@@ -20,7 +20,6 @@ using Supremacy.Types;
 using Supremacy.Universe;
 using System.Collections.Generic;
 using Supremacy.Utility;
-using System.Linq;
 
 namespace Supremacy.Orbitals
 {
@@ -40,6 +39,7 @@ namespace Supremacy.Orbitals
         private Dictionary<string, int> _possibleNames;
         private ShipType _shipClass;
 
+
         /// <summary>
         /// Gets or sets the ship class name.
         /// </summary>
@@ -57,10 +57,16 @@ namespace Supremacy.Orbitals
             get
             {
                 if (base.IsCombatant)
+                {
                     return true;
+                }
+
                 FieldInfo fieldInfo = typeof(ShipType).GetField(_shipClass.ToString());
                 if (fieldInfo != null)
+                {
                     return !Attribute.IsDefined(fieldInfo, typeof(NonCombatantAttribute));
+                }
+
                 return false;
             }
         }
@@ -71,8 +77,8 @@ namespace Supremacy.Orbitals
         /// <value>The intercept ability.</value>
         public Percentage InterceptAbility
         {
-            get { return _interceptAbility; }
-            set { _interceptAbility = value; }
+            get => _interceptAbility;
+            set => _interceptAbility = value;
         }
 
         /// <summary>
@@ -81,8 +87,8 @@ namespace Supremacy.Orbitals
         /// <value>The raid ability.</value>
         public Percentage RaidAbility
         {
-            get { return _raidAbility; }
-            set { _raidAbility = value; }
+            get => _raidAbility;
+            set => _raidAbility = value;
         }
 
         /// <summary>
@@ -91,8 +97,8 @@ namespace Supremacy.Orbitals
         /// <value>The evacuation limit.</value>
         public int EvacuationLimit
         {
-            get { return _evacuationLimit; }
-            set { _evacuationLimit = (byte)Math.Max(0, Math.Min(value, Byte.MaxValue)); }
+            get => _evacuationLimit;
+            set => _evacuationLimit = (byte)Math.Max(0, Math.Min(value, byte.MaxValue));
         }
 
         /// <summary>
@@ -106,8 +112,8 @@ namespace Supremacy.Orbitals
         /// </remarks>
         public int WorkCapacity
         {
-            get { return _workCapacity; }
-            set { _workCapacity = (ushort)Math.Max(0, Math.Min(value, UInt16.MaxValue)); }
+            get => _workCapacity;
+            set => _workCapacity = (ushort)Math.Max(0, Math.Min(value, ushort.MaxValue));
         }
 
         /// <summary>
@@ -116,8 +122,8 @@ namespace Supremacy.Orbitals
         /// <value>The maneuverability rating.</value>
         public new int Maneuverability
         {
-            get { return _maneuverability; }
-            set { _maneuverability = (byte)Math.Max(0, Math.Min(value, Byte.MaxValue)); }
+            get => _maneuverability;
+            set => _maneuverability = (byte)Math.Max(0, Math.Min(value, byte.MaxValue));
         }
 
         /// <summary>
@@ -126,8 +132,8 @@ namespace Supremacy.Orbitals
         /// <value>The speed.</value>
         public int Speed
         {
-            get { return _speed; }
-            set { _speed = (byte)value; }
+            get => _speed;
+            set => _speed = (byte)value;
         }
 
         /// <summary>
@@ -136,8 +142,13 @@ namespace Supremacy.Orbitals
         /// <value>The range.</value>
         public int Range
         {
-            get { return _range; }
-            set { _range = (byte)value; }
+            get => _range;
+            set => _range = (byte)value;
+        }
+
+        public Dictionary <string, int> PossibleNames
+        {
+            get => _possibleNames;
         }
 
         /// <summary>
@@ -146,8 +157,8 @@ namespace Supremacy.Orbitals
         /// <value>The fuel capacity.</value>
         public int FuelCapacity
         {
-            get { return _fuelCapacity; }
-            set { _fuelCapacity = (byte)value; }
+            get => _fuelCapacity;
+            set => _fuelCapacity = (byte)value;
         }
 
         /// <summary>
@@ -156,8 +167,8 @@ namespace Supremacy.Orbitals
         /// <value>The cloak strength.</value>
         public new int CloakStrength
         {
-            get { return _cloakStrength; }
-            set { _cloakStrength = (byte)value; }
+            get => _cloakStrength;
+            set => _cloakStrength = (byte)value;
         }
 
         /// <summary>
@@ -166,8 +177,8 @@ namespace Supremacy.Orbitals
         /// <value>The camouflaged strength.</value>
         public new int CamouflagedStrength
         {
-            get { return _camouflagedStrength; }
-            set { _camouflagedStrength = (byte)value; }
+            get => _camouflagedStrength;
+            set => _camouflagedStrength = (byte)value;
         }
         /// <summary>
         /// Gets or sets the type of the ship.
@@ -175,8 +186,8 @@ namespace Supremacy.Orbitals
         /// <value>The type of the ship.</value>
         public new ShipType ShipType
         {
-            get { return _shipClass; }
-            set { _shipClass = value; }
+            get => _shipClass;
+            set => _shipClass = value;
         }
 
         /// <summary>
@@ -185,8 +196,8 @@ namespace Supremacy.Orbitals
         /// <value>The dilithium cost.</value>
         public int Dilithium
         {
-            get { return BuildResourceCosts[ResourceType.Dilithium]; }
-            set { BuildResourceCosts[ResourceType.Dilithium] = value; }
+            get => BuildResourceCosts[ResourceType.Dilithium];
+            set => BuildResourceCosts[ResourceType.Dilithium] = value;
         }
 
         /// <summary>
@@ -222,38 +233,52 @@ namespace Supremacy.Orbitals
                 BuildResourceCosts[ResourceType.Dilithium] =
                     Number.ParseInt32(element["Dilithium"].InnerText.Trim());
                 if (BuildResourceCosts[ResourceType.Dilithium] < 1)
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: Dilithium should not be 0", Name);
+                }
             }
             if (element["CloakStrength"] != null)
             {
                 _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
                 if (_cloakStrength != 0)
+                {
                     if (_cloakStrength < 4 || _cloakStrength > 20)   // atm all values between 6 and 18 (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
+                    }
+                }
             }
             if (element["CamouflagedStrength"] != null)
             {
                 _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
                 if (_camouflagedStrength != 0)
+                {
                     if (_camouflagedStrength < 7 || _camouflagedStrength > 9)   // atm all values between 7 and 9 (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _camouflagedStrength should not be {1}", Name, _camouflagedStrength);
+                    }
+                }
             }
-            //if (element["RawMaterials"] != null)
+            //if (element["Duranium"] != null)
             //{
-            //    BuildResourceCosts[ResourceType.RawMaterials] =
-            //        ParseInt32(element["RawMaterials"].InnerText.Trim());
+            //    BuildResourceCosts[ResourceType.Duranium] =
+            //        ParseInt32(element["Duranium"].InnerText.Trim());
             //}
             if (element["Range"] != null)
             {
                 _range = Number.ParseByte(element["Range"].InnerText.Trim());
                 if (_range == 0 || _range > 25)  // atm 25 is highest value
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _range should not be {1}", Name, _range);
+                }
             }
             if (element["Speed"] != null)
             {
                 _speed = Number.ParseByte(element["Speed"].InnerText.Trim());
                 if (_speed == 0 || _speed > 15)
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _speed should not be {1}", Name, _speed);
+                }
             }
             if (element["FuelReserve"] != null)
             {
@@ -261,14 +286,20 @@ namespace Supremacy.Orbitals
                 //BuildResourceCosts[ResourceType.Deuterium] = _fuelCapacity;
 
                 if (_fuelCapacity > 15)   // atm Empires have 4 and minors have a zero
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _fuelCapacity should not be {1}", Name, _fuelCapacity);
+                }
             }
             if (element["InterceptAbility"] != null)
             {
                 _interceptAbility = Number.ParsePercentage(element["InterceptAbility"].InnerText.Trim());
                 if (_interceptAbility != 0)
+                {
                     if (_interceptAbility * 100 < 1 || _interceptAbility * 100 > 99)   // atm all values between 0% and 45% (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _interceptAbility should not be {1}", Name, _interceptAbility);
+                    }
+                }
             }
             if (element["RaidAbility"] != null)
             {
@@ -278,15 +309,23 @@ namespace Supremacy.Orbitals
             {
                 _maneuverability = Number.ParseByte(element["Maneuverability"].InnerText.Trim());
                 if (_maneuverability != 0)
+                {
                     if (_maneuverability < 1 || _maneuverability > 12)   // atm all values between 1 and 10 (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _maneuverability should not be {1}", Name, _maneuverability);
+                    }
+                }
             }
             if (element["EvacuationLimit"] != null)
             {
                 _evacuationLimit = Number.ParseByte(element["EvacuationLimit"].InnerText.Trim());
                 if (_evacuationLimit != 0)
+                {
                     if (_evacuationLimit < 1 || _evacuationLimit > 12)   // atm all values between 1 and 10 (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _evacuationLimit should not be {1}", Name, _evacuationLimit);
+                    }
+                }
             }
             if (element["WorkCapacity"] != null)
             {
@@ -303,6 +342,7 @@ namespace Supremacy.Orbitals
 
                 foreach (XmlElement name in element["ShipNames"])
                 {
+                    
                     _possibleNames.Add(name.InnerText.Trim(), 0);
                     //GameLog.Core.GameData.DebugFormat("ShipNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
                 }
@@ -326,78 +366,78 @@ namespace Supremacy.Orbitals
 
             newElement = doc.CreateElement("ShipType");
             newElement.InnerText = ShipType.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("ClassName");
             newElement.InnerText = ClassName;
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             if (Dilithium > 0)
             {
                 newElement = doc.CreateElement("Dilithium");
                 newElement.InnerText = Dilithium.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (CloakStrength > 0)
             {
                 newElement = doc.CreateElement("CloakStrength");
                 newElement.InnerText = CloakStrength.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (base.CamouflagedStrength > 0)
             {
                 newElement = doc.CreateElement("CamouflagedStrength");
                 newElement.InnerText = base.CamouflagedStrength.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             newElement = doc.CreateElement("Range");
             newElement.InnerText = Range.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("Speed");
             newElement.InnerText = Speed.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("FuelReserve");
             newElement.InnerText = FuelCapacity.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             if (InterceptAbility > 0)
             {
                 newElement = doc.CreateElement("InterceptAbility");
                 newElement.InnerText = _interceptAbility.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (RaidAbility > 0)
             {
                 newElement = doc.CreateElement("RaidAbility");
                 newElement.InnerText = _raidAbility.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (Maneuverability > 0)
             {
                 newElement = doc.CreateElement("Maneuverability");
                 newElement.InnerText = Maneuverability.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (EvacuationLimit > 0)
             {
                 newElement = doc.CreateElement("EvacuationLimit");
                 newElement.InnerText = EvacuationLimit.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (WorkCapacity > 0)
             {
                 newElement = doc.CreateElement("WorkCapacity");
                 newElement.InnerText = WorkCapacity.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
             if (_possibleNames.Count > 0)
             {
@@ -406,9 +446,9 @@ namespace Supremacy.Orbitals
                 {
                     XmlElement nameElement = doc.CreateElement("ShipName");
                     nameElement.InnerText = shipName.Key;
-                    newElement.AppendChild(nameElement);
+                    _ = newElement.AppendChild(nameElement);
                 }
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
         }
 
@@ -429,7 +469,7 @@ namespace Supremacy.Orbitals
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
             Ship ship = new Ship(this);
 
-            string shipDesign = ship.ShipDesign.Name;
+            //string shipDesign = ship.ShipDesign.Name;
 
 
             if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true && civManager.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
@@ -474,7 +514,10 @@ namespace Supremacy.Orbitals
                 }
                 string newShipName = "";
                 if (owner.ShipPrefix != null)
+                {
                     newShipName = owner.ShipPrefix + " ";
+                }
+
                 newShipName = newShipName + leastUsedName;
                 if (ship.Owner.Key == "BORG")
                 {
@@ -494,15 +537,19 @@ namespace Supremacy.Orbitals
             }
             ship.Reset();
             ship.Location = location;
-            ship.CreateFleet();
+            _ = ship.CreateFleet();
 
             int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
             if (fuelNeeded > 0)
-                ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+            {
+                _ = ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+            }
 
             // default we want to be "camouflaged"
             if (ship.CanCamouflage == true && ship.IsCamouflaged == false)
+            {
                 ship.IsCamouflaged = true;
+            }
 
             GameContext.Current.Universe.Objects.Add(ship);
 

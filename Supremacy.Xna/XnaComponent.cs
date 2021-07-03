@@ -846,7 +846,7 @@ namespace Supremacy.Xna
 
         protected void CopySurface(RenderTarget2D source, RenderTarget2D destination)
         {
-            _copySurfaceMethod.Invoke(
+            _ = _copySurfaceMethod.Invoke(
                 Graphics.GraphicsDevice,
                 new object[] { GetRenderTargetPointer(BackBuffer), GetRenderTargetPointer(FrontBuffer) });
         }

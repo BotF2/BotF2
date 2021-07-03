@@ -52,7 +52,7 @@ namespace Supremacy.Client
         private readonly INavigationService _navigationService;
         private readonly IGameWindow _gameWindow;
         private readonly SitRepDialog _sitRepDialog;
-        private readonly ShipOverview _shipOverview;
+        //private readonly ShipOverview _shipOverview;
         private readonly IAppContext _appContext;
         private readonly IPlayerOrderService _playerOrderService;
         private readonly Dictionary<EventBase, SubscriptionToken> _eventSubscriptionTokens;
@@ -84,14 +84,20 @@ namespace Supremacy.Client
             [NotNull] IPlayerOrderService playerOrderService)
         {
             if (regionManager == null)
+            {
                 throw new ArgumentNullException("regionManager");
+            }
+
             if (regionViewRegistry == null)
+            {
                 throw new ArgumentNullException("regionViewRegistry");
+            }
+
             _container = container ?? throw new ArgumentNullException("container");
             _navigationService = navigationService ?? throw new ArgumentNullException("navigationService");
             _gameWindow = gameWindow ?? throw new ArgumentNullException("gameWindow");
             _sitRepDialog = container.Resolve<SitRepDialog>();
-            _shipOverview = container.Resolve<ShipOverview>();
+            //_shipOverview = container.Resolve<ShipOverview>();
             _appContext = appContext ?? throw new ArgumentNullException("appContext");
             _client = client ?? throw new ArgumentNullException("client");
             _playerOrderService = playerOrderService ?? throw new ArgumentNullException("playerOrderService");
@@ -109,10 +115,10 @@ namespace Supremacy.Client
             ShowSummary(true);
         }
 
-        private void ExecuteShowShipOverviewCommand(object obj)
-        {
-            ShowShipOverview(true);
-        }
+        //private void ExecuteShowShipOverviewCommand(object obj)
+        //{
+        //    ShowShipOverview(true);
+        //}
 
         private static void ExecuteTurnCommand(object obj)
         {
@@ -125,7 +131,9 @@ namespace Supremacy.Client
         public void RunLocal([NotNull] GameInitData initData)
         {
             if (initData == null)
+            {
                 throw new ArgumentNullException("initData");
+            }
 
             CheckDisposed();
 
@@ -140,7 +148,9 @@ namespace Supremacy.Client
             try
             {
                 if (initData.Options == null)
+                {
                     initData.Options = _container.Resolve<GameOptions>();
+                }
 
                 _gameOptions = initData.Options;
 
@@ -166,7 +176,9 @@ namespace Supremacy.Client
             IDisposable handle = _gameWindow.EnterWaitCursorScope();
 
             if (Interlocked.CompareExchange(ref _connectWaitCursorHandle, handle, null) != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void UnhookCommandAndEventHandlers()
@@ -179,7 +191,9 @@ namespace Supremacy.Client
             lock (_eventSubscriptionTokens)
             {
                 foreach (EventBase subscribedEvent in _eventSubscriptionTokens.Keys)
+                {
                     subscribedEvent.Unsubscribe(_eventSubscriptionTokens[subscribedEvent]);
+                }
 
                 _eventSubscriptionTokens.Clear();
             }
@@ -188,14 +202,19 @@ namespace Supremacy.Client
         private void OnLocalPlayerJoined(LocalPlayerJoinedEventArgs args)
         {
             if (_lobbyScreenShown)
+            {
                 return;
-
+            }
 
             if (_eventSubscriptionTokens.TryGetValue(ClientEvents.LocalPlayerJoined, out SubscriptionToken subscriptionToken))
+            {
                 ClientEvents.LocalPlayerJoined.Unsubscribe(subscriptionToken);
+            }
 
             if (!_appContext.IsSinglePlayerGame)
-                _navigationService.ActivateScreen(StandardGameScreens.MultiplayerLobby);
+            {
+                _ = _navigationService.ActivateScreen(StandardGameScreens.MultiplayerLobby);
+            }
 
             _lobbyScreenShown = true;
 
@@ -212,7 +231,7 @@ namespace Supremacy.Client
             ClientCommands.EndTurn.RegisterCommand(_endTurnCommand);
             ClientCommands.ShowEndOfTurnSummary.RegisterCommand(_showEndOfTurnSummaryCommand);
             //ClientCommands.ShowShipOverview.RegisterCommand(_showShipOverviewCommand);
-            ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
+            _ = ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
 
             lock (_eventSubscriptionTokens)
             {
@@ -264,7 +283,9 @@ namespace Supremacy.Client
         {
             ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView> presenter = _container.Resolve<ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView>>();
             if (presenter.Model.IsRunning)
+            {
                 return;
+            }
 
             presenter.Model.ProcessUpdate(e.Value);
             presenter.Run();
@@ -294,33 +315,41 @@ namespace Supremacy.Client
         {
             IDisposable handle = _gameWindow.EnterWaitCursorScope();
             if (Interlocked.CompareExchange(ref _gameStartWaitCursorHandle, handle, null) != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void SetTurnWaitCursor()
         {
             IDisposable handle = _gameWindow.EnterWaitCursorScope();
             if (Interlocked.CompareExchange(ref _turnWaitCursorHandle, handle, null) != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void OnTurnStarted(EventArgs args)
         {
             IGameContext currentGame = _appContext.CurrentGame;
             if (currentGame == null)
+            {
                 return;
+            }
 
             ClientEvents.ScreenRefreshRequired.Publish(ClientEventArgs.Default);
 
             if (!_firstTurnStarted)
             {
                 _firstTurnStarted = true;
-                _navigationService.ActivateScreen(StandardGameScreens.GalaxyScreen);
+                _ = _navigationService.ActivateScreen(StandardGameScreens.GalaxyScreen);
                 ClearGameStartWaitCursor();
             }
 
             foreach (IInfoCardSubject infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
+            {
                 infoCardSubject.RefreshData();
+            }
 
             ClearTurnWaitCursor();
 
@@ -332,7 +361,9 @@ namespace Supremacy.Client
         private void ProcessSitRepEntries()
         {
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
+            {
                 return;
+            }
 
             foreach (SitRepEntry sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
             {
@@ -354,14 +385,18 @@ namespace Supremacy.Client
         private void ShowSummary(bool showIfEmpty)
         {
             if (!_appContext.IsGameInPlay)
+            {
                 return;
+            }
 
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
             if (showIfEmpty)
+            {
                 _sitRepDialog.Show();
+            }
             else if (!service.AutoTurn)
             {
                 // works but doubled
@@ -373,33 +408,39 @@ namespace Supremacy.Client
             }
         }
 
-        private void ShowShipOverview(bool showIfEmpty)
-        {
-            if (!_appContext.IsGameInPlay)
-                return;
+        //private void ShowShipOverview(bool showIfEmpty)
+        //{
+        //    if (!_appContext.IsGameInPlay)
+        //    {
+        //        return;
+        //    }
 
-            _shipOverview.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
+        //    _shipOverview.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
-            IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+        //    IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
-            if (showIfEmpty)
-                _shipOverview.Show();
-            else if (!service.AutoTurn)
-            {
-                // works but doubled
-                if (ClientSettings.Current.EnableCombatScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
-                {
-                    GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
-                    _shipOverview.ShowIfAnyVisibleEntries();
-                }
-            }
-        }
+        //    if (showIfEmpty)
+        //    {
+        //        _shipOverview.Show();
+        //    }
+        //    else if (!service.AutoTurn)
+        //    {
+        //        // works but doubled
+        //        if (ClientSettings.Current.EnableCombatScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
+        //        {
+        //            GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
+        //            _shipOverview.ShowIfAnyVisibleEntries();
+        //        }
+        //    }
+        //}
 
         private void ClearTurnWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _turnWaitCursorHandle, null);
             if (handle != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void ClearWaitCursors()
@@ -413,14 +454,18 @@ namespace Supremacy.Client
         {
             IDisposable handle = Interlocked.Exchange(ref _connectWaitCursorHandle, null);
             if (handle != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void ClearGameStartWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _gameStartWaitCursorHandle, null);
             if (handle != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void OnGameStarted(DataEventArgs<GameStartData> args)
@@ -495,7 +540,9 @@ namespace Supremacy.Client
         protected void CheckDisposed()
         {
             if (_isDisposed)
+            {
                 throw new ObjectDisposedException("GameClient");
+            }
         }
 
         protected void StartServer(bool allowRemoteConnections)
@@ -540,7 +587,10 @@ namespace Supremacy.Client
         {
             IGameServer server = Interlocked.Exchange(ref _server, null);
             if (server == null)
+            {
                 return;
+            }
+
             server.Faulted -= OnServerFaulted;
             if (server.IsRunning)
             {
@@ -567,11 +617,15 @@ namespace Supremacy.Client
         private void Connect(Action connectAction)
         {
             if (connectAction == null)
+            {
                 throw new ArgumentNullException("connectAction");
+            }
 
             IGameClient client = Interlocked.CompareExchange(ref _client, null, null);
             if (client == null)
+            {
                 return;
+            }
 
             HookClientEventHandlers(client);
 
@@ -586,7 +640,7 @@ namespace Supremacy.Client
                 _dispatcher.Invoke(
                     (Action)ClearWaitCursors,
                     DispatcherPriority.Normal);
-                Interlocked.Exchange(ref _client, null);
+                _ = Interlocked.Exchange(ref _client, null);
                 ClientEvents.ClientConnectionFailed.Publish(ClientEventArgs.Default);
                 Terminate();
             }
@@ -595,7 +649,10 @@ namespace Supremacy.Client
         protected void HookClientEventHandlers(IGameClient client)
         {
             if (client == null)
+            {
                 return;
+            }
+
             client.Connected += OnClientConnected;
             client.Disconnected += OnClientDisconnected;
         }
@@ -603,7 +660,10 @@ namespace Supremacy.Client
         protected void UnhookClientEventHandlers(IGameClient client)
         {
             if (client == null)
+            {
                 return;
+            }
+
             client.Connected -= OnClientConnected;
             client.Disconnected -= OnClientDisconnected;
         }
@@ -612,7 +672,10 @@ namespace Supremacy.Client
         private void OnClientDisconnected(ClientDataEventArgs<ClientDisconnectReason> args)
         {
             if (_suppressClientEvents)
+            {
                 return;
+            }
+
             _suppressClientEvents = true;
             ClientEvents.ClientDisconnected.Publish(args);
         }
@@ -620,7 +683,10 @@ namespace Supremacy.Client
         private void OnClientConnected(EventArgs args)
         {
             if (_suppressClientEvents)
+            {
                 return;
+            }
+
             ClientEvents.ClientConnected.Publish(new ClientConnectedEventArgs(_isServerLocal));
         }
         // ReSharper restore MemberCanBeMadeStatic
@@ -629,7 +695,9 @@ namespace Supremacy.Client
         {
             IGameClient client = Interlocked.Exchange(ref _client, null);
             if (client == null)
+            {
                 return;
+            }
 
             UnhookClientEventHandlers(client);
 
@@ -643,15 +711,22 @@ namespace Supremacy.Client
             }
 
             if (!_suppressClientEvents)
+            {
                 ClientEvents.ClientDisconnected.Publish(new ClientDataEventArgs<ClientDisconnectReason>(ClientDisconnectReason.Disconnected));
+            }
         }
 
         public void RunRemote([NotNull] string playerName, [NotNull] string remoteHost)
         {
             if (playerName == null)
+            {
                 throw new ArgumentNullException("playerName");
+            }
+
             if (remoteHost == null)
+            {
                 throw new ArgumentNullException("remoteHost");
+            }
 
             CheckDisposed();
 
@@ -701,7 +776,9 @@ namespace Supremacy.Client
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisposed = true;
 
@@ -717,7 +794,7 @@ namespace Supremacy.Client
                 }
             }
 
-            _navigationService.ActivateScreen(StandardGameScreens.MenuScreen);
+            _ = _navigationService.ActivateScreen(StandardGameScreens.MenuScreen);
 
             ClearScreenViews();
 
@@ -733,7 +810,7 @@ namespace Supremacy.Client
 
             UnhookCommandAndEventHandlers();
 
-            _dispatcher.BeginInvoke((Action)OnTerminated);
+            _ = _dispatcher.BeginInvoke((Action)OnTerminated);
         }
 
         private void ClearScreenViews()

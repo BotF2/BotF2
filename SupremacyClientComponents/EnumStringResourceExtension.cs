@@ -18,8 +18,8 @@ namespace Supremacy.Client
         [ConstructorArgument("key")]
         public string Key
         {
-            get { return _key; }
-            set { _key = value; }
+            get => _key;
+            set => _key = value;
         }
 
         public StringCase Case { get; set; }
@@ -62,7 +62,9 @@ namespace Supremacy.Client
                 }
 
                 if (Equals(property, ContentControl.ContentProperty))
+                {
                     return new AccessText { Text = text };
+                }
             }
             return text;
         }

@@ -38,8 +38,8 @@ namespace Supremacy.Orbitals
 
         public byte Maneuverability
         {
-            get { return _maneuverability; }
-            set { _maneuverability = (byte)value; }
+            get => _maneuverability;
+            set => _maneuverability = (byte)value;
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace Supremacy.Orbitals
         /// <value>The size of the crew.</value>
         public int CrewSize
         {
-            get { return _crewSize; }
-            set { _crewSize = (ushort)Math.Max(0, Math.Min(value, UInt16.MaxValue)); }
+            get => _crewSize;
+            set => _crewSize = (ushort)Math.Max(0, Math.Min(value, ushort.MaxValue));
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Supremacy.Orbitals
         /// <remarks>
         /// An orbital is manned if it has a crew size greater than zero.
         /// </remarks>
-        public bool IsManned => (_crewSize > 0);
+        public bool IsManned => _crewSize > 0;
 
         /// <summary>
         /// Gets or sets the hull strength.
@@ -67,8 +67,8 @@ namespace Supremacy.Orbitals
         /// <value>The hull strength.</value>
         public int HullStrength
         {
-            get { return _hullStrength; }
-            set { _hullStrength = (ushort)Math.Max(0, Math.Min(value, UInt16.MaxValue)); }
+            get => _hullStrength;
+            set => _hullStrength = (ushort)Math.Max(0, Math.Min(value, ushort.MaxValue));
         }
 
         /// <summary>
@@ -77,8 +77,8 @@ namespace Supremacy.Orbitals
         /// <value>The shield strength.</value>
         public int ShieldStrength
         {
-            get { return _shieldStrength; }
-            set { _shieldStrength = (ushort)Math.Max(0, Math.Min(value, UInt16.MaxValue)); }
+            get => _shieldStrength;
+            set => _shieldStrength = (ushort)Math.Max(0, Math.Min(value, ushort.MaxValue));
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ namespace Supremacy.Orbitals
         /// <value>The shield recharge rate.</value>
         public Percentage ShieldRechargeRate
         {
-            get { return _shieldRechargeRate; }
-            set { _shieldRechargeRate = value; }
+            get => _shieldRechargeRate;
+            set => _shieldRechargeRate = value;
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace Supremacy.Orbitals
         /// <value>The science ability.</value>
         public Percentage ScienceAbility
         {
-            get { return _scienceAbility; }
-            set { _scienceAbility = value; }
+            get => _scienceAbility;
+            set => _scienceAbility = value;
         }
 
         /// <summary>
@@ -117,8 +117,8 @@ namespace Supremacy.Orbitals
         /// </value>
         public string ShipType
         {
-            get { return _shipType; }
-            set { _shipType = value; }
+            get => _shipType;
+            set => _shipType = value;
         }
         /// <summary>
         /// Gets or sets the scan strength.
@@ -126,8 +126,8 @@ namespace Supremacy.Orbitals
         /// <value>The scan strength.</value>
         public int ScanStrength
         {
-            get { return _scanPower; }
-            set { _scanPower = (byte)value; }
+            get => _scanPower;
+            set => _scanPower = (byte)value;
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace Supremacy.Orbitals
         /// <value>The cloak strength.</value>
         public int CloakStrength
         {
-            get { return _cloakStrength; }
-            set { _cloakStrength = (byte)value; }
+            get => _cloakStrength;
+            set => _cloakStrength = (byte)value;
         }
 
         /// <summary>
@@ -146,8 +146,8 @@ namespace Supremacy.Orbitals
         /// <value>The scan strength.</value>
         public int CamouflagedStrength
         {
-            get { return _camouflagedStrength; }
-            set { _camouflagedStrength = (byte)value; }
+            get => _camouflagedStrength;
+            set => _camouflagedStrength = (byte)value;
         }
 
         /// <summary>
@@ -159,13 +159,19 @@ namespace Supremacy.Orbitals
             get
             {
                 if (_sensorRange > 6)  // not more than 6 sectors to all directions
+                {
                     _sensorRange = 6;
+                }
+
                 return _sensorRange;
             }
             set
             {
                 if (_sensorRange > 6)
+                {
                     _sensorRange = 6;
+                }
+
                 _sensorRange = (byte)value;
             }
         }
@@ -176,8 +182,8 @@ namespace Supremacy.Orbitals
         /// <value>The primary weapon.</value>
         public WeaponType PrimaryWeapon
         {
-            get { return _primaryWeapon; }
-            set { _primaryWeapon = value; }
+            get => _primaryWeapon;
+            set => _primaryWeapon = value;
         }
 
         /// <summary>
@@ -192,16 +198,22 @@ namespace Supremacy.Orbitals
                 {
                     string value = LocalizedText.GetString(OrbitalStringKeys.PrimaryWeaponName);
                     if (value == null)
+                    {
                         GameLog.Core.XMLCheck.WarnFormat("PrimaryWeaponName is missing... (ship/station is unknown here");
-                    if (value != null)
-                        return value;
+                    }
 
+                    if (value != null)
+                    {
+                        return value;
+                    }
                 }
                 if (TryEnsureObjectString())
+                {
                     return TextDatabaseEntry.Custom1;
+                }
                 //if (TextDatabaseEntry.Custom1 == null)
                 //    GameLog.Core.XMLCheck.WarnFormat("PrimaryWeaponName is missing... (ship/station is unknown here");
-                return String.Empty;
+                return string.Empty;
             }
         }
 
@@ -211,8 +223,8 @@ namespace Supremacy.Orbitals
         /// <value>The secondary weapon.</value>
         public WeaponType SecondaryWeapon
         {
-            get { return _secondaryWeapon; }
-            set { _secondaryWeapon = value; }
+            get => _secondaryWeapon;
+            set => _secondaryWeapon = value;
         }
 
         /// <summary>
@@ -227,23 +239,29 @@ namespace Supremacy.Orbitals
                 {
                     string value = LocalizedText.GetString(OrbitalStringKeys.SecondaryWeaponName);
                     if (value == null)
+                    {
                         GameLog.Core.XMLCheck.WarnFormat("SecondaryWeaponName is missing... (ship/station is unknown here");
-                    if (value != null)
-                        return value;
+                    }
 
+                    if (value != null)
+                    {
+                        return value;
+                    }
                 }
                 if (TryEnsureObjectString())
+                {
                     return TextDatabaseEntry.Custom2;
+                }
                 //if (TextDatabaseEntry.Custom2 == null)
                 //    GameLog.Core.XMLCheck.WarnFormat("SecondaryWeaponName is missing... (ship/station is unknown here");
-                return String.Empty;
+                return string.Empty;
             }
         }
 
         public string ModelFile
         {
-            get { return _modelFile; }
-            set { _modelFile = value; }
+            get => _modelFile;
+            set => _modelFile = value;
         }
 
         /// <summary>
@@ -268,8 +286,12 @@ namespace Supremacy.Orbitals
             {
                 _crewSize = Number.ParseUInt16(element["Crew"].InnerText.Trim());
                 if (_crewSize != 0)
+                {
                     if (_crewSize < 1 || _crewSize > 65000)   // atm all values between x and x (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _crewSize should not be {1}", Name, _crewSize);
+                    }
+                }
             }
             if (element["ScienceAbility"] != null)
             {
@@ -283,50 +305,78 @@ namespace Supremacy.Orbitals
             {
                 _scanPower = Number.ParseByte(element["ScanPower"].InnerText.Trim());
                 if (_scanPower != 0)
+                {
                     if (_scanPower < 1 || _scanPower > 255)   // atm all values between x and x (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _scanPower should not be {1}", Name, _scanPower);
+                    }
+                }
             }
             if (element["SensorRange"] != null)
             {
                 _sensorRange = Number.ParseByte(element["SensorRange"].InnerText.Trim());
                 if (_sensorRange != 0)
+                {
                     if (_sensorRange < 1 || _sensorRange > 255)   // atm all values between x and x (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _sensorRange should not be {1}", Name, _sensorRange);
+                    }
+                }
             }
             if (element["HullStrength"] != null)
             {
                 _hullStrength = Number.ParseUInt16(element["HullStrength"].InnerText.Trim());
                 if (_hullStrength != 0)
+                {
                     if (_hullStrength < 1)   // atm all values > 0
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _hullStrength should not be {1}", Name, _hullStrength);
+                    }
+                }
             }
             if (element["ShieldStrength"] != null)
             {
                 _shieldStrength = Number.ParseUInt16(element["ShieldStrength"].InnerText.Trim());
                 if (_shieldStrength != 0)
+                {
                     if (_shieldStrength < 1 || _shieldStrength > 65000)   // atm all values between 1 and 10 (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _shieldStrength should not be {1}", Name, _shieldStrength);
+                    }
+                }
             }
             if (element["ShieldRecharge"] != null)
             {
                 _shieldRechargeRate = Number.ParsePercentage(element["ShieldRecharge"].InnerText.Trim());
                 if (_shieldRechargeRate != 0)
+                {
                     if (_shieldRechargeRate < 0.01 || _shieldRechargeRate > 1)   // atm all values between x and x (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _shieldRechargeRate should not be {1}", Name, _shieldRechargeRate);
+                    }
+                }
             }
             if (element["CloakStrength"] != null)
             {
                 _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
                 if (_cloakStrength != 0)
+                {
                     if (_cloakStrength < 1 || _cloakStrength > 255)   // atm all values between x and x (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
+                    }
+                }
             }
             if (element["CamouflagedStrength"] != null)
             {
                 _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
                 if (_camouflagedStrength != 0)
+                {
                     if (_camouflagedStrength < 1 || _camouflagedStrength > 255)   // atm all values between x and x (or 0 for not having this ability)
+                    {
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _camouflagedStrength should not be {1}", Name, _camouflagedStrength);
+                    }
+                }
             }
             if (element["BeamType"] != null)
             {
@@ -352,7 +402,9 @@ namespace Supremacy.Orbitals
                     Refire = beamRefire
                 };
                 if (_primaryWeapon.Damage > 0 && _primaryWeapon.Count < 1)   // atm all values between x and x (or 0 for not having this ability)
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for a beam: Damage = {0}, but Count = {1}", _primaryWeapon.Damage, _primaryWeapon.Count);
+                }
                 //_primaryWeaponName = element["BeamType"].GetAttribute("Name").Trim();
             }
             if (element["TorpedoType"] != null)
@@ -360,8 +412,15 @@ namespace Supremacy.Orbitals
                 int torpedoCount = Number.ParseInt32(element["TorpedoType"].GetAttribute("Count").Trim());
                 int torpedoDamage = Number.ParseInt32(element["TorpedoType"].GetAttribute("Damage").Trim());
 
-                if (torpedoCount == 0) torpedoDamage = 0;
-                if (torpedoDamage == 0) torpedoCount = 0;
+                if (torpedoCount == 0)
+                {
+                    torpedoDamage = 0;
+                }
+
+                if (torpedoDamage == 0)
+                {
+                    torpedoCount = 0;
+                }
 
                 _secondaryWeapon = new WeaponType
                 {
@@ -410,56 +469,60 @@ namespace Supremacy.Orbitals
             {
                 newElement = doc.CreateElement("Crew");
                 newElement.InnerText = CrewSize.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (ScienceAbility > 0)
             {
                 newElement = doc.CreateElement("ScienceAbility");
                 newElement.InnerText = _scienceAbility.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
 
                 if (_scienceAbility < 0 || _scienceAbility > 100)   // atm all values between x and x (or 0 for not having this ability)
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml ScienceAbility = {0}, but check for a correct value in percent", _scienceAbility);
+                }
 
-                Int32.TryParse(_scienceAbility.ToString(), out int _scienceAbilityINT);
+                _ = int.TryParse(_scienceAbility.ToString(), out int _scienceAbilityINT);
                 if (_scienceAbility != _scienceAbilityINT)  // atm all values between x and x (or 0 for not having this ability)
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml ScienceAbility = {0}, but check for a correct value (full numeric) in percent", _scienceAbility);
+                }
             }
 
             if (ScanStrength > 0)
             {
                 newElement = doc.CreateElement("ScanPower");
                 newElement.InnerText = ScanStrength.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (SensorRange > 0)
             {
                 newElement = doc.CreateElement("SensorRange");
                 newElement.InnerText = SensorRange.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (HullStrength > 0)
             {
                 newElement = doc.CreateElement("HullStrength");
                 newElement.InnerText = HullStrength.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (ShieldStrength > 0)
             {
                 newElement = doc.CreateElement("ShieldStrength");
                 newElement.InnerText = ShieldStrength.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (ShieldRechargeRate > 0)
             {
                 newElement = doc.CreateElement("ShieldRecharge");
                 newElement.InnerText = _shieldRechargeRate.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (PrimaryWeapon.Count > 0)
@@ -469,7 +532,7 @@ namespace Supremacy.Orbitals
                 newElement.SetAttribute("Count", PrimaryWeapon.Count.ToString());
                 newElement.SetAttribute("Damage", PrimaryWeapon.Damage.ToString());
                 newElement.SetAttribute("Refire", PrimaryWeapon.Refire.ToString());
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (SecondaryWeapon.Count > 0)
@@ -478,7 +541,7 @@ namespace Supremacy.Orbitals
                 //newElement.SetAttribute("Name", SecondaryWeaponName);
                 newElement.SetAttribute("Count", SecondaryWeapon.Count.ToString());
                 newElement.SetAttribute("Damage", SecondaryWeapon.Damage.ToString());
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
         }
     }
@@ -502,18 +565,19 @@ namespace Supremacy.Orbitals
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(MarkupExtension))
+            {
                 return true;
+            }
+
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            OrbitalStringKey orbitalKey = value as OrbitalStringKey;
-            if (orbitalKey != null &&
+            if (value is OrbitalStringKey orbitalKey &&
                 destinationType == typeof(MarkupExtension))
             {
-                IValueSerializerContext serializerContext = context as IValueSerializerContext;
-                if (serializerContext != null)
+                if (context is IValueSerializerContext serializerContext)
                 {
                     ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                     if (typeSerializer != null)

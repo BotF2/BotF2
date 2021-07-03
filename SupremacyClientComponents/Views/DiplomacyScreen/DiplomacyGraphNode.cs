@@ -17,10 +17,7 @@ namespace Supremacy.Client.Views
 
         public DiplomacyGraphNode(Civilization civilization, ICommand selectNodeCommand)
         {
-            if (civilization == null)
-                throw new ArgumentNullException("civilization");
-
-            _civilization = civilization;
+            _civilization = civilization ?? throw new ArgumentNullException("civilization");
             _selectNodeCommand = selectNodeCommand;
             _children = new ObservableCollection<DiplomacyGraphNode>();
         }
@@ -47,7 +44,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -58,7 +57,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

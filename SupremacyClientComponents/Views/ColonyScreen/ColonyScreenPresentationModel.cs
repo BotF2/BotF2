@@ -52,9 +52,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedColonyChanged(Colony oldValue, Colony newValue)
         {
-            EventHandler handler = SelectedColonyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
+            SelectedColonyChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
             OnPropertyChanged("SelectedColony");
         }
 
@@ -62,7 +60,7 @@ namespace Supremacy.Client.Views
 
         public Colony SelectedColony
         {
-            get { return _selectedColony; }
+            get => _selectedColony;
             set
             {
                 Colony oldValue = _selectedColony;
@@ -79,19 +77,20 @@ namespace Supremacy.Client.Views
 
         private void OnColoniesChanged()
         {
-            EventHandler handler = ColoniesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ColoniesChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("Colonies");
         }
 
         public IEnumerable<Colony> Colonies
         {
-            get { return _colonies; }
+            get => _colonies;
             set
             {
                 if (Equals(_colonies, value))
+                {
                     return;
+                }
+
                 _colonies = value;
                 OnColoniesChanged();
             }
@@ -105,19 +104,20 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedPlanetaryBuildProjectChanged()
         {
-            EventHandler handler = SelectedPlanetaryBuildProjectChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedPlanetaryBuildProjectChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("SelectedPlanetaryBuildProject");
         }
 
         public BuildProject SelectedPlanetaryBuildProject
         {
-            get { return _selectedPlanetaryBuildProject; }
+            get => _selectedPlanetaryBuildProject;
             set
             {
                 if (Equals(_selectedPlanetaryBuildProject, value))
+                {
                     return;
+                }
+
                 _selectedPlanetaryBuildProject = value;
                 OnSelectedPlanetaryBuildProjectChanged();
             }
@@ -131,19 +131,20 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedShipyardBuildProjectChanged()
         {
-            EventHandler handler = SelectedShipyardBuildProjectChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipyardBuildProjectChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("SelectedShipyardBuildProject");
         }
 
         public BuildProject SelectedShipyardBuildProject
         {
-            get { return _selectedShipyardBuildProject; }
+            get => _selectedShipyardBuildProject;
             set
             {
                 if (Equals(_selectedShipyardBuildProject, value))
+                {
                     return;
+                }
+
                 _selectedShipyardBuildProject = value;
                 OnSelectedShipyardBuildProjectChanged();
             }
@@ -183,19 +184,20 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedShipyardBuildSlotChanged()
         {
-            EventHandler handler = SelectedShipyardBuildSlotChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipyardBuildSlotChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("SelectedShipyardBuildSlot");
         }
 
         public ShipyardBuildSlot SelectedShipyardBuildSlot
         {
-            get { return _selectedShipyardBuildSlot; }
+            get => _selectedShipyardBuildSlot;
             set
             {
                 if (Equals(_selectedShipyardBuildSlot, value))
+                {
                     return;
+                }
+
                 _selectedShipyardBuildSlot = value;
                 OnSelectedShipyardBuildSlotChanged();
             }
@@ -209,19 +211,20 @@ namespace Supremacy.Client.Views
 
         private void OnPlanetaryBuildProjectsChanged()
         {
-            EventHandler handler = PlanetaryBuildProjectsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            PlanetaryBuildProjectsChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("PlanetaryBuildProjects");
         }
 
         public IEnumerable<BuildProject> PlanetaryBuildProjects
         {
-            get { return _planetaryBuildProjects; }
+            get => _planetaryBuildProjects;
             set
             {
                 if (Equals(_planetaryBuildProjects, value))
+                {
                     return;
+                }
+
                 _planetaryBuildProjects = value;
                 OnPlanetaryBuildProjectsChanged();
             }
@@ -235,19 +238,20 @@ namespace Supremacy.Client.Views
 
         private void OnShipyardBuildProjectsChanged()
         {
-            EventHandler handler = ShipyardBuildProjectsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ShipyardBuildProjectsChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("ShipyardBuildProjects");
         }
 
         public IEnumerable<BuildProject> ShipyardBuildProjects
         {
-            get { return _shipyardBuildProjects; }
+            get => _shipyardBuildProjects;
             set
             {
                 if (Equals(_shipyardBuildProjects, value))
+                {
                     return;
+                }
+
                 _shipyardBuildProjects = value;
                 OnShipyardBuildProjectsChanged();
             }
@@ -287,19 +291,20 @@ namespace Supremacy.Client.Views
 
         private void OnAddToPlanetaryBuildQueueCommandChanged()
         {
-            EventHandler handler = AddToPlanetaryBuildQueueCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            AddToPlanetaryBuildQueueCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("AddToPlanetaryBuildQueueCommand");
         }
 
         public ICommand AddToPlanetaryBuildQueueCommand
         {
-            get { return _addToPlanetaryBuildQueueCommand; }
+            get => _addToPlanetaryBuildQueueCommand;
             set
             {
                 if (Equals(_addToPlanetaryBuildQueueCommand, value))
+                {
                     return;
+                }
+
                 _addToPlanetaryBuildQueueCommand = value;
                 OnAddToPlanetaryBuildQueueCommandChanged();
             }
@@ -313,19 +318,20 @@ namespace Supremacy.Client.Views
 
         private void OnRemoveFromPlanetaryBuildQueueCommandChanged()
         {
-            EventHandler handler = RemoveFromPlanetaryBuildQueueCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            RemoveFromPlanetaryBuildQueueCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("RemoveFromPlanetaryBuildQueueCommand");
         }
 
         public ICommand RemoveFromPlanetaryBuildQueueCommand
         {
-            get { return _removeFromPlanetaryBuildQueueCommand; }
+            get => _removeFromPlanetaryBuildQueueCommand;
             set
             {
                 if (Equals(_removeFromPlanetaryBuildQueueCommand, value))
+                {
                     return;
+                }
+
                 _removeFromPlanetaryBuildQueueCommand = value;
                 OnRemoveFromPlanetaryBuildQueueCommandChanged();
             }
@@ -339,19 +345,20 @@ namespace Supremacy.Client.Views
 
         private void OnAddToShipyardBuildQueueCommandChanged()
         {
-            EventHandler handler = AddToShipyardBuildQueueCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            AddToShipyardBuildQueueCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("AddToShipyardBuildQueueCommand");
         }
 
         public ICommand AddToShipyardBuildQueueCommand
         {
-            get { return _addToShipyardBuildQueueCommand; }
+            get => _addToShipyardBuildQueueCommand;
             set
             {
                 if (Equals(_addToShipyardBuildQueueCommand, value))
+                {
                     return;
+                }
+
                 _addToShipyardBuildQueueCommand = value;
                 OnAddToShipyardBuildQueueCommandChanged();
             }
@@ -365,19 +372,20 @@ namespace Supremacy.Client.Views
 
         private void OnRemoveFromShipyardBuildQueueCommandChanged()
         {
-            EventHandler handler = RemoveFromShipyardBuildQueueCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            RemoveFromShipyardBuildQueueCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("RemoveFromShipyardBuildQueueCommand");
         }
 
         public ICommand RemoveFromShipyardBuildQueueCommand
         {
-            get { return _removeFromShipyardBuildQueueCommand; }
+            get => _removeFromShipyardBuildQueueCommand;
             set
             {
                 if (Equals(_removeFromShipyardBuildQueueCommand, value))
+                {
                     return;
+                }
+
                 _removeFromShipyardBuildQueueCommand = value;
                 OnRemoveFromShipyardBuildQueueCommandChanged();
             }
@@ -393,27 +401,26 @@ namespace Supremacy.Client.Views
 
         private void OnCancelBuildProjectCommandChanged()
         {
-            EventHandler handler = CancelBuildProjectCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            CancelBuildProjectCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("CancelBuildProjectCommand");
         }
 
         private void OnBuyBuildProjectCommandChanged()
         {
-            EventHandler handler = BuyBuildProjectCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            BuyBuildProjectCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("BuyBuildProjectCommand");
         }
 
         public ICommand CancelBuildProjectCommand
         {
-            get { return _cancelBuildProjectCommand; }
+            get => _cancelBuildProjectCommand;
             set
             {
                 if (Equals(_cancelBuildProjectCommand, value))
+                {
                     return;
+                }
+
                 _cancelBuildProjectCommand = value;
                 OnCancelBuildProjectCommandChanged();
             }
@@ -421,11 +428,14 @@ namespace Supremacy.Client.Views
 
         public ICommand BuyBuildProjectCommand
         {
-            get { return _buyBuildProjectCommand; }
+            get => _buyBuildProjectCommand;
             set
             {
                 if (Equals(_buyBuildProjectCommand, value))
+                {
                     return;
+                }
+
                 _buyBuildProjectCommand = value;
                 OnBuyBuildProjectCommandChanged();
             }
@@ -439,19 +449,20 @@ namespace Supremacy.Client.Views
 
         private void OnActivateFacilityCommandChanged()
         {
-            EventHandler handler = ActivateFacilityCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ActivateFacilityCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("ActivateFacilityCommand");
         }
 
         public ICommand ActivateFacilityCommand
         {
-            get { return _activateFacilityCommand; }
+            get => _activateFacilityCommand;
             set
             {
                 if (Equals(_activateFacilityCommand, value))
+                {
                     return;
+                }
+
                 _activateFacilityCommand = value;
                 OnActivateFacilityCommandChanged();
             }
@@ -465,19 +476,20 @@ namespace Supremacy.Client.Views
 
         private void OnDeactivateFacilityCommandChanged()
         {
-            EventHandler handler = DeactivateFacilityCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            DeactivateFacilityCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("DeactivateFacilityCommand");
         }
 
         public ICommand DeactivateFacilityCommand
         {
-            get { return _deactivateFacilityCommand; }
+            get => _deactivateFacilityCommand;
             set
             {
                 if (Equals(_deactivateFacilityCommand, value))
+                {
                     return;
+                }
+
                 _deactivateFacilityCommand = value;
                 OnDeactivateFacilityCommandChanged();
             }
@@ -491,19 +503,20 @@ namespace Supremacy.Client.Views
 
         private void OnScrapFacilityCommandChanged()
         {
-            EventHandler handler = ScrapFacilityCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ScrapFacilityCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("ScrapFacilityCommand");
         }
 
         public ICommand ScrapFacilityCommand
         {
-            get { return _scrapFacilityCommand; }
+            get => _scrapFacilityCommand;
             set
             {
                 if (Equals(_scrapFacilityCommand, value))
+                {
                     return;
+                }
+
                 _scrapFacilityCommand = value;
                 OnScrapFacilityCommandChanged();
             }
@@ -517,19 +530,20 @@ namespace Supremacy.Client.Views
 
         private void OnUnscrapFacilityCommandChanged()
         {
-            EventHandler handler = UnscrapFacilityCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            UnscrapFacilityCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("UnscrapFacilityCommand");
         }
 
         public ICommand UnscrapFacilityCommand
         {
-            get { return _unscrapFacilityCommand; }
+            get => _unscrapFacilityCommand;
             set
             {
                 if (Equals(_unscrapFacilityCommand, value))
+                {
                     return;
+                }
+
                 _unscrapFacilityCommand = value;
                 OnUnscrapFacilityCommandChanged();
             }
@@ -543,19 +557,20 @@ namespace Supremacy.Client.Views
 
         private void OnToggleBuildingScrapCommandChanged()
         {
-            EventHandler handler = ToggleBuildingScrapCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ToggleBuildingScrapCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("ToggleBuildingScrapCommand");
         }
 
         public ICommand ToggleBuildingScrapCommand
         {
-            get { return _toggleBuildingScrapCommand; }
+            get => _toggleBuildingScrapCommand;
             set
             {
                 if (Equals(_toggleBuildingScrapCommand, value))
+                {
                     return;
+                }
+
                 _toggleBuildingScrapCommand = value;
                 OnToggleBuildingScrapCommandChanged();
             }
@@ -569,19 +584,20 @@ namespace Supremacy.Client.Views
 
         private void OnToggleBuildingIsActiveCommandChanged()
         {
-            EventHandler handler = ToggleBuildingIsActiveCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ToggleBuildingIsActiveCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("ToggleBuildingIsActiveCommand");
         }
 
         public ICommand ToggleBuildingIsActiveCommand
         {
-            get { return _toggleBuildingIsActiveCommand; }
+            get => _toggleBuildingIsActiveCommand;
             set
             {
                 if (Equals(_toggleBuildingIsActiveCommand, value))
+                {
                     return;
+                }
+
                 _toggleBuildingIsActiveCommand = value;
                 OnToggleBuildingIsActiveCommandChanged();
             }
@@ -595,19 +611,20 @@ namespace Supremacy.Client.Views
 
         private void OnToggleShipyardBuildSlotCommandChanged()
         {
-            EventHandler handler = ToggleShipyardBuildSlotCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ToggleShipyardBuildSlotCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("ToggleShipyardBuildSlotCommand");
         }
 
         public ICommand ToggleShipyardBuildSlotCommand
         {
-            get { return _toggleShipyardBuildSlotCommand; }
+            get => _toggleShipyardBuildSlotCommand;
             set
             {
                 if (Equals(_toggleShipyardBuildSlotCommand, value))
+                {
                     return;
+                }
+
                 _toggleShipyardBuildSlotCommand = value;
                 OnToggleShipyardBuildSlotCommandChanged();
             }
@@ -621,19 +638,20 @@ namespace Supremacy.Client.Views
 
         private void OnSelectShipBuildProjectCommandChanged()
         {
-            EventHandler handler = SelectShipBuildProjectCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectShipBuildProjectCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("SelectShipBuildProjectCommand");
         }
 
         public ICommand SelectShipBuildProjectCommand
         {
-            get { return _selectShipBuildProjectCommand; }
+            get => _selectShipBuildProjectCommand;
             set
             {
                 if (Equals(_selectShipBuildProjectCommand, value))
+                {
                     return;
+                }
+
                 _selectShipBuildProjectCommand = value;
                 OnSelectShipBuildProjectCommandChanged();
             }
@@ -647,19 +665,20 @@ namespace Supremacy.Client.Views
 
         private void OnActivateOrbitalBatteryCommandChanged()
         {
-            EventHandler handler = ActivateOrbitalBatteryCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ActivateOrbitalBatteryCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("ActivateOrbitalBatteryCommand");
         }
 
         public ICommand ActivateOrbitalBatteryCommand
         {
-            get { return _activateOrbitalBatteryCommand; }
+            get => _activateOrbitalBatteryCommand;
             set
             {
                 if (Equals(_activateOrbitalBatteryCommand, value))
+                {
                     return;
+                }
+
                 _activateOrbitalBatteryCommand = value;
                 OnActivateOrbitalBatteryCommandChanged();
             }
@@ -673,19 +692,20 @@ namespace Supremacy.Client.Views
 
         private void OnDedeactivateOrbitalBatteryCommandChanged()
         {
-            EventHandler handler = DedeactivateOrbitalBatteryCommandChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            DedeactivateOrbitalBatteryCommandChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged("DedeactivateOrbitalBatteryCommand");
         }
 
         public ICommand DedeactivateOrbitalBatteryCommand
         {
-            get { return _deactivateOrbitalBatteryCommand; }
+            get => _deactivateOrbitalBatteryCommand;
             set
             {
                 if (Equals(_deactivateOrbitalBatteryCommand, value))
+                {
                     return;
+                }
+
                 _deactivateOrbitalBatteryCommand = value;
                 OnDedeactivateOrbitalBatteryCommandChanged();
             }
@@ -701,11 +721,13 @@ namespace Supremacy.Client.Views
 
         public int MaxActiveOrbitalBatteries
         {
-            get { return _maxActiveOrbitalBatteries; }
+            get => _maxActiveOrbitalBatteries;
             set
             {
                 if (Equals(value, _maxActiveOrbitalBatteries))
+                {
                     return;
+                }
 
                 _maxActiveOrbitalBatteries = value;
 
@@ -730,11 +752,13 @@ namespace Supremacy.Client.Views
 
         public int ActiveFoodFacilites
         {
-            get { return _activeFoodFacilites; }
+            get => _activeFoodFacilites;
             set
             {
                 if (Equals(value, _activeFoodFacilites))
+                {
                     return;
+                }
 
                 _activeFoodFacilites = value;
 
@@ -759,11 +783,13 @@ namespace Supremacy.Client.Views
 
         public int ActiveIndustryFacilites
         {
-            get { return _activeIndustryFacilites; }
+            get => _activeIndustryFacilites;
             set
             {
                 if (Equals(value, _activeIndustryFacilites))
+                {
                     return;
+                }
 
                 _activeIndustryFacilites = value;
 
@@ -788,11 +814,13 @@ namespace Supremacy.Client.Views
 
         public int ActiveEnergyFacilites
         {
-            get { return _activeEnergyFacilites; }
+            get => _activeEnergyFacilites;
             set
             {
                 if (Equals(value, _activeEnergyFacilites))
+                {
                     return;
+                }
 
                 _activeEnergyFacilites = value;
 
@@ -817,11 +845,13 @@ namespace Supremacy.Client.Views
 
         public int ActiveResearchFacilites
         {
-            get { return _activeResearchFacilites; }
+            get => _activeResearchFacilites;
             set
             {
                 if (Equals(value, _activeResearchFacilites))
+                {
                     return;
+                }
 
                 _activeResearchFacilites = value;
 
@@ -846,11 +876,13 @@ namespace Supremacy.Client.Views
 
         public int ActiveIntelligenceFacilites
         {
-            get { return _activeIntelligenceFacilites; }
+            get => _activeIntelligenceFacilites;
             set
             {
                 if (Equals(value, _activeIntelligenceFacilites))
+                {
                     return;
+                }
 
                 _activeIntelligenceFacilites = value;
 
@@ -875,11 +907,13 @@ namespace Supremacy.Client.Views
 
         public int ActiveOrbitalBatteries
         {
-            get { return _activeOrbitalBatteries; }
+            get => _activeOrbitalBatteries;
             set
             {
                 if (Equals(value, _activeOrbitalBatteries))
+                {
                     return;
+                }
 
                 _activeOrbitalBatteries = value;
 
@@ -909,7 +943,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -920,7 +956,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

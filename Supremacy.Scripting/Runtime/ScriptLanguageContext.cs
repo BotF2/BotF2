@@ -86,7 +86,7 @@ namespace Supremacy.Scripting.Runtime
 
         internal Expression ParseExpression(SourceUnit source)
         {
-            EnsureParser();
+            _ = EnsureParser();
             return _parser.Parse<Expression>(source.GetReader(), _xamlTypeMap);
         }
 
@@ -95,7 +95,7 @@ namespace Supremacy.Scripting.Runtime
             ScriptCompilerOptions compilerOptions,
             ErrorSink errorSink)
         {
-            EnsureParser();
+            _ = EnsureParser();
 
             CompilerContext compilerContext = new CompilerContext(scriptSource, compilerOptions, errorSink);
             ScriptGenerator generator = new ScriptGenerator(this, compilerContext);

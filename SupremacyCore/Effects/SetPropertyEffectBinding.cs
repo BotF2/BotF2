@@ -95,10 +95,7 @@ namespace Supremacy.Effects
 
             internal EffectPropertyModifier([NotNull] SetPropertyEffectBinding<TValue> effectBinding)
             {
-                if (effectBinding == null)
-                    throw new ArgumentNullException("effectBinding");
-
-                _effectBinding = effectBinding;
+                _effectBinding = effectBinding ?? throw new ArgumentNullException("effectBinding");
             }
 
             internal void UpdateTarget()
@@ -106,7 +103,9 @@ namespace Supremacy.Effects
                 lock (EffectSystem.SyncRoot)
                 {
                     if (EffectSystem.IsSuspended)
+                    {
                         return;
+                    }
 
                     Invalidate();
                 }
@@ -117,7 +116,9 @@ namespace Supremacy.Effects
             protected override TValue ProvideValueCore(TValue baseValue, TValue currentValue)
             {
                 if (_currentValueProvider != null)
+                {
                     ((INotifyPropertyChanged)_currentValueProvider).PropertyChanged -= OnObservableValueChanged;
+                }
 
                 ParameterBindingContext context = new ParameterBindingContext(baseValue, currentValue);
                 Scripting.RuntimeScriptParameters mergedRuntimeScriptParameters = _effectBinding.GetMergedRuntimeScriptParameters(context);

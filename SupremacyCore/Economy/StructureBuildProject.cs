@@ -96,7 +96,7 @@ namespace Supremacy.Economy
         /// </summary>
         public override void Finish()
         {
-            GameContext.Current.Universe.Destroy(UpgradeTarget);
+            _ = GameContext.Current.Universe.Destroy(UpgradeTarget);
             base.Finish();
         }
 
@@ -155,7 +155,10 @@ namespace Supremacy.Economy
             {
                 Shipyard shipyard = Colony.Shipyard;
                 if (shipyard == null || shipyard.ObjectID != _upgradeTargetId)
+                {
                     return null;
+                }
+
                 return shipyard;
             }
         }
@@ -178,7 +181,7 @@ namespace Supremacy.Economy
 
             // next is to scrap Upgrade target which might not be available any more
             string _scrapped = UpgradeTarget.Name;
-            GameContext.Current.Universe.Destroy(UpgradeTarget);
+            _ = GameContext.Current.Universe.Destroy(UpgradeTarget);
             base.Finish();
         }
 

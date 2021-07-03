@@ -62,8 +62,11 @@ namespace Supremacy.Client.Views
             get
             {
                 if (_designInstance == null)
+                {
                     _designInstance = new SystemAssaultScreenViewModel(DesignTimeAppContext.Instance, null,
                         ServiceLocator.Current.GetInstance<ISoundPlayer>());
+                }
+
                 return _designInstance;
             }
         }
@@ -91,7 +94,7 @@ namespace Supremacy.Client.Views
         private readonly ObservableCollection<AssaultUnitViewModel> _defendingUnits;
         private readonly ObservableCollection<AssaultUnitViewModel> _destroyedDefendingUnits;
 
-        private ISoundPlayer _soundPlayer = null;
+        private readonly ISoundPlayer _soundPlayer = null;
         private InvasionArena _currentUpdate;
 
         public SystemAssaultScreenViewModel([NotNull] IAppContext appContext, IRegionManager regionManager, [NotNull] ISoundPlayer soundPlayer)
@@ -154,10 +157,7 @@ namespace Supremacy.Client.Views
                     StateChangeDisposition.Optional));
 
             _stateManager.StateChanged += (sender, args) => OnStateChanged();
-
-            if (soundPlayer == null)
-                throw new ArgumentNullException("soundPlayer");
-            _soundPlayer = soundPlayer;
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             RoundNumber = 1;
         }
@@ -207,11 +207,13 @@ namespace Supremacy.Client.Views
 
         public Civilization Invader
         {
-            get { return _invader; }
+            get => _invader;
             set
             {
                 if (Equals(value, _invader))
+                {
                     return;
+                }
 
                 _invader = value;
 
@@ -236,11 +238,13 @@ namespace Supremacy.Client.Views
 
         public Civilization Defender
         {
-            get { return _defender; }
+            get => _defender;
             set
             {
                 if (Equals(value, _defender))
+                {
                     return;
+                }
 
                 _defender = value;
 
@@ -292,11 +296,13 @@ namespace Supremacy.Client.Views
 
         public StarSystem StarSystem
         {
-            get { return _starSystem; }
+            get => _starSystem;
             set
             {
                 if (Equals(value, _starSystem))
+                {
                     return;
+                }
 
                 _starSystem = value;
 
@@ -321,11 +327,13 @@ namespace Supremacy.Client.Views
 
         public int RoundNumber
         {
-            get { return _roundNumber; }
+            get => _roundNumber;
             private set
             {
                 if (Equals(value, _roundNumber))
+                {
                     return;
+                }
 
                 _roundNumber = value;
 
@@ -350,7 +358,7 @@ namespace Supremacy.Client.Views
 
         public InvasionAction? SelectedAction
         {
-            get { return _selectedAction; }
+            get => _selectedAction;
             set
             {
                 //if (Equals(value, _selectedAction))
@@ -379,16 +387,22 @@ namespace Supremacy.Client.Views
 
         public InvasionTargetingStrategy SelectedTargetingStrategy
         {
-            get { return _selectedTargetingStrategy; }
+            get => _selectedTargetingStrategy;
             set
             {
                 if (Equals(value, _selectedTargetingStrategy))
+                {
                     return;
+                }
 
                 if (EnumHelper.IsDefined(value))
+                {
                     _selectedTargetingStrategy = value;
+                }
                 else
+                {
                     _selectedTargetingStrategy = InvasionTargetingStrategy.Balanced;
+                }
 
                 OnSelectedTargetingStrategyChanged();
             }
@@ -428,11 +442,13 @@ namespace Supremacy.Client.Views
 
         public TimeSpan? ExplosionInterval
         {
-            get { return _explosionInterval; }
+            get => _explosionInterval;
             set
             {
                 if (Equals(value, _explosionInterval))
+                {
                     return;
+                }
 
                 _explosionInterval = value;
 
@@ -457,11 +473,13 @@ namespace Supremacy.Client.Views
 
         public Planet PrimaryPlanet
         {
-            get { return _primaryPlanet; }
+            get => _primaryPlanet;
             set
             {
                 if (Equals(value, _primaryPlanet))
+                {
                     return;
+                }
 
                 _primaryPlanet = value;
 
@@ -486,11 +504,13 @@ namespace Supremacy.Client.Views
 
         public int SelectedTransportsCombatStrength
         {
-            get { return _selectedTransportsCombatStrength; }
+            get => _selectedTransportsCombatStrength;
             private set
             {
                 if (Equals(value, _selectedTransportsCombatStrength))
+                {
                     return;
+                }
 
                 _selectedTransportsCombatStrength = value;
 
@@ -569,10 +589,14 @@ namespace Supremacy.Client.Views
                 //GroundCombatOddsValue = GroundCombatOddsValue / 100;
 
                 if (GroundCombatOddsValue > 100)
+                {
                     GroundCombatOddsValue = 100;
+                }
 
                 if (GroundCombatOddsValue < 0)
+                {
                     GroundCombatOddsValue = 0;
+                }
 
                 //GroundCombatOddsValue = 99;
                 return GroundCombatOddsValue;
@@ -593,11 +617,15 @@ namespace Supremacy.Client.Views
         private bool CanExecuteSetActionCommand(ICheckableCommandParameter p)
         {
             if (p == null || State != SystemAssaultScreenState.AwaitingPlayerOrders)
+            {
                 return false;
+            }
 
             InvasionAction? action = p.InnerParameter as InvasionAction?;
             if (action == null)
+            {
                 return true;
+            }
 
             bool canExecute = true;
 
@@ -623,7 +651,9 @@ namespace Supremacy.Client.Views
         private void ExecuteSetActionCommand(ICheckableCommandParameter p)
         {
             if (!CanExecuteSetActionCommand(p))
+            {
                 return;
+            }
 
             SelectedAction = (InvasionAction?)p.InnerParameter;
             InvalidateCommands();
@@ -632,13 +662,17 @@ namespace Supremacy.Client.Views
         private bool CanExecuteSetTargetingStrategyCommand(ICheckableCommandParameter p)
         {
             if (p == null || State != SystemAssaultScreenState.AwaitingPlayerOrders)
+            {
                 return false;
+            }
 
             InvasionTargetingStrategy? targetingStrategy = p.InnerParameter as InvasionTargetingStrategy?;
             if (targetingStrategy == null)
+            {
                 return false;
+            }
 
-            p.IsChecked = (SelectedTargetingStrategy == targetingStrategy);
+            p.IsChecked = SelectedTargetingStrategy == targetingStrategy;
 
             return SelectedAction.HasValue &&
                    SelectedAction == InvasionAction.BombardPlanet;
@@ -647,7 +681,9 @@ namespace Supremacy.Client.Views
         private void ExecuteSetTargetingStrategyCommand(ICheckableCommandParameter p)
         {
             if (!CanExecuteSetTargetingStrategyCommand(p))
+            {
                 return;
+            }
 
             SelectedTargetingStrategy = (InvasionTargetingStrategy)p.InnerParameter;
             InvalidateCommands();
@@ -656,12 +692,11 @@ namespace Supremacy.Client.Views
         private bool CanExecuteCommitOrdersCommand(object _)
         {
             if (State != SystemAssaultScreenState.AwaitingPlayerOrders || !SelectedAction.HasValue)
+            {
                 return false;
+            }
 
-            if (SelectedAction == InvasionAction.LandTroops && !TroopTransports.Any(o => o.IsSelected))
-                return false;
-
-            return true;
+            return SelectedAction != InvasionAction.LandTroops || TroopTransports.Any(o => o.IsSelected);
         }
 
         private bool CanExecuteLandTroopsOrderCommand(InvasionUnit arg)
@@ -682,7 +717,9 @@ namespace Supremacy.Client.Views
         private void ExecuteCommitOrdersCommand(object _)
         {
             if (!CanExecuteCommitOrdersCommand(null))
+            {
                 return;
+            }
 
             // ReSharper disable PossibleInvalidOperationException
             ClientCommands.SendInvasionOrders.Execute(
@@ -693,7 +730,7 @@ namespace Supremacy.Client.Views
                     TroopTransports.Where(o => o.IsSelected).Select(o => o.Unit)));
             // ReSharper restore PossibleInvalidOperationException
 
-            _stateManager.TryChange(SystemAssaultScreenState.WaitingForUpdate);
+            _ = _stateManager.TryChange(SystemAssaultScreenState.WaitingForUpdate);
         }
 
         private void ExecuteLandTroopsOrderCommand(InvasionUnit unit) { }
@@ -718,14 +755,15 @@ namespace Supremacy.Client.Views
 
         protected override void RunOverride()
         {
-            IDialog dialog = View as IDialog;
-            if (dialog != null && !dialog.IsOpen)
+            if (View is IDialog dialog && !dialog.IsOpen)
+            {
                 dialog.Show();
+            }
         }
 
         protected override void RegisterCommandAndEventHandlers()
         {
-            ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
+            _ = ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
         }
 
         protected override void UnregisterCommandAndEventHandlers()
@@ -751,18 +789,21 @@ namespace Supremacy.Client.Views
             OnClose();
 
             if (State != SystemAssaultScreenState.Finished)
-                _stateManager.TryChange(SystemAssaultScreenState.Finished);
+            {
+                _ = _stateManager.TryChange(SystemAssaultScreenState.Finished);
+            }
         }
 
         private void OnClose()
         {
-            IDialog dialog = View as IDialog;
-            if (dialog != null)
+            if (View is IDialog dialog)
+            {
                 dialog.Close();
+            }
 
             _currentUpdate = null;
             _invadingUnits.Clear();
-            _troopTransports.ForEach(o => o.IsSelectedChanged -= OnTroopTransportIsSelectedChanged);
+            _ = _troopTransports.ForEach(o => o.IsSelectedChanged -= OnTroopTransportIsSelectedChanged);
             _troopTransports.Clear();
             _destroyedInvadingUnits.Clear();
             _defendingUnits.Clear();
@@ -788,12 +829,18 @@ namespace Supremacy.Client.Views
                 _currentUpdate.InvasionID != newUpdate.InvasionID)
             {
                 if (_currentUpdate.IsFinished)
+                {
                     _currentUpdate = null;
+                }
                 else
+                {
                     throw new InvalidOperationException("Combat update received while another combat was in progress.");
+                }
             }
             if (newUpdate.Invader.IsHuman)
+            {
                 ProcessUpdate(newUpdate);
+            }
 
             //ServiceLocator.Current.GetInstance<INavigationService>().ActivateScreen(this.ViewName);
         }
@@ -802,7 +849,7 @@ namespace Supremacy.Client.Views
         {
             AssaultScreenSettings settings = AssaultScreenSettings.Instance;
 
-            _stateManager.TryChange(SystemAssaultScreenState.ReplayingResults);
+            _ = _stateManager.TryChange(SystemAssaultScreenState.ReplayingResults);
 
             if (SelectedAction == InvasionAction.UnloadAllOrdinance)
             {
@@ -849,7 +896,9 @@ namespace Supremacy.Client.Views
             }
 
             if (soundEffect != null)
+            {
                 _soundPlayer.Play("GroundCombat", soundEffect);
+            }
 
             if (ClientSettings.Current.EnableCombatScreen == false)
             {
@@ -859,7 +908,7 @@ namespace Supremacy.Client.Views
                 soundEffect = "CombatAll";
             }
 
-            Observable
+            _ = Observable
                 .Timer(playbackDuration, Scheduler.ThreadPool)
                 .ObserveOnDispatcher()
                 .Subscribe(
@@ -873,9 +922,11 @@ namespace Supremacy.Client.Views
         public void ProcessUpdate([NotNull] InvasionArena update)
         {
             if (update == null)
+            {
                 throw new ArgumentNullException("update");
+            }
 
-            bool newInvasion = (_currentUpdate == null || _currentUpdate.InvasionID != update.InvasionID);
+            bool newInvasion = _currentUpdate == null || _currentUpdate.InvasionID != update.InvasionID;
             if (newInvasion ||
                 SelectedAction == InvasionAction.StandDown)
             {
@@ -903,7 +954,7 @@ namespace Supremacy.Client.Views
             if (newInvasion)
             {
                 StarSystem = GameContext.Current.Universe.Map[colony.Location].System;
-                GameLog.Client.General.DebugFormat("New Invasion on {0} at {1}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location);
+                GameLog.Client.SystemAssault.DebugFormat("New Invasion on {0} at {1}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location);
 
                 PrimaryPlanet = StarSystem.Planets
                     .OrderByDescending(p => p.GetGrowthRate(colony.Inhabitants))
@@ -914,7 +965,7 @@ namespace Supremacy.Client.Views
                 Defender = StarSystem.Owner;
 
                 _invadingUnits.Clear();
-                _troopTransports.ForEach(o => o.IsSelectedChanged -= OnTroopTransportIsSelectedChanged);
+                _ = _troopTransports.ForEach(o => o.IsSelectedChanged -= OnTroopTransportIsSelectedChanged);
                 _troopTransports.Clear();
                 _destroyedInvadingUnits.Clear();
                 _defendingUnits.Clear();
@@ -923,7 +974,7 @@ namespace Supremacy.Client.Views
                 _invadingUnits.AddRange(update.InvadingUnits.Select(o => new AssaultUnitViewModel(o)));
                 _defendingUnits.AddRange(update.DefendingUnits.Select(o => new AssaultUnitViewModel(o)));
 
-                _invadingUnits
+                _ = _invadingUnits
                     .Where(o => o.Category == AssaultUnitCategory.TroopTransport && !o.IsDestroyed)
                     .ForEach(
                         o =>
@@ -949,14 +1000,16 @@ namespace Supremacy.Client.Views
                 {
                     AssaultUnitViewModel model = _invadingUnits.FirstOrDefault(o => Equals(o.Unit, invadingUnit));
                     if (model == null)
+                    {
                         continue;
+                    }
 
                     model.UpdateUnit(invadingUnit);
 
                     if (invadingUnit.IsDestroyed)
                     {
-                        _invadingUnits.Remove(model);
-                        _troopTransports.Remove(model);
+                        _ = _invadingUnits.Remove(model);
+                        _ = _troopTransports.Remove(model);
                         model.IsSelectedChanged -= OnTroopTransportIsSelectedChanged;
                         _destroyedInvadingUnits.Add(model);
                     }
@@ -966,13 +1019,15 @@ namespace Supremacy.Client.Views
                 {
                     AssaultUnitViewModel model = _defendingUnits.FirstOrDefault(o => Equals(o.Unit, defendingUnit));
                     if (model == null)
+                    {
                         continue;
+                    }
 
                     model.UpdateUnit(defendingUnit);
 
                     if (defendingUnit.IsDestroyed)
                     {
-                        _defendingUnits.Remove(model);
+                        _ = _defendingUnits.Remove(model);
                         _destroyedDefendingUnits.Add(model);
                     }
                 }
@@ -984,20 +1039,22 @@ namespace Supremacy.Client.Views
 
 
 
-            GameLog.Client.General.DebugFormat("Proceeding Invasion on {0} {1} - Round {4}, Population: Last={2}, _current={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
+            GameLog.Client.SystemAssaultDetails.DebugFormat("Proceeding Invasion on {0} {1} - Round {4}, Population: Last={2}, _current={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
                                             GameContext.Current.Universe.Map[colony.Location].System.Colony.Population, _defenderPopulation, RoundNumber);
 
             if (update.IsFinished)
+            {
                 SelectedAction = null;
+            }
 
             if (newInvasion)
             {
-                _stateManager.TryChange(SystemAssaultScreenState.AwaitingPlayerOrders);
+                _ = _stateManager.TryChange(SystemAssaultScreenState.AwaitingPlayerOrders);
             }
             else
             {
                 SystemAssaultScreenState nextState = update.IsFinished ? SystemAssaultScreenState.Finished : SystemAssaultScreenState.AwaitingPlayerOrders;
-                _stateManager.TryChange(nextState);
+                _ = _stateManager.TryChange(nextState);
             }
         }
     }
@@ -1021,14 +1078,18 @@ namespace Supremacy.Client.Views
         public AssaultUnitViewModel([NotNull] InvasionUnit unit)
         {
             if (unit == null)
+            {
                 throw new ArgumentNullException("unit");
+            }
 
             UpdateUnit(unit);
 
             _category = ResolveCategory(_unit);
 
             if (_category == AssaultUnitCategory.TroopTransport)
-                _troopCount = CombatHelper.ComputeGroundCombatStrength(unit.Source.Owner, unit.Source.Location, ((Ship)(unit.Source)).ShipDesign.WorkCapacity);
+            {
+                _troopCount = CombatHelper.ComputeGroundCombatStrength(unit.Source.Owner, unit.Source.Location, ((Ship)unit.Source).ShipDesign.WorkCapacity);
+            }
         }
 
         public InvasionUnit Unit => _unit;
@@ -1038,10 +1099,11 @@ namespace Supremacy.Client.Views
         private static AssaultUnitCategory ResolveCategory(InvasionUnit unit)
         {
             if (unit is InvasionFacility)
+            {
                 return AssaultUnitCategory.ProductionFacility;
+            }
 
-            InvasionStructure structure = unit as InvasionStructure;
-            if (structure != null)
+            if (unit is InvasionStructure structure)
             {
                 BuildingDesign design = (BuildingDesign)structure.Design;
                 IEnumerable<Bonus> militaryBonuses = design.GetBonuses(
@@ -1051,31 +1113,23 @@ namespace Supremacy.Client.Views
                     BonusType.PlanetaryShielding,
                     BonusType.PercentPlanetaryShielding);
 
-                if (militaryBonuses.Any())
-                    return AssaultUnitCategory.MilitaryStructure;
-
-                return AssaultUnitCategory.CivilianStructure;
+                return militaryBonuses.Any() ? AssaultUnitCategory.MilitaryStructure : AssaultUnitCategory.CivilianStructure;
             }
 
             if (unit.Source is OrbitalBattery)
-                return AssaultUnitCategory.OrbitalBattery;
-
-            InvasionOrbital orbital = unit as InvasionOrbital;
-            if (orbital != null &&
-                ((Ship)orbital.Source).ShipType == ShipType.Transport)
             {
-                return AssaultUnitCategory.TroopTransport;
+                return AssaultUnitCategory.OrbitalBattery;
             }
 
-            return AssaultUnitCategory.CombatantShip;
+            return unit is InvasionOrbital orbital &&
+                ((Ship)orbital.Source).ShipType == ShipType.Transport
+                ? AssaultUnitCategory.TroopTransport
+                : AssaultUnitCategory.CombatantShip;
         }
 
         public void UpdateUnit([NotNull] InvasionUnit unit)
         {
-            if (unit == null)
-                throw new ArgumentNullException("unit");
-
-            _unit = unit;
+            _unit = unit ?? throw new ArgumentNullException("unit");
 
             OnHasShieldsChanged();
             OnShieldStrengthChanged();
@@ -1092,10 +1146,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                InvasionOrbital orbital = _unit as InvasionOrbital;
-                if (orbital == null)
-                    return null;
-                return orbital.ShieldStrength;
+                return !(_unit is InvasionOrbital orbital) ? null : orbital.ShieldStrength;
             }
         }
 
@@ -1116,10 +1167,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                InvasionOrbital orbital = _unit as InvasionOrbital;
-                if (orbital == null)
-                    return _unit.Health;
-                return orbital.HullStrength;
+                return !(_unit is InvasionOrbital orbital) ? _unit.Health : orbital.HullStrength;
             }
         }
 
@@ -1140,9 +1188,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                InvasionOrbital orbital = _unit as InvasionOrbital;
-
-                return orbital != null &&
+                return _unit is InvasionOrbital orbital &&
                        orbital.Source.ShieldStrength.Maximum > 0;
             }
         }
@@ -1179,11 +1225,13 @@ namespace Supremacy.Client.Views
 
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 if (Equals(value, _isSelected))
+                {
                     return;
+                }
 
                 _isSelected = value;
 
@@ -1231,7 +1279,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -1242,7 +1292,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }
@@ -1268,7 +1320,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan ExplosionIntervalMaxPrecision
         {
-            get { return _explosionIntervalMaxPrecision; }
+            get => _explosionIntervalMaxPrecision;
             set
             {
                 VerifyInitializing();
@@ -1279,7 +1331,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan ExplosionIntervalBalanced
         {
-            get { return _explosionIntervalBalanced; }
+            get => _explosionIntervalBalanced;
             set
             {
                 VerifyInitializing();
@@ -1290,7 +1342,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan ExplosionIntervalMaxDamage
         {
-            get { return _explosionIntervalMaxDamage; }
+            get => _explosionIntervalMaxDamage;
             set
             {
                 VerifyInitializing();
@@ -1301,7 +1353,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan ExplosionIntervalUnloadAllOrdinance
         {
-            get { return _explosionIntervalUnloadAllOrdinance; }
+            get => _explosionIntervalUnloadAllOrdinance;
             set
             {
                 VerifyInitializing();
@@ -1312,7 +1364,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan AttackOrbitalDefensesReplayDuration
         {
-            get { return _attackOrbitalDefensesReplayDuration; }
+            get => _attackOrbitalDefensesReplayDuration;
             set
             {
                 VerifyInitializing();
@@ -1323,7 +1375,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan BombardmentReplayDuration
         {
-            get { return _bombardmentReplayDuration; }
+            get => _bombardmentReplayDuration;
             set
             {
                 VerifyInitializing();
@@ -1334,7 +1386,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan UnloadAllOrdinanceReplayDuration
         {
-            get { return _unloadAllOrdinanceReplayDuration; }
+            get => _unloadAllOrdinanceReplayDuration;
             set
             {
                 VerifyInitializing();
@@ -1345,7 +1397,7 @@ namespace Supremacy.Client.Views
 
         public TimeSpan LandTroopsReplayDuration
         {
-            get { return _landTroopsReplayDuration; }
+            get => _landTroopsReplayDuration;
             set
             {
                 VerifyInitializing();
@@ -1381,9 +1433,8 @@ namespace Supremacy.Client.Views
         {
             try
             {
-                IVirtualFileInfo dataFile;
 
-                if (!ResourceManager.VfsService.TryGetFileInfo(new Uri(DataFileUri), out dataFile) ||
+                if (!ResourceManager.VfsService.TryGetFileInfo(new Uri(DataFileUri), out IVirtualFileInfo dataFile) ||
                     !dataFile.Exists)
                 {
                     // nobody knows structure or content of this file
@@ -1396,7 +1447,7 @@ namespace Supremacy.Client.Views
 
                 using (System.IO.Stream stream = dataFile.OpenRead())
                 {
-                    XamlHelper.LoadInto(this, stream);
+                    _ = XamlHelper.LoadInto(this, stream);
                 }
             }
             catch (Exception e)
@@ -1426,7 +1477,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -1437,7 +1490,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

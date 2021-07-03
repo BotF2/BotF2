@@ -34,9 +34,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -99,7 +98,7 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    target.Morale.AdjustCurrent(+5);
+                    _ = target.Morale.AdjustCurrent(+5);
                     target.Morale.UpdateAndReset();
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];

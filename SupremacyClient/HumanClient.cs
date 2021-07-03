@@ -8,7 +8,6 @@
 // All other rights reserved.
 
 using Supremacy.Combat;
-using Supremacy.Intelligence;
 
 namespace Supremacy.Client
 {

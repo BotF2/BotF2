@@ -1122,12 +1122,12 @@ namespace FMOD
         public const uint DECAYHFLIMIT = 0x00000020;   /* AirAbsorptionHF affects DecayHFRatio */
         public const uint ECHOTIMESCALE = 0x00000040;   /* 'EnvSize' affects echo time */
         public const uint MODULATIONTIMESCALE = 0x00000080;   /* 'EnvSize' affects modulation time */
-        public const uint DEFAULT = (DECAYTIMESCALE |
+        public const uint DEFAULT = DECAYTIMESCALE |
             REFLECTIONSSCALE |
             REFLECTIONSDELAYSCALE |
             REVERBSCALE |
             REVERBDELAYSCALE |
-            DECAYHFLIMIT);
+            DECAYHFLIMIT;
     }
 
 
@@ -1282,7 +1282,7 @@ namespace FMOD
         public const uint ENVIRONMENT0 = 0x00000008; /* EAX4 only. Specify channel to target reverb instance 0. */
         public const uint ENVIRONMENT1 = 0x00000010; /* EAX4 only. Specify channel to target reverb instance 1. */
         public const uint ENVIRONMENT2 = 0x00000020; /* EAX4 only. Specify channel to target reverb instance 2. */
-        public const uint DEFAULT = (DIRECTHFAUTO | ROOMAUTO | ROOMHFAUTO | ENVIRONMENT0);
+        public const uint DEFAULT = DIRECTHFAUTO | ROOMAUTO | ROOMHFAUTO | ENVIRONMENT0;
     }
 
 

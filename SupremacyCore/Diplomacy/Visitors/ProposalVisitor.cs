@@ -5,31 +5,41 @@ namespace Supremacy.Diplomacy.Visitors
         protected virtual void VisitGift(IProposal proposal)
         {
             foreach (IClause clause in proposal.Clauses)
+            {
                 clause.Accept(this);
+            }
         }
 
         protected virtual void VisitDemand(IProposal proposal)
         {
             foreach (IClause clause in proposal.Clauses)
+            {
                 clause.Accept(this);
+            }
         }
 
         protected virtual void VisitExchange(IProposal proposal)
         {
             foreach (IClause clause in proposal.Clauses)
+            {
                 clause.Accept(this);
+            }
         }
 
         protected virtual void VisitWarPact(IProposal proposal)
         {
             foreach (IClause clause in proposal.Clauses)
+            {
                 clause.Accept(this);
+            }
         }
 
         protected virtual void VisitTreatyProposal(IProposal proposal)
         {
             foreach (IClause clause in proposal.Clauses)
+            {
                 clause.Accept(this);
+            }
         }
 
         #region Implementation of IProposalVisitor<out IAgreement>

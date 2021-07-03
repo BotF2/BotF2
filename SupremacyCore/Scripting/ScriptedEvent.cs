@@ -41,7 +41,7 @@ namespace Supremacy.Scripting
 
         protected int MinTurnsBetweenExecutions
         {
-            get { return _minTurnsBetweenExecutions; }
+            get => _minTurnsBetweenExecutions;
             set
             {
                 VerifyInitializing();
@@ -56,7 +56,9 @@ namespace Supremacy.Scripting
             get
             {
                 if (MinTurnsBetweenExecutions < 0)
+                {
                     return LastExecution != 0;
+                }
 
                 return MinTurnsBetweenExecutions == 0 ||
                        LastExecution == 0 ||
@@ -74,9 +76,14 @@ namespace Supremacy.Scripting
         public void Initialize([NotNull] string eventId, [NotNull] IDictionary<string, object> options)
         {
             if (eventId == null)
+            {
                 throw new ArgumentNullException("eventId");
+            }
+
             if (options == null)
+            {
                 throw new ArgumentNullException("options");
+            }
 
             BeginInit();
 
@@ -93,9 +100,8 @@ namespace Supremacy.Scripting
 
         internal virtual void InitializeCore(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("MinTurnsBetweenExecutions", out value))
+            if (options.TryGetValue("MinTurnsBetweenExecutions", out object value))
             {
                 try
                 {
@@ -125,7 +131,9 @@ namespace Supremacy.Scripting
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             try { DisposeOverride(); }
             finally { _isDisposed = true; }

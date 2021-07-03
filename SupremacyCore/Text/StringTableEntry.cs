@@ -39,13 +39,19 @@ namespace Supremacy.Text
 
         public string Key
         {
-            get { return _keyNode.Content; }
+            get => _keyNode.Content;
             set
             {
                 if (value == null)
+                {
                     throw new ArgumentNullException("value");
-                if (value == String.Empty)
+                }
+
+                if (value == string.Empty)
+                {
                     throw new ArithmeticException("value cannot be empty");
+                }
+
                 if (value != _keyNode.Content)
                 {
                     string oldKey = Key;
@@ -62,7 +68,7 @@ namespace Supremacy.Text
 
         public string Value
         {
-            get { return ValueNode.Content; }
+            get => ValueNode.Content;
             set
             {
                 ValueNode.Content = value;
@@ -72,18 +78,13 @@ namespace Supremacy.Text
 
         public StringTableEntry(StringTableNode keyNode, StringTableNode valueNode)
         {
-            if (keyNode == null)
-                throw new ArgumentNullException("keyNode");
-            if (valueNode == null)
-                throw new ArgumentNullException("valueNode");
-            _keyNode = keyNode;
-            _valueNode = valueNode;
+            _keyNode = keyNode ?? throw new ArgumentNullException("keyNode");
+            _valueNode = valueNode ?? throw new ArgumentNullException("valueNode");
         }
 
         private void OnKeyChanged(string oldKey, string newKey)
         {
-            if (KeyChanged != null)
-                KeyChanged(this, new KeyChangedEventArgs(oldKey, newKey));
+            KeyChanged?.Invoke(this, new KeyChangedEventArgs(oldKey, newKey));
         }
 
         #region INotifyPropertyChanged Members
@@ -91,8 +92,7 @@ namespace Supremacy.Text
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

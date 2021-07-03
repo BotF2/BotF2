@@ -9,14 +9,11 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
-using Supremacy.Client;
-using Supremacy.Client.Commands;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Messaging;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -108,7 +105,10 @@ namespace Supremacy.WCF
             {
                 ServerPlayerInfo playerInfo = _playerInfo.FromSessionId(OperationContext.Current.SessionId);
                 if (playerInfo != null)
+                {
                     return playerInfo.Player;
+                }
+
                 return null;
             }
         }
@@ -119,7 +119,9 @@ namespace Supremacy.WCF
             {
                 OperationContext operationContext = OperationContext.Current;
                 if (operationContext == null)
+                {
                     return null;
+                }
 
                 return _playerInfo.FromSessionId(operationContext.SessionId);
             }
@@ -134,14 +136,18 @@ namespace Supremacy.WCF
         internal void DoStartGame()
         {
             if (_isGameStarted)
+            {
                 return;
+            }
 
             _isGameStarted = true;
 
             try
             {
                 if (_playerInfo.Count > 1)
+                {
                     SendLobbyUpdate();
+                }
 
                 lock (_playerInfo.SyncRoot)
                 {
@@ -149,7 +155,7 @@ namespace Supremacy.WCF
                     {
                         Player player = playerInfo.Player;
 
-                        ((Action)playerInfo.Callback.NotifyGameStarting)
+                        _ = ((Action)playerInfo.Callback.NotifyGameStarting)
                             .ToAsync(playerInfo.Scheduler)()
                             .Subscribe(
                                 _ => { },
@@ -185,7 +191,7 @@ namespace Supremacy.WCF
                         }
                         finally
                         {
-                            GameContext.PopThreadContext();
+                            _ = GameContext.PopThreadContext();
                         }
                     }
                 }
@@ -200,12 +206,14 @@ namespace Supremacy.WCF
                         try
                         {
                             if (playerInfo.Callback == null)
+                            {
                                 continue;
+                            }
 
                             Player player = playerInfo.Player;
                             GameStartMessage message = new GameStartMessage(GameStartData.Create(_game, player, textDatabase));
 
-                            ((Action<GameStartMessage>)playerInfo.Callback.NotifyGameStarted)
+                            _ = ((Action<GameStartMessage>)playerInfo.Callback.NotifyGameStarted)
                                 .ToAsync(_scheduler)(message)
                                 .Subscribe(
                                     _ => { },
@@ -214,7 +222,10 @@ namespace Supremacy.WCF
                         catch
                         {
                             if (playerInfo.Player.IsGameHost)
+                            {
                                 throw;
+                            }
+
                             DropPlayerAsync(playerInfo.Player);
                         }
                     }
@@ -227,7 +238,7 @@ namespace Supremacy.WCF
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
 
-                MessageBox.Show("An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
+                _ = MessageBox.Show("An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
                 //_errorService.HandleError(e);
 
@@ -239,7 +250,7 @@ namespace Supremacy.WCF
                 Thread.Sleep(1000);
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
-                MessageBox.Show("An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
+                _ = MessageBox.Show("An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
             }
@@ -249,14 +260,19 @@ namespace Supremacy.WCF
         {
             ServerPlayerInfo player = CurrentPlayerInfo;
             if (player == null)
+            {
                 return;
+            }
+
             DropPlayer(player);
         }
 
         internal void DropPlayer(Player player)
         {
             if (_playerInfo.TryGetValue(player, out ServerPlayerInfo playerInfo))
+            {
                 return;
+            }
 
             DropPlayer(playerInfo);
         }
@@ -268,7 +284,9 @@ namespace Supremacy.WCF
             lock (_playerInfo.SyncRoot)
             {
                 if (!_playerInfo.Remove(player))
+                {
                     return;
+                }
             }
 
             try
@@ -282,7 +300,7 @@ namespace Supremacy.WCF
 
             if (playerInfo.Session.Channel.State == CommunicationState.Opened)
             {
-                ((Action)playerInfo.Callback.NotifyDisconnected)
+                _ = ((Action)playerInfo.Callback.NotifyDisconnected)
                     .ToAsync(_scheduler)()
                     .Subscribe(
                         _ => { },
@@ -290,7 +308,7 @@ namespace Supremacy.WCF
             }
 
 
-            ((Action)playerInfo.Session.Channel.Close)
+            _ = ((Action)playerInfo.Session.Channel.Close)
                 .ToAsync(_scheduler)()
                 .Subscribe(
                     _ => { },
@@ -299,12 +317,16 @@ namespace Supremacy.WCF
             OnPlayerExited(player);
 
             if (_isGameEnding)
+            {
                 return;
+            }
 
             if (_playerInfo.Count > 0)
             {
                 if (!TryProcessTurn() && (_combatEngine != null) && _combatEngine.Ready)
-                    ((Action<CombatEngine>)TryResumeCombat).ToAsync()(_combatEngine);
+                {
+                    _ = ((Action<CombatEngine>)TryResumeCombat).ToAsync()(_combatEngine);
+                }
             }
             else
             {
@@ -314,18 +336,20 @@ namespace Supremacy.WCF
 
         internal void DropPlayerAsync(Player player)
         {
-            ((Action<Player>)DropPlayer).ToAsync(_scheduler)(player);
+            _ = ((Action<Player>)DropPlayer).ToAsync(_scheduler)(player);
         }
 
         internal void DropPlayerAsync(ServerPlayerInfo player)
         {
-            ((Action<ServerPlayerInfo>)DropPlayer).ToAsync(_scheduler)(player);
+            _ = ((Action<ServerPlayerInfo>)DropPlayer).ToAsync(_scheduler)(player);
         }
 
         internal void EndGame()
         {
             if (!_isGameStarted)
+            {
                 return;
+            }
 
             _isGameStarted = false;
             _isGameEnding = true;
@@ -335,13 +359,15 @@ namespace Supremacy.WCF
                 lock (_playerInfo.SyncRoot)
                 {
                     while (_playerInfo.Count > 0)
+                    {
                         DropPlayer(_playerInfo[0]);
+                    }
                 }
             }
             finally
             {
                 _isGameEnding = false;
-                Interlocked.Exchange(ref _isProcessingTurn, 0);
+                _ = Interlocked.Exchange(ref _isProcessingTurn, 0);
                 _game = null;
             }
 
@@ -357,7 +383,10 @@ namespace Supremacy.WCF
         internal void ClearChannelClosingHandling(IContextChannel contextChannel)
         {
             if (contextChannel == null)
+            {
                 return;
+            }
+
             contextChannel.Closing -= OnChannelClosing;
             contextChannel.Faulted -= OnChannelClosing;
         }
@@ -381,9 +410,13 @@ namespace Supremacy.WCF
                 player = new Player { PlayerID = _playerInfo.Count };
 
                 if (!string.IsNullOrWhiteSpace(playerName))
+                {
                     player.Name = playerName;
+                }
                 else
+                {
                     player.Name = "Player " + player.PlayerID;
+                }
 
                 OperationContext session = OperationContext.Current;
 
@@ -407,7 +440,9 @@ namespace Supremacy.WCF
         internal Player GetPlayerByEmpire(Civilization empire)
         {
             if (empire == null)
+            {
                 return null;
+            }
 
             return GetPlayerByEmpireId(empire.CivID);
         }
@@ -424,14 +459,19 @@ namespace Supremacy.WCF
         {
             ServerPlayerInfo playerInfo = _playerInfo.FromPlayerId(playerId);
             if (playerInfo != null)
+            {
                 return playerInfo.Player;
+            }
+
             return null;
         }
 
         internal ISupremacyCallback GetPlayerCallback(Player player)
         {
             if (_playerInfo.TryGetValue(player, out ServerPlayerInfo playerInfo))
+            {
                 return playerInfo.Callback;
+            }
 
             return null;
         }
@@ -439,7 +479,7 @@ namespace Supremacy.WCF
         internal void OnTurnPhaseChanged(TurnPhase phase)
         {
             SendTurnPhaseChangedNotifications(phase);
-            new AutoResetEvent(false).WaitOne(100, true);
+            _ = new AutoResetEvent(false).WaitOne(100, true);
         }
 
         internal async void ProcessTurn()
@@ -447,7 +487,7 @@ namespace Supremacy.WCF
             try
             {
                 await SendAllTurnEndedNotificationsAsync().ConfigureAwait(false);
-                new AutoResetEvent(false).WaitOne(100, true);
+                _ = new AutoResetEvent(false).WaitOne(100, true);
 
                 Player gameHost = GetPlayerById(0);
                 List<Order> orders; // fleet orders, not combat orders
@@ -479,7 +519,7 @@ namespace Supremacy.WCF
                         {
                             lock (_aiAsyncLock)
                             {
-                                Interlocked.Exchange(ref _aiAsyncResult, null);
+                                _ = Interlocked.Exchange(ref _aiAsyncResult, null);
                             }
                             try
                             {
@@ -523,8 +563,8 @@ namespace Supremacy.WCF
 
                             GameContext.PushThreadContext(_game);
 
-                            try { SavedGameManager.AutoSave(gameHost, _lobbyData); }
-                            finally { GameContext.PopThreadContext(); }
+                            try { _ = SavedGameManager.AutoSave(gameHost, _lobbyData); }
+                            finally { _ = GameContext.PopThreadContext(); }
                         });
                 }
 
@@ -542,17 +582,19 @@ namespace Supremacy.WCF
                 await Task.WhenAll(batchOperation).ConfigureAwait(false);
 
                 if (autoSaveTask != null)
+                {
                     await autoSaveTask.ConfigureAwait(false);
+                }
 
                 await SendTurnFinishedNotificationsAsync().ConfigureAwait(false);
             }
             finally
             {
-                Interlocked.Exchange(ref _isProcessingTurn, 0);
+                _ = Interlocked.Exchange(ref _isProcessingTurn, 0);
             }
 
             // Just in case the AI task completed before resetting _isProcessingTurn to 0.
-            TryProcessTurn();
+            _ = TryProcessTurn();
         }
 
         private async Task DoTurnCore()
@@ -563,11 +605,11 @@ namespace Supremacy.WCF
 
             GameContext gameContext = _game;
 
-            Observable
+            _ = Observable
                 .ToAsync(() => _gameEngine.DoTurn(gameContext), _threadPoolScheduler)()
                 .Subscribe(tcs.SetResult, tcs.SetException);
 
-            await tcs.Task;
+            _ = await tcs.Task;
 
             _gameEngine.TurnPhaseChanged -= OnGameEngineTurnPhaseChanged;
         }
@@ -576,7 +618,9 @@ namespace Supremacy.WCF
         {
             ISupremacyCallback callback = playerInfo.Callback;
             if (callback == null)
+            {
                 return;
+            }
 
             Player player = playerInfo.Player;
             GameUpdateMessage message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
@@ -590,7 +634,7 @@ namespace Supremacy.WCF
 
             try
             {
-                await tcs.Task.ConfigureAwait(false);
+                _ = await tcs.Task.ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -618,11 +662,13 @@ namespace Supremacy.WCF
 
                     ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
+                    {
                         continue;
+                    }
 
                     TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
-                    Observable
+                    _ = Observable
                         .ToAsync(callback.NotifyTurnFinished, _scheduler)()
                         .Subscribe(
                             tcs.SetResult,
@@ -649,12 +695,14 @@ namespace Supremacy.WCF
                 {
                     ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
+                    {
                         continue;
+                    }
 
                     TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
                     ServerPlayerInfo info = playerInfo;
-                    Observable
+                    _ = Observable
                         .ToAsync(callback.NotifyAllTurnEnded, _scheduler)()
                         .Subscribe(
                             tcs.SetResult,
@@ -680,7 +728,7 @@ namespace Supremacy.WCF
                     Player player = playerInfo.Player;
                     LobbyData lobbyData = LobbyData;
 
-                    ((Action<LobbyData>)playerInfo.Callback.NotifyLobbyUpdated)
+                    _ = ((Action<LobbyData>)playerInfo.Callback.NotifyLobbyUpdated)
                         .ToAsync(playerInfo.Scheduler)(lobbyData)
                         .Subscribe(
                             _ => { },
@@ -694,11 +742,13 @@ namespace Supremacy.WCF
             lock (_playerInfo.SyncRoot)
             {
                 if (Interlocked.CompareExchange(ref _isProcessingTurn, 1, 0) != 0)
+                {
                     return false;
+                }
 
                 if (_playerInfo.Count == 0)
                 {
-                    Interlocked.Exchange(ref _isProcessingTurn, 0);
+                    _ = Interlocked.Exchange(ref _isProcessingTurn, 0);
                     return false;
                 }
 
@@ -706,7 +756,7 @@ namespace Supremacy.WCF
                 {
                     if (_aiAsyncResult != null)
                     {
-                        Interlocked.Exchange(ref _isProcessingTurn, 0);
+                        _ = Interlocked.Exchange(ref _isProcessingTurn, 0);
                         return false;
                     }
                 }
@@ -719,19 +769,19 @@ namespace Supremacy.WCF
 
                     if (anyOutstandingOrders)
                     {
-                        Interlocked.Exchange(ref _isProcessingTurn, 0);
+                        _ = Interlocked.Exchange(ref _isProcessingTurn, 0);
                         return false;
                     }
                 }
                 catch
                 {
-                    Interlocked.Exchange(ref _isProcessingTurn, 0);
+                    _ = Interlocked.Exchange(ref _isProcessingTurn, 0);
                     return false;
                 }
 
             }
 
-            _threadPoolScheduler.Schedule(ProcessTurn);
+            _ = _threadPoolScheduler.Schedule(ProcessTurn);
 
             return true;
         }
@@ -750,7 +800,9 @@ namespace Supremacy.WCF
                 lock (_playerInfo.SyncRoot)
                 {
                     if (_playerInfo.Count == 0)
+                    {
                         break;
+                    }
 
                     DropPlayer(_playerInfo[0].Player);
                 }
@@ -767,11 +819,11 @@ namespace Supremacy.WCF
             lock (_aiAsyncLock)
             {
                 _aiAsyncResult = null;
-                Observable.ToAsync(
+                _ = Observable.ToAsync(
                     delegate
                     {
                         OnTurnPhaseChanged(TurnPhase.WaitOnPlayers);
-                        TryProcessTurn();
+                        _ = TryProcessTurn();
                     },
                     _scheduler)();
             }
@@ -780,13 +832,17 @@ namespace Supremacy.WCF
         private void OnChannelClosing(object sender, EventArgs e)
         {
             if (!(sender is IContextChannel channel))
+            {
                 return;
+            }
 
             ClearChannelClosingHandling(channel);
 
             ServerPlayerInfo playerInfo = _playerInfo.FromSessionId(channel.InputSession.Id);
             if (playerInfo == null)
+            {
                 return;
+            }
 
             DropPlayer(playerInfo.Player);
         }
@@ -805,22 +861,25 @@ namespace Supremacy.WCF
                 {
                     Player otherPlayer = otherPlayerInfo.Player;
                     if (otherPlayer == player)
+                    {
                         continue;
+                    }
 
                     ISupremacyCallback callback = otherPlayerInfo.Callback;
                     if (callback == null)
+                    {
                         continue;
-
-                    ((Action)
-                     (() =>
-                     {
-                         callback.NotifyPlayerExited(player);
-                         callback.NotifyLobbyUpdated(LobbyData);
-                     }))
-                        .ToAsync(_scheduler)()
-                        .Subscribe(
-                            _ => { },
-                            e => DropPlayerAsync(otherPlayer));
+                    }
+                    _ = ((Action)
+                   (() =>
+                   {
+                       callback.NotifyPlayerExited(player);
+                       callback.NotifyLobbyUpdated(LobbyData);
+                   }))
+                      .ToAsync(_scheduler)()
+                      .Subscribe(
+                          _ => { },
+                          e => DropPlayerAsync(otherPlayer));
                 }
             }
         }
@@ -828,7 +887,9 @@ namespace Supremacy.WCF
         private void OnPlayerJoined([NotNull] Player player)
         {
             if (player == null)
+            {
                 throw new ArgumentNullException("player");
+            }
 
             ISupremacyCallback callback = GetPlayerCallback(player);
             LobbyData lobbyData = LobbyData;
@@ -852,18 +913,19 @@ namespace Supremacy.WCF
                 {
                     ServerPlayerInfo otherPlayerCopy = otherPlayer;
                     if (otherPlayerCopy.Callback == null)
+                    {
                         continue;
-
-                    ((Action)
-                     (() =>
-                     {
-                         otherPlayerCopy.Callback.NotifyPlayerJoined(player);
-                         otherPlayerCopy.Callback.NotifyLobbyUpdated(lobbyData);
-                     }))
-                        .ToAsync(_scheduler)()
-                        .Subscribe(
-                            _ => { },
-                            e => DropPlayerAsync(otherPlayerCopy.Player));
+                    }
+                    _ = ((Action)
+                   (() =>
+                   {
+                       otherPlayerCopy.Callback.NotifyPlayerJoined(player);
+                       otherPlayerCopy.Callback.NotifyLobbyUpdated(lobbyData);
+                   }))
+                      .ToAsync(_scheduler)()
+                      .Subscribe(
+                          _ => { },
+                          e => DropPlayerAsync(otherPlayerCopy.Player));
                 }
             }
         }
@@ -872,7 +934,9 @@ namespace Supremacy.WCF
         {
             ServerPlayerInfo sender = _playerInfo.FromPlayerId(senderId);
             if (sender == null)
+            {
                 return;
+            }
 
             ServerPlayerInfo[] recipients;
 
@@ -888,16 +952,20 @@ namespace Supremacy.WCF
             {
                 ServerPlayerInfo recipient = _playerInfo.FromPlayerId(recipientId);
                 if (recipient != null)
+                {
                     recipients = new[] { recipient, sender };
+                }
                 else
+                {
                     recipients = new[] { sender };
+                }
             }
 
             foreach (ServerPlayerInfo recipient in recipients)
             {
                 ServerPlayerInfo recipientCopy = recipient;
 
-                ((Action<int, string, int>)recipient.Callback.NotifyChatMessageReceived)
+                _ = ((Action<int, string, int>)recipient.Callback.NotifyChatMessageReceived)
                     .ToAsync(recipient.Scheduler)(senderId, message, recipientId)
                     .Subscribe(
                         _ => { },
@@ -913,11 +981,13 @@ namespace Supremacy.WCF
                 {
                     ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
+                    {
                         continue;
+                    }
 
                     ServerPlayerInfo playerInfoCopy = playerInfo;
 
-                    ((Action<TurnPhase>)playerInfoCopy.Callback.NotifyTurnProgressChanged)
+                    _ = ((Action<TurnPhase>)playerInfoCopy.Callback.NotifyTurnProgressChanged)
                         .ToAsync(playerInfo.Scheduler)(phase)
                         .Subscribe(
                             _ => { },
@@ -941,7 +1011,9 @@ namespace Supremacy.WCF
             {
                 PlayerSlot slot = _lobbyData.Slots[slotId];
                 if (slot.IsFrozen)
+                {
                     return;
+                }
 
                 if ((!slot.IsVacant ||
                      playerId != CurrentPlayer.PlayerID) &&
@@ -951,7 +1023,9 @@ namespace Supremacy.WCF
                 }
 
                 if (playerId >= _playerInfo.Count)
+                {
                     return;
+                }
 
                 if (playerId == Player.UnassignedPlayerID)
                 {
@@ -962,7 +1036,9 @@ namespace Supremacy.WCF
                 if (playerId == Player.ComputerPlayerID)
                 {
                     if (!CurrentPlayer.IsGameHost)
+                    {
                         return;
+                    }
 
                     slot.Player = Player.Computer;
                     slot.Status = SlotStatus.Computer;
@@ -980,15 +1056,16 @@ namespace Supremacy.WCF
 
                     PlayerSlot oldSlot = _lobbyData.Slots
                         .Where(o => o != slot)
-                        .Where(otherSlot => otherSlot.Player == assignedPlayer)
-                        .FirstOrDefault();
+.FirstOrDefault(otherSlot => otherSlot.Player == assignedPlayer);
 
                     if (oldSlot != null)
+                    {
                         ClearPlayerSlot(oldSlot.SlotID);
+                    }
                 }
             }
 
-            Observable.ToAsync(SendLobbyUpdate, _scheduler)();
+            _ = Observable.ToAsync(SendLobbyUpdate, _scheduler)();
         }
 
         public int GetNewObjectID()
@@ -998,7 +1075,7 @@ namespace Supremacy.WCF
 
         public void SaveGameDeleteManualSaved()
         {
-            SavedGameManager.SaveGameDeleteManualSaved();
+            _ = SavedGameManager.SaveGameDeleteManualSaved();
         }
 
         public void SaveGame(string fileName)
@@ -1007,11 +1084,13 @@ namespace Supremacy.WCF
 
             ServerPlayerInfo currentPlayerInfo = CurrentPlayerInfo;
             if (currentPlayerInfo == null || !currentPlayerInfo.Player.IsGameHost)
+            {
                 return;
+            }
 
             try
             {
-                SavedGameManager.SaveGame(
+                _ = SavedGameManager.SaveGame(
                     fileName,
                     _game,
                     CurrentPlayer,
@@ -1026,7 +1105,9 @@ namespace Supremacy.WCF
         public void StartGame()
         {
             if (_isGameStarted)
+            {
                 return;
+            }
 
             lock (_playerInfo.SyncRoot)
             {
@@ -1041,7 +1122,9 @@ namespace Supremacy.WCF
                     foreach (Player unassignedPlayer in unassignedPlayers)
                     {
                         if (vacantSlots.Count == 0)
+                        {
                             DropPlayer(unassignedPlayer);
+                        }
 
                         vacantSlots[0].Player = unassignedPlayer;
                         vacantSlots[0].Status = SlotStatus.Taken;
@@ -1063,7 +1146,9 @@ namespace Supremacy.WCF
                 _lobbyData.GameOptions.Freeze();
 
                 if (playerAssignmentsChanged)
+                {
                     SendLobbyUpdate();
+                }
             }
 
             new Task(DoStartGame).Start();
@@ -1082,14 +1167,19 @@ namespace Supremacy.WCF
             {
                 SavedGameHeader header = SavedGameManager.LoadSavedGameHeader(initData.SaveGameFileName);
                 if (header == null)
+                {
                     return HostGameResult.LoadGameFailure;
+                }
+
                 initData.Options.Freeze();
             }
             else
             {
                 Guid modId = initData.Options.ModID;
                 if (!Equals(modId, Guid.Empty))
+                {
                     mod = GameModLoader.FindMods().Where(o => o.UniqueIdentifier == modId).FirstOrDefault();
+                }
             }
 
             _lobbyData.IsMultiplayerGame = initData.IsMultiplayerGame;
@@ -1123,10 +1213,14 @@ namespace Supremacy.WCF
                 _lobbyData.Slots[i] = slot;
 
                 if (slot.IsFrozen)
+                {
                     continue;
+                }
 
                 if (slot.Status == SlotStatus.Closed)
+                {
                     slot.Close();
+                }
             }
 
             if (initData.GameType != GameType.MultiplayerNew)
@@ -1138,7 +1232,7 @@ namespace Supremacy.WCF
 
             if (!initData.IsMultiplayerGame)
             {
-                ((Action)StartGame)
+                _ = ((Action)StartGame)
                     .ToAsync(_scheduler)()
                     .Subscribe(
                     _ => { },
@@ -1191,7 +1285,7 @@ namespace Supremacy.WCF
         {
             EnsurePlayer();
 
-            ((Action<int, string, int>)SendChatMessageCallback).ToAsync(_scheduler)(
+            _ = ((Action<int, string, int>)SendChatMessageCallback).ToAsync(_scheduler)(
                 CurrentPlayer.PlayerID,
                 message,
                 recipientId);
@@ -1212,11 +1306,13 @@ namespace Supremacy.WCF
                 {
                     ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
+                    {
                         continue;
+                    }
 
                     ServerPlayerInfo playerInfoCopy = playerInfo;
 
-                    ((Action<int>)callback.NotifyPlayerFinishedTurn)
+                    _ = ((Action<int>)callback.NotifyPlayerFinishedTurn)
                         .ToAsync(_scheduler)(currentPlayer.EmpireID)
                         .Subscribe(
                             _ => { },
@@ -1224,20 +1320,22 @@ namespace Supremacy.WCF
                 }
             }
 
-            TryProcessTurn();
+            _ = TryProcessTurn();
         }
 
         public void UpdateGameOptions(GameOptions options)
         {
             if (_isGameStarted)
+            {
                 return;
+            }
 
             lock (_playerInfo.SyncRoot)
             {
                 _lobbyData.GameOptions = options;
             }
 
-            Observable.ToAsync(SendLobbyUpdate, _scheduler)();
+            _ = Observable.ToAsync(SendLobbyUpdate, _scheduler)();
         }
 
         public void UpdateEmpireSelection(int playerId, int empireId)
@@ -1255,7 +1353,9 @@ namespace Supremacy.WCF
                 }
 
                 if (playerId >= _playerInfo.Count)
+                {
                     return;
+                }
 
                 currentPlayerInfo.Player.EmpireID = empireId;
 
@@ -1269,7 +1369,7 @@ namespace Supremacy.WCF
                 }
             }
 
-            Observable.ToAsync(SendLobbyUpdate, _scheduler)();
+            _ = Observable.ToAsync(SendLobbyUpdate, _scheduler)();
         }
 
         public void ClearPlayerSlot(int slotId)
@@ -1280,13 +1380,17 @@ namespace Supremacy.WCF
 
                 PlayerSlot slot = _lobbyData.Slots[slotId];
                 if (slot.IsFrozen)
+                {
                     return;
+                }
 
                 Player currentPlayer = CurrentPlayer;
                 if (slot.IsClosed)
                 {
                     if (!currentPlayer.IsGameHost)
+                    {
                         return;
+                    }
                 }
                 else if (!slot.IsVacant &&
                          !currentPlayer.IsGameHost &&
@@ -1298,7 +1402,7 @@ namespace Supremacy.WCF
                 slot.Clear();
             }
 
-            Observable.ToAsync(SendLobbyUpdate, _scheduler)();
+            _ = Observable.ToAsync(SendLobbyUpdate, _scheduler)();
         }
 
         public void ClosePlayerSlot(int slotId)
@@ -1309,16 +1413,20 @@ namespace Supremacy.WCF
 
                 PlayerSlot slot = _lobbyData.Slots[slotId];
                 if (slot.IsFrozen || slot.IsClosed)
+                {
                     return;
+                }
 
                 Player currentPlayer = CurrentPlayer;
                 if (!currentPlayer.IsGameHost)
+                {
                     return;
+                }
 
                 slot.Close();
             }
 
-            Observable.ToAsync(SendLobbyUpdate, _scheduler)();
+            _ = Observable.ToAsync(SendLobbyUpdate, _scheduler)();
         }
 
         #region Combat
@@ -1345,7 +1453,9 @@ namespace Supremacy.WCF
             try
             {
                 if (_combatEngine == null || orders == null)
+                {
                     return;
+                }
 
                 // just a test .... but "Resolving Combat" never finished
                 //if (orders.CombatID == -1)
@@ -1356,12 +1466,16 @@ namespace Supremacy.WCF
                     try
                     {
                         if (orders.CombatID != -1 && _combatEngine != null)
+                        {
                             _combatEngine.SubmitOrders(orders);
+                        }
                     }
                     catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
 
                     if (_combatEngine != null && _combatEngine.Ready)
+                    {
                         TryResumeCombat(_combatEngine);
+                    }
                 }
             }
             catch (Exception e)
@@ -1376,7 +1490,9 @@ namespace Supremacy.WCF
             try
             {
                 if (_combatEngine == null || target1 == null)
+                {
                     return;
+                }
 
                 lock (_combatEngine.SyncLockTargetOnes)
                 {
@@ -1396,7 +1512,9 @@ namespace Supremacy.WCF
             try
             {
                 if (_combatEngine == null || target2 == null)
+                {
                     return;
+                }
 
                 lock (_combatEngine.SyncLockTargetTwos)
                 {
@@ -1486,7 +1604,7 @@ namespace Supremacy.WCF
             }
 
 
-            GameContext.PopThreadContext();
+            _ = GameContext.PopThreadContext();
         }
 
         private void TryResumeCombat(CombatEngine engine)
@@ -1499,7 +1617,9 @@ namespace Supremacy.WCF
                     lock (engine.SyncLock)
                     {
                         if (engine.Ready)
+                        {
                             engine.ResolveCombatRound();
+                        }
                     }
 
                 }
@@ -1510,7 +1630,7 @@ namespace Supremacy.WCF
 
                 finally
                 {
-                    GameContext.PopThreadContext();
+                    _ = GameContext.PopThreadContext();
                 }
             }
         }
@@ -1529,8 +1649,9 @@ namespace Supremacy.WCF
                 }
             }
             else if (player.IsHumanPlayer) //this is bool based on return (_playerId >= GameHostID) GameHostID is always 0    
+            {
                 return;
-
+            }
             else if (_invasionEngine == engine)
             {
                 _invasionEngine = null;
@@ -1542,11 +1663,15 @@ namespace Supremacy.WCF
         {
             InvasionEngine invasionEngine = _invasionEngine;
             if (invasionEngine == null)
+            {
                 return;
+            }
 
             GameContext game = _game;
             if (game != null)
+            {
                 GameContext.PushThreadContext(game);
+            }
 
             try
             {
@@ -1561,7 +1686,9 @@ namespace Supremacy.WCF
             finally
             {
                 if (game != null)
-                    GameContext.Pop();
+                {
+                    _ = GameContext.Pop();
+                }
             }
         }
 
@@ -1576,18 +1703,26 @@ namespace Supremacy.WCF
                     _alreadyDidCivAsAI = invasionArena.Invader;
                     GameLog.Client.AI.DebugFormat("_alreadyDidCivAsAI = {0}", invasionArena.Invader.Key);
                     if (_invasionEngine == null)
+                    {
                         _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+                    }
 
-                    _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                    _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
                     doneOnceAlready = true;
                 }
             }
             else if (doneOnceAlready == false)
             {
                 if (_invasionEngine == null)
+                {
                     _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+                }
 
-                _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                if (_invasionEngine != null)
+                {
+                    _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                }
+
                 doneOnceAlready = true;
             }
         }
@@ -1595,9 +1730,11 @@ namespace Supremacy.WCF
         public void SendInvasionOrders(InvasionOrders orders)
         {
             if (_invasionEngine == null || orders == null)
+            {
                 return;
+            }
 
-            _threadPoolScheduler.Schedule(() => _invasionEngine.SubmitOrders(orders));
+            _ = _threadPoolScheduler.Schedule(() => _invasionEngine.SubmitOrders(orders));
         }
 
         private void SendInvasionUpdateCallback(InvasionEngine engine, InvasionArena update)
@@ -1607,7 +1744,9 @@ namespace Supremacy.WCF
             {
                 ISupremacyCallback callback = player.Callback;
                 if (callback != null)
+                {
                     callback.NotifyInvasionUpdate(update);
+                }
             }
             else if (update.Status == InvasionStatus.InProgress)
             {
@@ -1621,9 +1760,13 @@ namespace Supremacy.WCF
                     ).ToList();
 
                 if (transports.Count == 0)
+                {
                     SendInvasionOrders(new InvasionOrders(update.InvasionID, InvasionAction.StandDown, InvasionTargetingStrategy.Balanced));
+                }
                 else
+                {
                     SendInvasionOrders(new InvasionOrders(update.InvasionID, InvasionAction.LandTroops, InvasionTargetingStrategy.Balanced));
+                }
             }
         }
         #endregion
@@ -1637,7 +1780,7 @@ namespace Supremacy.WCF
             {
                 ServerPlayerInfo playerCopy = player;
 
-                ((Action<ServerPlayerInfo>)PingPlayer)
+                _ = ((Action<ServerPlayerInfo>)PingPlayer)
                     .ToAsync(player.Scheduler)(player)
                     .Subscribe(
                     _ => { },
@@ -1648,7 +1791,9 @@ namespace Supremacy.WCF
         private void PingPlayer([NotNull] ServerPlayerInfo player)
         {
             if (player == null)
+            {
                 throw new ArgumentNullException("player");
+            }
 
             try { player.Callback.Ping(); }
             catch { DropPlayer(player); }
@@ -1667,7 +1812,9 @@ namespace Supremacy.WCF
         {
             IDisposable heartbeat = Interlocked.Exchange(ref _heartbeat, null);
             if (heartbeat != null)
+            {
                 heartbeat.Dispose();
+            }
         }
         #endregion
         #endregion

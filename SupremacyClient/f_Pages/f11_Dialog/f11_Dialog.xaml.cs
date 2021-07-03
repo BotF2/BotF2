@@ -27,7 +27,7 @@ namespace Supremacy.Client
             //        Key.Escape,
             //        ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
@@ -38,7 +38,7 @@ namespace Supremacy.Client
             //        GenericCommands.CancelCommand,
             //        OnGenericCommandsCancelCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));

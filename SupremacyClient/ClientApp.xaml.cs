@@ -65,10 +65,11 @@ namespace Supremacy.Client
 
         private static SplashScreen _splashScreen;
         private static Mutex _singleInstanceMutex;
-
-        private bool _isShuttingDown;
         public static string newline = Environment.NewLine;
         public static DateTime starttime = DateTime.Now;
+        public string _text = "";
+        public string blank = " ";
+        public string separator = " ;";
 
         //public string newline = Environment.NewLine;
         #endregion
@@ -80,15 +81,28 @@ namespace Supremacy.Client
         #endregion
 
         #region Properties and Indexers
-        public new static ClientApp Current => (ClientApp)Application.Current;
+        public static new ClientApp Current => (ClientApp)Application.Current;
 
         public static Version ClientVersion
         {
             get
             {
-                GameLog.Client.General.InfoFormat("Current Version = {0}", Current.Version);
-                GameLog.Client.GeneralDetails.DebugFormat("Time running = {0}", DateTime.Now - starttime);
-                Console.WriteLine("Time running = {0}", DateTime.Now - starttime);
+                string _text;
+                string _text2 = "";
+                if (File.Exists("SupremacyClient.exe"))
+                {
+                    _text2 = " SupremacyClient.exe ";
+                    _text2 += new FileInfo("SupremacyClient.exe").Length.ToString() + " ";
+                    _text2 += new FileInfo("SupremacyClient.exe").LastWriteTime.ToString();
+                }
+                _text = "Current Version = " + Current.Version + _text2;
+                Console.WriteLine(_text);
+                GameLog.Client.General.InfoFormat(_text);
+
+                _text = "Time running = " + (DateTime.Now - starttime).ToString();
+
+                GameLog.Client.GeneralDetails.DebugFormat(_text);
+
                 return Current.Version;
             }
         }
@@ -97,9 +111,11 @@ namespace Supremacy.Client
 
         public string ClientHint => ClientVersion + newline + ResourceManager.GetString("HINT_FOR_RUNNING");
 
-        public bool IsShuttingDown => _isShuttingDown;
+        public bool IsShuttingDown { get; private set; }
 
         public IClientCommandLineArguments CommandLineArguments => CmdLineArgs;
+
+        //public static string _text { get; private set; }
         #endregion
 
         #region Methods
@@ -126,14 +142,16 @@ namespace Supremacy.Client
             // If the "ExitFrame" callback doesn't get finished, Abort it.
             if (exitOperation.Status != DispatcherOperationStatus.Completed)
             {
-                exitOperation.Abort();
+                _ = exitOperation.Abort();
             }
         }
 
         protected void LoadBaseResources()
         {
             if (Current.IsShuttingDown)
+            {
                 return;
+            }
 
             try
             {
@@ -175,7 +193,9 @@ namespace Supremacy.Client
         public bool LoadDefaultResources()
         {
             if (Current.IsShuttingDown)
+            {
                 return false;
+            }
 
             GameLog.Client.UI.DebugFormat("LoadDefaultResources...");
             ResourceDictionary themeDictionary = null;
@@ -193,11 +213,15 @@ namespace Supremacy.Client
             }
 
             if (themeDictionary == null)
+            {
                 return false;
+            }
 
             LoadBaseResources();
             if (Current.Resources == null)
+            {
                 return false;
+            }
 
             Current.Resources.MergedDictionaries.Add(themeDictionary);
             return true;
@@ -206,7 +230,9 @@ namespace Supremacy.Client
         public bool LoadThemeResources(string theme)
         {
             if (Current.IsShuttingDown)
+            {
                 return false;
+            }
 
             // individual UI
             Uri themeUri = new Uri(
@@ -227,11 +253,15 @@ namespace Supremacy.Client
             }
 
             if (themeDictionary == null)
+            {
                 return false;
+            }
 
             LoadBaseResources();
             if (Current.Resources == null)
+            {
                 return false;
+            }
 
             Current.Resources.MergedDictionaries.Add(themeDictionary);
             return true;
@@ -296,7 +326,9 @@ namespace Supremacy.Client
         public bool LoadThemeResourcesShipyard(string themeShipyard)
         {
             if (Current.IsShuttingDown)
+            {
                 return false;
+            }
 
             // individual UI
             Uri themeUriShipyard = new Uri(
@@ -316,7 +348,9 @@ namespace Supremacy.Client
             }
 
             if (themeDictionaryShipyard == null)
+            {
                 return false;
+            }
 
             Current.Resources.MergedDictionaries.Add(themeDictionaryShipyard);
 
@@ -325,7 +359,7 @@ namespace Supremacy.Client
 
         protected override void OnExit(ExitEventArgs e)
         {
-            _isShuttingDown = true;
+            IsShuttingDown = true;
             if (!CmdLineArgs.AllowMultipleInstances)
             {
                 _singleInstanceMutex.ReleaseMutex();
@@ -338,7 +372,9 @@ namespace Supremacy.Client
 
             Dispatcher schedulerDispatcher = Scheduler.Dispatcher.Dispatcher;
             if (schedulerDispatcher != Dispatcher)
+            {
                 throw new InvalidOperationException("DispatcherScheduler is not bound to the main application Dispatcher.");
+            }
 
             Licenser.LicenseKey = "DGF20-AUTJ7-3K8MD-DNNA";
 
@@ -347,7 +383,7 @@ namespace Supremacy.Client
                typeof(Timeline),
                new FrameworkPropertyMetadata(ClientSettings.Current.DesiredAnimationFrameRate));
 
-            LoadDefaultResources();
+            _ = LoadDefaultResources();
 
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
@@ -390,7 +426,7 @@ namespace Supremacy.Client
 
                 if (!CheckNetFxVersion())
                 {
-                    MessageBox.Show(
+                    _ = MessageBox.Show(
                             "Rise of the UFP requires Microsoft .NET Framework 4.6.2 or greater"
                             + newline
                             + "It must be installed before running the game.",
@@ -403,7 +439,7 @@ namespace Supremacy.Client
 
                 if (!CheckXNAFramework31())
                 {
-                    MessageBox.Show(
+                    _ = MessageBox.Show(
                             "Rise of the UFP requires Microsoft XNA Framework V3.1 "
                             + Environment.NewLine
                             + "It must be installed before running the game.",
@@ -488,7 +524,9 @@ namespace Supremacy.Client
                         //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
                         if (File.Exists("Resources/SoundFX/Menu/LoadingSplash.wav"))
+                        {
                             player.Play();
+                        }
                         else
                         {
                             GameLog.Client.Audio.InfoFormat("Resources/SoundFX/Menu/LoadingSplash.wav not found...");
@@ -504,16 +542,23 @@ namespace Supremacy.Client
                     }
 
                     if (File.Exists("Resources\\Data\\Civilizations.xml"))
+                    {
                         StartClient(args);
+                    }
                     else
-                        MessageBox.Show("Resources\\Data\\Civilizations.xml is missing" + Environment.NewLine + Environment.NewLine +
+                    {
+                        _ = MessageBox.Show("Resources\\Data\\Civilizations.xml is missing" + Environment.NewLine + Environment.NewLine +
                             "Make sure you have the folder \\Resources !!" + Environment.NewLine + "(only delivered within an original game release)", "WARNING",
                             MessageBoxButton.OK);
+                    }
                 }
                 catch (Exception e)
                 {
                     while (e.InnerException != null)
+                    {
                         e = e.InnerException;
+                    }
+
                     throw e;
                 }
             }
@@ -552,7 +597,7 @@ namespace Supremacy.Client
                 if (File.Exists(xna_copy))
                 {
                     GameLog.Client.General.Info("for XNA 3.1: trying to copy into XNA31_ok.info from C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v3.1\\Redist\\DX Redist\\DXSETUP.exe");
-                    Process.Start(xna_copy);
+                    _ = Process.Start(xna_copy);
                     Thread.Sleep(1000);
                 }
                 else
@@ -560,7 +605,7 @@ namespace Supremacy.Client
                     _text = "Did not found file " + xna_copy + newline + "to check for XNA 3.1"
                         + newline + newline + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
                         + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'";
-                    MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+                    _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
 
                 }
@@ -578,7 +623,7 @@ namespace Supremacy.Client
                     + newline + newline + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
                     ;
                 GameLog.Client.General.Info(_text);
-                MessageBox.Show(_text, "CHECK", MessageBoxButton.OK);
+                _ = MessageBox.Show(_text, "CHECK", MessageBoxButton.OK);
             }
             else { found = true; }
 
@@ -655,7 +700,7 @@ namespace Supremacy.Client
                 _singleInstanceMutex = new Mutex(true, "{CC4FD558-0934-451d-A387-738B5DB5619C}", out bool mutexIsNew);
                 if (!mutexIsNew)
                 {
-                    MessageBox.Show("An instance of Supremacy is already running.");
+                    _ = MessageBox.Show("An instance of Supremacy is already running.");
                     Environment.Exit(Environment.ExitCode);
                 }
             }
@@ -669,7 +714,9 @@ namespace Supremacy.Client
             }
 
             if (CmdLineArgs.TraceLevel != PresentationTraceLevel.None)
+            {
                 PresentationTraceSources.Refresh();
+            }
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -692,7 +739,7 @@ namespace Supremacy.Client
             }
             catch
             {
-                MessageBox.Show(
+                _ = MessageBox.Show(
                     "The error log could not be created.  You may still run the game,\n"
                     + "but error details cannot be logged.",
                     "Warning",
@@ -783,29 +830,32 @@ namespace Supremacy.Client
             protected override void ConfigureContainer()
             {
                 base.ConfigureContainer();
-                Container.RegisterInstance(ResourceManager.VfsService, new ContainerControlledLifetimeManager());
-                Container.RegisterInstance<IApplicationSettingsService>(new ApplicationSettingsService(), new ContainerControlledLifetimeManager());
-                Container.RegisterInstance<IClientApplication>(Current, new ContainerControlledLifetimeManager());
-                Container.RegisterInstance<IDispatcherService>(new DefaultDispatcherService(Dispatcher.CurrentDispatcher), new ContainerControlledLifetimeManager());
-                Container.RegisterType<IUnhandledExceptionHandler, ClientUnhandledExceptionHandler>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<INavigationCommandsProxy, NavigationCommandsProxy>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<IAppContext, Context.AppContext>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<IResourceManager, ClientResourceManager>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<IGameErrorService, GameErrorService>(new ContainerControlledLifetimeManager());
-                Container.RegisterInstance<IAudioEngine>(FMODAudioEngine.Instance, new ContainerControlledLifetimeManager());
-                Container.RegisterType<IMusicPlayer, MusicPlayer>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<ISoundPlayer, SoundPlayer>(new ContainerControlledLifetimeManager());
+                _ = Container.RegisterInstance(ResourceManager.VfsService, new ContainerControlledLifetimeManager());
+                _ = Container.RegisterInstance<IApplicationSettingsService>(new ApplicationSettingsService(), new ContainerControlledLifetimeManager());
+                _ = Container.RegisterInstance<IClientApplication>(Current, new ContainerControlledLifetimeManager());
+                _ = Container.RegisterInstance<IDispatcherService>(new DefaultDispatcherService(Dispatcher.CurrentDispatcher), new ContainerControlledLifetimeManager());
+                _ = Container.RegisterType<IUnhandledExceptionHandler, ClientUnhandledExceptionHandler>(new ContainerControlledLifetimeManager());
+                _ = Container.RegisterType<INavigationCommandsProxy, NavigationCommandsProxy>(new ContainerControlledLifetimeManager());
+                _ = Container.RegisterType<IAppContext, Context.AppContext>(new ContainerControlledLifetimeManager());
+                _ = Container.RegisterType<IResourceManager, ClientResourceManager>(new ContainerControlledLifetimeManager());
+                _ = Container.RegisterType<IGameErrorService, GameErrorService>(new ContainerControlledLifetimeManager());
+                _ = Container.RegisterInstance<IAudioEngine>(FMODAudioEngine.Instance, new ContainerControlledLifetimeManager());
+                _ = Container.RegisterType<IMusicPlayer, MusicPlayer>(new ContainerControlledLifetimeManager());
+                _ = Container.RegisterType<ISoundPlayer, SoundPlayer>(new ContainerControlledLifetimeManager());
             }
 
             protected override DependencyObject CreateShell()
             {
                 if (_shell != null)
+                {
                     return _shell;
+                }
+
                 _shell = Container.Resolve<ClientWindow>();
                 _shell.SourceInitialized += OnGameWindowSourceInitialized;
                 Application.Current.MainWindow = _shell;
                 _shell.Show();
-                Container.RegisterInstance<IGameWindow>(_shell, new ContainerControlledLifetimeManager());
+                _ = Container.RegisterInstance<IGameWindow>(_shell, new ContainerControlledLifetimeManager());
                 return _shell;
             }
         }

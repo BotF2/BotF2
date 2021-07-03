@@ -14,10 +14,7 @@ namespace Supremacy.Client.OptionsPages
         public AudioOptionsPage(
             [NotNull] IResourceManager resourceManager)
         {
-            if (resourceManager == null)
-                throw new ArgumentNullException("resourceManager");
-
-            _resourceManager = resourceManager;
+            _resourceManager = resourceManager ?? throw new ArgumentNullException("resourceManager");
 
             InitializeComponent();
         }

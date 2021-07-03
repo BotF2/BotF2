@@ -64,8 +64,8 @@ namespace Supremacy.VFS
         /// <value>The size the default size of the files (in KB).</value>
         public int DefaultFilesSize
         {
-            get { return _defaultFilesSize; }
-            set { _defaultFilesSize = value; }
+            get => _defaultFilesSize;
+            set => _defaultFilesSize = value;
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace Supremacy.VFS
         /// <value>The compression mode.</value>
         public CompressionAlgorithm CompressionAlgorithm
         {
-            get { return _compressionAlgorithm; }
-            set { _compressionAlgorithm = value; }
+            get => _compressionAlgorithm;
+            set => _compressionAlgorithm = value;
         }
 
         #endregion
@@ -108,7 +108,9 @@ namespace Supremacy.VFS
             if (!recurse)
             {
                 if (_files.ContainsKey(path))
+                {
                     return path;
+                }
             }
             else
             {
@@ -117,8 +119,8 @@ namespace Supremacy.VFS
 
                 foreach (string key in _files.Keys)
                 {
-                    if (StringComparer.Equals(Path.GetDirectoryName(key), dir) &&
-                        StringComparer.Equals(Path.GetFileName(key), name))
+                    if (StringComparer.Equals(IOPath.GetDirectoryName(key), dir) &&
+                        StringComparer.Equals(IOPath.GetFileName(key), name))
                     {
                         return key;
                     }
@@ -178,7 +180,7 @@ namespace Supremacy.VFS
 
         protected override void InternalDeleteFile(string resolvedName)
         {
-            _files.Remove(resolvedName);
+            _ = _files.Remove(resolvedName);
         }
 
         #endregion

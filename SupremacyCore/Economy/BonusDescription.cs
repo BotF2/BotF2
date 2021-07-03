@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
 using System.IO;
 
 using Supremacy.Data;
@@ -44,16 +43,18 @@ namespace Supremacy.Economy
         /// <returns>The description.</returns>
         public static string GetDescription(BonusType bonus)
         {
-            string description;
-            string isPercent;
 
-            if (!_descriptions.TryGetValue(bonus.ToString(), 0, out description))
+            if (!_descriptions.TryGetValue(bonus.ToString(), 0, out string description))
+            {
                 return string.Format("{0}", bonus);
+            }
 
-            if (!_descriptions.TryGetValue(bonus.ToString(), 1, out isPercent) || !StringHelper.IsTrue(isPercent))
+            if (!_descriptions.TryGetValue(bonus.ToString(), 1, out string isPercent) || !StringHelper.IsTrue(isPercent))
+            {
                 return string.Format("{0}", description);
+            }
 
-            return String.Format("% {0}", description);
+            return string.Format("% {0}", description);
         }
 
         /// <summary>
@@ -63,16 +64,18 @@ namespace Supremacy.Economy
         /// <returns>The description.</returns>
         public static string GetDescription(Bonus bonus)
         {
-            string description;
-            string isPercent;
 
-            if (!_descriptions.TryGetValue(bonus.BonusType.ToString(), 0, out description))
+            if (!_descriptions.TryGetValue(bonus.BonusType.ToString(), 0, out string description))
+            {
                 return string.Format("{0:+#,0;-#,0} {1}", bonus.Amount, bonus.BonusType);
+            }
 
-            if (!_descriptions.TryGetValue(bonus.BonusType.ToString(), 1, out isPercent) || !StringHelper.IsTrue(isPercent))
-                return String.Format("{0:+#,0;-#,0} {1}", bonus.Amount, description);
+            if (!_descriptions.TryGetValue(bonus.BonusType.ToString(), 1, out string isPercent) || !StringHelper.IsTrue(isPercent))
+            {
+                return string.Format("{0:+#,0;-#,0} {1}", bonus.Amount, description);
+            }
 
-            return String.Format("{0:+#,0;-#,0}% {1}", bonus.Amount, description);
+            return string.Format("{0:+#,0;-#,0}% {1}", bonus.Amount, description);
         }
     }
 
@@ -101,8 +104,7 @@ namespace Supremacy.Economy
         /// <returns>The description.</returns>
         public static string GetDescription(BuildRestriction restriction)
         {
-            string description;
-            return _descriptions.TryGetValue(restriction.ToString(), 0, out description) ? description : restriction.ToString();
+            return _descriptions.TryGetValue(restriction.ToString(), 0, out string description) ? description : restriction.ToString();
         }
     }
 }

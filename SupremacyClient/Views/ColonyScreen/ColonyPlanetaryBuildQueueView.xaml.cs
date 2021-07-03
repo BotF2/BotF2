@@ -17,17 +17,22 @@ namespace Supremacy.Client.Views
 
         private void OnBuildQueueItemClicked(object sender, object clickedItem)
         {
-            BuildQueueItem buildQueueItem = clickedItem as BuildQueueItem;
-            if (buildQueueItem == null)
+            if (!(clickedItem is BuildQueueItem buildQueueItem))
+            {
                 return;
+            }
 
             ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
+            {
                 return;
+            }
 
             ICommand command = presentationModel.RemoveFromPlanetaryBuildQueueCommand;
             if ((command != null) && command.CanExecute(buildQueueItem))
+            {
                 command.Execute(buildQueueItem);
+            }
         }
 
         private ColonyScreenPresentationModel PresentationModel => DataContext as ColonyScreenPresentationModel;
@@ -36,15 +41,21 @@ namespace Supremacy.Client.Views
         {
             ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
+            {
                 return false;
+            }
 
             Universe.Colony colony = presentationModel.SelectedColony;
             if (colony == null)
+            {
                 return false;
+            }
 
             BuildProject project = colony.BuildSlots[0].Project;
             if (project == null)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -58,7 +69,9 @@ namespace Supremacy.Client.Views
 
                 ICommand command = presentationModel.CancelBuildProjectCommand;
                 if ((command != null) && command.CanExecute(project))
+                {
                     command.Execute(project);
+                }
             }
         }
 
@@ -71,7 +84,9 @@ namespace Supremacy.Client.Views
 
                 ICommand command = presentationModel.BuyBuildProjectCommand;
                 if ((command != null) && command.CanExecute(project))
+                {
                     command.Execute(project);
+                }
             }
         }
     }

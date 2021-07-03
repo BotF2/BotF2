@@ -68,7 +68,7 @@ namespace Supremacy.Client.Commands
 
         public Fleet TargetFleet => _targetFleet;
 
-        public bool HasTargetFleet => (_targetFleet != null);
+        public bool HasTargetFleet => _targetFleet != null;
 
         public RedeployShipCommandArgs([NotNull] Ship ship)
             : this(ship, null) { }
@@ -88,7 +88,9 @@ namespace Supremacy.Client.Commands
         public ScrapCommandArgs([NotNull] TechObject @object)
         {
             if (@object == null)
+            {
                 throw new ArgumentNullException("object");
+            }
 
             _objects = new ArrayWrapper<TechObject>(new[] { @object });
 
@@ -98,7 +100,9 @@ namespace Supremacy.Client.Commands
         public ScrapCommandArgs([NotNull] IEnumerable<TechObject> objects)
         {
             if (objects == null)
+            {
                 throw new ArgumentNullException("objects");
+            }
 
             _objects = new ArrayWrapper<TechObject>(objects.ToArray());
 
@@ -108,11 +112,17 @@ namespace Supremacy.Client.Commands
         private void SetInitialScrapValue()
         {
             if (_objects.All(o => o.Scrap))
+            {
                 _scrap = true;
+            }
             else if (_objects.Any(o => o.Scrap))
+            {
                 _scrap = null;
+            }
             else
+            {
                 _scrap = false;
+            }
         }
 
         public IIndexedCollection<TechObject> Objects => _objects;
@@ -125,7 +135,7 @@ namespace Supremacy.Client.Commands
 
         public bool? IsChecked
         {
-            get { return _scrap; }
+            get => _scrap;
             set
             {
                 _scrap = value ?? false;

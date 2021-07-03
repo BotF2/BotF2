@@ -45,7 +45,7 @@ namespace Supremacy.Economy
         /// <value>The project under construction.</value>
         public virtual BuildProject Project
         {
-            get { return _project; }
+            get => _project;
             set
             {
                 _project = value;
@@ -54,7 +54,7 @@ namespace Supremacy.Economy
             }
         }
 
-        public bool HasProject => (_project != null);
+        public bool HasProject => _project != null;
 
         public bool AllShipsToQueue => true;
 
@@ -70,7 +70,7 @@ namespace Supremacy.Economy
         /// <value>The project priority.</value>
         public BuildPriority Priority
         {
-            get { return _priority; }
+            get => _priority;
             set
             {
                 _priority = value;
@@ -111,8 +111,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

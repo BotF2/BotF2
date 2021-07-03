@@ -34,19 +34,10 @@ namespace Supremacy.Client.Services
             [NotNull] INavigationCommandsProxy navigationCommands,
             [NotNull] IAppContext appContext)
         {
-            if (dispatcherService == null)
-                throw new ArgumentNullException("dispatcherService");
-            if (regionManager == null)
-                throw new ArgumentNullException("regionManager");
-            if (navigationCommands == null)
-                throw new ArgumentNullException("navigationCommands");
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-
-            _dispatcherService = dispatcherService;
-            _regionManager = regionManager;
-            _navigationCommands = navigationCommands;
-            _appContext = appContext;
+            _dispatcherService = dispatcherService ?? throw new ArgumentNullException("dispatcherService");
+            _regionManager = regionManager ?? throw new ArgumentNullException("regionManager");
+            _navigationCommands = navigationCommands ?? throw new ArgumentNullException("navigationCommands");
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
 
             _navigationCommands.ActivateScreen.RegisterCommand(new DelegateCommand<string>(s => _dispatcherService.Invoke((Func<string, bool>)ActivateScreen, s)));
             _navigationCommands.NavigateToColony.RegisterCommand(new DelegateCommand<Colony>(NavigateToColony));
@@ -59,14 +50,18 @@ namespace Supremacy.Client.Services
         {
             object view = _regionManager.Regions[ClientRegions.GameScreens].GetView(screenName);
             if (view == null)
+            {
                 return false;
+            }
 
             ViewActivatingEventArgs activatingArgs = new ViewActivatingEventArgs(view);
 
             ClientEvents.ViewActivating.Publish(activatingArgs);
 
             if (activatingArgs.Cancel)
+            {
                 return false;
+            }
 
             GameLog.Client.UI.DebugFormat("[INavigationService] Activating Screen: {0}", screenName);
 
@@ -80,52 +75,72 @@ namespace Supremacy.Client.Services
         public void NavigateToColony(Colony colony)
         {
             if (!_appContext.IsGameInPlay)
+            {
                 return;
+            }
 
             CivilizationManager playerEmpire = _appContext.LocalPlayerEmpire;
             if (playerEmpire == null)
+            {
                 return;
+            }
 
             if (colony == null)
+            {
                 return;
+            }
 
             GameLog.Client.UI.DebugFormat("[INavigationService] Navigating to Colony: {0}", colony.Name);
 
-            bool ownedByPlayer = (colony.OwnerID == playerEmpire.CivilizationID);
+            bool ownedByPlayer = colony.OwnerID == playerEmpire.CivilizationID;
 
-            ActivateScreen(StandardGameScreens.GalaxyScreen);
+            _ = ActivateScreen(StandardGameScreens.GalaxyScreen);
 
             GalaxyScreenCommands.SelectSector.Execute(colony.Sector);
             GalaxyScreenCommands.CenterOnSector.Execute(colony.Sector);
 
             if (!ownedByPlayer)
+            {
                 return;
+            }
         }
 
         public void RushColonyProduction(Colony colony)
         {
             CivilizationManager playerEmpire = _appContext.LocalPlayerEmpire;
             if (playerEmpire == null)
+            {
                 return;
+            }
 
             if (colony == null)
+            {
                 return;
+            }
 
-            bool ownedByPlayer = (colony.OwnerID == playerEmpire.CivilizationID);
+            bool ownedByPlayer = colony.OwnerID == playerEmpire.CivilizationID;
             if (!ownedByPlayer)
+            {
                 return;
+            }
 
             BuildProject project = colony.BuildSlots[0].Project;
             if (project == null)
+            {
                 return;
+            }
 
             if (project.IsCancelled || project.IsCompleted || project.IsRushed)
+            {
                 return;
+            }
 
             int creditsNeeded = project.GetTotalCreditsCost();
 
             if (playerEmpire.Credits.CurrentValue < creditsNeeded)
+            {
                 return;
+            }
 
             string confirmationMessage = string.Format(ResourceManager.GetString("CONFIRM_RUSH_BUILDING_MESSAGE"),
                 creditsNeeded, playerEmpire.Credits.CurrentValue);
@@ -136,7 +151,9 @@ namespace Supremacy.Client.Services
                 MessageDialogButtons.YesNo);
 
             if (confirmResult != MessageDialogResult.Yes)
+            {
                 return;
+            }
 
             GameLog.Client.Colonies.DebugFormat("Rushing production for Colony: {0}", colony.Name);
 

@@ -28,7 +28,9 @@ namespace Supremacy.WCF
         public GameStartMessage(GameStartData data)
         {
             if (data == null)
+            {
                 throw new ArgumentNullException("data");
+            }
 
             try
             {
@@ -59,7 +61,10 @@ namespace Supremacy.WCF
             get
             {
                 if (_data == null)
+                {
                     _data = StreamUtility.Read<GameUpdateData>(_buffer);
+                }
+
                 return _data;
             }
         }
@@ -67,7 +72,10 @@ namespace Supremacy.WCF
         public GameUpdateMessage(GameUpdateData data)
         {
             if (data == null)
+            {
                 throw new ArgumentNullException("data");
+            }
+
             _buffer = StreamUtility.Write(data);
         }
     }

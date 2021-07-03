@@ -31,7 +31,6 @@ using Supremacy.Xna;
 
 using System.Linq;
 using Supremacy.Client.Context;
-using Supremacy.Utility;
 
 namespace Supremacy.UI
 {
@@ -54,7 +53,7 @@ namespace Supremacy.UI
         private static readonly CachedBitmap EnergyBonusImage;
         private static readonly CachedBitmap FoodBonusImage;
         private static readonly CachedBitmap NebulaImage;
-        private static readonly CachedBitmap RawMaterialsBonusImage;
+        private static readonly CachedBitmap DuraniumBonusImage;
         public static readonly DependencyProperty ShowStatsProperty;
         #endregion
 
@@ -115,14 +114,14 @@ namespace Supremacy.UI
                 BitmapCacheOption.OnLoad);
             DilithiumBonusImage.Freeze();
 
-            RawMaterialsBonusImage = new CachedBitmap(
+            DuraniumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
                         "Resources/Images/UI/ScreenIcons/rawmaterials.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
-            RawMaterialsBonusImage.Freeze();
+            DuraniumBonusImage.Freeze();
         }
         #endregion
 
@@ -415,7 +414,7 @@ namespace Supremacy.UI
                             health.ToolTip = ResourceManager.GetString("SYSTEM_HEALTH_TOOLTIP");
                             orbitals.ToolTip = ResourceManager.GetString("SYSTEM_SHIELDS_TOOLTIP");
 
-                            orbitals.SetBinding(
+                            _ = orbitals.SetBinding(
                                 TextBlock.TextProperty,
                                 new MultiBinding
                                 {
@@ -495,7 +494,7 @@ namespace Supremacy.UI
                     if (planet.PlanetType == PlanetType.Asteroids)
                     {
                         AsteroidsView asteroids = new AsteroidsView { Margin = new Thickness(0, 0, 14, 0) };
-                        visuals.Children.Add(asteroids);
+                        _ = visuals.Children.Add(asteroids);
                     }
                     else
                     {
@@ -599,18 +598,18 @@ namespace Supremacy.UI
 
             if (IsExplored(system.Sector))
             {
-                if (system.HasRawMaterialsBonus)
+                if (system.HasDuraniumBonus)
                 {
                     Image bonusIcon = new Image
                     {
-                        Source = RawMaterialsBonusImage,
+                        Source = DuraniumBonusImage,
                         Width = SystemBonusIconSize,
                         Height = SystemBonusIconSize,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
                         ToolTip = GameContext.Current.Tables.EnumTables
                             [typeof(SystemBonus).Name]
-                            [SystemBonus.RawMaterials.ToString()][0]
+                            [SystemBonus.Duranium.ToString()][0]
                     };
                     _ = starContainer.Children.Add(bonusIcon);
                 }
@@ -622,7 +621,7 @@ namespace Supremacy.UI
                         Width = SystemBonusIconSize,
                         Height = SystemBonusIconSize,
                         Margin = new Thickness(
-                            (system.HasRawMaterialsBonus ? SystemBonusIconSize : 0),
+                            system.HasDuraniumBonus ? SystemBonusIconSize : 0,
                             0,
                             0,
                             0),
@@ -638,7 +637,7 @@ namespace Supremacy.UI
 
             star.ToolTip = starToolTip;
 
-            visuals.Children.Add(starContainer);
+            _ = visuals.Children.Add(starContainer);
 
             view.SetValue(Grid.ColumnProperty, 1);
             view.Stretch = Stretch.Uniform;

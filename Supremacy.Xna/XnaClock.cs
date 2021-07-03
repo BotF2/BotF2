@@ -115,7 +115,7 @@ namespace Supremacy.Xna
 
         internal static long Counter => Stopwatch.GetTimestamp();
 
-        internal TimeSpan CurrentTime => (_currentTimeBase + _currentTimeOffset);
+        internal TimeSpan CurrentTime => _currentTimeBase + _currentTimeOffset;
 
         internal TimeSpan ElapsedAdjustedTime => _elapsedAdjustedTime;
 

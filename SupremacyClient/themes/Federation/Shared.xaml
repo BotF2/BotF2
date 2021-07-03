@@ -115,10 +115,10 @@
                         <Rectangle Grid.Column="0"
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource OrangeGradient_Top_Bottom}" />
+                       Fill="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
                         <!--Fill="{StaticResource GrayDarkGradient_Top_Bottom}" />    o r Orange-->
                         <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
-                                     Background="{StaticResource AzureGradient_Top_Bottom}">
+                                     Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}">
                             <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
                         </scc:PixelSnappingBorder>
                     </Grid>
@@ -126,24 +126,24 @@
                         <!--IsMouseOver-->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="Background" 
-                                    Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+                                    Value="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
                         </Trigger>
                         <!--IsSelected-->
                         <Trigger Property="IsSelected" Value="True">
                             <!--<Setter Property="Panel.ZIndex" Value="100" />-->
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PinkGradient_Left_Right}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
                         </Trigger>
                         <!--IsMouseDown-->
                         <!--<Trigger Property="IsMouseDown" Value="True">
-              <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Right_Left}"/>
-            </Trigger>-->
+                          <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Right_Left}"/>
+                        </Trigger>-->
                         <!--IsEnabled-->
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Left_Right}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
+                        <!--<Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Left_Right}" />
-                        </Trigger>
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

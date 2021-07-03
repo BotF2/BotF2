@@ -10,7 +10,6 @@
 using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Network;
 using Supremacy.Types;
 using Supremacy.Utility;

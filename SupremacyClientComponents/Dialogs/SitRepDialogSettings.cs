@@ -24,7 +24,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowGreenItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowGreenItemsProperty, value);
         }
 
@@ -48,7 +51,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowOrangeItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowOrangeItemsProperty, value);
         }
 
@@ -72,7 +78,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowRedItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowRedItemsProperty, value);
         }
 
@@ -96,7 +105,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowBlueItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowBlueItemsProperty, value);
         }
 
@@ -120,7 +132,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowGrayItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowGrayItemsProperty, value);
         }
 
@@ -145,7 +160,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowPurpleItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowPurpleItemsProperty, value);
         }
 
@@ -170,7 +188,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowPinkItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowPinkItemsProperty, value);
         }
 
@@ -194,7 +215,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowBrownItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowBrownItemsProperty, value);
         }
 
@@ -218,7 +242,10 @@ namespace Supremacy.Client.Dialogs
         public static void SetShowAquaItems(DependencyObject source, bool value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ShowAquaItemsProperty, value);
         }
 
@@ -248,14 +275,20 @@ namespace Supremacy.Client.Dialogs
         public static SitRepCategory GetVisibleCategories(DependencyObject source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             return (SitRepCategory)source.GetValue(VisibleCategoriesProperty);
         }
 
         public static void SetVisibleCategories(DependencyObject source, SitRepCategory value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(VisibleCategoriesProperty, value);
         }
 

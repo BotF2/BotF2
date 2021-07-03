@@ -71,14 +71,14 @@ namespace Supremacy.VFS
                 VerifySecure(path);
                 return path;
             }
-            set { _path = value; }
+            set => _path = value;
         }
 
         private Func<string> _pathResolver;
         public Func<string> PathResolver
         {
-            get { return _pathResolver; }
-            set { _pathResolver = value ?? (() => _path); }
+            get => _pathResolver;
+            set => _pathResolver = value ?? (() => _path);
         }
 
         public override bool IsReadOnly => false;
@@ -101,13 +101,17 @@ namespace Supremacy.VFS
         protected void VerifyNotReadOnly()
         {
             if (IsReadOnly)
+            {
                 throw new NotSupportedException("This source is read-only.");
+            }
         }
 
         public override Stream GetFile(string path, bool recurse)
         {
             if (string.IsNullOrEmpty(Path))
+            {
                 return null;
+            }
 
             VerifySecure(path);
             return BaseGetStream(path, recurse, FileAccess.Read, true);
@@ -115,10 +119,12 @@ namespace Supremacy.VFS
 
         public override ReadOnlyCollection<string> GetFiles(string path, bool recurse, string searchPattern)
         {
-            List<string> files = new List<String>();
+            List<string> files = new List<string>();
 
             if (string.IsNullOrEmpty(Path))
+            {
                 return files.AsReadOnly();
+            }
 
             VerifySecure(path);
 
@@ -126,14 +132,20 @@ namespace Supremacy.VFS
             string fullPath = IOPath.Combine(sourcePath, path);
 
             if (!Directory.Exists(fullPath))
+            {
                 return files.AsReadOnly();
+            }
 
             // Get the files names
-            String[] directoryFiles;
+            string[] directoryFiles;
             if (recurse)
+            {
                 directoryFiles = Directory.GetFiles(fullPath, searchPattern, SearchOption.AllDirectories);
+            }
             else
+            {
                 directoryFiles = Directory.GetFiles(fullPath, searchPattern, SearchOption.TopDirectoryOnly);
+            }
 
             files.AddRange(directoryFiles.Select(f => IOPath.IsPathRooted(f) ? f.Remove(0, sourcePath.Length + 1) : f));
 
@@ -143,7 +155,9 @@ namespace Supremacy.VFS
         public override Stream GetWritableFile(string path, bool recurse)
         {
             if (string.IsNullOrEmpty(Path))
+            {
                 return null;
+            }
 
             VerifyNotReadOnly();
             VerifySecure(path);
@@ -155,7 +169,9 @@ namespace Supremacy.VFS
             VerifyNotReadOnly();
 
             if (string.IsNullOrEmpty(Path))
+            {
                 return false;
+            }
 
             VerifySecure(path);
             return BaseDeleteStream(path, recurse, true);
@@ -249,7 +265,9 @@ namespace Supremacy.VFS
             VerifyNotReadOnly();
 
             if (string.IsNullOrEmpty(Path))
+            {
                 return null;
+            }
 
             EnsureDirectory(resolvedName);
             return File.Open(resolvedName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
@@ -258,10 +276,15 @@ namespace Supremacy.VFS
         protected void EnsureDirectory([NotNull] string path)
         {
             if (path == null)
+            {
                 throw new ArgumentNullException("path");
+            }
+
             string directoryName = IOPath.GetDirectoryName(path);
             if (!Directory.Exists(directoryName))
-                Directory.CreateDirectory(directoryName);
+            {
+                _ = Directory.CreateDirectory(directoryName);
+            }
         }
 
         protected override void InternalDeleteFile(string resolvedName)
@@ -269,7 +292,9 @@ namespace Supremacy.VFS
             VerifyNotReadOnly();
 
             if (string.IsNullOrEmpty(Path))
+            {
                 return;
+            }
 
             File.Delete(resolvedName);
         }
@@ -277,7 +302,10 @@ namespace Supremacy.VFS
         protected override Stream InternalGetFile(string resolvedName, FileAccess access, FileShare share)
         {
             if ((access & FileAccess.Write) == FileAccess.Write)
+            {
                 VerifyNotReadOnly();
+            }
+
             try
             {
                 return File.Open(resolvedName, FileMode.Open, access, share);
@@ -285,7 +313,7 @@ namespace Supremacy.VFS
             catch
             {
                 string message = "File is NOT available > " + resolvedName;
-                MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
                 Console.WriteLine(message);
                 GameLog.Client.General.ErrorFormat(message);
                 return File.Open("vfs:///Resources/Images/__image_missing.png", FileMode.Open, access, share);
@@ -297,14 +325,20 @@ namespace Supremacy.VFS
             FileInfo fileInfo;
 
             if (string.IsNullOrEmpty(Path) || !CheckPathValid(path))
+            {
                 return null;
+            }
 
             string resolvedName = ResolveFileName(path, recurse);
 
             if (string.IsNullOrEmpty(resolvedName))
+            {
                 fileInfo = new FileInfo(TranslatePath(path));
+            }
             else
+            {
                 fileInfo = new FileInfo(resolvedName);
+            }
 
             try
             {
@@ -324,34 +358,45 @@ namespace Supremacy.VFS
         protected string TranslatePath(string path)
         {
             if (IOPath.IsPathRooted(path))
+            {
                 return path;
+            }
+
             return IOPath.Combine(Path, path);
         }
 
         protected override string ResolveFileName(string path, bool recurse)
         {
             if (string.IsNullOrEmpty(Path))
+            {
                 return string.Empty;
+            }
 
             path = TranslatePath(path);
 
             if (!recurse)
             {
                 if (File.Exists(path))
+                {
                     return new FileInfo(path).FullName;
+                }
             }
             else
             {
                 string dir = IOPath.GetDirectoryName(path);
 
                 if (!Directory.Exists(dir))
+                {
                     return string.Empty;
+                }
 
                 DirectoryInfo info = new DirectoryInfo(dir);
                 FileInfo[] files = info.GetFiles(IOPath.GetFileName(path), SearchOption.AllDirectories);
 
                 if (files.Length > 0)
+                {
                     return files[0].FullName;
+                }
             }
 
             return string.Empty;
@@ -360,9 +405,14 @@ namespace Supremacy.VFS
         protected static void VerifySecure(string path)
         {
             if (path == null)
+            {
                 return;
+            }
+
             if (path.Contains(".."))
+            {
                 throw new SecurityException("A secure path can't contain the \"..\" modifier.");
+            }
         }
 
         protected static bool CheckPathValid(string path)
@@ -392,15 +442,9 @@ namespace Supremacy.VFS
                 [NotNull] string virtualPath,
                 [NotNull] FileInfo physicalFileInfo)
             {
-                if (source == null)
-                    throw new ArgumentNullException("source");
-                if (virtualPath == null)
-                    throw new ArgumentNullException("virtualPath");
-                if (physicalFileInfo == null)
-                    throw new ArgumentNullException("physicalFileInfo");
-                _source = source;
-                _virtualPath = virtualPath;
-                _physicalFileInfo = physicalFileInfo;
+                _source = source ?? throw new ArgumentNullException("source");
+                _virtualPath = virtualPath ?? throw new ArgumentNullException("virtualPath");
+                _physicalFileInfo = physicalFileInfo ?? throw new ArgumentNullException("physicalFileInfo");
             }
 
             #region IVirtualFileInfo Members
@@ -454,7 +498,7 @@ namespace Supremacy.VFS
             /// <value>The file's attributes.</value>
             public FileAttributes Attributes
             {
-                get { return _physicalFileInfo.Attributes; }
+                get => _physicalFileInfo.Attributes;
                 set
                 {
                     VerifyNotReadOnly();
@@ -468,7 +512,7 @@ namespace Supremacy.VFS
             /// <value>The UTC date and time that the file was created.</value>
             public DateTime CreationTimeUtc
             {
-                get { return _physicalFileInfo.CreationTimeUtc; }
+                get => _physicalFileInfo.CreationTimeUtc;
                 set
                 {
                     VerifyNotReadOnly();
@@ -482,7 +526,7 @@ namespace Supremacy.VFS
             /// <value>The UTC date and time that the file was last accessed.</value>
             public DateTime LastAccessTimeUtc
             {
-                get { return _physicalFileInfo.LastAccessTimeUtc; }
+                get => _physicalFileInfo.LastAccessTimeUtc;
                 set
                 {
                     VerifyNotReadOnly();
@@ -496,7 +540,7 @@ namespace Supremacy.VFS
             /// <value>The UTC date and time that the file was last written to.</value>
             public DateTime LastWriteTimeUtc
             {
-                get { return _physicalFileInfo.LastWriteTimeUtc; }
+                get => _physicalFileInfo.LastWriteTimeUtc;
                 set
                 {
                     VerifyNotReadOnly();
@@ -570,10 +614,10 @@ namespace Supremacy.VFS
 
             private void OnStreamClosed(object sender, EventArgs args)
             {
-                IVirtualFileStream virtualFileStream = sender as IVirtualFileStream;
-
-                if (virtualFileStream != null)
+                if (sender is IVirtualFileStream virtualFileStream)
+                {
                     virtualFileStream.Closed -= OnStreamClosed;
+                }
 
                 Refresh();
             }
@@ -637,8 +681,7 @@ namespace Supremacy.VFS
             {
                 Stream stream = _source.InternalCreateFile(_physicalFileInfo.FullName);
 
-                CreateOnWriteHardDiskSource.CreateOnWriteStream createOnWriteStream = stream as CreateOnWriteHardDiskSource.CreateOnWriteStream;
-                if (createOnWriteStream != null)
+                if (stream is CreateOnWriteHardDiskSource.CreateOnWriteStream createOnWriteStream)
                 {
                     createOnWriteStream.BaseStreamCreated += OnCreateOnWriteStreamOnBaseStreamCreated;
                     createOnWriteStream.Closed += OnStreamClosed;
@@ -651,9 +694,10 @@ namespace Supremacy.VFS
 
             private void OnCreateOnWriteStreamOnBaseStreamCreated(object sender, EventArgs args)
             {
-                CreateOnWriteHardDiskSource.CreateOnWriteStream createOnWriteStream = sender as CreateOnWriteHardDiskSource.CreateOnWriteStream;
-                if (createOnWriteStream == null)
+                if (!(sender is CreateOnWriteHardDiskSource.CreateOnWriteStream createOnWriteStream))
+                {
                     return;
+                }
 
                 createOnWriteStream.BaseStreamCreated -= OnCreateOnWriteStreamOnBaseStreamCreated;
 
@@ -688,22 +732,29 @@ namespace Supremacy.VFS
             protected void VerifyNotReadOnly()
             {
                 if (!IsReadOnly)
+                {
                     return;
+                }
 
                 Refresh();
 
                 if (IsReadOnly)
+                {
                     throw new NotSupportedException("This virtual file is read-only.");
+                }
             }
 
             public bool Equals(IVirtualFileInfo other)
             {
                 if (ReferenceEquals(other, this))
+                {
                     return true;
+                }
 
-                HardDiskVirtualFileInfo otherInfo = other as HardDiskVirtualFileInfo;
-                if (ReferenceEquals(otherInfo, null))
+                if (!(other is HardDiskVirtualFileInfo otherInfo))
+                {
                     return false;
+                }
 
                 return _source.StringComparer.Equals(
                     otherInfo._physicalFileInfo.FullName,

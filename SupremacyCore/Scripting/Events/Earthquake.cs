@@ -5,7 +5,6 @@
 //
 // All other rights reserved.
 
-using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Universe;
@@ -35,9 +34,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -100,16 +98,16 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    target.Morale.AdjustCurrent(-5);
+                    _ = target.Morale.AdjustCurrent(-5);
 
                     // Population
                     //Don't reduce the population if it is already low
                     if (population >= 65)
                     {
-                        target.Population.AdjustCurrent(-5);
+                        _ = target.Population.AdjustCurrent(-5);
                     }
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(-(health / 6));
+                    _ = target.Health.AdjustCurrent(-(health / 6));
                     target.Health.UpdateAndReset();
 
                     // Facilities

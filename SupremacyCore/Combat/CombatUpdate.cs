@@ -51,11 +51,15 @@ namespace Supremacy.Combat
             if (hostileAssets.Count == 0)
             {
                 CombatAssets changeSides = friendlyAssets.Last();
-                friendlyAssets.Remove(changeSides);
+                _ = friendlyAssets.Remove(changeSides);
                 hostileAssets.Add(changeSides);
                 yesStandoff = true;
             }
-            else yesStandoff = standoff;
+            else
+            {
+                yesStandoff = standoff;
+            }
+
             CombatID = combatId;
             RoundNumber = roundNumber;
             IsStandoff = yesStandoff;

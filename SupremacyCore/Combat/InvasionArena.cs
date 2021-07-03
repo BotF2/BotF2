@@ -331,13 +331,13 @@ namespace Supremacy.Combat
             // ReSharper restore AccessToModifiedClosure
 
             IEnumerable<Ship> invadingUnits =
-                (
+
                     from f in GameContext.Current.Universe.FindAt<Fleet>(colony.Location)
                     where f.OwnerID == InvaderID && f.Order is AssaultSystemOrder
                     from ship in f.Ships
                     select ship
                     //where ship.IsCombatant || ship.ShipType == ShipType.Transport
-                );
+                ;
 
             _invadingUnits.AddRange(invadingUnits.Select(o => new InvasionOrbital(o)));
 
@@ -392,8 +392,8 @@ namespace Supremacy.Combat
 
         public InvasionStatus Status
         {
-            get { return _status; }
-            set { _status = value; }
+            get => _status;
+            set => _status = value;
         }
 
         public bool IsFinished => _status != InvasionStatus.InProgress;
@@ -458,7 +458,7 @@ namespace Supremacy.Combat
             {
                 _status = InvasionStatus.Defeat;
             }
-            else if (Invader.IsHuman && (IsMultiplayerGame && RoundNumber == 5) || RoundNumber > MaxRounds) // || _canLandTroops == false) // Change roundnumber in MP to 5 (was 3)
+            else if (Invader.IsHuman && IsMultiplayerGame && RoundNumber == 5 || RoundNumber > MaxRounds) // || _canLandTroops == false) // Change roundnumber in MP to 5 (was 3)
             {
                 _status = InvasionStatus.Stalemate;
             }
@@ -645,7 +645,7 @@ namespace Supremacy.Combat
                 _invasionArena.Update();    // make sure all stats are up-to-date
 
                 //TODO: Didn't this get moved out of CombatEngine?
-                Data.Table accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
+                Data.Table accuracyTable = GameContext.Current.Tables.GameOptionTables["AccuracyModifiers"];
                 _experienceAccuracy = new Dictionary<ExperienceRank, double>();
                 foreach (ExperienceRank rank in EnumHelper.GetValues<ExperienceRank>())
                 {
@@ -682,8 +682,10 @@ namespace Supremacy.Combat
                         SubmitOrders(landTroops);
                     }
                     if (invasionArena.Status == InvasionStatus.Victory)
+                    {
                         // _invasionEndedCallback(this);
                         GameLog.Client.AI.DebugFormat("InvasionArean status = {0}", invasionArena.Status);
+                    }
                 }
                 else
                 {
@@ -834,7 +836,9 @@ namespace Supremacy.Combat
              * the invader's troop transports as they try to land.
              */
             if (defendingUnits.Count() > 0)
+            {
                 ProcessSpaceCombat(transports, defendingUnits);
+            }
 
             _ = transports.RemoveWhere(o => o.IsDestroyed);
 
@@ -1086,7 +1090,7 @@ namespace Supremacy.Combat
 
             if (_invasionArena.Population.CurrentValue < 5)   // Bombardment ends with pop below 5 to avoid and an never ending bombardment, never going below 1
             {
-                _invasionArena.Population.AdjustCurrent(-1 * _invasionArena.Population.CurrentValue);
+                _ = _invasionArena.Population.AdjustCurrent(-1 * _invasionArena.Population.CurrentValue);
             }
         }
 
@@ -1314,7 +1318,7 @@ namespace Supremacy.Combat
                                 unitsAbleToAttack.RemoveAt(targetIndex);
                             }
 
-                            targetList.Remove(target);
+                            _ = targetList.Remove(target);
                         }
                     }
                 }
@@ -1406,7 +1410,10 @@ namespace Supremacy.Combat
             {
                 return false; //throw new InvalidOperationException("An invasion is already in progress.");
             }
-            else return true;
+            else
+            {
+                return true;
+            }
         }
     }
 }

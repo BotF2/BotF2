@@ -1,11 +1,8 @@
-using Microsoft.Practices.Unity;
 using Supremacy.Client.Audio;
 using Supremacy.Collections;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Universe;
-using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -170,10 +167,10 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                CivilizationManager isZeroNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 0).FirstOrDefault();
+                CivilizationManager isZeroNull = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 0);
                 if (isZeroNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 0).FirstOrDefault();
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 0);
                     //GameLog.Client.Test.DebugFormat("## Playable SpiedCivZero = {0}", _spiedCivDummy.Civilization.Key);
                 }
                 else
@@ -189,10 +186,10 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                CivilizationManager isOneNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 1).FirstOrDefault();
+                CivilizationManager isOneNull = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 1);
                 if (isOneNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 1).FirstOrDefault();
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 1);
                     // GameLog.Client.Test.DebugFormat("## Playable SpiedCivOne = {0}", _spiedCivDummy.Civilization.Key);
                 }
                 else
@@ -209,10 +206,10 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                CivilizationManager isTwoNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 2).FirstOrDefault();
+                CivilizationManager isTwoNull = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 2);
                 if (isTwoNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 2).FirstOrDefault();
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 2);
                     //  GameLog.Client.Test.DebugFormat("## Playable SpiedCivTwo = {0}", _spiedCivDummy.Civilization.Key);
                 }
                 else
@@ -228,10 +225,10 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                CivilizationManager isThreeNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 3).FirstOrDefault();
+                CivilizationManager isThreeNull = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 3);
                 if (isThreeNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 3).FirstOrDefault();
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 3);
                     // GameLog.Client.Test.DebugFormat("## Playable SpiedCivThree = {0}", _spiedCivDummy.Civilization.Key);
                 }
                 else
@@ -247,10 +244,10 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                CivilizationManager isFourNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 4).FirstOrDefault();
+                CivilizationManager isFourNull = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 4);
                 if (isFourNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 4).FirstOrDefault();
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 4);
                     //  GameLog.Client.Test.DebugFormat("## Playable SpiedCivFour = {0}", _spiedCivDummy.Civilization.Key);
                 }
                 else
@@ -266,10 +263,10 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                CivilizationManager isFiveNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 5).FirstOrDefault();
+                CivilizationManager isFiveNull = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 5);
                 if (isFiveNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 5).FirstOrDefault();
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 5);
                     // GameLog.Client.Test.DebugFormat("## Playable SpiedCivFive = {0}", _spiedCivDummy.Civilization.Key);
                 }
                 else
@@ -285,10 +282,10 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                CivilizationManager isSixNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 6).FirstOrDefault();
+                CivilizationManager isSixNull = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 6);
                 if (isSixNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 6).FirstOrDefault();
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.FirstOrDefault(s => s.CivilizationID == 6);
                     // GameLog.Client.Test.DebugFormat("## Playable SpiedCivSix = {0}", _spiedCivDummy.Civilization.Key);
                 }
                 else

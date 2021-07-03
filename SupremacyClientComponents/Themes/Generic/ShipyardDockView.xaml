@@ -310,7 +310,7 @@
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
               </Grid.RowDefinitions>
-              <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
+              <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/Duranium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Duranium}}" />
               <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
               <Image Grid.Row="2" Source="{StaticResource StopwatchImage}" Width="17" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />
               <!-- Invisible text to avoid shifting layouts -->
@@ -327,8 +327,8 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                 <TextBlock.Text>
                   <MultiBinding StringFormat="{}{0} / {1}">
-                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[RawMaterials]" Mode="OneWay" />
-                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.BuildResourceCosts)[RawMaterials]" Mode="OneWay" />
+                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[Duranium]" Mode="OneWay" />
+                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.BuildResourceCosts)[Duranium]" Mode="OneWay" />
                   </MultiBinding>
                 </TextBlock.Text>
               </TextBlock>

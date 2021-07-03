@@ -11,10 +11,8 @@ namespace Supremacy.VFS
 
         public static bool TryGetFileInfo(this IVfsService vfsService, Uri uri, out IVirtualFileInfo virtualFileInfo)
         {
-            Uri sourceUri;
-            Uri resourceUri;
 
-            VfsUriHelper.ValidateAndGetVfsUriComponents(uri, out sourceUri, out resourceUri);
+            VfsUriHelper.ValidateAndGetVfsUriComponents(uri, out Uri sourceUri, out Uri resourceUri);
 
             string virtualPath = resourceUri.ToString().Substring(1);
 
@@ -33,12 +31,12 @@ namespace Supremacy.VFS
 
                 virtualFileInfo = source.GetFileInfo(virtualPath, true);
 
-                return (virtualFileInfo != null);
+                return virtualFileInfo != null;
             }
 
             virtualFileInfo = vfsService.GetFile(virtualPath);
 
-            return (virtualFileInfo != null);
+            return virtualFileInfo != null;
         }
     }
 }

@@ -22,10 +22,9 @@ namespace Supremacy.Orbitals
             XmlElement currentElement = element["UnitEnergyCost"];
             if (currentElement != null)
             {
-                int unitEnergyCost;
                 string unitEnergyCostText = currentElement.InnerText.Trim();
 
-                if (int.TryParse(unitEnergyCostText, out unitEnergyCost))
+                if (int.TryParse(unitEnergyCostText, out int unitEnergyCost))
                 {
                     UnitEnergyCost = unitEnergyCost;
                 }
@@ -57,7 +56,7 @@ namespace Supremacy.Orbitals
             XmlElement newElement = doc.CreateElement("UnitEnergyCost");
 
             newElement.InnerText = UnitEnergyCost.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
         }
 
         public override bool TrySpawn(MapLocation location, Civilization owner, out TechObject spawnedInstance)
@@ -78,7 +77,7 @@ namespace Supremacy.Orbitals
 
             system.Colony.OrbitalBatteryDesign = this;
             system.Colony.AddOrbitalBatteries(1);
-            system.Colony.ActivateOrbitalBattery();
+            _ = system.Colony.ActivateOrbitalBattery();
 
             spawnedInstance = null;
             return true;
@@ -109,8 +108,8 @@ namespace Supremacy.Orbitals
 
         public new OrbitalBatteryDesign Design
         {
-            get { return (OrbitalBatteryDesign)base.Design; }
-            set { base.Design = value; }
+            get => (OrbitalBatteryDesign)base.Design;
+            set => base.Design = value;
         }
 
         #region IsActive Property
@@ -119,11 +118,13 @@ namespace Supremacy.Orbitals
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (Equals(value, _isActive))
+                {
                     return;
+                }
 
                 _isActive = value;
 

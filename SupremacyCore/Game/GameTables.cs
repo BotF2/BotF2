@@ -21,14 +21,14 @@ namespace Supremacy.Game
     [Serializable]
     public sealed class GameTables
     {
-        private TableMap _resourceTables;
+        //private TableMap _resourceTables;
         private TableMap _universeTables;
         private TableMap _moraleTables;
         private TableMap _enumTables;
-        private TableMap _shipTables;
-        private TableMap _diplomacyTables;
+        //private TableMap _shipTables;
+        //private TableMap _diplomacyTables;
         private TableMap _gameOptionTables;
-        private TableMap _strengthTables;
+        //private TableMap _strengthTables;
 
         /// <summary>
         /// Gets the game option tables.
@@ -40,7 +40,7 @@ namespace Supremacy.Game
         /// Gets the resource tables.
         /// </summary>
         /// <value>The resource tables.</value>
-        public TableMap ResourceTables => _resourceTables;
+        //public TableMap ResourceTables => _resourceTables;
 
         /// <summary>
         /// Gets the universe tables.
@@ -58,7 +58,7 @@ namespace Supremacy.Game
         /// Gets the diplomacy tables.
         /// </summary>
         /// <value>The diplomacy tables.</value>
-        public TableMap DiplomacyTables => _diplomacyTables;
+        //public TableMap DiplomacyTables => _diplomacyTables;
 
         /// <summary>
         /// Gets the enum string tables.
@@ -70,13 +70,13 @@ namespace Supremacy.Game
         /// Gets the ship tables.
         /// </summary>
         /// <value>The ship tables.</value>
-        public TableMap ShipTables => _shipTables;
+        //public TableMap ShipTables => _shipTables;
 
         /// <summary>
         /// Gets the strength tables.
         /// </summary>
         /// <value>The strength tables.</value>
-        public TableMap StrengthTables => _strengthTables;
+        //public TableMap StrengthTables => _strengthTables;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameTables"/> class.
@@ -95,22 +95,22 @@ namespace Supremacy.Game
 
             GameTables tables = new GameTables
             {
-                _resourceTables = TableMap.ReadFromFile(
-                                 ResourceManager.GetResourcePath(tablesPath + "ResourceTables.txt")),
+                //_resourceTables = TableMap.ReadFromFile(
+                //                 ResourceManager.GetResourcePath(tablesPath + "ResourceTables.txt")),
                 _universeTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "UniverseTables.txt")),
                 _moraleTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "MoraleTables.txt")),
                 _enumTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "EnumStrings.txt")),
-                _shipTables = TableMap.ReadFromFile(
-                                 ResourceManager.GetResourcePath(tablesPath + "ShipTables.txt")),
-                _diplomacyTables = TableMap.ReadFromFile(
-                                 ResourceManager.GetResourcePath(tablesPath + "DiplomacyTables.txt")),
+                //_shipTables = TableMap.ReadFromFile(
+                //                 ResourceManager.GetResourcePath(tablesPath + "ShipTables.txt")),
+                //_diplomacyTables = TableMap.ReadFromFile(
+                //                 ResourceManager.GetResourcePath(tablesPath + "DiplomacyTables.txt")),
                 _gameOptionTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "GameOptionTables.txt")),
-                _strengthTables = TableMap.ReadFromFile(
-                                 ResourceManager.GetResourcePath(tablesPath + "StrengthTables.txt"))
+                //_strengthTables = TableMap.ReadFromFile(
+                //                 ResourceManager.GetResourcePath(tablesPath + "StrengthTables.txt"))
             };
 
             return tables;

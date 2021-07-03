@@ -19,16 +19,19 @@ namespace Supremacy.Client.Controls
 
         private static void OnHyperlinkClick(object sender, RoutedEventArgs e)
         {
-            Hyperlink link = sender as Hyperlink;
-            if (link == null)
+            if (!(sender is Hyperlink link))
+            {
                 return;
+            }
 
             HyperlinkClickedEventArgs args = new HyperlinkClickedEventArgs(link.NavigateUri, link, link.DataContext);
 
             link.RaiseEvent(args);
 
             if (args.Handled)
+            {
                 e.Handled = true;
+            }
         }
 
         public static Span ToSpan(this RichText richText, bool handleAccessKeyCharacter = true)
@@ -61,7 +64,9 @@ namespace Supremacy.Client.Controls
                     span = new Hyperlink();
 
                     if (currentUri != RichTextConverter.EmptyLinkUri)
+                    {
                         ((Hyperlink)span).NavigateUri = currentUri;
+                    }
 
                     GenericWeakEventManager.AddListener(
                         span,
@@ -108,30 +113,42 @@ namespace Supremacy.Client.Controls
                 }
 
                 if (inline == null)
+                {
                     continue;
+                }
 
                 span.Inlines.Add(inline);
 
                 // ReSharper disable RedundantCheckBeforeAssignment
 
                 if (part.Style.FontWeight != inline.FontWeight)
+                {
                     inline.FontWeight = part.Style.FontWeight;
+                }
 
                 if (part.Style.FontStyle != inline.FontStyle)
+                {
                     inline.FontStyle = part.Style.FontStyle;
+                }
 
                 if (part.Style.Foreground != null && part.Style.Foreground != inline.Foreground)
+                {
                     inline.Foreground = part.Style.Foreground;
+                }
 
                 if (part.Style.Background != null && part.Style.Background != inline.Background)
+                {
                     inline.Background = part.Style.Background;
+                }
 
                 // ReSharper restore RedundantCheckBeforeAssignment
 
                 Pen pen = (Pen)null;
 
                 if (part.Style.EffectBrush != null && part.Style.EffectBrush != part.Style.Foreground)
+                {
                     pen = new Pen { Brush = part.Style.EffectBrush };
+                }
 
                 switch (part.Style.Effect)
                 {

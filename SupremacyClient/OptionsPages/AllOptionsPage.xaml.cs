@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
 using Supremacy.Annotations;
 using Supremacy.Resources;
 
@@ -14,9 +13,7 @@ namespace Supremacy.Client.OptionsPages
 
         public AllOptionsPage([NotNull] IResourceManager resourceManager)
         {
-            if (resourceManager == null)
-                throw new ArgumentNullException("resourceManager");
-            _resourceManager = resourceManager;
+            _resourceManager = resourceManager ?? throw new ArgumentNullException("resourceManager");
             InitializeComponent();
         }
 

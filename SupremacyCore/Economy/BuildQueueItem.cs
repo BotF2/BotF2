@@ -34,10 +34,14 @@ namespace Supremacy.Economy
             get
             {
                 if (Project == null)
+                {
                     return null;
+                }
 
                 if (_count > 1)
-                    return String.Format("{0}x {1}", _count, Project.Description);
+                {
+                    return string.Format("{0}x {1}", _count, Project.Description);
+                }
 
                 return Project.Description;
             }
@@ -71,9 +75,7 @@ namespace Supremacy.Economy
         /// <param name="project">The queued project.</param>
         public BuildQueueItem(BuildProject project)
         {
-            if (project == null)
-                throw new ArgumentNullException("project");
-            _project = project;
+            _project = project ?? throw new ArgumentNullException("project");
             _count = 1;
             OnPropertyChanged("Count");
             OnPropertyChanged("Project");
@@ -127,8 +129,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

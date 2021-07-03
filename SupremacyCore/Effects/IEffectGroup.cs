@@ -68,11 +68,9 @@ namespace Supremacy.Effects
             : this()
         {
             if (sourceType == null)
+            {
                 throw new ArgumentNullException("sourceType");
-            if (scope == null)
-                throw new ArgumentNullException("scope");
-            if (effects == null)
-                throw new ArgumentNullException("effects");
+            }
 
             if (!typeof(IEffectSource).IsAssignableFrom(sourceType))
             {
@@ -85,11 +83,11 @@ namespace Supremacy.Effects
 
             _sourceType = sourceType;
             _activation = activation;
-            _scope = scope;
-            _effects = effects;
+            _scope = scope ?? throw new ArgumentNullException("scope");
+            _effects = effects ?? throw new ArgumentNullException("effects");
             _customParameterBindings = customParameterBindings ?? new EffectParameterBindingCollection();
 
-            _effects.ForEach(o => o.EffectGroup = this);
+            _ = _effects.ForEach(o => o.EffectGroup = this);
         }
 
         internal EffectParameterCollection SystemParameters => _systemParameters.Value;
@@ -129,7 +127,9 @@ namespace Supremacy.Effects
         private ScriptExpression EvaluateActivation()
         {
             if (_activation == null)
+            {
                 return null;
+            }
 
             return new ScriptExpression
             {
@@ -195,14 +195,18 @@ namespace Supremacy.Effects
             {
                 Type openType = TypeManager.DropGenericTypeArguments(targetType);
                 if (typeof(IValueProvider<>).IsAssignableFrom(openType))
+                {
                     targetType = targetType.GetGenericArguments()[0];
+                }
             }
 
             if (targetType.IsGenericType)
             {
                 Type openType = TypeManager.DropGenericTypeArguments(targetType);
                 if (typeof(IEnumerable<>).IsAssignableFrom(openType))
+                {
                     targetType = targetType.GetGenericArguments()[0];
+                }
             }
 
             return new EffectParameter(Effect.ParameterNameTarget, targetType);

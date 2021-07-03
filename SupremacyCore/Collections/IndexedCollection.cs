@@ -628,7 +628,7 @@ namespace Supremacy.Collections
 
                 if (index.LookupTable.ContainsKey(GetIndexableHashCode(propertyValue)))
                 {
-                    index.LookupTable[GetIndexableHashCode(propertyValue)].Remove(item);
+                    _ = index.LookupTable[GetIndexableHashCode(propertyValue)].Remove(item);
                 }
             }
         }
@@ -1088,10 +1088,12 @@ namespace Supremacy.Collections
                             IEnumerable<TSource> sourceEnum = myIndex[hashRight.Value].AsEnumerable();
 
                             if (sourceEnum != null && sourceEnum.Count() != 0)
+                            {
                                 foreach (TSource item in sourceEnum.Where(expr.Compile()))
                                 {
                                     yield return item;
                                 }
+                            }
                         }
                         //} catch
                         //{

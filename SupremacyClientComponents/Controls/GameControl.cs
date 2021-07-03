@@ -10,7 +10,7 @@ namespace Supremacy.Client.Controls
     {
         internal static void BindToValue(DependencyObject target, DependencyProperty property, object value)
         {
-            BindingOperations.SetBinding(
+            _ = BindingOperations.SetBinding(
                 target,
                 property,
                 new Binding
@@ -24,18 +24,20 @@ namespace Supremacy.Client.Controls
         {
             if (invoke)
             {
-                element.Dispatcher.BeginInvoke(
+                _ = element.Dispatcher.BeginInvoke(
                     DispatcherPriority.Send,
                     (Action)
                     (() =>
                      {
                          if (element.IsKeyboardFocusWithin)
-                             Keyboard.Focus(null);
+                         {
+                             _ = Keyboard.Focus(null);
+                         }
                      }));
             }
             else
             {
-                Keyboard.Focus(null);
+                _ = Keyboard.Focus(null);
             }
         }
     }

@@ -20,7 +20,9 @@ namespace Supremacy.Utility
             lock (_syncLock)
             {
                 if (_isClosed)
+                {
                     return;
+                }
 
                 _isClosed = true;
             }
@@ -31,7 +33,9 @@ namespace Supremacy.Utility
             lock (_syncLock)
             {
                 if (_isClosed)
+                {
                     return;
+                }
 
                 Channel.Publish(loggingEvent);
             }

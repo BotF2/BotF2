@@ -49,8 +49,8 @@ namespace Supremacy.VFS.Utilities
         /// </value>
         public bool IsCaseSensitive
         {
-            get { return _isCaseSensitive; }
-            set { _isCaseSensitive = value; }
+            get => _isCaseSensitive;
+            set => _isCaseSensitive = value;
         }
 
         private bool _isInvariantCulture;
@@ -62,18 +62,24 @@ namespace Supremacy.VFS.Utilities
         /// </value>
         public bool IsInvariantCulture
         {
-            get { return _isInvariantCulture; }
+            get => _isInvariantCulture;
             set
             {
                 if (_isInvariantCulture == value)
+                {
                     return;
+                }
 
                 _isInvariantCulture = value;
 
                 if (_isInvariantCulture)
+                {
                     _cultureInfo = CultureInfo.InvariantCulture;
+                }
                 else
+                {
                     _cultureInfo = new CultureInfo(_cultureName);
+                }
             }
         }
 
@@ -119,7 +125,9 @@ namespace Supremacy.VFS.Utilities
             _cultureName = cultureName;
 
             if (!_isInvariantCulture)
+            {
                 _cultureInfo = new CultureInfo(_cultureName);
+            }
         }
 
         #endregion
@@ -135,16 +143,24 @@ namespace Supremacy.VFS.Utilities
         public bool Equals(string x, string y)
         {
             if (_isCaseSensitive && _isInvariantCulture)
+            {
                 return x.Equals(y, StringComparison.InvariantCulture);
+            }
 
             if (!_isCaseSensitive && _isInvariantCulture)
+            {
                 return x.Equals(y, StringComparison.InvariantCultureIgnoreCase);
+            }
 
             if (_isCaseSensitive && !_isInvariantCulture)
+            {
                 return x.Equals(y, StringComparison.CurrentCulture);
+            }
 
             if (!_isCaseSensitive && !_isInvariantCulture)
+            {
                 return x.Equals(y, StringComparison.CurrentCultureIgnoreCase);
+            }
 
             return false;
         }
@@ -157,10 +173,14 @@ namespace Supremacy.VFS.Utilities
         public int GetHashCode(string obj)
         {
             if (_isCaseSensitive)
+            {
                 return obj.GetHashCode();
+            }
 
             if (_isInvariantCulture)
+            {
                 return obj.ToLowerInvariant().GetHashCode();
+            }
 
             return obj.ToLower().GetHashCode();
         }
@@ -178,7 +198,9 @@ namespace Supremacy.VFS.Utilities
         public int Compare(string x, string y)
         {
             if (_isCaseSensitive)
+            {
                 return _cultureInfo.CompareInfo.Compare(x, y, CompareOptions.None);
+            }
 
             return _cultureInfo.CompareInfo.Compare(x, y, CompareOptions.IgnoreCase);
         }

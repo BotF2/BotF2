@@ -20,20 +20,17 @@ namespace Supremacy.Client
 
         public DefaultDispatcherService([NotNull] Dispatcher dispatcher)
         {
-            if (dispatcher == null)
-                throw new ArgumentNullException("dispatcher");
-
-            _dispatcher = dispatcher;
+            _dispatcher = dispatcher ?? throw new ArgumentNullException("dispatcher");
         }
 
         public void Invoke(Delegate target, params object[] args)
         {
-            _dispatcher.Invoke(target, args);
+            _ = _dispatcher.Invoke(target, args);
         }
 
         public void InvokeAsync(Delegate target, params object[] args)
         {
-            _dispatcher.BeginInvoke(target, args);
+            _ = _dispatcher.BeginInvoke(target, args);
         }
     }
 }

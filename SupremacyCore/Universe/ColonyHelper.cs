@@ -11,7 +11,9 @@ namespace Supremacy.Universe
         public static int ColonyValue(this Colony colony)
         {
             if (colony == null)
+            {
                 return 0;
+            }
 
             int total = 0;
 
@@ -70,7 +72,7 @@ namespace Supremacy.Universe
             total += colony.Population.CurrentValue * 100;
 
 
-            GameLog.Core.Production.DebugFormat("Turn {0};{1};{2} ({3});Value=;{4};Pop=;{5};ShipYardSlots=;{6};Buildings={7};"
+            GameLog.Core.CivsAndRacesDetails.DebugFormat("Turn {0};{3};{4};Pop;{5};ShipYardSlots;{6};Buildings;ColonyValue={7};{1};{2}"
                 , GameContext.Current.TurnNumber
                 , colony.Owner
                 , colony.Name

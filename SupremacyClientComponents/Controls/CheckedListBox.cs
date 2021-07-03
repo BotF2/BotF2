@@ -36,16 +36,18 @@ namespace Supremacy.Client.Controls
 
         private static void OnSelectAll(object target, ExecutedRoutedEventArgs args)
         {
-            CheckedListBox listBox = target as CheckedListBox;
-            if (listBox != null)
+            if (target is CheckedListBox listBox)
+            {
                 listBox.SelectAll();
+            }
         }
 
         private static void OnUnselectAll(object target, ExecutedRoutedEventArgs args)
         {
-            CheckedListBox listBox = target as CheckedListBox;
-            if (listBox != null)
+            if (target is CheckedListBox listBox)
+            {
                 listBox.UnselectAll();
+            }
         }
 
         protected override bool IsItemItsOwnContainerOverride(object item)
@@ -90,8 +92,8 @@ namespace Supremacy.Client.Controls
         [Bindable(true)]
         public bool IsSelected
         {
-            get { return (bool)GetValue(IsSelectedProperty); }
-            set { SetValue(IsSelectedProperty, value); }
+            get => (bool)GetValue(IsSelectedProperty);
+            set => SetValue(IsSelectedProperty, value);
         }
 
         internal MultiSelector ParentSelector => ItemsControl.ItemsControlFromItemContainer(this) as MultiSelector;
@@ -155,7 +157,9 @@ namespace Supremacy.Client.Controls
             if (VisualTreeHelper.GetParent(this) == null)
             {
                 if (IsKeyboardFocusWithin)
+                {
                     itemsControl = ItemsControl.GetItemsOwner(oldParent);
+                }
             }
             else
             {
@@ -164,14 +168,18 @@ namespace Supremacy.Client.Controls
                 {
                     object t = parentSelector.ItemContainerGenerator.ItemFromContainer(this);
                     if (t != null && parentSelector.SelectedItems.Contains(t))
+                    {
                         SetCurrentValue(IsSelectedProperty, true);
+                    }
                 }
             }
 
             base.OnVisualParentChanged(oldParent);
 
             if (itemsControl != null)
-                itemsControl.Focus();
+            {
+                _ = itemsControl.Focus();
+            }
         }
 
         private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -180,9 +188,13 @@ namespace Supremacy.Client.Controls
             bool isSelected = (bool)e.NewValue;
 
             if (isSelected)
+            {
                 checkedListBoxItem.OnSelected(new RoutedEventArgs(Selector.SelectedEvent, checkedListBoxItem));
+            }
             else
+            {
                 checkedListBoxItem.OnUnselected(new RoutedEventArgs(Selector.UnselectedEvent, checkedListBoxItem));
+            }
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -198,7 +210,9 @@ namespace Supremacy.Client.Controls
         private void HandleMouseButtonDown()
         {
             if (CheckedListBox.ElementGetIsSelectable(this) && Focus())
+            {
                 IsSelected = !IsSelected;
+            }
         }
 
     }

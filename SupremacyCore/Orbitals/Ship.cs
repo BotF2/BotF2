@@ -60,7 +60,7 @@ namespace Supremacy.Orbitals
 
                 return _nameString;
             }
-            set { base.Name = value; }
+            set => base.Name = value;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Supremacy.Orbitals
         /// <value>The fuel reserve.</value>
         public Meter FuelReserve => _fuelReserve;
 
-        public override bool IsMobile => (_speed > 0);
+        public override bool IsMobile => _speed > 0;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Ship"/> is stranded.
@@ -97,12 +97,10 @@ namespace Supremacy.Orbitals
         /// <value>The speed.</value>
         public int Speed
         {
-            get
-            {
+            get =>
                 //if ((Fleet != null) && (Fleet.IsInTow || (Fleet.Order is TowOrder)))
                 //    return 1;
-                return _speed;
-            }
+                _speed;
             set
             {
                 _speed = (byte)value;
@@ -116,7 +114,7 @@ namespace Supremacy.Orbitals
         /// <value>The range.</value>
         public int Range
         {
-            get { return _range; }
+            get => _range;
             set
             {
                 _range = (byte)value;
@@ -136,7 +134,7 @@ namespace Supremacy.Orbitals
         /// <value>The ship design.</value>
         public ShipDesign ShipDesign
         {
-            get { return Design as ShipDesign; }
+            get => Design as ShipDesign;
             set
             {
                 Design = value;
@@ -152,7 +150,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsCloaked
         {
-            get { return _isCloaked; }
+            get => _isCloaked;
             set
             {
                 if (CanCloak)
@@ -169,7 +167,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// 	<c>true</c> if this <see cref="Ship"/> can cloak; otherwise, <c>false</c>.
         /// </value>
-        public bool CanCloak => (ShipDesign.CloakStrength > 0);
+        public bool CanCloak => ShipDesign.CloakStrength > 0;
 
         /// <summary>
         /// Gets or sets the cloak strength.
@@ -179,7 +177,7 @@ namespace Supremacy.Orbitals
         public int CloakStrength
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         {
-            get { return _cloakStrength; }
+            get => _cloakStrength;
             set
             {
                 _cloakStrength = (byte)value;
@@ -195,7 +193,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsCamouflaged
         {
-            get { return _isCamouflaged; }
+            get => _isCamouflaged;
             set
             {
                 if (CanCamouflage)
@@ -213,7 +211,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsAssimilated
         {
-            get { return _isAssimilated; }
+            get => _isAssimilated;
             set
             {
                 _isAssimilated = value;
@@ -226,7 +224,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// 	<c>true</c> if this <see cref="Ship"/> can camouflage; otherwise, <c>false</c>.
         /// </value>
-        public bool CanCamouflage => (ShipDesign.CamouflagedStrength > 0);
+        public bool CanCamouflage => ShipDesign.CamouflagedStrength > 0;
 
         /// <summary>
         /// Gets or sets the camouflage strength.
@@ -234,7 +232,7 @@ namespace Supremacy.Orbitals
         /// <value>The camouflage strength.</value>
         public int CamouflagedStrength
         {
-            get { return _camouflagedStrength; }
+            get => _camouflagedStrength;
             set
             {
                 _camouflagedStrength = (byte)value;
@@ -247,7 +245,7 @@ namespace Supremacy.Orbitals
         /// <value>The fleet to which this <see cref="Ship"/> is attached.</value>
         public Fleet Fleet
         {
-            get { return GameContext.Current.Universe.Objects[_fleetId] as Fleet; }
+            get => GameContext.Current.Universe.Objects[_fleetId] as Fleet;
             set
             {
                 Fleet oldFleet = Fleet;
@@ -276,9 +274,14 @@ namespace Supremacy.Orbitals
                 if ((oldFleet != null) && (value != oldFleet))
                 {
                     if (oldFleet.Ships.Contains(this))
+                    {
                         oldFleet.RemoveShip(this);
+                    }
+
                     if (oldFleet.Ships.Count == 0)
-                        GameContext.Current.Universe.Destroy(oldFleet);
+                    {
+                        _ = GameContext.Current.Universe.Destroy(oldFleet);
+                    }
                 }
             }
         }

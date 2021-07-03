@@ -998,9 +998,9 @@ namespace Supremacy.UI
 
         private static bool IsStarNameVisible(StarSystem starSystem)
         {
-            return ((starSystem != null) &&
+            return (starSystem != null) &&
                     IsExplored(starSystem.Location) &&
-                    starSystem.StarType <= StarType.Wormhole);
+                    starSystem.StarType <= StarType.Wormhole;
         }
 
         private static bool IsValidTradeEndpoint(TradeRoute route, Colony colony)
@@ -1181,7 +1181,10 @@ namespace Supremacy.UI
                 GameContext.Current.Universe.Map.Width / 4 + 1,
                 GameContext.Current.Universe.Map.Height / 4 + 1);
             StarSystem _new = new StarSystem { Location = loc };
-            if (_new != null) AutoScrollToSector(_new.Sector);
+            if (_new != null)
+            {
+                AutoScrollToSector(_new.Sector);
+            }
         }
 
         private void ExecuteCenterOn2Command(Sector sector)  // Center to Quadrant 2
@@ -1190,7 +1193,10 @@ namespace Supremacy.UI
                 GameContext.Current.Universe.Map.Width / 4 * 3 + 1,
                 GameContext.Current.Universe.Map.Height / 4 + 1);
             StarSystem _new = new StarSystem { Location = loc };
-            if (_new != null) AutoScrollToSector(_new.Sector);
+            if (_new != null)
+            {
+                AutoScrollToSector(_new.Sector);
+            }
         }
 
         private void ExecuteCenterOn3Command(Sector sector)  // Center to Quadrant 3
@@ -1199,7 +1205,10 @@ namespace Supremacy.UI
                 GameContext.Current.Universe.Map.Width / 4 + 1,
                 GameContext.Current.Universe.Map.Height / 4 * 3 - 1);
             StarSystem _new = new StarSystem { Location = loc };
-            if (_new != null) AutoScrollToSector(_new.Sector);
+            if (_new != null)
+            {
+                AutoScrollToSector(_new.Sector);
+            }
         }
 
         private void ExecuteCenterOn4Command(Sector sector)  // Center to Quadrant 4
@@ -1208,7 +1217,10 @@ namespace Supremacy.UI
                 GameContext.Current.Universe.Map.Width / 4 * 3 - 1,
                 GameContext.Current.Universe.Map.Height / 4 * 3 - 1);
             StarSystem _new = new StarSystem { Location = loc };
-            if (_new != null) AutoScrollToSector(_new.Sector);
+            if (_new != null)
+            {
+                AutoScrollToSector(_new.Sector);
+            }
         }
 
         public void CenterOnSelectedSector()
@@ -1268,7 +1280,7 @@ namespace Supremacy.UI
                 // If scrolling right...
                 if (offset > _lastOffsetRequestX)
                 {
-                    offsetX -= (ViewportWidth % sectorSize);
+                    offsetX -= ViewportWidth % sectorSize;
                 }
 
                 _lastOffsetRequestX = offset;
@@ -1323,7 +1335,7 @@ namespace Supremacy.UI
                 // If scrolling down...
                 if (offset > _lastOffsetRequestY)
                 {
-                    offsetY -= (ViewportHeight % sectorSize);
+                    offsetY -= ViewportHeight % sectorSize;
                 }
 
                 _lastOffsetRequestY = offset;
@@ -1780,7 +1792,7 @@ namespace Supremacy.UI
                         continue;
                     }
 
-                    Pen borderPen = (owner.IsEmpire)
+                    Pen borderPen = owner.IsEmpire
                                         ? s_borderPens[owner.CivID]
                                         : s_minorRaceBorderPen;
 
@@ -2261,7 +2273,7 @@ namespace Supremacy.UI
                                 adorner,
                                 (location.Y * SectorSize) + FleetIconSpacing);
 
-                            _fleetIconCanvas.Children.Add(adorner);
+                            _ = _fleetIconCanvas.Children.Add(adorner);
                             _fleetIconAdorners.Add(adorner);
 
                             consumedWidth += FleetIconSize + FleetIconSpacing;
@@ -2317,7 +2329,10 @@ namespace Supremacy.UI
 
                                 int tradeRouteUnused = sector.System.Colony.TradeRoutesPossible;
                                 string tradeRouteUnused_Text = tradeRouteUnused.ToString();
-                                if (tradeRouteUnused_Text == "0") tradeRouteUnused_Text = " ";
+                                if (tradeRouteUnused_Text == "0")
+                                {
+                                    tradeRouteUnused_Text = " ";
+                                }
 
                                 GameLog.Core.TradeRoutes.DebugFormat("Turn {0};TradeRoutes Not used/Possible/Used; {1} ;{2};{3};for Sector {4} {5} ({6})"
                                     , GameContext.Current.TurnNumber
@@ -2647,7 +2662,7 @@ namespace Supremacy.UI
                                 _newRouteEta = BuildRouteETA(SelectedFleet, _newRoute);
                                 if (_newRouteEta != null)
                                 {
-                                    _children.Add(_newRouteEta);
+                                    _ = _children.Add(_newRouteEta);
                                 }
                             }
                         }
@@ -2757,7 +2772,7 @@ namespace Supremacy.UI
                         _newRouteEta = BuildRouteETA(SelectedFleet, _newRoute);
                         if (_newRouteEta != null)
                         {
-                            _children.Add(_newRouteEta);
+                            _ = _children.Add(_newRouteEta);
                         }
                     }
                 }

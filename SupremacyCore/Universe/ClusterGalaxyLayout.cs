@@ -42,12 +42,12 @@ namespace Supremacy.Universe
                 averageClusters = 2;
             }
 
-            clusters = random.Next((averageClusters * 8) / 10, (averageClusters * 12) / 10) + 1;
+            clusters = random.Next(averageClusters * 8 / 10, averageClusters * 12 / 10) + 1;
 
             for (i = 0, attempts = 0; (i < clusters) && (attempts < MaxStarPlacementAttempts); i++, attempts++)
             {
-                double x = (((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0)) * clusters;
-                double y = (((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0)) * clusters;
+                double x = ((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0) * clusters;
+                double y = ((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0) * clusters;
 
                 int j;
                 for (j = 0; j < clustersPosition.Count; j++)
@@ -111,8 +111,8 @@ namespace Supremacy.Universe
                     y = (y / Math.Sqrt(clusters)) + clustersPosition[cluster].Item1.Item2;
                 }
 
-                x = ((x + 1) * width) / 2.0;
-                y = ((y + 1) * height) / 2.0;
+                x = (x + 1) * width / 2.0;
+                y = (y + 1) * height / 2.0;
 
                 if ((x < 0) || (width <= x) || (y < 0) || (height <= y))
                 {
@@ -133,19 +133,21 @@ namespace Supremacy.Universe
                 positions.Add(dominionNode);
 
                 int borgX = width - (width / 8);
-                int borgY = (height / 8);
+                int borgY = height / 8;
                 MapLocation borgLocation = new MapLocation(borgX, borgY);
                 MapLocationQuadtreeNode borgNode = new MapLocationQuadtreeNode(borgLocation);
 
                 positions.Add(borgNode);
 
                 if (newNode.Location != dominionLocation && newNode.Location != borgLocation)
+                {
                     positions.Add(newNode);
+                }
 
                 attempts = 0;
             }
 
-            return (positions.Count - initialPositions);
+            return positions.Count - initialPositions;
         }
     }
 }

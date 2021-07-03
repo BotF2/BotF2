@@ -9,7 +9,6 @@
 
 using Supremacy.Annotations;
 using Supremacy.Entities;
-using Supremacy.Resources;
 using Supremacy.Utility;
 using System;
 using System.ComponentModel;
@@ -41,7 +40,9 @@ namespace Supremacy.Game
         public static GameInitData CreateSinglePlayerGame([NotNull] GameOptions options, int localPlayerEmpireID)
         {
             if (options == null)
+            {
                 throw new ArgumentNullException("options");
+            }
 
             GameLog.Client.GameData.DebugFormat("CreateSinglePlayerGame: SP-GameName={0}, SP-Name={2}, localPlayerEmpireID={1}",
                                                         SinglePlayerGameName, localPlayerEmpireID, SinglePlayerName);
@@ -84,9 +85,14 @@ namespace Supremacy.Game
         public static GameInitData CreateMultiplayerGame([NotNull] GameOptions options, [NotNull] string localPlayerName)
         {
             if (options == null)
+            {
                 throw new ArgumentNullException("options");
+            }
+
             if (localPlayerName == null)
+            {
                 throw new ArgumentNullException("localPlayerName");
+            }
 
             GameInitData initData = new GameInitData
             {
@@ -118,7 +124,9 @@ namespace Supremacy.Game
         public static GameInitData CreateFromSavedGame([NotNull] SavedGameHeader savedGameHeader)
         {
             if (savedGameHeader == null)
+            {
                 throw new ArgumentNullException("savedGameHeader");
+            }
 
             DateTime _time = DateTime.Now;
             GameLog.Core.GeneralDetails.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);  // GameLog always ... Core.General
@@ -199,11 +207,11 @@ namespace Supremacy.Game
         }
 
         #region Properties and Indexers
-        public bool IsMultiplayerGame => ((GameType == GameType.MultiplayerNew) || (GameType == GameType.MultiplayerLoad));
+        public bool IsMultiplayerGame => (GameType == GameType.MultiplayerNew) || (GameType == GameType.MultiplayerLoad);
 
         public int LocalPlayerEmpireID
         {
-            get { return _localPlayerEmpireID; }
+            get => _localPlayerEmpireID;
             set
             {
                 _localPlayerEmpireID = value;
@@ -214,7 +222,7 @@ namespace Supremacy.Game
 
         public string LocalPlayerName
         {
-            get { return _localPlayerName; }
+            get => _localPlayerName;
             set
             {
                 _localPlayerName = value;
@@ -224,7 +232,7 @@ namespace Supremacy.Game
 
         public int[] EmpireIDs
         {
-            get { return _empireIDs; }
+            get => _empireIDs;
             set
             {
                 _empireIDs = value;
@@ -234,7 +242,7 @@ namespace Supremacy.Game
 
         public string[] EmpireNames
         {
-            get { return _empireNames; }
+            get => _empireNames;
             set
             {
                 _empireNames = value;
@@ -245,7 +253,7 @@ namespace Supremacy.Game
 
         public string GameName
         {
-            get { return _gameName; }
+            get => _gameName;
             set
             {
                 _gameName = value;
@@ -255,7 +263,7 @@ namespace Supremacy.Game
 
         public GameType GameType
         {
-            get { return _gameType; }
+            get => _gameType;
             set
             {
                 _gameType = value;
@@ -266,7 +274,7 @@ namespace Supremacy.Game
 
         public GameOptions Options
         {
-            get { return _options; }
+            get => _options;
             set
             {
                 _options = value;
@@ -276,7 +284,7 @@ namespace Supremacy.Game
 
         public string SaveGameFileName
         {
-            get { return _saveGameFilename; }
+            get => _saveGameFilename;
             set
             {
                 _saveGameFilename = value;
@@ -286,7 +294,7 @@ namespace Supremacy.Game
 
         public SlotClaim[] SlotClaims
         {
-            get { return _slotClaims; }
+            get => _slotClaims;
             set
             {
                 _slotClaims = value;
@@ -296,7 +304,7 @@ namespace Supremacy.Game
 
         public SlotStatus[] SlotStatus
         {
-            get { return _slotStatus; }
+            get => _slotStatus;
             set
             {
                 _slotStatus = value;
@@ -324,7 +332,7 @@ namespace Supremacy.Game
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
 

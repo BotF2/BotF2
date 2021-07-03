@@ -55,7 +55,7 @@ namespace Supremacy.Game
 
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                _ = Directory.CreateDirectory(path);
             }
 
             string[] fileNames = Directory.GetFiles(path, "*.sav", SearchOption.TopDirectoryOnly);
@@ -109,7 +109,9 @@ namespace Supremacy.Game
         public static SavedGameHeader LoadSavedGameHeader([NotNull] string fileName)
         {
             if (fileName == null)
+            {
                 throw new ArgumentNullException("fileName");
+            }
 
             try
             {
@@ -198,7 +200,7 @@ namespace Supremacy.Game
                             memoryStream.WriteByte((byte)value);
                         }
                         GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileName);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        _ = memoryStream.Seek(0, SeekOrigin.Begin);
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }
                 }
@@ -241,7 +243,9 @@ namespace Supremacy.Game
         public static FileInfo GetSavedGameFile([NotNull] SavedGameHeader header)
         {
             if (header == null)
+            {
                 throw new ArgumentNullException("header");
+            }
 
             return new FileInfo(Path.Combine(
                 ResourceManager.GetResourcePath(""),
@@ -260,7 +264,9 @@ namespace Supremacy.Game
         public static bool SaveGame([NotNull] string fileName, [NotNull] GameContext game, [NotNull] Player localPlayer, [NotNull] LobbyData lobbyData)
         {
             if (fileName == null)
+            {
                 fileName = "_manual_save_(CTRL+S)";
+            }
 
             GameLog.Core.SaveLoad.DebugFormat("SaveGame: localPlayer={1}, fileName= '{0}'",
                                     fileName, localPlayer);
@@ -295,7 +301,7 @@ namespace Supremacy.Game
 
                 if (!Directory.Exists(SavedGameDirectory))
                 {
-                    Directory.CreateDirectory(SavedGameDirectory);
+                    _ = Directory.CreateDirectory(SavedGameDirectory);
                 }
 
                 header = new SavedGameHeader(game, localPlayer);
@@ -321,7 +327,7 @@ namespace Supremacy.Game
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
 
             Channel.Publish(new GameSavedMessage(header));
@@ -340,11 +346,11 @@ namespace Supremacy.Game
                 if (File.Exists(fileName))
                 {
                     File.Delete(fileName);
-                    MessageBox.Show("Deleted: " + fileName);
+                    _ = MessageBox.Show("Deleted: " + fileName);
                     return true;
                 }
             }
-            catch { MessageBox.Show("Problem at deleting: " + fileName); ; return false; }
+            catch { _ = MessageBox.Show("Problem at deleting: " + fileName); ; return false; }
             return false;
         }
 
@@ -358,7 +364,9 @@ namespace Supremacy.Game
         {
             GameContext game = GameContext.Current;
             if (game == null)
+            {
                 return false;
+            }
 
             try
             {

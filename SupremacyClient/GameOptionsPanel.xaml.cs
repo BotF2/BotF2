@@ -108,7 +108,10 @@ namespace Supremacy.Client
             get
             {
                 if (_options == null)
+                {
                     _options = ServiceLocator.Current.GetInstance<GameOptions>();
+                }
+
                 return _options;
             }
             set
@@ -116,7 +119,9 @@ namespace Supremacy.Client
                 _options = value;
                 DataContext = _options;
                 if (IsLoaded)
+                {
                     UpdateGalaxyImage();
+                }
             }
         }
         #endregion
@@ -124,8 +129,7 @@ namespace Supremacy.Client
         #region Methods
         private void OnOptionsChanged()
         {
-            if (OptionsChanged != null)
-                OptionsChanged();
+            OptionsChanged?.Invoke();
         }
 
         private void UpdateGalaxyImage()

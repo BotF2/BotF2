@@ -31,8 +31,8 @@ namespace Supremacy.Client.Controls
 
         public Geometry Glyph
         {
-            get { return (Geometry)GetValue(GlyphProperty); }
-            set { SetValue(GlyphProperty, value); }
+            get => (Geometry)GetValue(GlyphProperty);
+            set => SetValue(GlyphProperty, value);
         }
     }
 }

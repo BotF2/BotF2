@@ -33,7 +33,7 @@ namespace Supremacy.Diplomacy
         [XmlElement("DiplomacyState")]
         public DiplomacyState[] States
         {
-            get { return _diplomacyState; }
+            get => _diplomacyState;
             set
             {
                 _diplomacyState = value;
@@ -111,9 +111,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_threatProbability.HasValue)
+                {
                     return _threatProbability.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._threatProbability;
+                }
+
                 return null;
             }
             set
@@ -125,7 +131,7 @@ namespace Supremacy.Diplomacy
 
         public RegardDecay MilitaryPowerRegardDecay
         {
-            get { return _militaryPowerRegardDecay; }
+            get => _militaryPowerRegardDecay;
             set
             {
                 _militaryPowerRegardDecay = value;
@@ -135,7 +141,7 @@ namespace Supremacy.Diplomacy
 
         public RegardDecay MilitarySafetyRegardDecay
         {
-            get { return _militarySafetyRegardDecay; }
+            get => _militarySafetyRegardDecay;
             set
             {
                 _militarySafetyRegardDecay = value;
@@ -145,7 +151,7 @@ namespace Supremacy.Diplomacy
 
         public RegardDecay DiplomacyRegardDecay
         {
-            get { return _diplomacyRegardDecay; }
+            get => _diplomacyRegardDecay;
             set
             {
                 _diplomacyRegardDecay = value;
@@ -155,7 +161,7 @@ namespace Supremacy.Diplomacy
 
         public RegardDecay CreditsRegardDecay
         {
-            get { return _creditsRegardDecay; }
+            get => _creditsRegardDecay;
             set
             {
                 _creditsRegardDecay = value;
@@ -165,7 +171,7 @@ namespace Supremacy.Diplomacy
 
         public RegardDecay KnowledgeRegardDecay
         {
-            get { return _knowledgeRegardDecay; }
+            get => _knowledgeRegardDecay;
             set
             {
                 _knowledgeRegardDecay = value;
@@ -175,7 +181,7 @@ namespace Supremacy.Diplomacy
 
         public RegardDecay ProductionRegardDecay
         {
-            get { return _productionRegardDecay; }
+            get => _productionRegardDecay;
             set
             {
                 _productionRegardDecay = value;
@@ -188,9 +194,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_incursionRegardCost.HasValue)
+                {
                     return _incursionRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._incursionRegardCost;
+                }
+
                 return null;
             }
             set
@@ -205,9 +217,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_incursionOfAllyRegardCost.HasValue)
+                {
                     return _incursionOfAllyRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._incursionOfAllyRegardCost;
+                }
+
                 return null;
             }
             set
@@ -222,9 +240,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_invaderMovementRegardCost.HasValue)
+                {
                     return _invaderMovementRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._invaderMovementRegardCost;
+                }
+
                 return null;
             }
             set
@@ -239,9 +263,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_raidingRegardCost.HasValue)
+                {
                     return _raidingRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._raidingRegardCost;
+                }
+
                 return null;
             }
             set
@@ -256,9 +286,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_attackCiviliansRegardCost.HasValue)
+                {
                     return _attackCiviliansRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._attackCiviliansRegardCost;
+                }
+
                 return null;
             }
             set
@@ -273,9 +309,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_invadeColonyRegardCost.HasValue)
+                {
                     return _invadeColonyRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._invadeColonyRegardCost;
+                }
+
                 return null;
             }
             set
@@ -290,9 +332,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_holdReceptionRegardBonus.HasValue)
+                {
                     return _holdReceptionRegardBonus.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._holdReceptionRegardBonus;
+                }
+
                 return null;
             }
             set
@@ -307,9 +355,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_unprovokedAttackRegardCost.HasValue)
+                {
                     return _unprovokedAttackRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._unprovokedAttackRegardCost;
+                }
+
                 return null;
             }
             set
@@ -324,9 +378,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_tradeEmbargoRegardCost.HasValue)
+                {
                     return _tradeEmbargoRegardCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._tradeEmbargoRegardCost;
+                }
+
                 return null;
             }
             set
@@ -341,9 +401,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_hasPactTrustBonus.HasValue)
+                {
                     return _hasPactTrustBonus.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._hasPactTrustBonus;
+                }
+
                 return null;
             }
             set
@@ -358,9 +424,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_noWarTrustBonus.HasValue)
+                {
                     return _noWarTrustBonus.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._noWarTrustBonus;
+                }
+
                 return null;
             }
             set
@@ -375,9 +447,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_followThroughTrustBonus.HasValue)
+                {
                     return _followThroughTrustBonus.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._followThroughTrustBonus;
+                }
+
                 return null;
             }
             set
@@ -392,9 +470,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_attackCiviliansTrustCost.HasValue)
+                {
                     return _attackCiviliansTrustCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._attackCiviliansTrustCost;
+                }
+
                 return null;
             }
             set
@@ -409,9 +493,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_unprovokedAttackTrustCost.HasValue)
+                {
                     return _unprovokedAttackTrustCost.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._unprovokedAttackTrustCost;
+                }
+
                 return null;
             }
             set
@@ -426,9 +516,15 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_wantMapTurns.HasValue)
+                {
                     return _wantMapTurns.Value;
+                }
+
                 if (_parentState != null)
+                {
                     return _parentState._wantMapTurns;
+                }
+
                 return null;
             }
             set
@@ -444,7 +540,10 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_parentState == null)
+                {
                     return _proposalClauseState;
+                }
+
                 return _proposalClauseState.Concat(
                     _parentState.ProposalClauseStates.Where(
                         o => !_proposalClauseState.Any(i => i.Clause == o.Clause)))
@@ -460,7 +559,7 @@ namespace Supremacy.Diplomacy
         [XmlAttribute(DataType = "NCName")]
         public string Key
         {
-            get { return _key; }
+            get => _key;
             set
             {
                 _key = value;
@@ -475,7 +574,10 @@ namespace Supremacy.Diplomacy
         public static DiplomacyState Merge(DiplomacyState parentState)
         {
             if (parentState == null)
+            {
                 throw new ArgumentNullException("parentState");
+            }
+
             return new DiplomacyState(parentState);
         }
 
@@ -508,7 +610,7 @@ namespace Supremacy.Diplomacy
 
         public double Positive
         {
-            get { return _positive; }
+            get => _positive;
             set
             {
                 _positive = value;
@@ -518,7 +620,7 @@ namespace Supremacy.Diplomacy
 
         public double Negative
         {
-            get { return _negative; }
+            get => _negative;
             set
             {
                 _negative = value;
@@ -565,7 +667,7 @@ namespace Supremacy.Diplomacy
 
         public ClauseType Clause
         {
-            get { return _clause; }
+            get => _clause;
             set
             {
                 _clause = value;
@@ -575,7 +677,7 @@ namespace Supremacy.Diplomacy
 
         public int SendPriority
         {
-            get { return _sendPriority; }
+            get => _sendPriority;
             set
             {
                 _sendPriority = value;
@@ -585,7 +687,7 @@ namespace Supremacy.Diplomacy
 
         public int AcceptPriority
         {
-            get { return _acceptPriority; }
+            get => _acceptPriority;
             set
             {
                 _acceptPriority = value;
@@ -595,7 +697,7 @@ namespace Supremacy.Diplomacy
 
         public int RejectPriority
         {
-            get { return _rejectPriority; }
+            get => _rejectPriority;
             set
             {
                 _rejectPriority = value;
@@ -605,7 +707,7 @@ namespace Supremacy.Diplomacy
 
         public int SenderRegardResult
         {
-            get { return _senderRegardResult; }
+            get => _senderRegardResult;
             set
             {
                 _senderRegardResult = value;
@@ -615,7 +717,7 @@ namespace Supremacy.Diplomacy
 
         public int RecipientRegardResult
         {
-            get { return _recipientRegardResult; }
+            get => _recipientRegardResult;
             set
             {
                 _recipientRegardResult = value;
@@ -625,7 +727,7 @@ namespace Supremacy.Diplomacy
 
         public int ViolationRegardCost
         {
-            get { return _violationRegardCost; }
+            get => _violationRegardCost;
             set
             {
                 _violationRegardCost = value;
@@ -635,7 +737,7 @@ namespace Supremacy.Diplomacy
 
         public int ViolationTrustCost
         {
-            get { return _violationTrustCost; }
+            get => _violationTrustCost;
             set
             {
                 _violationTrustCost = value;

@@ -49,21 +49,20 @@ namespace Supremacy.Client
 
         void EmpireList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (EmpireChanged != null)
-                EmpireChanged(this, new EventArgs());
+            EmpireChanged?.Invoke(this, new EventArgs());
         }
 
         public int SelectedEmpireID => ((KeyValuePair<int, string>)EmpireList.SelectedItem).Key;
 
         public LobbyData LobbyData
         {
-            get { return GetValue(LobbyDataProperty) as LobbyData; }
-            set { SetValue(LobbyDataProperty, value); }
+            get => GetValue(LobbyDataProperty) as LobbyData;
+            set => SetValue(LobbyDataProperty, value);
         }
 
         public Player Player
         {
-            get { return GetValue(PlayerProperty) as Player; }
+            get => GetValue(PlayerProperty) as Player;
             set
             {
                 SetValue(PlayerProperty, value);
@@ -82,14 +81,18 @@ namespace Supremacy.Client
             {
                 empires.Add(i, LobbyData.Empires[i]);
                 if (i == Player.EmpireID)
+                {
                     playerEmpire = new KeyValuePair<int, string>(i, LobbyData.Empires[i]);
+                }
             }
             foreach (Player player in LobbyData.Players)
             {
                 if (player != Player)
                 {
                     if (player.EmpireID >= 0)
-                        empires.Remove(player.EmpireID);
+                    {
+                        _ = empires.Remove(player.EmpireID);
+                    }
                 }
             }
             itemsSource.AddRange(empires);

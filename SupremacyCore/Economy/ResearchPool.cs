@@ -59,7 +59,10 @@ namespace Supremacy.Economy
         public ResearchProject(ResearchApplication application)
         {
             if (application == null)
+            {
                 throw new ArgumentNullException("application");
+            }
+
             _applicationId = application.ApplicationID;
             _progress = new Meter(0, 0, application.ResearchCost);
         }
@@ -136,7 +139,9 @@ namespace Supremacy.Economy
                     foreach (ResearchProject project in _queue[field.FieldID])
                     {
                         if (project.Application == application)
+                        {
                             return false;
+                        }
                     }
                     return true;
                 }
@@ -158,7 +163,7 @@ namespace Supremacy.Economy
                 if (field.Applications.Contains(application))
                 {
                     ResearchProject project = GetCurrentProject(field);
-                    return ((project != null) && (project.Application == application));
+                    return (project != null) && (project.Application == application);
                 }
             }
             return false;
@@ -172,7 +177,10 @@ namespace Supremacy.Economy
         public int GetTechLevel(ResearchField field)
         {
             if (field == null)
+            {
                 throw new ArgumentNullException("field");
+            }
+
             return GetTechLevel(field.FieldID);
         }
 
@@ -189,7 +197,10 @@ namespace Supremacy.Economy
                 levels.Add(GetTechLevel(field));
             }
             if (levels.Count == 0)
+            {
                 return 0;
+            }
+
             return levels.Min();
         }
 
@@ -212,9 +223,15 @@ namespace Supremacy.Economy
         public ResearchApplication GetNextApplication(ResearchField field)
         {
             if (field == null)
+            {
                 throw new ArgumentNullException("field");
+            }
+
             if (_queue[field.FieldID].Count == 0)
+            {
                 return null;
+            }
+
             return _queue[field.FieldID][0].Application;
         }
 
@@ -226,9 +243,14 @@ namespace Supremacy.Economy
         public ResearchPool(Civilization owner, ResearchMatrix matrix)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
+            }
+
             if (matrix == null)
+            {
                 throw new ArgumentNullException("matrix");
+            }
 
             List<int> fieldIds = new List<int>();
 
@@ -262,7 +284,9 @@ namespace Supremacy.Economy
                 foreach (ResearchApplication application in field.Applications)
                 {
                     if (application.Level > GetTechLevel(field))
+                    {
                         _queue[field.FieldID].Add(new ResearchProject(application));
+                    }
                     else
                     {
                         _cumulativePoints.BaseValue += application.ResearchCost;
@@ -286,7 +310,10 @@ namespace Supremacy.Economy
         public ResearchProject GetCurrentProject(ResearchField field)
         {
             if (field == null)
+            {
                 throw new ArgumentNullException("field");
+            }
+
             return GetCurrentProject(field.FieldID);
         }
 
@@ -298,7 +325,10 @@ namespace Supremacy.Economy
         public ResearchProject GetCurrentProject(int fieldId)
         {
             if (_queue[fieldId].Count == 0)
+            {
                 return null;
+            }
+
             return _queue[fieldId][0];
         }
 
@@ -311,7 +341,9 @@ namespace Supremacy.Economy
             GameLog.Client.Test.InfoFormat("UpdatingResearch...");
 
             if (researchPoints < 0)
+            {
                 researchPoints = 0;
+            }
 
             _distributions.TotalValue = researchPoints;
 
@@ -330,7 +362,7 @@ namespace Supremacy.Economy
                 //    researchPoints, field.TechCategory, _bonuses[field.TechCategory], fieldPoints, _cumulativePoints);
 
                 fieldPoints += (int)(_bonuses[field.TechCategory] * fieldPoints);
-                _cumulativePoints.AdjustCurrent(fieldPoints);
+                _ = _cumulativePoints.AdjustCurrent(fieldPoints);
 
 
 
@@ -355,7 +387,9 @@ namespace Supremacy.Economy
                         continue;
                     }
                     if (fieldPoints <= 0)
+                    {
                         break;
+                    }
                 }
 
             }
@@ -398,7 +432,9 @@ namespace Supremacy.Economy
             List<TechObjectDesign> newDesigns = designsAfter.Except(designsBefore).ToList();
 
             if (civManager != null)
+            {
                 civManager.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
+            }
         }
 
         /// <summary>
@@ -411,10 +447,14 @@ namespace Supremacy.Economy
                 int nextTechLevel = _techLevels[field.FieldID];
 
                 if (GetCurrentProject(field) != null)
+                {
                     nextTechLevel = GetCurrentProject(field).Application.Level;
+                }
 
                 if (nextTechLevel > _techLevels[field.FieldID])
+                {
                     _techLevels[field.FieldID] = nextTechLevel - 1;
+                }
             }
         }
 
@@ -453,7 +493,7 @@ namespace Supremacy.Economy
 
         public ResearchPoolValueCollection()
         {
-            EnumHelper.GetValues<TechCategory>().ForEach(t => this.Add(t, new Meter()));
+            _ = EnumHelper.GetValues<TechCategory>().ForEach(t => Add(t, new Meter()));
         }
 
         public ResearchPoolValueCollection(SerializationInfo info, StreamingContext context) : base(info, context)
@@ -484,7 +524,7 @@ namespace Supremacy.Economy
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
             Dictionary<TechCategory, Meter> data = reader.ReadDictionary<TechCategory, Meter>();
-            EnumHelper.GetValues<TechCategory>().ForEach(r => this[r] = data[r].Clone());
+            _ = EnumHelper.GetValues<TechCategory>().ForEach(r => this[r] = data[r].Clone());
         }
     }
 
@@ -510,27 +550,27 @@ namespace Supremacy.Economy
                 {
                     case TechCategory.BioTech:
                         return civManager.GlobalBonuses
-                            .Where(o => ((o.BonusType == BonusType.PercentBioTechResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                            .Where(o => (o.BonusType == BonusType.PercentBioTechResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Computers:
                         return civManager.GlobalBonuses
-                            .Where(o => ((o.BonusType == BonusType.PercentComputerResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                            .Where(o => (o.BonusType == BonusType.PercentComputerResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Construction:
                         return civManager.GlobalBonuses
-                            .Where(o => ((o.BonusType == BonusType.PercentConstructionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                            .Where(o => (o.BonusType == BonusType.PercentConstructionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Energy:
                         return civManager.GlobalBonuses
-                            .Where(o => ((o.BonusType == BonusType.PercentEnergyResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                            .Where(o => (o.BonusType == BonusType.PercentEnergyResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Propulsion:
                         return civManager.GlobalBonuses
-                            .Where(o => ((o.BonusType == BonusType.PercentPropulsionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                            .Where(o => (o.BonusType == BonusType.PercentPropulsionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Weapons:
                         return civManager.GlobalBonuses
-                            .Where(o => ((o.BonusType == BonusType.PercentWeaponsResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                            .Where(o => (o.BonusType == BonusType.PercentWeaponsResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                 }
                 return 0.0f;
@@ -556,7 +596,9 @@ namespace Supremacy.Economy
         public ResearchBonusCollection([NotNull] Civilization owner)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
+            }
             // works    GameLog.Print("ResearchBonusCollection Owner = {0} = {1}", owner.CivID, owner.Name);
             _ownerId = owner.CivID;
         }

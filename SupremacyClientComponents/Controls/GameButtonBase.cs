@@ -102,15 +102,19 @@ namespace Supremacy.Client.Controls
 
             internal bool GetFlag(Flags flag)
             {
-                return ((_flags & flag) == flag);
+                return (_flags & flag) == flag;
             }
 
             internal void SetFlag(Flags flag, bool set)
             {
                 if (set)
+                {
                     _flags |= flag;
+                }
                 else
-                    _flags &= (~flag);
+                {
+                    _flags &= ~flag;
+                }
             }
         }
         #endregion
@@ -148,7 +152,7 @@ namespace Supremacy.Client.Controls
 
         private static void OnAccessKeyPressed(object sender, AccessKeyPressedEventArgs e)
         {
-            if ((!e.Handled && (e.Scope == null)) && (e.Target == null))
+            if (!e.Handled && (e.Scope == null) && (e.Target == null))
             {
                 e.Target = (UIElement)sender;
             }
@@ -156,11 +160,14 @@ namespace Supremacy.Client.Controls
 
         internal bool CanExecute
         {
-            get { return _flags.GetFlag(Flags.CanExecute); }
+            get => _flags.GetFlag(Flags.CanExecute);
             set
             {
                 if (_flags.GetFlag(Flags.CanExecute) == value)
+                {
                     return;
+                }
+
                 _flags.SetFlag(Flags.CanExecute, value);
                 CoerceValue(IsEnabledProperty);
             }
@@ -171,8 +178,7 @@ namespace Supremacy.Client.Controls
             GameButtonBase control = (GameButtonBase)o;
             string stringValue = value as string;
 
-            RoutedCommand command;
-            if ((string.IsNullOrEmpty(stringValue)) && ((command = control.Command as RoutedCommand) != null))
+            if (string.IsNullOrEmpty(stringValue) && (control.Command is RoutedCommand command))
             {
                 if (o.HasDefaultValue(InputGestureTextProperty))
                 {
@@ -181,7 +187,9 @@ namespace Supremacy.Client.Controls
                     {
                         KeyGesture keyGesture = inputGestures.OfType<KeyGesture>().FirstOrDefault();
                         if (keyGesture != null)
+                        {
                             return keyGesture.GetDisplayStringForCulture(CultureInfo.CurrentCulture);
+                        }
                     }
                 }
             }
@@ -192,7 +200,9 @@ namespace Supremacy.Client.Controls
         private bool HandleIsMouseOverChanged()
         {
             if (ClickMode != ClickMode.Hover)
+            {
                 return false;
+            }
 
             if (IsMouseOver)
             {
@@ -211,7 +221,10 @@ namespace Supremacy.Client.Controls
         {
             DependencyObject focusScope = FocusManager.GetFocusScope(o);
             if (focusScope != null)
-                return (focusScope.GetVisualParent() == null);
+            {
+                return focusScope.GetVisualParent() == null;
+            }
+
             return true;
         }
 
@@ -226,25 +239,34 @@ namespace Supremacy.Client.Controls
             GameButtonBase control = (GameButtonBase)o;
             bool? newValue = (bool?)e.NewValue;
 
-            ICheckableCommandParameter parameter = control.CommandParameter as ICheckableCommandParameter;
-            if (parameter != null)
+            if (control.CommandParameter is ICheckableCommandParameter parameter)
+            {
                 parameter.IsChecked = newValue;
+            }
 
             if (newValue.HasValue && newValue.Value)
+            {
                 control.OnChecked();
+            }
             else if (newValue == false)
+            {
                 control.OnUnchecked();
+            }
             else
+            {
                 control.OnIndeterminate();
+            }
         }
 
         private void UpdateIsPressed()
         {
             Point point = Mouse.PrimaryDevice.GetPosition(this);
-            if (((point.X >= 0) && (point.X <= ActualWidth)) && ((point.Y >= 0) && (point.Y <= ActualHeight)))
+            if ((point.X >= 0) && (point.X <= ActualWidth) && (point.Y >= 0) && (point.Y <= ActualHeight))
             {
                 if (!IsPressed)
+                {
                     IsPressed = true;
+                }
             }
             else if (IsPressed)
             {
@@ -254,27 +276,27 @@ namespace Supremacy.Client.Controls
 
         public ClickMode ClickMode
         {
-            get { return (ClickMode)GetValue(ClickModeProperty); }
-            set { SetValue(ClickModeProperty, value); }
+            get => (ClickMode)GetValue(ClickModeProperty);
+            set => SetValue(ClickModeProperty, value);
         }
 
         public bool HasPopup
         {
-            get { return (bool)GetValue(HasPopupProperty); }
-            protected set { SetValue(HasPopupProperty, value); }
+            get => (bool)GetValue(HasPopupProperty);
+            protected set => SetValue(HasPopupProperty, value);
         }
 
         public bool? IsChecked
         {
-            get { return (bool?)GetValue(IsCheckedProperty); }
-            set { SetValue(IsCheckedProperty, value); }
+            get => (bool?)GetValue(IsCheckedProperty);
+            set => SetValue(IsCheckedProperty, value);
         }
 
         [Localizability(LocalizationCategory.None)]
         public string InputGestureText
         {
-            get { return (string)GetValue(InputGestureTextProperty); }
-            set { SetValue(InputGestureTextProperty, value); }
+            get => (string)GetValue(InputGestureTextProperty);
+            set => SetValue(InputGestureTextProperty, value);
         }
 
         protected override bool IsEnabledCore
@@ -282,15 +304,18 @@ namespace Supremacy.Client.Controls
             get
             {
                 if (base.IsEnabledCore)
+                {
                     return CanExecute;
+                }
+
                 return false;
             }
         }
 
         public bool IsPressed
         {
-            get { return (bool)GetValue(IsPressedProperty); }
-            private set { SetValue(IsPressedPropertyKey, value); }
+            get => (bool)GetValue(IsPressedProperty);
+            private set => SetValue(IsPressedPropertyKey, value);
         }
 
         protected override Size MeasureOverride(Size constraint)
@@ -301,7 +326,9 @@ namespace Supremacy.Client.Controls
             {
                 desiredSize.Width = Math.Ceiling(desiredSize.Width);
                 if (desiredSize.Width % 2 == 1)
+                {
                     desiredSize.Width++;
+                }
             }
 
             return desiredSize;
@@ -310,8 +337,8 @@ namespace Supremacy.Client.Controls
         [Localizability(LocalizationCategory.Text)]
         public string MenuItemDescription
         {
-            get { return (string)GetValue(MenuItemDescriptionProperty); }
-            set { SetValue(MenuItemDescriptionProperty, value); }
+            get => (string)GetValue(MenuItemDescriptionProperty);
+            set => SetValue(MenuItemDescriptionProperty, value);
         }
 
         protected virtual void OnChecked()
@@ -324,10 +351,14 @@ namespace Supremacy.Client.Controls
             base.OnClick(e);
 
             if ((ClickMode == ClickMode.Press) && IsMouseCaptured)
+            {
                 ReleaseMouseCapture();
+            }
 
             if (!Focusable)
+            {
                 UpdateCanExecute();
+            }
         }
 
         protected override void OnCommandChanged(ICommand oldCommand, ICommand newCommand)
@@ -347,7 +378,9 @@ namespace Supremacy.Client.Controls
             base.OnKeyDown(e);
 
             if (ClickMode == ClickMode.Hover)
+            {
                 return;
+            }
 
             if (e.Key == Key.Space)
             {
@@ -358,10 +391,12 @@ namespace Supremacy.Client.Controls
                     _flags.SetFlag(Flags.IsSpaceKeyDown, true);
 
                     IsPressed = true;
-                    CaptureMouse();
+                    _ = CaptureMouse();
 
                     if (ClickMode == ClickMode.Press)
+                    {
                         RaiseClickEvent(new ExecuteRoutedEventArgs(ExecuteReason.Keyboard));
+                    }
 
                     e.Handled = true;
                 }
@@ -374,11 +409,13 @@ namespace Supremacy.Client.Controls
 
                     IsPressed = false;
                     if (IsMouseCaptured)
+                    {
                         ReleaseMouseCapture();
+                    }
 
                     RaiseClickEvent(new ExecuteRoutedEventArgs(ExecuteReason.Keyboard));
 
-                    if ((IsKeyboardFocused) && !IsInMainFocusScope(this))
+                    if (IsKeyboardFocused && !IsInMainFocusScope(this))
                     {
                         IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
                         if ((popupAnchor == null) ||
@@ -400,7 +437,9 @@ namespace Supremacy.Client.Controls
                 _flags.SetFlag(Flags.IsSpaceKeyDown, false);
 
                 if (IsMouseCaptured)
+                {
                     ReleaseMouseCapture();
+                }
             }
         }
 
@@ -409,21 +448,28 @@ namespace Supremacy.Client.Controls
             base.OnKeyUp(e);
 
             if (ClickMode == ClickMode.Hover)
+            {
                 return;
+            }
 
-            if (((e.Key == Key.Space) &&
-                 (_flags.GetFlag(Flags.IsSpaceKeyDown)) &&
-                 ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) != ModifierKeys.Alt)))
+            if ((e.Key == Key.Space) &&
+                 _flags.GetFlag(Flags.IsSpaceKeyDown) &&
+                 ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) != ModifierKeys.Alt))
             {
                 _flags.SetFlag(Flags.IsSpaceKeyDown, false);
 
                 if (Mouse.PrimaryDevice.LeftButton == MouseButtonState.Released)
                 {
-                    bool isReleaseClick = (IsPressed && (ClickMode == ClickMode.Release));
+                    bool isReleaseClick = IsPressed && (ClickMode == ClickMode.Release);
                     if (IsMouseCaptured)
+                    {
                         ReleaseMouseCapture();
+                    }
+
                     if (isReleaseClick)
+                    {
                         RaiseClickEvent(new ExecuteRoutedEventArgs(ExecuteReason.Keyboard));
+                    }
                 }
                 else if (IsMouseCaptured)
                 {
@@ -439,12 +485,19 @@ namespace Supremacy.Client.Controls
             base.OnLostKeyboardFocus(e);
 
             if ((ClickMode == ClickMode.Hover) || (e.OriginalSource != this))
+            {
                 return;
+            }
 
             if (IsPressed)
+            {
                 IsPressed = false;
+            }
+
             if (IsMouseCaptured)
+            {
                 ReleaseMouseCapture();
+            }
 
             _flags.SetFlag(Flags.IsSpaceKeyDown, false);
         }
@@ -456,7 +509,7 @@ namespace Supremacy.Client.Controls
             if ((e.OriginalSource == this) && (ClickMode != ClickMode.Hover) &&
                 (!_flags.GetFlag(Flags.IsSpaceKeyDown)))
             {
-                if ((IsKeyboardFocused) && (!IsInMainFocusScope(this)))
+                if (IsKeyboardFocused && (!IsInMainFocusScope(this)))
                 {
                     IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
                     if ((popupAnchor == null) ||
@@ -476,7 +529,9 @@ namespace Supremacy.Client.Controls
             base.OnMouseEnter(e);
 
             if (HandleIsMouseOverChanged())
+            {
                 e.Handled = true;
+            }
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -484,7 +539,9 @@ namespace Supremacy.Client.Controls
             base.OnMouseLeave(e);
 
             if (HandleIsMouseOverChanged())
+            {
                 e.Handled = true;
+            }
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -493,18 +550,20 @@ namespace Supremacy.Client.Controls
             {
                 e.Handled = true;
 
-                Focus();
+                _ = Focus();
 
                 if (e.ButtonState == MouseButtonState.Pressed)
                 {
-                    CaptureMouse();
+                    _ = CaptureMouse();
 
                     if (IsMouseCaptured)
                     {
                         if (e.ButtonState == MouseButtonState.Pressed)
                         {
-                            if ((!IsPressed) && (IsMouseOverBounds(e)))
+                            if ((!IsPressed) && IsMouseOverBounds(e))
+                            {
                                 IsPressed = true;
+                            }
                         }
                         else
                         {
@@ -513,7 +572,7 @@ namespace Supremacy.Client.Controls
                     }
                 }
 
-                if ((ClickMode == ClickMode.Press) && (IsMouseOverBounds(e)))
+                if ((ClickMode == ClickMode.Press) && IsMouseOverBounds(e))
                 {
                     bool onClickFailed = true;
                     try
@@ -545,10 +604,15 @@ namespace Supremacy.Client.Controls
                                      IsPressed &&
                                      (ClickMode == ClickMode.Release);
 
-                if ((IsMouseCaptured) && (!_flags.GetFlag(Flags.IsSpaceKeyDown)))
+                if (IsMouseCaptured && (!_flags.GetFlag(Flags.IsSpaceKeyDown)))
+                {
                     ReleaseMouseCapture();
+                }
+
                 if (isReleaseClick)
+                {
                     RaiseClickEvent(new ExecuteRoutedEventArgs(ExecuteReason.Mouse));
+                }
             }
 
             base.OnMouseLeftButtonUp(e);
@@ -574,8 +638,10 @@ namespace Supremacy.Client.Controls
         {
             IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
 
-            if ((popupAnchor != null) && (popupAnchor.IsPopupOpen && !StaysOpenOnClick))
+            if ((popupAnchor != null) && popupAnchor.IsPopupOpen && !StaysOpenOnClick)
+            {
                 PopupControlService.CloseAllPopups(GamePopupCloseReason.ControlClick);
+            }
 
             base.OnPreviewClick(e);
         }
@@ -599,20 +665,25 @@ namespace Supremacy.Client.Controls
 
         public bool StaysOpenOnClick
         {
-            get { return (bool)GetValue(StaysOpenOnClickProperty); }
-            set { SetValue(StaysOpenOnClickProperty, value); }
+            get => (bool)GetValue(StaysOpenOnClickProperty);
+            set => SetValue(StaysOpenOnClickProperty, value);
         }
 
         protected override void UpdateCanExecute()
         {
             if (Command != null)
+            {
                 CanExecute = GameCommand.CanExecuteCommandSource(this);
+            }
             else
+            {
                 CanExecute = true;
+            }
 
-            ICheckableCommandParameter checkableParameter = CommandParameter as ICheckableCommandParameter;
-            if ((checkableParameter == null) || !checkableParameter.Handled)
+            if ((!(CommandParameter is ICheckableCommandParameter checkableParameter)) || !checkableParameter.Handled)
+            {
                 return;
+            }
 
             IsChecked = checkableParameter.IsChecked;
 

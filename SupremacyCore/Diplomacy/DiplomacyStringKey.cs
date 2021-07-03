@@ -120,10 +120,16 @@ namespace Supremacy.Diplomacy
 
         public bool Equals(DiplomacyStringKey other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
+
             return other._stringId == _stringId &&
                    string.Equals(other._civilization, _civilization, StringComparison.OrdinalIgnoreCase);
         }
@@ -147,14 +153,16 @@ namespace Supremacy.Diplomacy
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(MarkupExtension))
+            {
                 return true;
+            }
+
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            DiplomacyStringKey key = value as DiplomacyStringKey;
-            if (key != null &&
+            if (value is DiplomacyStringKey key &&
                 destinationType == typeof(MarkupExtension))
             {
                 return new DiplomacyStringExtension

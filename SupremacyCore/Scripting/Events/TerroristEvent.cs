@@ -5,7 +5,6 @@
 //
 // All other rights reserved.
 
-using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Universe;
@@ -35,9 +34,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {

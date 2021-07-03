@@ -226,11 +226,13 @@ namespace Supremacy.Client
             try
             {
                 if (System.IO.File.Exists(file))
+                {
                     _ = Process.Start(file);
+                }
             }
             catch
             {
-                MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+                _ = MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
             }
         }
 
@@ -261,16 +263,16 @@ namespace Supremacy.Client
             _ = SavedGameManager.SaveGameDeleteManualSaved();
         }
 
-        private void ExecuteOptionsCommand(object obj) { _optionsDialog.ShowDialog(); }
-        private void ExecuteTracesCommand(object obj) { _tracesDialog.ShowDialog(); }
+        private void ExecuteOptionsCommand(object obj) { _ = _optionsDialog.ShowDialog(); }
+        private void ExecuteTracesCommand(object obj) { _ = _tracesDialog.ShowDialog(); }
 
-        private void Execute_f06_Command(object obj) { _f06_Dialog.ShowDialog(); }
-        private void Execute_f07_Command(object obj) { _f07_Dialog.ShowDialog(); }
-        private void Execute_f08_Command(object obj) { _f08_Dialog.ShowDialog(); }
-        private void Execute_f09_Command(object obj) { _f09_Dialog.ShowDialog(); }
-        private void Execute_f10_Command(object obj) { _f10_Dialog.ShowDialog(); }
-        private void Execute_f11_Command(object obj) { _f11_Dialog.ShowDialog(); }
-        private void Execute_f12_Command(object obj) { _f12_Dialog.ShowDialog(); }
+        private void Execute_f06_Command(object obj) { _ = _f06_Dialog.ShowDialog(); }
+        private void Execute_f07_Command(object obj) { _ = _f07_Dialog.ShowDialog(); }
+        private void Execute_f08_Command(object obj) { _ = _f08_Dialog.ShowDialog(); }
+        private void Execute_f09_Command(object obj) { _ = _f09_Dialog.ShowDialog(); }
+        private void Execute_f10_Command(object obj) { _ = _f10_Dialog.ShowDialog(); }
+        private void Execute_f11_Command(object obj) { _ = _f11_Dialog.ShowDialog(); }
+        private void Execute_f12_Command(object obj) { _ = _f12_Dialog.ShowDialog(); }
 
         private void Execute_s0_Command(object obj) { ExecuteSP_DirectlyGameCommand(0); }
         private void Execute_s1_Command(object obj) { ExecuteSP_DirectlyGameCommand(1); }
@@ -280,7 +282,7 @@ namespace Supremacy.Client
         private void Execute_s5_Command(object obj) { ExecuteSP_DirectlyGameCommand(5); }
         private void Execute_s6_Command(object obj) { ExecuteSP_DirectlyGameCommand(6); }
 
-        private void ExecuteFakeCommand(object obj) { _fakeDialog.ShowDialog(); }
+        private void ExecuteFakeCommand(object obj) { _ = _fakeDialog.ShowDialog(); }
         private void ExecuteLogTxtCommand(object obj)
         {
             string logFile = Path.Combine(
@@ -297,11 +299,11 @@ namespace Supremacy.Client
 
                 try
                 {
-                    Process.Start(processStartInfo);
+                    _ = Process.Start(processStartInfo);
                 }
                 catch
                 {
-                    MessageBox.Show("Could not load Log.txt");
+                    _ = MessageBox.Show("Could not load Log.txt");
                 }
             }
         }
@@ -313,13 +315,13 @@ namespace Supremacy.Client
             if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
                 double fileSize = new FileInfo(errorFile).Length;
-                if (fileSize == 0) { MessageBox.Show("Error.txt is empty - nothing to load"); return; }
-                if (fileSize < 0) { MessageBox.Show("Could not load Error.txt"); return; }
+                if (fileSize == 0) { _ = MessageBox.Show("Error.txt is empty - nothing to load"); return; }
+                if (fileSize < 0) { _ = MessageBox.Show("Could not load Error.txt"); return; }
 
                 ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = errorFile };
 
                 try { _ = Process.Start(processStartInfo); }
-                catch { MessageBox.Show("Could not load Error.txt"); }
+                catch { _ = MessageBox.Show("Could not load Error.txt"); }
             }
         }
 
@@ -335,7 +337,7 @@ namespace Supremacy.Client
 
         private void ExecuteEndGameCommand(bool showConfirmation)
         {
-            EndGame(showConfirmation);
+            _ = EndGame(showConfirmation);
         }
 
         private void ExecuteShowSettingsFileCommand(object obj)
@@ -363,7 +365,9 @@ namespace Supremacy.Client
                     {
                         string line = reader.ReadLine();
                         if (line == null)
+                        {
                             break;
+                        }
                         //Console.WriteLine(line);
                         _text += line;
                     }
@@ -373,9 +377,9 @@ namespace Supremacy.Client
             }
 
             string[] coll = _text.Split(' ');
-            List<string> _trues = new List<String>(); /*_trues.Clear();*/
-            List<string> _false = new List<String>(); /*_false.Clear();*/
-            List<string> _rest = new List<String>(); /*_rest.Clear();*/
+            List<string> _trues = new List<string>(); /*_trues.Clear();*/
+            List<string> _false = new List<string>(); /*_false.Clear();*/
+            List<string> _rest = new List<string>(); /*_rest.Clear();*/
             //_array = new Dictionary<int, string, string, string>();
 
             foreach (string item in coll)
@@ -437,7 +441,7 @@ namespace Supremacy.Client
                 ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = _file };
 
                 try { _ = Process.Start(processStartInfo); }
-                catch { MessageBox.Show("Could not load Text-File about Settings"); }
+                catch { _ = MessageBox.Show("Could not load Text-File about Settings"); }
             }
 
 
@@ -454,13 +458,17 @@ namespace Supremacy.Client
         private void Exit(bool showConfirmation)
         {
             if (_isExiting)
+            {
                 return;
+            }
 
             _isExiting = true;
             try
             {
                 if (!EndGame(showConfirmation))
+                {
                     return;
+                }
             }
             finally
             {
@@ -478,13 +486,17 @@ namespace Supremacy.Client
                     "Are you sure you want to " + (_isExiting ? "exit?" : "quit?"),
                     MessageDialogButtons.YesNo);
                 if (result != MessageDialogResult.Yes)
+                {
                     return false;
+                }
             }
 
             IGameController gameController = Interlocked.CompareExchange(ref _gameController, null, null);
 
             if (gameController == null)
+            {
                 return true;
+            }
 
             gameController.Terminate();
 
@@ -511,7 +523,9 @@ namespace Supremacy.Client
             UIHelpers.IsAutomaticBrowserLaunchEnabled = true;
 
             if (AutoLoadSavedGame())
+            {
                 return;
+            }
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
             GameLog.Client.General.InfoFormat("MenuScreen activated... ");
@@ -523,7 +537,9 @@ namespace Supremacy.Client
             string savedGameFile = _app.CommandLineArguments.SavedGame;
 
             if (string.IsNullOrWhiteSpace(savedGameFile))
+            {
                 return false;
+            }
 
             try
             {
@@ -546,51 +562,51 @@ namespace Supremacy.Client
 
         private void RegisterViewsAndServices()
         {
-            _container.RegisterInstance(GameOptionsManager.LoadDefaults());
+            _ = _container.RegisterInstance(GameOptionsManager.LoadDefaults());
 
-            _container.RegisterType<IScheduler, EventLoopScheduler>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
+            _ = _container.RegisterType<IScheduler, EventLoopScheduler>(new ContainerControlledLifetimeManager());
+            _ = _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
 
-            _container.Resolve<INavigationService>();
+            _ = _container.Resolve<INavigationService>();
 
-            _container.RegisterType<IGameObjectIDService, GameObjectIDService>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ISupremacyCallback, GameClientCallback>(new TransientLifetimeManager());
-            _container.RegisterType<IGameClient, GameClient>(new TransientLifetimeManager());
-            _container.RegisterType<IGameServer, GameServer>(new TransientLifetimeManager());
-            _container.RegisterType<IPlayerOrderService, PlayerOrderService>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IGameController, GameController>(new TransientLifetimeManager());
+            _ = _container.RegisterType<IGameObjectIDService, GameObjectIDService>(new ContainerControlledLifetimeManager());
+            _ = _container.RegisterType<ISupremacyCallback, GameClientCallback>(new TransientLifetimeManager());
+            _ = _container.RegisterType<IGameClient, GameClient>(new TransientLifetimeManager());
+            _ = _container.RegisterType<IGameServer, GameServer>(new TransientLifetimeManager());
+            _ = _container.RegisterType<IPlayerOrderService, PlayerOrderService>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IGameController, GameController>(new TransientLifetimeManager());
             //_container.RegisterInstance<IScriptService>(new ScriptService());*/
 
-            _container.RegisterType<StatusWindow>(new ContainerControlledLifetimeManager());
-            _container.RegisterInstance(new CombatWindow());
+            _ = _container.RegisterType<StatusWindow>(new ContainerControlledLifetimeManager());
+            _ = _container.RegisterInstance(new CombatWindow());
 
-            _container.RegisterType<GalaxyScreenPresentationModel>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<ColonyScreenPresentationModel>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<DiplomacyScreenViewModel>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<ScienceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<AssetsScreenPresentationModel>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<EncyclopediaScreenPresentationModel>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<SystemAssaultScreenViewModel>(new ContainerControlledLifetimeManager());
+            _ = _container.RegisterType<GalaxyScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<ColonyScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<DiplomacyScreenViewModel>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<ScienceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<AssetsScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<EncyclopediaScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<SystemAssaultScreenViewModel>(new ContainerControlledLifetimeManager());
 
             //_container.RegisterType<ISinglePlayerScreen, SinglePlayerScreen>(new ExternallyControlledLifetimeManager());
 
-            _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IColonyScreenView, ColonyScreenView>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<INewDiplomacyScreenView, NewDiplomacyScreen>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IScienceScreenView, ResearchScreen>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IColonyScreenView, ColonyScreenView>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<INewDiplomacyScreenView, NewDiplomacyScreen>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IScienceScreenView, ResearchScreen>(new ExternallyControlledLifetimeManager());
             // _container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IAssetsScreenView, AssetsScreen>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IEncyclopediaScreenView, EncyclopediaScreen>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<ILobbyScreenView, MultiplayerLobby>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ISystemAssaultScreenView, SystemAssaultScreen>(new ContainerControlledLifetimeManager());
+            _ = _container.RegisterType<IAssetsScreenView, AssetsScreen>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IEncyclopediaScreenView, EncyclopediaScreen>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<ILobbyScreenView, MultiplayerLobby>(new ContainerControlledLifetimeManager());
+            _ = _container.RegisterType<ISystemAssaultScreenView, SystemAssaultScreen>(new ContainerControlledLifetimeManager());
 
-            _container.RegisterType<IGalaxyScreenPresenter, GalaxyScreenPresenter>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IColonyScreenPresenter, ColonyScreenPresenter>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IScienceScreenPresenter, ScienceScreenPresenter>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IAssetsScreenPresenter, AssetsScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IGalaxyScreenPresenter, GalaxyScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IColonyScreenPresenter, ColonyScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IScienceScreenPresenter, ScienceScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IAssetsScreenPresenter, AssetsScreenPresenter>(new ExternallyControlledLifetimeManager());
             //_container.RegisterType<IScienceScreenPresenter, EncyclodepiaScreenPresenter>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IEncyclopediaScreenPresenter, EncyclopediaScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IEncyclopediaScreenPresenter, EncyclopediaScreenPresenter>(new ExternallyControlledLifetimeManager());
 
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MenuScreen, typeof(MenuScreen));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MultiplayerLobby, typeof(ILobbyScreenView));
@@ -663,16 +679,16 @@ namespace Supremacy.Client
 
         private void RegisterEventHandlers()
         {
-            ClientEvents.ClientConnectionFailed.Subscribe(OnClientConnectionFailed, ThreadOption.UIThread);
-            ClientEvents.ClientDisconnected.Subscribe(OnClientDisconnected, ThreadOption.UIThread);
-            ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.UIThread);
-            ClientEvents.GameStarting.Subscribe(OnGameStarting, ThreadOption.UIThread);
-            ClientEvents.GameEnding.Subscribe(OnGameEnding, ThreadOption.UIThread);
-            ClientEvents.ClientConnected.Subscribe(OnClientConnected, ThreadOption.BackgroundThread);
-            ClientEvents.LocalPlayerJoined.Subscribe(OnLocalPlayerJoined, ThreadOption.UIThread);
-            ClientEvents.PlayerExited.Subscribe(OnPlayerExited, ThreadOption.UIThread);
+            _ = ClientEvents.ClientConnectionFailed.Subscribe(OnClientConnectionFailed, ThreadOption.UIThread);
+            _ = ClientEvents.ClientDisconnected.Subscribe(OnClientDisconnected, ThreadOption.UIThread);
+            _ = ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.UIThread);
+            _ = ClientEvents.GameStarting.Subscribe(OnGameStarting, ThreadOption.UIThread);
+            _ = ClientEvents.GameEnding.Subscribe(OnGameEnding, ThreadOption.UIThread);
+            _ = ClientEvents.ClientConnected.Subscribe(OnClientConnected, ThreadOption.BackgroundThread);
+            _ = ClientEvents.LocalPlayerJoined.Subscribe(OnLocalPlayerJoined, ThreadOption.UIThread);
+            _ = ClientEvents.PlayerExited.Subscribe(OnPlayerExited, ThreadOption.UIThread);
 
-            Channel<GameSavedMessage>.Public
+            _ = Channel<GameSavedMessage>.Public
                 .ObserveOn(Scheduler.ThreadPool)
                 .Subscribe(_ => ShellIntegration.UpdateJumpList());
         }
@@ -682,10 +698,14 @@ namespace Supremacy.Client
             IPlayer player = args.Value;
 
             if (!_appContext.IsGameInPlay)
+            {
                 return;
+            }
 
             if (Equals(player, _appContext.LocalPlayer))
+            {
                 return;
+            }
 
             IEnumerable<IPlayer> remainingPlayers = _appContext.RemotePlayers.Where(o => !Equals(o, player));
             if (!remainingPlayers.Any())
@@ -695,11 +715,13 @@ namespace Supremacy.Client
                     _resourceManager.GetStringFormat("LAST_PLAYER_EXITED_MESSAGE_CONTENT", player.Name),
                     MessageDialogButtons.YesNo);
                 if (result == MessageDialogResult.No)
-                    EndGame(false);
+                {
+                    _ = EndGame(false);
+                }
             }
             else
             {
-                MessageDialog.Show(
+                _ = MessageDialog.Show(
                     _resourceManager.GetString("PLAYER_EXITED_MESSAGE_HEADER"),
                     _resourceManager.GetStringFormat("PLAYER_EXITED_MESSAGE_CONTENT", player.Name),
                     MessageDialogButtons.Ok);
@@ -709,13 +731,17 @@ namespace Supremacy.Client
         private void OnLocalPlayerJoined(LocalPlayerJoinedEventArgs args)
         {
             if (!_appContext.IsSinglePlayerGame)
+            {
                 ClearStatusWindow();
+            }
         }
 
         private void OnGameStarting(ClientEventArgs obj)
         {
             if (!_appContext.IsSinglePlayerGame)
+            {
                 ShowLoadingScreen();
+            }
         }
 
         private void ShowLoadingScreen()
@@ -751,24 +777,30 @@ namespace Supremacy.Client
 
             introTextCase = localEmpire + startTechLvl;  // startTechLvl = -1 shown
             if (startTechLvl == -1)
+            {
                 introTextCase = _resourceManager.GetString("GAME_START_INFO_LOADING_GAME");
+            }
             //"...history from the saved game continues ... let's see what the future will bring...";
 
             try
             {
                 if (_appContext.RemotePlayers != null)
+                {
                     introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_JOINER_LOADING_GAME");
+                }
                 //"...Competition to Supremacy of Galaxy begins... join and let your empire raise ...";
             }
             catch { }
 
             if (_appContext.IsGameHost == true)
+            {
                 introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_HOSTER_LOADING_GAME");
+            }
             //"...Competition to Supremacy of Galaxy begins... let your empire raise and lead others ...";
 
 
 
-            GameLog.Client.GameInitData.DebugFormat("introTextCase = {0}", introTextCase);
+            GameLog.Client.GameInitDataDetails.DebugFormat("introTextCase = {0}", introTextCase);
             //string introTextCase = "FED1"; 
             string introText = Environment.NewLine;
             //+ "----------------------------------------------------------------------------------------------------------------------------------------------"
@@ -825,7 +857,7 @@ namespace Supremacy.Client
             bool isConnected = _appContext.IsConnected;
             bool isGameEnding = _appContext.IsGameEnding;
             bool isGameInPlay = _appContext.IsGameInPlay;
-            bool gameControllerExists = (Interlocked.CompareExchange(ref _gameController, null, null) != null);
+            bool gameControllerExists = Interlocked.CompareExchange(ref _gameController, null, null) != null;
 
             _optionsCommand.IsActive = true;
             _tracesCommand.IsActive = true;
@@ -864,22 +896,36 @@ namespace Supremacy.Client
             if (_appContext.IsGameInPlay)
             {
                 if (_appContext.LocalPlayer.Empire.Key == "FEDERATION")
+                {
                     LoadTheme("Federation");
+                }
                 else if (_appContext.LocalPlayer.Empire.Key == "ROMULANS")
+                {
                     LoadTheme("Romulans");
+                }
                 else if (_appContext.LocalPlayer.Empire.Key == "KLINGONS")
+                {
                     LoadTheme("Klingons");
+                }
                 else if (_appContext.LocalPlayer.Empire.Key == "CARDASSIANS")
+                {
                     LoadTheme("Cardassians");
+                }
                 else if (_appContext.LocalPlayer.Empire.Key == "DOMINION")
+                {
                     LoadTheme("Dominion");
+                }
                 else if (_appContext.LocalPlayer.Empire.Key == "BORG")
+                {
                     LoadTheme("Borg");
+                }
                 else if (_appContext.LocalPlayer.Empire.Key == "TERRANEMPIRE")
+                {
                     LoadTheme("TerranEmpire");
+                }
                 else
                 {
-                    MessageBox.Show("Empire is set to NOT-Playable - falling back to Default - Please restart, Select Single Player Menu and set Empire Playable to YES");
+                    _ = MessageBox.Show("Empire is set to NOT-Playable - falling back to Default - Please restart, Select Single Player Menu and set Empire Playable to YES");
                     LoadDefaultTheme();
                 }
 
@@ -888,7 +934,7 @@ namespace Supremacy.Client
 
         public void LoadDefaultTheme()
         {
-            _app.LoadDefaultResources();
+            _ = _app.LoadDefaultResources();
         }
 
         public void LoadTheme(string theme)
@@ -896,11 +942,13 @@ namespace Supremacy.Client
             //works: GameLog.Client.GameData.DebugFormat("ClientModule.cs: UI-Theme={0} (or default), EmpireID={1}", theme, _appContext.LocalPlayer.EmpireID);
 
             if (!_app.LoadThemeResources(theme))
-                _app.LoadDefaultResources();
+            {
+                _ = _app.LoadDefaultResources();
+            }
 
             ThemeShipyard = theme;
 
-            _app.LoadThemeResourcesShipyard(ThemeShipyard);
+            _ = _app.LoadThemeResourcesShipyard(ThemeShipyard);
 
             // load theme music
             _appContext.ThemeMusicLibrary.Load(Path.Combine(MusicThemeBasePath, theme, MusicPackFileName));
@@ -911,14 +959,16 @@ namespace Supremacy.Client
         {
             ClearStatusWindow();
 
-            MessageDialog.Show(
+            _ = MessageDialog.Show(
                 _resourceManager.GetString("CLIENT_CONNECTION_FAILURE_HEADER"),
                 _resourceManager.GetString("CLIENT_CONNECTION_FAILURE_MESSAGE"),
                 MessageDialogButtons.Ok);
 
             IGameController gameController = Interlocked.Exchange(ref _gameController, null);
             if (gameController == null)
+            {
                 return;
+            }
 
             try
             {
@@ -936,7 +986,9 @@ namespace Supremacy.Client
         {
             StatusWindow statusWindow = _container.Resolve<StatusWindow>();
             if ((statusWindow != null) && statusWindow.IsOpen)
+            {
                 statusWindow.Close();
+            }
         }
 
         private void OnClientDisconnected(DataEventArgs<ClientDisconnectReason> args)
@@ -945,7 +997,9 @@ namespace Supremacy.Client
 
             IGameController gameController = Interlocked.Exchange(ref _gameController, null);
             if (gameController == null)
+            {
                 return;
+            }
 
             string disconnectMessage = null;
 
@@ -979,7 +1033,7 @@ namespace Supremacy.Client
 
             if (disconnectMessage != null)
             {
-                MessageDialog.Show(
+                _ = MessageDialog.Show(
                     _resourceManager.GetString("CLIENT_DISCONNECT_HEADER"),
                     disconnectMessage,
                     MessageDialogButtons.Ok);
@@ -1043,7 +1097,10 @@ namespace Supremacy.Client
         }
         private void ExecuteSP_DirectlyGameCommand(int _id)
         {
-            if (_appContext.IsGameInPlay) return;
+            if (_appContext.IsGameInPlay)
+            {
+                return;
+            }
 
             SinglePlayerStartScreen startScreen = new SinglePlayerStartScreen(_soundPlayer);
             GameOptions options = startScreen.Options;
@@ -1072,7 +1129,9 @@ namespace Supremacy.Client
         private void ExecuteStartSinglePlayerGameCommand(object parameter)
         {
             if (Interlocked.CompareExchange(ref _gameController, null, null) != null)
+            {
                 return;
+            }
 
             LoadDefaultTheme();
 
@@ -1081,7 +1140,9 @@ namespace Supremacy.Client
 
             bool? dialogResult = startScreen.ShowDialog();
             if (!dialogResult.HasValue || !dialogResult.Value)
+            {
                 return;
+            }
 
             GameInitData initData = GameInitData.CreateSinglePlayerGame(options, startScreen.EmpireID);
 
@@ -1132,18 +1193,24 @@ namespace Supremacy.Client
         private void RunGameController(Action<IGameController> runDelegate, bool remoteConnection)
         {
             if (Interlocked.CompareExchange(ref _gameController, null, null) != null)
+            {
                 return;
+            }
 
             try
             {
                 _gameController = ResolveGameController();
 
                 if (remoteConnection)
+                {
                     ShowConnectingScreen();
+                }
                 else
+                {
                     ShowLoadingScreen();
+                }
 
-                runDelegate.BeginInvoke(
+                _ = runDelegate.BeginInvoke(
                     _gameController,
                     delegate (IAsyncResult result)
                     {
@@ -1155,7 +1222,7 @@ namespace Supremacy.Client
                         catch (SupremacyException e)
                         {
                             GameLog.Client.General.Error("runDelegate.EndInvoke failed", e);
-                            Interlocked.Exchange(ref _gameController, null);
+                            _ = Interlocked.Exchange(ref _gameController, null);
                             _dispatcherService.InvokeAsync((Action)ClearStatusWindow);
                             _errorService.HandleError(e);
                             _dispatcherService.InvokeAsync((Action)ActivateMenuScreen);
@@ -1168,7 +1235,7 @@ namespace Supremacy.Client
                 GameLog.Client.General.Error("ResolveGameController failed", e);
                 ClearStatusWindow();
                 _errorService.HandleError(e);
-                Interlocked.Exchange(ref _gameController, null);
+                _ = Interlocked.Exchange(ref _gameController, null);
                 ActivateMenuScreen();
             }
 
@@ -1189,11 +1256,15 @@ namespace Supremacy.Client
         {
             IRegion region = _regionManager.Regions[ClientRegions.GameScreens];
             if (region == null)
+            {
                 return;
+            }
 
             object menuScreen = region.GetView(StandardGameScreens.MenuScreen);
             if (menuScreen == null)
+            {
                 return;
+            }
 
             region.Deactivate(menuScreen);
         }
@@ -1202,11 +1273,15 @@ namespace Supremacy.Client
         {
             IRegion region = _regionManager.Regions[ClientRegions.GameScreens];
             if (region == null)
+            {
                 return;
+            }
 
             object menuScreen = region.GetView(StandardGameScreens.MenuScreen);
             if (menuScreen == null)
+            {
                 return;
+            }
 
             region.Activate(menuScreen);
         }
@@ -1217,10 +1292,14 @@ namespace Supremacy.Client
 
             IGameController gameController = _container.Resolve<IGameController>();
             if (gameController == null)
+            {
                 throw new SupremacyException("A game controller could not be created.");
+            }
 
             if (Interlocked.CompareExchange(ref _gameController, gameController, null) != null)
+            {
                 return _gameController;
+            }
 
             gameController.Terminated += OnGameControllerTerminated;
             return gameController;
@@ -1229,9 +1308,12 @@ namespace Supremacy.Client
         private void OnGameControllerTerminated(object sender, EventArgs args)
         {
             if (!(sender is IGameController gameController))
+            {
                 return;
+            }
+
             gameController.Terminated -= OnGameControllerTerminated;
-            Interlocked.CompareExchange(ref _gameController, null, gameController);
+            _ = Interlocked.CompareExchange(ref _gameController, null, gameController);
             _app.DoEvents();
             GC.Collect(2, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();

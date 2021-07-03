@@ -16,7 +16,6 @@ using Supremacy.Annotations;
 using Supremacy.Encyclopedia;
 using Supremacy.IO.Serialization;
 using Supremacy.Resources;
-using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 
@@ -34,7 +33,7 @@ namespace Supremacy.Entities
         protected const string MissingImageUri = "vfs:///Resources/Images/__image_missing.png";
 
         private PlanetType _homePlanetType;
-        private PlanetTypeFlags _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;
+        private readonly PlanetTypeFlags _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;
         private double _combatEffectiveness = 1.0;
 
         /// <summary>
@@ -73,19 +72,22 @@ namespace Supremacy.Entities
         /// <value>The home planet type.</value>
         public PlanetType HomePlanetType
         {
-            get { return _homePlanetType; }
+            get => _homePlanetType;
             set
             {
                 if (!value.IsHabitable())
+                {
                     throw new ArgumentException("Planet type is marked as Uninhabitable: " + value);
+                }
+
                 _homePlanetType = value;
             }
         }
 
         public double CombatEffectiveness
         {
-            get { return _combatEffectiveness; }
-            set { _combatEffectiveness = value; }
+            get => _combatEffectiveness;
+            set => _combatEffectiveness = value;
         }
 
         public PlanetTypeFlags HabitablePlanetTypes => _habitablePlanetTypes;
@@ -113,14 +115,18 @@ namespace Supremacy.Entities
 
             string description = (string)element.Element(ns + "Description");
             if (!string.IsNullOrEmpty(description))
+            {
                 description = TextHelper.TrimParagraphs(description);
+            }
 
             Description = description ?? string.Empty;
             CombatEffectiveness = (double?)element.Element(ns + "CombatEffectiveness") ?? 1.0;
 
             PlanetType? homePlanetType = EnumHelper.Parse<PlanetType>((string)element.Element(ns + "HomePlanetType"));
             if (!homePlanetType.HasValue)
+            {
                 homePlanetType = PlanetType.Terran;
+            }
 
             string habitablePlanetTypes = (string)element.Element(ns + "HabitablePlanetTypes");
             if (habitablePlanetTypes != null)
@@ -132,7 +138,9 @@ namespace Supremacy.Entities
                 {
 
                     if (EnumHelper.TryParse(name.Trim(), out PlanetType planetType))
+                    {
                         planetTypes.Add(planetType);
+                    }
                 }
 
                 if (planetTypes.Count == 0)
@@ -244,7 +252,9 @@ namespace Supremacy.Entities
                 {
                     string imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
                     if (File.Exists(imagePath))
+                    {
                         return ResourceManager.GetResourceUri(imagePath).ToString();
+                    }
                 }
 
                 return MissingImageUri;

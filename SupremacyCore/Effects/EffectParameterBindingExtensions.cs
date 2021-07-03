@@ -13,9 +13,14 @@ namespace Supremacy.Effects
             [NotNull] ScriptParameters scriptParameters)
         {
             if (effectParameter == null)
+            {
                 throw new ArgumentNullException("effectParameter");
+            }
+
             if (scriptParameters == null)
+            {
                 throw new ArgumentNullException("scriptParameters");
+            }
 
             string parameterName = effectParameter.Parameter.Name;
 
@@ -36,9 +41,14 @@ namespace Supremacy.Effects
             [NotNull] ScriptParameters scriptParameters)
         {
             if (effectParameters == null)
+            {
                 throw new ArgumentNullException("effectParameters");
+            }
+
             if (scriptParameters == null)
+            {
                 throw new ArgumentNullException("scriptParameters");
+            }
 
             RuntimeScriptParameters runtimeParameters = new RuntimeScriptParameters();
 

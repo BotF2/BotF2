@@ -18,8 +18,8 @@ namespace Supremacy.Types
     [Serializable]
     public class ValueModifier<T> where T : IConvertible
     {
-        protected const byte CompoundMultiplierFlag = (1 << 0);
-        protected const byte ApplyOffsetFirstFlag = (1 << 1);
+        protected const byte CompoundMultiplierFlag = 1 << 0;
+        protected const byte ApplyOffsetFirstFlag = 1 << 1;
 
         // ReSharper disable StaticFieldInGenericType
         private static readonly Func<T, T, Percentage, T> _compoundMultiplyExpression;
@@ -76,38 +76,42 @@ namespace Supremacy.Types
         protected void SetFlag(byte flag, bool value)
         {
             if (value)
+            {
                 _flags |= flag;
+            }
             else
-                _flags &= (byte)(~flag);
+            {
+                _flags &= (byte)~flag;
+            }
         }
 
         protected bool IsFlagSet(byte flag)
         {
-            return ((_flags & flag) == flag);
+            return (_flags & flag) == flag;
         }
 
         public bool HasCompoundMultiplier
         {
-            get { return IsFlagSet(CompoundMultiplierFlag); }
-            set { SetFlag(CompoundMultiplierFlag, value); }
+            get => IsFlagSet(CompoundMultiplierFlag);
+            set => SetFlag(CompoundMultiplierFlag, value);
         }
 
         public bool IsOffsetAppliedFirst
         {
-            get { return IsFlagSet(ApplyOffsetFirstFlag); }
-            set { SetFlag(ApplyOffsetFirstFlag, value); }
+            get => IsFlagSet(ApplyOffsetFirstFlag);
+            set => SetFlag(ApplyOffsetFirstFlag, value);
         }
 
         public int Offset
         {
-            get { return _offset; }
-            set { _offset = value; }
+            get => _offset;
+            set => _offset = value;
         }
 
         public Percentage Multiplier
         {
-            get { return _multiplier; }
-            set { _multiplier = value; }
+            get => _multiplier;
+            set => _multiplier = value;
         }
 
         public T Apply(T originalValue)
@@ -118,7 +122,10 @@ namespace Supremacy.Types
         public T Apply(T originalValue, T currentValue)
         {
             if (IsOffsetAppliedFirst)
+            {
                 return ApplyMultiplier(originalValue, ApplyOffset(originalValue, currentValue));
+            }
+
             return ApplyOffset(originalValue, ApplyMultiplier(originalValue, currentValue));
         }
 
@@ -130,7 +137,10 @@ namespace Supremacy.Types
         protected T ApplyMultiplier(T originalValue, T currentValue)
         {
             if (HasCompoundMultiplier)
-                _compoundMultiplyExpression(originalValue, currentValue, _multiplier);
+            {
+                _ = _compoundMultiplyExpression(originalValue, currentValue, _multiplier);
+            }
+
             return _standardMultiplyExpression(originalValue, currentValue, _multiplier);
         }
 

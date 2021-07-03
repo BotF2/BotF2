@@ -125,7 +125,10 @@ namespace Supremacy.Entities
         public Civilization(Race race)
         {
             if (race == null)
+            {
                 throw new ArgumentNullException("race");
+            }
+
             _key = race.Key;
             _raceId = race.Key;
             _civType = CivilizationType.MinorPower;
@@ -139,7 +142,10 @@ namespace Supremacy.Entities
         public Civilization(string key, Race race)
         {
             if (race == null)
+            {
                 throw new ArgumentNullException("race");
+            }
+
             _key = key;
             _raceId = race.Key;
             _civType = CivilizationType.MinorPower;
@@ -147,12 +153,10 @@ namespace Supremacy.Entities
 
         public List<Civilization> SpiedCivList
         {
-            get { return _spiedCivList; }
-            set
-            {
+            get => _spiedCivList;
+            set =>
                 // code here to .Add civs to list as spy ships install spy network
                 _spiedCivList = value;
-            }
         }
 
 
@@ -188,15 +192,17 @@ namespace Supremacy.Entities
             {
                 _moraleDriftRate = (int)element.Element(ns + "MoraleDriftRate");
             }
-            EnumHelper.TryParse((string)element.Element(ns + "HomeQuadrant"), out _homeQuadrant);
-            EnumHelper.TryParse((string)element.Element(ns + "CivilizationType"), out _civType);
-            EnumHelper.TryParse((string)element.Element(ns + "TechCurve"), out _techCurve);
+            _ = EnumHelper.TryParse((string)element.Element(ns + "HomeQuadrant"), out _homeQuadrant);
+            _ = EnumHelper.TryParse((string)element.Element(ns + "CivilizationType"), out _civType);
+            _ = EnumHelper.TryParse((string)element.Element(ns + "TechCurve"), out _techCurve);
             string indConvRation = (string)element.Element(ns + "IndustryToCreditsConversionRatio");
             if (!string.IsNullOrEmpty(indConvRation))
             {
                 ushort convRatio = Number.ParseUInt16(indConvRation);
                 if (convRatio > 0)
+                {
                     _industryToCreditsConversionRatio = (float)convRatio / 100.0f;
+                }
             }
 
             _traits = (string)element.Element(ns + "Traits");
@@ -254,8 +260,9 @@ namespace Supremacy.Entities
             }
 
             if (string.IsNullOrEmpty(_raceId))
+            {
                 _raceId = Race.InvalidRaceKey;
-
+            }
         }
         #endregion
 
@@ -266,8 +273,8 @@ namespace Supremacy.Entities
         /// <value>The civilization ID.</value>
         public int CivID
         {
-            get { return _civId; }
-            set { _civId = value; }
+            get => _civId;
+            set => _civId = value;
         }
 
         /// <summary>
@@ -276,8 +283,8 @@ namespace Supremacy.Entities
         /// <value>The unique key.</value>
         public string Key
         {
-            get { return _key; }
-            set { _key = value; }
+            get => _key;
+            set => _key = value;
         }
 
         /// <summary>
@@ -286,8 +293,8 @@ namespace Supremacy.Entities
         /// <value>The short name.</value>
         public string ShortName
         {
-            get { return _shortName; }
-            set { _shortName = value; }
+            get => _shortName;
+            set => _shortName = value;
         }
 
 
@@ -297,8 +304,8 @@ namespace Supremacy.Entities
         /// <value>The short name ArtCap.</value>
         public string ShortNameArtCap
         {
-            get { return _shortNameArtCap; }
-            set { _shortNameArtCap = value; }
+            get => _shortNameArtCap;
+            set => _shortNameArtCap = value;
         }
 
         /// <summary>
@@ -307,8 +314,8 @@ namespace Supremacy.Entities
         /// <value>The short name ArtDir.</value>
         public string ShortNameArtDir
         {
-            get { return _shortNameArtDir; }
-            set { _shortNameArtDir = value; }
+            get => _shortNameArtDir;
+            set => _shortNameArtDir = value;
         }
 
         /// <summary>
@@ -317,8 +324,8 @@ namespace Supremacy.Entities
         /// <value>The short name FromThe.</value>
         public string ShortNameFromThe
         {
-            get { return _shortNameFromThe; }
-            set { _shortNameFromThe = value; }
+            get => _shortNameFromThe;
+            set => _shortNameFromThe = value;
         }
 
         /// <summary>
@@ -327,8 +334,8 @@ namespace Supremacy.Entities
         /// <value>The short name ToThe.</value>
         public string ShortNameToThe
         {
-            get { return _shortNameToThe; }
-            set { _shortNameToThe = value; }
+            get => _shortNameToThe;
+            set => _shortNameToThe = value;
         }
 
         /// <summary>
@@ -337,8 +344,8 @@ namespace Supremacy.Entities
         /// <value>The long name.</value>
         public string LongName
         {
-            get { return _longName; }
-            set { _longName = value; }
+            get => _longName;
+            set => _longName = value;
         }
 
         /// <summary>
@@ -347,8 +354,8 @@ namespace Supremacy.Entities
         /// <value>The long name ArtCap.</value>
         public string LongNameArtCap
         {
-            get { return _longNameArtCap; }
-            set { _longNameArtCap = value; }
+            get => _longNameArtCap;
+            set => _longNameArtCap = value;
         }
 
         /// <summary>
@@ -357,8 +364,8 @@ namespace Supremacy.Entities
         /// <value>The long name ArtDir.</value>
         public string LongNameArtDir
         {
-            get { return _longNameArtDir; }
-            set { _longNameArtDir = value; }
+            get => _longNameArtDir;
+            set => _longNameArtDir = value;
         }
 
         /// <summary>
@@ -367,8 +374,8 @@ namespace Supremacy.Entities
         /// <value>The long name FromThe.</value>
         public string LongNameFromThe
         {
-            get { return _longNameFromThe; }
-            set { _longNameFromThe = value; }
+            get => _longNameFromThe;
+            set => _longNameFromThe = value;
         }
 
         /// <summary>
@@ -377,8 +384,8 @@ namespace Supremacy.Entities
         /// <value>The long name OfTheGreater.</value>
         public string LongNameOfTheGreater
         {
-            get { return _longNameOfTheGreater; }
-            set { _longNameOfTheGreater = value; }
+            get => _longNameOfTheGreater;
+            set => _longNameOfTheGreater = value;
         }
 
         /// <summary>
@@ -387,8 +394,8 @@ namespace Supremacy.Entities
         /// <value>The diplomacy report text.</value>
         public string DiplomacyReport
         {
-            get { return _diplomacyReport; }
-            set { _diplomacyReport = value; }
+            get => _diplomacyReport;
+            set => _diplomacyReport = value;
         }
 
         /// <summary>
@@ -397,8 +404,8 @@ namespace Supremacy.Entities
         /// <value>The conversion ratio.</value>
         public float IndustryToCreditsConversionRatio
         {
-            get { return _industryToCreditsConversionRatio; }
-            set { _industryToCreditsConversionRatio = value; }
+            get => _industryToCreditsConversionRatio;
+            set => _industryToCreditsConversionRatio = value;
         }
 
         /// <summary>
@@ -419,7 +426,9 @@ namespace Supremacy.Entities
                 {
                     string imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
                     if (File.Exists(imagePath))
+                    {
                         return ResourceManager.GetResourceUri(imagePath).ToString();
+                    }
                 }
 
                 return Race.ImagePath;
@@ -441,7 +450,9 @@ namespace Supremacy.Entities
                     string imagePath = ResourceManager.GetResourcePath(imageUri);
 
                     if (File.Exists(imagePath))
+                    {
                         return imageUri;
+                    }
                 }
 
                 return DefaultInsigniaUri;
@@ -454,8 +465,8 @@ namespace Supremacy.Entities
         /// <value>The territory color.</value>
         public string Color
         {
-            get { return _color ?? DefaultColor; }
-            set { _color = value; }
+            get => _color ?? DefaultColor;
+            set => _color = value;
         }
 
         /// <summary>
@@ -464,8 +475,8 @@ namespace Supremacy.Entities
         /// <value>The classification.</value>
         public CivilizationType CivilizationType
         {
-            get { return _civType; }
-            set { _civType = value; }
+            get => _civType;
+            set => _civType = value;
         }
 
         /// <summary>
@@ -474,8 +485,8 @@ namespace Supremacy.Entities
         /// <value>The tech curve.</value>
         public TechCurve TechCurve
         {
-            get { return _techCurve; }
-            set { _techCurve = value; }
+            get => _techCurve;
+            set => _techCurve = value;
         }
 
         /// <summary>
@@ -491,7 +502,7 @@ namespace Supremacy.Entities
         /// <value>The tech curve.</value>
         public Civilization TargetCivilization
         {
-            get { return _targetCivilization; }
+            get => _targetCivilization;
             set { if (_targetCivilization == null) { _targetCivilization = value; } }
         }
 
@@ -501,8 +512,8 @@ namespace Supremacy.Entities
         /// <value> bool </value>
         public bool InTransit
         {
-            get { return _inTransit; }
-            set { _inTransit = value; }
+            get => _inTransit;
+            set => _inTransit = value;
         }
 
         /// <summary>
@@ -511,7 +522,7 @@ namespace Supremacy.Entities
         /// <value>
         /// <c>true</c> if this <see cref="Civilization"/> is an empire; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEmpire => (_civType == CivilizationType.Empire);
+        public bool IsEmpire => _civType == CivilizationType.Empire;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Civilization"/> can expand.
@@ -519,7 +530,7 @@ namespace Supremacy.Entities
         /// <value>
         /// <c>true</c> if this instance can expand; otherwise, <c>false</c>.
         /// </value>
-        public bool CanExpand => (_civType != CivilizationType.MinorPower);
+        public bool CanExpand => _civType != CivilizationType.MinorPower;
 
         /// <summary>
         /// Gets or sets the primary race of this <see cref="Civilization"/>.
@@ -540,10 +551,7 @@ namespace Supremacy.Entities
                 }
                 return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];
             }
-            set
-            {
-                _raceId = (value != null) ? value.Key : Race.InvalidRaceKey;
-            }
+            set => _raceId = (value != null) ? value.Key : Race.InvalidRaceKey;
         }
 
         /// <summary>
@@ -552,8 +560,8 @@ namespace Supremacy.Entities
         /// <value>The primary race ID.</value>
         public string RaceID
         {
-            get { return _raceId; }
-            set { _raceId = value ?? Race.InvalidRaceKey; }
+            get => _raceId;
+            set => _raceId = value ?? Race.InvalidRaceKey;
         }
 
         /// <summary>
@@ -562,8 +570,8 @@ namespace Supremacy.Entities
         /// <value>The home quadrant.</value>
         public Quadrant HomeQuadrant
         {
-            get { return _homeQuadrant; }
-            set { _homeQuadrant = value; }
+            get => _homeQuadrant;
+            set => _homeQuadrant = value;
         }
 
         /// <summary>
@@ -572,8 +580,8 @@ namespace Supremacy.Entities
         /// <value>The name of the home system.</value>
         public string HomeSystemName
         {
-            get { return _homeSystemName; }
-            set { _homeSystemName = value; }
+            get => _homeSystemName;
+            set => _homeSystemName = value;
         }
 
         /// <summary>
@@ -588,7 +596,10 @@ namespace Supremacy.Entities
             get
             {
                 if (!IsEmpire)
+                {
                     return false;
+                }
+
                 return PlayerContext.Current == null || PlayerContext.Current.IsHumanPlayer(this);
             }
         }
@@ -640,8 +651,11 @@ namespace Supremacy.Entities
         public virtual bool Equals(Civilization civ)
         {
             if (civ == null)
+            {
                 return false;
-            return (civ.Key == Key);
+            }
+
+            return civ.Key == Key;
         }
 
         /// <summary>
@@ -691,10 +705,16 @@ namespace Supremacy.Entities
             writer.WriteElementString("LongNameArtDir", LongNameArtDir);
             writer.WriteElementString("LongNameFromThe", LongNameFromThe);
             writer.WriteElementString("LongNameOfTheGreater", LongNameOfTheGreater);
-            if (!String.IsNullOrEmpty(DiplomacyReport))
+            if (!string.IsNullOrEmpty(DiplomacyReport))
+            {
                 writer.WriteElementString("DiplomacyReport", DiplomacyReport);
-            if (!String.IsNullOrEmpty(HomeSystemName))
+            }
+
+            if (!string.IsNullOrEmpty(HomeSystemName))
+            {
                 writer.WriteElementString("HomeSystemName", HomeSystemName);
+            }
+
             writer.WriteElementString("Color", Color);
             writer.WriteElementString("HomeQuadrant", HomeQuadrant.ToString());
             writer.WriteElementString("CivilizationType", CivilizationType.ToString());
@@ -813,10 +833,16 @@ namespace Supremacy.Entities
         public static bool operator ==(Civilization a, Civilization b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
+            }
+
             if ((a is null) || (b is null))
+            {
                 return false;
-            return (a.Key == b.Key);
+            }
+
+            return a.Key == b.Key;
         }
 
         /// <summary>
@@ -828,10 +854,16 @@ namespace Supremacy.Entities
         public static bool operator !=(Civilization a, Civilization b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return false;
+            }
+
             if ((a is null) || (b is null))
+            {
                 return true;
-            return (a.Key != b.Key);
+            }
+
+            return a.Key != b.Key;
         }
 
         //public static implicit operator CombatTargetTwo(Civilization v)

@@ -40,13 +40,18 @@ namespace Supremacy.Game
         protected GameObject()
         {
             if (GameContext.Current != null)
+            {
                 _objectId = GameContext.Current.GenerateID();
+            }
         }
 
         protected GameObject(int objectId)
         {
             if (objectId <= -1)
+            {
                 throw new ArgumentException("Invalid object ID.");
+            }
+
             _objectId = objectId;
         }
 
@@ -67,7 +72,7 @@ namespace Supremacy.Game
         [Indexable]
         public int ObjectID
         {
-            get { return _objectId; }
+            get => _objectId;
             protected internal set
             {
                 _objectId = value;
@@ -79,9 +84,7 @@ namespace Supremacy.Game
 
         private void OnObjectIDChanged()
         {
-            EventHandler handler = ObjectIDChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ObjectIDChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -90,9 +93,7 @@ namespace Supremacy.Game
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected internal virtual void OnDeserialized() { }
@@ -121,7 +122,9 @@ namespace Supremacy.Game
         public virtual void SerializeOwnedData([NotNull] SerializationWriter writer, [CanBeNull] object context)
         {
             if (writer == null)
+            {
                 throw new ArgumentNullException("writer");
+            }
 
             writer.WriteOptimized(_objectId);
         }
@@ -129,7 +132,9 @@ namespace Supremacy.Game
         public virtual void DeserializeOwnedData([NotNull] SerializationReader reader, [CanBeNull] object context)
         {
             if (reader == null)
+            {
                 throw new ArgumentNullException("reader");
+            }
 
             _objectId = reader.ReadOptimizedInt32();
         }

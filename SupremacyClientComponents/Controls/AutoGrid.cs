@@ -60,10 +60,16 @@ namespace Supremacy.Client.Controls
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj))
+                if (obj is null)
+                {
                     return false;
+                }
+
                 if (obj.GetType() != typeof(ReservedPosition))
+                {
                     return false;
+                }
+
                 return Equals((ReservedPosition)obj);
             }
 
@@ -157,8 +163,8 @@ namespace Supremacy.Client.Controls
         /// </summary>
         public bool IsAutoIndexing
         {
-            get { return (bool)GetValue(IsAutoIndexingProperty); }
-            set { SetValue(IsAutoIndexingProperty, value); }
+            get => (bool)GetValue(IsAutoIndexingProperty);
+            set => SetValue(IsAutoIndexingProperty, value);
         }
 
         /// <summary>
@@ -173,8 +179,8 @@ namespace Supremacy.Client.Controls
         /// <value>The orientation.</value>
         public Orientation Orientation
         {
-            get { return (Orientation)GetValue(OrientationProperty); }
-            set { SetValue(OrientationProperty, value); }
+            get => (Orientation)GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
         }
 
         /// <summary>
@@ -189,8 +195,8 @@ namespace Supremacy.Client.Controls
         /// <value>The child margin.</value>
         public Thickness? ChildMargin
         {
-            get { return (Thickness?)GetValue(ChildMarginProperty); }
-            set { SetValue(ChildMarginProperty, value); }
+            get => (Thickness?)GetValue(ChildMarginProperty);
+            set => SetValue(ChildMarginProperty, value);
         }
 
         /// <summary>
@@ -205,8 +211,8 @@ namespace Supremacy.Client.Controls
         /// <value>The child horizontal alignment.</value>
         public HorizontalAlignment? ChildHorizontalAlignment
         {
-            get { return (HorizontalAlignment?)GetValue(ChildHorizontalAlignmentProperty); }
-            set { SetValue(ChildHorizontalAlignmentProperty, value); }
+            get => (HorizontalAlignment?)GetValue(ChildHorizontalAlignmentProperty);
+            set => SetValue(ChildHorizontalAlignmentProperty, value);
         }
 
         /// <summary>
@@ -221,8 +227,8 @@ namespace Supremacy.Client.Controls
         /// <value>The child vertical alignment.</value>
         public VerticalAlignment? ChildVerticalAlignment
         {
-            get { return (VerticalAlignment?)GetValue(ChildVerticalAlignmentProperty); }
-            set { SetValue(ChildVerticalAlignmentProperty, value); }
+            get => (VerticalAlignment?)GetValue(ChildVerticalAlignmentProperty);
+            set => SetValue(ChildVerticalAlignmentProperty, value);
         }
 
         /// <summary>
@@ -258,8 +264,11 @@ namespace Supremacy.Client.Controls
 
                     if (IsAutoIndexing)
                     {
-                        _rowOrColumnCount = (isVertical) ? ColumnDefinitions.Count : RowDefinitions.Count;
-                        if (_rowOrColumnCount == 0) _rowOrColumnCount = 1;
+                        _rowOrColumnCount = isVertical ? ColumnDefinitions.Count : RowDefinitions.Count;
+                        if (_rowOrColumnCount == 0)
+                        {
+                            _rowOrColumnCount = 1;
+                        }
 
                         int cellCount = 0;
                         int currentRow = 0;
@@ -268,9 +277,8 @@ namespace Supremacy.Client.Controls
 
                         foreach (UIElement child in Children)
                         {
-                            ChildLayoutInfo layoutInfo;
 
-                            if (!_childData.TryGetValue(child, out layoutInfo))
+                            if (!_childData.TryGetValue(child, out ChildLayoutInfo layoutInfo))
                             {
                                 layoutInfo = new ChildLayoutInfo
                                 {
@@ -309,7 +317,7 @@ namespace Supremacy.Client.Controls
                                 {
                                     layoutInfo.ActualColumn = layoutInfo.OriginalColumn;
                                     layoutInfo.ActualRow = layoutInfo.OriginalRow;
-                                    reservedPositions.Add(
+                                    _ = reservedPositions.Add(
                                         new ReservedPosition(
                                             layoutInfo.ActualColumn,
                                             layoutInfo.ActualRow));
@@ -387,20 +395,25 @@ namespace Supremacy.Client.Controls
                                 if (!child.HasDefaultValue(ColumnSpanProperty))
                                 {
                                     if ((currentColumn + childColumnSpan) >= _rowOrColumnCount)
-                                        childColumnSpan -= ((currentColumn + childColumnSpan) - _rowOrColumnCount - 1);
+                                    {
+                                        childColumnSpan -= currentColumn + childColumnSpan - _rowOrColumnCount - 1;
+                                    }
 
                                     cellCount += childRowSpan * childColumnSpan;
 
                                     for (int i = 0; i < (childColumnSpan - 1); i++)
-                                        reservedPositions.Add(new ReservedPosition(currentRow, currentColumn + i));
+                                    {
+                                        _ = reservedPositions.Add(new ReservedPosition(currentRow, currentColumn + i));
+                                    }
                                 }
                                 if (!child.HasDefaultValue(RowSpanProperty))
                                 {
                                     cellCount += childRowSpan * childColumnSpan;
 
                                     for (int i = 0; i < (childRowSpan - 1); i++)
-                                        reservedPositions.Add(new ReservedPosition(currentRow + i, currentColumn));
-
+                                    {
+                                        _ = reservedPositions.Add(new ReservedPosition(currentRow + i, currentColumn));
+                                    }
                                 }
                                 else if (++currentColumn >= _rowOrColumnCount)
                                 {
@@ -413,19 +426,25 @@ namespace Supremacy.Client.Controls
                                 if (!child.HasDefaultValue(RowSpanProperty))
                                 {
                                     if ((currentColumn + childRowSpan) >= _rowOrColumnCount)
-                                        childRowSpan -= ((currentColumn + childRowSpan) - _rowOrColumnCount - 1);
+                                    {
+                                        childRowSpan -= currentColumn + childRowSpan - _rowOrColumnCount - 1;
+                                    }
 
                                     cellCount += childRowSpan * childColumnSpan;
 
                                     for (int i = 0; i < (childRowSpan - 1); i++)
-                                        reservedPositions.Add(new ReservedPosition(currentRow + i, currentColumn));
+                                    {
+                                        _ = reservedPositions.Add(new ReservedPosition(currentRow + i, currentColumn));
+                                    }
                                 }
                                 if (!child.HasDefaultValue(ColumnSpanProperty))
                                 {
                                     cellCount += childRowSpan * childColumnSpan;
 
                                     for (int i = 0; i < (childColumnSpan - 1); i++)
-                                        reservedPositions.Add(new ReservedPosition(currentRow, currentColumn + i));
+                                    {
+                                        _ = reservedPositions.Add(new ReservedPosition(currentRow, currentColumn + i));
+                                    }
                                 }
                                 else if (++currentRow >= _rowOrColumnCount)
                                 {
@@ -438,7 +457,7 @@ namespace Supremacy.Client.Controls
                         //  Update the number of rows/columns
                         if (isVertical)
                         {
-                            int newRowCount = ((cellCount - 1) / _rowOrColumnCount + 1);
+                            int newRowCount = (cellCount - 1) / _rowOrColumnCount + 1;
                             while (RowDefinitions.Count < newRowCount)
                             {
                                 RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
@@ -450,7 +469,7 @@ namespace Supremacy.Client.Controls
                         }
                         else // horizontal
                         {
-                            int newColumnCount = ((cellCount - 1) / _rowOrColumnCount + 1);
+                            int newColumnCount = (cellCount - 1) / _rowOrColumnCount + 1;
                             while (ColumnDefinitions.Count < newColumnCount)
                             {
                                 ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
@@ -467,15 +486,15 @@ namespace Supremacy.Client.Controls
                     {
                         if (ChildMargin != null)
                         {
-                            child.SetIfDefault(MarginProperty, ChildMargin.Value);
+                            _ = child.SetIfDefault(MarginProperty, ChildMargin.Value);
                         }
                         if (ChildHorizontalAlignment != null)
                         {
-                            child.SetIfDefault(HorizontalAlignmentProperty, ChildHorizontalAlignment.Value);
+                            _ = child.SetIfDefault(HorizontalAlignmentProperty, ChildHorizontalAlignment.Value);
                         }
                         if (ChildVerticalAlignment != null)
                         {
-                            child.SetIfDefault(VerticalAlignmentProperty, ChildVerticalAlignment.Value);
+                            _ = child.SetIfDefault(VerticalAlignmentProperty, ChildVerticalAlignment.Value);
                         }
                     }
                 }

@@ -58,7 +58,10 @@ namespace Supremacy.Client
             get
             {
                 if (_current == null)
+                {
                     _current = LoadCore();
+                }
+
                 return _current;
             }
         }
@@ -75,7 +78,9 @@ namespace Supremacy.Client
                 ClientSettingsFileName);
 
             if (_tracingClientSettings)
-                GameLog.Client.General.InfoFormat("SAVE     {0}: Content: " + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+            {
+                GameLog.Client.General.InfoFormat("SAVE     {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+            }
         }
 
         public event EventHandler Loaded;
@@ -139,7 +144,9 @@ namespace Supremacy.Client
                     ClientSettingsFileName);
 
                 if (!Directory.Exists(settingsDirectory))
+                {
                     Directory.CreateDirectory(settingsDirectory);
+                }
 
                 using (FileStream fileWriter = File.Create(filePath))
                 {
@@ -174,17 +181,19 @@ namespace Supremacy.Client
                         settings = new ClientSettings();
                         try
                         {
-                            // filePath = SupremacyClient_Settings.xaml
+                            // filePath = SupremacyClient..Settings.xaml
                             string _text = "for problems: just try to deleted " + filePath + " manually from your hard disk !";
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
-                            settings = XamlReader.Load(fileReader) as ClientSettings ??
-                                       new ClientSettings();
+                            settings = XamlReader.Load(fileReader) as ClientSettings ?? new ClientSettings();
 
-                            GameLog.Client.General.InfoFormat("LOADCORE {0}: Content: " + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+
+                            GameLog.Client.General.InfoFormat("LOADCORE {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
 
                             if (settings == null)
+                            {
                                 settings = new ClientSettings();
+                            }
 
                             settings.OnLoaded();
                         }
@@ -236,8 +245,8 @@ namespace Supremacy.Client
 
         public bool EnableDialogAnimations
         {
-            get { return GetEnableDialogAnimations(this); }
-            set { SetEnableDialogAnimations(this, value); }
+            get => GetEnableDialogAnimations(this);
+            set => SetEnableDialogAnimations(this, value);
         }
         #endregion
 
@@ -252,8 +261,8 @@ namespace Supremacy.Client
 
         public bool EnableFullScreenMode
         {
-            get { return (bool)GetValue(EnableFullScreenModeProperty); }
-            set { SetValue(EnableFullScreenModeProperty, value); }
+            get => (bool)GetValue(EnableFullScreenModeProperty);
+            set => SetValue(EnableFullScreenModeProperty, value);
         }
         #endregion
 
@@ -269,8 +278,8 @@ namespace Supremacy.Client
 
         public double MasterVolume
         {
-            get { return (double)GetValue(MasterVolumeProperty); }
-            set { SetValue(MasterVolumeProperty, value); }
+            get => (double)GetValue(MasterVolumeProperty);
+            set => SetValue(MasterVolumeProperty, value);
         }
 
         public event EventHandler<PropertyChangedRoutedEventArgs<double>> MasterVolumeChanged;
@@ -293,8 +302,8 @@ namespace Supremacy.Client
 
         public double MusicVolume
         {
-            get { return (double)GetValue(MusicVolumeProperty); }
-            set { SetValue(MusicVolumeProperty, value); }
+            get => (double)GetValue(MusicVolumeProperty);
+            set => SetValue(MusicVolumeProperty, value);
         }
 
         public event EventHandler<PropertyChangedRoutedEventArgs<double>> MusicVolumeChanged;
@@ -317,8 +326,8 @@ namespace Supremacy.Client
 
         public double FXVolume
         {
-            get { return (double)GetValue(FXVolumeProperty); }
-            set { SetValue(FXVolumeProperty, value); }
+            get => (double)GetValue(FXVolumeProperty);
+            set => SetValue(FXVolumeProperty, value);
         }
 
         public event EventHandler<PropertyChangedRoutedEventArgs<double>> FXVolumeChanged;
@@ -341,8 +350,8 @@ namespace Supremacy.Client
 
         public bool EnableAntiAliasing
         {
-            get { return (bool)GetValue(EnableAntiAliasingProperty); }
-            set { SetValue(EnableAntiAliasingProperty, value); }
+            get => (bool)GetValue(EnableAntiAliasingProperty);
+            set => SetValue(EnableAntiAliasingProperty, value);
         }
 
         public event EventHandler<PropertyChangedRoutedEventArgs<bool>> EnableAntiAliasingChanged;
@@ -364,8 +373,8 @@ namespace Supremacy.Client
 
         public bool EnableHighQualityScaling
         {
-            get { return (bool)GetValue(EnableHighQualityScalingProperty); }
-            set { SetValue(EnableHighQualityScalingProperty, value); }
+            get => (bool)GetValue(EnableHighQualityScalingProperty);
+            set => SetValue(EnableHighQualityScalingProperty, value);
         }
         #endregion
 
@@ -380,8 +389,8 @@ namespace Supremacy.Client
 
         public bool EnableStarMapAnimations
         {
-            get { return (bool)GetValue(EnableStarMapAnimationsProperty); }
-            set { SetValue(EnableStarMapAnimationsProperty, value); }
+            get => (bool)GetValue(EnableStarMapAnimationsProperty);
+            set => SetValue(EnableStarMapAnimationsProperty, value);
         }
         #endregion
 
@@ -396,8 +405,8 @@ namespace Supremacy.Client
 
         public bool EnableAnimation
         {
-            get { return (bool)GetValue(EnableAnimationProperty); }
-            set { SetValue(EnableAnimationProperty, value); }
+            get => (bool)GetValue(EnableAnimationProperty);
+            set => SetValue(EnableAnimationProperty, value);
         }
         #endregion
 
@@ -412,8 +421,8 @@ namespace Supremacy.Client
 
         public bool EnableCombatScreen
         {
-            get { return (bool)GetValue(EnableCombatScreenProperty); }
-            set { SetValue(EnableCombatScreenProperty, value); }
+            get => (bool)GetValue(EnableCombatScreenProperty);
+            set => SetValue(EnableCombatScreenProperty, value);
         }
         #endregion
 
@@ -429,12 +438,12 @@ namespace Supremacy.Client
 
         public bool Traces_SetAll_without_Details
         {
-            get { return (bool)GetValue(Traces_SetAll_without_DetailsProperty); }
+            get => (bool)GetValue(Traces_SetAll_without_DetailsProperty);
             set
             {
                 SetValue(Traces_SetAll_without_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** SET ALL **) to DEBUG (press ingame CTRL + C, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("#### Log.Txt: 'Set All w/o Details' for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -542,12 +551,12 @@ namespace Supremacy.Client
 
         public bool Traces_SetAll_and_Details
         {
-            get { return (bool)GetValue(Traces_SetAll_and_DetailsProperty); }
+            get => (bool)GetValue(Traces_SetAll_and_DetailsProperty);
             set
             {
                 SetValue(Traces_SetAll_and_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** Set All and DETAILS OME **) to DEBUG (press ingame CTRL + C, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("    #### Log.Txt: 'SetAll_and_Details'  for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -653,12 +662,12 @@ namespace Supremacy.Client
                 FrameworkPropertyMetadataOptions.None));
         public bool Traces_ClearAll
         {
-            get { return (bool)GetValue(Traces_ClearAllProperty); }
+            get => (bool)GetValue(Traces_ClearAllProperty);
             set
             {
                 SetValue(Traces_ClearAllProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + C, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("              #### Log.Txt: 'ClearAll'            for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -774,12 +783,12 @@ namespace Supremacy.Client
                 FrameworkPropertyMetadataOptions.None));
         public bool Traces_ClearAllDetails
         {
-            get { return (bool)GetValue(Traces_ClearAllDetailsProperty); }
+            get => (bool)GetValue(Traces_ClearAllDetailsProperty);
             set
             {
                 SetValue(Traces_ClearAllDetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + C, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("       #### Log.Txt: 'ClearAllDetails'     for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -893,12 +902,12 @@ namespace Supremacy.Client
 
         public bool Traces_SetSome  // some making most sense
         {
-            get { return (bool)GetValue(Traces_SetSomeProperty); }
+            get => (bool)GetValue(Traces_SetSomeProperty);
             set
             {
                 SetValue(Traces_SetSomeProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** SOME **) set to DEBUG (press ingame CTRL + Z, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("               #### Log.Txt: 'Some'                for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -908,79 +917,79 @@ namespace Supremacy.Client
                     // Audio changes shall be done directly = OnTracesAudioChanged
 
                     SetValue(TracesAIProperty, value); OnTracesAIChanged(false, true); GameLog.SetRepositoryToDebug("AI");
-                    SetValue(TracesAudioProperty, false); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, false); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
                     SetValue(TracesCivsAndRacesProperty, value); OnTracesCivsAndRacesChanged(false, true); GameLog.SetRepositoryToDebug("CivsAndRaces");
                     SetValue(TracesColoniesProperty, false); OnTracesColoniesChanged(false, true); GameLog.SetRepositoryToDebug("Colonies");
                     SetValue(TracesCombatProperty, value); OnTracesCombatChanged(false, true); GameLog.SetRepositoryToDebug("Combat");
                     SetValue(TracesCreditsProperty, false); OnTracesCreditsChanged(false, true); GameLog.SetRepositoryToDebug("Credits");
-                    SetValue(TracesDeuteriumProperty, false); OnTracesDeuteriumChanged(false, true); GameLog.SetRepositoryToDebug("Deuterium");
-                    SetValue(TracesDilithiumProperty, false); OnTracesDilithiumChanged(false, true); GameLog.SetRepositoryToDebug("Dilithium");
-                    SetValue(TracesDuraniumProperty, false); OnTracesDuraniumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("Duranium");
+                    //SetValue(TracesDeuteriumProperty, false); OnTracesDeuteriumChanged(false, true); GameLog.SetRepositoryToDebug("Deuterium");
+                    //SetValue(TracesDilithiumProperty, false); OnTracesDilithiumChanged(false, true); GameLog.SetRepositoryToDebug("Dilithium");
+                    //SetValue(TracesDuraniumProperty, false); OnTracesDuraniumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("Duranium");
                     SetValue(TracesDiplomacyProperty, value); OnTracesDiplomacyChanged(false, true); GameLog.SetRepositoryToDebug("Diplomacy");
                     SetValue(TracesEnergyProperty, false); OnTracesEnergyChanged(false, true); GameLog.SetRepositoryToDebug("Energy");
                     SetValue(TracesEventsProperty, value); OnTracesEventsChanged(false, true); GameLog.SetRepositoryToDebug("Events");
-                    SetValue(TracesGalaxyGeneratorProperty, false); OnTracesGalaxyGeneratorChanged(false, true); GameLog.SetRepositoryToDebug("GalaxyGenerator");
+                    //SetValue(TracesGalaxyGeneratorProperty, false); OnTracesGalaxyGeneratorChanged(false, true); GameLog.SetRepositoryToDebug("GalaxyGenerator");
                     SetValue(TracesGameDataProperty, false); OnTracesGameDataChanged(false, true); GameLog.SetRepositoryToDebug("GameData");
-                    SetValue(TracesGameInitDataProperty, false); OnTracesGameInitDataChanged(false, true); GameLog.SetRepositoryToDebug("GameInitData");
+                    //SetValue(TracesGameInitDataProperty, false); OnTracesGameInitDataChanged(false, true); GameLog.SetRepositoryToDebug("GameInitData");
                     // done at first
                     //SetValue(TracesGeneralProperty, value); OnTracesGeneralChanged(false, true); GameLog.SetRepositoryToDebug("General");
-                    SetValue(TracesInfoTextProperty, false); OnTracesInfoTextChanged(false, true); GameLog.SetRepositoryToDebug("InfoText");
+                    //SetValue(TracesInfoTextProperty, false); OnTracesInfoTextChanged(false, true); GameLog.SetRepositoryToDebug("InfoText");
                     SetValue(TracesIntelProperty, false); OnTracesIntelChanged(false, true); GameLog.SetRepositoryToDebug("Intel");
-                    SetValue(TracesMapDataProperty, false); OnTracesMapDataChanged(false, true); GameLog.SetRepositoryToDebug("MapData");
-                    SetValue(TracesMultiPlayProperty, false); OnTracesMultiPlayChanged(false, true); GameLog.SetRepositoryToDebug("MultiPlay");
+                    //SetValue(TracesMapDataProperty, false); OnTracesMapDataChanged(false, true); GameLog.SetRepositoryToDebug("MapData");
+                    //SetValue(TracesMultiPlayProperty, false); OnTracesMultiPlayChanged(false, true); GameLog.SetRepositoryToDebug("MultiPlay");
                     SetValue(TracesProductionProperty, value); OnTracesProductionChanged(false, true); GameLog.SetRepositoryToDebug("Production");
                     ////////SetValue(TracesReportErrorsProperty, value); OnTracesReportErrorsChanged(false, true); GameLog.SetRepositoryToDebug("ReportErrors");
                     SetValue(TracesResearchProperty, value); OnTracesResearchChanged(false, true); GameLog.SetRepositoryToDebug("Research");
                     SetValue(TracesSitRepsProperty, value); OnTracesSitRepsChanged(false, true); GameLog.SetRepositoryToDebug("SitReps");
-                    SetValue(TracesSaveLoadProperty, false); OnTracesSaveLoadChanged(false, true); GameLog.SetRepositoryToDebug("SaveLoad");
+                    //SetValue(TracesSaveLoadProperty, false); OnTracesSaveLoadChanged(false, true); GameLog.SetRepositoryToDebug("SaveLoad");
                     SetValue(TracesShipsProperty, false); OnTracesShipsChanged(false, true); GameLog.SetRepositoryToDebug("Ships");
                     SetValue(TracesShipProductionProperty, false); OnTracesShipProductionChanged(false, true); GameLog.SetRepositoryToDebug("ShipProduction");
                     SetValue(TracesStationsProperty, false); OnTracesStationsChanged(false, true); GameLog.SetRepositoryToDebug("Stations");
-                    SetValue(TracesStructuresProperty, false); OnTracesStructuresChanged(false, true); GameLog.SetRepositoryToDebug("Structures");
+                    //SetValue(TracesStructuresProperty, false); OnTracesStructuresChanged(false, true); GameLog.SetRepositoryToDebug("Structures");
                     SetValue(TracesSystemAssaultProperty, value); OnTracesSystemAssaultChanged(false, true); GameLog.SetRepositoryToDebug("SystemAssault");
                     SetValue(TracesTestProperty, false); OnTracesTestChanged(false, true); GameLog.SetRepositoryToDebug("Test");
-                    SetValue(TracesTradeRoutesProperty, value); OnTracesTradeRoutesChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutes");
-                    SetValue(TracesUIProperty, false); OnTracesUIChanged(false, true); GameLog.SetRepositoryToDebug("UI");
-                    SetValue(TracesXMLCheckProperty, false); OnTracesXMLCheckChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheck");
-                    SetValue(TracesXML2CSVOutputProperty, false); OnTracesXML2CSVOutputChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                    //SetValue(TracesTradeRoutesProperty, value); OnTracesTradeRoutesChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutes");
+                    //SetValue(TracesUIProperty, false); OnTracesUIChanged(false, true); GameLog.SetRepositoryToDebug("UI");
+                    //SetValue(TracesXMLCheckProperty, false); OnTracesXMLCheckChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheck");
+                    //SetValue(TracesXML2CSVOutputProperty, false); OnTracesXML2CSVOutputChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutput");
 
                     // Details
-                    SetValue(TracesAIDetailsProperty, false); OnTracesAIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("AIDetails");
-                    SetValue(TracesAudioDetailsProperty, false); OnTracesAudioDetailsChanged(false, true); GameLog.SetRepositoryToDebug("AudioDetails");
-                    SetValue(TracesCivsAndRacesDetailsProperty, false); OnTracesCivsAndRacesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("CivsAndRacesDetails");
-                    SetValue(TracesColoniesDetailsProperty, false); OnTracesColoniesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ColoniesDetails");
-                    SetValue(TracesCombatDetailsProperty, false); OnTracesCombatDetailsChanged(false, true); GameLog.SetRepositoryToDebug("CombatDetails");
-                    SetValue(TracesCreditsDetailsProperty, false); OnTracesCreditsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("CreditsDetails");
-                    SetValue(TracesDeuteriumDetailsProperty, false); OnTracesDeuteriumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DeuteriumDetails");
-                    SetValue(TracesDilithiumDetailsProperty, false); OnTracesDilithiumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DilithiumDetails");
-                    SetValue(TracesDuraniumDetailsProperty, false); OnTracesDuraniumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DuraniumDetails");
-                    SetValue(TracesDiplomacyDetailsProperty, false); OnTracesDiplomacyDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DiplomacyDetails");
-                    SetValue(TracesEnergyDetailsProperty, false); OnTracesEnergyDetailsChanged(false, true); GameLog.SetRepositoryToDebug("EnergyDetails");
-                    SetValue(TracesEventsDetailsProperty, false); OnTracesEventsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("EventsDetails");
-                    SetValue(TracesGalaxyGeneratorDetailsProperty, false); OnTracesGalaxyGeneratorDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GalaxyGeneratorDetails");
-                    SetValue(TracesGameDataDetailsProperty, false); OnTracesGameDataDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GameDataDetails");
-                    SetValue(TracesGameInitDataDetailsProperty, false); OnTracesGameInitDataDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GameInitDataDetails");
-                    // done at first
-                    //SetValue(TracesGeneralDetailsProperty, value); OnTracesGeneralDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GeneralDetails");
-                    SetValue(TracesInfoTextDetailsProperty, false); OnTracesInfoTextDetailsChanged(false, true); GameLog.SetRepositoryToDebug("InfoTextDetails");
-                    SetValue(TracesIntelDetailsProperty, false); OnTracesIntelDetailsChanged(false, true); GameLog.SetRepositoryToDebug("IntelDetails");
-                    SetValue(TracesMapDataDetailsProperty, false); OnTracesMapDataDetailsChanged(false, true); GameLog.SetRepositoryToDebug("MapDataDetails");
-                    SetValue(TracesMultiPlayDetailsProperty, false); OnTracesMultiPlayDetailsChanged(false, true); GameLog.SetRepositoryToDebug("MultiPlayDetails");
-                    SetValue(TracesProductionDetailsProperty, false); OnTracesProductionDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ProductionDetails");
-                    //////SetValue(TracesReportErrorsDetailsProperty, false); OnTracesReportErrorsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ReportErrorsDetails");
-                    SetValue(TracesResearchDetailsProperty, false); OnTracesResearchDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ResearchDetails");
-                    SetValue(TracesSitRepsDetailsProperty, false); OnTracesSitRepsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SitRepsDetails");
-                    SetValue(TracesSaveLoadDetailsProperty, false); OnTracesSaveLoadDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SaveLoadDetails");
-                    SetValue(TracesShipsDetailsProperty, false); OnTracesShipsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ShipsDetails");
-                    SetValue(TracesShipProductionDetailsProperty, false); OnTracesShipProductionDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ShipProductionDetails");
-                    SetValue(TracesStationsDetailsProperty, false); OnTracesStationsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("StationsDetails");
-                    SetValue(TracesStructuresDetailsProperty, false); OnTracesStructuresDetailsChanged(false, true); GameLog.SetRepositoryToDebug("StructuresDetails");
-                    SetValue(TracesSystemAssaultDetailsProperty, false); OnTracesSystemAssaultDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SystemAssaultDetails");
-                    SetValue(TracesTestDetailsProperty, false); OnTracesTestDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TestDetails");
-                    SetValue(TracesTradeRoutesDetailsProperty, false); OnTracesTradeRoutesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutesDetails");
-                    SetValue(TracesUIDetailsProperty, false); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
-                    SetValue(TracesXMLCheckDetailsProperty, false); OnTracesXMLCheckDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheckDetails");
-                    SetValue(TracesXML2CSVOutputDetailsProperty, false); OnTracesXML2CSVOutputDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutputDetails");
+                    //SetValue(TracesAIDetailsProperty, false); OnTracesAIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("AIDetails");
+                    //SetValue(TracesAudioDetailsProperty, false); OnTracesAudioDetailsChanged(false, true); GameLog.SetRepositoryToDebug("AudioDetails");
+                    //SetValue(TracesCivsAndRacesDetailsProperty, false); OnTracesCivsAndRacesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("CivsAndRacesDetails");
+                    //SetValue(TracesColoniesDetailsProperty, false); OnTracesColoniesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ColoniesDetails");
+                    //SetValue(TracesCombatDetailsProperty, false); OnTracesCombatDetailsChanged(false, true); GameLog.SetRepositoryToDebug("CombatDetails");
+                    //SetValue(TracesCreditsDetailsProperty, false); OnTracesCreditsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("CreditsDetails");
+                    //SetValue(TracesDeuteriumDetailsProperty, false); OnTracesDeuteriumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DeuteriumDetails");
+                    //SetValue(TracesDilithiumDetailsProperty, false); OnTracesDilithiumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DilithiumDetails");
+                    //SetValue(TracesDuraniumDetailsProperty, false); OnTracesDuraniumDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DuraniumDetails");
+                    //SetValue(TracesDiplomacyDetailsProperty, false); OnTracesDiplomacyDetailsChanged(false, true); GameLog.SetRepositoryToDebug("DiplomacyDetails");
+                    //SetValue(TracesEnergyDetailsProperty, false); OnTracesEnergyDetailsChanged(false, true); GameLog.SetRepositoryToDebug("EnergyDetails");
+                    //SetValue(TracesEventsDetailsProperty, false); OnTracesEventsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("EventsDetails");
+                    //SetValue(TracesGalaxyGeneratorDetailsProperty, false); OnTracesGalaxyGeneratorDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GalaxyGeneratorDetails");
+                    //SetValue(TracesGameDataDetailsProperty, false); OnTracesGameDataDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GameDataDetails");
+                    //SetValue(TracesGameInitDataDetailsProperty, false); OnTracesGameInitDataDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GameInitDataDetails");
+                    //// done at first
+                    ////SetValue(TracesGeneralDetailsProperty, value); OnTracesGeneralDetailsChanged(false, true); GameLog.SetRepositoryToDebug("GeneralDetails");
+                    //SetValue(TracesInfoTextDetailsProperty, false); OnTracesInfoTextDetailsChanged(false, true); GameLog.SetRepositoryToDebug("InfoTextDetails");
+                    //SetValue(TracesIntelDetailsProperty, false); OnTracesIntelDetailsChanged(false, true); GameLog.SetRepositoryToDebug("IntelDetails");
+                    //SetValue(TracesMapDataDetailsProperty, false); OnTracesMapDataDetailsChanged(false, true); GameLog.SetRepositoryToDebug("MapDataDetails");
+                    //SetValue(TracesMultiPlayDetailsProperty, false); OnTracesMultiPlayDetailsChanged(false, true); GameLog.SetRepositoryToDebug("MultiPlayDetails");
+                    //SetValue(TracesProductionDetailsProperty, false); OnTracesProductionDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ProductionDetails");
+                    ////////SetValue(TracesReportErrorsDetailsProperty, false); OnTracesReportErrorsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ReportErrorsDetails");
+                    //SetValue(TracesResearchDetailsProperty, false); OnTracesResearchDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ResearchDetails");
+                    //SetValue(TracesSitRepsDetailsProperty, false); OnTracesSitRepsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SitRepsDetails");
+                    //SetValue(TracesSaveLoadDetailsProperty, false); OnTracesSaveLoadDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SaveLoadDetails");
+                    //SetValue(TracesShipsDetailsProperty, false); OnTracesShipsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ShipsDetails");
+                    //SetValue(TracesShipProductionDetailsProperty, false); OnTracesShipProductionDetailsChanged(false, true); GameLog.SetRepositoryToDebug("ShipProductionDetails");
+                    //SetValue(TracesStationsDetailsProperty, false); OnTracesStationsDetailsChanged(false, true); GameLog.SetRepositoryToDebug("StationsDetails");
+                    //SetValue(TracesStructuresDetailsProperty, false); OnTracesStructuresDetailsChanged(false, true); GameLog.SetRepositoryToDebug("StructuresDetails");
+                    //SetValue(TracesSystemAssaultDetailsProperty, false); OnTracesSystemAssaultDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SystemAssaultDetails");
+                    //SetValue(TracesTestDetailsProperty, false); OnTracesTestDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TestDetails");
+                    //SetValue(TracesTradeRoutesDetailsProperty, false); OnTracesTradeRoutesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutesDetails");
+                    //SetValue(TracesUIDetailsProperty, false); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
+                    //SetValue(TracesXMLCheckDetailsProperty, false); OnTracesXMLCheckDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheckDetails");
+                    //SetValue(TracesXML2CSVOutputDetailsProperty, false); OnTracesXML2CSVOutputDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutputDetails");
 
                     //SendKeys.SendWait("{ENTER}");  // doesn't work - close OptionsDialog ...(and reload)
                     //Thread.Sleep(1000);
@@ -1003,13 +1012,13 @@ namespace Supremacy.Client
 
         public bool Traces_SetSelection2
         {
-            get { return (bool)GetValue(Traces_SetSelection2Property); }
+            get => (bool)GetValue(Traces_SetSelection2Property);
             set
             {
                 SetValue(Traces_SetSelection2Property, value);
 
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** Selection 2 **) set to DEBUG (press ingame CTRL + C, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("         #### Log.Txt: 'Selection 2'         for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -1119,15 +1128,19 @@ namespace Supremacy.Client
 
         public bool TracesAI
         {
-            get { return (bool)GetValue(TracesAIProperty); }
+            get => (bool)GetValue(TracesAIProperty);
             set
             {
                 SetValue(TracesAIProperty, value);
                 //GameLog.Client.General.InfoFormat("AI = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("AI");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("AI");
+                }
             }
         }
 
@@ -1153,15 +1166,19 @@ namespace Supremacy.Client
 
         public bool TracesAIDetails
         {
-            get { return (bool)GetValue(TracesAIDetailsProperty); }
+            get => (bool)GetValue(TracesAIDetailsProperty);
             set
             {
                 SetValue(TracesAIDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesAIDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("AIDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("AIDetails");
+                }
             }
         }
         #endregion TracesAIDetails Property
@@ -1183,15 +1200,19 @@ namespace Supremacy.Client
 
         public bool TracesAudio
         {
-            get { return (bool)GetValue(TracesAudioProperty); }
+            get => (bool)GetValue(TracesAudioProperty);
             set
             {
                 SetValue(TracesAudioProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesAudio = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Audio");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Audio");
+                }
             }
         }
         //public bool EnableCombatScreen
@@ -1216,15 +1237,19 @@ namespace Supremacy.Client
             TracesAudioDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesAudioDetails
         {
-            get { return (bool)GetValue(TracesAudioDetailsProperty); }
+            get => (bool)GetValue(TracesAudioDetailsProperty);
             set
             {
                 SetValue(TracesAudioDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesAudioDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("AudioDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("AudioDetails");
+                }
             }
         }
         #endregion TracesAudioDetails Property
@@ -1244,15 +1269,19 @@ namespace Supremacy.Client
             TracesCivsAndRacesChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesCivsAndRaces
         {
-            get { return (bool)GetValue(TracesCivsAndRacesProperty); }
+            get => (bool)GetValue(TracesCivsAndRacesProperty);
             set
             {
                 SetValue(TracesCivsAndRacesProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("CivsAndRaces");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("CivsAndRaces");
+                }
             }
         }
         #endregion TracesCivsAndRaces
@@ -1273,15 +1302,19 @@ namespace Supremacy.Client
 
         public bool TracesCivsAndRacesDetails
         {
-            get { return (bool)GetValue(TracesCivsAndRacesDetailsProperty); }
+            get => (bool)GetValue(TracesCivsAndRacesDetailsProperty);
             set
             {
                 SetValue(TracesCivsAndRacesDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCivsAndRacesDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("CivsAndRacesDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("CivsAndRacesDetails");
+                }
             }
         }
         #endregion TracesCivsAndRacesDetails Property
@@ -1300,15 +1333,19 @@ namespace Supremacy.Client
             TracesColoniesChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesColonies
         {
-            get { return (bool)GetValue(TracesColoniesProperty); }
+            get => (bool)GetValue(TracesColoniesProperty);
             set
             {
                 SetValue(TracesColoniesProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesColonies = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Colonies");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Colonies");
+                }
             }
         }
         #endregion TracesColonies Property
@@ -1327,15 +1364,19 @@ namespace Supremacy.Client
             TracesColoniesDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesColoniesDetails
         {
-            get { return (bool)GetValue(TracesColoniesDetailsProperty); }
+            get => (bool)GetValue(TracesColoniesDetailsProperty);
             set
             {
                 SetValue(TracesColoniesDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesColoniesDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("ColoniesDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("ColoniesDetails");
+                }
             }
         }
         #endregion TracesColoniesDetails Property
@@ -1354,15 +1395,19 @@ namespace Supremacy.Client
             TracesCombatChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesCombat
         {
-            get { return (bool)GetValue(TracesCombatProperty); }
+            get => (bool)GetValue(TracesCombatProperty);
             set
             {
                 SetValue(TracesCombatProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCombat = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Combat");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Combat");
+                }
             }
         }
         #endregion TracesCombat Property
@@ -1381,15 +1426,19 @@ namespace Supremacy.Client
             TracesCombatDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesCombatDetails
         {
-            get { return (bool)GetValue(TracesCombatDetailsProperty); }
+            get => (bool)GetValue(TracesCombatDetailsProperty);
             set
             {
                 SetValue(TracesCombatDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCombatDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("CombatDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("CombatDetails");
+                }
             }
         }
         #endregion TracesCombatDetails Property
@@ -1408,15 +1457,19 @@ namespace Supremacy.Client
             TracesCreditsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesCredits
         {
-            get { return (bool)GetValue(TracesCreditsProperty); }
+            get => (bool)GetValue(TracesCreditsProperty);
             set
             {
                 SetValue(TracesCreditsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Credits");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Credits");
+                }
             }
         }
         #endregion TracesCredits
@@ -1435,15 +1488,19 @@ namespace Supremacy.Client
             TracesCreditsDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesCreditsDetails
         {
-            get { return (bool)GetValue(TracesCreditsDetailsProperty); }
+            get => (bool)GetValue(TracesCreditsDetailsProperty);
             set
             {
                 SetValue(TracesCreditsDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCreditsDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("CreditsDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("CreditsDetails");
+                }
             }
         }
         #endregion TracesCreditsDetails Property
@@ -1463,15 +1520,19 @@ namespace Supremacy.Client
             TracesDeuteriumChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDeuterium
         {
-            get { return (bool)GetValue(TracesDeuteriumProperty); }
+            get => (bool)GetValue(TracesDeuteriumProperty);
             set
             {
                 SetValue(TracesDeuteriumProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Deuterium");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Deuterium");
+                }
             }
         }
         #endregion TracesDeuterium
@@ -1490,15 +1551,19 @@ namespace Supremacy.Client
             TracesDeuteriumDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDeuteriumDetails
         {
-            get { return (bool)GetValue(TracesDeuteriumDetailsProperty); }
+            get => (bool)GetValue(TracesDeuteriumDetailsProperty);
             set
             {
                 SetValue(TracesDeuteriumDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesDeuteriumDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("DeuteriumDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("DeuteriumDetails");
+                }
             }
         }
         #endregion TracesDeuteriumDetails Property
@@ -1517,15 +1582,19 @@ namespace Supremacy.Client
             TracesDilithiumChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDilithium
         {
-            get { return (bool)GetValue(TracesDilithiumProperty); }
+            get => (bool)GetValue(TracesDilithiumProperty);
             set
             {
                 SetValue(TracesDilithiumProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Dilithium");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Dilithium");
+                }
             }
         }
         #endregion TracesDilithium
@@ -1544,15 +1613,19 @@ namespace Supremacy.Client
             TracesDilithiumDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDilithiumDetails
         {
-            get { return (bool)GetValue(TracesDilithiumDetailsProperty); }
+            get => (bool)GetValue(TracesDilithiumDetailsProperty);
             set
             {
                 SetValue(TracesDilithiumDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesDilithiumDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("DilithiumDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("DilithiumDetails");
+                }
             }
         }
         #endregion TracesDilithiumDetails Property
@@ -1571,15 +1644,19 @@ namespace Supremacy.Client
             TracesDuraniumChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDuranium
         {
-            get { return (bool)GetValue(TracesDuraniumProperty); }
+            get => (bool)GetValue(TracesDuraniumProperty);
             set
             {
                 SetValue(TracesDuraniumProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Duranium");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Duranium");
+                }
             }
         }
         #endregion TracesDuranium
@@ -1598,15 +1675,19 @@ namespace Supremacy.Client
             TracesDuraniumDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDuraniumDetails
         {
-            get { return (bool)GetValue(TracesDuraniumDetailsProperty); }
+            get => (bool)GetValue(TracesDuraniumDetailsProperty);
             set
             {
                 SetValue(TracesDuraniumDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesDuraniumDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("DuraniumDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("DuraniumDetails");
+                }
             }
         }
         #endregion TracesDuraniumDetails Property
@@ -1625,15 +1706,19 @@ namespace Supremacy.Client
             TracesDiplomacyChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDiplomacy
         {
-            get { return (bool)GetValue(TracesDiplomacyProperty); }
+            get => (bool)GetValue(TracesDiplomacyProperty);
             set
             {
                 SetValue(TracesDiplomacyProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesDiplomacy = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Diplomacy");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Diplomacy");
+                }
             }
         }
         #endregion TracesDiplomacy Property
@@ -1652,15 +1737,19 @@ namespace Supremacy.Client
             TracesDiplomacyDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesDiplomacyDetails
         {
-            get { return (bool)GetValue(TracesDiplomacyDetailsProperty); }
+            get => (bool)GetValue(TracesDiplomacyDetailsProperty);
             set
             {
                 SetValue(TracesDiplomacyDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesDiplomacyDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("DiplomacyDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("DiplomacyDetails");
+                }
             }
         }
         #endregion TracesDiplomacyDetails Property
@@ -1679,15 +1768,19 @@ namespace Supremacy.Client
             TracesEnergyChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesEnergy
         {
-            get { return (bool)GetValue(TracesEnergyProperty); }
+            get => (bool)GetValue(TracesEnergyProperty);
             set
             {
                 SetValue(TracesEnergyProperty, value);
                 //GameLog.Client.General.InfoFormat("Trace for Energy = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Energy");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Energy");
+                }
             }
         }
         #endregion TracesEnergy Property
@@ -1706,15 +1799,19 @@ namespace Supremacy.Client
             TracesEnergyDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesEnergyDetails
         {
-            get { return (bool)GetValue(TracesEnergyDetailsProperty); }
+            get => (bool)GetValue(TracesEnergyDetailsProperty);
             set
             {
                 SetValue(TracesEnergyDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesEnergyDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("EnergyDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("EnergyDetails");
+                }
             }
         }
         #endregion TracesEnergyDetails Property
@@ -1733,15 +1830,19 @@ namespace Supremacy.Client
             TracesEventsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesEvents
         {
-            get { return (bool)GetValue(TracesEventsProperty); }
+            get => (bool)GetValue(TracesEventsProperty);
             set
             {
                 SetValue(TracesEventsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesEvents = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Events");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Events");
+                }
             }
         }
         #endregion TracesEvents Property
@@ -1760,15 +1861,19 @@ namespace Supremacy.Client
             TracesEventsDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesEventsDetails
         {
-            get { return (bool)GetValue(TracesEventsDetailsProperty); }
+            get => (bool)GetValue(TracesEventsDetailsProperty);
             set
             {
                 SetValue(TracesEventsDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesEventsDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("EventsDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("EventsDetails");
+                }
             }
         }
         #endregion TracesEventsDetails Property
@@ -1788,15 +1893,19 @@ namespace Supremacy.Client
             TracesGalaxyGeneratorChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGalaxyGenerator
         {
-            get { return (bool)GetValue(TracesGalaxyGeneratorProperty); }
+            get => (bool)GetValue(TracesGalaxyGeneratorProperty);
             set
             {
                 SetValue(TracesGalaxyGeneratorProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesGalaxyGenerator = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("GalaxyGenerator");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("GalaxyGenerator");
+                }
             }
         }
         #endregion TracesGalaxyGenerator Property 
@@ -1815,15 +1924,19 @@ namespace Supremacy.Client
             TracesGalaxyGeneratorDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGalaxyGeneratorDetails
         {
-            get { return (bool)GetValue(TracesGalaxyGeneratorDetailsProperty); }
+            get => (bool)GetValue(TracesGalaxyGeneratorDetailsProperty);
             set
             {
                 SetValue(TracesGalaxyGeneratorDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesGalaxyGeneratorDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("GalaxyGeneratorDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("GalaxyGeneratorDetails");
+                }
             }
         }
         #endregion TracesGalaxyGeneratorDetails Property
@@ -1842,15 +1955,19 @@ namespace Supremacy.Client
             TracesGameDataChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGameData
         {
-            get { return (bool)GetValue(TracesGameDataProperty); }
+            get => (bool)GetValue(TracesGameDataProperty);
             set
             {
                 SetValue(TracesGameDataProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesGameData = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("GameData");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("GameData");
+                }
             }
         }
 
@@ -1887,15 +2004,19 @@ namespace Supremacy.Client
             TracesGameDataDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGameDataDetails
         {
-            get { return (bool)GetValue(TracesGameDataDetailsProperty); }
+            get => (bool)GetValue(TracesGameDataDetailsProperty);
             set
             {
                 SetValue(TracesGameDataDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesGameDataDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("GameDataDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("GameDataDetails");
+                }
             }
         }
         #endregion TracesGameDataDetails Property
@@ -1914,15 +2035,19 @@ namespace Supremacy.Client
             TracesGameInitDataChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGameInitData
         {
-            get { return (bool)GetValue(TracesGameInitDataProperty); }
+            get => (bool)GetValue(TracesGameInitDataProperty);
             set
             {
                 SetValue(TracesGameInitDataProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("GameInitData");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("GameInitData");
+                }
             }
         }
         #endregion TracesGameInitData
@@ -1941,15 +2066,19 @@ namespace Supremacy.Client
             TracesGameInitDataDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGameInitDataDetails
         {
-            get { return (bool)GetValue(TracesGameInitDataDetailsProperty); }
+            get => (bool)GetValue(TracesGameInitDataDetailsProperty);
             set
             {
                 SetValue(TracesGameInitDataDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesGameInitDataDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("GameInitDataDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("GameInitDataDetails");
+                }
             }
         }
         #endregion TracesGameInitDataDetails Property
@@ -1971,15 +2100,19 @@ namespace Supremacy.Client
             TracesInfoTextChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesInfoText
         {
-            get { return (bool)GetValue(TracesInfoTextProperty); }
+            get => (bool)GetValue(TracesInfoTextProperty);
             set
             {
                 SetValue(TracesInfoTextProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesInfoText = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("InfoText");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("InfoText");
+                }
             }
         }
         #endregion TracesInfoText Property
@@ -1998,15 +2131,19 @@ namespace Supremacy.Client
             TracesInfoTextDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesInfoTextDetails
         {
-            get { return (bool)GetValue(TracesInfoTextDetailsProperty); }
+            get => (bool)GetValue(TracesInfoTextDetailsProperty);
             set
             {
                 SetValue(TracesInfoTextDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesInfoTextDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("InfoTextDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("InfoTextDetails");
+                }
             }
         }
         #endregion TracesInfoTextDetails Property
@@ -2025,15 +2162,19 @@ namespace Supremacy.Client
             TracesIntelChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesIntel
         {
-            get { return (bool)GetValue(TracesIntelProperty); }
+            get => (bool)GetValue(TracesIntelProperty);
             set
             {
                 SetValue(TracesIntelProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesIntel = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Intel");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Intel");
+                }
             }
         }
         #endregion TracesIntel Property
@@ -2052,15 +2193,19 @@ namespace Supremacy.Client
             TracesIntelDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesIntelDetails
         {
-            get { return (bool)GetValue(TracesIntelDetailsProperty); }
+            get => (bool)GetValue(TracesIntelDetailsProperty);
             set
             {
                 SetValue(TracesIntelDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesIntelDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("IntelDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("IntelDetails");
+                }
             }
         }
         #endregion TracesIntelDetails Property
@@ -2080,15 +2225,19 @@ namespace Supremacy.Client
             TracesMapDataChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesMapData
         {
-            get { return (bool)GetValue(TracesMapDataProperty); }
+            get => (bool)GetValue(TracesMapDataProperty);
             set
             {
                 SetValue(TracesMapDataProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesMapData = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("MapData");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("MapData");
+                }
             }
         }
         #endregion TracesMapData Property
@@ -2107,15 +2256,19 @@ namespace Supremacy.Client
             TracesMapDataDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesMapDataDetails
         {
-            get { return (bool)GetValue(TracesMapDataDetailsProperty); }
+            get => (bool)GetValue(TracesMapDataDetailsProperty);
             set
             {
                 SetValue(TracesMapDataDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesMapDataDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("MapDataDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("MapDataDetails");
+                }
             }
         }
         #endregion TracesMapDataDetails Property
@@ -2135,15 +2288,19 @@ namespace Supremacy.Client
             TracesMultiPlayChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesMultiPlay
         {
-            get { return (bool)GetValue(TracesMultiPlayProperty); }
+            get => (bool)GetValue(TracesMultiPlayProperty);
             set
             {
                 SetValue(TracesMultiPlayProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesMultiPlay = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("MultiPlay");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("MultiPlay");
+                }
             }
         }
         #endregion TracesMultiPlay Property
@@ -2162,15 +2319,19 @@ namespace Supremacy.Client
             TracesMultiPlayDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesMultiPlayDetails
         {
-            get { return (bool)GetValue(TracesMultiPlayDetailsProperty); }
+            get => (bool)GetValue(TracesMultiPlayDetailsProperty);
             set
             {
                 SetValue(TracesMultiPlayDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesMultiPlayDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("MultiPlayDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("MultiPlayDetails");
+                }
             }
         }
         #endregion TracesMultiPlayDetails Property
@@ -2190,15 +2351,19 @@ namespace Supremacy.Client
             TracesProductionChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesProduction
         {
-            get { return (bool)GetValue(TracesProductionProperty); }
+            get => (bool)GetValue(TracesProductionProperty);
             set
             {
                 SetValue(TracesProductionProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesProduction = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Production");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Production");
+                }
             }
         }
         #endregion TracesProduction Property
@@ -2217,15 +2382,19 @@ namespace Supremacy.Client
             TracesProductionDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesProductionDetails
         {
-            get { return (bool)GetValue(TracesProductionDetailsProperty); }
+            get => (bool)GetValue(TracesProductionDetailsProperty);
             set
             {
                 SetValue(TracesProductionDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesProductionDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("ProductionDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("ProductionDetails");
+                }
             }
         }
         #endregion TracesProductionDetails Property
@@ -2246,15 +2415,19 @@ namespace Supremacy.Client
             TracesSitRepsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesSitReps
         {
-            get { return (bool)GetValue(TracesSitRepsProperty); }
+            get => (bool)GetValue(TracesSitRepsProperty);
             set
             {
                 SetValue(TracesSitRepsProperty, value);
                 //GameLog.Client.General.InfoFormat("SitReps = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("SitReps");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("SitReps");
+                }
             }
         }
 
@@ -2283,15 +2456,19 @@ namespace Supremacy.Client
             TracesSitRepsDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesSitRepsDetails
         {
-            get { return (bool)GetValue(TracesSitRepsDetailsProperty); }
+            get => (bool)GetValue(TracesSitRepsDetailsProperty);
             set
             {
                 SetValue(TracesSitRepsDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesSitRepsDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("SitRepsDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("SitRepsDetails");
+                }
             }
         }
         #endregion TracesSitRepsDetails Property
@@ -2312,8 +2489,8 @@ namespace Supremacy.Client
             TracesReportErrorsToEmailChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesReportErrorsToEmail
         {
-            get { return (bool)GetValue(ReportErrorsToEmailProperty); }
-            set { SetValue(ReportErrorsToEmailProperty, value); }
+            get => (bool)GetValue(ReportErrorsToEmailProperty);
+            set => SetValue(ReportErrorsToEmailProperty, value);
         }
         #endregion TracesReportErrorsToEmail
 
@@ -2332,15 +2509,19 @@ namespace Supremacy.Client
             TracesResearchChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesResearch
         {
-            get { return (bool)GetValue(TracesResearchProperty); }
+            get => (bool)GetValue(TracesResearchProperty);
             set
             {
                 SetValue(TracesResearchProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesResearch = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Research");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Research");
+                }
             }
         }
         #endregion TracesResearch Property
@@ -2359,15 +2540,19 @@ namespace Supremacy.Client
             TracesResearchDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesResearchDetails
         {
-            get { return (bool)GetValue(TracesResearchDetailsProperty); }
+            get => (bool)GetValue(TracesResearchDetailsProperty);
             set
             {
                 SetValue(TracesResearchDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesResearchDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("ResearchDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("ResearchDetails");
+                }
             }
         }
         #endregion TracesResearchDetails Property
@@ -2386,15 +2571,19 @@ namespace Supremacy.Client
             TracesSaveLoadChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesSaveLoad
         {
-            get { return (bool)GetValue(TracesSaveLoadProperty); }
+            get => (bool)GetValue(TracesSaveLoadProperty);
             set
             {
                 SetValue(TracesSaveLoadProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesSaveLoad = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("SaveLoad");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("SaveLoad");
+                }
             }
         }
         #endregion TracesSaveLoad Property
@@ -2413,15 +2602,19 @@ namespace Supremacy.Client
             TracesSaveLoadDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesSaveLoadDetails
         {
-            get { return (bool)GetValue(TracesSaveLoadDetailsProperty); }
+            get => (bool)GetValue(TracesSaveLoadDetailsProperty);
             set
             {
                 SetValue(TracesSaveLoadDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesSaveLoadDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("SaveLoadDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("SaveLoadDetails");
+                }
             }
         }
         #endregion TracesSaveLoadDetails Property
@@ -2440,15 +2633,19 @@ namespace Supremacy.Client
             TracesShipsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesShips
         {
-            get { return (bool)GetValue(TracesShipsProperty); }
+            get => (bool)GetValue(TracesShipsProperty);
             set
             {
                 SetValue(TracesShipsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesShips = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Ships");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Ships");
+                }
             }
         }
         #endregion TracesShips
@@ -2467,15 +2664,19 @@ namespace Supremacy.Client
             TracesShipsDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesShipsDetails
         {
-            get { return (bool)GetValue(TracesShipsDetailsProperty); }
+            get => (bool)GetValue(TracesShipsDetailsProperty);
             set
             {
                 SetValue(TracesShipsDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesShipsDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("ShipsDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("ShipsDetails");
+                }
             }
         }
         #endregion TracesShipsDetails Property
@@ -2494,15 +2695,19 @@ namespace Supremacy.Client
             TracesShipProductionChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesShipProduction
         {
-            get { return (bool)GetValue(TracesShipProductionProperty); }
+            get => (bool)GetValue(TracesShipProductionProperty);
             set
             {
                 SetValue(TracesShipProductionProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesShipProduction = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("ShipProduction");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("ShipProduction");
+                }
             }
         }
         #endregion TracesShipProduction Property
@@ -2521,15 +2726,19 @@ namespace Supremacy.Client
             TracesShipProductionDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesShipProductionDetails
         {
-            get { return (bool)GetValue(TracesShipProductionDetailsProperty); }
+            get => (bool)GetValue(TracesShipProductionDetailsProperty);
             set
             {
                 SetValue(TracesShipProductionDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesShipProductionDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("ShipProductionDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("ShipProductionDetails");
+                }
             }
         }
         #endregion TracesShipProductionDetails Property
@@ -2548,15 +2757,19 @@ namespace Supremacy.Client
             TracesStationsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesStations
         {
-            get { return (bool)GetValue(TracesStationsProperty); }
+            get => (bool)GetValue(TracesStationsProperty);
             set
             {
                 SetValue(TracesStationsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesStations = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Stations");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Stations");
+                }
             }
         }
         #endregion TracesStations Property
@@ -2575,15 +2788,19 @@ namespace Supremacy.Client
             TracesStationsDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesStationsDetails
         {
-            get { return (bool)GetValue(TracesStationsDetailsProperty); }
+            get => (bool)GetValue(TracesStationsDetailsProperty);
             set
             {
                 SetValue(TracesStationsDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesStationsDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("StationsDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("StationsDetails");
+                }
             }
         }
         #endregion TracesStationsDetails Property
@@ -2602,15 +2819,19 @@ namespace Supremacy.Client
             TracesStructuresChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesStructures
         {
-            get { return (bool)GetValue(TracesStructuresProperty); }
+            get => (bool)GetValue(TracesStructuresProperty);
             set
             {
                 SetValue(TracesStructuresProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesStructures = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Structures");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Structures");
+                }
             }
         }
         #endregion TracesStructures Property
@@ -2629,15 +2850,19 @@ namespace Supremacy.Client
             TracesStructuresDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesStructuresDetails
         {
-            get { return (bool)GetValue(TracesStructuresDetailsProperty); }
+            get => (bool)GetValue(TracesStructuresDetailsProperty);
             set
             {
                 SetValue(TracesStructuresDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesStructuresDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("StructuresDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("StructuresDetails");
+                }
             }
         }
         #endregion TracesStructuresDetails Property
@@ -2656,15 +2881,19 @@ namespace Supremacy.Client
             TracesSystemAssaultChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesSystemAssault
         {
-            get { return (bool)GetValue(TracesSystemAssaultProperty); }
+            get => (bool)GetValue(TracesSystemAssaultProperty);
             set
             {
                 SetValue(TracesSystemAssaultProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesSystemAssault = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("SystemAssault");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("SystemAssault");
+                }
             }
         }
         #endregion TracesSystemAssault Property
@@ -2683,15 +2912,19 @@ namespace Supremacy.Client
             TracesSystemAssaultDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesSystemAssaultDetails
         {
-            get { return (bool)GetValue(TracesSystemAssaultDetailsProperty); }
+            get => (bool)GetValue(TracesSystemAssaultDetailsProperty);
             set
             {
                 SetValue(TracesSystemAssaultDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesSystemAssaultDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("SystemAssaultDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("SystemAssaultDetails");
+                }
             }
         }
         #endregion TracesSystemAssaultDetails Property
@@ -2711,15 +2944,19 @@ namespace Supremacy.Client
             TracesTestChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesTest
         {
-            get { return (bool)GetValue(TracesTestProperty); }
+            get => (bool)GetValue(TracesTestProperty);
             set
             {
                 SetValue(TracesTestProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesTest = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("Test");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("Test");
+                }
             }
         }
         #endregion TracesTest Property  
@@ -2738,15 +2975,19 @@ namespace Supremacy.Client
             TracesTestDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesTestDetails
         {
-            get { return (bool)GetValue(TracesTestDetailsProperty); }
+            get => (bool)GetValue(TracesTestDetailsProperty);
             set
             {
                 SetValue(TracesTestDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesTestDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("TestDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("TestDetails");
+                }
             }
         }
         #endregion TracesTestDetails Property
@@ -2765,15 +3006,19 @@ namespace Supremacy.Client
             TracesTradeRoutesChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesTradeRoutes
         {
-            get { return (bool)GetValue(TracesTradeRoutesProperty); }
+            get => (bool)GetValue(TracesTradeRoutesProperty);
             set
             {
                 SetValue(TracesTradeRoutesProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesTradeRoutes = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("TradeRoutes");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("TradeRoutes");
+                }
             }
         }
         #endregion TracesTradeRoutes Property
@@ -2792,15 +3037,19 @@ namespace Supremacy.Client
             TracesTradeRoutesDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesTradeRoutesDetails
         {
-            get { return (bool)GetValue(TracesTradeRoutesDetailsProperty); }
+            get => (bool)GetValue(TracesTradeRoutesDetailsProperty);
             set
             {
                 SetValue(TracesTradeRoutesDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesTradeRoutesDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("TradeRoutesDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("TradeRoutesDetails");
+                }
             }
         }
         #endregion TracesTradeRoutesDetails Property
@@ -2819,15 +3068,19 @@ namespace Supremacy.Client
             TracesUIChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesUI
         {
-            get { return (bool)GetValue(TracesUIProperty); }
+            get => (bool)GetValue(TracesUIProperty);
             set
             {
                 SetValue(TracesUIProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesUI = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("UI");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("UI");
+                }
             }
         }
         #endregion TracesUI Property
@@ -2846,15 +3099,19 @@ namespace Supremacy.Client
             TracesUIDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesUIDetails
         {
-            get { return (bool)GetValue(TracesUIDetailsProperty); }
+            get => (bool)GetValue(TracesUIDetailsProperty);
             set
             {
                 SetValue(TracesUIDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesUIDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("UIDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("UIDetails");
+                }
             }
         }
         #endregion TracesUIDetails Property
@@ -2873,15 +3130,19 @@ namespace Supremacy.Client
             TracesXMLCheckChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesXMLCheck
         {
-            get { return (bool)GetValue(TracesXMLCheckProperty); }
+            get => (bool)GetValue(TracesXMLCheckProperty);
             set
             {
                 SetValue(TracesXMLCheckProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesXMLCheck = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("XMLCheck");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("XMLCheck");
+                }
             }
         }
         #endregion TracesXMLCheck
@@ -2900,15 +3161,19 @@ namespace Supremacy.Client
             TracesXMLCheckDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesXMLCheckDetails
         {
-            get { return (bool)GetValue(TracesXMLCheckDetailsProperty); }
+            get => (bool)GetValue(TracesXMLCheckDetailsProperty);
             set
             {
                 SetValue(TracesXMLCheckDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesXMLCheckDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("XMLCheckDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("XMLCheckDetails");
+                }
             }
         }
         #endregion TracesXMLCheckDetails Property
@@ -2928,7 +3193,7 @@ namespace Supremacy.Client
 
         public bool TracesXML2CSVOutput
         {
-            get { return (bool)GetValue(TracesXML2CSVOutputProperty); }
+            get => (bool)GetValue(TracesXML2CSVOutputProperty);
             set
             {
                 SetValue(TracesXML2CSVOutputProperty, value);
@@ -2938,7 +3203,9 @@ namespace Supremacy.Client
                     GameLog.SetRepositoryToDebug("XML2CSVOutput");
                 }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("XML2CSVOutput");
+                }
             }
         }
         #endregion TracesXML2CSVOutput
@@ -2957,15 +3224,19 @@ namespace Supremacy.Client
             TracesXML2CSVOutputDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesXML2CSVOutputDetails
         {
-            get { return (bool)GetValue(TracesXML2CSVOutputDetailsProperty); }
+            get => (bool)GetValue(TracesXML2CSVOutputDetailsProperty);
             set
             {
                 SetValue(TracesXML2CSVOutputDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesXML2CSVOutputDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("XML2CSVOutputDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("XML2CSVOutputDetails");
+                }
             }
         }
         #endregion TracesXML2CSVOutputDetails Property
@@ -2984,15 +3255,19 @@ namespace Supremacy.Client
             TracesGeneralChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGeneral
         {
-            get { return (bool)GetValue(TracesGeneralProperty); }
+            get => (bool)GetValue(TracesGeneralProperty);
             set
             {
                 SetValue(TracesGeneralProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesGeneral = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("General");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("General");
+                }
             }
         }
         #endregion TracesGeneral Property
@@ -3011,15 +3286,19 @@ namespace Supremacy.Client
             TracesGeneralDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool TracesGeneralDetails
         {
-            get { return (bool)GetValue(TracesGeneralDetailsProperty); }
+            get => (bool)GetValue(TracesGeneralDetailsProperty);
             set
             {
                 SetValue(TracesGeneralDetailsProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesGeneralDetails = {0}", value);
                 if (value == true)
+                {
                     GameLog.SetRepositoryToDebug("GeneralDetails");
+                }
                 else
+                {
                     GameLog.SetRepositoryToErrorOnly("GeneralDetails");
+                }
             }
         }
         #endregion TracesGeneralDetails Property
@@ -3041,8 +3320,8 @@ namespace Supremacy.Client
             TracesReportErrorsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         public bool ReportErrors
         {
-            get { return (bool)GetValue(ReportErrorsProperty); }
-            set { SetValue(ReportErrorsProperty, value); }
+            get => (bool)GetValue(ReportErrorsProperty);
+            set => SetValue(ReportErrorsProperty, value);
         }
         #endregion ReportErrors Property
 
@@ -3057,8 +3336,8 @@ namespace Supremacy.Client
 
         public double ClientWindowWidth
         {
-            get { return (double)GetValue(ClientWindowWidthProperty); }
-            set { SetValue(ClientWindowWidthProperty, value); }
+            get => (double)GetValue(ClientWindowWidthProperty);
+            set => SetValue(ClientWindowWidthProperty, value);
         }
         #endregion ClientWindowWidth Property
 
@@ -3073,8 +3352,8 @@ namespace Supremacy.Client
 
         public double ClientWindowHeight
         {
-            get { return (double)GetValue(ClientWindowHeightProperty); }
-            set { SetValue(ClientWindowHeightProperty, value); }
+            get => (double)GetValue(ClientWindowHeightProperty);
+            set => SetValue(ClientWindowHeightProperty, value);
         }
         #endregion ClientWindowHeight Property
 
@@ -3089,8 +3368,8 @@ namespace Supremacy.Client
 
         public double WidthSpecial1
         {
-            get { return (double)GetValue(WidthSpecial1Property); }
-            set { SetValue(WidthSpecial1Property, value); }
+            get => (double)GetValue(WidthSpecial1Property);
+            set => SetValue(WidthSpecial1Property, value);
         }
         #endregion WidthSpecial1 Property
 
@@ -3105,8 +3384,8 @@ namespace Supremacy.Client
 
         public double HeightSpecial1
         {
-            get { return (double)GetValue(HeightSpecial1Property); }
-            set { SetValue(HeightSpecial1Property, value); }
+            get => (double)GetValue(HeightSpecial1Property);
+            set => SetValue(HeightSpecial1Property, value);
         }
         #endregion HeightSpecial1 Property
 
@@ -3121,8 +3400,8 @@ namespace Supremacy.Client
 
         public double WidthSpecial2
         {
-            get { return (double)GetValue(WidthSpecial2Property); }
-            set { SetValue(WidthSpecial2Property, value); }
+            get => (double)GetValue(WidthSpecial2Property);
+            set => SetValue(WidthSpecial2Property, value);
         }
         #endregion WidthSpecial2 Property
 
@@ -3137,8 +3416,8 @@ namespace Supremacy.Client
 
         public double HeightSpecial2
         {
-            get { return (double)GetValue(HeightSpecial2Property); }
-            set { SetValue(HeightSpecial2Property, value); }
+            get => (double)GetValue(HeightSpecial2Property);
+            set => SetValue(HeightSpecial2Property, value);
         }
         #endregion HeightSpecial2 Property
 
@@ -3153,8 +3432,8 @@ namespace Supremacy.Client
 
         public double WidthSpecial3
         {
-            get { return (double)GetValue(WidthSpecial3Property); }
-            set { SetValue(WidthSpecial3Property, value); }
+            get => (double)GetValue(WidthSpecial3Property);
+            set => SetValue(WidthSpecial3Property, value);
         }
         #endregion WidthSpecial3 Property
 
@@ -3169,8 +3448,8 @@ namespace Supremacy.Client
 
         public double HeightSpecial3
         {
-            get { return (double)GetValue(HeightSpecial3Property); }
-            set { SetValue(HeightSpecial3Property, value); }
+            get => (double)GetValue(HeightSpecial3Property);
+            set => SetValue(HeightSpecial3Property, value);
         }
         #endregion HeightSpecial3 Property
 
@@ -3185,8 +3464,8 @@ namespace Supremacy.Client
 
         public bool EnableScreenTransitions
         {
-            get { return (bool)GetValue(EnableScreenTransitionsProperty); }
-            set { SetValue(EnableScreenTransitionsProperty, value); }
+            get => (bool)GetValue(EnableScreenTransitionsProperty);
+            set => SetValue(EnableScreenTransitionsProperty, value);
         }
         #endregion EnableScreenTransitions Property
 
@@ -3201,8 +3480,8 @@ namespace Supremacy.Client
 
         public int DesiredAnimationFrameRate
         {
-            get { return (int)GetValue(DesiredAnimationFrameRateProperty); }
-            set { SetValue(DesiredAnimationFrameRateProperty, value); }
+            get => (int)GetValue(DesiredAnimationFrameRateProperty);
+            set => SetValue(DesiredAnimationFrameRateProperty, value);
         }
         #endregion DesiredAnimationFrameRate Property
 
@@ -3216,7 +3495,9 @@ namespace Supremacy.Client
         bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier)
         {
             if (!_attachedValues.Remove(attachableMemberIdentifier))
+            {
                 return false;
+            }
 
             OnPropertyChanged(attachableMemberIdentifier.MemberName);
             return true;

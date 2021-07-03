@@ -20,7 +20,9 @@ namespace Supremacy.Effects
         public static DynamicObjectType FromSystemType([NotNull] Type systemType)
         {
             if (systemType == null)
+            {
                 throw new ArgumentNullException("systemType");
+            }
 
             if (!typeof(DynamicObject).IsAssignableFrom(systemType))
             {
@@ -67,14 +69,18 @@ namespace Supremacy.Effects
             DynamicObjectType dType = (DynamicObjectType)ClrTypeMappings[systemType];
 
             if (dType != null)
+            {
                 return dType;
+            }
 
             dType = new DynamicObjectType { _systemType = systemType };
 
             ClrTypeMappings[systemType] = dType;
 
             if (systemType != typeof(DynamicObject))
+            {
                 dType._baseDType = FromSystemTypeRecursive(systemType.BaseType);
+            }
 
             dType._id = DynamicObjectTypeCount++;
 
@@ -120,7 +126,9 @@ namespace Supremacy.Effects
                 do
                 {
                     if (dynamicObjectType.Id == Id)
+                    {
                         return true;
+                    }
 
                     dynamicObjectType = dynamicObjectType._baseDType;
                 }
@@ -153,7 +161,9 @@ namespace Supremacy.Effects
                 while (dynamicObjectType1 != null)
                 {
                     if (dynamicObjectType1.Id == dynamicObjectType.Id)
+                    {
                         return true;
+                    }
 
                     dynamicObjectType1 = dynamicObjectType1._baseDType;
                 }

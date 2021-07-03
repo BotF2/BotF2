@@ -31,7 +31,7 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            return !DoResolveBase(parseContext) ? null : (this);
+            return !DoResolveBase(parseContext) ? null : this;
         }
 
         private bool DoResolveBase(ParseContext ec)

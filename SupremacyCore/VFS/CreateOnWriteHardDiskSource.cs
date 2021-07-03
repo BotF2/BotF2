@@ -30,7 +30,10 @@ namespace Supremacy.VFS
             {
                 CreateOnWriteStream openCreateStream = _createStreams.FirstOrDefault(o => StringComparer.Equals(o.VirtualPath, path));
                 if (openCreateStream != null)
+                {
                     return false;
+                }
+
                 return base.CanAccessFile(path, minimumShareLevel);
             }
         }
@@ -46,13 +49,16 @@ namespace Supremacy.VFS
             _createStreams = new List<CreateOnWriteStream>();
         }
 
-        protected override sealed Stream InternalCreateFile(string resolvedName)
+        protected sealed override Stream InternalCreateFile(string resolvedName)
         {
             CreateOnWriteStream stream;
             lock (_createStreamsLock)
             {
                 if (_createStreams.Any(o => StringComparer.Equals(o.ResolvedPath, resolvedName)))
+                {
                     throw new UnauthorizedAccessException("File is in use.");
+                }
+
                 EnsureDirectory(resolvedName);
                 stream = new CreateOnWriteStream(resolvedName);
                 _createStreams.Add(stream);
@@ -69,10 +75,13 @@ namespace Supremacy.VFS
         private void EndCreateStreamTracking([NotNull] CreateOnWriteStream stream)
         {
             if (stream == null)
+            {
                 throw new ArgumentNullException("stream");
+            }
+
             lock (_createStreamsLock)
             {
-                _createStreams.Remove(stream);
+                _ = _createStreams.Remove(stream);
             }
         }
 
@@ -101,11 +110,17 @@ namespace Supremacy.VFS
                 get
                 {
                     if (_isStreamCreated)
+                    {
                         return base.Length;
+                    }
+
                     lock (_createStreamLock)
                     {
                         if (_isStreamCreated)
+                        {
                             return base.Length;
+                        }
+
                         return 0;
                     }
                 }
@@ -116,11 +131,17 @@ namespace Supremacy.VFS
                 get
                 {
                     if (_isStreamCreated)
+                    {
                         return base.Position;
+                    }
+
                     lock (_createStreamLock)
                     {
                         if (_isStreamCreated)
+                        {
                             return base.Position;
+                        }
+
                         return 0;
                     }
                 }
@@ -134,18 +155,22 @@ namespace Supremacy.VFS
             private void EnsureBaseStream()
             {
                 if (_isStreamCreated)
+                {
                     return;
+                }
+
                 lock (_createStreamLock)
                 {
                     if (_isStreamCreated)
+                    {
                         return;
+                    }
+
                     VerifyNotDisposed();
                     BaseStream = File.Open(ResolvedPath, FileMode.Create, Access, Share);
                     _isStreamCreated = true;
 
-                    EventHandler handler = BaseStreamCreated;
-                    if (handler != null)
-                        handler(this, EventArgs.Empty);
+                    BaseStreamCreated?.Invoke(this, EventArgs.Empty);
                 }
             }
 

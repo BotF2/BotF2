@@ -12,13 +12,10 @@ namespace Supremacy.Diplomacy.Visitors
 
         private CreditObligationFulfillmentVisitor([NotNull] IAgreement agreement)
         {
-            if (agreement == null)
-                throw new ArgumentNullException("agreement");
-
-            _agreement = agreement;
+            _agreement = agreement ?? throw new ArgumentNullException("agreement");
         }
 
-        public new static void Visit(IAgreement agreement)
+        public static new void Visit(IAgreement agreement)
         {
             ((AgreementVisitor)new CreditObligationFulfillmentVisitor(agreement)).Visit(agreement);
         }
@@ -27,7 +24,9 @@ namespace Supremacy.Diplomacy.Visitors
         {
             CreditsClauseData creditsData = clause.GetData<CreditsClauseData>();
             if (creditsData == null)
+            {
                 return;
+            }
 
             TransferCredits(creditsData, _agreement.Proposal.Sender, _agreement.Proposal.Recipient);
         }
@@ -36,7 +35,9 @@ namespace Supremacy.Diplomacy.Visitors
         {
             CreditsClauseData creditsData = clause.GetData<CreditsClauseData>();
             if (creditsData == null)
+            {
                 return;
+            }
 
             TransferCredits(creditsData, _agreement.Proposal.Recipient, _agreement.Proposal.Sender);
         }
@@ -49,13 +50,15 @@ namespace Supremacy.Diplomacy.Visitors
             int creditsToTransfer = creditsData.RecurringAmount;
 
             if (GameContext.Current.TurnNumber == _agreement.StartTurn)
+            {
                 creditsToTransfer += creditsData.ImmediateAmount;
+            }
 
             //senderDiplomat.OwnerTreasury.Subtract(creditsToTransfer);
             //recipientDiplomat.OwnerTreasury.Add(creditsToTransfer);
 
-            CivilizationManager.For(senderDiplomat.Owner).Credits.AdjustCurrent(-creditsToTransfer);
-            CivilizationManager.For(recipientDiplomat.Owner).Credits.AdjustCurrent(creditsToTransfer);
+            _ = CivilizationManager.For(senderDiplomat.Owner).Credits.AdjustCurrent(-creditsToTransfer);
+            _ = CivilizationManager.For(recipientDiplomat.Owner).Credits.AdjustCurrent(creditsToTransfer);
         }
     }
 }

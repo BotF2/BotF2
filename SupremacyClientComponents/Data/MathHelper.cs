@@ -27,9 +27,15 @@ namespace Supremacy.Client.Data
                     value = Math.Ceiling(value);
 
                     if ((mode == RoundMode.CeilingToEven) && (value % 2 == 1))
+                    {
                         value++;
+                    }
+
                     if ((mode == RoundMode.CeilingToOdd) && (value % 2 == 0))
+                    {
                         value++;
+                    }
+
                     break;
                 case RoundMode.Floor:
                 case RoundMode.FloorToEven:
@@ -38,9 +44,15 @@ namespace Supremacy.Client.Data
                     value = Math.Floor(value);
 
                     if ((mode == RoundMode.FloorToEven) && (value % 2 == 1))
+                    {
                         value--;
+                    }
+
                     if ((mode == RoundMode.FloorToOdd) && (value % 2 == 0))
+                    {
                         value--;
+                    }
+
                     break;
                 case RoundMode.Round:
 

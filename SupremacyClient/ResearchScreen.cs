@@ -71,7 +71,9 @@ namespace Supremacy.Client
 
 
             if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
+            {
                 Resources.MergedDictionaries.Add(themeResources);
+            }
         }
 
         private void LoadEncyclopediaEntries()
@@ -86,7 +88,9 @@ namespace Supremacy.Client
             foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
                 if (DiplomacyHelper.IsMember(civ, playerCiv))
+                {
                     techTree.Merge(GameContext.Current.TechTrees[civ]);
+                }
             }
 
             IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
@@ -98,13 +102,13 @@ namespace Supremacy.Client
                              select raceEntry
                          )
                 .Concat(
-                (
+
                     from design in techTree
                     where TechTreeHelper.MeetsTechLevels(civManager, design)
                     let designEntry = design as IEncyclopediaEntry
                     where designEntry != null
                     select designEntry
-                ))
+                )
                 .OrderBy(o => o.EncyclopediaHeading)
                 .GroupBy(o => o.EncyclopediaCategory)
                 .OrderBy(o => o.Key);
@@ -136,7 +140,9 @@ namespace Supremacy.Client
             itemStyle.Seal();
 
             if (_encyclopediaEntryListView == null)
+            {
                 return;
+            }
 
             _encyclopediaEntryListView.Items.Clear();
 
@@ -154,22 +160,28 @@ namespace Supremacy.Client
                 groupItem.ItemsSource = entriesView;
                 //groupItem.IsExpanded = true;
                 groupItem.IsExpanded = false;
-                _encyclopediaEntryListView.Items.Add(groupItem);
+                _ = _encyclopediaEntryListView.Items.Add(groupItem);
             }
         }
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            string searchText = String.Empty;
+            string searchText = string.Empty;
 
             if (!(value is IEncyclopediaEntry entry))
+            {
                 return false;
+            }
 
             if (_searchText != null)
+            {
                 searchText = _searchText.Text.Trim();
+            }
 
-            if (searchText == String.Empty)
+            if (searchText == string.Empty)
+            {
                 return true;
+            }
 
             string[] words = searchText.Split(
                 new[] { ' ', ',', ';' },
@@ -178,8 +190,8 @@ namespace Supremacy.Client
             foreach (string word in words)
             {
                 string lcWord = word.ToLowerInvariant();
-                return (entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
-                        || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord));
+                return entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
+                        || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord);
             }
 
             return false;
@@ -196,7 +208,9 @@ namespace Supremacy.Client
             }
 
             if (_researchFieldItemsControl == null)
+            {
                 return;
+            }
 
             BuildResearchFields();
             _researchFieldItemsControl.Child = _researchFieldGrid;
@@ -219,7 +233,7 @@ namespace Supremacy.Client
                 dataContainer.Content = data;
                 dataContainer.SetValue(Grid.ColumnProperty, column++);
 
-                _researchFieldGrid.Children.Add(dataContainer);
+                _ = _researchFieldGrid.Children.Add(dataContainer);
             }
         }
 
@@ -243,7 +257,7 @@ namespace Supremacy.Client
                     {
                         if (internalGrid != null)
                         {
-                            _researchMatrixGrid.Children.Add(internalGrid);
+                            _ = _researchMatrixGrid.Children.Add(internalGrid);
                         }
                         row = data.TechLevel;
                         internalRow = 0;
@@ -272,11 +286,13 @@ namespace Supremacy.Client
                     dataContainer.SetValue(Grid.RowProperty, internalRow++);
                     dataContainer.MouseLeftButtonDown += ApplicationContainer_MouseLeftButtonDown;
                     if (internalGrid != null)
-                        internalGrid.Children.Add(dataContainer);
+                    {
+                        _ = internalGrid.Children.Add(dataContainer);
+                    }
                 }
                 if (internalGrid != null)
                 {
-                    _researchMatrixGrid.Children.Add(internalGrid);
+                    _ = _researchMatrixGrid.Children.Add(internalGrid);
                 }
             }
         }
@@ -361,7 +377,9 @@ namespace Supremacy.Client
         private FlowDocument GenerateEncyclopediaDocument(IEncyclopediaEntry entry)
         {
             if (entry == null)
+            {
                 return new FlowDocument();
+            }
 
             TechObjectDesign design = entry as TechObjectDesign;
             FlowDocument doc = new FlowDocument();
@@ -379,7 +397,9 @@ namespace Supremacy.Client
             };
 
             if (entry.EncyclopediaCategory == EncyclopediaCategory.Races)
+            {
                 doc.Blocks.Add(headerBlock);
+            }
 
             doc.FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily;
             doc.FontSize = 12d * 96d / 72d;
@@ -396,7 +416,9 @@ namespace Supremacy.Client
                 StringSplitOptions.RemoveEmptyEntries).Select(o => new Paragraph(new Run(o))).ToList();
 
             if (entry.EncyclopediaCategory == EncyclopediaCategory.Races)
+            {
                 doc.Blocks.AddRange(paragraphs);
+            }
 
             Paragraph firstParagraph = paragraphs.FirstOrDefault();
             if (firstParagraph == null)
@@ -448,9 +470,13 @@ namespace Supremacy.Client
                 };
 
                 if (firstParagraph.Inlines.Any())
+                {
                     firstParagraph.Inlines.InsertBefore(firstParagraph.Inlines.First(), imageFloater);
+                }
                 else
+                {
                     firstParagraph.Inlines.Add(imageFloater);
+                }
             }
             // END of Encyclopedia-HEADER
 
@@ -492,7 +518,9 @@ namespace Supremacy.Client
                     TextBlock techText = new TextBlock();
 
                     if (design.TechRequirements[techCategory] < 1)
+                    {
                         techIcon.Opacity = 0.25;
+                    }
 
                     ImageBrush imageBrush = new ImageBrush(
                         fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
@@ -524,7 +552,7 @@ namespace Supremacy.Client
                     techText.VerticalAlignment = VerticalAlignment.Bottom;
 
                     techIcon.Child = new Grid { Children = { techTextShadow, techText } };
-                    techIcon.ToolTip = String.Format(
+                    techIcon.ToolTip = string.Format(
                         "{0} Level {1}",
                         ResourceManager.GetString(field.Name),
                         design.TechRequirements[techCategory]);
@@ -532,7 +560,7 @@ namespace Supremacy.Client
                     techIcon.UseLayoutRounding = true;
                     techIcon.CacheMode = new BitmapCache { SnapsToDevicePixels = true };
 
-                    BindingOperations.SetBinding(
+                    _ = BindingOperations.SetBinding(
                         techIcon.CacheMode,
                         BitmapCache.RenderAtScaleProperty,
                         new Binding
@@ -592,7 +620,7 @@ namespace Supremacy.Client
 
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 (Action)RefreshEncyclopediaEntries);
         }
@@ -600,13 +628,17 @@ namespace Supremacy.Client
         private void RefreshEncyclopediaEntries()
         {
             if (_encyclopediaEntryListView == null)
+            {
                 return;
+            }
 
             IEnumerable<ICollectionView> groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
                                                        select groupItem.ItemsSource).OfType<ICollectionView>();
 
             foreach (ICollectionView groupView in groupViews)
+            {
                 groupView.Refresh();
+            }
         }
 
         protected override Size ArrangeOverride(Size arrangeBounds)
@@ -615,14 +647,14 @@ namespace Supremacy.Client
             foreach (ColumnDefinition column in _researchFieldGrid.ColumnDefinitions)
             {
                 column.Width = new GridLength(
-                    (1.0 / _researchFieldGrid.ColumnDefinitions.Count)
+                    1.0 / _researchFieldGrid.ColumnDefinitions.Count
                     * _researchMatrixHost.ActualWidth,
                     GridUnitType.Pixel);
             }
             foreach (ColumnDefinition column in _researchMatrixGrid.ColumnDefinitions)
             {
                 column.Width = new GridLength(
-                    (1.0 / _researchMatrixGrid.ColumnDefinitions.Count)
+                    1.0 / _researchMatrixGrid.ColumnDefinitions.Count
                     * _researchMatrixHost.ActualWidth,
                     GridUnitType.Pixel);
             }
@@ -658,7 +690,9 @@ namespace Supremacy.Client
         public void SelectApplication(ResearchApplication application)
         {
             if (_researchMatrixGrid == null)
+            {
                 return;
+            }
 
             FrameworkElement parent = _researchMatrixGrid.Parent as FrameworkElement;
             while ((parent != null)
@@ -756,7 +790,7 @@ namespace Supremacy.Client
                 StringBuilder result = new StringBuilder(_application.Level + " > " + ResourceManager.GetString(_application.Name));
                 if (IsResearching)
                 {
-                    result.AppendFormat(
+                    _ = result.AppendFormat(
                         " ( {0:0%} )",
                         _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
 
@@ -784,7 +818,7 @@ namespace Supremacy.Client
 
                 if (IsResearching)
                 {
-                    result.AppendFormat(
+                    _ = result.AppendFormat(
                         " ({0:0%})",
                         _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
 

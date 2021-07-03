@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -46,7 +45,7 @@ namespace Supremacy.Client
         private readonly Civilization _onlyFireIfFiredAppone;
         private Civilization _theTargeted1Civ;
         private Civilization _theTargeted2Civ;
-        private IAppContext _appContext;
+        private readonly IAppContext _appContext;
 
 
         public CombatWindow()
@@ -54,7 +53,7 @@ namespace Supremacy.Client
             InitializeComponent();
 
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
-            ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
+            _ = ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
             DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 
             FriendlyStationItem.HeaderTemplate = itemTemplate;
@@ -106,7 +105,7 @@ namespace Supremacy.Client
         private void HandleCombatUpdate(CombatUpdate update)
         {
             _update = update;
-            string _report = _update.CombatID + ": " + "Combat at " + _update.Location
+            string _text = _update.CombatID + ": " + "Combat at " + _update.Location
                 + " > " + _update.FriendlyAssets.Count() + " on our side - "
                 + _update.HostileAssets.Count() + " hostile "
                 ;
@@ -119,7 +118,7 @@ namespace Supremacy.Client
                 if (assets.Owner == _appContext.LocalPlayer.Empire)
                 {
                     _playerAssets = assets;
-                    _playerAssets.CombatID = this._update.CombatID;
+                    _playerAssets.CombatID = _update.CombatID;
                     break;
                 }
                 else
@@ -144,34 +143,34 @@ namespace Supremacy.Client
 
                 if (_update.IsStandoff)
                 {
-                    string _standoffText = String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
+                    string _standoffText = string.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
                         + _standoffText;
-                    SubHeaderText.Text = String.Format(
+                    SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
                         _update.Sector.Name);
-                    _report += _standoffText + " - no winner";
+                    _text += _standoffText + " - no winner";
 
                     CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location, _report));
+                    playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location, _text));
 
                     playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
-                        String.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
+                        string.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
 
                 }
                 else if (_playerAssets.HasSurvivingAssets)
                 {
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-                        + String.Format(ResourceManager.GetString("COMBAT_VICTORY"));
-                    SubHeaderText.Text = String.Format(
+                        + string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
+                    SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_VICTORY"),
                         _update.Sector.Name);
                 }
                 else
                 {
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-                        + String.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
-                    SubHeaderText.Text = String.Format(
+                        + string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
+                    SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_DEFEAT"),
                         _update.Sector.Name);
                 }
@@ -180,16 +179,18 @@ namespace Supremacy.Client
             {
                 HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER"); // + ": "
                                                                               //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
-                SubHeaderText.Text = String.Format(
+                SubHeaderText.Text = string.Format(
                     ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
                     _update.Sector.Name);
                 SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
                 {
                     if (File.Exists("Resources/SoundFX/REDALERT.wav"))
+                    {
                         soundPlayer.Play();
+                    }
                 }
             }
-            SubHeader2Text.Text = String.Format(
+            SubHeader2Text.Text = string.Format(
                 ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
                 _update.Sector.Name);
 
@@ -204,9 +205,9 @@ namespace Supremacy.Client
             //We need at least 3 ships to create a formation
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat
-            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0)); // && fa.Owner != fa.Sector.Station.Owner);
+            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0); // && fa.Owner != fa.Sector.Station.Owner);
             //Can hail
-            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null)); //(update.RoundNumber == 1);
+            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null); //(update.RoundNumber == 1);
 
             UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
@@ -215,7 +216,9 @@ namespace Supremacy.Client
             LowerButtonsPanel.IsEnabled = true;
 
             if (!IsVisible)
-                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
+            {
+                _ = Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
+            }
         }
 
         private void ClearUnitTrees()
@@ -258,7 +261,7 @@ namespace Supremacy.Client
                 {
                     foreach (CombatUnit shipStats in friendlyAssets.CombatShips)
                     {
-                        FriendlyCombatantItems.Items.Add(shipStats);
+                        _ = FriendlyCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
 
                     }
@@ -267,25 +270,25 @@ namespace Supremacy.Client
                 {
                     foreach (CombatUnit shipStats in friendlyAssets.NonCombatShips)
                     {
-                        FriendlyNonCombatantItems.Items.Add(shipStats);
+                        _ = FriendlyNonCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
 
                     }
                 }
                 foreach (CombatUnit shipStats in friendlyAssets.DestroyedShips)
                 {
-                    FriendlyDestroyedItems.Items.Add(shipStats);
+                    _ = FriendlyDestroyedItems.Items.Add(shipStats);
 
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
                 {
-                    FriendlyAssimilatedItems.Items.Add(shipStats);
+                    _ = FriendlyAssimilatedItems.Items.Add(shipStats);
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
                 {
-                    FriendlyEscapedItems.Items.Add(shipStats);
+                    _ = FriendlyEscapedItems.Items.Add(shipStats);
 
                 }
 
@@ -294,7 +297,7 @@ namespace Supremacy.Client
                 ;
                 foreach (Civilization Friend in _friendlyCivs)
                 {
-                    FriendCivilizationsItems.Items.Add(Friend); // a template for rach other civ
+                    _ = FriendCivilizationsItems.Items.Add(Friend); // a template for rach other civ
                     GameLog.Core.Combat.DebugFormat("_friendlyCivs containing = {0}", Friend.ShortName);
                 }
 
@@ -314,39 +317,39 @@ namespace Supremacy.Client
                 }
                 foreach (CombatUnit shipStats in hostileAssets.CombatShips)
                 {
-                    HostileCombatantItems.Items.Add(shipStats);
+                    _ = HostileCombatantItems.Items.Add(shipStats);
                     otherCivs.Add(shipStats.Owner);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.NonCombatShips)
                 {
-                    HostileNonCombatantItems.Items.Add(shipStats);
+                    _ = HostileNonCombatantItems.Items.Add(shipStats);
                     otherCivs.Add(shipStats.Owner);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.EscapedShips)
                 {
-                    HostileEscapedItems.Items.Add(shipStats);
+                    _ = HostileEscapedItems.Items.Add(shipStats);
 
                 }
                 foreach (CombatUnit shipStats in hostileAssets.DestroyedShips)
                 {
-                    HostileDestroyedItems.Items.Add(shipStats);
+                    _ = HostileDestroyedItems.Items.Add(shipStats);
 
                 }
                 foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
                 {
-                    HostileAssimilatedItems.Items.Add(shipStats);
+                    _ = HostileAssimilatedItems.Items.Add(shipStats);
                 }
                 _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field (a list) _otherCivs
 
                 foreach (Civilization Other in _otherCivs)
                 {
-                    OtherCivilizationsSummaryItem1.Items.Add(Other); // a template for rach other civ
+                    _ = OtherCivilizationsSummaryItem1.Items.Add(Other); // a template for rach other civ
                     GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Other.ShortName);
 
                 }
 
             }
-            OtherCivilizationsSummaryItem1.Items.Add(_onlyFireIfFiredAppone);
+            _ = OtherCivilizationsSummaryItem1.Items.Add(_onlyFireIfFiredAppone);
             ShowHideUnitTrees();
         }
 
@@ -394,12 +397,15 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            if (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-                || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))))
+            if (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))
+                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
             {
                 TransportsButton.IsEnabled = true;
             }
-            else TransportsButton.IsEnabled = false;
+            else
+            {
+                TransportsButton.IsEnabled = false;
+            }
 
             //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
             GameLog.Core.CombatDetails.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
@@ -422,12 +428,16 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            if (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-               || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))))
+            if (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))
+               || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
             {
                 TransportsButton.IsEnabled = true;
             }
-            else TransportsButton.IsEnabled = false;
+            else
+            {
+                TransportsButton.IsEnabled = false;
+            }
+
             GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }
 
@@ -435,20 +445,35 @@ namespace Supremacy.Client
         {
             CombatOrder order = CombatOrder.Retreat;
             if (sender == EngageButton)
+            {
                 order = CombatOrder.Engage;
+            }
+
             if (sender == TransportsButton)
+            {
                 order = CombatOrder.Transports;
+            }
+
             if (sender == FormationButton)
+            {
                 order = CombatOrder.Formation;
+            }
+
             if (sender == RushButton)
+            {
                 order = CombatOrder.Rush;
+            }
+
             if (sender == HailButton)
+            {
                 order = CombatOrder.Hail;
+            }
+
             if (sender == EscapeButton)
             {
                 order = CombatOrder.Retreat;
                 DialogResult = true;
-                this.Close();
+                Close();
             }
 
             GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);

@@ -182,23 +182,31 @@ namespace Supremacy.IO.Compression
                         uint index = D_INDEX1(ip);
                         byte* pos = ip - (ip - dict[index]);
                         if (pos < input || (offset = (uint)(ip - pos)) <= 0 || offset > M4_MAX_OFFSET)
+                        {
                             literal = true;
+                        }
                         else if (offset <= M2_MAX_OFFSET || pos[3] == ip[3]) { }
                         else
                         {
                             index = D_INDEX2(index);
                             pos = ip - (ip - dict[index]);
                             if (pos < input || (offset = (uint)(ip - pos)) <= 0 || offset > M4_MAX_OFFSET)
+                            {
                                 literal = true;
+                            }
                             else if (offset <= M2_MAX_OFFSET || pos[3] == ip[3]) { }
                             else
+                            {
                                 literal = true;
+                            }
                         }
 
                         if (!literal)
                         {
-                            if (*((ushort*)pos) == *((ushort*)ip) && pos[2] == ip[2])
+                            if (*(ushort*)pos == *(ushort*)ip && pos[2] == ip[2])
+                            {
                                 match = true;
+                            }
                         }
 
                         literal = false;
@@ -207,7 +215,10 @@ namespace Supremacy.IO.Compression
                             dict[index] = ip;
                             ++ip;
                             if (ip >= ip_end)
+                            {
                                 break;
+                            }
+
                             continue;
                         }
                         match = false;
@@ -218,10 +229,12 @@ namespace Supremacy.IO.Compression
                             if (t <= 3)
                             {
                                 Debug.Assert(op - 2 > output);
-                                op[-2] |= (byte)(t);
+                                op[-2] |= (byte)t;
                             }
                             else if (t <= 18)
+                            {
                                 *op++ = (byte)(t - 3);
+                            }
                             else
                             {
                                 uint tt = t - 18;
@@ -232,7 +245,7 @@ namespace Supremacy.IO.Compression
                                     *op++ = 0;
                                 }
                                 Debug.Assert(tt > 0);
-                                *op++ = (byte)(tt);
+                                *op++ = (byte)tt;
                             }
                             do
                             {
@@ -286,7 +299,9 @@ namespace Supremacy.IO.Compression
                             {
                                 --offset;
                                 if (length <= 33)
+                                {
                                     *op++ = (byte)(M3_MARKER | (length - 2));
+                                }
                                 else
                                 {
                                     length -= 33;
@@ -297,7 +312,7 @@ namespace Supremacy.IO.Compression
                                         *op++ = 0;
                                     }
                                     Debug.Assert(length > 0);
-                                    *op++ = (byte)(length);
+                                    *op++ = (byte)length;
                                 }
                             }
                             else
@@ -306,7 +321,9 @@ namespace Supremacy.IO.Compression
                                 Debug.Assert(offset > 0);
                                 Debug.Assert(offset <= 0x7FFF);
                                 if (length <= M4_MAX_LEN)
+                                {
                                     *op++ = (byte)(M4_MARKER | ((offset & 0x4000) >> 11) | (length - 2));
+                                }
                                 else
                                 {
                                     length -= M4_MAX_LEN;
@@ -317,7 +334,7 @@ namespace Supremacy.IO.Compression
                                         *op++ = 0;
                                     }
                                     Debug.Assert(length > 0);
-                                    *op++ = (byte)(length);
+                                    *op++ = (byte)length;
                                 }
                             }
                             *op++ = (byte)((offset & 63) << 2);
@@ -325,7 +342,9 @@ namespace Supremacy.IO.Compression
                         }
                         ii = ip;
                         if (ip >= ip_end)
+                        {
                             break;
+                        }
                     }
                     dstlen = (uint)(op - output);
                     tmp = (uint)(in_end - ii);
@@ -340,7 +359,7 @@ namespace Supremacy.IO.Compression
                 }
                 else if (tmp <= 3)
                 {
-                    dst[dstlen - 2] |= (byte)(tmp);
+                    dst[dstlen - 2] |= (byte)tmp;
                 }
                 else if (tmp <= 18)
                 {
@@ -356,7 +375,7 @@ namespace Supremacy.IO.Compression
                         dst[dstlen++] = 0;
                     }
                     Debug.Assert(tt > 0);
-                    dst[dstlen++] = (byte)(tt);
+                    dst[dstlen++] = (byte)tt;
                 }
                 do
                 {
@@ -378,7 +397,7 @@ namespace Supremacy.IO.Compression
 
         public static unsafe byte[] Decompress(byte[] src)
         {
-            byte[] dst = new byte[(src[src.Length - 4] | (src[src.Length - 3] << 8) | (src[src.Length - 2] << 16 | src[src.Length - 1] << 24))];
+            byte[] dst = new byte[(src[src.Length - 4] | (src[src.Length - 3] << 8) | src[src.Length - 2] << 16 | src[src.Length - 1] << 24)];
 
             uint t = 0;
             fixed (byte* input = src, output = dst)
@@ -398,14 +417,22 @@ namespace Supremacy.IO.Compression
                 {
                     t = (uint)(*ip++ - 17);
                     if (t < 4)
+                    {
                         match_next = true;
+                    }
                     else
                     {
                         Debug.Assert(t > 0);
                         if ((op_end - op) < t)
+                        {
                             throw new OverflowException("Output Overrun");
+                        }
+
                         if ((ip_end - ip) < t + 1)
+                        {
                             throw new OverflowException("Input Overrun");
+                        }
+
                         do
                         {
                             *op++ = *ip++;
@@ -419,29 +446,45 @@ namespace Supremacy.IO.Compression
                     {
                         t = *ip++;
                         if (t >= 16)
+                        {
                             match = true;
+                        }
                         else
                         {
                             if (t == 0)
                             {
                                 if ((ip_end - ip) < 1)
+                                {
                                     throw new OverflowException("Input Overrun");
+                                }
+
                                 while (*ip == 0)
                                 {
                                     t += 255;
                                     ++ip;
                                     if ((ip_end - ip) < 1)
+                                    {
                                         throw new OverflowException("Input Overrun");
+                                    }
                                 }
                                 t += (uint)(15 + *ip++);
                             }
                             Debug.Assert(t > 0);
                             if ((op_end - op) < t + 3)
+                            {
                                 throw new OverflowException("Output Overrun");
+                            }
+
                             if ((ip_end - ip) < t + 4)
+                            {
                                 throw new OverflowException("Input Overrun");
+                            }
+
                             for (int x = 0; x < 4; ++x, ++op, ++ip)
+                            {
                                 *op = *ip;
+                            }
+
                             if (--t > 0)
                             {
                                 if (t >= 4)
@@ -449,7 +492,10 @@ namespace Supremacy.IO.Compression
                                     do
                                     {
                                         for (int x = 0; x < 4; ++x, ++op, ++ip)
+                                        {
                                             *op = *ip;
+                                        }
+
                                         t -= 4;
                                     } while (t >= 4);
                                     if (t > 0)
@@ -478,16 +524,24 @@ namespace Supremacy.IO.Compression
 
                         t = *ip++;
                         if (t >= 16)
+                        {
                             match = true;
+                        }
                         else
                         {
                             pos = op - (1 + M2_MAX_OFFSET);
                             pos -= t >> 2;
                             pos -= *ip++ << 2;
                             if (pos < output || pos >= op)
+                            {
                                 throw new OverflowException("Lookbehind Overrun");
+                            }
+
                             if ((op_end - op) < 3)
+                            {
                                 throw new OverflowException("Output Overrun");
+                            }
+
                             *op++ = *pos++;
                             *op++ = *pos++;
                             *op++ = *pos++;
@@ -504,9 +558,15 @@ namespace Supremacy.IO.Compression
                             pos -= *ip++ << 3;
                             t = (t >> 5) - 1;
                             if (pos < output || pos >= op)
+                            {
                                 throw new OverflowException("Lookbehind Overrun");
+                            }
+
                             if ((op_end - op) < t + 2)
+                            {
                                 throw new OverflowException("Output Overrun");
+                            }
+
                             copy_match = true;
                         }
                         else if (t >= 32)
@@ -515,13 +575,18 @@ namespace Supremacy.IO.Compression
                             if (t == 0)
                             {
                                 if ((ip_end - ip) < 1)
+                                {
                                     throw new OverflowException("Input Overrun");
+                                }
+
                                 while (*ip == 0)
                                 {
                                     t += 255;
                                     ++ip;
                                     if ((ip_end - ip) < 1)
+                                    {
                                         throw new OverflowException("Input Overrun");
+                                    }
                                 }
                                 t += (uint)(31 + *ip++);
                             }
@@ -538,22 +603,31 @@ namespace Supremacy.IO.Compression
                             if (t == 0)
                             {
                                 if ((ip_end - ip) < 1)
+                                {
                                     throw new OverflowException("Input Overrun");
+                                }
+
                                 while (*ip == 0)
                                 {
                                     t += 255;
                                     ++ip;
                                     if ((ip_end - ip) < 1)
+                                    {
                                         throw new OverflowException("Input Overrun");
+                                    }
                                 }
                                 t += (uint)(7 + *ip++);
                             }
                             pos -= (*(ushort*)ip) >> 2;
                             ip += 2;
                             if (pos == op)
+                            {
                                 eof_found = true;
+                            }
                             else
+                            {
                                 pos -= 0x4000;
+                            }
                         }
                         else
                         {
@@ -561,9 +635,15 @@ namespace Supremacy.IO.Compression
                             pos -= t >> 2;
                             pos -= *ip++ << 2;
                             if (pos < output || pos >= op)
+                            {
                                 throw new OverflowException("Lookbehind Overrun");
+                            }
+
                             if ((op_end - op) < 2)
+                            {
                                 throw new OverflowException("Output Overrun");
+                            }
+
                             *op++ = *pos++;
                             *op++ = *pos++;
                             match_done = true;
@@ -571,20 +651,31 @@ namespace Supremacy.IO.Compression
                         if (!eof_found && !match_done && !copy_match)
                         {
                             if (pos < output || pos >= op)
+                            {
                                 throw new OverflowException("Lookbehind Overrun");
+                            }
+
                             Debug.Assert(t > 0);
                             if ((op_end - op) < t + 2)
+                            {
                                 throw new OverflowException("Output Overrun");
+                            }
                         }
                         if (!eof_found && t >= 2 * 4 - 2 && (op - pos) >= 4 && !match_done && !copy_match)
                         {
                             for (int x = 0; x < 4; ++x, ++op, ++pos)
+                            {
                                 *op = *pos;
+                            }
+
                             t -= 2;
                             do
                             {
                                 for (int x = 0; x < 4; ++x, ++op, ++pos)
+                                {
                                     *op = *pos;
+                                }
+
                                 t -= 4;
                             } while (t >= 4);
                             if (t > 0)
@@ -613,7 +704,9 @@ namespace Supremacy.IO.Compression
 
                             t = (uint)(ip[-2] & 3);
                             if (t == 0)
+                            {
                                 break;
+                            }
                         }
                         if (!eof_found)
                         {
@@ -621,43 +714,57 @@ namespace Supremacy.IO.Compression
                             Debug.Assert(t > 0);
                             Debug.Assert(t < 4);
                             if ((op_end - op) < t)
+                            {
                                 throw new OverflowException("Output Overrun");
+                            }
+
                             if ((ip_end - ip) < t + 1)
+                            {
                                 throw new OverflowException("Input Overrun");
+                            }
+
                             *op++ = *ip++;
                             if (t > 1)
                             {
                                 *op++ = *ip++;
                                 if (t > 2)
+                                {
                                     *op++ = *ip++;
+                                }
                             }
                             t = *ip++;
                         }
                     } while (!eof_found && ip < ip_end);
                 }
                 if (!eof_found)
+                {
                     throw new OverflowException("EOF Marker Not Found");
+                }
                 else
                 {
                     Debug.Assert(t == 1);
                     if (ip > ip_end)
+                    {
                         throw new OverflowException("Input Overrun");
+                    }
                     else if (ip < ip_end)
+                    {
                         throw new OverflowException("Input Not Consumed");
+                    }
                 }
             }
 
             return dst;
         }
 
-        private unsafe static uint D_INDEX1(byte* input)
+        private static unsafe uint D_INDEX1(byte* input)
         {
             return D_MS(D_MUL(0x21, D_X3(input, 5, 5, 6)) >> 5, 0);
         }
 
         private static uint D_INDEX2(uint idx)
         {
-            return (idx & (D_MASK & 0x7FF)) ^ (((D_MASK >> 1) + 1) | 0x1F);
+            return (idx & D_MASK & 0x7FF) ^ (((D_MASK >> 1) + 1) | 0x1F);
         }
 
         private static uint D_MS(uint v, byte s)
@@ -670,12 +777,12 @@ namespace Supremacy.IO.Compression
             return a * b;
         }
 
-        private unsafe static uint D_X2(byte* input, byte s1, byte s2)
+        private static unsafe uint D_X2(byte* input, byte s1, byte s2)
         {
             return (uint)((((input[2] << s2) ^ input[1]) << s1) ^ input[0]);
         }
 
-        private unsafe static uint D_X3(byte* input, byte s1, byte s2, byte s3)
+        private static unsafe uint D_X3(byte* input, byte s1, byte s2, byte s3)
         {
             return (D_X2(input + 1, s2, s3) << s1) ^ input[0];
         }

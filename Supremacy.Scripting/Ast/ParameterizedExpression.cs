@@ -37,7 +37,7 @@ namespace Supremacy.Scripting.Ast
 
                 foreach (LocalDeclaration local in locals)
                 {
-                    scope.CreateParameter(local.VariableName);
+                    _ = scope.CreateParameter(local.VariableName);
                 }
 
                 MSAst lambdaBody = expression.Transform(generator);

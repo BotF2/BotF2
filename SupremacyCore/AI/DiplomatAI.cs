@@ -2,13 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows.Documents;
-using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
-using Supremacy.Client;
 using Supremacy.Diplomacy;
-using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Utility;
@@ -22,7 +17,9 @@ namespace Supremacy.AI
         {
 
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             Civilization aCiv = (Civilization)civ;
 
@@ -35,16 +32,27 @@ namespace Supremacy.AI
             // we can control regard and trust for both human otherCivs and AI otherCivs
             {
                 if (otherCiv.CivID == civ.CivID)
+                {
                     continue;
+                }
+
                 if (!DiplomacyHelper.IsContactMade(civ.CivID, otherCiv.CivID))
+                {
                     continue;
+                }
+
                 if (!otherCiv.IsEmpire && !aCiv.IsEmpire)
+                {
                     continue;
+                }
+
                 ForeignPower foreignPower = diplomat.GetForeignPower(otherCiv);
                 Diplomat otherdiplomat = Diplomat.Get(otherCiv);
                 ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
                 if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || otherForeignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
+                {
                     continue;
+                }
 
                 #region Foriegn Traits List
 
@@ -72,9 +80,9 @@ namespace Supremacy.AI
                 int[] countArray = new int[] { foreignTraits.Length, theCivTraits.Length };
                 int fewestTotalTraits = countArray.Min();
 
-                int similarTraits = (countCommon * 10 / fewestTotalTraits); // (a double from 1 to 0) * 10 
-                                                                            // GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
-                                                                            //similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
+                int similarTraits = countCommon * 10 / fewestTotalTraits; // (a double from 1 to 0) * 10 
+                                                                          // GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
+                                                                          //similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
 
                 /*
                  * look for human to human proposals
@@ -269,31 +277,71 @@ namespace Supremacy.AI
                                 switch (clause.ClauseType)
                                 {
                                     case ClauseType.TreatyMembership:
-                                        if (regard > 899 && trust > 899) accepted = true; break;
+                                        if (regard > 899 && trust > 899)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyFullAlliance:
-                                        if (regard > 899 && trust > 899) accepted = true; break;
+                                        if (regard > 899 && trust > 899)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyDefensiveAlliance:
-                                        if (regard > 799 && trust > 799) accepted = true; break;
+                                        if (regard > 799 && trust > 799)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyWarPact:
-                                        if (regard > 799 && trust > 799) accepted = true; break;
+                                        if (regard > 799 && trust > 799)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyAffiliation:
-                                        if (regard > 699 && trust > 699) accepted = true; break;
+                                        if (regard > 699 && trust > 699)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyNonAggression:
-                                        if (regard > 499 && trust > 499) accepted = true; break;
+                                        if (regard > 499 && trust > 499)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyOpenBorders:
-                                        if (regard > 399 && trust > 399) accepted = true; break;
+                                        if (regard > 399 && trust > 399)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyCeaseFire:
                                         {
                                             Random num = new Random();
-                                            int chance = num.Next(1, (similarTraits + 2));
-                                            if (chance != 1) accepted = true; break;
+                                            int chance = num.Next(1, similarTraits + 2);
+                                            if (chance != 1)
+                                            {
+                                                accepted = true;
+                                            }
+
+                                            break;
                                         }
                                     case ClauseType.OfferGiveCredits:
                                         accepted = true;
@@ -529,12 +577,14 @@ namespace Supremacy.AI
 
                         if (foreignPower.ResponseReceived.ResponseType == ResponseType.Accept
                         )
+                        {
                             GameLog.Client.Diplomacy.DebugFormat(
                                 "## Responce type ={0} ResponseReceived by ?counterparty = {1} to {2} Regard = {3} Trust = {4}",
                                 foreignPower.ResponseReceived.ResponseType.ToString(),
                                 foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName,
                                 foreignPower.DiplomacyData.Regard.CurrentValue,
                                 foreignPower.DiplomacyData.Trust.CurrentValue);
+                        }
                         // Added some positive RegardEventTypes.
                         {
                             DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, +90);
@@ -618,18 +668,28 @@ namespace Supremacy.AI
             if (traits.Contains("Warlike"))
             {
                 if (otherTraits.Contains("Warlike"))
+                {
                     degree = 20;
+                }
                 else if (otherTraits.Contains("Pleaceful"))
+                {
                     degree = -25;
+                }
+
                 DiplomacyHelper.ApplyRegardChange(foreignPow.Counterparty, foreignPow.Owner, degree);
                 DiplomacyHelper.ApplyTrustChange(foreignPow.Counterparty, foreignPow.Owner, degree);
             }
             else if (traits.Contains("Peaceful"))
             {
                 if (otherTraits.Contains("Peaceful"))
+                {
                     degree = -25;
+                }
                 else if (otherTraits.Contains("Warlike"))
+                {
                     degree = 20;
+                }
+
                 DiplomacyHelper.ApplyRegardChange(foreignPow.Counterparty, foreignPow.Owner, degree);
                 DiplomacyHelper.ApplyTrustChange(foreignPow.Counterparty, foreignPow.Owner, degree);
             }

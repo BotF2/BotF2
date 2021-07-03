@@ -99,9 +99,11 @@ namespace Supremacy.Client.DragDrop
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
-            UIElement sourceElement = d as UIElement;
-            if (sourceElement == null)
+            if (!(d is UIElement sourceElement))
+            {
                 return;
+            }
+
             if (e.NewValue != null && e.OldValue == null)
             {
                 sourceElement.PreviewMouseLeftButtonDown += OnDragSourcePreviewMouseLeftButtonDown;
@@ -109,9 +111,10 @@ namespace Supremacy.Client.DragDrop
                 sourceElement.PreviewMouseUp += OnDragSourcePreviewMouseUp;
 
                 // Set the Drag source UI
-                IDragSourceAdvisor advisor = e.NewValue as IDragSourceAdvisor;
-                if (advisor != null)
+                if (e.NewValue is IDragSourceAdvisor advisor)
+                {
                     advisor.SourceElement = sourceElement;
+                }
             }
             else if (e.NewValue == null && e.OldValue != null)
             {
@@ -125,9 +128,11 @@ namespace Supremacy.Client.DragDrop
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
-            UIElement targetElement = d as UIElement;
-            if (targetElement == null)
+            if (!(d is UIElement targetElement))
+            {
                 return;
+            }
+
             if (e.NewValue != null && e.OldValue == null)
             {
                 targetElement.PreviewDragEnter += OnDropTargetPreviewDragEnter;
@@ -137,9 +142,10 @@ namespace Supremacy.Client.DragDrop
                 targetElement.AllowDrop = true;
 
                 // Set the Drag source UI
-                IDropTargetAdvisor advisor = e.NewValue as IDropTargetAdvisor;
-                if (advisor != null)
+                if (e.NewValue is IDropTargetAdvisor advisor)
+                {
                     advisor.TargetElement = targetElement;
+                }
             }
             else if (e.NewValue == null && e.OldValue != null)
             {
@@ -168,7 +174,9 @@ namespace Supremacy.Client.DragDrop
             _offsetPoint = new Point(0, 0);
 
             if (CurrentDropTargetAdvisor.IsValidDataObject(e.Data))
+            {
                 CurrentDropTargetAdvisor.OnDropCompleted(e.Data, dropPoint);
+            }
 
             e.Handled = true;
         }
@@ -202,7 +210,10 @@ namespace Supremacy.Client.DragDrop
             // Setup the preview Adorner
             _offsetPoint = new Point();
             if (CurrentDropTargetAdvisor.ApplyMouseOffset && e.Data.GetData(DragOffsetFormat) != null)
+            {
                 _offsetPoint = (Point)e.Data.GetData(DragOffsetFormat);
+            }
+
             CreatePreviewAdorner(sender as UIElement, e.Data);
 
             e.Handled = true;
@@ -233,21 +244,29 @@ namespace Supremacy.Client.DragDrop
         private static void OnDragSourcePreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.Handled)
+            {
                 return;
+            }
 
             ScrollBar scrollBar = ((DependencyObject)e.OriginalSource).FindVisualAncestorByType<ScrollBar>();
             if (scrollBar != null)
+            {
                 return;
+            }
 
             DependencyObject source = ((DependencyObject)e.OriginalSource).FindVisualAncestor(o => GetDragSourceAdvisor(o) != null);
             if (source == null)
+            {
                 return;
+            }
 
             // Make this the new drag source
             CurrentDragSourceAdvisor = GetDragSourceAdvisor(source);
 
             if (CurrentDragSourceAdvisor.IsDraggable(source as UIElement) == false)
+            {
                 return;
+            }
 
             _draggedElement = source as UIElement;
             _dragStartPoint = e.GetPosition(CurrentDragSourceAdvisor.GetTopContainer());
@@ -258,19 +277,21 @@ namespace Supremacy.Client.DragDrop
         private static void OnDragSourcePreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (_isMouseDown && IsDragGesture(e.GetPosition(CurrentDragSourceAdvisor.GetTopContainer())))
+            {
                 DragStarted(sender as UIElement);
+            }
         }
 
         private static void OnDragSourcePreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             _isMouseDown = false;
-            Mouse.Capture(null);
+            _ = Mouse.Capture(null);
         }
 
         private static void DragStarted(UIElement uiElt)
         {
             _isMouseDown = false;
-            Mouse.Capture(uiElt);
+            _ = Mouse.Capture(uiElt);
 
             DataObject data = CurrentDragSourceAdvisor.GetDataObject(_draggedElement);
 
@@ -284,7 +305,7 @@ namespace Supremacy.Client.DragDrop
 
             // Clean up
             RemovePreviewAdorner();
-            Mouse.Capture(null);
+            _ = Mouse.Capture(null);
             _draggedElement = null;
         }
 
@@ -293,13 +314,15 @@ namespace Supremacy.Client.DragDrop
             bool hGesture = Math.Abs(point.X - _dragStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance;
             bool vGesture = Math.Abs(point.Y - _dragStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance;
 
-            return (hGesture | vGesture);
+            return hGesture | vGesture;
         }
 
         private static void CreatePreviewAdorner(UIElement adornedElt, IDataObject data)
         {
             if (_overlayElement != null)
+            {
                 return;
+            }
 
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(CurrentDropTargetAdvisor.GetTopContainer());
             UIElement feedbackElement = CurrentDropTargetAdvisor.GetVisualFeedback(data);
@@ -320,7 +343,10 @@ namespace Supremacy.Client.DragDrop
         private static void RemovePreviewAdorner()
         {
             if (_overlayElement == null)
+            {
                 return;
+            }
+
             AdornerLayer.GetAdornerLayer(CurrentDropTargetAdvisor.GetTopContainer()).Remove(_overlayElement);
             _overlayElement = null;
         }

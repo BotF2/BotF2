@@ -19,7 +19,7 @@ namespace Supremacy.Client.Controls
         /// </returns>
         public bool Contains(Guid uniqueId)
         {
-            return (IndexOf(uniqueId) != InvalidIndex);
+            return IndexOf(uniqueId) != InvalidIndex;
         }
 
         /// <summary>
@@ -36,7 +36,9 @@ namespace Supremacy.Client.Controls
             for (int index = 0; index < Count; index++)
             {
                 if (this[index].Name == name)
+                {
                     return index;
+                }
             }
             return InvalidIndex;
         }
@@ -55,7 +57,9 @@ namespace Supremacy.Client.Controls
             for (int index = 0; index < Count; index++)
             {
                 if (this[index].UniqueId == uniqueId)
+                {
                     return index;
+                }
             }
             return InvalidIndex;
         }
@@ -77,7 +81,10 @@ namespace Supremacy.Client.Controls
             {
                 int index = IndexOf(uniqueId);
                 if (index != InvalidIndex)
+                {
                     return this[index];
+                }
+
                 return null;
             }
         }
@@ -93,7 +100,9 @@ namespace Supremacy.Client.Controls
             CopyTo(result, 0);
 
             if (sortByLastFocusedDateTime)
+            {
                 Array.Sort(result, new InfoCard.LastFocusedComparer(result));
+            }
 
             return result;
         }

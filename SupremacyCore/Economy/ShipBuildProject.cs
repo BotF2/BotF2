@@ -57,30 +57,30 @@ namespace Supremacy.Economy
         /// Gets the raw materials needed.
         /// </summary>
         /// <value>The raw materials needed.</value>
-        public int RawMaterialsNeeded => ResourcesRequired[ResourceType.RawMaterials];
+        public int DuraniumNeeded => ResourcesRequired[ResourceType.Duranium];
 
         /// <summary>
         /// Gets the raw materials used.
         /// </summary>
         /// <value>The raw materials used.</value>
-        public int RawMaterialsUsed => ResourcesInvested[ResourceType.RawMaterials];
+        public int DuraniumUsed => ResourcesInvested[ResourceType.Duranium];
 
-        public bool HasRawMaterialsShortage
+        public bool HasDuraniumShortage
         {
-            get { return GetFlag(BuildProjectFlags.RawMaterialsShortage); }
-            protected set { SetFlag(BuildProjectFlags.RawMaterialsShortage, value); }
+            get => GetFlag(BuildProjectFlags.DuraniumShortage);
+            protected set => SetFlag(BuildProjectFlags.DuraniumShortage, value);
         }
 
         public bool HasDeuteriumShortage
         {
-            get { return GetFlag(BuildProjectFlags.DeuteriumShortage); }
-            protected set { SetFlag(BuildProjectFlags.DeuteriumShortage, value); }
+            get => GetFlag(BuildProjectFlags.DeuteriumShortage);
+            protected set => SetFlag(BuildProjectFlags.DeuteriumShortage, value);
         }
 
         public bool HasDilithiumShortage
         {
-            get { return GetFlag(BuildProjectFlags.DilithiumShortage); }
-            protected set { SetFlag(BuildProjectFlags.DilithiumShortage, value); }
+            get => GetFlag(BuildProjectFlags.DilithiumShortage);
+            protected set => SetFlag(BuildProjectFlags.DilithiumShortage, value);
         }
 
         /// <summary>
@@ -189,9 +189,11 @@ namespace Supremacy.Economy
     [Serializable]
     public class ShipRepairProject : ShipBuildProject
     {
+#pragma warning disable IDE0044 // Add readonly modifier
         private int _repairTargetId;
         private int _laborRequired;
         private ResourceValueCollection _resourcesRequired;
+#pragma warning restore IDE0044 // Add readonly modifier
 
         /// <summary>
         /// Gets the description of the ship being repaired.
@@ -243,16 +245,16 @@ namespace Supremacy.Economy
             if (repairTarget.FuelReserve.CurrentValue < repairTarget.FuelReserve.Maximum)
             {
                 _resourcesRequired[ResourceType.Deuterium] =
-                    (repairTarget.FuelReserve.Maximum - repairTarget.FuelReserve.CurrentValue);
+                    repairTarget.FuelReserve.Maximum - repairTarget.FuelReserve.CurrentValue;
             }
 
             if (repairTarget.HullStrength.CurrentValue < repairTarget.ShipDesign.HullStrength)
             {
                 float hullCurrent = repairTarget.HullStrength.CurrentValue;
                 float hullTotal = repairTarget.ShipDesign.HullStrength;
-                float pHullDamage = (1.0f - (hullCurrent / hullTotal));
-                float rawMaterials = repairTarget.Design.BuildResourceCosts[ResourceType.RawMaterials];
-                _resourcesRequired[ResourceType.RawMaterials] = (int)(pHullDamage * rawMaterials);
+                float pHullDamage = 1.0f - (hullCurrent / hullTotal);
+                float duranium = repairTarget.Design.BuildResourceCosts[ResourceType.Duranium];
+                _resourcesRequired[ResourceType.Duranium] = (int)(pHullDamage * duranium);
             }
         }
 

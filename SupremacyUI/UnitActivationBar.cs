@@ -181,7 +181,9 @@ namespace Supremacy.UI
             }
 
             if (_poolBar == null)
+            {
                 return;
+            }
 
             _poolBar.UnitCost = _children.Min(o => o.UnitCost);
             _poolBar.Units = PoolSize / _poolBar.UnitCost;
@@ -413,7 +415,7 @@ namespace Supremacy.UI
 
         private static bool ValidateValue(object value)
         {
-            return ((int)value >= 0);
+            return (int)value >= 0;
         }
 
         private static bool ValidateUnitCost(object value)

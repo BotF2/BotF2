@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -174,8 +173,8 @@ namespace Supremacy.Client.Controls
 
         public GameButtonDisplayMode DisplayMode
         {
-            get { return (GameButtonDisplayMode)GetValue(DisplayModeProperty); }
-            set { SetValue(DisplayModeProperty, value); }
+            get => (GameButtonDisplayMode)GetValue(DisplayModeProperty);
+            set => SetValue(DisplayModeProperty, value);
         }
 
         #endregion
@@ -210,10 +209,14 @@ namespace Supremacy.Client.Controls
         protected override object CoerceCommandParameter(DependencyObject obj, object value)
         {
             if (value != null || Command == null)
+            {
                 return value;
+            }
 
             if (_defaultCommandParameter == null)
+            {
                 _defaultCommandParameter = new CheckableCommandParameter();
+            }
 
             return _defaultCommandParameter;
         }
@@ -223,7 +226,9 @@ namespace Supremacy.Client.Controls
         private void UpdateStyleForVisualStudioBug()
         {
             if (!DesignerProperties.GetIsInDesignMode(this))
+            {
                 return;
+            }
 
             switch (DisplayMode)
             {
@@ -275,7 +280,7 @@ namespace Supremacy.Client.Controls
         internal static void BindToValue(DependencyObject obj, DependencyProperty property, object value)
         {
             Binding binding = new Binding { BindsDirectlyToSource = true, Source = value };
-            BindingOperations.SetBinding(obj, property, binding);
+            _ = BindingOperations.SetBinding(obj, property, binding);
         }
     }
 }

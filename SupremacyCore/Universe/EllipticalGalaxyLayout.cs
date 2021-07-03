@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using Supremacy.Utility;
 using System;
 
 namespace Supremacy.Universe
@@ -34,7 +33,7 @@ namespace Supremacy.Universe
                  (i < number) && (attempts < MaxStarPlacementAttempts);
                  i++, attempts++)
             {
-                double radius = (random.NextDouble() * gapConstant);
+                double radius = random.NextDouble() * gapConstant;
                 double angle = random.NextDouble() * 2.0 * Math.PI;
 
                 double x1 = radius * Math.Cos(angle);
@@ -49,11 +48,25 @@ namespace Supremacy.Universe
                 int xLoc = (int)(((x + 1.0) * width / 2.0) + rInt);
                 int yLoc = (int)(((y + 1.0) * height / 2.0) + rInt);
 
-                if (xLoc < 0) xLoc = 0;
-                if (xLoc > width) xLoc = width;
+                if (xLoc < 0)
+                {
+                    xLoc = 0;
+                }
 
-                if (yLoc < 0) yLoc = 0;
-                if (yLoc > height) yLoc = height;
+                if (xLoc > width)
+                {
+                    xLoc = width;
+                }
+
+                if (yLoc < 0)
+                {
+                    yLoc = 0;
+                }
+
+                if (yLoc > height)
+                {
+                    yLoc = height;
+                }
 
                 MapLocation location = new MapLocation(
                     xLoc,
@@ -74,14 +87,16 @@ namespace Supremacy.Universe
                 positions.Add(dominionNode);
 
                 int borgX = width - (width / 8);
-                int borgY = (height / 8);
+                int borgY = height / 8;
                 MapLocation borgLocation = new MapLocation(borgX, borgY);
                 MapLocationQuadtreeNode borgNode = new MapLocationQuadtreeNode(borgLocation);
 
                 positions.Add(borgNode);
 
                 if (newNode.Location != dominionLocation && newNode.Location != borgLocation)
+                {
                     positions.Add(newNode);
+                }
 
                 attempts = 0;
             }

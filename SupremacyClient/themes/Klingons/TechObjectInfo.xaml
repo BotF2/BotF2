@@ -58,7 +58,7 @@
                          TextTrimming="CharacterEllipsis"
                          TextWrapping="NoWrap" />
             </wpf:AutoGrid>
-            <wpf:AutoGrid x:Name="RawMaterials">
+            <wpf:AutoGrid x:Name="Duranium">
               <wpf:AutoGrid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -72,7 +72,7 @@
                          TextWrapping="NoWrap" />
               <TextBlock VerticalAlignment="Top"
                          TextAlignment="Right"
-                         Text="{Binding Path=Design.RawMaterials}"
+                         Text="{Binding Path=Design.Duranium}"
                          TextTrimming="CharacterEllipsis"
                          TextWrapping="NoWrap" />
             </wpf:AutoGrid>
@@ -187,9 +187,9 @@
           </StackPanel>
         </Border>
         <DataTemplate.Triggers>
-          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+          <DataTrigger Binding="{Binding Path=Design.Duranium}"
                        Value="0">
-            <Setter TargetName="RawMaterials"
+            <Setter TargetName="Duranium"
                     Property="Visibility"
                     Value="Collapsed" />
           </DataTrigger>
@@ -257,7 +257,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="RawMaterials">
+          <wpf:AutoGrid x:Name="Duranium">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -271,7 +271,7 @@
                        TextWrapping="NoWrap" />
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.RawMaterials}"
+                       Text="{Binding Path=Design.Duranium}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
@@ -421,9 +421,9 @@
           </wpf:AutoGrid>
         </StackPanel>
         <DataTemplate.Triggers>
-          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+          <DataTrigger Binding="{Binding Path=Design.Duranium}"
                        Value="0">
-            <Setter TargetName="RawMaterials"
+            <Setter TargetName="Duranium"
                     Property="Visibility"
                     Value="Collapsed" />
           </DataTrigger>
@@ -485,7 +485,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="RawMaterials">
+          <wpf:AutoGrid x:Name="Duranium">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -499,7 +499,7 @@
                        TextWrapping="NoWrap" />
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.RawMaterials}"
+                       Text="{Binding Path=Design.Duranium}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
@@ -613,9 +613,9 @@
           </wpf:AutoGrid>
         </StackPanel>
         <DataTemplate.Triggers>
-          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+          <DataTrigger Binding="{Binding Path=Design.Duranium}"
                        Value="0">
-            <Setter TargetName="RawMaterials"
+            <Setter TargetName="Duranium"
                     Property="Visibility"
                     Value="Collapsed" />
           </DataTrigger>
@@ -683,7 +683,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="RawMaterials">
+          <wpf:AutoGrid x:Name="Duranium">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -697,7 +697,7 @@
                        TextWrapping="NoWrap" />
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.RawMaterials}"
+                       Text="{Binding Path=Design.Duranium}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
@@ -1005,9 +1005,9 @@
           </wpf:AutoGrid>
         </StackPanel>
         <DataTemplate.Triggers>
-          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+          <DataTrigger Binding="{Binding Path=Design.Duranium}"
                        Value="0">
-            <Setter TargetName="RawMaterials"
+            <Setter TargetName="Duranium"
                     Property="Visibility"
                     Value="Collapsed" />
           </DataTrigger>
@@ -1103,7 +1103,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="RawMaterials">
+          <wpf:AutoGrid x:Name="Duranium">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1117,7 +1117,7 @@
                        TextWrapping="NoWrap" />
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.RawMaterials}"
+                       Text="{Binding Path=Design.Duranium}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
@@ -1344,9 +1344,9 @@
           </wpf:AutoGrid>
         </StackPanel>
         <DataTemplate.Triggers>
-          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+          <DataTrigger Binding="{Binding Path=Design.Duranium}"
                        Value="0">
-            <Setter TargetName="RawMaterials"
+            <Setter TargetName="Duranium"
                     Property="Visibility"
                     Value="Collapsed" />
           </DataTrigger>
@@ -1430,7 +1430,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="RawMaterials">
+          <wpf:AutoGrid x:Name="Duranium">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1444,7 +1444,7 @@
                        TextWrapping="NoWrap" />
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.RawMaterials}"
+                       Text="{Binding Path=Design.Duranium}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
@@ -1689,9 +1689,9 @@
           </wpf:AutoGrid>
         </StackPanel>
         <DataTemplate.Triggers>
-          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+          <DataTrigger Binding="{Binding Path=Design.Duranium}"
                        Value="0">
-            <Setter TargetName="RawMaterials"
+            <Setter TargetName="Duranium"
                     Property="Visibility"
                     Value="Collapsed" />
           </DataTrigger>

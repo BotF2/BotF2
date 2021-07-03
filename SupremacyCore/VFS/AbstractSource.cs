@@ -52,8 +52,8 @@ namespace Supremacy.VFS
         /// <value>The name.</value>
         public string Name
         {
-            get { return _name; }
-            protected internal set { _name = value; }
+            get => _name;
+            protected internal set => _name = value;
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace Supremacy.VFS
         /// </value>
         public bool IsCaseSensitive
         {
-            get { return _stringComparer.IsCaseSensitive; }
-            set { _stringComparer.IsCaseSensitive = value; }
+            get => _stringComparer.IsCaseSensitive;
+            set => _stringComparer.IsCaseSensitive = value;
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace Supremacy.VFS
         /// </value>
         public bool IsInvariantCulture
         {
-            get { return _stringComparer.IsInvariantCulture; }
-            set { _stringComparer.IsInvariantCulture = value; }
+            get => _stringComparer.IsInvariantCulture;
+            set => _stringComparer.IsInvariantCulture = value;
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace Supremacy.VFS
         /// <value>The sleep time in milliseconds.</value>
         protected internal int SleepTime
         {
-            get { return _sleepTime; }
-            set { _sleepTime = value; }
+            get => _sleepTime;
+            set => _sleepTime = value;
         }
 
         /// <summary>
@@ -166,10 +166,14 @@ namespace Supremacy.VFS
                     if (disposing)
                     {
                         foreach (StreamDecorator<T> stream in _usedFiles.SelectMany(o => o.Value))
+                        {
                             stream.Closed -= StreamClosed;
+                        }
 
                         foreach (ICollection<StreamDecorator<T>> openCopyCollection in _usedFiles.Values)
+                        {
                             openCopyCollection.Clear();
+                        }
 
                         _usedFiles.Clear();
                     }
@@ -184,8 +188,7 @@ namespace Supremacy.VFS
                 CheckDisposed();
 
                 string key = file.VirtualPath;
-                ICollection<StreamDecorator<T>> openCopies;
-                if (!_usedFiles.TryGetValue(key, out openCopies))
+                if (!_usedFiles.TryGetValue(key, out ICollection<StreamDecorator<T>> openCopies))
                 {
                     openCopies = new List<StreamDecorator<T>>();
                     _usedFiles[key] = openCopies;
@@ -199,7 +202,9 @@ namespace Supremacy.VFS
             lock (_lockInstance)
             {
                 if (_disposed)
+                {
                     throw new ObjectDisposedException(Name ?? GetType().Name);
+                }
             }
         }
 
@@ -227,12 +232,16 @@ namespace Supremacy.VFS
                 lock (_lockInstance)
                 {
                     if (_disposed) // Source is disposed
+                    {
                         return null;
+                    }
 
                     // Resolve the file name. If it's not found return
                     resolvedName = ResolveFileName(path, recurse);
                     if (_stringComparer.Equals(resolvedName, string.Empty))
+                    {
                         return null;
+                    }
 
                     Debug.WriteLine("Trying to get file {0}", resolvedName);
 
@@ -303,16 +312,17 @@ namespace Supremacy.VFS
         {
             lock (_lockInstance)
             {
-                ICollection<StreamDecorator<T>> openCopies;
-                if (!_usedFiles.TryGetValue(path, out openCopies))
+                if (!_usedFiles.TryGetValue(path, out ICollection<StreamDecorator<T>> openCopies))
+                {
                     return true;
+                }
 
                 switch (minimumShareLevel)
                 {
                     case FileShare.Delete:
                         return false;
                     default:
-                        return !openCopies.Any(o => ((o.Share & minimumShareLevel) != minimumShareLevel));
+                        return !openCopies.Any(o => (o.Share & minimumShareLevel) != minimumShareLevel);
                 }
             }
         }
@@ -328,7 +338,9 @@ namespace Supremacy.VFS
                 lock (_lockInstance)
                 {
                     if (_disposed) // Source is disposed
+                    {
                         return null;
+                    }
 
                     // Resolve the file name. If found the file exists
                     string resolvedName = ResolveFileName(path, false);
@@ -343,7 +355,9 @@ namespace Supremacy.VFS
                     {
                         canAccessFile = CanAccessFile(path, GetMinimumFileShareForAccess(FileAccess.Write));
                         if (canAccessFile) // File not used
+                        {
                             stream = InternalGetFile(resolvedName, FileAccess.ReadWrite, FileShare.None);
+                        }
                     }
 
                     if (stream != null)
@@ -385,12 +399,16 @@ namespace Supremacy.VFS
                 lock (_lockInstance)
                 {
                     if (_disposed) // Source is disposed
+                    {
                         return false;
+                    }
 
                     // Resolve the file name. If it's not found the file doesn't exist
                     string resolvedName = ResolveFileName(path, recurse);
                     if (_stringComparer.Equals(resolvedName, string.Empty))
+                    {
                         return false;
+                    }
 
                     if (CanAccessFile(path, FileShare.Delete)) // File not used
                     {
@@ -446,7 +464,9 @@ namespace Supremacy.VFS
         protected bool CheckPathAlias(string pathAlias)
         {
             if (string.IsNullOrWhiteSpace(pathAlias))
+            {
                 return false;
+            }
 
             return PathAliasRegex.Value.IsMatch(pathAlias);
         }
@@ -459,16 +479,19 @@ namespace Supremacy.VFS
             lock (_lockInstance)
             {
                 string key = stream.VirtualPath;
-                ICollection<StreamDecorator<T>> openCopies;
 
-                if (!_usedFiles.TryGetValue(key, out openCopies))
+                if (!_usedFiles.TryGetValue(key, out ICollection<StreamDecorator<T>> openCopies))
+                {
                     return;
+                }
 
-                openCopies.Remove(stream);
+                _ = openCopies.Remove(stream);
                 stream.Closed -= StreamClosed;
 
                 if (openCopies.Count == 0)
-                    _usedFiles.Remove(key);
+                {
+                    _ = _usedFiles.Remove(key);
+                }
 
                 Debug.WriteLine("Stream {0} closed", stream.ResolvedPath);
             }
@@ -505,7 +528,10 @@ namespace Supremacy.VFS
         public virtual IVirtualFileInfo GetFileInfo(string definedPathAlias, string path, bool recurse)
         {
             if (!_definedPaths.TryGetValue(definedPathAlias, out string aliasedPath))
+            {
                 return null;
+            }
+
             return GetFileInfo(path, recurse);
         }
 
@@ -516,11 +542,12 @@ namespace Supremacy.VFS
 
         public Stream GetFile(string definedPathAlias, string path, bool recurse)
         {
-            string aliasedPath;
 
             // If the path is not defined in this source, return
-            if (!_definedPaths.TryGetValue(definedPathAlias, out aliasedPath))
+            if (!_definedPaths.TryGetValue(definedPathAlias, out string aliasedPath))
+            {
                 return null;
+            }
 
             return GetFile(Path.Combine(aliasedPath, path), recurse);
         }
@@ -534,10 +561,9 @@ namespace Supremacy.VFS
 
         public bool TryGetFile(string definedPathAlias, string path, bool recurse, out Stream stream)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!_definedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!_definedPaths.TryGetValue(definedPathAlias, out string dir))
             {
                 stream = null;
                 return false;
@@ -553,11 +579,12 @@ namespace Supremacy.VFS
 
         public ReadOnlyCollection<string> GetFiles(string definedPathAlias, string path, bool recurse, string searchPattern)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!_definedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!_definedPaths.TryGetValue(definedPathAlias, out string dir))
+            {
                 return new List<string>(0).AsReadOnly();
+            }
 
             return GetFiles(Path.Combine(dir, path), recurse, searchPattern);
         }

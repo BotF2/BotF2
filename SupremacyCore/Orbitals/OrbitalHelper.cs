@@ -13,16 +13,22 @@ namespace Supremacy.Orbitals
         {
             StarSystem system = GameContext.Current.Universe.Map[location].System;
             if (system == null)
+            {
                 return null;
+            }
 
             Colony colony = system.Colony;
             if (colony == null)
+            {
                 return null;
+            }
 
             IEnumerable<OrbitalBattery> source = GameContext.Current.Universe.FindAt<OrbitalBattery>(location).Where(o => o.OwnerID == colony.OwnerID);
 
             if (predicate != null)
+            {
                 source = source.Where(predicate);
+            }
 
             return source.OrderBy(o => o.HullStrength.CurrentValue).FirstOrDefault();
         }
@@ -37,16 +43,22 @@ namespace Supremacy.Orbitals
         {
             StarSystem system = GameContext.Current.Universe.Map[location].System;
             if (system == null)
+            {
                 return null;
+            }
 
             Colony colony = system.Colony;
             if (colony == null)
+            {
                 return null;
+            }
 
             IEnumerable<OrbitalBattery> source = GameContext.Current.Universe.FindAt<OrbitalBattery>(location).Where(o => o.OwnerID == colony.OwnerID);
 
             if (predicate != null)
+            {
                 source = source.Where(predicate);
+            }
 
             return source.OrderByDescending(o => o.HullStrength.CurrentValue).FirstOrDefault();
         }
@@ -70,15 +82,16 @@ namespace Supremacy.Orbitals
         public static double GetDamageControlModifier(this Orbital orbital)
         {
             if (orbital == null)
+            {
                 throw new ArgumentNullException("orbital");
+            }
 
-            Data.Table dcmTable = GameContext.Current.Tables.ShipTables["DamageControlModifiers"];
+            Data.Table dcmTable = GameContext.Current.Tables.GameOptionTables["DamageControlModifiers"];
             if (dcmTable != null)
             {
                 if (dcmTable[orbital.ExperienceRank.ToString()] != null)
                 {
-                    double modifier;
-                    if (double.TryParse(dcmTable[orbital.ExperienceRank.ToString()][0], out modifier))
+                    if (double.TryParse(dcmTable[orbital.ExperienceRank.ToString()][0], out double modifier))
                     {
                         return modifier;  // for some reasons the previous way gave a 5 to 10, whyever
                     }
@@ -99,9 +112,12 @@ namespace Supremacy.Orbitals
         public static double GetAccuracyModifier(this Orbital orbital)
         {
             if (orbital == null)
+            {
                 throw new ArgumentNullException("orbital");
+            }
+
             double returnModifier = 0.4;
-            Data.Table accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
+            Data.Table accuracyTable = GameContext.Current.Tables.GameOptionTables["AccuracyModifiers"];
             if (accuracyTable != null)
             {
                 if (accuracyTable[orbital.ExperienceRank.ToString()] != null)
@@ -138,17 +154,20 @@ namespace Supremacy.Orbitals
         public static int Firepower(this Orbital orbital)
         {
             if (orbital == null)
+            {
                 throw new ArgumentNullException("orbital");
+            }
+
             int firepower = 0;
             if (orbital.OrbitalDesign.PrimaryWeapon != null)
             {
-                firepower += (orbital.OrbitalDesign.PrimaryWeapon.Damage
-                              * orbital.OrbitalDesign.PrimaryWeapon.Count);
+                firepower += orbital.OrbitalDesign.PrimaryWeapon.Damage
+                              * orbital.OrbitalDesign.PrimaryWeapon.Count;
             }
             if (orbital.OrbitalDesign.SecondaryWeapon != null)
             {
-                firepower += (orbital.OrbitalDesign.SecondaryWeapon.Damage
-                              * orbital.OrbitalDesign.SecondaryWeapon.Count);
+                firepower += orbital.OrbitalDesign.SecondaryWeapon.Damage
+                              * orbital.OrbitalDesign.SecondaryWeapon.Count;
             }
             return firepower;
         }
@@ -161,12 +180,12 @@ namespace Supremacy.Orbitals
         public static int EffectiveCombatStrength(this Orbital orbital)
         {
             int effectiveStrength = orbital.EffectiveCombatStrength();
-            effectiveStrength *= (orbital.ShieldStrength.Maximum
+            effectiveStrength *= orbital.ShieldStrength.Maximum
                 + orbital.ShieldStrength.CurrentValue
                 + orbital.HullStrength.Maximum
-                + orbital.HullStrength.CurrentValue);
-            effectiveStrength *= ((2 * orbital.ShieldStrength.Maximum)
-                                  + (2 * orbital.HullStrength.Maximum));
+                + orbital.HullStrength.CurrentValue;
+            effectiveStrength *= (2 * orbital.ShieldStrength.Maximum)
+                                  + (2 * orbital.HullStrength.Maximum);
             return effectiveStrength;
         }
 
@@ -178,14 +197,20 @@ namespace Supremacy.Orbitals
         public static int TotalHitPoints(this Orbital orbital)
         {
             if (orbital == null)
+            {
                 throw new ArgumentNullException("orbital");
-            return (orbital.HullStrength.CurrentValue + orbital.ShieldStrength.CurrentValue);
+            }
+
+            return orbital.HullStrength.CurrentValue + orbital.ShieldStrength.CurrentValue;
         }
 
         public static int TotalHitPoints(IList<Orbital> orbitals)
         {
             if (orbitals == null)
+            {
                 throw new ArgumentNullException("orbitals");
+            }
+
             return orbitals.Sum(o => o.TotalHitPoints());
         }
     }

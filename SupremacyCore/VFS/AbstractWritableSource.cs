@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #region Using Statements
 
-using System;
 using System.IO;
 
 #endregion
@@ -53,11 +52,12 @@ namespace Supremacy.VFS
         /// <returns>A stream to the new file.</returns>
         public Stream CreateFile(string definedPathAlias, string path)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!DefinedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
+            {
                 return null;
+            }
 
             return CreateFile(Path.Combine(dir, path));
         }
@@ -88,10 +88,9 @@ namespace Supremacy.VFS
         /// </returns>
         public bool TryCreateFile(string definedPathAlias, string path, out Stream stream)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!DefinedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
             {
                 stream = null;
                 return false;
@@ -120,11 +119,12 @@ namespace Supremacy.VFS
         /// <returns>A stream to the file.</returns>
         public Stream GetWritableFile(string definedPathAlias, string path, bool recurse)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!DefinedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
+            {
                 return null;
+            }
 
             return GetWritableFile(Path.Combine(dir, path), recurse);
         }
@@ -159,10 +159,9 @@ namespace Supremacy.VFS
         /// </returns>
         public bool TryGetWritableFile(string definedPathAlias, string path, bool recurse, out Stream stream)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!DefinedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
             {
                 stream = null;
                 return false;
@@ -193,11 +192,12 @@ namespace Supremacy.VFS
         /// </returns>
         public bool RemoveFile(string definedPathAlias, string path, bool recurse)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!DefinedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
+            {
                 return false;
+            }
 
             return RemoveFile(Path.Combine(dir, path), recurse);
         }
@@ -226,11 +226,12 @@ namespace Supremacy.VFS
         /// </returns>
         public bool TryRemoveFile(string definedPathAlias, string path, bool recurse)
         {
-            string dir;
 
             // If the path is not defined in this source, return
-            if (!DefinedPaths.TryGetValue(definedPathAlias, out dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
+            {
                 return false;
+            }
 
             return TryRemoveFile(Path.Combine(dir, path), recurse);
         }

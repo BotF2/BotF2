@@ -26,8 +26,8 @@ namespace Supremacy.Client
            Description = "Sets the WPF presentation trace level.")]
         public PresentationTraceLevel TraceLevel
         {
-            get { return _traceLevel; }
-            set { _traceLevel = value; }
+            get => _traceLevel;
+            set => _traceLevel = value;
         }
 
         [CmdArg(
@@ -80,7 +80,9 @@ namespace Supremacy.Client
         public void Validate()
         {
             if (ShowUsage)
+            {
                 return;
+            }
         }
         #endregion
 
@@ -108,7 +110,9 @@ namespace Supremacy.Client
             }
 
             if (!options.ShowUsage)
+            {
                 return;
+            }
 
             options.Usage(null);
             ClientApp.Current.Shutdown();

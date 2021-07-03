@@ -42,7 +42,9 @@ namespace Supremacy.Types
             int desiredStateValue = desiredState.Value;
 
             if (currentState == desiredStateValue)
+            {
                 return true;
+            }
 
             foreach (StateTransition<TStateEnum> transition in _transitionMap.Where(t => t.From == currentState && t.To == desiredStateValue))
             {
@@ -53,7 +55,9 @@ namespace Supremacy.Types
                 }
 
                 if (transition.Disposition == StateChangeDisposition.Optional)
+                {
                     return false;
+                }
 
                 throw new InvalidOperationException("Mandatory state transition couldn't occur.");
             }
@@ -82,9 +86,14 @@ namespace Supremacy.Types
         public StateTransition([NotNull] TStateEnum from, [NotNull] TStateEnum to, StateChangeDisposition disposition)
         {
             if (@from == null)
+            {
                 throw new ArgumentNullException("from");
+            }
+
             if (to == null)
+            {
                 throw new ArgumentNullException("to");
+            }
 
             _from = from.Value;
             _to = to.Value;
@@ -112,7 +121,10 @@ namespace Supremacy.Types
         {
             StateTransition<TStateEnum>? other = obj as StateTransition<TStateEnum>?;
             if (other.HasValue)
+            {
                 return Equals(other);
+            }
+
             return false;
         }
 
@@ -128,7 +140,7 @@ namespace Supremacy.Types
 
         public override int GetHashCode()
         {
-            return (_from | (_to << 16));
+            return _from | (_to << 16);
         }
     }
 
@@ -162,7 +174,9 @@ namespace Supremacy.Types
         {
             FieldInfo field = GetFieldInfo();
             if (field != null)
+            {
                 return field.Name;
+            }
 
             return _value.ToString();
         }
@@ -193,10 +207,11 @@ namespace Supremacy.Types
 
         internal static State Get(Type type, int value)
         {
-            State state;
 
-            if (TryGet(type, value, out state))
+            if (TryGet(type, value, out State state))
+            {
                 return state;
+            }
 
             throw new InvalidOperationException(
                 string.Format(
@@ -209,15 +224,16 @@ namespace Supremacy.Types
         internal static bool TryGet(Type type, int value, out State state)
         {
             state = GetValues(type).FirstOrDefault(o => o._value == value);
-            return (state != null);
+            return state != null;
         }
 
         internal static State Parse(Type type, string value)
         {
-            State result;
 
-            if (TryParse(type, value, out result))
+            if (TryParse(type, value, out State result))
+            {
                 return result;
+            }
 
             throw new InvalidOperationException(
                 string.Format(
@@ -235,17 +251,26 @@ namespace Supremacy.Types
                          select (State)f.GetValue(null)
                      ).FirstOrDefault();
 
-            return (state != null);
+            return state != null;
         }
 
         public bool Equals(State other)
         {
             if (ReferenceEquals(this, other))
+            {
                 return true;
-            if (ReferenceEquals(null, other))
+            }
+
+            if (other is null)
+            {
                 return false;
+            }
+
             if (other.GetType() != GetType())
+            {
                 return false;
+            }
+
             return other._value == _value;
         }
 
@@ -360,7 +385,9 @@ namespace Supremacy.Types
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (sourceType == typeof(int) || sourceType == typeof(string))
+            {
                 return true;
+            }
 
             return base.CanConvertFrom(context, sourceType);
         }
@@ -392,15 +419,20 @@ namespace Supremacy.Types
             if (intValue.HasValue)
             {
                 if (State.TryGet(type, intValue.Value, out state))
+                {
                     return state;
+                }
+
                 return null;
             }
 
-            string stringValue = value as string;
-            if (stringValue != null)
+            if (value is string stringValue)
             {
                 if (State.TryParse(type, stringValue, out state))
+                {
                     return state;
+                }
+
                 return null;
             }
 
@@ -414,8 +446,7 @@ namespace Supremacy.Types
             {
                 if (destinationType == typeof(MarkupExtension))
                 {
-                    IValueSerializerContext serializerContext = context as IValueSerializerContext;
-                    if (serializerContext != null)
+                    if (context is IValueSerializerContext serializerContext)
                     {
                         ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                         if (typeSerializer != null)
@@ -435,10 +466,14 @@ namespace Supremacy.Types
                 }
 
                 if (destinationType == typeof(int))
+                {
                     return state.Value;
+                }
 
                 if (destinationType == typeof(string))
+                {
                     return state.ToString();
+                }
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

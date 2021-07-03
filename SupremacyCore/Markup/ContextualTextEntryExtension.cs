@@ -17,7 +17,9 @@ namespace Supremacy.Markup
             object context = Context;
 
             if (baseKey == null || context == null)
+            {
                 throw new InvalidOperationException("BaseKey and Context must both be set on a ContextualEnumTextGroupExtension.");
+            }
 
             return new ContextualTextEntryKey(context, baseKey);
         }

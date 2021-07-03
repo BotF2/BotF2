@@ -14,7 +14,7 @@ namespace Supremacy.Scripting.Ast
             // ReSharper restore ValueParameterNotUsed
         }
 
-        public bool HasExplicitType => (ElementType != null);
+        public bool HasExplicitType => ElementType != null;
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {

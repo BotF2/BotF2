@@ -67,7 +67,10 @@ namespace Supremacy.Universe
         public Quadrant GetQuadrant(Sector sector)
         {
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
+
             return GetQuadrant(sector.Location);
         }
 
@@ -81,11 +84,17 @@ namespace Supremacy.Universe
             if (location.X < (Width / 2))
             {
                 if (location.Y < (Height / 2))
+                {
                     return Quadrant.Gamma;
+                }
+
                 return Quadrant.Alpha;
             }
             if (location.Y < (Height / 2))
+            {
                 return Quadrant.Delta;
+            }
+
             return Quadrant.Beta;
         }
 
@@ -97,7 +106,9 @@ namespace Supremacy.Universe
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
+                {
                     _sectors[x, y].Reset();
+                }
             }
         }
 

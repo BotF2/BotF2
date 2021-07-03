@@ -35,22 +35,22 @@ namespace Supremacy.Client
 
             SaveGameList.SelectionChanged += SaveGameListSelectionChanged;
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.CancelCommand,
                     Key.Escape,
                     ModifierKeys.None));
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.CancelCommand,
                     GenericCommandsCancelCommandExecuted));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     GenericCommandsAcceptCommandExecuted));
@@ -62,9 +62,11 @@ namespace Supremacy.Client
 
         private void GenericCommandsAcceptCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
-            SavedGameHeader saveGameHeader = SaveGameList.SelectedItem as SavedGameHeader;
-            if (saveGameHeader == null)
+            if (!(SaveGameList.SelectedItem is SavedGameHeader saveGameHeader))
+            {
                 return;
+            }
+
             Close();
             GameLog.Client.General.DebugFormat("LOAD was pressed (GenericCommandsAcceptCommandExecuted)");
             ClientCommands.LoadGame.Execute(saveGameHeader);
@@ -78,19 +80,21 @@ namespace Supremacy.Client
         private void LoadGameDialogIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (IsVisible)
+            {
                 DataContext = SavedGameManager.FindSavedGames();
+            }
 
             if (IsLoaded)
             {
-                Focus();
-                SaveGameList.Focus();
+                _ = Focus();
+                _ = SaveGameList.Focus();
             }
         }
 
         private void LoadGameDialogLoaded(object sender, RoutedEventArgs e)
         {
-            Focus();
-            SaveGameList.Focus();
+            _ = Focus();
+            _ = SaveGameList.Focus();
         }
 
         private void SaveGameListSelectionChanged(object sender, SelectionChangedEventArgs e)

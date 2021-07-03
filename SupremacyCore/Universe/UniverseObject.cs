@@ -60,7 +60,7 @@ namespace Supremacy.Universe
         /// <value>The name.</value>
         public virtual string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 _name = value;
@@ -76,11 +76,14 @@ namespace Supremacy.Universe
         [Indexable]
         public virtual int OwnerID
         {
-            get { return _ownerId; }
+            get => _ownerId;
             set
             {
                 if (value < 0)
+                {
                     value = Civilization.InvalidID;
+                }
+
                 _ownerId = (short)value;
                 OnOwnerIDChanged();
                 OnPropertyChanged("OwnerID");
@@ -90,7 +93,7 @@ namespace Supremacy.Universe
         /// <summary>
         /// Gets whether or not this <see cref="UniverseObject"/> is owned.
         /// </summary>
-        public bool IsOwned => (_ownerId != Civilization.InvalidID);
+        public bool IsOwned => _ownerId != Civilization.InvalidID;
 
         /// <summary>
         /// Gets or sets the owner of this <see cref="UniverseObject"/>.
@@ -101,13 +104,18 @@ namespace Supremacy.Universe
             get
             {
                 if (OwnerID == Civilization.InvalidID)
+                {
                     return null;
+                }
+
                 return GameContext.Current.Civilizations[OwnerID];
             }
             set
             {
                 if (value == Owner)
+                {
                     return;
+                }
 
                 OwnerID = (value != null)
                     ? (short)value.CivID
@@ -131,7 +139,7 @@ namespace Supremacy.Universe
         /// <value>The turn created.</value>
         public int LastOwnershipChange => _lastOwnershipChange;
 
-        public int Age => (GameContext.Current.TurnNumber - _turnCreated);
+        public int Age => GameContext.Current.TurnNumber - _turnCreated;
 
         /// <summary>
         /// Gets the galactic sector in which this <see cref="UniverseObject"/> resides.
@@ -150,11 +158,17 @@ namespace Supremacy.Universe
                 if (Location.X < map.Width / 2)
                 {
                     if (Location.Y < map.Height / 2)
+                    {
                         return Quadrant.Gamma;
+                    }
+
                     return Quadrant.Alpha;
                 }
                 if (Location.Y < map.Height / 2)
+                {
                     return Quadrant.Delta;
+                }
+
                 return Quadrant.Beta;
             }
         }
@@ -206,20 +220,18 @@ namespace Supremacy.Universe
         /// </summary>
         protected virtual void OnLocationChanged()
         {
-            if (LocationChanged != null)
-                LocationChanged(this, EventArgs.Empty);
+            LocationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnOwnerIDChanged()
         {
-            if (OwnerIDChanged != null)
-                OwnerIDChanged(this, EventArgs.Empty);
+            OwnerIDChanged?.Invoke(this, EventArgs.Empty);
         }
 
         [Indexable]
         public MapLocation Location
         {
-            get { return _location; }
+            get => _location;
             set
             {
                 _location = value;
@@ -231,13 +243,16 @@ namespace Supremacy.Universe
         public int DistanceTo([NotNull] UniverseObject other)
         {
             if (other == null)
+            {
                 throw new ArgumentNullException("other");
+            }
+
             return MapLocation.GetDistance(Location, other.Location);
         }
 
         public void Destroy()
         {
-            GameContext.Current.Universe.Destroy(this);
+            _ = GameContext.Current.Universe.Destroy(this);
         }
 
         #region Overridden Members
@@ -269,7 +284,9 @@ namespace Supremacy.Universe
         protected internal override void OnDeserialized()
         {
             if (_effectBindings == null)
+            {
                 _effectBindings = new Lazy<EffectBindingCollection>();
+            }
 
             base.OnDeserialized();
         }
@@ -282,7 +299,9 @@ namespace Supremacy.Universe
             writer.Write(hasEffectBindings);
 
             if (hasEffectBindings)
+            {
                 _effectBindings.Value.SerializeOwnedData(writer, context);
+            }
         }
 
         private void DeserializeEffectData([NotNull] SerializationReader reader, object context)
@@ -290,10 +309,14 @@ namespace Supremacy.Universe
             bool hasEffectBindings = reader.ReadBoolean();
 
             if (!hasEffectBindings)
+            {
                 return;
+            }
 
             if (_effectBindings == null)
+            {
                 _effectBindings = new Lazy<EffectBindingCollection>();
+            }
 
             _effectBindings.Value.DeserializeOwnedData(reader, context);
         }
@@ -307,7 +330,10 @@ namespace Supremacy.Universe
         public override string ToString()
         {
             if (Name != null)
+            {
                 return ResourceManager.GetString(Name);
+            }
+
             return base.ToString();
         }
 
@@ -335,7 +361,10 @@ namespace Supremacy.Universe
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))
+            {
                 return true;
+            }
+
             return Equals(obj as UniverseObject);
         }
 
@@ -352,7 +381,10 @@ namespace Supremacy.Universe
         public virtual bool Equals(UniverseObject obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
+
             return Equals(obj.ObjectID, ObjectID);
         }
 
@@ -367,10 +399,16 @@ namespace Supremacy.Universe
         public static bool operator ==(UniverseObject a, UniverseObject b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
+            }
+
             if (((object)a == null) || ((object)b == null))
+            {
                 return false;
-            return (a.ObjectID == b.ObjectID);
+            }
+
+            return a.ObjectID == b.ObjectID;
         }
 
         /// <summary>

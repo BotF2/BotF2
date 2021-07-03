@@ -4,21 +4,17 @@ using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
-using Supremacy.Client.Controls;
 using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Supremacy.Client.Views
@@ -42,12 +38,17 @@ namespace Supremacy.Client.Views
             {
 
                 if (_designInstance != null)
+                {
                     return _designInstance;
+                }
                 // ReSharper disable AssignNullToNotNullAttribute
                 _designInstance = new DiplomacyScreenViewModel(DesignTimeAppContext.Instance, null);
                 // ReSharper restore AssignNullToNotNullAttribute
                 if (_designInstance.ForeignPowers != null) // && _designInstance.ForeignPowers.Count() > 0)
+                {
                     _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
+                }
+
                 _designInstance.DisplayMode = DiplomacyScreenDisplayMode.Outbox;
 
                 //_designInstance.MakeProposalCommand.Execute(null);
@@ -137,7 +138,9 @@ namespace Supremacy.Client.Views
         private void ExecuteSetSelectedGraphNodeCommand(DiplomacyGraphNode node)
         {
             if (CanExecuteSetSelectedGraphNodeCommand(node))
+            {
                 SelectedGraphNode = node;
+            }
         }
 
         private void ExecuteResetGraphCommand()
@@ -180,7 +183,9 @@ namespace Supremacy.Client.Views
         private bool CanExecuteMakeProposalCommand()
         {
             if (!CanExecuteNewProposalCommandCore(out ForeignPowerViewModel selectedForeignPower))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -190,23 +195,30 @@ namespace Supremacy.Client.Views
             selectedForeignPower = SelectedForeignPower;
 
             if (selectedForeignPower == null)
+            {
                 return false;
+            }
 
             if (!selectedForeignPower.IsDiplomatAvailable)
+            {
                 return false;
+            }
 
             if (selectedForeignPower.OutgoingMessage != null)
+            {
                 return false;
+            }
 
             return true;
         }
 
         private void ExecuteMakeProposalCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteNewProposalCommandCore(out foreignPower))
+            if (!CanExecuteNewProposalCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             foreignPower.OutgoingMessage = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
             foreignPower.OutgoingMessage.Edit();
@@ -236,10 +248,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteDeclareWarCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteDeclareWarCommandCore(out foreignPower))
+            if (!CanExecuteDeclareWarCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -252,7 +265,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement declareWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.WarDeclaration);
             if (declareWarElement == null || !declareWarElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             declareWarElement.AddCommand.Execute(null);
 
@@ -280,10 +295,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteEndWarCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteEndWarCommandCore(out foreignPower))
+            if (!CanExecuteEndWarCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -296,7 +312,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement endWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyCeaseFireClause); // CeaseFire = endWar
             if (endWarElement == null || !endWarElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             endWarElement.AddCommand.Execute(null);
 
@@ -332,10 +350,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteOpenBordersCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteOpenBordersCommandCore(out foreignPower))
+            if (!CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -348,7 +367,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement openBordersElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
             if (openBordersElement == null || !openBordersElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             openBordersElement.AddCommand.Execute(null);
 
@@ -408,10 +429,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteNonAgressionCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteNonAgressionCommandCore(out foreignPower))
+            if (!CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -424,7 +446,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement nonAgressionElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyNonAggressionClause);
             if (nonAgressionElement == null || !nonAgressionElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             nonAgressionElement.AddCommand.Execute(null);
 
@@ -459,10 +483,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteAffiliationCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteAffiliationCommandCore(out foreignPower))
+            if (!CanExecuteAffiliationCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -475,7 +500,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement affiliationElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
             if (affiliationElement == null || !affiliationElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             affiliationElement.AddCommand.Execute(null);
 
@@ -512,10 +539,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteDefenceAllianceCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteDefenceAllianceCommandCore(out foreignPower))
+            if (!CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -528,7 +556,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement defenceAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyDefensiveAllianceClause);
             if (defenceAllianceElement == null || !defenceAllianceElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             defenceAllianceElement.AddCommand.Execute(null);
 
@@ -557,10 +587,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteFullAllianceCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteFullAllianceCommandCore(out foreignPower))
+            if (!CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -573,7 +604,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement fullAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyFullAllianceClause);
             if (fullAllianceElement == null || !fullAllianceElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             fullAllianceElement.AddCommand.Execute(null);
 
@@ -602,10 +635,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteMembershipCommand()
         {
-            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteMembershipCommandCore(out foreignPower))
+            if (!CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower))
+            {
                 return;
+            }
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
 
@@ -618,7 +652,9 @@ namespace Supremacy.Client.Views
 
             DiplomacyMessageAvailableElement membershipElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyMembershipClause);
             if (membershipElement == null || !membershipElement.AddCommand.CanExecute(null))
+            {
                 return;
+            }
 
             membershipElement.AddCommand.Execute(null);
 
@@ -641,7 +677,10 @@ namespace Supremacy.Client.Views
         private void ExecuteEditMessageCommand()
         {
             if (!CanExecuteEditMessageCommand())
+            {
                 return;
+            }
+
             if (SelectedForeignPower != null &&
                 SelectedForeignPower.OutgoingMessage != null &&
                 !SelectedForeignPower.OutgoingMessage.IsEditing)
@@ -664,7 +703,9 @@ namespace Supremacy.Client.Views
         private void ExecuteSendMessageCommand()
         {
             if (!CanExecuteSendMessageCommand())
+            {
                 return;
+            }
 
             SelectedForeignPower.OutgoingMessage.Send();
             GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
@@ -677,17 +718,17 @@ namespace Supremacy.Client.Views
                     //GameLog.Client.Diplomacy.DebugFormat("!@^% element = {0} ", element.Description);
                     if (element.ElementType == DiplomacyMessageElementType.WarDeclaration)
                     {
-                        Int32.TryParse(SelectedForeignPower.CounterpartyRegard.ToString(), out int regard);
-                        Int32.TryParse(SelectedForeignPower.CounterpartyTrust.ToString(), out int trust);
+                        _ = int.TryParse(SelectedForeignPower.CounterpartyRegard.ToString(), out int regard);
+                        _ = int.TryParse(SelectedForeignPower.CounterpartyTrust.ToString(), out int trust);
                         if (_cancelationRegardDictionary.ContainsKey(_selectedID))
                         {
-                            _cancelationRegardDictionary.Remove(_selectedID);
+                            _ = _cancelationRegardDictionary.Remove(_selectedID);
                             _cancelationRegardDictionary.Add(_selectedID, regard);
                         }
                         else { _cancelationRegardDictionary.Add(_selectedID, regard); }
                         if (_cancelationTrustDictionary.ContainsKey(_selectedID))
                         {
-                            _cancelationTrustDictionary.Remove(_selectedID);
+                            _ = _cancelationTrustDictionary.Remove(_selectedID);
                             _cancelationTrustDictionary.Add(_selectedID, trust);
                         }
                         else { _cancelationTrustDictionary.Add(_selectedID, trust); }
@@ -716,7 +757,10 @@ namespace Supremacy.Client.Views
         private void ExecuteCancelMessageCommand()
         {
             if (!CanExecuteCancelMessageCommand())
+            {
                 return;
+            }
+
             int _selectedID = SelectedForeignPower.Counterparty.CivID;
 
             foreach (DiplomacyMessageElement element in SelectedForeignPower.OutgoingMessage.StatementElements)
@@ -727,9 +771,14 @@ namespace Supremacy.Client.Views
                     int? regard = _cancelationRegardDictionary[_selectedID];
                     int? trust = _cancelationTrustDictionary[_selectedID];
                     if (regard != null)
+                    {
                         DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)regard);
+                    }
+
                     if (trust != null)
+                    {
                         DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)trust);
+                    }
                 }
             }
 
@@ -744,7 +793,9 @@ namespace Supremacy.Client.Views
         private void ExecuteSetDisplayModeComand(ICheckableCommandParameter p)
         {
             if (!CanExecuteSetDisplayModeComand(p))
+            {
                 return;
+            }
 
             DisplayMode = (DiplomacyScreenDisplayMode)p.InnerParameter;
 
@@ -754,7 +805,9 @@ namespace Supremacy.Client.Views
         private bool CanExecuteSetDisplayModeComand(ICheckableCommandParameter p)
         {
             if (p == null)
+            {
                 return false;
+            }
 
             DiplomacyScreenDisplayMode? displayMode = p.InnerParameter as DiplomacyScreenDisplayMode?;
             if (displayMode == null)
@@ -763,7 +816,7 @@ namespace Supremacy.Client.Views
                 return false;
             }
 
-            p.IsChecked = (displayMode == DisplayMode);
+            p.IsChecked = displayMode == DisplayMode;
             return true;
         }
 
@@ -774,8 +827,7 @@ namespace Supremacy.Client.Views
 
         private void RaisePropertyChanged(string propertyName)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected override void UnregisterCommandAndEventHandlers()
@@ -789,7 +841,7 @@ namespace Supremacy.Client.Views
         {
             base.RegisterCommandAndEventHandlers();
 
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
         }
 
         protected override void InvalidateCommands()
@@ -814,7 +866,9 @@ namespace Supremacy.Client.Views
             _cancelMessageCommand.RaiseCanExecuteChanged();
 
             if (_selectedForeignPower != null)
+            {
                 _selectedForeignPower.InvalidateCommands();
+            }
         }
 
         private void OnTurnStarted(GameContextEventArgs args)
@@ -836,7 +890,7 @@ namespace Supremacy.Client.Views
 
         protected internal override void RegisterViewWithRegion()
         {
-            RegionManager.Regions[ClientRegions.GameScreens].Add(View, ViewName, true);
+            _ = RegionManager.Regions[ClientRegions.GameScreens].Add(View, ViewName, true);
         }
 
         protected internal override void UnregisterViewWithRegion()
@@ -889,11 +943,13 @@ namespace Supremacy.Client.Views
 
         public Civilization PlayerCivilization
         {
-            get { return _playerCivilization; }
+            get => _playerCivilization;
             set
             {
                 if (Equals(value, _playerCivilization))
+                {
                     return;
+                }
 
                 _playerCivilization = value;
 
@@ -918,11 +974,13 @@ namespace Supremacy.Client.Views
 
         public DiplomacyGraphNode SelectedGraphNode
         {
-            get { return _selectedGraphNode; }
+            get => _selectedGraphNode;
             set
             {
                 if (Equals(value, _selectedGraphNode))
+                {
                     return;
+                }
 
                 _selectedGraphNode = value;
 
@@ -947,11 +1005,13 @@ namespace Supremacy.Client.Views
 
         public DiplomacyGraphNode LocalPlayerGraphNode
         {
-            get { return _localPlayerGraphNode; }
+            get => _localPlayerGraphNode;
             set
             {
                 if (Equals(value, _localPlayerGraphNode))
+                {
                     return;
+                }
 
                 _localPlayerGraphNode = value;
 
@@ -977,14 +1037,13 @@ namespace Supremacy.Client.Views
 
         public ForeignPowerViewModel SelectedForeignPower
         {
-            get
-            {
-                return _selectedForeignPower;
-            }
+            get => _selectedForeignPower;
             set
             {
                 if (Equals(value, _selectedForeignPower))
+                {
                     return;
+                }
 
                 _selectedForeignPower = value;
                 OnSelectedForeignPowerChanged();
@@ -1004,7 +1063,10 @@ namespace Supremacy.Client.Views
             SelectedForeignPowerChanged.Raise(this);
             OnPropertyChanged("SelectedForeignPower");
             if (_selectedForeignPower != null)
+            {
                 ExecuteMakeProposalCommand();
+            }
+
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
             if (AreNewMessageCommandsVisible) { }
@@ -1117,7 +1179,7 @@ namespace Supremacy.Client.Views
             get
             {
                 ForeignPowerViewModel selectedForeignPower = SelectedForeignPower;
-                _isMembershipButtonVisible = (selectedForeignPower != null && !selectedForeignPower.Counterparty.IsEmpire);
+                _isMembershipButtonVisible = selectedForeignPower != null && !selectedForeignPower.Counterparty.IsEmpire;
                 return _isMembershipButtonVisible;
             }
         }
@@ -1137,7 +1199,7 @@ namespace Supremacy.Client.Views
             get
             {
                 ForeignPowerViewModel selectedForeignPower = SelectedForeignPower;
-                _isFullAllianceButtonVisible = (selectedForeignPower != null && selectedForeignPower.Counterparty.IsEmpire);
+                _isFullAllianceButtonVisible = selectedForeignPower != null && selectedForeignPower.Counterparty.IsEmpire;
                 return _isFullAllianceButtonVisible;
             }
         }
@@ -1157,15 +1219,15 @@ namespace Supremacy.Client.Views
 
         public DiplomacyScreenDisplayMode DisplayMode
         {
-            get
-            {
+            get =>
                 //ForeignPowerShortName.
-                return _displayMode;
-            }
+                _displayMode;
             set
             {
                 if (Equals(value, _displayMode))
+                {
                     return;
+                }
 
                 _displayMode = value;
 
@@ -1224,7 +1286,9 @@ namespace Supremacy.Client.Views
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
+                {
                     continue;
+                }
 
                 ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
                 ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
@@ -1238,8 +1302,9 @@ namespace Supremacy.Client.Views
             }
 
             if (selectedForeignPower != null)
+            {
                 SelectedForeignPower = _foreignPowers.FirstOrDefault(o => o.Counterparty.CivID == selectedForeignPower.CivID);
-
+            }
         }
 
         private void RefreshRelationshipGraph()
@@ -1257,7 +1322,9 @@ namespace Supremacy.Client.Views
                 nodes.Add(node);
 
                 if (civ == localPlayerEmpire)
+                {
                     localPlayerNode = node;
+                }
             }
 
             for (int i = 0; i < count; i++)

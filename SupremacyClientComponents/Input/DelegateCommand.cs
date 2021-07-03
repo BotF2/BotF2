@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -16,14 +15,14 @@ namespace Supremacy.Client.Input
 
         public bool IsActive
         {
-            get
-            {
-                return _isActive;
-            }
+            get => _isActive;
             set
             {
                 if (_isActive == value)
+                {
                     return;
+                }
+
                 _isActive = value;
                 OnIsActiveChanged();
             }
@@ -38,7 +37,9 @@ namespace Supremacy.Client.Input
         public DelegateCommand(Action executeMethod, Func<bool> canExecuteMethod)
         {
             if (executeMethod == null && canExecuteMethod == null)
+            {
                 throw new ArgumentNullException("executeMethod", "Execute and CanExecute callbacks cannot both be null.");
+            }
 
             _executeMethod = executeMethod;
             _canExecuteMethod = canExecuteMethod;
@@ -47,14 +48,20 @@ namespace Supremacy.Client.Input
         public bool CanExecute()
         {
             if (_canExecuteMethod == null)
+            {
                 return true;
+            }
+
             return _canExecuteMethod();
         }
 
         public void Execute()
         {
             if (_executeMethod == null)
+            {
                 return;
+            }
+
             _executeMethod();
         }
 
@@ -78,7 +85,10 @@ namespace Supremacy.Client.Input
         {
             EventHandler eventHandler = IsActiveChanged;
             if (eventHandler == null)
+            {
                 return;
+            }
+
             eventHandler(this, EventArgs.Empty);
         }
 
@@ -87,16 +97,24 @@ namespace Supremacy.Client.Input
             Dispatcher dispatcher = (Dispatcher)null;
 
             if (Application.Current != null)
+            {
                 dispatcher = Application.Current.Dispatcher;
+            }
 
             EventHandler eventHandler = CanExecuteChanged;
             if (eventHandler == null)
+            {
                 return;
+            }
 
             if (dispatcher != null && !dispatcher.CheckAccess())
+            {
                 dispatcher.Invoke((Action)OnCanExecuteChanged);
+            }
             else
+            {
                 eventHandler(this, EventArgs.Empty);
+            }
         }
     }
 
@@ -108,14 +126,14 @@ namespace Supremacy.Client.Input
 
         public bool IsActive
         {
-            get
-            {
-                return _isActive;
-            }
+            get => _isActive;
             set
             {
                 if (_isActive == value)
+                {
                     return;
+                }
+
                 _isActive = value;
                 OnIsActiveChanged();
             }
@@ -130,7 +148,9 @@ namespace Supremacy.Client.Input
         public DelegateCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)
         {
             if (executeMethod == null && canExecuteMethod == null)
+            {
                 throw new ArgumentNullException("executeMethod", "Execute and CanExecute callbacks cannot both be null.");
+            }
 
             _executeMethod = executeMethod;
             _canExecuteMethod = canExecuteMethod;
@@ -139,14 +159,20 @@ namespace Supremacy.Client.Input
         public bool CanExecute(T parameter)
         {
             if (_canExecuteMethod == null)
+            {
                 return true;
+            }
+
             return _canExecuteMethod(parameter);
         }
 
         public void Execute(T parameter)
         {
             if (_executeMethod == null)
+            {
                 return;
+            }
+
             _executeMethod(parameter);
         }
 
@@ -171,7 +197,10 @@ namespace Supremacy.Client.Input
         {
             EventHandler eventHandler = IsActiveChanged;
             if (eventHandler == null)
+            {
                 return;
+            }
+
             eventHandler(this, EventArgs.Empty);
         }
 
@@ -180,16 +209,24 @@ namespace Supremacy.Client.Input
             Dispatcher dispatcher = (Dispatcher)null;
 
             if (Application.Current != null)
+            {
                 dispatcher = Application.Current.Dispatcher;
+            }
 
             EventHandler eventHandler = CanExecuteChanged;
             if (eventHandler == null)
+            {
                 return;
+            }
 
             if (dispatcher != null && !dispatcher.CheckAccess())
+            {
                 dispatcher.Invoke((Action)OnCanExecuteChanged);
+            }
             else
+            {
                 eventHandler(this, EventArgs.Empty);
+            }
         }
     }
 }

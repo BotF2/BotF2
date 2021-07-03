@@ -33,16 +33,20 @@ namespace Supremacy.Client.Data
             {
                 IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
                 if (appContext == null)
+                {
                     return null;
+                }
+
                 return appContext.LocalPlayer.Empire;
             }
         }
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            TradeRoute tradeRoute = value as TradeRoute;
-            if (tradeRoute == null || !tradeRoute.IsAssigned)
+            if (!(value is TradeRoute tradeRoute) || !tradeRoute.IsAssigned)
+            {
                 return 0;
+            }
 
             return GetCreditsForTradeRoute(tradeRoute);
         }
@@ -51,19 +55,29 @@ namespace Supremacy.Client.Data
         {
             Civilization empire = LocalPlayerEmpire;
             if (empire == null)
+            {
                 return tradeRoute.Credits;
+            }
 
             Colony colony;
 
             if (tradeRoute.SourceColony.OwnerID == empire.CivID)
+            {
                 colony = tradeRoute.SourceColony;
+            }
             else if (tradeRoute.TargetColony.OwnerID == empire.CivID)
+            {
                 colony = tradeRoute.TargetColony;
+            }
             else
+            {
                 colony = null;
+            }
 
             if (colony == null)
+            {
                 return tradeRoute.Credits;
+            }
 
             double bonus = colony.Buildings
                               .Where(o => o.IsActive)
@@ -82,15 +96,18 @@ namespace Supremacy.Client.Data
         public override object MultiConvert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values == null)
+            {
                 return null;
+            }
 
             int total = 0;
 
             for (int i = 0; i < values.Length; i++)
             {
-                TradeRoute tradeRoute = values[i] as TradeRoute;
-                if (tradeRoute != null && tradeRoute.IsAssigned)
+                if (values[i] is TradeRoute tradeRoute && tradeRoute.IsAssigned)
+                {
                     total += GetCreditsForTradeRoute(tradeRoute);
+                }
             }
 
             return total;

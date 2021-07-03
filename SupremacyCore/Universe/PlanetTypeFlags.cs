@@ -32,12 +32,16 @@ namespace Supremacy.Universe
         public PlanetTypeFlags([NotNull] IEnumerable<PlanetType> planetTypes)
         {
             if (planetTypes == null)
+            {
                 throw new ArgumentNullException("planetTypes");
+            }
 
             _flags = 0;
 
             foreach (PlanetType planetType in planetTypes)
+            {
                 _flags |= 1 << (int)planetType;
+            }
         }
 
         public PlanetTypeFlags(params PlanetType[] planetTypes)
@@ -45,7 +49,9 @@ namespace Supremacy.Universe
             _flags = 0;
 
             foreach (PlanetType planetType in planetTypes)
+            {
                 _flags |= 1 << (int)planetType;
+            }
         }
 
         public bool this[PlanetType planetType]
@@ -64,8 +70,10 @@ namespace Supremacy.Universe
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
+            {
                 return false;
+            }
 
             PlanetTypeFlags? other = obj as PlanetTypeFlags?;
             return other.HasValue && Equals(other.GetValueOrDefault());

@@ -11,7 +11,9 @@ namespace Supremacy.Effects
         public static ScriptParameter ToScriptParameter([NotNull] this IEffectParameter effectParameter)
         {
             if (effectParameter == null)
+            {
                 throw new ArgumentNullException("effectParameter");
+            }
 
             return new ScriptParameter(
                 effectParameter.Name,
@@ -23,7 +25,9 @@ namespace Supremacy.Effects
         public static ScriptParameters ToScriptParameters([NotNull] this IEffectParameterCollection effectParameters)
         {
             if (effectParameters == null)
+            {
                 throw new ArgumentNullException("effectParameters");
+            }
 
             return new ScriptParameters(effectParameters.Select(ToScriptParameter));
         }

@@ -21,11 +21,14 @@ namespace Supremacy.Utility
         public static short? ToInt16(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            short result;
-            if (short.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (short.TryParse(value, IntegerNumberStyle, provider, out short result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -108,7 +111,9 @@ namespace Supremacy.Utility
         public static short? ToInt16(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -168,11 +173,14 @@ namespace Supremacy.Utility
         public static ushort? ToUInt16(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            ushort result;
-            if (ushort.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (ushort.TryParse(value, IntegerNumberStyle, provider, out ushort result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -255,7 +263,9 @@ namespace Supremacy.Utility
         public static ushort? ToUInt16(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -315,11 +325,14 @@ namespace Supremacy.Utility
         public static int? ToInt32(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            int result;
-            if (int.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (int.TryParse(value, IntegerNumberStyle, provider, out int result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -402,7 +415,9 @@ namespace Supremacy.Utility
         public static int? ToInt32(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -462,11 +477,14 @@ namespace Supremacy.Utility
         public static uint? ToUInt32(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            uint result;
-            if (uint.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (uint.TryParse(value, IntegerNumberStyle, provider, out uint result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -549,7 +567,9 @@ namespace Supremacy.Utility
         public static uint? ToUInt32(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -609,11 +629,14 @@ namespace Supremacy.Utility
         public static long? ToInt64(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            long result;
-            if (long.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (long.TryParse(value, IntegerNumberStyle, provider, out long result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -696,7 +719,9 @@ namespace Supremacy.Utility
         public static long? ToInt64(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -756,11 +781,14 @@ namespace Supremacy.Utility
         public static ulong? ToUInt64(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            ulong result;
-            if (ulong.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (ulong.TryParse(value, IntegerNumberStyle, provider, out ulong result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -843,7 +871,9 @@ namespace Supremacy.Utility
         public static ulong? ToUInt64(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -903,11 +933,14 @@ namespace Supremacy.Utility
         public static byte? ToByte(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            byte result;
-            if (byte.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (byte.TryParse(value, IntegerNumberStyle, provider, out byte result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -990,7 +1023,9 @@ namespace Supremacy.Utility
         public static byte? ToByte(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -1050,11 +1085,14 @@ namespace Supremacy.Utility
         public static sbyte? ToSByte(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            sbyte result;
-            if (sbyte.TryParse(value, IntegerNumberStyle, provider, out result))
+            if (sbyte.TryParse(value, IntegerNumberStyle, provider, out sbyte result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -1137,7 +1175,9 @@ namespace Supremacy.Utility
         public static sbyte? ToSByte(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -1192,11 +1232,14 @@ namespace Supremacy.Utility
         public static bool? ToBoolean(string value)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            bool result;
-            if (bool.TryParse(value, out result))
+            if (bool.TryParse(value, out bool result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -1286,7 +1329,9 @@ namespace Supremacy.Utility
         public static bool? ToBoolean(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -1346,11 +1391,14 @@ namespace Supremacy.Utility
         public static double? ToDouble(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            double result;
-            if (double.TryParse(value, RealNumberStyle, provider, out result))
+            if (double.TryParse(value, RealNumberStyle, provider, out double result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -1433,7 +1481,9 @@ namespace Supremacy.Utility
         public static double? ToDouble(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -1493,11 +1543,14 @@ namespace Supremacy.Utility
         public static float? ToSingle(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            float result;
-            if (float.TryParse(value, RealNumberStyle, provider, out result))
+            if (float.TryParse(value, RealNumberStyle, provider, out float result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -1580,7 +1633,9 @@ namespace Supremacy.Utility
         public static float? ToSingle(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -1640,11 +1695,14 @@ namespace Supremacy.Utility
         public static decimal? ToDecimal(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            decimal result;
-            if (decimal.TryParse(value, DecimalNumberStyle, provider, out result))
+            if (decimal.TryParse(value, DecimalNumberStyle, provider, out decimal result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -1727,7 +1785,9 @@ namespace Supremacy.Utility
         public static decimal? ToDecimal(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -1787,10 +1847,14 @@ namespace Supremacy.Utility
         public static char? ToChar(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             if (value.Length == 1)
+            {
                 return value[0];
+            }
 
             return null;
         }
@@ -1803,14 +1867,20 @@ namespace Supremacy.Utility
         public static char? ToChar(sbyte value)
         {
             if (value < 0)
+            {
                 return null;
+            }
+
             return (char?)value;
         }
 
         public static char? ToChar(short value)
         {
             if (value < 0)
+            {
                 return null;
+            }
+
             return (char?)value;
         }
 
@@ -1822,7 +1892,10 @@ namespace Supremacy.Utility
         public static char? ToChar(long value)
         {
             if (value < 0)
+            {
                 return null;
+            }
+
             return (char?)value;
         }
 
@@ -1834,7 +1907,10 @@ namespace Supremacy.Utility
         public static char? ToChar(int value)
         {
             if (value < 0)
+            {
                 return null;
+            }
+
             return (char?)value;
         }
 
@@ -1881,7 +1957,9 @@ namespace Supremacy.Utility
         public static char? ToChar(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -1941,11 +2019,14 @@ namespace Supremacy.Utility
         public static DateTime? ToDateTime(string value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            DateTime result;
-            if (DateTime.TryParse(value, provider, DateTimeStyle, out result))
+            if (DateTime.TryParse(value, provider, DateTimeStyle, out DateTime result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -2028,7 +2109,9 @@ namespace Supremacy.Utility
         public static DateTime? ToDateTime(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
@@ -2238,15 +2321,19 @@ namespace Supremacy.Utility
         public static string ToString(object value, IFormatProvider provider)
         {
             if (value == null)
+            {
                 return string.Empty;
+            }
 
-            IConvertible convertible = value as IConvertible;
-            if (convertible != null)
+            if (value is IConvertible convertible)
+            {
                 return convertible.ToString(provider);
+            }
 
-            IFormattable formattable = value as IFormattable;
-            if (formattable != null)
+            if (value is IFormattable formattable)
+            {
                 return formattable.ToString(null, provider);
+            }
 
             return value.ToString();
         }
@@ -2263,13 +2350,17 @@ namespace Supremacy.Utility
         public static object ChangeType(object value, Type conversionType, IFormatProvider provider)
         {
             if (conversionType == null)
+            {
                 return null;
+            }
 
-            IConvertible convertible = value as IConvertible;
-            if (convertible == null)
+            if (!(value is IConvertible convertible))
             {
                 if (value != null && value.GetType() == conversionType)
+                {
                     return value;
+                }
+
                 return null;
             }
 
@@ -2319,9 +2410,10 @@ namespace Supremacy.Utility
 
         public static object ChangeType(object value, TypeCode typeCode, IFormatProvider provider)
         {
-            IConvertible convertible = value as IConvertible;
-            if (convertible == null)
+            if (!(value is IConvertible convertible))
+            {
                 return null;
+            }
 
             switch (typeCode)
             {

@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Runtime.Serialization;
-using Supremacy.Annotations;
-using Supremacy.Collections;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
-using Supremacy.Tech;
 
 namespace Supremacy.Economy
 {
@@ -24,7 +15,7 @@ namespace Supremacy.Economy
 
         public Shipyard Shipyard
         {
-            get { return _shipyard; }
+            get => _shipyard;
             set
             {
                 _shipyard = value;
@@ -34,7 +25,7 @@ namespace Supremacy.Economy
 
         public int SlotID
         {
-            get { return _slotId; }
+            get => _slotId;
             set
             {
                 _slotId = value;
@@ -44,7 +35,7 @@ namespace Supremacy.Economy
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 _isActive = value;

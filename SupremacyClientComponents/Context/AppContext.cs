@@ -120,7 +120,9 @@ namespace Supremacy.Client.Context
         protected virtual void Dispose(bool isDisposing)
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             try
             {
@@ -136,17 +138,17 @@ namespace Supremacy.Client.Context
         #region Private Methods
         private void HookEventHandlers()
         {
-            ClientEvents.ClientConnected.Subscribe(OnClientConnected);
-            ClientEvents.ClientDisconnected.Subscribe(OnClientConnectionClosed);
-            ClientEvents.ClientConnectionFailed.Subscribe(OnClientConnectionClosed, ThreadOption.UIThread);
-            ClientEvents.LocalPlayerJoined.Subscribe(OnLocalPlayerJoined, ThreadOption.PublisherThread);
-            ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated);
-            ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.PublisherThread);
-            ClientEvents.GameUpdateDataReceived.Subscribe(OnGameUpdateDataReceived, ThreadOption.UIThread);
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
-            ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded);
-            ClientEvents.GameEnding.Subscribe(OnGameEnding);
-            ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread);
+            _ = ClientEvents.ClientConnected.Subscribe(OnClientConnected);
+            _ = ClientEvents.ClientDisconnected.Subscribe(OnClientConnectionClosed);
+            _ = ClientEvents.ClientConnectionFailed.Subscribe(OnClientConnectionClosed, ThreadOption.UIThread);
+            _ = ClientEvents.LocalPlayerJoined.Subscribe(OnLocalPlayerJoined, ThreadOption.PublisherThread);
+            _ = ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated);
+            _ = ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.PublisherThread);
+            _ = ClientEvents.GameUpdateDataReceived.Subscribe(OnGameUpdateDataReceived, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded);
+            _ = ClientEvents.GameEnding.Subscribe(OnGameEnding);
+            _ = ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread);
         }
 
         private void OnGameUpdateDataReceived(ClientDataEventArgs<GameUpdateData> args)
@@ -182,7 +184,9 @@ namespace Supremacy.Client.Context
             IPlayer localPlayer = args.Player;
 
             if (localPlayer == null)
+            {
                 return;
+            }
 
             _accessLock.EnterWriteLock();
             try
@@ -228,7 +232,7 @@ namespace Supremacy.Client.Context
             {
                 if (_currentGame != null)
                 {
-                    _dispatcher.Invoke(
+                    _ = _dispatcher.Invoke(
                         (Func<GameContext, bool>)GameContext.CheckAndPop,
                         DispatcherPriority.Send,
                         _currentGame);
@@ -302,7 +306,7 @@ namespace Supremacy.Client.Context
             try
             {
                 _currentGame = args.Value.CreateLocalGame();
-                _dispatcher.Invoke(
+                _ = _dispatcher.Invoke(
                     (Action<GameContext>)GameContext.PushThreadContext,
                     DispatcherPriority.Send,
                     _currentGame);
@@ -657,7 +661,10 @@ namespace Supremacy.Client.Context
                 try
                 {
                     if ((_localPlayer == null) || (_currentGame == null))
+                    {
                         return null;
+                    }
+
                     return _currentGame.CivilizationManagers[_localPlayer.EmpireID];
                 }
                 finally

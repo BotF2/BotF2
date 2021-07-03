@@ -35,12 +35,9 @@ namespace Supremacy.Diplomacy
 
         public Response(ResponseType responseType, [NotNull] IProposal proposal, [CanBeNull] IProposal counterProposal = null, int turnSent = 0)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
             _turnSent = turnSent == 0 ? GameContext.Current.TurnNumber + 1 : turnSent;
             _responseType = responseType;
-            _proposal = proposal;
+            _proposal = proposal ?? throw new ArgumentNullException("proposal");
             _counterProposal = counterProposal;
             _turnSent = turnSent;
         }
@@ -104,15 +101,21 @@ namespace Supremacy.Diplomacy
         public static bool IsValid(this IResponse response)
         {
             if (response == null)
+            {
                 return false;
-            return (response.ResponseType != ResponseType.NoResponse);
+            }
+
+            return response.ResponseType != ResponseType.NoResponse;
         }
 
         private static bool TestResponseType(IResponse response, ResponseType responseType)
         {
             if (response == null)
+            {
                 return false;
-            return (response.ResponseType == responseType);
+            }
+
+            return response.ResponseType == responseType;
         }
     }
 }

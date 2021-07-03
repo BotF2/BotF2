@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -68,7 +67,7 @@ namespace Supremacy.Client
 
         public GameContextMenu()
         {
-            SetBinding(
+            _ = SetBinding(
                 LayoutTransformProperty,
                 new Binding
                 {

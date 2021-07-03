@@ -10,7 +10,6 @@ using Supremacy.Client.Commands;
 using Supremacy.Client.DragDrop;
 using Supremacy.Orbitals;
 using Supremacy.Client.Context;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -23,10 +22,7 @@ namespace Supremacy.Client.Views
         #region Constructors and Finalizers
         public TaskForceListView([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-
-            _appContext = appContext;
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
 
             InitializeComponent();
 
@@ -40,16 +36,23 @@ namespace Supremacy.Client.Views
 
                 DependencyObject container = TaskForceList.ItemContainerGenerator.ContainerFromItem(item);
                 if (container == null)
+                {
                     continue;
+                }
                 // doesn't work fine        GameLog.Print("container = {0}, item = {1}", container.ToString(), item.ToString());
 
                 //works     GameLog.Print("TaskForceList.Items.Count = {0}", TaskForceList.Items.Count);   // gives amount of blue lines = sections, not more
 
 
                 if (DragDropManager.GetDropTargetAdvisor(container) == null)
+                {
                     DragDropManager.SetDropTargetAdvisor(container, new TaskForceDropTargetAdvisor());
+                }
+
                 if (DragDropManager.GetDragSourceAdvisor(container) == null)
+                {
                     DragDropManager.SetDragSourceAdvisor(container, new TaskForceDragSourceAdvisor());
+                }
             }
         }
 
@@ -63,8 +66,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            FleetViewWrapper fleetView = targetListViewItem.DataContext as FleetViewWrapper;
-            if (fleetView == null)
+            if (!(targetListViewItem.DataContext is FleetViewWrapper fleetView))
             {
                 e.Handled = true;
                 return;
@@ -95,14 +97,20 @@ namespace Supremacy.Client.Views
         private void PopulateTaskForceOrderMenu([NotNull] FleetView fleetView)
         {
             if (fleetView == null)
+            {
                 throw new ArgumentNullException("fleetView");
+            }
 
             ContextMenu orderMenu = ContextMenu;
             if (orderMenu != null)
+            {
                 orderMenu.Items.Clear();
+            }
 
             if (fleetView.Source.OwnerID != _appContext.LocalPlayer.EmpireID)
+            {
                 return;
+            }
 
             if (orderMenu == null)
             {
@@ -127,9 +135,9 @@ namespace Supremacy.Client.Views
                     Mode = BindingMode.OneWay
                 };
 
-                cloakItem.SetBinding(MenuItem.IsCheckedProperty, cloakBinding);
-                orderMenu.Items.Add(cloakItem);
-                orderMenu.Items.Add(new Separator());
+                _ = cloakItem.SetBinding(MenuItem.IsCheckedProperty, cloakBinding);
+                _ = orderMenu.Items.Add(cloakItem);
+                _ = orderMenu.Items.Add(new Separator());
             }
 
             if (fleetView.Source.CanCamouflage)
@@ -149,9 +157,9 @@ namespace Supremacy.Client.Views
                     Mode = BindingMode.OneWay
                 };
 
-                camouflagedItem.SetBinding(MenuItem.IsCheckedProperty, camouflageBinding);
-                orderMenu.Items.Add(camouflagedItem);
-                orderMenu.Items.Add(new Separator());
+                _ = camouflagedItem.SetBinding(MenuItem.IsCheckedProperty, camouflageBinding);
+                _ = orderMenu.Items.Add(camouflagedItem);
+                _ = orderMenu.Items.Add(new Separator());
             }
 
             foreach (FleetOrder order in FleetOrders.GetAvailableOrders(fleetView.Source))
@@ -162,7 +170,7 @@ namespace Supremacy.Client.Views
                     Command = GalaxyScreenCommands.IssueTaskForceOrder,
                     CommandParameter = new Pair<FleetView, FleetOrder>(fleetView, order)
                 };
-                orderMenu.Items.Add(orderItem);
+                _ = orderMenu.Items.Add(orderItem);
             }
 
             orderMenu.Closed += OnOrderMenuClosed;
@@ -173,7 +181,10 @@ namespace Supremacy.Client.Views
             ContextMenu sourceMenu = (ContextMenu)args.Source;
             sourceMenu.Closed -= OnOrderMenuClosed;
             if (_orderMenuTargetItem == null)
+            {
                 return;
+            }
+
             _orderMenuTargetItem.ClearValue(IsOrderMenuOpenedProperty);
             _orderMenuTargetItem = null;
         }

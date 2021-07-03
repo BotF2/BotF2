@@ -118,7 +118,9 @@ namespace Supremacy.Client.Controls
             Sides side)
         {
             if ((width <= 0) || (height <= 0))
+            {
                 return;
+            }
 
             Rect bounds = new Rect(left, top, width, height);
 
@@ -160,7 +162,9 @@ namespace Supremacy.Client.Controls
             Corners corner)
         {
             if ((width <= 0) || (height <= 0))
+            {
                 return;
+            }
 
             Rect bounds = new Rect(left, top, width, height);
             double offsetPercentage = 0.0;
@@ -213,33 +217,37 @@ namespace Supremacy.Client.Controls
 
         public Thickness BorderThickness
         {
-            get { return (Thickness)GetValue(BorderThicknessProperty); }
-            set { SetValue(BorderThicknessProperty, value); }
+            get => (Thickness)GetValue(BorderThicknessProperty);
+            set => SetValue(BorderThicknessProperty, value);
         }
 
         public Color Color
         {
-            get { return (Color)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            get => (Color)GetValue(ColorProperty);
+            set => SetValue(ColorProperty, value);
         }
 
         public CornerRadius CornerRadius
         {
-            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
-            set { SetValue(CornerRadiusProperty, value); }
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             if (Color.A == 0.0)
+            {
                 return;
+            }
 
             Rect bounds = new Rect(new Point(XOffset, YOffset), RenderSize);
 
             bounds.Inflate(ZOffset, ZOffset);
 
             if ((bounds.Width <= 0) || (bounds.Height <= 0))
+            {
                 return;
+            }
 
             Rect innerBounds = new Rect(
                 bounds.Left + BorderThickness.Left,
@@ -398,20 +406,20 @@ namespace Supremacy.Client.Controls
 
         public double XOffset
         {
-            get { return (double)GetValue(XOffsetProperty); }
-            set { SetValue(XOffsetProperty, value); }
+            get => (double)GetValue(XOffsetProperty);
+            set => SetValue(XOffsetProperty, value);
         }
 
         public double YOffset
         {
-            get { return (double)GetValue(YOffsetProperty); }
-            set { SetValue(YOffsetProperty, value); }
+            get => (double)GetValue(YOffsetProperty);
+            set => SetValue(YOffsetProperty, value);
         }
 
         public double ZOffset
         {
-            get { return (double)GetValue(ZOffsetProperty); }
-            set { SetValue(ZOffsetProperty, value); }
+            get => (double)GetValue(ZOffsetProperty);
+            set => SetValue(ZOffsetProperty, value);
         }
     }
 }

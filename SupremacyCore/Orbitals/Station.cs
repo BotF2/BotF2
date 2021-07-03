@@ -41,8 +41,8 @@ namespace Supremacy.Orbitals
         /// <value>The station design.</value>
         public StationDesign StationDesign
         {
-            get { return Design as StationDesign; }
-            set { Design = value; }
+            get => Design as StationDesign;
+            set => Design = value;
         }
 
         public Station() { }

@@ -4,7 +4,6 @@ using Supremacy.Annotations;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Intelligence;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -19,7 +18,7 @@ namespace Supremacy.Client.Views
 
         protected override void RegisterCommandAndEventHandlers()
         {
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
         }
 
         protected override void UnregisterCommandAndEventHandlers()

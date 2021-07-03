@@ -61,8 +61,8 @@ namespace Supremacy.Client
 
         public DependencyObject HostControl
         {
-            get { return _hostControl; }
-            set { _hostControl = value as GameScreenStack; }
+            get => _hostControl;
+            set => _hostControl = value as GameScreenStack;
         }
 
         public void Detach()
@@ -91,7 +91,10 @@ namespace Supremacy.Client
         private void OnViewsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (_updating)
+            {
                 return;
+            }
+
             try
             {
                 _updating = true;
@@ -100,7 +103,10 @@ namespace Supremacy.Client
                     foreach (Control childItem in e.NewItems.OfType<Control>())
                     {
                         if (_hostControl.Screens.Contains(childItem))
+                        {
                             continue;
+                        }
+
                         _hostControl.AddScreen(childItem);
                         if ((_hostControl.CurrentScreen == null) && (childItem is IActiveAware activeAware) && activeAware.IsActive)
                         {
@@ -128,7 +134,9 @@ namespace Supremacy.Client
         private void OnHostControlCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (_updating)
+            {
                 return;
+            }
 
             try
             {
@@ -138,8 +146,11 @@ namespace Supremacy.Client
                     foreach (object childItem in e.NewItems)
                     {
                         if (Region.Views.Contains(childItem))
+                        {
                             continue;
-                        Region.Add(childItem);
+                        }
+
+                        _ = Region.Add(childItem);
                     }
                 }
                 else if (e.Action == NotifyCollectionChangedAction.Remove)
@@ -147,7 +158,9 @@ namespace Supremacy.Client
                     foreach (object childItem in e.OldItems)
                     {
                         if (Region.Views.Contains(childItem))
+                        {
                             Region.Remove(childItem);
+                        }
                     }
                 }
             }
@@ -161,14 +174,16 @@ namespace Supremacy.Client
         {
             foreach (Control childItem in _hostControl.Screens)
             {
-                Region.Add(childItem);
+                _ = Region.Add(childItem);
             }
         }
 
         private void OnActiveViewsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (_updating)
+            {
                 return;
+            }
 
             try
             {
@@ -195,7 +210,9 @@ namespace Supremacy.Client
         private void HostControlSelectionChanged(object sender, EventArgs e)
         {
             if (_updating)
+            {
                 return;
+            }
 
             try
             {
@@ -258,14 +275,20 @@ namespace Supremacy.Client
             GameLog.Client.UI.DebugFormat("GameScreenStack.cs: screen={0}", screen);
             Console.WriteLine("GameScreenStack.cs: screen={0}", screen);
             if (screen == null)
+            {
                 throw new ArgumentNullException("screen");
+            }
+
             lock (_screens)
             {
                 if (_screens.Contains(screen))
+                {
                     return;
-                bool wasEmpty = (_screens.Count == 0);
+                }
+
+                bool wasEmpty = _screens.Count == 0;
                 _screens.Add(screen);
-                _itemsContainer.Children.Add(screen);
+                _ = _itemsContainer.Children.Add(screen);
                 if (IsVisible)
                 {
                     screen.Measure(RenderSize);
@@ -273,7 +296,9 @@ namespace Supremacy.Client
                 }
                 screen.Visibility = Visibility.Hidden;
                 if (wasEmpty)
+                {
                     FallbackScreen = screen;
+                }
             }
         }
 
@@ -282,24 +307,35 @@ namespace Supremacy.Client
             lock (_screens)
             {
                 if ((screen == null) || !_screens.Contains(screen))
+                {
                     return;
+                }
+
                 if (screen == CurrentScreen)
                 {
                     if (FallbackScreen != null)
                     {
                         if (FallbackScreen != screen)
+                        {
                             CurrentScreen = FallbackScreen;
+                        }
                         else
+                        {
                             FallbackScreen = null;
+                        }
                     }
                     else
+                    {
                         CurrentScreen = null;
+                    }
                 }
                 _itemsContainer.Children.Remove(screen);
-                _screens.Remove(screen);
+                _ = _screens.Remove(screen);
 
                 if (ClientApp.Current.IsShuttingDown)
+                {
                     return;
+                }
 
                 screen.Style = null;
                 screen.Template = null;
@@ -309,32 +345,45 @@ namespace Supremacy.Client
 
         public Control CurrentScreen
         {
-            get { return _currentScreen; }
+            get => _currentScreen;
             set
             {
                 if (value == _currentScreen)
+                {
                     return;
+                }
+
                 lock (_screens)
                 {
                     Control lastScreen = _currentScreen;
                     if (value != null && !_screens.Contains(value))
+                    {
                         AddScreen(value);
+                    }
+
                     if (lastScreen != null)
                     {
                         if (lastScreen.Effect is TransitionEffect)
+                        {
                             lastScreen.ClearValue(EffectProperty);
+                        }
+
                         lastScreen.Visibility = Visibility.Hidden;
                         if (lastScreen is IActiveAware activeAwareScreen)
+                        {
                             activeAwareScreen.IsActive = false;
+                        }
                     }
                     _currentScreen = value;
                     if (_currentScreen != null)
                     {
                         _currentScreen.Visibility = Visibility.Visible;
-                        _currentScreen.Focus();
+                        _ = _currentScreen.Focus();
 
                         if (_currentScreen is IActiveAware activeAwareScreen)
+                        {
                             activeAwareScreen.IsActive = true;
+                        }
                     }
                     CurrentScreenChanged?.Invoke(this, new EventArgs());
                 }
@@ -344,7 +393,7 @@ namespace Supremacy.Client
 
         public Control FallbackScreen
         {
-            get { return _fallbackScreen; }
+            get => _fallbackScreen;
             set
             {
                 if ((value != null) && !_screens.Contains(value))

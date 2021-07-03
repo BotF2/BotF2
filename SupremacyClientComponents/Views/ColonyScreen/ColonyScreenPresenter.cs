@@ -18,7 +18,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
 namespace Supremacy.Client.Views
@@ -113,11 +112,15 @@ namespace Supremacy.Client.Views
                 {
                     StarSystem system = sector.System;
                     if (system == null)
+                    {
                         return;
+                    }
 
                     Colony colony = system.Colony;
                     if (colony == null || colony.OwnerID != AppContext.LocalPlayer.EmpireID)
+                    {
                         return;
+                    }
 
                     _newColonySelection = colony.ObjectID;
                 });
@@ -135,7 +138,9 @@ namespace Supremacy.Client.Views
             if (currentColonyIndex <= 0)
             {
                 if (colonies.Count == 0)
+                {
                     return;
+                }
 
                 Model.SelectedColony = colonies[colonies.Count - 1];
             }
@@ -152,9 +157,13 @@ namespace Supremacy.Client.Views
 
             int currentColonyIndex = colonies.IndexOf(currentColony);
             if ((currentColonyIndex == (colonies.Count - 1)) || (currentColonyIndex < 0))
+            {
                 Model.SelectedColony = colonies[0];
+            }
             else
+            {
                 Model.SelectedColony = colonies[currentColonyIndex + 1];
+            }
         }
 
         protected override void OnViewActivating()
@@ -170,19 +179,25 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteToggleBuildingIsActiveCommand(Building building)
         {
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private void ExecuteToggleBuildingIsActiveCommand(Building building)
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
             if (building.IsActive)
-                colony.DeactivateBuilding(building);
+            {
+                _ = colony.DeactivateBuilding(building);
+            }
             else
-                colony.ActivateBuilding(building);
+            {
+                _ = colony.ActivateBuilding(building);
+            }
 
             PlayerOrderService.AddOrder(new UpdateBuildingOrder(building));
         }
@@ -190,11 +205,15 @@ namespace Supremacy.Client.Views
         private bool CanExecuteToggleShipyardBuildSlotCommand(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
+            {
                 return false;
+            }
 
             Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -202,18 +221,24 @@ namespace Supremacy.Client.Views
         private void ExecuteToggleShipyardBuildSlotCommand(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
+            {
                 return;
+            }
 
             Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
+            {
                 return;
+            }
 
             if (buildSlot.IsActive)
             {
-                colony.DeactivateShipyardBuildSlot(buildSlot);
+                _ = colony.DeactivateShipyardBuildSlot(buildSlot);
             }
             else
-                colony.ActivateShipyardBuildSlot(buildSlot);
+            {
+                _ = colony.ActivateShipyardBuildSlot(buildSlot);
+            }
 
             PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(buildSlot));
         }
@@ -221,11 +246,15 @@ namespace Supremacy.Client.Views
         private bool CanExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
+            {
                 return false;
+            }
 
             Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
+            {
                 return false;
+            }
 
             return true; //buildSlot.IsActive; // && !buildSlot.HasProject;
         }
@@ -233,11 +262,15 @@ namespace Supremacy.Client.Views
         private void ExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
+            {
                 return;
+            }
 
             Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
+            {
                 return;
+            }
 
             //if (!buildSlot.IsActive || buildSlot.HasProject)
             //    return;
@@ -245,7 +278,7 @@ namespace Supremacy.Client.Views
             NewShipSelectionView view = new NewShipSelectionView(buildSlot);
             TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
 
-            BindingOperations.SetBinding(
+            _ = BindingOperations.SetBinding(
                 statsViewModel,
                 TechObjectDesignViewModel.DesignProperty,
                 new Binding
@@ -259,11 +292,15 @@ namespace Supremacy.Client.Views
             bool? result = view.ShowDialog();
 
             if (!result.HasValue || !result.Value)
+            {
                 return;
+            }
 
             ShipBuildProject project = view.SelectedBuildProject;
             if (project == null)
+            {
                 return;
+            }
             //var _buildQueueItem = new BuildQueueItem(project);
             AddProjectToBuildSlotQueue(project, colony.Shipyard);
             //AddProjectToBuildQueue(project, colony);
@@ -291,7 +328,7 @@ namespace Supremacy.Client.Views
             {
                 return false;
             }
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private void ExecuteToggleBuildingScrapCommand(object parameter)
@@ -304,13 +341,17 @@ namespace Supremacy.Client.Views
             else
             {
                 if (!(parameter is ICheckableCommandParameter checkableParameter))
+                {
                     return;
+                }
 
                 building = checkableParameter.InnerParameter as Building;
                 if (building == null)
+                {
                     return;
+                }
 
-                checkableParameter.IsChecked = (building.Scrap = !building.Scrap);
+                checkableParameter.IsChecked = building.Scrap = !building.Scrap;
                 checkableParameter.Handled = true;
             }
 
@@ -319,18 +360,22 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteUnscrapFacilityCommand(ProductionCategory category)
         {
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private void ExecuteUnscrapFacilityCommand(ProductionCategory category)
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
             int facilitiesToScrap = colony.GetScrappedFacilities(category);
             if (facilitiesToScrap == 0)
+            {
                 return;
+            }
 
             colony.SetScrappedFacilities(category, --facilitiesToScrap);
 
@@ -339,18 +384,22 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteScrapFacilityCommand(ProductionCategory category)
         {
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private void ExecuteScrapFacilityCommand(ProductionCategory category)
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
             int facilitiesToScrap = colony.GetScrappedFacilities(category);
             if (facilitiesToScrap >= colony.GetTotalFacilities(category))
+            {
                 return;
+            }
 
             colony.SetScrappedFacilities(category, ++facilitiesToScrap);
 
@@ -359,32 +408,36 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteDeactivateFacilityCommand(ProductionCategory category)
         {
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private void ExecuteDeactivateFacilityCommand(ProductionCategory category)
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
-            colony.DeactivateFacility(category);
+            _ = colony.DeactivateFacility(category);
 
             PlayerOrderService.AddOrder(new SetColonyProductionOrder(colony));
         }
 
         private bool CanExecuteActivateFacilityCommand(ProductionCategory category)
         {
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private void ExecuteActivateFacilityCommand(ProductionCategory category)
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
-            colony.ActivateFacility(category);
+            _ = colony.ActivateFacility(category);
 
             PlayerOrderService.AddOrder(new SetColonyProductionOrder(colony));
         }
@@ -395,14 +448,18 @@ namespace Supremacy.Client.Views
 
             Colony selectedColony = Model.SelectedColony;
             if (selectedColony == null)
+            {
                 Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
+            }
         }
 
         protected override void TerminateOverride()
         {
             Colony selectedColony = Model.SelectedColony;
             if (selectedColony != null)
+            {
                 selectedColony.PropertyChanged -= OnSelectedColonyPropertyChanged;
+            }
 
             Model.Colonies = null;
             Model.SelectedColony = null;
@@ -423,10 +480,14 @@ namespace Supremacy.Client.Views
                 // Update buildItems in colony queue
                 Colony colony = Model.SelectedColony;
                 if (colony == null)
+                {
                     return;
+                }
 
                 foreach (BuildQueueItem item in colony.BuildQueue)
+                {
                     item.InvalidateTurnsRemaining();
+                }
             }
         }
 
@@ -437,7 +498,9 @@ namespace Supremacy.Client.Views
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 1");
 
             if (!IsRunning)
+            {
                 return;
+            }
 
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 2");
 
@@ -445,10 +508,14 @@ namespace Supremacy.Client.Views
             //    this.Model.Colonies = this.AppContext.LocalPlayerEmpire.Colonies;
 
             if (e.OldValue != null)
+            {
                 e.OldValue.PropertyChanged -= OnSelectedColonyPropertyChanged;
+            }
 
             if (e.NewValue != null)
+            {
                 e.NewValue.PropertyChanged += OnSelectedColonyPropertyChanged;
+            }
 
             UpdateBuildLists();
 
@@ -466,7 +533,9 @@ namespace Supremacy.Client.Views
                 Microsoft.Practices.Composite.Regions.IRegionManager regionManager = CompositeRegionManager.GetRegionManager((DependencyObject)View);
 
                 if (!regionManager.Regions.ContainsRegionWithName(CommonGameScreenRegions.PlanetsView))
+                {
                     CompositeRegionManager.UpdateRegions();
+                }
 
                 if (regionManager.Regions.ContainsRegionWithName(CommonGameScreenRegions.PlanetsView))
                 {
@@ -489,7 +558,9 @@ namespace Supremacy.Client.Views
         private void UpdateOrbitalBatteries()
         {
             if (_updatingOrbitalBatteries)
+            {
                 return;
+            }
 
             _updatingOrbitalBatteries = true;
 
@@ -511,16 +582,24 @@ namespace Supremacy.Client.Views
                         if (activeCountDifference > 0)
                         {
                             if (selectedColony.ActivateOrbitalBattery())
+                            {
                                 --activeCountDifference;
+                            }
                             else
+                            {
                                 break;
+                            }
                         }
                         else
                         {
                             if (selectedColony.DeactivateOrbitalBattery())
+                            {
                                 ++activeCountDifference;
+                            }
                             else
+                            {
                                 break;
+                            }
                         }
                     }
                     while (activeCountDifference != 0);
@@ -533,7 +612,9 @@ namespace Supremacy.Client.Views
                 {
                     int possibleActivations = selectedColony.NetEnergy / selectedColony.OrbitalBatteryDesign.UnitEnergyCost;
                     if (possibleActivations > 0)
+                    {
                         maxActiveOrbitalBatteries += possibleActivations;
+                    }
                 }
 
                 Model.MaxActiveOrbitalBatteries = maxActiveOrbitalBatteries;
@@ -561,7 +642,9 @@ namespace Supremacy.Client.Views
 
                 }
                 else
+                {
                     Model.ShipyardBuildProjects = Enumerable.Empty<BuildProject>();
+                }
             }
             else
             {
@@ -618,14 +701,16 @@ namespace Supremacy.Client.Views
 
             GalaxyScreenCommands.SelectSector.RegisterCommand(_selectSectorCommand);
 
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
         }
 
         private void OnTurnStarted(GameContextEventArgs args)
         {
             Colony selectedColony = Model.SelectedColony;
             if (selectedColony == null)
+            {
                 Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
+            }
 
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
         }
@@ -633,10 +718,14 @@ namespace Supremacy.Client.Views
         private bool CanExecuteCancelBuildProjectCommand(BuildProject project)
         {
             if (Model.SelectedColony == null)
+            {
                 return false;
+            }
 
             if (project is ShipBuildProject)
-                return (Model.SelectedColony.Shipyard != null);
+            {
+                return Model.SelectedColony.Shipyard != null;
+            }
 
             return true;
         }
@@ -644,15 +733,21 @@ namespace Supremacy.Client.Views
         private void ExecuteCancelBuildProjectCommand([NotNull] BuildProject project)
         {
             if (project == null)
+            {
                 throw new ArgumentNullException("project");
+            }
 
             IProductionCenter productionCenter = project.ProductionCenter;
             if (productionCenter == null)
+            {
                 return;
+            }
 
             BuildSlot buildSlot = productionCenter.BuildSlots.FirstOrDefault(o => o.Project == project);
             if (buildSlot == null)
+            {
                 return;
+            }
 
             if (project.IsPartiallyComplete || project.IsRushed)
             {
@@ -662,13 +757,15 @@ namespace Supremacy.Client.Views
                     MessageDialogButtons.YesNo);
 
                 if (confirmResult != MessageDialogResult.Yes)
+                {
                     return;
+                }
             }
 
             if (project.IsRushed)
             {
                 CivilizationManager civMan = CivilizationManager.For(productionCenter.Owner);
-                civMan.Credits.AdjustCurrent(project.GetTotalCreditsCost());
+                _ = civMan.Credits.AdjustCurrent(project.GetTotalCreditsCost());
             }
 
             project.Cancel();
@@ -682,7 +779,9 @@ namespace Supremacy.Client.Views
         private bool CanExecuteBuyBuildProjectCommand(BuildProject project)
         {
             if (project == null)
+            {
                 return false;
+            }
 
             if (project.IsCancelled)
             {
@@ -694,14 +793,18 @@ namespace Supremacy.Client.Views
             }
 
             if (/*project.IsCancelled || */project.IsCompleted || project.IsRushed)
+            {
                 return false;
+            }
 
             if (Model.SelectedColony == null)
+            {
                 return false;
+            }
 
             CivilizationManager civMan = CivilizationManager.For(Model.SelectedColony.Owner);
 
-            if (civMan.Credits.CurrentValue < project.GetTotalCreditsCost())
+            if (civMan.Credits.CurrentValue < project.GetTotalCreditsCost() * 5)  // 5 times expensive
             {
                 int missingCredits = project.GetCurrentIndustryCost() - civMan.Credits.CurrentValue;
                 string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"), missingCredits);
@@ -715,15 +818,21 @@ namespace Supremacy.Client.Views
         private void ExecuteBuyBuildProjectCommand([NotNull] BuildProject project)
         {
             if (project == null)
+            {
                 throw new ArgumentNullException("project");
+            }
 
             IProductionCenter productionCenter = project.ProductionCenter;
             if (productionCenter == null)
+            {
                 return;
+            }
 
             BuildSlot buildSlot = productionCenter.BuildSlots.FirstOrDefault(o => o.Project == project);
             if (buildSlot == null)
+            {
                 return;
+            }
 
             CivilizationManager civMan = CivilizationManager.For(Model.SelectedColony.Owner);
 
@@ -734,10 +843,12 @@ namespace Supremacy.Client.Views
                 confirmationMessage,
                 MessageDialogButtons.YesNo);
             if (confirmResult != MessageDialogResult.Yes)
+            {
                 return;
+            }
 
             // Temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
-            civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost());
+            _ = civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost());
 
             project.IsRushed = true;
             PlayerOrderService.AddOrder(new RushProductionOrder(productionCenter));
@@ -745,12 +856,12 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
         {
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private bool CanExecuteRemoveFromShipyardBuildQueueCommand(BuildQueueItem item)
         {
-            return (Model.SelectedColony != null); // && (Model.SelectedColony.Shipyard != null));
+            return Model.SelectedColony != null; // && (Model.SelectedColony.Shipyard != null));
         }
 
         //private bool CanExecuteClearBuildSlotQueueCommand(BuildProject item)
@@ -762,7 +873,9 @@ namespace Supremacy.Client.Views
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
             RemoveItemFromBuildQueue(item, colony);
         }
@@ -771,7 +884,9 @@ namespace Supremacy.Client.Views
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
             //if (colony.Shipyard == null)
             //    return;
@@ -781,7 +896,7 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteAddToShipyardBuildQueueCommand(BuildProject project)
         {
-            return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
+            return (Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null);
         }
 
         //private bool CanExecuteAddToBuildSlotQueueCommand(BuildProject project)
@@ -793,10 +908,14 @@ namespace Supremacy.Client.Views
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
             if (colony.Shipyard == null)
+            {
                 return;
+            }
 
             AddProjectToBuildQueue(project, colony.Shipyard);
         }
@@ -804,12 +923,19 @@ namespace Supremacy.Client.Views
         protected void RemoveItemFromBuildQueue([NotNull] BuildQueueItem item, [NotNull] IProductionCenter productionCenter)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException("item");
+            }
+
             if (productionCenter == null)
+            {
                 throw new ArgumentNullException("productionCenter");
+            }
 
             if ((item.Count <= 1) || !item.DecrementCount())
-                productionCenter.BuildQueue.Remove(item);
+            {
+                _ = productionCenter.BuildQueue.Remove(item);
+            }
 
             PlayerOrderService.AddOrder(new UpdateProductionOrder(productionCenter));
 
@@ -819,12 +945,19 @@ namespace Supremacy.Client.Views
         protected void RemoveItemFromShipyardBuildQueue([NotNull] BuildQueueItem item, [NotNull] IProductionCenter productionCenter)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException("item");
+            }
+
             if (productionCenter == null)
+            {
                 throw new ArgumentNullException("productionCenter");
+            }
 
             if ((item.Count <= 1) || !item.DecrementCount())
-                productionCenter.BuildQueue.Remove(item);
+            {
+                _ = productionCenter.BuildQueue.Remove(item);
+            }
 
             PlayerOrderService.AddOrder(new UpdateProductionOrder(productionCenter));
 
@@ -834,9 +967,14 @@ namespace Supremacy.Client.Views
         protected void AddProjectToBuildQueue([NotNull] BuildProject project, [NotNull] IProductionCenter productionCenter)
         {
             if (project == null)
+            {
                 throw new ArgumentNullException("project");
+            }
+
             if (productionCenter == null)
+            {
                 throw new ArgumentNullException("productionCenter");
+            }
 
             bool newItemAdded = true;
             BuildQueueItem lastItemInQueue = productionCenter.BuildQueue.LastOrDefault();
@@ -844,7 +982,9 @@ namespace Supremacy.Client.Views
             if ((lastItemInQueue != null) && project.IsEquivalent(lastItemInQueue.Project))
             {
                 if (lastItemInQueue.IncrementCount())
+                {
                     newItemAdded = false;
+                }
             }
 
             if (newItemAdded)
@@ -856,18 +996,27 @@ namespace Supremacy.Client.Views
             PlayerOrderService.AddOrder(new UpdateProductionOrder(productionCenter));
 
             if (productionCenter is Colony)
+            {
                 Model.SelectedPlanetaryBuildProject = null;
+            }
             else if (productionCenter is Shipyard)
+            {
                 Model.SelectedShipyardBuildProject = null;
+            }
 
             UpdateBuildLists();
         }
         protected void AddProjectToBuildSlotQueue([NotNull] BuildProject project, [NotNull] Shipyard shipyard)
         {
             if (project == null)
+            {
                 throw new ArgumentNullException("project");
+            }
+
             if (shipyard == null)
+            {
                 throw new ArgumentNullException("buildSlot");
+            }
 
             bool newItemAdded = true;
             BuildQueueItem lastItemInQueue = shipyard.BuildQueue.LastOrDefault();
@@ -875,7 +1024,9 @@ namespace Supremacy.Client.Views
             if ((lastItemInQueue != null) && project.IsEquivalent(lastItemInQueue.Project))
             {
                 if (lastItemInQueue.IncrementCount())
+                {
                     newItemAdded = false;
+                }
             }
 
             if (newItemAdded)
@@ -925,17 +1076,21 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteAddToPlanetaryBuildQueueCommand(BuildProject arg)
         {
-            return (Model.SelectedColony != null);
+            return Model.SelectedColony != null;
         }
 
         private void ExecuteAddToPlanetaryBuildQueueCommand([NotNull] BuildProject project)
         {
             if (project == null)
+            {
                 throw new ArgumentNullException("project");
+            }
 
             Colony colony = Model.SelectedColony;
             if (colony == null)
+            {
                 return;
+            }
 
             AddProjectToBuildQueue(project, colony);
         }

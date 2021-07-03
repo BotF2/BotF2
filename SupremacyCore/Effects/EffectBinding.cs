@@ -32,16 +32,9 @@ namespace Supremacy.Effects
             [NotNull] IEffectTarget target)
             : this()
         {
-            if (effect == null)
-                throw new ArgumentNullException("effect");
-            if (effectGroupBinding == null)
-                throw new ArgumentNullException("effectGroupBinding");
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            _effect = effect;
-            _effectGroupBinding = effectGroupBinding;
-            _target = target;
+            _effect = effect ?? throw new ArgumentNullException("effect");
+            _effectGroupBinding = effectGroupBinding ?? throw new ArgumentNullException("effectGroupBinding");
+            _target = target ?? throw new ArgumentNullException("target");
         }
 
         private EffectBinding()
@@ -56,7 +49,10 @@ namespace Supremacy.Effects
             get
             {
                 if (_description != null)
+                {
                     return _description.Value as string;
+                }
+
                 return null;
             }
         }
@@ -70,12 +66,16 @@ namespace Supremacy.Effects
             get
             {
                 lock (EffectSystem.SyncRoot)
+                {
                     return _state;
+                }
             }
             private set
             {
                 lock (EffectSystem.SyncRoot)
+                {
                     _state = value;
+                }
             }
         }
 
@@ -84,7 +84,9 @@ namespace Supremacy.Effects
             get
             {
                 lock (EffectSystem.SyncRoot)
-                    return (_state != EffectState.Detached);
+                {
+                    return _state != EffectState.Detached;
+                }
             }
         }
 
@@ -93,7 +95,9 @@ namespace Supremacy.Effects
             get
             {
                 lock (EffectSystem.SyncRoot)
-                    return (_state == EffectState.Attached);
+                {
+                    return _state == EffectState.Attached;
+                }
             }
         }
 
@@ -108,11 +112,17 @@ namespace Supremacy.Effects
             lock (EffectSystem.SyncRoot)
             {
                 if (_suspendScope.IsWithin)
+                {
                     State = EffectState.Suspended;
+                }
                 else if (_isAttached)
+                {
                     State = EffectState.Attached;
+                }
                 else
+                {
                     State = EffectState.Detached;
+                }
             }
         }
 
@@ -134,7 +144,9 @@ namespace Supremacy.Effects
         public void UpdateTarget()
         {
             lock (EffectSystem.SyncRoot)
+            {
                 UpdateTargetCore();
+            }
         }
 
         public void Attach()
@@ -142,7 +154,9 @@ namespace Supremacy.Effects
             lock (EffectSystem.SyncRoot)
             {
                 if (_isAttached)
+                {
                     return;
+                }
 
                 GameLog.Core.General.DebugFormat(
                     "Attaching effect to object {{{0}}}: {1}",
@@ -196,9 +210,10 @@ namespace Supremacy.Effects
 
         private void DetachDescription()
         {
-            INotifyPropertyChanged observableDescription = _description as INotifyPropertyChanged;
-            if (observableDescription == null)
+            if (!(_description is INotifyPropertyChanged observableDescription))
+            {
                 return;
+            }
 
             observableDescription.PropertyChanged -= OnDescriptionPropertyChanged;
         }
@@ -213,7 +228,9 @@ namespace Supremacy.Effects
             lock (EffectSystem.SyncRoot)
             {
                 if (!_isAttached)
+                {
                     return;
+                }
 
                 GameLog.Core.General.DebugFormat(
                     "Detaching effect to object {{{0}}}: {1}",
@@ -234,7 +251,7 @@ namespace Supremacy.Effects
 
         #region INotifyPropertyChanged Members
 
-        [field: NonSerializedAttribute]
+        [field: NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -253,7 +270,9 @@ namespace Supremacy.Effects
                         previousValue);
 
                     if (previousValue == valueBeforeCombine)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -270,16 +289,16 @@ namespace Supremacy.Effects
                         previousValue);
 
                     if (previousValue == valueBeforeRemove)
+                    {
                         return;
+                    }
                 }
             }
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = _propertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

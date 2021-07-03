@@ -18,13 +18,16 @@ namespace Supremacy.Text
     {
         private static bool IsCrOrLf(char c)
         {
-            return ((c == '\r') || (c == '\n'));
+            return (c == '\r') || (c == '\n');
         }
 
         public static StringTableDocument Read(string fileName)
         {
             if (fileName == null)
+            {
                 throw new ArgumentNullException("fileName");
+            }
+
             using (StreamReader reader = new StreamReader(fileName))
             {
                 return Read(reader);
@@ -50,7 +53,7 @@ namespace Supremacy.Text
                     {
                         currentNode = StringTableNode.CreateValue();
                     }
-                    else if (Char.IsWhiteSpace(c))
+                    else if (char.IsWhiteSpace(c))
                     {
                         currentNode = StringTableNode.CreateWhitespace();
                     }
@@ -65,7 +68,9 @@ namespace Supremacy.Text
                         continue;
                     }
                     else
+                    {
                         continue;
+                    }
                 }
 
                 if (IsCrOrLf(c) && (buffer.Length == 0) && (previousNode != null)
@@ -77,9 +82,9 @@ namespace Supremacy.Text
                 switch (currentNode.NodeType)
                 {
                     case StringTableNodeType.Whitespace:
-                        if (Char.IsWhiteSpace(c))
+                        if (char.IsWhiteSpace(c))
                         {
-                            buffer.Append(c);
+                            _ = buffer.Append(c);
                         }
                         else
                         {
@@ -91,7 +96,7 @@ namespace Supremacy.Text
                     case StringTableNodeType.Comment:
                         if (!IsCrOrLf(c))
                         {
-                            buffer.Append(c);
+                            _ = buffer.Append(c);
                         }
                         else
                         {
@@ -102,7 +107,7 @@ namespace Supremacy.Text
                     case StringTableNodeType.Key:
                         if (c != ']')
                         {
-                            buffer.Append(c);
+                            _ = buffer.Append(c);
                         }
                         else
                         {
@@ -134,7 +139,7 @@ namespace Supremacy.Text
                                 GameLog.Core.GameData.Error(e);
                             }
 
-                            buffer.Append(c);
+                            _ = buffer.Append(c);
                         }
                         break;
 
@@ -161,7 +166,9 @@ namespace Supremacy.Text
                             previousNode,
                             currentNode);
                         if (!doc.Entries.Contains(entry.Key))
+                        {
                             doc.Entries.Add(entry);
+                        }
                     }
                     previousNode = currentNode;
                     currentNode = null;
@@ -207,7 +214,9 @@ namespace Supremacy.Text
             foreach (char c in buffer)
             {
                 if (!(char.IsWhiteSpace(c) || IsCrOrLf(c)))
+                {
                     return false;
+                }
             }
             return true;
         }

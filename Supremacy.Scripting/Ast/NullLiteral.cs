@@ -54,7 +54,7 @@ namespace Supremacy.Scripting.Ast
         public override ConstantExpression ConvertImplicitly(Type targetType)
         {
             // Null literal is of object type
-            return targetType == TypeManager.CoreTypes.Object ? (this) : base.ConvertImplicitly(targetType);
+            return targetType == TypeManager.CoreTypes.Object ? this : base.ConvertImplicitly(targetType);
         }
 
         public override System.Linq.Expressions.Expression TransformCore(ScriptGenerator generator)

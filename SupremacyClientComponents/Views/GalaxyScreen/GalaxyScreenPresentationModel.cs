@@ -21,7 +21,6 @@ using Supremacy.Resources;
 using Supremacy.Diplomacy;
 using Supremacy.Client.Context;
 using Supremacy.Game;
-using Supremacy.Utility;
 using Supremacy.Combat;
 
 namespace Supremacy.Client.Views
@@ -37,7 +36,7 @@ namespace Supremacy.Client.Views
 
         public Sector Sector
         {
-            get { return _sector; }
+            get => _sector;
             set
             {
                 _sector = value;
@@ -70,7 +69,9 @@ namespace Supremacy.Client.Views
             get
             {
                 if (Sector != null && Sector.Owner == PlayerCiv)
+                {
                     _stationScrapVisibility = true;
+                }
                 else { _stationScrapVisibility = false; }
                 return _stationScrapVisibility;
             }
@@ -89,10 +90,14 @@ namespace Supremacy.Client.Views
             _stationName = "Unknown in station";
             _stationStatus = "";
             if (Sector == null || PlayerCiv == null)
+            {
                 return;
+            }
 
             if (Sector.Station == null)
+            {
                 return;
+            }
 
             string imagePath = "";
 
@@ -104,7 +109,9 @@ namespace Supremacy.Client.Views
             }
 
             if (string.IsNullOrEmpty(imagePath))
+            {
                 imagePath = "Resources/Images/Insignias/__unknown.png";
+            }
 
             if (!Uri.TryCreate(imagePath, UriKind.Absolute, out Uri uri))
             {
@@ -113,7 +120,9 @@ namespace Supremacy.Client.Views
                 {
                     tmpPath = ResourceManager.GetResourcePath(@"Resources\Images\__image_missing.png");
                     if (!File.Exists(tmpPath))
+                    {
                         return;
+                    }
                 }
 
                 uri = ResourceManager.GetResourceUri(tmpPath);
@@ -206,11 +215,14 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<Ship> AvailableShips
         {
-            get { return _availableShips; }
+            get => _availableShips;
             set
             {
                 if (Equals(_availableShips, value))
+                {
                     return;
+                }
+
                 _availableShips = value;
                 OnAvailableShipsChanged();
             }
@@ -218,11 +230,14 @@ namespace Supremacy.Client.Views
 
         public GalaxyScreenInputMode InputMode
         {
-            get { return _inputMode; }
+            get => _inputMode;
             set
             {
                 if (Equals(_inputMode, value))
+                {
                     return;
+                }
+
                 _inputMode = value;
                 OnInputModeChanged();
             }
@@ -230,11 +245,14 @@ namespace Supremacy.Client.Views
 
         public GalaxyScreenOverviewMode OverviewMode
         {
-            get { return _overviewMode; }
+            get => _overviewMode;
             set
             {
                 if (Equals(_overviewMode, value))
+                {
                     return;
+                }
+
                 _overviewMode = value;
                 OnOverviewModeChanged();
             }
@@ -242,7 +260,7 @@ namespace Supremacy.Client.Views
 
         public Sector SelectedSector
         {
-            get { return _selectedSector; }
+            get => _selectedSector;
             set
             {
                 if (Equals(_selectedSector, value))
@@ -262,11 +280,14 @@ namespace Supremacy.Client.Views
 
         public Sector HoveredSector
         {
-            get { return _hoveredSector; }
+            get => _hoveredSector;
             set
             {
                 if (Equals(_hoveredSector, value))
+                {
                     return;
+                }
+
                 _hoveredSector = value;
                 OnHoveredSectorChanged();
             }
@@ -274,7 +295,7 @@ namespace Supremacy.Client.Views
 
         internal Sector SelectedSectorInternal
         {
-            get { return _selectedSector; }
+            get => _selectedSector;
             set
             {
                 _selectedSector = value;
@@ -287,11 +308,14 @@ namespace Supremacy.Client.Views
 
         public string SelectedSectorAllegiance
         {
-            get { return _selectedSectorAllegiance; }
+            get => _selectedSectorAllegiance;
             set
             {
                 if (Equals(_selectedSectorAllegiance, value))
+                {
                     return;
+                }
+
                 _selectedSectorAllegiance = value;
                 OnSelectedSectorAllegianceChanged();
             }
@@ -299,11 +323,14 @@ namespace Supremacy.Client.Views
 
         public string SelectedSectorInhabitants
         {
-            get { return _selectedSectorInhabitants; }
+            get => _selectedSectorInhabitants;
             set
             {
                 if (Equals(_selectedSectorInhabitants, value))
+                {
                     return;
+                }
+
                 _selectedSectorInhabitants = value;
                 OnSelectedSectorInhabitantsChanged();
             }
@@ -311,14 +338,14 @@ namespace Supremacy.Client.Views
 
         public Ship SelectedShip
         {
-            get
-            {
-                return _selectedShipResolved ?? _selectedShip;
-            }
+            get => _selectedShipResolved ?? _selectedShip;
             set
             {
                 if (Equals(_selectedShip, value) && Equals(_selectedShipResolved, value))
+                {
                     return;
+                }
+
                 _selectedShip = value;
                 _selectedShipResolved = value;
                 OnSelectedShipChanged();
@@ -327,20 +354,21 @@ namespace Supremacy.Client.Views
 
         public ShipView SelectedShipInTaskForce
         {
-            get
-            {
-                return _selectedShipInTaskForce;
-            }
+            get => _selectedShipInTaskForce;
             set
             {
                 if (Equals(_selectedShipInTaskForce, value))
+                {
                     return;
+                }
 
                 _selectedShipInTaskForce = value;
                 OnSelectedShipInTaskForceChanged();
 
                 if ((_selectedShipInTaskForce == null) || !_selectedShipInTaskForce.IsOwned)
+                {
                     return;
+                }
 
                 _selectedShipResolved = _selectedShipInTaskForce.Source;
                 OnSelectedShipChanged();
@@ -353,7 +381,9 @@ namespace Supremacy.Client.Views
             {
                 Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
                 if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                {
                     _selectedShipsInTaskForce = null; // Enumerable.Empty<ShipView>();
+                }
 
                 return _selectedShipsInTaskForce ?? Enumerable.Empty<ShipView>();
             }
@@ -361,7 +391,9 @@ namespace Supremacy.Client.Views
             {
 
                 if (Equals(_selectedShipInTaskForce, value))
+                {
                     return;
+                }
 
                 _selectedShipsInTaskForce = value;
                 OnSelectedShipsInTaskForceChanged();
@@ -390,7 +422,10 @@ namespace Supremacy.Client.Views
             set
             {
                 if (Equals(_selectedTaskForce, value))
+                {
                     return;
+                }
+
                 _selectedTaskForce = value;
                 OnSelectedTaskForceChanged();
             }
@@ -398,11 +433,14 @@ namespace Supremacy.Client.Views
 
         public TradeRoute SelectedTradeRoute
         {
-            get { return _selectedTradeRoute; }
+            get => _selectedTradeRoute;
             set
             {
                 if (Equals(_selectedTradeRoute, value))
+                {
                     return;
+                }
+
                 _selectedTradeRoute = value;
                 OnSelectedTradeRouteChanged();
             }
@@ -410,11 +448,14 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> TaskForces
         {
-            get { return _taskForces; }
+            get => _taskForces;
             set
             {
                 if (Equals(_taskForces, value))
+                {
                     return;
+                }
+
                 _taskForces = value;
                 OnTaskForcesChanged();
             }
@@ -422,11 +463,14 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> LocalPlayerTaskForces
         {
-            get { return _localPlayerTaskForces; }
+            get => _localPlayerTaskForces;
             set
             {
                 if (Equals(_localPlayerTaskForces, value))
+                {
                     return;
+                }
+
                 _localPlayerTaskForces = value;
                 OnLocalPlayerTaskForcesChanged();
             }
@@ -437,13 +481,19 @@ namespace Supremacy.Client.Views
             get
             {
                 if (_localPlayerTaskForces == null)
+                {
                     return _otherVisibleTaskForces;
+                }
+
                 return _localPlayerTaskForces.Union(_otherVisibleTaskForces);
             }
             set
             {
                 if (Equals(_otherVisibleTaskForces, value))
+                {
                     return;
+                }
+
                 _otherVisibleTaskForces = value;
                 OnVisibleTaskForcesChanged();
             }
@@ -451,11 +501,14 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> ISpyTaskForces
         {
-            get { return _iSpyTaskForces; } // do we need to union this to _localPlayerTaskFoces like above?
+            get => _iSpyTaskForces;  // do we need to union this to _localPlayerTaskFoces like above?
             set
             {
                 if (Equals(_iSpyTaskForces, value))
+                {
                     return;
+                }
+
                 _iSpyTaskForces = value;
                 OnISpyTaskForcesChanged();
             }
@@ -497,7 +550,10 @@ namespace Supremacy.Client.Views
                             // GameLog.Client.Intel.DebugFormat("IsUnScannable was True so got Insignia _ScanBlock & count++ ={0}", count);
                             iSpyList.Add(fleetView);
                         }
-                        else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        else
+                        {
+                            fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        }
                     }
                     else if (mapData.GetScanStrength(fleetView.View.Source.Location) > 0)
                     {
@@ -508,7 +564,10 @@ namespace Supremacy.Client.Views
                             count++;
 
                         }
-                        else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        else
+                        {
+                            fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        }
                     }
 
                     if (count <= 1)
@@ -530,20 +589,27 @@ namespace Supremacy.Client.Views
             //var imagePath =   insigniaPath.ToLowerInvariant();
 
             if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
+            {
                 imageUri = ResourceManager.GetResourceUri(insigniaPath);
+            }
             else
+            {
                 imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
+            }
 
             return ImageCache.Current.Get(imageUri);
         }
 
         public IEnumerable<TradeRoute> TradeRoutes
         {
-            get { return _tradeRoutes; }
+            get => _tradeRoutes;
             set
             {
                 if (Equals(_tradeRoutes, value))
+                {
                     return;
+                }
+
                 _tradeRoutes = value;
                 OnTradeRoutesChanged();
             }

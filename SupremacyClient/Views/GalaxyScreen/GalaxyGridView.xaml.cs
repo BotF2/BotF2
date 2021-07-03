@@ -34,10 +34,7 @@ namespace Supremacy.Client.Views
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-
-            _container = container;
+            _container = container ?? throw new ArgumentNullException("container");
             _appContext = _container.Resolve<IAppContext>();
             _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
 
@@ -95,21 +92,29 @@ namespace Supremacy.Client.Views
         private void OnLocalPlayerEmpireChanged()
         {
             if (!_appContext.IsGameInPlay || _appContext.IsGameEnding)
+            {
                 return;
+            }
 
             CivilizationManager localPlayerEmpire = _appContext.LocalPlayerEmpire;
             if (localPlayerEmpire == null)
+            {
                 return;
+            }
         }
 
         private void OnSectorDoubleClicked(Sector sector)
         {
             if ((sector == null) || (sector.System == null))
+            {
                 return;
+            }
 
             Colony colony = sector.System.Colony;
             if (colony == null)
+            {
                 return;
+            }
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
         }
@@ -117,7 +122,9 @@ namespace Supremacy.Client.Views
         private void ExecuteRevealMapCommand(object t)
         {
             if (!_appContext.IsSinglePlayerGame)
+            {
                 return;
+            }
 
             SectorMap map = _appContext.CurrentGame.Universe.Map;
             Entities.Civilization playerCiv = _appContext.LocalPlayer.Empire;
@@ -138,9 +145,14 @@ namespace Supremacy.Client.Views
             foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ == playerCiv)
+                {
                     continue;
+                }
+
                 if (diplomat.GetForeignPower(civ).DiplomacyData.Status == ForeignPowerStatus.NoContact)
+                {
                     diplomat.GetForeignPower(civ).DiplomacyData.Status = ForeignPowerStatus.Neutral;
+                }
             }
             GalaxyGrid.Update();
         }
@@ -153,12 +165,12 @@ namespace Supremacy.Client.Views
             //    if (PlayerContext.Current.Players.Contains)
             if (!_appContext.IsSinglePlayerGame)
             {
-                MessageDialog.Show("Cheat Menu is not available in MultiPlayer", "INFO", MessageDialogButtons.Ok);
+                _ = MessageDialog.Show("Cheat Menu is not available in MultiPlayer", "INFO", MessageDialogButtons.Ok);
                 return;
             }
 
             CheatMenu cheatMenu = new CheatMenu(_appContext);
-            cheatMenu.ShowDialog();
+            _ = cheatMenu.ShowDialog();
         }
 
         private void Execute_f12_ScreenCommand(object t)
@@ -167,7 +179,7 @@ namespace Supremacy.Client.Views
             //    return;
 
             GameInfoScreen _f12_Screen = new GameInfoScreen(_appContext);
-            _f12_Screen.ShowDialog();
+            _ = _f12_Screen.ShowDialog();
         }
         private void Execute_f11_ScreenCommand(object t)
         {
@@ -175,7 +187,7 @@ namespace Supremacy.Client.Views
             //    return;
 
             GameInfoScreen _f11_Screen = new GameInfoScreen(_appContext);
-            _f11_Screen.ShowDialog();
+            _ = _f11_Screen.ShowDialog();
         }
         private void Execute_f10_ScreenCommand(object t)
         {
@@ -183,7 +195,7 @@ namespace Supremacy.Client.Views
             //    return;
 
             GameInfoScreen _f10_Screen = new GameInfoScreen(_appContext);
-            _f10_Screen.ShowDialog();
+            _ = _f10_Screen.ShowDialog();
         }
 
         private void Execute_f09_ScreenCommand(object t)
@@ -194,7 +206,7 @@ namespace Supremacy.Client.Views
             //var _f09_Screen = new GameInfoScreen(_appContext);
             //_f09_Screen.ShowDialog();
             GameInfoScreen GameInfoScreen = new GameInfoScreen(_appContext);
-            GameInfoScreen.ShowDialog();
+            _ = GameInfoScreen.ShowDialog();
         }
 
         private void Execute_f08_ScreenCommand(object t)
@@ -203,7 +215,7 @@ namespace Supremacy.Client.Views
             //    return;
 
             ColonyInfoScreen _f08_Screen = new ColonyInfoScreen(_appContext);
-            _f08_Screen.ShowDialog();
+            _ = _f08_Screen.ShowDialog();
         }
 
         private void Execute_f07_ScreenCommand(object t)
@@ -212,7 +224,7 @@ namespace Supremacy.Client.Views
             //    return;
 
             GameInfoScreen _f07_Screen = new GameInfoScreen(_appContext);
-            _f07_Screen.ShowDialog();
+            _ = _f07_Screen.ShowDialog();
         }
 
         private void Execute_f06_ScreenCommand(object t)
@@ -221,20 +233,21 @@ namespace Supremacy.Client.Views
             //    return;
 
             ColorInfoScreen _f06_Screen = new ColorInfoScreen(_appContext);
-            _f06_Screen.ShowDialog();
+            _ = _f06_Screen.ShowDialog();
         }
         #endregion
 
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            IAppContext appContext = sender as IAppContext;
-
-            if (appContext == null)
+            if (!(sender is IAppContext appContext))
+            {
                 return false;
+            }
 
-            PropertyChangedEventArgs propertyChangedEventArgs = e as PropertyChangedEventArgs;
-            if (propertyChangedEventArgs == null)
+            if (!(e is PropertyChangedEventArgs propertyChangedEventArgs))
+            {
                 return false;
+            }
 
             switch (propertyChangedEventArgs.PropertyName)
             {

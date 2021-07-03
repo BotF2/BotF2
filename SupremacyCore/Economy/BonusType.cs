@@ -26,8 +26,8 @@ namespace Supremacy.Economy
         /// <value>The type of the bonus.</value>
         public BonusType BonusType
         {
-            get { return _bonusType; }
-            set { _bonusType = value; }
+            get => _bonusType;
+            set => _bonusType = value;
         }
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace Supremacy.Economy
         /// <value>The amount.</value>
         public int Amount
         {
-            get { return _amount; }
-            set { _amount = value; }
+            get => _amount;
+            set => _amount = value;
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace Supremacy.Economy
         PercentPlanetaryShielding,
         ScanRange,
         JammingRange,
-        RawMaterials,
-        PercentRawMaterials,
+        Duranium,
+        PercentDuranium,
         Deuterium,
         PercentDeuterium,
         Dilithium,

@@ -20,10 +20,7 @@ namespace Supremacy.Diplomacy.Visitors
 
         private AcceptProposalVisitor([NotNull] IProposal proposal)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
-            _proposal = proposal;
+            _proposal = proposal ?? throw new ArgumentNullException("proposal");
             _agreementData = new Dictionary<object, object>();
         }
 
@@ -34,7 +31,10 @@ namespace Supremacy.Diplomacy.Visitors
         public static IAgreement Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {
             if (proposal == null)
+            {
                 throw new ArgumentNullException("proposal");
+            }
+
             GameLog.Client.Diplomacy.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
                 , proposal.Sender.Key
                 , proposal.Recipient.Key
@@ -80,17 +80,23 @@ namespace Supremacy.Diplomacy.Visitors
             {
                 Civilization sectorOwner = fleet.Sector.Owner;
                 if (sectorOwner == null)
+                {
                     sectorOwner = sectorClaims.GetOwner(fleet.Location);
+                }
 
                 if (sectorOwner == spaceOwner)
+                {
                     fleetsToMove.Add(fleet);
+                }
             }
 
             foreach (Fleet fleet in fleetsToMove)
             {
                 Colony destination = universe.FindNearestOwned<Colony>(fleet.Location, owner);
                 if (destination == null)
+                {
                     continue;
+                }
 
                 fleet.Route = null;
                 fleet.Location = destination.Location;
@@ -139,11 +145,15 @@ namespace Supremacy.Diplomacy.Visitors
 
             ForeignPower senderForeignPower = senderDiplomat.GetForeignPower(target);
             if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
+            {
                 senderForeignPower.DeclareWar();
+            }
 
             ForeignPower recipientForeignPower = recipientDiplomat.GetForeignPower(target);
             if (recipientForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
+            {
                 recipientForeignPower.DeclareWar();
+            }
         }
 
         protected override void VisitTreatyCeaseFireClause(IClause clause) { /* TODO */ }

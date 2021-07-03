@@ -23,7 +23,7 @@ namespace Supremacy.Client.Markup
         /// </summary>
         public new Uri Source
         {
-            get { return _sourceUri; }
+            get => _sourceUri;
             set
             {
                 _sourceUri = value;

@@ -10,14 +10,13 @@ namespace Supremacy.Client.Controls
 
         public override UIElement Child
         {
-            get
-            {
-                return _child;
-            }
+            get => _child;
             set
             {
                 if (_child == value)
+                {
                     return;
+                }
 
                 RemoveVisualChild(_child);
                 RemoveVisualChild(AdornerLayer);

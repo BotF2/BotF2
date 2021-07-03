@@ -814,7 +814,7 @@ namespace Supremacy.Collections
 
                 foreach (T item in removed)
                 {
-                    collection.Remove(item);
+                    _ = collection.Remove(item);
                 }
 
                 return removed;
@@ -1154,7 +1154,7 @@ namespace Supremacy.Collections
 
             StringBuilder builder = new StringBuilder();
 
-            builder.Append(start);
+            _ = builder.Append(start);
 
             // Call ToString on each item and put it in.
             foreach (T item in collection)

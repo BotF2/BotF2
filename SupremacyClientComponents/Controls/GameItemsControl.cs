@@ -30,17 +30,22 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceIsFirstItem(DependencyObject d, object baseValue)
         {
-            GameItemsControl itemsControl = ItemsControlFromItemContainer(d) as GameItemsControl;
-            if (itemsControl == null)
+            if (!(ItemsControlFromItemContainer(d) is GameItemsControl itemsControl))
+            {
                 return false;
+            }
 
             int itemsCount = itemsControl.Items.Count;
             if (itemsCount == 0)
+            {
                 return false;
+            }
 
             object item = itemsControl.ItemContainerGenerator.ItemFromContainer(d);
             if (item == null)
+            {
                 return false;
+            }
 
             return Equals(item, itemsControl.Items[0]);
         }
@@ -68,17 +73,22 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceIsLastItem(DependencyObject d, object baseValue)
         {
-            GameItemsControl itemsControl = ItemsControlFromItemContainer(d) as GameItemsControl;
-            if (itemsControl == null)
+            if (!(ItemsControlFromItemContainer(d) is GameItemsControl itemsControl))
+            {
                 return false;
+            }
 
             int itemsCount = itemsControl.Items.Count;
             if (itemsCount == 0)
+            {
                 return false;
+            }
 
             object item = itemsControl.ItemContainerGenerator.ItemFromContainer(d);
             if (item == null)
+            {
                 return false;
+            }
 
             return Equals(item, itemsControl.Items[itemsCount - 1]);
         }
@@ -115,14 +125,14 @@ namespace Supremacy.Client.Controls
         #region IVariantControl Implementation
         public VariantSize VariantSize
         {
-            get { return (VariantSize)GetValue(VariantSizeProperty); }
-            set { SetValue(VariantSizeProperty, value); }
+            get => (VariantSize)GetValue(VariantSizeProperty);
+            set => SetValue(VariantSizeProperty, value);
         }
 
         public GameControlContext Context
         {
-            get { return (GameControlContext)GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
+            get => (GameControlContext)GetValue(ContextProperty);
+            set => SetValue(ContextProperty, value);
         }
         #endregion
 
@@ -168,9 +178,10 @@ namespace Supremacy.Client.Controls
             element.CoerceValue(IsFirstItemProperty);
             element.CoerceValue(IsLastItemProperty);
 
-            IVariantControl variantControl = element as IVariantControl;
-            if (variantControl != null)
+            if (element is IVariantControl variantControl)
+            {
                 variantControl.Context = Context;
+            }
         }
 
         protected override void ClearContainerForItemOverride(DependencyObject element, object item)
@@ -184,9 +195,13 @@ namespace Supremacy.Client.Controls
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
                 OnValidateItems(Items);
+            }
             else if ((e.NewItems != null) && (e.NewItems.Count > 0))
+            {
                 OnValidateItems(e.NewItems);
+            }
 
             base.OnItemsChanged(e);
         }
@@ -199,15 +214,17 @@ namespace Supremacy.Client.Controls
             {
                 if (IsItemItsOwnContainerOverride(item))
                 {
-                    IVariantControl variantControl = item as IVariantControl;
-                    if (variantControl != null)
+                    if (item is IVariantControl variantControl)
+                    {
                         variantControl.VariantSize = newVariantSize;
+                    }
                 }
                 else
                 {
-                    IVariantControl itemContainer = ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
-                    if (itemContainer != null)
+                    if (ItemContainerGenerator.ContainerFromItem(item) is IVariantControl itemContainer)
+                    {
                         itemContainer.VariantSize = newVariantSize;
+                    }
                 }
             }
         }
@@ -218,15 +235,17 @@ namespace Supremacy.Client.Controls
             {
                 if (IsItemItsOwnContainerOverride(item))
                 {
-                    IVariantControl variantControl = item as IVariantControl;
-                    if (variantControl != null)
+                    if (item is IVariantControl variantControl)
+                    {
                         variantControl.Context = newContext;
+                    }
                 }
                 else
                 {
-                    IVariantControl itemContainer = ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
-                    if (itemContainer != null)
+                    if (ItemContainerGenerator.ContainerFromItem(item) is IVariantControl itemContainer)
+                    {
                         itemContainer.Context = newContext;
+                    }
                 }
             }
         }

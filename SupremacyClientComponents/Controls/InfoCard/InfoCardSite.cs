@@ -86,32 +86,44 @@ namespace Supremacy.Client.Controls
                 case NotifyCollectionChangedAction.Add:
                     foreach (object item in e.NewItems)
                     {
-                        InfoCard infoCard = item as InfoCard;
-                        if (infoCard != null)
+                        if (item is InfoCard infoCard)
+                        {
                             UpdateRegisteredInfoCardSite(infoCard, true);
+                        }
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     if (!DesignerProperties.GetIsInDesignMode(this))
+                    {
                         throw new NotSupportedException();
+                    }
+
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
                     foreach (object item in e.OldItems)
                     {
-                        InfoCard infoCard = item as InfoCard;
-                        if (infoCard == null)
+                        if (!(item is InfoCard infoCard))
+                        {
                             continue;
+                        }
+
                         if (infoCard.IsOpen)
-                            infoCard.Close();
+                        {
+                            _ = infoCard.Close();
+                        }
+
                         UnregisterInfoCardSiteObject(infoCard);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
                     if (!DesignerProperties.GetIsInDesignMode(this))
+                    {
                         throw new NotSupportedException();
+                    }
+
                     break;
             }
         }
@@ -123,7 +135,10 @@ namespace Supremacy.Client.Controls
             foreach (InfoCard infoCard in _infoCards)
             {
                 if (uniqueIds.ContainsKey(infoCard.UniqueId))
+                {
                     throw new InvalidOperationException();
+                }
+
                 uniqueIds[infoCard.UniqueId] = true;
             }
         }
@@ -267,8 +282,8 @@ namespace Supremacy.Client.Controls
 
         public bool CanInfoCardsPin
         {
-            get { return (bool)GetValue(CanInfoCardsPinProperty); }
-            set { SetValue(CanInfoCardsPinProperty, value); }
+            get => (bool)GetValue(CanInfoCardsPinProperty);
+            set => SetValue(CanInfoCardsPinProperty, value);
         }
         #endregion
 
@@ -287,31 +302,39 @@ namespace Supremacy.Client.Controls
 
         private static void OnInfoCardSitePropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            InfoCardSite oldInfoCardSite = e.OldValue as InfoCardSite;
-            InfoCardSite newInfoCardSite = e.NewValue as InfoCardSite;
-
-            if (oldInfoCardSite != null)
+            if (e.OldValue is InfoCardSite oldInfoCardSite)
+            {
                 oldInfoCardSite.UnregisterInfoCardSiteObject(d);
+            }
 
-            if (newInfoCardSite != null)
+            if (e.NewValue is InfoCardSite newInfoCardSite)
+            {
                 newInfoCardSite.RegisterInfoCardSiteObject(d);
-
+            }
         }
 
         public static InfoCardSite GetInfoCardSite(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return o.GetValue(InfoSiteInfoCardProperty) as InfoCardSite;
         }
 
         internal static void SetInfoCardSite(DependencyObject o, InfoCardSite value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(InfoCardSitePropertyKey, value);
             if (o is InfoCard)
+            {
                 o.CoerceValue(InfoCard.CanPinProperty);
+            }
         }
         #endregion
 
@@ -333,8 +356,8 @@ namespace Supremacy.Client.Controls
 
         public InfoCard ActiveInfoCard
         {
-            get { return (InfoCard)GetValue(ActiveInfoCardProperty); }
-            internal set { SetValue(ActiveInfoCardPropertyKey, value); }
+            get => (InfoCard)GetValue(ActiveInfoCardProperty);
+            internal set => SetValue(ActiveInfoCardPropertyKey, value);
         }
 
         private static void OnActiveInfoCardPropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -356,8 +379,8 @@ namespace Supremacy.Client.Controls
 
         public InfoCard LastActiveInfoCard
         {
-            get { return (InfoCard)GetValue(LastActiveInfoCardProperty); }
-            internal set { SetValue(LastActiveInfoCardPropertyKey, value); }
+            get => (InfoCard)GetValue(LastActiveInfoCardProperty);
+            internal set => SetValue(LastActiveInfoCardPropertyKey, value);
         }
         #endregion
 
@@ -378,8 +401,8 @@ namespace Supremacy.Client.Controls
 
         public bool UseHostedInfoCardWindows
         {
-            get { return (bool)GetValue(UseHostedInfoCardWindowsProperty); }
-            set { SetValue(UseHostedInfoCardWindowsProperty, value); }
+            get => (bool)GetValue(UseHostedInfoCardWindowsProperty);
+            set => SetValue(UseHostedInfoCardWindowsProperty, value);
         }
         #endregion
 
@@ -406,8 +429,8 @@ namespace Supremacy.Client.Controls
 
         public double InactiveInfoCardFadeOpacity
         {
-            get { return (double)GetValue(InactiveInfoCardFadeOpacityProperty); }
-            set { SetValue(InactiveInfoCardFadeOpacityProperty, value); }
+            get => (double)GetValue(InactiveInfoCardFadeOpacityProperty);
+            set => SetValue(InactiveInfoCardFadeOpacityProperty, value);
         }
         #endregion
 
@@ -425,13 +448,15 @@ namespace Supremacy.Client.Controls
         {
             InfoCardSite infoCardSite = (InfoCardSite)d;
             foreach (InfoCard infoCard in infoCardSite.InfoCards)
+            {
                 infoCard.ResetFade();
+            }
         }
 
         public bool IsInactiveInfoCardFadeEnabled
         {
-            get { return (bool)GetValue(IsInactiveInfoCardFadeEnabledProperty); }
-            set { SetValue(IsInactiveInfoCardFadeEnabledProperty, value); }
+            get => (bool)GetValue(IsInactiveInfoCardFadeEnabledProperty);
+            set => SetValue(IsInactiveInfoCardFadeEnabledProperty, value);
         }
         #endregion
 
@@ -446,8 +471,8 @@ namespace Supremacy.Client.Controls
 
         public Duration InactiveInfoCardFadeDuration
         {
-            get { return (Duration)GetValue(InactiveInfoCardFadeDurationProperty); }
-            set { SetValue(InactiveInfoCardFadeDurationProperty, value); }
+            get => (Duration)GetValue(InactiveInfoCardFadeDurationProperty);
+            set => SetValue(InactiveInfoCardFadeDurationProperty, value);
         }
         #endregion
 
@@ -462,8 +487,8 @@ namespace Supremacy.Client.Controls
 
         public TimeSpan InactiveInfoCardFadeDelay
         {
-            get { return (TimeSpan)GetValue(InactiveInfoCardFadeDelayProperty); }
-            set { SetValue(InactiveInfoCardFadeDelayProperty, value); }
+            get => (TimeSpan)GetValue(InactiveInfoCardFadeDelayProperty);
+            set => SetValue(InactiveInfoCardFadeDelayProperty, value);
         }
         #endregion
 
@@ -480,10 +505,14 @@ namespace Supremacy.Client.Controls
         protected virtual void OnActiveInfoCardChanged(InfoCard oldValue, InfoCard newValue)
         {
             if (oldValue != null)
+            {
                 RaiseInfoCardDeactivatedEvent(oldValue);
+            }
 
             if (newValue != null)
+            {
                 RaiseInfoCardActivatedEvent(newValue);
+            }
         }
 
         private void RaiseInfoCardActivatedEvent(InfoCard newValue)
@@ -508,7 +537,9 @@ namespace Supremacy.Client.Controls
         internal bool Close(InfoCard infoCard, InfoCardCloseReason closeReason, bool force)
         {
             if ((infoCard == null) || (!infoCard.IsOpen))
+            {
                 return false;
+            }
 
             // Raise closing event
             InfoCardEventArgs closingEventArgs = new InfoCardEventArgs(infoCard, InfoCardClosingEvent, this);
@@ -516,7 +547,9 @@ namespace Supremacy.Client.Controls
             infoCard.RaiseClosingEvent();
 
             if (!force && closingEventArgs.Cancel)
+            {
                 return false;
+            }
 
             EventNotifier notifier = new EventNotifier();
             notifier.Subscribe(infoCard);
@@ -527,12 +560,16 @@ namespace Supremacy.Client.Controls
 
             InfoCardHost infoCardHost = InfoCardHost.GetInfoCardHost(infoCard);
             if (infoCardHost != null)
+            {
                 infoCardHost.Content = null;
+            }
 
             notifier.RaiseEvents();
 
             if (InfoCardService.GetUnregisterInfoCardOnClose(infoCard))
-                InfoCards.Remove(infoCard);
+            {
+                _ = InfoCards.Remove(infoCard);
+            }
 
             RaiseEvent(new InfoCardEventArgs(infoCard, InfoCardClosedEvent, this));
             infoCard.RaiseClosedEvent();
@@ -545,7 +582,9 @@ namespace Supremacy.Client.Controls
         internal void AddCanvasChild(UIElement element)
         {
             if (!_canvas.Children.Contains(element))
-                _canvas.Children.Add(element);
+            {
+                _ = _canvas.Children.Add(element);
+            }
         }
 
         internal void BringToFront(UIElement element)
@@ -555,7 +594,9 @@ namespace Supremacy.Client.Controls
             foreach (UIElement child in _canvas.Children.OfType<UIElement>())
             {
                 if (child is IInfoCardWindow)
+                {
                     zIndex = Math.Max(zIndex, Panel.GetZIndex(child));
+                }
             }
 
             Panel.SetZIndex(element, zIndex + 1);
@@ -564,7 +605,9 @@ namespace Supremacy.Client.Controls
         internal void RemoveCanvasChild(UIElement element)
         {
             if (_canvas.Children.Contains(element))
+            {
                 _canvas.Children.Remove(element);
+            }
         }
 
         internal void UpdateOpenInfoCards()
@@ -626,7 +669,9 @@ namespace Supremacy.Client.Controls
                 if (infoCard.RegisteredInfoCardSite != this)
                 {
                     if (infoCard.RegisteredInfoCardSite != null)
+                    {
                         throw new InvalidOperationException(SR.InfoCardAlreadyRegistered);
+                    }
 
                     infoCard.RegisteredInfoCardSite = this;
                 }
@@ -642,21 +687,23 @@ namespace Supremacy.Client.Controls
             UpdateRegisteredInfoCardSite(infoCard, true);
 
             if (!_infoCards.Contains(infoCard))
+            {
                 _infoCards.Add(infoCard);
+            }
         }
 
         private void RegisterInfoCardSiteObject(DependencyObject o)
         {
-            InfoCard infoCard = o as InfoCard;
-            if (infoCard != null)
+            if (o is InfoCard infoCard)
             {
                 if (!infoCard.IsContainerForItem)
+                {
                     RegisterInfoCard(infoCard);
+                }
             }
             else
             {
-                InfoCardHost infoCardHost = o as InfoCardHost;
-                if (infoCardHost != null)
+                if (o is InfoCardHost infoCardHost)
                 {
                     _infoCardHosts.Add(infoCardHost);
 
@@ -669,20 +716,21 @@ namespace Supremacy.Client.Controls
         private void OnInfoCardHostActivated(object sender, EventArgs e)
         {
             InfoCardHost container = (InfoCardHost)sender;
-            _infoCardHosts.Remove(container);
+            _ = _infoCardHosts.Remove(container);
             _infoCardHosts.Insert(0, container);
         }
 
         private void OnInfoCardHostLayoutChanged(object sender, RoutedEventArgs e)
         {
             // If a rafting host...
-            InfoCardHost container = sender as InfoCardHost;
-            if (container != null)
+            if (sender is InfoCardHost container)
             {
                 CloseInfoCardWindowIfEmpty(container);
 
                 if (container.Content == null)
+                {
                     container.InfoCardSite = null;
+                }
             }
 
             ClearInternalCache();
@@ -692,30 +740,37 @@ namespace Supremacy.Client.Controls
         {
             IInfoCardWindow window = container.InfoCardWindow;
             if (!HasVisualContent(container) && (window != null) && (!window.IsClosing))
+            {
                 window.Close(InfoCardCloseReason.InfoCardWindowClosed);
+            }
         }
 
         internal bool HasVisualContent(InfoCardHost infoCardHost)
         {
-            return (GetInfoCardFromHost(infoCardHost) != null);
+            return GetInfoCardFromHost(infoCardHost) != null;
         }
 
         private void ClearInternalCache()
         {
             if ((LastActiveInfoCard != null) && (!LastActiveInfoCard.IsOpen))
+            {
                 LastActiveInfoCard = null;
+            }
 
             if ((ActiveInfoCard != null) && ((!ActiveInfoCard.IsOpen) || (!ActiveInfoCard.IsKeyboardFocusWithin)))
+            {
                 ActiveInfoCard = null;
+            }
         }
 
         private void UnregisterInfoCardSiteObject(DependencyObject o)
         {
-            InfoCardHost infoCardHost = o as InfoCardHost;
-            if (infoCardHost == null)
+            if (!(o is InfoCardHost infoCardHost))
+            {
                 return;
+            }
 
-            _infoCardHosts.Remove(infoCardHost);
+            _ = _infoCardHosts.Remove(infoCardHost);
 
             infoCardHost.LayoutChanged -= OnInfoCardHostLayoutChanged;
             infoCardHost.Activated -= OnInfoCardHostActivated;
@@ -734,7 +789,9 @@ namespace Supremacy.Client.Controls
             foreach (IInfoCardWindow infoCardWindow in infoCardWindows)
             {
                 if (!infoCardWindow.IsClosing)
+                {
                     infoCardWindow.Close(closeReason);
+                }
             }
         }
 
@@ -746,7 +803,10 @@ namespace Supremacy.Client.Controls
         protected internal virtual IInfoCardWindow CreateRaftingWindow(InfoCardHost infoCardHost)
         {
             if (UseHostedInfoCardWindows)
+            {
                 return new InfoCardWindowControl(infoCardHost);
+            }
+
             return CreateRaftingWindowForWindows(infoCardHost);
         }
 
@@ -754,11 +814,11 @@ namespace Supremacy.Client.Controls
         {
             InfoCardWindow window = new InfoCardWindow(infoCardHost);
 
-            window.SetBinding(
+            _ = window.SetBinding(
                 CanInfoCardsPinProperty,
                 InfoCardHelper.CreateBinding(this, CanInfoCardsPinProperty));
 
-            window.SetBinding(
+            _ = window.SetBinding(
                 DataContextProperty,
                 InfoCardHelper.CreateBinding(this, DataContextProperty));
 
@@ -774,7 +834,9 @@ namespace Supremacy.Client.Controls
             {
                 infoCardWindow = infoCardHost.InfoCardWindow;
                 if (infoCardWindow != null)
+                {
                     return;
+                }
             }
 
             if (infoCardHost == null)
@@ -789,7 +851,7 @@ namespace Supremacy.Client.Controls
             infoCardWindow.SnapToScreen();
 
             infoCardWindow.Show();
-            infoCardWindow.Activate();
+            _ = infoCardWindow.Activate();
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
@@ -797,7 +859,9 @@ namespace Supremacy.Client.Controls
             base.OnPropertyChanged(e);
 
             if (e.Property == IsVisibleProperty)
+            {
                 UpdateInfoCardWindows((bool)e.NewValue);
+            }
         }
 
         private void UpdateInfoCardWindows(bool isVisible)
@@ -807,19 +871,26 @@ namespace Supremacy.Client.Controls
                 foreach (InfoCard infoCard in _infoCards)
                 {
                     if ((infoCard.LastCloseReason == InfoCardCloseReason.InfoCardSiteUnloaded) && !infoCard.IsOpen)
+                    {
                         infoCard.Open();
+                    }
                 }
             }
             else
             {
-                Dispatcher.BeginInvoke(
+                _ = Dispatcher.BeginInvoke(
                     (Action)
                     delegate
                     {
                         if (IsVisible)
+                        {
                             return;
+                        }
+
                         if (!UseHostedInfoCardWindows)
+                        {
                             CloseInfoCardWindows(InfoCardCloseReason.InfoCardSiteUnloaded);
+                        }
                     },
                     DispatcherPriority.Send);
             }
@@ -840,7 +911,9 @@ namespace Supremacy.Client.Controls
         internal void OpenInfoCard(InfoCard infoCard)
         {
             if ((infoCard == null) || infoCard.IsOpen)
+            {
                 return;
+            }
 
             RaiseOpeningEvent(infoCard);
             OpenInfoCardCore(infoCard);
@@ -854,7 +927,10 @@ namespace Supremacy.Client.Controls
         protected override Visual GetVisualChild(int index)
         {
             if (index < base.VisualChildrenCount)
+            {
                 return base.GetVisualChild(index);
+            }
+
             return _canvas;
         }
         #endregion

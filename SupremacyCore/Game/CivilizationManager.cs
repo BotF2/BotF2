@@ -8,6 +8,7 @@
 
 using Supremacy.AI;
 using Supremacy.Annotations;
+using Supremacy.Client;
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -51,8 +52,11 @@ namespace Supremacy.Game
         private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
-        private Meter _totalIntelligenceAttackingAccumulated;
-        private Meter _totalIntelligenceDefenseAccumulated;
+        private readonly Meter _totalIntelligenceAttackingAccumulated;
+        private readonly Meter _totalIntelligenceDefenseAccumulated;
+        private string _text;
+        //private readonly IPlayer _localPlayer;
+        //private readonly AppContext _appContext;
 
         #endregion Fields
 
@@ -94,7 +98,7 @@ namespace Supremacy.Game
 
         public void AddCivHist(int civIDHist, string civKeyHist, int creditsHist, int coloniesHist, int populationHist, int maintenanceHist, int researchHist)
         {
-            string _tn = "";
+            string _tn;
             _tn = GameContext.Current.TurnNumber.ToString();
             string civIDHistAndTurn = civIDHist + "-" + _tn;
             CivHistory civHist_New = new CivHistory(
@@ -115,7 +119,7 @@ namespace Supremacy.Game
                 _civHist_List.Add(civHist_New);
                 foreach (CivHistory item in _civHist_List)
                 {
-                    GameLog.Core.CivsAndRaces.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
+                    GameLog.Core.CivsAndRacesDetails.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
                         , _tn
 
                         , item.CivIDHistAndTurn
@@ -133,6 +137,8 @@ namespace Supremacy.Game
             }
 
         }
+        //private AppContext _appContext => _appContext;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CivilizationManager"/> class.
         /// </summary>
@@ -167,8 +173,8 @@ namespace Supremacy.Game
             _resources.Deuterium.Reset();
             _resources.Dilithium.BaseValue = 10;
             _resources.Dilithium.Reset();
-            _resources.RawMaterials.BaseValue = 1000;
-            _resources.RawMaterials.Reset();
+            _resources.Duranium.BaseValue = 1000;
+            _resources.Duranium.Reset();
             _resources.UpdateAndReset();
 
             //_stealCreditsSpyOperation = new List<StealCredits>();
@@ -182,7 +188,9 @@ namespace Supremacy.Game
         public CivilizationManager(IGameContext game, Civilization civilization) : this()
         {
             if (civilization == null)
+            {
                 throw new ArgumentNullException("civilization");
+            }
 
             _civId = civilization.CivID;
             _research = new ResearchPool(civilization, game.ResearchMatrix);
@@ -235,8 +243,8 @@ namespace Supremacy.Game
         /// </summary>
         public int MaintenanceCostLastTurn
         {
-            get { return _maintenanceCostLastTurn; }
-            set { _maintenanceCostLastTurn = value; }
+            get => _maintenanceCostLastTurn;
+            set => _maintenanceCostLastTurn = value;
         }
 
 
@@ -268,7 +276,9 @@ namespace Supremacy.Game
             get
             {
                 if (_seatOfGovernmentId == -1)
+                {
                     return null;
+                }
 
                 return GameContext.Current.Universe.Objects[_seatOfGovernmentId] as Colony;
             }
@@ -285,14 +295,34 @@ namespace Supremacy.Game
             {
                 foreach (SitRepEntry rep in _sitRepEntries)
                 {
-                    //var playerID = Player.GameHostID;
-                    //if (GameContext.Current.IsMultiplayerGame == false)
-                    //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
-                    //CivilizationManager.
+                    int _player = 789;
 
-                    if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
+                    if (LocalPlayer != null)
+                    {
+                        _player = LocalPlayer.CivID;
+                    }
+
+                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_player];
+                    if (playerCivManager != null && rep.Owner.ToString() == playerCivManager.ToString())
+                    {
+                        _text = "SitRep Turn "
+                            + GameContext.Current.TurnNumber
+                            + " Cat= " + rep.Categories
+                            + " " + rep.Priority
+                            + " Action= " + rep.Action
+                            + " for " + rep.Owner
+                            + ":" + Environment.NewLine
+                            + "                    SitRep: " + rep.SummaryText
+                            + " Cat= " + rep.Categories
+                            + Environment.NewLine
+                            ;
+
+                        Console.WriteLine(_text);
                         GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
                             "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
+
+                    }
+
                 }
                 return _sitRepEntries;
             }
@@ -310,7 +340,7 @@ namespace Supremacy.Game
             get
             {
                 int totalPopulation = _totalPopulation.CurrentValue;
-                double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * ((1d / totalPopulation) * colony.Population.CurrentValue));
+                double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * (1d / totalPopulation * colony.Population.CurrentValue));
                 return (int)totalMorale;
             }
         }
@@ -367,7 +397,10 @@ namespace Supremacy.Game
             {
                 StarSystem homeSystem = HomeSystem;
                 if (homeSystem == null)
+                {
                     return false;
+                }
+
                 return homeSystem.OwnerID == CivilizationID;
             }
         }
@@ -378,7 +411,9 @@ namespace Supremacy.Game
             {
                 StarSystem homeSystem = HomeSystem;
                 if (homeSystem == null)
+                {
                     return false;
+                }
 
                 Colony colony = homeSystem.Colony;
                 return colony == null ||
@@ -392,13 +427,15 @@ namespace Supremacy.Game
         /// <value>The home colony.</value>
         public Colony HomeColony
         {
-            get { return GameContext.Current.Universe.Get<Colony>(_homeColonyId); }
+            get => GameContext.Current.Universe.Get<Colony>(_homeColonyId);
             internal set
             {
                 _homeColonyId = (value != null) ? value.ObjectID : -1;
 
                 if (value != null)
+                {
                     _homeColonyLocation = value.Location;
+                }
             }
         }
 
@@ -411,7 +448,10 @@ namespace Supremacy.Game
             get
             {
                 if (!_homeColonyLocation.HasValue)
+                {
                     return null;
+                }
+
                 return GameContext.Current.Universe.Map[_homeColonyLocation.Value].System;
             }
         }
@@ -422,8 +462,8 @@ namespace Supremacy.Game
         /// <value>The tech tree.</value>
         public TechTree TechTree
         {
-            get { return GameContext.Current.TechTrees[_civId]; }
-            internal set { GameContext.Current.TechTrees[_civId] = value; }
+            get => GameContext.Current.TechTrees[_civId];
+            internal set => GameContext.Current.TechTrees[_civId] = value;
         }
 
         /// <summary>
@@ -474,7 +514,9 @@ namespace Supremacy.Game
         {
             Data.Table moraleTable = GameContext.Current.Tables.MoraleTables["MoraleEventResults"];
             if (moraleTable == null)
+            {
                 return;
+            }
 
             const float multiplier = 1.0f;
 
@@ -482,15 +524,18 @@ namespace Supremacy.Game
                              moraleTable[eventType.ToString()][0];
 
             if (tableValue == null)
+            {
                 return;
-
+            }
 
             if (!int.TryParse(tableValue, out int change))
+            {
                 return;
+            }
 
             foreach (Colony colony in Colonies)
             {
-                colony.Morale.AdjustCurrent((int)(multiplier * change));
+                _ = colony.Morale.AdjustCurrent((int)(multiplier * change));
             }
         }
 
@@ -523,7 +568,9 @@ namespace Supremacy.Game
                                     (c =>
                                      {
                                          if (!homeColonyLocation.HasValue)
+                                         {
                                              return 1d;
+                                         }
 
                                          double distanceFactor = Math.Min(
                                              0.2,
@@ -542,14 +589,20 @@ namespace Supremacy.Game
                                    ).FirstOrDefault();
 
                 if (seatOfGovernment != null)
+                {
                     _seatOfGovernmentId = seatOfGovernment.ObjectID;
+                }
                 else
+                {
                     _seatOfGovernmentId = -1;
+                }
             }
 
             Diplomacy.Diplomat diplomat = GameContext.Current.Diplomats[_civId];
             if (diplomat != null)
+            {
                 diplomat.SeatOfGovernment = seatOfGovernment;
+            }
         }
 
         /// <summary>
@@ -558,43 +611,51 @@ namespace Supremacy.Game
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
         /// Handles the PropertyChanged event of the TotalPopulation property.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnTotalPopulationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("AverageMorale");
+            }
         }
         private void OnTotalResearchPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("AverageMorale");
+            }
         }
         private void OnInstallingSpyNetworkPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("InstallingSpyNetwork");
+            }
         }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             GameLog.Client.Intel.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
+            }
         }
 
         private void OnTotalIntelligenceDefenseAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             GameLog.Client.Intel.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
+            }
         }
 
         #endregion
@@ -612,14 +673,20 @@ namespace Supremacy.Game
         public static CivilizationManager For([NotNull] Civilization civ)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
+
             return GameContext.Current.CivilizationManagers[civ];
         }
 
         public static CivilizationManager For([NotNull] string civKey)
         {
             if (civKey == null)
+            {
                 throw new ArgumentNullException("civKey");
+            }
+
             return GameContext.Current.CivilizationManagers[civKey];
         }
 
@@ -635,6 +702,9 @@ namespace Supremacy.Game
         int ICivIdentity.CivID => _civId;
 
         public List<int> IntelIDs { get => _IntelIDs; set => _IntelIDs = value; }
+        public object AppContextProperty { get; private set; }
+        public Civilization LocalPlayer { get; private set; }
+
 
         #endregion
     }
@@ -664,8 +734,11 @@ namespace Supremacy.Game
             get
             {
                 if (civilization == null)
+                {
                     throw new ArgumentNullException("civilization");
-                TryGetValue(civilization.CivID, out TValue value);
+                }
+
+                _ = TryGetValue(civilization.CivID, out TValue value);
                 return value;
             }
         }
@@ -678,7 +751,7 @@ namespace Supremacy.Game
         {
             get
             {
-                TryGetValue(civKey, out TValue value);
+                _ = TryGetValue(civKey, out TValue value);
                 return value;
             }
         }
@@ -703,7 +776,7 @@ namespace Supremacy.Game
                     return true;
                 }
             }
-            value = typeof(TValue).IsValueType ? Activator.CreateInstance<TValue>() : default(TValue);
+            value = typeof(TValue).IsValueType ? Activator.CreateInstance<TValue>() : default;
             return false;
         }
 

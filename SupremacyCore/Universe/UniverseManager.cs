@@ -69,8 +69,8 @@ namespace Supremacy.Universe
         /// <value>The objects.</value>
         public UniverseObjectSet Objects
         {
-            get { return _objects; }
-            internal set { _objects = value; }
+            get => _objects;
+            internal set => _objects = value;
         }
 
         public GameObjectLookupCollection<Civilization, Colony> HomeColonyLookup => _homeColonyLookup;
@@ -139,9 +139,12 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             if (civilization == null)
+            {
                 throw new ArgumentNullException("civilization");
+            }
+
             IEnumerable<UniverseObject> items = from item in _objects
-                                                where (item.OwnerID == civilization.CivID)
+                                                where item.OwnerID == civilization.CivID
                                                 select item;
             return items.OfType<T>().ToHashSet();
         }
@@ -155,7 +158,7 @@ namespace Supremacy.Universe
                 throw new ArgumentNullException("startype");
             }
             IEnumerable<UniverseObject> items = from item in _objects
-                                                where (item != null && item.Sector != null && item.Sector.System != null && item.Sector.System.StarType == starType)
+                                                where item != null && item.Sector != null && item.Sector.System != null && item.Sector.System.StarType == starType
                                                 select item;
             return items.OfType<T>().ToHashSet();
         }
@@ -170,7 +173,7 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             IEnumerable<UniverseObject> items = from item in _objects
-                                                where (item.OwnerID == civilizationId)
+                                                where item.OwnerID == civilizationId
                                                 select item;
             return items.OfType<T>().ToHashSet();
         }
@@ -185,7 +188,7 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             IEnumerable<UniverseObject> items = from item in _objects
-                                                where (item.Location == location)
+                                                where item.Location == location
                                                 select item;
             return items.OfType<T>().ToHashSet();
         }
@@ -211,7 +214,7 @@ namespace Supremacy.Universe
         public T FindFirst<T>(Func<T, bool> predicate)
             where T : UniverseObject
         {
-            return _objects.OfType<T>().Where(predicate).FirstOrDefault();
+            return _objects.OfType<T>().FirstOrDefault(predicate);
         }
 
         /// <summary>
@@ -322,20 +325,30 @@ namespace Supremacy.Universe
         public bool ScrapNonStructures(Colony colony)
         {
             if (colony == null)
+            {
                 return false;
+            }
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
             if (civManager == null)
+            {
                 return false;
+            }
 
             foreach (ProductionCategory pc in EnumUtilities.GetValues<ProductionCategory>())
             {
                 int numFacilities = colony.GetScrappedFacilities(pc);
                 if (numFacilities == 0)
+                {
                     continue;
+                }
+
                 ProductionFacilityDesign design = colony.GetFacilityType(pc);
                 if (design == null)
+                {
                     continue;
+                }
+
                 double modifier = 1.0 + colony.ScrapBonus;
                 design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
                 credits = Math.Min(design.BuildCost, (int)Math.Floor(modifier * credits));
@@ -344,9 +357,9 @@ namespace Supremacy.Universe
                     resources[resource] = Math.Min(
                         design.BuildResourceCosts[resource],
                         (int)Math.Floor(modifier * resources[resource]));
-                    civManager.Resources[resource].AdjustCurrent(resources[resource]);
+                    _ = civManager.Resources[resource].AdjustCurrent(resources[resource]);
                 }
-                civManager.Credits.AdjustCurrent(credits);
+                _ = civManager.Credits.AdjustCurrent(credits);
             }
 
             colony.ScrapNonStructures();
@@ -362,14 +375,20 @@ namespace Supremacy.Universe
         public bool Scrap(TechObject target)
         {
             if (target == null)
+            {
                 return false;
+            }
 
             if (!target.IsOwned)
+            {
                 return Destroy(target);
+            }
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[target.OwnerID];
             if (civManager == null)
+            {
                 return Destroy(target);
+            }
 
             target.Design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
 
@@ -398,14 +417,14 @@ namespace Supremacy.Universe
                         (int)Math.Floor(totalReclaim * resources[resource]));
                 }
 
-                civManager.Credits.AdjustCurrent(credits);
+                _ = civManager.Credits.AdjustCurrent(credits);
             }
 
             if (Destroy(target))
             {
                 foreach (ResourceType resource in EnumUtilities.GetValues<ResourceType>())
                 {
-                    civManager.Resources[resource].AdjustCurrent(resources[resource]);
+                    _ = civManager.Resources[resource].AdjustCurrent(resources[resource]);
                 }
 
                 return true;
@@ -432,7 +451,9 @@ namespace Supremacy.Universe
         public bool Destroy(UniverseObject item)
         {
             if (item == null)
+            {
                 return false;
+            }
 
             if (item is Ship)
             {
@@ -443,7 +464,7 @@ namespace Supremacy.Universe
 
                 if (fleet.Ships.Count == 0)
                 {
-                    Destroy(fleet);
+                    _ = Destroy(fleet);
                 }
             }
 
@@ -461,7 +482,7 @@ namespace Supremacy.Universe
                     for (int i = 0; i < fleet.Ships.Count; i++)
                     {
                         Fleet newFleet = fleet.Ships[i].CreateFleet();
-                        Destroy(newFleet.Ships[0]);
+                        _ = Destroy(newFleet.Ships[0]);
                     }
                 }
             }
@@ -471,7 +492,7 @@ namespace Supremacy.Universe
                 StarSystem system = item as StarSystem;
                 if (system.IsInhabited)
                 {
-                    Destroy(system.Colony);
+                    _ = Destroy(system.Colony);
                 }
             }
 
@@ -488,13 +509,13 @@ namespace Supremacy.Universe
                         {
                             civManager.HomeColony = null;
                         }
-                        civManager.Colonies.Remove(colony);
+                        _ = civManager.Colonies.Remove(colony);
                     }
 
                     Colony ownerHomeColony = _homeColonyLookup[colonyOwner];
                     if (ownerHomeColony == colony)
                     {
-                        _homeColonyLookup.Remove(ownerHomeColony);
+                        _ = _homeColonyLookup.Remove(ownerHomeColony);
                     }
 
                     colony.System.Owner = null;
@@ -512,13 +533,13 @@ namespace Supremacy.Universe
                 tmpOBs.ForEach(o => Destroy(o));
 
                 colony.BuildQueue.Clear();
-                colony.BuildSlots.ForEach(o => o.Project = null);
+                _ = colony.BuildSlots.ForEach(o => o.Project = null);
 
-                colony.TradeRoutes.ForEach(o => o.TargetColony = null);
+                _ = colony.TradeRoutes.ForEach(o => o.TargetColony = null);
 
                 if (colony.Shipyard != null)
                 {
-                    Destroy(colony.Shipyard);
+                    _ = Destroy(colony.Shipyard);
                 }
             }
 
@@ -549,7 +570,7 @@ namespace Supremacy.Universe
                 orbitalBattery.Sector.System.Colony.OnOrbitalBatteryDestroyed(orbitalBattery);
             }
 
-            _objects.Remove(item);
+            _ = _objects.Remove(item);
             item.ObjectID = -1;
             return true;
         }
@@ -568,11 +589,15 @@ namespace Supremacy.Universe
 
                 Ship ship = item as Ship;
                 if (ship == null)
+                {
                     continue;
+                }
 
                 Fleet fleet = ship.Fleet;
                 if ((fleet != null) && !fleet.Ships.Contains(ship))
+                {
                     fleet.AddShipInternal(ship);
+                }
 
                 // Gamelog 
                 string ownerString = "not set";
@@ -606,13 +631,17 @@ namespace Supremacy.Universe
             {
                 StarSystem system = systemLocationLookup[colony.Location].FirstOrDefault();
                 if (system == null)
+                {
                     continue;
+                }
 
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
 
                 foreach (Building building in buildingLocationLookup[colony.Location])
+                {
                     colony.BuildingsInternal.Add(building);
+                }
             }
         }
 

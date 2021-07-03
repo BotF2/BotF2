@@ -21,25 +21,31 @@ namespace Supremacy.Client
 
         private static FrameworkElement PendingFocusElement
         {
-            get { return _pendingFocusElement; }
+            get => _pendingFocusElement;
             set
             {
                 if (_pendingFocusElement == value)
+                {
                     return;
+                }
 
                 if (_pendingFocusElement != null)
+                {
                     _pendingFocusElement.Loaded -= OnPendingFocusElementLoaded;
+                }
 
                 _pendingFocusElement = value;
 
                 if (_pendingFocusElement != null)
+                {
                     _pendingFocusElement.Loaded += OnPendingFocusElementLoaded;
+                }
             }
         }
 
         private static void OnPendingFocusElementLoaded(object sender, RoutedEventArgs args)
         {
-            Keyboard.Focus(PendingFocusElement);
+            _ = Keyboard.Focus(PendingFocusElement);
             PendingFocusElement = null;
         }
 
@@ -48,7 +54,7 @@ namespace Supremacy.Client
             if (element.IsLoaded && PresentationSource.FromVisual(element) != null)
             {
                 PendingFocusElement = null;
-                Keyboard.Focus(element);
+                _ = Keyboard.Focus(element);
             }
             else
             {
@@ -62,11 +68,12 @@ namespace Supremacy.Client
             {
                 IntPtr foregroundWindow = NativeMethods.GetForegroundWindow();
                 if (foregroundWindow == IntPtr.Zero)
+                {
                     return false;
+                }
 
-                uint foregroundProcessId;
 
-                NativeMethods.GetWindowThreadProcessId(foregroundWindow, out foregroundProcessId);
+                _ = NativeMethods.GetWindowThreadProcessId(foregroundWindow, out uint foregroundProcessId);
 
                 return NativeMethods.GetCurrentProcessId() == foregroundProcessId;
             }

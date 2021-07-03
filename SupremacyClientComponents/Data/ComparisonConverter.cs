@@ -20,13 +20,19 @@ namespace Supremacy.Client.Data
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || parameter == null)
+            {
                 return FalseValue;
+            }
 
             if (ComparisonType == ComparisonType.Equal)
+            {
                 return Equals(value, parameter) ? TrueValue : FalseValue;
+            }
 
             if (ComparisonType == ComparisonType.NotEqual)
+            {
                 return !Equals(value, parameter) ? TrueValue : FalseValue;
+            }
 
             double left = System.Convert.ToDouble(value);
             double right = System.Convert.ToDouble(parameter);

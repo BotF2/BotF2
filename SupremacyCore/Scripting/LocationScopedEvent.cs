@@ -25,7 +25,7 @@ namespace Supremacy.Scripting
         /// </summary>
         protected int LocationRecurrencePeriod
         {
-            get { return _locationRecurrencePeriod; }
+            get => _locationRecurrencePeriod;
             private set
             {
                 VerifyInitializing();
@@ -39,9 +39,8 @@ namespace Supremacy.Scripting
         {
             base.InitializeCore(options);
 
-            object value;
 
-            if (options.TryGetValue("LocationRecurrencePeriod", out value))
+            if (options.TryGetValue("LocationRecurrencePeriod", out object value))
             {
                 try
                 {
@@ -61,20 +60,23 @@ namespace Supremacy.Scripting
 
         protected virtual bool CanTargetMapLocation(MapLocation location)
         {
-            LocationTargetHistoryEntry entry;
 
-            if (!_locationTargetHistory.TryGetValue(location, out entry))
+            if (!_locationTargetHistory.TryGetValue(location, out LocationTargetHistoryEntry entry))
+            {
                 return true;
+            }
 
             if (LocationRecurrencePeriod < 0)
+            {
                 return false;
+            }
 
             return (GameContext.Current.TurnNumber - entry.TurnNumber) > LocationRecurrencePeriod;
         }
 
         protected virtual void OnLocationTargeted(MapLocation location)
         {
-            _locationTargetHistory.Remove(location);
+            _ = _locationTargetHistory.Remove(location);
             _locationTargetHistory.Add(new LocationTargetHistoryEntry(location, GameContext.Current.TurnNumber));
 
             RecordExecution();
@@ -85,7 +87,9 @@ namespace Supremacy.Scripting
             base.OnTurnFinishedOverride(game);
 
             if (LocationRecurrencePeriod < 0)
+            {
                 return;
+            }
 
             HashSet<MapLocation> removedItems = null;
 
@@ -94,16 +98,23 @@ namespace Supremacy.Scripting
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > LocationRecurrencePeriod)
                 {
                     if (removedItems == null)
+                    {
                         removedItems = new HashSet<MapLocation>();
-                    removedItems.Add(entry.Location);
+                    }
+
+                    _ = removedItems.Add(entry.Location);
                 }
             }
 
             if (removedItems == null)
+            {
                 return;
+            }
 
             foreach (MapLocation civId in removedItems)
-                _locationTargetHistory.Remove(civId);
+            {
+                _ = _locationTargetHistory.Remove(civId);
+            }
         }
 
         #region LocationTargetHistoryEntry Structure
@@ -117,7 +128,9 @@ namespace Supremacy.Scripting
             public LocationTargetHistoryEntry(MapLocation location, int turnNumber)
             {
                 if (turnNumber == 0)
+                {
                     throw new ArgumentOutOfRangeException("turnNumber", "Turn number was undefined.");
+                }
 
                 _location = location;
                 _turnNumber = turnNumber;

@@ -46,7 +46,10 @@ namespace Supremacy.Client.Controls
                 if (popup.RegisteredPopupSite != this)
                 {
                     if (popup.RegisteredPopupSite != null)
+                    {
                         throw new InvalidOperationException("GamePopup is already registered with another GamePopupSite.");
+                    }
+
                     popup.RegisteredPopupSite = this;
                 }
             }
@@ -64,29 +67,43 @@ namespace Supremacy.Client.Controls
                     foreach (object item in e.NewItems)
                     {
                         if (item is GamePopup gamePopup)
+                        {
                             UpdateRegisteredPopupSite(gamePopup, true);
+                        }
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     if (!DesignerProperties.GetIsInDesignMode(this))
+                    {
                         throw new NotSupportedException();
+                    }
+
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
                     foreach (object item in e.OldItems)
                     {
                         if (!(item is GamePopup gamePopup))
+                        {
                             continue;
+                        }
+
                         if (gamePopup.IsOpen)
+                        {
                             gamePopup.IsOpen = false;
+                        }
+
                         UpdateRegisteredPopupSite(gamePopup, false);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
                     if (!DesignerProperties.GetIsInDesignMode(this))
+                    {
                         throw new NotSupportedException();
+                    }
+
                     break;
             }
         }
@@ -120,9 +137,11 @@ namespace Supremacy.Client.Controls
         internal void AddCanvasChild(UIElement element)
         {
             if (!(element is GamePopupRoot popupRoot))
+            {
                 return;
+            }
 
-            _openPopupRoots.Add(popupRoot);
+            _ = _openPopupRoots.Add(popupRoot);
 
             InvalidateMeasure();
         }
@@ -130,7 +149,9 @@ namespace Supremacy.Client.Controls
         internal void RemoveCanvasChild(UIElement element)
         {
             if (!(element is GamePopupRoot popupRoot))
+            {
                 return;
+            }
 
             _openPopupRoots.Remove(popupRoot);
 
@@ -171,7 +192,10 @@ namespace Supremacy.Client.Controls
         {
             int baseCount = base.VisualChildrenCount;
             if (index < baseCount)
+            {
                 return base.GetVisualChild(index);
+            }
+
             return _openPopupRoots[index - baseCount];
         }
 
@@ -211,7 +235,9 @@ namespace Supremacy.Client.Controls
                     double bottom = Canvas.GetBottom(child);
 
                     if (!DoubleUtil.IsNaN(bottom))
+                    {
                         y = arrangeSize.Height - child.DesiredSize.Height - bottom;
+                    }
                 }
 
                 child.Arrange(new Rect(new Point(x, y), child.DesiredSize));
@@ -225,7 +251,9 @@ namespace Supremacy.Client.Controls
             Size childConstraint = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
             foreach (GamePopupRoot popupRoot in _openPopupRoots)
+            {
                 popupRoot.Measure(childConstraint);
+            }
 
             return base.MeasureOverride(constraint);
         }

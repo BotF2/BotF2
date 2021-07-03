@@ -17,10 +17,7 @@ namespace Supremacy.Diplomacy.Visitors
 
         private RejectProposalVisitor([NotNull] IProposal proposal)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
-            _proposal = proposal;
+            _proposal = proposal ?? throw new ArgumentNullException("proposal");
             _agreementData = new Dictionary<object, object>();
         }
 
@@ -31,8 +28,9 @@ namespace Supremacy.Diplomacy.Visitors
         public static void Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {
             if (proposal == null)
+            {
                 throw new ArgumentNullException("proposal");
-
+            }
 
             RejectProposalVisitor visitor = new RejectProposalVisitor(proposal);
 

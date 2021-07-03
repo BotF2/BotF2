@@ -30,11 +30,14 @@ namespace Supremacy.Client
         {
             AccessText accessText = new AccessText();
 
-            MarkupExtension markupExtension = Text as MarkupExtension;
-            if (markupExtension != null)
+            if (Text is MarkupExtension markupExtension)
+            {
                 accessText.SetValue(AccessText.TextProperty, markupExtension.ProvideValue(serviceProvider));
+            }
             else
+            {
                 accessText.SetValue(AccessText.TextProperty, Text);
+            }
 
             return accessText;
         }

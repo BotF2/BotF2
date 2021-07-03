@@ -80,15 +80,19 @@ namespace Supremacy.Client.Controls
 
             internal bool GetFlag(Flags flag)
             {
-                return ((_flags & flag) == flag);
+                return (_flags & flag) == flag;
             }
 
             internal void SetFlag(Flags flag, bool set)
             {
                 if (set)
+                {
                     _flags |= flag;
+                }
                 else
-                    _flags &= (~flag);
+                {
+                    _flags &= ~flag;
+                }
             }
         }
 
@@ -125,20 +129,20 @@ namespace Supremacy.Client.Controls
 
         bool IGamePopupAnchor.IgnoreNextLeftRelease
         {
-            get { return _flags.GetFlag(Flags.PopupIgnoreNextLeftRelease); }
-            set { _flags.SetFlag(Flags.PopupIgnoreNextLeftRelease, value); }
+            get => _flags.GetFlag(Flags.PopupIgnoreNextLeftRelease);
+            set => _flags.SetFlag(Flags.PopupIgnoreNextLeftRelease, value);
         }
 
         bool IGamePopupAnchor.IgnoreNextRightRelease
         {
-            get { return _flags.GetFlag(Flags.PopupIgnoreNextRightRelease); }
-            set { _flags.SetFlag(Flags.PopupIgnoreNextRightRelease, value); }
+            get => _flags.GetFlag(Flags.PopupIgnoreNextRightRelease);
+            set => _flags.SetFlag(Flags.PopupIgnoreNextRightRelease, value);
         }
 
         GamePopupCloseReason IGamePopupAnchor.LastCloseReason
         {
-            get { return _popupLastCloseReason; }
-            set { _popupLastCloseReason = value; }
+            get => _popupLastCloseReason;
+            set => _popupLastCloseReason = value;
         }
 
         void IGamePopupAnchor.OnPopupClosed()
@@ -160,8 +164,8 @@ namespace Supremacy.Client.Controls
 
         bool IGamePopupAnchor.PopupOpenedWithMouse
         {
-            get { return _flags.GetFlag(Flags.PopupOpenedWithMouse); }
-            set { _flags.SetFlag(Flags.PopupOpenedWithMouse, value); }
+            get => _flags.GetFlag(Flags.PopupOpenedWithMouse);
+            set => _flags.SetFlag(Flags.PopupOpenedWithMouse, value);
         }
 
         Thumb IGamePopupAnchor.ResizeGrip => (Thumb)GetTemplateChild(ResizeGripPartName);
@@ -172,21 +176,21 @@ namespace Supremacy.Client.Controls
 
         public bool AutoDisableWhenPopupContentIsDisabled
         {
-            get { return (bool)GetValue(AutoDisableWhenPopupContentIsDisabledProperty); }
-            set { SetValue(AutoDisableWhenPopupContentIsDisabledProperty, value); }
+            get => (bool)GetValue(AutoDisableWhenPopupContentIsDisabledProperty);
+            set => SetValue(AutoDisableWhenPopupContentIsDisabledProperty, value);
         }
 
         [Bindable(false)]
         public CustomPopupPlacementCallback CustomPopupPlacementCallback
         {
-            get { return (CustomPopupPlacementCallback)GetValue(CustomPopupPlacementCallbackProperty); }
-            set { SetValue(CustomPopupPlacementCallbackProperty, value); }
+            get => (CustomPopupPlacementCallback)GetValue(CustomPopupPlacementCallbackProperty);
+            set => SetValue(CustomPopupPlacementCallbackProperty, value);
         }
 
         public bool IsPopupOpen
         {
-            get { return (bool)GetValue(IsPopupOpenProperty); }
-            set { SetValue(IsPopupOpenProperty, value); }
+            get => (bool)GetValue(IsPopupOpenProperty);
+            set => SetValue(IsPopupOpenProperty, value);
         }
 
         protected override IEnumerator LogicalChildren
@@ -200,14 +204,20 @@ namespace Supremacy.Client.Controls
                 {
                     enumerator.Reset();
                     while (enumerator.MoveNext())
-                        children.Add(enumerator.Current);
+                    {
+                        _ = children.Add(enumerator.Current);
+                    }
                 }
 
                 if (PopupContent is DependencyObject)
-                    children.Add(PopupContent);
+                {
+                    _ = children.Add(PopupContent);
+                }
 
                 if (children.Count > 0)
+                {
                     return children.GetEnumerator();
+                }
 
                 return null;
             }
@@ -219,7 +229,7 @@ namespace Supremacy.Client.Controls
             // Originally added in build 480 with just IsKeyboardFocusWithin check as:
             //   "Fixed a bug where popup button popups may close when clicking on a non-focusable control in them"
             // But there were problems with SplitButtons retaining focus when clicked discovered in later builds, so further conditions added in build 485
-            if ((IsKeyboardFocusWithin) && (IsPopupOpen))
+            if (IsKeyboardFocusWithin && IsPopupOpen)
             {
                 GamePopup popup = ((IGamePopupAnchor)this).Popup;
                 if (popup != null && popup.Child != null)
@@ -227,7 +237,9 @@ namespace Supremacy.Client.Controls
                     IInputElement hitTarget = popup.Child.InputHitTest(e.GetPosition(popup.Child));
                     // If the mouse is over the popup's child control, don't call the base method
                     if (hitTarget != null)
+                    {
                         return;
+                    }
                 }
             }
 
@@ -265,64 +277,64 @@ namespace Supremacy.Client.Controls
 
         public object PopupContent
         {
-            get { return GetValue(PopupContentProperty); }
-            set { SetValue(PopupContentProperty, value); }
+            get => GetValue(PopupContentProperty);
+            set => SetValue(PopupContentProperty, value);
         }
 
         public DataTemplate PopupContentTemplate
         {
-            get { return (DataTemplate)GetValue(PopupContentTemplateProperty); }
-            set { SetValue(PopupContentTemplateProperty, value); }
+            get => (DataTemplate)GetValue(PopupContentTemplateProperty);
+            set => SetValue(PopupContentTemplateProperty, value);
         }
 
         public DataTemplateSelector PopupContentTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(PopupContentTemplateSelectorProperty); }
-            set { SetValue(PopupContentTemplateSelectorProperty, value); }
+            get => (DataTemplateSelector)GetValue(PopupContentTemplateSelectorProperty);
+            set => SetValue(PopupContentTemplateSelectorProperty, value);
         }
 
         public bool PopupHasBorder
         {
-            get { return (bool)GetValue(PopupHasBorderProperty); }
-            set { SetValue(PopupHasBorderProperty, value); }
+            get => (bool)GetValue(PopupHasBorderProperty);
+            set => SetValue(PopupHasBorderProperty, value);
         }
 
         [TypeConverter(typeof(LengthConverter))]
         public double PopupHorizontalOffset
         {
-            get { return (double)GetValue(PopupHorizontalOffsetProperty); }
-            set { SetValue(PopupHorizontalOffsetProperty, value); }
+            get => (double)GetValue(PopupHorizontalOffsetProperty);
+            set => SetValue(PopupHorizontalOffsetProperty, value);
         }
 
         public PlacementMode PopupPlacement
         {
-            get { return (PlacementMode)GetValue(PopupPlacementProperty); }
-            set { SetValue(PopupPlacementProperty, value); }
+            get => (PlacementMode)GetValue(PopupPlacementProperty);
+            set => SetValue(PopupPlacementProperty, value);
         }
 
         public Rect PopupPlacementRectangle
         {
-            get { return (Rect)GetValue(PopupPlacementRectangleProperty); }
-            set { SetValue(PopupPlacementRectangleProperty, value); }
+            get => (Rect)GetValue(PopupPlacementRectangleProperty);
+            set => SetValue(PopupPlacementRectangleProperty, value);
         }
 
         public UIElement PopupPlacementTarget
         {
-            get { return (UIElement)GetValue(PopupPlacementTargetProperty); }
-            set { SetValue(PopupPlacementTargetProperty, value); }
+            get => (UIElement)GetValue(PopupPlacementTargetProperty);
+            set => SetValue(PopupPlacementTargetProperty, value);
         }
 
         public ControlResizeMode PopupResizeMode
         {
-            get { return (ControlResizeMode)GetValue(PopupResizeModeProperty); }
-            set { SetValue(PopupResizeModeProperty, value); }
+            get => (ControlResizeMode)GetValue(PopupResizeModeProperty);
+            set => SetValue(PopupResizeModeProperty, value);
         }
 
         [TypeConverter(typeof(LengthConverter))]
         public double PopupVerticalOffset
         {
-            get { return (double)GetValue(PopupVerticalOffsetProperty); }
-            set { SetValue(PopupVerticalOffsetProperty, value); }
+            get => (double)GetValue(PopupVerticalOffsetProperty);
+            set => SetValue(PopupVerticalOffsetProperty, value);
         }
     }
 
@@ -348,15 +360,19 @@ namespace Supremacy.Client.Controls
 
             internal bool GetFlag(Flags flag)
             {
-                return ((_flags & flag) == flag);
+                return (_flags & flag) == flag;
             }
 
             internal void SetFlag(Flags flag, bool set)
             {
                 if (set)
+                {
                     _flags |= flag;
+                }
                 else
-                    _flags &= (~flag);
+                {
+                    _flags &= ~flag;
+                }
             }
         }
 
@@ -374,14 +390,19 @@ namespace Supremacy.Client.Controls
         {
             GamePopupButton control = (GamePopupButton)obj;
             if (control._flags.GetFlag(Flags.ForceStaysOpenOnClick))
+            {
                 return true;
+            }
+
             return value;
         }
 
         protected override void OnClick(ExecuteRoutedEventArgs e)
         {
             if (e == null)
+            {
                 throw new ArgumentNullException("e");
+            }
 
             // Ignore the base code so that a command is not raised
 
@@ -389,7 +410,9 @@ namespace Supremacy.Client.Controls
             {
                 // Only close the popup if not a menu item
                 if (Context != GameControlContext.MenuItem)
+                {
                     IsPopupOpen = false;
+                }
             }
             else
             {
@@ -397,7 +420,7 @@ namespace Supremacy.Client.Controls
                 GameCommand.ExecuteCommandSource(this);
 
                 // Flag if the popup is being opened with the mouse
-                ((IGamePopupAnchor)this).PopupOpenedWithMouse = (e.Reason == ExecuteReason.Mouse);
+                ((IGamePopupAnchor)this).PopupOpenedWithMouse = e.Reason == ExecuteReason.Mouse;
 
                 // Open the popup
                 IsPopupOpen = true;
@@ -419,7 +442,9 @@ namespace Supremacy.Client.Controls
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             if (e == null)
+            {
                 throw new ArgumentNullException("e");
+            }
 
             // If ignoring the next mouse down, eat the mouse down
             bool ignoreMouseDown = _flags.GetFlag(Flags.IgnoreNextMouseDown);
@@ -430,12 +455,12 @@ namespace Supremacy.Client.Controls
                 // If there is a popup open, see if the click was on a disabled menu item and if so, handle the mouse down
                 if (!ignoreMouseDown && IsPopupOpen && !IsMouseDirectlyOver && e.Source is GameMenu)
                 {
-                    ContentPresenter presenter = e.OriginalSource as ContentPresenter;
-                    if (presenter != null && VisualTreeHelper.GetChildrenCount(presenter) > 0)
+                    if (e.OriginalSource is ContentPresenter presenter && VisualTreeHelper.GetChildrenCount(presenter) > 0)
                     {
-                        UIElement presenterContent = VisualTreeHelper.GetChild(presenter, 0) as UIElement;
-                        if (presenterContent != null && !presenterContent.IsEnabled)
+                        if (VisualTreeHelper.GetChild(presenter, 0) is UIElement presenterContent && !presenterContent.IsEnabled)
+                        {
                             ignoreMouseDown = true;
+                        }
                     }
                 }
 
@@ -488,7 +513,7 @@ namespace Supremacy.Client.Controls
         protected override void UpdateCanExecute()
         {
             bool commandCanExecute = Command == null || Command == ApplicationCommands.NotACommand || GameCommand.CanExecuteCommandSource(this);
-            CanExecute = commandCanExecute && (!AutoDisableWhenPopupContentIsDisabled || (PopupControlService.IsPopupAnchorPopupEnabled(this)));
+            CanExecute = commandCanExecute && (!AutoDisableWhenPopupContentIsDisabled || PopupControlService.IsPopupAnchorPopupEnabled(this));
         }
     }
 }

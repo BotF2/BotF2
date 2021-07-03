@@ -45,26 +45,25 @@ namespace Supremacy.Client
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            Enum enumValue = value as Enum;
             bool parameterIsTypeName = false;
 
             string typeName = (string)null;
             string valueName = (string)null;
 
-            if (enumValue != null)
+            if (value is Enum enumValue)
             {
                 typeName = enumValue.GetType().Name;
                 valueName = enumValue.ToString();
             }
 
-            string result;
 
             if (typeName == null)
             {
-                string stringValue = value as string;
-                if (stringValue != null)
+                if (value is string stringValue)
                 {
                     try
                     {
@@ -74,7 +73,9 @@ namespace Supremacy.Client
                             typeName = parameter as string;
 
                             if (typeName == null)
+                            {
                                 return value;
+                            }
 
                             parameterIsTypeName = true;
                         }
@@ -93,10 +94,14 @@ namespace Supremacy.Client
             }
 
             if (typeName == null)
+            {
                 return value;
+            }
 
-            if (!EnumTables.TryGetValue(typeName, valueName, 0, out result))
+            if (!EnumTables.TryGetValue(typeName, valueName, 0, out string result))
+            {
                 return value;
+            }
 
             if (!parameterIsTypeName &&
                 result != null &&
@@ -107,7 +112,9 @@ namespace Supremacy.Client
             }
 
             if (result != null)
+            {
                 result = result.Replace("&", AccessText ? "_" : "");
+            }
 
             return result;
         }
@@ -129,7 +136,9 @@ namespace Supremacy.Client
             {
                 Type enumType = value as Type ?? Type.GetType(value.ToString());
                 if (enumType != null)
+                {
                     return Enum.GetValues(enumType);
+                }
             }
             catch (Exception e)
             {

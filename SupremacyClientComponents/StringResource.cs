@@ -34,8 +34,8 @@ namespace Supremacy.Client
         [ConstructorArgument("key")]
         public string Key
         {
-            get { return _key; }
-            set { _key = value; }
+            get => _key;
+            set => _key = value;
         }
 
         public StringCase Case { get; set; }
@@ -65,9 +65,8 @@ namespace Supremacy.Client
                     break;
             }
 
-            IProvideValueTarget provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
 
-            if (provideValueTarget != null)
+            if (serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget provideValueTarget)
             {
                 object property = provideValueTarget.TargetProperty;
 
@@ -79,7 +78,9 @@ namespace Supremacy.Client
                 }
 
                 if (Equals(property, ContentControl.ContentProperty))
+                {
                     return new AccessText { Text = text };
+                }
             }
 
             return text;

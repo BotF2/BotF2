@@ -39,6 +39,7 @@ namespace Supremacy.Universe
         private PlanetBonus _bonuses;
         private BitVector32 _data;
         private string _name;
+        private string _text;
         #endregion
 
         #region Constructors
@@ -80,8 +81,8 @@ namespace Supremacy.Universe
         /// <value>The planet's name.</value>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         /// <summary>
@@ -90,8 +91,8 @@ namespace Supremacy.Universe
         /// <value>The bonuses.</value>
         public PlanetBonus Bonuses
         {
-            get { return _bonuses; }
-            set { _bonuses = value; }
+            get => _bonuses;
+            set => _bonuses = value;
         }
 
         /// <summary>
@@ -100,8 +101,8 @@ namespace Supremacy.Universe
         /// <value>The design of the planet.</value>
         public PlanetType PlanetType
         {
-            get { return (PlanetType)_data[PlanetTypeSection]; }
-            set { _data[PlanetTypeSection] = (int)value; }
+            get => (PlanetType)_data[PlanetTypeSection];
+            set => _data[PlanetTypeSection] = (int)value;
         }
 
         /// <summary>
@@ -110,8 +111,8 @@ namespace Supremacy.Universe
         /// <value>The size of the planet.</value>
         public PlanetSize PlanetSize
         {
-            get { return (PlanetSize)_data[PlanetSizeSection]; }
-            set { _data[PlanetSizeSection] = (int)value; }
+            get => (PlanetSize)_data[PlanetSizeSection];
+            set => _data[PlanetSizeSection] = (int)value;
         }
 
         /// <summary>
@@ -120,8 +121,8 @@ namespace Supremacy.Universe
         /// <value>The variation.</value>
         public int Variation
         {
-            get { return _data[VariationSection]; }
-            set { _data[VariationSection] = value; }
+            get => _data[VariationSection];
+            set => _data[VariationSection] = value;
         }
 
         /// <summary>
@@ -217,19 +218,28 @@ namespace Supremacy.Universe
 
                 case PlanetType.Rogue:
                     if (homePlanetType == PlanetType.Rogue)
+                    {
                         return PlanetEnvironment.Ideal;
+                    }
+
                     return PlanetEnvironment.Hostile;
 
                 default:
                     int result;
                     Wheel<PlanetType> envs = new Wheel<PlanetType>();
                     for (int i = 0; i < (int)PlanetType.Rogue; i++)
+                    {
                         envs.Insert((PlanetType)i);
+                    }
+
                     result = envs.GetDistance(
                         PlanetType,
                         homePlanetType);
                     if (result >= (int)PlanetEnvironment.Uninhabitable)
+                    {
                         return PlanetEnvironment.Uninhabitable;
+                    }
+
                     return (PlanetEnvironment)result;
             }
         }
@@ -241,9 +251,7 @@ namespace Supremacy.Universe
         /// <returns>The environment.</returns>
         public PlanetEnvironment GetEnvironment(Race race)
         {
-            if (race == null)
-                throw new ArgumentNullException("race");
-            return GetEnvironment(race.HomePlanetType);
+            return race == null ? throw new ArgumentNullException("race") : GetEnvironment(race.HomePlanetType);
         }
 
         /// <summary>
@@ -278,6 +286,10 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(PlanetType homePlanetType)
         {
+            //_text = "GetMaxPopulation by race " + race.Key;
+            //Console.Write(_text);
+            //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
+
             Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
 
             // OK to return null here! Do not need to fix
@@ -286,8 +298,9 @@ namespace Supremacy.Universe
             try
             {
                 if (PlanetSize == PlanetSize.NoWorld)
-                    maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
-                        [GetEnvironment(homePlanetType).ToString()]);
+                {
+                    maxPop = 0;
+                }
                 else
                 {
                     maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
@@ -296,8 +309,8 @@ namespace Supremacy.Universe
             }
             catch (Exception ex)
             {
-                GameLog.Client.GalaxyGenerator.DebugFormat("Generated at HomeSystem with 99 Population due to avoid crash > GetMaxPopulation");
-                GameLog.Client.GalaxyGenerator.DebugFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
+                GameLog.Client.GalaxyGenerator.ErrorFormat("Generated at HomeSystem with 99 Population due to avoid crash > GetMaxPopulation");
+                GameLog.Client.GalaxyGenerator.ErrorFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
             }
             return maxPop;
             //return Number.ParseInt32(table[PlanetSize.ToString()]
@@ -313,9 +326,16 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(Race race)
         {
+            _text = "GetMaxPopulation by race " + race.Key;
+            //Console.WriteLine(_text);
+            GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
+
             Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
-            return Number.ParseInt32(table[PlanetSize.ToString()]
+
+            int _pop = Number.ParseInt32(table[PlanetSize.ToString()]
                 [GetEnvironment(race).ToString()]);
+
+            return _pop;
         }
 
         /// <summary>

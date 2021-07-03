@@ -1068,12 +1068,12 @@ namespace Supremacy.Xna
 
                     if (preferredFormatIndex == -1)
                     {
-                        return (ValidBackBufferFormats.Length - formatIndex);
+                        return ValidBackBufferFormats.Length - formatIndex;
                     }
 
                     if (formatIndex >= preferredFormatIndex)
                     {
-                        return (formatIndex - preferredFormatIndex);
+                        return formatIndex - preferredFormatIndex;
                     }
                 }
 
@@ -1085,7 +1085,7 @@ namespace Supremacy.Xna
 
         public object GetService(Type serviceType)
         {
-            return serviceType == typeof(IGraphicsDeviceService) ? (this) : null;
+            return serviceType == typeof(IGraphicsDeviceService) ? this : null;
         }
 
         #endregion

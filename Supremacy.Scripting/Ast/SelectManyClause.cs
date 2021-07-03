@@ -85,7 +85,9 @@ namespace Supremacy.Scripting.Ast
             finally
             {
                 if (initializerIsQuery)
+                {
                     sw.Indent -= 4;
+                }
             }
 
             sw.WriteLine();

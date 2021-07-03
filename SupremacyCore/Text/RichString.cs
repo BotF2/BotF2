@@ -29,13 +29,13 @@ namespace Supremacy.Text
 
         public TextStyle Style
         {
-            get { return _style; }
-            set { _style = value; }
+            get => _style;
+            set => _style = value;
         }
 
         public int Offset
         {
-            get { return _offset; }
+            get => _offset;
             set
             {
                 _offset = value;
@@ -45,7 +45,7 @@ namespace Supremacy.Text
 
         public int Length
         {
-            get { return _length; }
+            get => _length;
             set
             {
                 _length = value;
@@ -58,10 +58,14 @@ namespace Supremacy.Text
         public RichString(int offset, int length, TextStyle style, RichText richtext)
         {
             if (richtext == null)
+            {
                 throw new ArgumentNullException("richtext");
+            }
 
             if (length < 0)
+            {
                 throw new ArgumentOutOfRangeException("length", length, "Length must be non-negative.");
+            }
 
             int parentLength = richtext.Length;
 
@@ -99,10 +103,14 @@ namespace Supremacy.Text
         public void AssertValid()
         {
             if (_richText == null)
+            {
                 throw new InvalidOperationException("RichText is Null.");
+            }
 
             if (_length < 0)
+            {
                 throw new ArgumentOutOfRangeException(string.Format("Length {0} must be non-negative.", _length));
+            }
 
             int parentLength = _richText.Length;
 
@@ -117,7 +125,9 @@ namespace Supremacy.Text
             }
 
             if (_offset + _length <= parentLength)
+            {
                 return;
+            }
 
             throw new ArgumentOutOfRangeException(
                 string.Format(
@@ -145,11 +155,20 @@ namespace Supremacy.Text
         public int CompareTo(RichString other)
         {
             if (other == null)
+            {
                 return -1;
+            }
+
             if (other == this)
+            {
                 return 0;
+            }
+
             if (other.RichText != RichText)
+            {
                 return -1;
+            }
+
             return other.Offset - Offset;
         }
 
@@ -157,7 +176,10 @@ namespace Supremacy.Text
         {
             StringBuilder output = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            {
                 Dump(writer);
+            }
+
             return output.ToString();
         }
     }

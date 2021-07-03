@@ -24,9 +24,7 @@ namespace Supremacy.Game
         #region Constructors
         public PlayerContext(IIndexedCollection<Player> players)
         {
-            if (players == null)
-                throw new ArgumentNullException("players");
-            _players = players;
+            _players = players ?? throw new ArgumentNullException("players");
         }
         #endregion
 

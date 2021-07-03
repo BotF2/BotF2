@@ -66,6 +66,6 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if this <see cref="ChatMessage"/> is global message; otherwise, <c>false</c>.
         /// </value>
-        public bool IsGlobalMessage => (_recipient == null);
+        public bool IsGlobalMessage => _recipient == null;
     }
 }

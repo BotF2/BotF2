@@ -18,8 +18,8 @@ namespace Supremacy.Effects
 
         public SetPropertyEffect([NotNull] DynamicProperty targetProperty, [NotNull] string valueExpression)
         {
-            Guard.ArgumentNotNull(targetProperty, "targetProperty");
-            Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
+            _ = Guard.ArgumentNotNull(targetProperty, "targetProperty");
+            _ = Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
 
             _targetProperty = targetProperty;
             _valueExpression = valueExpression;

@@ -10,7 +10,6 @@
 // 
 
 using System;
-using System.Diagnostics;
 using System.Xaml;
 
 using Supremacy.Collections;
@@ -29,19 +28,24 @@ namespace Supremacy.Scripting
         {
             GameContext gameContext = GameContext.Current;
             if (gameContext == null)
+            {
                 gameContext = GameContext.Create(GameOptionsManager.LoadDefaults(), false);
+            }
 
             GameContext.PushThreadContext(gameContext);
 
             try
             {
-                IVirtualFileInfo fileInfo;
 
-                if (!ResourceManager.VfsService.TryGetFileInfo(new Uri("vfs:///Resources/Data/ScriptedEvents.xaml"), out fileInfo))
+                if (!ResourceManager.VfsService.TryGetFileInfo(new Uri("vfs:///Resources/Data/ScriptedEvents.xaml"), out IVirtualFileInfo fileInfo))
+                {
                     return null;
+                }
 
                 if (!fileInfo.Exists)
+                {
                     return null;
+                }
 
                 using (System.IO.Stream stream = fileInfo.OpenRead())
                 {
@@ -50,7 +54,7 @@ namespace Supremacy.Scripting
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
     }

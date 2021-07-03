@@ -59,9 +59,7 @@ namespace Supremacy.Types
         #region Constructors
         internal Distribution(DistributionGroup<TKey> parent)
         {
-            if (parent == null)
-                throw new ArgumentNullException("parent");
-            _group = parent;
+            _group = parent ?? throw new ArgumentNullException("parent");
             _suppressValueChangedScope = new StateScope();
         }
         #endregion
@@ -69,7 +67,7 @@ namespace Supremacy.Types
         #region Properties and Indexers
         public bool IsLocked
         {
-            get { return _isLocked; }
+            get => _isLocked;
             set
             {
                 if (value == _isLocked)
@@ -91,7 +89,7 @@ namespace Supremacy.Types
 
         public Percentage Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 if (SetValue(value))
@@ -123,29 +121,41 @@ namespace Supremacy.Types
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void OnValueChanged()
         {
             if (SuppressValueChangedScope.IsWithin)
+            {
                 return;
-            if (ValueChanged != null)
-                ValueChanged(this, new DistributionEventArgs<TKey>(this));
+            }
+
+            ValueChanged?.Invoke(this, new DistributionEventArgs<TKey>(this));
             OnPropertyChanged("Value");
         }
 
         private bool SetValue(Percentage newValue)
         {
             if (IsLocked)
+            {
                 throw new InvalidOperationException("Value cannot be set while locked.");
+            }
+
             if (newValue == Value)
+            {
                 return false;
+            }
+
             if (newValue < MinValue)
+            {
                 throw new ArgumentOutOfRangeException("newValue", "Value must be >= MinValue.");
+            }
+
             if (newValue > MaxValue)
+            {
                 throw new ArgumentOutOfRangeException("newValue", "Value must be <= MaxValue.");
+            }
 
             int passesSinceChanged = 0;
             float change = newValue - Value;
@@ -154,7 +164,9 @@ namespace Supremacy.Types
 
             float changeRounded = (float)Math.Round(change, 2);
             if (FloatUtil.AreClose(change, changeRounded))
+            {
                 change = changeRounded;
+            }
 
             List<Distribution<TKey>> otherValues = new List<Distribution<TKey>>(_group.Children);
             HashSet<Distribution<TKey>> changedChildren = new HashSet<Distribution<TKey>>();
@@ -200,37 +212,47 @@ namespace Supremacy.Types
                         using (otherValues[i].SuppressValueChangedScope.Enter())
                         {
                             otherValues[i].SetValueInternal(otherValues[i].Value - delta);
-                            changedChildren.Add(otherValues[i]);
+                            _ = changedChildren.Add(otherValues[i]);
                         }
                         SetValueInternal(Value + delta);
                         change -= delta;
                         float ceiling = (float)Math.Round(change, 2);
                         if (FloatUtil.AreClose(change, ceiling))
+                        {
                             change = ceiling;
+                        }
+
                         _group._lastChangeIndex = i + 1;
                         noChange = false;
                         passesSinceChanged = 0;
                         if (Math.Abs(change) < 0.01f)
+                        {
                             break;
+                        }
                     }
                     if (noChange)
                     {
                         if (++passesSinceChanged > 1)
+                        {
                             break;
+                        }
+
                         _group._lastChangeIndex = 0;
                     }
                 }
             }
 
             if (Value != originalValue)
+            {
                 OnValueChanged();
+            }
 
             foreach (Distribution<TKey> changedChild in changedChildren)
             {
                 changedChild.OnValueChanged();
             }
 
-            return ((Value == newValue) || (Value != originalValue));
+            return (Value == newValue) || (Value != originalValue);
         }
         #endregion
 
@@ -238,9 +260,14 @@ namespace Supremacy.Types
         public void OnDeserialization(object sender)
         {
             if (_suppressValueChangedScope == null)
+            {
                 _suppressValueChangedScope = new StateScope();
+            }
+
             if (_group != null)
+            {
                 ValueChanged += _group.DistributionGroup_ValueChanged;
+            }
         }
         #endregion
 
@@ -272,7 +299,10 @@ namespace Supremacy.Types
         public DistributionGroup(IEnumerable<TKey> initialKeys) : this()
         {
             if (initialKeys == null)
+            {
                 throw new ArgumentNullException("initialKeys");
+            }
+
             foreach (TKey key in initialKeys)
             {
                 _children[key] = new Distribution<TKey>(this);
@@ -285,11 +315,14 @@ namespace Supremacy.Types
         #region Properties and Indexers
         public int TotalValue
         {
-            get { return _totalValue; }
+            get => _totalValue;
             set
             {
                 if (value < 0)
+                {
                     throw new ArgumentException("value must be non-negative");
+                }
+
                 _totalValue = value;
                 OnPropertyChanged("TotalValue");
             }
@@ -302,7 +335,10 @@ namespace Supremacy.Types
             get
             {
                 if (!_children.ContainsKey(key))
+                {
                     return null;
+                }
+
                 return _children[key];
             }
         }
@@ -314,7 +350,10 @@ namespace Supremacy.Types
             float totalValue = Distribution<TKey>.MaxValue;
             float unitValue = (float)Math.Round(totalValue / _children.Count, 2);
             if ((unitValue * _children.Count) > totalValue)
+            {
                 unitValue -= 0.01f;
+            }
+
             Percentage remainder = totalValue - (unitValue * _children.Count);
             foreach (Distribution<TKey> child in _children.Values)
             {
@@ -327,7 +366,9 @@ namespace Supremacy.Types
                     child.SetValueInternal(child.Value + 0.01f);
                     remainder -= 0.01f;
                     if (remainder < 0.01f)
+                    {
                         break;
+                    }
                 }
             }
         }
@@ -339,8 +380,7 @@ namespace Supremacy.Types
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

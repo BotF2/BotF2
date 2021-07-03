@@ -1,8 +1,5 @@
 ﻿using Supremacy.Economy;
-using Supremacy.Game;
 using Supremacy.Tech;
-using Supremacy.Utility;
-using Supremacy.Client;
 using System.Linq;
 
 using System.Windows;
@@ -27,7 +24,7 @@ namespace Supremacy.Client.Views
 
             BuildSlotQueueProjectList.ItemsSource = shipList;
 
-            SetBinding(
+            _ = SetBinding(
                 SelectedBuildSlotQueueProjectProperty,
                 new Binding
                 {
@@ -37,7 +34,9 @@ namespace Supremacy.Client.Views
                 });
 
             if (BuildSlotQueueProjectList.Items.Count > 0)
+            {
                 BuildSlotQueueProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
+            }
         }
 
         #region SelectedBuildProject Property
@@ -49,8 +48,8 @@ namespace Supremacy.Client.Views
 
         public ShipBuildProject SelectedBuildSlotQueueProject
         {
-            get { return (ShipBuildProject)GetValue(SelectedBuildSlotQueueProjectProperty); }
-            set { SetValue(SelectedBuildSlotQueueProjectProperty, value); }
+            get => (ShipBuildProject)GetValue(SelectedBuildSlotQueueProjectProperty);
+            set => SetValue(SelectedBuildSlotQueueProjectProperty, value);
         }
         #endregion
 
@@ -65,8 +64,8 @@ namespace Supremacy.Client.Views
 
         public object AdditionalQueueContent
         {
-            get { return GetValue(AdditionalQueueContentProperty); }
-            set { SetValue(AdditionalQueueContentProperty, value); }
+            get => GetValue(AdditionalQueueContentProperty);
+            set => SetValue(AdditionalQueueContentProperty, value);
         }
         #endregion
 
@@ -74,25 +73,31 @@ namespace Supremacy.Client.Views
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (SelectedBuildSlotQueueProject != null);
+            e.CanExecute = SelectedBuildSlotQueueProject != null;
         }
 
         private void ExecuteAcceptCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (SelectedBuildSlotQueueProject == null)
+            {
                 return;
+            }
+
             DialogResult = true;
         }
 
         private void OnBuildProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DependencyObject source = e.OriginalSource as DependencyObject;
-            if (source == null)
+            if (!(e.OriginalSource is DependencyObject source))
+            {
                 return;
+            }
 
             ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
             if (contanier == null)
+            {
                 return;
+            }
 
             DialogResult = true;
         }

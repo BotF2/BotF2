@@ -666,7 +666,7 @@ namespace Supremacy.Scripting.Ast
 
                     for (int i = argumentCount; i < paramCount; ++i)
                     {
-                        resized.Add(null);
+                        _ = resized.Add(null);
                     }
 
                     arguments = resized;
@@ -688,7 +688,9 @@ namespace Supremacy.Scripting.Ast
                         while (true)
                         {
                             if (!(arguments[i] is NamedArgument namedArgument))
+                            {
                                 break;
+                            }
 
                             int index = pd.GetParameterIndexByName(namedArgument.Name);
 
@@ -740,7 +742,9 @@ namespace Supremacy.Scripting.Ast
                 {
                     Type[] genericArguments = candidate.GetGenericArguments();
                     if (genericArguments.Length != TypeArguments.Count)
+                    {
                         return int.MaxValue - 20000 + Math.Abs(TypeArguments.Count - genericArguments.Length);
+                    }
 
                     // TODO: Don't create new method, create Parameters only
                     method = ((MethodInfo)candidate).MakeGenericMethod(TypeArguments.ResolvedTypes);
@@ -1665,7 +1669,7 @@ namespace Supremacy.Scripting.Ast
                 {
                     if (CustomErrorHandler != null)
                     {
-                        CustomErrorHandler.NoExactMatch(ec, BestCandidate);
+                        _ = CustomErrorHandler.NoExactMatch(ec, BestCandidate);
                     }
                     else
                     {

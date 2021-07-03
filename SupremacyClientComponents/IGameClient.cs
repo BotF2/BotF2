@@ -71,14 +71,21 @@ namespace Supremacy.Client
             [NotNull] string remoteServerHostName)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            if (playerName == null)
-                throw new ArgumentNullException("playerName");
-            if (remoteServerHostName == null)
-                throw new ArgumentNullException("remoteServerHostName");
+            }
 
-            IPAddress hostAddress;
-            if (IPAddress.TryParse(remoteServerHostName, out hostAddress))
+            if (playerName == null)
+            {
+                throw new ArgumentNullException("playerName");
+            }
+
+            if (remoteServerHostName == null)
+            {
+                throw new ArgumentNullException("remoteServerHostName");
+            }
+
+            if (IPAddress.TryParse(remoteServerHostName, out IPAddress hostAddress))
             {
                 self.Connect(playerName, hostAddress);
             }
@@ -116,14 +123,21 @@ namespace Supremacy.Client
             [NotNull] string remoteServerHostName)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            if (initData == null)
-                throw new ArgumentNullException("initData");
-            if (remoteServerHostName == null)
-                throw new ArgumentNullException("remoteServerHostName");
+            }
 
-            IPAddress hostAddress;
-            if (IPAddress.TryParse(remoteServerHostName, out hostAddress))
+            if (initData == null)
+            {
+                throw new ArgumentNullException("initData");
+            }
+
+            if (remoteServerHostName == null)
+            {
+                throw new ArgumentNullException("remoteServerHostName");
+            }
+
+            if (IPAddress.TryParse(remoteServerHostName, out IPAddress hostAddress))
             {
                 self.HostAndConnect(initData, hostAddress);
             }

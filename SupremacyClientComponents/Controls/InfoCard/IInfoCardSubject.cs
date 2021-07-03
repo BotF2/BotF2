@@ -35,9 +35,7 @@ namespace Supremacy.Client.Controls
         #region Constructors and Finalizers
         protected InfoCardSubject([NotNull] Func<object> dataResolver)
         {
-            if (dataResolver == null)
-                throw new ArgumentNullException("dataResolver");
-            DataResolver = dataResolver;
+            DataResolver = dataResolver ?? throw new ArgumentNullException("dataResolver");
         }
 
         protected InfoCardSubject() { }
@@ -48,7 +46,7 @@ namespace Supremacy.Client.Controls
         #region DataResolver Property
         protected Func<object> DataResolver
         {
-            get { return _dataResolver; }
+            get => _dataResolver;
             set
             {
                 _dataResolver = value;
@@ -81,7 +79,10 @@ namespace Supremacy.Client.Controls
         {
             Func<object> dataResolver = DataResolver;
             if (dataResolver == null)
+            {
                 return null;
+            }
+
             return dataResolver();
         }
 
@@ -94,15 +95,16 @@ namespace Supremacy.Client.Controls
 
         private void OnDataChanged()
         {
-            EventHandler handler = DataChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            DataChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public bool Matches(InfoCard infoCard)
         {
             if (infoCard == null)
+            {
                 return false;
+            }
+
             return Equals(infoCard.DataContext, Data);
         }
 
@@ -134,7 +136,7 @@ namespace Supremacy.Client.Controls
 
         public UniverseObject Target
         {
-            set { SetValue(TargetProperty, value); }
+            set => SetValue(TargetProperty, value);
         }
         #endregion
 
@@ -149,7 +151,10 @@ namespace Supremacy.Client.Controls
         protected static Func<object> CreateDataResolver(UniverseObject target)
         {
             if (target == null)
+            {
                 return () => null;
+            }
+
             return () => GameContext.Current.Universe.Objects[target.ObjectID];
         }
     }

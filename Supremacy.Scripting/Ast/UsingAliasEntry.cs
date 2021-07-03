@@ -68,7 +68,7 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            base.Resolve(rc);
+            _ = base.Resolve(rc);
 
             if (Resolved == null)
             {

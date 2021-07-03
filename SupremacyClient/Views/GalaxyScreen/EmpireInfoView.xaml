@@ -189,11 +189,11 @@
 
         <TextBlock Foreground="Gray"
                HorizontalAlignment="Right">
-      <TextBlock Text="{Binding Path=Resources.RawMaterials.CurrentValue, Mode=OneWay}" 
+      <TextBlock Text="{Binding Path=Resources.Duranium.CurrentValue, Mode=OneWay}" 
                  />
       <TextBlock Text="/" />
-      <TextBlock Foreground="{Binding Path=Resources.RawMaterials.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
-                 Text="{Binding Path=Resources.RawMaterials.LastChange, Mode=OneWay}" 
+      <TextBlock Foreground="{Binding Path=Resources.Duranium.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
+                 Text="{Binding Path=Resources.Duranium.LastChange, Mode=OneWay}" 
                  >
                 <TextBlock.ToolTip>
                     <TextBlock Text="{Binding Source={s:StringResource LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"

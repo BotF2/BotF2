@@ -20,8 +20,8 @@ namespace Supremacy.Client.Controls
 
         public GameCommandUIProvider(string label, string imageSourceLarge, string imageSourceSmall) :
             this(label,
-                (!String.IsNullOrEmpty(imageSourceLarge) ? new BitmapImage(new Uri(imageSourceLarge, UriKind.RelativeOrAbsolute)) : null),
-                (!String.IsNullOrEmpty(imageSourceSmall) ? new BitmapImage(new Uri(imageSourceSmall, UriKind.RelativeOrAbsolute)) : null))
+                !string.IsNullOrEmpty(imageSourceLarge) ? new BitmapImage(new Uri(imageSourceLarge, UriKind.RelativeOrAbsolute)) : null,
+                !string.IsNullOrEmpty(imageSourceSmall) ? new BitmapImage(new Uri(imageSourceSmall, UriKind.RelativeOrAbsolute)) : null)
         { }
 
         public GameCommandUIProvider(string label, ImageSource imageSourceLarge, ImageSource imageSourceSmall)
@@ -33,11 +33,14 @@ namespace Supremacy.Client.Controls
 
         public ImageSource ImageSourceLarge
         {
-            get { return _imageSourceLarge; }
+            get => _imageSourceLarge;
             set
             {
                 if (_imageSourceLarge == value)
+                {
                     return;
+                }
+
                 _imageSourceLarge = value;
                 NotifyPropertyChanged("ImageSourceLarge");
             }
@@ -45,11 +48,14 @@ namespace Supremacy.Client.Controls
 
         public ImageSource ImageSourceSmall
         {
-            get { return _imageSourceSmall; }
+            get => _imageSourceSmall;
             set
             {
                 if (_imageSourceSmall == value)
+                {
                     return;
+                }
+
                 _imageSourceSmall = value;
                 NotifyPropertyChanged("ImageSourceSmall");
             }
@@ -58,11 +64,14 @@ namespace Supremacy.Client.Controls
         [Localizability(LocalizationCategory.Label)]
         public string Label
         {
-            get { return _label; }
+            get => _label;
             set
             {
                 if (_label == value)
+                {
                     return;
+                }
+
                 _label = value;
                 NotifyPropertyChanged("Label");
             }
@@ -70,9 +79,7 @@ namespace Supremacy.Client.Controls
 
         protected void NotifyPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

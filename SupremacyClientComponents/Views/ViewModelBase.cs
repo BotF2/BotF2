@@ -99,7 +99,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -110,7 +112,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }
@@ -131,13 +135,14 @@ namespace Supremacy.Client.Views
 
         protected virtual IInteractionNode FindParentInteractionNode()
         {
-            DependencyObject view = View as DependencyObject;
-            if (view == null)
+            if (!(View is DependencyObject view))
+            {
                 return null;
+            }
 
             IInteractionNode ancestorNode = null;
 
-            view.FindVisualAncestor(
+            _ = view.FindVisualAncestor(
                 o =>
                 {
                     ancestorNode = Views.View.GetInteractionNode(o);
@@ -148,7 +153,7 @@ namespace Supremacy.Client.Views
 
             if (ancestorNode == null)
             {
-                view.FindLogicalAncestor(
+                _ = view.FindLogicalAncestor(
                     o =>
                     {
                         ancestorNode = Views.View.GetInteractionNode(o);

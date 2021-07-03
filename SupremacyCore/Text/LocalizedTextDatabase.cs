@@ -27,11 +27,11 @@ namespace Supremacy.Text
 
         public string GetString(object groupKey, object stringkey)
         {
-            LocalizedTextGroup group;
-            LocalizedString entry;
 
-            if (_groups.TryGetValue(groupKey, out group) && group.Entries.TryGetValue(stringkey, out entry))
+            if (_groups.TryGetValue(groupKey, out LocalizedTextGroup group) && group.Entries.TryGetValue(stringkey, out LocalizedString entry))
+            {
                 return entry.LocalText;
+            }
 
             return null;
         }
@@ -41,29 +41,37 @@ namespace Supremacy.Text
         public void Merge([NotNull] LocalizedTextDatabase database, bool overwrite = false)
         {
             if (database == null)
+            {
                 throw new ArgumentNullException("database");
+            }
 
             foreach (LocalizedTextGroup group in database.Groups)
+            {
                 Merge(group, overwrite);
+            }
         }
 
         public void Merge([NotNull] LocalizedTextGroup group, bool overwrite = false)
         {
             if (group == null)
+            {
                 throw new ArgumentNullException("group");
+            }
 
-            LocalizedTextGroup existingGroup;
 
-            if (_groups.TryGetValue(group.Key, out existingGroup))
+            if (_groups.TryGetValue(group.Key, out LocalizedTextGroup existingGroup))
             {
                 foreach (LocalizedString entry in group.Entries)
                 {
-                    LocalizedString existingEntry;
 
-                    if (existingGroup.Entries.TryGetValue(entry.Name, out existingEntry))
+                    if (existingGroup.Entries.TryGetValue(entry.Name, out LocalizedString existingEntry))
+                    {
                         existingEntry.Merge(entry, overwrite);
+                    }
                     else
+                    {
                         existingGroup.Entries.Add(entry);
+                    }
                 }
             }
             else
@@ -76,7 +84,9 @@ namespace Supremacy.Text
         {
             IVfsService vfsService = ResourceManager.VfsService;
             if (vfsService == null)
+            {
                 return Enumerable.Empty<Uri>();
+            }
 
             return LocateTextFiles(vfsService);
         }
@@ -112,10 +122,11 @@ namespace Supremacy.Text
             {
                 try
                 {
-                    IVirtualFileInfo fileInfo;
 
-                    if (!vfsService.TryGetFileInfo(file, out fileInfo))
+                    if (!vfsService.TryGetFileInfo(file, out IVirtualFileInfo fileInfo))
+                    {
                         continue;
+                    }
 
                     object content;
 
@@ -124,15 +135,13 @@ namespace Supremacy.Text
                         content = XamlServices.Load(stream);
                     }
 
-                    LocalizedTextDatabase databaseContent = content as LocalizedTextDatabase;
-                    if (databaseContent != null)
+                    if (content is LocalizedTextDatabase databaseContent)
                     {
                         database.Merge(databaseContent);
                         continue;
                     }
 
-                    LocalizedTextGroup textGroup = content as LocalizedTextGroup;
-                    if (textGroup != null)
+                    if (content is LocalizedTextGroup textGroup)
                     {
                         database.Merge(textGroup);
                         continue;
@@ -202,10 +211,7 @@ namespace Supremacy.Text
 
             internal StandardLocalizedTextGroupKey([NotNull] string name)
             {
-                if (name == null)
-                    throw new ArgumentNullException("name");
-
-                _name = name;
+                _name = name ?? throw new ArgumentNullException("name");
             }
 
             public string Name => _name;
@@ -221,18 +227,19 @@ namespace Supremacy.Text
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
             {
                 if (destinationType == typeof(MarkupExtension))
+                {
                     return true;
+                }
+
                 return base.CanConvertTo(context, destinationType);
             }
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                StandardLocalizedTextGroupKey standardKey = value as StandardLocalizedTextGroupKey;
-                if (standardKey != null &&
+                if (value is StandardLocalizedTextGroupKey standardKey &&
                     destinationType == typeof(MarkupExtension))
                 {
-                    IValueSerializerContext serializerContext = context as IValueSerializerContext;
-                    if (serializerContext != null)
+                    if (context is IValueSerializerContext serializerContext)
                     {
                         ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                         if (typeSerializer != null)
@@ -268,7 +275,7 @@ namespace Supremacy.Text
 
         public object Key
         {
-            get { return _key; }
+            get => _key;
             set
             {
                 VerifyInitializing();
@@ -284,7 +291,9 @@ namespace Supremacy.Text
             get
             {
                 if (_entries.Count == 0)
+                {
                     return null;
+                }
 
                 return _entries[0];
             }
@@ -296,7 +305,9 @@ namespace Supremacy.Text
             {
                 LocalizedString defaultEntry = DefaultEntry;
                 if (defaultEntry == null)
+                {
                     return null;
+                }
 
                 return defaultEntry.LocalText;
             }
@@ -304,9 +315,11 @@ namespace Supremacy.Text
 
         public string GetString(object entryKey)
         {
-            LocalizedString entry;
-            if (_entries.TryGetValue(entryKey, out entry))
+            if (_entries.TryGetValue(entryKey, out LocalizedString entry))
+            {
                 return entry.LocalText;
+            }
+
             return null;
         }
     }
@@ -324,9 +337,11 @@ namespace Supremacy.Text
         {
             get
             {
-                LocalizedString value;
-                if (TryGetValue(key, out value))
+                if (TryGetValue(key, out LocalizedString value))
+                {
                     return value;
+                }
+
                 return null;
             }
         }
@@ -334,7 +349,7 @@ namespace Supremacy.Text
         internal object GroupKey
         {
             // ReSharper disable MemberCanBePrivate.Local
-            get { return _groupKey; }
+            get => _groupKey;
             set
             {
                 VerifyInitializing();
@@ -364,15 +379,20 @@ namespace Supremacy.Text
         {
             object groupKey = GroupKey;
             if (groupKey == null)
+            {
                 return string.Empty;
+            }
 
             Type typeKey = groupKey as Type;
             if (typeKey != null)
+            {
                 return string.Format("{{{0}}}", typeKey.Name);
+            }
 
-            NameTypeTextGroupKey nameTypeKey = groupKey as NameTypeTextGroupKey;
-            if (nameTypeKey != null)
+            if (groupKey is NameTypeTextGroupKey nameTypeKey)
+            {
                 return string.Format("{{{0}, {1}}}", nameTypeKey.Type.Name, nameTypeKey.Name);
+            }
 
             return string.Format("{0}", groupKey);
         }
@@ -382,7 +402,9 @@ namespace Supremacy.Text
         private void VerifyInitializing()
         {
             if (!_isInitialized)
+            {
                 return;
+            }
 
             throw new InvalidOperationException(SR.InvalidOperationException_AlreadyInitialized);
         }
@@ -401,10 +423,14 @@ namespace Supremacy.Text
             lock (SyncRoot)
             {
                 if (_isInitialized)
+                {
                     return;
+                }
 
                 if (_groupKey == null)
+                {
                     throw new InvalidOperationException("Localized text groups must have a key defined.");
+                }
 
                 _isInitialized = true;
 
@@ -419,7 +445,9 @@ namespace Supremacy.Text
             get
             {
                 lock (SyncRoot)
+                {
                     return _isInitialized;
+                }
             }
         }
 
@@ -428,9 +456,7 @@ namespace Supremacy.Text
 
         private void OnInitialized()
         {
-            EventHandler handler = Initialized;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Initialized?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }
@@ -442,13 +468,8 @@ namespace Supremacy.Text
 
         public NameTypeTextGroupKey([NotNull] Type type, [NotNull] string name)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            _type = type;
-            _name = name;
+            _type = type ?? throw new ArgumentNullException("type");
+            _name = name ?? throw new ArgumentNullException("name");
         }
 
         public Type Type => _type;
@@ -463,13 +484,8 @@ namespace Supremacy.Text
 
         public ContextualTextEntryKey([NotNull] object context, [NotNull] object baseKey)
         {
-            if (baseKey == null)
-                throw new ArgumentNullException("baseKey");
-            if (context == null)
-                throw new ArgumentNullException("context");
-
-            _baseKey = baseKey;
-            _context = context;
+            _baseKey = baseKey ?? throw new ArgumentNullException("baseKey");
+            _context = context ?? throw new ArgumentNullException("context");
         }
 
         public object BaseKey => _baseKey;
@@ -478,10 +494,16 @@ namespace Supremacy.Text
 
         public bool Equals(ContextualTextEntryKey other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
+
             return Equals(other._baseKey, _baseKey) &&
                    Equals(other._context, _context);
         }

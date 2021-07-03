@@ -24,8 +24,6 @@ using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Utility;
 using System.IO;
-using Supremacy.Game;
-using System.Windows.Automation;
 
 namespace Supremacy.Text
 {
@@ -79,24 +77,24 @@ namespace Supremacy.Text
             string techObjectEntryType = typeof(ITechObjectTextDatabaseEntry).FullName;
             XElement techObjectTableElement = doc.Root.Elements("Tables")
                 .Elements("Table")
-                .Where(e => string.Equals((string)e.Attribute("EntryType"), techObjectEntryType))
-                .FirstOrDefault();
+                .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), techObjectEntryType));
 
             if (techObjectTableElement == null)
+            {
                 return database;
+            }
 
             IEnumerable<XElement> techObjectEntries = techObjectTableElement
                 .Elements("Entries")
                 .Elements("Entry");
 
             // for Output file
-            string pathOutputfile = "./Resources/Data/";  // instead of ./Resources/Data/
+            string pathOutputfile = "./lib/";  // instead of ./Resources/Data/
             string separator = ";";
             string line = "";
             StreamWriter streamWriter;
             string file = "./lib/test-FromTextDatabase.txt";
-            //streamWriter = new StreamWriter(file);
-            String strHeader = "";  // first line of output files
+            string strHeader = "";  // first line of output files
 
 
             try // avoid hang up if this file is opened by another program 
@@ -104,11 +102,13 @@ namespace Supremacy.Text
                 //if (_XML2CSVOutput == false)
                 //    continue;
 
-                file = pathOutputfile + "z_FromTextDatabase_(autoCreated).csv";
+                file = pathOutputfile + "_TextDatabase_List(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
+                {
                     goto WriterCloseFromTextDatabase;
+                }
 
                 streamWriter = new StreamWriter(file);
 
@@ -127,7 +127,9 @@ namespace Supremacy.Text
                     string key = (string)entryElement.Attribute("Key");
 
                     if (key == null)
+                    {
                         continue;
+                    }
 
                     ClientTextDatabaseEntry<ITechObjectTextDatabaseEntry> entry = new ClientTextDatabaseEntry<ITechObjectTextDatabaseEntry>(key);
                     IEnumerable<XElement> localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
@@ -171,11 +173,12 @@ namespace Supremacy.Text
                 string raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
                 XElement raceTableElement = doc.Root.Elements("Tables")
                     .Elements("Table")
-                    .Where(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType))
-                    .FirstOrDefault();
+                    .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType));
 
                 if (raceTableElement == null)    // Races might be done in RaceDatabase.cs
+                {
                     return database;
+                }
 
                 IEnumerable<XElement> raceEntries = raceTableElement
                     .Elements("Entries")
@@ -186,7 +189,9 @@ namespace Supremacy.Text
                     string key = (string)entryElement.Attribute("Key");
 
                     if (key == null)
+                    {
                         continue;
+                    }
 
                     ClientTextDatabaseEntry<IRaceTextDatabaseEntry> entry = new ClientTextDatabaseEntry<IRaceTextDatabaseEntry>(key);
                     IEnumerable<XElement> localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
@@ -207,7 +212,7 @@ namespace Supremacy.Text
             }
             catch (Exception e)
             {
-                GameLog.Core.GameData.Error("Cannot write ... z_FromTextDatabase_(autoCreated).csv", e);
+                GameLog.Core.GameData.Error("Cannot write ... ./lib/TextDatabase__List(autoCreated).csv", e);
             }
 
             return database;
@@ -230,9 +235,15 @@ namespace Supremacy.Text
         ITextDatabaseTable<TEntry> ITextDatabase.GetTable<TEntry>()
         {
             if (typeof(TEntry) == typeof(ITechObjectTextDatabaseEntry))
+            {
                 return (ITextDatabaseTable<TEntry>)_techObjectTextTable;
+            }
+
             if (typeof(TEntry) == typeof(IRaceTextDatabaseEntry))
+            {
                 return (ITextDatabaseTable<TEntry>)_raceTextTable;
+            }
+
             return null;
         }
 
@@ -434,7 +445,9 @@ namespace Supremacy.Text
 
 
                 if (_localizedEntries.TryGetValue(culture.Name, out TLocalizedEntry localizedEntry))
+                {
                     return localizedEntry;
+                }
 
                 while (!culture.IsNeutralCulture &&
                        culture.Parent != CultureInfo.InvariantCulture)
@@ -442,13 +455,17 @@ namespace Supremacy.Text
                     culture = culture.Parent;
 
                     if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                    {
                         return localizedEntry;
+                    }
                 }
 
                 culture = ResourceManager.NeutralCulture;
 
                 if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                {
                     return localizedEntry;
+                }
 
                 while (!culture.IsNeutralCulture &&
                        culture.Parent != CultureInfo.InvariantCulture)
@@ -456,7 +473,9 @@ namespace Supremacy.Text
                     culture = culture.Parent;
 
                     if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                    {
                         return localizedEntry;
+                    }
                 }
 
                 return null;
@@ -496,13 +515,24 @@ namespace Supremacy.Text
                 _language = language ?? throw new ArgumentNullException("language");
 
                 if (name != null)
+                {
                     name = name.Trim();
+                }
+
                 if (description != null)
+                {
                     description = description.Trim();
+                }
+
                 if (custom1 != null)
+                {
                     custom1 = custom1.Trim();
+                }
+
                 if (custom2 != null)
+                {
                     custom2 = custom2.Trim();
+                }
 
                 Name = name;
                 Description = description;
@@ -569,13 +599,20 @@ namespace Supremacy.Text
                 _language = language ?? throw new ArgumentNullException("language");
 
                 if (singularName != null)
+                {
                     singularName = singularName.Trim();
+                }
+
                 if (pluralName != null)
+                {
                     pluralName = pluralName.Trim();
+                }
                 //if (classLevel != null)
                 //    classLevel = classLevel.Trim();
                 if (description != null)
+                {
                     description = description.Trim();
+                }
 
                 SingularName = singularName;
                 PluralName = pluralName;
@@ -666,10 +703,16 @@ namespace Supremacy.Text
             where TLocalizedEntry : class, ILocalizedTextDatabaseEntry
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             TLocalizedEntry entry = self.GetLocalizedEntry(language);
             if ((entry == null) || !string.Equals(entry.Language, language, StringComparison.OrdinalIgnoreCase))
+            {
                 entry = self.CreateLocalizedEntry(language);
+            }
+
             return entry;
         }
 
@@ -678,7 +721,10 @@ namespace Supremacy.Text
             where TLocalizedEntry : class, ILocalizedTextDatabaseEntry
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             return self.GetLocalizedEntry(ResourceManager.CurrentLocale);
         }
         #endregion

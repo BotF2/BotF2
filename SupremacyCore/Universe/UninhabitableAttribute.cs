@@ -23,7 +23,7 @@ namespace Supremacy.Universe
 
         public override bool Match(object obj)
         {
-            return (obj is UninhabitableAttribute);
+            return obj is UninhabitableAttribute;
         }
     }
 }

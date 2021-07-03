@@ -36,14 +36,14 @@ namespace Supremacy.Combat
                 assets.Owner);
 
             IEnumerable<Sector> sectors =
-                (
+
                     from s in assets.Sector.GetNeighbors()
                     let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
                     let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
                     let hostileOrbitalPower = hostileOrbitals.Sum(o => o.Firepower())
                     orderby hostileOrbitalPower ascending, distance descending
                     select s
-                );
+                ;
 
             return sectors.FirstOrDefault();
         }

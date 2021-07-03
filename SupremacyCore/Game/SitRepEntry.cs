@@ -134,7 +134,10 @@ namespace Supremacy.Game
         protected SitRepEntry(Civilization owner, SitRepPriority priority)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
+            }
+
             _ownerId = owner.CivID;
             _priority = priority;
         }
@@ -147,7 +150,10 @@ namespace Supremacy.Game
         protected SitRepEntry(int ownerId, SitRepPriority priority)
         {
             if (ownerId == -1)
+            {
                 throw new ArgumentException("invalid Civilization ID", "ownerId");
+            }
+
             _ownerId = ownerId;
             _priority = priority;
         }
@@ -192,12 +198,20 @@ namespace Supremacy.Game
         private static void SitRepComment_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (!(e.Source is TextBox SitRepCommentText))
+            {
                 return;
+            }
+
             System.Windows.Data.BindingExpression bindingExpression = SitRepCommentText.GetBindingExpression(TextBox.TextProperty);
             if (bindingExpression == null)
+            {
                 return;
-            if (!String.IsNullOrEmpty(SitRepCommentText.Text))
+            }
+
+            if (!string.IsNullOrEmpty(SitRepCommentText.Text))
+            {
                 bindingExpression.UpdateSource();
+            }
         }
 
         /// <summary>
@@ -252,7 +266,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -260,9 +277,9 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_DETAIL_TEXT"), Colony.Name);
-        public override string SummaryText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_SUMMARY_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_DETAIL_TEXT"), Colony.Name, Colony.Location);
+        public override string SummaryText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_SUMMARY_TEXT"), Colony.Name, Colony.Location);
         public override string SitRepComment { get; set; }
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png";
         public override bool IsPriority => true;
@@ -308,11 +325,30 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_UNPOWERED"),
-                    ResourceManager.GetString(ItemType.Name),
                     GameContext.Current.Universe.Map[Location].Name,
+                    GameContext.Current.Universe.Map[Location].Location,
+                    ResourceManager.GetString(ItemType.Name),
                     _isActive ? "" : " (unpowered)");
     }
 
+    [Serializable]
+    public class BuildProjectStatusSitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        private readonly MapLocation _loc;
+
+        public BuildProjectStatusSitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Gray)
+        { _loc = loc; _note = Note; }
+
+        public string Note => _note;
+        public override SitRepCategory Categories => SitRepCategory.Construction;
+        public override SitRepAction Action => SitRepAction.CenterOnSector;
+        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+        public override bool IsPriority => true;
+        public override string SitRepComment { get; set; }
+        public override string SummaryText => _note;
+    }
+    // End of SitRepEntry
 
     [Serializable]
     public class BuildProjectResourceShortageSitRepEntry : SitRepEntry
@@ -361,10 +397,13 @@ namespace Supremacy.Game
         private readonly bool _shipyardQueue;
 
         public BuildQueueEmptySitRepEntry(Civilization owner, Colony colony, bool shipyardQueue)
-            : base(owner, SitRepPriority.Brown)
+            : base(owner, SitRepPriority.Orange)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _col_ID = colony.ObjectID;
             _shipyardQueue = shipyardQueue;
         }
@@ -377,10 +416,10 @@ namespace Supremacy.Game
         public override string SummaryText => _shipyardQueue
                     ? string.Format(
                         ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
-                        Colony.Name)
+                        Colony.Name, Colony.Location)
                     : string.Format(
                     ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
-                    Colony.Name);
+                    Colony.Name, Colony.Location);
     }
 
     [Serializable]
@@ -392,7 +431,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = target.ObjectID;
             _creditsStolen = creditsStolen;
         }
@@ -401,11 +443,31 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.CenterOnSector;
         public override object ActionTarget => Colony.Sector;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_STOLEN_SUCCESSFULLY"), _creditsStolen, Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_STOLEN_SUCCESSFULLY"), _creditsStolen, Colony.Name, Colony.Location);
         //"Our agents stole {0} credits from the treasury on {1}.",
         public override bool IsPriority => true;
 
     }
+    // End of SitRepEntry
+
+    [Serializable]
+    public class LaborToEnergyAddedSitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        private readonly MapLocation _loc;
+
+        public LaborToEnergyAddedSitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Gray)
+        { _loc = loc; _note = Note; }
+
+        public string Note => _note;
+        public override SitRepCategory Categories => SitRepCategory.Construction;
+        public override SitRepAction Action => SitRepAction.CenterOnSector;
+        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+        public override bool IsPriority => true;
+        public override string SitRepComment { get; set; }
+        public override string SummaryText => _note;
+    }
+    // End of SitRepEntry
 
     [Serializable]
     public class CreditsStolenTargetSitRepEntry : SitRepEntry
@@ -416,7 +478,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = target.ObjectID;
             _creditsStolen = creditsStolen;
         }
@@ -425,7 +490,7 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ViewColony;
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_WERE_STOLEN"), _creditsStolen, Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_WERE_STOLEN"), _creditsStolen, Colony.Name, Colony.Location);
         // {0} credits were stolen from our treasury on { 1}.
         public override bool IsPriority => true;
     }
@@ -441,7 +506,10 @@ namespace Supremacy.Game
         : base(orbital.Owner, SitRepPriority.Orange)
         {
             if (orbital == null)
+            {
                 throw new ArgumentNullException("orbital");
+            }
+
             _name = orbital.Name;
             _shipType = orbital.OrbitalDesign.ShipType;
             _location = orbital.Location;
@@ -470,7 +538,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -479,11 +550,11 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ViewColony;
         public override object ActionTarget => Colony;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Earthquake.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_SUMMARY_TEXT"), Colony.Name, Colony.Location);
         public override bool IsPriority => true;
 
     }
@@ -496,7 +567,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -505,7 +579,7 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
         public override bool IsPriority => true;
-        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Colony.Name, Colony.Location);
 
     }
 
@@ -534,7 +608,9 @@ namespace Supremacy.Game
         private string EnsureText(ref string text, ref bool resolved, bool detailed)
         {
             if (resolved)
+            {
                 return text;
+            }
 
             DiplomacySitRepStringKey? key = ResolveTextKey(detailed);
             if (key == null)
@@ -608,34 +684,64 @@ namespace Supremacy.Game
             IResponse response = _exchange as IResponse;
 
             if (proposal == null && response != null && response.ResponseType == ResponseType.Counter)
+            {
                 proposal = response.CounterProposal;
+            }
 
             if (proposal != null)
             {
                 if (proposal.HasTreaty()) // has clause of treaty type including WarPact
                 {
                     if (proposal.HasClause(ClauseType.TreatyCeaseFire))
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
+                    }
+
                     if (proposal.HasClause(ClauseType.TreatyNonAggression))
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactProposedSummaryText;
+                    }
+
                     if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersProposedSummaryText;
+                    }
+
                     if (proposal.HasClause(ClauseType.TreatyAffiliation))
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationProposedSummaryText;
+                    }
+
                     if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.DefensiveAllianceProposedSummaryText;
+                    }
+
                     if (proposal.HasClause(ClauseType.TreatyFullAlliance))
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.FullAllianceProposedSummaryText;
+                    }
+
                     if (proposal.HasClause(ClauseType.TreatyMembership))
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.MembershipProposedSummaryText;
+                    }
                 }
 
                 if (proposal.IsGift())
+                {
                     return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.GiftOfferedSummaryText;
+                }
+
                 if (proposal.IsDemand())
+                {
                     return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeDemandedSummaryText;
+                }
+
                 if (proposal.IsWarPact())
+                {
                     return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactProposedSummaryText;
+                }
             }
 
             if (response != null)
@@ -647,57 +753,109 @@ namespace Supremacy.Game
                     if (proposal.HasTreaty())
                     {
                         if (proposal.HasClause(ClauseType.TreatyCeaseFire))
+                        {
                             return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireAcceptedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
+                        {
                             return detailed ? DiplomacySitRepStringKey.NonAggressionPactAcceptedDetailText : DiplomacySitRepStringKey.NonAggressionPactAcceptedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
+                        {
                             return detailed ? DiplomacySitRepStringKey.OpenBordersAcceptedDetailText : DiplomacySitRepStringKey.OpenBordersAcceptedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
+                        {
                             return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
+                        {
                             return detailed ? DiplomacySitRepStringKey.DefensiveAllianceAcceptedDetailText : DiplomacySitRepStringKey.DefensiveAllianceAcceptedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyFullAlliance))
+                        {
                             return detailed ? DiplomacySitRepStringKey.FullAllianceAcceptedDetailText : DiplomacySitRepStringKey.FullAllianceAcceptedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyMembership))
+                        {
                             return detailed ? DiplomacySitRepStringKey.MembershipAcceptedDetailText : DiplomacySitRepStringKey.MembershipAcceptedSummaryText;
+                        }
                     }
 
                     if (proposal.IsDemand())
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeAcceptedSummaryText;
+                    }
+
                     if (proposal.IsWarPact())
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactAcceptedSummaryText;
+                    }
                 }
                 else if (response.ResponseType == ResponseType.Reject)
                 {
                     if (proposal.HasTreaty())
                     {
                         if (proposal.HasClause(ClauseType.TreatyCeaseFire))
+                        {
                             return DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
+                        {
                             return DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
+                        {
                             return DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
+                        {
                             return DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
+                        {
                             return DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyFullAlliance))
+                        {
                             return DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
+                        }
+
                         if (proposal.HasClause(ClauseType.TreatyMembership))
+                        {
                             return DiplomacySitRepStringKey.MembershipRejectedSummaryText;
+                        }
                     }
 
                     if (proposal.IsDemand())
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeRejectedSummaryText;
+                    }
+
                     if (proposal.IsWarPact())
+                    {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactRejectedSummaryText;
+                    }
                 }
             }
 
             if (_exchange is Statement statement)
             {
                 if (statement.StatementType == StatementType.WarDeclaration)
+                {
                     return detailed ? DiplomacySitRepStringKey.WarDeclaredDetailText : DiplomacySitRepStringKey.WarDeclaredSummaryText;
+                }
             }
 
             return null;
@@ -706,7 +864,7 @@ namespace Supremacy.Game
         public override string SitRepComment { get; set; }
         public override string SummaryText => EnsureText(ref _summaryText, ref _hasEvaluatedSummaryText, false);
 
-        //public override string SummaryText => string.Format(ResourceManager.GetString("EARTHQUAKE_SUMMARY_TEXT"), Colony.Name); 
+        //public override string SummaryText => string.Format(ResourceManager.GetString("EARTHQUAKE_SUMMARY_TEXT"), Colony.Name, Colony.Location); 
         public override string DetailText => EnsureText(ref _detailText, ref _hasEvaluatedDetailText, true);
 
         public override string DetailImage
@@ -714,7 +872,9 @@ namespace Supremacy.Game
             get
             {
                 if (_hasEvaluatedDetailText)
+                {
                     return _image;
+                }
 
                 if (!HasDetails)
                 {
@@ -750,9 +910,13 @@ namespace Supremacy.Game
                 }
 
                 if (Owner == sender)
+                {
                     _image = recipient.InsigniaPath;
+                }
                 else
+                {
                     _image = sender.InsigniaPath;
+                }
 
                 return _image;
             }
@@ -767,7 +931,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -776,10 +943,10 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("EARTHQUAKE_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("EARTHQUAKE_SUMMARY_TEXT"), Colony.Name, Colony.Location);
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("EARTHQUAKE_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("EARTHQUAKE_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("EARTHQUAKE_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("EARTHQUAKE_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Earthquake.png";
     }
 
@@ -792,7 +959,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Blue)
         {
             if (civilization == null)
+            {
                 throw new ArgumentNullException("civilization");
+            }
+
             _civilizationID = civilization.CivID;
             _location = location;
         }
@@ -818,7 +988,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
             _destroyedFoodReserves = destroyedFoodReserves;
         }
@@ -827,7 +1000,7 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.CenterOnSector;
         public override object ActionTarget => System.Sector;
 
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED_SUCCESSFULLY"), _destroyedFoodReserves, System.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED_SUCCESSFULLY"), System.Name, System.Location, _destroyedFoodReserves);
         public override string SitRepComment { get; set; }
         public override bool IsPriority => true;
     }
@@ -840,7 +1013,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -849,11 +1025,11 @@ namespace Supremacy.Game
         public override bool IsPriority => true;
         public override object ActionTarget => Colony;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("GAMMA_RAY_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("GAMMA_RAY_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("GAMMA_RAY_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("GAMMA_RAY_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("GAMMA_RAY_BURST_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("GAMMA_RAY_BURST_SUMMARY_TEXT"), Colony.Name, Colony.Location);
     }
 
     [Serializable]
@@ -864,10 +1040,13 @@ namespace Supremacy.Game
         //private readonly string _researchNote;
 
         public GrowthByHealthSitRepEntry(Civilization owner, Colony colony)
-                : base(owner, SitRepPriority.Brown)
+                : base(owner, SitRepPriority.Blue)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
 
@@ -883,7 +1062,9 @@ namespace Supremacy.Game
             {
                 string _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"));
                 if (Colony != null)
+                {
                     _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_TEXT"), Colony.Name, Colony.Location);
+                }
 
                 return _text;
             }
@@ -901,7 +1082,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Orange)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
         }
 
@@ -926,7 +1110,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
         }
         public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
@@ -948,7 +1135,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
             _destroyedFoodReserves = destroyedFoodReserves;
         }
@@ -958,7 +1148,7 @@ namespace Supremacy.Game
         public override object ActionTarget => System.Sector;
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED"), _destroyedFoodReserves, System.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED"), System.Name, System.Location, _destroyedFoodReserves);
 
     }
 
@@ -972,7 +1162,10 @@ namespace Supremacy.Game
         {
             GameLog.Client.SitReps.DebugFormat(SummaryText);
             if (itemType == null)
+            {
                 throw new ArgumentNullException("itemType");
+            }
+
             _itemTypeId = itemType.DesignID;
             _location = location;
         }
@@ -980,7 +1173,10 @@ namespace Supremacy.Game
         public MapLocation Location => _location;
         public override SitRepCategory Categories => SitRepCategory.Construction;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I"), ResourceManager.GetString(ItemType.Name), GameContext.Current.Universe.Map[Location].Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I")
+            , GameContext.Current.Universe.Map[Location].Name
+            , GameContext.Current.Universe.Map[Location].Location
+            , ResourceManager.GetString(ItemType.Name));
     }
 
     [Serializable]
@@ -991,7 +1187,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Orange)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colonyName missing for MajorAsteroidImpact");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -1000,11 +1199,11 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override bool IsPriority => true;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/MajorAsteroidImpact.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_SUMMARY_TEXT"), Colony.Name, Colony.Location);
     }
 
     [Serializable]
@@ -1028,7 +1227,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Blue)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -1036,7 +1238,7 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ViewColony;
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), Colony.Sector.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), Colony.Sector.Name, Colony.Location);
 
         public override bool IsPriority => true;
 
@@ -1077,11 +1279,19 @@ namespace Supremacy.Game
             : base(ownerCiv, SitRepPriority.Red)
         {
             if (ownerCiv == null)
+            {
                 throw new ArgumentNullException("owmer");
+            }
+
             if (victim == null)
+            {
                 throw new ArgumentNullException("victim");
+            }
+
             if (denouncer == null)
+            {
                 throw new ArgumentNullException("denouncer");
+            }
 
             _denouncerCivilizationID = denouncer.CivID;
             _ownerCivilizationID = ownerCiv.CivID;
@@ -1146,11 +1356,19 @@ namespace Supremacy.Game
             : base(ownerCiv, SitRepPriority.Red)
         {
             if (ownerCiv == null)
+            {
                 throw new ArgumentNullException("owmer");
+            }
+
             if (victim == null)
+            {
                 throw new ArgumentNullException("victim");
+            }
+
             if (commender == null)
+            {
                 throw new ArgumentNullException("commender");
+            }
 
             _commenderCivilizationID = commender.CivID;
             _ownerCivilizationID = ownerCiv.CivID;
@@ -1173,7 +1391,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = colony.System.ObjectID;
 
             _gainedResearchPointsSum = gainedResearchPointsSum;
@@ -1217,7 +1438,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = colony.System.ObjectID;
 
             _gainedCreditsSum = gainedCreditsSum;
@@ -1312,7 +1536,10 @@ namespace Supremacy.Game
             : base(attacking, SitRepPriority.Red) // owner is the attackED for this, the sabotaged sit rep
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _attacked = attacked;
             _attacking = attacking;
             _systemId = colony.System.ObjectID;
@@ -1333,7 +1560,7 @@ namespace Supremacy.Game
         public override bool HasDetails => true; // turn on/off for extra Dialog window
         public override string DetailImage => "vfs:///Resources/Images/Intelligence/IntelMission.png";
         public override string HeaderText => string.Format(ResourceManager.GetString("NEW_SABOTAGED_HEADER_TEXT"));
-        //public override string HeaderText => string.Format(ResourceManager.GetString("NEW_SABOTAGED_HEADER_TEXT"), Colony.Name); 
+        //public override string HeaderText => string.Format(ResourceManager.GetString("NEW_SABOTAGED_HEADER_TEXT"), Colony.Name, Colony.Location); 
         public override string DetailText
         {
             get
@@ -1344,7 +1571,7 @@ namespace Supremacy.Game
                 return _detailText;
             }
         }
-        //public override string DetailText => string.Format(ResourceManager.GetString("NEW_SABOTAGED_DETAIL_TEXT"), Colony.Name); 
+        //public override string DetailText => string.Format(ResourceManager.GetString("NEW_SABOTAGED_DETAIL_TEXT"), Colony.Name, Colony.Location); 
         public string RoleString => string.Format(ResourceManager.GetString("SABOTAGE_ROLE_ATTACKED_CIV"));
         public string BlamedString => _blamed + " " + RatioLevelString;
         public string RatioLevelString
@@ -1438,7 +1665,9 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red) // owner is the attackING for this, the sabotagING sit rep
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
             //_attacked = owner;
             _attacked = attacked;
             _systemId = colony.System.ObjectID;
@@ -1592,7 +1821,10 @@ namespace Supremacy.Game
             : base(orbital.Owner, SitRepPriority.Purple)
         {
             if (orbital == null)
+            {
                 throw new ArgumentNullException("orbital");
+            }
+
             _name = orbital.Name;
             _shipType = orbital.OrbitalDesign.ShipType;
             _location = orbital.Location;
@@ -1623,7 +1855,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
             _orbitalBatteriesDestroyed = orbitalBatteriesDestroyed;
             _shieldHealthRemoved = shieldHealthRemoved;
@@ -1648,7 +1883,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
             _orbitalBatteriesDestroyed = orbitalBatteriesDestroyed;
             _shieldHealthRemoved = shieldHealthRemoved;
@@ -1671,7 +1909,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -1679,12 +1920,12 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("PLAGUE_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("PLAGUE_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("PLAGUE_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("PLAGUE_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Plague.png";
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("PLAGUE_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("PLAGUE_SUMMARY_TEXT"), Colony.Name, Colony.Location);
     }
 
     //TODO: This needs fleshing out a bit more - needs a definite pop up,
@@ -1702,7 +1943,7 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_POPULATION_DIED"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_POPULATION_DIED"), Colony.Name, Colony.Location);
         public override bool IsPriority => true;
 
     }
@@ -1719,9 +1960,14 @@ namespace Supremacy.Game
         public PopulationDyingSitRepEntry(Civilization owner, Colony colony) : base(owner, SitRepPriority.Red)
         {
             if (owner == null)
+            {
                 throw new ArgumentException("owner");
+            }
+
             if (colony == null)
+            {
                 throw new ArgumentException("colony");
+            }
 
             _colonyID = colony.ObjectID;
         }
@@ -1730,7 +1976,7 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), Colony.Name, Colony.Location);
     }
 
     [Serializable]
@@ -1743,7 +1989,9 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
             _systemId = target.System.ObjectID;
             _facilityType = productionType;
@@ -1799,7 +2047,9 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
             _systemId = target.System.ObjectID;
             _facilityType = productionType;
@@ -1852,7 +2102,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -1860,14 +2113,51 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_SUMMARY_TEXT"), Colony.Name, Colony.Location);
         public override bool IsPriority => true;
 
     }
+
+    [Serializable]
+    public class ReportOutput_Brown_CoS_SitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        private readonly MapLocation _loc;
+
+        public ReportOutput_Brown_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Brown)
+        { _loc = loc; _note = Note; }
+        public string Note => _note;
+        public override SitRepCategory Categories => SitRepCategory.Construction;
+        public override SitRepAction Action => SitRepAction.CenterOnSector;
+        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+        public override bool IsPriority => true;
+        public override string SitRepComment { get; set; }
+        public override string SummaryText => _note;
+    }
+    // End of SitRepEntry
+
+    [Serializable]
+    public class ReportOutput_Purple_CoS_SitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        private readonly MapLocation _loc;
+
+        public ReportOutput_Purple_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Purple)
+        { _loc = loc; _note = Note; }
+
+        public string Note => _note;
+        public override SitRepCategory Categories => SitRepCategory.Construction;
+        public override SitRepAction Action => SitRepAction.CenterOnSector;
+        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+        public override bool IsPriority => true;
+        public override string SitRepComment { get; set; }
+        public override string SummaryText => _note;
+    }
+    // End of SitRepEntry
 
     [Serializable]
     public class ResearchCompleteSitRepEntry : SitRepEntry
@@ -1881,7 +2171,10 @@ namespace Supremacy.Game
             ICollection<TechObjectDesign> newDesigns) : base(owner, SitRepPriority.Green)
         {
             if (application == null)
+            {
                 throw new ArgumentNullException("application");
+            }
+
             _applicationId = application.ApplicationID;
             if (newDesigns != null)
             {
@@ -1907,17 +2200,20 @@ namespace Supremacy.Game
             get
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine(ResourceManager.GetString(Application.Description));
+                _ = sb.AppendLine(ResourceManager.GetString(Application.Description));
                 if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
                 {
-                    sb.Append("[nl/]" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + "[nl/]");
+                    _ = sb.Append("[nl/]" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + "[nl/]");
                     for (int i = 0; i < _newDesignIds.Length; i++)
                     {
                         TechObjectDesign design = GameContext.Current.TechDatabase[_newDesignIds[i]];
                         if (design == null)
+                        {
                             continue;
-                        sb.Append("[nl/]");
-                        sb.Append(ResourceManager.GetString(design.Name));
+                        }
+
+                        _ = sb.Append("[nl/]");
+                        _ = sb.Append(ResourceManager.GetString(design.Name));
 
                     }
                 }
@@ -1931,7 +2227,10 @@ namespace Supremacy.Game
             {
                 ResearchField field = Application.Field;
                 if (field != null)
+                {
                     return field.Image;
+                }
+
                 return base.DetailImage;
             }
         }
@@ -1943,7 +2242,7 @@ namespace Supremacy.Game
         private readonly string _researchNote;
 
         public ScienceSummarySitRepEntry(Civilization owner, string researchNote)
-                : base(owner, SitRepPriority.Gray)
+                : base(owner, SitRepPriority.Blue)
         { _researchNote = researchNote; }
 
         public string ResearchNote => _researchNote;
@@ -1962,23 +2261,16 @@ namespace Supremacy.Game
 
         private readonly int _shipID;
         private readonly int _researchGained;
-        public ScienceShipResearchGainedSitRepEntry(
-            Civilization owner,
-            Ship scienceShip,
-            int researchGained)
+        public ScienceShipResearchGainedSitRepEntry(Civilization owner, Ship scienceShip, int researchGained)
             : base(owner, SitRepPriority.Green)
         {
             _shipID = scienceShip.ObjectID;
             _researchGained = researchGained;
         }
         public Ship ScienceShip => GameContext.Current.Universe.Get<Ship>(_shipID);
-
         //public override string SitRepComment => "no"; } set { 
-
         public int ResearchGained => _researchGained;
-
         public override SitRepCategory Categories => SitRepCategory.Research;
-
         public override SitRepAction Action => SitRepAction.SelectTaskForce;
         public override object ActionTarget => ScienceShip.Fleet;
         public override bool IsPriority => true;
@@ -2009,7 +2301,10 @@ namespace Supremacy.Game
                     return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
                         ScienceShip.Name, ScienceShip.Sector, StarTypeFullText, _researchGained, StarTypeFullText);
                 }
-                else return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP_RESULT_UNKNOWN"));
+                else
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP_RESULT_UNKNOWN"));
+                }
             }
         }
     }
@@ -2030,7 +2325,6 @@ namespace Supremacy.Game
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
         public override string SummaryText => _note;
-
     }
     // End of SitRepEntry
 
@@ -2055,9 +2349,9 @@ namespace Supremacy.Game
     {
         private readonly MapLocation _location;
         private readonly string _note;
-        public ShipMedicalHelpProvidedSitRepEntry(Civilization owner, MapLocation location, string note) : base(owner, SitRepPriority.Aqua)
+        public ShipMedicalHelpProvidedSitRepEntry(Civilization owner, MapLocation location, string note) : base(owner, SitRepPriority.Blue)
         { _location = location; _note = note; }
-        public string Note => _note;
+        //public string Note => _note;
         public override SitRepAction Action => SitRepAction.CenterOnSector;
         public override object ActionTarget => GameContext.Current.Universe.Map[_location];
         public override SitRepCategory Categories => SitRepCategory.General;
@@ -2094,7 +2388,7 @@ namespace Supremacy.Game
         private readonly string _note;
         //private readonly MapLocation _loc;
 
-        public ShipSummarySitRepEntry(Civilization owner, string Note) : base(owner, SitRepPriority.Aqua)
+        public ShipSummarySitRepEntry(Civilization owner, string Note) : base(owner, SitRepPriority.Purple)
         { /*_loc = loc;*/ _note = Note; }
 
         public string Note => _note;
@@ -2116,7 +2410,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony missing for Supernova");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -2124,11 +2421,11 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
         public override bool HasDetails => true;  // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("SUPERNOVA_I_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("SUPERNOVA_I_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("SUPERNOVA_I_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("SUPERNOVA_I_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Supernova.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SUPERNOVA_I_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SUPERNOVA_I_SUMMARY_TEXT"), Colony.Name, Colony.Location);
 
         public override bool IsPriority => true;
 
@@ -2142,7 +2439,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -2151,7 +2451,7 @@ namespace Supremacy.Game
         public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_STARVATION"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_STARVATION"), Colony.Name, Colony.Location);
     }
 
     [Serializable]
@@ -2167,7 +2467,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony missing for SystemAssault");
+            }
+
             _colonyID = colony.System.ObjectID;
             _status = status.ToUpper();
             _pop = pop;
@@ -2184,13 +2487,13 @@ namespace Supremacy.Game
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
         public override string HeaderText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT")
-, System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
+                , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
         public override string DetailText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT")
-, System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
+                , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/SystemAssault.png";
         public override string SitRepComment { get; set; }
         public override string SummaryText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT")
-, System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
+                , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
         public override bool IsPriority => true;
 
     }
@@ -2205,7 +2508,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -2213,11 +2519,11 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/TerroristBombingOfShipProduction.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_SUMMARY_TEXT"), Colony.Name, Colony.Location);
         public override bool IsPriority => true;
 
     }
@@ -2230,7 +2536,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
 
@@ -2239,11 +2548,11 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ViewColony;
         public override object ActionTarget => Colony;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/TerroristsCaptured.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_SUMMARY_TEXT"), Colony.Name, Colony.Location);
         public override bool IsPriority => true;
 
     }
@@ -2256,7 +2565,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -2265,11 +2577,11 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ViewColony;
         public override object ActionTarget => Colony;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png";
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_SUMMARY_TEXT"), Colony.Name, Colony.Location);
         public override bool IsPriority => true;
 
     }
@@ -2283,7 +2595,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
             _lostCredits = lostCredits;
         }
@@ -2306,7 +2621,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _systemId = target.System.ObjectID;
             _lostCredits = lostCredits;
         }
@@ -2327,7 +2645,10 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Pink)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             _colonyID = colony.ObjectID;
         }
         private readonly int _colonyID;
@@ -2337,12 +2658,12 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ViewColony;
         public override object ActionTarget => Colony;
         public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("TRIBBLES_HEADER_TEXT"), Colony.Name);
-        public override string DetailText => string.Format(ResourceManager.GetString("TRIBBLES_DETAIL_TEXT"), Colony.Name);
+        public override string HeaderText => string.Format(ResourceManager.GetString("TRIBBLES_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString("TRIBBLES_DETAIL_TEXT"), Colony.Name, Colony.Location);
         public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Tribbles.png";
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("TRIBBLES_SUMMARY_TEXT"), Colony.Name);
+        public override string SummaryText => string.Format(ResourceManager.GetString("TRIBBLES_SUMMARY_TEXT"), Colony.Name, Colony.Location);
 
     }
 
@@ -2351,10 +2672,13 @@ namespace Supremacy.Game
     {
         private readonly TradeRoute _tradeRoute;
         private readonly int _systemId;
-        public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner, SitRepPriority.Orange)
+        public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner, SitRepPriority.Brown)
         {
             if (route == null)
+            {
                 throw new ArgumentException("TradeRoute");
+            }
+
             _systemId = route.SourceColony.ObjectID;
             _tradeRoute = route;
         }
@@ -2378,9 +2702,14 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Purple)
         {
             if (aggressor == null)
+            {
                 throw new ArgumentNullException("aggressor");
+            }
+
             if (victim == null)
+            {
                 throw new ArgumentNullException("victim");
+            }
 
             _victimCivilizationID = victim.CivID;
             _aggressorCivilizationID = aggressor.CivID;
@@ -2442,9 +2771,15 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Red)
         {
             if (aggressor == null)
+            {
                 throw new ArgumentNullException("aggressor");
+            }
+
             if (victim == null)
+            {
                 throw new ArgumentNullException("victim");
+            }
+
             _ownerCivilizationID = owner.CivID;
             _victimCivilizationID = victim.CivID;
             _aggressorCivilizationID = aggressor.CivID;

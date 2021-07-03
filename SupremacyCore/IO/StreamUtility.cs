@@ -44,7 +44,7 @@ namespace Supremacy.IO
             {
                 sout.OptimizeForSize = true;
                 sout.WriteObject(value);
-                sout.AppendTokenTables();
+                _ = sout.AppendTokenTables();
                 sout.Flush();
                 byte[] results = MiniLZO.Compress((MemoryStream)sout.BaseStream);
                 return results;

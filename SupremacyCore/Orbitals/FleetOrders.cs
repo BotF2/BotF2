@@ -14,7 +14,6 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Client;
 using Supremacy.Pathfinding;
 using Supremacy.Resources;
 using Supremacy.Tech;
@@ -107,7 +106,7 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            return (base.IsValidOrder(fleet) && fleet.IsCombatant);
+            return base.IsValidOrder(fleet) && fleet.IsCombatant;
         }
 
         public override FleetOrder Create()
@@ -135,7 +134,9 @@ namespace Supremacy.Orbitals
 
                 //var statusFormat = ResourceManager.GetString("SYSTEM_ASSAULT_STATUS_FORMAT");
                 if (statusFormat == null)
+                {
                     return OrderName;
+                }
 
                 Fleet fleet = Fleet;
                 string sector = fleet?.Sector.Name;  // checking for Sector existing and Name
@@ -149,14 +150,20 @@ namespace Supremacy.Orbitals
         {
             //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - beginning to check..."); 
             if (!base.IsValidOrder(fleet))
+            {
                 return false;
+            }
 
             if (!fleet.HasTroopTransports)
+            {
                 return false;
+            }
 
             StarSystem system = GameContext.Current.Universe.Map[fleet.Location].System;
             if (system == null || !system.IsInhabited)
+            {
                 return false;
+            }
             //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - check mostly done...");
 
             //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner));
@@ -238,17 +245,34 @@ namespace Supremacy.Orbitals
         public override bool IsValidOrder(Fleet fleet)
         {
             if (!base.IsValidOrder(fleet))
+            {
                 return false;
+            }
+
             if (fleet.Sector.System == null)
+            {
                 return false;
+            }
+
             if (fleet.Sector.System.HasColony)
+            {
                 return false;
+            }
+
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
+            {
                 return false;
+            }
+
             if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            {
                 return false;
+            }
+
             if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -257,10 +281,15 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnBeginning();
             if (_isComplete)
+            {
                 return;
+            }
+
             Ship colonyShip = FindBestColonyShip();
             if (colonyShip == null)
+            {
                 return;
+            }
 
             Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
@@ -286,14 +315,16 @@ namespace Supremacy.Orbitals
             civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
             civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
-            GameContext.Current.Universe.Destroy(colonyShip);
+            _ = GameContext.Current.Universe.Destroy(colonyShip);
         }
 
         protected internal override void OnOrderAssigned()
         {
             base.OnOrderAssigned();
             if (!Fleet.Route.IsEmpty)
+            {
                 Fleet.Route = TravelRoute.Empty;
+            }
         }
     }
 
@@ -352,16 +383,20 @@ namespace Supremacy.Orbitals
             int oldHealth = colony.Health.CurrentValue;
             float healthAdjustment = 1.01f + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 2);
             //healthAdjustment = helpByShip / 10;
-            if (healthAdjustment > 1.24f) healthAdjustment = 1.24f;
+            if (healthAdjustment > 1.24f)
+            {
+                healthAdjustment = 1.24f;
+            }
+
             if (Fleet.Sector.System.Colony is null)
             { /*do nothing*/ }
             else if (Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
             {
-                Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
+                _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
 
-                string _report = Fleet.ObjectID
+                string _text = Fleet.ObjectID
                     + blank + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help at"
                     + blank + Fleet.Sector.System.Colony.Name
                     //+ blank + Fleet.Sector.System.Colony.ObjectID 
@@ -370,18 +405,18 @@ namespace Supremacy.Orbitals
                     + blank + Fleet.Sector.System.Colony.Health.CurrentValue
                     + blank + "(old=" + oldHealth + ")";
 
-                Console.WriteLine(_report);
-                GameLog.Core.ColoniesDetails.DebugFormat(_report);
+                Console.WriteLine(_text);
+                GameLog.Core.ColoniesDetails.DebugFormat(_text);
                 //GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}%, new = {7}"
                 //    , Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
                 //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
                 //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
 
-                _report = healthAdjustment + " up to " + Fleet.Sector.System.Colony.Health.CurrentValue + " (old: " + oldHealth + ") by " + Fleet.Name + " (Medical Ship)";
-                GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _report));
+                _text = "we provided through " + Fleet.Name + " (Medical Ship): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " (before: " + oldHealth + ")";
+                GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _text));
 
-                _report = healthAdjustment + " up to " + Fleet.Sector.System.Colony.Health.CurrentValue + " (old: " + oldHealth + ") by " + Fleet.Name + " (" + Fleet.Owner.ShortName + " Medical Ship)";
-                GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _report));
+                _text = "we got by " + Fleet.Name + " (" + Fleet.Owner.ShortName + " Medical Ship): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " (before: " + oldHealth + ")";
+                GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _text));
             }
 
             //If the colony is not ours, just doing small medical help + increase regard + trust etc
@@ -395,7 +430,7 @@ namespace Supremacy.Orbitals
                 healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
 
                 // only small medical help = +1
-                Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
+                _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
                 //ToDo: SitRep
 
@@ -418,7 +453,7 @@ namespace Supremacy.Orbitals
                     ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
                 }
 
-                string _report = Fleet.ObjectID
+                string _text = Fleet.ObjectID
                     + blank + Fleet.Name + " doing Medical help at "
                     + blank + Fleet.Sector.System.Colony.Name
                     //+ blank + Fleet.Sector.System.Colony.ObjectID 
@@ -426,8 +461,8 @@ namespace Supremacy.Orbitals
                     + blank + healthAdjustment + "%, new = "
                     + blank + Fleet.Sector.System.Colony.Health.CurrentValue;
 
-                Console.WriteLine(_report);
-                GameLog.Core.ColoniesDetails.DebugFormat(_report);
+                Console.WriteLine(_text);
+                GameLog.Core.ColoniesDetails.DebugFormat(_text);
             }
         }
 
@@ -485,21 +520,41 @@ namespace Supremacy.Orbitals
         {
             //var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (!base.IsValidOrder(fleet))
+            {
                 return false;
+            }
             // if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
             // return false;
             if (fleet.Sector.System == null)
+            {
                 return false;
+            }
+
             if (fleet.Sector.System.Colony == null)
+            {
                 return false;
+            }
+
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+            {
                 return false;
+            }
+
             if (fleet.Sector.Owner.CivID == 6) // borg systems us sabotage order
+            {
                 return false;
+            }
+
             if (!fleet.Sector.Owner.IsEmpire)  // if it is NOT an empire, return false
+            {
                 return false;
+            }
+
             if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
+            {
                 return false;
+            }
+
             foreach (Ship ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)
@@ -515,12 +570,21 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnBeginning();
             if (!IsAssigned)
+            {
                 return;
+            }
+
             if (_isComplete)
+            {
                 return;
+            }
+
             Ship spyOnShip = FindBestSpyOnShip();
             if (spyOnShip == null)
+            {
                 return;
+            }
+
             CreateSpyOn(
                 Fleet.Owner,
                 Fleet.Sector.System);
@@ -531,7 +595,9 @@ namespace Supremacy.Orbitals
         {
             base.OnOrderAssigned();
             if (!Fleet.Route.IsEmpty)
+            {
                 Fleet.Route = TravelRoute.Empty;
+            }
         }
 
         private static void CreateSpyOn(Civilization civ, StarSystem system)
@@ -746,9 +812,14 @@ namespace Supremacy.Orbitals
         {
             // Borg systems only in place of AssetsScreen spy missions for the rest
             if (!base.IsValidOrder(fleet))
+            {
                 return false;
+            }
+
             if (fleet.Sector.System == null)
+            {
                 return false;
+            }
             //try // no owner for wormholes....
             //{
             //    if (fleet.Sector.Owner.Key == "BORG" || fleet.Sector.Owner.Key == null)
@@ -764,7 +835,9 @@ namespace Supremacy.Orbitals
                     foreach (Ship ship in fleet.Ships)
                     {
                         if (ship.ShipType == ShipType.Spy)
+                        {
                             return true;
+                        }
                     }
                 }
             }
@@ -776,21 +849,29 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnBeginning();
             if (_isComplete)
+            {
                 return;
+            }
+
             Ship sabotageShip = FindBestSabotageShip();
             if (sabotageShip == null)
+            {
                 return;
+            }
+
             CreateSabotage(
                 Fleet.Owner,
                 Fleet.Sector.System);
-            GameContext.Current.Universe.Destroy(sabotageShip);
+            _ = GameContext.Current.Universe.Destroy(sabotageShip);
         }
 
         protected internal override void OnOrderAssigned()
         {
             base.OnOrderAssigned();
             if (!Fleet.Route.IsEmpty)
+            {
                 Fleet.Route = TravelRoute.Empty;
+            }
         }
 
         private static void CreateSabotage(Civilization civ, StarSystem system)
@@ -801,16 +882,22 @@ namespace Supremacy.Orbitals
 
             int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
+            {
                 defenseIntelligence = 2;
+            }
 
             int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)
+            {
                 attackingIntelligence = 1;
+            }
 
             int ratio = attackingIntelligence / defenseIntelligence;
             //max ratio for no exceeding gaining points
             if (ratio > 10)
+            {
                 ratio = 10;
+            }
 
             GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SABOTAGED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
                 system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
@@ -918,15 +1005,30 @@ namespace Supremacy.Orbitals
         public override bool IsValidOrder(Fleet fleet)
         {
             if (!base.IsValidOrder(fleet))
+            {
                 return false;
+            }
+
             if (fleet.Sector.System == null)
+            {
                 return false;
+            }
+
             if (!fleet.Sector.System.HasColony)
+            {
                 return false;
+            }
+
             if (!fleet.Ships.Any(s => s.ShipType == ShipType.Diplomatic))
+            {
                 return false;
+            }
+
             if (fleet.Sector.System.Owner.Key == "BORG")
+            {
                 return false;
+            }
+
             return true;
         }
 
@@ -934,10 +1036,15 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnBeginning();
             if (_isComplete)
+            {
                 return;
+            }
+
             Ship _influenceShip = FindBestInfluenceShip();
             if (_influenceShip == null)
+            {
                 return;
+            }
 
             CivilizationManager influencedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
             CivilizationManager influencerCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
@@ -953,7 +1060,7 @@ namespace Supremacy.Orbitals
                     Fleet.Owner, Fleet.Sector.System.Name);
                 if (Fleet.Sector.System.Colony.Morale.CurrentValue < 95)
                 {
-                    Fleet.Sector.System.Colony.Morale.AdjustCurrent(+3);
+                    _ = Fleet.Sector.System.Colony.Morale.AdjustCurrent(+3);
                     Fleet.Sector.System.Colony.Morale.UpdateAndReset();
                     GameLog.Core.Diplomacy.DebugFormat("{0} successfully increased the morale at {1}",
                         influencerCiv, Fleet.Sector.System.Name);
@@ -978,7 +1085,9 @@ namespace Supremacy.Orbitals
         {
             base.OnOrderAssigned();
             if (!Fleet.Route.IsEmpty)
+            {
                 Fleet.Route = TravelRoute.Empty;
+            }
         }
 
     }
@@ -997,38 +1106,54 @@ namespace Supremacy.Orbitals
 
         public override object Target
         {
-            get { return TargetFleet; }
+            get => TargetFleet;
             set
             {
                 if (value == null)
+                {
                     TargetFleet = null;
+                }
+
                 if (value is Fleet)
+                {
                     TargetFleet = value as Fleet;
+                }
                 else
+                {
                     throw new ArgumentException("Target must be of type Supremacy.Orbitals.Fleet");
+                }
+
                 OnPropertyChanged("Target");
             }
         }
 
         public Fleet TargetFleet
         {
-            get { return GameContext.Current.Universe.Objects[_targetFleetId] as Fleet; }
+            get => GameContext.Current.Universe.Objects[_targetFleetId] as Fleet;
             private set
             {
                 Fleet currentTarget = TargetFleet;
                 if (currentTarget != null)
+                {
                     EndTow();
+                }
+
                 if (value == null)
+                {
                     _targetFleetId = -1;
+                }
                 else
+                {
                     _targetFleetId = value.ObjectID;
+                }
+
                 OnPropertyChanged("TargetFleet");
             }
         }
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_TOW");
 
-        public override string Status => String.Format(
+        public override string Status => string.Format(
                     ResourceManager.GetString("FLEET_ORDER_STATUS_TOW"),
                     TargetFleet);
 
@@ -1041,12 +1166,20 @@ namespace Supremacy.Orbitals
                     int turns = Fleet.Route.Length / Fleet.Speed;
                     string formatString;
                     if ((Fleet.Route.Length % Fleet.Speed) != 0)
+                    {
                         turns++;
+                    }
+
                     if (turns == 1)
+                    {
                         formatString = ResourceManager.GetString("ORDER_ETA_TURN_MULTILINE");
+                    }
                     else
+                    {
                         formatString = ResourceManager.GetString("ORDER_ETA_TURNS_MULTILINE");
-                    return String.Format(formatString, Status, turns);
+                    }
+
+                    return string.Format(formatString, Status, turns);
                 }
                 return Status;
             }
@@ -1076,7 +1209,9 @@ namespace Supremacy.Orbitals
         private void BeginTow()
         {
             if (TargetFleet.IsInTow)
+            {
                 return;
+            }
 
             TargetFleet.IsInTow = true;
 
@@ -1091,13 +1226,17 @@ namespace Supremacy.Orbitals
             TargetFleet.LockShips();
 
             if (_orderLocked)
+            {
                 TargetFleet.UnlockOrder();
+            }
 
             TargetFleet.SetOrder(FleetOrders.AvoidOrder.Create());
             TargetFleet.LockOrder();
 
             if (TargetFleet.IsRouteLocked)
+            {
                 TargetFleet.UnlockRoute();
+            }
 
             TargetFleet.SetRoute(TravelRoute.Empty);
             TargetFleet.LockRoute();
@@ -1108,20 +1247,31 @@ namespace Supremacy.Orbitals
         private void EndTow()
         {
             if (!TargetFleet.IsInTow)
+            {
                 return;
+            }
 
             TargetFleet.UnlockOrder();
             TargetFleet.UnlockRoute();
 
             if (_lastOrder != null)
+            {
                 TargetFleet.SetOrder(_lastOrder);
+            }
             else
+            {
                 TargetFleet.SetOrder(TargetFleet.GetDefaultOrder());
+            }
 
             if (_orderLocked)
+            {
                 TargetFleet.LockOrder();
+            }
+
             if (!_shipsLocked)
+            {
                 TargetFleet.UnlockShips();
+            }
 
             TargetFleet.IsInTow = false;
 
@@ -1132,20 +1282,28 @@ namespace Supremacy.Orbitals
         {
             base.OnOrderAssigned();
             if (TargetFleet != null)
+            {
                 BeginTow();
+            }
         }
 
         protected internal override void OnOrderCancelled()
         {
             if (TargetFleet != null)
+            {
                 EndTow();
+            }
+
             base.OnOrderCancelled();
         }
 
         protected internal override void OnOrderCompleted()
         {
             if (TargetFleet != null)
+            {
                 EndTow();
+            }
+
             base.OnOrderCompleted();
         }
 
@@ -1155,7 +1313,9 @@ namespace Supremacy.Orbitals
 
             Fleet targetFleet = TargetFleet;
             if ((targetFleet != null) && targetFleet.IsInTow)
+            {
                 TargetFleet.SetRoute(TravelRoute.Empty);
+            }
         }
 
         protected internal override void OnTurnEnding()
@@ -1171,35 +1331,48 @@ namespace Supremacy.Orbitals
                 if ((ship != null) && (!FleetHelper.IsFleetInFuelRange(targetFleet)))
                 {
                     int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
-                    ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+                    _ = ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
                 }
             }
 
             if (IsComplete)
+            {
                 Fleet.SetOrder(Fleet.GetDefaultOrder());
+            }
         }
 
         public override void OnFleetMoved()
         {
             base.OnFleetMoved();
             if (TargetFleet != null)
+            {
                 TargetFleet.Location = Fleet.Location;
+            }
         }
 
         public override bool IsValidOrder(Fleet fleet)
         {
             if (!base.IsValidOrder(fleet))
+            {
                 return false;
+            }
+
             if (fleet.Ships.Count != 1)
+            {
                 return false;
+            }
+
             if (fleet == Fleet && fleet.IsStranded)
+            {
                 return false;
+            }
+
             return true;
         }
 
         public override IEnumerable<object> FindTargets(Fleet source)
         {
-            List<object> targets = new List<Object>();
+            List<object> targets = new List<object>();
             foreach (Fleet targetFleet in GameContext.Current.Universe.FindAt<Fleet>(source.Location))
             {
                 if ((targetFleet != source)
@@ -1226,11 +1399,11 @@ namespace Supremacy.Orbitals
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE");
 
-        public override string Status => String.Format(
+        public override string Status => string.Format(
                     ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"),
                     Fleet);
 
-        public override string DisplayText => String.Format(
+        public override string DisplayText => string.Format(
                     ResourceManager.GetString("ORDER_ENTER_WORMHOLE"),
                     Status);
 
@@ -1252,7 +1425,9 @@ namespace Supremacy.Orbitals
         {
             base.OnOrderAssigned();
             if (Fleet != null)
+            {
                 _startingLocation = Fleet.Location;
+            }
         }
 
 
@@ -1275,7 +1450,9 @@ namespace Supremacy.Orbitals
                     GameLog.Core.General.DebugFormat("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
 
                     if (IsComplete)
+                    {
                         Fleet.SetOrder(Fleet.GetDefaultOrder());
+                    }
                 }
             }
         }
@@ -1284,7 +1461,9 @@ namespace Supremacy.Orbitals
         {
 
             if (fleet.Sector.System != null && fleet.Sector.System.StarType == StarType.Wormhole)
+            {
                 return true;
+            }
 
             return false;
         }
@@ -1320,14 +1499,20 @@ namespace Supremacy.Orbitals
         public override bool IsValidOrder(Fleet fleet)
         {
             if (!base.IsValidOrder(fleet))
+            {
                 return false;
+            }
+
             if (!FleetHelper.IsFleetInFuelRange(fleet))
             {
                 bool needsFuel = false;
                 foreach (Ship ship in fleet.Ships)
                 {
                     if (ship.FuelReserve.IsMaximized)
+                    {
                         continue;
+                    }
+
                     needsFuel = true;
                     break;
                 }
@@ -1335,7 +1520,9 @@ namespace Supremacy.Orbitals
                 {
                     StarSystem system = fleet.Sector.System;
                     if (system != null)
-                        return ((system.StarType == StarType.Nebula) || system.ContainsPlanetType(PlanetType.GasGiant));
+                    {
+                        return (system.StarType == StarType.Nebula) || system.ContainsPlanetType(PlanetType.GasGiant);
+                    }
                 }
             }
             return false;
@@ -1346,10 +1533,14 @@ namespace Supremacy.Orbitals
             base.OnTurnBeginning();
 
             if ((++_turnsCollecting % 2) != 0)
+            {
                 return;
+            }
 
             foreach (Ship ship in Fleet.Ships)
-                ship.FuelReserve.AdjustCurrent(1);
+            {
+                _ = ship.FuelReserve.AdjustCurrent(1);
+            }
         }
     }
 
@@ -1367,7 +1558,7 @@ namespace Supremacy.Orbitals
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_BUILD_STATION");
 
-        public override string Status => String.Format(
+        public override string Status => string.Format(
                     ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION"),
                     ResourceManager.GetString(_buildProject.StationDesign.Name));
 
@@ -1375,20 +1566,14 @@ namespace Supremacy.Orbitals
 
         public override object Target
         {
-            get { return BuildProject; }
-            set { BuildProject = value as StationBuildProject; }
+            get => BuildProject;
+            set => BuildProject = value as StationBuildProject;
         }
 
         public StationBuildProject BuildProject
         {
-            get
-            {
-                return _buildProject;
-            }
-            set
-            {
-                _buildProject = value;
-            }
+            get => _buildProject;
+            set => _buildProject = value;
         }
 
         public override Percentage? PercentComplete
@@ -1396,7 +1581,10 @@ namespace Supremacy.Orbitals
             get
             {
                 if (BuildProject != null)
+                {
                     return BuildProject.PercentComplete;
+                }
+
                 return null;
             }
         }
@@ -1417,7 +1605,9 @@ namespace Supremacy.Orbitals
         public override IEnumerable<object> FindTargets([NotNull] Fleet source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
 
             List<StationDesign> designs = new List<StationDesign>();
             List<object> targets = new List<object>();
@@ -1435,7 +1625,9 @@ namespace Supremacy.Orbitals
             foreach (StationDesign stationDesign in civManager.TechTree.StationDesigns)
             {
                 if (TechTreeHelper.MeetsTechLevels(civManager, stationDesign))
+                {
                     designs.Add(stationDesign);
+                }
             }
 
             for (int i = 0; i < designs.Count; i++)
@@ -1443,14 +1635,23 @@ namespace Supremacy.Orbitals
                 for (int j = 0; j < designs.Count; j++)
                 {
                     if (i == j)
+                    {
                         continue;
+                    }
+
                     foreach (TechObjectDesign obsoleteDesign in designs[i].ObsoletedDesigns)
                     {
                         if (obsoleteDesign != designs[j])
+                        {
                             continue;
+                        }
+
                         designs.RemoveAt(j);
                         if (i > j)
+                        {
                             i--;
+                        }
+
                         j--;
                     }
                 }
@@ -1468,9 +1669,15 @@ namespace Supremacy.Orbitals
         public override bool IsValidOrder(Fleet fleet)
         {
             if (fleet.Sector.Station != null)
+            {
                 return false;
+            }
+
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
+            {
                 return false;
+            }
+
             foreach (Ship ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Construction)
@@ -1485,24 +1692,32 @@ namespace Supremacy.Orbitals
         public override bool CanAssignOrder(Fleet fleet)
         {
             if (!IsValidOrder(fleet))
+            {
                 return false;
+            }
 
             // if build order already set, can't assign it again
             if (fleet.Order is BuildStationOrder)
+            {
                 return false;
+            }
 
             // can't start building if any other ship is already building an outpost
             foreach (Fleet otherFleet in GameContext.Current.Universe.FindAt<Fleet>(fleet.Location))
             {
                 if ((otherFleet != fleet) && (otherFleet.Order is BuildStationOrder))
+                {
                     return false;
+                }
             }
 
             // needs to be a construction ship
             foreach (Ship ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Construction)
+                {
                     return true;
+                }
             }
 
             return false;
@@ -1518,12 +1733,16 @@ namespace Supremacy.Orbitals
             base.OnTurnBeginning();
 
             if (!IsAssigned)
+            {
                 return;
+            }
 
             StationBuildProject project = _buildProject;
             GameLog.Core.Production.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             if ((project == null) || (project.ProductionCenter == null) || project.IsCompleted)
+            {
                 return;
+            }
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[project.Builder];
             if (civManager == null)
@@ -1539,21 +1758,21 @@ namespace Supremacy.Orbitals
             int buildOutput = project.ProductionCenter.GetBuildOutput(0);
             ResourceValueCollection resources = new ResourceValueCollection
             {
-                [ResourceType.RawMaterials] = civManager.Resources[ResourceType.RawMaterials].CurrentValue
+                [ResourceType.Duranium] = civManager.Resources[ResourceType.Duranium].CurrentValue
             };
 
             ResourceValueCollection usedResources = resources.Clone();
 
             project.Advance(ref buildOutput, usedResources);
 
-            //RawMaterialsBefore = usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials];
+            //DuraniumBefore = usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium];
 
             GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
-                , project.BuildDesign, civManager.Resources[ResourceType.RawMaterials].CurrentValue
-                , usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials]);
+                , project.BuildDesign, civManager.Resources[ResourceType.Duranium].CurrentValue
+                , usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
 
-            civManager.Resources[ResourceType.RawMaterials].AdjustCurrent(
-                usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials]);
+            _ = civManager.Resources[ResourceType.Duranium].AdjustCurrent(
+                usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
 
         }
 
@@ -1569,7 +1788,10 @@ namespace Supremacy.Orbitals
            ;
             Ship destroyedShip = Fleet.Ships.FirstOrDefault(o => o.ShipType == ShipType.Construction);
             if (destroyedShip != null)
-                GameContext.Current.Universe.Destroy(destroyedShip);
+            {
+                _ = GameContext.Current.Universe.Destroy(destroyedShip);
+            }
+
             GameLog.Core.Stations.DebugFormat("Destroyed = {0}", destroyedShip);
         }
 
@@ -1577,7 +1799,9 @@ namespace Supremacy.Orbitals
         {
             base.OnFleetMoved();
             if (BuildProject != null)
+            {
                 BuildProject.Cancel();
+            }
         }
 
         #region FleetProductionCenter Class
@@ -1591,7 +1815,10 @@ namespace Supremacy.Orbitals
             public FleetProductionCenter(Fleet fleet)
             {
                 if (fleet == null)
+                {
                     throw new ArgumentNullException("fleet");
+                }
+
                 _fleetId = fleet.ObjectID;
                 _buildSlot = new BuildSlot();
             }
@@ -1655,7 +1882,10 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnBeginning();
             if (!IsAssigned)
+            {
                 return;
+            }
+
             if (Fleet.Route.IsEmpty && (Fleet.UnitAIType != UnitAIType.SystemAttack || Fleet.UnitAIType != UnitAIType.Reserve))
             {
                 if (UnitAI.GetBestSectorToExplore(Fleet, out Sector bestSector))

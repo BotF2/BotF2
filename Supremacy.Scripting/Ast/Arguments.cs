@@ -159,7 +159,9 @@ namespace Supremacy.Scripting.Ast
 
             MSAst[] transformedArguments = new MSAst[_arguments.Count];
             for (int i = 0; i < _arguments.Count; i++)
+            {
                 transformedArguments[i] = _arguments[i].Value.Transform(generator);
+            }
 
             return transformedArguments;
         }

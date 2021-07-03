@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using Microsoft.Practices.ServiceLocation;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -573,7 +572,7 @@ namespace Supremacy.Combat
             foreach (KeyValuePair<string, int> empire in _empireStrengths)
             {
                 GameLog.Core.CombatDetails.DebugFormat("Strength for {0} = {1}", empire.Key, empire.Value);
-                //GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _report));
+                //GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _text));
                 //makes crash !!   _empireStrengths.Add(empire.Key, empire.Value);
             }
         }
@@ -609,16 +608,16 @@ namespace Supremacy.Combat
                     newfleet.Name = "Assimilated Assets";
                     GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
-                    string _report = "Ship " + ship.ObjectID + " assimilated: " + ship.Name + " (" + ship.Design + ").";
+                    string _text = "Ship assimilated: " + ship.ObjectID + " " + ship.Name + " ( " + ship.Design + " ).";
 
                     GameLog.Core.CombatDetails.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
                         ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
 
-                    GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _report));
+                    GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _text));
 
                     //for Borg only: 
-                    _report += "We gained " + gainedResearchPoints + " research points.";
-                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(borg, ship.Location, _report));
+                    _text += "We gained " + gainedResearchPoints + " research points.";
+                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(borg, ship.Location, _text));
 
                 }
             }
@@ -659,7 +658,7 @@ namespace Supremacy.Combat
         }
 
         /// <summary>
-        /// Returns the <see cref="CombatAssets"/> that belong to the given <see cref="Entities.Civilization"/>
+        /// Returns the <see cref="CombatAssets"/> that belong to the given <see cref="Civilization"/>
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>

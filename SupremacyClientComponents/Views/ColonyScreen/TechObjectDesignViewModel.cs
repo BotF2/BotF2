@@ -33,8 +33,8 @@ namespace Supremacy.Client.Views
 
         public TechObjectDesign Design
         {
-            get { return (TechObjectDesign)GetValue(DesignProperty); }
-            set { SetValue(DesignProperty, value); }
+            get => (TechObjectDesign)GetValue(DesignProperty);
+            set => SetValue(DesignProperty, value);
         }
         #endregion
 
@@ -47,8 +47,8 @@ namespace Supremacy.Client.Views
 
         public Civilization Civilization
         {
-            get { return (Civilization)GetValue(CivilizationProperty); }
-            set { SetValue(CivilizationProperty, value); }
+            get => (Civilization)GetValue(CivilizationProperty);
+            set => SetValue(CivilizationProperty, value);
         }
         #endregion
 
@@ -67,8 +67,8 @@ namespace Supremacy.Client.Views
 
         public MapLocation? Location
         {
-            get { return (MapLocation?)GetValue(LocationProperty); }
-            set { SetValue(LocationProperty, value); }
+            get => (MapLocation?)GetValue(LocationProperty);
+            set => SetValue(LocationProperty, value);
         }
         #endregion
 
@@ -93,12 +93,12 @@ namespace Supremacy.Client.Views
 
             TechObjectDesign design = viewModel.Design;
             if (design == null)
+            {
                 return baseValue;
+            }
 
-            TechTree primaryTechTree;
-            TechTree secondaryTechTree;
 
-            viewModel.GetTechTrees(out primaryTechTree, out secondaryTechTree);
+            viewModel.GetTechTrees(out TechTree primaryTechTree, out TechTree secondaryTechTree);
 
             return design.UpgradableDesigns
                 .Where(
@@ -130,12 +130,12 @@ namespace Supremacy.Client.Views
 
             TechObjectDesign design = viewModel.Design;
             if (design == null)
+            {
                 return baseValue;
+            }
 
-            TechTree primaryTechTree;
-            TechTree secondaryTechTree;
 
-            viewModel.GetTechTrees(out primaryTechTree, out secondaryTechTree);
+            viewModel.GetTechTrees(out TechTree primaryTechTree, out TechTree secondaryTechTree);
 
             return design.ObsoletedDesigns
                 .Where(
@@ -154,22 +154,31 @@ namespace Supremacy.Client.Views
 
             IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             if (appContext == null)
+            {
                 return;
+            }
 
             Game.IGameContext gameContext = appContext.CurrentGame;
             if (gameContext == null)
+            {
                 return;
+            }
 
             TechObjectDesign design = Design;
             if (design == null)
+            {
                 return;
+            }
 
             Civilization civilization = Civilization;
             if (civilization == null)
             {
                 Game.CivilizationManager localPlayerEmpire = appContext.LocalPlayerEmpire;
                 if (localPlayerEmpire == null)
+                {
                     return;
+                }
+
                 civilization = localPlayerEmpire.Civilization;
             }
 
@@ -177,19 +186,27 @@ namespace Supremacy.Client.Views
 
             MapLocation? location = Location;
             if ((!(design is BuildingDesign)) || !location.HasValue)
+            {
                 return;
+            }
 
             StarSystem system = gameContext.Universe.Map[location.Value].System;
             if (system == null)
+            {
                 return;
+            }
 
             Colony colony = system.Colony;
             if (colony == null)
+            {
                 return;
+            }
 
             Civilization originalOwner = colony.OriginalOwner;
             if (originalOwner != civilization)
+            {
                 secondaryTechTree = gameContext.TechTrees[civilization];
+            }
         }
         #endregion
 

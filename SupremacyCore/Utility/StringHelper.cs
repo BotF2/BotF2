@@ -19,8 +19,8 @@ namespace Supremacy.Utility
             if (value != null)
             {
                 value = value.Trim();
-                return (value.Equals("true", StringComparison.OrdinalIgnoreCase)
-                        || value.Equals("1", StringComparison.Ordinal));
+                return value.Equals("true", StringComparison.OrdinalIgnoreCase)
+                        || value.Equals("1", StringComparison.Ordinal);
             }
             return false;
         }
@@ -30,8 +30,8 @@ namespace Supremacy.Utility
             if (value != null)
             {
                 value = value.Trim();
-                return (value.Equals("false", StringComparison.OrdinalIgnoreCase)
-                        || value.Equals("0", StringComparison.Ordinal));
+                return value.Equals("false", StringComparison.OrdinalIgnoreCase)
+                        || value.Equals("0", StringComparison.Ordinal);
             }
             return false;
         }
@@ -39,27 +39,36 @@ namespace Supremacy.Utility
         public static string QuoteString(string value)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             StringBuilder sb = new StringBuilder(value.Length + 2);
             int bracketDepth = 0;
 
-            sb.Append('"');
+            _ = sb.Append('"');
 
             for (int i = 0; i < value.Length; i++)
             {
                 char c = value[i];
                 char last = i == 0 ? '\0' : value[i - 1];
                 if (c == '{' && last != '\\')
+                {
                     ++bracketDepth;
+                }
                 else if (c == '}' && last != '\\')
+                {
                     --bracketDepth;
+                }
                 else if (c == '"' && bracketDepth == 0)
-                    sb.Append('\\');
-                sb.Append(c);
+                {
+                    _ = sb.Append('\\');
+                }
+
+                _ = sb.Append(c);
             }
 
-            sb.Append('"');
+            _ = sb.Append('"');
 
             return sb.ToString();
         }

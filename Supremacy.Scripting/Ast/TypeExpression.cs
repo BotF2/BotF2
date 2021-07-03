@@ -28,7 +28,7 @@ namespace Supremacy.Scripting.Ast
             Span = span;
         }
 
-        public static TypeExpression Create([NotNull] Type type, SourceSpan span = default(SourceSpan))
+        public static TypeExpression Create([NotNull] Type type, SourceSpan span = default)
         {
             if (type == null)
             {

@@ -49,10 +49,14 @@ namespace Supremacy.Client
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             if (!FlagsType.IsAssignableFrom(value.GetType()))
+            {
                 return value;
+            }
 
             System.Collections.Generic.List<object> flagValues = Enum.GetValues(FlagsType).Cast<object>().OrderBy(o => o).ToList();
             System.Collections.Generic.List<object> innerFlagValues = flagValues;

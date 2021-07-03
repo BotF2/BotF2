@@ -43,9 +43,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -115,44 +114,64 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    target.Population.AdjustCurrent(-population / 5);
+                    _ = target.Population.AdjustCurrent(-population / 5);
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(-(health / 5));
+                    _ = target.Health.AdjustCurrent(-(health / 5));
                     //GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     int removeFood = 2; // If you have food 4 or more then take out 2
                     if (target.GetTotalFacilities(ProductionCategory.Food) < 4)
+                    {
                         removeFood = 0;
+                    }
+
                     target.RemoveFacilities(ProductionCategory.Food, removeFood);
 
                     int removeIndustry = 4;  // If you have industry 8 or more then take out 4
                     if (target.GetTotalFacilities(ProductionCategory.Industry) < 8)
+                    {
                         removeIndustry = 0;
+                    }
+
                     target.RemoveFacilities(ProductionCategory.Industry, removeIndustry);
 
                     int removeEnergy = 2; ;  // If you have energy 6 or more then take out 2
                     if (target.GetTotalFacilities(ProductionCategory.Energy) < 6)
+                    {
                         removeEnergy = 0;
+                    }
+
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
 
                     int removeResearch = 2;   // If you have research 4 or more then take out 2
                     if (target.GetTotalFacilities(ProductionCategory.Research) < 4)
+                    {
                         removeResearch = 0;
+                    }
+
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
                     int removeIntelligence = 3;   // If you have intel 4 or more than take out 3
                     if (target.GetTotalFacilities(ProductionCategory.Intelligence) < 4)
+                    {
                         removeIntelligence = 0;
+                    }
+
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence);
 
                     int removeOrbitalBatteries = 10;  // if you have 11 or more orbital batteries take out 10
                     if (target.OrbitalBatteries.Count <= 11)
+                    {
                         removeOrbitalBatteries = 0;
+                    }
+
                     target.RemoveOrbitalBatteries(removeOrbitalBatteries);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
+                    {
                         civManager.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target));
+                    }
 
                     GameContext.Current.Universe.UpdateSectors();
                     return;

@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -40,18 +39,22 @@ namespace Supremacy.Client
         {
             base.OnApplyTemplate();
 
-            TextBox nameText = GetTemplateChild("NameText") as TextBox;
 
-            if (nameText == null)
+            if (!(GetTemplateChild("NameText") is TextBox nameText))
+            {
                 return;
+            }
+
             nameText.LostFocus += NameText_OnLostFocus;
             nameText.GotFocus += NameText_OnGotFocus;
             nameText.TextChanged += NameText_OnTextChanged;
 
-            TextBox classText = GetTemplateChild("ClassText") as TextBox;
 
-            if (classText == null)
+            if (!(GetTemplateChild("ClassText") is TextBox classText))
+            {
                 return;
+            }
+
             classText.LostFocus += ClassText_OnLostFocus;
             classText.GotFocus += ClassText_OnGotFocus;
             classText.TextChanged += ClassText_OnTextChanged;
@@ -60,69 +63,99 @@ namespace Supremacy.Client
 
         private static void NameText_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox nameText = e.Source as TextBox;
-            if (nameText == null)
+            if (!(e.Source is TextBox nameText))
+            {
                 return;
+            }
+
             System.Windows.Data.BindingExpression bindingExpression = nameText.GetBindingExpression(TextBox.TextProperty);
             if (bindingExpression == null)
+            {
                 return;
-            if (!String.IsNullOrEmpty(nameText.Text))
+            }
+
+            if (!string.IsNullOrEmpty(nameText.Text))
+            {
                 bindingExpression.UpdateSource();
+            }
         }
 
         private static void ClassText_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox classText = e.Source as TextBox;
-            if (classText == null)
+            if (!(e.Source is TextBox classText))
+            {
                 return;
+            }
+
             System.Windows.Data.BindingExpression bindingExpression = classText.GetBindingExpression(TextBox.TextProperty);
             if (bindingExpression == null)
+            {
                 return;
-            if (!String.IsNullOrEmpty(classText.Text))
+            }
+
+            if (!string.IsNullOrEmpty(classText.Text))
+            {
                 bindingExpression.UpdateSource();
+            }
         }
 
         private void NameText_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox nameText = e.Source as TextBox;
-            if (nameText == null)
+            if (!(e.Source is TextBox nameText))
+            {
                 return;
+            }
+
             _previousText = nameText.Text;
         }
 
         private void ClassText_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox classText = e.Source as TextBox;
-            if (classText == null)
+            if (!(e.Source is TextBox classText))
+            {
                 return;
+            }
+
             _previousClassText = classText.Text;
         }
 
         private void NameText_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox nameText = e.Source as TextBox;
             string previousText = _previousText;
             _previousText = null;
-            if ((nameText == null) || String.Equals(nameText.Text, previousText))
+            if ((!(e.Source is TextBox nameText)) || string.Equals(nameText.Text, previousText))
+            {
                 return;
+            }
+
             Ship ship = DataContext as Ship;
             if (ship == null)
+            {
                 return;
-            if (String.IsNullOrEmpty(nameText.Text.Trim()) || String.Equals(ship.Name, ship.ShipDesign.Name))
+            }
+
+            if (string.IsNullOrEmpty(nameText.Text.Trim()) || string.Equals(ship.Name, ship.ShipDesign.Name))
+            {
                 ship.Name = null;
+            }
+
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(new SetObjectNameOrder(ship, ship.Name));
         }
 
         private void ClassText_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox classText = e.Source as TextBox;
             string previousText = _previousClassText;
             _previousClassText = null;
-            if ((classText == null) || String.Equals(classText.Text, previousText))
+            if ((!(e.Source is TextBox classText)) || string.Equals(classText.Text, previousText))
+            {
                 return;
+            }
+
             Ship ship = DataContext as Ship;
             if (ship == null)
+            {
                 return;
+            }
             //if (String.IsNullOrEmpty(classText.Text.Trim()) || String.Equals(ship.ClassName, ship.ShipDesign.ClassName))
             //    ship.Class = null;
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(new SetObjectNameOrder(ship, ship.ClassName));

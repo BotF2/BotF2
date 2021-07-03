@@ -26,7 +26,9 @@ namespace Supremacy.Universe
             MapRectangle region = neighbors.Region;
 
             if (!neighbors.Any())
+            {
                 return double.MaxValue;
+            }
 
             while (true)
             {
@@ -41,12 +43,17 @@ namespace Supremacy.Universe
                 {
                     double result = candidates.Min(o => GetDistance(o.Location, source.Location));
                     if (neighbors.Contains(source) && result != 0)
+                    {
                         System.Diagnostics.Debugger.Break();
+                    }
+
                     return result;
                 }
 
                 if (boundingBox.Contains(region))
+                {
                     break;
+                }
 
                 radius *= 2;
             }

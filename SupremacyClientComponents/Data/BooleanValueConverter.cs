@@ -17,21 +17,24 @@ namespace Supremacy.Client.Data
 
         public object TrueValue
         {
-            get { return _trueValue; }
-            set { _trueValue = value; }
+            get => _trueValue;
+            set => _trueValue = value;
         }
 
         public object FalseValue
         {
-            get { return _falseValue; }
-            set { _falseValue = value; }
+            get => _falseValue;
+            set => _falseValue = value;
         }
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             object convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
             if (convertedCondition == DependencyProperty.UnsetValue || !Equals(convertedCondition, True))
+            {
                 return ValueConversionHelper.Convert(_falseValue, targetType, parameter, culture);
+            }
+
             return ValueConversionHelper.Convert(_trueValue, targetType, parameter, culture);
         }
 
@@ -41,7 +44,9 @@ namespace Supremacy.Client.Data
             {
                 object convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
                 if (convertedCondition == DependencyProperty.UnsetValue || !Equals(convertedCondition, True))
+                {
                     return ValueConversionHelper.Convert(_falseValue, targetType, parameter, culture);
+                }
             }
             return ValueConversionHelper.Convert(_trueValue, targetType, parameter, culture);
         }

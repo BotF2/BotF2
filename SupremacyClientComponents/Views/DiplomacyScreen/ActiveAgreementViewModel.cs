@@ -7,7 +7,6 @@ using System.Threading;
 using Supremacy.Annotations;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
-using Supremacy.Game;
 using Supremacy.Scripting;
 using Supremacy.Utility;
 
@@ -24,10 +23,7 @@ namespace Supremacy.Client.Views
 
         public ActiveAgreementViewModel([NotNull] IAgreement agreement)
         {
-            if (agreement == null)
-                throw new ArgumentNullException("agreement");
-
-            _agreement = agreement;
+            _agreement = agreement ?? throw new ArgumentNullException("agreement");
             _elements = new ObservableCollection<DiplomacyMessageElement>();
             _elementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_elements);
 
@@ -70,11 +66,13 @@ namespace Supremacy.Client.Views
 
         public int StartTurn
         {
-            get { return _startTurn; }
+            get => _startTurn;
             private set
             {
                 if (Equals(value, _startTurn))
+                {
                     return;
+                }
 
                 _startTurn = value;
 
@@ -99,11 +97,13 @@ namespace Supremacy.Client.Views
 
         public int EndTurn
         {
-            get { return _endTurn; }
+            get => _endTurn;
             private set
             {
                 if (Equals(value, _endTurn))
+                {
                     return;
+                }
 
                 _endTurn = value;
 
@@ -128,11 +128,13 @@ namespace Supremacy.Client.Views
 
         public DiplomaticMessageCategory Category
         {
-            get { return _category; }
+            get => _category;
             private set
             {
                 if (Equals(value, _category))
+                {
                     return;
+                }
 
                 _category = value;
 
@@ -157,11 +159,13 @@ namespace Supremacy.Client.Views
 
         public string Description
         {
-            get { return _description; }
+            get => _description;
             private set
             {
                 if (Equals(value, _description))
+                {
                     return;
+                }
 
                 _description = value;
 
@@ -232,13 +236,21 @@ namespace Supremacy.Client.Views
             IProposal proposal = _agreement.Proposal;
 
             if (proposal.IsGift())
+            {
                 leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionGift : DiplomacyStringID.ActiveAgreementDescriptionGiftNoDuration;
+            }
             else if (proposal.IsDemand())
+            {
                 leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionDemand : DiplomacyStringID.ActiveAgreementDescriptionDemandNoDuration;
+            }
             else if (!proposal.HasTreaty())
+            {
                 leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionExchange : DiplomacyStringID.ActiveAgreementDescriptionExchangeNoDuration;
+            }
             else
+            {
                 leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionTreaty : DiplomacyStringID.ActiveAgreementDescriptionTreatyNoDuration;
+            }
 
             _descriptionScript.ScriptCode = DiplomacyMessageViewModel.QuoteString(
                 DiplomacyMessageViewModel.LookupDiplomacyText(
@@ -263,7 +275,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -274,7 +288,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

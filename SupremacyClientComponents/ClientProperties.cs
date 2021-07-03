@@ -18,14 +18,20 @@ namespace Supremacy.Client
         public static double GetScaleFactor(UIElement source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             return (double)source.GetValue(ScaleFactorProperty);
         }
 
         public static void SetScaleFactor(UIElement source, double value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(ScaleFactorProperty, value);
         }
 

@@ -9,58 +9,49 @@ namespace Supremacy.Utility
     {
         public static void Raise(this EventHandler handler, object sender)
         {
-            if (handler != null)
-                handler(sender, EventArgs.Empty);
+            handler?.Invoke(sender, EventArgs.Empty);
         }
 
         public static void Raise(this EventHandler handler, object sender, EventArgs e)
         {
-            if (handler != null)
-                handler(sender, e);
+            handler?.Invoke(sender, e);
         }
 
         public static void Raise(this EventHandler<EventArgs> handler, object sender)
         {
-            if (handler != null)
-                handler(sender, EventArgs.Empty);
+            handler?.Invoke(sender, EventArgs.Empty);
         }
 
         public static void Raise<TEventArgs>(this EventHandler<TEventArgs> handler, object sender, TEventArgs e)
             where TEventArgs : EventArgs
         {
-            if (handler != null)
-                handler(sender, e);
+            handler?.Invoke(sender, e);
         }
 
         public static void Raise(this PropertyChangedEventHandler handler, object sender, string propertyName)
         {
-            if (handler != null)
-                handler(sender, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
         }
 
         public static void Raise(this PropertyChangedEventHandler handler, object sender, PropertyChangedEventArgs e)
         {
-            if (handler != null)
-                handler(sender, e);
+            handler?.Invoke(sender, e);
         }
 
         public static void Raise(this PropertyChangingEventHandler handler, object sender, string propertyName)
         {
-            if (handler != null)
-                handler(sender, new PropertyChangingEventArgs(propertyName));
+            handler?.Invoke(sender, new PropertyChangingEventArgs(propertyName));
         }
 
         public static void Raise(this PropertyChangingEventHandler handler, object sender, PropertyChangingEventArgs e)
         {
-            if (handler != null)
-                handler(sender, e);
+            handler?.Invoke(sender, e);
         }
 
         #region NotifyCollectionChangedEventHandler Extensions
         public static void RaiseReset(this NotifyCollectionChangedEventHandler handler, object sender)
         {
-            if (handler != null)
-                handler(sender, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            handler?.Invoke(sender, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         public static void Raise(
@@ -68,8 +59,7 @@ namespace Supremacy.Utility
             object sender,
             NotifyCollectionChangedEventArgs e)
         {
-            if (handler != null)
-                handler(sender, e);
+            handler?.Invoke(sender, e);
         }
 
         public static void Raise(

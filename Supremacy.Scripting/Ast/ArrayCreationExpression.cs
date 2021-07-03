@@ -153,7 +153,10 @@ namespace Supremacy.Scripting.Ast
             {
                 _ = arrayQualifier.Append("[");
                 for (int i = Dimensions.Count - 1; i > 0; i--)
+                {
                     _ = arrayQualifier.Append(",");
+                }
+
                 _ = arrayQualifier.Append("]");
             }
 
@@ -448,7 +451,9 @@ namespace Supremacy.Scripting.Ast
         {
             element = element.Resolve(ec);
             if (element == null)
+            {
                 return null;
+            }
 
             if (ResolvedElementType == null)
             {

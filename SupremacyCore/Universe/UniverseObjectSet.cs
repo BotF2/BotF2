@@ -15,7 +15,7 @@ namespace Supremacy.Universe
 {
     /// <summary>
     /// Represents an observable collection of <see cref="UniverseObject"/>s, keyed
-    /// on <see cref="Supremacy.Universe.UniverseObject.ObjectID"/>.
+    /// on <see cref="UniverseObject.ObjectID"/>.
     /// </summary>
     [Serializable]
     public class UniverseObjectSet :
@@ -60,9 +60,13 @@ namespace Supremacy.Universe
             {
                 int itemIndex = ((IList<UniverseObject>)this).IndexOf(item);
                 if (itemIndex >= 0)
+                {
                     ReplaceItem(itemIndex, item, true);
+                }
                 else
+                {
                     InsertItem(Count, item, true);
+                }
             }
             finally
             {
@@ -82,7 +86,9 @@ namespace Supremacy.Universe
                     foreach (UniverseObject item in _objectIdIndex.LookupTable[hashCode])
                     {
                         if (item.ObjectID == objectId)
+                        {
                             return item;
+                        }
                     }
                 }
                 return null;
@@ -119,7 +125,9 @@ namespace Supremacy.Universe
                 List<UniverseObject> cloneInternalCollection = new List<UniverseObject>(count);
 
                 for (int i = 0; i < count; i++)
+                {
                     cloneInternalCollection[i] = internalCollection[i];
+                }
 
                 return new UniverseObjectSet(cloneInternalCollection);
             }
@@ -199,7 +207,7 @@ namespace Supremacy.Universe
             try
             {
                 value = GetObjectById(key);
-                return (value != null);
+                return value != null;
             }
             finally
             {

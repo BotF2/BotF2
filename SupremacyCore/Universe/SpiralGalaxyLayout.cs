@@ -24,10 +24,10 @@ namespace Supremacy.Universe
             const int numArms = 3;
             int initialCount = positions.Count;
             Random rand = new MersenneTwister();
-            double armOffset = (rand.NextDouble() * (2.0 * Math.PI));
-            const double armAngle = ((2.0 * Math.PI) / numArms);
-            const double armSpread = ((0.3 * Math.PI) / numArms);
-            const double armLength = (1.5 * Math.PI);
+            double armOffset = rand.NextDouble() * (2.0 * Math.PI);
+            const double armAngle = 2.0 * Math.PI / numArms;
+            const double armSpread = 0.3 * Math.PI / numArms;
+            const double armLength = 1.5 * Math.PI;
             const double center = 0.15;
 
             for (int i = 0, attempts = 0;
@@ -55,7 +55,7 @@ namespace Supremacy.Universe
 
                 if ((position.X < 0) || (width <= position.X)
                     || (position.Y < 0) || (height <= position.Y)
-                    || Double.IsNaN(position.X) || Double.IsNaN(position.Y))
+                    || double.IsNaN(position.X) || double.IsNaN(position.Y))
                 {
                     continue;
                 }

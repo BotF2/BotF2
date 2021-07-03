@@ -95,19 +95,21 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties
-        public bool IsMaximized => (CurrentValue == Maximum);
+        public bool IsMaximized => CurrentValue == Maximum;
 
-        public bool IsMinimized => (CurrentValue == Minimum);
+        public bool IsMinimized => CurrentValue == Minimum;
 
         public bool AutoClamp
         {
-            get { return _autoClamp; }
+            get => _autoClamp;
             set
             {
                 _autoClamp = value;
                 OnPropertyChanged("AutoClamp");
                 if (_autoClamp)
+                {
                     Clamp();
+                }
             }
         }
 
@@ -116,7 +118,7 @@ namespace Supremacy.Types
         /// </summary>
         public int CurrentValue
         {
-            get { return Math.Max(Minimum, Math.Min(Maximum, _currentValue)); }
+            get => Math.Max(Minimum, Math.Min(Maximum, _currentValue));
             set
             {
                 _currentValue = value;
@@ -138,8 +140,11 @@ namespace Supremacy.Types
             get
             {
                 if (IsMinimized)
+                {
                     return 0f;
-                return 0.01f * (((CurrentValue - Minimum) * 100) / (Maximum - Minimum));
+                }
+
+                return 0.01f * ((CurrentValue - Minimum) * 100 / (Maximum - Minimum));
             }
             // ReSharper restore PossibleLossOfFraction
         }
@@ -154,7 +159,10 @@ namespace Supremacy.Types
             get
             {
                 if (IsMinimized)
+                {
                     return 0f;
+                }
+
                 return (Percentage)(1d + Math.Log(PercentFilled, 10d));
             }
             // ReSharper restore PossibleLossOfFraction
@@ -170,8 +178,8 @@ namespace Supremacy.Types
         /// </summary>
         public int BaseValue
         {
-            get { return Math.Max(Minimum, Math.Min(Maximum, _baseValue)); }
-            set { SetBaseValue(value); }
+            get => Math.Max(Minimum, Math.Min(Maximum, _baseValue));
+            set => SetBaseValue(value);
         }
 
         /// <summary>
@@ -179,7 +187,7 @@ namespace Supremacy.Types
         /// </summary>
         public int Minimum
         {
-            get { return _minimum; }
+            get => _minimum;
             set
             {
                 _minimum = Math.Min(MaxValue, Math.Max(MinValue, Math.Min(Maximum, value)));
@@ -202,7 +210,7 @@ namespace Supremacy.Types
         /// </summary>
         public int Maximum
         {
-            get { return _maximum; }
+            get => _maximum;
             set
             {
                 _maximum = Math.Max(MinValue, Math.Min(MaxValue, Math.Max(Minimum, value)));
@@ -223,14 +231,14 @@ namespace Supremacy.Types
         /// <summary>
         /// The change between the current value and last value
         /// </summary>
-        public int LastChange => (CurrentValue - LastValue);
+        public int LastChange => CurrentValue - LastValue;
 
         /// <summary>
         /// The last (adjusted) efficiency of the Meter
         /// </summary>
         public int LastValue
         {
-            get { return _lastValue; }
+            get => _lastValue;
             protected set
             {
                 _lastValue = value;
@@ -276,7 +284,10 @@ namespace Supremacy.Types
         public int ApplyModifier(ValueModifier modifier)
         {
             if (modifier != null)
+            {
                 CurrentValue = modifier.Apply(BaseValue, CurrentValue);
+            }
+
             return CurrentValue;
         }
 
@@ -288,7 +299,9 @@ namespace Supremacy.Types
         public void SetValues(Meter meter)
         {
             if (meter == null)
+            {
                 throw new ArgumentNullException("meter");
+            }
 
             _autoClamp = meter._autoClamp;
             _minimum = meter._minimum;
@@ -374,11 +387,17 @@ namespace Supremacy.Types
             if (_autoClamp)
             {
                 if (value > Maximum)
+                {
                     CurrentValue = Maximum;
+                }
                 else if (value < _minimum)
+                {
                     CurrentValue = Minimum;
+                }
                 else
+                {
                     CurrentValue = value;
+                }
             }
             else
             {
@@ -390,13 +409,22 @@ namespace Supremacy.Types
         public void Clamp()
         {
             if (BaseValue < Minimum)
+            {
                 BaseValue = Minimum;
+            }
             else if (BaseValue > Maximum)
+            {
                 BaseValue = Maximum;
+            }
+
             if (CurrentValue < Minimum)
+            {
                 CurrentValue = Minimum;
+            }
             else if (CurrentValue > Maximum)
+            {
                 CurrentValue = Maximum;
+            }
         }
 
         protected void OnCurrentValueChanged()

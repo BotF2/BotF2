@@ -38,13 +38,15 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsAssigned
         {
-            get { return TurnAssigned != 0; }
+            get => TurnAssigned != 0;
             private set
             {
                 if (value)
                 {
                     if (!IsAssigned)
+                    {
                         TurnAssigned = Math.Max(1, GameContext.Current.TurnNumber);
+                    }
                 }
                 else
                 {
@@ -55,7 +57,7 @@ namespace Supremacy.Orbitals
 
         public int TurnAssigned
         {
-            get { return _turnAssigned; }
+            get => _turnAssigned;
             private set
             {
                 _turnAssigned = value;
@@ -69,8 +71,11 @@ namespace Supremacy.Orbitals
             get
             {
                 if (!IsAssigned)
+                {
                     return 0;
-                return (TurnAssigned - GameContext.Current.TurnNumber);
+                }
+
+                return TurnAssigned - GameContext.Current.TurnNumber;
             }
         }
 
@@ -109,13 +114,13 @@ namespace Supremacy.Orbitals
 
                 if (Fleet.IsInTow)
                 {
-                    displayText = String.Format(
+                    displayText = string.Format(
                         ResourceManager.GetString("ORDER_IN_TOW"),
                         Status);
                 }
                 else if (Fleet.IsStranded)
                 {
-                    displayText = String.Format(
+                    displayText = string.Format(
                         ResourceManager.GetString("ORDER_STRANDED"),
                         Status);
                 }
@@ -126,7 +131,7 @@ namespace Supremacy.Orbitals
 
                 if (percentComplete.HasValue)
                 {
-                    displayText = String.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                    displayText = string.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
                 }
 
                 if (!Fleet.Route.IsEmpty)
@@ -134,12 +139,20 @@ namespace Supremacy.Orbitals
                     int turns = Fleet.Route.Length / Fleet.Speed;
                     string formatString;
                     if ((Fleet.Route.Length % Fleet.Speed) != 0)
+                    {
                         turns++;
+                    }
+
                     if (turns == 1)
+                    {
                         formatString = ResourceManager.GetString("ORDER_ETA_TURN");
+                    }
                     else
+                    {
                         formatString = ResourceManager.GetString("ORDER_ETA_TURNS");
-                    displayText = String.Format(formatString, displayText, turns);
+                    }
+
+                    displayText = string.Format(formatString, displayText, turns);
                 }
 
                 return displayText;
@@ -152,7 +165,7 @@ namespace Supremacy.Orbitals
         /// <value>The fleet.</value>
         public Fleet Fleet
         {
-            get { return GameContext.Current.Universe.Objects[_fleetId] as Fleet; }
+            get => GameContext.Current.Universe.Objects[_fleetId] as Fleet;
             internal set
             {
                 _fleetId = (value == null) ? -1 : value.ObjectID;
@@ -184,9 +197,9 @@ namespace Supremacy.Orbitals
         /// Gets or sets the object that is the target of this <see cref="FleetOrder"/> (if applicable).
         /// </summary>
         /// <value>The target, or <c>null</c> if not applicable.</value>
-        public virtual Object Target
+        public virtual object Target
         {
-            get { return null; }
+            get => null;
             // ReSharper disable ValueParameterNotUsed
             set { }
             // ReSharper restore ValueParameterNotUsed
@@ -240,9 +253,14 @@ namespace Supremacy.Orbitals
             {
                 //GameLog.Print("Fleet.Owner={0}, Fleet.Name={1})", Fleet.Owner, Fleet.Name);
                 if (Fleet == null)
+                {
                     return false;
+                }
+
                 if (Fleet.IsInTow)
+                {
                     return false;
+                }
                 //if (this.Fleet.IsCamouflaged)
                 //    return false;
                 return true;
@@ -278,7 +296,10 @@ namespace Supremacy.Orbitals
                 if (IsTargetRequired(fleet))
                 {
                     if (Target != null)
+                    {
                         return true;
+                    }
+
                     return FindTargets(fleet).Any();
                 }
                 return true;
@@ -305,7 +326,9 @@ namespace Supremacy.Orbitals
         {
             IsAssigned = true;
             if ((Fleet != null) && IsRouteCancelledOnAssign)
+            {
                 Fleet.SetRouteInternal(TravelRoute.Empty);
+            }
         }
 
         /// <summary>
@@ -377,7 +400,9 @@ namespace Supremacy.Orbitals
                 {
                     Fleet.SetOrder(Fleet.GetDefaultOrder());
                     if (Fleet.Order != null)
+                    {
                         Fleet.Order.OnTurnBeginning();
+                    }
                 }
             }
         }

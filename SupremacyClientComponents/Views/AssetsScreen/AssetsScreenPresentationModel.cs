@@ -83,12 +83,35 @@ namespace Supremacy.Client.Views
                     _localSpyingCivList = IntelHelper._spyingCiv_0_List;
 
                 }
-                if (MyLocalCivManager.Civilization.CivID == 1) _localSpyingCivList = IntelHelper._spyingCiv_1_List;
-                if (MyLocalCivManager.Civilization.CivID == 2) _localSpyingCivList = IntelHelper._spyingCiv_2_List;
-                if (MyLocalCivManager.Civilization.CivID == 3) _localSpyingCivList = IntelHelper._spyingCiv_3_List;
-                if (MyLocalCivManager.Civilization.CivID == 4) _localSpyingCivList = IntelHelper._spyingCiv_4_List;
-                if (MyLocalCivManager.Civilization.CivID == 5) _localSpyingCivList = IntelHelper._spyingCiv_5_List;
-                if (MyLocalCivManager.Civilization.CivID == 6) _localSpyingCivList = IntelHelper._spyingCiv_6_List;
+                if (MyLocalCivManager.Civilization.CivID == 1)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_1_List;
+                }
+
+                if (MyLocalCivManager.Civilization.CivID == 2)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_2_List;
+                }
+
+                if (MyLocalCivManager.Civilization.CivID == 3)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_3_List;
+                }
+
+                if (MyLocalCivManager.Civilization.CivID == 4)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_4_List;
+                }
+
+                if (MyLocalCivManager.Civilization.CivID == 5)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_5_List;
+                }
+
+                if (MyLocalCivManager.Civilization.CivID == 6)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_6_List;
+                }
 
                 return _localSpyingCivList;
             }
@@ -172,8 +195,7 @@ namespace Supremacy.Client.Views
         {
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
             //works   GameLog.Client.Intel.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
-            int newAttackIntelligence = 0;
-            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _ = int.TryParse(attackMeter.CurrentValue.ToString(), out int newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
             //works   GameLog.Client.Intel.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
             return attackMeter;
@@ -181,9 +203,9 @@ namespace Supremacy.Client.Views
         protected virtual void FillUpDefense()
         {
             CivilizationManager civ = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization];
-            civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
+            _ = civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
             civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
-            civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
+            _ = civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
             civ.TotalIntelligenceDefenseAccumulated.UpdateAndReset();
             //OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             //OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
@@ -200,7 +222,9 @@ namespace Supremacy.Client.Views
             : base(DesignTimeAppContext.Instance)
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
+            }
 
             _colonies = MyLocalCivManager.Colonies; //not the host on a remote machine, DesignTimeObjects.LocalCivManager.Colonies;
             _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
@@ -240,7 +264,7 @@ namespace Supremacy.Client.Views
 
         public event EventHandler TotalDilithiumChanged;
         public event EventHandler TotalDeuteriumChanged;
-        public event EventHandler TotalRawMaterialsChanged;
+        public event EventHandler TotalDuraniumChanged;
 
         public event EventHandler SpiedZeroColoniesChanged;
         public event EventHandler SpiedZeroTotalPopulationChanged;
@@ -281,16 +305,16 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<Colony> Colonies
         {
-            get
-            {  // would be nice to be sorted ...HomeSystem first, than A - Z
+            get =>
                 //if (_colonies != null)
                 //    OnColoniesChanged();
-                return _colonies;
-            }
+                _colonies;
             set
             {
                 if (Equals(value, _colonies))
+                {
                     return;
+                }
 
                 _colonies = value;
 
@@ -306,11 +330,13 @@ namespace Supremacy.Client.Views
         }
         public IEnumerable<Colony> SpiedZeroColonies
         {
-            get { return _spiedZeroColonies; }
+            get => _spiedZeroColonies;
             set
             {
                 if (Equals(value, _spiedZeroColonies))
+                {
                     return;
+                }
 
                 _spiedZeroColonies = value;
 
@@ -320,11 +346,13 @@ namespace Supremacy.Client.Views
         }
         public IEnumerable<Colony> SpiedOneColonies
         {
-            get { return _spiedOneColonies; }
+            get => _spiedOneColonies;
             set
             {
                 if (Equals(value, _spiedOneColonies))
+                {
                     return;
+                }
 
                 _spiedOneColonies = value;
 
@@ -334,11 +362,13 @@ namespace Supremacy.Client.Views
         }
         public IEnumerable<Colony> SpiedTwoColonies
         {
-            get { return _spiedTwoColonies; }
+            get => _spiedTwoColonies;
             set
             {
                 if (Equals(value, _spiedTwoColonies))
+                {
                     return;
+                }
 
                 _spiedTwoColonies = value;
 
@@ -348,11 +378,13 @@ namespace Supremacy.Client.Views
         }
         public IEnumerable<Colony> SpiedThreeColonies
         {
-            get { return _spiedThreeColonies; }
+            get => _spiedThreeColonies;
             set
             {
                 if (Equals(value, _spiedThreeColonies))
+                {
                     return;
+                }
 
                 _spiedThreeColonies = value;
 
@@ -362,11 +394,13 @@ namespace Supremacy.Client.Views
         }
         public IEnumerable<Colony> SpiedFourColonies
         {
-            get { return _spiedFourColonies; }
+            get => _spiedFourColonies;
             set
             {
                 if (Equals(value, _spiedFourColonies))
+                {
                     return;
+                }
 
                 _spiedFourColonies = value;
 
@@ -376,11 +410,13 @@ namespace Supremacy.Client.Views
         }
         public IEnumerable<Colony> SpiedFiveColonies
         {
-            get { return _spiedFiveColonies; }
+            get => _spiedFiveColonies;
             set
             {
                 if (Equals(value, _spiedFiveColonies))
+                {
                     return;
+                }
 
                 _spiedFiveColonies = value;
 
@@ -390,11 +426,13 @@ namespace Supremacy.Client.Views
         }
         public IEnumerable<Colony> SpiedSixColonies
         {
-            get { return _spiedSixColonies; }
+            get => _spiedSixColonies;
             set
             {
                 if (Equals(value, _spiedSixColonies))
+                {
                     return;
+                }
 
                 _spiedSixColonies = value;
 
@@ -444,10 +482,10 @@ namespace Supremacy.Client.Views
             TotalDeuteriumChanged.Raise(this);
             OnPropertyChanged("TotalDeuterium");
         }
-        protected virtual void OnTotalRawMaterialsChanged()
+        protected virtual void OnTotalDuraniumChanged()
         {
-            TotalRawMaterialsChanged.Raise(this);
-            OnPropertyChanged("TotalRawMaterials");
+            TotalDuraniumChanged.Raise(this);
+            OnPropertyChanged("TotalDuranium");
         }
 
 
@@ -623,7 +661,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public int TotalRawMaterials
+        public int TotalDuranium
         {
             get
             {
@@ -631,11 +669,11 @@ namespace Supremacy.Client.Views
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
-                    return civManager.Resources.RawMaterials.CurrentValue;
+                    return civManager.Resources.Duranium.CurrentValue;
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalRawMaterials: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalDuranium: {0} {1}", e.Message, e.StackTrace);
                     GameLog.Core.General.Error(e);
                     //Meter zero = new Meter(0, 0, 0);
                     return 0;
@@ -951,10 +989,7 @@ namespace Supremacy.Client.Views
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -973,7 +1008,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -984,7 +1021,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

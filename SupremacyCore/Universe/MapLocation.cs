@@ -16,20 +16,30 @@ namespace Supremacy.Universe
         public MapLocation(int x, int y)
         {
             if (x > MaxValue)
+            {
                 x = MaxValue;
+            }
             else if (x < MinValue)
+            {
                 x = MinValue;
+            }
+
             if (y > MaxValue)
+            {
                 y = MaxValue;
+            }
             else if (y < MinValue)
+            {
                 y = MinValue;
+            }
+
             _x = x;
             _y = y;
         }
 
         public static double Area2(MapLocation p0, MapLocation p1, MapLocation p2)
         {
-            return (((p0._x * (p1._y - p2._y)) + (p1._x * (p2._y - p0._y))) + (p2._x * (p0._y - p1._y)));
+            return (p0._x * (p1._y - p2._y)) + (p1._x * (p2._y - p0._y)) + (p2._x * (p0._y - p1._y));
         }
 
         public static int GetDistance(MapLocation a, MapLocation b)
@@ -40,7 +50,7 @@ namespace Supremacy.Universe
         public static int GetDistanceSquared(MapLocation a, MapLocation b)
         {
             int distance = Math.Max(Math.Abs(a._x - b._x), Math.Abs(a._y - b._y));
-            return (distance * distance);
+            return distance * distance;
         }
 
         public static double GetEuclideanDistance(MapLocation a, MapLocation b)
@@ -55,7 +65,7 @@ namespace Supremacy.Universe
 
         public override int GetHashCode()
         {
-            return ((_x << 8) | _y);
+            return (_x << 8) | _y;
         }
 
         public bool Equals(MapLocation other)
@@ -63,7 +73,7 @@ namespace Supremacy.Universe
             return (other._x == _x) && (other._y == _y);
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             MapLocation other = (MapLocation)obj;
             if (other != null)

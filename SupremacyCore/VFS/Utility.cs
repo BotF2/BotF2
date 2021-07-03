@@ -63,7 +63,9 @@ namespace Supremacy.VFS
 
             // if pattern doesn't actually contain any wildcards, use simple equality
             if (pattern.IndexOfAny(Wildcards) == -1)
-                return (path == pattern);
+            {
+                return path == pattern;
+            }
 
             // otherwise do pattern matching
             int i = 0;
@@ -81,7 +83,9 @@ namespace Supremacy.VFS
             // if we have reached the end of the pattern without finding a * wildcard,
             // the match must fail if the string is longer or shorter than the pattern
             if (j == pattern.Length)
+            {
                 return path.Length == pattern.Length;
+            }
 
             int cp = 0;
             int mp = 0;
@@ -89,7 +93,7 @@ namespace Supremacy.VFS
             {
                 if (j < pattern.Length && pattern[j] == '*')
                 {
-                    if ((j++) >= pattern.Length)
+                    if (j++ >= pattern.Length)
                     {
                         return true;
                     }

@@ -409,9 +409,15 @@ namespace Supremacy.Client
         private static void EnsureResource([NotNull] string resourceName, ref ComponentResourceKey resourceKey)
         {
             if (string.IsNullOrEmpty(resourceName))
+            {
                 throw new ArgumentException("Argument cannot be null or empty.", "resourceName");
+            }
+
             if (resourceKey != null)
+            {
                 return;
+            }
+
             resourceKey = new ComponentResourceKey(typeof(ClientResources), resourceName);
         }
     }

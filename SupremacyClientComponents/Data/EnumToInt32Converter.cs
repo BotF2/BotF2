@@ -8,9 +8,11 @@ namespace Supremacy.Client.Data
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Enum enumValue = value as Enum;
-            if (enumValue != null)
+            if (value is Enum enumValue)
+            {
                 return System.Convert.ToInt32(value);
+            }
+
             return Binding.DoNothing;
         }
 
@@ -18,7 +20,10 @@ namespace Supremacy.Client.Data
         {
             int? intValue = value as int?;
             if (intValue.HasValue && targetType.IsEnum)
+            {
                 return Enum.ToObject(targetType, intValue.Value);
+            }
+
             return Binding.DoNothing;
         }
     }

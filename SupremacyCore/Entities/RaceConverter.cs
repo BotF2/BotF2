@@ -11,12 +11,12 @@ namespace Supremacy.Entities
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return (destinationType == typeof(string));
+            return destinationType == typeof(string);
         }
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return (sourceType == typeof(string));
+            return sourceType == typeof(string);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
@@ -24,7 +24,9 @@ namespace Supremacy.Entities
             string stringValue = value as string;
 
             if (string.IsNullOrWhiteSpace(stringValue))
+            {
                 return null;
+            }
 
             // ReSharper disable AssignNullToNotNullAttribute
             try
@@ -42,9 +44,11 @@ namespace Supremacy.Entities
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            Race race = value as Race;
-            if (race == null)
+            if (!(value is Race race))
+            {
                 return null;
+            }
+
             return race.Key;
         }
     }

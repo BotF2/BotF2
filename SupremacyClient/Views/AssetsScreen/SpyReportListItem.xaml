@@ -341,7 +341,7 @@
                   Grid.Row="2"
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/rawmaterials.png"
-                  Label="{Binding Path=NetRawMaterials}"
+                  Label="{Binding Path=NetDuranium}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOLTIP}" />
         <!--<TextBlock Text="RESEARCH (empire) = "
                 Grid.Row="2"

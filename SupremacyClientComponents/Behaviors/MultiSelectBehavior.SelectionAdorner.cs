@@ -29,7 +29,7 @@ namespace Supremacy.Client.Behaviors
 
             public Point? EndPoint
             {
-                get { return _endPoint; }
+                get => _endPoint;
                 set
                 {
                     _endPoint = value;
@@ -42,7 +42,9 @@ namespace Supremacy.Client.Behaviors
                 base.OnRender(drawingContext);
 
                 if (!EndPoint.HasValue)
+                {
                     return;
+                }
 
                 Rect rect = new Rect
                 {

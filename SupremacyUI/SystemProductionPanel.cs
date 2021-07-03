@@ -871,7 +871,7 @@ namespace Supremacy.UI
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
                     LaborPool,
                     GameContext.Current.TurnNumber,
-                    this.Name,
+                    Name,
                     colony.Name,
                     colony.Location
                     );

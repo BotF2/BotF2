@@ -41,15 +41,21 @@ namespace Supremacy.Client.Data
         public static object Convert(object value, Type targetType, object parameter = null, CultureInfo culture = null)
         {
             if (IsNullValue(value))
+            {
                 return NullValueForType(targetType);
+            }
 
             // If direct assignment is possible, the value is valid.
             Type sourceType = value.GetType();
             if (targetType.IsAssignableFrom(sourceType))
+            {
                 return value;
+            }
 
             if (culture == null)
+            {
                 culture = CultureInfo.InvariantCulture;
+            }
 
             IValueConverter converter = _converterTable[sourceType, targetType, false];
             if (converter == null)
@@ -57,10 +63,14 @@ namespace Supremacy.Client.Data
                 converter = DefaultValueConverter.Create(sourceType, targetType, false);
 
                 if (converter == null)
+                {
                     return DependencyProperty.UnsetValue;
+                }
 
                 if (converter == DefaultValueConverter.ValueConverterNotNeeded)
+                {
                     return value;
+                }
 
                 _converterTable.Add(sourceType, targetType, false, converter);
             }
@@ -68,7 +78,9 @@ namespace Supremacy.Client.Data
             object result = converter.Convert(value, targetType, parameter, culture);
 
             if (!CoerceValidValue(ref result, targetType) || result == Binding.DoNothing || result == DependencyProperty.UnsetValue)
+            {
                 return DependencyProperty.UnsetValue;
+            }
 
             return result;
         }
@@ -90,7 +102,9 @@ namespace Supremacy.Client.Data
 
             // If direct assignment is possible, the value is valid.
             if (targetType.IsAssignableFrom(value.GetType()))
+            {
                 return true;
+            }
 
             // Otherwise the value is invalid.
             return false;
@@ -99,10 +113,14 @@ namespace Supremacy.Client.Data
         private static bool IsNullValue(object value)
         {
             if (value == null)
+            {
                 return true;
+            }
 
             if (System.Convert.IsDBNull(value))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -110,13 +128,19 @@ namespace Supremacy.Client.Data
         private static object NullValueForType(Type type)
         {
             if (type == null)
+            {
                 return null;
+            }
 
             if (!type.IsValueType)
+            {
                 return null;
+            }
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
                 return null;
+            }
 
             return DependencyProperty.UnsetValue;
         }
@@ -138,10 +162,13 @@ namespace Supremacy.Client.Data
                 get
                 {
                     if (_cachedBaseUri == null)
+                    {
                         _cachedBaseUri = _targetElement == null ? _baseUri : BaseUriHelper.GetBaseUri(_targetElement);
+                    }
+
                     return _cachedBaseUri;
                 }
-                set { throw new NotSupportedException(); }
+                set => throw new NotSupportedException();
             }
 
             public IContainer Container => null;
@@ -158,9 +185,13 @@ namespace Supremacy.Client.Data
             internal void SetTargetElement(DependencyObject target)
             {
                 if (target != null)
+                {
                     ++_nestingLevel;
+                }
                 else if (_nestingLevel > 0)
+                {
                     --_nestingLevel;
+                }
 
                 Debug.Assert(_nestingLevel <= 1, "illegal to recurse/reenter ValueConverterContext.SetTargetElement()");
 
@@ -191,7 +222,7 @@ namespace Supremacy.Client.Data
             private readonly bool _shouldConvertFrom;
             private readonly bool _shouldConvertTo;
 
-            private static readonly Type StringType = typeof(String);
+            private static readonly Type StringType = typeof(string);
 
             protected DefaultValueConverter(
                 TypeConverter typeConverter,
@@ -230,19 +261,27 @@ namespace Supremacy.Client.Data
 
                 // Sometimes no conversion is necessary.
                 if (sourceType == targetType || (!targetToSource && targetType.IsAssignableFrom(sourceType)))
+                {
                     return ValueConverterNotNeeded;
+                }
 
                 // The type converter for System.Object is useless.  It claims it can convert from string,
                 // but then throws an exception when asked to do so.  We work around it.
                 if (targetType == typeof(object))
+                {
                     return new ObjectTargetConverter(sourceType);
+                }
 
                 if (sourceType == typeof(object))
+                {
                     return new ObjectSourceConverter(targetType);
+                }
 
                 // Use System.Convert for well-known base types 
                 if (SystemConvertConverter.CanConvert(sourceType, targetType))
+                {
                     return new SystemConvertConverter(sourceType, targetType);
+                }
 
                 // Need to check for nullable types first, since NullableConverter is a bit over-eager;
                 // TypeConverter for Nullable can convert, e.g., Nullable<DateTime> to string, but it ends
@@ -263,7 +302,9 @@ namespace Supremacy.Client.Data
 
                 // Recursive call to try to find a converter for basic value types.
                 if (sourceIsNullable || targetIsNullable)
+                {
                     return Create(sourceType, targetType, targetToSource);
+                }
 
                 // Special case for converting IListSource to IList.
                 if (typeof(IListSource).IsAssignableFrom(sourceType) &&
@@ -275,7 +316,9 @@ namespace Supremacy.Client.Data
                 // Interfaces are best handled on a per-instance basis.  The type may
                 // not implement the interface, but an instance of a derived type may. 
                 if (sourceType.IsInterface || targetType.IsInterface)
+                {
                     return new InterfaceConverter(sourceType, targetType);
+                }
 
                 // Try using the source's type converter.
                 TypeConverter typeConverter = GetConverter(sourceType);
@@ -320,10 +363,14 @@ namespace Supremacy.Client.Data
                 System.Xaml.XamlType knownType = XamlReader.GetWpfSchemaContext().GetXamlType(type);
 
                 if (knownType != null && knownType.TypeConverter != null)
+                {
                     typeConverter = knownType.TypeConverter.ConverterInstance;
+                }
 
                 if (typeConverter == null)
+                {
                     typeConverter = TypeDescriptor.GetConverter(type);
+                }
 
                 return typeConverter;
             }
@@ -335,8 +382,7 @@ namespace Supremacy.Client.Data
 
                 object result = DependencyProperty.UnsetValue;
 
-                string stringValue = o as string;
-                if (stringValue != null)
+                if (o is string stringValue)
                 {
                     try
                     {
@@ -389,13 +435,15 @@ namespace Supremacy.Client.Data
             protected void EnsureConverter(Type type)
             {
                 if (_typeConverter == null)
+                {
                     _typeConverter = GetConverter(type);
+                }
             }
 
             private object ConvertHelper(object o, Type destinationType, DependencyObject targetElement, CultureInfo culture, bool isForward)
             {
                 object value = DependencyProperty.UnsetValue;
-                bool needAssignment = (isForward ? !_shouldConvertTo : !_shouldConvertFrom);
+                bool needAssignment = isForward ? !_shouldConvertTo : !_shouldConvertFrom;
 
                 NotSupportedException savedException = null;
 
@@ -412,9 +460,13 @@ namespace Supremacy.Client.Data
                             context.SetTargetElement(targetElement);
 
                             if (isForward)
+                            {
                                 value = _typeConverter.ConvertTo(context, culture, o, destinationType);
+                            }
                             else
+                            {
                                 value = _typeConverter.ConvertFrom(context, culture, o);
+                            }
                         }
                         catch (NotSupportedException ex)
                         {
@@ -435,7 +487,9 @@ namespace Supremacy.Client.Data
                 }
 
                 if (needAssignment && savedException != null)
+                {
                     throw savedException;
+                }
 
                 return value;
             }
@@ -510,13 +564,19 @@ namespace Supremacy.Client.Data
             public object ConvertBack(object o, Type type, object parameter, CultureInfo culture)
             {
                 if (o == null && !SourceType.IsValueType)
+                {
                     return null;
+                }
 
                 if (o != null && SourceType.IsAssignableFrom(o.GetType()))
+                {
                     return o;
+                }
 
                 if (SourceType == typeof(string))
+                {
                     return string.Format(culture, "{0}", new[] { o });
+                }
 
                 EnsureConverter(SourceType);
 
@@ -536,13 +596,19 @@ namespace Supremacy.Client.Data
             object IValueConverter.Convert(object o, Type type, object parameter, CultureInfo culture)
             {
                 if (o != null && TargetType.IsAssignableFrom(o.GetType()))
+                {
                     return o;
+                }
 
                 if (o == null && !TargetType.IsValueType)
+                {
                     return null;
+                }
 
                 if (TargetType == typeof(string))
+                {
                     return string.Format(culture, "{0}", new[] { o });
+                }
 
                 EnsureConverter(TargetType);
 
@@ -604,17 +670,25 @@ namespace Supremacy.Client.Data
 
                 // DateTime can only be converted to and from String type
                 if (sourceType == typeof(DateTime))
-                    return (targetType == typeof(string));
+                {
+                    return targetType == typeof(string);
+                }
 
                 if (targetType == typeof(DateTime))
-                    return (sourceType == typeof(string));
+                {
+                    return sourceType == typeof(string);
+                }
 
                 // Char can only be converted to a subset of supported types
                 if (sourceType == typeof(char))
+                {
                     return CanConvertChar(targetType);
+                }
 
                 if (targetType == typeof(char))
+                {
                     return CanConvertChar(sourceType);
+                }
 
                 // Using nested loops is up to 40% more efficient than using one loop
                 for (int i = 0; i < SupportedTypes.Length; ++i)
@@ -625,7 +699,9 @@ namespace Supremacy.Client.Data
                         for (; i < SupportedTypes.Length; ++i)
                         {
                             if (targetType == SupportedTypes[i])
+                            {
                                 return true;
+                            }
                         }
                     }
                     else if (targetType == SupportedTypes[i])
@@ -634,7 +710,9 @@ namespace Supremacy.Client.Data
                         for (; i < SupportedTypes.Length; ++i)
                         {
                             if (sourceType == SupportedTypes[i])
+                            {
                                 return true;
+                            }
                         }
                     }
                 }
@@ -647,7 +725,9 @@ namespace Supremacy.Client.Data
                 for (int i = 0; i < CharSupportedTypes.Length; ++i)
                 {
                     if (type == CharSupportedTypes[i])
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -661,8 +741,7 @@ namespace Supremacy.Client.Data
         {
             object IValueConverter.Convert(object o, Type type, object parameter, CultureInfo culture)
             {
-                IListSource listSource = o as IListSource;
-                return listSource != null ? listSource.GetList() : null;
+                return o is IListSource listSource ? listSource.GetList() : null;
             }
 
             public object ConvertBack(object o, Type type, object parameter, CultureInfo culture)
@@ -734,7 +813,10 @@ namespace Supremacy.Client.Data
                 public static bool operator ==(Key k1, Key k2)
                 {
                     if (k1._sourceType == k2._sourceType && k1._targetType == k2._targetType)
+                    {
                         return k1._targetToSource == k2._targetToSource;
+                    }
+
                     return false;
                 }
 

@@ -17,9 +17,9 @@ namespace Supremacy.Messaging
 
         private static readonly Channel<T> _publicChannel;
         private static readonly Dictionary<string, IChannel<T>> _privateChannels;
-        private static readonly Object _channelsLock = new object();
+        private static readonly object _channelsLock = new object();
 
-        private readonly Object _instanceLock = new Object();
+        private readonly object _instanceLock = new object();
         private readonly List<ChannelSubscriptionBase<T>> _subscriptions;
         #endregion
 
@@ -49,10 +49,11 @@ namespace Supremacy.Messaging
 
                 lock (_channelsLock)
                 {
-                    IChannel<T> channel;
 
-                    if (_privateChannels.TryGetValue(key, out channel))
+                    if (_privateChannels.TryGetValue(key, out IChannel<T> channel))
+                    {
                         return channel;
+                    }
                 }
 
                 return CreateChannel(key);
@@ -135,10 +136,13 @@ namespace Supremacy.Messaging
                 foreach (ChannelSubscriptionBase<T> subscriber in subscribers)
                 {
                     if (subscriber.Subscriber == null)
-                        _subscriptions.Remove(subscriber);
-
+                    {
+                        _ = _subscriptions.Remove(subscriber);
+                    }
                     else if (ReferenceEquals(subscriber, subscription))
-                        _subscriptions.Remove(subscriber);
+                    {
+                        _ = _subscriptions.Remove(subscriber);
+                    }
                 }
             }
         }
@@ -155,9 +159,13 @@ namespace Supremacy.Messaging
             ChannelSubscriptionBase<T> subscription;
 
             if (useWeakReference)
+            {
                 subscription = new WeakChannelSubscription<T>(threadOption, subscriber);
+            }
             else
+            {
                 subscription = new ChannelSubscription<T>(threadOption, subscriber);
+            }
 
             lock (_instanceLock)
             {
@@ -180,7 +188,9 @@ namespace Supremacy.Messaging
             lock (_instanceLock)
             {
                 if (_subscriptions.Count == 0)
+                {
                     return;
+                }
 
                 subscriptionsList = _subscriptions.ToArray();
             }
@@ -197,7 +207,9 @@ namespace Supremacy.Messaging
             lock (_instanceLock)
             {
                 if (_subscriptions.Count == 0)
+                {
                     return;
+                }
 
                 subscriptionsList = _subscriptions.ToArray();
             }
@@ -245,7 +257,7 @@ namespace Supremacy.Messaging
 
                     ChannelEvent waitEvent = new ChannelEvent();
 
-                    scheduler.Schedule(
+                    _ = scheduler.Schedule(
                         () =>
                         {
                             subscriber.OnNext(value);
@@ -307,7 +319,7 @@ namespace Supremacy.Messaging
 
                     ChannelEvent waitEvent = new ChannelEvent();
 
-                    scheduler.Schedule(
+                    _ = scheduler.Schedule(
                         () =>
                         {
                             subscriber.OnError(error);
@@ -319,7 +331,10 @@ namespace Supremacy.Messaging
                 catch
                 {
                     if (Debugger.IsAttached)
+                    {
                         Debugger.Break();
+                    }
+
                     throw;
                 }
             }
@@ -336,7 +351,9 @@ namespace Supremacy.Messaging
             lock (_instanceLock)
             {
                 foreach (ChannelSubscriptionBase<T> subscription in subscriptions)
-                    _subscriptions.Remove(subscription);
+                {
+                    _ = _subscriptions.Remove(subscription);
+                }
             }
         }
         #endregion
@@ -345,9 +362,13 @@ namespace Supremacy.Messaging
         void IChannel<T>.OnNext(T value, bool asynchronously)
         {
             if (asynchronously)
-                Scheduler.ThreadPool.Schedule(() => OnNextInternal(value));
+            {
+                _ = Scheduler.ThreadPool.Schedule(() => OnNextInternal(value));
+            }
             else
+            {
                 OnNextInternal(value);
+            }
         }
 
         void IChannel<T>.OnError(Exception exception, bool asynchronously)
@@ -355,9 +376,13 @@ namespace Supremacy.Messaging
             Guard.ArgumentNotNull(exception, "exception");
 
             if (asynchronously)
-                Scheduler.ThreadPool.Schedule(() => OnErrorInternal(exception));
+            {
+                _ = Scheduler.ThreadPool.Schedule(() => OnErrorInternal(exception));
+            }
             else
+            {
                 OnErrorInternal(exception);
+            }
         }
         #endregion
 
@@ -386,12 +411,18 @@ namespace Supremacy.Messaging
                 lock (SyncLock)
                 {
                     if (_eventClosed)
+                    {
                         return;
+                    }
 
                     if (_usingDispatcher)
+                    {
                         _frame.Continue = false;
+                    }
                     else
-                        _event.Set();
+                    {
+                        _ = _event.Set();
+                    }
                 }
             }
 
@@ -415,11 +446,13 @@ namespace Supremacy.Messaging
                     Dispatcher.PushFrame(_frame);
 
                     if (timer != null)
+                    {
                         timer.Stop();
+                    }
                 }
                 else
                 {
-                    _event.WaitOne(
+                    _ = _event.WaitOne(
                         _timeout.HasValue ? _timeout.Value : TimeSpan.FromMilliseconds(-1),
                         false);
                 }
@@ -427,14 +460,18 @@ namespace Supremacy.Messaging
                 lock (SyncLock)
                 {
                     if (_eventClosed)
+                    {
                         return;
+                    }
 
                     /* 
                      * Close the event immediately instead of waiting for a GC because the Dispatcher
                      * may be a high-activity component, and and we could run out of events.
                      */
                     if (!_usingDispatcher)
+                    {
                         _event.Close();
+                    }
 
                     _eventClosed = true;
                 }

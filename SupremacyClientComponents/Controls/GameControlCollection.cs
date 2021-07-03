@@ -28,7 +28,9 @@ namespace Supremacy.Client.Controls
         public void AddRange(T[] items)
         {
             foreach (T item in items)
+            {
                 Add(item);
+            }
         }
 
         protected override void ClearItems()
@@ -46,7 +48,7 @@ namespace Supremacy.Client.Controls
 
         public bool Contains(string label)
         {
-            return (IndexOf(label) != -1);
+            return IndexOf(label) != -1;
         }
 
         public GameControlContext Context => _context;
@@ -56,7 +58,9 @@ namespace Supremacy.Client.Controls
             for (int index = 0; index < Count; index++)
             {
                 if (GameControlService.GetLabel(this[index]) == label)
+                {
                     return index;
+                }
             }
             return -1;
         }
@@ -72,16 +76,22 @@ namespace Supremacy.Client.Controls
                     {
                         foreach (object newItem in e.NewItems)
                         {
-                            IVariantControl variantControl = newItem as IVariantControl;
-                            if (variantControl != null)
+                            if (newItem is IVariantControl variantControl)
                             {
                                 if (_context != GameControlContext.None)
+                                {
                                     variantControl.Context = _context;
+                                }
+
                                 if (_itemVariantSize.HasValue)
+                                {
                                     variantControl.VariantSize = _itemVariantSize.Value;
+                                }
                             }
                             if (logicalParent != null)
+                            {
                                 logicalParent.AddLogicalChild(newItem);
+                            }
                         }
                         break;
                     }
@@ -95,7 +105,9 @@ namespace Supremacy.Client.Controls
                         if (logicalParent != null)
                         {
                             foreach (object oldItem in e.OldItems)
+                            {
                                 logicalParent.RemoveLogicalChild(oldItem);
+                            }
                         }
                         break;
                     }

@@ -36,7 +36,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Food);
-                    colony.ActivateFacility(ProductionCategory.Food);
+                    _ = colony.ActivateFacility(ProductionCategory.Food);
                 }
             }
 
@@ -48,7 +48,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Industry);
-                    colony.ActivateFacility(ProductionCategory.Industry);
+                    _ = colony.ActivateFacility(ProductionCategory.Industry);
                 }
             }
 
@@ -60,7 +60,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Energy);
-                    colony.ActivateFacility(ProductionCategory.Energy);
+                    _ = colony.ActivateFacility(ProductionCategory.Energy);
                 }
             }
 
@@ -72,7 +72,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Research);
-                    colony.ActivateFacility(ProductionCategory.Research);
+                    _ = colony.ActivateFacility(ProductionCategory.Research);
                 }
             }
 
@@ -84,7 +84,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Intelligence);
-                    colony.ActivateFacility(ProductionCategory.Intelligence);
+                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
                 }
             }
         }

@@ -38,10 +38,8 @@ namespace Supremacy.Client
         public GameServer(
             [NotNull] IUnhandledExceptionHandler unhandledExceptionHandler)
         {
-            if (unhandledExceptionHandler == null)
-                throw new ArgumentNullException("unhandledExceptionHandler");
             _serviceLock = new object();
-            _unhandledExceptionHandler = unhandledExceptionHandler;
+            _unhandledExceptionHandler = unhandledExceptionHandler ?? throw new ArgumentNullException("unhandledExceptionHandler");
         }
         #endregion
 
@@ -49,7 +47,9 @@ namespace Supremacy.Client
         protected void CheckDisposed()
         {
             if (_isDisposed)
+            {
                 throw new ObjectDisposedException("GameServer");
+            }
         }
 
         protected void CreateServiceHost()
@@ -59,12 +59,15 @@ namespace Supremacy.Client
             lock (_serviceLock)
             {
                 if (_isServiceLoaded)
+                {
                     return;
+                }
+
                 try
                 {
                     SupremacyServiceHost serviceHost = new SupremacyServiceHost();
                     HookServiceHostEventHandlers(serviceHost);
-                    Interlocked.CompareExchange(ref _serviceHost, serviceHost, null);
+                    _ = Interlocked.CompareExchange(ref _serviceHost, serviceHost, null);
                     _isServiceLoaded = true;
                 }
                 catch (Exception e)
@@ -90,7 +93,9 @@ namespace Supremacy.Client
             lock (_serviceLock)
             {
                 if (!_isServiceLoaded)
+                {
                     return;
+                }
 
                 SupremacyServiceHost serviceHost = Interlocked.Exchange(ref _serviceHost, null);
                 try
@@ -112,7 +117,9 @@ namespace Supremacy.Client
 
                 AppDomain serviceDomain = Interlocked.CompareExchange(ref _serviceDomain, null, null);
                 if (serviceDomain == null)
+                {
                     return;
+                }
 
                 try
                 {
@@ -130,7 +137,9 @@ namespace Supremacy.Client
         protected void HookServiceHostEventHandlers([NotNull] SupremacyServiceHost serviceHost)
         {
             if (serviceHost == null)
+            {
                 throw new ArgumentNullException("serviceHost");
+            }
 
             CheckDisposed();
 
@@ -146,18 +155,20 @@ namespace Supremacy.Client
             lock (_serviceLock)
             {
                 if (!_isServiceRunning)
+                {
                     return;
+                }
             }
 
-            Action<EventArgs> handler = Started;
-            if (handler != null)
-                handler(EventArgs.Empty);
+            Started?.Invoke(EventArgs.Empty);
         }
 
         protected void UnhookServiceHostEventHandlers(SupremacyServiceHost serviceHost)
         {
             if (serviceHost == null)
+            {
                 throw new ArgumentNullException("serviceHost");
+            }
 
             CheckDisposed();
 
@@ -171,7 +182,9 @@ namespace Supremacy.Client
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             try
             {
@@ -200,7 +213,9 @@ namespace Supremacy.Client
             CheckDisposed();
 
             if (_isServiceRunning)
+            {
                 return;
+            }
 
             try
             {
@@ -221,10 +236,14 @@ namespace Supremacy.Client
             lock (_serviceLock)
             {
                 if (!_isServiceLoaded)
+                {
                     return;
+                }
 
                 if (!_isServiceRunning)
+                {
                     raiseStopped = false;
+                }
 
                 _isServiceRunning = false;
 
@@ -239,11 +258,11 @@ namespace Supremacy.Client
             }
 
             if (!raiseStopped)
+            {
                 return;
+            }
 
-            Action<EventArgs> handler = Stopped;
-            if (handler != null)
-                handler(EventArgs.Empty);
+            Stopped?.Invoke(EventArgs.Empty);
         }
         #endregion
 
@@ -251,7 +270,10 @@ namespace Supremacy.Client
         private void OnServiceClosed(EventArgs args)
         {
             if (!_isServiceRunning)
+            {
                 return;
+            }
+
             Stop();
         }
 
@@ -260,13 +282,14 @@ namespace Supremacy.Client
             lock (_serviceLock)
             {
                 if (!_isServiceRunning)
+                {
                     return;
+                }
+
                 _isServiceRunning = false;
             }
 
-            Action<EventArgs> handler = Faulted;
-            if (handler != null)
-                handler(EventArgs.Empty);
+            Faulted?.Invoke(EventArgs.Empty);
         }
 
         private void OnServiceOpened(EventArgs args)

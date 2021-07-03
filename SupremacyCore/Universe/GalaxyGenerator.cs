@@ -126,7 +126,10 @@ namespace Supremacy.Universe
                 {
                     string line = reader.ReadLine();
                     if (line == null)
+                    {
                         break;
+                    }
+
                     names.Add(line.Trim());
                 }
             }
@@ -167,7 +170,9 @@ namespace Supremacy.Universe
                 {
                     string line = reader.ReadLine();
                     if (line == null)
+                    {
                         break;
+                    }
                     //GameLog.Core.GalaxyGenerator.DebugFormat("Nebula Name = {0}", line);
                     names.Add(line.Trim());
                 }
@@ -215,7 +220,10 @@ namespace Supremacy.Universe
             if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
             {
                 minDistance--;
-                if (minDistance < 1) minDistance = 1;
+                if (minDistance < 1)
+                {
+                    minDistance = 1;
+                }
             }
             GameLog.Core.GalaxyGenerator.DebugFormat("GalaxySize = {0}, EmpireCount = {1}, MinDistanceBetweenHomeworlds = {2}", size, empireCount, minDistance);
             return minDistance;
@@ -251,7 +259,9 @@ namespace Supremacy.Universe
 
 
                     if (!PlaceHomeworlds(starPositions, starNames, out CollectionBase<MapLocation> homeLocations))
+                    {
                         continue;
+                    }
 
                     GenerateSystems(starPositions, starNames, homeLocations);
                     PlaceMoons();
@@ -329,7 +339,7 @@ namespace Supremacy.Universe
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
 
@@ -376,7 +386,7 @@ namespace Supremacy.Universe
             }
 
 
-            layout.GetStarPositions(out ICollection<MapLocation> positions, number, width, height);
+            _ = layout.GetStarPositions(out ICollection<MapLocation> positions, number, width, height);
 
             CollectionBase<MapLocation> result = new CollectionBase<MapLocation>(positions.Count);
 
@@ -393,8 +403,8 @@ namespace Supremacy.Universe
                 Name = civ.HomeSystemName,
                 Inhabitants = civ.Race.Key,
                 Bonuses = (civ.CivilizationType == CivilizationType.MinorPower)
-                                 ? SystemBonus.RawMaterials
-                                 : SystemBonus.Dilithium | SystemBonus.RawMaterials
+                                 ? SystemBonus.Duranium
+                                 : SystemBonus.Dilithium | SystemBonus.Duranium
             };
 
             GeneratePlanetsWithHomeworld(system, civ);
@@ -405,7 +415,10 @@ namespace Supremacy.Universe
         private static void SetPlanetNames(StarSystem system)
         {
             if (system == null)
+            {
                 throw new ArgumentNullException("system");
+            }
+
             for (int i = 0; i < system.Planets.Count; i++)
             {
                 if (string.IsNullOrEmpty(system.Planets[i].Name))
@@ -475,7 +488,9 @@ namespace Supremacy.Universe
             homeSystem.Location = location;
 
             if (homeSystemDescriptor.IsInhabitantsDefined)
+            {
                 race = GameContext.Current.Races[homeSystemDescriptor.Inhabitants];
+            }
 
             if (homeSystemDescriptor.StarType.HasValue)
             {
@@ -487,28 +502,42 @@ namespace Supremacy.Universe
             }
 
             if (homeSystemDescriptor.HasBonuses)
+            {
                 homeSystem.AddBonus(homeSystemDescriptor.Bonuses);
+            }
 
             if (homeSystemDescriptor.Planets.Count == 0)
+            {
                 GeneratePlanetsWithHomeworld(homeSystemDescriptor, civ);
+            }
             else
+            {
                 GenerateUnspecifiedPlanets(homeSystemDescriptor);
+            }
 
             foreach (PlanetDescriptor planetDescriptor in homeSystemDescriptor.Planets)
             {
                 if (planets.Count >= StarHelper.MaxNumberOfPlanets(homeSystem.StarType))
+                {
                     break;
+                }
 
                 if (!planetDescriptor.IsSinglePlanet)
+                {
                     continue;
+                }
 
                 Planet planet = new Planet();
 
                 if (planetDescriptor.IsNameDefined)
+                {
                     planet.Name = planetDescriptor.Name;
+                }
 
                 if (planetDescriptor.Size.HasValue)
+                {
                     planet.PlanetSize = planetDescriptor.Size.Value;
+                }
 
                 if (planetDescriptor.Type.HasValue)
                 {
@@ -528,7 +557,9 @@ namespace Supremacy.Universe
                 }
 
                 if (planetDescriptor.HasBonuses)
+                {
                     planet.AddBonus(planetDescriptor.Bonuses);
+                }
 
                 planet.Variation = RandomHelper.Random(Planet.MaxVariations);
                 planets.Add(planet);
@@ -545,7 +576,9 @@ namespace Supremacy.Universe
             CreateHomeColony(civ, homeSystem, race);
 
             if (civManager.HomeColony == null)
+            {
                 civManager.HomeColony = homeSystem.Colony;
+            }
 
             civManager.Colonies.Add(homeSystem.Colony);
 
@@ -577,7 +610,7 @@ namespace Supremacy.Universe
                         //GameLog.Core.GalaxyGenerator.DebugFormat("dom_Location-LIMITS are up to {0} and to {1}",
                         if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
                         {
-                            iPosition = positions.FirstIndexWhere((d) => { return (d.X <= 3 && d.Y <= 3); });
+                            iPosition = positions.FirstIndexWhere((d) => { return d.X <= 3 && d.Y <= 3; });
                         }
                         else
                         {
@@ -596,14 +629,14 @@ namespace Supremacy.Universe
 
                         {
                             int borgX = GameContext.Current.Universe.Map.Width - (GameContext.Current.Universe.Map.Width / 8);
-                            int borgY = (GameContext.Current.Universe.Map.Height / 8);
-                            iPosition = positions.FirstIndexWhere((d) => { return (d.X >= borgX && d.Y <= borgY); });
+                            int borgY = GameContext.Current.Universe.Map.Height / 8;
+                            iPosition = positions.FirstIndexWhere((d) => { return d.X >= borgX && d.Y <= borgY; });
                         }
                         else
                         {
                             iPosition = positions.FirstIndexWhere((l) =>
                             {
-                                return (l.X > ((GameContext.Current.Universe.Map.Width / 4) * 3)) &&
+                                return (l.X > (GameContext.Current.Universe.Map.Width / 4 * 3)) &&
                                 (l.Y <= (GameContext.Current.Universe.Map.Height / 2 - 3));
                             });
                         }
@@ -725,8 +758,8 @@ namespace Supremacy.Universe
                     {
                         iPosition = positions.FirstIndexWhere((l) =>
                         {
-                            return ((l.X < (GameContext.Current.Universe.Map.Width / 4)) &&
-                                (l.Y > (GameContext.Current.Universe.Map.Height / 4) * 3));
+                            return (l.X < (GameContext.Current.Universe.Map.Width / 4)) &&
+                                (l.Y > GameContext.Current.Universe.Map.Height / 4 * 3);
                         });
                     }
                     //Ensure that everybody else is in their correct quadrants
@@ -796,12 +829,14 @@ namespace Supremacy.Universe
 
             bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
             if (minorRaceFrequency != MinorRaceFrequency.None)
-                PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+            {
+                _ = PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+            }
 
             HashSet<int> unusedCivs = GameContext.Current.Civilizations.Except(chosenCivs).Select(o => o.CivID).ToHashSet();
 
-            GameContext.Current.Civilizations.RemoveRange(unusedCivs);
-            GameContext.Current.CivilizationManagers.RemoveRange(unusedCivs);
+            _ = GameContext.Current.Civilizations.RemoveRange(unusedCivs);
+            _ = GameContext.Current.CivilizationManagers.RemoveRange(unusedCivs);
 
             return result;
         }
@@ -809,24 +844,30 @@ namespace Supremacy.Universe
         private static void PlaceBonuses(StarSystem system)
         {
             if (system == null)
+            {
                 throw new ArgumentNullException("system");
+            }
 
             /*
              * Dilithium and Raw Materials System Bonuses
              */
             if (system.IsInhabited && system.Colony.Owner.CanExpand)
             {
-                system.AddBonus(SystemBonus.Dilithium | SystemBonus.RawMaterials);
+                system.AddBonus(SystemBonus.Dilithium | SystemBonus.Duranium);
             }
             else if (system.HasBonus(SystemBonus.Random))
             {
                 if (system.Planets.Any(p => p.PlanetType.IsHabitable()))
                 {
                     if (!system.HasDilithiumBonus && RandomHelper.Chance(4))
+                    {
                         system.AddBonus(SystemBonus.Dilithium);
+                    }
 
-                    if (!system.HasRawMaterialsBonus && RandomHelper.Chance(3))
-                        system.AddBonus(SystemBonus.RawMaterials);
+                    if (!system.HasDuraniumBonus && RandomHelper.Chance(3))
+                    {
+                        system.AddBonus(SystemBonus.Duranium);
+                    }
                 }
             }
 
@@ -838,10 +879,14 @@ namespace Supremacy.Universe
             foreach (Planet planet in system.Planets)
             {
                 if (planet.HasFoodBonus)
+                {
                     ++foodPlacementCount;
+                }
 
                 if (planet.HasEnergyBonus)
+                {
                     ++energyPlacementCount;
+                }
             }
 
             /*
@@ -883,7 +928,9 @@ namespace Supremacy.Universe
             PlanetSize planetSize;
             homePlanet.Type = civ.Race.HomePlanetType;
             while (!(planetSize = EnumUtilities.NextEnum<PlanetSize>()).IsHabitable())
+            {
                 continue;
+            }
 
             if (!system.IsStarTypeDefined) // null star type
             {
@@ -913,7 +960,9 @@ namespace Supremacy.Universe
             foreach (PlanetDescriptor planetDescriptor in system.Planets)
             {
                 if (planetDescriptor.IsSinglePlanet)
+                {
                     result++;
+                }
             }
             return result;
         }
@@ -973,11 +1022,15 @@ namespace Supremacy.Universe
                     if (!planetDescriptor.IsSizeDefined)
                     {
                         while ((planetDescriptor.Size = GetPlanetSize(system.StarType.Value, i)) == PlanetSize.NoWorld)
+                        {
                             continue;
+                        }
                     }
 
                     if (!planetDescriptor.IsTypeDefined)
+                    {
                         planetDescriptor.Type = GetPlanetType(system.StarType.Value, planetDescriptor.Size.Value, i);
+                    }
                 }
             }
 
@@ -1048,7 +1101,7 @@ namespace Supremacy.Universe
 
             GameContext gameContext = GameContext.Current;
 
-            Parallel.ForEach(
+            _ = Parallel.ForEach(
                 positions,
                 position =>
                 {
@@ -1087,7 +1140,10 @@ namespace Supremacy.Universe
                                 break;
                             case StarType.Nebula:
                                 if (nebulaNames.Count == 0)
+                                {
                                     break;
+                                }
+
                                 system.Name = nebulaNames[0];
                                 nebulaNames.RemoveAt(0);
                                 break;
@@ -1151,7 +1207,9 @@ namespace Supremacy.Universe
                                     planets.Add(planet);
                                 }
                                 if (system.StarType == StarType.Nebula)
+                                {
                                     break;
+                                }
                             }
 
                             if (planets.Count > 0)
@@ -1165,11 +1223,11 @@ namespace Supremacy.Universe
                                     case 2:
                                     case 3:
                                     case 4:
-                                        system.AddBonus(SystemBonus.RawMaterials);
+                                        system.AddBonus(SystemBonus.Duranium);
                                         break;
                                     case 5:
                                         system.AddBonus(SystemBonus.Dilithium);
-                                        system.AddBonus(SystemBonus.RawMaterials);
+                                        system.AddBonus(SystemBonus.Duranium);
                                         break;
                                     default:
                                         break;
@@ -1191,7 +1249,7 @@ namespace Supremacy.Universe
                         if (system.Name == "Dummy")
                         {
                             system.Name = starNames.FirstOrDefault();
-                            starNames.Remove(system.Name);
+                            _ = starNames.Remove(system.Name);
                         }
 
                         var qry = from s in systemNamesList
@@ -1215,7 +1273,7 @@ namespace Supremacy.Universe
                     }
                     finally
                     {
-                        GameContext.PopThreadContext();
+                        _ = GameContext.PopThreadContext();
                     }
                 });
 
@@ -1237,7 +1295,9 @@ namespace Supremacy.Universe
                 foreach (CivilizationManager cID in emp)
                 {
                     if (notFinalName == cID.HomeColony.Name)
+                    {
                         notFinalName = "Wormhole";
+                    }
                 }
                 wormhole.Name = notFinalName;
 
@@ -1372,7 +1432,7 @@ namespace Supremacy.Universe
                             moons.Add(moonSize.GetType(EnumUtilities.NextEnum<MoonShape>()));
                         }
 
-                        handicap += (maxRoll / Planet.MaxMoonsPerPlanet);
+                        handicap += maxRoll / Planet.MaxMoonsPerPlanet;
                     }
                     planet.Moons = moons.ToArray();
                 }

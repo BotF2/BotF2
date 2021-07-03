@@ -18,7 +18,10 @@ namespace Supremacy.Scripting
             get
             {
                 if (_instance == null)
+                {
                     _instance = new ScriptService();
+                }
+
                 return _instance;
             }
         }
@@ -30,7 +33,7 @@ namespace Supremacy.Scripting
             ScriptEngine scriptEngine = ScriptRuntime.CreateRemote(AppDomain.CurrentDomain, scriptRuntimeSetup).GetEngineByTypeName(languageName);
 
             _context = (ScriptLanguageContext)HostingHelpers.GetLanguageContext(scriptEngine);
-            _context.DomainManager.LoadAssembly(typeof(Game.GameContext).Assembly);
+            _ = _context.DomainManager.LoadAssembly(typeof(Game.GameContext).Assembly);
         }
 
         #region Implementation of IScriptService

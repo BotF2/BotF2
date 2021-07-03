@@ -27,9 +27,7 @@ namespace Supremacy.Diplomacy
 
         public DiplomacyDataInternal(DiplomacyData baseData)
         {
-            if (baseData == null)
-                throw new ArgumentNullException("baseData");
-            _baseData = baseData;
+            _baseData = baseData ?? throw new ArgumentNullException("baseData");
         }
 
         #region IDiplomacyDataExtended Members
@@ -50,7 +48,10 @@ namespace Supremacy.Diplomacy
                 GameLog.Core.Diplomacy.DebugFormat("_motivations.Count={0}", count);
 
                 if (count != 0)
+                {
                     return _motivations[count - 1];
+                }
+
                 return Motivation.NoMotivation;
             }
         }
@@ -69,7 +70,9 @@ namespace Supremacy.Diplomacy
         public void ConsiderMotivation(Motivation motivation)
         {
             if (motivation == null)
+            {
                 throw new ArgumentNullException("motivation");
+            }
 
             _motivations.AddSorted(motivation, m => m.Priority);
         }
@@ -122,27 +125,27 @@ namespace Supremacy.Diplomacy
 
         public int ContactTurn
         {
-            get { return _baseData.ContactTurn; }
-            protected set { _baseData.ContactTurn = value; }
+            get => _baseData.ContactTurn;
+            protected set => _baseData.ContactTurn = value;
         }
         public bool FirstDiplomaticAction
         {
-            get { return _baseData.FirstDiplomaticAction; }
-            set { _baseData.FirstDiplomaticAction = value; }
+            get => _baseData.FirstDiplomaticAction;
+            set => _baseData.FirstDiplomaticAction = value;
         }
 
         public int ContactDuration => _baseData.ContactDuration;
 
         public ForeignPowerStatus Status
         {
-            get { return _baseData.Status; }
-            internal set { _baseData.Status = value; }
+            get => _baseData.Status;
+            internal set => _baseData.Status = value;
         }
 
         public int LastStatusChange
         {
-            get { return _baseData.LastStatusChange; }
-            internal set { _baseData.LastStatusChange = value; }
+            get => _baseData.LastStatusChange;
+            internal set => _baseData.LastStatusChange = value;
         }
 
         public int TurnsSinceLastStatusChange => _baseData.TurnsSinceLastStatusChange;

@@ -87,7 +87,7 @@ namespace Supremacy.Scripting.Ast
         //
         //   Returns null if the expression can not be folded.
         // </summary>
-        static public ConstantExpression BinaryFold(ParseContext ec, MSAst.ExpressionType oper,
+        public static ConstantExpression BinaryFold(ParseContext ec, MSAst.ExpressionType oper,
                              ConstantExpression left, ConstantExpression right, SourceSpan loc)
         {
             ConstantExpression result = null;
@@ -215,7 +215,9 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.And:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     //
                     // int operator &(int x, int y);
@@ -527,7 +529,9 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.Multiply:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     try
                     {
@@ -892,7 +896,9 @@ namespace Supremacy.Scripting.Ast
                             ((ConstantExpression<int>)right).Value;
                     }
                     else
+                    {
                         return null;
+                    }
 
                     return new ConstantExpression<bool>(booleanResult) { Span = left.Span };
 
@@ -949,7 +955,9 @@ namespace Supremacy.Scripting.Ast
                             ((ConstantExpression<int>)right).Value;
                     }
                     else
+                    {
                         return null;
+                    }
 
                     return new ConstantExpression<bool>(booleanResult) { Span = left.Span };
 
@@ -990,7 +998,9 @@ namespace Supremacy.Scripting.Ast
                             ((ConstantExpression<int>)right).Value;
                     }
                     else
+                    {
                         return null;
+                    }
 
                     return new ConstantExpression<bool>(booleanResult) { Span = left.Span };
 
@@ -1031,7 +1041,9 @@ namespace Supremacy.Scripting.Ast
                             ((ConstantExpression<int>)right).Value;
                     }
                     else
+                    {
                         return null;
+                    }
 
                     return new ConstantExpression<bool>(booleanResult) { Span = left.Span };
 
@@ -1072,7 +1084,9 @@ namespace Supremacy.Scripting.Ast
                             ((ConstantExpression<int>)right).Value;
                     }
                     else
+                    {
                         return null;
+                    }
 
                     return new ConstantExpression<bool>(booleanResult) { Span = left.Span };
 
@@ -1113,7 +1127,9 @@ namespace Supremacy.Scripting.Ast
                             ((ConstantExpression<int>)right).Value;
                     }
                     else
+                    {
                         return null;
+                    }
 
                     return new ConstantExpression<bool>(booleanResult) { Span = left.Span };
             }

@@ -11,12 +11,12 @@ namespace Supremacy.Scripting.Utility
     {
         public static bool IsPrimitiveType(Type t)
         {
-            return (t == CoreTypes.Int32 || t == CoreTypes.UInt32 ||
+            return t == CoreTypes.Int32 || t == CoreTypes.UInt32 ||
                     t == CoreTypes.Int64 || t == CoreTypes.UInt64 ||
                     t == CoreTypes.Single || t == CoreTypes.Double ||
                     t == CoreTypes.Char || t == CoreTypes.Int16 ||
                     t == CoreTypes.Boolean || t == CoreTypes.SByte ||
-                    t == CoreTypes.Byte || t == CoreTypes.UInt16);
+                    t == CoreTypes.Byte || t == CoreTypes.UInt16;
         }
 
         public static class CoreTypes

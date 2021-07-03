@@ -836,7 +836,7 @@ namespace Supremacy.Scripting.Ast
                     return null;
                 }
 
-                return TypeManager.IsValueType(leftType) ? null : (this);
+                return TypeManager.IsValueType(leftType) ? null : this;
             }
 
             bool rightIsGenericParameter = TypeManager.IsGenericParameter(rightType);
@@ -979,10 +979,12 @@ namespace Supremacy.Scripting.Ast
             // E operator + (U x, E e)
             // E operator + (E e, U x)
             //
-            if (!((Operator.IsComparison() || Operator.IsBitwise()) ||
+            if (!(Operator.IsComparison() || Operator.IsBitwise() ||
                   (Operator == MSAst.ExpressionType.Subtract && leftIsEnum) ||
-                  (Operator == MSAst.ExpressionType.Add && (leftIsEnum != rightIsEnum || Type != null))))	// type != null for lifted null
+                  (Operator == MSAst.ExpressionType.Add && (leftIsEnum != rightIsEnum || Type != null))))   // type != null for lifted null
+            {
                 return null;
+            }
 
             Expression leftTemp = Left;
             Expression rightTemp = Right;
@@ -1017,14 +1019,22 @@ namespace Supremacy.Scripting.Ast
                 underlyingType = Enum.GetUnderlyingType(leftType);
 
                 if (Left is ConstantExpression)
+                {
                     Left = ((ConstantExpression)Left).ConvertExplicitly(false, underlyingType);
+                }
                 else
+                {
                     Left = EmptyCastExpression.Create(Left, underlyingType);
+                }
 
                 if (Right is ConstantExpression)
+                {
                     Right = ((ConstantExpression)Right).ConvertExplicitly(false, underlyingType);
+                }
                 else
+                {
                     Right = EmptyCastExpression.Create(Right, underlyingType);
+                }
             }
             else if (leftIsEnum)
             {
@@ -1110,7 +1120,10 @@ namespace Supremacy.Scripting.Ast
                 {
                     resultType = underlyingType;
                 }
-                else resultType = Operator == MSAst.ExpressionType.Add && rightIsEnum ? rightType : leftType;
+                else
+                {
+                    resultType = Operator == MSAst.ExpressionType.Add && rightIsEnum ? rightType : leftType;
+                }
             }
 
             expr = ResolveOperatorPredefined(ec, _standardOperators, true, resultType);
@@ -1349,7 +1362,10 @@ namespace Supremacy.Scripting.Ast
             {
                 userOper = MSAst.ExpressionType.And;
             }
-            else userOper = Operator == MSAst.ExpressionType.OrElse ? MSAst.ExpressionType.Or : Operator;
+            else
+            {
+                userOper = Operator == MSAst.ExpressionType.OrElse ? MSAst.ExpressionType.Or : Operator;
+            }
 
             string methodName = OperatorInfo.GetOperatorInfo(userOper).SignatureName;
 

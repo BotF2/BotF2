@@ -16,17 +16,23 @@ namespace Supremacy.Client.Controls
         internal void RaiseEvents()
         {
             foreach (InfoCardHost container in _popupHosts.Values)
+            {
                 container.RaiseEvent(new RoutedEventArgs(InfoCardHost.LayoutChangedEvent, container));
+            }
         }
 
         internal void Subscribe(DependencyObject o)
         {
             if (o == null)
+            {
                 return;
+            }
 
             InfoCardHost infoCardHost = InfoCardHost.GetInfoCardHost(o);
             if (infoCardHost != null)
+            {
                 _popupHosts[infoCardHost.UniqueId] = infoCardHost;
+            }
         }
     }
 }

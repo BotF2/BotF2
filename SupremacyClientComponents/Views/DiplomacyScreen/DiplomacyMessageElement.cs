@@ -16,8 +16,6 @@ using Supremacy.Scripting;
 using Supremacy.Utility;
 
 using System.Linq;
-using System.Runtime.CompilerServices;
-using FMOD;
 
 namespace Supremacy.Client.Views
 {
@@ -38,13 +36,8 @@ namespace Supremacy.Client.Views
             DiplomacyMessageElementType elementType,
             ICommand removeCommand)
         {
-            if (sender == null)
-                throw new ArgumentNullException("sender");
-            if (recipient == null)
-                throw new ArgumentNullException("recipient");
-
-            _sender = sender;
-            _recipient = recipient;
+            _sender = sender ?? throw new ArgumentNullException("sender");
+            _recipient = recipient ?? throw new ArgumentNullException("recipient");
             _actionCategory = actionCategory;
             _elementType = elementType; // includes TreatyWarPact
             _removeCommand = removeCommand;
@@ -78,14 +71,16 @@ namespace Supremacy.Client.Views
         private void ExecuteEditParameterCommand(DataTemplate contentTemplate)
         {
             if (!CanExecuteEditParameterCommand(contentTemplate))
+            {
                 return;
+            }
 
             Type parameterType = GetViewModelParameterTypeForElementType(_elementType);
             string displayMemberPath = (string)null;
 
             if (HasFixedParameter)
             {
-                MessageDialog.Show(
+                _ = MessageDialog.Show(
                     new ContentPresenter
                     {
                         Content = SelectedParameter,
@@ -96,7 +91,9 @@ namespace Supremacy.Client.Views
             else
             {
                 if (parameterType == typeof(Civilization))
+                {
                     displayMemberPath = "ShortName";
+                }
 
                 object parameter = TargetSelectionDialog.Show(
                     _parametersCallback().Cast<object>(),
@@ -104,7 +101,9 @@ namespace Supremacy.Client.Views
                     "SELECT PARAMETER");
 
                 if (parameter != null)
+                {
                     SelectedParameter = parameter;
+                }
             }
 
             UpdateDescription();
@@ -113,10 +112,14 @@ namespace Supremacy.Client.Views
         private bool CanExecuteEditParameterCommand(DataTemplate contentTemplate)
         {
             if (!IsEditing || !HasParameter)
+            {
                 return false;
+            }
 
             if (HasFixedParameter)
+            {
                 return SelectedParameter != null;
+            }
 
             return HasParameter;
         }
@@ -138,11 +141,13 @@ namespace Supremacy.Client.Views
 
         public string Description
         {
-            get { return _description; }
+            get => _description;
             private set
             {
                 if (Equals(value, _description))
+                {
                     return;
+                }
 
                 _description = value;
 
@@ -167,11 +172,13 @@ namespace Supremacy.Client.Views
 
         public Tone Tone
         {
-            get { return _tone; }
+            get => _tone;
             set
             {
                 if (Equals(value, _tone))
+                {
                     return;
+                }
 
                 _tone = value;
 
@@ -196,11 +203,13 @@ namespace Supremacy.Client.Views
 
         public bool IsEditing
         {
-            get { return _isEditing; }
+            get => _isEditing;
             set
             {
                 if (Equals(value, _isEditing))
+                {
                     return;
+                }
 
                 _isEditing = value;
 
@@ -240,11 +249,13 @@ namespace Supremacy.Client.Views
 
         public bool HasFixedParameter
         {
-            get { return _hasFixedParameter; }
+            get => _hasFixedParameter;
             set
             {
                 if (Equals(value, _hasFixedParameter))
+                {
                     return;
+                }
 
                 _hasFixedParameter = value;
 
@@ -265,7 +276,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler IsParameterSelectedChanged;
 
-        public bool IsParameterSelected => (_selectedParameter != null);
+        public bool IsParameterSelected => _selectedParameter != null;
 
         protected virtual void OnIsParameterSelectedChanged()
         {
@@ -284,11 +295,13 @@ namespace Supremacy.Client.Views
 
         public object SelectedParameter
         {
-            get { return _selectedParameter; }
+            get => _selectedParameter;
             set
             {
                 if (Equals(value, _selectedParameter))
+                {
                     return;
+                }
 
                 _selectedParameter = value;
 
@@ -314,11 +327,13 @@ namespace Supremacy.Client.Views
 
         public Func<IEnumerable> ParametersCallback
         {
-            get { return _parametersCallback; }
+            get => _parametersCallback;
             set
             {
                 if (Equals(value, _parametersCallback))
+                {
                     return;
+                }
 
                 _parametersCallback = value;
 
@@ -349,7 +364,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -360,7 +377,9 @@ namespace Supremacy.Client.Views
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }
@@ -462,7 +481,9 @@ namespace Supremacy.Client.Views
                              };
 
             if (_scriptExpression.Parameters.Count > 2)
+            {
                 parameters.Add(new RuntimeScriptParameter(_scriptExpression.Parameters[2], _selectedParameter));
+            }
 
             return _scriptExpression.Evaluate<string>(parameters);
         }
@@ -504,24 +525,32 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementType.RequestBreakAgreementClause:
                     break;
                 case DiplomacyMessageElementType.OfferGiveCreditsClause:
-                    CreditsDataViewModel offerCreditsData = SelectedParameter as CreditsDataViewModel;
-                    if (offerCreditsData != null)
+                    if (SelectedParameter is CreditsDataViewModel offerCreditsData)
                     {
                         if (offerCreditsData.RecurringAmount > 0 && offerCreditsData.ImmediateAmount > 0)
+                        {
                             return DiplomacyStringID.CreditsOfferImmediateAndRecurring;
+                        }
+
                         if (offerCreditsData.RecurringAmount > 0)
+                        {
                             return DiplomacyStringID.CreditsOfferRecurring;
+                        }
                     }
                     return DiplomacyStringID.CreditsOfferImmediate;
 
                 case DiplomacyMessageElementType.RequestGiveCreditsClause:
-                    CreditsDataViewModel requestCreditsData = SelectedParameter as CreditsDataViewModel;
-                    if (requestCreditsData != null)
+                    if (SelectedParameter is CreditsDataViewModel requestCreditsData)
                     {
                         if (requestCreditsData.RecurringAmount > 0 && requestCreditsData.ImmediateAmount > 0)
+                        {
                             return DiplomacyStringID.CreditsDemandImmediateAndRecurring;
+                        }
+
                         if (requestCreditsData.RecurringAmount > 0)
+                        {
                             return DiplomacyStringID.CreditsDemandRecurring;
+                        }
                     }
                     return DiplomacyStringID.CreditsDemandImmediate;
 

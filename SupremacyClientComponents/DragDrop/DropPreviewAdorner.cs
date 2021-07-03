@@ -55,7 +55,7 @@ namespace Supremacy.Client.DragDrop
 
         public double Left
         {
-            get { return _left; }
+            get => _left;
             set
             {
                 _left = value;
@@ -65,7 +65,7 @@ namespace Supremacy.Client.DragDrop
 
         public double Top
         {
-            get { return _top; }
+            get => _top;
             set
             {
                 _top = value;
@@ -77,9 +77,10 @@ namespace Supremacy.Client.DragDrop
 
         private void UpdatePosition()
         {
-            AdornerLayer layer = Parent as AdornerLayer;
-            if (layer != null)
+            if (Parent is AdornerLayer layer)
+            {
                 layer.Update(AdornedElement);
+            }
         }
 
         protected override Size MeasureOverride(Size constraint)
@@ -107,7 +108,9 @@ namespace Supremacy.Client.DragDrop
             result.Children.Add(base.GetDesiredTransform(transform));
 
             if (Left > 0)
+            {
                 Visibility = Visibility.Visible;
+            }
 
             return result;
         }

@@ -31,12 +31,8 @@ namespace Supremacy.Client.Services
             [NotNull] IResourceManager resourceManager,
             [NotNull] IDispatcherService dispatcherService)
         {
-            if (resourceManager == null)
-                throw new ArgumentNullException("resourceManager");
-            if (dispatcherService == null)
-                throw new ArgumentNullException("dispatcherService");
-            _resourceManager = resourceManager;
-            _dispatcherService = dispatcherService;
+            _resourceManager = resourceManager ?? throw new ArgumentNullException("resourceManager");
+            _dispatcherService = dispatcherService ?? throw new ArgumentNullException("dispatcherService");
         }
 
         protected static string BuildErrorMessage(Exception exception)
@@ -46,12 +42,12 @@ namespace Supremacy.Client.Services
 
             while (innerException != null)
             {
-                errorMessage.AppendLine(innerException.Message);
-                errorMessage.AppendLine();
-                errorMessage.AppendLine(innerException.StackTrace);
-                errorMessage.AppendLine();
-                errorMessage.AppendLine("----------------------------------------");
-                errorMessage.AppendLine();
+                _ = errorMessage.AppendLine(innerException.Message);
+                _ = errorMessage.AppendLine();
+                _ = errorMessage.AppendLine(innerException.StackTrace);
+                _ = errorMessage.AppendLine();
+                _ = errorMessage.AppendLine("----------------------------------------");
+                _ = errorMessage.AppendLine();
                 innerException = innerException.InnerException;
             }
 
@@ -61,15 +57,16 @@ namespace Supremacy.Client.Services
         public void HandleError([NotNull] Exception exception)
         {
             if (exception == null)
+            {
                 throw new ArgumentNullException("exception");
+            }
 
             GameLog.Server.General.Error(BuildErrorMessage(exception));
 
             string header;
             string message;
 
-            GameDataException gameDataException = exception as GameDataException;
-            if (gameDataException != null)
+            if (exception is GameDataException gameDataException)
             {
                 header = _resourceManager.GetString("GAME_DATA_ERROR_HEADER");
                 message = _resourceManager.GetStringFormat(
@@ -96,13 +93,12 @@ namespace Supremacy.Client.Services
                          messageText,
                          (Inline[])formattedTextConverter.Convert(message));
 
-                     MessageDialog.Show(
+                     _ = MessageDialog.Show(
                          header,
                          messageText,
                          MessageDialogButtons.Ok);
 
-                     SupremacyException supremacyException = exception as SupremacyException;
-                     if (supremacyException == null)
+                     if (!(exception is SupremacyException supremacyException))
                      {
                          ClientCommands.Exit.Execute(false);
                          return;

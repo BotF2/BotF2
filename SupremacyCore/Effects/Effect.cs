@@ -27,8 +27,8 @@ namespace Supremacy.Effects
 
         public EffectGroup EffectGroup
         {
-            get { return _effectGroup; }
-            internal set { _effectGroup = value; }
+            get => _effectGroup;
+            internal set => _effectGroup = value;
         }
 
         public string DescriptionExpression { get; set; }
@@ -39,8 +39,8 @@ namespace Supremacy.Effects
 
         public EffectBinding Bind([NotNull] EffectGroupBinding effectGroupBinding, [NotNull] IEffectTarget effectTarget)
         {
-            Guard.ArgumentNotNull(effectGroupBinding, "effectGroupBinding");
-            Guard.ArgumentNotNull(effectTarget, "effectTarget");
+            _ = Guard.ArgumentNotNull(effectGroupBinding, "effectGroupBinding");
+            _ = Guard.ArgumentNotNull(effectTarget, "effectTarget");
 
             EffectBinding binding = BindCore(effectGroupBinding, effectTarget);
 

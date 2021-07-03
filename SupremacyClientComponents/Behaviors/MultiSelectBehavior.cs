@@ -31,7 +31,10 @@ namespace Supremacy.Client.Behaviors
         private void OnSelectorLostMouseCapture(object sender, MouseEventArgs e)
         {
             if (!_isSelectionInProgress)
+            {
                 return;
+            }
+
             EndSelection();
             e.Handled = true;
         }
@@ -47,7 +50,10 @@ namespace Supremacy.Client.Behaviors
         private void OnSelectorPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (!_isSelectionInProgress)
+            {
                 return;
+            }
+
             EndSelection();
             e.Handled = true;
         }
@@ -55,7 +61,9 @@ namespace Supremacy.Client.Behaviors
         private void OnSelectorPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (!_isSelectionInProgress)
+            {
                 return;
+            }
 
             Point endPoint = e.GetPosition(_selector);
 
@@ -67,7 +75,7 @@ namespace Supremacy.Client.Behaviors
                 {
                     return;
                 }
-                _selector.CaptureMouse();
+                _ = _selector.CaptureMouse();
             }
 
             _selectionAdorner.EndPoint = endPoint;
@@ -77,7 +85,10 @@ namespace Supremacy.Client.Behaviors
             foreach (KeyValuePair<object, UIElement> valuePair in itemsInSelectionRectangle)
             {
                 if (Selector.GetIsSelected(valuePair.Value))
+                {
                     continue;
+                }
+
                 _newlySelectedItems[valuePair.Key] = valuePair.Value;
                 AddSelection(valuePair.Key, valuePair.Value);
             }
@@ -85,7 +96,7 @@ namespace Supremacy.Client.Behaviors
             foreach (KeyValuePair<object, UIElement> unselectedItem in _newlySelectedItems.Except(itemsInSelectionRectangle).ToList())
             {
                 RemoveSelection(unselectedItem.Key, unselectedItem.Value);
-                _newlySelectedItems.Remove(unselectedItem.Key);
+                _ = _newlySelectedItems.Remove(unselectedItem.Key);
             }
 
             _adornerLayer.Update(_selector);
@@ -142,13 +153,16 @@ namespace Supremacy.Client.Behaviors
 
         private void OnSelectorPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            DependencyObject originalSource = e.OriginalSource as DependencyObject;
-            if (originalSource == null)
+            if (!(e.OriginalSource is DependencyObject originalSource))
+            {
                 return;
+            }
 
             ScrollBar scrollBar = originalSource.FindVisualAncestorByType<ScrollBar>();
             if (scrollBar != null)
+            {
                 return;
+            }
 
             IEnumerable<HitTestResult> hitTestResults = from object item in _selector.Items
                                                         select item as UIElement ?? _selector.ItemContainerGenerator.ContainerFromItem(item) as UIElement
@@ -157,14 +171,18 @@ namespace Supremacy.Client.Behaviors
                                                         select VisualTreeHelper.HitTest(container, e.GetPosition(container));
 
             if (hitTestResults.Any(hitTestResult => (hitTestResult != null) && (hitTestResult.VisualHit != null)))
+            {
                 return;
+            }
 
             _isSelectionInProgress = true;
 
             if ((Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.Shift)
+            {
                 ClearSelection();
+            }
 
-            _selector.Focus();
+            _ = _selector.Focus();
 
             CreateSelectionAdorner(e.GetPosition(_selector));
 
@@ -174,25 +192,39 @@ namespace Supremacy.Client.Behaviors
         private static void AddSelection(object item, DependencyObject container)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException("item");
+            }
+
             if (container == null)
+            {
                 throw new ArgumentNullException("container");
+            }
 
             if (!Selector.GetIsSelected(container))
+            {
                 Selector.SetIsSelected(container, true);
+            }
         }
 
         private void RemoveSelection(object item, DependencyObject container)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException("item");
+            }
+
             if (container == null)
+            {
                 throw new ArgumentNullException("container");
+            }
 
             Selector.SetIsSelected(container, false);
 
             if (_selector.SelectedItem == item)
+            {
                 _selector.SelectedItem = null;
+            }
         }
 
         private void ClearSelection()
@@ -204,7 +236,9 @@ namespace Supremacy.Client.Behaviors
                                                        select container;
 
             foreach (DependencyObject container in containers)
+            {
                 Selector.SetIsSelected(container, false);
+            }
         }
 
         private void CreateSelectionAdorner(Point startPoint)
@@ -212,7 +246,9 @@ namespace Supremacy.Client.Behaviors
             RemoveSelectionAdorner();
 
             if (_adornerLayer == null)
+            {
                 _adornerLayer = AdornerLayer.GetAdornerLayer(_selector);
+            }
 
             _selectionAdorner = new SelectionAdorner(_selector, startPoint);
             _adornerLayer.Add(_selectionAdorner);
@@ -221,9 +257,14 @@ namespace Supremacy.Client.Behaviors
         private void RemoveSelectionAdorner()
         {
             if (_adornerLayer == null)
+            {
                 return;
+            }
+
             if (_selectionAdorner == null)
+            {
                 return;
+            }
 
             _selectionAdorner.EndPoint = null;
 
@@ -236,7 +277,9 @@ namespace Supremacy.Client.Behaviors
         protected override void OnDetaching()
         {
             if (_selector == null)
+            {
                 return;
+            }
 
             _selector.PreviewMouseDown -= OnSelectorPreviewMouseDown;
             _selector.PreviewMouseUp -= OnSelectorPreviewMouseUp;
@@ -250,7 +293,9 @@ namespace Supremacy.Client.Behaviors
         private void OnSelectorPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if ((e.Key != Key.Escape) || !GetSelectedItemContainers().Any())
+            {
                 return;
+            }
 
             ClearSelection();
 

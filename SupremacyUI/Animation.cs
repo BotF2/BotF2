@@ -9,8 +9,6 @@ using Supremacy.Client;
 using Supremacy.Resources;
 using Supremacy.Utility;
 using System.IO;
-using Supremacy.Client.Dialogs;
-using log4net;
 
 namespace Supremacy.UI
 {

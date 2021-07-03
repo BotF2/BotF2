@@ -18,7 +18,6 @@ using Supremacy.Diplomacy;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
-using Supremacy.Utility;
 
 namespace Supremacy.Pathfinding
 {
@@ -55,9 +54,14 @@ namespace Supremacy.Pathfinding
         {
             List<TNode> buffer = new List<TNode>();
             for (Path<TNode> path = this; path != null; path = path.PreviousSteps)
+            {
                 buffer.Insert(0, path.LastStep);
+            }
+
             foreach (TNode node in buffer)
+            {
                 yield return node;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -83,26 +87,38 @@ namespace Supremacy.Pathfinding
         public static TravelRoute FindPath(Fleet fleet, PathOptions options, IEnumerable<Sector> forbiddenSectors, Sector waypoint, params Sector[] waypoints)
         {
             if (waypoint == null)
+            {
                 throw new ArgumentNullException("waypoint");
+            }
+
             List<Sector> waypointsList = new List<Sector>(((waypoints == null) ? 0 : waypoints.Length) + 1)
                                 {
                                     waypoint
                                 };
             if (waypoints != null)
+            {
                 waypointsList.AddRange(waypoints);
+            }
+
             return FindPath(fleet, forbiddenSectors, waypointsList);
         }
 
         public static TravelRoute FindPath(Fleet fleet, PathOptions options, Sector waypoint, params Sector[] waypoints)
         {
             if (waypoint == null)
+            {
                 throw new ArgumentNullException("waypoint");
+            }
+
             List<Sector> waypointsList = new List<Sector>(((waypoints == null) ? 0 : waypoints.Length) + 1)
                                 {
                                     waypoint
                                 };
             if (waypoints != null)
+            {
                 waypointsList.AddRange(waypoints);
+            }
+
             return FindPath(fleet, null, waypointsList);
         }
 
@@ -131,7 +147,10 @@ namespace Supremacy.Pathfinding
             foreach (Ship ship in fleet.Ships)
             {
                 if (fleet.Owner != null)
+                {
                     break;
+                }
+
                 if (ship.Owner != null)
                 {
                     fleet.Owner = ship.Owner;
@@ -142,9 +161,13 @@ namespace Supremacy.Pathfinding
             ISet<Sector> forbiddenSectorSet;
 
             if (forbiddenSectors != null)
+            {
                 forbiddenSectorSet = forbiddenSectors as ISet<Sector> ?? new HashSet<Sector>(forbiddenSectors);
+            }
             else
+            {
                 forbiddenSectorSet = null;
+            }
 
             TravelRoute route = new TravelRoute(waypoints);
             Sector start = fleet.Sector;
@@ -168,7 +191,9 @@ namespace Supremacy.Pathfinding
                     sector => 1.0);
 
                 if (segment == null || !segment.Any())
+                {
                     continue;
+                }
 
                 foreach (Sector step in segment.Skip(1))
                 {
@@ -200,15 +225,21 @@ namespace Supremacy.Pathfinding
                 Path<TNode> path = queue.Dequeue();
 
                 if (closed.Contains(path.LastStep))
+                {
                     continue;
+                }
 
                 if (isFinishedCallback(path.LastStep))
+                {
                     return path;
+                }
 
                 if ((canContinueCallback == null) || !canContinueCallback(path.LastStep))
+                {
                     return null;
+                }
 
-                closed.Add(path.LastStep);
+                _ = closed.Add(path.LastStep);
 
                 foreach (TNode neighbor in getNeighbors(path.LastStep))
                 {

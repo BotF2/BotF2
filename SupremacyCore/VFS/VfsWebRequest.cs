@@ -26,9 +26,7 @@ namespace Supremacy.VFS
 
         public VfsWebRequest([NotNull] Uri requestUri)
         {
-            if (requestUri == null)
-                throw new ArgumentNullException("requestUri");
-            _requestUri = requestUri;
+            _requestUri = requestUri ?? throw new ArgumentNullException("requestUri");
         }
 
         public override WebResponse GetResponse()
@@ -46,7 +44,9 @@ namespace Supremacy.VFS
             lock (typeof(VfsWebRequestFactory))
             {
                 if (UriParser.IsKnownScheme("vfs"))
+                {
                     return;
+                }
 
                 UriParser.Register(
                     new GenericUriParser(
@@ -58,7 +58,7 @@ namespace Supremacy.VFS
                     Scheme,
                     -1);
 
-                WebRequest.RegisterPrefix(Scheme, new VfsWebRequestFactory());
+                _ = WebRequest.RegisterPrefix(Scheme, new VfsWebRequestFactory());
             }
         }
 
@@ -78,10 +78,7 @@ namespace Supremacy.VFS
 
         public VfsWebResponse([NotNull] Uri responseUri)
         {
-            if (responseUri == null)
-                throw new ArgumentNullException("responseUri");
-
-            _responseUri = responseUri;
+            _responseUri = responseUri ?? throw new ArgumentNullException("responseUri");
         }
 
         private readonly Lazy<IVfsService> _vfsService = new Lazy<IVfsService>(() => ResourceManager.VfsService);
@@ -92,11 +89,12 @@ namespace Supremacy.VFS
         {
             IVfsService vfsService = VfsService;
             if (vfsService == null)
+            {
                 throw new InvalidOperationException("Could not resolve VFS service.");
+            }
 
-            IVirtualFileInfo virtualFileInfo;
 
-            if (!vfsService.TryGetFileInfo(_responseUri, out virtualFileInfo))
+            if (!vfsService.TryGetFileInfo(_responseUri, out IVirtualFileInfo virtualFileInfo))
             {
                 throw new FileNotFoundException(
                     string.Format(

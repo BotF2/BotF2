@@ -87,8 +87,7 @@ namespace Supremacy.Data
             table = (Table)_tables[tableName];
             GameLog.Core.GameInitData.DebugFormat("tableName = {0} for TRowKey rowKey, string columnKey, out string value", tableName);
 
-            Table<TRowKey> typedTable = table as Table<TRowKey>;
-            if (typedTable == null)
+            if (!(table is Table<TRowKey> typedTable))
             {
                 return false;
             }
@@ -142,8 +141,7 @@ namespace Supremacy.Data
             table = (Table)_tables[tableName];
             GameLog.Core.GameInitData.DebugFormat("tableName = {0} for TRowKey rowKey, int columnIndex, out string value", tableName);
 
-            Table<TRowKey> typedTable = table as Table<TRowKey>;
-            if (typedTable == null)
+            if (!(table is Table<TRowKey> typedTable))
             {
                 return false;
             }

@@ -1,9 +1,6 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
 using System.Threading;
 using System.Windows;
 
@@ -74,7 +71,7 @@ namespace Supremacy.Client.Interop
                 : base(ptr, fOwnsHandle)
             {
                 // ReSharper disable DoNotCallOverridableMethodsInConstructor
-                HandleCollector.Add(handle, HandleCollectorType);
+                _ = HandleCollector.Add(handle, HandleCollectorType);
                 // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
@@ -87,14 +84,14 @@ namespace Supremacy.Client.Interop
             public static bool DeleteObject(IntPtr hObject)
             {
                 bool result = UnsafeNativeMethods.DeleteObject(hObject);
-                Marshal.GetLastWin32Error();
+                _ = Marshal.GetLastWin32Error();
                 return result;
             }
 
             [SecurityCritical]
             protected override bool ReleaseHandle()
             {
-                HandleCollector.Remove(handle, CommonHandles.GDI);
+                _ = HandleCollector.Remove(handle, CommonHandles.GDI);
                 return UnsafeNativeMethods.DeleteObject(handle);
             }
 
@@ -103,18 +100,15 @@ namespace Supremacy.Client.Interop
             public override bool IsInvalid
             {
                 [SecurityCritical, SecuritySafeCritical]
-                get
-                {
-                    return (handle == IntPtr.Zero);
-                }
+                get => handle == IntPtr.Zero;
             }
         }
 
         [DllImport("user32.dll")]
-        public extern static IntPtr GetForegroundWindow();
+        public static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
-        public extern static uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
         [DllImport("kernel32.dll")]
         public static extern uint GetCurrentProcessId();
@@ -185,14 +179,24 @@ namespace Supremacy.Client.Interop
                     Rect workingArea = monitorInfo.rcWork.ToRect();
 
                     if (bounds.Right > workingArea.Right)
+                    {
                         bounds.Offset(workingArea.Right - bounds.Right, 0);
+                    }
+
                     if (bounds.Left < workingArea.Left)
+                    {
                         bounds.Offset(workingArea.Left - bounds.Left, 0);
+                    }
 
                     if (bounds.Bottom > workingArea.Bottom)
+                    {
                         bounds.Offset(0, workingArea.Bottom - bounds.Bottom);
+                    }
+
                     if (bounds.Top < workingArea.Top)
+                    {
                         bounds.Offset(0, workingArea.Top - bounds.Top);
+                    }
                 }
             }
 
@@ -328,10 +332,10 @@ namespace Supremacy.Client.Interop
                 {
                     if (_handleCount > _threshold)
                     {
-                        _threshold = _handleCount + ((_handleCount * _deltaPercent) / 100);
+                        _threshold = _handleCount + (_handleCount * _deltaPercent / 100);
                         return true;
                     }
-                    int num = (100 * _threshold) / (100 + _deltaPercent);
+                    int num = 100 * _threshold / (100 + _deltaPercent);
                     if ((num >= _initialThreshHold) && (_handleCount < ((int)(num * 0.9f))))
                     {
                         _threshold = num;

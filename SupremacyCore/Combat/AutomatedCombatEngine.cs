@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 using Supremacy.Collections;
-using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
@@ -17,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
 using Supremacy.Universe;
-using Supremacy.Tech;
 
 namespace Supremacy.Combat
 {
@@ -997,7 +995,7 @@ namespace Supremacy.Combat
                         combatOrderBonusMalus += AttackingShip.Item1.RemainingFirepower * 0.17;
                     }
 
-                    Convert.ToInt32(combatOrderBonusMalus);
+                    _ = Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
                     if (
                     ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
@@ -1647,7 +1645,7 @@ namespace Supremacy.Combat
                         combatOrderBonusMalus += applyDamage * 0.17;
                     }
 
-                    Convert.ToInt32(combatOrderBonusMalus);
+                    _ = Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
                     if (
                         ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
@@ -1994,7 +1992,7 @@ namespace Supremacy.Combat
             {
 
                 Sector theSector = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector;
-                String systemName = "";
+                string systemName = "";
                 if (theSector.System != null)
                 {
                     systemName = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector.System.Name;
@@ -2010,21 +2008,33 @@ namespace Supremacy.Combat
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
                 {
                     if (systemName != "" && (systemName == ship.Item1.Owner.HomeSystemName || (theSector.System.Owner != null && !CombatHelper.WillEngage(ship.Item1.Owner, theSector.System.Owner))))
+                    {
                         _stayingThereShips.Add(ship); // at a home system to defend
+                    }
                     else if (foundStation && !CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
+                    {
                         _stayingThereShips.Add(ship); // at a station to defend
+                    }
                     else if (constructOrColonyShips.Count() > 0) //
                     {
                         CombatUnit firstConstrutorOrColonyCombatUnit = constructOrColonyShips.FirstOrDefault()?.Item1;
                         if (ship.Item1.Owner == firstConstrutorOrColonyCombatUnit.Owner || !CombatHelper.WillEngage(ship.Item1.Owner, firstConstrutorOrColonyCombatUnit.Owner))
+                        {
                             _stayingThereShips.Add(ship); // first owner of a colony or construction ship stays
+                        }
                         else
+                        {
                             _allRetreatShips.Add(ship);
+                        }
                     }
                     else if (firstShipOwner != null && !CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
+                    {
                         _stayingThereShips.Add(ship); // otherwise who is first stays
+                    }
                     else
+                    {
                         _allRetreatShips.Add(ship);
+                    }
                     //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
 
                 }

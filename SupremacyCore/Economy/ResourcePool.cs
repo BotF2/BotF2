@@ -39,7 +39,7 @@ namespace Supremacy.Economy
         /// Gets the Raw Materials stockpile.
         /// </summary>
         /// <value>The Raw Materials stockpile.</value>
-        public Meter RawMaterials => _values[(int)ResourceType.RawMaterials];
+        public Meter Duranium => _values[(int)ResourceType.Duranium];
 
         /// <summary>
         /// Gets the stockpile for the specified resource type.
@@ -53,11 +53,16 @@ namespace Supremacy.Economy
         public bool MeetsOrExceeds(ResourceValueCollection resources)
         {
             if (resources == null)
+            {
                 throw new ArgumentNullException("resources");
+            }
+
             foreach (ResourceType resource in EnumHelper.GetValues<ResourceType>())
             {
                 if (this[resource].CurrentValue < resources[resource])
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -86,11 +91,17 @@ namespace Supremacy.Economy
         void OnMeterChanged(object sender, PropertyChangedEventArgs e)
         {
             if (sender == Dilithium)
+            {
                 OnPropertyChanged("Dilithium");
+            }
             else if (sender == Deuterium)
+            {
                 OnPropertyChanged("Deuterium");
-            else if (sender == RawMaterials)
-                OnPropertyChanged("RawMaterials");
+            }
+            else if (sender == Duranium)
+            {
+                OnPropertyChanged("Duranium");
+            }
         }
 
         /// <summary>
@@ -117,8 +128,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

@@ -92,9 +92,12 @@ namespace Supremacy.Scripting.Ast
                     {
                         error = CompilerErrors.MemberIsObsolete;
                     }
-                    else error = string.IsNullOrEmpty(obsoleteAttribute.Message)
+                    else
+                    {
+                        error = string.IsNullOrEmpty(obsoleteAttribute.Message)
                         ? CompilerErrors.MemberIsObsoleteWarning
                         : CompilerErrors.MemberIsObsoleteWithMessageWarning;
+                    }
 
                     ec.ReportError(
                         error,
@@ -126,7 +129,7 @@ namespace Supremacy.Scripting.Ast
 
             if (!IsInstance)
             {
-                return original != null && original.IdenticalNameAndTypeName(ec, left, loc) ? (this) : ResolveExtensionMemberAccess(ec, left);
+                return original != null && original.IdenticalNameAndTypeName(ec, left, loc) ? this : ResolveExtensionMemberAccess(ec, left);
             }
 
             InstanceExpression = left;
@@ -159,7 +162,7 @@ namespace Supremacy.Scripting.Ast
     {
         private FieldInfo _field;
 
-        public ConstantMemberExpression([NotNull] FieldInfo field, SourceSpan span = default(SourceSpan))
+        public ConstantMemberExpression([NotNull] FieldInfo field, SourceSpan span = default)
         {
             _field = field ?? throw new ArgumentNullException("field");
 
@@ -205,7 +208,9 @@ namespace Supremacy.Scripting.Ast
         {
             IConstant ic = TypeManager.GetConstant(_field);
             if (ic.ResolveValue())
+            {
                 ic.CheckObsoleteness(ec, Span);
+            }
 
             return ic.CreateConstantReference(Span);
         }

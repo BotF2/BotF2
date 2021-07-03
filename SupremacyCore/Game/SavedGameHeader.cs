@@ -93,9 +93,14 @@ namespace Supremacy.Game
         public SavedGameHeader(IGameContext game, Player localPlayer)
         {
             if (game == null)
+            {
                 throw new ArgumentNullException("game");
+            }
+
             if (localPlayer == null)
+            {
                 throw new ArgumentNullException("localPlayer");
+            }
 
             IsMultiplayerGame = game.IsMultiplayerGame;
             LocalPlayerName = localPlayer.Name;

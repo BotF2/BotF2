@@ -13,7 +13,7 @@ namespace Supremacy.Scripting
         {
             _parameter = parameter;
 
-            bool valueIsNull = (value == null);
+            bool valueIsNull = value == null;
 
             if (!_parameter.IsValidValue(ref value))
             {

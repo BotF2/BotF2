@@ -22,7 +22,9 @@ namespace Supremacy.Client.Controls
         internal static void ProcessKeyDown(FrameworkElement presenter, KeyEventArgs e)
         {
             if (e.Handled)
+            {
                 return;
+            }
 
             FocusNavigationDirection direction = FocusNavigationDirection.Next;
             switch (e.Key)
@@ -31,14 +33,14 @@ namespace Supremacy.Client.Controls
                     direction = FocusNavigationDirection.Down;
                     break;
                 case Key.Left:
-                    direction = (presenter.FlowDirection == FlowDirection.LeftToRight
+                    direction = presenter.FlowDirection == FlowDirection.LeftToRight
                                      ? FocusNavigationDirection.Left
-                                     : FocusNavigationDirection.Right);
+                                     : FocusNavigationDirection.Right;
                     break;
                 case Key.Right:
-                    direction = (presenter.FlowDirection == FlowDirection.LeftToRight
+                    direction = presenter.FlowDirection == FlowDirection.LeftToRight
                                      ? FocusNavigationDirection.Right
-                                     : FocusNavigationDirection.Left);
+                                     : FocusNavigationDirection.Left;
                     break;
                 case Key.Up:
                     direction = FocusNavigationDirection.Up;
@@ -46,18 +48,22 @@ namespace Supremacy.Client.Controls
             }
 
             if (direction == FocusNavigationDirection.Next)
+            {
                 return;
+            }
 
-            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
-            if (focusedElement == null)
+            if (!(Keyboard.FocusedElement is UIElement focusedElement))
+            {
                 return;
+            }
 
-            IInputElement predictedFocus = focusedElement.PredictFocus(direction) as IInputElement;
-            if (predictedFocus == null)
+            if (!(focusedElement.PredictFocus(direction) is IInputElement predictedFocus))
+            {
                 return;
+            }
 
             e.Handled = true;
-            predictedFocus.Focus();
+            _ = predictedFocus.Focus();
             return;
         }
 

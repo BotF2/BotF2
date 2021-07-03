@@ -40,7 +40,7 @@ namespace Supremacy.Entities
 
         private static int GetKey(int ownerCivId, int otherCivId)
         {
-            return ((ownerCivId << 16) | otherCivId);
+            return (ownerCivId << 16) | otherCivId;
         }
 
         public void Add(Civilization ownerCiv, Civilization otherCiv, TValue value)
@@ -51,14 +51,20 @@ namespace Supremacy.Entities
         public bool Remove(Civilization ownerCiv, Civilization otherCiv)
         {
             if ((ownerCiv == null) || (otherCiv == null))
+            {
                 return false;
+            }
+
             return _map.Remove(GetKey(ownerCiv.CivID, otherCiv.CivID));
         }
 
         public bool HasValue(Civilization ownerCiv, Civilization otherCiv)
         {
             if ((ownerCiv == null) || (otherCiv == null))
+            {
                 return false;
+            }
+
             return _map.ContainsKey(GetKey(ownerCiv.CivID, otherCiv.CivID));
         }
 
@@ -67,17 +73,29 @@ namespace Supremacy.Entities
             get
             {
                 if (ownerCiv == null)
+                {
                     throw new ArgumentNullException("ownerCiv");
+                }
+
                 if (otherCiv == null)
+                {
                     throw new ArgumentNullException("otherCiv");
+                }
+
                 return this[ownerCiv.CivID, otherCiv.CivID];
             }
             set
             {
                 if (ownerCiv == null)
+                {
                     throw new ArgumentNullException("ownerCiv");
+                }
+
                 if (otherCiv == null)
+                {
                     throw new ArgumentNullException("otherCiv");
+                }
+
                 this[ownerCiv.CivID, otherCiv.CivID] = value;
             }
         }
@@ -86,16 +104,20 @@ namespace Supremacy.Entities
         {
             get
             {
-                TValue result;
-                if (_map.TryGetValue(GetKey(ownerCivId, otherCivId), out result))
+                if (_map.TryGetValue(GetKey(ownerCivId, otherCivId), out TValue result))
+                {
                     return result;
-                return default(TValue);
+                }
+
+                return default;
             }
             set
             {
-                _map.Remove(GetKey(ownerCivId, otherCivId));
+                _ = _map.Remove(GetKey(ownerCivId, otherCivId));
                 if (!Equals(value, null))
+                {
                     _map[GetKey(ownerCivId, otherCivId)] = value;
+                }
             }
         }
 
@@ -104,12 +126,15 @@ namespace Supremacy.Entities
             foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (otherCiv == ownerCiv)
+                {
                     continue;
+                }
 
-                TValue value;
 
-                if (TryGetValue(ownerCiv, otherCiv, out value))
+                if (TryGetValue(ownerCiv, otherCiv, out TValue value))
+                {
                     yield return value;
+                }
             }
         }
 
@@ -117,7 +142,7 @@ namespace Supremacy.Entities
         {
             if (firstCiv == null || secondCiv == null)
             {
-                result = default(TValue);
+                result = default;
                 return false;
             }
 
@@ -147,7 +172,9 @@ namespace Supremacy.Entities
 
             int count = reader.ReadInt32();
             for (int i = 0; i < count; i++)
+            {
                 _map.Add(reader.ReadInt32(), reader.Read<TValue>());
+            }
         }
 
         #endregion
@@ -157,7 +184,9 @@ namespace Supremacy.Entities
         public IEnumerator<TValue> GetEnumerator()
         {
             foreach (KeyValuePair<int, TValue> pair in _map)
+            {
                 yield return pair.Value;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

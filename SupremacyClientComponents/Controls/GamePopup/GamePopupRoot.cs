@@ -126,7 +126,7 @@ namespace Supremacy.Client.Controls
 
         internal void SetupLayoutBindings(GamePopup popup)
         {
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 WidthProperty,
                 new Binding
                 {
@@ -135,7 +135,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(WidthProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 HeightProperty,
                 new Binding
                 {
@@ -144,7 +144,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(HeightProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MinWidthProperty,
                 new Binding
                 {
@@ -153,7 +153,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MinWidthProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MinHeightProperty,
                 new Binding
                 {
@@ -162,7 +162,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MinHeightProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MaxWidthProperty,
                 new Binding
                 {
@@ -171,7 +171,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MaxWidthProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MaxHeightProperty,
                 new Binding
                 {
@@ -180,7 +180,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MaxHeightProperty),
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 ClipToBoundsProperty,
                 new Binding
                 {
@@ -194,10 +194,11 @@ namespace Supremacy.Client.Controls
         {
             UIElement child = Child;
             if (child == null)
+            {
                 return;
+            }
 
-            TranslateTransform renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
-            if (renderTransform == null)
+            if (!(_adornerDecorator.RenderTransform is TranslateTransform renderTransform))
             {
                 renderTransform = new TranslateTransform();
                 _adornerDecorator.RenderTransform = renderTransform;
@@ -209,7 +210,9 @@ namespace Supremacy.Client.Controls
                 FlowDirection flowDirection = FlowDirection;
 
                 if (direction != flowDirection)
+                {
                     animateFromRight = !animateFromRight;
+                }
 
                 double width = _adornerDecorator.RenderSize.Width;
                 DoubleAnimation horizontalAnimation = new DoubleAnimation(
@@ -235,9 +238,10 @@ namespace Supremacy.Client.Controls
         {
             BeginAnimation(OpacityProperty, null);
 
-            TranslateTransform renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
-            if (renderTransform == null)
+            if (!(_adornerDecorator.RenderTransform is TranslateTransform renderTransform))
+            {
                 return;
+            }
 
             renderTransform.BeginAnimation(TranslateTransform.XProperty, null);
             renderTransform.BeginAnimation(TranslateTransform.YProperty, null);
@@ -247,22 +251,24 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                TranslateTransform renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
-                if (renderTransform != null)
+                if (_adornerDecorator.RenderTransform is TranslateTransform renderTransform)
+                {
                     return new Vector(renderTransform.X, renderTransform.Y);
+                }
+
                 return new Vector();
             }
         }
 
         internal UIElement Child
         {
-            get { return _adornerDecorator.Child; }
-            set { _adornerDecorator.Child = value; }
+            get => _adornerDecorator.Child;
+            set => _adornerDecorator.Child = value;
         }
 
         internal Transform Transform
         {
-            set { _transformDecorator.LayoutTransform = value; }
+            set => _transformDecorator.LayoutTransform = value;
         }
 
         protected override int VisualChildrenCount => 1;
@@ -278,9 +284,10 @@ namespace Supremacy.Client.Controls
 
         internal void SetPosition(PlacementMode preferedPlacement, UIElement placementTarget, Point mousePosition, bool secondSetPositionCall = false)
         {
-            UIElement visualRoot = this.FindVisualRoot() as UIElement;
-            if (visualRoot == null)
+            if (!(this.FindVisualRoot() is UIElement visualRoot))
+            {
                 return;
+            }
 
             Rect screenBounds = new Rect(visualRoot.RenderSize);
 
@@ -305,18 +312,24 @@ namespace Supremacy.Client.Controls
                         {
                             PositionTop(_relativeToTargetPoint, secondSetPositionCall);
                             if (_arrow != null)
+                            {
                                 _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
+                            }
                         }
                         else
                         {
                             _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
                             PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
                             if (_arrow != null)
+                            {
                                 _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
+                            }
                         }
 
                         if (secondSetPositionCall)
+                        {
                             break;
+                        }
 
                         SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
                         break;
@@ -345,7 +358,9 @@ namespace Supremacy.Client.Controls
                         }
 
                         if (secondSetPositionCall)
+                        {
                             break;
+                        }
 
                         SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
                         break;
@@ -374,7 +389,9 @@ namespace Supremacy.Client.Controls
                         }
 
                         if (secondSetPositionCall)
+                        {
                             break;
+                        }
 
                         SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
                         break;
@@ -387,17 +404,23 @@ namespace Supremacy.Client.Controls
                             _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
                             PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
                             if (_arrow != null)
+                            {
                                 _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
+                            }
                         }
                         else
                         {
                             PositionTop(_relativeToTargetPoint, secondSetPositionCall);
                             if (_arrow != null)
+                            {
                                 _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
+                            }
                         }
 
                         if (secondSetPositionCall)
+                        {
                             break;
+                        }
 
                         SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
                         break;

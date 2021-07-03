@@ -59,7 +59,9 @@ namespace Supremacy.Effects
                 {
                     CompositeDisposer disposer = Interlocked.Exchange(ref SuspendedEffectsHandle, null);
                     if (disposer != null)
+                    {
                         disposer.Dispose();
+                    }
                 }
 
             }
@@ -68,18 +70,22 @@ namespace Supremacy.Effects
         public static void RegisterEffectSource([NotNull] IEffectSource effectSource)
         {
             if (effectSource == null)
+            {
                 throw new ArgumentNullException("effectSource");
+            }
 
             lock (SyncRoot)
             {
                 if (RegisteredSources.ContainsKey(effectSource))
+                {
                     return;
+                }
 
                 IEffectGroupBindingCollection effectGroups = effectSource.EffectGroupBindings;
 
                 if (SuspendEffectsScope.IsWithin)
                 {
-                    effectGroups
+                    _ = effectGroups
                         .SelectMany(o => o.EffectBindings)
                         .Select(o => o.Suspend())
                         .ForEach(o => SuspendedEffectsHandle.AddChild(o));
@@ -91,7 +97,9 @@ namespace Supremacy.Effects
                 {
                     workers[i] = new EffectGroupWorker(effectSource, effectGroups[i]);
                     if (IsEnabled)
+                    {
                         workers[i].Activate();
+                    }
                 }
 
                 RegisteredSources.Add(effectSource, workers);
@@ -101,22 +109,29 @@ namespace Supremacy.Effects
         public static void UnregisterEffectSource([NotNull] IEffectSource effectSource)
         {
             if (effectSource == null)
+            {
                 throw new ArgumentNullException("effectSource");
+            }
 
             lock (SyncRoot)
             {
-                EffectGroupWorker[] workers;
 
-                if (!RegisteredSources.TryGetValue(effectSource, out workers))
+                if (!RegisteredSources.TryGetValue(effectSource, out EffectGroupWorker[] workers))
+                {
                     return;
+                }
 
-                RegisteredSources.Remove(effectSource);
+                _ = RegisteredSources.Remove(effectSource);
 
                 if (!IsEnabled)
+                {
                     return;
+                }
 
                 foreach (EffectGroupWorker effectGroupWorker in workers)
+                {
                     effectGroupWorker.Deactivate();
+                }
             }
         }
 
@@ -125,11 +140,13 @@ namespace Supremacy.Effects
             lock (SyncRoot)
             {
                 if (IsEnabled)
+                {
                     return;
+                }
 
                 try
                 {
-                    RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Activate());
+                    _ = RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Activate());
                 }
                 finally
                 {
@@ -143,11 +160,13 @@ namespace Supremacy.Effects
             lock (SyncRoot)
             {
                 if (!IsEnabled)
+                {
                     return;
+                }
 
                 try
                 {
-                    RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Deactivate());
+                    _ = RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Deactivate());
                 }
                 finally
                 {
@@ -177,26 +196,26 @@ namespace Supremacy.Effects
 
             internal EffectGroupWorker([NotNull] IEffectSource source, [NotNull] EffectGroupBinding effectGroupBinding)
             {
-                if (source == null)
-                    throw new ArgumentNullException("source");
-                if (effectGroupBinding == null)
-                    throw new ArgumentNullException("effectGroupBinding");
-
-                _source = source;
-                _effectGroupBinding = effectGroupBinding;
+                _source = source ?? throw new ArgumentNullException("source");
+                _effectGroupBinding = effectGroupBinding ?? throw new ArgumentNullException("effectGroupBinding");
                 _attachedTargets = new HashSet<object>();
             }
 
             private void SetScopeObservation(object scope, bool enableObservation)
             {
-                INotifyCollectionChanged observableScope = scope as INotifyCollectionChanged;
-                if (observableScope == null)
+                if (!(scope is INotifyCollectionChanged observableScope))
+                {
                     return;
+                }
 
                 if (enableObservation && !_isObservingScope)
+                {
                     observableScope.CollectionChanged += OnScopeChanged;
+                }
                 else if (!enableObservation && _isObservingScope)
+                {
                     observableScope.CollectionChanged -= OnScopeChanged;
+                }
 
                 _isObservingScope = enableObservation;
             }
@@ -204,7 +223,9 @@ namespace Supremacy.Effects
             internal void Activate()
             {
                 if (_isActive)
+                {
                     return;
+                }
 
                 try
                 {
@@ -228,7 +249,9 @@ namespace Supremacy.Effects
             {
                 object oldScope = _lastScopeValue;
                 if (oldScope != null)
+                {
                     SetScopeObservation(oldScope, false);
+                }
 
                 object scopeValue = _lastScopeValue = _scope.Value;
 
@@ -236,7 +259,9 @@ namespace Supremacy.Effects
                 IEnumerable newItems = scopeValue as IEnumerable ??
                                ((scopeValue == null) ? null : new[] { scopeValue });
                 if (_isActive)
+                {
                     SetScopeObservation(_scope.Value, true);
+                }
 
                 UpdateTargets(oldItems, newItems);
             }
@@ -253,7 +278,7 @@ namespace Supremacy.Effects
                     foreach (IEffectTarget oldItem in oldItems.OfType<IEffectTarget>())
                     {
                         _effectGroupBinding.DetachTarget(oldItem);
-                        _attachedTargets.Remove(oldItem);
+                        _ = _attachedTargets.Remove(oldItem);
                     }
                 }
 
@@ -262,7 +287,7 @@ namespace Supremacy.Effects
                     foreach (IEffectTarget newItem in newItems.OfType<IEffectTarget>())
                     {
                         _effectGroupBinding.AttachTarget(newItem);
-                        _attachedTargets.Add(newItem);
+                        _ = _attachedTargets.Add(newItem);
                     }
                 }
             }
@@ -312,7 +337,9 @@ namespace Supremacy.Effects
             internal void Deactivate()
             {
                 if (!_isActive)
+                {
                     return;
+                }
 
                 try
                 {

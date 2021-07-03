@@ -31,28 +31,25 @@ namespace Supremacy.Client.Audio
         #region Properties
         public float Volume
         {
-            get { return _channelGroup.Volume; }
-            set { _channelGroup.Volume = value; }
+            get => _channelGroup.Volume;
+            set => _channelGroup.Volume = value;
         }
         #endregion
 
         #region Construction & Lifetime
         public SoundPlayer([NotNull] IAudioEngine engine, [NotNull] IAppContext appContext)
         {
-            if (engine == null)
-                throw new ArgumentNullException("engine");
-            if (appContext == null)
-                throw new ArgumentNullException("musicLibrary");
-
-            _engine = engine;
-            _appContext = appContext;
+            _engine = engine ?? throw new ArgumentNullException("engine");
+            _appContext = appContext ?? throw new ArgumentNullException("musicLibrary");
             _channelGroup = _engine.CreateGrouping("sound");
         }
 
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisposed = true;
 
@@ -86,7 +83,10 @@ namespace Supremacy.Client.Audio
         public void Play(string pack, string sound)
         {
             MusicEntry track = _appContext.ThemeMusicLibrary.LookupTrack(pack, sound);
-            if (track == null) track = _appContext.DefaultMusicLibrary.LookupTrack(pack, sound);
+            if (track == null)
+            {
+                track = _appContext.DefaultMusicLibrary.LookupTrack(pack, sound);
+            }
 
             if (track != null)
             {
@@ -101,9 +101,10 @@ namespace Supremacy.Client.Audio
 
         public void PlayAny(string pack)
         {
-            MusicPack musicPack = null;
-            if (!_appContext.ThemeMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack))
-                _appContext.DefaultMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack);
+            if (!_appContext.ThemeMusicLibrary.MusicPacks.TryGetValue(pack, out MusicPack musicPack))
+            {
+                _ = _appContext.DefaultMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack);
+            }
 
             if (musicPack != null)
             {
@@ -120,7 +121,9 @@ namespace Supremacy.Client.Audio
         public void PlayFile(string fileName)
         {
             if (fileName == null)
+            {
                 throw new ArgumentNullException("fileName");
+            }
 
             string resourcePath = ResourceManager.GetResourcePath(fileName);
 
@@ -150,7 +153,7 @@ namespace Supremacy.Client.Audio
                 try
                 {
                     track.Dispose();
-                    _audioTracks.Remove(track);
+                    _ = _audioTracks.Remove(track);
                 }
                 catch (Exception e)
                 {

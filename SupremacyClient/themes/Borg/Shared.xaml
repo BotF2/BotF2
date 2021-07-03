@@ -1673,12 +1673,14 @@
                            Grid.Row="0"
                            Height="28"
                            VerticalAlignment="Top"
+                           Opacity="0.5"
                            Fill="DarkGreen"
                            Margin="7,0,0,0" />
                 <Rectangle Grid.Column="3"
                            Grid.Row="0"
                            Width="14"
                            Height="28"
+                           Opacity="0.5"
                            VerticalAlignment="Top"
                            Fill="{StaticResource Borg2Gradient_Left_Right}"
                            Margin="3,0,0,0" />
@@ -1956,7 +1958,7 @@
         <Grid>
             <Border x:Name="Border"
               Width="21"
-              Background="{StaticResource Borg2Gradient_Bottom_Top}">
+              Background="{StaticResource Borg3Gradient_Bottom_Top}">
                 <Path x:Name="Arrow"
               Grid.Column="1"
               Fill="Black"
@@ -1990,7 +1992,7 @@
     <ControlTemplate x:Key="LCARS_ComboBoxTextBox"
                    TargetType="{x:Type TextBox}">
         <Border x:Name="Border"
-            BorderBrush="{StaticResource Borg2Gradient_Bottom_Top}"
+            BorderBrush="{StaticResource Borg3Gradient_Bottom_Top}"
             Background="#FF000000"
             BorderThickness="2"
             Focusable="False" />

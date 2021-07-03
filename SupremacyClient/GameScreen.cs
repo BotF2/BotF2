@@ -67,17 +67,17 @@ namespace Supremacy.Client
         public static void SetAppContext(DependencyObject element, IAppContext value)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             element.SetValue(AppContextProperty, value);
         }
         #endregion
 
         protected GameScreenBase([NotNull] IUnityContainer container)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-
-            _container = container;
+            _container = container ?? throw new ArgumentNullException("container");
             _regionManager = _container.Resolve<IRegionManager>();
             _playerOrderService = _container.Resolve<IPlayerOrderService>();
 
@@ -87,8 +87,8 @@ namespace Supremacy.Client
 
         public IAppContext AppContext
         {
-            get { return GetValue(AppContextProperty) as IAppContext; }
-            set { SetValue(AppContextProperty, value); }
+            get => GetValue(AppContextProperty) as IAppContext;
+            set => SetValue(AppContextProperty, value);
         }
 
         protected IPlayerOrderService PlayerOrderService => _playerOrderService;
@@ -137,19 +137,25 @@ namespace Supremacy.Client
             IsVisibleChanged += GameScreenIsVisibleChanged;
             IsActiveChanged += HandleIsActiveChanged;
 
-            ClientEvents.ScreenRefreshRequired.Subscribe(e => RefreshScreen());
+            _ = ClientEvents.ScreenRefreshRequired.Subscribe(e => RefreshScreen());
         }
 
         private void HandleIsActiveChanged(object sender, EventArgs args)
         {
             IRegion region = RegionManager.Regions[ClientRegions.GameScreens];
             if (!region.Views.Contains(this))
+            {
                 return;
+            }
 
             if (_isActive)
+            {
                 region.Activate(this);
+            }
             else
+            {
                 region.Deactivate(this);
+            }
         }
 
         public void BringDescendantIntoView(DependencyObject descendant)
@@ -159,7 +165,9 @@ namespace Supremacy.Client
             while (target != null && target != this)
             {
                 if (target.ReadLocalValue(Selector.IsSelectedProperty) != DependencyProperty.UnsetValue)
+                {
                     Selector.SetIsSelected(target, true);
+                }
 
                 target = WpfHelper.GetParent(target as FrameworkElement);
             }
@@ -170,9 +178,13 @@ namespace Supremacy.Client
         private void GameScreenIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (IsVisible)
+            {
                 OnShowCore();
+            }
             else
+            {
                 OnHideCore();
+            }
         }
 
         private void OnHideCore()
@@ -220,14 +232,16 @@ namespace Supremacy.Client
         {
             ChatMessage chatMessage = args.Value;
             if (chatMessage != null)
+            {
                 ProcessChatMessage(chatMessage);
+            }
         }
 
         private void GameScreenLoaded(object sender, RoutedEventArgs e)
         {
-            ClientEvents.ChatMessageReceived.Subscribe(OnChatMessageReceived);
-            ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.ChatMessageReceived.Subscribe(OnChatMessageReceived);
+            _ = ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
             RefreshScreen();
         }
 
@@ -244,9 +258,15 @@ namespace Supremacy.Client
         private void ProcessChatMessage(ChatMessage message)
         {
             if (!IsActive || !IsVisible || !AppContext.IsGameInPlay)
+            {
                 return;
+            }
+
             if (ReferenceEquals(message.Sender, AppContext.LocalPlayer))
+            {
                 return;
+            }
+
             RaiseEvent(new RoutedEventArgs(ChatMessageReceivedEvent, this));
         }
 
@@ -264,11 +284,14 @@ namespace Supremacy.Client
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (Equals(_isActive, value))
+                {
                     return;
+                }
+
                 _isActive = value;
                 OnIsActiveChanged();
             }

@@ -69,7 +69,7 @@ namespace Supremacy.Client.Controls
 
         internal GameMenuItem CurrentSelection
         {
-            get { return _currentSelection; }
+            get => _currentSelection;
             set
             {
                 bool isKeyboardFocused = false;
@@ -86,7 +86,9 @@ namespace Supremacy.Client.Controls
                 {
                     _currentSelection.IsSelected = true;
                     if (isKeyboardFocused)
-                        _currentSelection.Focus();
+                    {
+                        _ = _currentSelection.Focus();
+                    }
                 }
             }
         }
@@ -116,19 +118,24 @@ namespace Supremacy.Client.Controls
 
             foreach (object item in control.Items)
             {
-                IVariantControl childControl = item as IVariantControl;
-                if (childControl == null)
+                if (!(item is IVariantControl childControl))
+                {
                     childControl = control.ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
+                }
+
                 if (childControl != null)
+                {
                     childControl.VariantSize = control.ItemVariantSize;
+                }
             }
         }
 
         private static void OnMenuItemIsSelectedChangedEvent(object sender, RoutedPropertyChangedEventArgs<bool> e)
         {
-            GameMenuItem originalSource = e.OriginalSource as GameMenuItem;
-            if (originalSource == null)
+            if (!(e.OriginalSource is GameMenuItem originalSource))
+            {
                 return;
+            }
 
             GameMenu control = (GameMenu)sender;
 
@@ -138,7 +145,9 @@ namespace Supremacy.Client.Controls
                     originalSource.LogicalParent == control)
                 {
                     if (control.CurrentSelection != null && control.CurrentSelection.IsPopupOpen)
+                    {
                         control.CurrentSelection.IsPopupOpen = false;
+                    }
 
                     control.CurrentSelection = originalSource;
                 }
@@ -157,24 +166,34 @@ namespace Supremacy.Client.Controls
 
             // Quit if the menu is hidden since the last timer start
             if (!IsVisible)
+            {
                 return;
+            }
 
             // Select the menu item under the mouse and show its popup if it has one
             GameMenuItem highlightedMenuItem = HighlightedMenuItem;
             if (highlightedMenuItem == null)
+            {
                 return;
+            }
 
             if (highlightedMenuItem != CurrentSelection)
+            {
                 highlightedMenuItem.FocusOrSelect();
+            }
 
             if (highlightedMenuItem.HasPopup)
+            {
                 highlightedMenuItem.IsPopupOpen = true;
+            }
         }
 
         public static bool GetCanUnhighlightWhenFocused(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
 
             return (bool)obj.GetValue(CanUnhighlightWhenFocusedProperty);
         }
@@ -182,7 +201,9 @@ namespace Supremacy.Client.Controls
         public static void SetCanUnhighlightWhenFocused(DependencyObject obj, bool value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
 
             obj.SetValue(CanUnhighlightWhenFocusedProperty, value);
         }
@@ -194,33 +215,41 @@ namespace Supremacy.Client.Controls
 
         protected sealed override bool IsItemItsOwnContainerOverride(object item)
         {
-            return (item is GameMenuItem);
+            return item is GameMenuItem;
         }
 
         public static bool GetIsMenuItemInputGestureTextVisible(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (bool)obj.GetValue(IsMenuItemInputGestureTextVisibleProperty);
         }
 
         public static void SetIsMenuItemInputGestureTextVisible(DependencyObject obj, bool value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(IsMenuItemInputGestureTextVisibleProperty, value);
         }
 
         public VariantSize ItemVariantSize
         {
-            get { return (VariantSize)GetValue(ItemVariantSizeProperty); }
-            set { SetValue(ItemVariantSizeProperty, value); }
+            get => (VariantSize)GetValue(ItemVariantSizeProperty);
+            set => SetValue(ItemVariantSizeProperty, value);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e == null)
+            {
                 throw new ArgumentNullException("e");
+            }
 
             base.OnKeyDown(e);
 
@@ -256,7 +285,7 @@ namespace Supremacy.Client.Controls
                             {
                                 // Close the parent popup
                                 e.Handled = true;
-                                PopupControlService.Current.ClosePopup(popupAnchor, GamePopupCloseReason.EscapeKeyPressed);
+                                _ = PopupControlService.Current.ClosePopup(popupAnchor, GamePopupCloseReason.EscapeKeyPressed);
                             }
                         }
                         break;
@@ -269,14 +298,15 @@ namespace Supremacy.Client.Controls
                             CurrentSelection.IsPopupOpen = true;
 
                             // Focus the first item in a child Menu
-                            Dispatcher.BeginInvoke(
+                            _ = Dispatcher.BeginInvoke(
                                 DispatcherPriority.Send,
                                 (Action)
                                 (() =>
                                  {
-                                     GameMenu menu = Keyboard.FocusedElement as GameMenu;
-                                     if (menu != null)
-                                         menu.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                                     if (Keyboard.FocusedElement is GameMenu menu)
+                                     {
+                                         _ = menu.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                                     }
                                  }));
                         }
                         break;
@@ -297,16 +327,15 @@ namespace Supremacy.Client.Controls
 
                 // If the Menu is in a ContextMenu, ensure focus moves out of the context menu and into this Menu
                 // after it is displayed... otherwise arrow keys won't work
-                Dispatcher.BeginInvoke(
+                _ = Dispatcher.BeginInvoke(
                     DispatcherPriority.Send,
                     (Action)
                     (() =>
                      {
-                         ContextMenu contextMenuParent = Keyboard.FocusedElement as ContextMenu;
-                         if (contextMenuParent != null &&
+                         if (Keyboard.FocusedElement is ContextMenu contextMenuParent &&
                              VisualTreeHelperExtended.GetAncestor(this, typeof(ContextMenu)) == contextMenuParent)
                          {
-                             Focus();
+                             _ = Focus();
                          }
                      }));
             }
@@ -317,7 +346,9 @@ namespace Supremacy.Client.Controls
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {
             if (e == null)
+            {
                 throw new ArgumentNullException("e");
+            }
 
             base.OnItemsChanged(e);
 
@@ -331,7 +362,10 @@ namespace Supremacy.Client.Controls
                         IVariantControl control = item as IVariantControl ??
                                       ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
                         if (control == null)
+                        {
                             continue;
+                        }
+
                         control.Context = GameControlContext.MenuItem;
                         control.VariantSize = ItemVariantSize;
                     }
@@ -343,7 +377,10 @@ namespace Supremacy.Client.Controls
                         IVariantControl control = item as IVariantControl ??
                                       ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
                         if (control == null)
+                        {
                             continue;
+                        }
+
                         control.Context = GameControlContext.MenuItem;
                         control.VariantSize = ItemVariantSize;
                     }
@@ -356,11 +393,15 @@ namespace Supremacy.Client.Controls
             base.OnIsKeyboardFocusWithinChanged(e);
 
             if ((bool)e.NewValue)
+            {
                 return;
+            }
 
             // Clear the selection if a context menu is not displayed
             if (CurrentSelection != null && !(Keyboard.FocusedElement is ContextMenu))
+            {
                 CurrentSelection = null;
+            }
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -369,12 +410,16 @@ namespace Supremacy.Client.Controls
 
             // Clear the current selection if appropriate
             if (IsMouseOver || CurrentSelection == null)
+            {
                 return;
+            }
 
             if (CurrentSelection.IsKeyboardFocusWithin)
             {
                 if (CurrentSelection.IsPopupOpen)
+                {
                     CurrentSelection.IsHighlighted = true;
+                }
             }
             else if (!CurrentSelection.IsPopupOpen)
             {

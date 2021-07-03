@@ -29,7 +29,10 @@ namespace Supremacy.Client
         public static implicit operator T([NotNull] WeakReference<T> weakReference)
         {
             if (weakReference == null)
+            {
                 throw new ArgumentNullException("weakReference");
+            }
+
             return weakReference.Target;
         }
     }

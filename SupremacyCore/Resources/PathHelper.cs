@@ -37,7 +37,9 @@ namespace Supremacy.Resources
                         EnvironmentVariableTarget.User);
 
                     if (!string.IsNullOrWhiteSpace(homePath))
+                    {
                         return homePath;
+                    }
 
                     string currentDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
                     string workingDirectory = Path.Combine(
@@ -51,7 +53,9 @@ namespace Supremacy.Resources
 
                     DirectoryInfo workingDirectoryInfo = new DirectoryInfo(workingDirectory);
                     if (workingDirectoryInfo.Exists)
+                    {
                         return workingDirectoryInfo.FullName;
+                    }
                 }
             }
             catch (Exception e)

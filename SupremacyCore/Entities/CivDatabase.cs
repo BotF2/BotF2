@@ -44,7 +44,7 @@ namespace Supremacy.Entities
         //private readonly  _appContext;
 
         /// <summary>
-        /// Gets the <see cref="Supremacy.Entities.Civilization"/> corresponding to the specified unique key.
+        /// Gets the <see cref="Civilization"/> corresponding to the specified unique key.
         /// </summary>
         /// <value>The civilization.</value>
         public Civilization this[string key]
@@ -54,7 +54,9 @@ namespace Supremacy.Entities
                 lock (_reverseLookup)
                 {
                     if (_reverseLookup.ContainsKey(key))
+                    {
                         return _reverseLookup[key];
+                    }
                 }
                 return null;
             }
@@ -128,7 +130,7 @@ namespace Supremacy.Entities
         {
             lock (_reverseLookup)
             {
-                _reverseLookup.Remove(Items[index].Key);
+                _ = _reverseLookup.Remove(Items[index].Key);
             }
             base.RemoveItem(index);
         }
@@ -163,7 +165,10 @@ namespace Supremacy.Entities
         private void OnDeserialized(StreamingContext context)
         {
             if (_reverseLookup == null)
+            {
                 _reverseLookup = new Dictionary<string, Civilization>(StringComparer.OrdinalIgnoreCase);
+            }
+
             lock (_reverseLookup)
             {
                 foreach (Civilization civ in Items)
@@ -187,7 +192,9 @@ namespace Supremacy.Entities
             base.DeserializeOwnedData(reader, context);
 
             if (_reverseLookup == null)
+            {
                 _reverseLookup = new Dictionary<string, Civilization>(StringComparer.OrdinalIgnoreCase);
+            }
 
             lock (_reverseLookup)
             {
@@ -196,12 +203,12 @@ namespace Supremacy.Entities
                     _reverseLookup[civ.Key] = civ;
 
                     // works 
-                    GameLog.Core.CivsAndRaces.DebugFormat("deserialize {0}", civ.Key);
+                    GameLog.Core.CivsAndRacesDetails.DebugFormat("deserialize {0}", civ.Key);
                     if (civ.SpiedCivList != null)
                     {
                         foreach (Civilization spiedCiv in civ.SpiedCivList)
                         {
-                            GameLog.Core.CivsAndRaces.DebugFormat("DeserializeOwnedData: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
+                            GameLog.Core.CivsAndRacesDetails.DebugFormat("DeserializeOwnedData: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
                         }
                     }
 
@@ -236,7 +243,9 @@ namespace Supremacy.Entities
             XDocument xmlDoc = new XDocument(rootElement);
 
             foreach (Civilization civilization in this)
-                civilization.AppendXml(rootElement);
+            {
+                _ = civilization.AppendXml(rootElement);
+            }
 
             xmlDoc.Save(fileName, SaveOptions.None);
         }
@@ -247,11 +256,11 @@ namespace Supremacy.Entities
         private static void LoadSchemas()
         {
             _xmlSchemas = new XmlSchemaSet();
-            _xmlSchemas.Add("Supremacy:Supremacy.xsd",
+            _ = _xmlSchemas.Add("Supremacy:Supremacy.xsd",
                            ResourceManager.GetResourcePath("Resources/Data/Supremacy.xsd"));
-            _xmlSchemas.Add("Supremacy:Races.xsd",
+            _ = _xmlSchemas.Add("Supremacy:Races.xsd",
                            ResourceManager.GetResourcePath("Resources/Data/Races.xsd"));
-            _xmlSchemas.Add("Supremacy:Civilizations.xsd",
+            _ = _xmlSchemas.Add("Supremacy:Civilizations.xsd",
                            ResourceManager.GetResourcePath("Resources/Data/Civilizations.xsd"));
         }
 
@@ -284,7 +293,9 @@ namespace Supremacy.Entities
                 XDocument xmlDoc = XDocument.Load(ResourceManager.GetResourcePath(DefaultDatabasePath));
 
                 if (_xmlSchemas == null)
+                {
                     LoadSchemas();
+                }
 
                 xmlDoc.Validate(_xmlSchemas, ValidateXml, true);
 

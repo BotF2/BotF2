@@ -19,19 +19,23 @@ namespace Supremacy.Client.Themes
             IClientApplication clientApplication = ServiceLocator.Current.GetInstance<IClientApplication>();
 
             if (clientApplication?.IsShuttingDown != false)
+            {
                 return false;
+            }
 
             string theme = appContext?.LocalPlayer?.Empire?.Key;
             if (theme == null)
+            {
                 return false;
+            }
 
             Uri themeUri = new Uri(
                 $"/SupremacyClient;Component/themes/{theme}/Theme.xaml",
                 UriKind.RelativeOrAbsolute);
 
-            string _text = "including" + themeUri.ToString();
-            GameLog.Client.UIDetails.DebugFormat(_text);
+            string _text = "including Theme > " + themeUri.ToString();
             Console.WriteLine(_text);
+            GameLog.Client.UIDetails.DebugFormat(_text);
 
             try
             {

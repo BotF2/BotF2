@@ -29,7 +29,9 @@ namespace Supremacy.Client
         public void HandleError(Exception exception)
         {
             if (exception is AppDomainUnloadedException)
+            {
                 return;
+            }
 
             if (exception is SupremacyException supremacyException)
             {
@@ -53,7 +55,7 @@ namespace Supremacy.Client
 
                     Console.Error.WriteLine(errors);
                     Console.Error.Flush();
-                    MessageBox.Show(
+                    _ = MessageBox.Show(
                         "An unhandled exception has occurred.  Detailed error information is "
                         + "available in the 'Log.txt' file.",
                         "Unhandled Exception",
@@ -96,7 +98,7 @@ namespace Supremacy.Client
 
                 try
                 {
-                    System.Diagnostics.Process.Start(".\\Resources\\reportError.bat");
+                    _ = System.Diagnostics.Process.Start(".\\Resources\\reportError.bat");
                     // batch opens a web site with email function, 
                     // but just if batch file is activated = rem is removed before web adress
                     // opens Win10 mail function which might be connected to Google Mail account or any other

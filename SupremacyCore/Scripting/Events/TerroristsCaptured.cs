@@ -23,9 +23,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -66,13 +65,15 @@ namespace Supremacy.Scripting.Events
                     Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     if (target.Owner.Name == "Borg") // Borg do not have terrorists
+                    {
                         return;
+                    }
 
                     Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     OnUnitTargeted(target);
 
-                    target.Morale.AdjustCurrent(+3);
+                    _ = target.Morale.AdjustCurrent(+3);
                     target.Morale.UpdateAndReset();
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];

@@ -44,13 +44,16 @@ namespace Supremacy.Utility
             Type type = typeof(T);
 
             if (!type.IsEnum)
+            {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName));
+            }
 
-            object value;
 
             Dictionary<Type, object> cache = _cache;
-            if (cache.TryGetValue(type, out value))
+            if (cache.TryGetValue(type, out object value))
+            {
                 return (CacheEntry<T>)value;
+            }
 
             CacheEntry<T> newEntry = new CacheEntry<T>();
 
@@ -59,12 +62,16 @@ namespace Supremacy.Utility
                 Dictionary<Type, object> newCache = new Dictionary<Type, object>(cache) { { type, newEntry } };
 
                 if (Interlocked.CompareExchange(ref _cache, newCache, cache) == cache)
+                {
                     return newEntry;
+                }
 
                 cache = _cache;
 
                 if (cache.TryGetValue(type, out value))
+                {
                     return (CacheEntry<T>)value;
+                }
             }
         }
 
@@ -127,7 +134,9 @@ namespace Supremacy.Utility
         public static ulong ToUInt64<T>(T value) where T : struct
         {
             if (!typeof(T).IsEnum)
+            {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", typeof(T).FullName));
+            }
 
             return ToUInt64Internal(value);
         }
@@ -141,20 +150,20 @@ namespace Supremacy.Utility
                 case TypeCode.Boolean:
                 case TypeCode.SByte:
                 case TypeCode.Byte:
-                    return **((byte**)&r);
+                    return **(byte**)&r;
 
                 case TypeCode.Char:
                 case TypeCode.Int16:
                 case TypeCode.UInt16:
-                    return **((ushort**)&r);
+                    return **(ushort**)&r;
 
                 case TypeCode.Int32:
                 case TypeCode.UInt32:
-                    return **((uint**)&r);
+                    return **(uint**)&r;
 
                 case TypeCode.Int64:
                 case TypeCode.UInt64:
-                    return **((ulong**)&r);
+                    return **(ulong**)&r;
 
                 default:
                     throw new ArgumentOutOfRangeException();

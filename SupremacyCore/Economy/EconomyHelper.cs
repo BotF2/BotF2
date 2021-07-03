@@ -12,13 +12,9 @@ namespace Supremacy.Economy
         /// <returns></returns>
         public static int ComputeResourceValue(ResourceType resourceType, int amount)
         {
-            int baseValue;
 
-            Data.Table table = GameContext.Current.Tables.ResourceTables["BaseCreditValues"];
-            if (table == null || !int.TryParse(table[resourceType.ToString()][0], out baseValue))
-                return amount;
-
-            return baseValue * amount;
+            Data.Table table = GameContext.Current.Tables.GameOptionTables["BaseCreditValues"];
+            return table == null || !int.TryParse(table[resourceType.ToString()][0], out int baseValue) ? amount : baseValue * amount;
         }
 
         /// <summary>
@@ -31,7 +27,7 @@ namespace Supremacy.Economy
             int runningTotal = 0;
             runningTotal += ComputeResourceValue(ResourceType.Deuterium, resources[ResourceType.Deuterium]);
             runningTotal += ComputeResourceValue(ResourceType.Dilithium, resources[ResourceType.Dilithium]);
-            runningTotal += ComputeResourceValue(ResourceType.RawMaterials, resources[ResourceType.RawMaterials]);
+            runningTotal += ComputeResourceValue(ResourceType.Duranium, resources[ResourceType.Duranium]);
 
             return runningTotal;
         }

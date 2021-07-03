@@ -456,7 +456,7 @@ namespace Supremacy.UI
                 new Vector3D(0, 1, 0),
                 (double)OrthographicCamera.WidthProperty.DefaultMetadata.DefaultValue)
             {
-                NearPlaneDistance = (-1),
+                NearPlaneDistance = -1,
                 FarPlaneDistance = 1,
                 Transform = _cameraAngle
             };
@@ -675,7 +675,7 @@ namespace Supremacy.UI
                 switch (planet.PlanetSize)
                 {
                     case PlanetSize.Large:
-                        dimension = (2d / 3d) * BaseDimension;
+                        dimension = 2d / 3d * BaseDimension;
                         break;
                     case PlanetSize.Medium:
                         dimension = .5d * BaseDimension;
@@ -687,7 +687,7 @@ namespace Supremacy.UI
                         dimension = .25d * BaseDimension;
                         break;
                     case PlanetSize.Giant:
-                        dimension = (5d / 6d) * BaseDimension;
+                        dimension = 5d / 6d * BaseDimension;
                         break;
                 }
             }

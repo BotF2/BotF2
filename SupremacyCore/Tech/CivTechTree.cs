@@ -37,6 +37,7 @@ namespace Supremacy.Tech
         private readonly HashSet<int> _stationDesigns;
         private readonly HashSet<int> _productionFacilityDesigns;
         private readonly HashSet<int> _orbitalBatteryDesigns;
+        private static string _text;
 
         /// <summary>
         /// Gets the subset of building designs in this <see cref="TechTree"/>.
@@ -109,31 +110,45 @@ namespace Supremacy.Tech
         public bool Contains(TechObjectDesign design)
         {
             if (design == null)
+            {
                 return false;
+            }
 
             ProductionFacilityDesign pfDesign = design as ProductionFacilityDesign;
             if (pfDesign != null && _productionFacilityDesigns.Contains(pfDesign.DesignID))
+            {
                 return true;
+            }
 
             BuildingDesign bDesign = design as BuildingDesign;
             if (bDesign != null && _buildingDesigns.Contains(bDesign.DesignID))
+            {
                 return true;
+            }
 
             ShipyardDesign syDesign = design as ShipyardDesign;
             if (syDesign != null && _shipyardDesigns.Contains(syDesign.DesignID))
+            {
                 return true;
+            }
 
             ShipDesign shDesign = design as ShipDesign;
             if (shDesign != null && _shipDesigns.Contains(shDesign.DesignID))
+            {
                 return true;
+            }
 
             StationDesign stDesign = design as StationDesign;
             if (stDesign != null && _stationDesigns.Contains(stDesign.DesignID))
+            {
                 return true;
+            }
 
             OrbitalBatteryDesign obDesign = design as OrbitalBatteryDesign;
             if (obDesign != null && _orbitalBatteryDesigns.Contains(obDesign.DesignID))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -200,10 +215,15 @@ namespace Supremacy.Tech
                 {
                     string designKey = xmlFacility.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
+                    {
                         continue;
+                    }
+
                     ProductionFacilityDesign design = db.ProductionFacilityDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
-                        _productionFacilityDesigns.Add(design.DesignID);
+                    {
+                        _ = _productionFacilityDesigns.Add(design.DesignID);
+                    }
                 }
             }
 
@@ -214,10 +234,15 @@ namespace Supremacy.Tech
                 {
                     string designKey = xmlBuilding.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
+                    {
                         continue;
+                    }
+
                     BuildingDesign design = db.BuildingDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
-                        _buildingDesigns.Add(design.DesignID);
+                    {
+                        _ = _buildingDesigns.Add(design.DesignID);
+                    }
                 }
             }
 
@@ -228,10 +253,15 @@ namespace Supremacy.Tech
                 {
                     string designKey = xmlShipyard.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
+                    {
                         continue;
+                    }
+
                     ShipyardDesign design = db.ShipyardDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
-                        _shipyardDesigns.Add(design.DesignID);
+                    {
+                        _ = _shipyardDesigns.Add(design.DesignID);
+                    }
                 }
             }
 
@@ -242,10 +272,15 @@ namespace Supremacy.Tech
                 {
                     string designKey = xmlShip.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
+                    {
                         continue;
+                    }
+
                     ShipDesign design = db.ShipDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
-                        _shipDesigns.Add(design.DesignID);
+                    {
+                        _ = _shipDesigns.Add(design.DesignID);
+                    }
                 }
             }
 
@@ -256,10 +291,15 @@ namespace Supremacy.Tech
                 {
                     string designKey = xmlStation.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
+                    {
                         continue;
+                    }
+
                     StationDesign design = db.StationDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
-                        _stationDesigns.Add(design.DesignID);
+                    {
+                        _ = _stationDesigns.Add(design.DesignID);
+                    }
                 }
             }
 
@@ -270,10 +310,15 @@ namespace Supremacy.Tech
                 {
                     string designKey = xmlBattery.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
+                    {
                         continue;
+                    }
+
                     OrbitalBatteryDesign design = db.OrbitalBatteryDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
-                        _orbitalBatteryDesigns.Add(design.DesignID);
+                    {
+                        _ = _orbitalBatteryDesigns.Add(design.DesignID);
+                    }
                 }
             }
         }
@@ -292,9 +337,9 @@ namespace Supremacy.Tech
                 XmlDocument xmlDoc = new XmlDocument();
                 XmlSchemaSet schemas = new XmlSchemaSet();
 
-                schemas.Add("Supremacy:Supremacy.xsd",
+                _ = schemas.Add("Supremacy:Supremacy.xsd",
                             ResourceManager.GetResourcePath("Resources/Data/Supremacy.xsd"));
-                schemas.Add("Supremacy:TechTrees.xsd",
+                _ = schemas.Add("Supremacy:TechTrees.xsd",
                             ResourceManager.GetResourcePath("Resources/Data/TechTrees.xsd"));
 
                 xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath));
@@ -305,7 +350,9 @@ namespace Supremacy.Tech
                 foreach (TechObjectDesign design in db)
                 {
                     if (design.IsUniversallyAvailable)
+                    {
                         defaultTechTree.Add(design);
+                    }
                 }
 
                 game.TechTrees.Default = defaultTechTree;
@@ -313,20 +360,23 @@ namespace Supremacy.Tech
 
                 // CSV_Output
 
-                string pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
+                string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
                 string separator = ";";
                 string line = "";
                 StreamWriter streamWriter;
-                string file = "./lib/testz_FromTechTrees.txt";
+                string file = pathOutputFile + "test-Output.txt";
                 streamWriter = new StreamWriter(file);
-                String strHeader = "";  // first line of output files
+                streamWriter.Close();
+                string strHeader = "";  // first line of output files
 
-                file = pathOutputFile + "z_FromTechTrees_(autoCreated).csv";
+                file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
+                {
                     goto WriterClose;
+                }
 
                 streamWriter = new StreamWriter(file);
 
@@ -483,7 +533,8 @@ namespace Supremacy.Tech
                         }
                         catch (Exception e)
                         {
-                            GameLog.Core.GameData.Error("Cannot write ... z_FromTechTrees_(autoCreated).csv", e);
+                            _text = "Cannot write ... " + file + e;
+                            GameLog.Core.GameData.ErrorFormat(_text);
                         }
 
                         // End of TechTrees_To_CSV
@@ -498,7 +549,10 @@ namespace Supremacy.Tech
                         {
                             CivilizationManager civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
                             if (civManager == null)
+                            {
                                 continue;
+                            }
+
                             TechTree techTree = new TechTree(xmlTree);
                             techTree.Merge(defaultTechTree);
                             civManager.TechTree = techTree;
@@ -514,7 +568,7 @@ namespace Supremacy.Tech
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
 
@@ -525,20 +579,34 @@ namespace Supremacy.Tech
         public void Add(TechObjectDesign design)
         {
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
 
             if (design is BuildingDesign)
-                _buildingDesigns.Add(design.DesignID);
+            {
+                _ = _buildingDesigns.Add(design.DesignID);
+            }
             else if (design is ShipyardDesign)
-                _shipyardDesigns.Add(design.DesignID);
+            {
+                _ = _shipyardDesigns.Add(design.DesignID);
+            }
             else if (design is ProductionFacilityDesign)
-                _productionFacilityDesigns.Add(design.DesignID);
+            {
+                _ = _productionFacilityDesigns.Add(design.DesignID);
+            }
             else if (design is ShipDesign)
-                _shipDesigns.Add(design.DesignID);
+            {
+                _ = _shipDesigns.Add(design.DesignID);
+            }
             else if (design is StationDesign)
-                _stationDesigns.Add(design.DesignID);
+            {
+                _ = _stationDesigns.Add(design.DesignID);
+            }
             else if (design is OrbitalBatteryDesign)
-                _orbitalBatteryDesigns.Add(design.DesignID);
+            {
+                _ = _orbitalBatteryDesigns.Add(design.DesignID);
+            }
         }
 
         /// <summary>
@@ -548,10 +616,14 @@ namespace Supremacy.Tech
         public void AddMany(IEnumerable<TechObjectDesign> designs)
         {
             if (designs == null)
+            {
                 throw new ArgumentNullException("designs");
+            }
 
             foreach (TechObjectDesign design in designs)
+            {
                 Add(design);
+            }
         }
 
         /// <summary>
@@ -562,20 +634,39 @@ namespace Supremacy.Tech
         public bool Remove(TechObjectDesign design)
         {
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
 
             if (design is BuildingDesign)
+            {
                 return _buildingDesigns.Remove(design.DesignID);
+            }
+
             if (design is ShipyardDesign)
+            {
                 return _shipyardDesigns.Remove(design.DesignID);
+            }
+
             if (design is ProductionFacilityDesign)
+            {
                 return _productionFacilityDesigns.Remove(design.DesignID);
+            }
+
             if (design is ShipDesign)
+            {
                 return _shipDesigns.Remove(design.DesignID);
+            }
+
             if (design is StationDesign)
+            {
                 return _stationDesigns.Remove(design.DesignID);
+            }
+
             if (design is OrbitalBatteryDesign)
+            {
                 return _orbitalBatteryDesigns.Remove(design.DesignID);
+            }
 
             return false;
         }
@@ -584,7 +675,7 @@ namespace Supremacy.Tech
         /// Validates the XML.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="ValidationEventArgs"/> instance containing the event data.</param>
         private static void ValidateXml(object sender, ValidationEventArgs e)
         {
             XmlHelper.ValidateXml(XmlFilePath, e);
@@ -598,17 +689,34 @@ namespace Supremacy.Tech
         public IEnumerator<TechObjectDesign> GetEnumerator()
         {
             foreach (ProductionFacilityDesign design in _productionFacilityDesigns.Select(i => GameContext.Current.TechDatabase[i] as ProductionFacilityDesign))
+            {
                 yield return design;
+            }
+
             foreach (BuildingDesign design in _buildingDesigns.Select(i => GameContext.Current.TechDatabase[i] as BuildingDesign))
+            {
                 yield return design;
+            }
+
             foreach (ShipyardDesign design in _shipyardDesigns.Select(i => GameContext.Current.TechDatabase[i] as ShipyardDesign))
+            {
                 yield return design;
+            }
+
             foreach (ShipDesign design in _shipDesigns.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign))
+            {
                 yield return design;
+            }
+
             foreach (StationDesign design in _stationDesigns.Select(i => GameContext.Current.TechDatabase[i] as StationDesign))
+            {
                 yield return design;
+            }
+
             foreach (OrbitalBatteryDesign design in _orbitalBatteryDesigns.Select(i => GameContext.Current.TechDatabase[i] as OrbitalBatteryDesign))
+            {
                 yield return design;
+            }
         }
         #endregion
 

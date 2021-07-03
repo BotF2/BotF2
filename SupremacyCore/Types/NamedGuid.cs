@@ -14,7 +14,9 @@ namespace Supremacy.Types
         public NamedGuid(Guid guid, [NotNull] string name)
         {
             if (string.IsNullOrEmpty(name))
+            {
                 throw new ArgumentNullException("name", "Value must be a non-null, non-empty string.");
+            }
 
             _guid = guid;
             _name = name;
@@ -27,18 +29,24 @@ namespace Supremacy.Types
         public override string ToString()
         {
             if (_name[0] != '{')
+            {
                 return string.Format(CultureInfo.InvariantCulture, "{{{0}}}", _name);
+            }
 
             return _name;
         }
 
         public bool Equals(NamedGuid other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
+            }
 
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
 
             return other._guid.Equals(_guid);
         }

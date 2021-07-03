@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
 using System.Collections.Generic;
 
 namespace Supremacy.Utility
@@ -76,23 +75,32 @@ namespace Supremacy.Utility
                 }
 
                 if (current.Left.GrowthWeight > current.Right.GrowthWeight)
+                {
                     current = current.Right;
+                }
                 else
+                {
                     current = current.Left;
+                }
             }
         }
 
         public TItem Get()
         {
             if (_count == 0)
-                return default(TItem);
+            {
+                return default;
+            }
+
             return _chances[FindNode(RandomProvider.Shared.Next(_chances[0].GrowthWeight))].Item;
         }
 
         public TItem Take()
         {
             if (_count == 0)
-                return default(TItem);
+            {
+                return default;
+            }
 
             int probability = RandomProvider.Shared.Next(_chances[0].GrowthWeight);
             int index = FindNode(probability);
@@ -134,16 +142,23 @@ namespace Supremacy.Utility
                     _chances[index].GrowthWeight = _chances[index].CurrentWeight;
 
                     if (child < _count)
+                    {
                         _chances[index].GrowthWeight += _chances[child++].GrowthWeight;
+                    }
+
                     if (child < _count)
+                    {
                         _chances[index].GrowthWeight += _chances[child].GrowthWeight;
+                    }
                 }
             }
 
             // Feed back up the tree
             int feedWeight = _chances[index].GrowthWeight - priorGrowth;
             if (feedWeight == 0)
+            {
                 return;
+            }
 
             // Parent Weight
             int pIndex = index;
@@ -164,7 +179,9 @@ namespace Supremacy.Utility
                 prior += _chances[index].CurrentWeight;
 
                 if (chance < prior)
+                {
                     return index;
+                }
 
                 int nextIndex = (index << 1) + 1;
                 if (nextIndex < _count && chance < (prior + _chances[nextIndex].GrowthWeight))

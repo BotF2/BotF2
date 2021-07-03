@@ -29,13 +29,17 @@ namespace Supremacy.Text
         {
             get
             {
-                Brush color = default(Brush);
+                Brush color = default;
                 foreach (RichString richString in _parts)
                 {
                     if (color == default(Brush))
+                    {
                         color = richString.Style.Background;
+                    }
                     else if (color != richString.Style.Background)
-                        return default(Brush);
+                    {
+                        return default;
+                    }
                 }
                 return color;
             }
@@ -45,13 +49,17 @@ namespace Supremacy.Text
         {
             get
             {
-                Brush color = default(Brush);
+                Brush color = default;
                 foreach (RichString richString in _parts)
                 {
                     if (color == default(Brush))
+                    {
                         color = richString.Style.Foreground;
+                    }
                     else if (color != richString.Style.Foreground)
-                        return default(Brush);
+                    {
+                        return default;
+                    }
                 }
                 return color;
             }
@@ -63,18 +71,20 @@ namespace Supremacy.Text
 
         public string Text
         {
-            get { return _string; }
+            get => _string;
             set
             {
                 if (value == null)
+                {
                     throw new ArgumentNullException("value");
+                }
 
                 AssertValid();
 
                 _string = string.Empty;
                 _parts.Clear();
 
-                Append(value);
+                _ = Append(value);
             }
         }
 
@@ -97,12 +107,12 @@ namespace Supremacy.Text
 
         private RichText(string text, ICollection<RichString> parts)
         {
-            if (text == null)
-                throw new ArgumentNullException("text");
             if (parts == null)
+            {
                 throw new ArgumentNullException("parts");
+            }
 
-            _string = text;
+            _string = text ?? throw new ArgumentNullException("text");
             _parts = new List<RichString>(parts.Count);
 
             int offset = 0;
@@ -121,7 +131,10 @@ namespace Supremacy.Text
         public static implicit operator string([CanBeNull] RichText richtext)
         {
             if (richtext == null)
+            {
                 return null;
+            }
+
             return richtext.Text;
         }
 
@@ -129,7 +142,10 @@ namespace Supremacy.Text
         public static implicit operator RichText([CanBeNull] string text)
         {
             if (text == null)
+            {
                 return null;
+            }
+
             return new RichText(text);
         }
 
@@ -139,12 +155,18 @@ namespace Supremacy.Text
             if (a == null)
             {
                 if (b != null)
+                {
                     return b.Clone();
+                }
+
                 return null;
             }
             RichText result = a.Clone();
             if (b != null)
-                result.Append(b);
+            {
+                _ = result.Append(b);
+            }
+
             return result;
         }
 
@@ -154,12 +176,18 @@ namespace Supremacy.Text
             if (a == null)
             {
                 if (b != null)
+                {
                     return new RichText(b);
+                }
+
                 return null;
             }
             RichText result = a.Clone();
             if (b != null)
-                result.Append(b);
+            {
+                _ = result.Append(b);
+            }
+
             return result;
         }
 
@@ -169,29 +197,42 @@ namespace Supremacy.Text
             if (b == null)
             {
                 if (a != null)
+                {
                     return new RichText(a);
+                }
+
                 return null;
             }
             RichText result = b.Clone();
             if (a != null)
-                result.Prepend(a);
+            {
+                _ = result.Prepend(a);
+            }
+
             return result;
         }
 
         public static bool IsNullOrEmpty(RichText richtext)
         {
             if (richtext == null)
+            {
                 return true;
+            }
+
             return richtext.IsEmpty;
         }
 
         public RichText Append(string s, TextStyle style)
         {
             if (s == null)
+            {
                 throw new ArgumentNullException("s");
+            }
 
             if (s.Length == 0)
+            {
                 return this;
+            }
 
             int originalLength = _string.Length;
 
@@ -211,7 +252,9 @@ namespace Supremacy.Text
         public RichText Append(RichText richText)
         {
             if (richText == null)
+            {
                 throw new ArgumentNullException("richText");
+            }
 
             richText.AssertValid();
 
@@ -220,7 +263,9 @@ namespace Supremacy.Text
             _string = _string + richText._string;
 
             foreach (RichString richString in richText._parts)
+            {
                 _parts.Add(new RichString(originalLength + richString.Offset, richString.Length, richString.Style, this));
+            }
 
             AssertValid();
 
@@ -236,7 +281,9 @@ namespace Supremacy.Text
             foreach (RichString richString in _parts)
             {
                 if (!ReferenceEquals(richString.RichText, this))
+                {
                     throw new InvalidOperationException(string.Format("Invalid RichText: the part #{0} has a questionable parentage.", start));
+                }
 
                 if (richString.Offset != previousEnd)
                 {
@@ -264,7 +311,9 @@ namespace Supremacy.Text
             }
 
             if (previousEnd == Text.Length)
+            {
                 return;
+            }
 
             if (previousEnd < Text.Length)
             {
@@ -295,9 +344,11 @@ namespace Supremacy.Text
             StringBuilder output = new StringBuilder();
 
             using (XmlWriter writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            {
                 DumpToXaml(writer);
+            }
 
-            return (output).ToString();
+            return output.ToString();
         }
 
         public void DumpToXaml(XmlWriter writer)
@@ -307,7 +358,9 @@ namespace Supremacy.Text
             writer.WriteStartElement("RichText.Parts");
 
             foreach (RichString richString in _parts)
+            {
                 richString.Dump(writer);
+            }
 
             writer.WriteEndElement();
             writer.WriteEndElement();
@@ -324,13 +377,19 @@ namespace Supremacy.Text
             int length = Length;
 
             if (endOffset == -1)
+            {
                 endOffset = length;
+            }
 
             if (startOffset < 0)
+            {
                 throw new ArgumentOutOfRangeException("startOffset", startOffset, "The starting offset must be non-negative.");
+            }
 
             if (endOffset < 0)
+            {
                 throw new ArgumentOutOfRangeException("endOffset", endOffset, "The ending offset must be non-negative.");
+            }
 
             if (startOffset > length)
             {
@@ -370,7 +429,10 @@ namespace Supremacy.Text
                     textRangeDataRecord.Object is T)
                 {
                     if (list == null)
+                    {
                         list = new List<T>();
+                    }
+
                     list.Add((T)textRangeDataRecord.Object);
                 }
             }
@@ -381,16 +443,22 @@ namespace Supremacy.Text
         public RichText Prepend(string s, TextStyle style)
         {
             if (s == null)
+            {
                 throw new ArgumentNullException("s");
+            }
 
             if (s.Length == 0)
+            {
                 return this;
+            }
 
             _string = s + _string;
 
             int length = s.Length;
             foreach (RichString richString in _parts)
+            {
                 richString.Offset += length;
+            }
 
             _parts.Insert(0, new RichString(0, s.Length, style, this));
 
@@ -407,7 +475,9 @@ namespace Supremacy.Text
         public RichText Prepend(RichText richText)
         {
             if (richText == null)
+            {
                 throw new ArgumentNullException("richText");
+            }
 
             richText.AssertValid();
 
@@ -415,11 +485,15 @@ namespace Supremacy.Text
 
             int length = richText._string.Length;
             foreach (RichString richString in _parts)
+            {
                 richString.Offset += length;
+            }
 
             List<RichString> list = new List<RichString>(richText._parts.Count);
             foreach (RichString richString in richText._parts)
+            {
                 list.Add(new RichString(richString.Offset, richString.Length, richString.Style, this));
+            }
 
             list.AddRange(_parts);
             _parts = list;
@@ -434,7 +508,9 @@ namespace Supremacy.Text
             int length = Length;
 
             if (endOffset == -1)
+            {
                 endOffset = length;
+            }
 
             if (startOffset < 0)
             {
@@ -481,7 +557,7 @@ namespace Supremacy.Text
                         endOffset));
             }
 
-            _data.Add(new TextRangeDataRecord(startOffset, endOffset, data));
+            _ = _data.Add(new TextRangeDataRecord(startOffset, endOffset, data));
         }
 
         public void SetBackground(Brush background, int startOffset, int length)
@@ -559,7 +635,9 @@ namespace Supremacy.Text
         public void SetStyle(TextStyle style, int startOffset, int length)
         {
             foreach (RichString richString in GetPartsFromRangeAndSplit(startOffset, length))
+            {
                 richString.Style = style;
+            }
         }
 
         public void SetStyle(FontStyle style, int startOffset, int length)
@@ -612,7 +690,7 @@ namespace Supremacy.Text
         {
             string text = Text;
             Clear();
-            Append(text, style);
+            _ = Append(text, style);
         }
 
         public void SetStyle(TextEffectStyle effect, Brush effectBrush, int startOffset, int length)
@@ -713,7 +791,10 @@ namespace Supremacy.Text
         {
             string trimmed = Text.TrimEnd(trimchars);
             if (trimmed.Length == Length)
+            {
                 return this;
+            }
+
             return Split(trimmed.Length)[0];
         }
 
@@ -721,7 +802,10 @@ namespace Supremacy.Text
         {
             string trimmed = Text.TrimStart(trimchars);
             if (trimmed.Length == Length)
+            {
                 return this;
+            }
+
             return Split(Length - trimmed.Length)[1];
         }
 
@@ -740,10 +824,14 @@ namespace Supremacy.Text
             }
 
             if (nLocalOffset == 0 || nLocalOffset == length)
+            {
                 return new[] { part };
+            }
 
             if (!ReferenceEquals(part.RichText, this))
+            {
                 throw new InvalidOperationException("The given part has a wrong parent.");
+            }
 
             RichString[] richStringArray = new[]
                                   {
@@ -754,7 +842,7 @@ namespace Supremacy.Text
             if (bModifyPartsCollection)
             {
                 int index = _parts.IndexOf(part);
-                _parts.Remove(part);
+                _ = _parts.Remove(part);
                 _parts.InsertRange(index, richStringArray);
             }
 
@@ -768,16 +856,24 @@ namespace Supremacy.Text
             AssertValid();
 
             if (length == -1)
+            {
                 length = Length - startOffset;
+            }
 
             if (length == 0)
+            {
                 return ArrayWrapper<RichString>.Empty;
+            }
 
             if (startOffset < 0)
+            {
                 throw new ArgumentOutOfRangeException("startOffset", startOffset, "The starting offset must be non-negative.");
+            }
 
             if (length < 0)
+            {
                 throw new ArgumentOutOfRangeException("length", length, "The length must be non-negative.");
+            }
 
             if (startOffset > Length)
             {
@@ -810,18 +906,20 @@ namespace Supremacy.Text
                 int partEnd = offset + part.Length;
 
                 if (partEnd <= startOffset || offset >= end)
+                {
                     continue;
+                }
 
                 if (startOffset > offset && startOffset < partEnd)
                 {
-                    BreakString(part, startOffset - offset, true);
+                    _ = BreakString(part, startOffset - offset, true);
                     --index;
                     continue;
                 }
 
                 if (end > offset && end < partEnd)
                 {
-                    BreakString(part, end - offset, true);
+                    _ = BreakString(part, end - offset, true);
                     --index;
                     continue;
                 }

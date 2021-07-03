@@ -194,7 +194,7 @@ namespace Supremacy.Client.Data
         /// <returns>
         /// This instance.
         /// </returns>
-        public override sealed object ProvideValue(IServiceProvider serviceProvider)
+        public sealed override object ProvideValue(IServiceProvider serviceProvider)
         {
             return this;
         }

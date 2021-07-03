@@ -33,7 +33,10 @@ namespace Supremacy.VFS
         public static FileSecurity GetAccessControl([NotNull] this IVirtualFileInfo source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             return source.GetAccessControl(AccessControlSections.Group | AccessControlSections.Owner | AccessControlSections.Access);
         }
 
@@ -44,7 +47,9 @@ namespace Supremacy.VFS
             get
             {
                 if (_utf8NoBOM != null)
+                {
                     return _utf8NoBOM;
+                }
 
                 UTF8Encoding encoding = new UTF8Encoding(false, true);
                 Thread.MemoryBarrier();
@@ -78,7 +83,10 @@ namespace Supremacy.VFS
         public static Stream Open([NotNull] this IVirtualFileInfo self, FileAccess fileAccess)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             return self.Open(fileAccess, GetDefaultFileShare(fileAccess));
         }
 
@@ -116,7 +124,10 @@ namespace Supremacy.VFS
         public static bool TryOpenRead([NotNull] this IVirtualFileInfo self, FileShare fileShare, out Stream stream)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             return self.TryOpen(FileAccess.Read, fileShare, out stream);
         }
 
@@ -204,8 +215,7 @@ namespace Supremacy.VFS
         {
             try
             {
-                Stream stream;
-                if (!self.TryOpenRead(out stream))
+                if (!self.TryOpenRead(out Stream stream))
                 {
                     text = null;
                     return false;
@@ -243,7 +253,9 @@ namespace Supremacy.VFS
         public static string ReadAllText([NotNull] this IVirtualFileInfo self, [NotNull] Encoding encoding)
         {
             if (encoding == null)
+            {
                 throw new ArgumentNullException("encoding");
+            }
 
             using (StreamReader textReader = new StreamReader(self.OpenRead(), encoding))
             {
@@ -315,8 +327,7 @@ namespace Supremacy.VFS
         {
             try
             {
-                Stream stream;
-                if (!self.TryOpenRead(out stream))
+                if (!self.TryOpenRead(out Stream stream))
                 {
                     lines = null;
                     return false;
@@ -361,7 +372,10 @@ namespace Supremacy.VFS
         public static void WriteAllText([NotNull] this IVirtualFileInfo self, string text, Encoding encoding)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             using (StreamWriter textWriter = new StreamWriter(self.Create(), encoding))
             {
                 textWriter.Write(text);
@@ -378,7 +392,10 @@ namespace Supremacy.VFS
         public static void WriteAllLines([NotNull] this IVirtualFileInfo self, string[] lines, Encoding encoding)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             using (StreamWriter textWriter = new StreamWriter(self.Create(), encoding))
             {
                 foreach (string line in lines)
@@ -474,9 +491,15 @@ namespace Supremacy.VFS
         public static void WriteAllBytes([NotNull] this IVirtualFileInfo self, [NotNull] byte[] bytes)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             if (bytes == null)
+            {
                 throw new ArgumentNullException("bytes");
+            }
+
             using (Stream writeStream = self.Create())
             {
                 writeStream.Write(bytes, 0, bytes.Length);
@@ -493,13 +516,19 @@ namespace Supremacy.VFS
         public static bool TryWriteAllBytes([NotNull] this IVirtualFileInfo self, [NotNull] byte[] bytes)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            if (bytes == null)
-                throw new ArgumentNullException("bytes");
+            }
 
-            Stream writeStream;
-            if (!self.TryCreate(out writeStream))
+            if (bytes == null)
+            {
+                throw new ArgumentNullException("bytes");
+            }
+
+            if (!self.TryCreate(out Stream writeStream))
+            {
                 return false;
+            }
 
             try
             {
@@ -526,11 +555,14 @@ namespace Supremacy.VFS
         public static byte[] ReadAllBytes([NotNull] this IVirtualFileInfo self)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             byte[] buffer = new byte[self.Length];
             using (Stream readStream = self.OpenRead())
             {
-                readStream.Read(buffer, 0, buffer.Length);
+                _ = readStream.Read(buffer, 0, buffer.Length);
             }
             return buffer;
         }
@@ -544,9 +576,11 @@ namespace Supremacy.VFS
         public static bool TryReadAllBytes([NotNull] this IVirtualFileInfo self, out byte[] bytes)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            Stream readStream;
-            if (!self.TryOpenRead(out readStream))
+            }
+
+            if (!self.TryOpenRead(out Stream readStream))
             {
                 bytes = null;
                 return false;
@@ -556,7 +590,7 @@ namespace Supremacy.VFS
                 using (readStream)
                 {
                     bytes = new byte[self.Length];
-                    readStream.Read(bytes, 0, bytes.Length);
+                    _ = readStream.Read(bytes, 0, bytes.Length);
                 }
                 return true;
             }

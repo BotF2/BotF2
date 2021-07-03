@@ -10,14 +10,19 @@ namespace Supremacy.Client.Controls
         internal static IGameCommandUIProvider GetUIProviderResolved(ICommand command)
         {
             if (command == null)
+            {
                 return null;
+            }
 
-            IGameCommandUIProvider uiProvider = command as IGameCommandUIProvider;
-            if (uiProvider != null)
+            if (command is IGameCommandUIProvider uiProvider)
+            {
                 return uiProvider;
+            }
 
             if (LinkData.TryGetValue(command, out uiProvider))
+            {
                 return uiProvider;
+            }
 
             return null;
         }
@@ -27,33 +32,37 @@ namespace Supremacy.Client.Controls
             get
             {
                 if (_linkData == null)
+                {
                     _linkData = new Dictionary<ICommand, IGameCommandUIProvider>();
+                }
+
                 return _linkData;
             }
         }
 
         public static IGameCommandUIProvider GetUIProvider(ICommand command)
         {
-            IGameCommandUIProvider uiProvider;
-            if ((command != null) && (LinkData.TryGetValue(command, out uiProvider)))
+            if ((command != null) && LinkData.TryGetValue(command, out IGameCommandUIProvider uiProvider))
+            {
                 return uiProvider;
+            }
+
             return null;
         }
 
         public static void Register(ICommand command, IGameCommandUIProvider uiProvider)
         {
-            RoutedUICommand routedCommand = command as RoutedUICommand;
-            GameCommandUIProvider provider = uiProvider as GameCommandUIProvider;
-
-            if ((uiProvider.Label == null) && (routedCommand != null) && (provider != null))
+            if ((uiProvider.Label == null) && (command is RoutedUICommand routedCommand) && (uiProvider is GameCommandUIProvider provider))
+            {
                 provider.Label = routedCommand.Text;
+            }
 
             LinkData[command] = uiProvider;
         }
 
         public static void Unregister(ICommand command)
         {
-            LinkData.Remove(command);
+            _ = LinkData.Remove(command);
         }
 
         public static void UnregisterAll()

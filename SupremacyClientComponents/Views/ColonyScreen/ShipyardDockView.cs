@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 using Supremacy.Economy;
@@ -32,8 +31,8 @@ namespace Supremacy.Client
 
         public ShipyardBuildSlot BuildSlot
         {
-            get { return (ShipyardBuildSlot)GetValue(BuildSlotProperty); }
-            set { SetValue(BuildSlotProperty, value); }
+            get => (ShipyardBuildSlot)GetValue(BuildSlotProperty);
+            set => SetValue(BuildSlotProperty, value);
         }
         #endregion
 
@@ -46,8 +45,8 @@ namespace Supremacy.Client
 
         public ShipyardBuildSlot ShipyardBuildSlot
         {
-            get { return (ShipyardBuildSlot)GetValue(ShipyardBuildSlotProperty); }
-            set { SetValue(ShipyardBuildSlotProperty, value); }
+            get => (ShipyardBuildSlot)GetValue(ShipyardBuildSlotProperty);
+            set => SetValue(ShipyardBuildSlotProperty, value);
         }
         #endregion
     }

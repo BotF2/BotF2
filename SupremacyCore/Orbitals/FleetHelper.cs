@@ -24,7 +24,9 @@ namespace Supremacy.Orbitals
         public static bool IsInDistress(this Fleet fleet)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
 
             return fleet.Ships.Any(ShipHelper.IsInDistress);
         }
@@ -39,13 +41,17 @@ namespace Supremacy.Orbitals
         public static bool IsFleetInFuelRange(this Fleet fleet)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (civManager == null)
+            {
                 return false;
+            }
 
-            return (civManager.MapData.GetFuelRange(fleet.Location) <= fleet.Range);
+            return civManager.MapData.GetFuelRange(fleet.Location) <= fleet.Range;
         }
 
         /// <summary>
@@ -59,37 +65,52 @@ namespace Supremacy.Orbitals
         public static bool IsSectorWithinFuelRange(Sector sector, Fleet fleet)
         {
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
 
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
 
             if (!fleet.IsOwned)
+            {
                 return false;
+            }
 
             CivilizationMapData mapData = GameContext.Current.CivilizationManagers[fleet.Owner].MapData;
 
-            return (mapData.GetFuelRange(sector.Location) <= fleet.Range);
+            return mapData.GetFuelRange(sector.Location) <= fleet.Range;
         }
 
         public static int Firepower(this Fleet fleet)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             return fleet.Ships.Sum(f => f.Firepower());
         }
 
         public static int EffectiveCombatStrength(this Fleet fleet)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             return fleet.Ships.Sum(f => f.EffectiveCombatStrength());
         }
 
         public static int TotalHitPoints(this Fleet fleet)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             return fleet.Ships.Sum(f => f.TotalHitPoints());
         }
     }

@@ -43,7 +43,7 @@ namespace Supremacy.Orbitals
         /// <value>The shipyard design.</value>
         public ShipyardDesign ShipyardDesign
         {
-            get { return Design as ShipyardDesign; }
+            get => Design as ShipyardDesign;
             set
             {
                 Design = value;
@@ -64,7 +64,9 @@ namespace Supremacy.Orbitals
             // _buildSlotQueues = new ArrayWrapper<BuildProject>(new BuildProject[design.BuildSlotQueues]);
 
             for (int i = 0; i < _buildSlots.Count; i++)
+            {
                 _buildSlots[i] = new ShipyardBuildSlot { Shipyard = this, SlotID = i };
+            }
 
             _buildQueue = new ObservableCollection<BuildQueueItem>();
         }
@@ -94,10 +96,10 @@ namespace Supremacy.Orbitals
             switch (ShipyardDesign.BuildSlotOutputType)
             {
                 case ShipyardOutputType.PopulationRatio:
-                    output = (output / 100) * Sector.System.Colony.Population.CurrentValue;
+                    output = output / 100 * Sector.System.Colony.Population.CurrentValue;
                     break;
                 case ShipyardOutputType.IndustryRatio:
-                    output = (output / 100) * Sector.System.Colony.NetIndustry;
+                    output = output / 100 * Sector.System.Colony.NetIndustry;
                     break;
                 case ShipyardOutputType.Static:
                 default:
@@ -105,7 +107,9 @@ namespace Supremacy.Orbitals
             }
 
             if (ShipyardDesign.BuildSlotMaxOutput > 0)
+            {
                 output = Math.Min(output, ShipyardDesign.BuildSlotMaxOutput);
+            }
 
             float shipBuildingBonus = Sector.System.Colony.Buildings
                 .Where(o => o.IsActive)
@@ -114,7 +118,7 @@ namespace Supremacy.Orbitals
                 .Select(o => o.Amount * 0.01f)
                 .Sum();
 
-            output *= (1 + shipBuildingBonus);
+            output *= 1 + shipBuildingBonus;
 
             return (int)output;
         }
@@ -142,23 +146,35 @@ namespace Supremacy.Orbitals
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
                 if (slot.HasProject && slot.Project.IsCancelled)
+                {
                     slot.Project = null;
+                }
+
                 if (slot.HasProject)
+                {
                     baysWithProjects++;
+                }
+
                 BuildQueueItem queueItem = BuildQueue.FirstOrDefault();
                 if (queueItem == null)
+                {
                     continue;
+                }
+
                 if (slot.Project != null || slot.IsActive == false)
+                {
                     continue;
+                }
+
                 if (queueItem.Count > 1)
                 {
                     slot.Project = queueItem.Project.CloneEquivalent();
-                    queueItem.DecrementCount();
+                    _ = queueItem.DecrementCount();
                 }
                 else
                 {
                     slot.Project = queueItem.Project;
-                    BuildQueue.Remove(queueItem);
+                    _ = BuildQueue.Remove(queueItem);
                 }
             }
             int afterCount = 0;
@@ -220,7 +236,9 @@ namespace Supremacy.Orbitals
         private void UpdateBuildSlots()
         {
             if (_buildSlots == null)
+            {
                 return;
+            }
 
             for (int i = 0; i < _buildSlots.Count; i++)
             {

@@ -59,7 +59,9 @@ namespace Supremacy.Scripting.Ast
                 MSAst instance = null;
 
                 if (propertyExpression.InstanceExpression != null)
+                {
                     instance = propertyExpression.InstanceExpression.TransformCore(generator);
+                }
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 return MSAst.MakeIndex(

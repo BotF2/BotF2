@@ -37,7 +37,9 @@ namespace Supremacy.Types
         public void AddChild([NotNull] IDisposable child)
         {
             if (child == null)
+            {
                 throw new ArgumentNullException("child");
+            }
 
             if (_isDisposed)
             {
@@ -52,7 +54,9 @@ namespace Supremacy.Types
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             try
             {

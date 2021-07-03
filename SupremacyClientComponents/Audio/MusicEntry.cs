@@ -37,13 +37,8 @@ namespace Supremacy.Client.Audio
         #region Constructor
         public MusicEntry([NotNull] string trackName, [NotNull] string fileName) //, float fadeTime)
         {
-            if (trackName == null)
-                throw new ArgumentNullException("trackName");
-            if (fileName == null)
-                throw new ArgumentNullException("fileName");
-
-            _trackName = trackName;
-            _fileName = fileName;
+            _trackName = trackName ?? throw new ArgumentNullException("trackName");
+            _fileName = fileName ?? throw new ArgumentNullException("fileName");
             //_fadeTime = fadeTime;
         }
         #endregion

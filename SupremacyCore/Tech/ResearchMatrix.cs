@@ -69,8 +69,8 @@ namespace Supremacy.Tech
         /// <value>The tech level.</value>
         public int this[TechCategory category]
         {
-            get { return _values[(int)category]; }
-            set { _values[(int)category] = (byte)value; }
+            get => _values[(int)category];
+            set => _values[(int)category] = (byte)value;
         }
 
         /// <summary>
@@ -130,7 +130,10 @@ namespace Supremacy.Tech
         public ResearchMatrix(XmlElement element) : this()
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             if (element["Fields"] != null)
             {
                 foreach (XmlElement fieldElement in
@@ -165,7 +168,10 @@ namespace Supremacy.Tech
         public ResearchApplication GetApplication(int applicationId)
         {
             if (_applicationMap.ContainsKey(applicationId))
+            {
                 return _applicationMap[applicationId];
+            }
+
             return null;
         }
 
@@ -184,10 +190,10 @@ namespace Supremacy.Tech
 
             XmlElement xmlFields;
 
-            schemas.Add(
+            _ = schemas.Add(
                 "Supremacy:Supremacy.xsd",
                 ResourceManager.GetResourcePath("Resources/Data/Supremacy.xsd"));
-            schemas.Add(
+            _ = schemas.Add(
                 "Supremacy:ResearchMatrix.xsd",
                 ResourceManager.GetResourcePath("Resources/Data/ResearchMatrix.xsd"));
 
@@ -221,7 +227,7 @@ namespace Supremacy.Tech
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">
-        /// The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.
+        /// The <see cref="ValidationEventArgs"/> instance containing the event data.
         /// </param>
         private static void ValidateXml(object sender, ValidationEventArgs e)
         {
@@ -252,8 +258,8 @@ namespace Supremacy.Tech
         /// <value>The unique ID.</value>
         public int FieldID
         {
-            get { return _fieldId; }
-            internal set { _fieldId = value; }
+            get => _fieldId;
+            internal set => _fieldId = value;
         }
 
         /// <summary>
@@ -262,8 +268,8 @@ namespace Supremacy.Tech
         /// <value>The name.</value>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         /// <summary>
@@ -272,8 +278,8 @@ namespace Supremacy.Tech
         /// <value>The description.</value>
         public string Description
         {
-            get { return _description; }
-            set { _description = value; }
+            get => _description;
+            set => _description = value;
         }
 
         /// <summary>
@@ -282,8 +288,8 @@ namespace Supremacy.Tech
         /// <value>The tech category.</value>
         public TechCategory TechCategory
         {
-            get { return _category; }
-            set { _category = value; }
+            get => _category;
+            set => _category = value;
         }
 
         /// <summary>
@@ -300,7 +306,9 @@ namespace Supremacy.Tech
                         ResourceManager.GetString(_name)));
 
                 if (File.Exists(imagePath))
+                {
                     return ResourceManager.GetResourceUri(imagePath).ToString();
+                }
 
                 return "vfs:///Resources/Images/__image_missing.png";
             }
@@ -339,7 +347,9 @@ namespace Supremacy.Tech
         public ResearchField(XmlElement element) : this()
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
 
             if (element["Name"] != null)
             {
@@ -366,11 +376,20 @@ namespace Supremacy.Tech
                     delegate (ResearchApplication left, ResearchApplication right)
                     {
                         if (left == null)
+                        {
                             return -1;
+                        }
+
                         if (right == null)
+                        {
                             return 1;
+                        }
+
                         if (left.Level != right.Level)
+                        {
                             return left.Level.CompareTo(right.Level);
+                        }
+
                         return left.ResearchCost.CompareTo(right.ResearchCost);
                     });
             }
@@ -385,10 +404,16 @@ namespace Supremacy.Tech
         public static bool operator ==(ResearchField a, ResearchField b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
+            }
+
             if (((object)a == null) || ((object)b == null))
+            {
                 return false;
-            return (a._fieldId == b._fieldId);
+            }
+
+            return a._fieldId == b._fieldId;
         }
 
         /// <summary>
@@ -400,10 +425,16 @@ namespace Supremacy.Tech
         public static bool operator !=(ResearchField a, ResearchField b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return false;
+            }
+
             if (((object)a == null) || ((object)b == null))
+            {
                 return true;
-            return (a._fieldId != b._fieldId);
+            }
+
+            return a._fieldId != b._fieldId;
         }
 
         /// <summary>
@@ -417,7 +448,10 @@ namespace Supremacy.Tech
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(obj, this))
+            {
                 return true;
+            }
+
             return Equals(obj as ResearchField);
         }
 
@@ -432,8 +466,11 @@ namespace Supremacy.Tech
         public bool Equals(ResearchField researchField)
         {
             if (researchField == null)
+            {
                 return false;
-            return (_fieldId == researchField._fieldId);
+            }
+
+            return _fieldId == researchField._fieldId;
         }
 
         /// <summary>
@@ -468,8 +505,8 @@ namespace Supremacy.Tech
         /// <value>The unique ID.</value>
         public int ApplicationID
         {
-            get { return _applicationId; }
-            internal set { _applicationId = (short)Math.Min(value, Int16.MaxValue); }
+            get => _applicationId;
+            internal set => _applicationId = (short)Math.Min(value, short.MaxValue);
         }
 
         /// <summary>
@@ -478,8 +515,8 @@ namespace Supremacy.Tech
         /// <value>The name.</value>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         /// <summary>
@@ -488,8 +525,8 @@ namespace Supremacy.Tech
         /// <value>The description.</value>
         public string Description
         {
-            get { return _description; }
-            set { _description = value; }
+            get => _description;
+            set => _description = value;
         }
 
         /// <summary>
@@ -498,18 +535,12 @@ namespace Supremacy.Tech
         /// <value>The field.</value>
         public ResearchField Field
         {
-            get
-            {
-                return (_fieldId == ResearchField.InvalidFieldID)
+            get => (_fieldId == ResearchField.InvalidFieldID)
                     ? null
                     : GameContext.Current.ResearchMatrix.GetField(_fieldId);
-            }
-            set
-            {
-                _fieldId = (value != null)
-                    ? (short)Math.Min(value.FieldID, Int16.MaxValue)
+            set => _fieldId = (value != null)
+                    ? (short)Math.Min(value.FieldID, short.MaxValue)
                     : (short)ResearchField.InvalidFieldID;
-            }
         }
 
         /// <summary>
@@ -519,8 +550,8 @@ namespace Supremacy.Tech
         /// <value>The tech level.</value>
         public int Level
         {
-            get { return _level; }
-            set { _level = (byte)value; }
+            get => _level;
+            set => _level = (byte)value;
         }
 
         /// <summary>
@@ -529,8 +560,8 @@ namespace Supremacy.Tech
         /// <value>The research cost.</value>
         public int ResearchCost
         {
-            get { return _researchCost; }
-            set { _researchCost = value; }
+            get => _researchCost;
+            set => _researchCost = value;
         }
 
         /// <summary>
@@ -545,7 +576,9 @@ namespace Supremacy.Tech
         public ResearchApplication(XmlElement element) : this()
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
 
             if (element["Name"] != null)
             {
@@ -601,10 +634,16 @@ namespace Supremacy.Tech
         public bool Equals(ResearchApplication researchApplication)
         {
             if (ReferenceEquals(researchApplication, this))
+            {
                 return true;
-            if (ReferenceEquals(researchApplication, null))
+            }
+
+            if (researchApplication is null)
+            {
                 return false;
-            return (_applicationId == researchApplication._applicationId);
+            }
+
+            return _applicationId == researchApplication._applicationId;
         }
 
         /// <summary>
@@ -616,10 +655,16 @@ namespace Supremacy.Tech
         public static bool operator ==(ResearchApplication a, ResearchApplication b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
+            }
+
             if (((object)a == null) || ((object)b == null))
+            {
                 return false;
-            return (a._applicationId == b._applicationId);
+            }
+
+            return a._applicationId == b._applicationId;
         }
 
         /// <summary>
@@ -631,10 +676,16 @@ namespace Supremacy.Tech
         public static bool operator !=(ResearchApplication a, ResearchApplication b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return false;
+            }
+
             if (((object)a == null) || ((object)b == null))
+            {
                 return true;
-            return (a._applicationId != b._applicationId);
+            }
+
+            return a._applicationId != b._applicationId;
         }
 
         #region ICloneable Members

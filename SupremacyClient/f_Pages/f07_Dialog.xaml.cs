@@ -21,14 +21,12 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Supremacy.Client.Views;
-using Supremacy.Diplomacy;
 using Supremacy.Encyclopedia;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Utility;
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client.Context;
-using AppContext = System.AppContext;
 
 namespace Supremacy.Client
 {
@@ -78,24 +76,24 @@ namespace Supremacy.Client
             OnApplyTemplate();
             IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.CancelCommand,
                     Key.Escape,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.CancelCommand,
                     OnGenericCommandsCancelCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
@@ -165,13 +163,13 @@ namespace Supremacy.Client
                              select raceEntry
                          )
                 .Concat(
-                (
+
                     from design in techTree
                     where TechTreeHelper.MeetsTechLevels(civManager, design)
                     let designEntry = design as IEncyclopediaEntry
                     where designEntry != null
                     select designEntry
-                ))
+                )
                 .OrderBy(o => o.EncyclopediaHeading)
                 .GroupBy(o => o.EncyclopediaCategory)
                 .OrderBy(o => o.Key);
@@ -203,7 +201,9 @@ namespace Supremacy.Client
             itemStyle.Seal();
 
             if (_encyclopediaEntryListView == null)
+            {
                 return;
+            }
 
             _encyclopediaEntryListView.Items.Clear();
 
@@ -226,23 +226,29 @@ namespace Supremacy.Client
                 groupItem.Header = group.Key;
                 groupItem.ItemsSource = entriesView;
                 groupItem.IsExpanded = true;
-                _encyclopediaEntryListView.Items.Add(groupItem);
+                _ = _encyclopediaEntryListView.Items.Add(groupItem);
                 //GameLog.Client.Research.DebugFormat("");
             }
         }
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            string searchText = String.Empty;
+            string searchText = string.Empty;
 
             if (!(value is IEncyclopediaEntry entry))
+            {
                 return false;
+            }
 
             if (_searchText != null)
+            {
                 searchText = _searchText.Text.Trim();
+            }
 
-            if (searchText == String.Empty)
+            if (searchText == string.Empty)
+            {
                 return true;
+            }
 
             string[] words = searchText.Split(
                 new[] { ' ', ',', ';' },
@@ -251,8 +257,8 @@ namespace Supremacy.Client
             foreach (string word in words)
             {
                 string lcWord = word.ToLowerInvariant();
-                return (entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
-                        || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord));
+                return entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
+                        || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord);
             }
 
             return false;
@@ -260,7 +266,7 @@ namespace Supremacy.Client
 
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 (Action)RefreshEncyclopediaEntries);
         }
@@ -268,13 +274,17 @@ namespace Supremacy.Client
         private void RefreshEncyclopediaEntries()
         {
             if (_encyclopediaEntryListView == null)
+            {
                 return;
+            }
 
             System.Collections.Generic.IEnumerable<ICollectionView> groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
                                                                                   select groupItem.ItemsSource).OfType<ICollectionView>();
 
             foreach (ICollectionView groupView in groupViews)
+            {
                 groupView.Refresh();
+            }
         }
 
         private void EncyclopediaEntryListView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -292,7 +302,9 @@ namespace Supremacy.Client
         private FlowDocument GenerateEncyclopediaDocument(IEncyclopediaEntry entry)
         {
             if (entry == null)
+            {
                 return new FlowDocument();
+            }
 
             TechObjectDesign design = entry as TechObjectDesign;
             FlowDocument doc = new FlowDocument();
@@ -367,9 +379,13 @@ namespace Supremacy.Client
                 };
 
                 if (firstParagraph.Inlines.Any())
+                {
                     firstParagraph.Inlines.InsertBefore(firstParagraph.Inlines.First(), imageFloater);
+                }
                 else
+                {
                     firstParagraph.Inlines.Add(imageFloater);
+                }
             }
 
             doc.Blocks.AddRange(paragraphs);
@@ -410,7 +426,9 @@ namespace Supremacy.Client
                     TextBlock techText = new TextBlock();
 
                     if (design.TechRequirements[techCategory] < 1)
+                    {
                         techIcon.Opacity = 0.25;
+                    }
 
                     ImageBrush imageBrush = new ImageBrush(
                         fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
@@ -445,7 +463,7 @@ namespace Supremacy.Client
                     techText.VerticalAlignment = VerticalAlignment.Bottom;
 
                     techIcon.Child = new Grid { Children = { techTextShadow, techText } };
-                    techIcon.ToolTip = String.Format(
+                    techIcon.ToolTip = string.Format(
                         "{0} Level {1}",
                         ResourceManager.GetString(field.Name),
                         design.TechRequirements[techCategory]);
@@ -453,7 +471,7 @@ namespace Supremacy.Client
                     techIcon.UseLayoutRounding = true;
                     techIcon.CacheMode = new BitmapCache { SnapsToDevicePixels = true };
 
-                    BindingOperations.SetBinding(
+                    _ = BindingOperations.SetBinding(
                         techIcon.CacheMode,
                         BitmapCache.RenderAtScaleProperty,
                         new Binding

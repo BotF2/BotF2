@@ -81,7 +81,9 @@ namespace Supremacy.VFS
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
+            {
                 return;
+            }
 
             List<Exception> exceptions = new List<Exception>(_sources.Count);
 
@@ -103,7 +105,9 @@ namespace Supremacy.VFS
             _disposed = true;
 
             if (exceptions.Count != 0)
+            {
                 throw new AggregateException(exceptions);
+            }
         }
 
         /// <summary>
@@ -122,8 +126,8 @@ namespace Supremacy.VFS
         /// </summary>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         public virtual bool IsReadOnly => !_sources.Any(source => !source.IsReadOnly);
@@ -161,10 +165,11 @@ namespace Supremacy.VFS
         /// </returns>
         public IFilesSource GetSource(string sourceName)
         {
-            IFilesSource source;
 
-            if (_sources.TryGetValue(sourceName, out source))
+            if (_sources.TryGetValue(sourceName, out IFilesSource source))
+            {
                 return source;
+            }
 
             throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + _name + "\".");
         }
@@ -181,11 +186,14 @@ namespace Supremacy.VFS
             foreach (IFilesSource source in _sources)
             {
                 if (!string.Equals(source.Name, sourceName, StringComparison.Ordinal))
+                {
                     continue;
+                }
 
-                IWritableFilesSource writableSource = source as IWritableFilesSource;
-                if (writableSource != null)
+                if (source is IWritableFilesSource writableSource)
+                {
                     return writableSource;
+                }
 
                 throw new IOException(
                     "The source \"" + sourceName + "\" is not a IWritableFilesSource in the VFS \"" + _name + "\".");
@@ -242,7 +250,7 @@ namespace Supremacy.VFS
         {
             IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(path, recurse))
-                .Where(o => (o != null));
+                .Where(o => o != null);
 
             switch (FileResolutionMode)
             {
@@ -251,15 +259,14 @@ namespace Supremacy.VFS
                     break;
             }
 
-            return fileInfos.Where(o => o.Exists).FirstOrDefault()
-                   ?? fileInfos.FirstOrDefault();
+            return fileInfos.FirstOrDefault(o => o.Exists) ?? fileInfos.FirstOrDefault();
         }
 
         public IVirtualFileInfo GetFileInfo(string definedPathAlias, string path, bool recurse)
         {
             IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(definedPathAlias, path, recurse))
-                .Where(o => (o != null));
+                .Where(o => o != null);
 
             switch (FileResolutionMode)
             {
@@ -268,8 +275,7 @@ namespace Supremacy.VFS
                     break;
             }
 
-            return fileInfos.Where(o => o.Exists).FirstOrDefault()
-                   ?? fileInfos.FirstOrDefault();
+            return fileInfos.FirstOrDefault(o => o.Exists) ?? fileInfos.FirstOrDefault();
         }
 
         /// <summary>

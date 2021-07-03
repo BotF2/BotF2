@@ -85,7 +85,9 @@ namespace Supremacy.Client.Views
         {
             InvasionAction? action = Model.SelectedAction;
             if (action == null)
+            {
                 return;
+            }
 
             switch (action.Value)
             {
@@ -113,7 +115,9 @@ namespace Supremacy.Client.Views
         {
             SystemAssaultScreenState state = Model.State;
             if (state == null)
+            {
                 return;
+            }
 
             if (state == SystemAssaultScreenState.AwaitingPlayerOrders)
             {
@@ -137,11 +141,13 @@ namespace Supremacy.Client.Views
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (Equals(value, _isActive))
+                {
                     return;
+                }
 
                 _isActive = value;
 
@@ -165,11 +171,13 @@ namespace Supremacy.Client.Views
 
         public IAppContext AppContext
         {
-            get { return _appContext; }
+            get => _appContext;
             set
             {
                 if (Equals(value, _appContext))
+                {
                     return;
+                }
 
                 _appContext = value;
 
@@ -191,11 +199,13 @@ namespace Supremacy.Client.Views
 
         public SystemAssaultScreenViewModel Model
         {
-            get { return DataContext as SystemAssaultScreenViewModel; }
+            get => DataContext as SystemAssaultScreenViewModel;
             set
             {
                 if (Equals(value, DataContext))
+                {
                     return;
+                }
 
                 DataContext = value;
 
@@ -217,7 +227,9 @@ namespace Supremacy.Client.Views
         private void OnChangeOrdersButtonClick(object sender, ExecuteRoutedEventArgs e)
         {
             if (Model.State != SystemAssaultScreenState.AwaitingPlayerOrders)
+            {
                 return;
+            }
 
             Model.SelectedAction = null;
 
@@ -278,7 +290,9 @@ namespace Supremacy.Client.Views
                         fromIndex = _itemsControl.ItemContainerGenerator.IndexFromContainer(fromContainer);
 
                         if (fromIndex < 0)
+                        {
                             fromIndex = _itemsControl.Items.IndexOf(fromContainer);
+                        }
                     }
                 }
             }
@@ -303,15 +317,21 @@ namespace Supremacy.Client.Views
                         toIndex = _itemsControl.ItemContainerGenerator.IndexFromContainer(toContainer);
 
                         if (toIndex < 0)
+                        {
                             toIndex = _itemsControl.Items.IndexOf(toContainer);
+                        }
                     }
                 }
             }
             if (fromIndex < 0 || toIndex < 0)
+            {
                 return _forwardTransition;
+            }
 
             if (fromIndex < toIndex)
+            {
                 return _forwardTransition;
+            }
 
             return _backTransition;
         }
@@ -326,8 +346,9 @@ namespace Supremacy.Client.Views
         public bool IsValidDataObject(IDataObject obj)
         {
             if (!obj.GetDataPresent(CombatUnitUIContainerFormat.Name))
+            {
                 return false;
-
+            }
 
             return CanDrop(obj, out List<CombatUnit> draggedUnits, out ICommand dropCommand);
         }
@@ -338,18 +359,26 @@ namespace Supremacy.Client.Views
             draggedUnits = new List<CombatUnit>();
 
             if (!(TargetElement is FrameworkElement targetElement))
+            {
                 return false;
+            }
 
             ListBox targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
             if (targetListBox == null)
+            {
                 return false;
+            }
 
             SystemAssaultScreen view = targetElement.FindLogicalAncestorByType<SystemAssaultScreen>();
             if (view == null || view.Model == null)
+            {
                 return false;
+            }
 
             if (!(ExtractElement(obj) is DependencyObject sourceElement))
+            {
                 return false;
+            }
 
             AssaultGroup assaultGroup = SystemAssaultScreen.GetAssaultGroup(targetListBox);
 
@@ -358,7 +387,9 @@ namespace Supremacy.Client.Views
                 sourceListBox = sourceElement.FindLogicalAncestorByType<ListBox>();
 
                 if (sourceListBox == null)
+                {
                     return false;
+                }
 
                 draggedUnits.AddRange(sourceListBox.SelectedItems.OfType<CombatUnit>().Where(o => !o.IsDestroyed));
             }
@@ -366,13 +397,17 @@ namespace Supremacy.Client.Views
             {
                 CombatUnit combatUnit = sourceElement.GetValue(FrameworkElement.DataContextProperty) as CombatUnit;
                 if (combatUnit == null || combatUnit.IsDestroyed)
+                {
                     return false;
+                }
 
                 draggedUnits.Add(combatUnit);
             }
 
             if (draggedUnits.Count == 0)
+            {
                 return false;
+            }
 
             switch (assaultGroup)
             {
@@ -399,22 +434,31 @@ namespace Supremacy.Client.Views
         public virtual void OnDropCompleted(IDataObject obj, Point dropPoint)
         {
             if (!(TargetElement is FrameworkElement targetElement))
+            {
                 return;
+            }
 
             ListBox targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
             if (targetListBox == null)
+            {
                 return;
+            }
 
             AssaultGroup targetGroup = SystemAssaultScreen.GetAssaultGroup(targetListBox);
             if (targetGroup == AssaultGroup.Invalid || targetGroup == AssaultGroup.Destroyed)
+            {
                 return;
-
+            }
 
             if (!CanDrop(obj, out List<CombatUnit> draggedUnits, out ICommand dropCommand))
+            {
                 return;
+            }
 
             if (!draggedUnits.All(o => dropCommand.CanExecute(o)))
+            {
                 return;
+            }
 
             draggedUnits.ForEach(o => dropCommand.Execute(o));
         }
@@ -487,7 +531,7 @@ namespace Supremacy.Client.Views
                         Canvas.SetLeft(rectangle, i * 4);
                         Canvas.SetTop(rectangle, i * 4);
 
-                        canvas.Children.Add(rectangle);
+                        _ = canvas.Children.Add(rectangle);
                     }
 
                     visual = canvas;
@@ -546,32 +590,44 @@ namespace Supremacy.Client.Views
         public bool IsDraggable(UIElement draggedElement)
         {
             if (!(draggedElement is FrameworkElement draggedFrameworkElement))
+            {
                 return false;
+            }
 
             ListBox draggedListBox = draggedFrameworkElement.FindVisualAncestorByType<ListBox>();
             if (draggedListBox != null)
             {
                 if (!(Mouse.DirectlyOver is UIElement sourceItem))
+                {
                     return false;
+                }
 
                 ListBoxItem listBoxItem = sourceItem.FindVisualAncestorByType<ListBoxItem>();
                 if (listBoxItem == null)
+                {
                     return false;
+                }
             }
 
             SystemAssaultScreen view = draggedListBox.FindLogicalAncestorByType<SystemAssaultScreen>();
             if (view == null || view.Model == null || view.AppContext == null)
+            {
                 return false;
+            }
 
             Game.CivilizationManager localPlayerEmpire = view.AppContext.LocalPlayerEmpire;
             if (localPlayerEmpire == null)
+            {
                 return false;
+            }
 
             CombatUnit combatUnit = draggedFrameworkElement.DataContext as CombatUnit;
             if (combatUnit == null)
+            {
                 return false;
+            }
 
-            return (combatUnit.Source.OwnerID == localPlayerEmpire.CivilizationID);
+            return combatUnit.Source.OwnerID == localPlayerEmpire.CivilizationID;
         }
 
         public UIElement GetTopContainer()

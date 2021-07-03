@@ -24,42 +24,42 @@ namespace Supremacy.Text
 
         public FontStyle FontStyle
         {
-            get { return _fontStyle; }
-            set { _fontStyle = value; }
+            get => _fontStyle;
+            set => _fontStyle = value;
         }
 
         public FontWeight FontWeight
         {
-            get { return _fontWeight; }
-            set { _fontWeight = value; }
+            get => _fontWeight;
+            set => _fontWeight = value;
         }
 
         [DefaultValue(null)]
         public Brush Foreground
         {
-            get { return _foreground; }
-            set { _foreground = value; }
+            get => _foreground;
+            set => _foreground = value;
         }
 
         [DefaultValue(null)]
         public Brush Background
         {
-            get { return _background; }
-            set { _background = value; }
+            get => _background;
+            set => _background = value;
         }
 
         [DefaultValue(TextEffectStyle.None)]
         public TextEffectStyle Effect
         {
-            get { return _effect; }
-            set { _effect = value; }
+            get => _effect;
+            set => _effect = value;
         }
 
         [DefaultValue(null)]
         public Brush EffectBrush
         {
-            get { return _effectBrush; }
-            set { _effectBrush = value; }
+            get => _effectBrush;
+            set => _effectBrush = value;
         }
 
         public static TextStyle Default => _defaultStyle;
@@ -162,8 +162,11 @@ namespace Supremacy.Text
         {
             StringBuilder output = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            {
                 Dump(writer);
-            return (output).ToString();
+            }
+
+            return output.ToString();
         }
 
         public override bool Equals(object obj)

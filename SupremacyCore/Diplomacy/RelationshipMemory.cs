@@ -40,8 +40,8 @@ namespace Supremacy.Diplomacy
 
         public int Value
         {
-            get { return _value; }
-            internal set { _value = value; }
+            get => _value;
+            internal set => _value = value;
         }
 
         public object Parameter => _parameter;
@@ -55,7 +55,10 @@ namespace Supremacy.Diplomacy
         public RelationshipMemory(MemoryType memoryType, int turnCreated, int value, object parameter)
         {
             if (turnCreated < 0)
+            {
                 throw new ArgumentOutOfRangeException("turnCreated", "must be >= 0");
+            }
+
             _memoryType = memoryType;
             _turnCreated = turnCreated;
             _value = value;
@@ -65,7 +68,7 @@ namespace Supremacy.Diplomacy
         #region IAttitudeAdjuster Members
         public string Description => _memoryType.ToString();
 
-        public bool IsNegative => (_value < 0);
+        public bool IsNegative => _value < 0;
         #endregion
 
         public override string ToString()

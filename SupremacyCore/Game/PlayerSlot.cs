@@ -29,7 +29,7 @@ namespace Supremacy.Game
         #region Properties and Indexers
         public SlotClaim Claim
         {
-            get { return _claim; }
+            get => _claim;
             set
             {
                 _claim = value;
@@ -41,7 +41,7 @@ namespace Supremacy.Game
 
         public int EmpireID
         {
-            get { return _empireID; }
+            get => _empireID;
             set
             {
                 _empireID = value;
@@ -51,7 +51,7 @@ namespace Supremacy.Game
 
         public string EmpireName
         {
-            get { return _empireName; }
+            get => _empireName;
             set
             {
                 _empireName = value;
@@ -61,11 +61,14 @@ namespace Supremacy.Game
 
         public bool IsClosed
         {
-            get { return (Status == SlotStatus.Closed); }
+            get => Status == SlotStatus.Closed;
             set
             {
                 if (!value && IsFrozen)
+                {
                     return;
+                }
+
                 Status = value ? SlotStatus.Open : SlotStatus.Closed;
                 Player = null;
             }
@@ -78,14 +81,17 @@ namespace Supremacy.Game
             get
             {
                 if (Claim == SlotClaim.Assigned)
+                {
                     return false;
-                return ((Status == SlotStatus.Open) || (Status == SlotStatus.Computer));
+                }
+
+                return (Status == SlotStatus.Open) || (Status == SlotStatus.Computer);
             }
         }
 
         public Player Player
         {
-            get { return _player; }
+            get => _player;
             set
             {
                 _player = value;
@@ -95,7 +101,7 @@ namespace Supremacy.Game
 
         public int SlotID
         {
-            get { return _slotID; }
+            get => _slotID;
             set
             {
                 _slotID = value;
@@ -105,7 +111,7 @@ namespace Supremacy.Game
 
         public SlotStatus Status
         {
-            get { return _status; }
+            get => _status;
             set
             {
                 _status = value;
@@ -126,29 +132,40 @@ namespace Supremacy.Game
         public void Clear()
         {
             if (IsFrozen)
+            {
                 return;
+            }
+
             Status = SlotStatus.Open;
             Claim = SlotClaim.Unassigned;
             if ((Player != null) && (Player.EmpireID == EmpireID))
+            {
                 Player.EmpireID = -1;
+            }
+
             Player = null;
         }
 
         public void Close()
         {
             if (IsFrozen)
+            {
                 return;
+            }
+
             Status = SlotStatus.Closed;
             Claim = SlotClaim.Unassigned;
             if (Player != null)
+            {
                 Player.EmpireID = -1;
+            }
+
             Player = null;
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

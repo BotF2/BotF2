@@ -59,11 +59,15 @@ namespace Supremacy.Client.Controls
         {
             InfoCard infoCard = (InfoCard)sender;
             if (infoCard == null)
+            {
                 return;
+            }
 
-            InfoCardWindow window = InfoCardHost.GetInfoCardWindow(infoCard) as InfoCardWindow;
-            if (window == null)
+            if (!(InfoCardHost.GetInfoCardWindow(infoCard) is InfoCardWindow window))
+            {
                 return;
+            }
+
             window.ShowInTaskbar = true;
             window.Topmost = true;
         }
@@ -72,11 +76,14 @@ namespace Supremacy.Client.Controls
         {
             InfoCard infoCard = (InfoCard)sender;
             if (infoCard == null)
+            {
                 return;
+            }
 
-            InfoCardWindow window = InfoCardHost.GetInfoCardWindow(infoCard) as InfoCardWindow;
-            if (window == null)
+            if (!(InfoCardHost.GetInfoCardWindow(infoCard) is InfoCardWindow window))
+            {
                 return;
+            }
 
             window.ShowInTaskbar = false;
             window.Topmost = false;
@@ -84,9 +91,6 @@ namespace Supremacy.Client.Controls
 
         public InfoCardWindow(InfoCardHost container)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-
             InfoCardHost.SetInfoCardWindow(this, this);
 
             WindowStyle = WindowStyle.None;
@@ -97,11 +101,13 @@ namespace Supremacy.Client.Controls
             Height = 0;
             SizeToContent = SizeToContent.WidthAndHeight;
 
-            InfoCardHost = container;
+            InfoCardHost = container ?? throw new ArgumentNullException("container");
 
             Window ownerWindow = GetWindow(InfoCardSite);
             if (ownerWindow != null)
+            {
                 Owner = ownerWindow;
+            }
 
             InfoCard infoCard = (InfoCard)container.Content;
             Point location = container.Location ?? new Point(0, 0);
@@ -133,7 +139,9 @@ namespace Supremacy.Client.Controls
             base.OnContentRendered(e);
 
             if (SizeToContent == SizeToContent.WidthAndHeight)
+            {
                 SizeToContent = SizeToContent.Height;
+            }
         }
 
         #region IsClosing Property
@@ -147,8 +155,8 @@ namespace Supremacy.Client.Controls
 
         public bool IsClosing
         {
-            get { return (bool)GetValue(IsClosingProperty); }
-            private set { SetValue(IsClosingPropertyKey, value); }
+            get => (bool)GetValue(IsClosingProperty);
+            private set => SetValue(IsClosingPropertyKey, value);
         }
         #endregion
 
@@ -168,8 +176,7 @@ namespace Supremacy.Client.Controls
             get
             {
                 Point location = new Point(Left, Top);
-                InfoCard infoCard = InfoCardHost.Content as InfoCard;
-                if (infoCard != null)
+                if (InfoCardHost.Content is InfoCard infoCard)
                 {
                     Window targetWindow = GetWindow(infoCard.TargetElement);
                     if (targetWindow != null)
@@ -186,14 +193,17 @@ namespace Supremacy.Client.Controls
 
         public InfoCardHost InfoCardHost
         {
-            get { return Content as InfoCardHost; }
-            private set { Content = value; }
+            get => Content as InfoCardHost;
+            private set => Content = value;
         }
 
         public void Setup(Point? position)
         {
             if (!position.HasValue)
+            {
                 return;
+            }
+
             Left = position.Value.X;
             Top = position.Value.Y;
         }
@@ -208,9 +218,14 @@ namespace Supremacy.Client.Controls
                     Height));
 
             if (Left != bounds.Left)
+            {
                 Left = bounds.Left;
+            }
+
             if (Top != bounds.Top)
+            {
                 Top = bounds.Top;
+            }
         }
 
         void IInfoCardWindow.DragMove()
@@ -226,7 +241,9 @@ namespace Supremacy.Client.Controls
 
             InfoCard popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
             if ((popup != null) && !popup.IsPinned)
-                popup.Close();
+            {
+                _ = popup.Close();
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -236,7 +253,9 @@ namespace Supremacy.Client.Controls
             {
                 Window window = GetWindow(popupSite);
                 if ((window != null) && !window.IsActive)
-                    window.Activate();
+                {
+                    _ = window.Activate();
+                }
             }
 
             InfoCardHost = null;
@@ -267,7 +286,9 @@ namespace Supremacy.Client.Controls
             {
                 InfoCard popup = infoCardSite.GetInfoCardFromHost(InfoCardHost);
                 if (popup != null)
+                {
                     cancel |= !infoCardSite.Close(popup, _closeReason, false);
+                }
             }
 
             _closeReason = InfoCardCloseReason.InfoCardWindowClosed;

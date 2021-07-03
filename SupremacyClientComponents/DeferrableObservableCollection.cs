@@ -69,18 +69,26 @@ namespace Supremacy.Client
                             int compare = _sortComparer.Compare(item, this[i]);
 
                             if (compare > 0)
+                            {
                                 continue;
+                            }
 
                             newIndex = i;
 
                             if (compare != 0)
+                            {
                                 break;
+                            }
 
                             if (i >= index)
+                            {
                                 break;
+                            }
 
                             if (i >= index || i != count - 1)
+                            {
                                 continue;
+                            }
 
                             newIndex++;
                             break;
@@ -98,7 +106,9 @@ namespace Supremacy.Client
                         while (true)
                         {
                             if (startIndex > endIndex)
+                            {
                                 break;
+                            }
 
                             // Test index will be the middle slot
                             int testIndex = startIndex + (endIndex - startIndex) / 2;
@@ -146,7 +156,9 @@ namespace Supremacy.Client
             if (items != null)
             {
                 foreach (T item in items)
+                {
                     Add(item);
+                }
             }
         }
 
@@ -164,13 +176,17 @@ namespace Supremacy.Client
         public void EndUpdate()
         {
             if (_usageCounter <= 0)
+            {
                 return;
+            }
 
             // Decrement the counter
             _usageCounter = Math.Max(0, _usageCounter - 1);
 
             if (_usageCounter != 0 || !_isDirty)
+            {
                 return;
+            }
 
             // Flag as not dirty
             _isDirty = false;
@@ -206,7 +222,7 @@ namespace Supremacy.Client
         /// <value>
         /// <c>true</c> if property change notifications are currently suspended; otherwise, <c>false</c>.
         /// </value>
-        public bool IsPropertyChangeSuspended => (_usageCounter > 0);
+        public bool IsPropertyChangeSuspended => _usageCounter > 0;
 
         /// <summary>
         /// Raises the <c>CollectionChanged</c> event with the provided arguments.
@@ -215,9 +231,13 @@ namespace Supremacy.Client
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             if (IsPropertyChangeSuspended)
+            {
                 _isDirty = true;
+            }
             else
+            {
                 base.OnCollectionChanged(e);
+            }
         }
 
         /// <summary>
@@ -227,9 +247,13 @@ namespace Supremacy.Client
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (IsPropertyChangeSuspended)
+            {
                 _isDirty = true;
+            }
             else
+            {
                 base.OnPropertyChanged(e);
+            }
         }
 
         /// <summary>

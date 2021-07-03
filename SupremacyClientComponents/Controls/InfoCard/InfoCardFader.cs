@@ -25,12 +25,17 @@ namespace Supremacy.Client.Controls
         private void DestroyStoryboard()
         {
             if (_storyboard == null)
+            {
                 return;
+            }
+
             InfoCard infoCardElement = _infoCard;
             if (infoCardElement != null)
             {
                 if (_storyboard.GetCurrentState(infoCardElement) != ClockState.Stopped)
+                {
                     _storyboard.Stop(infoCardElement);
+                }
             }
 
             _storyboard = null;
@@ -40,9 +45,10 @@ namespace Supremacy.Client.Controls
         {
             DestroyStoryboard();
 
-            FrameworkElement infoCardElement = infoCardToFade as FrameworkElement;
-            if (infoCardElement == null)
+            if (!(infoCardToFade is FrameworkElement infoCardElement))
+            {
                 return;
+            }
 
             InfoCardSite infoCardSite = infoCardToFade.InfoCardSite;
             if ((infoCardSite == null) ||

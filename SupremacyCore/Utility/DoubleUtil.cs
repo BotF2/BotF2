@@ -33,7 +33,9 @@ namespace Supremacy.Utility
              * In case they are Infinities (then epsilon check does not work)
              */
             if (value1 == value2)
+            {
                 return true;
+            }
 
             /*
              * This computes (|value1-value2| / (|value1| + |value2| + 10.0)) < Epsilon
@@ -215,7 +217,9 @@ namespace Supremacy.Utility
              * If they're both empty, don't bother with the double logic.
              */
             if (rect1.IsEmpty)
+            {
                 return rect2.IsEmpty;
+            }
 
             /* 
              * At this point, rect1 isn't empty, so the first thing we can test is
@@ -235,7 +239,7 @@ namespace Supremacy.Utility
         /// <returns><c>true</c> if <paramref name="value"/> is between <c>0</c> and <c>1</c>; otherwise, <c>false</c>.</returns>
         public static bool IsBetweenZeroAndOne(double value)
         {
-            return (GreaterThanOrClose(value, 0) && LessThanOrClose(value, 1));
+            return GreaterThanOrClose(value, 0) && LessThanOrClose(value, 1);
         }
 
         /// <summary>

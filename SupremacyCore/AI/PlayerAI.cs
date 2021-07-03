@@ -58,8 +58,13 @@ namespace Supremacy.AI
                                 || spyingCiv.Traits.Contains(CivTraits.Warlike.ToString()))
                             {
                                 if (RandomHelper.Random(3) == 0)
+                                {
                                     DoSpySabotageMission(spyingCiv, Civ);
-                                else IntelHelper.SabotageStealResearch(spyingCiv, Civ, "No one");
+                                }
+                                else
+                                {
+                                    IntelHelper.SabotageStealResearch(spyingCiv, Civ, "No one");
+                                }
                             }
                         }
                     }
@@ -136,9 +141,11 @@ namespace Supremacy.AI
             foreach (Civilization invasionCiv in possibleCivs)
             {
                 if (!daCiv.Traits.Contains("Warlike") && invasionCiv.CivID > 6)  // not warlike and a minor so skip
+                {
                     continue;
+                }
 
-                Double lastRange = 999;
+                double lastRange = 999;
 
                 if (DiplomacyHelper.IsContactMade(daCiv, invasionCiv)
                     && !GameContext.Current.CivilizationManagers[invasionCiv].IsHomeColonyDestroyed
@@ -149,7 +156,7 @@ namespace Supremacy.AI
                 {
                     MapLocation empire = GameContext.Current.CivilizationManagers[invasionCiv].HomeSystem.Location;
                     MapLocation ai = GameContext.Current.CivilizationManagers[daCiv].HomeSystem.Location;
-                    Double curretRange = Math.Sqrt(Math.Pow((empire.X - ai.X), 2) + Math.Pow((empire.Y - ai.Y), 2));
+                    double curretRange = Math.Sqrt(Math.Pow(empire.X - ai.X, 2) + Math.Pow(empire.Y - ai.Y, 2));
 
                     int civFirePower = CalculateFirePower(daCiv);
                     int targetFirePower = CalculateFirePower(invasionCiv);
@@ -173,7 +180,10 @@ namespace Supremacy.AI
                             }
                         }
                     }
-                    else daCiv.TargetCivilization = null;
+                    else
+                    {
+                        daCiv.TargetCivilization = null;
+                    }
                 }
             }
         }
@@ -184,7 +194,10 @@ namespace Supremacy.AI
                     || !GameContext.Current.CivilizationManagers[undefeatedCiv].ControlsHomeSystem
                     || GameContext.Current.CivilizationManagers[undefeatedCiv].IsHomeColonyDestroyed
                     || GameContext.Current.CivilizationManagers[undefeatedCiv].TotalPopulation.IsMinimized)
+            {
                 stillViable = true;
+            }
+
             return stillViable;
         }
 
@@ -366,7 +379,9 @@ namespace Supremacy.AI
                         foreach (Ship ship in fleet.Ships)
                         {
                             if (ship.Owner != null)
+                            {
                                 fleet.Owner = ship.Owner;
+                            }
                         }
                         if (!DiplomacyHelper.AreAtWar(who, fleet.Owner))
                         {

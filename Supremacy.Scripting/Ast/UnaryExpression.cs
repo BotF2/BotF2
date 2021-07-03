@@ -233,7 +233,7 @@ namespace Supremacy.Scripting.Ast
 
                     if (exprType == TypeManager.CoreTypes.SByte)
                     {
-                        return new ConstantExpression<int>(~((sbyte)e.Value), e.Span);
+                        return new ConstantExpression<int>(~(sbyte)e.Value, e.Span);
                     }
 
                     if (exprType == TypeManager.CoreTypes.Int16)

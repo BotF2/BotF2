@@ -56,7 +56,9 @@ namespace Supremacy.Economy
             {
                 BuildProject project = buildSlot.Project;
                 if (project != null)
+                {
                     project.InvalidateTurnsRemaining();
+                }
             }
             foreach (BuildProject project in source.BuildQueue.Where(o => o.Project != null).Select(o => o.Project))
             {
@@ -73,7 +75,7 @@ namespace Supremacy.Economy
                 {
                     if (source.BuildQueue[i].Project.IsEquivalent(source.BuildQueue[i + 1].Project))
                     {
-                        source.BuildQueue[i].IncrementCount();
+                        _ = source.BuildQueue[i].IncrementCount();
                         source.BuildQueue.RemoveAt(i + 1);
                     }
                     else
@@ -90,7 +92,9 @@ namespace Supremacy.Economy
             bool suspendActiveProjects)
         {
             if (source.BuildQueue.Count == 0)
+            {
                 return;
+            }
 
             if (suspendActiveProjects)
             {
@@ -102,19 +106,23 @@ namespace Supremacy.Economy
             }
 
             // Sort BuildQueueItems in *descending* order of priority.
-            source.BuildQueue.Sort(
+            _ = source.BuildQueue.Sort(
                 (a, b) => priorityFunc(b.Project).CompareTo(priorityFunc(a.Project)));
 
             for (int i = 0; (i < source.BuildSlots.Count) && (source.BuildQueue.Count > 0); i++)
             {
                 if (source.BuildSlots[i].HasProject)
+                {
                     continue;
+                }
 
                 source.BuildSlots[i].Project = source.BuildQueue[0].Project;
-                source.BuildQueue[0].DecrementCount();
+                _ = source.BuildQueue[0].DecrementCount();
 
                 if (source.BuildQueue[0].Count == 0)
+                {
                     source.BuildQueue.RemoveAt(0);
+                }
             }
         }
     }

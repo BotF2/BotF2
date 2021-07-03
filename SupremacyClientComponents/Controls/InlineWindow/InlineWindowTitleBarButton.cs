@@ -320,8 +320,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when active and in a disabled state.</value>
         public Brush BackgroundActiveDisabled
         {
-            get { return (Brush)GetValue(BackgroundActiveDisabledProperty); }
-            set { SetValue(BackgroundActiveDisabledProperty, value); }
+            get => (Brush)GetValue(BackgroundActiveDisabledProperty);
+            set => SetValue(BackgroundActiveDisabledProperty, value);
         }
 
         /// <summary>
@@ -330,8 +330,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when active and in a hover state.</value>
         public Brush BackgroundActiveHover
         {
-            get { return (Brush)GetValue(BackgroundActiveHoverProperty); }
-            set { SetValue(BackgroundActiveHoverProperty, value); }
+            get => (Brush)GetValue(BackgroundActiveHoverProperty);
+            set => SetValue(BackgroundActiveHoverProperty, value);
         }
 
         /// <summary>
@@ -340,8 +340,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when active and in a hover state.</value>
         public Brush BackgroundActiveHoverHighlight
         {
-            get { return (Brush)GetValue(BackgroundActiveHoverHighlightProperty); }
-            set { SetValue(BackgroundActiveHoverHighlightProperty, value); }
+            get => (Brush)GetValue(BackgroundActiveHoverHighlightProperty);
+            set => SetValue(BackgroundActiveHoverHighlightProperty, value);
         }
 
         /// <summary>
@@ -350,8 +350,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when active and in a normal state.</value>
         public Brush BackgroundActiveNormal
         {
-            get { return (Brush)GetValue(BackgroundActiveNormalProperty); }
-            set { SetValue(BackgroundActiveNormalProperty, value); }
+            get => (Brush)GetValue(BackgroundActiveNormalProperty);
+            set => SetValue(BackgroundActiveNormalProperty, value);
         }
 
         /// <summary>
@@ -360,8 +360,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when active and in a pressed state.</value>
         public Brush BackgroundActivePressed
         {
-            get { return (Brush)GetValue(BackgroundActivePressedProperty); }
-            set { SetValue(BackgroundActivePressedProperty, value); }
+            get => (Brush)GetValue(BackgroundActivePressedProperty);
+            set => SetValue(BackgroundActivePressedProperty, value);
         }
 
         /// <summary>
@@ -370,8 +370,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when active and in a pressed state.</value>
         public Brush BackgroundActivePressedHighlight
         {
-            get { return (Brush)GetValue(BackgroundActivePressedHighlightProperty); }
-            set { SetValue(BackgroundActivePressedHighlightProperty, value); }
+            get => (Brush)GetValue(BackgroundActivePressedHighlightProperty);
+            set => SetValue(BackgroundActivePressedHighlightProperty, value);
         }
 
         /// <summary>
@@ -380,8 +380,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when inactive and in a disabled state.</value>
         public Brush BackgroundInactiveDisabled
         {
-            get { return (Brush)GetValue(BackgroundInactiveDisabledProperty); }
-            set { SetValue(BackgroundInactiveDisabledProperty, value); }
+            get => (Brush)GetValue(BackgroundInactiveDisabledProperty);
+            set => SetValue(BackgroundInactiveDisabledProperty, value);
         }
 
         /// <summary>
@@ -390,8 +390,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when inactive and in a hover state.</value>
         public Brush BackgroundInactiveHover
         {
-            get { return (Brush)GetValue(BackgroundInactiveHoverProperty); }
-            set { SetValue(BackgroundInactiveHoverProperty, value); }
+            get => (Brush)GetValue(BackgroundInactiveHoverProperty);
+            set => SetValue(BackgroundInactiveHoverProperty, value);
         }
 
         /// <summary>
@@ -400,8 +400,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when inactive and in a hover state.</value>
         public Brush BackgroundInactiveHoverHighlight
         {
-            get { return (Brush)GetValue(BackgroundInactiveHoverHighlightProperty); }
-            set { SetValue(BackgroundInactiveHoverHighlightProperty, value); }
+            get => (Brush)GetValue(BackgroundInactiveHoverHighlightProperty);
+            set => SetValue(BackgroundInactiveHoverHighlightProperty, value);
         }
 
         /// <summary>
@@ -410,8 +410,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the background of the button when inactive and in a normal state.</value>
         public Brush BackgroundInactiveNormal
         {
-            get { return (Brush)GetValue(BackgroundInactiveNormalProperty); }
-            set { SetValue(BackgroundInactiveNormalProperty, value); }
+            get => (Brush)GetValue(BackgroundInactiveNormalProperty);
+            set => SetValue(BackgroundInactiveNormalProperty, value);
         }
 
         /// <summary>
@@ -420,8 +420,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the border of the button when active and in a disabled state.</value>
         public Brush BorderActiveDisabledBrush
         {
-            get { return (Brush)GetValue(BorderActiveDisabledBrushProperty); }
-            set { SetValue(BorderActiveDisabledBrushProperty, value); }
+            get => (Brush)GetValue(BorderActiveDisabledBrushProperty);
+            set => SetValue(BorderActiveDisabledBrushProperty, value);
         }
 
         /// <summary>
@@ -430,8 +430,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the border of the button when active and in a hover state.</value>
         public Brush BorderActiveHoverBrush
         {
-            get { return (Brush)GetValue(BorderActiveHoverBrushProperty); }
-            set { SetValue(BorderActiveHoverBrushProperty, value); }
+            get => (Brush)GetValue(BorderActiveHoverBrushProperty);
+            set => SetValue(BorderActiveHoverBrushProperty, value);
         }
 
         /// <summary>
@@ -440,8 +440,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the border of the button when active and in a normal state.</value>
         public Brush BorderActiveNormalBrush
         {
-            get { return (Brush)GetValue(BorderActiveNormalBrushProperty); }
-            set { SetValue(BorderActiveNormalBrushProperty, value); }
+            get => (Brush)GetValue(BorderActiveNormalBrushProperty);
+            set => SetValue(BorderActiveNormalBrushProperty, value);
         }
 
         /// <summary>
@@ -450,8 +450,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the border of the button when active and in a pressed state.</value>
         public Brush BorderActivePressedBrush
         {
-            get { return (Brush)GetValue(BorderActivePressedBrushProperty); }
-            set { SetValue(BorderActivePressedBrushProperty, value); }
+            get => (Brush)GetValue(BorderActivePressedBrushProperty);
+            set => SetValue(BorderActivePressedBrushProperty, value);
         }
 
         /// <summary>
@@ -460,8 +460,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the border of the button when inactive and in a disabled state.</value>
         public Brush BorderInactiveDisabledBrush
         {
-            get { return (Brush)GetValue(BorderInactiveDisabledBrushProperty); }
-            set { SetValue(BorderInactiveDisabledBrushProperty, value); }
+            get => (Brush)GetValue(BorderInactiveDisabledBrushProperty);
+            set => SetValue(BorderInactiveDisabledBrushProperty, value);
         }
 
         /// <summary>
@@ -470,8 +470,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the border of the button when inactive and in a hover state.</value>
         public Brush BorderInactiveHoverBrush
         {
-            get { return (Brush)GetValue(BorderInactiveHoverBrushProperty); }
-            set { SetValue(BorderInactiveHoverBrushProperty, value); }
+            get => (Brush)GetValue(BorderInactiveHoverBrushProperty);
+            set => SetValue(BorderInactiveHoverBrushProperty, value);
         }
 
         /// <summary>
@@ -480,8 +480,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the border of the button when inactive and in a normal state.</value>
         public Brush BorderInactiveNormalBrush
         {
-            get { return (Brush)GetValue(BorderInactiveNormalBrushProperty); }
-            set { SetValue(BorderInactiveNormalBrushProperty, value); }
+            get => (Brush)GetValue(BorderInactiveNormalBrushProperty);
+            set => SetValue(BorderInactiveNormalBrushProperty, value);
         }
 
         /// <summary>
@@ -490,8 +490,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="System.Windows.CornerRadius"/> of the button's border.</value>
         public CornerRadius CornerRadius
         {
-            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
-            set { SetValue(CornerRadiusProperty, value); }
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
 
         /// <summary>
@@ -500,8 +500,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the foreground of the button when active and in a pressed state.</value>
         public Brush ForegroundActivePressed
         {
-            get { return (Brush)GetValue(ForegroundActivePressedProperty); }
-            set { SetValue(ForegroundActivePressedProperty, value); }
+            get => (Brush)GetValue(ForegroundActivePressedProperty);
+            set => SetValue(ForegroundActivePressedProperty, value);
         }
 
         /// <summary>
@@ -510,8 +510,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the foreground of the button when active and in a disabled state.</value>
         public Brush ForegroundActiveDisabled
         {
-            get { return (Brush)GetValue(ForegroundActiveDisabledProperty); }
-            set { SetValue(ForegroundActiveDisabledProperty, value); }
+            get => (Brush)GetValue(ForegroundActiveDisabledProperty);
+            set => SetValue(ForegroundActiveDisabledProperty, value);
         }
 
         /// <summary>
@@ -520,8 +520,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the foreground of the button when active and in a hover state.</value>
         public Brush ForegroundActiveHover
         {
-            get { return (Brush)GetValue(ForegroundActiveHoverProperty); }
-            set { SetValue(ForegroundActiveHoverProperty, value); }
+            get => (Brush)GetValue(ForegroundActiveHoverProperty);
+            set => SetValue(ForegroundActiveHoverProperty, value);
         }
 
         /// <summary>
@@ -530,8 +530,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the foreground of the button when active and in a normal state.</value>
         public Brush ForegroundActiveNormal
         {
-            get { return (Brush)GetValue(ForegroundActiveNormalProperty); }
-            set { SetValue(ForegroundActiveNormalProperty, value); }
+            get => (Brush)GetValue(ForegroundActiveNormalProperty);
+            set => SetValue(ForegroundActiveNormalProperty, value);
         }
 
         /// <summary>
@@ -540,8 +540,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the foreground of the button when inactive and in a disabled state.</value>
         public Brush ForegroundInactiveDisabled
         {
-            get { return (Brush)GetValue(ForegroundInactiveDisabledProperty); }
-            set { SetValue(ForegroundInactiveDisabledProperty, value); }
+            get => (Brush)GetValue(ForegroundInactiveDisabledProperty);
+            set => SetValue(ForegroundInactiveDisabledProperty, value);
         }
 
         /// <summary>
@@ -550,8 +550,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the foreground of the button when inactive and in a hover state.</value>
         public Brush ForegroundInactiveHover
         {
-            get { return (Brush)GetValue(ForegroundInactiveHoverProperty); }
-            set { SetValue(ForegroundInactiveHoverProperty, value); }
+            get => (Brush)GetValue(ForegroundInactiveHoverProperty);
+            set => SetValue(ForegroundInactiveHoverProperty, value);
         }
 
         /// <summary>
@@ -560,8 +560,8 @@ namespace Supremacy.Client.Controls
         /// <value>The <see cref="Brush"/> that is used to render the foreground of the button when inactive and in a normal state.</value>
         public Brush ForegroundInactiveNormal
         {
-            get { return (Brush)GetValue(ForegroundInactiveNormalProperty); }
-            set { SetValue(ForegroundInactiveNormalProperty, value); }
+            get => (Brush)GetValue(ForegroundInactiveNormalProperty);
+            set => SetValue(ForegroundInactiveNormalProperty, value);
         }
 
         /// <summary>
@@ -572,8 +572,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool IsActive
         {
-            get { return (bool)GetValue(IsActiveProperty); }
-            set { SetValue(IsActiveProperty, value); }
+            get => (bool)GetValue(IsActiveProperty);
+            set => SetValue(IsActiveProperty, value);
         }
 
         /// <summary>
@@ -584,7 +584,10 @@ namespace Supremacy.Client.Controls
         public static bool GetIsActive(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (bool)obj.GetValue(IsActiveProperty);
         }
 
@@ -596,7 +599,10 @@ namespace Supremacy.Client.Controls
         public static void SetIsActive(DependencyObject obj, bool value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(IsActiveProperty, value);
         }
     }

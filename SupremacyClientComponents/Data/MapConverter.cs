@@ -118,14 +118,14 @@ namespace Supremacy.Client.Data
         /// </remarks>
         public FallbackBehavior FallbackBehavior
         {
-            get { return (FallbackBehavior)GetValue(FallbackBehaviorProperty); }
-            set { SetValue(FallbackBehaviorProperty, value); }
+            get => (FallbackBehavior)GetValue(FallbackBehaviorProperty);
+            set => SetValue(FallbackBehaviorProperty, value);
         }
 
         public object FallbackValue
         {
-            get { return GetValue(FallbackValueProperty); }
-            set { SetValue(FallbackValueProperty, value); }
+            get => GetValue(FallbackValueProperty);
+            set => SetValue(FallbackValueProperty, value);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Supremacy.Client.Data
         /// </remarks>
         public Collection<Mapping> Mappings
         {
-            get { return GetValue(MappingsProperty) as Collection<Mapping>; }
+            get => GetValue(MappingsProperty) as Collection<Mapping>;
             private set
             {
                 Debug.Assert(Mappings == null);
@@ -180,14 +180,20 @@ namespace Supremacy.Client.Data
             {
                 object convertedValue = ValueConversionHelper.Convert(mapping.To, targetType, parameter, culture);
                 if (convertedValue != DependencyProperty.UnsetValue)
+                {
                     return convertedValue;
+                }
             }
 
             if (!this.HasDefaultValue(FallbackValueProperty))
+            {
                 return FallbackValue;
+            }
 
             if (FallbackBehavior == FallbackBehavior.ReturnUnsetValue)
+            {
                 return DependencyProperty.UnsetValue;
+            }
 
             return value;
         }
@@ -217,11 +223,15 @@ namespace Supremacy.Client.Data
             {
                 object convertedValue = ValueConversionHelper.Convert(mapping.From, targetType, parameter, culture);
                 if (convertedValue != DependencyProperty.UnsetValue)
+                {
                     return convertedValue;
+                }
             }
 
             if (FallbackBehavior == FallbackBehavior.ReturnUnsetValue)
+            {
                 return DependencyProperty.UnsetValue;
+            }
 
             return value;
         }
@@ -234,12 +244,17 @@ namespace Supremacy.Client.Data
                 if (comparand == null)
                 {
                     if (value == null)
+                    {
                         return mapping;
+                    }
+
                     continue;
                 }
 
                 if (value == null)
+                {
                     continue;
+                }
 
                 if (reverse)
                 {
@@ -248,12 +263,17 @@ namespace Supremacy.Client.Data
                     {
                         object convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType());
                         if (convertedComparand != DependencyProperty.UnsetValue && Equals(convertedComparand, value))
+                        {
                             return mapping;
+                        }
+
                         continue;
                     }
 
                     if (Equals(convertedValue, comparand))
+                    {
                         return mapping;
+                    }
                 }
                 else
                 {
@@ -262,12 +282,17 @@ namespace Supremacy.Client.Data
                     {
                         object convertedValue = ValueConversionHelper.Convert(value, comparand.GetType());
                         if (convertedValue != DependencyProperty.UnsetValue && Equals(convertedValue, value))
+                        {
                             return mapping;
+                        }
+
                         continue;
                     }
 
                     if (Equals(value, convertedComparand))
+                    {
                         return mapping;
+                    }
                 }
             }
 
@@ -318,8 +343,8 @@ namespace Supremacy.Client.Data
         [ConstructorArgument("from")]
         public object From
         {
-            get { return GetValue(FromProperty); }
-            set { SetValue(FromProperty, value); }
+            get => GetValue(FromProperty);
+            set => SetValue(FromProperty, value);
         }
 
         /// <summary>
@@ -328,8 +353,8 @@ namespace Supremacy.Client.Data
         [ConstructorArgument("to")]
         public object To
         {
-            get { return GetValue(ToProperty); }
-            set { SetValue(ToProperty, value); }
+            get => GetValue(ToProperty);
+            set => SetValue(ToProperty, value);
         }
 
         /// <summary>
@@ -359,7 +384,7 @@ namespace Supremacy.Client.Data
     public enum FallbackBehavior
     {
         /// <summary>
-        /// Specifies that <see cref="System.Windows.DependencyProperty.UnsetValue"/> should be returned when falling back.
+        /// Specifies that <see cref="DependencyProperty.UnsetValue"/> should be returned when falling back.
         /// </summary>
         ReturnUnsetValue,
         /// <summary>

@@ -52,9 +52,15 @@ namespace Supremacy.Orbitals
         public override bool Match(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
+
             if (obj is NonCombatantAttribute)
+            {
                 return true;
+            }
+
             return false;
         }
     }

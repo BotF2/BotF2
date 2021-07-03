@@ -174,7 +174,9 @@ namespace Supremacy.Client.Dialogs
                     BindingFlags.Static | BindingFlags.NonPublic);
 
                 if (windowDialogCancelCommandField == null)
+                {
                     return null;
+                }
 
                 return windowDialogCancelCommandField.GetValue(null) as RoutedCommand;
             }
@@ -191,16 +193,18 @@ namespace Supremacy.Client.Dialogs
             if (!Designer.IsInDesignMode)
             {
                 if (_rootRegionManager == null)
+                {
                     _rootRegionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+                }
             }
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     SetDialogResultCommand,
                     (s, a) => DialogResult = (bool?)new NullableBoolConverter().ConvertFrom(a.Parameter),
                     (s, a) => a.CanExecute = _showingAsDialog));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GetDialogCancelCommand(),
                     Key.Escape,
@@ -227,19 +231,23 @@ namespace Supremacy.Client.Dialogs
         private static void OnAccessKeyPressed(object sender, AccessKeyPressedEventArgs e)
         {
             if (e.Handled || (e.Scope != null))
+            {
                 return;
+            }
 
             Dialog dialog = sender as Dialog;
 
             if (dialog == null)
             {
-                DependencyObject senderElement = sender as DependencyObject;
-                if (senderElement != null)
+                if (sender is DependencyObject senderElement)
                 {
                     Dialog target = _rootRegionManager.Regions[ClientRegions.ModalDialogs].ActiveViews.OfType<Dialog>().FirstOrDefault()
                                  ?? _rootRegionManager.Regions[ClientRegions.ModelessDialogs].ActiveViews.OfType<Dialog>().FirstOrDefault();
                     if (target == null)
+                    {
                         return;
+                    }
+
                     dialog = senderElement.FindVisualAncestorByType<Dialog>();
                     if ((dialog == null) || (dialog != target))
                     {
@@ -255,7 +263,9 @@ namespace Supremacy.Client.Dialogs
             }
 
             if ((dialog == null) || dialog.IsActive)
+            {
                 return;
+            }
 
             e.Scope = dialog;
             e.Handled = true;
@@ -266,7 +276,7 @@ namespace Supremacy.Client.Dialogs
         {
             if (e.NewFocus == this)
             {
-                MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                _ = MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                 e.Handled = true;
             }
             base.OnGotKeyboardFocus(e);
@@ -287,8 +297,7 @@ namespace Supremacy.Client.Dialogs
                 return;
             }
 
-            DependencyObject newFocus = e.NewFocus as DependencyObject;
-            if (newFocus != null)
+            if (e.NewFocus is DependencyObject newFocus)
             {
                 if (newFocus == this ||
                     newFocus.IsVisualDescendantOf(this) ||
@@ -325,18 +334,18 @@ namespace Supremacy.Client.Dialogs
 
             e.Handled = true;
 
-            UIElement oldFocus = e.OldFocus as UIElement;
-            if ((oldFocus != null) && oldFocus.IsVisualDescendantOf(this) && oldFocus.IsVisible)
+            if ((e.OldFocus is UIElement oldFocus) && oldFocus.IsVisualDescendantOf(this) && oldFocus.IsVisible)
             {
-                Keyboard.Focus(e.OldFocus);
+                _ = Keyboard.Focus(e.OldFocus);
             }
             else
             {
-                Keyboard.Focus(this);
+                _ = Keyboard.Focus(this);
 
-                IInputElement firstFocusableDescendant = this.FindFirstFocusableDescendant(false) as IInputElement;
-                if (firstFocusableDescendant != null)
-                    Keyboard.Focus(firstFocusableDescendant);
+                if (this.FindFirstFocusableDescendant(false) is IInputElement firstFocusableDescendant)
+                {
+                    _ = Keyboard.Focus(firstFocusableDescendant);
+                }
             }
         }
 
@@ -350,8 +359,8 @@ namespace Supremacy.Client.Dialogs
 
         public string Header
         {
-            get { return (string)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get => (string)GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
         }
         #endregion
 
@@ -365,8 +374,8 @@ namespace Supremacy.Client.Dialogs
 
         public string SubHeader
         {
-            get { return (string)GetValue(SubHeaderProperty); }
-            set { SetValue(SubHeaderProperty, value); }
+            get => (string)GetValue(SubHeaderProperty);
+            set => SetValue(SubHeaderProperty, value);
         }
         #endregion
 
@@ -380,33 +389,44 @@ namespace Supremacy.Client.Dialogs
 
         public bool ShowActivated
         {
-            get { return (bool)GetValue(ShowActivatedProperty); }
-            set { SetValue(ShowActivatedProperty, value); }
+            get => (bool)GetValue(ShowActivatedProperty);
+            set => SetValue(ShowActivatedProperty, value);
         }
 
         public void Activate()
         {
             if (!IsOpen)
+            {
                 throw new InvalidOperationException("Cannot activate a dialog that has not been shown.");
+            }
+
             ActivateInternal();
         }
 
         private void ActivateInternal()
         {
             if (IsActive)
+            {
                 return;
+            }
+
             DialogRegion.Activate(this);
         }
 
         public void Show()
         {
             if (_showingAsDialog)
+            {
                 throw new InvalidOperationException("Cannot call Show() on a dialog that was opened with ShowDialog().");
+            }
 
             if (IsOpen)
             {
                 if (ShowActivated)
+                {
                     ActivateInternal();
+                }
+
                 return;
             }
             ShowInternal();
@@ -415,9 +435,13 @@ namespace Supremacy.Client.Dialogs
         private void OnDialogCancelCommand()
         {
             if (_showingAsDialog)
+            {
                 DialogResult = false;
+            }
             else
+            {
                 Close();
+            }
         }
 
         protected DialogManager ParentDialogManager => ItemsControl.ItemsControlFromItemContainer(this) as DialogManager;
@@ -425,13 +449,17 @@ namespace Supremacy.Client.Dialogs
         internal bool SetFocus()
         {
             if (_settingFocus)
+            {
                 return false;
+            }
 
             if (!IsModal && _rootRegionManager.Regions[ClientRegions.ModalDialogs].ActiveViews.Any())
+            {
                 return false;
+            }
 
             Dialog focusedElement = Keyboard.FocusedElement as Dialog;
-            bool setFocusOnContent = ((focusedElement == this) || (focusedElement == null)) ||
+            bool setFocusOnContent = (focusedElement == this) || (focusedElement == null) ||
                                     (focusedElement.ParentDialogManager != ParentDialogManager);
 
             _settingFocus = true;
@@ -439,8 +467,8 @@ namespace Supremacy.Client.Dialogs
 
             try
             {
-                Keyboard.Focus(this);
-                return (Focus() || setFocusOnContent);
+                _ = Keyboard.Focus(this);
+                return Focus() || setFocusOnContent;
             }
             finally
             {
@@ -463,10 +491,14 @@ namespace Supremacy.Client.Dialogs
             base.OnPreviewGotKeyboardFocus(e);
 
             if (_isFocusActivating)
+            {
                 return;
+            }
 
-            if ((e.Handled || (e.NewFocus != this)) || (IsActive || (ParentDialogManager == null)))
+            if (e.Handled || (e.NewFocus != this) || IsActive || (ParentDialogManager == null))
+            {
                 return;
+            }
 
             _isFocusActivating = true;
 
@@ -526,7 +558,9 @@ namespace Supremacy.Client.Dialogs
             finally
             {
                 if (Mouse.Captured == this)
-                    Mouse.Capture(null);
+                {
+                    _ = Mouse.Capture(null);
+                }
 
                 _showingAsDialog = false;
             }
@@ -537,7 +571,9 @@ namespace Supremacy.Client.Dialogs
         private void DoShowDialog()
         {
             if (!_showingAsDialog)
+            {
                 return;
+            }
 
             try
             {
@@ -568,23 +604,32 @@ namespace Supremacy.Client.Dialogs
             IsOpen = true;
 
             if (_showingAsDialog)
+            {
                 return;
+            }
 
             if (ShowActivated)
+            {
                 ActivateInternal();
+            }
         }
 
         public void Close()
         {
             if (!IsOpen)
+            {
                 return;
+            }
+
             CloseInternal(true);
         }
 
         private void CloseInternal(bool raiseCloseEvents)
         {
             if (!IsOpen || _isClosing)
+            {
                 return;
+            }
 
             _isClosing = true;
 
@@ -597,7 +642,9 @@ namespace Supremacy.Client.Dialogs
             try
             {
                 if (_showingAsDialog)
+                {
                     DoHideDialog();
+                }
             }
             catch (Exception e)
             {
@@ -626,7 +673,9 @@ namespace Supremacy.Client.Dialogs
             _isClosing = false;
 
             if (raiseCloseEvents)
+            {
                 OnClosed();
+            }
         }
 
         public event CancelRoutedEventHandler Closing
@@ -663,7 +712,9 @@ namespace Supremacy.Client.Dialogs
             }
 
             if (!_dialogResult.HasValue)
+            {
                 _dialogResult = false;
+            }
 
             _showingAsDialog = false;
         }
@@ -679,8 +730,8 @@ namespace Supremacy.Client.Dialogs
 
         public bool IsModal
         {
-            get { return (bool)GetValue(IsModalProperty); }
-            set { SetValue(IsModalProperty, value); }
+            get => (bool)GetValue(IsModalProperty);
+            set => SetValue(IsModalProperty, value);
         }
         #endregion
 
@@ -696,8 +747,8 @@ namespace Supremacy.Client.Dialogs
 
         public bool IsOpen
         {
-            get { return (bool)GetValue(IsOpenProperty); }
-            protected set { SetValue(IsOpenPropertyKey, value); }
+            get => (bool)GetValue(IsOpenProperty);
+            protected set => SetValue(IsOpenPropertyKey, value);
         }
         #endregion
 
@@ -713,23 +764,27 @@ namespace Supremacy.Client.Dialogs
 
         private static void OnIsActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Dialog dialog = d as Dialog;
-
-            if (dialog == null)
+            if (!(d is Dialog dialog))
+            {
                 return;
+            }
 
             if ((bool)e.NewValue)
+            {
                 dialog.RaiseEvent(new RoutedEventArgs(ActivatedEvent, dialog));
+            }
             else
+            {
                 dialog.RaiseEvent(new RoutedEventArgs(DeactivatedEvent, dialog));
+            }
         }
 
         public static readonly DependencyProperty IsActiveProperty = IsActivePropertyKey.DependencyProperty;
 
         public bool IsActive
         {
-            get { return (bool)GetValue(IsActiveProperty); }
-            protected internal set { SetValue(IsActivePropertyKey, value); }
+            get => (bool)GetValue(IsActiveProperty);
+            protected internal set => SetValue(IsActivePropertyKey, value);
         }
         #endregion
 
@@ -743,8 +798,8 @@ namespace Supremacy.Client.Dialogs
 
         public bool HasBorder
         {
-            get { return (bool)GetValue(HasBorderProperty); }
-            set { SetValue(HasBorderProperty, value); }
+            get => (bool)GetValue(HasBorderProperty);
+            set => SetValue(HasBorderProperty, value);
         }
         #endregion
 
@@ -758,24 +813,32 @@ namespace Supremacy.Client.Dialogs
 
         public bool AllowCancel
         {
-            get { return (bool)GetValue(AllowCancelProperty); }
-            set { SetValue(AllowCancelProperty, value); }
+            get => (bool)GetValue(AllowCancelProperty);
+            set => SetValue(AllowCancelProperty, value);
         }
         #endregion
 
         #region DialogResult (Property)
         public bool? DialogResult
         {
-            get { return _dialogResult; }
+            get => _dialogResult;
             set
             {
                 if (!_showingAsDialog)
+                {
                     throw new InvalidOperationException("DialogResult can only be set when the dialog is shown with ShowDialog().");
+                }
+
                 if (_dialogResult == value)
+                {
                     return;
+                }
+
                 _dialogResult = value;
                 if (!_isClosing)
+                {
                     Close();
+                }
             }
         }
         #endregion
@@ -784,11 +847,15 @@ namespace Supremacy.Client.Dialogs
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
             if (!IsOpen)
+            {
                 return true;
+            }
 
             IRegion dialogRegion = DialogRegion;
             if (dialogRegion == null)
+            {
                 return true;
+            }
 
             IsActive = dialogRegion.ActiveViews.Contains(this);
             return true;

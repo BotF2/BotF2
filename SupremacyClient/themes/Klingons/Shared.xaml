@@ -47,40 +47,46 @@
     <!-- <Style TargetType="{x:Type TabItem}"      >> TabItemStyle (Production and more, but only Header line)   -->
 
     <!--Usage: {StaticResource HeaderTextBrush}-->
-    <!--<SolidColorBrush Color="#ffF00D0D" x:Key="WhiteHeaderBrush" />-->
-    <!--<SolidColorBrush Color="#ffdc961b" x:Key="WhiteHeaderBrush" />-->
     <SolidColorBrush Color="#ffd03112" x:Key="HeaderTextBrush" />
     <SolidColorBrush Color="#FFFB6B1F" x:Key="DefaultTextBrush" />
-    <!--<SolidColorBrush Color="#ffe7d490" x:Key="DefaultTextBrush" />-->
     <SolidColorBrush Color="#ff999999" x:Key="DisabledTextBrush" />
     <SolidColorBrush Color="#7fc91314" x:Key="SelectionBrush" />
-    <!--<SolidColorBrush Color="#FFf4a460" x:Key="BorderBrush" />-->
-    <!--<SolidColorBrush Color="#FFffa540" x:Key="ButtonBackgroundBrush" />  doesn't work-->
     <SolidColorBrush Color="#ffdfdfff" x:Key="WhiteHeaderBrush"/>
-    <!--<SolidColorBrush Color="#ffF00D0D" x:Key="WhiteHeaderBrush" />-->
-    <!--<SolidColorBrush Color="#ffdc961b" x:Key="WhiteHeaderBrush" />-->
-
     <SolidColorBrush Color="#ffe7d490" x:Key="ParagraphBrush" />
     <SolidColorBrush Color="#FFFB6B1F" x:Key="WarningBrush" />
-    <!--<SolidColorBrush Color="#ff999999" x:Key="LCARS_DisabledTextBrush" />-->
     <SolidColorBrush Color="#ffe7d490" x:Key="BeigeTextBrush" />
 
     <SolidColorBrush Color="#ffe3242b" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}" />
     <SolidColorBrush Color="#FFFB6B1F" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}" />
-    <!--<SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}" />-->
-    <SolidColorBrush Color="#ffF00D0D" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}" />
+    <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}" />
     <SolidColorBrush Color="#fff62424" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}" />
     <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}" />
     <SolidColorBrush Color="#ff000000" x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}" />
     <SolidColorBrush Color="#ffd22424" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}" />
     <SolidColorBrush Color="#FFFB6B1F" x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}" />
-    <!--<SolidColorBrush Color="#ffd03112" x:Key="{x:Static scc:ClientResources.ButtonBackground}" /> RED doesn't work-->
     
     <!--unused-->
-    <!--<SolidColorBrush Color="#FF075e2b" x:Key="{x:Static scc:ClientResources.ButtonBackground}" /> doesn't work-->
-    <!--<SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.ButtonBackground}" /> doesn't work-->
-    <!--<SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.ButtonBackground}" /> doesn't work-->
-    
+    <SolidColorBrush Color="#ffd03112" x:Key="un_used_1" />
+    <SolidColorBrush Color="#ffe7d490" x:Key="un_used_2" />
+    <SolidColorBrush Color="#ff999999" x:Key="un_used_3" />
+    <SolidColorBrush Color="#ffdc961b" x:Key="un_used_4" />
+    <SolidColorBrush Color="#ffF00D0D" x:Key="un_used_5" />
+    <SolidColorBrush Color="#FFffa540" x:Key="un_used_6" />
+    <SolidColorBrush Color="#FFf4a460" x:Key="un_used_7" />
+    <SolidColorBrush Color="#ffe7d490" x:Key="un_used_8" />
+    <SolidColorBrush Color="#ffF00D0D" x:Key="un_used_9" />
+    <SolidColorBrush Color="#ffdc961b" x:Key="un_used_10" />
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_11" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_12" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_13" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_14" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_15" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_16" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_17" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_18" />-->
+    <!--<SolidColorBrush Color="#ff000000" x:Key="un_used_19" />-->
+
+
 
     <!--LinearGradientBrush-->
 

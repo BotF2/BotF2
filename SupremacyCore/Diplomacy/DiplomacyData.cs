@@ -10,7 +10,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using System.Security.Policy;
 using System.Threading;
 using Supremacy.Annotations;
 using Supremacy.Collections;
@@ -66,7 +65,7 @@ namespace Supremacy.Diplomacy
         private int _lastStatusChange;
         private ForeignPowerStatus _diplomacyStatus;
 
-        protected static TableMap DiplomacyTables => GameContext.Current.Tables.DiplomacyTables;
+        //protected static TableMap GameOptionTables => GameContext.Current.Tables.GameOptionTables;
 
         public DiplomacyData(int ownerId, int counterpartyId)
         {
@@ -102,14 +101,14 @@ namespace Supremacy.Diplomacy
 
         public int ContactTurn
         {
-            get { return _contactTurn; }
-            internal set { _contactTurn = value; }
+            get => _contactTurn;
+            internal set => _contactTurn = value;
         }
 
         public bool FirstDiplomaticAction
         {
-            get { return _firstDiplomaticAction; }
-            set { _firstDiplomaticAction = value; }
+            get => _firstDiplomaticAction;
+            set => _firstDiplomaticAction = value;
         }
 
         public int ContactDuration
@@ -117,21 +116,24 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_contactTurn == 0)
+                {
                     return -1;
+                }
+
                 return GameContext.Current.TurnNumber - _contactTurn;
             }
         }
 
         public ForeignPowerStatus Status
         {
-            get { return _diplomacyStatus; }
-            internal set { _diplomacyStatus = value; }
+            get => _diplomacyStatus;
+            internal set => _diplomacyStatus = value;
         }
 
         public int LastStatusChange
         {
-            get { return _lastStatusChange; }
-            internal set { _lastStatusChange = value; }
+            get => _lastStatusChange;
+            internal set => _lastStatusChange = value;
         }
 
         public int TurnsSinceLastStatusChange
@@ -139,7 +141,10 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (Status == ForeignPowerStatus.NoContact)
+                {
                     return 0;
+                }
+
                 return GameContext.Current.TurnNumber - LastStatusChange;
             }
         }
@@ -158,16 +163,20 @@ namespace Supremacy.Diplomacy
         public static RegardLevel CalculateRegardLevel(int regard)
         {
             RegardLevel regardLevel = RegardLevel.Detested;
-            Table regardLevelsTable = DiplomacyTables["RegardLevels"];
+            Table regardLevelsTable = GameContext.Current.Tables.GameOptionTables["RegardLevels"];
 
             foreach (RegardLevel enumValue in EnumHelper.GetValues<RegardLevel>())
             {
                 int? lowerBound = (int?)regardLevelsTable.GetValue(enumValue.ToString(), 0);
                 if (lowerBound == null)
+                {
                     continue;
+                }
 
                 if (regard >= lowerBound && enumValue > regardLevel)
+                {
                     regardLevel = enumValue;
+                }
             }
 
             return regardLevel;
@@ -176,7 +185,9 @@ namespace Supremacy.Diplomacy
         public void UpdateFrom([NotNull] IDiplomacyData diplomacyData)
         {
             if (diplomacyData == null)
+            {
                 throw new ArgumentNullException("diplomacyData");
+            }
 
             _regard.SetValues(diplomacyData.Regard);
             _trust.SetValues(diplomacyData.Trust);
@@ -196,7 +207,9 @@ namespace Supremacy.Diplomacy
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -207,7 +220,9 @@ namespace Supremacy.Diplomacy
                     PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

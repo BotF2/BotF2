@@ -79,11 +79,11 @@ namespace Supremacy.Client
                     {
                         if (commaSeparated)
                         {
-                            sb.Append(", ");
+                            _ = sb.Append(", ");
                         }
                         else
                         {
-                            sb.Append("\n");
+                            _ = sb.Append("\n");
                         }
                     }
                     _ = sb.Append(BonusDescriptions.GetDescription(bonuses[i]));
@@ -173,11 +173,11 @@ namespace Supremacy.Client
                 {
                     if (commaSeparated)
                     {
-                        sb.Append(", ");
+                        _ = sb.Append(", ");
                     }
                     else
                     {
-                        sb.Append("\n");
+                        _ = sb.Append("\n");
                     }
                 }
 

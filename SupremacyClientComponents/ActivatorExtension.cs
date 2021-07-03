@@ -31,8 +31,8 @@ namespace Supremacy.Client
         /// <value>The property name.</value>
         public string Name
         {
-            get { return (string)GetValue(NameProperty); }
-            set { SetValue(NameProperty, value); }
+            get => (string)GetValue(NameProperty);
+            set => SetValue(NameProperty, value);
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace Supremacy.Client
         /// <value>The property value.</value>
         public object Value
         {
-            get { return GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Supremacy.Client
         [ConstructorArgument("typeName")]
         public string TypeName
         {
-            get { return _typeName; }
+            get => _typeName;
             set
             {
                 NotNull(value);
@@ -138,7 +138,7 @@ namespace Supremacy.Client
         private Type _type;
         public Type Type
         {
-            get { return _type; }
+            get => _type;
             set
             {
                 NotNull(value);
@@ -154,29 +154,29 @@ namespace Supremacy.Client
         [ConstructorArgument("typeArgument1")]
         public Type TypeArgument1
         {
-            get { return GetTypeArgument(0); }
-            set { SetTypeArgument(0, value); }
+            get => GetTypeArgument(0);
+            set => SetTypeArgument(0, value);
         }
 
         [ConstructorArgument("typeArgument2")]
         public Type TypeArgument2
         {
-            get { return GetTypeArgument(1); }
-            set { SetTypeArgument(1, value); }
+            get => GetTypeArgument(1);
+            set => SetTypeArgument(1, value);
         }
 
         [ConstructorArgument("typeArgument3")]
         public Type TypeArgument3
         {
-            get { return GetTypeArgument(2); }
-            set { SetTypeArgument(2, value); }
+            get => GetTypeArgument(2);
+            set => SetTypeArgument(2, value);
         }
 
         [ConstructorArgument("typeArgument4")]
         public Type TypeArgument4
         {
-            get { return GetTypeArgument(3); }
-            set { SetTypeArgument(3, value); }
+            get => GetTypeArgument(3);
+            set => SetTypeArgument(3, value);
         }
 
         #endregion
@@ -233,8 +233,7 @@ namespace Supremacy.Client
                 if (type == null)
                 {
                     // resolve using type name
-                    IXamlTypeResolver typeResolver = serviceProvider.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
-                    if (typeResolver == null)
+                    if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is IXamlTypeResolver typeResolver))
                     {
                         throw new InvalidOperationException("Cannot retrieve IXamlTypeResolver.");
                     }
@@ -331,8 +330,8 @@ namespace Supremacy.Client
         [ConstructorArgument("type")]
         public Type Type
         {
-            get { return _type; }
-            set { _type = value; }
+            get => _type;
+            set => _type = value;
         }
 
         private readonly List<ActivatorSetter> _propertyValues;
@@ -376,7 +375,7 @@ namespace Supremacy.Client
                     if (dpDescriptor != null && binding != null)
                     {
                         BindingOperations.ClearBinding(propertyValue, ActivatorSetter.ValueProperty);
-                        BindingOperations.SetBinding(
+                        _ = BindingOperations.SetBinding(
                             (DependencyObject)value, dpDescriptor.DependencyProperty, binding);
                     }
                     else if (propertyValue.Value != null)

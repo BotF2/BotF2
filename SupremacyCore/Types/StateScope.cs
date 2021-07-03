@@ -158,7 +158,7 @@ namespace Supremacy.Types
                 bool wasWithin = IsWithin;
                 if (_children.Contains(child))
                 {
-                    _children.Remove(child);
+                    _ = _children.Remove(child);
                 }
                 if (wasWithin != IsWithin && _callback != null)
                 {

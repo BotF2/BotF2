@@ -14,7 +14,9 @@ namespace Supremacy.Markup
         {
             string designKey = DesignKey;
             if (designKey == null)
+            {
                 throw new InvalidOperationException("DesignKey must be set.");
+            }
 
             return new TechObjectTextGroupKey(designKey);
         }

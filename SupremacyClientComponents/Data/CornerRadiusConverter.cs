@@ -17,11 +17,15 @@ namespace Supremacy.Client.Data
         {
             double? doubleValue = value as double?;
             if (doubleValue.HasValue)
+            {
                 value = new CornerRadius(doubleValue.Value);
+            }
 
             CornerRadius? cornerRadius = value as CornerRadius?;
             if (!cornerRadius.HasValue)
+            {
                 return base.Convert(value, targetType, parameter, culture);
+            }
 
             return new CornerRadius
             {

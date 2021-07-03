@@ -28,7 +28,7 @@ namespace Supremacy.Client
         #region Field
         ISoundPlayer _soundPlayer = null;
 
-        Boolean _startAudio = false;
+        bool _startAudio = false;
         #endregion
 
         #region Constructors and Finalizers
@@ -53,7 +53,7 @@ namespace Supremacy.Client
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
 
@@ -117,7 +117,7 @@ namespace Supremacy.Client
                     case "Federation":
                         if (Options.FederationPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(
+                            _ = MessageDialog.Show(
                                 ResourceManager.GetString("CIV_1_NOT_IN GAME"),
                                 MessageDialogButtons.Ok);
                             return;
@@ -126,7 +126,7 @@ namespace Supremacy.Client
                     case "Terran Empire":
                         if (Options.TerranEmpirePlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(
+                            _ = MessageDialog.Show(
                                 ResourceManager.GetString("CIV_2_NOT_IN GAME"),
                                 MessageDialogButtons.Ok);
                             return;
@@ -135,7 +135,7 @@ namespace Supremacy.Client
                     case "Romulans":
                         if (Options.RomulanPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(
+                            _ = MessageDialog.Show(
                                 ResourceManager.GetString("CIV_3_NOT_IN GAME"),
                                 MessageDialogButtons.Ok);
                             return;
@@ -144,7 +144,7 @@ namespace Supremacy.Client
                     case "Klingons":
                         if (Options.KlingonPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(
+                            _ = MessageDialog.Show(
                                 ResourceManager.GetString("CIV_4_NOT_IN GAME"),
                                 MessageDialogButtons.Ok);
                             return;
@@ -153,7 +153,7 @@ namespace Supremacy.Client
                     case "Cardassians":
                         if (Options.CardassianPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(
+                            _ = MessageDialog.Show(
                                 ResourceManager.GetString("CIV_5_NOT_IN GAME"),
                                 MessageDialogButtons.Ok);
                             return;
@@ -162,7 +162,7 @@ namespace Supremacy.Client
                     case "Dominion":
                         if (Options.DominionPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(
+                            _ = MessageDialog.Show(
                                 ResourceManager.GetString("CIV_6_NOT_IN GAME"),
                                 MessageDialogButtons.Ok);
                             return;
@@ -171,7 +171,7 @@ namespace Supremacy.Client
                     case "Borg":
                         if (Options.BorgPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(
+                            _ = MessageDialog.Show(
                                 ResourceManager.GetString("CIV_7_NOT_IN GAME"),
                                 MessageDialogButtons.Ok);
                             return;
@@ -181,7 +181,7 @@ namespace Supremacy.Client
             }
 
             _soundPlayer.Play("Menu", "LoadingGame");
-            GameOptionsManager.SaveDefaults(OptionsPanel.Options);
+            _ = GameOptionsManager.SaveDefaults(OptionsPanel.Options);
             DialogResult = true;
         }
 

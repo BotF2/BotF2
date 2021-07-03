@@ -26,7 +26,7 @@ namespace Supremacy.Network
 
         public static IPHostEntry Resolve(string host)
         {
-            if ((cache.ContainsKey(host))
+            if (cache.ContainsKey(host)
                 && (cache[host].Item1 != null)
                 && ((DateTime.Now - cache[host].Item2) <= CacheTimeout))
             {
@@ -50,7 +50,9 @@ namespace Supremacy.Network
                     cache[host] = new Tuple<IPHostEntry, DateTime>(
                         hostEntry, DateTime.Now);
                     if (hostEntry != null)
+                    {
                         cache[hostEntry.HostName] = cache[host];
+                    }
                 }
 
                 if ((hostEntry != null) && (hostEntry.AddressList.Length > 0))

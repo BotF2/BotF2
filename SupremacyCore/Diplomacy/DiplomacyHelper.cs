@@ -9,7 +9,6 @@
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
-using Supremacy.Combat;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -20,12 +19,6 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Media;
-using System.Runtime.CompilerServices;
-using System.Web.Services.Description;
-using System.Windows;
-using System.Windows.Navigation;
-using System.Xaml.Schema;
 
 namespace Supremacy.Diplomacy
 {
@@ -39,25 +32,27 @@ namespace Supremacy.Diplomacy
 
         public static Civilization DiploScreenSelectedForeignPower
         {
-            get
-            {
-                return _diploScreenSelectedForeignPower;
-            }
-            set
-            {
-                _diploScreenSelectedForeignPower = value;
-            }
+            get => _diploScreenSelectedForeignPower;
+            set => _diploScreenSelectedForeignPower = value;
         }
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
+            }
+
             if (counterparty == null)
+            {
                 throw new ArgumentNullException("counterparty");
+            }
 
             if (owner.CivID == counterparty.CivID)
+            {
                 return ForeignPowerStatus.NoContact;
+            }
+
             _regardEvents = new CollectionBase<RegardEvent>();
             return GameContext.Current.DiplomacyData[owner.CivID, counterparty.CivID].Status;
         }
@@ -65,27 +60,38 @@ namespace Supremacy.Diplomacy
         public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             int civId = civ.CivID;
 
             foreach (Diplomat diplomat in GameContext.Current.Diplomats)
             {
                 if (diplomat.OwnerID == civId)
+                {
                     continue;
+                }
 
                 ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                 if (foreignPower != null)
-                    foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                {
+                    _ = foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                }
             }
         }
 
         public static void ApplyTrustChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int trustDelta)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
+
             if (otherPower == null)
+            {
                 throw new ArgumentNullException("otherPower");
+            }
 
             Diplomat diplomat = Diplomat.Get(otherPower);
             ForeignPower foreignPower = diplomat.GetForeignPower(civ);
@@ -102,7 +108,7 @@ namespace Supremacy.Diplomacy
 
             if (foreignPower != null)
             {
-                foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                _ = foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
                 foreignPower.DiplomacyData.Trust.UpdateAndReset();
                 foreignPower.UpdateRegardAndTrustMeters();
             }
@@ -118,9 +124,14 @@ namespace Supremacy.Diplomacy
         public static void ApplyRegardChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int regardDelta)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
+
             if (otherPower == null)
+            {
                 throw new ArgumentNullException("otherPower");
+            }
 
             Diplomat diplomat = Diplomat.Get(otherPower);
             ForeignPower foreignPower = diplomat.GetForeignPower(civ);
@@ -130,7 +141,7 @@ namespace Supremacy.Diplomacy
 
             if (foreignPower != null)
             {
-                foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
+                _ = foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
                 foreignPower.DiplomacyData.Regard.UpdateAndReset();
                 foreignPower.UpdateRegardAndTrustMeters();
 
@@ -146,7 +157,9 @@ namespace Supremacy.Diplomacy
 
                 // Regard events with a fixed duration do not decay.
                 if (regardEvent.Duration > 0)
+                {
                     continue;
+                }
 
                 int regard = regardEvent.Regard;
                 if (regard == 0)
@@ -156,28 +169,42 @@ namespace Supremacy.Diplomacy
                 }
 
                 if (!regardEvent.Type.GetCategories().HasFlag(category))
+                {
                     continue;
+                }
 
                 if (regard > 0)
+                {
                     regard = Math.Max(0, (int)(regard * decay.Positive));
+                }
                 else
+                {
                     regard = Math.Min(0, (int)(regard * decay.Negative));
+                }
 
                 if (regard == 0)
+                {
                     _regardEvents.RemoveAt(i--);
+                }
                 else
+                {
                     regardEvent.Regard = regard;
+                }
             }
         }
 
         public static Colony GetSeatOfGovernment([NotNull] Civilization who)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
 
             Diplomat diplomat = GameContext.Current.Diplomats[who.CivID];
             if (diplomat == null)
+            {
                 return null;
+            }
 
             return diplomat.SeatOfGovernment;
         }
@@ -186,9 +213,14 @@ namespace Supremacy.Diplomacy
         {
             GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration...");
             if (declaringCiv == null)
+            {
                 throw new ArgumentNullException("declaringCiv");
+            }
+
             if (targetCiv == null)
+            {
                 throw new ArgumentNullException("targetCiv");
+            }
 
             if (declaringCiv == targetCiv)
             {
@@ -226,8 +258,8 @@ namespace Supremacy.Diplomacy
             string otherCivID = statementAsString.Substring(1, 1);
             string aCivID = statementAsString.Substring(2, 1);
             string trueFalse = statementAsString.Substring(0, 1);
-            int aCivint = Int32.Parse(aCivID);
-            int otherCivint = Int32.Parse(otherCivID);
+            int aCivint = int.Parse(aCivID);
+            int otherCivint = int.Parse(otherCivID);
             Civilization aCiv = GameContext.Current.Civilizations[aCivint];
             Civilization otherCiv = GameContext.Current.Civilizations[otherCivint];
             Diplomat diplomat = Diplomat.Get(aCiv);
@@ -242,7 +274,7 @@ namespace Supremacy.Diplomacy
             {
                 if (foreignPower.CounterpartyForeignPower.LastProposalSent != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                 {
-                    AcceptProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
+                    _ = AcceptProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
                     CivilizationManagerMap civManagers = GameContext.Current.CivilizationManagers;
                     Civilization civ1 = foreignPower.CounterpartyForeignPower.Owner;
                     Civilization civ2 = foreignPower.Owner;
@@ -279,16 +311,25 @@ namespace Supremacy.Diplomacy
         public static void AcceptingRejecting([NotNull] ICivIdentity civ) // frind entry in dictionary and send as foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal; or Reject
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
+
             Civilization aCiv = (Civilization)civ;
             Diplomat diplomat = Diplomat.Get(civ);
 
             foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (aCiv == otherCiv)
+                {
                     continue;
+                }
+
                 if (!otherCiv.IsEmpire)
+                {
                     continue;
+                }
+
                 ForeignPower foreignPower = diplomat.GetForeignPower(otherCiv);
 
                 bool accepting = false;
@@ -359,7 +400,9 @@ namespace Supremacy.Diplomacy
         {
             string TrueFalse = "F";
             if (accepting == true)
+            {
                 TrueFalse = "T";
+            }
 
             string nameOfStatementType = TrueFalse + sender.CivID.ToString() + localPlayerCiv.CivID.ToString();
             switch (nameOfStatementType)
@@ -709,7 +752,7 @@ namespace Supremacy.Diplomacy
 
             if (_acceptRejectDictionary.ContainsKey(foreignPowerID))
             {
-                _acceptRejectDictionary.Remove(foreignPowerID);
+                _ = _acceptRejectDictionary.Remove(foreignPowerID);
                 _acceptRejectDictionary.Add(foreignPowerID, accepted);
             }
             else { _acceptRejectDictionary.Add(foreignPowerID, accepted); }
@@ -726,7 +769,7 @@ namespace Supremacy.Diplomacy
 
             if (_acceptRejectDictionary.ContainsKey(civIDs))
             {
-                _acceptRejectDictionary.Remove(civIDs);
+                _ = _acceptRejectDictionary.Remove(civIDs);
                 _acceptRejectDictionary.Add(civIDs, accepted);
             }
             else { _acceptRejectDictionary.Add(civIDs, accepted); }
@@ -740,7 +783,9 @@ namespace Supremacy.Diplomacy
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {
             if (agreement == null)
+            {
                 throw new ArgumentNullException("agreement");
+            }
 
             BreakAgreementVisitor.BreakAgreement(agreement);
         }
@@ -748,7 +793,9 @@ namespace Supremacy.Diplomacy
         public static IList<Civilization> GetAllies([NotNull] Civilization who)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
 
             return (from whoElse in GameContext.Current.Civilizations
                     where GameContext.Current.AgreementMatrix.IsAgreementActive(who, whoElse, ClauseType.TreatyDefensiveAlliance) ||
@@ -759,10 +806,14 @@ namespace Supremacy.Diplomacy
         public static IList<Civilization> GetMemberCivilizations([NotNull] Civilization who)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
 
             if (!who.IsEmpire)
+            {
                 return EmptyCivilizations;
+            }
 
             return (from whoElse in GameContext.Current.Civilizations
                     where GameContext.Current.AgreementMatrix.IsAgreementActive(who, whoElse, ClauseType.TreatyMembership)
@@ -776,7 +827,9 @@ namespace Supremacy.Diplomacy
         public static IList<Civilization> GetCivilizationsHavingContact([NotNull] Civilization who)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
 
             return (from whoElse in GameContext.Current.Civilizations
                     where whoElse != who
@@ -791,14 +844,18 @@ namespace Supremacy.Diplomacy
         public static Civilization GetWorstEnemy([NotNull] Civilization who)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
 
             int civId = GameContext.Current.DiplomacyData.GetValuesForOwner(who)
                 .MinElement(o => o.Regard.CurrentValue)
                 .CounterpartyID;
 
             if (civId != -1)
+            {
                 return GameContext.Current.Civilizations[civId];
+            }
 
             return null;
         }
@@ -806,16 +863,25 @@ namespace Supremacy.Diplomacy
         public static bool IsSafeTravelGuaranteed(Civilization traveller, Sector sector)
         {
             if (traveller == null)
+            {
                 throw new ArgumentNullException("traveller");
+            }
+
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
 
             Civilization sectorOwner = sector.Owner;
             if (sectorOwner == null)
+            {
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
+            }
 
             if (sectorOwner == null || sectorOwner == traveller)
+            {
                 return true;
+            }
 
             IDiplomacyData diplomacydata = GameContext.Current.DiplomacyData[traveller, sectorOwner];
 
@@ -853,11 +919,15 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("traveller");
             }
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
 
             Civilization sectorOwner = sector.Owner;
             if (sectorOwner == null)
+            {
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
+            }
 
             //GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
@@ -873,9 +943,14 @@ namespace Supremacy.Diplomacy
         public static bool AreAllied(Civilization who, Civilization whoElse)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
+
             if (whoElse == null)
+            {
                 throw new ArgumentNullException("whoElse");
+            }
 
             return GameContext.Current.AgreementMatrix.IsAgreementActive(who, whoElse, ClauseType.TreatyFullAlliance) ||
                    GameContext.Current.AgreementMatrix.IsAgreementActive(who, whoElse, ClauseType.TreatyDefensiveAlliance) ||
@@ -891,9 +966,14 @@ namespace Supremacy.Diplomacy
         public static bool AreFriendly(Civilization who, Civilization whoElse)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
+
             if (whoElse == null)
+            {
                 throw new ArgumentNullException("whoElse");
+            }
 
             IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
 
@@ -909,9 +989,15 @@ namespace Supremacy.Diplomacy
         public static bool AreNotFriendly(Civilization who, Civilization whoElse)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
+
             if (whoElse == null)
+            {
                 throw new ArgumentNullException("whoElse");
+            }
+
             IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
             return diplomacyData != null &&
                    diplomacyData.Status <= ForeignPowerStatus.Cold;
@@ -923,11 +1009,19 @@ namespace Supremacy.Diplomacy
         public static bool AreAtWar(Civilization who, Civilization whoElse)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
+
             if (whoElse == null)
+            {
                 throw new ArgumentNullException("whoElse");
+            }
+
             if (who == whoElse) // && !IsContactMade(who, whoElse))
+            {
                 return false;
+            }
 
             IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
 
@@ -953,18 +1047,25 @@ namespace Supremacy.Diplomacy
         /// </summary>
         public static bool IsAtWar(Civilization who)
         {
-            return (GameContext.Current.DiplomacyData.CountWhere(c => c.Status == ForeignPowerStatus.AtWar) > 0);
+            return GameContext.Current.DiplomacyData.CountWhere(c => c.Status == ForeignPowerStatus.AtWar) > 0;
         }
 
         public static bool ArePotentialEnemies(Civilization civ1, Civilization civ2)
         {
             if (civ1 == null)
+            {
                 throw new ArgumentNullException("civ1");
+            }
+
             if (civ2 == null)
+            {
                 throw new ArgumentNullException("civ2");
+            }
 
             if (civ1 == civ2)
+            {
                 return true;
+            }
 
             switch (GetForeignPowerStatus(civ1, civ2))
             {
@@ -980,9 +1081,14 @@ namespace Supremacy.Diplomacy
         public static bool AreNeutral(Civilization who, Civilization whoElse)
         {
             if (who == null)
+            {
                 throw new ArgumentNullException("who");
+            }
+
             if (whoElse == null)
+            {
                 throw new ArgumentNullException("whoElse");
+            }
 
             IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
 
@@ -998,15 +1104,21 @@ namespace Supremacy.Diplomacy
         public static bool IsIndependent([NotNull] Civilization Power)
         {
             if (Power == null)
+            {
                 throw new ArgumentNullException("minorPower");
+            }
 
             if (Power.IsEmpire)
+            {
                 return true;
+            }
 
             foreach (Civilization empire in GameContext.Current.Civilizations)
             {
                 if (empire.IsEmpire && IsMember(Power, empire))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -1015,12 +1127,19 @@ namespace Supremacy.Diplomacy
         public static bool IsMember(Civilization minorPower, Civilization empire)
         {
             if (minorPower == null)
+            {
                 throw new ArgumentNullException("minorPower");
+            }
+
             if (empire == null)
+            {
                 throw new ArgumentNullException("empire");
+            }
 
             if (minorPower.IsEmpire || !empire.IsEmpire)
+            {
                 return false;
+            }
 
             IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[empire, minorPower];
 
@@ -1031,13 +1150,20 @@ namespace Supremacy.Diplomacy
         public static bool IsAlliedWithWorstEnemy(Civilization enemyOf, Civilization allyOf)
         {
             if (enemyOf == null)
+            {
                 throw new ArgumentNullException("enemyOf");
+            }
+
             if (allyOf == null)
+            {
                 throw new ArgumentNullException("allyOf");
+            }
 
             Civilization worstEnemy = GetWorstEnemy(enemyOf);
             if (worstEnemy == null)
+            {
                 return false;
+            }
 
             // Note: This check will fail (as it should) if 'allyOf' is our worst enemy.
             if (GameContext.Current.AgreementMatrix.IsAgreementActive(allyOf, worstEnemy, ClauseType.TreatyDefensiveAlliance) ||
@@ -1076,7 +1202,7 @@ namespace Supremacy.Diplomacy
                     return 50;
                 case ResourceType.Dilithium:
                     return 150;
-                case ResourceType.RawMaterials:
+                case ResourceType.Duranium:
                     return 35;
                 default:
                     return 0;
@@ -1093,17 +1219,26 @@ namespace Supremacy.Diplomacy
             //SoundPlayer _soundPlayer = null;
 
             if (firstCiv == null)
+            {
                 throw new ArgumentNullException("firstCiv");
+            }
+
             if (secondCiv == null)
+            {
                 throw new ArgumentNullException("secondCiv");
+            }
 
             if (firstCiv == secondCiv)
+            {
                 return;
+            }
 
             ForeignPower foreignPower = Diplomat.Get(firstCiv).GetForeignPower(secondCiv);
             ForeignPower ownPower = Diplomat.Get(secondCiv).GetForeignPower(firstCiv);
             if (foreignPower.IsContactMade)
+            {
                 return;
+            }
 
             int actualContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
 
@@ -1111,16 +1246,22 @@ namespace Supremacy.Diplomacy
 
             // Only add sitrep entries if contact was made on the current turn.
             if (GameContext.Current.TurnNumber != actualContactTurn)
+            {
                 return;
+            }
 
             CivilizationManager firstManager = GameContext.Current.CivilizationManagers[firstCiv];
             CivilizationManager secondManager = GameContext.Current.CivilizationManagers[secondCiv];
 
             if (firstManager != null)
+            {
                 firstManager.SitRepEntries.Add(new FirstContactSitRepEntry(firstCiv, secondCiv, location));
+            }
 
             if (secondManager != null)
+            {
                 secondManager.SitRepEntries.Add(new FirstContactSitRepEntry(secondCiv, firstCiv, location));
+            }
 
             //GameLog.Core.Diplomacy.DebugFormat("firstManager.Civilization.Key = {0}, second = {1}", firstManager.Civilization.Key, secondManager.Civilization.Key);
             if (firstManager.Civilization.Key == "BORG")
@@ -1192,14 +1333,24 @@ namespace Supremacy.Diplomacy
                                             select station;
 
             foreach (Colony item in colonies)
-                otherCivs.Add(item.OwnerID);
+            {
+                _ = otherCivs.Add(item.OwnerID);
+            }
+
             foreach (Ship item in ships)
-                otherCivs.Add(item.OwnerID);
+            {
+                _ = otherCivs.Add(item.OwnerID);
+            }
+
             foreach (Station item in stations)
-                otherCivs.Add(item.OwnerID);
+            {
+                _ = otherCivs.Add(item.OwnerID);
+            }
 
             foreach (int otherCiv in otherCivs)
+            {
                 EnsureContact(civilization, GameContext.Current.Civilizations[otherCiv], location);
+            }
         }
 
         public static bool ShouldTheyGoToWar(Civilization oneCiv, Civilization twoCiv)
@@ -1210,7 +1361,9 @@ namespace Supremacy.Diplomacy
                 if (GameContext.Current.CivilizationManagers[oneCiv].MaintenanceCostLastTurn > GameContext.Current.CivilizationManagers[twoCiv].MaintenanceCostLastTurn)
                 {
                     if (oneCiv.Traits.Contains("Warlike") && (AreNotFriendly(oneCiv, twoCiv) || (AreNeutral(oneCiv, twoCiv) && RandomHelper.Random(2) == 1)))
+                    {
                         goodDayToDie = true;
+                    }
                 }
             }
             return goodDayToDie;
@@ -1218,14 +1371,20 @@ namespace Supremacy.Diplomacy
         public static bool IsContactMade(Civilization source, Civilization target)
         {
             if (source == null)
+            {
                 return false;
+            }
             //throw new ArgumentNullException("source");
             if (target == null)
+            {
                 return false;
+            }
             // throw new ArgumentNullException("target");
 
             if (source == target)
+            {
                 return false;
+            }
             //GameLog.Core.Test.DebugFormat("Diplomacy: source = {0} target = {1}",source.Key, target.Key);
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
         }
@@ -1233,9 +1392,14 @@ namespace Supremacy.Diplomacy
         public static bool IsScanBlocked(Civilization source, Sector sector)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
 
             if (sector != null && sector.Station != null && source != null)
             {
@@ -1247,7 +1411,9 @@ namespace Supremacy.Diplomacy
         public static bool IsContactMade(int sourceId, int targetId)
         {
             if (sourceId == targetId)
+            {
                 return true;
+            }
 
             //if (GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade() == true)
             //    GameLog.Core.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
@@ -1258,7 +1424,9 @@ namespace Supremacy.Diplomacy
         public static bool IsContactMade(this IDiplomacyData diplomacyData)
         {
             if (diplomacyData == null)
+            {
                 throw new ArgumentNullException("diplomacyData");
+            }
 
             return diplomacyData.ContactTurn != 0;
         }
@@ -1266,12 +1434,19 @@ namespace Supremacy.Diplomacy
         public static bool IsFirstContact(Civilization source, Civilization target)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
 
             if (source == target)
+            {
                 return false;
+            }
 
             return GameContext.Current.DiplomacyData[source, target].ContactDuration == 0;
         }
@@ -1279,9 +1454,14 @@ namespace Supremacy.Diplomacy
         public static int ComputeEndWarValue(Civilization sender, Civilization recipient)
         {
             if (sender == null)
+            {
                 throw new ArgumentNullException("sender");
+            }
+
             if (recipient == null)
+            {
                 throw new ArgumentNullException("recipient");
+            }
 
             return 0;
         }
@@ -1320,7 +1500,7 @@ namespace Supremacy.Diplomacy
                     civList.Add(aCivManager.Civilization);
                 }
             }
-            civList.Remove(civDeclaring);
+            _ = civList.Remove(civDeclaring);
             //if (civList != null)
             //{        
             //    foreach (var thisCiv in civList)

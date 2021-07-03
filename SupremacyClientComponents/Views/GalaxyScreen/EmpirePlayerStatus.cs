@@ -28,7 +28,9 @@ namespace Supremacy.Client.Views
         public void Update([NotNull] ILobbyData lobbyData)
         {
             if (lobbyData == null)
+            {
                 throw new ArgumentNullException("lobbyData");
+            }
 
             foreach (Player player in lobbyData.Players)
             {
@@ -43,7 +45,9 @@ namespace Supremacy.Client.Views
         {
 
             if (player == null)
+            {
                 throw new ArgumentNullException("player");
+            }
 
             this[player.Empire].IsReady = true;
             //Plays a "click" sound when turn button is pressed. Sound plays on all machines in Multiplayer.
@@ -57,12 +61,14 @@ namespace Supremacy.Client.Views
         public void ClearPlayerReadiness()
         {
             foreach (EmpirePlayerStatus status in this)
+            {
                 status.IsReady = false;
+            }
         }
 
         public void UpdateRelationshipStatus()
         {
-            this.ForEach(o => o.UpdateRelationshipStatus());
+            _ = this.ForEach(o => o.UpdateRelationshipStatus());
         }
     }
 
@@ -74,14 +80,17 @@ namespace Supremacy.Client.Views
 
         public EmpirePlayerStatus([NotNull] IAppContext appContext, [NotNull] Civilization empire)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
             if (empire == null)
+            {
                 throw new ArgumentNullException("empire");
-            if (!empire.IsEmpire)
-                throw new ArgumentException(@"Civilization must be an empire.", "empire");
+            }
 
-            _appContext = appContext;
+            if (!empire.IsEmpire)
+            {
+                throw new ArgumentException(@"Civilization must be an empire.", "empire");
+            }
+
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
             _empireId = empire.CivID;
         }
 
@@ -108,14 +117,20 @@ namespace Supremacy.Client.Views
             set
             {
                 if (value == null)
+                {
                     _playerId = Game.Player.UnassignedPlayerID;
+                }
                 else
+                {
                     _playerId = value.PlayerID;
+                }
 
                 OnPropertyChanged("Player");
 
                 if (!Player.IsHumanPlayer)
+                {
                     IsReady = true;
+                }
 
                 UpdateRelationshipStatus();
             }
@@ -127,7 +142,7 @@ namespace Supremacy.Client.Views
 
         public bool IsReady
         {
-            get { return !Player.IsHumanPlayer || _isReady; }
+            get => !Player.IsHumanPlayer || _isReady;
             set
             {
                 _isReady = value;
@@ -143,11 +158,13 @@ namespace Supremacy.Client.Views
 
         public ForeignPowerStatus DiplomacyStatus
         {
-            get { return _diplomacyStatus; }
+            get => _diplomacyStatus;
             set
             {
                 if (value == _diplomacyStatus)
+                {
                     return;
+                }
 
                 _diplomacyStatus = value;
 
@@ -168,9 +185,7 @@ namespace Supremacy.Client.Views
 
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

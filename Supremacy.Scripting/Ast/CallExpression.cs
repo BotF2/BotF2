@@ -179,7 +179,9 @@ namespace Supremacy.Scripting.Ast
                 Argument argument = Arguments[i];
 
                 if (i != 0)
+                {
                     sw.Write(", ");
+                }
 
                 argument.Dump(sw, indentChange);
             }

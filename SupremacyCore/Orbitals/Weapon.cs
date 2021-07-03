@@ -53,8 +53,8 @@ namespace Supremacy.Orbitals
         /// <value>The delivery type.</value>
         public WeaponDeliveryType DeliveryType
         {
-            get { return _deliveryType; }
-            set { _deliveryType = value; }
+            get => _deliveryType;
+            set => _deliveryType = value;
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace Supremacy.Orbitals
         /// <value>The number of individual weapons.</value>
         public int Count
         {
-            get { return _count; }
-            set { _count = (byte)Math.Min(value, Byte.MaxValue); }
+            get => _count;
+            set => _count = (byte)Math.Min(value, byte.MaxValue);
         }
 
         /// <summary>
@@ -76,10 +76,13 @@ namespace Supremacy.Orbitals
             get
             {
                 if (DeliveryType == WeaponDeliveryType.Beam)
+                {
                     return _refire;
+                }
+
                 return 1.0f;
             }
-            set { _refire = value; }
+            set => _refire = value;
         }
 
         /// <summary>
@@ -88,8 +91,8 @@ namespace Supremacy.Orbitals
         /// <value>The maximum damage.</value>
         public int Damage
         {
-            get { return _damage; }
-            set { _damage = (byte)Math.Min(value, Byte.MaxValue); }
+            get => _damage;
+            set => _damage = (byte)Math.Min(value, byte.MaxValue);
         }
     }
 }

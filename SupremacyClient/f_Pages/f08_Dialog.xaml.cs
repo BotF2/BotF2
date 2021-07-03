@@ -7,12 +7,6 @@
 //
 // All other rights reserved.
 
-using Microsoft.Practices.ServiceLocation;
-using Supremacy.Client.Context;
-using Supremacy.Game;
-using Supremacy.Orbitals;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -71,24 +65,24 @@ namespace Supremacy.Client
             //string Empire = "IsHitTestVisibleProperty";
             //_allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.CancelCommand,
                     Key.Escape,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.CancelCommand,
                     OnGenericCommandsCancelCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));

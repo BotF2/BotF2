@@ -23,9 +23,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -86,9 +85,9 @@ namespace Supremacy.Scripting.Events
                     }
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    target.Population.AdjustCurrent(-population / 6 * 3);
+                    _ = target.Population.AdjustCurrent(-population / 6 * 3);
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(-health / 5);
+                    _ = target.Health.AdjustCurrent(-health / 5);
                     target.Health.UpdateAndReset();
 
                     GameContext.Current.Universe.UpdateSectors();

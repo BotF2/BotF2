@@ -33,7 +33,9 @@ namespace Supremacy.Utility
                 {
                     GameContext gameContext = _gameContextCallback();
                     if (gameContext != null)
+                    {
                         GameContext.PushThreadContext(gameContext);
+                    }
 
                     try
                     {
@@ -42,7 +44,9 @@ namespace Supremacy.Utility
                     finally
                     {
                         if (gameContext != null)
-                            GameContext.PopThreadContext();
+                        {
+                            _ = GameContext.PopThreadContext();
+                        }
                     }
                 });
         }
@@ -54,7 +58,9 @@ namespace Supremacy.Utility
                 {
                     GameContext gameContext = _gameContextCallback();
                     if (gameContext != null)
+                    {
                         GameContext.PushThreadContext(gameContext);
+                    }
 
                     try
                     {
@@ -63,7 +69,9 @@ namespace Supremacy.Utility
                     finally
                     {
                         if (gameContext != null)
-                            GameContext.PopThreadContext();
+                        {
+                            _ = GameContext.PopThreadContext();
+                        }
                     }
                 },
                 dueTime);
@@ -77,9 +85,14 @@ namespace Supremacy.Utility
         public static GameScheduler AsGameScheduler([NotNull] this IScheduler scheduler, [NotNull] Func<GameContext> gameContextCallback)
         {
             if (scheduler == null)
+            {
                 throw new ArgumentNullException("scheduler");
+            }
+
             if (gameContextCallback == null)
+            {
                 throw new ArgumentNullException("gameContextCallback");
+            }
 
             return new GameScheduler(scheduler, gameContextCallback);
         }

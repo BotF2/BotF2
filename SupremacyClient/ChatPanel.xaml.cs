@@ -62,21 +62,21 @@ namespace Supremacy.Client
             Unloaded += ChatPanel_Unloaded;
             IsVisibleChanged += ChatPanel_IsVisibleChanged;
 
-            _globalPlayer = new Player { Name = "All Players", PlayerID = (-1) };
+            _globalPlayer = new Player { Name = "All Players", PlayerID = -1 };
         }
         #endregion
 
         #region Properties
         public ChatMessage MostRecentMessage
         {
-            get { return GetValue(MostRecentMessageProperty) as ChatMessage; }
-            set { SetValue(MostRecentMessageProperty, value); }
+            get => GetValue(MostRecentMessageProperty) as ChatMessage;
+            set => SetValue(MostRecentMessageProperty, value);
         }
 
         public bool IsMessageWaiting
         {
-            get { return (bool)GetValue(IsMessageWaitingProperty); }
-            set { SetValue(IsMessageWaitingProperty, value); }
+            get => (bool)GetValue(IsMessageWaitingProperty);
+            set => SetValue(IsMessageWaitingProperty, value);
         }
         #endregion
 
@@ -84,26 +84,30 @@ namespace Supremacy.Client
         private void ChatPanel_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue)
+            {
                 IsMessageWaiting = false;
+            }
         }
 
         private void ChatPanel_Loaded(object sender, RoutedEventArgs e)
         {
             IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             _isLoaded = true;
-            RecipientBox.Items.Add(_globalPlayer);
+            _ = RecipientBox.Items.Add(_globalPlayer);
 
             foreach (Player player in appContext.RemotePlayers)
-                RecipientBox.Items.Add(player);
+            {
+                _ = RecipientBox.Items.Add(player);
+            }
 
             RecipientBox.SelectedItem = _globalPlayer;
 
-            ClientEvents.ChatMessageReceived.Subscribe(OnChatMessageReceived, ThreadOption.UIThread);
-            ClientEvents.PlayerExited.Subscribe(OnPlayerExited, ThreadOption.UIThread);
+            _ = ClientEvents.ChatMessageReceived.Subscribe(OnChatMessageReceived, ThreadOption.UIThread);
+            _ = ClientEvents.PlayerExited.Subscribe(OnPlayerExited, ThreadOption.UIThread);
 
             if (IsVisible)
             {
-                Dispatcher.BeginInvoke(
+                _ = Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                     new BoolFunction(InputText.Focus));
             }
@@ -113,17 +117,25 @@ namespace Supremacy.Client
         {
             IPlayer player = args.Value;
             if (player == null)
+            {
                 return;
+            }
+
             Player item = RecipientBox.Items.OfType<Player>().FirstOrDefault(o => o.PlayerID == player.PlayerID);
             if (item != null)
+            {
                 RecipientBox.Items.Remove(item);
+            }
         }
 
         private void OnChatMessageReceived(DataEventArgs<ChatMessage> args)
         {
             ChatMessage message = args.Value;
             if (message == null)
+            {
                 return;
+            }
+
             DisplayChatMessage(message);
         }
 
@@ -147,7 +159,10 @@ namespace Supremacy.Client
                     IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
                     Player recipient = RecipientBox.SelectedItem as Player;
                     if (recipient == _globalPlayer)
+                    {
                         recipient = null;
+                    }
+
                     ClientCommands.SendChatMessage.Execute(new ChatMessage(appContext.LocalPlayer, messageText, recipient));
                     InputText.Clear();
                 }
@@ -160,12 +175,16 @@ namespace Supremacy.Client
 
             MostRecentMessage = message;
 
-            MessagePanel.Children.Add(messageContainer);
+            _ = MessagePanel.Children.Add(messageContainer);
             if (MessagePanel.ScrollOwner != null)
+            {
                 MessagePanel.ScrollOwner.ScrollToBottom();
+            }
 
             if (!IsVisible)
+            {
                 IsMessageWaiting = true;
+            }
         }
         #endregion
     }

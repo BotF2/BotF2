@@ -13,10 +13,7 @@ namespace Supremacy.Diplomacy.Visitors
 
         private BreakAgreementVisitor([NotNull] IAgreement agreement)
         {
-            if (agreement == null)
-                throw new ArgumentNullException("agreement");
-
-            _agreement = agreement;
+            _agreement = agreement ?? throw new ArgumentNullException("agreement");
         }
 
         protected IAgreement Agreement => _agreement;
@@ -24,7 +21,9 @@ namespace Supremacy.Diplomacy.Visitors
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {
             if (agreement == null)
+            {
                 throw new ArgumentNullException("agreement");
+            }
 
             BreakAgreementVisitor visitor = new BreakAgreementVisitor(agreement);
 
@@ -36,15 +35,17 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected override void VisitTreatyMembershipClause(IClause clause)
         {
-            object dataEntry;
 
             IDictionary<object, object> data = Agreement.Data;
-            if (data == null || !data.TryGetValue(AcceptProposalVisitor.TransferredColoniesDataKey, out dataEntry))
+            if (data == null || !data.TryGetValue(AcceptProposalVisitor.TransferredColoniesDataKey, out object dataEntry))
+            {
                 return;
+            }
 
-            List<int> transferredColonyIds = dataEntry as List<int>;
-            if (transferredColonyIds == null)
+            if (!(dataEntry is List<int> transferredColonyIds))
+            {
                 return;
+            }
 
             Entities.Civilization sender = Agreement.Proposal.Sender;
             Entities.Civilization empire = sender.IsEmpire ? sender : Agreement.Proposal.Recipient;

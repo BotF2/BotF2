@@ -31,9 +31,10 @@ namespace Supremacy.Client.Views
 
         protected override void SetInteractionNode()
         {
-            DependencyObject viewElement = View as DependencyObject;
-            if (viewElement != null)
+            if (View is DependencyObject viewElement)
+            {
                 Views.View.SetInteractionNode(viewElement, Model);
+            }
         }
 
         protected override void RunOverride()

@@ -38,7 +38,7 @@ namespace Supremacy.Tech
         /// <value><c>true</c> this <see cref="TechObject"/> will be scrapped; otherwise, <c>false</c>.</value>
         public bool Scrap
         {
-            get { return _scrap; }
+            get => _scrap;
             set
             {
                 _scrap = value;
@@ -52,8 +52,8 @@ namespace Supremacy.Tech
         /// <value>The name.</value>
         public override string Name
         {
-            get { return base.Name ?? ((Design != null) ? Design.Name : null); }
-            set { base.Name = value; }
+            get => base.Name ?? ((Design != null) ? Design.Name : null);
+            set => base.Name = value;
         }
 
         /// <summary>
@@ -71,7 +71,9 @@ namespace Supremacy.Tech
                     //    , _designId
                     //    );
                     if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
+                    {
                         return GameContext.Current.TechDatabase[_designId];
+                    }
                     else
                     {
                         //GameLog.Core.General.ErrorFormat("### Problem on Design name {0} design ID {1}"
@@ -91,7 +93,7 @@ namespace Supremacy.Tech
                     return GameContext.Current.TechDatabase[_designId];
                 }
             }
-            set { _designId = (value != null) ? value.DesignID : TechObjectDesign.InvalidDesignID; }
+            set => _designId = (value != null) ? value.DesignID : TechObjectDesign.InvalidDesignID;
         }
 
         public TechObject() { }
@@ -104,7 +106,10 @@ namespace Supremacy.Tech
             : this()
         {
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
+
             _designId = design.DesignID;
             _scrap = false;
         }

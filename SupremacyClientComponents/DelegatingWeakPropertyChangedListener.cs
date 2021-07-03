@@ -10,17 +10,17 @@ namespace Supremacy.Client
 
         public DelegatingWeakPropertyChangedListener(PropertyChangedEventHandler handler)
         {
-            if (handler == null)
-                throw new ArgumentNullException("handler");
-            _handler = handler;
+            _handler = handler ?? throw new ArgumentNullException("handler");
         }
 
         #region Implementation of IWeakEventListener
         bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            PropertyChangedEventArgs args = e as PropertyChangedEventArgs;
-            if (args == null)
+            if (!(e is PropertyChangedEventArgs args))
+            {
                 return false;
+            }
+
             _handler(sender, args);
             return true;
         }

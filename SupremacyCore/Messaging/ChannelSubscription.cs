@@ -22,10 +22,14 @@ namespace Supremacy.Messaging
         protected override void Dispose(bool disposing)
         {
             if (!disposing)
+            {
                 return;
+            }
 
             if (_subscriber != null)
+            {
                 ((Channel<T>)Channel<T>.Public).Unsubscribe(this);
+            }
 
             _subscriber = null;
         }

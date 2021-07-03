@@ -192,7 +192,9 @@ namespace Supremacy.Universe
         public static bool CanAddPlanet(StarSystem starSystem, PlanetType planetType, PlanetSize planetSize)
         {
             if (starSystem == null)
+            {
                 return false;
+            }
 
             return CanAddPlanet(starSystem.StarType, starSystem.Planets, planetType, planetSize);
         }
@@ -203,32 +205,38 @@ namespace Supremacy.Universe
             PlanetType planetType,
             PlanetSize planetSize)
         {
-            SupportsPlanetsAttribute attribute = Attribute.GetCustomAttribute(
+            if (!(Attribute.GetCustomAttribute(
                 typeof(StarType).GetField(starType.ToString()),
-                typeof(SupportsPlanetsAttribute)) as SupportsPlanetsAttribute;
-
-            if (attribute == null)
+                typeof(SupportsPlanetsAttribute)) is SupportsPlanetsAttribute attribute))
+            {
                 return false;
+            }
 
             if (attribute.IsAllowedTypesDefined)
             {
                 bool isPlanetTypeAllowed = attribute.AllowedTypes.Any(allowedType => allowedType == planetType);
                 if (!isPlanetTypeAllowed)
+                {
                     return false;
+                }
             }
 
             if (attribute.IsAllowedSizesDefined)
             {
                 bool isPlanetSizeAllowed = attribute.AllowedSizes.Any(allowedSize => allowedSize == planetSize);
                 if (!isPlanetSizeAllowed)
+                {
                     return false;
+                }
             }
 
             if (existingPlanets != null)
             {
                 int currentPlanetCount = existingPlanets.Count();
                 if (currentPlanetCount > attribute.MaxNumberOfPlanets)
+                {
                     return false;
+                }
             }
 
             return true;
@@ -238,7 +246,9 @@ namespace Supremacy.Universe
         {
             SupportsPlanetsAttribute supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
             if (supportsPlanetsAttribute != null)
+            {
                 return supportsPlanetsAttribute.MaxNumberOfPlanets;
+            }
 
             return StarSystem.MaxPlanetsPerSystem;
         }
@@ -246,7 +256,9 @@ namespace Supremacy.Universe
         public static int MaxNumberOfPlanets(StarSystem starSystem)
         {
             if (starSystem == null)
+            {
                 return 0;
+            }
 
             return MaxNumberOfPlanets(starSystem.StarType);
         }
@@ -254,7 +266,9 @@ namespace Supremacy.Universe
         public static bool SupportsPlanets(StarSystem starSystem)
         {
             if (starSystem == null)
+            {
                 return false;
+            }
 
             switch (starSystem.StarType)
             {
@@ -276,14 +290,19 @@ namespace Supremacy.Universe
             [NotNull] IIndexedEnumerable<MapLocation> homeLocations)
         {
             if (homeLocations == null)
+            {
                 throw new ArgumentNullException("homeLocations");
+            }
 
             if (homeLocations.Count == 0)
+            {
                 return true;
-
+            }
 
             if (!InterferenceFrames.TryGetValue(starType, out int[,,] interferenceFrames))
+            {
                 return true;
+            }
 
             int minDistance = GalaxyGenerator.MinHomeworldDistanceFromInterference;
             if (minDistance > 0)
@@ -309,14 +328,20 @@ namespace Supremacy.Universe
             [NotNull] StarSystem starSystem)
         {
             if (interference == null)
+            {
                 throw new ArgumentNullException("interference");
+            }
+
             if (starSystem == null)
+            {
                 throw new ArgumentNullException("starSystem");
+            }
 
-            int[,,] interferenceFrames;
 
-            if (!InterferenceFrames.TryGetValue(starSystem.StarType, out interferenceFrames))
+            if (!InterferenceFrames.TryGetValue(starSystem.StarType, out int[,,] interferenceFrames))
+            {
                 return;
+            }
 
             int frameCount = interferenceFrames.GetLength(0);
 
@@ -341,20 +366,28 @@ namespace Supremacy.Universe
             for (int y = startY; y <= endY; y++)
             {
                 if (y < 0)
+                {
                     continue;
+                }
 
                 for (int x = startX; x <= endX; x++)
                 {
                     if (x < 0)
+                    {
                         continue;
+                    }
 
                     int value = interferenceFrames[i, y - startY, x - startX];
                     if (value >= 0)
+                    {
                         continue;
+                    }
 
                     int current = interference[x, y];
                     if (value < current)
+                    {
                         interference[x, y] = value;
+                    }
                 }
             }
         }

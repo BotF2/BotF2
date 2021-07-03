@@ -86,7 +86,7 @@
         <!-- RAW MATERIALS -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="Gray" Text="{Binding Source={s:StringResource RAW_MATERIALS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
-            <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="Gray" Text="{Binding Path=SelectedColony.NetRawMaterials, Mode=OneWay}" />
+            <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="Gray" Text="{Binding Path=SelectedColony.NetDuranium, Mode=OneWay}" />
         </DockPanel>
     </StackPanel>
 </scc:ThemedUserControl>

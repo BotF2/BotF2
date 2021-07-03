@@ -23,7 +23,9 @@ namespace Supremacy.Client.Audio
         public static void Check(RESULT result)
         {
             if (result == RESULT.OK)
+            {
                 return;
+            }
 
             throw new ApplicationException("FMOD error! " + result + " - " + Error.String(result));
         }
@@ -68,7 +70,10 @@ namespace Supremacy.Client.Audio
             get
             {
                 if (_instance == null)
+                {
                     _instance = new FMODAudioEngine();
+                }
+
                 return _instance;
             }
         }
@@ -81,8 +86,8 @@ namespace Supremacy.Client.Audio
 
         public float Volume
         {
-            get { return _masterChannelGroup.Volume; }
-            set { _masterChannelGroup.Volume = value; }
+            get => _masterChannelGroup.Volume;
+            set => _masterChannelGroup.Volume = value;
         }
 
         public object Lock => _updateLock;
@@ -116,7 +121,9 @@ namespace Supremacy.Client.Audio
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisposed = true;
 
@@ -162,7 +169,10 @@ namespace Supremacy.Client.Audio
                 try
                 {
                     if (_system != null)
-                        _system.release();
+                    {
+                        _ = _system.release();
+                    }
+
                     _system = null;
                 }
                 catch (Exception e)
@@ -214,7 +224,9 @@ namespace Supremacy.Client.Audio
                 lock (_updateLock)
                 {
                     if (_updateTimerSubscription == null)
+                    {
                         _updateTimerSubscription = _updateTimer.Subscribe();
+                    }
 
                     GameLog.Client.Audio.Debug("Starting....");
                 }
@@ -256,7 +268,7 @@ namespace Supremacy.Client.Audio
             {
                 try
                 {
-                    _system.update();
+                    _ = _system.update();
                 }
                 catch
                 {
@@ -269,7 +281,7 @@ namespace Supremacy.Client.Audio
         {
             try
             {
-                _channelGroups.Remove(channelGroup);
+                _ = _channelGroups.Remove(channelGroup);
             }
             catch (Exception e)
             {
@@ -281,7 +293,7 @@ namespace Supremacy.Client.Audio
         {
             try
             {
-                _tracks.Remove(audioTrack);
+                _ = _tracks.Remove(audioTrack);
             }
             catch (Exception e)
             {

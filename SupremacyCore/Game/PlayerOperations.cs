@@ -9,12 +9,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.Practices.ServiceLocation;
 
 using Supremacy.Annotations;
-using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Orbitals;
 using Supremacy.Client;
@@ -38,7 +36,10 @@ namespace Supremacy.Game
             get
             {
                 if (_gameObjectIDService == null)
+                {
                     _gameObjectIDService = ServiceLocator.Current.GetInstance<IGameObjectIDService>();
+                }
+
                 return _gameObjectIDService;
             }
         }
@@ -49,7 +50,10 @@ namespace Supremacy.Game
             get
             {
                 if (_clientContext == null)
+                {
                     _clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
+                }
+
                 return _clientContext;
             }
         }
@@ -60,7 +64,10 @@ namespace Supremacy.Game
             get
             {
                 if (_playerOrderService == null)
+                {
                     _playerOrderService = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+                }
+
                 return _playerOrderService;
             }
         }
@@ -68,31 +75,55 @@ namespace Supremacy.Game
         public static void ActivateShipyardBuildSlot([NotNull] ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
+            {
                 throw new ArgumentNullException("buildSlot");
+            }
+
             if (buildSlot.IsActive)
+            {
                 return;
+            }
+
             if (!buildSlot.Shipyard.Sector.System.Colony.ActivateShipyardBuildSlot(buildSlot))
+            {
                 return;
+            }
+
             PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(buildSlot));
         }
 
         public static void DeactivateShipyardBuildSlot([NotNull] ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
+            {
                 throw new ArgumentNullException("buildSlot");
+            }
+
             if (!buildSlot.IsActive)
+            {
                 return;
+            }
+
             if (!buildSlot.Shipyard.Sector.System.Colony.DeactivateShipyardBuildSlot(buildSlot))
+            {
                 return;
+            }
+
             PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(buildSlot));
         }
 
         public static void SetFleetRoute(Fleet fleet, TravelRoute route)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             if (route == null)
+            {
                 route = TravelRoute.Empty;
+            }
+
             fleet.SetRoute(route);
             PlayerOrderService.AddOrder(new SetFleetRouteOrder(fleet));
         }
@@ -100,9 +131,15 @@ namespace Supremacy.Game
         public static void SetFleetOrder(Fleet fleet, FleetOrder order)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             if (order == null)
+            {
                 order = fleet.GetDefaultOrder();
+            }
+
             fleet.SetOrder(order);
             PlayerOrderService.AddOrder(new SetFleetOrderOrder(fleet));
         }
@@ -110,9 +147,15 @@ namespace Supremacy.Game
         public static void MergeFleets(Fleet sourceFleet, Fleet destinationFleet)
         {
             if (sourceFleet == null)
+            {
                 throw new ArgumentNullException("sourceFleet");
+            }
+
             if (destinationFleet == null)
+            {
                 return;
+            }
+
             foreach (Ship ship in new List<Ship>(sourceFleet.Ships))
             {
                 destinationFleet.AddShip(ship);
@@ -133,7 +176,9 @@ namespace Supremacy.Game
         private static void RedeployShipInternal(Ship ship, Fleet destinationFleet)
         {
             if (ship == null)
+            {
                 throw new ArgumentNullException("ship");
+            }
 
             if (destinationFleet != null)
             {
@@ -146,7 +191,9 @@ namespace Supremacy.Game
                 {
                     newFleetId = GameObjectIDService.GetNewObjectID();
                     if (!newFleetId.HasValue)
+                    {
                         return;
+                    }
                 }
                 catch
                 {
@@ -166,7 +213,9 @@ namespace Supremacy.Game
         public static void Scrap(bool scrap, [NotNull] IEnumerable<TechObject> items)
         {
             if (items == null)
+            {
                 throw new ArgumentNullException("items");
+            }
 
             foreach (TechObject item in items)
             {

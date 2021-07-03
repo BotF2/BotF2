@@ -194,7 +194,7 @@ namespace Supremacy.Game
             ModID = Guid.Empty;
             AIMode = AIMode.Normal;
             AITakeover = true;
-            CombatTimer = default(TimeSpan);
+            CombatTimer = default;
             GalaxyShape = GalaxyShape.Irregular;
             GalaxySize = GalaxySize.Small;
             PlanetDensity = PlanetDensity.Medium;
@@ -457,7 +457,9 @@ namespace Supremacy.Game
         public void Write([NotNull] BinaryWriter writer)
         {
             if (writer == null)
+            {
                 throw new ArgumentNullException("writer");
+            }
 
             // needs the same sorting as Reading
 
@@ -499,7 +501,9 @@ namespace Supremacy.Game
         public void Read([NotNull] BinaryReader reader)
         {
             if (reader == null)
+            {
                 throw new ArgumentNullException("reader");
+            }
 
             // needs the same sorting as Writing
 
@@ -543,19 +547,39 @@ namespace Supremacy.Game
         internal static bool Validate(GameOptions options)
         {
             if (options == null)
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(AIMode), options.AIMode))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(GalaxyShape), options.GalaxyShape))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(GalaxySize), options.GalaxySize))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(PlanetDensity), options.PlanetDensity))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(StarDensity), options.StarDensity))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(GalaxyCanon), options.GalaxyCanon))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -602,7 +626,7 @@ namespace Supremacy.Game
                 defaults = new GameOptions();
                 try
                 {
-                    SaveDefaults(defaults);
+                    _ = SaveDefaults(defaults);
                 }
                 catch
                 {

@@ -41,20 +41,20 @@ namespace Supremacy.Client.Data
 
         public object Case
         {
-            get { return GetValue(CaseProperty); }
-            set { SetValue(CaseProperty, value); }
+            get => GetValue(CaseProperty);
+            set => SetValue(CaseProperty, value);
         }
 
         public object IfMatch
         {
-            get { return GetValue(IfMatchProperty); }
-            set { SetValue(IfMatchProperty, value); }
+            get => GetValue(IfMatchProperty);
+            set => SetValue(IfMatchProperty, value);
         }
 
         public object Else
         {
-            get { return GetValue(ElseProperty); }
-            set { SetValue(ElseProperty, value); }
+            get => GetValue(ElseProperty);
+            set => SetValue(ElseProperty, value);
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -73,7 +73,9 @@ namespace Supremacy.Client.Data
                 {
                     object convertedValue = ValueConversionHelper.Convert(value, comparand.GetType(), null, culture);
                     if (convertedValue != DependencyProperty.UnsetValue)
+                    {
                         isMatch = Equals(convertedValue, comparand);
+                    }
                 }
             }
 

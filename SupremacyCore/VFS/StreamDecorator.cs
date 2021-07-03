@@ -51,17 +51,25 @@ namespace Supremacy.VFS
         #region Properties and Indexers
         protected T BaseStream
         {
-            get { return _baseStream; }
+            get => _baseStream;
             set
             {
                 VerifyNotDisposed();
                 if (ReferenceEquals(_baseStream, value))
+                {
                     return;
+                }
+
                 if (_baseStream != null)
+                {
                     GC.ReRegisterForFinalize(_baseStream);
+                }
+
                 _baseStream = value;
                 if (_baseStream != null)
+                {
                     GC.SuppressFinalize(_baseStream);
+                }
             }
         }
 
@@ -108,7 +116,10 @@ namespace Supremacy.VFS
         {
             VerifyNotDisposed();
             if (!CanRead)
+            {
                 throw new NotSupportedException("Stream does not support read.");
+            }
+
             return _baseStream.Read(buffer, offset, count);
         }
 
@@ -133,7 +144,9 @@ namespace Supremacy.VFS
         protected override void Dispose(bool disposing)
         {
             if (_closed)
+            {
                 return;
+            }
 
             try
             {
@@ -169,20 +182,23 @@ namespace Supremacy.VFS
             _closed = true;
 
             if (disposing)
+            {
                 GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void OnClosed()
         {
             Console.WriteLine("Close called for file {0}", ResolvedPath);
-            if (Closed != null)
-                Closed(this, EventArgs.Empty);
+            Closed?.Invoke(this, EventArgs.Empty);
         }
 
         protected void VerifyNotDisposed()
         {
             if (_closed)
+            {
                 throw new ObjectDisposedException("StreamDecorator");
+            }
         }
 
         ~StreamDecorator()

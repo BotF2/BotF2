@@ -25,13 +25,8 @@ namespace Supremacy.Effects
             [NotNull] EffectGroup effectGroup,
             IEffectParameterBindingCollection customParameterBindings)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (effectGroup == null)
-                throw new ArgumentNullException("effectGroup");
-
-            _source = source;
-            _effectGroup = effectGroup;
+            _source = source ?? throw new ArgumentNullException("source");
+            _effectGroup = effectGroup ?? throw new ArgumentNullException("effectGroup");
             _customParameterBindings = customParameterBindings;
             _targetEffectBindings = new KeyedCollectionBase<IEffectTarget, TargetEffectBinding>(o => o.Target);
         }
@@ -46,10 +41,11 @@ namespace Supremacy.Effects
 
         public IIndexedCollection<EffectBinding> GetEffectBindings(IEffectTarget target)
         {
-            TargetEffectBinding targetEffectBinding;
 
-            if (_targetEffectBindings.TryGetValue(target, out targetEffectBinding))
+            if (_targetEffectBindings.TryGetValue(target, out TargetEffectBinding targetEffectBinding))
+            {
                 return targetEffectBinding.EffectBindings;
+            }
 
             return ArrayWrapper<EffectBinding>.Empty;
         }
@@ -57,13 +53,14 @@ namespace Supremacy.Effects
         internal void AttachTarget([NotNull] IEffectTarget effectTarget)
         {
             if (effectTarget == null)
+            {
                 throw new ArgumentNullException("effectTarget");
+            }
 
             lock (EffectSystem.SyncRoot)
             {
-                TargetEffectBinding targetEffectBinding;
 
-                if (_targetEffectBindings.TryGetValue(effectTarget, out targetEffectBinding))
+                if (_targetEffectBindings.TryGetValue(effectTarget, out TargetEffectBinding targetEffectBinding))
                 {
                     throw new InvalidOperationException(
                         string.Format(
@@ -82,25 +79,28 @@ namespace Supremacy.Effects
 
                 _targetEffectBindings.Add(targetBindings);
 
-                IEffectTargetInternal internalTarget = effectTarget as IEffectTargetInternal;
-                if (internalTarget != null)
+                if (effectTarget is IEffectTargetInternal internalTarget)
+                {
                     internalTarget.EffectBindingsInternal.AddRange(effectBindings);
+                }
 
-                effectBindings.ForEach(o => o.Attach());
+                _ = effectBindings.ForEach(o => o.Attach());
             }
         }
 
         internal void DetachTarget([NotNull] IEffectTarget effectTarget)
         {
             if (effectTarget == null)
+            {
                 throw new ArgumentNullException("effectTarget");
-
-            IEffectTargetInternal internalTarget = effectTarget as IEffectTargetInternal;
+            }
 
             lock (EffectSystem.SyncRoot)
             {
                 if (!_targetEffectBindings.TryGetValue(effectTarget, out TargetEffectBinding targetEffectBinding))
+                {
                     return;
+                }
 
                 foreach (EffectBinding effectBinding in targetEffectBinding.EffectBindings)
                 {
@@ -108,8 +108,10 @@ namespace Supremacy.Effects
                     {
                         effectBinding.Detach();
 
-                        if (internalTarget != null)
-                            internalTarget.EffectBindingsInternal.Remove(effectBinding);
+                        if (effectTarget is IEffectTargetInternal internalTarget)
+                        {
+                            _ = internalTarget.EffectBindingsInternal.Remove(effectBinding);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -117,7 +119,7 @@ namespace Supremacy.Effects
                     }
                 }
 
-                _targetEffectBindings.Remove(effectTarget);
+                _ = _targetEffectBindings.Remove(effectTarget);
             }
         }
 
@@ -135,7 +137,7 @@ namespace Supremacy.Effects
 
         #region INotifyPropertyChanged Members
 
-        [field: NonSerializedAttribute]
+        [field: NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -154,7 +156,9 @@ namespace Supremacy.Effects
                         previousValue);
 
                     if (previousValue == valueBeforeCombine)
+                    {
                         return;
+                    }
                 }
             }
             remove
@@ -171,7 +175,9 @@ namespace Supremacy.Effects
                         previousValue);
 
                     if (previousValue == valueBeforeRemove)
+                    {
                         return;
+                    }
                 }
             }
         }
@@ -179,9 +185,7 @@ namespace Supremacy.Effects
         [UsedImplicitly]
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = _propertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
@@ -196,13 +200,8 @@ namespace Supremacy.Effects
 
             public TargetEffectBinding([NotNull] IEffectTarget target, [NotNull] IIndexedCollection<EffectBinding> effectBindings)
             {
-                if (target == null)
-                    throw new ArgumentNullException("target");
-                if (effectBindings == null)
-                    throw new ArgumentNullException("effectBindings");
-
-                _target = target;
-                _effectBindings = effectBindings;
+                _target = target ?? throw new ArgumentNullException("target");
+                _effectBindings = effectBindings ?? throw new ArgumentNullException("effectBindings");
             }
 
             public IEffectTarget Target => _target;

@@ -8,14 +8,12 @@
 // All other rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
-using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
 using Supremacy.Utility;
@@ -44,7 +42,9 @@ namespace Supremacy.Game
         public void UpdateLocalGame([NotNull] GameContext game)
         {
             if (game == null)
+            {
                 throw new ArgumentNullException("game");
+            }
 
             GameContext.PushThreadContext(game);
             try
@@ -77,7 +77,10 @@ namespace Supremacy.Game
                         foreach (Civilization civ in game.Civilizations)
                         {
                             if (civ.CivID == ownerId)
+                            {
                                 continue;
+                            }
+
                             ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                             _diplomacyData[ownerId, civ.CivID] = foreignPower.DiplomacyData;
                         }
@@ -88,7 +91,7 @@ namespace Supremacy.Game
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
 
@@ -102,9 +105,14 @@ namespace Supremacy.Game
         public static GameUpdateData Create(GameContext game, Player player)
         {
             if (game == null)
+            {
                 throw new ArgumentNullException("game");
+            }
+
             if (player == null)
+            {
                 throw new ArgumentNullException("player");
+            }
 
             GameUpdateData data = new GameUpdateData();
 
@@ -126,11 +134,11 @@ namespace Supremacy.Game
 
                 //GameLog.Core.Intel.DebugFormat("", _diplomat.);
 
-                data._civManagers.ForEach(o => o.Compact());
+                _ = data._civManagers.ForEach(o => o.Compact());
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
 
             return data;

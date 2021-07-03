@@ -32,16 +32,16 @@ namespace Supremacy.Effects
 
         public void EnsureIndex(int index)
         {
-            int delta = (index + 1) - Count;
+            int delta = index + 1 - Count;
             if (delta > 0)
             {
-                Add(delta);
+                _ = Add(delta);
             }
         }
 
         public bool IsValidIndex(int index)
         {
-            return (index >= 0 && index < Count);
+            return index >= 0 && index < Count;
         }
 
         public int IndexOf(T value)
@@ -62,7 +62,7 @@ namespace Supremacy.Effects
 
         public bool Contains(T value)
         {
-            return (IndexOf(value) != -1);
+            return IndexOf(value) != -1;
         }
 
         // 
@@ -184,7 +184,7 @@ namespace Supremacy.Effects
             if (index != -1)
             {
                 // Shift entries down
-                Array.Copy(List, index + 1, List, index, (Count - index - 1));
+                Array.Copy(List, index + 1, List, index, Count - index - 1);
 
                 // Return now unused entries back to default
                 Array.Clear(List, Count - 1, 1);

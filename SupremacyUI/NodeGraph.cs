@@ -665,7 +665,7 @@ namespace Supremacy.UI
                 RemoveVisualChild(gcp);
                 _fadingGCPListValid = false;
                 _isChildCountValid = false;
-                _fadingGCPs.Remove(key);
+                _ = _fadingGCPs.Remove(key);
             }
         }
 

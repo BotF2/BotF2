@@ -1,8 +1,5 @@
 ﻿using Supremacy.Economy;
-using Supremacy.Game;
 using Supremacy.Tech;
-using Supremacy.Utility;
-using Supremacy.Client;
 using System.Linq;
 
 using System.Windows;
@@ -27,7 +24,7 @@ namespace Supremacy.Client.Views
 
             BuildProjectList.ItemsSource = shipList;
 
-            SetBinding(
+            _ = SetBinding(
                 SelectedBuildProjectProperty,
                 new Binding
                 {
@@ -37,7 +34,9 @@ namespace Supremacy.Client.Views
                 });
 
             if (BuildProjectList.Items.Count > 0)
+            {
                 BuildProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
+            }
         }
 
         #region SelectedBuildProject Property
@@ -65,8 +64,8 @@ namespace Supremacy.Client.Views
 
         public object AdditionalContent
         {
-            get { return GetValue(AdditionalContentProperty); }
-            set { SetValue(AdditionalContentProperty, value); }
+            get => GetValue(AdditionalContentProperty);
+            set => SetValue(AdditionalContentProperty, value);
         }
         #endregion
 
@@ -83,18 +82,25 @@ namespace Supremacy.Client.Views
         private void ExecuteAcceptCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (SelectedBuildProject == null)
+            {
                 return;
+            }
+
             DialogResult = true;
         }
 
         private void OnBuildProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!(e.OriginalSource is DependencyObject source))
+            {
                 return;
+            }
 
             ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
             if (contanier == null)
+            {
                 return;
+            }
 
             DialogResult = true;
         }

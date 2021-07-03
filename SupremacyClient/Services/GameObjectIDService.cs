@@ -11,7 +11,6 @@ using System;
 
 using Supremacy.Annotations;
 using Supremacy.Client.Events;
-using Supremacy.Game;
 using Supremacy.Client.Context;
 
 namespace Supremacy.Client.Services
@@ -25,9 +24,7 @@ namespace Supremacy.Client.Services
         #region Constructors and Finalizers
         public GameObjectIDService([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            _appContext = appContext;
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
         }
         #endregion
 
@@ -46,7 +43,9 @@ namespace Supremacy.Client.Services
             while (!args.WaitHandle.WaitOne(timeout))
             {
                 if ((DateTime.Now - waitStart) > timeout)
+                {
                     break;
+                }
             }
 
             return args.Value;

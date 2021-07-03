@@ -488,7 +488,7 @@ namespace Supremacy.Data
                 }
             }
 
-            if (GameLog.Core.GameInitData.IsDebugEnabled)
+            if (GameLog.Core.GameInitDataDetails.IsDebugEnabled)
             {
                 //GameLog.Client.GameInitData.DebugFormat(tableOut);
                 string _values = "";
@@ -519,7 +519,7 @@ namespace Supremacy.Data
                     tableString = tableString.Substring(0, 60) + "...";
                 }
 
-                GameLog.Client.GameInitData.DebugFormat(tableString);
+                GameLog.Client.GameInitDataDetails.DebugFormat(tableString);
             }
 
             return table;

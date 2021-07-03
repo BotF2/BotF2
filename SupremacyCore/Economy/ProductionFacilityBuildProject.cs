@@ -44,9 +44,15 @@ namespace Supremacy.Economy
             : base(colony.Owner, colony, target)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
+
             _designId = target.DesignID;
             _colonyId = colony.ObjectID;
         }
@@ -75,9 +81,14 @@ namespace Supremacy.Economy
             : base(colony.Owner, colony, target)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
 
             _colony = new Lazy<Colony>(FindColony, LazyThreadSafetyMode.PublicationOnly);
         }
@@ -123,7 +134,7 @@ namespace Supremacy.Economy
             {
                 int count = Source.GetTotalFacilities(BaseFacilityType.Category);
                 int unitCost = (int)(0.50 * base.IndustryRequired);
-                return (count * unitCost);
+                return count * unitCost;
             }
         }
 
@@ -137,7 +148,9 @@ namespace Supremacy.Economy
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
             if (civManager == null)
+            {
                 return;
+            }
 
             civManager.SitRepEntries.Add(new ItemBuiltSitRepEntry(Builder, BuildDesign, Location));
         }
@@ -172,7 +185,7 @@ namespace Supremacy.Economy
             {
                 int count = Source.TotalOrbitalBatteries;
                 int unitCost = (int)(0.50 * base.IndustryRequired);
-                return (count * unitCost);
+                return count * unitCost;
             }
         }
 
@@ -201,7 +214,10 @@ namespace Supremacy.Economy
             ResourceValueCollection resourcesRequired = new ResourceValueCollection();
 
             foreach (ResourceType resourceType in EnumHelper.GetValues<ResourceType>())
+            {
                 resourcesRequired[resourceType] = (int)Math.Ceiling(base.ResourcesRequired[resourceType] / 2d);
+            }
+
             _resourcesRequired = resourcesRequired;
         }
 

@@ -18,12 +18,12 @@ namespace Supremacy.Markup
         #region Overrides of MarkupExtension
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            CultureInfo language;
 
-            string localText;
 
-            if (!LookupValue(out localText, out language))
+            if (!LookupValue(out string localText, out CultureInfo language))
+            {
                 return localText;
+            }
 
             switch (CharacterCasing)
             {
@@ -45,39 +45,46 @@ namespace Supremacy.Markup
             if (Group == null)
             {
                 if (string.IsNullOrWhiteSpace(Entry))
+                {
                     value = "{! Group and Key Required !}";
+                }
                 else
+                {
                     value = string.Format("{{! Group Required for Entry {0} !}}", Entry);
+                }
+
                 return false;
             }
 
-            LocalizedTextGroup group;
 
-            if (!textDatabase.Groups.TryGetValue(Group, out group))
+            if (!textDatabase.Groups.TryGetValue(Group, out LocalizedTextGroup group))
             {
                 value = string.Format("{{! Unknown Text Group: {0} !}}", Group);
                 return false;
             }
 
-            LocalizedString entry;
 
-            if (!group.Entries.TryGetValue(Entry, out entry))
+            if (!group.Entries.TryGetValue(Entry, out LocalizedString entry))
             {
                 entry = group.DefaultEntry;
 
                 if (entry == null)
                 {
                     if (group.Entries.Count == 0)
+                    {
                         value = string.Format("{{! Empty Text Group: {0} !}}", Group);
+                    }
                     else
+                    {
                         value = string.Format("{{! Missing Text Entry: {0} !}}", Entry);
+                    }
+
                     return false;
                 }
             }
 
-            LocalizedStringValue result;
 
-            if (entry.TryGetValue(ResourceManager.CurrentCulture, true, out result, out culture))
+            if (entry.TryGetValue(ResourceManager.CurrentCulture, true, out LocalizedStringValue result, out culture))
             {
                 value = result.Text;
                 return true;

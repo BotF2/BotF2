@@ -49,7 +49,7 @@ namespace Supremacy.Universe
         /// <value>The target colony.</value>
         public Colony TargetColony
         {
-            get { return GameContext.Current.Universe.Objects[_targetColonyId] as Colony; }
+            get => GameContext.Current.Universe.Objects[_targetColonyId] as Colony;
             set
             {
                 _targetColonyId = (value != null)
@@ -76,13 +76,13 @@ namespace Supremacy.Universe
                     float baseModSource = 0.025f;
                     float baseModTarget = 0.05f;
 
-                    Data.Table baseResProdTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
+                    Data.Table baseResProdTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopMultipliers"];
                     if (baseResProdTable != null)
                     {
                         try
                         {
-                            float.TryParse(baseResProdTable["Source"]["Value"], out float modSrc);
-                            float.TryParse(baseResProdTable["Target"]["Value"], out float modTarget);
+                            _ = float.TryParse(baseResProdTable["Source"]["Value"], out float modSrc);
+                            _ = float.TryParse(baseResProdTable["Target"]["Value"], out float modTarget);
 
                             baseModSource = modSrc;
                             baseModTarget = modTarget;
@@ -117,7 +117,7 @@ namespace Supremacy.Universe
         /// <value>The credits.</value>
         public int Credits
         {
-            get { return _credits; }
+            get => _credits;
             set
             {
                 _credits = value;
@@ -130,7 +130,9 @@ namespace Supremacy.Universe
             get
             {
                 if (!IsAssigned)
+                {
                     return 0;
+                }
 
                 //var clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
                 try
@@ -152,11 +154,17 @@ namespace Supremacy.Universe
                     Colony colony;
 
                     if (SourceColony.OwnerID == empire.CivID)
+                    {
                         colony = SourceColony;
+                    }
                     else if (TargetColony.OwnerID == empire.CivID)
+                    {
                         colony = TargetColony;
+                    }
                     else
+                    {
                         colony = null;
+                    }
 
                     if (colony == null)
                     {
@@ -230,7 +238,10 @@ namespace Supremacy.Universe
         public TradeRoute(Colony sourceColony)
         {
             if (sourceColony == null)
+            {
                 throw new ArgumentNullException("sourceColony");
+            }
+
             _sourceColonyId = sourceColony.ObjectID;
             _targetColonyId = -1;
             _credits = 0;
@@ -247,11 +258,20 @@ namespace Supremacy.Universe
         public bool IsValidTargetColony(Colony colony)
         {
             if (colony == null)
+            {
                 return true;
+            }
+
             if (!colony.IsOwned)
+            {
                 return false;
+            }
+
             if (colony.OwnerID == SourceColony.OwnerID)
+            {
                 return false;
+            }
+
             return DiplomacyHelper.IsTradeEstablished(colony.Owner, SourceColony.Owner);
         }
 
@@ -268,8 +288,7 @@ namespace Supremacy.Universe
         /// <param name="propertyName">Name of the property that has changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

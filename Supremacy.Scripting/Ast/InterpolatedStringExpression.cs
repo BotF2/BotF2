@@ -29,18 +29,13 @@ namespace Supremacy.Scripting.Ast
                 throw new ArgumentNullException("literalExpression");
             }
 
-            if (translateEscapeCharacter == null)
-            {
-                throw new ArgumentNullException("translateEscapeCharacter");
-            }
-
             if (literalExpression.Kind != LiteralKind.Text)
             {
                 throw new ArgumentException("Argument must be a Text literal expression.", "literalExpression");
             }
 
             _literalExpression = literalExpression;
-            _translateEscapeCharacter = translateEscapeCharacter;
+            _translateEscapeCharacter = translateEscapeCharacter ?? throw new ArgumentNullException("translateEscapeCharacter");
         }
 
         internal InterpolatedStringExpression()

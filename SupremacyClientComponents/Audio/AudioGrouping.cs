@@ -33,22 +33,25 @@ namespace Supremacy.Client.Audio
             }
             set
             {
-                if (value < 0) value = 0.0f;
-                else if (value > 1) value = 1.0f;
+                if (value < 0)
+                {
+                    value = 0.0f;
+                }
+                else if (value > 1)
+                {
+                    value = 1.0f;
+                }
 
                 lock (_engine.Lock)
                 {
-                    _channelGroup.setVolume(value);
+                    _ = _channelGroup.setVolume(value);
                 }
             }
         }
 
         public IAudioGrouping Parent
         {
-            get
-            {
-                return _parent;
-            }
+            get => _parent;
             set
             {
                 lock (_engine.Lock)
@@ -56,13 +59,14 @@ namespace Supremacy.Client.Audio
                     _parent = value;
                     if (_channelGroup != null)
                     {
-                        FMODGrouping parent = (_parent as FMODGrouping);
-                        if (parent != null && parent._channelGroup != null)
-                            parent._channelGroup.addGroup(_channelGroup);
+                        if (_parent is FMODGrouping parent && parent._channelGroup != null)
+                        {
+                            _ = parent._channelGroup.addGroup(_channelGroup);
+                        }
                         else
                         {
                             // return to master http://www.fmod.org/questions/question/forum-27115
-                            (_engine.Master as FMODGrouping)._channelGroup.addGroup(_channelGroup);
+                            _ = (_engine.Master as FMODGrouping)._channelGroup.addGroup(_channelGroup);
                         }
                     }
                 }
@@ -75,38 +79,34 @@ namespace Supremacy.Client.Audio
         #region Construction & Lifetime
         internal FMODGrouping([NotNull] FMODAudioEngine engine, string name)
         {
-            if (engine == null)
-                throw new ArgumentNullException("engine");
-
-            _engine = engine;
+            _engine = engine ?? throw new ArgumentNullException("engine");
             FMODErr.Check(engine.System.createChannelGroup(name, ref _channelGroup));
         }
 
         internal FMODGrouping([NotNull] FMODAudioEngine engine, [NotNull] FMOD.ChannelGroup channelGroup)
         {
-            if (engine == null)
-                throw new ArgumentNullException("engine");
-            if (channelGroup == null)
-                throw new ArgumentNullException("channelGroup");
-
-            _engine = engine;
-            _channelGroup = channelGroup;
+            _engine = engine ?? throw new ArgumentNullException("engine");
+            _channelGroup = channelGroup ?? throw new ArgumentNullException("channelGroup");
             _external = true;
         }
 
         public void Dispose()
         {
             if (_external)
+            {
                 return;
+            }
 
             lock (_engine.Lock)
             {
                 if (_isDisposed)
+                {
                     return;
+                }
 
                 _isDisposed = true;
 
-                _channelGroup.release();
+                _ = _channelGroup.release();
                 _channelGroup = null;
                 _engine.RemoveGrouping(this);
             }

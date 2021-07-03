@@ -56,18 +56,30 @@ namespace Supremacy.Client.Controls
         public static void AddHyperlinkClickedHandler(UIElement element, EventHandler<HyperlinkClickedEventArgs> handler)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             if (handler == null)
+            {
                 throw new ArgumentNullException("handler");
+            }
+
             element.AddHandler(HyperlinkClickedEvent, handler);
         }
 
         public static void RemoveHyperlinkClickedHandler(UIElement element, EventHandler<HyperlinkClickedEventArgs> handler)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             if (handler == null)
+            {
                 throw new ArgumentNullException("handler");
+            }
+
             element.RemoveHandler(HyperlinkClickedEvent, handler);
         }
         #endregion
@@ -106,42 +118,45 @@ namespace Supremacy.Client.Controls
         {
             InlineCollection inlines = null;
 
-            TextBlock textBlock = o as TextBlock;
-            if (textBlock != null)
+            if (o is TextBlock textBlock)
             {
                 inlines = textBlock.Inlines;
             }
             else
             {
-                Paragraph paragraph = o as Paragraph;
-                if (paragraph != null)
+                if (o is Paragraph paragraph)
                 {
                     inlines = paragraph.Inlines;
                 }
                 else
                 {
-                    Span span = o as Span;
-                    if (span != null)
+                    if (o is Span span)
+                    {
                         inlines = span.Inlines;
+                    }
                 }
             }
 
             if (inlines == null)
+            {
                 return;
+            }
 
             inlines.Clear();
 
             if (e.NewValue == null)
+            {
                 return;
+            }
 
-            IEnumerable<Inline> formattedInlines = FormattedTextConverter.Instance.Convert(
+            if (FormattedTextConverter.Instance.Convert(
                 e.NewValue,
                 typeof(IEnumerable<Inline>),
                 null,
-                CultureInfo.InvariantCulture) as IEnumerable<Inline>;
-
-            if (formattedInlines != null)
+                CultureInfo.InvariantCulture) is IEnumerable<Inline> formattedInlines)
+            {
                 inlines.AddRange(formattedInlines);
+            }
         }
         #endregion
     }

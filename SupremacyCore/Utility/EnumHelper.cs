@@ -29,14 +29,13 @@ namespace Supremacy.Utility
         public static bool IsDefined<T>(T value, out int ordinal) where T : struct
         {
             ordinal = Array.IndexOf(GetValues<T>(), value);
-            return (ordinal >= 0);
+            return ordinal >= 0;
         }
 
         public static bool MatchAttribute<T>(this T source, Attribute attribute) where T : struct
         {
-            bool result;
             //GameLog.Core.UI.DebugFormat("Matching Attributes - check these code lines !!");
-            if (EnumAttributeMatchCache.TryGetValue(new Tuple<Enum, Attribute>(source as Enum, attribute), out result))
+            if (EnumAttributeMatchCache.TryGetValue(new Tuple<Enum, Attribute>(source as Enum, attribute), out bool result))
             {
                 result = false;
                 // no hit ! for:GameLog.Core.UI.DebugFormat("Matching Attributes - result was set to FALSE as default");
@@ -59,18 +58,16 @@ namespace Supremacy.Utility
 
         public static TAttribute GetAttribute<TEnum, TAttribute>(this TEnum enumValue) where TEnum : struct where TAttribute : Attribute
         {
-            int ordinal;
 
-            if (!IsDefined(enumValue, out ordinal))
+            if (!IsDefined(enumValue, out int ordinal))
             {
                 return null;
             }
 
-            AttributeCollection attributes;
-            if (!EnumValueAttributeCache.TryGetItem(enumValue as Enum, out attributes))
+            if (!EnumValueAttributeCache.TryGetItem(enumValue as Enum, out AttributeCollection attributes))
             {
                 string name = GetNames<TEnum>()[ordinal];
-                FieldInfo field = (typeof(TEnum)).GetField(name);
+                FieldInfo field = typeof(TEnum).GetField(name);
 
                 attributes = new AttributeCollection(
                     Enumerable.ToArray(
@@ -83,10 +80,9 @@ namespace Supremacy.Utility
             return Enumerable.FirstOrDefault(Enumerable.OfType<TAttribute>(attributes));
         }
 
-        public static Nullable<T> Parse<T>(string value) where T : struct
+        public static T? Parse<T>(string value) where T : struct
         {
-            T result;
-            if (TryParse(value, false, out result))
+            if (TryParse(value, false, out T result))
             {
                 return result;
             }
@@ -101,7 +97,7 @@ namespace Supremacy.Utility
         public static bool TryParse<T>(string value, bool ignoreCase, out T result) where T : struct
         {
             result = new T();
-            if (!(typeof(T).IsEnum))
+            if (!typeof(T).IsEnum)
             {
                 return false;
             }
@@ -121,12 +117,12 @@ namespace Supremacy.Utility
             try
             {
                 ulong resultValue = 0;
-                if ((char.IsDigit(value[0]) || (value[0] == '-')) || (value[0] == '+'))
+                if (char.IsDigit(value[0]) || (value[0] == '-') || (value[0] == '+'))
                 {
                     Type underlyingType = Enum.GetUnderlyingType(typeof(T));
                     try
                     {
-                        Object convertedValue = Convert.ChangeType(value, underlyingType, CultureInfo.InvariantCulture);
+                        object convertedValue = Convert.ChangeType(value, underlyingType, CultureInfo.InvariantCulture);
                         result = (T)convertedValue;
                         return true;
                     }
@@ -211,10 +207,12 @@ namespace Supremacy.Utility
             }
         };
 
-        private static ulong ToUInt64(Object value)
+        private static ulong ToUInt64(object value)
         {
             if (value == null)
+            {
                 throw new ArgumentNullException("value");
+            }
 
             switch (Convert.GetTypeCode(value))
             {
@@ -240,24 +238,28 @@ namespace Supremacy.Utility
             if (entry == null)
             {
                 if (FieldInfoHash.Count > 100)
+                {
                     FieldInfoHash.Clear();
+                }
 
                 T[] enumValues;
                 ulong[] values;
                 string[] names;
 
-                if ((typeof(T)).BaseType == typeof(Enum))
+                if (typeof(T).BaseType == typeof(Enum))
                 {
                     enumValues = GetValues<T>();
                     names = GetNames<T>();
                     values = new ulong[enumValues.Length];
 
                     for (int i = 0; i < enumValues.Length; i++)
+                    {
                         values[i] = Convert.ToUInt64(enumValues[i]);
+                    }
                 }
                 else
                 {
-                    FieldInfo[] fields = (typeof(T)).GetFields(BindingFlags.Public | BindingFlags.Static);
+                    FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
 
                     values = new ulong[fields.Length];
                     names = new string[fields.Length];
@@ -282,11 +284,15 @@ namespace Supremacy.Utility
                             index--;
                             setValue = true;
                             if (index == 0)
+                            {
                                 break;
+                            }
                         }
 
                         if (!setValue)
+                        {
                             continue;
+                        }
 
                         names[index] = name;
                         values[index] = value;

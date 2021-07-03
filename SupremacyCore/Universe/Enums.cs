@@ -58,7 +58,10 @@ namespace Supremacy.Universe
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (typeof(ImageSource).IsAssignableFrom(destinationType))
+            {
                 return true;
+            }
+
             return base.CanConvertTo(context, destinationType);
         }
 
@@ -68,7 +71,9 @@ namespace Supremacy.Universe
             {
                 StarType? starType = value as StarType?;
                 if (starType.HasValue)
+                {
                     return ResourceManager.GetResourceUri(string.Format("Resources/Images/UI/Stars/Map/{0}.png", starType.Value));
+                }
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
@@ -166,9 +171,10 @@ namespace Supremacy.Universe
     /// </summary>
     public enum PlanetEnvironment : byte
     {
-        Ideal = 0,
+        NoWorld = 0,
+        Ideal,
         Comfortable,
-        //Adequate,
+        Adequate,
         Marginal,
         Hostile,
         Uninhabitable
@@ -182,7 +188,7 @@ namespace Supremacy.Universe
     {
         NoBonus = 0x00,
         Dilithium = 0x01,
-        RawMaterials = 0x02,
+        Duranium = 0x02,
         Random = 0x80,
     }
 

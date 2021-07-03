@@ -41,13 +41,20 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
+                {
                     //return "unknown";
                     return string.Format(ResourceManager.GetString("UNKNOWN"));
+                }
+
                 if (IsUnScannable)
+                {
                     //return "scan blocked";
                     return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
+                }
                 else
+                {
                     return View.Name;
+                }
             }
         }
 
@@ -56,13 +63,20 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
+                {
                     // return "unknown";
                     return string.Format(ResourceManager.GetString("UNKNOWN"));
+                }
+
                 if (IsUnScannable)
+                {
                     return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
+                }
                 //return "scan blocked";
                 else
+                {
                     return View.ClassName;
+                }
             }
         }
     }
@@ -98,14 +112,23 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsOwned || IsDesignOfShipsKnown)
+                {
                     return Source.Name;
+                }
+
                 if (IsNumberOfShipsKnown)
+                {
                     return _ships.Count + " in Nebula, Cloaked or Camouflaged";
+                }
+
                 if (IsOwnerKnown)
                 {
                     string ownerName = Source.Owner.ShortName;
                     if (ownerName.EndsWith("s"))
+                    {
                         ownerName = ownerName.Substring(0, ownerName.Length - 1);
+                    }
+
                     return ownerName + " Fleet";
                 }
                 return string.Format(ResourceManager.GetString("UNKNOWN_FLEET")); //"Unknown Fleet";
@@ -142,15 +165,20 @@ namespace Supremacy.Orbitals
         public static FleetView Create(Civilization owner, Fleet fleet)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
+            }
+
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
 
             List<ShipView> ships = new List<ShipView>();
             FleetView fleetView = new FleetView
             {
                 _sourceId = fleet.ObjectID,
-                _isOwned = (fleet.OwnerID == owner.CivID)
+                _isOwned = fleet.OwnerID == owner.CivID
             };
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
@@ -196,7 +224,7 @@ namespace Supremacy.Orbitals
                 }
                 if (netScanStrength >= 1)
                 {
-                    isDesignKnown = (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector));
+                    isDesignKnown = DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector);
                     //if(DiplomacyHelper.IsScanBlocked(owner, fleet.Sector) == true)
                     //GameLog.Client.Intel.DebugFormat("scanblocking = {0}, Contact ={1} isDesignKnown ={2}",
                     //    DiplomacyHelper.IsScanBlocked(owner, fleet.Sector), (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector)));
@@ -232,9 +260,12 @@ namespace Supremacy.Orbitals
         #region Implementation of IEquatable<FleetView>
         public bool Equals(FleetView other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
+            {
                 return false;
-            return (other._sourceId == _sourceId);
+            }
+
+            return other._sourceId == _sourceId;
         }
         #endregion
     }
@@ -259,7 +290,10 @@ namespace Supremacy.Orbitals
             bool isOwned)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             _sourceId = source.ObjectID;
             _isPresenceKnown = isPresenceKnown;
             _isDesignKnown = isDesignKnown;
@@ -292,9 +326,12 @@ namespace Supremacy.Orbitals
         #region Implementation of IEquatable<ShipView>
         public bool Equals(ShipView other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
+            {
                 return false;
-            return (other._sourceId == _sourceId);
+            }
+
+            return other._sourceId == _sourceId;
         }
         #endregion
     }

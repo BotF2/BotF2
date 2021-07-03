@@ -16,8 +16,8 @@ namespace Supremacy.Client.Controls
 
         public Brush Background
         {
-            get { return (Brush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
+            get => (Brush)GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
         }
         #endregion
 
@@ -32,8 +32,8 @@ namespace Supremacy.Client.Controls
 
         public bool IsInsetOnLeft
         {
-            get { return (bool)GetValue(IsInsetOnLeftProperty); }
-            set { SetValue(IsInsetOnLeftProperty, value); }
+            get => (bool)GetValue(IsInsetOnLeftProperty);
+            set => SetValue(IsInsetOnLeftProperty, value);
         }
         #endregion
 
@@ -48,8 +48,8 @@ namespace Supremacy.Client.Controls
 
         public bool IsOutsetOnRight
         {
-            get { return (bool)GetValue(IsOutsetOnRightProperty); }
-            set { SetValue(IsOutsetOnRightProperty, value); }
+            get => (bool)GetValue(IsOutsetOnRightProperty);
+            set => SetValue(IsOutsetOnRightProperty, value);
         }
         #endregion
 
@@ -72,13 +72,17 @@ namespace Supremacy.Client.Controls
                 c.BeginFigure(topLeft, true, true);
 
                 if (IsInsetOnLeft)
+                {
                     c.LineTo(middleLeft, false, true);
+                }
 
                 c.LineTo(bottomLeft, false, true);
                 c.LineTo(bottomRight, false, true);
 
                 if (IsOutsetOnRight)
+                {
                     c.LineTo(middleRight, false, true);
+                }
 
                 c.LineTo(topRight, false, true);
                 c.LineTo(topLeft, false, true);

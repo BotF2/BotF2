@@ -8,13 +8,8 @@
 // All other rights reserved.
 
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
-
-using Supremacy.Client.Interop;
 
 namespace Supremacy.Client
 {
@@ -33,7 +28,7 @@ namespace Supremacy.Client
         public static bool DeleteObject(IntPtr hObject)
         {
             bool flag = ExternalNativeMethods.IntDeleteObject(hObject);
-            Marshal.GetLastWin32Error();
+            _ = Marshal.GetLastWin32Error();
             return flag;
         }
 

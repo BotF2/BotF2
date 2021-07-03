@@ -11,9 +11,7 @@ namespace Supremacy.Messages
 
         public PlayerTurnFinishedMessage([NotNull] IPlayer player)
         {
-            if (player == null)
-                throw new ArgumentNullException("player");
-            _player = player;
+            _player = player ?? throw new ArgumentNullException("player");
         }
 
         public IPlayer Player => _player;

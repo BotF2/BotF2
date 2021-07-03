@@ -35,7 +35,7 @@ namespace Supremacy.Scripting.Ast
             clone._value = _value;
         }
 
-        public static ConstantExpression Create(Type type, object value, SourceSpan location = default(SourceSpan))
+        public static ConstantExpression Create(Type type, object value, SourceSpan location = default)
         {
             return Activator.CreateInstance(
                        typeof(ConstantExpression<>).MakeGenericType(type),

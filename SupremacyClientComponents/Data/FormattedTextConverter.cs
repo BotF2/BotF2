@@ -84,7 +84,9 @@ namespace Supremacy.Client.Data
             string source = (string)value;
 
             if (string.IsNullOrWhiteSpace(source))
+            {
                 return Binding.DoNothing;
+            }
 
             List<Inline> inlines = new List<Inline>();
             string[] lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -109,14 +111,18 @@ namespace Supremacy.Client.Data
 
                         while (i < line.Length && current != ']')
                         {
-                            sb.Append(current);
+                            _ = sb.Append(current);
 
                             if (++i < line.Length)
+                            {
                                 current = line[i];
+                            }
                         }
 
                         if (text.Length > 0)
+                        {
                             parentSpan.Inlines.Add(text);
+                        }
 
                         if (next == '/' && parentSpan.Parent != null)
                         {
@@ -148,14 +154,18 @@ namespace Supremacy.Client.Data
                     else
                     {
                         if (current == '[' && next == '[')
+                        {
                             ++i;
+                        }
 
-                        sb.Append(current);
+                        _ = sb.Append(current);
                     }
                 }
 
                 if (sb.Length > 0)
+                {
                     parentSpan.Inlines.Add(sb.ToString());
+                }
 
                 inlines.Add(parentSpan);
             }
@@ -194,10 +204,11 @@ namespace Supremacy.Client.Data
             {
                 case InlineType.Hyperlink:
                     {
-                        Uri uri;
 
-                        if (!Uri.TryCreate(param, UriKind.Absolute, out uri))
+                        if (!Uri.TryCreate(param, UriKind.Absolute, out Uri uri))
+                        {
                             uri = null;
+                        }
 
                         Hyperlink link = new Hyperlink();
                         link.NavigateUri = uri;
@@ -268,9 +279,10 @@ namespace Supremacy.Client.Data
 
         private static void OnHyperlinkClick(object sender, RoutedEventArgs e)
         {
-            Hyperlink link = sender as Hyperlink;
-            if (link == null)
+            if (!(sender is Hyperlink link))
+            {
                 return;
+            }
 
             link.RaiseEvent(new HyperlinkClickedEventArgs(link.NavigateUri, link, link.DataContext));
         }

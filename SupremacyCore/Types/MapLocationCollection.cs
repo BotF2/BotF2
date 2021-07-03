@@ -63,14 +63,18 @@ namespace Supremacy.Universe
             if (IsLeaf)
             {
                 foreach (T member in _members)
+                {
                     yield return member;
+                }
             }
             else
             {
                 foreach (QuadNode<T> node in _nodes)
                 {
                     foreach (T member in node)
+                    {
                         yield return member;
+                    }
                 }
             }
         }
@@ -191,8 +195,8 @@ namespace Supremacy.Universe
 
         public int LastSearchHit
         {
-            get { return _lastSearchHit; }
-            set { _lastSearchHit = value; }
+            get => _lastSearchHit;
+            set => _lastSearchHit = value;
         }
 
         public MapRectangle BoundingBox => _boundingBox;
@@ -215,21 +219,45 @@ namespace Supremacy.Universe
         public MapRectangle(int x1, int y1, int x2, int y2)
         {
             if (x1 < MapLocation.MinValue)
+            {
                 throw new ArgumentOutOfRangeException("x1", "value must be >= MapLocation.MinValue");
+            }
+
             if (y1 < MapLocation.MinValue)
+            {
                 throw new ArgumentOutOfRangeException("y1", "value must be >= MapLocation.MinValue");
+            }
+
             if (x1 > MapLocation.MaxValue)
+            {
                 throw new ArgumentOutOfRangeException("x1", "value must be <= MapLocation.MaxValue");
+            }
+
             if (y1 > MapLocation.MaxValue)
+            {
                 throw new ArgumentOutOfRangeException("y1", "value must be <= MapLocation.MaxValue");
+            }
+
             if (x2 < MapLocation.MinValue)
+            {
                 throw new ArgumentOutOfRangeException("x2", "value must be >= MapLocation.MinValue");
+            }
+
             if (y2 < MapLocation.MinValue)
+            {
                 throw new ArgumentOutOfRangeException("y2", "value must be >= MapLocation.MinValue");
+            }
+
             if (x2 > MapLocation.MaxValue)
+            {
                 throw new ArgumentOutOfRangeException("x2", "value must be <= MapLocation.MaxValue");
+            }
+
             if (y2 > MapLocation.MaxValue)
+            {
                 throw new ArgumentOutOfRangeException("y2", "value must be <= MapLocation.MaxValue");
+            }
+
             _x1 = (byte)x1;
             _y1 = (byte)y1;
             _x2 = (byte)x2;
@@ -249,22 +277,34 @@ namespace Supremacy.Universe
 
         public bool Contains(MapRectangle rectangle)
         {
-            return ((rectangle.MinX >= MinX) &&
+            return (rectangle.MinX >= MinX) &&
                     (rectangle.MinY >= MinY) &&
                     (rectangle.MaxX <= MaxX) &&
-                    (rectangle.MaxY <= MaxY));
+                    (rectangle.MaxY <= MaxY);
         }
 
         public bool Intersects(MapRectangle rectangle)
         {
             if (rectangle.MaxX < MinX)
+            {
                 return false;
+            }
+
             if (rectangle.MinX > MaxX)
+            {
                 return false;
+            }
+
             if (rectangle.MaxY < MinY)
+            {
                 return false;
+            }
+
             if (rectangle.MinY > MaxY)
+            {
                 return false;
+            }
+
             return true;
         }
 
@@ -286,16 +326,19 @@ namespace Supremacy.Universe
 
         public bool Equals(MapRectangle other)
         {
-            return ((other._x1 == _x1) &&
+            return (other._x1 == _x1) &&
                     (other._x2 == _x2) &&
                     (other._y1 == _y1) &&
-                    (other._y2 == _y2));
+                    (other._y2 == _y2);
         }
 
         public override bool Equals(object obj)
         {
             if (obj.GetType() != typeof(MapRectangle))
+            {
                 return false;
+            }
+
             return Equals((MapRectangle)obj);
         }
 

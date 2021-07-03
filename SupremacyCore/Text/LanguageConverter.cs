@@ -24,12 +24,12 @@ namespace Supremacy.Text
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return (destinationType == typeof(string));
+            return destinationType == typeof(string);
         }
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return (sourceType == typeof(string));
+            return sourceType == typeof(string);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
@@ -37,7 +37,9 @@ namespace Supremacy.Text
             string stringValue = value as string;
 
             if (string.IsNullOrWhiteSpace(stringValue))
+            {
                 return null;
+            }
 
             // ReSharper disable AssignNullToNotNullAttribute
             try
@@ -55,9 +57,10 @@ namespace Supremacy.Text
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            CultureInfo language = value as CultureInfo;
-            if (language == null)
+            if (!(value is CultureInfo language))
+            {
                 return null;
+            }
 
             return language.Name;
         }

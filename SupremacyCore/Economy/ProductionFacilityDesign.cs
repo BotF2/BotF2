@@ -78,7 +78,7 @@ namespace Supremacy.Economy
             {
                 Category = EnumHelper.Parse<ProductionCategory>(
                     tempElement.InnerText.Trim())
-                    ?? default(ProductionCategory);
+                    ?? default;
             }
 
             tempElement = element["UnitOutput"];
@@ -102,15 +102,15 @@ namespace Supremacy.Economy
 
             XmlElement newElement = doc.CreateElement("LaborCost");
             newElement.InnerText = LaborCost.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("ProductionCategory");
             newElement.InnerText = Category.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("UnitOutput");
             newElement.InnerText = UnitOutput.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Supremacy.Economy
 
             system.Colony.SetFacilityType(Category, this);
             system.Colony.AddFacility(Category);
-            system.Colony.ActivateFacility(Category);
+            _ = system.Colony.ActivateFacility(Category);
 
             spawnedInstance = null;
             return true;

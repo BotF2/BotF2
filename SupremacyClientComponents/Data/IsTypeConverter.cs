@@ -11,10 +11,14 @@ namespace Supremacy.Client.Data
         {
             Type type = parameter as Type;
             if (type == null)
+            {
                 return false;
+            }
 
             if (value == null)
+            {
                 return false;
+            }
 
             return type.IsInstanceOfType(value);
         }

@@ -13,7 +13,6 @@ using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
-using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -50,8 +49,8 @@ namespace Supremacy.Orbitals
         /// <value>The design.</value>
         public OrbitalDesign OrbitalDesign
         {
-            get { return Design as OrbitalDesign; }
-            set { Design = value; }
+            get => Design as OrbitalDesign;
+            set => Design = value;
         }
 
         /// <summary>
@@ -98,15 +97,15 @@ namespace Supremacy.Orbitals
         /// <value>The crew experience level.</value>
         public int ExperienceLevel
         {
-            get { return _experienceLevel; }
-            set { _experienceLevel = (ushort)Math.Max(0, Math.Min(value, UInt16.MaxValue)); }
+            get => _experienceLevel;
+            set => _experienceLevel = (ushort)Math.Max(0, Math.Min(value, ushort.MaxValue));
         }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Orbital"/> is manned.
         /// </summary>
         /// <value><c>true</c> if this <see cref="Orbital"/> is manned; otherwise, <c>false</c>.</value>
-        public bool IsManned => (OrbitalDesign.CrewSize > 0);
+        public bool IsManned => OrbitalDesign.CrewSize > 0;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Orbital"/> is operational.
@@ -114,7 +113,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Orbital"/> is operational; otherwise, <c>false</c>.
         /// </value>
-        public bool IsOperational => (!IsManned || !Crew.IsMinimized);
+        public bool IsOperational => !IsManned || !Crew.IsMinimized;
 
         /// <summary>
         /// Gets the crew experience rank.
@@ -124,7 +123,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                Data.Table rankTable = GameContext.Current.Tables.ShipTables["ExperienceRanks"];
+                Data.Table rankTable = GameContext.Current.Tables.GameOptionTables["ExperienceRanks"];
                 for (int i = 0; i < rankTable.Rows.Count; i++)
                 {
                     if (int.TryParse(rankTable[i][0], out int minimum))
@@ -213,7 +212,10 @@ namespace Supremacy.Orbitals
             // repair abilities are better in allied systems with colonies or starbases
             Entities.Civilization claimingCiv = null;
             if (GameContext.Current.SectorClaims != null)
+            {
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
+            }
+
             if (claimingCiv == Owner)
             {
                 // Added that system must be owned by ship´s owner
@@ -231,7 +233,7 @@ namespace Supremacy.Orbitals
                 //}
             }
 
-            HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
+            _ = HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
         }
 
         /// <summary>
@@ -239,7 +241,7 @@ namespace Supremacy.Orbitals
         /// </summary>
         public void RegenerateShields()
         {       //Bases regenerate their own shields 4 times quicker. See ship repair in simular line elsewhere
-            double increase = (OrbitalDesign.ShieldRechargeRate) * ShieldStrength.Maximum;   // ShieldStrength shown in Encyclopedia
+            double increase = OrbitalDesign.ShieldRechargeRate * ShieldStrength.Maximum;   // ShieldStrength shown in Encyclopedia
 
             // recently values were divided by seven and for stations multiplied with 4 - not neccessary anymore
             //if (OrbitalDesign.Key.Contains("BASE") 
@@ -251,7 +253,7 @@ namespace Supremacy.Orbitals
             //    increase = increase * 4;
             //}
 
-            ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
+            _ = ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
         }
 
         /// <summary>
@@ -266,8 +268,8 @@ namespace Supremacy.Orbitals
             //base.DynamicObjectType // that?
             // No shield regeneration // use Reharge value /7 from it. Here is where the ship regeneration is 
             // next 2 lines not needed they are in Regnerate shields -> no they are needed, its that thats working
-            double increase = (OrbitalDesign.ShieldRechargeRate / 7) * ShieldStrength.Maximum; // Reduce Oribtal ShieldRecharge to 50% Not yet tested
-            ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
+            double increase = OrbitalDesign.ShieldRechargeRate / 7 * ShieldStrength.Maximum; // Reduce Oribtal ShieldRecharge to 50% Not yet tested
+            _ = ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
 
 
             // orignal stuff. No longer full recovery after battle.
@@ -278,7 +280,9 @@ namespace Supremacy.Orbitals
             //double increase = 0.01; // only minimal hull repair on non-bases
             Entities.Civilization claimingCiv = null;
             if (GameContext.Current.SectorClaims != null)
+            {
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
+            }
 
             //GameLog.Core.MapData.DebugFormat("claimingCiv = {0}, Sector {1}, but owner=newOwner wish to be = {2}", claimingCiv, Sector.Location.ToString(), Owner);
 
@@ -290,7 +294,7 @@ namespace Supremacy.Orbitals
 
                     RegenerateHull();
                     increase = 0.07;
-                    HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
+                    _ = HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
                     _hullStrength.UpdateAndReset();
                     //GameLog.Core.MapData.DebugFormat("claiming: Sector has colony = {0}, Sector = {1}, Owner = {2}", Sector.System.Colony.Name, Sector.Location.ToString(), Owner);
                 }
@@ -299,7 +303,7 @@ namespace Supremacy.Orbitals
                     _shieldStrength.Reset(_shieldStrength.Maximum);
                     increase = 0.10;
                     RegenerateHull();
-                    HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
+                    _ = HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
                     _hullStrength.UpdateAndReset();
                     //GameLog.Core.MapData.DebugFormat("claiming: Sector has station = {0}, Sector = {1}, Owner = {2}", Sector.Station.Name, Sector.Location.ToString(), Owner);
                 }

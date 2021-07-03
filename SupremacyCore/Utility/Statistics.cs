@@ -29,19 +29,31 @@ namespace Supremacy.Utility
                                                 t * (-1.13520398 +
                                                 t * (1.48851587 +
                                                 t * (-0.82215223 +
-                                                t * (0.17087277))))))))));
-            if (z >= 0) return ans;
-            else return -ans;
+                                                t * 0.17087277)))))))));
+            if (z >= 0)
+            {
+                return ans;
+            }
+            else
+            {
+                return -ans;
+            }
         }
 
         // fractional error less than x.xx * 10 ^ -4.
         public static double Erf2(double z)
         {
             double t = 1.0 / (1.0 + 0.47047 * Math.Abs(z));
-            double poly = t * (0.3480242 + t * (-0.0958798 + t * (0.7478556)));
+            double poly = t * (0.3480242 + t * (-0.0958798 + t * 0.7478556));
             double ans = 1.0 - poly * Math.Exp(-z * z);
-            if (z >= 0) return ans;
-            else return -ans;
+            if (z >= 0)
+            {
+                return ans;
+            }
+            else
+            {
+                return -ans;
+            }
         }
 
         public static double Phi(double x)
@@ -58,8 +70,16 @@ namespace Supremacy.Utility
         // Reference: http://www.jstatsoft.org/v11/i04/v11i04.pdf
         public static double Phi2(double z)
         {
-            if (z > 8.0) return 1.0;    // needed for large values of z
-            if (z < -8.0) return 0.0;    // probably not needed
+            if (z > 8.0)
+            {
+                return 1.0;    // needed for large values of z
+            }
+
+            if (z < -8.0)
+            {
+                return 0.0;    // probably not needed
+            }
+
             double sum = 0.0, term = z;
             for (int i = 3; sum + term != sum; i += 2)
             {
@@ -72,7 +92,7 @@ namespace Supremacy.Utility
         // cumulative normal distribution
         public static double CPhi(double z)
         {
-            return 0.5 * (1.0 + Erf(z / (Math.Sqrt(2.0))));
+            return 0.5 * (1.0 + Erf(z / Math.Sqrt(2.0)));
         }
 
         // cumulative normal distribution with mean mu and std deviation sigma

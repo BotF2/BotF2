@@ -18,13 +18,8 @@ namespace Supremacy.Client.Views
         #region Constructors and Finalizers
         public TradeRouteListView([NotNull] IAppContext appContext, [NotNull] IResourceManager resourceManager)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            if (resourceManager == null)
-                throw new ArgumentNullException("resourceManager");
-
-            _appContext = appContext;
-            _resourceManager = resourceManager;
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
+            _resourceManager = resourceManager ?? throw new ArgumentNullException("resourceManager");
 
             InitializeComponent();
         }
@@ -40,8 +35,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            TradeRoute tradeRoute = targetListViewItem.DataContext as TradeRoute;
-            if (tradeRoute == null)
+            if (!(targetListViewItem.DataContext is TradeRoute tradeRoute))
             {
                 e.Handled = true;
                 return;
@@ -67,14 +61,20 @@ namespace Supremacy.Client.Views
         private void PopulateTradeRouteMenu(TradeRoute tradeRoute)
         {
             if (tradeRoute == null)
+            {
                 throw new ArgumentNullException("tradeRoute");
+            }
 
             ContextMenu contextMenu = ContextMenu;
             if (contextMenu != null)
+            {
                 contextMenu.Items.Clear();
+            }
 
             if (tradeRoute.SourceColony.OwnerID != _appContext.LocalPlayer.EmpireID)
+            {
                 return;
+            }
 
             if (contextMenu == null)
             {
@@ -82,7 +82,7 @@ namespace Supremacy.Client.Views
                 ContextMenu = contextMenu;
             }
 
-            contextMenu.Items.Add(
+            _ = contextMenu.Items.Add(
                 new MenuItem
                 {
                     Header = _resourceManager.GetString("Cancel trade route"),

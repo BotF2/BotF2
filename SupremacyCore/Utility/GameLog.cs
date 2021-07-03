@@ -35,9 +35,12 @@ namespace Supremacy.Utility
             lock (_syncLock)
             {
                 if (_initialized)
+                {
                     return;
-                XmlConfigurator.Configure(new FileInfo("LogConfig.log4net"));
-                BasicConfigurator.Configure(new ChannelLogAppender());
+                }
+
+                _ = XmlConfigurator.Configure(new FileInfo("LogConfig.log4net"));
+                _ = BasicConfigurator.Configure(new ChannelLogAppender());
                 _initialized = true;
             }
             Core.General.Info("Log Initialized");
@@ -202,14 +205,20 @@ namespace Supremacy.Utility
         protected GameLog(Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
+
             _name = type.FullName;
         }
 
         protected GameLog(string name)
         {
             if (string.IsNullOrEmpty(name))
+            {
                 throw new ArgumentException("name must be a non-null, non-empty string");
+            }
+
             _name = name;
         }
 

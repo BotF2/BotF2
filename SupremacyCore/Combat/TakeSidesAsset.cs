@@ -4,8 +4,6 @@
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
-using Supremacy.Utility;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,9 +40,13 @@ namespace Supremacy.Combat
                         if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner)) // ToDo 3+ directional scan
                         {
                             if (OppositionFleets.Contains(fleetsAtLocation[j]))
+                            {
                                 continue;
+                            }
                             else
+                            {
                                 OppositionFleets.Add(fleetsAtLocation[j]);
+                            }
                             //_ = OppositionFleets.Distinct();
                         }
 

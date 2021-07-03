@@ -147,7 +147,9 @@ namespace Supremacy.Scripting.Ast
 
             // TODO: the code above uses some non-standard multi-resolve rules
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
             ExpressionClass = ExpressionClass.Variable;
 

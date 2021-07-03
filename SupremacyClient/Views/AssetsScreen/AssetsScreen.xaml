@@ -184,7 +184,7 @@
                         Source="vfs:///Resources/Images/UI/ScreenIcons/rawmaterials.png"
                         />
                     <TextBlock 
-                        Grid.Column="37" Text="{Binding Path=TotalRawMaterials, Mode=OneWay}" 
+                        Grid.Column="37" Text="{Binding Path=TotalDuranium, Mode=OneWay}" 
                         Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>

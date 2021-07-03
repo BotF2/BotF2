@@ -28,7 +28,7 @@ namespace Supremacy.Client.Views
     {
         private readonly IUnityContainer _container;
         private readonly IAppContext _appContext;
-        private CivilizationManager _localCivManager;
+        private readonly CivilizationManager _localCivManager;
         //private IntelUpdate _update;
 
         // order dictionary is located in IntelOrders.cs constructor, store orders in core of host?
@@ -41,21 +41,27 @@ namespace Supremacy.Client.Views
         private string _blameWhoFive = "No one";
         private string _blameWhoSix = "No one";
 
+#pragma warning disable IDE0044 // Add readonly modifier
         private RadioButton[] _radioButtonZero;
+
         private RadioButton[] _radioButtonOne;
         private RadioButton[] _radioButtonTwo;
         private RadioButton[] _radioButtonThree;
         private RadioButton[] _radioButtonFour;
         private RadioButton[] _radioButtonFive;
         private RadioButton[] _radioButtonSix;
+#pragma warning restore IDE0044 // Add readonly modifier
 
-        Civilization _spiedZeroCiv = DesignTimeObjects.SpiedCivZero.Civilization;
-        Civilization _spiedOneCiv = DesignTimeObjects.SpiedCivOne.Civilization;
-        Civilization _spiedTwoCiv = DesignTimeObjects.SpiedCivTwo.Civilization;
-        Civilization _spiedThreeCiv = DesignTimeObjects.SpiedCivThree.Civilization;
-        Civilization _spiedFourCiv = DesignTimeObjects.SpiedCivFour.Civilization;
-        Civilization _spiedFiveCiv = DesignTimeObjects.SpiedCivFive.Civilization;
-        Civilization _spiedSixCiv = DesignTimeObjects.SpiedCivSix.Civilization;
+#pragma warning disable IDE0052 // Remove unread private members
+        readonly Civilization _spiedZeroCiv = DesignTimeObjects.SpiedCivZero.Civilization;
+
+        readonly Civilization _spiedOneCiv = DesignTimeObjects.SpiedCivOne.Civilization;
+        readonly Civilization _spiedTwoCiv = DesignTimeObjects.SpiedCivTwo.Civilization;
+        readonly Civilization _spiedThreeCiv = DesignTimeObjects.SpiedCivThree.Civilization;
+        readonly Civilization _spiedFourCiv = DesignTimeObjects.SpiedCivFour.Civilization;
+        readonly Civilization _spiedFiveCiv = DesignTimeObjects.SpiedCivFive.Civilization;
+        readonly Civilization _spiedSixCiv = DesignTimeObjects.SpiedCivSix.Civilization;
+#pragma warning restore IDE0052 // Remove unread private members
 
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
@@ -67,17 +73,16 @@ namespace Supremacy.Client.Views
         public Meter UpdateAttackingAccumulated(Civilization attackingCiv)
         {
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
-            int newAttackIntelligence = 0;
-            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _ = int.TryParse(attackMeter.CurrentValue.ToString(), out int newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
             return attackMeter;
         }
         protected virtual void FillUpDefense()
         {
             CivilizationManager civ = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
-            civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
+            _ = civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
             civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
-            civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
+            _ = civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
             civ.TotalIntelligenceDefenseAccumulated.UpdateAndReset();
             //OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             //OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
@@ -87,17 +92,13 @@ namespace Supremacy.Client.Views
         #endregion 
         public AssetsScreen([NotNull] IUnityContainer container)
         {
-            GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
-
-            if (container == null)
-                throw new ArgumentNullException("container");
-
-            _container = container;
+            GameLog.Client.UIDetails.DebugFormat("AssetsScreen - InitializeComponent();");
+            _container = container ?? throw new ArgumentNullException("container");
             _appContext = _container.Resolve<IAppContext>();
             _localCivManager = _appContext.LocalPlayerEmpire;
             InitializeComponent();
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
-            IntelHelper.GetLocalCiv(_localCivManager);
+            _ = IntelHelper.GetLocalCiv(_localCivManager);
             // ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
             // DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 
@@ -238,12 +239,16 @@ namespace Supremacy.Client.Views
         private void OnLocalPlayerEmpireChanged()
         {
             if (!_appContext.IsGameInPlay || _appContext.IsGameEnding)
+            {
                 return;
+            }
 
             CivilizationManager localPlayerEmpire = _appContext.LocalPlayerEmpire;
             //works  GameLog.Client.UI.DebugFormat("AssetsScreen local player ={0}", localPlayerEmpire.Civilization.Key);
             if (localPlayerEmpire == null)
+            {
                 return;
+            }
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -330,7 +335,7 @@ namespace Supremacy.Client.Views
                 // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
                 Diplomat diplomat1 = Diplomat.Get(GameContext.Current.CivilizationManagers[_civLocalPlayer.CivID]);
-                int empireCount = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Count();
+                int empireCount = GameContext.Current.Civilizations.Count(o => o.IsEmpire);
                 List<Civilization> empireCivsList = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
                 List<int> empireIdList = new List<int>();
                 foreach (Civilization empireCiv in empireCivsList)
@@ -343,7 +348,9 @@ namespace Supremacy.Client.Views
 
                 {
                     if (empireID == _civLocalPlayer.CivID)
+                    {
                         continue;
+                    }
 
                     ForeignPower ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[empireID]);
                     bool _checkedVisibleForSabotagePending = true;
@@ -356,9 +363,12 @@ namespace Supremacy.Client.Views
                         int _statementSentInTurn = diplomat1.GetLastStatementSent(ForeignPower).TurnSent;
 
                         if (_statementSentInTurn == 99999)
+                        {
                             _statementSentInTurn = 1;
+                        }
                         //switch (ForeignPower.LastStatementSent.StatementType)
                         if (GameContext.Current.TurnNumber < _statementSentInTurn + 2)
+                        {
                             switch (diplomat1.GetLastStatementSent(ForeignPower).StatementType)
                             {
                                 case StatementType.StealCredits:
@@ -376,11 +386,13 @@ namespace Supremacy.Client.Views
                                 default:
                                     break;
                             }
+                        }
                     }
                     //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
 
                     // just for testing      _checkedVisibleForSabotagePending = true;
                     if (_checkedVisibleForSabotagePending == false)
+                    {
                         switch (empireID)
                         {
                             case 0:
@@ -406,6 +418,7 @@ namespace Supremacy.Client.Views
                                 break;
                             default: break;
                         }
+                    }
                 }
 
                 Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
@@ -495,7 +508,9 @@ namespace Supremacy.Client.Views
                 }
             }
             else
+            {
                 PauseAnimations();
+            }
         }
 
         private bool CheckingVisibityForSabotagePending(Diplomat diplomat1, ForeignPower foreignPower)
@@ -580,11 +595,13 @@ namespace Supremacy.Client.Views
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (value == _isActive)
+                {
                     return;
+                }
 
                 _isActive = value;
 
@@ -602,8 +619,8 @@ namespace Supremacy.Client.Views
 
         public AssetsScreenPresentationModel Model
         {
-            get { return DataContext as AssetsScreenPresentationModel; }
-            set { DataContext = value; }
+            get => DataContext as AssetsScreenPresentationModel;
+            set => DataContext = value;
         }
 
         public void OnCreated() { }
@@ -616,8 +633,7 @@ namespace Supremacy.Client.Views
         #region OnButtonClicks
         private void OnBlameButtonsZeroClick(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
-            if (rb != null)
+            if (sender is RadioButton)
             {
                 if (BlameNoOne0.IsChecked == true)
                 {
@@ -660,8 +676,7 @@ namespace Supremacy.Client.Views
         }
         private void OnBlameButtonsOneClick(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
-            if (rb != null)
+            if (sender is RadioButton)
             {
                 if (BlameNoOne1.IsChecked == true)
                 {
@@ -705,8 +720,7 @@ namespace Supremacy.Client.Views
 
         private void OnBlameButtonsTwoClick(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
-            if (rb != null)
+            if (sender is RadioButton)
             {
                 if (BlameNoOne2.IsChecked == true)
                 {
@@ -749,8 +763,7 @@ namespace Supremacy.Client.Views
         }
         private void OnBlameButtonsThreeClick(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
-            if (rb != null)
+            if (sender is RadioButton)
             {
                 if (BlameNoOne3.IsChecked == true)
                 {
@@ -793,8 +806,7 @@ namespace Supremacy.Client.Views
         }
         private void OnBlameButtonsFourClick(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
-            if (rb != null)
+            if (sender is RadioButton)
             {
                 if (BlameNoOne4.IsChecked == true)
                 {
@@ -837,8 +849,7 @@ namespace Supremacy.Client.Views
         }
         private void OnBlameButtonsFiveClick(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
-            if (rb != null)
+            if (sender is RadioButton)
             {
                 if (BlameNoOne5.IsChecked == true)
                 {
@@ -881,8 +892,7 @@ namespace Supremacy.Client.Views
         }
         private void OnBlameButtonsSixClick(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
-            if (rb != null)
+            if (sender is RadioButton)
             {
                 if (BlameNoOne6.IsChecked == true)
                 {
@@ -1169,14 +1179,15 @@ namespace Supremacy.Client.Views
         #endregion
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            IAppContext appContext = sender as IAppContext;
-
-            if (appContext == null)
+            if (!(sender is IAppContext))
+            {
                 return false;
+            }
 
-            PropertyChangedEventArgs propertyChangedEventArgs = e as PropertyChangedEventArgs;
-            if (propertyChangedEventArgs == null)
+            if (!(e is PropertyChangedEventArgs propertyChangedEventArgs))
+            {
                 return false;
+            }
 
             switch (propertyChangedEventArgs.PropertyName)
             {

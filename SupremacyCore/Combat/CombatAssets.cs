@@ -14,7 +14,6 @@ using System.Linq;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Universe;
-using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {

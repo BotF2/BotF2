@@ -38,9 +38,14 @@ namespace Supremacy.Client.Views
             [NotNull] TView view)
         {
             if (model == null)
+            {
                 throw new ArgumentNullException("model");
+            }
+
             if (view is null)
+            {
                 throw new ArgumentNullException("view");
+            }
 
             _container = container;
             _regionManager = _container.Resolve<IRegionManager>();
@@ -84,7 +89,9 @@ namespace Supremacy.Client.Views
                 {
                     IRegionManager regionManager = CompositeRegionManager.GetRegionManager(view);
                     if (regionManager != null)
+                    {
                         return regionManager;
+                    }
                 }
                 return _regionManager;
             }
@@ -120,12 +127,14 @@ namespace Supremacy.Client.Views
 
         protected virtual void RegisterViewWithRegion()
         {
-            _regionManager.Regions[ClientRegions.GameScreens].Add(View, ViewName, true);
+            _ = _regionManager.Regions[ClientRegions.GameScreens].Add(View, ViewName, true);
             string _text = "registering Screen " + ViewName;
-            Console.WriteLine(_text);
-            GameLog.Client.UI.InfoFormat(_text);
+            //Console.WriteLine(_text);
+            GameLog.Client.UIDetails.InfoFormat(_text);
             if (ViewName == "ColonyScreen")
+            {
                 GameLog.Client.UI.InfoFormat(_text);
+            }
         }
 
         protected virtual void UnregisterViewWithRegion()
@@ -136,7 +145,9 @@ namespace Supremacy.Client.Views
         protected virtual void SetInteractionNode()
         {
             if (View is DependencyObject viewElement)
+            {
                 Views.View.SetInteractionNode(viewElement, this);
+            }
         }
 
         private void OnCommandManagerRequerySuggested(object sender, EventArgs e)
@@ -183,7 +194,9 @@ namespace Supremacy.Client.Views
             View.AppContext = null;
 
             if (View is IAnimationsHost animationsHost)
+            {
                 animationsHost.StopAnimations();
+            }
 
             IsRunning = false;
         }
@@ -191,24 +204,31 @@ namespace Supremacy.Client.Views
         protected virtual void ClearInteractionNode()
         {
             if (View is DependencyObject viewElement)
+            {
                 viewElement.ClearValue(Views.View.InteractionNodeProperty);
+            }
         }
 
         protected virtual void RemoveNestedViews()
         {
             IRegionManager scopedRegionManager = CompositeRegionManager.GetRegionManager(View as DependencyObject);
             if (scopedRegionManager == null)
+            {
                 return;
+            }
 
             foreach (IRegion nestedRegion in scopedRegionManager.Regions.ToList())
             {
                 foreach (object nestedView in nestedRegion.Views.ToList())
                 {
                     if (nestedView is IAnimationsHost animationsHost)
+                    {
                         animationsHost.StopAnimations();
+                    }
+
                     nestedRegion.Remove(nestedView);
                 }
-                scopedRegionManager.Regions.Remove(nestedRegion.Name);
+                _ = scopedRegionManager.Regions.Remove(nestedRegion.Name);
             }
         }
         #endregion
@@ -225,7 +245,9 @@ namespace Supremacy.Client.Views
         protected void ShowEndOfTurnSummary()
         {
             if (View.IsActive)
+            {
                 ClientCommands.ShowEndOfTurnSummary.Execute(null);
+            }
         }
 
         //protected void ShowShipOverview()
@@ -237,24 +259,26 @@ namespace Supremacy.Client.Views
         protected virtual IInteractionNode FindParentInteractionNode()
         {
             if (!(View is DependencyObject view))
+            {
                 return null;
+            }
 
             IInteractionNode ancestorNode = null;
 
-            view.FindVisualAncestor(
+            _ = view.FindVisualAncestor(
                 o =>
                 {
                     ancestorNode = Views.View.GetInteractionNode(o);
-                    return (ancestorNode != null);
+                    return ancestorNode != null;
                 });
 
             if (ancestorNode == null)
             {
-                view.FindLogicalAncestor(
+                _ = view.FindLogicalAncestor(
                     o =>
                     {
                         ancestorNode = Views.View.GetInteractionNode(o);
-                        return (ancestorNode != null);
+                        return ancestorNode != null;
                     });
             }
 

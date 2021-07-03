@@ -314,7 +314,7 @@ namespace Supremacy.Scripting.Utility
             //        //	t = constraints.EffectiveBaseClass;
             //    }
             //}
-            a.Add(bound);
+            _ = a.Add(bound);
         }
 
         private bool AllTypesAreFixed(Type[] types)
@@ -782,7 +782,7 @@ namespace Supremacy.Scripting.Utility
                 ArrayList u_candidates = new ArrayList();
                 if (u.IsGenericType)
                 {
-                    u_candidates.Add(u);
+                    _ = u_candidates.Add(u);
                 }
 
                 for (Type t = u.BaseType; t != null; t = t.BaseType)
@@ -973,7 +973,9 @@ namespace Supremacy.Scripting.Utility
                 foreach (Type ut in unfixed_types)
                 {
                     if (ut != null)
+                    {
                         return true;
+                    }
                 }
 
                 return false;

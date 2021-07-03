@@ -287,11 +287,15 @@ namespace Supremacy.Scripting.Runtime
             if (LanguageContext.ScriptVisibleNamespaces.TryGetValue((SymbolId)type.Name, out MemberTracker memberTracker))
             {
                 if ((memberTracker is TypeGroup typeGroup) && typeGroup.Types.Contains(type))
+                {
                     return true;
+                }
 
                 TypeTracker typeTracker = memberTracker as TypeTracker;
                 if (typeTracker.Type == type)
+                {
                     return true;
+                }
             }
 
             return _importedNamespaces.Any(o => string.Equals(o.Name, type.Namespace, StringComparison.Ordinal));
@@ -350,7 +354,9 @@ namespace Supremacy.Scripting.Runtime
                 found = trackerGroup.TryGetValue((SymbolId)name, out tracker);
             }
             else
+            {
                 found = ns.TryGetValue((SymbolId)name, out tracker);
+            }
 
             if (found)
             {
@@ -365,7 +371,9 @@ namespace Supremacy.Scripting.Runtime
                         fne = new TypeExpression(typeGroup.GetTypeForArity(genericArity).Type, location);
                     }
                     else
+                    {
                         fne = new TypeExpression(((TypeTracker)tracker).Type);
+                    }
                 }
             }
 
@@ -419,14 +427,12 @@ namespace Supremacy.Scripting.Runtime
                 .Concat(LanguageContext.ScriptVisibleNamespaces.IncludedNamespaces)
                 .Distinct()
                 .Select(ns => LookupNamespaceOrType(ns, name, location, ignoreAmbiguousReferences, genericArity))
-                .Where(result => result != null)
-                .FirstOrDefault();
+.FirstOrDefault(result => result != null);
         }
 
         public FullNamedExpression LookupNamespaceAlias(string alias)
         {
-            FullNamedExpression aliasTarget;
-            if (_registeredAliases.TryGetValue(alias, out aliasTarget))
+            if (_registeredAliases.TryGetValue(alias, out FullNamedExpression aliasTarget))
             {
                 return aliasTarget;
             }

@@ -17,9 +17,14 @@ namespace Supremacy.Utility
         public static string TrimParagraphs(string text)
         {
             if (text == null)
+            {
                 return null;
+            }
+
             if (text.Length == 0)
+            {
                 return text;
+            }
 
             StringBuilder result = new StringBuilder(text.Length);
             StringReader reader = new StringReader(text);
@@ -29,7 +34,7 @@ namespace Supremacy.Utility
             {
                 if ((line.Length > 0) || (result.Length > 0))
                 {
-                    result.AppendLine(line.Trim());
+                    _ = result.AppendLine(line.Trim());
                 }
             }
 

@@ -31,9 +31,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -89,11 +88,11 @@ namespace Supremacy.Scripting.Events
 
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves before : {0}", target.FoodReserves);
 
-                    target.FoodReserves.AdjustCurrent(-1 * target.FoodReserves.CurrentValue);
+                    _ = target.FoodReserves.AdjustCurrent(-1 * target.FoodReserves.CurrentValue);
                     target.FoodReserves.UpdateAndReset();
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves after : {0}", target.FoodReserves);
 
-                    target.DeactivateFacility(ProductionCategory.Food);
+                    _ = target.DeactivateFacility(ProductionCategory.Food);
 
                     OnUnitTargeted(target);
 

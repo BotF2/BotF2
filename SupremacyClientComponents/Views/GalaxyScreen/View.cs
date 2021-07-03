@@ -15,14 +15,20 @@ namespace Supremacy.Client.Views
         public static IInteractionNode GetInteractionNode(DependencyObject source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             return (IInteractionNode)source.GetValue(InteractionNodeProperty);
         }
 
         public static void SetInteractionNode(DependencyObject source, IInteractionNode value)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             source.SetValue(InteractionNodeProperty, value);
         }
 

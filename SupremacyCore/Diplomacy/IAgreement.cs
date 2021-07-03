@@ -43,10 +43,7 @@ namespace Supremacy.Diplomacy
 
         public NewAgreement([NotNull] IProposal proposal, int startTurn, IDictionary<object, object> data)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
-            _proposal = proposal;
+            _proposal = proposal ?? throw new ArgumentNullException("proposal");
             _startTurn = startTurn;
             _endTurn = 0;
             _data = data;
@@ -73,7 +70,10 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_data == null)
+                {
                     return null;
+                }
+
                 return _data.AsReadOnly();
             }
         }
@@ -83,7 +83,9 @@ namespace Supremacy.Diplomacy
         public void End()
         {
             if (_endTurn == 0)
+            {
                 _endTurn = GameContext.Current.TurnNumber;
+            }
         }
     }
 }

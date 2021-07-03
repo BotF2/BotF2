@@ -67,27 +67,27 @@ namespace Supremacy.Client
 
             //ClientCommands.ShowSaveGameDialog.RegisterCommand(SaveGameCommand);
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     LoadGameCommand,
                     delegate
                     {
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
-                        ServiceLocator.Current.GetInstance<LoadGameDialog>().ShowDialog();
+                        _ = ServiceLocator.Current.GetInstance<LoadGameDialog>().ShowDialog();
                     },
                     (s, e) => e.CanExecute = ClientCommands.LoadGame.CanExecute(null)));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     SaveGameCommand,
                     delegate
                     {
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
-                        ServiceLocator.Current.GetInstance<SaveGameDialog>().ShowDialog();
+                        _ = ServiceLocator.Current.GetInstance<SaveGameDialog>().ShowDialog();
                     },
                     (s, e) => e.CanExecute = ClientCommands.SaveGame.CanExecute(null)));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     MultiplayerCommand,
                     delegate
@@ -105,7 +105,10 @@ namespace Supremacy.Client
         private void OnIsActiveChanged(object sender, EventArgs e)
         {
             if (!IsActive)
+            {
                 return;
+            }
+
             ClientEvents.ScreenActivated.Publish(new ScreenActivatedEventArgs(StandardGameScreens.MenuScreen));
         }
 

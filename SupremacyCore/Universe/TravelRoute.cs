@@ -53,7 +53,10 @@ namespace Supremacy.Universe
             _path = new List<MapLocation>();
             _waypoints = new List<MapLocation>();
             foreach (Sector sector in waypoints)
+            {
                 _waypoints.Add(sector.Location);
+            }
+
             _waypoints.TrimExcess();
         }
 
@@ -79,7 +82,7 @@ namespace Supremacy.Universe
         /// Gets a value indicating whether this <see cref="TravelRoute"/> is empty.
         /// </summary>
         /// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-        public bool IsEmpty => (_path.Count == 0);
+        public bool IsEmpty => _path.Count == 0;
 
         /// <summary>
         /// Gets the length of this <see cref="TravelRoute"/>.
@@ -104,7 +107,10 @@ namespace Supremacy.Universe
             MapLocation result = _path[0];
             _path.RemoveAt(0);
             if ((_waypoints.Count > 0) && (_waypoints[0] == result))
+            {
                 _waypoints.RemoveAt(0);
+            }
+
             return result;
         }
 

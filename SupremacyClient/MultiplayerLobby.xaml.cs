@@ -15,7 +15,6 @@ using Supremacy.Client.Dialogs;
 using Supremacy.Client.Events;
 using Supremacy.Client.Views;
 using Supremacy.Client.Views.LobbyScreen;
-using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Utility;
@@ -69,11 +68,15 @@ namespace Supremacy.Client
             OptionsPanel.Options = lobbyData.GameOptions;
 
             if (PlayerInfoPanel.Children.Count == 0)
+            {
                 CreateSlots(lobbyData);
+            }
 
             //GameLog.Print("GameContext.Current.IsMultiplayerGame={0}", GameContext.Current.IsMultiplayerGame    IffffsMultiplayerGame.ToString());
             if (AppContext.IsSinglePlayerGame)
+            {
                 return;
+            }
 
             UpdateSlots(lobbyData);
         }
@@ -108,7 +111,7 @@ namespace Supremacy.Client
                 TextWrapping = TextWrapping.Wrap,
                 Text = "*** " + message
             };
-            ChatPanel.Children.Add(text);
+            _ = ChatPanel.Children.Add(text);
         }
 
         private void ClearChatMessages()
@@ -131,49 +134,49 @@ namespace Supremacy.Client
             //Federation !!! Do not change EmpireID to key. Key is not set at this stage and will crash multiplayer games at the lobby
             if ((AppContext.LocalPlayer.EmpireID == 0) && (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No))
             {
-                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Terran Empire":
             if ((AppContext.LocalPlayer.EmpireID == 1) && (OptionsPanel.Options.TerranEmpirePlayable == EmpirePlayable.No))
             {
-                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Romulans":
             if ((AppContext.LocalPlayer.EmpireID == 2) && (OptionsPanel.Options.RomulanPlayable == EmpirePlayable.No))
             {
-                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Klingons":
             if ((AppContext.LocalPlayer.EmpireID == 3) && (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No))
             {
-                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Cardassians":
             if ((AppContext.LocalPlayer.EmpireID == 4) && (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No))
             {
-                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Dominion":
             if ((AppContext.LocalPlayer.EmpireID == 5) && (OptionsPanel.Options.DominionPlayable == EmpirePlayable.No))
             {
-                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Borg":
             if ((AppContext.LocalPlayer.EmpireID == 6) && (OptionsPanel.Options.BorgPlayable == EmpirePlayable.No))
             {
-                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
@@ -187,7 +190,9 @@ namespace Supremacy.Client
                     _resourceManager.GetString("MP_LOBBY_WARN_UNASSIGNED_PLAYERS_MESSAGE"),
                     MessageDialogButtons.YesNo);
                 if (result == MessageDialogResult.No)
+                {
                     return;
+                }
             }
             if (OptionsPanel.Options.GalaxySize > GalaxySize.Small)
             {
@@ -203,7 +208,7 @@ namespace Supremacy.Client
                 }
             }
 
-            GameOptionsManager.SaveDefaults(OptionsPanel.Options);
+            _ = GameOptionsManager.SaveDefaults(OptionsPanel.Options);
             ClientCommands.StartMultiplayerGame.Execute(null);
         }
 
@@ -215,19 +220,24 @@ namespace Supremacy.Client
         private void OnOptionsPanelOptionsChanged()
         {
             if (!AppContext.IsConnected || !AppContext.IsGameHost)
+            {
                 return;
+            }
+
             ClientCommands.SendUpdatedGameOptions.Execute(OptionsPanel.Options);
         }
 
         private void OnMultiplayerLobbyLoaded(object sender, RoutedEventArgs e)
         {
-            ChatOutbox.Focus();
+            _ = ChatOutbox.Focus();
         }
 
         private void CreateSlots(ILobbyData lobbyData)
         {
             if ((lobbyData == null) || (lobbyData.Slots == null) || (lobbyData.Players == null))
+            {
                 return;
+            }
 
             ClearSlots();
 
@@ -237,7 +247,7 @@ namespace Supremacy.Client
                 slotView.AssignedPlayerChanged += OnSlotViewAssignedPlayerChanged;
                 slotView.SlotClosed += OnSlotViewSlotClosed;
                 slotView.SlotOpened += OnSlotViewSlotOpened;
-                PlayerInfoPanel.Children.Add(slotView);
+                _ = PlayerInfoPanel.Children.Add(slotView);
             }
 
             UpdateSlots(lobbyData);
@@ -258,7 +268,9 @@ namespace Supremacy.Client
         private static void OnSlotViewSlotOpened(object sender, EventArgs e)
         {
             if (!(sender is PlayerSlotView slotView))
+            {
                 return;
+            }
 
             ClientCommands.ClearPlayerSlot.Execute(slotView.Slot.SlotID);
         }
@@ -266,7 +278,9 @@ namespace Supremacy.Client
         private static void OnSlotViewSlotClosed(object sender, EventArgs e)
         {
             if (!(sender is PlayerSlotView slotView))
+            {
                 return;
+            }
 
             ClientCommands.ClosePlayerSlot.Execute(slotView.Slot.SlotID);
         }
@@ -274,12 +288,16 @@ namespace Supremacy.Client
         private static void OnSlotViewAssignedPlayerChanged(object sender, EventArgs e)
         {
             if (!(sender is PlayerSlotView slotView))
+            {
                 return;
+            }
 
             int playerId = Player.UnassignedPlayerID;
             Player player = slotView.AssignedPlayer;
             if (player != null)
+            {
                 playerId = player.PlayerID;
+            }
 
             if (playerId == Player.UnassignedPlayerID)
             {
@@ -297,7 +315,9 @@ namespace Supremacy.Client
         private void UpdateSlots(ILobbyData lobbyData)
         {
             if ((lobbyData == null) || (lobbyData.Slots == null) || (lobbyData.Players == null))
+            {
                 return;
+            }
 
             IPlayer localPlayer = AppContext.LocalPlayer;
 
@@ -324,7 +344,7 @@ namespace Supremacy.Client
                 else
                 {
                     GameLog.Client.Multiplay.DebugFormat("localplayer.Name={0} is NOT hosting...", localPlayer.Name);
-                    assignablePlayers.RemoveAll(o => !Equals(o, localPlayer) && !Equals(o, playerSlot.Player));
+                    _ = assignablePlayers.RemoveAll(o => !Equals(o, localPlayer) && !Equals(o, playerSlot.Player));
                     if (playerSlot.IsVacant)
                     {
                         assignablePlayers.Add(Player.Unassigned);
@@ -337,9 +357,11 @@ namespace Supremacy.Client
                         }
                         else
                         {
-                            assignablePlayers.RemoveAll(o => Equals(o, localPlayer));
+                            _ = assignablePlayers.RemoveAll(o => Equals(o, localPlayer));
                             if (Equals(playerSlot.Player, Player.Computer))
+                            {
                                 assignablePlayers.Add(Player.Computer);
+                            }
                         }
                     }
                 }
@@ -354,11 +376,17 @@ namespace Supremacy.Client
         private void OnChatOutboxKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
+            {
                 return;
+            }
+
             string message = ChatOutbox.Text.Trim();
             ChatOutbox.Text = "";
-            if (String.Equals(message, String.Empty))
+            if (string.Equals(message, string.Empty))
+            {
                 return;
+            }
+
             ClientCommands.SendChatMessage.Execute(
                 new ChatMessage(
                     AppContext.LocalPlayer,
@@ -371,11 +399,13 @@ namespace Supremacy.Client
             Binding widthBinding = new Binding { Source = ChatPanel, Path = new PropertyPath(ActualWidthProperty) };
 
             messageHost.Content = message;
-            messageHost.SetBinding(WidthProperty, widthBinding);
-            ChatPanel.Children.Add(messageHost);
+            _ = messageHost.SetBinding(WidthProperty, widthBinding);
+            _ = ChatPanel.Children.Add(messageHost);
 
             if (ChatPanel.ScrollOwner != null)
+            {
                 ChatPanel.ScrollOwner.ScrollToEnd();
+            }
         }
 
         #region Implementation of IActiveAware
@@ -390,24 +420,34 @@ namespace Supremacy.Client
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (Equals(_isActive, value))
+                {
                     return;
+                }
+
                 _isActive = value;
                 OnIsActiveChanged();
                 if (_isActive)
+                {
                     EnsureSlots();
+                }
                 else
+                {
                     ClearSlots();
+                }
             }
         }
 
         private void EnsureSlots()
         {
             if (PlayerInfoPanel.Children.Count != 0)
+            {
                 return;
+            }
+
             CreateSlots(AppContext.LobbyData);
         }
         #endregion
@@ -418,11 +458,11 @@ namespace Supremacy.Client
 
         public void OnCreated()
         {
-            ClientEvents.PlayerJoined.Subscribe(OnPlayerJoined, ThreadOption.UIThread);
-            ClientEvents.PlayerExited.Subscribe(OnPlayerExited, ThreadOption.UIThread);
-            ClientEvents.ClientDisconnected.Subscribe(OnClientDisconnected, ThreadOption.UIThread);
-            ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated, ThreadOption.UIThread);
-            ClientEvents.ChatMessageReceived.Subscribe(OnChatMessageReceived, ThreadOption.UIThread);
+            _ = ClientEvents.PlayerJoined.Subscribe(OnPlayerJoined, ThreadOption.UIThread);
+            _ = ClientEvents.PlayerExited.Subscribe(OnPlayerExited, ThreadOption.UIThread);
+            _ = ClientEvents.ClientDisconnected.Subscribe(OnClientDisconnected, ThreadOption.UIThread);
+            _ = ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated, ThreadOption.UIThread);
+            _ = ClientEvents.ChatMessageReceived.Subscribe(OnChatMessageReceived, ThreadOption.UIThread);
         }
 
         private void OnChatMessageReceived(ClientDataEventArgs<ChatMessage> arg)

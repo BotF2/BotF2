@@ -23,7 +23,9 @@ namespace Supremacy.Client.Controls
         {
             VariantSize? variantSize = value as VariantSize?;
             if (!variantSize.HasValue)
+            {
                 return 0d;
+            }
 
             switch (variantSize.Value)
             {
@@ -43,7 +45,9 @@ namespace Supremacy.Client.Controls
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(double))
+            {
                 return true;
+            }
 
             return base.CanConvertTo(context, destinationType);
         }

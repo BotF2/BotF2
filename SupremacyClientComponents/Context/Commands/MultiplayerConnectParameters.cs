@@ -20,12 +20,8 @@ namespace Supremacy.Client.Commands
 
         public MultiplayerConnectParameters([NotNull] string playerName, [NotNull] string remoteHost)
         {
-            if (playerName == null)
-                throw new ArgumentNullException("playerName");
-            if (remoteHost == null)
-                throw new ArgumentNullException("remoteHost");
-            _playerName = playerName;
-            _remoteHost = remoteHost;
+            _playerName = playerName ?? throw new ArgumentNullException("playerName");
+            _remoteHost = remoteHost ?? throw new ArgumentNullException("remoteHost");
         }
 
         public string PlayerName => _playerName;

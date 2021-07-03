@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using Microsoft.Scripting;
 
 using Obtics.Values;
 
 using Supremacy.Annotations;
-using Supremacy.Diplomacy.Visitors;
 using Supremacy.Scripting.Runtime;
 using Supremacy.Utility;
 
@@ -29,11 +27,14 @@ namespace Supremacy.Scripting
 
         public string ScriptCode
         {
-            get { return _scriptCode; }
+            get => _scriptCode;
             set
             {
                 if (value == _scriptCode)
+                {
                     return;
+                }
+
                 _scriptCode = value;
                 _delegate = null;
                 OnScriptCodeChanged();
@@ -55,13 +56,19 @@ namespace Supremacy.Scripting
             get
             {
                 if (_parameters == null)
+                {
                     _parameters = new ScriptParameters();
+                }
+
                 return _parameters;
             }
             set
             {
                 if (value == _parameters)
+                {
                     return;
+                }
+
                 _parameters = value;
                 _delegate = null;
                 OnPropertyChanged("Parameters");
@@ -77,10 +84,12 @@ namespace Supremacy.Scripting
         {
             get
             {
-                CompileScript();
+                _ = CompileScript();
 
                 if (_delegate != null)
+                {
                     return _delegate.Method.ReturnType;
+                }
 
                 return typeof(object);
             }
@@ -108,7 +117,7 @@ namespace Supremacy.Scripting
 
         public object Evaluate(RuntimeScriptParameters parameters)
         {
-            CompileScript();
+            _ = CompileScript();
             return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());  // on break check parameters - mostly for Martial Law checking Morale value condition
         }
 
@@ -158,11 +167,17 @@ namespace Supremacy.Scripting
             foreach (ScriptParameter parameter in Parameters)
             {
                 if (parameters.TryGetValue(parameter, out RuntimeScriptParameter runtimeParameter))
+                {
                     yield return runtimeParameter.Value;
+                }
                 else if (parameter.IsRequired)
+                {
                     throw new InvalidOperationException("Required parameter not specified: " + parameter.Name);
+                }
                 else
+                {
                     yield return parameter.DefaultValue;
+                }
             }
         }
         #endregion
@@ -182,17 +197,25 @@ namespace Supremacy.Scripting
             public override void Add(string message, string path, string code, string line, SourceSpan span, int errorCode, Severity severity)
             {
                 if (severity == Severity.Error || severity == Severity.FatalError)
+                {
                     GameLog.Core.General.Error(message);
+                }
                 else
+                {
                     GameLog.Core.General.Error(message);
+                }
             }
 
             public override void Add(SourceUnit source, string message, SourceSpan span, int errorCode, Severity severity)
             {
                 if (severity == Severity.Error || severity == Severity.FatalError)
+                {
                     GameLog.Core.General.Error(message);
+                }
                 else
+                {
                     GameLog.Core.General.Error(message);
+                }
             }
         }
     }

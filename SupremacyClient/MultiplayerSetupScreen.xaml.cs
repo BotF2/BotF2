@@ -51,19 +51,19 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(DirectConnectCommand,
                                    ExecuteDirectConnectCommand,
                                    CanExecuteDirectConnectCommand));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(JoinGameCommand,
                                    ExecuteJoinGameCommand,
                                    CanExecuteJoinGameCommand));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(HostGameCommand,
                                    ExecuteHostGameCommand,
                                    CanExecuteHostGameCommand));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(CancelCommand,
                                    ExecuteCancelCommand));
 
@@ -153,7 +153,7 @@ namespace Supremacy.Client
                 e.CanExecute = false;
                 return;
             }
-            e.CanExecute = (PART_ServerList.SelectedItem != null);
+            e.CanExecute = PART_ServerList.SelectedItem != null;
         }
 
         void CanExecuteHostGameCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -164,7 +164,7 @@ namespace Supremacy.Client
                 e.CanExecute = false;
                 return;
             }
-            e.CanExecute = (PlayerName.Text.Trim().Length > 0);
+            e.CanExecute = PlayerName.Text.Trim().Length > 0;
         }
 
         void ExecuteDirectConnectCommand(object sender, ExecutedRoutedEventArgs e)
@@ -198,7 +198,7 @@ namespace Supremacy.Client
         void OnMultiplayerSetupScreenUnloaded(object sender, RoutedEventArgs e)
         {
             //HumanClient.Current.NetworkClient.StopFindingServers();
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Normal,
                 new Function(UpdateServerList));
         }
@@ -206,7 +206,7 @@ namespace Supremacy.Client
         void OnMultiplayerSetupScreenLoaded(object sender, RoutedEventArgs e)
         {
             //HumanClient.Current.NetworkClient.StartFindingServers();
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Normal,
                 new Function(UpdateServerList));
         }

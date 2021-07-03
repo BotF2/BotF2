@@ -18,36 +18,43 @@ namespace Supremacy.Client.Data
 
         public object TrueValue
         {
-            get { return _trueValue; }
-            set { _trueValue = value; }
+            get => _trueValue;
+            set => _trueValue = value;
         }
 
         public object FalseValue
         {
-            get { return _falseValue; }
-            set { _falseValue = value; }
+            get => _falseValue;
+            set => _falseValue = value;
         }
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             SystemBonus? bonuses = value as SystemBonus?;
             if (!bonuses.HasValue)
+            {
                 return FalseValue;
+            }
 
             SystemBonus? comparand = parameter as SystemBonus?;
             if (!comparand.HasValue)
             {
-                string comparandString = parameter as string;
-                if (comparandString == null)
+                if (!(parameter is string comparandString))
+                {
                     return FalseValue;
+                }
 
                 comparand = EnumHelper.Parse<SystemBonus>(comparandString);
                 if (!comparand.HasValue)
+                {
                     return FalseValue;
+                }
             }
 
             if ((bonuses.Value & comparand.Value) == comparand.Value)
+            {
                 return TrueValue;
+            }
 
             return FalseValue;
         }

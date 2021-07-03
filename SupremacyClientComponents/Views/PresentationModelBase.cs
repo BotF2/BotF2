@@ -20,10 +20,7 @@ namespace Supremacy.Client.Views
 
         public PresentationModelBase([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-
-            _appContext = appContext;
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
         }
 
         protected virtual void OnLoaded() { }

@@ -24,7 +24,10 @@ namespace Supremacy.Utility
             [InvokerParameterName] string argumentName)
         {
             if (string.IsNullOrEmpty(argumentValue))
+            {
                 throw new ArgumentException(SR.ArgumentException_ValueMustBeNonEmptyString, argumentName);
+            }
+
             return argumentValue;
         }
 
@@ -43,7 +46,10 @@ namespace Supremacy.Utility
             [InvokerParameterName] string argumentName)
         {
             if (string.IsNullOrWhiteSpace(argumentValue))
+            {
                 throw new ArgumentException(SR.ArgumentException_ValueMustBeNonEmptyString, argumentName);
+            }
+
             return argumentValue;
         }
 
@@ -59,8 +65,11 @@ namespace Supremacy.Utility
             [AssertionCondition(AssertionConditionType.IsNotNull)] T argumentValue,
             [InvokerParameterName] string argumentName)
         {
-            if (ReferenceEquals(argumentValue, null))
+            if (argumentValue == null)
+            {
                 throw new ArgumentNullException(argumentName);
+            }
+
             return argumentValue;
         }
 
@@ -77,7 +86,9 @@ namespace Supremacy.Utility
             [InvokerParameterName] string argumentName)
         {
             if (argumentValue is TTarget)
+            {
                 return argumentValue;
+            }
 
             throw new ArgumentException(
                 string.Format(
@@ -94,7 +105,9 @@ namespace Supremacy.Utility
         public static void ArgumentIsDefinedEnum(Type enumType, object value, [InvokerParameterName] string argumentName)
         {
             if (Enum.IsDefined(enumType, value))
+            {
                 return;
+            }
 
             throw new ArgumentException(
                 string.Format(
@@ -109,7 +122,9 @@ namespace Supremacy.Utility
             if (type.IsEnum)
             {
                 if (!mustBeDefined || Enum.IsDefined(type, value))
+                {
                     return value;
+                }
             }
             else
             {
@@ -117,7 +132,7 @@ namespace Supremacy.Utility
                     type.IsEnum)
                 {
                     if (!mustBeDefined ||
-                        (!ReferenceEquals(value, null) && Enum.IsDefined(type, value)))
+                        (value is object && Enum.IsDefined(type, value)))
                     {
                         return value;
                     }
@@ -136,14 +151,18 @@ namespace Supremacy.Utility
             bool allowNull = false)
         {
             if (collection == null && !allowNull)
+            {
                 throw new ArgumentNullException("collection");
+            }
 
             Type constraintType = typeof(TElement);
 
             if (exactMatch)
             {
                 if (collection.Cast<object>().All(o => o.GetType() == constraintType))
+                {
                     return collection;
+                }
 
                 throw new ArgumentException(
                     string.Format(
@@ -154,7 +173,9 @@ namespace Supremacy.Utility
             }
 
             if (collection.Cast<object>().All(o => o is TElement))
+            {
                 return collection;
+            }
 
             throw new ArgumentException(
                 string.Format(

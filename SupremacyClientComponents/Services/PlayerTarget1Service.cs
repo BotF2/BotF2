@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-using Supremacy.Annotations;
-using Supremacy.Game;
-using Supremacy.Client.Context;
-
 namespace Supremacy.Client.Services
 {
     //public sealed class PlayerTarget1Service : IPlayerTarget1Service

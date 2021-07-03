@@ -7,7 +7,6 @@ using Supremacy.Client.Commands;
 using Supremacy.Orbitals;
 
 using System.Linq;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -24,21 +23,26 @@ namespace Supremacy.Client.Views
         #region Private Methods
         private void OnShipListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            GalaxyScreenPresentationModel presentationModel = DataContext as GalaxyScreenPresentationModel;
-            if ((presentationModel == null) || (presentationModel.InputMode != GalaxyScreenInputMode.RedeployShips))
+            if ((!(DataContext is GalaxyScreenPresentationModel presentationModel)) || (presentationModel.InputMode != GalaxyScreenInputMode.RedeployShips))
+            {
                 return;
+            }
 
-            DependencyObject originalSource = e.OriginalSource as DependencyObject;
-            if (originalSource == null)
+            if (!(e.OriginalSource is DependencyObject originalSource))
+            {
                 return;
+            }
 
             ListViewItem container = originalSource.FindVisualAncestorByType<ListViewItem>();
             if (container == null)
+            {
                 return;
+            }
 
-            ShipView selectedShip = container.DataContext as ShipView;
-            if (selectedShip == null)
+            if (!(container.DataContext is ShipView selectedShip))
+            {
                 return;
+            }
 
             GalaxyScreenCommands.RemoveShipFromTaskForce.Execute(
                 new RedeployShipCommandArgs(selectedShip.Source));
@@ -47,15 +51,16 @@ namespace Supremacy.Client.Views
         private void OnShipListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!(DataContext is GalaxyScreenPresentationModel presentationModel))
+            {
                 return;
+            }
 
             presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();
         }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            GalaxyScreenPresentationModel presentationModel = DataContext as GalaxyScreenPresentationModel;
-            if (presentationModel == null)
+            if (!(DataContext is GalaxyScreenPresentationModel presentationModel))
             {
                 e.Handled = true;
                 return;
@@ -85,7 +90,7 @@ namespace Supremacy.Client.Views
                 {
                     ScrapMenuItem.CommandParameter = new ScrapCommandArgs(selectedShips);
 
-                    ScrapMenuItem.SetBinding(
+                    _ = ScrapMenuItem.SetBinding(
                         MenuItem.IsCheckedProperty,
                         new Binding
                         {

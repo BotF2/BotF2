@@ -199,24 +199,24 @@ namespace Supremacy.UI
 
                 if (i > 0)
                 {
-                    animations[i].KeyFrames.Add(
+                    _ = animations[i].KeyFrames.Add(
                         new DiscreteDoubleKeyFrame(
                             0.0,
                             KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * (i - 1)))));
-                    animations[i].KeyFrames.Add(
+                    _ = animations[i].KeyFrames.Add(
                         new LinearDoubleKeyFrame(
                             1.0,
                             KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * i))));
                     if (i == (Frames.Length - 1))
                     {
-                        animations[i].KeyFrames.Add(
+                        _ = animations[i].KeyFrames.Add(
                             new LinearDoubleKeyFrame(
                                 0.0,
                                 KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * Frames.Length))));
                     }
                     else
                     {
-                        animations[i].KeyFrames.Add(
+                        _ = animations[i].KeyFrames.Add(
                             new DiscreteDoubleKeyFrame(
                                 0.0,
                                 KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * (i + 1)))));
@@ -288,9 +288,11 @@ namespace Supremacy.UI
             parent.Child = innerGrid;
 
             while (parent.Parent != null)
+            {
                 parent = (Border)parent.Parent;
+            }
 
-            _grid.Children.Add(parent);
+            _ = _grid.Children.Add(parent);
             AddVisualChild(_grid);
         }
 

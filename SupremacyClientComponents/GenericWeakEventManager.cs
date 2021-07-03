@@ -14,11 +14,19 @@ namespace Supremacy.Client
         public static void AddListener(object source, string eventName, IWeakEventListener listener)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (eventName == null)
+            {
                 throw new ArgumentNullException("eventName");
+            }
+
             if (listener == null)
+            {
                 throw new ArgumentNullException("listener");
+            }
 
             CurrentManager.PrivateAddListener(
                 source,
@@ -29,11 +37,19 @@ namespace Supremacy.Client
         public static void RemoveListener(object source, string eventName, IWeakEventListener listener)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (eventName == null)
+            {
                 throw new ArgumentNullException("eventName");
+            }
+
             if (listener == null)
+            {
                 throw new ArgumentNullException("listener");
+            }
 
             CurrentManager.PrivateRemoveListener(
                 source,
@@ -49,11 +65,19 @@ namespace Supremacy.Client
         public static void AddListener(object source, EventDescriptor eventDescriptor, IWeakEventListener listener)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (eventDescriptor == null)
+            {
                 throw new ArgumentNullException("eventDescriptor");
+            }
+
             if (listener == null)
+            {
                 throw new ArgumentNullException("listener");
+            }
 
             CurrentManager.PrivateAddListener(
                 source,
@@ -64,11 +88,19 @@ namespace Supremacy.Client
         public static void RemoveListener(object source, EventDescriptor eventDescriptor, IWeakEventListener listener)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (eventDescriptor == null)
+            {
                 throw new ArgumentNullException("eventDescriptor");
+            }
+
             if (listener == null)
+            {
                 throw new ArgumentNullException("listener");
+            }
 
             CurrentManager.PrivateRemoveListener(
                 source,
@@ -80,16 +112,14 @@ namespace Supremacy.Client
         {
             using (WriteLock)
             {
-                Dictionary<EventDescriptor, WeakEventListenerRecord> dictionary = base[source] as Dictionary<EventDescriptor, WeakEventListenerRecord>;
-                if (dictionary == null)
+                if (!(base[source] is Dictionary<EventDescriptor, WeakEventListenerRecord> dictionary))
                 {
                     dictionary = new Dictionary<EventDescriptor, WeakEventListenerRecord>();
                     base[source] = dictionary;
                 }
 
-                WeakEventListenerRecord record;
 
-                if (!dictionary.TryGetValue(eventDescriptor, out record))
+                if (!dictionary.TryGetValue(eventDescriptor, out WeakEventListenerRecord record))
                 {
                     record = new WeakEventListenerRecord(this, source, eventDescriptor);
                     dictionary[eventDescriptor] = record;
@@ -105,22 +135,28 @@ namespace Supremacy.Client
         {
             using (WriteLock)
             {
-                Dictionary<EventDescriptor, WeakEventListenerRecord> dictionary = base[source] as Dictionary<EventDescriptor, WeakEventListenerRecord>;
-                if (dictionary == null)
+                if (!(base[source] is Dictionary<EventDescriptor, WeakEventListenerRecord> dictionary))
+                {
                     return;
+                }
 
-                WeakEventListenerRecord record;
 
-                if (!dictionary.TryGetValue(eventDescriptor, out record))
+                if (!dictionary.TryGetValue(eventDescriptor, out WeakEventListenerRecord record))
+                {
                     return;
+                }
 
                 record.Remove(listener);
 
                 if (record.IsEmpty)
-                    dictionary.Remove(eventDescriptor);
+                {
+                    _ = dictionary.Remove(eventDescriptor);
+                }
 
                 if (dictionary.Count == 0)
+                {
                     Remove(source);
+                }
             }
         }
 
@@ -132,33 +168,43 @@ namespace Supremacy.Client
 
             foreach (EventDescriptor key in keys)
             {
-                bool isEmpty = (purgeAll || (source == null));
+                bool isEmpty = purgeAll || (source == null);
 
-                WeakEventListenerRecord record;
-                if (!dictionary.TryGetValue(key, out record))
+                if (!dictionary.TryGetValue(key, out WeakEventListenerRecord record))
+                {
                     continue;
+                }
 
                 if (!isEmpty)
                 {
                     if (record.Purge())
+                    {
                         removedAnyEntries = true;
+                    }
+
                     isEmpty = record.IsEmpty;
                 }
 
                 if (!isEmpty)
+                {
                     continue;
+                }
 
                 record.StopListening();
 
                 if (!purgeAll)
-                    dictionary.Remove(key);
+                {
+                    _ = dictionary.Remove(key);
+                }
             }
 
             if (dictionary.Count == 0)
             {
                 removedAnyEntries = true;
                 if (source != null)
+                {
                     Remove(source);
+                }
             }
 
             return removedAnyEntries;
@@ -209,17 +255,10 @@ namespace Supremacy.Client
 
             internal WeakEventListenerRecord(GenericWeakEventManager manager, object source, EventDescriptor eventDescriptor)
             {
-                if (manager == null)
-                    throw new ArgumentNullException("manager");
-                if (source == null)
-                    throw new ArgumentNullException("source");
-                if (eventDescriptor == null)
-                    throw new ArgumentNullException("eventDescriptor");
-
                 _listeners = new ListenerList();
-                _manager = manager;
-                _source.Target = source;
-                _eventDescriptor = eventDescriptor;
+                _manager = manager ?? throw new ArgumentNullException("manager");
+                _source.Target = source ?? throw new ArgumentNullException("source");
+                _eventDescriptor = eventDescriptor ?? throw new ArgumentNullException("eventDescriptor");
 
                 Type eventType = eventDescriptor.EventType;
 
@@ -238,7 +277,7 @@ namespace Supremacy.Client
 
             internal void Add(IWeakEventListener listener)
             {
-                ListenerList.PrepareForWriting(ref _listeners);
+                _ = ListenerList.PrepareForWriting(ref _listeners);
                 _listeners.Add(listener);
             }
 
@@ -246,7 +285,9 @@ namespace Supremacy.Client
             private void HandleEvent(object sender, EventArgs e)
             {
                 using (_manager.ReadLock)
-                    _listeners.BeginUse();
+                {
+                    _ = _listeners.BeginUse();
+                }
 
                 try { _manager.DeliverEventToList(sender, e, _listeners); }
                 finally { _listeners.EndUse(); }
@@ -254,28 +295,34 @@ namespace Supremacy.Client
 
             internal bool Purge()
             {
-                ListenerList.PrepareForWriting(ref _listeners);
+                _ = ListenerList.PrepareForWriting(ref _listeners);
                 return _listeners.Purge();
             }
 
             internal void Remove(IWeakEventListener listener)
             {
                 if (listener == null)
+                {
                     return;
+                }
 
-                ListenerList.PrepareForWriting(ref _listeners);
+                _ = ListenerList.PrepareForWriting(ref _listeners);
 
                 _listeners.Remove(listener);
 
                 if (_listeners.IsEmpty)
+                {
                     StopListening();
+                }
             }
 
             internal void StopListening()
             {
                 object target = _source.Target;
                 if (target == null)
+                {
                     return;
+                }
 
                 _source.Target = null;
                 _eventDescriptor.RemoveEventHandler(target, _handlerDelegate);

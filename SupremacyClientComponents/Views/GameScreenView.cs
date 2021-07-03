@@ -43,10 +43,11 @@ namespace Supremacy.Client.Views
 
         protected void InjectThemeResources()
         {
-            ResourceDictionary themeResources;
 
-            if (ThemeHelper.TryLoadThemeResources(out themeResources))
+            if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
+            {
                 Resources.MergedDictionaries.Add(themeResources);
+            }
         }
 
         #endregion
@@ -54,8 +55,8 @@ namespace Supremacy.Client.Views
         #region Properties and Indexers
         public IAppContext AppContext
         {
-            get { return GetValue(AppContextProperty) as IAppContext; }
-            set { SetValue(AppContextProperty, value); }
+            get => GetValue(AppContextProperty) as IAppContext;
+            set => SetValue(AppContextProperty, value);
         }
         #endregion
 
@@ -63,14 +64,20 @@ namespace Supremacy.Client.Views
         public static IAppContext GetAppContext(DependencyObject element)
         {
             if (element == null)
+            {
                 return null;
+            }
+
             return element.GetValue(AppContextProperty) as IAppContext;
         }
 
         public static void SetAppContext(DependencyObject element, IAppContext value)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             element.SetValue(AppContextProperty, value);
         }
         #endregion
@@ -155,10 +162,7 @@ namespace Supremacy.Client.Views
         #region Constructors and Finalizers
         protected GameScreenView([NotNull] IUnityContainer container)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-
-            _container = container;
+            _container = container ?? throw new ArgumentNullException("container");
             _playerOrderService = _container.Resolve<IPlayerOrderService>();
             _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
             _resourceManager = _container.Resolve<IResourceManager>();
@@ -180,9 +184,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnIsActiveChanged()
         {
-            EventHandler handler = IsActiveChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            IsActiveChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnShow() { }
@@ -193,11 +195,14 @@ namespace Supremacy.Client.Views
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (Equals(_isActive, value))
+                {
                     return;
+                }
+
                 _isActive = value;
                 UpdateCommands();
                 OnIsActiveChanged();
@@ -208,8 +213,8 @@ namespace Supremacy.Client.Views
         #region Implementation of IGameScreenView
         public TPresentationModel Model
         {
-            get { return DataContext as TPresentationModel; }
-            set { DataContext = value; }
+            get => DataContext as TPresentationModel;
+            set => DataContext = value;
         }
 
         protected IPlayerOrderService PlayerOrderService => _playerOrderService;
@@ -262,15 +267,19 @@ namespace Supremacy.Client.Views
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (IsVisible)
+            {
                 OnShowCore();
+            }
             else
+            {
                 OnHideCore();
+            }
         }
 
         private void OnShowCore()
         {
-            ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
             ResumeAnimations();
             OnShow();
         }

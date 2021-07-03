@@ -21,7 +21,7 @@ namespace Supremacy.Effects
 
         public EffectScope([CanBeNull] string descriptionExpression, [NotNull] string valueExpression)
         {
-            Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
+            _ = Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
 
             DescriptionExpression = descriptionExpression;
             ValueExpression = valueExpression;
@@ -31,7 +31,7 @@ namespace Supremacy.Effects
 
         public string DescriptionExpression
         {
-            get { return _descriptionExpression; }
+            get => _descriptionExpression;
             set
             {
                 VerifyInitializing();
@@ -41,7 +41,7 @@ namespace Supremacy.Effects
 
         public string ValueExpression
         {
-            get { return _valueExpression; }
+            get => _valueExpression;
             set
             {
                 VerifyInitializing();

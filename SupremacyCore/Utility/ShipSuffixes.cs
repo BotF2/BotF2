@@ -11,7 +11,9 @@ namespace Supremacy.Utility
             string suffix = "";
 
             if (number >= letters.Length)
+            {
                 suffix += letters[number / letters.Length - 1];
+            }
 
             suffix += letters[number % letters.Length];
 

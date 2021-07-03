@@ -43,7 +43,10 @@ namespace Supremacy.WCF
         public PlayerOrdersMessage(IList<Order> orders, bool autoTurn)
         {
             if (orders == null)
+            {
                 throw new ArgumentNullException("data");
+            }
+
             _buffer = Convert.ToBase64String(StreamUtility.Write(orders));
             AutoTurn = autoTurn;
         }

@@ -29,9 +29,7 @@ namespace Supremacy.Effects
         protected DynamicPropertyModifier([NotNull] object stackingKey)
             : this()
         {
-            if (stackingKey == null)
-                throw new ArgumentNullException("stackingKey");
-            _stackingKey = stackingKey;
+            _stackingKey = stackingKey ?? throw new ArgumentNullException("stackingKey");
         }
 
         [CanBeNull]
@@ -52,7 +50,10 @@ namespace Supremacy.Effects
         public void Invalidate()
         {
             if (_invalidationSuppressionScope.IsWithin)
+            {
                 return;
+            }
+
             OnInvalidated();
         }
 
@@ -60,9 +61,7 @@ namespace Supremacy.Effects
 
         private void OnInvalidated()
         {
-            EventHandler handler = Invalidated;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Invalidated?.Invoke(this, EventArgs.Empty);
         }
     }
 }

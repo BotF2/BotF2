@@ -31,7 +31,10 @@ namespace Supremacy.Client.Controls
         {
             GamePopupScrollViewer scrollViewer = this.FindVisualAncestorByType<GamePopupScrollViewer>();
             if (scrollViewer != null)
+            {
                 constraint.Width = scrollViewer.MeasureConstraint.Width;
+            }
+
             return base.MeasureOverride(constraint);
         }
 

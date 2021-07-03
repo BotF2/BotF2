@@ -37,8 +37,8 @@ namespace Supremacy.Orbitals
         /// <value>The build slots.</value>
         public int BuildSlots
         {
-            get { return _buildSlots; }
-            set { _buildSlots = (byte)value; }
+            get => _buildSlots;
+            set => _buildSlots = (byte)value;
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace Supremacy.Orbitals
         /// <value>The build output.</value>
         public int BuildOutput
         {
-            get { return _buildOutput; }
-            set { _buildOutput = (ushort)value; }
+            get => _buildOutput;
+            set => _buildOutput = (ushort)value;
         }
 
         /// <summary>
@@ -104,11 +104,11 @@ namespace Supremacy.Orbitals
 
             newElement = doc.CreateElement("RepairSlots");
             newElement.InnerText = BuildSlots.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("RepairCapacity");
             newElement.InnerText = BuildOutput.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             if (_possibleStationNames.Count > 0)
             {
@@ -117,9 +117,9 @@ namespace Supremacy.Orbitals
                 {
                     XmlElement nameElement = doc.CreateElement("StationName");
                     nameElement.InnerText = stationName.Key;
-                    newElement.AppendChild(nameElement);
+                    _ = newElement.AppendChild(nameElement);
                 }
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
         }
 
@@ -166,7 +166,10 @@ namespace Supremacy.Orbitals
                 }
                 string newStationName = "";
                 if (owner.ShipPrefix != null)
+                {
                     newStationName = owner.ShipPrefix + " ";
+                }
+
                 newStationName = newStationName + leastUsedName;
                 //if (ship.Owner.Key == "BORG")
                 //{
@@ -212,7 +215,7 @@ namespace Supremacy.Orbitals
                 //    this.Key ?? UnknownDesignKey,
                 //    location);
 
-                GameContext.Current.Universe.Destroy(existingStation);
+                _ = GameContext.Current.Universe.Destroy(existingStation);
             }
 
             //var station = new Station(this);

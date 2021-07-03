@@ -212,7 +212,7 @@ namespace Supremacy.Scripting.Utility
             {
                 if (i > 0)
                 {
-                    sb.Append(", ");
+                    _ = sb.Append(", ");
                 }
 
                 _ = sb.Append(GetCSharpName(types[i]));
@@ -541,68 +541,70 @@ namespace Supremacy.Scripting.Utility
 
                 case BuiltinType.Int16:
                     short parsedInt16;
-                    _ = Int16.TryParse(text, out parsedInt16);
+                    _ = short.TryParse(text, out parsedInt16);
                     value = parsedInt16;
                     break;
 
                 case BuiltinType.UInt16:
                     ushort parsedUInt16;
-                    _ = UInt16.TryParse(text, out parsedUInt16);
+                    _ = ushort.TryParse(text, out parsedUInt16);
                     value = parsedUInt16;
                     break;
 
                 case BuiltinType.Int32:
                     int parsedInt32;
-                    _ = Int32.TryParse(text, out parsedInt32);
+                    _ = int.TryParse(text, out parsedInt32);
                     value = parsedInt32;
                     break;
 
                 case BuiltinType.UInt32:
                     uint parsedUInt32;
-                    _ = UInt32.TryParse(text, out parsedUInt32);
+                    _ = uint.TryParse(text, out parsedUInt32);
                     value = parsedUInt32;
                     break;
 
                 case BuiltinType.Int64:
                     long parsedInt64;
-                    _ = Int64.TryParse(text, out parsedInt64);
+                    _ = long.TryParse(text, out parsedInt64);
                     value = parsedInt64;
                     break;
 
                 case BuiltinType.UInt64:
                     ulong parsedUInt64;
-                    _ = UInt64.TryParse(text, out parsedUInt64);
+                    _ = ulong.TryParse(text, out parsedUInt64);
                     value = parsedUInt64;
                     break;
 
                 case BuiltinType.Single:
                     float parsedSingle;
-                    _ = Single.TryParse(text, out parsedSingle);
+                    _ = float.TryParse(text, out parsedSingle);
                     value = parsedSingle;
                     break;
 
                 case BuiltinType.Double:
                     double parsedDouble;
-                    _ = Double.TryParse(text, out parsedDouble);
+                    _ = double.TryParse(text, out parsedDouble);
                     value = parsedDouble;
                     break;
 
                 case BuiltinType.Decimal:
                     decimal parsedDecimal;
-                    _ = Decimal.TryParse(text, out parsedDecimal);
+                    _ = decimal.TryParse(text, out parsedDecimal);
                     value = parsedDecimal;
                     break;
 
                 case BuiltinType.Boolean:
                     bool parsedBoolean;
-                    _ = Boolean.TryParse(text, out parsedBoolean);
+                    _ = bool.TryParse(text, out parsedBoolean);
                     value = parsedBoolean;
                     break;
 
                 case BuiltinType.Char:
                     bool parsedChar = text.Length == 3 && text[0] == '\'' && text[2] == '\'';
                     if (parsedChar)
+                    {
                         value = text[1];
+                    }
                     else
                     {
                         value = null;
@@ -1079,7 +1081,7 @@ namespace Supremacy.Scripting.Utility
 
                 if (AlmostMatch != null)
                 {
-                    AlmostMatch.Add(m);
+                    _ = AlmostMatch.Add(m);
                 }
 
                 return false;
@@ -1753,7 +1755,7 @@ namespace Supremacy.Scripting.Utility
 
         public static bool HasGenericArguments(Type type)
         {
-            return (GetNumberOfTypeArguments(type) > 0);
+            return GetNumberOfTypeArguments(type) > 0;
         }
 
         /// <remarks>
@@ -1847,7 +1849,7 @@ namespace Supremacy.Scripting.Utility
             }
         }
 
-        static public string GetFullNameSignature(MemberInfo mi)
+        public static string GetFullNameSignature(MemberInfo mi)
         {
             PropertyInfo pi = mi as PropertyInfo;
             if (pi != null)

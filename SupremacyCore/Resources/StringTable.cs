@@ -15,7 +15,6 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 using Supremacy.Types;
-using Supremacy.Utility;
 
 namespace Supremacy.Resources
 {
@@ -32,8 +31,8 @@ namespace Supremacy.Resources
 
         public string this[string key]
         {
-            get { return _strings.ContainsKey(key) ? _strings[key] : null; }
-            set { _strings[key] = value; }
+            get => _strings.ContainsKey(key) ? _strings[key] : null;
+            set => _strings[key] = value;
         }
 
         public StringTable()
@@ -60,7 +59,7 @@ namespace Supremacy.Resources
                     + fileName);
             }
 
-            String key = null;
+            string key = null;
             StringTable result = new StringTable();
             StringBuilder buffer = new StringBuilder();
             ReadState state = ReadState.ReadKey;
@@ -71,7 +70,9 @@ namespace Supremacy.Resources
                 string line = lines[i];
 
                 if ((line.Length == 0) || line.StartsWith("#"))
+                {
                     continue;
+                }
 
                 if (state == ReadState.ReadKey)
                 {
@@ -96,8 +97,11 @@ namespace Supremacy.Resources
                 else
                 {
                     if (buffer.Length > 0)
-                        buffer.AppendLine();
-                    buffer.Append(line);
+                    {
+                        _ = buffer.AppendLine();
+                    }
+
+                    _ = buffer.Append(line);
                 }
             }
             return result;

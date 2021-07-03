@@ -144,7 +144,7 @@ namespace Supremacy.Scripting.Ast
 
             if (second.Equals(first))
             {
-                postfix(ref first);
+                _ = postfix(ref first);
             }
 
             if (second.Equals(first))

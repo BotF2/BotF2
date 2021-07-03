@@ -2064,7 +2064,7 @@
                     DockPanel.Dock="Left"
                     Width="14"
                     Height="14"
-                    BorderBrush="{StaticResource BlueGradient_Top_Bottom}"
+                    BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                     BorderThickness="2"
                     Background="Transparent"
                     Margin="0">
@@ -2088,7 +2088,7 @@
                      Value="True">
               <Setter TargetName="Check"
                       Property="BorderBrush"
-                      Value="{StaticResource BlueHoverGradient_Top_Bottom}" />
+                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
             </Trigger>
             <Trigger Property="IsEnabled"
                      Value="False">
@@ -3223,29 +3223,21 @@
                                 <ColumnDefinition Width="0.25*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Path Grid.Column="0"
-                  Grid.Row="0"
-                  SnapsToDevicePixels="True"
-                  Data="{StaticResource LCARS_Corner_TopLeft_Small}"
-                  Fill="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="0" Grid.Row="0" SnapsToDevicePixels="True"
+                                  Data="{StaticResource LCARS_Corner_TopLeft_Small}"
+                                  Fill="{StaticResource KlingYellow1Gradient_Left_Right}" />
 
-                            <Path Grid.Column="4"
-                    Grid.Row="0"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_TopRight_Small}"
-                    Fill="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="4" Grid.Row="0" SnapsToDevicePixels="True"
+                                  Data="{StaticResource LCARS_Corner_TopRight_Small}"
+                                  Fill="{StaticResource KlingYellow1Gradient_Right_Left}" />
 
-                            <Path Grid.Column="0"
-                    Grid.Row="2"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_BottomLeft_Small}"
-                    Fill="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="0" Grid.Row="2" SnapsToDevicePixels="True"
+                                  Data="{StaticResource LCARS_Corner_BottomLeft_Small}"
+                                  Fill="{StaticResource KlingYellow1Gradient_Left_Right}" />
 
-                            <Path Grid.Column="4"
-                    Grid.Row="2"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_BottomRight_Small}"
-                    Fill="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="4" Grid.Row="2" SnapsToDevicePixels="True"
+                                  Data="{StaticResource LCARS_Corner_BottomRight_Small}"
+                                  Fill="{StaticResource KlingYellow1Gradient_Right_Left}" />
 
                             <Rectangle x:Name="LeftTopEdge"
                          Grid.Column="1"
@@ -3261,7 +3253,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource Kling2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource Kling2Gradient_Bottom_Top}" />
 
                             <Rectangle x:Name="RightTopEdge"
                          Grid.Column="3"
@@ -3277,7 +3269,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Left"
-                         Fill="{StaticResource Kling1Gradient_Left_Right}" />
+                         Fill="{StaticResource Kling2Gradient_Right_Left}" />
 
                             <Rectangle x:Name="RightEdge"
                          Grid.Column="4"
@@ -3285,7 +3277,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Right"
-                         Fill="{StaticResource Kling1Gradient_Left_Right}" />
+                         Fill="{StaticResource Kling2Gradient_Left_Right}" />
 
                             <Rectangle x:Name="LeftBottomEdge"
                          Grid.Column="1"
@@ -3301,7 +3293,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource Kling2Gradient_Bottom_Top}" />
+                         Fill="{StaticResource Kling2Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"
@@ -3614,7 +3606,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
+                         Fill="{StaticResource Borg3Gradient_Bottom_Top}" />
 
                             <Rectangle x:Name="RightTopEdge"
                          Grid.Column="3"
@@ -3654,7 +3646,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource Borg3Gradient_Left_Right}" />
+                         Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"

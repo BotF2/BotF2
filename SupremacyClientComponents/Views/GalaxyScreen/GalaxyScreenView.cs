@@ -46,7 +46,7 @@ namespace Supremacy.Client.Views
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.OemMinus, ModifierKeys.Control));
 
 
-            CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand, ExecuteEscapeCommand, CanExecuteEscapeCommand));
+            _ = CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand, ExecuteEscapeCommand, CanExecuteEscapeCommand));
         }
 
         private void CanExecuteEscapeCommand(object sender, CanExecuteRoutedEventArgs args)
@@ -88,7 +88,7 @@ namespace Supremacy.Client.Views
                 {
                     Model.SelectedTaskForce = null;
                     e.Handled = true;
-                    CaptureMouse();
+                    _ = CaptureMouse();
                     return;
                 }
 
@@ -96,7 +96,7 @@ namespace Supremacy.Client.Views
                 {
                     Model.SelectedTradeRoute = null;
                     e.Handled = true;
-                    CaptureMouse();
+                    _ = CaptureMouse();
                     return;
                 }
             }

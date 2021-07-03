@@ -9,8 +9,8 @@ namespace Supremacy.Messaging
     {
         #region Declarations
         private static readonly Dictionary<Type, ChannelInvoker> _invokers;
-        private static readonly Type _invokerGenericType = typeof(ChannelInvoker<Object>).GetGenericTypeDefinition();
-        private static readonly Object _lock = new Object();
+        private static readonly Type _invokerGenericType = typeof(ChannelInvoker<object>).GetGenericTypeDefinition();
+        private static readonly object _lock = new object();
         #endregion
 
         static Channel()
@@ -21,7 +21,7 @@ namespace Supremacy.Messaging
         internal Channel() { }
 
         #region Publish Related 
-        public static void Publish(Type channelType, Object payload)
+        public static void Publish(Type channelType, object payload)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
@@ -29,7 +29,7 @@ namespace Supremacy.Messaging
             invoker.Publish(payload, false);
         }
 
-        public static void Publish(Type channelType, string key, Object payload)
+        public static void Publish(Type channelType, string key, object payload)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
@@ -37,7 +37,7 @@ namespace Supremacy.Messaging
             invoker.Publish(key, payload, false);
         }
 
-        public static void Publish(Type channelType, Object payload, bool asynchronously)
+        public static void Publish(Type channelType, object payload, bool asynchronously)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
@@ -45,7 +45,7 @@ namespace Supremacy.Messaging
             invoker.Publish(payload, asynchronously);
         }
 
-        public static void Publish(Type channelType, string key, Object payload, bool asynchronously)
+        public static void Publish(Type channelType, string key, object payload, bool asynchronously)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
@@ -129,39 +129,39 @@ namespace Supremacy.Messaging
         #endregion
 
         #region Subscription Related
-        public static IDisposable Subscribe(Type channelType, Object subscriber)
+        public static IDisposable Subscribe(Type channelType, object subscriber)
         {
             return Subscribe(channelType, subscriber, ChannelThreadOption.PublisherThread, false);
         }
 
-        public static IDisposable Subscribe(Type channelType, string key, Object subscriber)
+        public static IDisposable Subscribe(Type channelType, string key, object subscriber)
         {
             return Subscribe(channelType, key, subscriber, ChannelThreadOption.PublisherThread, false);
         }
 
-        public static IDisposable Subscribe(Type channelType, Object subscriber, bool useWeakReference)
+        public static IDisposable Subscribe(Type channelType, object subscriber, bool useWeakReference)
         {
             return Subscribe(channelType, subscriber, ChannelThreadOption.PublisherThread, useWeakReference);
         }
 
-        public static IDisposable Subscribe(Type channelType, string key, Object subscriber, bool useWeakReference)
+        public static IDisposable Subscribe(Type channelType, string key, object subscriber, bool useWeakReference)
         {
             return Subscribe(channelType, key, subscriber, ChannelThreadOption.PublisherThread, useWeakReference);
         }
 
-        public static IDisposable Subscribe(Type channelType, Object subscriber, ChannelThreadOption threadOption)
+        public static IDisposable Subscribe(Type channelType, object subscriber, ChannelThreadOption threadOption)
         {
             return Subscribe(channelType, subscriber, threadOption, false);
         }
 
         public static IDisposable Subscribe(
-            Type channelType, string key, Object subscriber, ChannelThreadOption threadOption)
+            Type channelType, string key, object subscriber, ChannelThreadOption threadOption)
         {
             return Subscribe(channelType, key, subscriber, threadOption, false);
         }
 
         public static IDisposable Subscribe(
-            Type channelType, Object subscriber, ChannelThreadOption threadOption, bool useWeakReference)
+            Type channelType, object subscriber, ChannelThreadOption threadOption, bool useWeakReference)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
             Guard.ArgumentNotNull(subscriber, "subscriber");
@@ -171,7 +171,7 @@ namespace Supremacy.Messaging
         }
 
         public static IDisposable Subscribe(
-            Type channelType, string key, Object subscriber, ChannelThreadOption threadOption, bool useWeakReference)
+            Type channelType, string key, object subscriber, ChannelThreadOption threadOption, bool useWeakReference)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
             Guard.ArgumentNotNull(subscriber, "subscriber");
@@ -226,7 +226,7 @@ namespace Supremacy.Messaging
         #endregion
 
         #region Private Channels
-        public static Object GetChannel(Type channelType)
+        public static object GetChannel(Type channelType)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
@@ -234,7 +234,7 @@ namespace Supremacy.Messaging
             return invoker.GetChannel();
         }
 
-        public static Object GetChannel(Type channelType, string key)
+        public static object GetChannel(Type channelType, string key)
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
@@ -260,9 +260,9 @@ namespace Supremacy.Messaging
 
             //public abstract Object CreateOrGetChannel(string key);
 
-            public abstract Object GetChannel();
+            public abstract object GetChannel();
 
-            public abstract Object GetChannel(string key);
+            public abstract object GetChannel(string key);
 
             //public abstract bool TryGetChannel(string key, out Object channel);
 
@@ -286,12 +286,12 @@ namespace Supremacy.Messaging
         private class ChannelInvoker<T>
             : ChannelInvoker
         {
-            public override Object GetChannel()
+            public override object GetChannel()
             {
                 return Channel<T>.Public;
             }
 
-            public override Object GetChannel(string key)
+            public override object GetChannel(string key)
             {
                 return Channel<T>.Private[key];
             }

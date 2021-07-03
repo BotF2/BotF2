@@ -22,9 +22,14 @@ namespace Supremacy.Client
         public static DependencyProperty GetDependencyProperty([NotNull] Type targetType, [NotNull] string propertyName)
         {
             if (targetType == null)
+            {
                 throw new ArgumentNullException("targetType");
+            }
+
             if (propertyName == null)
+            {
                 throw new ArgumentNullException("propertyName");
+            }
 
             DependencyPropertyDescriptor propertyDescriptor = DependencyPropertyDescriptor.FromName(
                 propertyName,
@@ -32,7 +37,9 @@ namespace Supremacy.Client
                 targetType);
 
             if (propertyDescriptor != null)
+            {
                 return propertyDescriptor.DependencyProperty;
+            }
 
             return null;
         }
@@ -47,9 +54,14 @@ namespace Supremacy.Client
         public static DependencyProperty GetDependencyProperty([NotNull] this DependencyObject target, [NotNull] string propertyName)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
+
             if (propertyName == null)
+            {
                 throw new ArgumentNullException("propertyName");
+            }
 
             return GetDependencyProperty(target.GetType(), propertyName);
         }
@@ -65,11 +77,16 @@ namespace Supremacy.Client
         public static bool HasDefaultValue([NotNull] this DependencyObject target, [NotNull] DependencyProperty property)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
-            if (property == null)
-                throw new ArgumentNullException("property");
+            }
 
-            return (DependencyPropertyHelper.GetValueSource(target, property).BaseValueSource == BaseValueSource.Default);
+            if (property == null)
+            {
+                throw new ArgumentNullException("property");
+            }
+
+            return DependencyPropertyHelper.GetValueSource(target, property).BaseValueSource == BaseValueSource.Default;
         }
 
         /// <summary>
@@ -83,12 +100,19 @@ namespace Supremacy.Client
         public static bool SetIfDefault<T>([NotNull] this DependencyObject target, [NotNull] DependencyProperty property, T value)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
+
             if (property == null)
+            {
                 throw new ArgumentNullException("property");
+            }
 
             if (!target.HasDefaultValue(property))
+            {
                 return false;
+            }
 
             target.SetValue(property, value);
             return true;
@@ -103,9 +127,15 @@ namespace Supremacy.Client
         public static ValueSource GetValueSource([NotNull] this DependencyObject target, [NotNull] DependencyProperty property)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
+
             if (property == null)
+            {
                 throw new ArgumentNullException("property");
+            }
+
             GameLog.Client.GameData.DebugFormat("Civilization.cs: DependencyPropertyHelper: target={0}, property={1}", target, property);
             return DependencyPropertyHelper.GetValueSource(target, property);
         }
@@ -119,19 +149,29 @@ namespace Supremacy.Client
         public static BaseValueSource GetBaseValueSource([NotNull] this DependencyObject target, [NotNull] DependencyProperty property)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
+
             if (property == null)
+            {
                 throw new ArgumentNullException("property");
+            }
+
             return DependencyPropertyHelper.GetValueSource(target, property).BaseValueSource;
         }
 
         public static void TryFreeze([NotNull] this Freezable freezable)
         {
             if (freezable == null)
+            {
                 throw new ArgumentNullException("freezable");
+            }
 
             if (freezable.CanFreeze)
+            {
                 freezable.Freeze();
+            }
         }
     }
 }

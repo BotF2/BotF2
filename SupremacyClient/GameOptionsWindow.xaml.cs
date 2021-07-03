@@ -27,7 +27,7 @@ namespace Supremacy.Client
 
         void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            GameOptionsManager.SaveDefaults(Options);
+            _ = GameOptionsManager.SaveDefaults(Options);
             DialogResult = true;
         }
 

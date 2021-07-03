@@ -31,7 +31,9 @@ namespace Supremacy.Universe
                     Sector sector = map[x, y];
 
                     if (MapLocation.GetDistance(location, sector.Location) <= radius)
+                    {
                         sectors.Add(sector);
+                    }
                 }
             }
 
@@ -46,7 +48,9 @@ namespace Supremacy.Universe
                 (UniverseObject item) => (item is Station || item is StarSystem) && item.Owner == fleet.Owner);
 
             if (closestSite != null)
+            {
                 return closestSite.Location;
+            }
 
             return fleet.Location;
         }

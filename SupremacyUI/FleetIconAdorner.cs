@@ -55,7 +55,9 @@ namespace Supremacy.UI
 
             UpdateDistressIndicator();
             if (owners.Contains(playerCiv))
+            {
                 UpdateToolTip();
+            }
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
@@ -211,12 +213,15 @@ namespace Supremacy.UI
 
                 if (fleetsCloaked.Count() > 0)
                 {
-                    _countHolder = _countHolder - _fleets.Sum(o => o.Ships.Where(s => s.Source.IsCloaked == true).Count());
+                    _countHolder = _countHolder - _fleets.Sum(o => o.Ships.Count(s => s.Source.IsCloaked == true));
                     if (_countHolder != 0)
                     {
                         _countString = _countHolder.ToString();
                     }
-                    else _countString = "";
+                    else
+                    {
+                        _countString = "";
+                    }
                 }
                 CivilizationMapData _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
                 FleetView _fleetView = _fleets.First();

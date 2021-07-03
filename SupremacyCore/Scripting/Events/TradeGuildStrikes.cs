@@ -36,9 +36,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -83,7 +82,9 @@ namespace Supremacy.Scripting.Events
                     Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     if ((target.Owner.Name == "Borg") || target.Owner.Name == "Dominion") // Borg and Dominion don't have strikes
+                    {
                         return;
+                    }
 
                     _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
