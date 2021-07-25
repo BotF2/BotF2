@@ -40,6 +40,7 @@ namespace Supremacy.Universe
         private BitVector32 _data;
         private string _name;
         private string _text;
+        private readonly string newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -172,6 +173,8 @@ namespace Supremacy.Universe
                     }
                 }
             }
+
+
         }
 
         /// <summary>
@@ -208,6 +211,8 @@ namespace Supremacy.Universe
         /// <returns>The environment.</returns>
         public PlanetEnvironment GetEnvironment(PlanetType homePlanetType)
         {
+            _text = _text + _text + newline;  // dummy - do not remove
+
             switch (PlanetType)
             {
                 case PlanetType.Asteroids:
@@ -216,12 +221,20 @@ namespace Supremacy.Universe
                 case PlanetType.Demon:
                     return PlanetEnvironment.Uninhabitable;
 
+                case PlanetType.Jungle:
+                case PlanetType.Oceanic:
+                case PlanetType.Terran:
+                    return PlanetEnvironment.Ideal;
+
+                case PlanetType.Arctic:
+                case PlanetType.Barren:
+                case PlanetType.Desert:
                 case PlanetType.Rogue:
+                case PlanetType.Volcanic:
                     if (homePlanetType == PlanetType.Rogue)
                     {
-                        return PlanetEnvironment.Ideal;
+                        return PlanetEnvironment.Ideal;  // e.g. for Dominion
                     }
-
                     return PlanetEnvironment.Hostile;
 
                 default:
@@ -286,10 +299,6 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(PlanetType homePlanetType)
         {
-            //_text = "GetMaxPopulation by race " + race.Key;
-            //Console.Write(_text);
-            //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
-
             Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
 
             // OK to return null here! Do not need to fix
@@ -307,6 +316,10 @@ namespace Supremacy.Universe
                 GameLog.Client.GalaxyGenerator.ErrorFormat("Generated at HomeSystem with 99 Population due to avoid crash > GetMaxPopulation");
                 GameLog.Client.GalaxyGenerator.ErrorFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
             }
+            //_text = /*newline + */"GetMaxPopulation by homePlanetType " + homePlanetType.ToString() + " > " + maxPop;
+            ////Console.WriteLine(_text);
+            //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
+
             return maxPop;
             //return Number.ParseInt32(table[PlanetSize.ToString()]
             //       [GetEnvironment(homePlanetType).ToString()]);
@@ -323,7 +336,7 @@ namespace Supremacy.Universe
         {
             _text = "GetMaxPopulation by race " + race.Key;
             //Console.WriteLine(_text);
-            GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
 
             Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
 

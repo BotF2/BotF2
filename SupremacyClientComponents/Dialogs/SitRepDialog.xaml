@@ -20,20 +20,20 @@
           
           <!--this is used-->
                 <!--doesn't work fine atm-->
-                <!--<TextBox x:Name="PlayerComment"
+                <TextBox x:Name="SitRepCommentTextBox"
                     DockPanel.Dock="Left"
-                    TextAlignment="Right"  
-                    MinWidth="40"
+                    TextAlignment="Center"  
+                    MinWidth="20"
                     FontSize="14"
                     VerticalAlignment="Center">
                     <TextBox.Text>
-                        <Binding Path="SitRepComment" Mode="OneWay" UpdateSourceTrigger="Explicit"/>
+                        <Binding Path="SitRepComment" Mode="TwoWay" Converter="{StaticResource StringResourceConverter}" UpdateSourceTrigger="Explicit"/>
                     </TextBox.Text>
                     <TextBox.ToolTip>
                         <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_YOUR_TEXT_TOOLTIP}"
                                    FontSize="20"/>
                     </TextBox.ToolTip>
-                </TextBox>-->
+                </TextBox>
           
                 <Image x:Name="PriorityIcon"
                DockPanel.Dock="Left"
@@ -89,7 +89,7 @@
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="Golden">
-                    <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_golden.png" />
+                    <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_yellow.png" />
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="Crimson">
@@ -102,6 +102,14 @@
 
                 <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="Aqua">
                     <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_aqua.png" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="YellowRed">
+                    <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_yellow_red.png" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="BlueDark">
+                    <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_blue_dark.png" />
                 </DataTrigger>
 
 
@@ -192,7 +200,7 @@
         <!--ListView-->
         <ListView x:Name="ItemsView" ItemTemplate="{StaticResource SitRepEntryTemplate}" 
               Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Auto" BorderBrush="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-              Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="8" MouseDoubleClick="OnSitRepEntryDoubleClick">
+              Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="8" MouseDoubleClick="OnSitRepEntryDoubleClick" MouseUp="OnSitRepEntrySelected">
             
         </ListView>
 
@@ -203,9 +211,9 @@
         
         <!--activate this if you want-->
         <controls:GameButton x:Name="FilterButton" Click="OnFilterButtonClick" DisplayMode="Tiny"
-                    Visibility="Hidden" Height="20"  Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Margin="0,0,0,0" 
+                    Visibility="Hidden" Height="1" Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Margin="0,0,0,0" 
                     Label="{scc:StringResource Key=SITREP_DIALOG_FILTER_BUTTON_TEXT, Case=Upper}"
-                    VerticalAlignment="Center" HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" HorizontalAlignment="Right" 
                     >
             <!--<controls:GameButton.ToolTip>
                 <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_FILTER_BUTTON_TOOLTIP}" 
@@ -216,7 +224,7 @@
                 <ContextMenu x:Name="FilterMenu"
                        StaysOpen="True"
                        PlacementTarget="{x:Reference FilterButton}"
-                       Placement="Top" />
+                       Placement="Bottom" />
             </controls:GameButton.ContextMenu>
         </controls:GameButton>
         <!--FILTER BUTTON is not used anymore due to nobody used it ever BUT it has to be open for running the code-->
@@ -289,7 +297,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <CheckBox x:Name="BrownCheck" Foreground="RosyBrown" Grid.Row="0" Grid.Column="4" Margin="14,0,0,0"
+                <CheckBox x:Name="BrownCheck" Foreground="SaddleBrown" Grid.Row="0" Grid.Column="4" Margin="14,0,0,0"
                 Content="{scc:StringResource Key=SITREP_DIALOG_BROWN_CHECKBOX}"
                 VerticalAlignment="Center" HorizontalAlignment="Left" Checked="OnFilterItemIsCheckedChanged"
                 Unchecked="OnFilterItemIsCheckedChanged"
@@ -301,7 +309,22 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <CheckBox x:Name="CrimsonCheck" Foreground="Crimson" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
+
+                <CheckBox x:Name="YellowRedCheck" Foreground="Crimson" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
+                DockPanel.Dock="Left"
+                Content="{scc:StringResource Key=SITREP_DIALOG_YELLOWRED_CHECKBOX}"
+                
+                Checked="OnFilterItemIsCheckedChanged"
+                Unchecked="OnFilterItemIsCheckedChanged"
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowYellowRedItems), Mode=TwoWay}" 
+                      >
+                    <CheckBox.ToolTip>
+                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_YELLOWRED_CHECKBOX_TOOLTIP}" 
+                               FontSize="18"/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+
+                <CheckBox x:Name="CrimsonCheck" Foreground="Crimson" Grid.Row="0" Grid.Column="6" VerticalAlignment="Center" Margin="14,0,0,0"
                 DockPanel.Dock="Left"
                 Content="{scc:StringResource Key=SITREP_DIALOG_CRIMSON_CHECKBOX}"
                 
@@ -314,6 +337,7 @@
                                FontSize="18"/>
                     </CheckBox.ToolTip>
                 </CheckBox>
+
 
             </Grid>
         </StackPanel>
@@ -427,6 +451,19 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
+                <CheckBox x:Name="BlueDarkCheck" Foreground="SteelBlue" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" Margin="14,0,0,0"
+                DockPanel.Dock="Left"
+                Content="{scc:StringResource Key=SITREP_DIALOG_BLUEDARK_CHECKBOX}"
+                
+                Checked="OnFilterItemIsCheckedChanged"
+                Unchecked="OnFilterItemIsCheckedChanged"
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowBlueDarkItems), Mode=TwoWay}" 
+                      >
+                    <CheckBox.ToolTip>
+                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_BLUEDARK_CHECKBOX_TOOLTIP}" 
+                               FontSize="18"/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
 
 
             </Grid>

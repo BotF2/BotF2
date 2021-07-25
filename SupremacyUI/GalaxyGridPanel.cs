@@ -62,12 +62,14 @@ namespace Supremacy.UI
         public static readonly DependencyProperty UseAnimatedStarsProperty;
         public static readonly DependencyProperty UseAnimationProperty;
         public static readonly DependencyProperty UseCombatScreenProperty;
+        public static readonly DependencyProperty UseSummaryScreenProperty;
+        public static readonly DependencyProperty UseSitRepDetailsScreenProperty;
         public static readonly DependencyProperty SelectedFleetProperty;
         public static readonly DependencyProperty SelectedSectorProperty;
-        private static readonly DependencyPropertyKey HoveredSectorPropertyKey;
-        public static readonly DependencyProperty HoveredSectorProperty;
         public static readonly DependencyProperty SelectedSectorAllegianceProperty;
         public static readonly DependencyProperty SelectedTradeRouteProperty;
+        public static readonly DependencyProperty HoveredSectorProperty;
+        private static readonly DependencyPropertyKey HoveredSectorPropertyKey;
         #endregion
 
         #region Fields
@@ -135,6 +137,7 @@ namespace Supremacy.UI
         private readonly DelegateCommand<Sector> _centerOn2Command;
         private readonly DelegateCommand<Sector> _centerOn3Command;
         private readonly DelegateCommand<Sector> _centerOn4Command;
+        private readonly DelegateCommand<Sector> _SummaryOnOffCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _zoomInCommand;
         private readonly DelegateCommand<object> _zoomOutCommand;
@@ -376,6 +379,20 @@ namespace Supremacy.UI
                 new FrameworkPropertyMetadata(
                     true,
                     UseCombatScreenChangedCallback));
+            UseSummaryScreenProperty = DependencyProperty.Register(
+    "UseSummaryScreen",
+    typeof(bool),
+    typeof(GalaxyGridPanel),
+    new FrameworkPropertyMetadata(
+        true,
+        UseSummaryScreenChangedCallback));
+            UseSitRepDetailsScreenProperty = DependencyProperty.Register(
+    "UseSitRepDetailsScreen",
+    typeof(bool),
+    typeof(GalaxyGridPanel),
+    new FrameworkPropertyMetadata(
+        true,
+        UseSitRepDetailsScreenChangedCallback));
         }
 
         public GalaxyGridPanel()
@@ -415,6 +432,7 @@ namespace Supremacy.UI
             _centerOn2Command = new DelegateCommand<Sector>(ExecuteCenterOn2Command);
             _centerOn3Command = new DelegateCommand<Sector>(ExecuteCenterOn3Command);
             _centerOn4Command = new DelegateCommand<Sector>(ExecuteCenterOn4Command);
+            _SummaryOnOffCommand = new DelegateCommand<Sector>(ExecuteSummaryOnOffCommand);
             _selectSectorCommand = new DelegateCommand<Sector>(ExecuteSelectSectorCommand);
 
             GalaxyScreenCommands.CenterOnSector.RegisterCommand(_centerOnSectorCommand);
@@ -425,6 +443,7 @@ namespace Supremacy.UI
             GalaxyScreenCommands.CenterOn2.RegisterCommand(_centerOn2Command);
             GalaxyScreenCommands.CenterOn3.RegisterCommand(_centerOn3Command);
             GalaxyScreenCommands.CenterOn4.RegisterCommand(_centerOn4Command);
+            GalaxyScreenCommands.SummaryOnOff.RegisterCommand(_SummaryOnOffCommand);
 
 
             GalaxyScreenCommands.SelectSector.RegisterCommand(_selectSectorCommand);
@@ -513,6 +532,24 @@ namespace Supremacy.UI
                     Path = new PropertyPath(ClientSettings.EnableCombatScreenProperty),
                     Mode = BindingMode.OneWay
                 });
+
+            _ = SetBinding(
+    UseSummaryScreenProperty,
+    new Binding
+    {
+        Source = ClientSettings.Current,
+        Path = new PropertyPath(ClientSettings.EnableSummaryScreenProperty),
+        Mode = BindingMode.OneWay
+    });
+
+            _ = SetBinding(
+    UseSitRepDetailsScreenProperty,
+    new Binding
+    {
+        Source = ClientSettings.Current,
+        Path = new PropertyPath(ClientSettings.EnableSitRepDetailsScreenProperty),
+        Mode = BindingMode.OneWay
+    });
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -736,6 +773,18 @@ namespace Supremacy.UI
         {
             get => (bool)GetValue(UseCombatScreenProperty);
             set => SetValue(UseCombatScreenProperty, value);
+        }
+
+        public bool UseSummaryScreen
+        {
+            get => (bool)GetValue(UseSummaryScreenProperty);
+            set => SetValue(UseSummaryScreenProperty, value);
+        }
+
+        public bool UseSitRepDetailsScreen
+        {
+            get => (bool)GetValue(UseSitRepDetailsScreenProperty);
+            set => SetValue(UseSitRepDetailsScreenProperty, value);
         }
 
         public double ScaleFactor => _scale.ScaleX;
@@ -1142,6 +1191,26 @@ namespace Supremacy.UI
             view.Update(true);
         }
 
+        private static void UseSummaryScreenChangedCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(source is GalaxyGridPanel view))
+            {
+                return;
+            }
+
+            view.Update(true);
+        }
+
+        private static void UseSitRepDetailsScreenChangedCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(source is GalaxyGridPanel view))
+            {
+                return;
+            }
+
+            view.Update(true);
+        }
+
         private static object SelectedTradeRouteCoerceValueCallback(
             DependencyObject source, object value)
         {
@@ -1223,6 +1292,15 @@ namespace Supremacy.UI
             }
         }
 
+        private void ExecuteSummaryOnOffCommand(Sector sector)  // Center to Quadrant 4
+        {
+            if (ClientSettings.Current.EnableSummaryScreen = true)
+                ClientSettings.Current.EnableSummaryScreen = false;
+            else
+                ClientSettings.Current.EnableSummaryScreen = true;
+
+        }
+
         public void CenterOnSelectedSector()
         {
             ExecuteCenterOnSectorCommand(SelectedSector);
@@ -1232,31 +1310,6 @@ namespace Supremacy.UI
         {
             ExecuteCenterOnHomeSectorCommand(SelectedSector);
         }
-
-        //public void CenterOn1()
-        //{
-        //    int w = GameContext.Current.Universe.Map.Width / 4;
-        //    int h = GameContext.Current.Universe.Map.Height / 4;
-        //    MapLocation loc = new MapLocation(w, h);
-        //    //int aimSector = GameContext.Current.Universe.Find<Sector>.Where(o => o.Sector.Location == loc).ToList();
-        //    int SelectedSector = GameContext.Current.Universe.Objects.Where(o => o.Sector.Location == loc && o.ObjectType == UniverseObjectType.StarSystem).FirstOrDefault().ObjectID;// && o.Sector.Location.X == w && o.Sector.Location.Y == h);
-        //    ExecuteCenterOnSectorCommand(GameContext.Current.Universe.Objects[SelectedSector].Sector);
-        //}
-
-        //public void CenterOn2()
-        //{
-        //    ExecuteCenterOnHomeSectorCommand(SelectedSector);
-        //}
-
-        //public void CenterOn3()
-        //{
-        //    ExecuteCenterOnHomeSectorCommand(SelectedSector);
-        //}
-
-        //public void CenterOn4()
-        //{
-        //    ExecuteCenterOnHomeSectorCommand(SelectedSector);
-        //}
 
         public void SetHorizontalOffset(double offset, bool snapToGrid)
         {

@@ -79,7 +79,7 @@ namespace Supremacy.Game
                 {
                     MapLocation location = new MapLocation(x, y);
                     Sector sector = GameContext.Current.Universe.Map[location];
-                    StarSystem system = (sector != null) ? sector.System : null;
+                    StarSystem system = sector?.System;
                     if ((system != null) && system.IsInhabited)
                     {
                         if ((sector.System.Name == civ1.HomeSystemName)

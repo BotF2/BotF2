@@ -109,7 +109,7 @@ namespace Supremacy.Resources
             get => GameContext.Current.Civilizations[_civKey];
             set
             {
-                _civKey = (value != null) ? value.Key : null;
+                _civKey = value?.Key;
                 OnPropertyChanged("Civilization");
                 OnPropertyChanged("Value");
             }
@@ -384,12 +384,12 @@ namespace Supremacy.Resources
 
         public static string GetString(Civilization civ, string category, string key, int randomIndex)
         {
-            return GetString((civ != null) ? civ.Key : null, category, key, null, randomIndex);
+            return GetString(civ?.Key, category, key, null, randomIndex);
         }
 
         public static string GetString(Civilization civ, string category, string key, Tone? demeanor, int randomIndex)
         {
-            return GetString((civ != null) ? civ.Key : null, category, key, randomIndex);
+            return GetString(civ?.Key, category, key, randomIndex);
         }
 
         public static string GetString(string civKey, string category, string key, int randomIndex)

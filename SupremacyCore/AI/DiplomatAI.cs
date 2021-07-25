@@ -142,18 +142,30 @@ namespace Supremacy.AI
                                 break;
                         }
 
-                        GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression fropm {1}",
-                            foreignPower.Counterparty.Key,
-                              foreignPower.Owner.Key,
-                              foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                              foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression from {1}",
+                        _text = "Turn: " + GameContext.Current.TurnNumber
+                            + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                            + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                            + " for " + foreignPower.Counterparty.Key
+                            + " BEFORE First Impression from " + foreignPower.Owner.Key
+                            ;
+                        //Console.WriteLine(_text);
+                        GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+
+
                         TrustAndRegardByTraits(foreignPower, impact, similarTraits);
 
-                        GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} After First Impression from {1}",
-                            foreignPower.Counterparty.Key,
-                              foreignPower.Owner.Key,
-                              foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                              foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
+
+                        _text = "Turn: " + GameContext.Current.TurnNumber
+                            + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                            + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                            + " for " + foreignPower.Counterparty.Key
+                            + " AFTER First Impression from " + foreignPower.Owner.Key
+                            ;
+                        //Console.WriteLine(_text);
+                        GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+
+
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower CounterParty ={0} regard ={1} trust ={2}", foreignPower.Counterparty.Key, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2}", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                         //foreignPower.UpdateStatus();
@@ -195,13 +207,24 @@ namespace Supremacy.AI
                         DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(2, 10));
                     }
                     //foreignPower.UpdateRegardAndTrustMeters();
-                    GameLog.Client.Diplomacy.DebugFormat("## Turn {4}: regard ={2} trust ={3} After Ongoing Impression from {1} to {0} "
+
+                    GameLog.Client.DiplomacyDetails.DebugFormat("## Turn {4}: regard= {2} trust= {3} after Ongoing Impression from {1} to {0} "
                           , foreignPower.Counterparty.Key
                           , foreignPower.Owner.Key
                           , foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                           , foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                           , GameContext.Current.TurnNumber
                           );
+
+                    _text = "Turn: " + GameContext.Current.TurnNumber
+                        + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                        + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                        + " for " + foreignPower.Counterparty.Key
+                        + " AFTER Ongoing Impression " + foreignPower.Owner.Key
+                        ;
+                    //Console.WriteLine(_text);
+                    GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+
                     // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                     //foreignPower.UpdateStatus();
                     #endregion
@@ -678,6 +701,7 @@ namespace Supremacy.AI
             }
         }
         private static readonly Random getrandom = new Random();
+        private static string _text;
 
         public static int GetRandomNumber(int min, int max)
         {

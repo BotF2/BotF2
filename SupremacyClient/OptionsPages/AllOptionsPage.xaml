@@ -19,13 +19,13 @@
     <Grid.RowDefinitions>
 
             <RowDefinition Height="Auto" />
-        <RowDefinition Height="5" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="5" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="20" />
+            <RowDefinition Height="5" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="18" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="18" />
             <RowDefinition Height="18" />
             <RowDefinition Height="18" />
@@ -120,45 +120,73 @@
         Value="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.FXVolume), Mode=TwoWay}" />
         </DockPanel>
 
-        <CheckBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"
+        <!--<StackPanel Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3">-->
+
+            <CheckBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"
+
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableFullScreenMode), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_FULL_SCREEN_MODE}"
         ToolTip="{s:StringResource SETTINGS_FULL_SCREEN_MODE_TOOLTIP}" 
         />
+                
         <CheckBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3"
+
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableDialogAnimations), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_ENABLE_DIALOG_ANIMATIONS}"
         ToolTip="{s:StringResource SETTINGS_ENABLE_DIALOG_ANIMATIONS_TOOLTIP}" 
         />
+            
         <CheckBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3"
+
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableStarMapAnimations), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_USE_ANIMATED_STARS}"
         ToolTip="{s:StringResource SETTINGS_USE_ANIMATED_STARS_TOOLTIP}" 
         />
         <CheckBox Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3"
+
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableAnimation), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_USE_ANIMATION}"
         ToolTip="{s:StringResource SETTINGS_USE_ANIMATION_TOOLTIP}" 
         />
         <CheckBox Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3"
+
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableHighQualityScaling), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_USE_HIGH_QUALITY_SCALING}"
         ToolTip="{s:StringResource SETTINGS_USE_HIGH_QUALITY_SCALING_TOOLTIP}" 
         />
         <CheckBox Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3"
+
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableAntiAliasing), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_ENABLE_ANTIALIASING}"
         ToolTip="{s:StringResource SETTINGS_ENABLE_ANTIALIASING_TOOLTIP}" 
         />
         <CheckBox Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3"
+
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableCombatScreen), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_USE_COMBAT_SCREEN}"
         ToolTip="{s:StringResource SETTINGS_USE_COMBAT_SCREEN_TOOLTIP}" 
         />
+
+      
         <CheckBox Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableSitRepDetailsScreen), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_USE_SITREPDETAILS_SCREEN}"
+        ToolTip="{s:StringResource SETTINGS_USE_SITREPDETAILS_SCREEN_TOOLTIP}" 
+        />
+      
+        <CheckBox Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableSummaryScreen), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_USE_SUMMARY_SCREEN}"
+        ToolTip="{s:StringResource SETTINGS_USE_SUMMARY_SCREEN_TOOLTIP}" 
+        />      
+      
+        <!--</StackPanel>-->
+        <!--<CheckBox Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.ReportErrors), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_REPORT_ERRORS}"
         ToolTip="{s:StringResource SETTINGS_REPORT_ERRORS_TOOLTIP}"
-        />
+        />-->
     </Grid>
 </UserControl>

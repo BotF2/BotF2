@@ -56,6 +56,7 @@ namespace Supremacy.Universe
         private SectorMap _map;
         private UniverseObjectSet _objects;
         private GameObjectLookupCollection<Civilization, Colony> _homeColonyLookup;
+        private string _text;
 
         /// <summary>
         /// Gets the map of the game universe.
@@ -118,6 +119,8 @@ namespace Supremacy.Universe
         {
             // works 
             //GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
+            _text = "Searching for Crash: Find(UniverseObjectType objectType)";
+            Console.WriteLine(_text);
             return _objects.Where(o => o.ObjectType == objectType).ToHashSet();
         }
 
@@ -126,6 +129,8 @@ namespace Supremacy.Universe
         {
             // works 
             //GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
+            _text = "Searching for Crash: Find(UniverseObjectType objectType) - 2 where T";
+            Console.WriteLine(_text);
             return _objects.Where(o => o.ObjectType == objectType).OfType<T>().ToHashSet();
         }
 

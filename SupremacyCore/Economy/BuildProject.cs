@@ -51,6 +51,7 @@ namespace Supremacy.Economy
         private byte _priority;
         private BuildProjectFlags _flags;
         private ResourceValueCollection _resourcesInvested;
+        private string _text;
 
 
 
@@ -198,20 +199,25 @@ namespace Supremacy.Economy
             {
                 if (_industryInvested < IndustryRequired)
                 {
-                    //string _percentDONE_text = "";
-                    //if (IndustryInvested > 0 && IndustryRequired > 0)
-                    //    _percentDONE_text = /*(100.0 * */(_industryInvested / IndustryRequired)).ToString();
-                    //this.PercentComplete
 
-                    if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
-                    {
-                        GameLog.Core.Stations.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
-                      BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
-                    }
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder.CivID];
 
+                    //if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
+                    //{
+                    _text = _location + " > " + BuildDesign + " not complete... " + PercentComplete.ToString() + " percent done";
 
-                    GameLog.Core.Production.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
-                        BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
+                    GameLog.Core.Stations.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
+                    BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
+
+                    civManager.SitRepEntries.Add(new ReportEntryCoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", SitRepPriority.Gray));
+                    //civManager.SitRepEntries.Add(new ReportOutput_Gray_CoS_SitRepEntry(civManager.Civilization, _location, _text));
+                    //}
+                    //else
+                    //{
+                    //GameLog.Core.Production.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
+                    //    BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
+                    //}
+
                     return false;
                 }
 
@@ -442,7 +448,7 @@ namespace Supremacy.Economy
             {
                 if (spawnedInstance.ObjectType == UniverseObjectType.Building)
                 {
-                    GameLog.Core.Production.DebugFormat(" Turn {3}: BuildProject.Finished (spawned): ##########  {0} built by {1} at {2}",
+                    GameLog.Core.Production.DebugFormat(" Turn {3}: {1} built at {2} > {0} (spawned)",
                         BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
                     newEntry = new BuildingBuiltSitRepEntry(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive);
                 }
@@ -450,10 +456,10 @@ namespace Supremacy.Economy
 
             if (newEntry == null)
             {
-                GameLog.Core.Production.DebugFormat(" Turn {3}: BuildProject.FINISHED: ##########  {0} built by {1} at {2}",
+                GameLog.Core.Production.DebugFormat(" Turn {3}: {1} built at {2} > {0}",
                     BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
 
-                newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location);
+                newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green);
             }
 
             civManager.SitRepEntries.Add(newEntry);

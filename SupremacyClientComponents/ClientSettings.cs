@@ -424,7 +424,43 @@ namespace Supremacy.Client
             get => (bool)GetValue(EnableCombatScreenProperty);
             set => SetValue(EnableCombatScreenProperty, value);
         }
-        #endregion
+        #endregion EnableCombatScreen Property
+
+        #region EnableSummaryScreen Property
+        public static readonly DependencyProperty EnableSummaryScreenProperty = DependencyProperty.Register(
+            "EnableSummaryScreen",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public event EventHandler<PropertyChangedRoutedEventArgs<bool>> EnableSummaryScreenChanged;
+        private void OnEnableSummaryScreenChanged(bool oldValue, bool newValue) =>
+            EnableSummaryScreenChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        public bool EnableSummaryScreen
+        {
+            get => (bool)GetValue(EnableSummaryScreenProperty);
+            set => SetValue(EnableSummaryScreenProperty, value);
+        }
+        #endregion EnableSummaryScreen Property
+
+        #region EnableSitRepDetailsScreen Property
+        public static readonly DependencyProperty EnableSitRepDetailsScreenProperty = DependencyProperty.Register(
+            "EnableSitRepDetailsScreen",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool EnableSitRepDetailsScreen
+        {
+            get => (bool)GetValue(EnableSitRepDetailsScreenProperty);
+            set => SetValue(EnableSitRepDetailsScreenProperty, value);
+        }
+        #endregion EnableSitRepDetailsScreen Property
 
         #region Traces_SetAll_without_DetailsProperty
         public static readonly DependencyProperty Traces_SetAll_without_DetailsProperty = DependencyProperty.Register(
@@ -1215,11 +1251,7 @@ namespace Supremacy.Client
                 }
             }
         }
-        //public bool EnableCombatScreen
-        //{
-        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
-        //    set { SetValue(EnableCombatScreenProperty, value); }
-        //}
+
         #endregion TracesAudio Property
 
         #region TracesAudioDetails Property

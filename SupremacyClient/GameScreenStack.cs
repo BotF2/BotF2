@@ -271,8 +271,9 @@ namespace Supremacy.Client
         public void AddScreen(Control screen)
         {
             // works
+            //Console.WriteLine("GameScreenStack.cs: screen={0}", screen);
             GameLog.Client.UIDetails.DebugFormat("GameScreenStack.cs: screen={0}", screen);
-            Console.WriteLine("GameScreenStack.cs: screen={0}", screen);
+
             if (screen == null)
             {
                 throw new ArgumentNullException("screen");

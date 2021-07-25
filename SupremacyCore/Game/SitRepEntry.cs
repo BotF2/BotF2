@@ -72,6 +72,14 @@ namespace Supremacy.Game
         /// Shutdowns due to Energy or something else
         /// </summary>
         Crimson,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        RedYellow,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        BlueDark,
 
         Yellow // Yellow is needed for old Saved Games
     }
@@ -113,6 +121,12 @@ namespace Supremacy.Game
         FirstContact = 0x00000800,
     }
 
+    public enum SitRepComment
+    {
+        open,
+        DONE
+    }
+
     public enum SitRepAction
     {
         None,
@@ -131,7 +145,7 @@ namespace Supremacy.Game
     public abstract class SitRepEntry
     {
         protected readonly int _ownerId;
-        protected readonly SitRepPriority _priority;
+        protected SitRepPriority _priority;
         protected string _sitRepComment;
 
         /// <summary>
@@ -149,6 +163,7 @@ namespace Supremacy.Game
             _ownerId = owner.CivID;
             _priority = priority;
         }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SitRepEntry"/> class.
@@ -267,6 +282,48 @@ namespace Supremacy.Game
     }
 
     [Serializable]
+    public class ReportEntryCoS : SitRepEntry  // Centers on Sector
+    {
+        //private readonly int _colonyID;
+        private readonly MapLocation _loc;
+        private readonly string _comment;
+        private readonly string _report;
+        private readonly SitRepPriority _priority;
+
+
+        public ReportEntryCoS(Civilization owner, MapLocation loc, string report, string comment, SitRepPriority priority)
+            : base(owner, priority)
+        {
+            if (loc == null)
+            {
+                throw new ArgumentNullException("loc");
+            }
+
+            _loc = loc;
+            _comment = comment;
+            _report = report;
+            _priority = priority;
+
+        }
+        //public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
+        //public override SitRepAction Action => SitRepAction.ViewColony;
+        //public override object ActionTarget => Colony;
+
+        public override SitRepCategory Categories => SitRepCategory.General;
+        //public override SitRepPriority Priority => _priority;
+
+        public override SitRepAction Action => SitRepAction.CenterOnSector;
+        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+        public override bool HasDetails => false; // turn on/off for extra Dialog window
+        //public override string HeaderText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_HEADER_TEXT"), Colony.Name, Colony.Location);
+        public override string DetailText => _report;
+        public override string SummaryText => _report;
+        public override string SitRepComment { get => _comment; set { } }
+        //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png";
+        public override bool IsPriority => true;
+    }
+
+    [Serializable]
     public class AsteroidImpactSitRepEntry : SitRepEntry
     {
         private readonly int _colonyID;
@@ -322,7 +379,7 @@ namespace Supremacy.Game
         private readonly int _colonyID;
 
         public BuildingBuiltSitRepEntry(Civilization owner, TechObjectDesign itemType, MapLocation location, bool isActive)
-        : base(owner, itemType, location)
+        : base(owner, itemType, location, SitRepPriority.RedYellow)
         {
             _colonyID = GameContext.Current.Universe.Map[Location].System.Colony.ObjectID;
             _isActive = isActive;
@@ -336,7 +393,10 @@ namespace Supremacy.Game
                     GameContext.Current.Universe.Map[Location].Name,
                     GameContext.Current.Universe.Map[Location].Location,
                     ResourceManager.GetString(ItemType.Name),
-                    _isActive ? "" : " (unpowered)");
+                    _isActive ? "" : " ("
+                    + string.Format(ResourceManager.GetString("UN"))
+                    + string.Format(ResourceManager.GetString("POWERED"))
+                    + ")");
     }
 
     [Serializable]
@@ -405,7 +465,7 @@ namespace Supremacy.Game
         private readonly bool _shipyardQueue;
 
         public BuildQueueEmptySitRepEntry(Civilization owner, Colony colony, bool shipyardQueue)
-            : base(owner, SitRepPriority.Orange)
+            : base(owner, SitRepPriority.Yellow)
         {
             if (colony == null)
             {
@@ -1038,7 +1098,7 @@ namespace Supremacy.Game
         //private readonly string _researchNote;
 
         public GrowthByHealthSitRepEntry(Civilization owner, Colony colony)
-                : base(owner, SitRepPriority.Crimson)
+                : base(owner, SitRepPriority.RedYellow)
         {
             if (colony == null)
             {
@@ -1155,10 +1215,9 @@ namespace Supremacy.Game
     {
         private readonly int _itemTypeId;
         private readonly MapLocation _location;
-        public ItemBuiltSitRepEntry(Civilization owner, TechObjectDesign itemType, MapLocation location)
+        public ItemBuiltSitRepEntry(Civilization owner, TechObjectDesign itemType, MapLocation location, SitRepPriority priority)
             : base(owner, SitRepPriority.Green)
         {
-            GameLog.Client.SitReps.DebugFormat(SummaryText);
             if (itemType == null)
             {
                 throw new ArgumentNullException("itemType");
@@ -1166,6 +1225,7 @@ namespace Supremacy.Game
 
             _itemTypeId = itemType.DesignID;
             _location = location;
+            //GameLog.Client.SitReps.DebugFormat("SR: "+ SummaryText);
         }
         public TechObjectDesign ItemType => GameContext.Current.TechDatabase[_itemTypeId];
         public MapLocation Location => _location;
@@ -1173,7 +1233,7 @@ namespace Supremacy.Game
         public override string SitRepComment { get; set; }
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I")
             , GameContext.Current.Universe.Map[Location].Name
-            , GameContext.Current.Universe.Map[Location].Location
+            , Location
             , ResourceManager.GetString(ItemType.Name));
     }
 
@@ -2121,42 +2181,235 @@ namespace Supremacy.Game
 
     }
 
-    [Serializable]
-    public class ReportOutput_Brown_CoS_SitRepEntry : SitRepEntry
-    {
-        private readonly string _note;
-        private readonly MapLocation _loc;
+    //[Serializable]
+    //public class ReportOutput_Aqua_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
 
-        public ReportOutput_Brown_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Brown)
-        { _loc = loc; _note = Note; }
-        public string Note => _note;
-        public override SitRepCategory Categories => SitRepCategory.Construction;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => _note;
-    }
-    // End of SitRepEntry
+    //    public ReportOutput_Aqua_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Brown)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
 
-    [Serializable]
-    public class ReportOutput_Purple_CoS_SitRepEntry : SitRepEntry
-    {
-        private readonly string _note;
-        private readonly MapLocation _loc;
+    //[Serializable]
+    //public class ReportOutput_Blue_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
 
-        public ReportOutput_Purple_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Purple)
-        { _loc = loc; _note = Note; }
+    //    public ReportOutput_Blue_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Blue)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
 
-        public string Note => _note;
-        public override SitRepCategory Categories => SitRepCategory.Construction;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => _note;
-    }
-    // End of SitRepEntry
+    //[Serializable]
+    //public class ReportOutput_BlueDark_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_BlueDark_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.BlueDark)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+
+    //[Serializable]
+    //public class ReportOutput_Brown_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Brown_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Brown)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_Gray_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Gray_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Gray)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_Green_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Green_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Green)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_Orange_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Orange_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Orange)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_Pink_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Pink_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Pink)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_Purple_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Purple_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Purple)
+    //    { _loc = loc; _note = Note; }
+
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_Red_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Red_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Red)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_Yellow_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_Yellow_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Yellow)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
+
+    //[Serializable]
+    //public class ReportOutput_RedYellow_CoS_SitRepEntry : SitRepEntry
+    //{
+    //    // CoS = CenterOnSector
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
+
+    //    public ReportOutput_RedYellow_CoS_SitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.RedYellow)
+    //    { _loc = loc; _note = Note; }
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //}
+    //// End of SitRepEntry
 
     [Serializable]
     public class ResearchCompleteSitRepEntry : SitRepEntry
@@ -2671,7 +2924,7 @@ namespace Supremacy.Game
     {
         private readonly TradeRoute _tradeRoute;
         private readonly int _systemId;
-        public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner, SitRepPriority.Golden)
+        public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner, SitRepPriority.Orange)
         {
             if (route == null)
             {

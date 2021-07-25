@@ -534,7 +534,7 @@ namespace Supremacy.Tech
             }
             GameLog.Core.XMLCheck.InfoFormat("lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
             //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
-            GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 396 were fine)", successfullyLoadedShipDesignCounter);
+            GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 394 were fine)", successfullyLoadedShipDesignCounter);
 
             /************
              * Stations *

@@ -40,7 +40,7 @@ namespace Supremacy.Diplomacy
             set
             {
                 VerifyInitializing();
-                _civilizationKey = (value != null) ? value.Key : null;
+                _civilizationKey = value?.Key;
                 OnPropertyChanged("Civilization");
             }
         }

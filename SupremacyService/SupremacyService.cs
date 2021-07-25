@@ -48,7 +48,7 @@ namespace Supremacy.WCF
     {
         #region Fields
 
-        private static readonly Lazy<GameLog> _log = new Lazy<GameLog>(() => GameLog.Server);
+        //private static readonly Lazy<GameLog> _log = new Lazy<GameLog>(() => GameLog.Server);
 
         private readonly object _aiAsyncLock;
         private readonly Dictionary<Player, PlayerOrdersMessage> _playerOrders;

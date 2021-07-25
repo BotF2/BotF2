@@ -602,7 +602,7 @@ namespace Supremacy.Client.Controls
                     return;
                 }
 
-                UIElement element = popupAnchor.Popup != null ? popupAnchor.Popup.Child : null;
+                UIElement element = popupAnchor.Popup?.Child;
                 if (element != null)
                 {
                     if ((popupAnchor is DependencyObject popupAnchorObj) && (element.DesiredSize.Width == 0))

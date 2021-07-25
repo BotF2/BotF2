@@ -51,6 +51,7 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand CenterOn2 = new CompositeCommand();
         public static readonly CompositeCommand CenterOn3 = new CompositeCommand();
         public static readonly CompositeCommand CenterOn4 = new CompositeCommand();
+        public static readonly CompositeCommand SummaryOnOff = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCloak = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCamouflage = new CompositeCommand();
         public static readonly CompositeCommand IssueTaskForceOrder = new CompositeCommand();

@@ -1274,7 +1274,7 @@ namespace Supremacy.Client.Views
 
         private void RefreshForeignPowers()
         {
-            Civilization selectedForeignPower = (SelectedForeignPower != null) ? SelectedForeignPower.Counterparty : null;
+            Civilization selectedForeignPower = SelectedForeignPower?.Counterparty;
 
             SelectedForeignPower = null;
 

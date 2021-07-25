@@ -135,7 +135,7 @@ namespace Supremacy.Client.Audio
                     _group = value as FMODGrouping;
                     if (_channel != null)
                     {
-                        FMODErr.Check(_channel.setChannelGroup(_group != null ? _group.ChannelGroup : null));
+                        FMODErr.Check(_channel.setChannelGroup(_group?.ChannelGroup));
                     }
                 }
             }

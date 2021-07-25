@@ -51,6 +51,10 @@ namespace Supremacy.Universe
             PlanetSizeModToMoonSizeDist = new Dictionary<Tuple<PlanetSize, MoonSize>, int>();
             PlanetTypeModToMoonSizeDist = new Dictionary<Tuple<PlanetType, MoonSize>, int>();
 
+            _text = "GalaxyGenerator starts...";
+            Console.WriteLine(_text);
+            GameLog.Core.GalaxyGenerator.DebugFormat(_text);
+
 
             foreach (StarType starType in EnumHelper.GetValues<StarType>())
             {
@@ -264,6 +268,7 @@ namespace Supremacy.Universe
                     }
 
                     GenerateSystems(starPositions, starNames, homeLocations);
+
                     PlaceMoons();
 
                     LinkWormholes();
@@ -334,11 +339,69 @@ namespace Supremacy.Universe
                         GameLog.Core.GalaxyGenerator.DebugFormat("Unable to place Bajoran and/or Gamma wormholes");
                     }
 
+                    int count = 0;
+                    for (int x = 0; x < mapSize.Height; x++)
+                    {
+                        for (int y = 0; y < mapSize.Width; y++)
+                        {
+                            Sector loc = GameContext.Current.Universe.Map[y, x];
+                            if (!loc.Name.Contains("("))  // emtpy sector are named e.g. (0,0)
+                            {
+                                _text = ";MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType;
+                                Console.WriteLine(_text);
+                                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text); // hiding info in Log.txt
+                                count += 1;
+                            }
+                        }
+                    }
+                    _text = "### MapContent-Count:;" + count;
+                    Console.WriteLine(_text);
+                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+
+                    _text = "Searching for Crash: systemNamesList";
+                    Console.WriteLine(_text);
+                    IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
+
+                    var qry = from s in systemNamesList
+                              group s by s into grp
+                              select new
+                              {
+                                  num = grp.Key,
+                                  count = grp.Count()
+                              };
+                    //then...
+                    //if (qry.curr != null)
+                    foreach (var o in qry)
+                    {
+                        if (o.count > 1)
+                        {
+                            _text = "######  Star Name " + o.num + " is used in systemNamesList " + o.count + " times - ";
+                            Console.WriteLine(_text);
+                            GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
+                        }
+                    }
+
+                    count = 0;
+                    foreach (UniverseObject item in systemNamesList)
+                    {
+
+                        _text = "Systems:;inhabited=" + item.Sector.System.IsInhabited + item.Location + ";" + item.Name + ";";
+                        if (item.Sector.System.Colony != null)
+                            _text += ";" + item.Sector.System.Colony.MaxPopulation;
+                        Console.WriteLine(_text);
+                        //GameLog.Core.GalaxyGenerator.DebugFormat(_text);  // hiding info in Log.txt
+                        count += 1;
+                    }
+                    _text = "### Systems-Count:;" + count;
+                    Console.WriteLine(_text);
+                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
                     break;
                 }
             }
             finally
             {
+
                 _ = GameContext.PopThreadContext();
             }
         }
@@ -981,8 +1044,11 @@ namespace Supremacy.Universe
                         }
                         else
                         {
-                            _text = "PlanetSize = " + planetSize + " at " + system.Name + " Number " + newPlanets;
-                            GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                            // Asteroids
+
+                            //_text = "PlanetSize = " + planetSize + " at " + system.Name + " Number " + newPlanets;
+                            //Console.WriteLine(_text);
+                            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
                         }
 
                         attemptNumber++;
@@ -1035,7 +1101,7 @@ namespace Supremacy.Universe
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
             Colony colony = new Colony(system, inhabitants);
 
-            colony.Population.BaseValue = (int)(0.6f * system.GetMaxPopulation(inhabitants));
+            colony.Population.BaseValue = (int)(0.5f * system.GetMaxPopulation(inhabitants));
             colony.Population.Reset();
             colony.Name = system.Name;
 
@@ -1075,181 +1141,242 @@ namespace Supremacy.Universe
 
             GameContext gameContext = GameContext.Current;
 
-            _ = Parallel.ForEach(
-                positions,
-                position =>
+            //_ = Parallel.ForEach(
+            //    positions,
+            //    position =>
+            //    {
+            //        GameContext.PushThreadContext(gameContext);
+
+            //        try
+            //        {
+
+            foreach (MapLocation position in positions)
+            {
+                GameContext.PushThreadContext(gameContext);
+
+                StarSystem system = new StarSystem();
+                List<Planet> planets = new List<Planet>();
+
+                StarType starType;
+
+                do { starType = GetStarType(false); }
+                while (!StarHelper.CanPlaceStar(starType, position, homeLocations));
+
+                system.StarType = starType;
+                system.Location = position;
+
+                //Set the name
+                switch (system.StarType)
                 {
-                    GameContext.PushThreadContext(gameContext);
-
-                    try
-                    {
-                        StarSystem system = new StarSystem();
-                        List<Planet> planets = new List<Planet>();
-
-                        StarType starType;
-
-                        do { starType = GetStarType(false); }
-                        while (!StarHelper.CanPlaceStar(starType, position, homeLocations));
-
-                        system.StarType = starType;
-                        system.Location = position;
-
-                        //Set the name
-                        switch (system.StarType)
+                    case StarType.BlackHole:
+                        system.Name = "Black Hole";
+                        break;
+                    case StarType.NeutronStar:
+                        system.Name = "Neutron Star";
+                        break;
+                    case StarType.Quasar:
+                        system.Name = "Quasar";
+                        break;
+                    case StarType.RadioPulsar:
+                        system.Name = "Radio Pulsar";
+                        break;
+                    case StarType.XRayPulsar:
+                        system.Name = "X-Ray Pulsar";
+                        break;
+                    case StarType.Nebula:
+                        if (nebulaNames.Count == 0)
                         {
-                            case StarType.BlackHole:
-                                system.Name = "Black Hole";
-                                break;
-                            case StarType.NeutronStar:
-                                system.Name = "Neutron Star";
-                                break;
-                            case StarType.Quasar:
-                                system.Name = "Quasar";
-                                break;
-                            case StarType.RadioPulsar:
-                                system.Name = "Radio Pulsar";
-                                break;
-                            case StarType.XRayPulsar:
-                                system.Name = "X-Ray Pulsar";
-                                break;
-                            case StarType.Nebula:
-                                if (nebulaNames.Count == 0)
-                                {
-                                    break;
-                                }
+                            break;
+                        }
 
-                                system.Name = nebulaNames[0];
-                                nebulaNames.RemoveAt(0);
+                        system.Name = nebulaNames[0];
+                        nebulaNames.RemoveAt(0);
+                        break;
+                    case StarType.Wormhole:
+                        if (system.Quadrant == Quadrant.Delta) // No wormholes near Borg in Delta Quadrant
+                        {
+                            system.StarType = StarType.BlackHole;
+                            system.Name = "Black Hole";
+                            GameLog.Core.GalaxyGeneratorDetails.DebugFormat("BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
+                            break;
+                        }
+                        GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Wormhole placed at {0}", system.Location);
+                        break;
+                    case StarType.White:
+                    //break;
+                    case StarType.Blue:
+                    //break;
+                    case StarType.Yellow:
+                    //break;
+                    case StarType.Orange:
+                    //break;
+                    case StarType.Red:
+                    //break;
+                    default:
+                        if (starNames.Count == 0)
+                        {
+                            system.Name = "System " + system.ObjectID;
+                            break;
+                        }
+
+                        //_text = system.Location + " has type > " + system.StarType;
+                        //Console.WriteLine(_text);
+                        //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
+                        //system.Name = "Dummy";  // not inside Parallel foreach
+                        system.Name = starNames[0];
+                        starNames.RemoveAt(0);
+                        break;
+                }
+
+                _text = "Searching for Crash: systemNamesList";
+                Console.WriteLine(_text);
+                IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
+
+                //foreach (var pos in positions)
+                //{
+                if (system.Name == "Dummy")
+                {
+                    system.Name = starNames.FirstOrDefault();
+                    _ = starNames.Remove(system.Name);
+                    _text = system.Name + " got used and wiped out from list of Star names";
+                    Console.WriteLine(_text);
+                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
+                }
+
+                var qry = from s in systemNamesList
+                          group s by s into grp
+                          select new
+                          {
+                              num = grp.Key,
+                              count = grp.Count()
+                          };
+                //then...
+                foreach (var o in qry)
+                {
+                    if (o.count > 1)
+                    {
+                        Console.WriteLine("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
+                        GameLog.Core.GalaxyGenerator.ErrorFormat("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
+                    }
+                }
+
+
+
+                // below "SupportsPlanets" doesn't work atm ... so here manually (to get some sector available to COLONIZE)
+                bool _supportPlanets;
+                switch (system.StarType)
+                {
+                    case StarType.White:
+                    case StarType.Blue:
+                    case StarType.Yellow:
+                    case StarType.Orange:
+                    case StarType.Red:
+                    case StarType.Nebula:
+                        _supportPlanets = true;
+                        break;
+                    default:
+                        _supportPlanets = false;
+                        break;
+                }
+
+                //If the system supports planets, generate them
+                //doesn't work atm:   if (starType.SupportsPlanets())
+                if (_supportPlanets == true)
+                {
+                    for (int i = 0; i < maxPlanets - 1; i++)
+                    {
+                        PlanetSize planetSize = GetPlanetSize(system.StarType, i);
+                        if (planetSize != PlanetSize.NoWorld)
+                        {
+                            Planet planet = new Planet
+                            {
+                                PlanetSize = planetSize,
+                                PlanetType = GetPlanetType(system.StarType, planetSize, i),
+                                Variation = RandomHelper.Random(Planet.MaxVariations),
+                                Bonuses = PlanetBonus.Random
+                            };
+
+                            planets.Add(planet);
+                        }
+                        if (system.StarType == StarType.Nebula)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (planets.Count > 0)
+                    {
+                        int rndSystemBonusType = RandomHelper.Random(8);
+                        switch (rndSystemBonusType)
+                        {
+                            case 1:
+                                system.AddBonus(SystemBonus.Dilithium);
                                 break;
-                            case StarType.Wormhole:
-                                if (system.Quadrant == Quadrant.Delta) // No wormholes near Borg in Delta Quadrant
-                                {
-                                    system.StarType = StarType.BlackHole;
-                                    system.Name = "Black Hole";
-                                    GameLog.Core.GalaxyGenerator.DebugFormat("BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
-                                    break;
-                                }
-                                GameLog.Core.GalaxyGenerator.DebugFormat("Wormhole placed at {0}", system.Location);
+                            case 2:
+                            case 3:
+                            case 4:
+                                system.AddBonus(SystemBonus.Duranium);
+                                break;
+                            case 5:
+                                system.AddBonus(SystemBonus.Dilithium);
+                                system.AddBonus(SystemBonus.Duranium);
                                 break;
                             default:
-                                if (starNames.Count == 0)
-                                {
-                                    system.Name = "System " + system.ObjectID;
-                                    break;
-                                }
-                                system.Name = "Dummy";  // not inside Parallel foreach
-                                starNames.RemoveAt(0);
                                 break;
                         }
-
-
-
-                        // below "SupportsPlanets" doesn't work atm ... so here manually (to get some sector available to COLONIZE)
-                        bool _supportPlanets;
-                        switch (system.StarType)
-                        {
-                            case StarType.White:
-                            case StarType.Blue:
-                            case StarType.Yellow:
-                            case StarType.Orange:
-                            case StarType.Red:
-                            case StarType.Nebula:
-                                _supportPlanets = true;
-                                break;
-                            default:
-                                _supportPlanets = false;
-                                break;
-                        }
-
-                        //If the system supports planets, generate them
-                        //doesn't work atm:   if (starType.SupportsPlanets())
-                        if (_supportPlanets == true)
-                        {
-                            for (int i = 0; i < maxPlanets - 1; i++)
-                            {
-                                PlanetSize planetSize = GetPlanetSize(system.StarType, i);
-                                if (planetSize != PlanetSize.NoWorld)
-                                {
-                                    Planet planet = new Planet
-                                    {
-                                        PlanetSize = planetSize,
-                                        PlanetType = GetPlanetType(system.StarType, planetSize, i),
-                                        Variation = RandomHelper.Random(Planet.MaxVariations),
-                                        Bonuses = PlanetBonus.Random
-                                    };
-
-                                    planets.Add(planet);
-                                }
-                                if (system.StarType == StarType.Nebula)
-                                {
-                                    break;
-                                }
-                            }
-
-                            if (planets.Count > 0)
-                            {
-                                int rndSystemBonusType = RandomHelper.Random(8);
-                                switch (rndSystemBonusType)
-                                {
-                                    case 1:
-                                        system.AddBonus(SystemBonus.Dilithium);
-                                        break;
-                                    case 2:
-                                    case 3:
-                                    case 4:
-                                        system.AddBonus(SystemBonus.Duranium);
-                                        break;
-                                    case 5:
-                                        system.AddBonus(SystemBonus.Dilithium);
-                                        system.AddBonus(SystemBonus.Duranium);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                            system.AddPlanets(planets);
-                            SetPlanetNames(system);
-                            PlaceBonuses(system);
-                        }
-
-                        GameContext.Current.Universe.Objects.Add(system);
-                        GameContext.Current.Universe.Map[position].System = system;
-
-                        IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
-
-                        //foreach (var pos in positions)
-                        //{
-                        if (system.Name == "Dummy")
-                        {
-                            system.Name = starNames.FirstOrDefault();
-                            _ = starNames.Remove(system.Name);
-                        }
-
-                        var qry = from s in systemNamesList
-                                  group s by s into grp
-                                  select new
-                                  {
-                                      num = grp.Key,
-                                      count = grp.Count()
-                                  };
-                        //then...
-                        foreach (var o in qry)
-                        {
-                            if (o.count > 1)
-                            {
-                                Console.WriteLine("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
-                                GameLog.Core.GalaxyGenerator.ErrorFormat("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
-                            }
-                        }
-
-                        //}
                     }
-                    finally
-                    {
-                        _ = GameContext.PopThreadContext();
-                    }
-                });
+
+                    system.AddPlanets(planets);
+                    SetPlanetNames(system);
+                    PlaceBonuses(system);
+                }
+
+                GameContext.Current.Universe.Objects.Add(system);
+                GameContext.Current.Universe.Map[position].System = system;
+
+                //_text = "Searching for Crash: systemNamesList";
+                //Console.WriteLine(_text);
+                //IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
+
+                //foreach (var pos in positions)
+                //{
+                if (system.Name == "Dummy")
+                {
+                    system.Name = starNames.FirstOrDefault();
+                    _ = starNames.Remove(system.Name);
+                    _text = system.Name + " got used and wiped out from list of Star names";
+                    Console.WriteLine(_text);
+                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
+                }
+
+                //var qry = from s in systemNamesList
+                //          group s by s into grp
+                //          select new
+                //          {
+                //              num = grp.Key,
+                //              count = grp.Count()
+                //          };
+                ////then...
+                //foreach (var o in qry)
+                //{
+                //    if (o.count > 1)
+                //    {
+                //        Console.WriteLine("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
+                //        GameLog.Core.GalaxyGenerator.ErrorFormat("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
+                //    }
+                //}
+
+            }
+            //}
+            //            finally
+            //            {
+            _ = GameContext.PopThreadContext();
+            //}
+            //}
+            //);
 
         }
 
@@ -1275,14 +1402,14 @@ namespace Supremacy.Universe
                 }
                 wormhole.Name = notFinalName;
 
-                GameLog.Core.GalaxyGenerator.DebugFormat("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
+                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
             }
 
             while (wormholes.Count > 1)
             {
                 GameContext.Current.Universe.Map[wormholes[0].Sector.Location].System.WormholeDestination = wormholes[1].Sector.Location;
                 GameContext.Current.Universe.Map[wormholes[1].Sector.Location].System.WormholeDestination = wormholes[0].Sector.Location;
-                GameLog.Core.GalaxyGenerator.DebugFormat("Wormholes at {0} and {1} linked", wormholes[0].Sector.Location, wormholes[1].Sector.Location);
+                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Wormholes at {0} and {1} linked", wormholes[0].Sector.Location, wormholes[1].Sector.Location);
                 //Call this twice to remove the first 2 wormholes which are now linked
                 wormholes.RemoveAt(0);
                 wormholes.RemoveAt(0);

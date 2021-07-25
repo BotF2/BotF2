@@ -372,7 +372,7 @@ namespace Supremacy.Client
                     // got a null ref from this gamelog. Are we missing a sitRepEntry.SummaryText?
                     // GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
 
-                    if ((ClientSettings.Current != null) && sitRepEntry.HasDetails && ClientSettings.Current.EnableCombatScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
+                    if ((ClientSettings.Current != null) && sitRepEntry.HasDetails && ClientSettings.Current.EnableSitRepDetailsScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
                     {
                         SitRepDetailDialog.Show(sitRepEntry);
                     }
@@ -400,39 +400,14 @@ namespace Supremacy.Client
             else if (!service.AutoTurn)
             {
                 // works but doubled
-                if (ClientSettings.Current.EnableCombatScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
+                if (ClientSettings.Current.EnableSummaryScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
                 {
-                    GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
+                    GameLog.Client.General.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
                 }
             }
         }
 
-        //private void ShowShipOverview(bool showIfEmpty)
-        //{
-        //    if (!_appContext.IsGameInPlay)
-        //    {
-        //        return;
-        //    }
-
-        //    _shipOverview.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
-
-        //    IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
-
-        //    if (showIfEmpty)
-        //    {
-        //        _shipOverview.Show();
-        //    }
-        //    else if (!service.AutoTurn)
-        //    {
-        //        // works but doubled
-        //        if (ClientSettings.Current.EnableCombatScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
-        //        {
-        //            GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
-        //            _shipOverview.ShowIfAnyVisibleEntries();
-        //        }
-        //    }
-        //}
 
         private void ClearTurnWaitCursor()
         {

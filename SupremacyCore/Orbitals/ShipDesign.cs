@@ -36,8 +36,9 @@ namespace Supremacy.Orbitals
         private ushort _workCapacity;
         private Percentage _interceptAbility;
         private Percentage _raidAbility;
-        private Dictionary<string, int> _possibleNames;
+        private readonly Dictionary<string, int> _possibleNames;
         private ShipType _shipClass;
+        private readonly string _text;
 
 
         /// <summary>
@@ -244,7 +245,8 @@ namespace Supremacy.Orbitals
                 {
                     if (_cloakStrength < 4 || _cloakStrength > 20)   // atm all values between 6 and 18 (or 0 for not having this ability)
                     {
-                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
+                        //_text = ""; // dummy - do not remove :-)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}" + _text, Name, _cloakStrength);
                     }
                 }
             }
@@ -338,12 +340,17 @@ namespace Supremacy.Orbitals
             else
             {
                 // for problems with ships activate ...
-                //GameLog.Core.GameData.DebugFormat("ShipNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
+                //_text = "ShipNames available (see TechObjectDatabase.xml or activate FullOutput in code) for " + Name;
+                //Console.WriteLine(_text);
+                //GameLog.Core.GameData.DebugFormat(_text);
 
                 foreach (XmlElement name in element["ShipNames"])
                 {
 
                     _possibleNames.Add(name.InnerText.Trim(), 0);
+
+                    //_text = "ShipNames - Possible Name for " + Name + " " + name.InnerText.Trim();
+                    //Console.WriteLine(_text);
                     //GameLog.Core.GameData.DebugFormat("ShipNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
                 }
             }

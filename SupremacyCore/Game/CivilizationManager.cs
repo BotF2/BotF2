@@ -95,7 +95,13 @@ namespace Supremacy.Game
             }
         }
 
-        public void AddCivHist(int civIDHist, string civKeyHist, int creditsHist, int coloniesHist, int populationHist, int maintenanceHist, int researchHist)
+        public void AddCivHist(int civIDHist
+            , string civKeyHist
+            , int creditsHist
+            , int coloniesHist
+            , int populationHist
+            , int maintenanceHist
+            , int researchHist)
         {
             string _tn;
             _tn = GameContext.Current.TurnNumber.ToString();
@@ -118,20 +124,21 @@ namespace Supremacy.Game
                 _civHist_List.Add(civHist_New);
                 foreach (CivHistory item in _civHist_List)
                 {
-                    GameLog.Core.CivsAndRacesDetails.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
-                        , _tn
 
-                        , item.CivIDHistAndTurn
-                        , item.CivIDHist
-                        , item.CivKeyHist
-
-                        , item.CreditsHist
-                        , item.ColoniesHist
-                        , item.PopulationHist
-                        , item.MaintenanceHist
-
-                        , item.ResearchHist
-                        );
+                    //GameLog.Core.GameDataDetails.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
+                    _text =
+                        "Turn;" + _tn
+                        + ";CivID+Turn;" + item.CivIDHistAndTurn
+                        + ";" + item.CivIDHist
+                        + ";" + item.CivKeyHist
+                        + ";Credits;" + item.CreditsHist
+                        + ";Col;" + item.ColoniesHist
+                        + ";Pop;" + item.PopulationHist
+                        + ";Maint;" + item.MaintenanceHist
+                        + ";Research;" + item.ResearchHist
+                        ;
+                    //Console.WriteLine(_text);
+                    GameLog.Core.GameDataDetails.DebugFormat(_text);
                 }
             }
 

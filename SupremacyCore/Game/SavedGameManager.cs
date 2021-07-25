@@ -132,7 +132,7 @@ namespace Supremacy.Game
                 }
 
                 string _text = /*Environment.NewLine + */"   fullPath =        " + fullPath;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 SavedGameHeader header;

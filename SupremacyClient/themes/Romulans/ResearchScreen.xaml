@@ -121,9 +121,9 @@
                     <Setter TargetName="Border"
                             Property="Background"
                             Value="{DynamicResource Rom2Gradient_Left_Right}"/>
-                    <Trigger.EnterActions>
+                    <!--<Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
-                    </Trigger.EnterActions>
+                    </Trigger.EnterActions>-->
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
@@ -156,9 +156,9 @@
                     <Setter TargetName="Border"
                             Property="Background"
                             Value="{DynamicResource Rom2Gradient_Left_Right}"/>
-                    <Trigger.EnterActions>
+                    <!--<Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
-                    </Trigger.EnterActions>
+                    </Trigger.EnterActions>-->
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>

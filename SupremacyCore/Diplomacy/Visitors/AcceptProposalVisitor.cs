@@ -32,7 +32,7 @@ namespace Supremacy.Diplomacy.Visitors
                 throw new ArgumentNullException("proposal");
             }
 
-            GameLog.Client.Diplomacy.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
+            GameLog.Client.DiplomacyDetails.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
                 , proposal.Sender.Key
                 , proposal.Recipient.Key
                 , proposal.Clauses[0].ClauseType
@@ -55,7 +55,7 @@ namespace Supremacy.Diplomacy.Visitors
 
             Response response = new Response(ResponseType.Accept, proposal);
 
-            GameLog.Core.Diplomacy.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
+            GameLog.Core.DiplomacyDetails.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
                 agreement.Recipient, agreement.Sender, agreement.Proposal.TurnSent, proposal.Clauses.Count, response.ResponseType.ToString());
 
             foreignPower.ResponseSent = response;

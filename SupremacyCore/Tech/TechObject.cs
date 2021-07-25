@@ -52,7 +52,7 @@ namespace Supremacy.Tech
         /// <value>The name.</value>
         public override string Name
         {
-            get => base.Name ?? ((Design != null) ? Design.Name : null);
+            get => base.Name ?? (Design?.Name);
             set => base.Name = value;
         }
 

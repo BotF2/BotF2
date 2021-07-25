@@ -792,6 +792,19 @@
                                             </Button.ToolTip>
                                         </Button>
 
+                                        <ToggleButton  Margin="0,0,3,0" MinWidth="30" x:Name="SummaryOnOff"
+                            Command="{x:Static scc:GalaxyScreenCommands.SummaryOnOff}"                                                 
+                            Style="{StaticResource LCARS_BorderToggleButtonStyle}"
+                            Content="{s:StringResource Key=SUMMARY_ON_OFF_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <ToggleButton.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource SUMMARY_ON_OFF_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </ToggleButton.ToolTip>
+                                        </ToggleButton>
+
                                     </StackPanel>
                                     
                                     

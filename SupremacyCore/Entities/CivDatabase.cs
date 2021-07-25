@@ -203,7 +203,7 @@ namespace Supremacy.Entities
                     _reverseLookup[civ.Key] = civ;
 
                     // works 
-                    GameLog.Core.CivsAndRacesDetails.DebugFormat("deserialize {0}", civ.Key);
+                    //GameLog.Core.CivsAndRacesDetails.DebugFormat("deserialize {0}", civ.Key);
                     if (civ.SpiedCivList != null)
                     {
                         foreach (Civilization spiedCiv in civ.SpiedCivList)

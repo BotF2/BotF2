@@ -278,6 +278,60 @@ namespace Supremacy.Client.Dialogs
 
         #endregion ShowBrownItems Attached Property
 
+        #region ShowYellowRedItems Attached Property
+
+        public static readonly DependencyProperty ShowYellowRedItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowYellowRedItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowYellowRedItems(DependencyObject source)
+        {
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowYellowRedItemsProperty);
+        }
+
+        public static void SetShowYellowRedItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            source.SetValue(ShowYellowRedItemsProperty, value);
+        }
+
+        #endregion ShowYellowRedItems Attached Property
+
+        #region ShowBlueDarkItems Attached Property
+
+        public static readonly DependencyProperty ShowBlueDarkItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowBlueDarkItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowBlueDarkItems(DependencyObject source)
+        {
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowBlueDarkItemsProperty);
+        }
+
+        public static void SetShowBlueDarkItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            source.SetValue(ShowBlueDarkItemsProperty, value);
+        }
+
+        #endregion ShowBlueDarkItems Attached Property
+
         #region ShowAquaItems Attached Property
 
         public static readonly DependencyProperty ShowAquaItemsProperty = DependencyProperty.RegisterAttached(

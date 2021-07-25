@@ -235,7 +235,7 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("visitor");
             }
 
-            GameLog.Core.Diplomacy.DebugFormat("Turn {3}: Sender ={2}, proposal clause type = {0}, Recipient ={1} "
+            GameLog.Core.DiplomacyDetails.DebugFormat("Turn {3}: Sender ={2}, proposal clause type = {0}, Recipient ={1} "
                 , proposal.Clauses[0].ClauseType.ToString()
                 , proposal.Recipient.ShortName
                 , proposal.Sender.ShortName

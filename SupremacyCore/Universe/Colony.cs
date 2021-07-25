@@ -367,9 +367,9 @@ namespace Supremacy.Universe
                     }
                 }
 
-                string _text = System.Name + ": baseGrowthRate " + baseGrowthRate.ToString() + ", modifier: " + modifier.Multiplier.ToString();
-                //Console.WriteLine(_text);
-                GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
+                //string _text = System.Name + ": baseGrowthRate " + baseGrowthRate.ToString() + ", modifier: " + modifier.Multiplier.ToString();
+                ////Console.WriteLine(_text);
+                //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
                 return Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
             }
@@ -497,7 +497,8 @@ namespace Supremacy.Universe
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
 
-            civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
+            civManager.SitRepEntries.Add(new ReportEntryCoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", SitRepPriority.Purple));
+            //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
 
 
             return status;
@@ -1214,6 +1215,7 @@ namespace Supremacy.Universe
         /// <returns>The natural production level.</returns>
         protected internal int GetBaseResourceProduction(ResourceType resourceType, int currentPopulation)
         {
+            _text = currentPopulation.ToString();  // just a dummy to avoid a "curPop can be removed"
             switch (resourceType)
             {
                 case ResourceType.Deuterium:
@@ -1223,6 +1225,7 @@ namespace Supremacy.Universe
                 default:
                     return 0;
             }
+
         }
 
         /// <summary>
@@ -1792,6 +1795,8 @@ namespace Supremacy.Universe
             int _researchPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Research);
             int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
 
+            int _orbBat_used = this.ActiveOrbitalBatteries;
+
 
             //        var energyBuildings = Buildings.
             //            .Where(o => o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList());
@@ -1813,6 +1818,14 @@ namespace Supremacy.Universe
                 {
                     break;
                 }
+
+                foreach (var orb in OrbitalBatteries)
+                {
+                    orb.IsActive = false;
+                    _text = "OrbitalBattery shutted down";
+                    Console.WriteLine(_text);
+                }
+                OnPropertyChanged("ActiveOrbitalBatteries");
 
                 /*
                  * First try to shut down any unutilized shipyard build slots.  Those can be considered
@@ -1902,6 +1915,8 @@ namespace Supremacy.Universe
             _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + TotalResearchFacilities; // _researchPF_unused;
             int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
             _text += ", Int: " + GetActiveFacilities(ProductionCategory.Intelligence) + "/" + TotalIntelligenceFacilities; // _intelPF_unused;
+            //int _orbBatused = colony.ActiveOrbitalBatteries;
+            _text += ", OrbB: " + colony.ActiveOrbitalBatteries.ToString();
 
             Console.WriteLine(_text);
             GameLog.Core.ProductionDetails.DebugFormat(_text);
@@ -1946,14 +1961,35 @@ namespace Supremacy.Universe
         {
             int shutDown = 0;
             Shipyard shipyard = Shipyard;
+            int netEnergy = NetEnergy;
+
+            if (OrbitalBatteries.Count > 0)
+            {
+                for (int i = 0; i < OrbitalBatteries.Count; i++)
+                {
+                    _ = DeactivateOrbitalBattery();
+                    _text = "OrbitalBattery de-activated" + netEnergy;
+                    Console.WriteLine(_text);
+                }
+            }
 
             while (true)
             {
-                int netEnergy = NetEnergy;
+                netEnergy = NetEnergy;
                 if (netEnergy >= 0)  // no energy shortage !
                 {
                     break;
                 }
+
+                if (OrbitalBatteries.Count > 0)
+                {
+                    List<OrbitalBattery> deactivateOrbBat = OrbitalBatteries.Where(o => o.IsActive).ToList();
+                    foreach (OrbitalBattery item in deactivateOrbBat)
+                    {
+                        DeactivateOrbitalBattery();
+                    }
+                }
+
 
                 /*
                  * First try to shut down any unutilized shipyard build slots.  Those can be considered
@@ -1962,8 +1998,7 @@ namespace Supremacy.Universe
                 if (shipyard != null)
                 {
                     ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
-                        .Where(o => o.IsActive && !o.HasProject)
-.FirstOrDefault(DeactivateShipyardBuildSlot);
+                        .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(DeactivateShipyardBuildSlot);
 
                     if (deactivatedBuildSlot != null)
                     {
@@ -2013,8 +2048,7 @@ namespace Supremacy.Universe
                 if (shipyard != null)
                 {
                     ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
-                        .Where(o => o.IsActive && !o.HasProject)
-.FirstOrDefault(DeactivateShipyardBuildSlot);
+                        .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(DeactivateShipyardBuildSlot);
 
                     if (deactivatedBuildSlot != null)
                     {
@@ -2027,6 +2061,16 @@ namespace Supremacy.Universe
                 continue;
             }
 
+            if (OrbitalBatteries.Count > 0)
+            {
+                int Activate_OrbBat = netEnergy / OrbitalBatteries[0].Design.UnitEnergyCost;
+                for (int i = 0; i < Activate_OrbBat; i++)
+                {
+                    _ = ActivateOrbitalBattery();
+                    _text = "OrbitalBattery activated" + netEnergy;
+                    Console.WriteLine(_text);
+                }
+            }
             return shutDown;
         }
 

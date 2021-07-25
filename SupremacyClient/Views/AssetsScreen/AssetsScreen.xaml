@@ -25,9 +25,10 @@
         </Style>
 
     </UserControl.Resources>
-    <TabControl>
+
         <!--TAB for Local Player COLONIES-->
-        <TabItem Header="{s:StringResource Key=COLONIES_TAB_HEADER}">
+    <TabControl>        
+        <!--<TabItem Header="{s:StringResource Key=COLONIES_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -76,7 +77,7 @@
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <!--Grid.Column="1"-->
+                    --><!--Grid.Column="1"--><!--
                     <TextBlock 
                         Grid.Column="1" Text="{s:StringResource Key=TURN_VALUES}"
                         Foreground="Aqua"
@@ -93,7 +94,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
 
-                    <!--Colonies.Count-->
+                    --><!--Colonies.Count--><!--
                     <TextBlock 
                         Grid.Column="5" Text="{s:StringResource Key=COLONIES}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -105,7 +106,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     
-                    <!--TotalPopulation-->
+                    --><!--TotalPopulation--><!--
                     <TextBlock 
                         Grid.Column="9" Text="{s:StringResource Key=TOTAL_POPULATION}"
                         Foreground="LightGoldenrodYellow"
@@ -117,7 +118,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     
-                    <!--CreditsEmpire-->
+                    --><!--CreditsEmpire--><!--
                     <TextBlock 
                         Grid.Column="13" Text="{s:StringResource Key=TOTAL_CREDITS}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -128,7 +129,7 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                    <!--TotalResearch-->
+                    --><!--TotalResearch--><!--
                     <TextBlock 
                         Grid.Column="17" Text="{s:StringResource Key=TOTAL_RESEARCH}"
                         Foreground="SteelBlue"
@@ -139,7 +140,7 @@
                         Foreground="SteelBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                    <!--TotalIntelligenceProduction-->
+                    --><!--TotalIntelligenceProduction--><!--
                     <TextBlock 
                         Grid.Column="21" Text="{s:StringResource Key=TOTAL_INTELLIGENCE}"
                         Foreground="Silver"
@@ -190,7 +191,7 @@
                         FontSize="12pt"/>
                 </Grid>
                 
-                <!--ColonyList-->
+                --><!--ColonyList--><!--
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto"
@@ -205,7 +206,9 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-        </TabItem>
+        </TabItem>-->
+        
+        
         <!--SPY_REPORT_TAB_HEADER-->
         <TabItem Header="{s:StringResource Key=SPY_REPORT_TAB_HEADER}">
             <!-- Spy Tab and Grid just for Head line -->

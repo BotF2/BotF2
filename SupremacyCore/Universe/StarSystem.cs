@@ -32,7 +32,7 @@ namespace Supremacy.Universe
         private Colony _colony;
         private ArrayWrapper<Planet> _planets;
         private StarType _starType;
-        private string _text;
+        public readonly string _text;
         #endregion
 
         #region Constructors
@@ -160,6 +160,7 @@ namespace Supremacy.Universe
                         * ((float)planet.GetMaxPopulation(homePlanetType) / maxPop);
                 }
             }
+
             return growthRate;
         }
 
@@ -189,25 +190,24 @@ namespace Supremacy.Universe
         {
             int result = 0;
             int _planetPop = 0;
+
             foreach (Planet planet in Planets)
             {
-                //int _planetPop = planet.GetMaxPopulation(homePlanetType);
                 if (planet.PlanetSize != PlanetSize.NoWorld)
                 {
                     _planetPop = planet.GetMaxPopulation(homePlanetType);
-                    //planet.PlanetSize = PlanetSize.Medium; // avoids crashes e.g. Cardassia Prime
-                    //_text = planet.Name + " ( " + planet.PlanetType + " ) has PlanetSize 'NoWorld' ";
+                    //_text = planet.Name + " ( " + planet.PlanetType + " ) gets " + _planetPop + " population (Code 0123)";
                     //Console.WriteLine(_text);
-                    //GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
-                    //_planetPop = 0;
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
                 }
                 else
                 {
-                    _text = planet.Name + " ( " + planet.PlanetType + " ) has PlanetSize 'NoWorld' ";
-                    Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
+                    // seems to affect Asteroids and nothing more
+
+                    //_text = planet.Name + " ( " + planet.PlanetType + " ) has PlanetSize 'NoWorld' ";
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
                 }
-                //int _planetPop = planet.GetMaxPopulation(homePlanetType);
 
                 result += _planetPop;
             }

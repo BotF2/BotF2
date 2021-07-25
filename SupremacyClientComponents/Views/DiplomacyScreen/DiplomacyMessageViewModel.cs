@@ -501,10 +501,11 @@ namespace Supremacy.Client.Views
                 bool isWarPact = _treatyElements[0].ElementType == DiplomacyMessageElementType.TreatyWarPact;
 
                 treatyLeadInId = isWarPact ? DiplomacyStringID.WarPactLeadIn : DiplomacyStringID.ProposalLeadIn;
-                if (treatyLeadInId == DiplomacyStringID.ProposalLeadIn)
-                {
-                    GameLog.Client.Diplomacy.DebugFormat("** Treaty Leadin text set, {0}", treatyLeadInId.ToString());
-                }
+                //if (treatyLeadInId == DiplomacyStringID.ProposalLeadIn)
+                //{
+                //    GameLog.Client.DiplomacyDetails.DebugFormat("** Treaty Leadin text set, {0}", treatyLeadInId.ToString());
+                //}
+
                 /* we do not currently use offer or demand with warpact */
                 if (_offerElements.Count != 0)
                 {
@@ -661,7 +662,7 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("OFFER_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                        GameLog.Client.Diplomacy.DebugFormat("OFFER_DIALOG_HINT is outcommented");
+                        GameLog.Client.DiplomacyDetails.DebugFormat("OFFER_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Request:
@@ -670,14 +671,14 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("REQUEST_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                        GameLog.Client.Diplomacy.DebugFormat("REQUEST_DIALOG_HINT is outcommented");
+                        GameLog.Client.DiplomacyDetails.DebugFormat("REQUEST_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
                     _treatyElements.Add(element);
                     if (element != null && element.Description != null && element.SelectedParameter != null && element.ElementType != null)
                     {
-                        GameLog.Client.Diplomacy.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
+                        GameLog.Client.DiplomacyDetails.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
                             element.Description.ToString(),
                             element.SelectedParameter.ToString(),
                             element.ElementType.ToString());
@@ -686,7 +687,7 @@ namespace Supremacy.Client.Views
                     st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
                     //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                    GameLog.Client.Diplomacy.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
+                    GameLog.Client.DiplomacyDetails.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
                     _statementElements.Add(element);
@@ -701,7 +702,7 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                    GameLog.Client.Diplomacy.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
+                    GameLog.Client.DiplomacyDetails.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
                     _statementElements.Add(element);
                     break;
             }
@@ -798,8 +799,17 @@ namespace Supremacy.Client.Views
 
             foreach (Clause clause in clauses)
             {
-                GameLog.Core.Diplomacy.DebugFormat("((()))Create Proposal sender {0}, Recipient = {1}: Tone = {2} clause type = {3} data = {4} duration = {5}",
-                    Sender.ShortName, _recipient.ShortName, _tone, clause.ClauseType.ToString(), clause.Data, clause.Duration);
+
+                //GameLog.Core.Diplomacy.DebugFormat("((()))Create Proposal sender {0}, Recipient = {1}: Tone = {2} clause type = {3} data = {4} duration = {5}",
+                _text =
+                "Turn " + GameContext.Current.TurnNumber
+                + ": Proposal created: Sender " + Sender.ShortName
+                + " to > " + _recipient.ShortName
+                + ": " + clause.ClauseType.ToString()
+                + " ( " + _tone + "," + clause.Duration + clause.Data + " )"
+                ;
+                //Console.WriteLine(_text);
+                GameLog.Core.Diplomacy.DebugFormat(_text);
                 // if ClauseType == TreatyWarPact then clause.Data = string shortname of target civilization
             }
             return new NewProposal(Sender, _recipient, clauses);
@@ -1322,6 +1332,7 @@ namespace Supremacy.Client.Views
         #region Implementation of INotifyPropertyChanged
 
         [NonSerialized] private PropertyChangedEventHandler _propertyChanged;
+        private string _text;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {

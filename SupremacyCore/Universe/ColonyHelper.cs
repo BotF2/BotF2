@@ -8,6 +8,8 @@ namespace Supremacy.Universe
 {
     public static class ColonyHelper
     {
+        private static string _text;
+
         public static int ColonyValue(this Colony colony)
         {
             if (colony == null)
@@ -71,13 +73,14 @@ namespace Supremacy.Universe
 
             total += colony.Population.CurrentValue * 100;
 
-
-            GameLog.Core.CivsAndRacesDetails.DebugFormat("Turn {0};{3};{4};Pop;{5};ShipYardSlots;{6};Buildings;ColonyValue={7};{1};{2}"
+            _text = colony.Population.CurrentValue.ToString();
+            if (_text.Length == 2) _text = " " + _text;
+            GameLog.Core.CivsAndRacesDetails.DebugFormat("Turn {0};{4};Pop;{5};ShipYardSlots;{6};Buildings;ColonyValue= {7};{1};{2};{3}"
                 , GameContext.Current.TurnNumber
                 , colony.Owner
                 , colony.Name
                 , colony.Location
-                , colony.Population.CurrentValue
+                , _text
                 , shipyardBuildSlotsCount
                 , colony.Buildings.Count
                 , total

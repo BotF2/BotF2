@@ -16,12 +16,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
 using Supremacy.Universe;
+using Supremacy.Resources;
 
 namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private readonly int[,] empiresInBattle;
+        private string _text;
+        private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
@@ -34,6 +37,7 @@ namespace Supremacy.Combat
         protected override void ResolveCombatRoundCore()
         {
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count);
+            MapLocation _sector = _assets.FirstOrDefault().Location;
             bool activeBattle = true; // false when less than two civs remaining
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 7) // multiplayer starts at round 5 // always true
@@ -306,7 +310,7 @@ namespace Supremacy.Combat
                                     //int shipFirepower = 0;
             int howOftenContinued = 0;
 
-            GameLog.Core.Combat.DebugFormat("Main While is starting");
+            GameLog.Core.CombatDetails.DebugFormat("Main While is starting");
 
             #region top of Battle while loop to attacker while loop
             // ENTIRE BATTTLE
@@ -384,7 +388,7 @@ namespace Supremacy.Combat
                 if (AttackingShips.Count > 0 && AttackingShips != null) // UPDATE 07 july 2019 make sure it does not crash, use count >0
                 {
                     AttackingShip = AttackingShips.RandomElementOrDefault();
-                    GameLog.Core.Combat.DebugFormat("Current Attacking Ship {0}", AttackingShip.Item1.Name);
+                    GameLog.Core.CombatDetails.DebugFormat("Current Attacking Ship {0}", AttackingShip.Item1.Name);
                 }
                 // COUNT ACTICE FIREROUND PER EMPIRE
                 shipsPerEmpire[indexOfAttackerEmpires, 2]++;
@@ -1949,6 +1953,15 @@ namespace Supremacy.Combat
                             {
                                 _ = Assets.NonCombatShips.Remove(combatent.Item1);
                             }
+                            Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
+                            CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
+                            _text = ship.Item1.Source.ObjectID
+                                + " " + ship.Item1.Name
+                                + " " + ship.Item1.Source.Design
+                                + " escaped."
+                                ;
+
+                            civManager.SitRepEntries.Add(new ReportEntryCoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, _x, SitRepPriority.RedYellow));
                         }
                         else
                         {
@@ -1969,6 +1982,9 @@ namespace Supremacy.Combat
             //if (true) // End Combat after 3 While loops
             //{
             GameLog.Core.CombatDetails.DebugFormat("NOW FORCE ALL TO RETREAT THAT WHERE NOT DESTROYED, Number of destroyed ships in total: {0}", countDestroyed);
+
+
+
             //GameLog.Core.CombatDetails.DebugFormat("round# ={0}", _roundNumber);
             //_roundNumber += 1;
             //GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
@@ -2054,10 +2070,31 @@ namespace Supremacy.Combat
                             _ = ownerAssets.CombatShips.Remove(ship.Item1);
                             _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
                             _ = _combatShips.Remove(ship);
+
+                            CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
+                            _text = ship.Item1.Source.Location
+                                + " " + ship.Item1.Source.ObjectID
+                                + " ( " + ship.Item1.Source.Design
+                                + " ) " + ship.Item1.Name
+
+                                + " escaped."
+                                ;
+                            //civManager.SitRepEntries.Add(new ReportEntryCoS(firstShipOwner, ship.Item1.Source.Location, _text, _x, SitRepPriority.RedYellow));
                         }
+
                     }
                 }
             }
+
+            foreach (int item in ownerIDs)
+            {
+
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[item];
+                if (civManager.Civilization.IsEmpire)
+                    civManager.SitRepEntries.Add(new ReportEntryCoS(civManager.Civilization, _sector, _text, "x2", SitRepPriority.RedYellow));
+                //_text = 
+            }
+            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[GetAssets.];
 
             GameLog.Core.CombatDetails.DebugFormat("AutomatedCombatEngine ends");
         }

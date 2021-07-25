@@ -29,19 +29,25 @@ namespace Supremacy.Combat
         private List<Civilization> _civStatusList;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
+        private readonly string _text;
 
         public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
-            GameLog.Core.Combat.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
-                "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
-                combatId
-                , roundNumber
-                , standoff
-                , owner.CivID
-                , location.ToString()
-                , friendlyAssets.Count
-                , hostileAssets.Count
-                );
+
+            //GameLog.Core.CombatDetails.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
+            //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
+            _text =
+                "### combatId " + combatId
+                + " Round " + roundNumber
+                + " at " + location.ToString()
+                + ", standoff= " + standoff
+                + ", civ= " + owner.CivID
+
+                + ", CIVs friendly= " + friendlyAssets.Count
+                + " vs hostile= " + hostileAssets.Count
+                ;
+            Console.WriteLine(_text);
+            GameLog.Core.CombatDetails.DebugFormat(_text);
 
             if (owner == null)
             {

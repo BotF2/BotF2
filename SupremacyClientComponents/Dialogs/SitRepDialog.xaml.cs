@@ -5,6 +5,7 @@ using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -21,7 +22,7 @@ namespace Supremacy.Client.Dialogs
     {
         private SitRepCategory _visibleCategories;
         private IEnumerable<SitRepEntry> _sitRepEntries;
-        private string _previousSitRepCommentText;
+        private string _previoussitRepCommentTextBox;
         //private readonly static Dictionary<int, string> _SitRepComments = new Dictionary<int, string>(); // { { "98", false } };
 
 
@@ -68,52 +69,49 @@ namespace Supremacy.Client.Dialogs
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            //TextBox sitRepCommentTextBox;
 
-            if (!(GetTemplateChild("SitRepComment") is TextBox sitRepCommentText))
-            {
-                return;
-            }
 
-            sitRepCommentText.LostFocus += SitRepCommentText_OnLostFocus;
-            sitRepCommentText.GotFocus += SitRepCommentText_OnGotFocus;
-            sitRepCommentText.TextChanged += SitRepCommentText_OnTextChanged;
+            //sitRepCommentTextBox.LostFocus += SitRepCommentTextBox_OnLostFocus;
+            //sitRepCommentTextBox.GotFocus += SitRepCommentTextBox_OnGotFocus;
+            //sitRepCommentTextBox.TextChanged += SitRepCommentTextBox_OnTextChanged;
 
         }
 
-        private static void SitRepCommentText_OnTextChanged(object sender, TextChangedEventArgs e)
+        private static void SitRepCommentTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!(e.Source is TextBox sitRepCommentText))
+            if (!(e.Source is TextBox sitRepCommentTextBox))
             {
                 return;
             }
 
-            BindingExpression bindingExpression = sitRepCommentText.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty);
+            BindingExpression bindingExpression = sitRepCommentTextBox.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty);
             if (bindingExpression == null)
             {
                 return;
             }
 
-            if (!string.IsNullOrEmpty(sitRepCommentText.Text))
+            if (!string.IsNullOrEmpty(sitRepCommentTextBox.Text))
             {
                 bindingExpression.UpdateSource();
             }
         }
 
 
-        private void SitRepCommentText_OnGotFocus(object sender, RoutedEventArgs e)
+        private void SitRepCommentTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            if (!(e.Source is TextBox sitRepCommentText))
+            if (!(e.Source is TextBox sitRepCommentTextBox))
             {
                 return;
             }
 
-            _previousSitRepCommentText = sitRepCommentText.Text;
+            _previoussitRepCommentTextBox = sitRepCommentTextBox.Text;
         }
-        private void SitRepCommentText_OnLostFocus(object sender, RoutedEventArgs e)
+        private void SitRepCommentTextBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            string previousText = _previousSitRepCommentText;
-            _previousSitRepCommentText = null;
-            if ((!(e.Source is TextBox sitRepCommentText)) || string.Equals(sitRepCommentText.Text, previousText))
+            string previousText = _previoussitRepCommentTextBox;
+            _previoussitRepCommentTextBox = null;
+            if ((!(e.Source is TextBox sitRepCommentTextBox)) || string.Equals(sitRepCommentTextBox.Text, previousText))
             {
                 return;
             }
@@ -123,7 +121,7 @@ namespace Supremacy.Client.Dialogs
                 return;
             }
 
-            entry.SitRepComment = string.IsNullOrEmpty(sitRepCommentText.Text.Trim()) ? null : sitRepCommentText.Text;
+            entry.SitRepComment = string.IsNullOrEmpty(sitRepCommentTextBox.Text.Trim()) ? null : sitRepCommentTextBox.Text;
             //ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(new SetObjectNameOrder(entry, entry.ClassName));
         }
 
@@ -215,9 +213,30 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Aqua);
             }
 
+            if (CrimsonCheck.IsChecked.HasValue && CrimsonCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Crimson);
+            }
+
+            if (GoldenCheck.IsChecked.HasValue && GoldenCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Golden);
+            }
+
+            if (BlueDarkCheck.IsChecked.HasValue && BlueDarkCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.BlueDark);
+            }
+
+            if (YellowRedCheck.IsChecked.HasValue && YellowRedCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.RedYellow);
+            }
+
             ItemsView.Items.Filter = o => ((SitRepEntry)o).Categories/* & visibleCategories*/ != 0 &&
                                                visiblePriorities.Contains(((SitRepEntry)o).Priority);
             ItemsView.Items.Refresh();
+
         }
 
         public IEnumerable<SitRepEntry> SitRepEntries
@@ -268,10 +287,31 @@ namespace Supremacy.Client.Dialogs
             Close();
         }
 
-        private void OnSitRepEntryDoubleClick(object sender, RoutedEventArgs e)
+        private void OnSitRepEntrySelected(object sender, RoutedEventArgs e)
+        {
+            //var entry = this.ItemsView.SelectedItem;
+            //entry.
+            //var entry = GetTemplateChild("Itemsview");
+            //entry.   entry.GetValue(SitRepComment.DONE);//   SitRepDone.Read);
+            if (ItemsView.SelectedItem is SitRepEntry selection)
+            {
+                selection.SitRepComment = selection.SitRepComment == "" ? "X" : "";
+                Console.WriteLine("Changed SitRepComment to x or blank");
+            }
+            ItemsView.Items.Refresh();
+            //UpdateCategoryFilter();
+            ////OnLoaded();
+            //ApplyFilter();
+
+        }
+
+            private void OnSitRepEntryDoubleClick(object sender, RoutedEventArgs e)
         {
             if (ItemsView.SelectedItem is SitRepEntry selection)
             {
+                selection.SitRepComment = selection.SitRepComment == "" ? "X" : "";
+                Console.WriteLine("Changed SitRepComment to x or blank");
+
                 switch (selection.Action)
                 {
                     case SitRepAction.ShowScienceScreen:

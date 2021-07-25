@@ -1094,7 +1094,11 @@ namespace Supremacy.AI
         public static bool SystemNotAlreadyTaken(Fleet fleet)
         {
             GetFleetOwner(fleet);
+            _text = "Searching for Crash: SystemNotAlreadyTaken-1=Colonies";
+            Console.WriteLine(_text);
             bool otherColony = GameContext.Current.Universe.Objects.Where(o => o.Location == fleet.Location && o.ObjectType == UniverseObjectType.Colony && o.Owner != fleet.Owner).Any();
+            _text = "Searching for Crash: SystemNotAlreadyTaken-2=Station";
+            Console.WriteLine(_text);
             bool otherStation = GameContext.Current.Universe.Objects.Where(o => o.Location == fleet.Location && o.ObjectType == UniverseObjectType.Station).Any();
             if (otherColony || otherStation)
             {
@@ -1136,6 +1140,8 @@ namespace Supremacy.AI
             }
 
             int value = 1;
+            _text = "Searching for Crash: someObject";
+            Console.WriteLine(_text);
             IEnumerable<UniverseObject> someObject = universeObjects.Where(o => o.Sector == sector);
             if (someObject != null)
             {

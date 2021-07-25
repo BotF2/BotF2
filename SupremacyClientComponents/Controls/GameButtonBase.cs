@@ -671,7 +671,7 @@ namespace Supremacy.Client.Controls
 
         protected override void UpdateCanExecute()
         {
-            CanExecute = Command != null ? GameCommand.CanExecuteCommandSource(this) : true;
+            CanExecute = Command == null || GameCommand.CanExecuteCommandSource(this);
 
             if ((!(CommandParameter is ICheckableCommandParameter checkableParameter)) || !checkableParameter.Handled)
             {
