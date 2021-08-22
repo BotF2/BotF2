@@ -68,7 +68,7 @@
                 Grid.IsSharedSizeScope="True">
                         <DockPanel.Background>
                             <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Images/UI/Backgrounds/Starmap.png">
-                                <!--<ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/Starmap.png">-->
+                                <!--<ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Specific_Empires_UI/Borg/GalaxyScreen/Starmap.png">-->
                             </ImageBrush>
                         </DockPanel.Background>
             <Grid DockPanel.Dock="Top"
@@ -102,7 +102,7 @@
                                         <!--<Style.Triggers>
                                             <EventTrigger RoutedEvent="Button.Click">
                                             <EventTrigger.Actions>
-                                              <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
+                                              <SoundPlayerAction Source="Resources/Specific_Empires_UI/Dominion/Sounds/Turn.wav" />
                                             </EventTrigger.Actions>
                                           </EventTrigger>
                                         </Style.Triggers>-->
@@ -976,18 +976,18 @@
                                             </Button.ToolTip>
                                         </Button>
 
-                                        <ToggleButton  Margin="0,0,3,0" MinWidth="30" x:Name="SummaryOnOff"
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="SummaryOnOff"
                             Command="{x:Static scc:GalaxyScreenCommands.SummaryOnOff}"                                                 
-                            Style="{StaticResource LCARS_BorderToggleButtonStyle}"
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=SUMMARY_ON_OFF_BUTTON_TEXT, Case=Upper}"
                                             >
-                                            <ToggleButton.ToolTip>
+                                            <Button.ToolTip>
                                                 <ToolTip>
                                                     <TextBlock FontSize="20" Text="{s:StringResource SUMMARY_ON_OFF_BUTTON_TOOLTIP}"
                                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
                                                 </ToolTip>
-                                            </ToggleButton.ToolTip>
-                                        </ToggleButton>
+                                            </Button.ToolTip>
+                                        </Button>
 
                                     </StackPanel>
 

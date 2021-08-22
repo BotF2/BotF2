@@ -40,12 +40,17 @@ namespace Supremacy.Game
         private readonly ResourcePool _resources;
         private readonly List<SitRepEntry> _sitRepEntries;
         private readonly Meter _totalPopulation;
+        private readonly Meter _totalValue;
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
         private readonly UniverseObjectList<Colony> _colonies;
-        private List<Civilization> _spiedCivList;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
+
+#pragma warning disable IDE0044 // Add readonly modifier
+        private List<Civilization> _spiedCivList;
+#pragma warning restore IDE0044 // Add readonly modifier
+
 
         private int _homeColonyId;
         private List<int> _IntelIDs;
@@ -54,6 +59,8 @@ namespace Supremacy.Game
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
         private string _text;
+        private readonly string newline = Environment.NewLine;
+
         //private readonly IPlayer _localPlayer;
         //private readonly AppContext _appContext;
 
@@ -68,40 +75,85 @@ namespace Supremacy.Game
             public int CivIDHist;
             public string CivKeyHist;
             public int CreditsHist;
+            public int CreditsHist_LT;
+            public int CreditsHist_Maint;
             public int ColoniesHist;
             public int PopulationHist;
-            public int MaintenanceHist;
+            public int MoraleHist;
+            public int DilithiumHist;
+            public int DeuteriumHist;
+            public int DuraniumHist;
+            public int TotalValueHist;
             public int ResearchHist;
+            public int IntelProdHist;
+            public int IDefHist;
+            public int IAttHist;
+            public int R_CredHist;
+
             public CivHistory
                 (
                 string civIDHistAndTurn  // Index of civID and Turn
                 , int civIDHist   // just civID
                 , string civKeyHist
                 , int creditsHist
+                , int creditsHist_lt
+                , int creditsHist_maint
                 , int coloniesHist
                 , int populationHist
-                , int maintenanceHist
+                , int moraleHist
+                , int diHist
+                , int deHist
+                , int duHist
+                , int totalValueHist
                 , int researchHist
+                , int intelProdHist
+                , int iDefHist
+                , int iAttHist
+                , int r_CredHist
+                //, string sitrepsHist
                 )
             {
                 CivIDHistAndTurn = civIDHistAndTurn;
                 CivIDHist = civIDHist;
                 CivKeyHist = civKeyHist;
                 CreditsHist = creditsHist;
+                CreditsHist_LT = creditsHist_lt;
+                CreditsHist_Maint = creditsHist_maint;
                 ColoniesHist = coloniesHist;
                 PopulationHist = populationHist;
-                MaintenanceHist = maintenanceHist;
+                MoraleHist = moraleHist;
+                DilithiumHist = diHist;
+                DeuteriumHist = deHist;
+                DuraniumHist = duHist;
+                TotalValueHist = totalValueHist;
                 ResearchHist = researchHist;
+                IntelProdHist = intelProdHist;
+                IDefHist = iDefHist;
+                IAttHist = iAttHist;
+                R_CredHist = r_CredHist;
+                //SitRepsHist = sitrepsHist;
             }
         }
 
         public void AddCivHist(int civIDHist
             , string civKeyHist
             , int creditsHist
+            , int creditsHist_lt
+            , int creditsHist_maint
             , int coloniesHist
             , int populationHist
-            , int maintenanceHist
-            , int researchHist)
+            , int moraleHist
+            , int dilithiumHist
+            , int deHist
+            , int duHist
+            , int totalValueHist
+            , int researchHist
+            , int intelProdHist
+            , int iDefHist
+            , int iAttHist
+            , int r_CredHist
+            //, string sitrepsHist
+            )
         {
             string _tn;
             _tn = GameContext.Current.TurnNumber.ToString();
@@ -112,34 +164,30 @@ namespace Supremacy.Game
                 , civIDHist
                 , civKeyHist
                 , creditsHist
+                , creditsHist_lt
+                , creditsHist_maint
                 , coloniesHist
                 , populationHist
-                , maintenanceHist
+                , moraleHist
+                , dilithiumHist
+                , deHist
+                , duHist
+                , totalValueHist
                 , researchHist
+                , intelProdHist
+                , iDefHist
+                , iAttHist
+                , r_CredHist
+                //, sitrepsHist  // not here
                 //, blank, blank, blank, blank, blank, blank, blank  // 11
                 );
+
+            _text = newline; // dummy - do not remove
 
             if (_civHist_List != null)
             {
                 _civHist_List.Add(civHist_New);
-                foreach (CivHistory item in _civHist_List)
-                {
-
-                    //GameLog.Core.GameDataDetails.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
-                    _text =
-                        "Turn;" + _tn
-                        + ";CivID+Turn;" + item.CivIDHistAndTurn
-                        + ";" + item.CivIDHist
-                        + ";" + item.CivKeyHist
-                        + ";Credits;" + item.CreditsHist
-                        + ";Col;" + item.ColoniesHist
-                        + ";Pop;" + item.PopulationHist
-                        + ";Maint;" + item.MaintenanceHist
-                        + ";Research;" + item.ResearchHist
-                        ;
-                    //Console.WriteLine(_text);
-                    GameLog.Core.GameDataDetails.DebugFormat(_text);
-                }
+                // Output > try ALT + H ingame
             }
 
         }
@@ -162,6 +210,9 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
+
+            _totalValue = new Meter();
+            _totalValue.PropertyChanged += OnTotalValuePropertyChanged;
 
             _totalResearch = new Meter();
             _totalResearch.PropertyChanged += OnTotalResearchPropertyChanged;
@@ -226,6 +277,12 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The total population.</value>
         public Meter TotalPopulation => _totalPopulation;
+
+        /// <summary>
+        /// Gets the total value of all the civilization's colonies for compare issues
+        /// </summary>
+        /// <value>The total value for compare issues.</value>
+        public Meter TotalValue => _totalValue;
 
         /// <summary>
         /// Gets the total research of all the civilization's colonies.
@@ -351,6 +408,27 @@ namespace Supremacy.Game
                 int totalPopulation = _totalPopulation.CurrentValue;
                 double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * (1d / totalPopulation * colony.Population.CurrentValue));
                 return (int)totalMorale;
+            }
+        }
+
+        /// <summary>
+        /// Gets the average techlevel of research fields.
+        /// </summary>
+        /// <value>The average morale.</value>
+        public int AverageTechLevel
+        {
+            get
+            {
+                int _averageTechlevel =
+                    Research.GetTechLevel(TechCategory.BioTech)
+                    + Research.GetTechLevel(TechCategory.Computers)
+                    + Research.GetTechLevel(TechCategory.Construction)
+                    + Research.GetTechLevel(TechCategory.Energy)
+                    + Research.GetTechLevel(TechCategory.Propulsion)
+                    + Research.GetTechLevel(TechCategory.Weapons)
+                    ;
+
+                return _averageTechlevel / 6;
             }
         }
 
@@ -573,22 +651,21 @@ namespace Supremacy.Game
             {
                 MapLocation? homeColonyLocation = _homeColonyLocation;
 
-                Func<Colony, double> rankHueristic = (Func<Colony, double>)
-                                    (c =>
-                                     {
-                                         if (!homeColonyLocation.HasValue)
-                                         {
-                                             return 1d;
-                                         }
+                double rankHueristic(Colony c)
+                {
+                    if (!homeColonyLocation.HasValue)
+                    {
+                        return 1d;
+                    }
 
-                                         double distanceFactor = Math.Min(
-                                             0.2,
-                                             Math.Max(
-                                                 1d,
-                                                 2d / MapLocation.GetDistance(c.Location, homeColonyLocation.Value)));
+                    double distanceFactor = Math.Min(
+                        0.2,
+                        Math.Max(
+                            1d,
+                            2d / MapLocation.GetDistance(c.Location, homeColonyLocation.Value)));
 
-                                         return c.ColonyValue() * distanceFactor;
-                                     });
+                    return c.ColonyValue() * distanceFactor;
+                }
 
                 seatOfGovernment = (
                                        from c in Colonies
@@ -625,14 +702,21 @@ namespace Supremacy.Game
         {
             if (e.PropertyName == "CurrentValue")
             {
-                OnPropertyChanged("AverageMorale");
+                OnPropertyChanged("TotalPopulation");
+            }
+        }
+        private void OnTotalValuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+            {
+                OnPropertyChanged("TotalValue");
             }
         }
         private void OnTotalResearchPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
             {
-                OnPropertyChanged("AverageMorale");
+                OnPropertyChanged("TotalResearch");
             }
         }
         private void OnInstallingSpyNetworkPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -644,7 +728,7 @@ namespace Supremacy.Game
         }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.Intel.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            //GameLog.Client.IntelDetails.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
             {
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
@@ -653,7 +737,7 @@ namespace Supremacy.Game
 
         private void OnTotalIntelligenceDefenseAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.Intel.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            //GameLog.Client.IntelDetails.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
             {
                 OnPropertyChanged("TotalIntelligenceDefenseAccumulated");

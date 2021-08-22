@@ -152,7 +152,7 @@ namespace Supremacy.Economy
                 return;
             }
 
-            civManager.SitRepEntries.Add(new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green));
+            civManager.SitRepEntries.Add(new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
         }
 
         public ProductionFacilityUpgradeProject(Colony colony, ProductionFacilityDesign target)
@@ -202,7 +202,7 @@ namespace Supremacy.Economy
             if (civManager != null)
             {
                 civManager.SitRepEntries.Add(
-                    new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green));
+                    new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
             }
         }
 

@@ -367,7 +367,7 @@ namespace Supremacy.Types
 
         string IConvertible.ToString(IFormatProvider provider)
         {
-            return ((IConvertible)Value).ToString(provider);
+            return Value.ToString(provider);
         }
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)

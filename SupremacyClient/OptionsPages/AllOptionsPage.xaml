@@ -175,6 +175,7 @@
         ToolTip="{s:StringResource SETTINGS_USE_SITREPDETAILS_SCREEN_TOOLTIP}" 
         />
       
+       <!--### SettingsOnOff is turned on/off by GalaxyScreen ###-->
         <CheckBox Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3"
 
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableSummaryScreen), Mode=TwoWay}"

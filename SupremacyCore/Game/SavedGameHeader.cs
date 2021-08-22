@@ -129,7 +129,6 @@ namespace Supremacy.Game
         /// Writes this <see cref="SavedGameHeader"/> to the specified output stream.
         /// </summary>
         /// <param name="output">The output stream.</param>
-        [SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "TODO: Requires further investigation")]
         public void Write(Stream output)
         {
             if (!output.CanWrite)
@@ -153,7 +152,7 @@ namespace Supremacy.Game
 
             for (int i = 0; i < empireCount; i++)
             {
-                GameLog.Core.SaveLoad.DebugFormat("Writing Empires: empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, {0}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
+                GameLog.Core.SaveLoadDetails.DebugFormat("Writing Empires: empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, {0}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
                 writer.Write(EmpireIDs[i]);
                 writer.Write(EmpireNames[i]);
                 writer.Write((byte)SlotClaims[i]);
@@ -211,7 +210,7 @@ namespace Supremacy.Game
 
                 /*+ Environment.NewLine + ";FileName   ;" + reader.   --- no filename available here*/
                 ;
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 
             return header;
         }

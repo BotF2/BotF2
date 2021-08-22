@@ -26,7 +26,7 @@ namespace Supremacy.Client
     public partial class SinglePlayerStartScreen
     {
         #region Field
-        ISoundPlayer _soundPlayer = null;
+        readonly ISoundPlayer _soundPlayer = null;
 
         bool _startAudio = false;
         #endregion
@@ -220,9 +220,9 @@ namespace Supremacy.Client
             DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs e)
         {
-            if (dependencyObject is Run)
+            if (dependencyObject is Run run)
             {
-                ((Run)dependencyObject).Text = (string)e.NewValue;
+                run.Text = (string)e.NewValue;
             }
         }
         #endregion

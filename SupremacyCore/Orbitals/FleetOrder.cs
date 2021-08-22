@@ -112,20 +112,15 @@ namespace Supremacy.Orbitals
                 string displayText;
                 Percentage? percentComplete = PercentComplete;
 
-                if (Fleet.IsInTow)
-                {
-                    displayText = string.Format(
+                displayText = Fleet.IsInTow
+                    ? string.Format(
                         ResourceManager.GetString("ORDER_IN_TOW"),
-                        Status);
-                }
-                else
-                {
-                    displayText = Fleet.IsStranded
+                        Status)
+                    : Fleet.IsStranded
                         ? string.Format(
                                             ResourceManager.GetString("ORDER_STRANDED"),
                                             Status)
                         : Status;
-                }
 
                 if (percentComplete.HasValue)
                 {

@@ -1073,7 +1073,7 @@ namespace Supremacy.Tech
                 // End of PShipNames
                 #endregion PossibleShipNames_To_CSV;
 
-                #region SHIPS_to_CSV
+                #region SHIPS_to_CSV and ShipData.txt for UnityEngine
                 try // avoid hang up if this file is opened by another program 
                 {
                     // Ships    
@@ -1272,6 +1272,229 @@ namespace Supremacy.Tech
 
                 // End of Ships
                 #endregion SHIPS_to_CSV
+
+                #region SHIPS_to_ShipData.csv (UnityEngine)
+                try // avoid hang up if this file is opened by another program 
+                {
+                    // Ships    
+                    file = pathOutputFile + "ShipData.csv";   //Console.WriteLine("writing {0}", file);
+
+                    if (file == null)
+                    {
+                        goto WriterClose;
+                    }
+
+                    streamWriter = new StreamWriter(file);
+
+                    strHeader =    // Head line
+                        "CE_Ship" + separator +
+                        "ATT_Key" + separator +
+                        //"CE_DesignID" + separator +   // not useful for current working
+                        //"CE_ShipType" + separator +  // moved down for current working
+                        //"CE_ClassName" + separator +  // moved down for current working
+                        "CE_TechRequirements" + separator +
+                        "CE_BioTech" + separator +
+                        "CE_Computers" + separator +
+                        "CE_Construction" + separator +
+                        "CE_Energy" + separator +
+                        "CE_Propulsion" + separator +
+                        "CE_Weapons" + separator +
+
+                        "CE_BuildCost" + separator +
+                        "CE_Duranium" + separator +
+                        "CE_MaintenanceCost" + separator +
+
+                        "CE_HullStrength" + separator +
+                        "CE_PopulationHealth" + separator +
+                        "CE_IsUniversallyAvailable" + separator +
+
+                        "CE_Crew" + separator +    // it's Crew
+                        "CE_ScienceAbility" + separator +
+                        "CE_ScanPower" + separator +
+                        "CE_SensorRange" + separator +
+                        "CE_HullStrength" + separator +
+                        "CE_ShieldStrength" + separator +
+                        "CE_ShieldRecharge" + separator +
+
+                        "CE_ShipType" + separator +
+
+                        "CE_Dilithium" + separator +
+                        "CE_CloakStrength" + separator +
+                        "CE_CamouflagedStrength" + separator +
+                        "CE_Range" + separator +
+                        "CE_Speed" + separator +
+                        "CE_FuelReserve" + separator +
+                        "CE_Maneuverability" + separator +
+                        "CE_EvacuationLimit" + separator +
+                        "CE_WorkCapacity" + separator +
+                        "CE_InterceptAbility" + separator +
+
+                        "CE_ClassName" + separator +
+                        //"CE_PrimaryWeaponName" + separator + // not useful for current working
+                        "CE_Beam Count" + separator +
+                        "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
+                                                            //"CE_PrimaryWeapon.Refire" + separator +
+                        "CE_Damage" + separator +
+
+
+                        //"CE_SecondaryWeaponName" + separator + // not useful for current working
+                        "CE_Torpedo Count" + separator +
+                        "CE_Damage" + separator +
+                        "FirePower" + separator +
+
+                        "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
+                        "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
+                        "CE_PossibleNames"
+                        ;
+                    //"CE_SecondaryWeapon.Damage" + separator +
+
+
+
+                    ////////////streamWriter.WriteLine(strHeader);
+                    // End of head line
+
+
+                    foreach (ShipDesign item in db.ShipDesigns)   // each item
+                    {
+
+                        int _beamDamage = 0;
+                        //int _beamRefire = 1;
+                        int _torpedoDamage = 0;
+
+                        int _firepower = (item.PrimaryWeapon.Count * item.PrimaryWeapon.Damage)
+                                            + (item.SecondaryWeapon.Count * item.SecondaryWeapon.Damage);
+
+                        if (item.PrimaryWeapon != null)
+                        {
+                            //_ = int.TryParse(item.PrimaryWeapon.Refire.ToString(), out _beamRefire);
+                            _beamDamage = item.PrimaryWeapon.Count * item.PrimaryWeapon.Damage; // * _beamRefire;
+                        }
+
+                        if (item.SecondaryWeapon != null)
+                        {
+                            _torpedoDamage = item.SecondaryWeapon.Count * item.SecondaryWeapon.Damage;
+                        }
+
+                        line =
+                            //"Ship" + separator +
+                            item.Key + "(Clone)" + separator +
+                            item.ShieldStrength + separator +
+                            item.HullStrength + separator +
+                            _beamDamage + separator +
+                            _torpedoDamage/* + separator */
+                            ;
+                            ////item.DesignID + separator +   // not useful for current working
+                            ////item.ShipType + separator +  // moved down for current working
+                            ////item.ClassName + separator +  // moved down for current working
+                            ////item.Key;   // just for testing
+
+                            ////<TechRequirements>
+                            //"xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                            //                   // after GoogleSheet-Export: replace...
+                            //                   // </Weapons> by </Weapons></TechRequirements>
+                            //                   // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                            ////"<Biotech>" + separator +                // not helpful
+                            //item.TechRequirements[TechCategory.BioTech] + separator +
+                            ////"</Biotech>" + separator +                 // not helpful
+                            ////"<Computers>" + separator +                 // not helpful
+                            //item.TechRequirements[TechCategory.Computers] + separator +
+                            ////"</Computers>" + separator +                // not helpful
+                            ////"<Construction>" + separator +                 // not helpful
+                            //item.TechRequirements[TechCategory.Construction] + separator +
+                            ////"</Construction>" + separator +                // not helpful
+                            ////"<Energy>" + separator +                 // not helpful
+                            //item.TechRequirements[TechCategory.Energy] + separator +
+                            ////"</Energy>" + separator +                // not helpful
+                            ////"<Propulsion>" + separator +                 // not helpful
+                            //item.TechRequirements[TechCategory.Propulsion] + separator +
+                            ////"</Propulsion>" + separator +                // not helpful
+                            ////"<Weapons>" + separator +                 // not helpful
+                            //item.TechRequirements[TechCategory.Weapons] + separator +
+                            ////"</Weapons>" + separator +                // not helpful
+
+                            //item.BuildCost + separator +
+                            //item.Duranium + separator +
+                            //item.MaintenanceCost + separator +
+                            //item.HullStrength + separator +
+                            //item.PopulationHealth + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export
+                            //item.IsUniversallyAvailable + separator +
+
+
+
+                            //item.CrewSize + separator +
+                            //item.ScienceAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+                            //item.ScanStrength + separator +
+                            //item.SensorRange + separator +
+                            //item.HullStrength + separator +
+                            //item.ShieldStrength + separator +
+                            //item.ShieldRechargeRate + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+
+                            //item.ShipType + separator +
+
+
+                            //item.Dilithium + separator +
+                            //item.CloakStrength + separator +
+                            //item.CamouflagedStrength + separator +
+                            //item.Range + separator +
+                            //item.Speed + separator +
+                            //item.FuelCapacity + separator +
+                            //item.Maneuverability + separator +
+                            //item.EvacuationLimit + separator +
+                            //item.WorkCapacity + separator +
+
+                            //item.InterceptAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+
+
+                            //item.ClassName + separator +
+                            ////"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
+                            //item.PrimaryWeapon.Count + separator +
+                            //item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
+                            //item.PrimaryWeapon.Damage + separator +
+
+                            ////"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
+                            //item.SecondaryWeapon.Count + separator +
+                            //item.SecondaryWeapon.Damage + separator +
+
+                            //_firepower + separator +
+
+
+                            // // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
+                            // "ObsoletedItems" + item.Key + separator +
+
+                            // //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
+                            // //"<ObsoletedItems> + newline + " +                 // not helpful
+                            // //"<ObsoletedItem></ObsoletedItem>" +// not helpful
+                            // //" + newline + </ObsoletedItems>" +                 // not helpful
+                            // //separator +
+
+                            // //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
+                            // "UpgradeOptions" + item.Key + separator +
+                            ////item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
+                            ////"<UpgradeOptions> + newline + " +                // not helpful
+                            ////"<UpgradeOption></UpgradeOption> + " +// not helpful
+                            ////separator +
+
+
+
+                            //// Possibles ShipNames
+                            ////"<ShipNames> + newline + " +                // not helpful
+                            ////"<ShipName></ShipName>" +// not helpful
+                            ////" + newline + </ShipNames>" +                 // not helpful
+                            //"PossibleShipNames" + item.Key
+                            ;
+
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                catch (Exception e)
+                {
+                    _text = "Cannot write ... " + file + e;
+                    GameLog.Core.GameData.ErrorFormat(_text);
+                }
+
+                // End of Ships
+                #endregion SHIPS_to_ShipData.txt
 
                 #region Shipyards_To_CSV
                 try // avoid hang up if this file is opened by another program 

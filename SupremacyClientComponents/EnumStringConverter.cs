@@ -51,8 +51,8 @@ namespace Supremacy.Client
 
             bool parameterIsTypeName = false;
 
-            string typeName = (string)null;
-            string valueName = (string)null;
+            string typeName = null;
+            string valueName = null;
 
             if (value is Enum enumValue)
             {
@@ -165,13 +165,9 @@ namespace Supremacy.Client
         #region Constructors
         public AltEnumStringConverter()
         {
-            if (GameContext.Current != null)
-            {
-                _enumTables = GameContext.Current.Tables.EnumTables;
-            }
-            else
-            {
-                _enumTables = Designer.IsInDesignMode
+            _enumTables = GameContext.Current != null
+                ? GameContext.Current.Tables.EnumTables
+                : Designer.IsInDesignMode
                     ? TableMap.ReadFromFile(
                                     Path.Combine(
                                         PathHelper.GetWorkingDirectory(),
@@ -180,7 +176,6 @@ namespace Supremacy.Client
                                     Path.Combine(
                                         Environment.CurrentDirectory,
                                         @"Resources\Data\EnumStrings.txt"));
-            }
         }
         #endregion
 

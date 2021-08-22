@@ -1370,24 +1370,18 @@ namespace Supremacy.Scripting.Ast
             Argument rightArg = new Argument(Right);
             _ = args.Add(rightArg);
 
-            MethodGroupExpression union;
+            MethodGroupExpression union = leftOperators != null && rightOperators != null
+                ? IsPredefinedUserOperator(l, userOper)
+                    ? rightOperators.OverloadResolve(ec, ref args, true, Span) ?? leftOperators
+                    : IsPredefinedUserOperator(r, userOper)
+                        ? leftOperators.OverloadResolve(ec, ref args, true, Span) ?? rightOperators
+                        : MethodGroupExpression.MakeUnionSet(leftOperators, rightOperators, Span)
+                : leftOperators ?? rightOperators;
 
             //
             // User-defined operator implementations always take precedence
             // over predefined operator implementations
             //
-            if (leftOperators != null && rightOperators != null)
-            {
-                union = IsPredefinedUserOperator(l, userOper)
-                    ? rightOperators.OverloadResolve(ec, ref args, true, Span) ?? leftOperators
-                    : IsPredefinedUserOperator(r, userOper)
-                        ? leftOperators.OverloadResolve(ec, ref args, true, Span) ?? rightOperators
-                        : MethodGroupExpression.MakeUnionSet(leftOperators, rightOperators, Span);
-            }
-            else
-            {
-                union = leftOperators ?? rightOperators;
-            }
 
             union = union.OverloadResolve(ec, ref args, true, Span);
             if (union == null)

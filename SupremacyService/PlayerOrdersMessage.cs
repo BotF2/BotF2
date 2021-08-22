@@ -30,7 +30,7 @@ namespace Supremacy.WCF
                 IList<Order> orders = StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer));
                 foreach (Order item in orders)
                 {
-                    GameLog.Core.SaveLoad.DebugFormat("Order: owner = {0}, IsExecuted = {1}", item.Owner, item.IsExecuted);
+                    GameLog.Core.SaveLoadDetails.DebugFormat("Order: owner = {0}, IsExecuted = {1}", item.Owner, item.IsExecuted);
                 }
 /*                GameLog.Core.SaveLoad.DebugFormat("{0}", gamelogText)*/;
                 return StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer));

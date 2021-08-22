@@ -30,6 +30,7 @@ namespace Supremacy.Orbitals
         private ArrayWrapper<ShipyardBuildSlot> _buildSlots;
         // private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
+        private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -92,7 +93,7 @@ namespace Supremacy.Orbitals
         /// <returns>The build output.</returns>
         public int GetBuildOutput(int slot)
         {
-            float output = (float)ShipyardDesign.BuildSlotOutput;
+            float output = ShipyardDesign.BuildSlotOutput;
             switch (ShipyardDesign.BuildSlotOutputType)
             {
                 case ShipyardOutputType.PopulationRatio:
@@ -138,7 +139,7 @@ namespace Supremacy.Orbitals
             int count = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                GameLog.Client.ShipProduction.DebugFormat("Shipyard before BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
+                GameLog.Client.ShipProductionDetails.DebugFormat("Shipyard before BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
                 count++;
             }
             //int bays = BuildSlots.Count();
@@ -180,7 +181,7 @@ namespace Supremacy.Orbitals
             int afterCount = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                GameLog.Client.ShipProduction.DebugFormat("Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
+                GameLog.Client.ShipProductionDetails.DebugFormat("Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
                 afterCount++;
             }
         }
@@ -209,15 +210,16 @@ namespace Supremacy.Orbitals
                         _design = slot.Project.BuildDesign.ToString();
                         _percent = slot.Project.PercentComplete.ToString();
                     }
-                    GameLog.Core.SaveLoad.DebugFormat(
-                        "Slot= " + slot.SlotID
-                        + " at " + slot.Shipyard.Name
-                        /*+ " ("*/ + slot.Shipyard.Location
-                        + " " + _percent
-                        + " done for " + _design
 
-                        //+ " percent done " //+ slot.Project.BuildDesign
-                        );
+                    _text =
+                    "Slot= " + slot.SlotID
+                    + " at " + slot.Shipyard.Name
+                    + " " + slot.Shipyard.Location
+                    + " " + _percent
+                    + " done for " + _design
+                    ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 }
             }
             catch { };

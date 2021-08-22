@@ -1,5 +1,4 @@
-// 
-// CivilizationScopedEvent.cs
+// File:CivilizationScopedEvent.cs
 // 
 // Copyright (c) 2013-2013 Mike Strobel
 // 
@@ -7,7 +6,6 @@
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 // 
 // All other rights reserved.
-// 
 
 using System;
 using System.Collections.Generic;

@@ -301,7 +301,6 @@ namespace Supremacy.Client.Controls
         /// <summary>
         /// Initializes the <c>InlineWindowTitleBarButton</c> class.
         /// </summary>
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static InlineWindowTitleBarButton()
         {
             // Override default properties

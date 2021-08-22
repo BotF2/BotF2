@@ -39,9 +39,10 @@ namespace Supremacy.Game
     public class GameEngine
     {
 
-        public int _gameTurnNumber = 0;  // internal use
+        public int _tn = 0;  // internal use // Turn Number
         public string blank = " ";
-        readonly List<CivValue> CivValueList = new List<CivValue>();
+        public readonly List<CivValue> CivValueList = new List<CivValue>();
+        public readonly List<CivRank> CivRankList = new List<CivRank>();
         public string newline = Environment.NewLine;
         public int AAASpecialWidth1;
         public int AAASpecialHeight1;
@@ -50,7 +51,12 @@ namespace Supremacy.Game
         private string _text;
         private string _note;
         private string _owner;
-        private readonly string _x = string.Format(ResourceManager.GetString("X"));
+        private int _r_Credits_BestValue;
+        private int _r_Credits_Average_5;
+        private int _r_maint_BestValue;
+        private int _r_maint_Average_5;
+
+        //private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
         #region Public Members
 
@@ -159,13 +165,14 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("game");
             }
 
-            GameLog.Core.Events.DebugFormat("...beginning DoTurn...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning DoTurn...");
 
             HashSet<Fleet> fleets;
 
             GameContext.PushThreadContext(game);
             try
             {
+                GameLog.Core.GeneralDetails.DebugFormat("...beginning Check for Scripted Events ...");
                 List<Scripting.ScriptedEvent> eventsToRemove = game.ScriptedEvents.Where(o => !o.CanExecute).ToList();
                 foreach (Scripting.ScriptedEvent eventToRemove in eventsToRemove)
                 {
@@ -190,7 +197,7 @@ namespace Supremacy.Game
             }
             finally { _ = GameContext.PopThreadContext(); }
 
-            GameLog.Core.Events.DebugFormat("...beginning PreTurnOperations...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning PreTurnOperations...");
 
             OnTurnPhaseChanged(game, TurnPhase.PreTurnOperations);
             GameContext.PushThreadContext(game);
@@ -198,7 +205,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PreTurnOperations);
 
-            GameLog.Core.Events.DebugFormat("...beginning SpyOperations...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning SpyOperations...");
 
             //OnTurnPhaseChanged(game, TurnPhase.SpyOperations);
             //GameContext.PushThreadContext(game);
@@ -206,7 +213,7 @@ namespace Supremacy.Game
             //finally { GameContext.PopThreadContext(); }
             //OnTurnPhaseFinished(game, TurnPhase.SpyOperations);
 
-            GameLog.Core.Events.DebugFormat("...beginning FleetMovement...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning FleetMovement...");
 
             OnTurnPhaseChanged(game, TurnPhase.FleetMovement);
             GameContext.PushThreadContext(game);
@@ -214,7 +221,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.FleetMovement);
 
-            GameLog.Core.Events.DebugFormat("...beginning Diplomacy...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Diplomacy...");
 
             OnTurnPhaseChanged(game, TurnPhase.Diplomacy);
             GameContext.PushThreadContext(game);
@@ -222,7 +229,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Diplomacy);
 
-            GameLog.Core.Events.DebugFormat("...beginning Combat...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Combat...");
 
             OnTurnPhaseChanged(game, TurnPhase.Combat);
             GameContext.PushThreadContext(game);
@@ -230,7 +237,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Combat);
 
-            GameLog.Core.Events.DebugFormat("...beginning PopulationGrowth...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning PopulationGrowth...");
 
             OnTurnPhaseChanged(game, TurnPhase.PopulationGrowth);
             GameContext.PushThreadContext(game);
@@ -238,7 +245,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PopulationGrowth);
 
-            GameLog.Core.Events.DebugFormat("...beginning Research...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Research...");
 
             OnTurnPhaseChanged(game, TurnPhase.Research);
             GameContext.PushThreadContext(game);
@@ -246,7 +253,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Research);
 
-            GameLog.Core.Events.DebugFormat("...beginning Scrapping...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Scrapping...");
 
             OnTurnPhaseChanged(game, TurnPhase.Scrapping);
             GameContext.PushThreadContext(game);
@@ -254,7 +261,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Scrapping);
 
-            GameLog.Core.Events.DebugFormat("...beginning Maintenance...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Maintenance...");
 
             OnTurnPhaseChanged(game, TurnPhase.Maintenance);
             GameContext.PushThreadContext(game);
@@ -262,7 +269,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Maintenance);
 
-            GameLog.Core.Events.DebugFormat("...beginning Production...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Production...");
 
             OnTurnPhaseChanged(game, TurnPhase.Production);
             GameContext.PushThreadContext(game);
@@ -270,7 +277,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Production);
 
-            GameLog.Core.Events.DebugFormat("...beginning ShipProduction...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning ShipProduction...");
 
             OnTurnPhaseChanged(game, TurnPhase.ShipProduction);
             GameContext.PushThreadContext(game);
@@ -278,7 +285,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.ShipProduction);
 
-            GameLog.Core.Events.DebugFormat("...beginning Trade...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Trade...");
 
             OnTurnPhaseChanged(game, TurnPhase.Trade);
             GameContext.PushThreadContext(game);
@@ -286,7 +293,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Trade);
 
-            //GameLog.Core.Events.DebugFormat("...beginning Intelligence...");
+            //GameLog.Core.GeneralDetails.DebugFormat("...beginning Intelligence...");
 
             //OnTurnPhaseChanged(game, TurnPhase.Intelligence);
             //GameContext.PushThreadContext(game);
@@ -294,7 +301,7 @@ namespace Supremacy.Game
             //finally { GameContext.PopThreadContext(); }
             //OnTurnPhaseFinished(game, TurnPhase.Intelligence);
 
-            GameLog.Core.Events.DebugFormat("...beginning Morale...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Morale...");
 
             OnTurnPhaseChanged(game, TurnPhase.Morale);
             GameContext.PushThreadContext(game);
@@ -302,7 +309,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Morale);
 
-            GameLog.Core.Events.DebugFormat("...beginning MapUpdates...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning MapUpdates...");
 
             OnTurnPhaseChanged(game, TurnPhase.MapUpdates);
             GameContext.PushThreadContext(game);
@@ -310,7 +317,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.MapUpdates);
 
-            GameLog.Core.Events.DebugFormat("...beginning PostTurnOperations...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning PostTurnOperations...");
 
             OnTurnPhaseChanged(game, TurnPhase.PostTurnOperations);
             GameContext.PushThreadContext(game);
@@ -318,11 +325,11 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PostTurnOperations);
 
-            GameLog.Core.Events.DebugFormat("...beginning SendUpdates...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning SendUpdates...");
 
             OnTurnPhaseChanged(game, TurnPhase.SendUpdates);
 
-            GameLog.Core.Events.DebugFormat("...beginning PushThreadContext...");
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning PushThreadContext...");
 
             GameContext.PushThreadContext(game);
             try
@@ -337,7 +344,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
 
 
-            GameLog.Core.Events.DebugFormat("...HandleFleetLocationChanged...");
+            GameLog.Core.GeneralDetails.DebugFormat("...HandleFleetLocationChanged...");
 
 
             foreach (Fleet fleet in fleets)
@@ -387,13 +394,20 @@ namespace Supremacy.Game
                   }
                   finally
                   {
+
                       GameContext.PushThreadContext(game);
                   }
               });
 
             if (!errors.IsEmpty)
             {
-                throw new AggregateException(errors);
+                foreach (var err in errors)
+                {
+                    _text = err.Message;
+                    GameLog.Core.General.DebugFormat(_text);
+                }
+
+                //throw new AggregateException(errors);   // causes crashes - not able to find out why
             }
 
             errors.Clear();
@@ -444,7 +458,7 @@ namespace Supremacy.Game
                 }
             }
         }
-        #endregion
+        #endregion DoPreTurnSetup
 
         #region DoPreGameSetup() Method
         public void DoPreGameSetup(GameContext game)
@@ -463,7 +477,7 @@ namespace Supremacy.Game
                           GameLog.Core.General.DebugFormat("New civ added: {0}", civ.Name);
                           MapLocation _loc = GameContext.Current.CivilizationManagers[civ.CivID].HomeSystem.Location;
                           GameContext.Current.CivilizationManagers[civ.CivID].SitRepEntries.Add(
-                              new ReportEntryCoS(civ, _loc, "HomeSystem placed at " + _loc, "x", SitRepPriority.Gray));
+                              new ReportEntry_CoS(civ, _loc, "HomeSystem placed at " + _loc, "", "", SitRepPriority.Gray));
                           // generates a needed first SitRep in initialize SitRepCommentTextBox
                       }
                   }
@@ -574,7 +588,7 @@ namespace Supremacy.Game
             GameLog.Core.GameInitDataDetails.DebugFormat(_text);
 
             game.TurnNumber = 1;
-            _gameTurnNumber = 1;
+            _tn = 1;
 
         }
         #endregion
@@ -593,25 +607,25 @@ namespace Supremacy.Game
                 //string name = fleet.Name;
                 if (fleet.UnitAIType == UnitAIType.Reserve)
                 {
-                    GameLog.Client.AI.DebugFormat("*** Reserve, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
+                    GameLog.Client.AIDetails.DebugFormat("*** Turn {0}: Reserve,  Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
                         turn, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                 }
 
                 if (shipNum >= 5 && fleet.UnitAIType != UnitAIType.SystemDefense)
                 {
-                    GameLog.Client.AI.DebugFormat("*** >5 and Not SystemDefence, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
+                    GameLog.Client.AIDetails.DebugFormat("*** Turn {0}: {2} {1} >5 and Not SystemDefence, Unit: AIType={3}, Activity={4}, Duration={5}, Start ={6}",
                         GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                 }
 
                 if (fleet.Route.Steps.Count() > 0 && shipNum >= 5)
                 {
-                    GameLog.Client.AI.DebugFormat("# of ships = {0} fleet Waypooints ={1} step 1 {2}", shipNum, fleet.Route.Waypoints, fleet.Route.Steps[0]);
+                    GameLog.Client.AIDetails.DebugFormat("# {0} ships inside fleet, {1} Waypoints to go, first step = {2}", shipNum, fleet.Route.Waypoints.Count, fleet.Route.Steps[0]);
                     for (int i = 0; i < shipNum; i++)
                     {
                         _text = "Ship's Fleet# =" + i;
                         Ship ship = fleet.Ships[i];
                         _text += "/ObjectID =" + ship.ObjectID + "/Name =" + ship.Name;
-                        GameLog.Core.AI.DebugFormat(_text);
+                        GameLog.Core.AIDetails.DebugFormat(_text);
                     }
                 }
 
@@ -715,8 +729,10 @@ namespace Supremacy.Game
 
                     if ((shipsDamaged > 0) || (shipsDestroyed > 0))
                     {
-                        GameLog.Client.AI.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, fleet.Owner.Key, fleet.Location);
-                        civManager.SitRepEntries.Add(new BlackHoleEncounterSitRepEntry(fleet.Owner, fleet.Location, shipsDamaged, shipsDestroyed));
+                        _text = string.Format(ResourceManager.GetString("SITREP_BLACK_HOLE_ENCOUNTER"), fleet.Location, shipsDestroyed, shipsDamaged);
+
+                        //GameLog.Client.ShipsDetails.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, fleet.Owner.Key, fleet.Location);
+                        civManager.SitRepEntries.Add(new ReportEntry_CoS(fleet.Owner, fleet.Location, _text, "", "", SitRepPriority.Blue));
                     }
                 }
             }
@@ -1151,7 +1167,7 @@ namespace Supremacy.Game
 
                     if (_gameLog != "what's next + ")
                     {
-                        GameLog.Core.Diplomacy.DebugFormat(_gameLog);
+                        GameLog.Core.DiplomacyDetails.DebugFormat(_gameLog);
                     }
 
                     //  Second.2 = proposalSent
@@ -1355,198 +1371,211 @@ namespace Supremacy.Game
         #region DoPopulation() Method
         void DoPopulation(GameContext game)
         {
-            _ = ParallelForEach(GameContext.Current.Civilizations, civ =>
-              {
-                  GameContext.PushThreadContext(game);
-                  try
-                  {
-                      CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
+            //_ = ParallelForEach(GameContext.Current.Civilizations, civ =>
+            foreach (var civ in GameContext.Current.Civilizations)
+            {
+                GameContext.PushThreadContext(game);
+                try
+                {
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
 
-                      civManager.TotalPopulation.Reset();
+                    civManager.TotalPopulation.Reset();
 
-                      _text = "";
+                    _text = "";
 
-                      foreach (Colony colony in civManager.Colonies)
-                      {
-                          colony.Population.Maximum = colony.MaxPopulation;
+                    foreach (Colony colony in civManager.Colonies)
+                    {
+                        colony.Population.Maximum = colony.MaxPopulation;
 
-                          int popChange = 0;
-                          int foodDeficit;
+                        int popChange = 0;
+                        int foodDeficit;
 
-                          _ = colony.FoodReserves.AdjustCurrent(colony.GetProductionOutput(ProductionCategory.Food));
-                          foodDeficit = Math.Min(colony.FoodReserves.CurrentValue - colony.Population.CurrentValue, 0);
-                          _ = colony.FoodReserves.AdjustCurrent(-1 * colony.Population.CurrentValue);
-                          colony.FoodReserves.UpdateAndReset();
+                        _ = colony.FoodReserves.AdjustCurrent(colony.GetProductionOutput(ProductionCategory.Food));
+                        foodDeficit = Math.Min(colony.FoodReserves.CurrentValue - colony.Population.CurrentValue, 0);
+                        _ = colony.FoodReserves.AdjustCurrent(-1 * colony.Population.CurrentValue);
+                        colony.FoodReserves.UpdateAndReset();
 
-                          /*
-                           * If there is not enough food to feed the population, we need to kill off some of the
-                           * population due to starvation.  Otherwise, we increase the population according to the
-                           * growth rate if we did not suffer a loss due to starvation during the previous turn.
-                           * We want to ensure that there is a 1-turn period between population loss and recovery.
-                           */
-                          //if (colony.Name == "Ledos")
-                          //    ; // ddd;
+                        /*
+                         * If there is not enough food to feed the population, we need to kill off some of the
+                         * population due to starvation.  Otherwise, we increase the population according to the
+                         * growth rate if we did not suffer a loss due to starvation during the previous turn.
+                         * We want to ensure that there is a 1-turn period between population loss and recovery.
+                         */
+                        //if (colony.Name == "Ledos")
+                        //    ; // ddd;
 
-                          Percentage growthRate = colony.GrowthRate;
-
-
-                          if (foodDeficit < 0)
-                          {
-                              popChange = -(int)Math.Floor(0.1 * Math.Sqrt(Math.Abs(colony.Population.CurrentValue * foodDeficit)));
-                              civManager.SitRepEntries.Add(new StarvationSitRepEntry(civ, colony));
-                          }
-                          else
-                          {
-                              // minimum growth of 1.0, otherwise minors and even Majors stays and begin value e.g. 16 (not getting more!!)
-                              popChange = (int)Math.Ceiling(1 + growthRate * colony.Population.CurrentValue);  // minimum growth of 1.0
-                          }
-
-                          if (growthRate < 0)
-                          {
-                              civManager.SitRepEntries.Add(new PopulationDyingSitRepEntry(civ, colony));
-                          }
-
-                          int newPopulation = colony.Population.AdjustCurrent(popChange);
-
-                          // TODO: We need to figure out how to deal with a civilization having no colonies
-                          // and no colony ships
-                          if (colony.Population.CurrentValue == 0)
-                          {
-                              _note = colony.Location
-                              + " " + colony.Name
-                              + " > Population have died from illness, and the colony has been lost.";
-
-                              civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(civ, colony.Sector.Location, _note));
-                              colony.Destroy();
-                              civManager.EnsureSeatOfGovernment();
-                              return;
-                          }
-                          colony.Population.UpdateAndReset();
-                          _ = civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
+                        Percentage growthRate = colony.GrowthRate;
 
 
-                          int newLabors = colony.GetAvailableLabor() / 10;
-                          int curPop = colony.Population.CurrentValue;
-                          int maxPop = colony.MaxPopulation;
+                        if (foodDeficit < 0)
+                        {
+                            popChange = -(int)Math.Floor(0.1 * Math.Sqrt(Math.Abs(colony.Population.CurrentValue * foodDeficit)));
+                            _text = string.Format(ResourceManager.GetString("SITREP_STARVATION"), colony.Name, colony.Location);
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Red));
+                            //civManager.SitRepEntries.Add(new StarvationSitRepEntry(civ, colony));
+                        }
+                        else
+                        {
+                            // minimum growth of 1.0, otherwise minors and even Majors stays and begin value e.g. 16 (not getting more!!)
+                            popChange = (int)Math.Ceiling(1 + growthRate * colony.Population.CurrentValue);  // minimum growth of 1.0
+                        }
 
-                          if (newLabors > 0)
-                          {
-                              while (newLabors > 0 && colony.TotalIndustryFacilities > colony.ActiveIndustryFacilities)
-                              {
-                                  _ = colony.ActivateFacility(ProductionCategory.Industry);
-                                  newLabors -= 1;
-                                  _text = colony.Location + blank + colony.Name
-                                  + " - population growing (now " + curPop + " / " + maxPop
-                                  + " ) - one labor unit was added to Industry Production.";
-                                  Console.WriteLine(_text);
-                                  civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                              }
-                          }
+                        if (growthRate < 0)
+                        {
+                            _text = string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), colony.Name, colony.Location);
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Red));
+                            //civManager.SitRepEntries.Add(new PopulationDyingSitRepEntry(civ, colony));
+                        }
 
-                          if (newLabors > 0)
-                          {
-                              while (newLabors > 0 && colony.TotalResearchFacilities > colony.ActiveResearchFacilities)
-                              {
-                                  _ = colony.ActivateFacility(ProductionCategory.Research);
-                                  newLabors -= 1;
-                                  _text = colony.Location + blank + colony.Name
-                                  + " - population growing (now " + curPop + " / " + maxPop
-                                  + " ) - one labor unit was added to Research Facility.";
-                                  Console.WriteLine(_text);
-                                  civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                              }
-                          }
+                        int newPopulation = colony.Population.AdjustCurrent(popChange);
 
-                          if (newLabors > 0)
-                          {
-                              while (newLabors > 0 && colony.TotalIntelligenceFacilities > colony.ActiveIntelligenceFacilities)
-                              {
-                                  _ = colony.ActivateFacility(ProductionCategory.Intelligence);
-                                  newLabors -= 1;
-                                  _text = colony.Location + blank + colony.Name
-                                  + " - population growing (now " + curPop + " / " + maxPop
-                                    + " ) - one labor unit was added to Intelligence Facility.";
-                                  Console.WriteLine(_text);
-                                  civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                              }
-                          }
+                        // TODO: We need to figure out how to deal with a civilization having no colonies
+                        // and no colony ships
+                        if (colony.Population.CurrentValue == 0)
+                        {
+                            _note = colony.Location
+                            + " " + colony.Name
+                            + " > Population have died from illness, and the colony has been lost.";
 
-                          if (newLabors > 0)
-                          {
-                              while (newLabors > 0 && colony.TotalEnergyFacilities > colony.ActiveEnergyFacilities)
-                              {
-                                  _ = colony.ActivateFacility(ProductionCategory.Energy);
-                                  newLabors -= 1;
-                                  _text = colony.Location + blank + colony.Name
-                                  + " - population growing (now " + curPop + " / " + maxPop
-                                      + " ) - one labor unit was added to Energy Production.";
-                                  Console.WriteLine(_text);
-                                  civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                              }
-                          }
-
-                          if (newLabors > 0)
-                          {
-                              while (newLabors > 0 && colony.TotalFoodFacilities > colony.ActiveFoodFacilities)
-                              {
-                                  _ = colony.ActivateFacility(ProductionCategory.Food);
-                                  newLabors -= 1;
-                                  _text = colony.Location + blank + colony.Name
-                                  + " - population growing (now " + curPop + " / " + maxPop
-                                  + " ) - one labor unit was added to Food Production.";
-                                  Console.WriteLine(_text);
-                                  civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                              }
-                          }
-
-                          int availableLaborUnits = colony.GetAvailableLabor() / 10;
-                          _text = colony.Location + blank + colony.Name
-                          + " - Labor Pool: " + availableLaborUnits
-                          + " - Food: " + colony.ActiveFoodFacilities + " / " + colony.TotalFoodFacilities
-                          + " - Industry: " + colony.ActiveIndustryFacilities + " / " + colony.TotalIndustryFacilities
-                          + " - Energy: " + colony.ActiveEnergyFacilities + " / " + colony.TotalEnergyFacilities
-                          + " - Research: " + colony.ActiveResearchFacilities + " / " + colony.TotalResearchFacilities
-                          + " - Intel: " + colony.ActiveIntelligenceFacilities + " / " + colony.TotalIntelligenceFacilities
-                          + " - Pop: " + colony.Population.CurrentValue + " / " + colony.MaxPopulation;
-                          ;
-                          Console.WriteLine(_text);
-                          civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
+                            civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(colony.Owner, colony.Sector.Location, _note));
+                            colony.Destroy();
+                            civManager.EnsureSeatOfGovernment();
+                            return;
+                        }
+                        colony.Population.UpdateAndReset();
+                        _ = civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
 
 
-                          if (newPopulation < colony.Population.Maximum)
-                          {
-                              ProductionFacilityDesign foodFacilityType = colony.GetFacilityType(ProductionCategory.Food);
-                              if ((foodFacilityType != null) && (colony.GetAvailableLabor() >= foodFacilityType.LaborCost))
-                              {
-                                  int popInThreeTurns = Math.Min(colony.Population.Maximum,
-                                      (int)(newPopulation * (1 + colony.GrowthRate) * (1 + colony.GrowthRate) * (1 + colony.GrowthRate)));
-                                  while (popInThreeTurns > colony.GetProductionOutput(ProductionCategory.Food))
-                                  {
-                                      if (!colony.ActivateFacility(ProductionCategory.Food))
-                                      {
-                                          break;
-                                      }
-                                  }
-                              }
-                          }
+                        int newLabors = colony.GetAvailableLabor() / 10;
+                        int curPop = colony.Population.CurrentValue;
+                        int maxPop = colony.MaxPopulation;
 
-                          while (colony.ActivateFacility(ProductionCategory.Industry))
-                          {
-                              continue;
-                          }
-                      }
+                        if (newLabors > 0)
+                        {
+                            while (newLabors > 0 && colony.TotalIndustryFacilities > colony.ActiveIndustryFacilities)
+                            {
+                                _ = colony.ActivateFacility(ProductionCategory.Industry);
+                                newLabors -= 1;
+                                _text = colony.Location + blank + colony.Name
+                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " ) - one labor unit was added to Industry Production.";
+                                Console.WriteLine(_text);
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
+                            }
+                        }
 
-                      civManager.EnsureSeatOfGovernment();
-                  }
-                  catch (Exception e)
-                  {
-                      GameLog.Core.General.Error(e);
-                  }
-                  finally
-                  {
-                      _ = GameContext.PopThreadContext();
-                  }
-              });
+                        if (newLabors > 0)
+                        {
+                            while (newLabors > 0 && colony.TotalResearchFacilities > colony.ActiveResearchFacilities)
+                            {
+                                _ = colony.ActivateFacility(ProductionCategory.Research);
+                                newLabors -= 1;
+                                _text = colony.Location + blank + colony.Name
+                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " ) - one labor unit was added to Research Facility.";
+                                Console.WriteLine(_text);
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
+                            }
+                        }
+
+                        if (newLabors > 0)
+                        {
+                            while (newLabors > 0 && colony.TotalIntelligenceFacilities > colony.ActiveIntelligenceFacilities)
+                            {
+                                _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                                newLabors -= 1;
+                                _text = colony.Location + blank + colony.Name
+                                + " > population growing (now " + curPop + " / " + maxPop
+                                  + " ) - one labor unit was added to Intelligence Facility.";
+                                Console.WriteLine(_text);
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
+                            }
+                        }
+
+                        if (newLabors > 0)
+                        {
+                            while (newLabors > 0 && colony.TotalEnergyFacilities > colony.ActiveEnergyFacilities)
+                            {
+                                _ = colony.ActivateFacility(ProductionCategory.Energy);
+                                newLabors -= 1;
+                                _text = colony.Location + blank + colony.Name
+                                + " > population growing (now " + curPop + " / " + maxPop
+                                    + " ) - one labor unit was added to Energy Production.";
+                                Console.WriteLine(_text);
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
+                            }
+                        }
+
+                        if (newLabors > 0)
+                        {
+                            while (newLabors > 0 && colony.TotalFoodFacilities > colony.ActiveFoodFacilities)
+                            {
+                                _ = colony.ActivateFacility(ProductionCategory.Food);
+                                newLabors -= 1;
+                                _text = colony.Location + blank + colony.Name
+                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " ) - one labor unit was added to Food Production.";
+                                Console.WriteLine(_text);
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
+                            }
+                        }
+
+                        int availableLaborUnits = colony.GetAvailableLabor() / 10;
+                        _text = colony.Location + blank + colony.Name
+                        + " > Labor Pool: " + availableLaborUnits
+                        + " - Food: " + colony.ActiveFoodFacilities + " / " + colony.TotalFoodFacilities
+                        + " - Industry: " + colony.ActiveIndustryFacilities + " / " + colony.TotalIndustryFacilities
+                        + " - Energy: " + colony.ActiveEnergyFacilities + " / " + colony.TotalEnergyFacilities
+                        + " - Research: " + colony.ActiveResearchFacilities + " / " + colony.TotalResearchFacilities
+                        + " - Intel: " + colony.ActiveIntelligenceFacilities + " / " + colony.TotalIntelligenceFacilities
+                        + " - Pop: " + colony.Population.CurrentValue + " / " + colony.MaxPopulation;
+                        ;
+                        Console.WriteLine(_text);
+
+                        if (civManager.Civilization.CivID == colony.Owner.CivID)
+                        {
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Brown));
+                        }
+
+                        if (newPopulation < colony.Population.Maximum)
+                        {
+                            ProductionFacilityDesign foodFacilityType = colony.GetFacilityType(ProductionCategory.Food);
+                            if ((foodFacilityType != null) && (colony.GetAvailableLabor() >= foodFacilityType.LaborCost))
+                            {
+                                int popInThreeTurns = Math.Min(colony.Population.Maximum,
+                                    (int)(newPopulation * (1 + colony.GrowthRate) * (1 + colony.GrowthRate) * (1 + colony.GrowthRate)));
+                                while (popInThreeTurns > colony.GetProductionOutput(ProductionCategory.Food))
+                                {
+                                    if (!colony.ActivateFacility(ProductionCategory.Food))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        while (colony.ActivateFacility(ProductionCategory.Industry))
+                        {
+                            continue;
+                        }
+                    }
+
+                    civManager.EnsureSeatOfGovernment();
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.General.Error(e);
+                }
+                finally
+                {
+                    _ = GameContext.PopThreadContext();
+                }
+            };
         }
         #endregion
 
@@ -1578,33 +1607,64 @@ namespace Supremacy.Game
 
                       // works GameLog.Core.Research.DebugFormat("Turn {3}: Base research gained for {0} {1} is {2}",
                       //scienceShip.ObjectID, scienceShip.Name, researchGained, GameContext.Current.TurnNumber);
-
+                      //_text = 
+                      string _starType = "";
                       switch (starType)
                       {
                           case StarType.Nebula:
                               researchGained *= 20;  // multiplied with 5
+                              _starType = ResourceManager.GetString("STAR_TYPE_NEBULA");
                               break;
+                          // 10 Points for...
                           case StarType.Blue:
+                              researchGained *= 10;
+                              _starType = ResourceManager.GetString("STAR_TYPE_BLUE");
+                              break;
                           case StarType.Orange:
+                              researchGained *= 10;
+                              _starType = ResourceManager.GetString("STAR_TYPE_ORANGE");
+                              break;
                           case StarType.Red:
+                              researchGained *= 10;
+                              _starType = ResourceManager.GetString("STAR_TYPE_RED");
+                              break;
                           case StarType.White:
+                              researchGained *= 10;
+                              _starType = ResourceManager.GetString("STAR_TYPE_WHITE");
+                              break;
                           case StarType.Yellow:
                               researchGained *= 10;
+                              _starType = ResourceManager.GetString("STAR_TYPE_Yellow");
                               break;
 
+                          // 15 points for ...
                           case StarType.XRayPulsar:
+                              researchGained *= 15;
+                              _starType = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR");
+                              break;
                           case StarType.RadioPulsar:
+                              researchGained *= 15;
+                              _starType = ResourceManager.GetString("STAR_TYPE_QUASAR");
+                              break;
                           case StarType.NeutronStar:
                               researchGained *= 15;
+                              _starType = ResourceManager.GetString("STAR_TYPE_NEUTRONSTAR");
                               break;
 
+                          // 20 points for ...
                           case StarType.BlackHole:
+                              researchGained *= 20;
+                              _starType = ResourceManager.GetString("STAR_TYPE_BLACKHOLE");
+                              break;
                           case StarType.Quasar:
                               researchGained *= 20;
+                              _starType = ResourceManager.GetString("STAR_TYPE_QUASAR");
                               break;
 
+                          // 30 points for ...
                           case StarType.Wormhole:
                               researchGained *= 30;
+                              _starType = ResourceManager.GetString("STAR_TYPE_WORMHOLE");
                               break;
 
                           default:
@@ -1613,7 +1673,7 @@ namespace Supremacy.Game
                       }
 
 
-
+                      researchGained *= GameContext.Current.CivilizationManagers[scienceShip.Owner].AverageTechLevel;
 
                       GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
@@ -1621,7 +1681,21 @@ namespace Supremacy.Game
                       //works   GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
                       //    scienceShip.ObjectID, scienceShip.Name, researchGained, owner.Civilization.Key, starType, scienceShip.Sector);
 
-                      GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained));
+                      if (researchGained < 1)
+                      {
+                          _text = string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP_RESULT_UNKNOWN"));
+                      }
+                      else
+                      {
+                          _text = string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
+                        scienceShip.Sector.Location, scienceShip.Name, scienceShip.ObjectID, researchGained, _starType);
+                          //{0} > Science Ship {2} {1} gained {3} research points studying this {4}.
+                      }
+
+                      GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new
+                              ReportEntry_CoS(owner.Civilization, scienceShip.Location, _text, "", "", SitRepPriority.Gray));
+                      //              GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new
+                      //ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained));
                   }
                   catch (Exception e)
                   {
@@ -1948,7 +2022,7 @@ namespace Supremacy.Game
         #region DoMaintenance() Method
         private void DoMaintenance(GameContext game)
         {
-            int turn = game.TurnNumber;
+            //int turn = game.TurnNumber;
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
 
@@ -1958,13 +2032,13 @@ namespace Supremacy.Game
                 foreach (Colony colony in civManager.Colonies)
                 {
                     int _energyPF_unused = colony.TotalEnergyFacilities - colony.GetActiveFacilities(ProductionCategory.Energy);
-                    GameLog.Core.Energy.DebugFormat(" Turn {0}: {1} Energy Facilities unused at {2} {3} {4} "
-                        , turn
-                        , _energyPF_unused
-                        , colony.Name
-                        , colony.Location
-                        , colony.Owner
-                        );
+                    //GameLog.Core.EnergyDetails.DebugFormat(" Turn {0}: {1} Energy Facilities unused at {2} {3} {4} "
+                    //    , turn
+                    //    , _energyPF_unused
+                    //    , colony.Name
+                    //    , colony.Location
+                    //    , colony.Owner
+                    //    );
 
                     if (colony.NetEnergy < 0 && _energyPF_unused > 0)
                     {
@@ -1975,7 +2049,7 @@ namespace Supremacy.Game
 
                     if (_shutdowned > 0)
                     {
-                        GameLog.Core.Energy.DebugFormat(" Turn {0}: Energy Shutdown for {1} building at {2} {3} {4} "
+                        GameLog.Core.EnergyDetails.DebugFormat(" Turn {0}: Energy Shutdown for {1} building at {2} {3} {4} "
                         , GameContext.Current.TurnNumber
                         , _shutdowned
                         , colony.Name
@@ -2132,9 +2206,23 @@ namespace Supremacy.Game
                         //See if there is actually anything to build for this colony
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
                         {
-                            GameLog.Core.Production.DebugFormat("Turn {2}: Nothing to do for Colony {0} ({1})"
-                                , colony.Name, civ.Name, GameContext.Current.TurnNumber);
-                            civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
+                            _text = "Turn " + GameContext.Current.TurnNumber
+                                + ": Nothing to do for Colony " + colony.Name
+                                + " (" + civ.Name
+                                + ")"
+                                ;
+                            //Console.WriteLine(_text);
+                            //GameLog.Core.Production.DebugFormat(_text);
+                            _text = string.Format(ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
+                                colony.Name, colony.Location);
+                            //? string.Format(
+                            //    ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
+                            //    Colony.Name, Colony.Location)
+                            //: string.Format(
+                            //ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
+                            //Colony.Name, Colony.Location);
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
+                            //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
                             continue;
                         }
 
@@ -2152,7 +2240,20 @@ namespace Supremacy.Game
 
                         if (colony.BuildQueue.IsEmpty())
                         {
-                            civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
+                            //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
+
+                            //Console.WriteLine(_text);
+                            //GameLog.Core.Production.DebugFormat(_text);
+                            _text = string.Format(ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
+                                colony.Name, colony.Location);
+                            //? string.Format(
+                            //    ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
+                            //    Colony.Name, Colony.Location)
+                            //: string.Format(
+                            //ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
+                            //Colony.Name, Colony.Location);
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
+                            //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
                         }
 
                         //Start going through the queue
@@ -2269,7 +2370,8 @@ namespace Supremacy.Game
                                         + colony.BuildSlots[0].Project.BuildDesign.LocalizedName + " - "
                                         + colony.BuildSlots[0].Project.PercentComplete + " done";
 
-                                    civManager.SitRepEntries.Add(new BuildProjectStatusSitRepEntry(colony.Owner, colony.Location, _note));
+                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _note, "", "", SitRepPriority.Gray));
+                                    //civManager.SitRepEntries.Add(new BuildProjectStatusSitRepEntry(colony.Owner, colony.Location, _note, "", "", SitRepPriority.Gray));
                                 }
 
                                 _ = civManager.Resources.Deuterium.AdjustCurrent(-1 * deuteriumUsed);
@@ -2303,7 +2405,21 @@ namespace Supremacy.Game
 
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
                         {
-                            civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
+                            //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
+
+                            //Console.WriteLine(_text);
+                            //GameLog.Core.Production.DebugFormat(_text);
+                            _text = string.Format(
+                        ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
+                        colony.Name, colony.Location);
+                            //? string.Format(
+                            //    ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
+                            //    Colony.Name, Colony.Location)
+                            //: string.Format(
+                            //ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
+                            //Colony.Name, Colony.Location);
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
+                            //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
                         }
                         else
                         {
@@ -2372,7 +2488,9 @@ namespace Supremacy.Game
 
                           if (!colony.Population.IsMaximized && colony.GrowthRate == 0) // && Int32.TryParse(colony.Health.ToString(), out int _health) != 100)
                           {
-                              civManager.SitRepEntries.Add(new GrowthByHealthSitRepEntry(civ, colony));
+                              _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"), colony.Name, colony.Location);
+                              civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Yellow));
+                              //civManager.SitRepEntries.Add(new GrowthByHealthSitRepEntry(civ, colony));
                           }
 
 
@@ -2400,7 +2518,7 @@ namespace Supremacy.Game
                                   }
                                   if (!slot.HasProject && shipyard.BuildQueue.IsEmpty())
                                   {
-                                      GameLog.Core.ShipProduction.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
+                                      GameLog.Core.ShipProductionDetails.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
                                           slot.SlotID,
                                           colony.Name,
                                           civ.Name);
@@ -2418,12 +2536,12 @@ namespace Supremacy.Game
                                   _ = civManager.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
                                   _ = civManager.Resources.Duranium.AdjustCurrent(-1 * duraniumUsed);
 
-                                  GameLog.Core.ShipProduction.DebugFormat(/*Environment.NewLine + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ Environment.NewLine*/,
+                                  GameLog.Core.ShipProductionDetails.DebugFormat(/*Environment.NewLine + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ Environment.NewLine*/,
                                       deuteriumUsed, dilithiumUsed, duraniumUsed, slot.Project, colony, GameContext.Current.TurnNumber, colony.Owner);
 
                                   if (slot.Project.IsCompleted)
                                   {
-                                      GameLog.Core.ShipProduction.DebugFormat("Turn {4}: {0} in Shipyard Slot {1} on {2} ({3}) is finished",
+                                      GameLog.Core.ShipProductionDetails.DebugFormat("Turn {4}: {0} in Shipyard Slot {1} on {2} ({3}) is finished",
                                           slot.Project.BuildDesign,
                                           slot.SlotID,
                                           colony.Name,
@@ -2652,7 +2770,10 @@ namespace Supremacy.Game
                               if (!route.IsAssigned) // && civManager.SitRepEntries.Any(s=>s.Categories.ToString() == "SpecialEvent"))
                               {
                                   //works   GameLog.Core.TradeRoutes.DebugFormat("trade route for {0}, credit {1}=0 should add sitRep", route.SourceColony.Owner, route.SourceColony.CreditsFromTrade.BaseValue);
-                                  civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
+                                  _text = string.Format(ResourceManager.GetString("SITREP_UNASSIGNED_TRADE_ROUTE"), route.SourceColony, route.SourceColony.Location);
+                                  //civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
+                                  civManager.SitRepEntries.Add(new ReportEntry_CoS(route.Owner, route.SourceColony.Location, _text, "", "", SitRepPriority.Crimson));
+
                               }
                           }
                           /*
@@ -2710,8 +2831,14 @@ namespace Supremacy.Game
 
             foreach (Orbital orbital in destroyedOrbitals)
             {
+                _text = orbital.Location
+                    + " > " + orbital.ObjectID
+                    + " " + orbital
+                    + " (" + orbital.Design
+                    + ") was destroyed."
+                    ;
                 GameContext.Current.CivilizationManagers[orbital.OwnerID].SitRepEntries.Add(
-                    new OrbitalDestroyedSitRepEntry(orbital));
+                    new ReportEntry_CoS(orbital.Owner, orbital.Location, _text, "", "", SitRepPriority.RedYellow));
                 _ = GameContext.Current.Universe.Destroy(orbital);
             }
 
@@ -2876,24 +3003,322 @@ namespace Supremacy.Game
                 civValueShipSummary += " - Ships: " + allCivShips.Count() + " - Fire Power Total: " + _fpAll;
 
 
-
-                civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary));
-                civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary2));
+                civManager.SitRepEntries.Add(new ReportEntry_ShowGalaxy(civManager.Civilization, civValueShipSummary, "", "", SitRepPriority.Purple));
+                civManager.SitRepEntries.Add(new ReportEntry_ShowGalaxy(civManager.Civilization, civValueShipSummary2, "", "", SitRepPriority.Purple));
             }
 
             foreach (CivValue civ in CivValueList)
             {
-                string _text = /*newline +*/ "CivValueList: " /*+ civ.AA_CIV_ID*/;
+                _text = /*newline +*/ "CivValueList: " /*+ civ.AA_CIV_ID*/;
                 //_text += civ.CIV_KEY;
-                _text += ";Pop;" + civ.CIV_TOT_POP;
-                _text += ";Int;" + civ.CIV_TOT_INT;
+                _text += ";Pop;" + civ.TOT_POP;
+                _text += ";MOR;" + civ.MOR;
+                _text += ";Cred; " + civ.CRED;
+                _text += ";Maint; " + civ.MAINT;
+
                 _text += ";ID;" + civ.AA_CIV_ID;
                 _text += ";" + civ.CIV_KEY;
                 //_text += newline + "   " + civValueShipSummary;
                 //_text += newline + "   " + civValueShipSummary2;
-                GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
                 Console.WriteLine(_text);
+                //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
+
             }
+
+            //HashSet<Station> allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
+            //foreach (Station station in allStations)
+            //{
+            //    CivilizationManager civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
+
+            //    string _rep = station.Location + " > Station " + station.ObjectID + ": Maint. " + station.Design.MaintenanceCost; ;
+            //    _rep += " > * " /*+ station.ObjectID + blank */+ station.Name + " *"  /*( Maint." + station.Design.MaintenanceCost + " )"*/;
+            //    civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, station.Location, _rep, "", "", SitRepPriority.Pink));
+            //}
+
+            //foreach (Fleet fleet in allFleets)
+            //{
+            //    foreach (Ship ship in fleet.Ships)
+            //    {
+            //        //if (!fleet.Route.IsEmpty) 
+            //        string _rep = ship.Location + " > Ship ";
+            //        string _design = ship.DesignName + "  ";
+            //        while (_design.Length < 25)
+            //        {
+            //            _design += "_";
+            //        }
+
+
+            //        _rep += ship.ObjectID + ": " /*+ " < " */+ _design + " - Maint. " + ship.Design.MaintenanceCost + " > * " + blank + ship.Name + "  * > ";
+            //        _rep += blank + fleet.Order;
+            //        if (!fleet.Route.IsEmpty)
+            //        {
+            //            MapLocation _aim = fleet.Route.Waypoints.LastOrDefault();
+            //            Sector _aimSector = GameContext.Current.Universe.Map[_aim];
+            //            //GameContext.Current.Universe.Find<MapLocation>().TryFindFirstItem(o => o == _aim, out Sector _aimSector);
+            //            _rep += " # on the way to " + _aim.ToString() + " named " + _aimSector.Name;
+            //        }
+
+            //        CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.OwnerID];
+            //        CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+
+            //        // only own civilization
+            //        civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, ship.Location, _rep, "", "", SitRepPriority.Pink));
+
+            //        // all ships shown
+            //        //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
+            //    } // end of each ship
+            //}
+
+            //HashSet<CivilizationManager> civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
+            //List<CivRank> rankLists = new List<CivRank>();
+            foreach (CivilizationManager civ in GameContext.Current.CivilizationManagers)
+            {
+                _ = int.TryParse(civ.Credits.ToString(), out int cred);
+                _ = int.TryParse(civ.MaintenanceCostLastTurn.ToString(), out int maint);
+                CivRankList.Add(new CivRank(civ.Civilization.Key, cred, maint));
+                    
+                    //);
+                
+            }
+            //PrintCivRank(CivRankList);
+            // Ranking Credits
+            List<CivRank> r_credList = CivRankList.OrderByDescending(o => o.R_CRED).ToList();
+            PrintCivRank(r_credList);
+            _r_Credits_BestValue = r_credList[0].R_CRED;
+            if (r_credList.Count > 6)
+            {
+                _r_Credits_Average_5 = r_credList[1].R_CRED  // first = [0] already know, so average of place 2 - 6
+                    + r_credList[2].R_CRED
+                    + r_credList[3].R_CRED
+                    + r_credList[4].R_CRED
+                    + r_credList[5].R_CRED
+                    ;
+                _r_Credits_Average_5 /= 5;
+            }
+            else
+            {
+                _r_Credits_Average_5 = 99999;
+            }
+            r_credList.Clear();
+
+            // Ranking Maintenance = Military Power
+            List<CivRank> r_maintList = CivRankList.OrderByDescending(o => o.R_MAINT).ToList();
+            PrintCivRank(r_maintList);
+            _r_maint_BestValue = r_maintList[0].R_MAINT;
+            if (r_maintList.Count > 6)
+            {
+                _r_maint_Average_5 = r_maintList[1].R_MAINT  // first = [0] already know, so average of place 2 - 6
+                    + r_maintList[2].R_MAINT
+                    + r_maintList[3].R_MAINT
+                    + r_maintList[4].R_MAINT
+                    + r_maintList[5].R_MAINT
+                    ;
+                _r_maint_Average_5 /= 5;
+            }
+            else
+            {
+                _r_maint_Average_5 = 99999;
+            }
+            r_maintList.Clear();
+
+            //var allCivs = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
+            foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
+            {
+                /*
+                 * Reset the resource stockpile meters now that we have finished
+                 * production for the each civilization.  This will update the
+                 * last base value of the meters so that the net change this turn
+                 * is properly reflected.  Do the same for the credit treasury.
+                 */
+                civManager.Resources.UpdateAndReset();
+                civManager.Credits.UpdateAndReset();
+                civManager.OnTurnFinished();
+
+                //string civID_and_Turn_Text = civManager.civID_and_Turn); 
+
+                _ = int.TryParse(civManager.TotalPopulation.ToString(), out int _totalPopulation);
+                _ = int.TryParse(civManager.TotalValue.ToString(), out int _totalValue);
+                _ = int.TryParse(civManager.Research.CumulativePoints.ToString(), out int _totalResearch);
+                _ = int.TryParse(civManager.TotalIntelligenceProduction.ToString(), out int _totalIProd);
+                _ = int.TryParse(civManager.TotalIntelligenceDefenseAccumulated.ToString(), out int _totalIDef);
+                _ = int.TryParse(civManager.TotalIntelligenceAttackingAccumulated.ToString(), out int _totalIAtt);
+
+                r_credList = CivRankList.OrderByDescending(o => o.R_CRED).ToList();
+                PrintCivRank(r_credList);
+                int _rankingCreditsPositon = 1 + r_credList.FindIndex(o => o.CIV_KEY == civManager.Civilization.Key); // +1: 1 = Place 2
+
+                r_maintList = CivRankList.OrderByDescending(o => o.R_MAINT).ToList();
+                PrintCivRank(r_maintList);
+                int _rankingMaintPositon = 1 + r_maintList.FindIndex(o => o.CIV_KEY == civManager.Civilization.Key); // +1: 1 = Place 2
+
+                //CivHistory = logging civs value from turn 1 (and once making curves like in BotF)
+
+                //CivValue for comparing civs in current turn
+                AddCivValue(
+                    civManager.CivilizationID
+                    , civManager.Civilization.Key
+                    , _totalPopulation
+                    , civManager.AverageMorale
+                    , _totalValue
+                    , civManager.Credits.CurrentValue
+                    , civManager.MaintenanceCostLastTurn
+                    , _totalResearch
+                    , civManager.TotalIntelligenceProduction
+                    , _rankingCreditsPositon
+                    , _rankingMaintPositon
+                    );
+
+                _text = "Empire"
+                    //+ civManager.Civilization.Key
+                    + ": Col>" + civManager.Colonies.Count
+                    + ", Pop>" + _totalPopulation
+                    + "/ Mor>" + civManager.AverageMorale
+
+
+                    //+ "+" + civManager.Credits.CurrentChange
+                    + ", Res> " + civManager.Research.CumulativePoints.LastChange
+                    + ", Int> " + civManager.TotalIntelligenceProduction
+                    + ", Dil> " + civManager.Resources.Dilithium.CurrentValue
+                    + " /" + civManager.Resources.Dilithium.LastChange
+                    + ", Deu> " + civManager.Resources.Deuterium.CurrentValue
+                    + " /" + civManager.Resources.Deuterium.LastChange
+                    + ", Dur> " + civManager.Resources.Duranium.CurrentValue
+                    + " /" + civManager.Resources.Duranium.LastChange
+
+                    + " , Maint." + civManager.MaintenanceCostLastTurn
+                    + ", Credits> " + civManager.Credits.CurrentValue
+                    + " / " + civManager.Credits.LastChange
+
+                    + " "
+                    + " for " + civManager.Civilization.Key
+                    ;
+                //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
+                civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
+
+                foreach (Colony col in civManager.Colonies)
+                {
+                    _text = col.Location //+ " " "Colony"
+                    //+ civManager.Civilization.Key
+                    //+ " Colony" /*+ col.Name*/
+                    + ": Pop> " + col.Population + " /G " + col.GrowthRate
+                    + " /H " + col.Health
+                    + " /Mor " + col.Morale
+
+                    + ", Dil> " + col.NetDilithium
+                    + ", Deu> " + col.NetDeuterium
+                    + ", Dur> " + col.NetDuranium
+
+                    + ", Food> " + col.FoodReserves
+                    + " / " + col.FoodReserves.LastChange
+                    + ", Ind> " + col.NetIndustry
+                    + ", En> " + col.NetEnergy
+                    + ", Res> " + col.NetResearch
+                    + ", Int> " + col.NetIntelligence
+
+                    + "  for " + col.Name
+                    ;
+                    civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, col.Location, _text, "", "", SitRepPriority.Brown));
+                }
+
+                
+
+                civManager.AddCivHist(civManager.CivilizationID
+                    , civManager.Civilization.Key
+
+                    , civManager.Credits.CurrentValue
+                    , civManager.Credits.LastChange
+                    , civManager.MaintenanceCostLastTurn
+                    , civManager.Colonies.Count
+                    , _totalPopulation
+                    , civManager.AverageMorale
+                    , civManager.Resources.Dilithium.CurrentValue
+                    , civManager.Resources.Deuterium.CurrentValue
+                    , civManager.Resources.Duranium.CurrentValue
+                    , _totalValue
+                    , _totalResearch
+                    , civManager.TotalIntelligenceProduction
+                    , _totalIDef
+                    , _totalIAtt
+                    , _rankingCreditsPositon
+
+                                          //, civManager.MaintenanceCostLastTurn
+                                          //, civManager.MaintenanceCostLastTurn
+                                          //, civManager.MaintenanceCostLastTurn
+
+                    //, civManager.SitRepEntries.ToString()
+                    );
+
+                if (civManager.HomeSystem.Owner != null)
+                {
+                    _owner += _owner; // dummy - do not remove
+                    _owner = civManager.HomeSystem.Owner.Key;
+                }
+                // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
+
+                //GameLog.Core.CivsAndRacesDetails.DebugFormat(Environment.NewLine + "   Turn {0};Col:;{1};Pop:;{2};Morale:;{3};IntelProd;{9};IDef;{11};IAtt;{12};Maint;{10};
+                //Credits;{4};Change;{5};Research;{6};Dil;{14};Deut;{15};Dur;{16};{7};for;{8};{13};Owner;{17}" + Environment.NewLine
+
+                _text =
+                      //newline + "   " + 
+                      "Turn:;" + GameContext.Current.TurnNumber
+
+                    + ";Research;" + civManager.Research.CumulativePoints
+
+                    + ";IntelProd;" + civManager.TotalIntelligenceProduction
+
+                    + ";IDef;" + civManager.TotalIntelligenceDefenseAccumulated
+                    + ";IAtt;" + civManager.TotalIntelligenceAttackingAccumulated
+
+                    + ";Dil;" + civManager.Resources.Dilithium.CurrentValue
+                    + ";Deut;" + civManager.Resources.Deuterium.CurrentValue
+                    + ";Dur;" + civManager.Resources.Duranium.CurrentValue
+                    + ";Morale:;" + civManager.AverageMorale
+                    + ";Col:; " + civManager.Colonies.Count
+                    + ";Pop:; " + civManager.TotalPopulation
+
+                    + ";Credits; " + civManager.Credits.CurrentValue
+                    //+ ";Change;" + civManager.Credits.CurrentChange  // always 0
+                    + ";LT; " + civManager.Credits.LastChange
+                    + ";Maint; " + civManager.MaintenanceCostLastTurn
+
+                    + ";for;" /*+ civManager.Civilization.CivilizationType + ";"*/
+                    + ";" + civManager.Civilization.Key
+                    + ";" + civManager.CivilizationID
+                    //+ newline
+                    ;
+                Console.WriteLine(_text);
+                //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
+
+                PrintCivRank(CivRankList);
+                _text = "Ranking: Credits > " + civManager.Civilization.Name
+                    + " = * " + _rankingCreditsPositon
+                    + " * = " + civManager.Credits
+                    + "  -  Rivals: " + _r_Credits_Average_5
+                    + "  -  Best: " + _r_Credits_BestValue
+
+                    ;
+                Console.WriteLine(_text);
+                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+
+                _text = "Ranking: Maint > " + civManager.Civilization.Name
+                    + " = * " + _rankingMaintPositon
+                    + " * = " + civManager.MaintenanceCostLastTurn
+                    + "  -  Rivals: " + _r_maint_Average_5
+                    + "  -  Best: " + _r_maint_BestValue
+
+                    ;
+                Console.WriteLine(_text);
+                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+            }
+
+            //        foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
+            //        {
+            //            _text = "Ranking: You"
+            //+ civManager._civHist_List.
+            //;
+            //            civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.BlueDark));
+            //        }
+            CivRankList.Clear();
 
             HashSet<Station> allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
             foreach (Station station in allStations)
@@ -2902,7 +3327,7 @@ namespace Supremacy.Game
 
                 string _rep = station.Location + " > Station " + station.ObjectID + ": Maint. " + station.Design.MaintenanceCost; ;
                 _rep += " > * " /*+ station.ObjectID + blank */+ station.Name + " *"  /*( Maint." + station.Design.MaintenanceCost + " )"*/;
-                civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, station.Location, _rep));
+                civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, station.Location, _rep, "", "", SitRepPriority.Pink));
             }
 
             foreach (Fleet fleet in allFleets)
@@ -2932,155 +3357,34 @@ namespace Supremacy.Game
                     CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
                     // only own civilization
-                    civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, ship.Location, _rep));
+                    civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, ship.Location, _rep, "", "", SitRepPriority.Pink));
 
                     // all ships shown
                     //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
                 } // end of each ship
             }
 
-
-
-            //var allCivs = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
-            foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
-            {
-                /*
-                 * Reset the resource stockpile meters now that we have finished
-                 * production for the each civilization.  This will update the
-                 * last base value of the meters so that the net change this turn
-                 * is properly reflected.  Do the same for the credit treasury.
-                 */
-                civManager.Resources.UpdateAndReset();
-                civManager.Credits.UpdateAndReset();
-                civManager.OnTurnFinished();
-
-                //string civID_and_Turn_Text = civManager.civID_and_Turn); 
-
-                _ = int.TryParse(civManager.TotalPopulation.ToString(), out int _totalPopulation);
-                _ = int.TryParse(civManager.TotalResearch.ToString(), out int _totalResearch);
-
-                AddCivValue(
-                    civManager.CivilizationID
-                    , civManager.Civilization.Key
-                    , civManager.TotalPopulation
-                    , civManager.TotalIntelligenceProduction
-                    );
-
-                _text = "Empire"
-                    //+ civManager.Civilization.Key
-                    + ": Col>" + civManager.Colonies.Count
-                    + ", Pop>" + _totalPopulation
-                    + "/ Mor>" + civManager.AverageMorale
-
-
-                    //+ "+" + civManager.Credits.CurrentChange
-                    + ", Res> " + civManager.Research.CumulativePoints.LastChange
-                    + ", Int> " + civManager.TotalIntelligenceProduction
-                    + ", Dil> " + civManager.Resources.Dilithium.CurrentValue
-                    + " /" + civManager.Resources.Dilithium.LastChange
-                    + ", Deu> " + civManager.Resources.Deuterium.CurrentValue
-                    + " /" + civManager.Resources.Deuterium.LastChange
-                    + ", Dur> " + civManager.Resources.Duranium.CurrentValue
-                    + " /" + civManager.Resources.Duranium.LastChange
-
-                    + " , Maint." + civManager.MaintenanceCostLastTurn
-                    + ", Credits> " + civManager.Credits.CurrentValue
-                    + " / " + civManager.Credits.LastChange
-
-                    + " "
-                    + " for " + civManager.Civilization.Key
-                    ;
-                //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
-                civManager.SitRepEntries.Add(new ReportEntryCoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", SitRepPriority.Purple));
-
-                foreach (Colony col in civManager.Colonies)
-                {
-                    _text = col.Location //+ " " "Colony"
-                    //+ civManager.Civilization.Key
-                    //+ " Colony" /*+ col.Name*/
-                    + ": Pop> " + col.Population + " /G " + col.GrowthRate
-                    + " /H " + col.Health
-                    + " /Mor " + col.Morale
-
-                    + ", Dil> " + col.NetDilithium
-                    + ", Deu> " + col.NetDeuterium
-                    + ", Dur> " + col.NetDuranium
-
-                    + ", Food> " + col.FoodReserves
-                    + " / " + col.FoodReserves.LastChange
-                    + ", Ind> " + col.NetIndustry
-                    + ", En> " + col.NetEnergy
-                    + ", Res> " + col.NetResearch
-                    + ", Int> " + col.NetIntelligence
-
-                    + "  for " + col.Name
-                    ;
-                    civManager.SitRepEntries.Add(new ReportEntryCoS(civManager.Civilization, col.Location, _text, _x, SitRepPriority.Red));
-                }
-
-
-                civManager.AddCivHist(civManager.CivilizationID
-                    , civManager.Civilization.Key
-                    , civManager.Credits.CurrentValue
-                    , civManager.Colonies.Count
-                    , _totalPopulation
-                    , civManager.MaintenanceCostLastTurn
-                    , _totalResearch
-                    );
-
-                if (civManager.HomeSystem.Owner != null)
-                {
-                    _owner += _owner; // dummy - do not remove
-                    _owner = civManager.HomeSystem.Owner.Key;
-                }
-                // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
-
-                //GameLog.Core.CivsAndRacesDetails.DebugFormat(Environment.NewLine + "   Turn {0};Col:;{1};Pop:;{2};Morale:;{3};IntelProd;{9};IDef;{11};IAtt;{12};Maint;{10};
-                //Credits;{4};Change;{5};Research;{6};Dil;{14};Deut;{15};Dur;{16};{7};for;{8};{13};Owner;{17}" + Environment.NewLine
-
-                _text = newline + "   "
-                    + "Turn:;" + GameContext.Current.TurnNumber
-
-                    + ";Research;" + civManager.Research.CumulativePoints
-
-                    + ";IntelProd;" + civManager.TotalIntelligenceProduction
-
-                    + ";IDef;" + civManager.TotalIntelligenceDefenseAccumulated
-                    + ";IAtt;" + civManager.TotalIntelligenceAttackingAccumulated
-
-                    + ";Dil;" + civManager.Resources.Dilithium.CurrentValue
-                    + ";Deut;" + civManager.Resources.Deuterium.CurrentValue
-                    + ";Dur;" + civManager.Resources.Duranium.CurrentValue
-                    + ";Morale:;" + civManager.AverageMorale
-                    + ";Col:; " + civManager.Colonies.Count
-                    + ";Pop:; " + civManager.TotalPopulation
-
-                    + ";Credits; " + civManager.Credits.CurrentValue
-                    //+ ";Change;" + civManager.Credits.CurrentChange  // always 0
-                    + ";LT; " + civManager.Credits.LastChange
-                    + ";Maint; " + civManager.MaintenanceCostLastTurn
-
-
-                    + ";for;" /*+ civManager.Civilization.CivilizationType + ";"*/
-                    + ";" + civManager.Civilization.Key
-                    + ";" + civManager.CivilizationID
-
-                    //+ ";Owner;" + _owner
-
-                    + newline
-
-
-                    //, civManager.Civilization.IntelOrdersGoingToHost.Count
-                    //, civManager.Treasury.GrossIncome  // ;Treasury;{7}  // doesn't work, maybe it's just done with Credits !
-                    //, civManager.Treasury.Maintenance  // ;Maint;{8}
-
-                    ;
-                //Console.WriteLine(_text);
-                GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
-            }
-
             GameContext.Current.TurnNumber++;
-            _gameTurnNumber = GameContext.Current.TurnNumber;
+            _tn = GameContext.Current.TurnNumber;
+        }
+
+        //private void PrintCivRank(List<CivRank> civRankList)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        private void PrintCivRank(List<CivRank> list)
+        {
+            Console.WriteLine(newline);
+            foreach (var item in list)
+            {
+                _text = "CivRankList;"
+                    + item.CIV_KEY
+                    + ";" + item.R_CRED
+                    + ";" + item.R_MAINT
+                    ;
+                Console.WriteLine(_text);
+            }
         }
         #endregion
 
@@ -3186,7 +3490,7 @@ namespace Supremacy.Game
             {
                 //CivilizationManager civManager = GameContext.Current.CivilizationManagers[combat[i].OwnerID];
                 //GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportOutput_RedYellow_CoS_SitRepEntry(combat[i].Owner, combat[i].Location, _text));
-                GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportEntryCoS(combat[i].Owner, combat[i].Location, _text, "x", SitRepPriority.RedYellow));
+                GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportEntry_CoS(combat[i].Owner, combat[i].Location, _text, "", "", SitRepPriority.Yellow));
             }
 
             CombatOccurring?.Invoke(combat);
@@ -3233,73 +3537,128 @@ namespace Supremacy.Game
                 body);
         }
 
-        //    civManager.AddCivHist(civManager.CivilizationID
-        //, civManager.Civilization.Key
-        //, civManager.Credits.CurrentValue
-        //, civManager.Colonies.Count
-        //, _totalPopulation
-        //, civManager.MaintenanceCostLastTurn
-        //, _totalResearch
-        //);
-        //            // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
-        //            GameLog.Core.CivsAndRaces.DebugFormat(Environment.NewLine + "   Turn {0};Col:;{1};Pop:;{2};Morale:;{3};IntelProd;{9};IDef;{11};IAtt;{12};Maint;{10};Credits;{4};Change;{5};Research;{6};Dil;{14};Deut;{15};Dur;{16};{7};for;{8};{13};Owner;{17}" + Environment.NewLine
-        //                , GameContext.Current.TurnNumber                    
-
-        //                , civManager.Colonies.Count
-        //                , civManager.TotalPopulation
-        //                , civManager.AverageMorale
-        //                , civManager.Credits.CurrentValue
-        //                , civManager.Credits.CurrentChange
-        //                , civManager.Credits.LastChange
-
-        //                , civManager.Research.CumulativePoints
-        //                , civManager.Civilization.CivilizationType
-        //                , civManager.Civilization.Key
-        //                , civManager.TotalIntelligenceProduction
-        //                , civManager.MaintenanceCostLastTurn
-        //                , civManager.TotalIntelligenceDefenseAccumulated
-        //                , civManager.TotalIntelligenceAttackingAccumulated
-        //                , civManager.CivilizationID
-        //                , civManager.Resources.Dilithium.CurrentValue
-        //                , civManager.Resources.Deuterium.CurrentValue
-        //                , civManager.Resources.Duranium.CurrentValue
-        //                , civManager.HomeSystem.Owner.Key
-
-
-
         // new list/stuff to find out 'Best' and 'Places' values for each civ
         public class CivValue
         {
             public int AA_CIV_ID;
             public string CIV_KEY;
-            public Meter CIV_TOT_POP;
-
-            public int CIV_TOT_INT;
+            public int TOT_POP;
+            public int MOR;
+            public int TOT_VAL;
+            public int CRED;
+            public int MAINT;
+            public int RES;
+            public int IPROD;
+            public int R_CRED;
+            public int R_MAINT;
 
 
             public CivValue(
                 int aa_civ_ID
                 , string civ_key
-                , Meter civ_tot_pop
-                , int civ_tot_int
+                , int tot_pop
+                , int mor
+                , int tot_val
+                , int cred
+                , int maint
+                , int res
+                , int iprod
+                , int r_cred
+                , int r_maint
                 )
             {
                 AA_CIV_ID = aa_civ_ID;
                 CIV_KEY = civ_key;
-                CIV_TOT_POP = civ_tot_pop;
-                CIV_TOT_INT = civ_tot_int;
+                TOT_POP = tot_pop;
+                MOR = mor;
+                TOT_VAL = tot_val;
+                CRED = cred;
+                MAINT = maint;
+                RES = res;
+                IPROD = iprod;
+                R_CRED = r_cred;
+                R_MAINT = r_maint;
             }
         }
 
-        public void AddCivValue(int civID, string civKey, Meter civTotPop, int civTotInt)
+        public void AddCivValue(int civID, string civKey, int TotPop, int Mor, int TotVal, int cred, int maint, int TotRes, int IProd, int r_cred, int r_maint)
         {
             CivValue civValueNew = new CivValue(
                 civID
                 , civKey
-                , civTotPop
-                , civTotInt
+                , TotPop
+                , Mor
+                , TotVal
+                , cred
+                , maint
+                , TotRes
+                , IProd
+                , r_cred
+                , r_maint
                 );
             CivValueList.Add(civValueNew);
+        }
+
+        public class CivRank
+        {
+            //public int AA_CIV_ID;
+            public string CIV_KEY;
+            //public int TOT_POP;
+            //public int MOR;
+            //public int TOT_VAL;
+            //public int CRED;
+
+            //public int RES;
+            //public int IPROD;
+            public int R_CRED;
+            public int R_MAINT;
+
+            public CivRank(
+                //int aa_civ_ID
+                //, 
+                string civ_key
+                //, int tot_pop
+                //, int mor
+                //, int tot_val
+                //, int cred
+
+                //, int res
+                //, int iprod
+                , int r_cred
+                , int r_maint
+                )
+            {
+                //AA_CIV_ID = aa_civ_ID;
+                CIV_KEY = civ_key;
+                //TOT_POP = tot_pop;
+                //MOR = mor;
+                //TOT_VAL = tot_val;
+                //CRED = cred;
+
+                //RES = res;
+                //IPROD = iprod;
+                R_CRED = r_cred;
+                R_MAINT = r_maint;
+            }
+        }
+
+        public void AddCivRank(/*int civID, */string civKey/*, int TotPop, int Mor, int TotVal, int cred, int TotRes, int IProd*/, int r_cred, int r_maint)
+        {
+            CivRank civRankNew = new CivRank(
+                //civID
+                //, 
+                civKey
+                //, TotPop
+                //, Mor
+                //, TotVal
+                //, cred
+                , r_cred
+                , r_maint
+                //, TotRes
+                //, IProd
+
+                );
+            CivRankList.Add(civRankNew);
         }
 
         //public void GetAcceptReject(ForeignPower foreignPower)

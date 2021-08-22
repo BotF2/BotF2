@@ -76,7 +76,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            foreach (IAgreement agreement in agreements.OrderByDescending(o => (int)o.StartTurn))
+            foreach (IAgreement agreement in agreements.OrderByDescending(o => o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
                 GameLog.Client.Diplomacy.DebugFormat(Environment.NewLine + "                                                      Turn {3};added;sender=; {1};recipient=; {2};agreement=;{0}"
@@ -324,7 +324,7 @@ namespace Supremacy.Client.Views
                 //    , _foreignPower.StatementReceived.StatementType.ToString()
                 //    , _foreignPower.ProposalReceived);
 
-                ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
+                ResolveMessageCategory(_foreignPower.ProposalReceived ?? _foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
 
         protected virtual void OnIncomingMessageCategoryChanged()
         {

@@ -327,7 +327,7 @@ namespace Supremacy.Game
             {
                 var empires = CivDatabase.Load().Where(o => o.IsEmpire).Select(o => new { o.Name, o.CivID });
 
-                EmpireIDs = empires.Select(o => (int)o.CivID).ToArray();
+                EmpireIDs = empires.Select(o => o.CivID).ToArray();
                 EmpireNames = empires.Select(o => o.Name).ToArray();
             }
             finally

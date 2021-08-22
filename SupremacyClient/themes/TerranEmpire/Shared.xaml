@@ -712,22 +712,22 @@
 
   
   <ImageBrush x:Key="FleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/TerranEmpire/GalaxyScreen/FleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/TerranEmpire/GalaxyScreen/FleetSelectionBorder.png" />
 
     <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/TerranEmpire/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/TerranEmpire/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
 
     <!--<ImageBrush x:Key="LeftRepeatButton1"
-              ImageSource="vfs:///Resources/UI/TerranEmpire/Shared/LeftRepeatButton1.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/TerranEmpire/Shared/LeftRepeatButton1.png" />
 
   <ImageBrush x:Key="LeftRepeatButton2"
-              ImageSource="vfs:///Resources/UI/TerranEmpire/Shared/LeftRepeatButton2.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/TerranEmpire/Shared/LeftRepeatButton2.png" />
     
   <ImageBrush x:Key="RightRepeatButton1"
-              ImageSource="vfs:///Resources/UI/TerranEmpire/Shared/RightRepeatButton1.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/TerranEmpire/Shared/RightRepeatButton1.png" />
 
   <ImageBrush x:Key="RightRepeatButton2"
-              ImageSource="vfs:///Resources/UI/TerranEmpire/Shared/RightRepeatButton2.png" />-->
+              ImageSource="vfs:///Resources/Specific_Empires_UI/TerranEmpire/Shared/RightRepeatButton2.png" />-->
 
   <Style x:Key="LockToggleButtonStyle"
          TargetType="{x:Type ToggleButton}">
@@ -745,13 +745,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Image x:Name="LockImage"
-                 Source="vfs:///Resources/UI/TerranEmpire/Shared/Unlocked.png"/>
+                 Source="vfs:///Resources/Specific_Empires_UI/TerranEmpire/Shared/Unlocked.png"/>
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked"
                      Value="True">
               <Setter TargetName="LockImage"
                       Property="Source"
-                      Value="vfs:///Resources/UI/TerranEmpire/Shared/Locked.png"/>
+                      Value="vfs:///Resources/Specific_Empires_UI/TerranEmpire/Shared/Locked.png"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -760,7 +760,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/TerranEmpire/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/TerranEmpire/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>

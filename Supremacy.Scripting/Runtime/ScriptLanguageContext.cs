@@ -344,7 +344,7 @@ namespace Supremacy.Scripting.Runtime
             MSAst.LambdaExpression transformed = ParseScript(sourceUnit, (ScriptCompilerOptions)options, errorSink);
 
             return new LegacyScriptCode(
-                transformed as MSAst.LambdaExpression ??
+                transformed ??
                 MSAst.Expression.Lambda(transformed),
                 sourceUnit);
         }

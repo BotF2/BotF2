@@ -486,7 +486,7 @@ namespace Supremacy.Collections
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (_suppressChangeNotificationsScope.IsWithin)
+            if (_suppressChangeNotificationsScope == null || _suppressChangeNotificationsScope.IsWithin)
             {
                 return;
             }

@@ -23,8 +23,6 @@ namespace Supremacy.Client.Dialogs
         private SitRepCategory _visibleCategories;
         private IEnumerable<SitRepEntry> _sitRepEntries;
         private string _previoussitRepCommentTextBox;
-        //private readonly static Dictionary<int, string> _SitRepComments = new Dictionary<int, string>(); // { { "98", false } };
-
 
         public SitRepDialog()
         {
@@ -66,17 +64,17 @@ namespace Supremacy.Client.Dialogs
         }
 
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            //TextBox sitRepCommentTextBox;
+        //public override void OnApplyTemplate()
+        //{
+        //    base.OnApplyTemplate();
+        //    //TextBox sitRepCommentTextBox;
 
 
-            //sitRepCommentTextBox.LostFocus += SitRepCommentTextBox_OnLostFocus;
-            //sitRepCommentTextBox.GotFocus += SitRepCommentTextBox_OnGotFocus;
-            //sitRepCommentTextBox.TextChanged += SitRepCommentTextBox_OnTextChanged;
+        //    //sitRepCommentTextBox.LostFocus += SitRepCommentTextBox_OnLostFocus;
+        //    //sitRepCommentTextBox.GotFocus += SitRepCommentTextBox_OnGotFocus;
+        //    //sitRepCommentTextBox.TextChanged += SitRepCommentTextBox_OnTextChanged;
 
-        }
+        //}
 
         private static void SitRepCommentTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -228,7 +226,7 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.BlueDark);
             }
 
-            if (YellowRedCheck.IsChecked.HasValue && YellowRedCheck.IsChecked.Value)
+            if (RedYellowCheck.IsChecked.HasValue && RedYellowCheck.IsChecked.Value)
             {
                 visiblePriorities.Add(SitRepPriority.RedYellow);
             }
@@ -305,7 +303,7 @@ namespace Supremacy.Client.Dialogs
 
         }
 
-            private void OnSitRepEntryDoubleClick(object sender, RoutedEventArgs e)
+        private void OnSitRepEntryDoubleClick(object sender, RoutedEventArgs e)
         {
             if (ItemsView.SelectedItem is SitRepEntry selection)
             {
@@ -314,12 +312,12 @@ namespace Supremacy.Client.Dialogs
 
                 switch (selection.Action)
                 {
-                    case SitRepAction.ShowScienceScreen:
+                    case SitRepAction.ShowGalaxyScreen: // F3
                         Close();
-                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen); // F4
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
                         break;
 
-                    case SitRepAction.ViewColony:
+                    case SitRepAction.ShowColony:
                         Close();
                         GalaxyScreenCommands.SelectSector.Execute((selection.ActionTarget as Colony).Sector); // F2
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
@@ -328,9 +326,14 @@ namespace Supremacy.Client.Dialogs
                         //SendKeys.SendWait("{F2}");
                         break;
 
+                    case SitRepAction.ShowScienceScreen: // F3
+                        Close();
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen); // F3
+                        break;
+
                     case SitRepAction.ShowDiploScreen:
                         Close();
-                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.DiplomacyScreen);  // F3
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.DiplomacyScreen);  // F4
                         break;
 
                     case SitRepAction.ShowIntelScreen:
@@ -351,6 +354,10 @@ namespace Supremacy.Client.Dialogs
                         GalaxyScreenCommands.SelectSector.Execute(fleet.Sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(fleet.Sector);
                         GalaxyScreenCommands.SelectTaskForce.Execute(fleet);
+                        break;
+
+                    case SitRepAction.None:
+                    default:
                         break;
 
                 }

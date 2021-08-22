@@ -189,7 +189,7 @@ namespace Supremacy.Text
 
                         if (tag.Length > 0)
                         {
-                            string parameter = (string)null;
+                            string parameter = null;
 
                             int parameterDelimiter = tag.IndexOf(' ');
                             if (parameterDelimiter > 0)

@@ -1248,12 +1248,12 @@ namespace Supremacy.Diplomacy
 
             if (firstManager != null)
             {
-                firstManager.SitRepEntries.Add(new FirstContactSitRepEntry(firstCiv, secondCiv, location));
+                firstManager.SitRepEntries.Add(new ReportFirstContact(firstCiv, secondCiv, location));
             }
 
             if (secondManager != null)
             {
-                secondManager.SitRepEntries.Add(new FirstContactSitRepEntry(secondCiv, firstCiv, location));
+                secondManager.SitRepEntries.Add(new ReportFirstContact(secondCiv, firstCiv, location));
             }
 
             //GameLog.Core.Diplomacy.DebugFormat("firstManager.Civilization.Key = {0}, second = {1}", firstManager.Civilization.Key, secondManager.Civilization.Key);

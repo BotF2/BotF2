@@ -112,10 +112,10 @@
     </LinearGradientBrush>
 
     <ImageBrush x:Key="FleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/FleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Borg/GalaxyScreen/FleetSelectionBorder.png" />
 
     <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Borg/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
 
 
     <!--HeaderFont-->
@@ -705,7 +705,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ToggleButton.Click">
                 <!--<EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
         </EventTrigger.Actions>-->
             </EventTrigger>
         </Style.Triggers>
@@ -880,7 +880,7 @@
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="Button.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={DynamicResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Federation/Sounds/ButtonClick.wav', Converter={DynamicResource PathToUriConverter}}" />
         </EventTrigger.Actions>
         </EventTrigger>-->
         </Style.Triggers>
@@ -1079,13 +1079,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Image x:Name="LockImage"
-                 Source="vfs:///Resources/UI/Borg/Shared/Unlocked.png"/>
+                 Source="vfs:///Resources/Specific_Empires_UI/Borg/Shared/Unlocked.png"/>
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked"
                      Value="True">
               <Setter TargetName="LockImage"
                       Property="Source"
-                      Value="vfs:///Resources/UI/Borg/Shared/Locked.png"/>
+                      Value="vfs:///Resources/Specific_Empires_UI/Borg/Shared/Locked.png"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1094,7 +1094,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Borg/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Borg/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>

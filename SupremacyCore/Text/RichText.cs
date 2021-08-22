@@ -420,7 +420,7 @@ namespace Supremacy.Text
                         endOffset));
             }
 
-            IList<T> list = (IList<T>)null;
+            IList<T> list = null;
 
             foreach (TextRangeDataRecord textRangeDataRecord in _data)
             {
@@ -890,10 +890,10 @@ namespace Supremacy.Text
                 throw new ArgumentException(
                     string.Format(
                         "The offset plus length give {0}+{1}={2}, which is beyond the string length {3}.",
-                        (object)startOffset,
-                        (object)length,
-                        (object)(startOffset + length),
-                        (object)Length));
+                        startOffset,
+                        length,
+                        startOffset + length,
+                        Length));
             }
 
             int end = startOffset + length;

@@ -8,7 +8,7 @@
                 xmlns:controls="clr-namespace:Supremacy.Client.Controls"
                 IsModal="False"
                 Height="700"
-                Width="1020">
+                Width="1280">
 
   <dialogs:Dialog.Resources>
     <DataTemplate x:Key="SitRepEntryTemplate"
@@ -16,16 +16,13 @@
       <DockPanel LastChildFill="True">
                 <!--<TextBlock VerticalAlignment="Center"   // not used
                    Text="- text space for player - not saved" />-->
-          
-          
-          <!--this is used-->
-                <!--doesn't work fine atm-->
+
                 <TextBox x:Name="SitRepCommentTextBox"
                     DockPanel.Dock="Left"
                     TextAlignment="Center"  
                     MinWidth="20"
-                    FontSize="14"
-                    VerticalAlignment="Center">
+                    FontSize="16">
+                    <!--VerticalAlignment="Center">-->
                     <TextBox.Text>
                         <Binding Path="SitRepComment" Mode="TwoWay" Converter="{StaticResource StringResourceConverter}" UpdateSourceTrigger="Explicit"/>
                     </TextBox.Text>
@@ -34,16 +31,9 @@
                                    FontSize="20"/>
                     </TextBox.ToolTip>
                 </TextBox>
-          
-                <Image x:Name="PriorityIcon"
-               DockPanel.Dock="Left"
-               Source="vfs:///Resources/Images/UI/ScreenIcons/hand_green.png"
-               Width="16"
-               Height="16"
-               Margin="10,2,7,2"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Left" />
-        <!--<Image x:Name="DoneIcon"  // not finished ... concentrating on the text field
+
+                <!--not finished ... concentrating on the text field-->
+                <!--<Image x:Name="DoneIcon"  
                DockPanel.Dock="Left"
                Source="vfs:///Resources/Images/UI/ScreenIcons/hand_green.png"
                Width="16"
@@ -52,8 +42,16 @@
                VerticalAlignment="Center"
                HorizontalAlignment="Left" />-->
 
+                <Image x:Name="PriorityIcon"
+               DockPanel.Dock="Left"
+               Source="vfs:///Resources/Images/UI/ScreenIcons/hand_green.png"
+               Width="18"
+               Height="18"
+               Margin="10,2,7,2"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Left" />
           
-                <TextBlock VerticalAlignment="Center"
+                <TextBlock FontSize="20" VerticalAlignment="Center" 
                    Text="{Binding Path=SummaryText, Mode=OneWay}" />
       </DockPanel>
 
@@ -104,7 +102,7 @@
                     <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_aqua.png" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="YellowRed">
+                <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="RedYellow">
                     <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_yellow_red.png" />
                 </DataTrigger>
 
@@ -258,18 +256,20 @@
                       Content="{scc:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}"
                       />
 
+                <!--no Stackpanel to place row 1 + 2 identical <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="8" Orientation="Horizontal">-->
 
-                <CheckBox x:Name="AquaCheck" Foreground="Aqua" Grid.Row="0" Grid.Column="1" Margin="14,0,0,0"
-                Content="{scc:StringResource Key=SITREP_DIALOG_AQUA_CHECKBOX}"
+                <CheckBox x:Name="PinkCheck" Foreground="DeepPink" Grid.Row="0" Grid.Column="1" Margin="14,0,0,0"
+                Content="{scc:StringResource Key=SITREP_DIALOG_PINK_CHECKBOX}"
                 VerticalAlignment="Center" HorizontalAlignment="Left" Checked="OnFilterItemIsCheckedChanged"
                 Unchecked="OnFilterItemIsCheckedChanged"
-                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowAquaItems), Mode=TwoWay}" 
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowPinkItems), Mode=TwoWay}" 
                 >
                     <CheckBox.ToolTip>
-                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_AQUA_CHECKBOX_TOOLTIP}" 
+                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_PINK_CHECKBOX_TOOLTIP}" 
                                FontSize="18"/>
                     </CheckBox.ToolTip>
                 </CheckBox>
+
 
                 <CheckBox x:Name="BlueCheck" Foreground="DodgerBlue" Grid.Row="0" Grid.Column="2" Margin="14,0,0,0"
                 Content="{scc:StringResource Key=SITREP_DIALOG_BLUE_CHECKBOX}"
@@ -285,14 +285,14 @@
                 </CheckBox>
 
 
-                <CheckBox x:Name="PinkCheck" Foreground="DeepPink" Grid.Row="0" Grid.Column="3" Margin="14,0,0,0"
-                Content="{scc:StringResource Key=SITREP_DIALOG_PINK_CHECKBOX}"
+                <CheckBox x:Name="AquaCheck" Foreground="Aqua" Grid.Row="0" Grid.Column="3" Margin="14,0,0,0"
+                Content="{scc:StringResource Key=SITREP_DIALOG_AQUA_CHECKBOX}"
                 VerticalAlignment="Center" HorizontalAlignment="Left" Checked="OnFilterItemIsCheckedChanged"
                 Unchecked="OnFilterItemIsCheckedChanged"
-                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowPinkItems), Mode=TwoWay}" 
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowAquaItems), Mode=TwoWay}" 
                 >
                     <CheckBox.ToolTip>
-                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_PINK_CHECKBOX_TOOLTIP}" 
+                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_AQUA_CHECKBOX_TOOLTIP}" 
                                FontSize="18"/>
                     </CheckBox.ToolTip>
                 </CheckBox>
@@ -310,7 +310,7 @@
                 </CheckBox>
 
 
-                <CheckBox x:Name="YellowRedCheck" Foreground="Crimson" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
+                <CheckBox x:Name="RedYellowCheck" Foreground="Crimson" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
                 DockPanel.Dock="Left"
                 Content="{scc:StringResource Key=SITREP_DIALOG_YELLOWRED_CHECKBOX}"
                 
@@ -365,10 +365,23 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                <!--<CheckBox x:Name="GreenCheck" DockPanel.Dock="Left" VerticalAlignment="Center"-->
+            <CheckBox x:Name="GreenCheck" Foreground="LimeGreen"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="24,0,0,0"
+                Content="{scc:StringResource Key=SITREP_DIALOG_GREEN_CHECKBOX}"
+                
+                Checked="OnFilterItemIsCheckedChanged"
+                Unchecked="OnFilterItemIsCheckedChanged"
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowGreenItems), Mode=TwoWay}"
+                      >
+                <CheckBox.ToolTip>
+                    <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_GREEN_CHECKBOX_TOOLTIP}" 
+                               FontSize="18"/>
+                </CheckBox.ToolTip>
+            </CheckBox>
 
-                <CheckBox x:Name="GrayCheck" Foreground="Gray" Grid.Row="1" Grid.Column="0" Margin="24,0,0,0"
+                <CheckBox x:Name="GrayCheck" Foreground="Gray" Grid.Row="1" Grid.Column="1" Margin="14,0,0,0"
                 Content="{scc:StringResource Key=SITREP_DIALOG_GRAY_CHECKBOX}"
-                VerticalAlignment="Center" HorizontalAlignment="Right"
+                VerticalAlignment="Center" 
                 Checked="OnFilterItemIsCheckedChanged"
                 Unchecked="OnFilterItemIsCheckedChanged"
                 IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, 
@@ -380,19 +393,6 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <!--<CheckBox x:Name="GreenCheck" DockPanel.Dock="Left" VerticalAlignment="Center"-->
-            <CheckBox x:Name="GreenCheck" Foreground="LimeGreen"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
-                Content="{scc:StringResource Key=SITREP_DIALOG_GREEN_CHECKBOX}"
-                Margin="14,0,0,0"
-                Checked="OnFilterItemIsCheckedChanged"
-                Unchecked="OnFilterItemIsCheckedChanged"
-                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowGreenItems), Mode=TwoWay}"
-                      >
-                <CheckBox.ToolTip>
-                    <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_GREEN_CHECKBOX_TOOLTIP}" 
-                               FontSize="18"/>
-                </CheckBox.ToolTip>
-            </CheckBox>
 
             <!--<CheckBox x:Name="OrangeCheck" DockPanel.Dock="Left" VerticalAlignment="Center"-->
             <CheckBox x:Name="OrangeCheck" Foreground="Orange" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="14,0,0,0" 
@@ -437,7 +437,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <CheckBox x:Name="GoldenCheck" Foreground="Gold" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
+                <CheckBox x:Name="GoldenCheck" Foreground="Khaki" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
                 DockPanel.Dock="Left"
                 Content="{scc:StringResource Key=SITREP_DIALOG_GOLDEN_CHECKBOX}"
                 

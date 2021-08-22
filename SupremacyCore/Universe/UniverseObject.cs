@@ -118,8 +118,8 @@ namespace Supremacy.Universe
                 }
 
                 OwnerID = (value != null)
-                    ? (short)value.CivID
-                    : (short)Civilization.InvalidID;
+                    ? value.CivID
+                    : Civilization.InvalidID;
 
                 _lastOwnershipChange = GameContext.Current.TurnNumber;
 

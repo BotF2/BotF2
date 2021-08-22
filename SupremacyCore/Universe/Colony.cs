@@ -490,16 +490,15 @@ namespace Supremacy.Universe
             string status = buildSlot.Project.BuildDesign.ToString();
             //return base.Name ?? ((System != null) ? System.Name : null); 
 
+
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
             _text = buildSlot.Shipyard.Location
                 + blank + buildSlot.SlotID
                 + buildSlot.Project.BuildDesign.ToString()
                 ;
-
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
-
-            civManager.SitRepEntries.Add(new ReportEntryCoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", SitRepPriority.Purple));
+            Console.WriteLine("SR: " + _text);
+            civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
             //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
-
 
             return status;
         }
@@ -1903,7 +1902,7 @@ namespace Supremacy.Universe
         private void Report(Colony colony)
         {
             //int _laborpool_unused = this.AvailableLabor;
-            string _text = colony.Name + ": AvailableLabor:" + AvailableLabor.ToString();
+            _text = colony.Name + ": AvailableLabor:" + AvailableLabor.ToString();
             int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
             _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + TotalFoodFacilities; // _foodPF_unused;
             int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
@@ -1918,8 +1917,8 @@ namespace Supremacy.Universe
             //int _orbBatused = colony.ActiveOrbitalBatteries;
             _text += ", OrbB: " + colony.ActiveOrbitalBatteries.ToString();
 
-            Console.WriteLine(_text);
-            GameLog.Core.ProductionDetails.DebugFormat(_text);
+            //Console.WriteLine(_text);
+            //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
 
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
@@ -1968,8 +1967,8 @@ namespace Supremacy.Universe
                 for (int i = 0; i < OrbitalBatteries.Count; i++)
                 {
                     _ = DeactivateOrbitalBattery();
-                    _text = "OrbitalBattery de-activated" + netEnergy;
-                    Console.WriteLine(_text);
+                    //_text = "OrbitalBattery de-activated > Energy = " + netEnergy;
+                    //Console.WriteLine(_text);
                 }
             }
 
@@ -1986,7 +1985,7 @@ namespace Supremacy.Universe
                     List<OrbitalBattery> deactivateOrbBat = OrbitalBatteries.Where(o => o.IsActive).ToList();
                     foreach (OrbitalBattery item in deactivateOrbBat)
                     {
-                        DeactivateOrbitalBattery();
+                        _ = DeactivateOrbitalBattery();
                     }
                 }
 
@@ -2064,11 +2063,12 @@ namespace Supremacy.Universe
             if (OrbitalBatteries.Count > 0)
             {
                 int Activate_OrbBat = netEnergy / OrbitalBatteries[0].Design.UnitEnergyCost;
+                if (Activate_OrbBat > 2) Activate_OrbBat = 2;  // in peace two active OrbBat are enough
                 for (int i = 0; i < Activate_OrbBat; i++)
                 {
                     _ = ActivateOrbitalBattery();
-                    _text = "OrbitalBattery activated" + netEnergy;
-                    Console.WriteLine(_text);
+                    //_text = "OrbitalBattery activated > Energy = " + netEnergy;
+                    //Console.WriteLine(_text);
                 }
             }
             return shutDown;

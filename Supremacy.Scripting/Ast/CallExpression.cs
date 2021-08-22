@@ -85,7 +85,7 @@ namespace Supremacy.Scripting.Ast
         public override MSAst TransformCore(ScriptGenerator generator)
         {
             Expression target = Target;
-            Type type = (Type)null;
+            Type type = null;
 
             MSAst transformedTarget;
 

@@ -72,6 +72,7 @@ namespace Supremacy.Client
         private bool _lobbyScreenShown;
         private bool _isDisposed;
         private bool _firstTurnStarted;
+        private string _text;
 
         public GameController(
             [NotNull] IUnityContainer container,
@@ -140,7 +141,7 @@ namespace Supremacy.Client
             _isServerLocal = true;
 
             _dispatcher.Invoke(
-                (Action)SetConnectWaitCursor,
+                SetConnectWaitCursor,
                 DispatcherPriority.Normal);
 
             HookCommandAndEventHandlers();
@@ -163,7 +164,7 @@ namespace Supremacy.Client
                 UnhookCommandAndEventHandlers();
 
                 _dispatcher.Invoke(
-                    (Action)ClearWaitCursors,
+                    ClearWaitCursors,
                     DispatcherPriority.Normal);
 
                 throw;
@@ -391,6 +392,16 @@ namespace Supremacy.Client
 
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
+            foreach (var item in _sitRepDialog.SitRepEntries)
+            {
+                _text = "Turn;" + GameContext.Current.TurnNumber
+                    + ";" + item.Priority
+                    + ";" + item.SummaryText
+
+                    ;
+                GameLog.Core.SitReps.InfoFormat(_text);
+            }
+
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
             if (showIfEmpty)
@@ -400,9 +411,9 @@ namespace Supremacy.Client
             else if (!service.AutoTurn)
             {
                 // works but doubled
-                if (ClientSettings.Current.EnableSummaryScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
+                if (ClientSettings.Current.EnableSummaryScreen == true)   // only show SUMMARY if active (if not, a quicker game is possible)
                 {
-                    GameLog.Client.General.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
+                    //GameLog.Client.General.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
                 }
             }
@@ -613,7 +624,7 @@ namespace Supremacy.Client
                 UnhookClientEventHandlers(client);
                 UnhookCommandAndEventHandlers();
                 _dispatcher.Invoke(
-                    (Action)ClearWaitCursors,
+                    ClearWaitCursors,
                     DispatcherPriority.Normal);
                 _ = Interlocked.Exchange(ref _client, null);
                 ClientEvents.ClientConnectionFailed.Publish(ClientEventArgs.Default);
@@ -706,7 +717,7 @@ namespace Supremacy.Client
             CheckDisposed();
 
             _dispatcher.Invoke(
-                    (Action)SetConnectWaitCursor,
+                    SetConnectWaitCursor,
                     DispatcherPriority.Normal);
 
             HookCommandAndEventHandlers();
@@ -735,7 +746,7 @@ namespace Supremacy.Client
             {
                 UnhookCommandAndEventHandlers();
                 _dispatcher.Invoke(
-                    (Action)ClearWaitCursors,
+                    ClearWaitCursors,
                     DispatcherPriority.Normal);
                 throw;
             }
@@ -780,7 +791,7 @@ namespace Supremacy.Client
             }
             finally
             {
-                _dispatcher.Invoke((Action)ClearWaitCursors);
+                _dispatcher.Invoke(ClearWaitCursors);
             }
 
             UnhookCommandAndEventHandlers();

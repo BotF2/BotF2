@@ -26,7 +26,10 @@ namespace Supremacy.AI
 {
     public static class UnitAI
     {
+#pragma warning disable IDE0044 // Add readonly modifier
         private static IEnumerable<Sector> _deathStars = GameContext.Current.Universe.FindStarType<Sector>(StarType.BlackHole).ToList()
+#pragma warning restore IDE0044 // Add readonly modifier
+
             .Concat(GameContext.Current.Universe.FindStarType<Sector>(StarType.NeutronStar).ToList());
         private static string _text;
 
@@ -1140,8 +1143,8 @@ namespace Supremacy.AI
             }
 
             int value = 1;
-            _text = "Searching for Crash: someObject";
-            Console.WriteLine(_text);
+            //_text = "Searching for Crash: someObject";
+            //Console.WriteLine(_text);
             IEnumerable<UniverseObject> someObject = universeObjects.Where(o => o.Sector == sector);
             if (someObject != null)
             {
@@ -1249,8 +1252,9 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestSectorForStation(Fleet fleet, List<Fleet> constructionFleets, out Sector bestSector)
         {
-            //GameLog.Client.AIDetails.DebugFormat("GetBestSectorForStation");
-            Console.WriteLine("GetBestSectorForStation: " + fleet.Name + fleet.Location);
+            //_text = "GetBestSectorForStation: " + fleet.Name + fleet.Location;
+            //Console.WriteLine(_text);
+            //GameLog.Client.AIDetails.DebugFormat(_text);
             GetFleetOwner(fleet);
             if (fleet == null)
             {
@@ -1261,16 +1265,26 @@ namespace Supremacy.AI
                 bestSector = null;
                 return false;
             }
-            //GameLog.Client.AIDetails.DebugFormat("A");
+
             int halfMapWidthX = GameContext.Current.Universe.Map.Width / 2;
+            _text = halfMapWidthX.ToString();
+            Console.WriteLine(halfMapWidthX);
+
             int halfMapHeightY = GameContext.Current.Universe.Map.Height / 2;
+            Console.WriteLine(halfMapHeightY);
             int thirdMapWidthX = GameContext.Current.Universe.Map.Width / 3;
+            Console.WriteLine(thirdMapWidthX);
             int thirdMapHeightY = GameContext.Current.Universe.Map.Height / 3;
+            Console.WriteLine(thirdMapHeightY);
             int quarterMapWidthX = GameContext.Current.Universe.Map.Width / 4;
+            Console.WriteLine(quarterMapWidthX);
             int quarterMapHeightY = GameContext.Current.Universe.Map.Height / 4;
+            Console.WriteLine(quarterMapHeightY);
             int lengthQuarterMap = (int)Math.Sqrt((int)Math.Pow(quarterMapWidthX, 2) + (int)Math.Pow(quarterMapHeightY, 2));
+            Console.WriteLine(lengthQuarterMap);
             int lengthThirdMap = (int)Math.Sqrt((int)Math.Pow(thirdMapWidthX, 2) + (int)Math.Pow(thirdMapHeightY, 2));
-            //GameLog.Client.AIDetails.DebugFormat("B");
+            Console.WriteLine(lengthThirdMap);
+
             switch (fleet.Owner.Key)
             {
                 case "BORG":
@@ -1346,9 +1360,13 @@ namespace Supremacy.AI
                         Console.WriteLine(_text);
                         //GameLog.Client.AIDetails.DebugFormat("Dominion");
                         int domX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
+                        Console.WriteLine(domX);
                         int domXDelta = Math.Abs(halfMapWidthX - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X) / 4;
+                        Console.WriteLine(domXDelta);
                         int domY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
+                        Console.WriteLine(domY);
                         int domYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y) / 4;
+                        Console.WriteLine(domYDelta);
 
                         List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
                             // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
@@ -1358,6 +1376,17 @@ namespace Supremacy.AI
                             && s.Location.Y <= halfMapHeightY - domYDelta && s.Location.Y > domY)
                             // find a list of objects in some sector around Dom side of galactic center
                             .ToList();
+                        foreach (var item in objectsAlongCenterAxis)
+                        {
+                            _text = item.Location
+                                + item.Name
+                                + item.ObjectID
+
+                                ;
+                            Console.WriteLine(_text);
+
+                            //if (item.ObjectType != )
+                        }
 
 
                         if (objectsAlongCenterAxis.Count == 0)
@@ -1425,16 +1454,16 @@ namespace Supremacy.AI
                         }
                         catch { bestSector = null; return false; }
 
-                        bestSector = objectsAroundHome.Last().Sector; //[objectsAroundHome.Count - 1].Sector;
-                        if (bestSector == null)
+                        try
                         {
-                            return false;
+                            bestSector = objectsAroundHome.Last().Sector; //[objectsAroundHome.Count - 1].Sector;
+                            _text = fleet.Owner.Key + " station selected sector at " + bestSector.Location + " " + bestSector.Name;
+                            Console.WriteLine(_text);
+                            // GameLog.Core.AIDetails.DebugFormat(_text);
                         }
+                        catch { bestSector = null; return false; }
 
-                        _text = fleet.Owner.Key + " station selected sector at " + bestSector.Location + bestSector.Name;
-                        Console.WriteLine(_text);
-                        // GameLog.Core.AIDetails.DebugFormat(_text);
-                        return true;
+                        return bestSector != null;
                     }
                 default:
                     bestSector = null;
@@ -1444,10 +1473,6 @@ namespace Supremacy.AI
                     return false; // could not find sector for station
             }
         }
-
-        /*
-        * Medical value
-        */
 
         /// <summary>
         /// Determines the value of a <see cref="Civilization"/> providing

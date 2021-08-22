@@ -7,7 +7,6 @@ namespace Supremacy.Client.Controls
 {
     public class GamePopupContentPresenter : ContentPresenter
     {
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static GamePopupContentPresenter()
         {
             Control.IsTabStopProperty.OverrideMetadata(

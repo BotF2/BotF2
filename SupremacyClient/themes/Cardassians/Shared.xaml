@@ -738,10 +738,10 @@
 
 
     <ImageBrush x:Key="FleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Cardassians/GalaxyScreen/FleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Cardassians/GalaxyScreen/FleetSelectionBorder.png" />
 
     <ImageBrush x:Key="CamouflagedFleetSelectionBorderPinkBrush"
-              ImageSource="vfs:///Resources/UI/Cardassians/GalaxyScreen/CamouflagedFleetSelectionBorderPink.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Cardassians/GalaxyScreen/CamouflagedFleetSelectionBorderPink.png" />
     
     
     <Style x:Key="LockToggleButtonStyle"
@@ -760,13 +760,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Image x:Name="LockImage"
-                 Source="vfs:///Resources/UI/Cardassians/Shared/Unlocked.png"/>
+                 Source="vfs:///Resources/Specific_Empires_UI/Cardassians/Shared/Unlocked.png"/>
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked"
                      Value="True">
               <Setter TargetName="LockImage"
                       Property="Source"
-                      Value="vfs:///Resources/UI/Cardassians/Shared/Locked.png"/>
+                      Value="vfs:///Resources/Specific_Empires_UI/Cardassians/Shared/Locked.png"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -775,7 +775,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Cardassians/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Cardassians/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>

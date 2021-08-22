@@ -376,14 +376,7 @@ namespace Supremacy.Types
         {
             if (_autoClamp)
             {
-                if (value > Maximum)
-                {
-                    CurrentValue = Maximum;
-                }
-                else
-                {
-                    CurrentValue = value < _minimum ? Minimum : value;
-                }
+                CurrentValue = value > Maximum ? Maximum : value < _minimum ? Minimum : value;
             }
             else
             {

@@ -74,7 +74,6 @@ namespace Supremacy.Client.Controls
         /// <value>
         /// The item with the specified <c>UniqueId</c> value. 
         /// </value>
-        [SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers")]
         public InfoCard this[Guid uniqueId]
         {
             get

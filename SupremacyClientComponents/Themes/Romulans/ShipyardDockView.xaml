@@ -57,7 +57,7 @@
                        Opacity="1"
                        Width="50"
                        Height="50"
-                       Source="vfs:///Resources/UI/Romulans/ColonyScreen/build_ship.png" Stretch="UniformToFill"
+                       Source="vfs:///Resources/Specific_Empires_UI/Romulans/ColonyScreen/build_ship.png" Stretch="UniformToFill"
                        HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <TextBlock x:Name="Build"
                            Text="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_TOOLTIP}" 
@@ -288,7 +288,7 @@
 
             <Grid x:Name="ImageSite" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="0" Width="235" Height="145" Opacity="0.33">
                 <!-- Background image of Bay -->
-               <Image Source="vfs:///Resources/UI/Romulans/ColonyScreen/shipyard_dock.png" Margin="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+               <Image Source="vfs:///Resources/Specific_Empires_UI/Romulans/ColonyScreen/shipyard_dock.png" Margin="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
                <!--CancelButton: 150 to 125 is too big-->
                <Button x:Name="CancelButton" 
                     Style="{StaticResource CancelShipConstructionButton}" 

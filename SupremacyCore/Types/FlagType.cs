@@ -222,7 +222,7 @@ namespace Supremacy.Types
                 return false;
             }
 
-            return _value.Equals((int)value);
+            return _value.Equals(value);
         }
         #endregion
 

@@ -27,11 +27,13 @@ namespace Supremacy.Client.Views
             }
 
             ICommand command = presentationModel.RemoveFromShipyardBuildQueueCommand;
+
             if ((command != null) && command.CanExecute(buildQueueItem))
             {
                 command.Execute(buildQueueItem);
             }
         }
+
 
         private ColonyScreenPresentationModel PresentationModel => DataContext as ColonyScreenPresentationModel;
     }

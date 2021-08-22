@@ -140,7 +140,6 @@ namespace Supremacy.Client.Controls
             remove { RemoveHandler(UncheckedEvent, value); }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static GameButtonBase()
         {
             KeyboardNavigation.AcceptsReturnProperty.OverrideMetadata(

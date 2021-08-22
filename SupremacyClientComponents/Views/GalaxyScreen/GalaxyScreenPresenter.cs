@@ -630,7 +630,7 @@ namespace Supremacy.Client.Views
 
         private Civilization GetPerceivedSectorOwner(Sector sector)
         {
-            Civilization owner = (Civilization)null;
+            Civilization owner = null;
             Civilization localPlayerEmpire = AppContext.LocalPlayer.Empire;
             CivilizationManager localPlayerEmpireManager = AppContext.LocalPlayerEmpire;
 

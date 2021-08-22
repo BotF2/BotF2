@@ -25,8 +25,8 @@ namespace Supremacy.Client.Views
 
         private bool _isMembershipButtonVisible;
         private bool _isFullAllianceButtonVisible;
-        private Dictionary<int, int> _cancelationRegardDictionary = new Dictionary<int, int> { { 999, 0 } };
-        private Dictionary<int, int> _cancelationTrustDictionary = new Dictionary<int, int> { { 999, 0 } };
+        private readonly Dictionary<int, int> _cancelationRegardDictionary = new Dictionary<int, int> { { 999, 0 } };
+        private readonly Dictionary<int, int> _cancelationTrustDictionary = new Dictionary<int, int> { { 999, 0 } };
 
         #region Design-Time Instance
 
@@ -70,7 +70,7 @@ namespace Supremacy.Client.Views
 
         #endregion Design-Time Instance
 
-        public Civilization LocalPalyer => (Civilization)GameContext.Current.CivilizationManagers[ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.CivID].Civilization;
+        public Civilization LocalPalyer => GameContext.Current.CivilizationManagers[ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.CivID].Civilization;
         public bool localIsHost => ServiceLocator.Current.GetInstance<IAppContext>().IsGameHost;
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
@@ -708,7 +708,7 @@ namespace Supremacy.Client.Views
             }
 
             SelectedForeignPower.OutgoingMessage.Send();
-            GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
+            GameLog.Client.DiplomacyDetails.DebugFormat("Diplo Message: SEND button pressed...");
             if (SelectedForeignPower != null && SelectedForeignPower.OutgoingMessage != null)
             {
                 int _selectedID = SelectedForeignPower.Counterparty.CivID;
@@ -733,8 +733,8 @@ namespace Supremacy.Client.Views
                         }
                         else { _cancelationTrustDictionary.Add(_selectedID, trust); }
 
-                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)regard * -1);
-                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)trust * -1);
+                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, regard * -1);
+                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, trust * -1);
                     }
 
                 }

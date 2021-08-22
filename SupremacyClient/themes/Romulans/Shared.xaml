@@ -1084,7 +1084,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ToggleButton.Click">
                 <!--<EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
         </EventTrigger.Actions>-->
             </EventTrigger>
         </Style.Triggers>
@@ -1283,22 +1283,22 @@
 
 
   <ImageBrush x:Key="FleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Romulans/GalaxyScreen/FleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Romulans/GalaxyScreen/FleetSelectionBorder.png" />
 
     <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Romulans/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Romulans/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
 
     <!--<ImageBrush x:Key="LeftRepeatButton1"
-              ImageSource="vfs:///Resources/UI/Romulans/Shared/LeftRepeatButton1.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Romulans/Shared/LeftRepeatButton1.png" />
 
   <ImageBrush x:Key="LeftRepeatButton2"
-              ImageSource="vfs:///Resources/UI/Romulans/Shared/LeftRepeatButton2.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Romulans/Shared/LeftRepeatButton2.png" />
     
   <ImageBrush x:Key="RightRepeatButton1"
-              ImageSource="vfs:///Resources/UI/Romulans/Shared/RightRepeatButton1.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Romulans/Shared/RightRepeatButton1.png" />
 
   <ImageBrush x:Key="RightRepeatButton2"
-              ImageSource="vfs:///Resources/UI/Romulans/Shared/RightRepeatButton2.png" />-->
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Romulans/Shared/RightRepeatButton2.png" />-->
 
 
   <Style x:Key="LockToggleButtonStyle"
@@ -1317,13 +1317,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Image x:Name="LockImage"
-                 Source="vfs:///Resources/UI/Romulans/Shared/Unlocked.png" />
+                 Source="vfs:///Resources/Specific_Empires_UI/Romulans/Shared/Unlocked.png" />
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked"
                      Value="True">
               <Setter TargetName="LockImage"
                       Property="Source"
-                      Value="vfs:///Resources/UI/Romulans/Shared/Locked.png" />
+                      Value="vfs:///Resources/Specific_Empires_UI/Romulans/Shared/Locked.png" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1332,7 +1332,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Romulans/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Romulans/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>

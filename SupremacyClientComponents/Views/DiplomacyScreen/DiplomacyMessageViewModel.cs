@@ -42,7 +42,11 @@ namespace Supremacy.Client.Views
         private readonly ScriptExpression _requestLeadInTextScript;
 
         private readonly ScriptParameters _leadInParameters;
+#pragma warning disable IDE0044 // Add readonly modifier
         private RuntimeScriptParameters _leadInRuntimeParameters;
+#pragma warning restore IDE0044 // Add readonly modifier
+
+
         private readonly DelegateCommand<ICheckableCommandParameter> _setAcceptButton;
         private readonly DelegateCommand<ICheckableCommandParameter> _setRejectButton;
         private Order _sendOrder;
@@ -676,7 +680,8 @@ namespace Supremacy.Client.Views
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
                     _treatyElements.Add(element);
-                    if (element != null && element.Description != null && element.SelectedParameter != null && element.ElementType != null)
+                    //if (element != null && element.Description != null && element.SelectedParameter != null && element.ElementType != null)
+                    if (element != null && element.Description != null && element.SelectedParameter != null /*&& element.ElementType != null*/)
                     {
                         GameLog.Client.DiplomacyDetails.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
                             element.Description.ToString(),
@@ -1129,7 +1134,7 @@ namespace Supremacy.Client.Views
             Civilization senderCiv = DiplomacyHelper.DiploScreenSelectedForeignPower;
             ForeignPower selectedForeignPower = diplomat.GetForeignPower(senderCiv);
 
-            bool localPlayerIsHosting = DiplomacyScreenViewModel.DesignInstance.localIsHost;
+            //bool localPlayerIsHosting = DiplomacyScreenViewModel.DesignInstance.localIsHost;
             string Accepted = "ACCEPTED";
             if (accepting == false)
             {
@@ -1215,13 +1220,11 @@ namespace Supremacy.Client.Views
                     {
                         leadInId = DiplomacyStringID.AcceptGiftLeadIn;
                     }
-                    else if (response.Proposal.IsDemand())
-                    {
-                        leadInId = DiplomacyStringID.AcceptDemandLeadIn;
-                    }
                     else
                     {
-                        leadInId = !response.Proposal.HasTreaty() ? DiplomacyStringID.AcceptExchangeLeadIn : DiplomacyStringID.AcceptProposalLeadIn;
+                        leadInId = response.Proposal.IsDemand()
+                            ? DiplomacyStringID.AcceptDemandLeadIn
+                            : !response.Proposal.HasTreaty() ? DiplomacyStringID.AcceptExchangeLeadIn : DiplomacyStringID.AcceptProposalLeadIn;
                     }
 
                     break;
@@ -1230,13 +1233,11 @@ namespace Supremacy.Client.Views
                     {
                         leadInId = DiplomacyStringID.RejectProposalLeadIn; // should not happen
                     }
-                    else if (response.Proposal.IsDemand())
-                    {
-                        leadInId = DiplomacyStringID.RejectDemandLeadIn;
-                    }
                     else
                     {
-                        leadInId = !response.Proposal.HasTreaty() ? DiplomacyStringID.RejectExchangeLeadIn : DiplomacyStringID.RejectProposalLeadIn;
+                        leadInId = response.Proposal.IsDemand()
+                            ? DiplomacyStringID.RejectDemandLeadIn
+                            : !response.Proposal.HasTreaty() ? DiplomacyStringID.RejectExchangeLeadIn : DiplomacyStringID.RejectProposalLeadIn;
                     }
 
                     break;
@@ -1268,7 +1269,7 @@ namespace Supremacy.Client.Views
 
             DiplomacyStringID leadInId;
 
-            switch ((object)proposal.Clauses[0].ClauseType) // not all cases used below, ToDo
+            switch (proposal.Clauses[0].ClauseType) // not all cases used below, ToDo
             {
                 case ClauseType.TreatyOpenBorders:
                     leadInId = DiplomacyStringID.OpenBordersClause;

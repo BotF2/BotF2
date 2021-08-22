@@ -17,7 +17,6 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region Constructors and Finalizers
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static InfoCardWindow()
         {
             ShowInTaskbarProperty.OverrideMetadata(

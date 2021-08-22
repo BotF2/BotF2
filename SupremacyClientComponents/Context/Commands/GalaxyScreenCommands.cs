@@ -111,14 +111,7 @@ namespace Supremacy.Client.Commands
 
         private void SetInitialScrapValue()
         {
-            if (_objects.All(o => o.Scrap))
-            {
-                _scrap = true;
-            }
-            else
-            {
-                _scrap = _objects.Any(o => o.Scrap) ? null : (bool?)false;
-            }
+            _scrap = _objects.All(o => o.Scrap) ? true : _objects.Any(o => o.Scrap) ? null : (bool?)false;
         }
 
         public IIndexedCollection<TechObject> Objects => _objects;

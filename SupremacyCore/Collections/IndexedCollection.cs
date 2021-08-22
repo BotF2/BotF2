@@ -1016,7 +1016,7 @@ namespace Supremacy.Collections
             Expression<Func<TSource, bool>> expr)
         {
             //our indexes work from the hash values of that which is indexed, regardless of type
-            bool noIndex = true;
+            //bool noIndex = true;
             const bool done = false;
             //IEnumerable<TSource> results;
             Expression<Func<TSource, bool>> innerExpr = expr;
@@ -1063,54 +1063,55 @@ namespace Supremacy.Collections
             if (!done)
             {
                 //indexes only work on equality expressions here
-                if (expr.Body.NodeType == ExpressionType.Equal)
-                {
-                    //Equality is a binary expression
-                    BinaryExpression binExp = (BinaryExpression)expr.Body;
-                    //Get some aliases for either side
-                    E leftSide = binExp.Left;
-                    E rightSide = binExp.Right;
+                //if (expr.Body.NodeType == ExpressionType.Equal)
+                //{
+                //    //Equality is a binary expression
+                //    BinaryExpression binExp = (BinaryExpression)expr.Body;
+                //    //Get some aliases for either side
+                //    E leftSide = binExp.Left;
+                //    E rightSide = binExp.Right;
 
-                    int? hashRight = GetHashRight(sourceCollection, leftSide, rightSide);
+                //    int? hashRight = GetHashRight(sourceCollection, leftSide, rightSide);
 
-                    //if we were able to create a hash from the right side (likely)
-                    if (hashRight.HasValue && HasIndexablePropertyOnLeft(leftSide, sourceCollection))
-                    {
-                        //cast to MemberExpression - it allows us to get the property
-                        MemberExpression propExp = (MemberExpression)leftSide;
-                        string property = propExp.Member.Name;
-                        Dictionary<int, HashSet<TSource>> myIndex =
-                                sourceCollection.GetIndexByProperty(property).LookupTable;
-                        //try
-                        //{
-                        if (myIndex.ContainsKey(hashRight.Value))
-                        {
-                            IEnumerable<TSource> sourceEnum = myIndex[hashRight.Value].AsEnumerable();
+                //    //if we were able to create a hash from the right side (likely)
+                //    if (hashRight.HasValue && HasIndexablePropertyOnLeft(leftSide, sourceCollection))
+                //    {
+                //        //cast to MemberExpression - it allows us to get the property
+                //        MemberExpression propExp = (MemberExpression)leftSide;
+                //        string property = propExp.Member.Name;
+                //        Dictionary<int, HashSet<TSource>> myIndex =
+                //                sourceCollection.GetIndexByProperty(property).LookupTable;
+                //        //try
+                //        //{
+                //        if (myIndex.ContainsKey(hashRight.Value))
+                //        {
+                //            IEnumerable<TSource> sourceEnum = myIndex[hashRight.Value].AsEnumerable();
 
-                            if (sourceEnum != null && sourceEnum.Count() != 0)
-                            {
-                                foreach (TSource item in sourceEnum.Where(expr.Compile()))
-                                {
-                                    yield return item;
-                                }
-                            }
-                        }
-                        //} catch
-                        //{
+                //            if (sourceEnum != null && sourceEnum.Count() != 0)
+                //            {
 
-                        //}
+                //                foreach (TSource item in sourceEnum.Where(expr.Compile()))
+                //                {
+                //                    yield return item;
+                //                }
+                //            }
+                //        }
+                //        //} catch
+                //        //{
 
-                        noIndex = false; //we found an index, whether it had values or not is another matter
-                    }
-                }
-                if (noIndex) //no index?  just do it the normal slow way then...
-                {
+                //        //}
+
+                //        noIndex = false; //we found an index, whether it had values or not is another matter
+                //    }
+                //}
+                //if (noIndex) //no index?  just do it the normal slow way then...
+                //{
                     IEnumerable<TSource> sourceEnum = sourceCollection.AsEnumerable();
                     foreach (TSource resultItem in sourceEnum.Where(expr.Compile()))
                     {
                         yield return resultItem;
                     }
-                }
+                //}
             }
         }
 

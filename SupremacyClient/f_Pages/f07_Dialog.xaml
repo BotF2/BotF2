@@ -94,7 +94,7 @@
                             Property="Background"
                             Value="{DynamicResource PurpleGradient_Left_Right}"/>
                                                 <Trigger.EnterActions>
-                                                    <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
+                                                    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/ButtonClick.wav"/>
                                                 </Trigger.EnterActions>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
@@ -129,7 +129,7 @@
                             Property="Background"
                             Value="{DynamicResource PurpleGradient_Left_Right}"/>
                                                 <Trigger.EnterActions>
-                                                    <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
+                                                    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/ButtonClick.wav"/>
                                                 </Trigger.EnterActions>
                                             </Trigger>
                                         </ControlTemplate.Triggers>

@@ -938,6 +938,7 @@ namespace Supremacy.UI
                              (location.Y * SectorSize) + (0.5 * SectorSize));
         }
 
+
         private static FormattedText GetStarText(StarSystem system, Civilization playerCiv)
         {
             Civilization owner = system.Owner;
@@ -968,7 +969,8 @@ namespace Supremacy.UI
                 FlowDirection.LeftToRight,
                 s_textTypeface,
                 StarNameFontSize,
-                brush)
+                brush,
+                StarNameFontSize)
             {
                 MaxTextWidth = SectorSize - 6,
                 TextAlignment = TextAlignment.Center,
@@ -1292,12 +1294,11 @@ namespace Supremacy.UI
             }
         }
 
-        private void ExecuteSummaryOnOffCommand(Sector sector)  // Center to Quadrant 4
+        private void ExecuteSummaryOnOffCommand(Sector sector)
         {
-            if (ClientSettings.Current.EnableSummaryScreen = true)
-                ClientSettings.Current.EnableSummaryScreen = false;
-            else
-                ClientSettings.Current.EnableSummaryScreen = true;
+            System.Windows.Forms.SendKeys.SendWait("^o"); // OptionsDialog
+            //ClientSettings.Current.EnableSummaryScreen = ClientSettings.Current.EnableSummaryScreen != true;
+            //ClientSettings.Current.Save();
 
         }
 

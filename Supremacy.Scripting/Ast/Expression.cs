@@ -440,7 +440,6 @@ namespace Supremacy.Scripting.Ast
             return mi[0] is MethodBase ? new MethodGroupExpression(mi, queriedType, span) : ExprClassFromMemberInfo(containerType, mi[0], span);
         }
 
-#pragma warning disable 168
         public static Expression ExprClassFromMemberInfo(Type containerType, MemberInfo mi, SourceSpan span)
         {
             EventInfo eventInfo = mi as EventInfo;
@@ -467,7 +466,6 @@ namespace Supremacy.Scripting.Ast
             Type typeInfo = mi as Type;
             return typeInfo != null ? new TypeExpression(typeInfo) { Span = span } : null;
         }
-#pragma warning restore 168
 
         public const MemberTypes AllMemberTypes =
             MemberTypes.Constructor |

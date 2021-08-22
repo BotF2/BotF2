@@ -455,7 +455,6 @@ namespace Supremacy.Client.Controls
         internal delegate void FindInfoCardEventHandler(object sender, FindInfoCardEventArgs e);
         #endregion
 
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static InfoCardService()
         {
             // Register event handlers
@@ -505,8 +504,8 @@ namespace Supremacy.Client.Controls
 
         private static Visual FindContentElementParent(ContentElement ce)
         {
-            Visual visual = (Visual)null;
-            DependencyObject parent = (DependencyObject)ce;
+            Visual visual = null;
+            DependencyObject parent = ce;
 
             while (parent != null)
             {

@@ -22,11 +22,12 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            GameLog.Client.ShipProduction.DebugFormat("this is a gamelog ={0}", e.ClickCount);
+            GameLog.Client.ShipProductionDetails.DebugFormat("BuildList doubleclicked", e.ClickCount);
             if (!(BuildList.SelectedItem is BuildProject selectedProject))
             {
                 return;
             }
+
 
             ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
@@ -34,10 +35,19 @@ namespace Supremacy.Client.Views
                 return;
             }
 
+            //if (this)
+
+            int _howMany = 5;
+
             ICommand command = presentationModel.AddToShipyardBuildQueueCommand;
+
             if ((command != null) && command.CanExecute(selectedProject))
             {
-                command.Execute(selectedProject);
+                for (int i = 0; i < _howMany; i++)
+                {
+                    command.Execute(selectedProject);
+
+                }
             }
         }
 

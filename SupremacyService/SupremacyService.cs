@@ -504,7 +504,7 @@ namespace Supremacy.WCF
 
                 lock (_aiAsyncLock)
                 {
-                    Action<GameContext, List<Civilization>> doAiPlayers = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
+                    Action<GameContext, List<Civilization>> doAiPlayers = _gameEngine.DoAIPlayers;
                     _aiAsyncResult = doAiPlayers.BeginInvoke(
                         _game, autoTurnCivs,
                         delegate (IAsyncResult result)
@@ -542,7 +542,7 @@ namespace Supremacy.WCF
                 }
 
 
-                GameLog.Server.General.InfoFormat("Turn processing time: {0}", stopwatch.Elapsed);
+                GameLog.Server.GeneralDetails.InfoFormat("Turn processing time: {0}", stopwatch.Elapsed);
 
                 Task autoSaveTask = null;
 

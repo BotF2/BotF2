@@ -111,14 +111,7 @@ namespace Supremacy.Effects
         {
             lock (EffectSystem.SyncRoot)
             {
-                if (_suspendScope.IsWithin)
-                {
-                    State = EffectState.Suspended;
-                }
-                else
-                {
-                    State = _isAttached ? EffectState.Attached : EffectState.Detached;
-                }
+                State = _suspendScope.IsWithin ? EffectState.Suspended : _isAttached ? EffectState.Attached : EffectState.Detached;
             }
         }
 

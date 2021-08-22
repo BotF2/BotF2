@@ -55,99 +55,49 @@
         </Grid.RowDefinitions>
 
 
-        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9"
-        FontSize="14pt"
-        Foreground="White"
-        Margin="3,0,6,0"
-        VerticalAlignment="Center"
+        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" Margin="3,0,6,0"
+        Foreground="White" FontSize="14pt" VerticalAlignment="Center"
         Text="{s:StringResource SETTINGS_TRACES_INFOTEXT_LINE}"
         ToolTip="{s:StringResource SETTINGS_TRACES_INFOTEXT_LINE_TOOLTIP}"
         />
               <!--Command="{x:Static local:GenericCommands.AcceptCommand}"-->
-        <!--<Button x:Name="AcceptButton"
-                Grid.Row="1"
-                Grid.RowSpan="2"
-
-
-              Style="{DynamicResource LCARS_ButtonStyle}"
-              IsCancel="True"
-              Margin="0,0,6,0"
-                />-->
-
-         <!--ToDo: bring back and work more on it-->
-        <!--<scc:GameButton x:Name="AllTracesButton"
-                    Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
-                    DisplayMode="Tiny"
-                    Label="All"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static local:GenericCommands.TracesSetAllCommand}"
-                     />
-
-        <scc:GameButton x:Name="SomeTracesButton"
-                    Grid.Row="2" Grid.Column="4" VerticalAlignment="Center"
-                    DisplayMode="Tiny"
-                    Label="Some"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static local:GenericCommands.TracesSetSomeCommand}"
-                     />
-
-        <scc:GameButton x:Name="NoneTracesButton"
-                    Grid.Row="2" Grid.Column="8" VerticalAlignment="Center"
-                    DisplayMode="Tiny"
-                    Label="None"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static local:GenericCommands.TracesSetNoneCommand}"
-                     />-->
+        <!--<Button x:Name="AcceptButton" Grid.Row="1" Grid.RowSpan="2" Margin="0,0,6,0" IsCancel="True"
+                 Style="{DynamicResource LCARS_ButtonStyle}"/>-->
 
         <RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetSome), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_SET_SOME}"
+        GroupName="Traces_Group" Content="{s:StringResource SETTINGS_TRACES_SET_SOME}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_SOME_TOOLTIP}" 
         />        
         
         <RadioButton Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetAll_without_Details), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_SET_ALL}"
+        GroupName="Traces_Group" Content="{s:StringResource SETTINGS_TRACES_SET_ALL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_ALL_TOOLTIP}" 
         />
 
         <RadioButton Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_ClearAll), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_CLEAR_ALL}"
+        GroupName="Traces_Group" Content="{s:StringResource SETTINGS_TRACES_CLEAR_ALL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_CLEAR_ALL_TOOLTIP}" 
         />
 
         <!--row 2--> 
         <RadioButton Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetSome), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_SET_SELECTION_2}"
+        GroupName="Traces_Group" Content="{s:StringResource SETTINGS_TRACES_SET_SELECTION_2}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_SELECTION_2_TOOLTIP}" 
         />        
         
         <RadioButton Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetAll_and_Details), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_SET_ALL_AND_DETAILS}"
+        GroupName="Traces_Group" Content="{s:StringResource SETTINGS_TRACES_SET_ALL_AND_DETAILS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_ALL_AND_DETAILS_TOOLTIP}" 
         />
 
         <RadioButton Grid.Row="2" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_ClearAllDetails), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_CLEAR_ALL_DETAILS}"
+        GroupName="Traces_Group" Content="{s:StringResource SETTINGS_TRACES_CLEAR_ALL_DETAILS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_CLEAR_ALL_DETAILS_TOOLTIP}" 
         />
         

@@ -39,7 +39,7 @@ namespace Supremacy.Orbitals
         public byte Maneuverability
         {
             get => _maneuverability;
-            set => _maneuverability = (byte)value;
+            set => _maneuverability = value;
         }
 
         /// <summary>

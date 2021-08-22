@@ -174,8 +174,8 @@
                                         BorderThickness="2"
                                         CornerRadius="4"
                                                        
-                                        Width="1000"
-                                        Height="840">
+                                        Width="576"
+                                        Height="480">
 
                                                         <Border.Background>
                                                         <ImageBrush ImageSource="{Binding Path=Source.ShipDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />

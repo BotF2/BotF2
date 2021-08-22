@@ -211,6 +211,7 @@ namespace Supremacy.Universe
         /// <returns>The environment.</returns>
         public PlanetEnvironment GetEnvironment(PlanetType homePlanetType)
         {
+            _text = "";
             _text = _text + _text + newline;  // dummy - do not remove
 
             switch (PlanetType)

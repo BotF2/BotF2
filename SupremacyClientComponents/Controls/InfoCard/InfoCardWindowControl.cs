@@ -151,8 +151,8 @@ namespace Supremacy.Client.Controls
 
         bool IInfoCardWindow.Activate()
         {
-            return (bool)Dispatcher.Invoke(
-                (Func<bool>)base.Activate,
+            return Dispatcher.Invoke(
+                Activate,
                 DispatcherPriority.Input);
         }
 

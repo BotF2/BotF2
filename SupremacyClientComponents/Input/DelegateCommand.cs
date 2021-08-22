@@ -94,7 +94,7 @@ namespace Supremacy.Client.Input
 
         protected virtual void OnCanExecuteChanged()
         {
-            Dispatcher dispatcher = (Dispatcher)null;
+            Dispatcher dispatcher = null;
 
             if (Application.Current != null)
             {
@@ -109,7 +109,7 @@ namespace Supremacy.Client.Input
 
             if (dispatcher != null && !dispatcher.CheckAccess())
             {
-                dispatcher.Invoke((Action)OnCanExecuteChanged);
+                dispatcher.Invoke(OnCanExecuteChanged);
             }
             else
             {
@@ -206,7 +206,7 @@ namespace Supremacy.Client.Input
 
         protected virtual void OnCanExecuteChanged()
         {
-            Dispatcher dispatcher = (Dispatcher)null;
+            Dispatcher dispatcher = null;
 
             if (Application.Current != null)
             {
@@ -221,7 +221,7 @@ namespace Supremacy.Client.Input
 
             if (dispatcher != null && !dispatcher.CheckAccess())
             {
-                dispatcher.Invoke((Action)OnCanExecuteChanged);
+                dispatcher.Invoke(OnCanExecuteChanged);
             }
             else
             {

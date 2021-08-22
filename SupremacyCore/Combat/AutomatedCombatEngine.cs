@@ -22,9 +22,12 @@ namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly int[,] empiresInBattle;
+#pragma warning restore IDE0052 // Remove unread private members
+
         private string _text;
-        private readonly string _x = string.Format(ResourceManager.GetString("X"));
+        //private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
@@ -1930,10 +1933,12 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("IsDestroid = {2} (Hull = {3}) for combatent {0} {1} if true see second line ", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                 if (combatent.Item1.IsDestroyed)
                 {
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[combatent.Item1.Owner.CivID];
                     //GameLog.Core.CombatDetails.DebugFormat("Combatent {0} {1} IsDestroid ={2} if true see second line Hull ={3}", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                     CombatAssets Assets = GetAssets(combatent.Item1.Owner);
                     _ = Assets.AssimilatedShips.Remove(combatent.Item1);
                     GameLog.Core.Combat.DebugFormat("Combatent {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
+                    
                     if (combatent.Item1.Source is Ship)
                     {
                         if (Assets != null)
@@ -1942,7 +1947,17 @@ namespace Supremacy.Combat
                             if (!Assets.DestroyedShips.Contains(combatent.Item1))
                             {
                                 Assets.DestroyedShips.Add(combatent.Item1);
+                                _text = combatent.Item1.Source.Location
+                                + " " + combatent.Item1.Source.Sector.Name
+                                + " > " + combatent.Item1.Source.ObjectID
+                                + " " + combatent.Item1.Name
+                                + " (" + combatent.Item1.Source.Design
+                                + ") destroyed."
+                                ;
+
+                                civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                             }
+
                             if (combatent.Item1.Source.IsCombatant)
                             {
                                 countDestroyed++;
@@ -1954,14 +1969,16 @@ namespace Supremacy.Combat
                                 _ = Assets.NonCombatShips.Remove(combatent.Item1);
                             }
                             Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
-                            CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
-                            _text = ship.Item1.Source.ObjectID
-                                + " " + ship.Item1.Name
-                                + " " + ship.Item1.Source.Design
-                                + " escaped."
+                            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
+                            _text = ship.Item1.Source.Location
+                                + " > " + ship.Item1.Source.Sector.Name
+                                + " > Ship " + ship.Item1.Source.ObjectID
+                                + ": * " + ship.Item1.Name
+                                + " * (" + ship.Item1.Source.Design
+                                + ") escaped."
                                 ;
 
-                            civManager.SitRepEntries.Add(new ReportEntryCoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, _x, SitRepPriority.RedYellow));
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                         }
                         else
                         {
@@ -1973,6 +1990,16 @@ namespace Supremacy.Combat
                         if (!Assets.DestroyedShips.Contains(combatent.Item1))
                         {
                             Assets.DestroyedShips.Add(combatent.Item1);
+                            _text = combatent.Item1.Source.Location
+                            + " " + combatent.Item1.Source.Sector.Name
+                            + " > " + combatent.Item1.Source.ObjectID
+                            + " " + combatent.Item1.Name
+                            + " " + combatent.Item1.Source.Design
+                            + " destroyed."
+                            ;
+
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+
                         }
                     }
                 }
@@ -2045,11 +2072,14 @@ namespace Supremacy.Combat
                     }
                     else if (firstShipOwner != null && !CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
                     {
-                        _stayingThereShips.Add(ship); // otherwise who is first stays
+                        //2021-08-21: changed this
+                        //_stayingThereShips.Add(ship); // otherwise who is first stays
+                        _allRetreatShips.Add(ship);
                     }
                     else
                     {
-                        _allRetreatShips.Add(ship);
+                        _stayingThereShips.Add(ship); // otherwise who is first stays
+                        //_allRetreatShips.Add(ship);
                     }
                     //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
 
@@ -2079,7 +2109,7 @@ namespace Supremacy.Combat
 
                                 + " escaped."
                                 ;
-                            //civManager.SitRepEntries.Add(new ReportEntryCoS(firstShipOwner, ship.Item1.Source.Location, _text, _x, SitRepPriority.RedYellow));
+                            //civManager.SitRepEntries.Add(new ReportEntryCoS(firstShipOwner, ship.Item1.Source.Location, _text,  SitRepPriority.RedYellow));
                         }
 
                     }
@@ -2091,7 +2121,7 @@ namespace Supremacy.Combat
 
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[item];
                 if (civManager.Civilization.IsEmpire)
-                    civManager.SitRepEntries.Add(new ReportEntryCoS(civManager.Civilization, _sector, _text, "x2", SitRepPriority.RedYellow));
+                    civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, _sector, _text, "", "", SitRepPriority.Red));
                 //_text = 
             }
             //CivilizationManager civManager = GameContext.Current.CivilizationManagers[GetAssets.];

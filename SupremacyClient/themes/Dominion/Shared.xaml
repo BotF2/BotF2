@@ -113,10 +113,10 @@
     <!--End of some LinearGradientBrush-->
 
     <ImageBrush x:Key="FleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Dominion/GalaxyScreen/FleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Dominion/GalaxyScreen/FleetSelectionBorder.png" />
 
     <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Dominion/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Dominion/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
 
 
 
@@ -227,7 +227,7 @@
 
 
 
-
+<!--REDEPLOY-->
     <Style x:Key="LCARS_SimpleButtonStyle"
          TargetType="{x:Type Button}"
          BasedOn="{StaticResource LCARS_BaseButtonStyle}">
@@ -252,7 +252,7 @@
                     Grid.Column="0"
                     Margin="0"
                     Padding="{TemplateBinding Padding}"
-                    Background="{StaticResource Dom2Gradient_Bottom_Top}">
+                    Background="{StaticResource Dom4Gradient_Bottom_Top}">
                             <ContentPresenter HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 RecognizesAccessKey="True" />
@@ -265,11 +265,12 @@
                       Property="Opacity"
                       Value="0.33" />
                         </Trigger>
+                        <!--IsMouseOver-->
                         <Trigger Property="IsMouseOver"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource Dom4Gradient_Bottom_Top}" />
+                      Value="{StaticResource Dom3Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsPressed"
                      Value="True">
@@ -346,7 +347,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ToggleButton.Click">
                 <!--<EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
         </EventTrigger.Actions>-->
             </EventTrigger>
         </Style.Triggers>
@@ -437,7 +438,7 @@
                       Value="0.33"  />
                             <Setter TargetName="ContentBorder"
                             Property="Background"
-                      Value="{StaticResource Dom2Gradient_Bottom_Top}" />
+                      Value="{StaticResource Dom4Gradient_Bottom_Top}" />
                         </Trigger>
                         
                         <!--IsMouseOver-->
@@ -445,7 +446,7 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource Dom4Gradient_Top_Bottom}" />
+                      Value="{StaticResource Dom3Gradient_Top_Bottom}" />
                         </Trigger>
                         
                         <!--IsPressed-->
@@ -505,7 +506,7 @@
                      Value="False">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource Dom3Gradient_Bottom_Top}" />
+                      Value="{StaticResource Dom4Gradient_Bottom_Top}" />
                             <Setter TargetName="ContentBorder"
                       Property="Opacity"
                       Value="0.33" />
@@ -515,7 +516,7 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource Dom4Gradient_Bottom_Top}" />
+                      Value="{StaticResource Dom3Gradient_Bottom_Top}" />
                         </Trigger>
                         <!--IsPressed-->
                         <Trigger Property="IsPressed"
@@ -822,7 +823,7 @@
                     Grid.Column="1"
                     Margin="3,0,3,0"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="{StaticResource Dom2Gradient_Top_Bottom}">
+                    Background="{StaticResource Dom4Gradient_Top_Bottom}">
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -1049,7 +1050,7 @@
                             <Setter TargetName="Border"
                       Property="Background"
 
-                      Value="{StaticResource Dom4Gradient_Bottom_Top}" />
+                      Value="{StaticResource Dom2Gradient_Bottom_Top}" />
                         </Trigger>
                         <!--IsSelected-->
                         <Trigger Property="IsSelected"
@@ -1058,7 +1059,7 @@
                       Value="100" />-->
                             <Setter TargetName="Border"
                       Property="Background"
-                      Value="{StaticResource Dom2Gradient_Left_Right}" />
+                      Value="{StaticResource Dom4Gradient_Left_Right}" />
                         </Trigger>
                         <!--<Trigger Property="IsMouseDown"
                      Value="True">
@@ -1154,13 +1155,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Image x:Name="LockImage"
-                 Source="vfs:///Resources/UI/Dominion/Shared/Unlocked.png"/>
+                 Source="vfs:///Resources/Specific_Empires_UI/Dominion/Shared/Unlocked.png"/>
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked"
                      Value="True">
               <Setter TargetName="LockImage"
                       Property="Source"
-                      Value="vfs:///Resources/UI/Dominion/Shared/Locked.png"/>
+                      Value="vfs:///Resources/Specific_Empires_UI/Dominion/Shared/Locked.png"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1169,7 +1170,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Dominion/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Dominion/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>
@@ -1181,7 +1182,7 @@
             <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
                            TargetType="{x:Type RepeatButton}">
                 <Border x:Name="LeftButton"
-                     Background="{StaticResource Dom3Gradient_TopLeft_BottomRight}"
+                     Background="{StaticResource Dom4Gradient_TopLeft_BottomRight}"
                      CornerRadius="5,5,7,48" />
                 <ControlTemplate.Triggers>
                     <MultiTrigger>
@@ -1218,7 +1219,7 @@
             <ControlTemplate x:Key="RightRepeatButtonTemplate"
                            TargetType="{x:Type RepeatButton}">
             <Border x:Name="RightButton"
-                    Background="{StaticResource Dom3Gradient_TopLeft_BottomRight}"
+                    Background="{StaticResource Dom4Gradient_TopLeft_BottomRight}"
                     CornerRadius="14,48,5,5" />
             <ControlTemplate.Triggers>
               <MultiTrigger>

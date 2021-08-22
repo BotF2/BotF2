@@ -1216,25 +1216,14 @@ namespace Supremacy.Collections
             {
                 count = trueList.Count;
             }
-            else if (indexable != null)
-            {
-                count = indexable.Count;
-            }
             else
             {
-                count = collection is ICollection list ? list.Count : collection.Count();
+                count = indexable != null ? indexable.Count : collection is ICollection list ? list.Count : collection.Count();
             }
 
             int skipCount = RandomProvider.Shared.Next(count);
 
-            if (trueList != null)
-            {
-                result = (T)trueList[skipCount];
-            }
-            else
-            {
-                result = indexable != null ? indexable[skipCount] : collection.Skip(skipCount).First();
-            }
+            result = trueList != null ? (T)trueList[skipCount] : indexable != null ? indexable[skipCount] : collection.Skip(skipCount).First();
 
             return true;
         }

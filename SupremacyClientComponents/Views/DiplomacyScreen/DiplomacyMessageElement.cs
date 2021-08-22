@@ -73,7 +73,7 @@ namespace Supremacy.Client.Views
             }
 
             Type parameterType = GetViewModelParameterTypeForElementType(ElementType);
-            string displayMemberPath = (string)null;
+            string displayMemberPath = null;
 
             if (HasFixedParameter)
             {

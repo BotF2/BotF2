@@ -152,7 +152,7 @@ namespace Supremacy.Client.Controls
 
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
-            ItemsControl itemsControl = (ItemsControl)null;
+            ItemsControl itemsControl = null;
 
             if (VisualTreeHelper.GetParent(this) == null)
             {

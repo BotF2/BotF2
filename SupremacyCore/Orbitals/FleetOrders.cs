@@ -49,6 +49,7 @@ namespace Supremacy.Orbitals
         public static readonly AssaultSystemOrder AssaultSystemOrder;
 
         private static readonly List<FleetOrder> _orders;
+        public static string _text;
 
 
         static FleetOrders()
@@ -202,6 +203,7 @@ namespace Supremacy.Orbitals
     public sealed class ColonizeOrder : FleetOrder
     {
         private readonly bool _isComplete;
+        private string _text;
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_COLONIZE");
 
@@ -313,7 +315,10 @@ namespace Supremacy.Orbitals
 
             civManager.MapData.SetScanned(colony.Location, true, 1);
             civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
-            civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
+
+            _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
+            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, "", "", SitRepPriority.Blue)) ;
+            //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
             _ = GameContext.Current.Universe.Destroy(colonyShip);
         }
@@ -1532,6 +1537,7 @@ namespace Supremacy.Orbitals
     {
         private bool _finished;
         private StationBuildProject _buildProject;
+        private object _text;
 
         public StationDesign StationDesign => BuildProject.BuildDesign as StationDesign;
 
@@ -1717,7 +1723,9 @@ namespace Supremacy.Orbitals
             }
 
             StationBuildProject project = _buildProject;
-            GameLog.Core.Production.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
+            _text = project.Location + " > project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
+            Console.WriteLine(_text);
+            //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             if ((project == null) || (project.ProductionCenter == null) || project.IsCompleted)
             {
                 return;
@@ -1746,9 +1754,16 @@ namespace Supremacy.Orbitals
 
             //DuraniumBefore = usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium];
 
-            GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
-                , project.BuildDesign, civManager.Resources[ResourceType.Duranium].CurrentValue
-                , usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
+            _text = project.Location
+                + " > project: Builder = " + project.Builder
+                + ", BuildDesign = " + project.BuildDesign
+                + ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
+                //+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
+                ;
+            Console.WriteLine(_text);
+            //GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
+            //    , project.BuildDesign, civManager.Resources[ResourceType.Duranium].CurrentValue
+            //    , usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
 
             _ = civManager.Resources[ResourceType.Duranium].AdjustCurrent(
                 usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
@@ -1861,6 +1876,10 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnBeginning();
             if (!IsAssigned)
+            {
+                return;
+            }
+            if (Fleet == null)
             {
                 return;
             }

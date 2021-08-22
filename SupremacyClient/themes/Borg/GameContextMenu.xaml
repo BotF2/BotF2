@@ -19,7 +19,7 @@ All other rights reserved.-->
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="MenuItem.Click">
 <EventTrigger.Actions>
-    <SoundPlayerAction Source="vfs:///Resources/UI/Borg/Sounds/GameContextMenuItem.wav" />
+    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Borg/Sounds/GameContextMenuItem.wav" />
 </EventTrigger.Actions>
 </EventTrigger>-->
         </Style.Triggers>
@@ -35,40 +35,40 @@ All other rights reserved.-->
         <Style.Resources>
             <BitmapImage x:Key="Image_Main1"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/main1.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/main1.png" />
             <BitmapImage x:Key="Image_Main2"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/main2.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/main2.png" />
             <BitmapImage x:Key="Image_Dip1"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/embassy1.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/embassy1.png" />
             <BitmapImage x:Key="Image_Dip2"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/embassy2.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/embassy2.png" />
             <BitmapImage x:Key="Image_Intel1"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/intel1.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/intel1.png" />
             <BitmapImage x:Key="Image_Intel2"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/intel2.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/intel2.png" />
             <BitmapImage x:Key="Image_Menu1"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/menu1.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/menu1.png" />
             <BitmapImage x:Key="Image_Menu2"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/menu2.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/menu2.png" />
             <BitmapImage x:Key="Image_Science1"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/science1.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/science1.png" />
             <BitmapImage x:Key="Image_Science2"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/science2.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/science2.png" />
             <BitmapImage x:Key="Image_Systems1"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/system1.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/system1.png" />
             <BitmapImage x:Key="Image_Systems2"
                         CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/system2.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/system2.png" />
         </Style.Resources>
         <Setter Property="LayoutTransform"
     Value="{Binding Path=MainWindow.LayoutTransform, Source={x:Static Application.Current}}" />
@@ -96,7 +96,7 @@ All other rights reserved.-->
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
-                        UriSource="vfs:///Resources/UI/Borg/ContextMenu/popup.png" />
+                        UriSource="vfs:///Resources/Specific_Empires_UI/Borg/ContextMenu/popup.png" />
                                 </Image.Source>
                             </Image>
                             <MenuItem x:Name="MenuItem_Main"
@@ -269,7 +269,7 @@ All other rights reserved.-->
         <Style.Triggers>
             <EventTrigger RoutedEvent="ContextMenu.Opened">
                 <EventTrigger.Actions>
-                    <SoundPlayerAction Source="vfs:///Resources/UI/Borg/Sounds/GameContextMenu.wav" />
+                    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Borg/Sounds/GameContextMenu.wav" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </Style.Triggers>

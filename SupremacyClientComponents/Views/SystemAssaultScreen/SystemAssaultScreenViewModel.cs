@@ -491,6 +491,7 @@ namespace Supremacy.Client.Views
         public event EventHandler SelectedTransportsCombatStrengthChanged;
 
         private int _selectedTransportsCombatStrength;
+        private string _text;
 
         public int SelectedTransportsCombatStrength
         {
@@ -566,14 +567,18 @@ namespace Supremacy.Client.Views
 
                     GroundCombatOddsValue = 100 + attack - defend;
 
-                    GameLog.Client.General.DebugFormat("SelectedTransportsCombatStrength = {0}, _defenderCombatStrength.CurrentValue = {1}, GroundCombatOdds = {2}",
-                        SelectedTransportsCombatStrength, _defenderCombatStrength.CurrentValue, GroundCombatOddsValue);
-
-                    // 
+                    GameLog.Client.SystemAssaultDetails.DebugFormat("GroundCombatOdds...");
+                    _text =
+                        "GroundCombatOdds= " + GroundCombatOddsValue
+                        + " ( Transports: " + SelectedTransportsCombatStrength
+                        + " vs DefenderStrength: " + defend
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.SystemAssaultDetails.DebugFormat(_text);
                 }
                 catch (Exception e)
                 {
-                    GameLog.Client.SystemAssault.DebugFormat("Exception {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Client.SystemAssault.ErrorFormat("Exception {0} {1}", e.Message, e.StackTrace);
                 }
 
                 //GroundCombatOddsValue = GroundCombatOddsValue / 100;
@@ -1478,7 +1483,8 @@ namespace Supremacy.Client.Views
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        // 2021-08-21: added "new" to avoid an error hint
+        protected new virtual void OnPropertyChanged(string propertyName)
         {
             _propertyChanged.Raise(this, propertyName);
         }

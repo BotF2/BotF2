@@ -178,7 +178,7 @@ namespace Supremacy.Universe
 
         bool IKeyedLookup<int, UniverseObject>.Contains(int key)
         {
-            IKeyedCollection<int, UniverseObject> @this = (IKeyedCollection<int, UniverseObject>)this;
+            IKeyedCollection<int, UniverseObject> @this = this;
 
             return @this.TryGetValue(key, out UniverseObject item);
         }

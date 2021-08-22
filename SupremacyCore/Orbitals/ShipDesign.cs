@@ -235,6 +235,7 @@ namespace Supremacy.Orbitals
                     Number.ParseInt32(element["Dilithium"].InnerText.Trim());
                 if (BuildResourceCosts[ResourceType.Dilithium] < 1)
                 {
+                    _text = Name; // Dummy entry
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: Dilithium should not be 0", Name);
                 }
             }

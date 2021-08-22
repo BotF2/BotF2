@@ -45,13 +45,12 @@ namespace Supremacy.Client.Audio
 
         private bool _isDisposed = false;
         private readonly object _updateLock = new object();
-        private IAppContext _appContext = null;
+        private readonly IAppContext _appContext = null;
         private IAudioEngine _engine = null;
         private IAudioGrouping _channelGroup = null;
         private MusicPack _musicPack = null;
         private KeyValuePair<int, MusicEntry> _musicEntry;
-        private List<IAudioTrack> _endingTracks = new List<IAudioTrack>();
-        private float _fadeTime = DefaultFadeTime;
+        private readonly List<IAudioTrack> _endingTracks = new List<IAudioTrack>();
         private readonly IObservable<long> _updateTimer = null;
         private IDisposable _updateTimerSubscription = null;
         #endregion
@@ -65,16 +64,12 @@ namespace Supremacy.Client.Audio
 
         public PlaybackMode PlayMode { get; set; } = PlaybackMode.None;
 
-        public float FadeTime
-        {
-            get => _fadeTime;
-            set => _fadeTime = value;
-        }
+        public float FadeTime { get; set; } = DefaultFadeTime;
 
         public float FadeFactor
         {
-            get => UpdateInterval / (1000.0f * _fadeTime);
-            set => _fadeTime = UpdateInterval / (1000.0f * value);
+            get => UpdateInterval / (1000.0f * FadeTime);
+            set => FadeTime = UpdateInterval / (1000.0f * value);
         }
 
         public bool IsPlaying { get; private set; } = false;
@@ -341,7 +336,7 @@ namespace Supremacy.Client.Audio
                         _musicEntry = _musicPack.Next(_musicEntry.Key);
                     }
 
-                    GameLog.Client.Audio.DebugFormat("Next at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
+                    //GameLog.Client.Audio.DebugFormat("Next at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
 
                     Play();
                 }
@@ -431,13 +426,13 @@ namespace Supremacy.Client.Audio
                 {
                     if (CurrentAudioTrack != null && CurrentAudioTrack.IsPlaying && CurrentAudioTrack.Volume < 1.0f)
                     {
-                        CurrentAudioTrack.FadeIn(FadeFactor / _fadeTime);
+                        CurrentAudioTrack.FadeIn(FadeFactor / FadeTime);
                     }
 
                     for (int i = _endingTracks.Count - 1; i >= 0; --i)
                     {
                         IAudioTrack track = _endingTracks[i];
-                        track.FadeOut(FadeFactor / _fadeTime);
+                        track.FadeOut(FadeFactor / FadeTime);
                         if (track.Volume <= 0.0f)
                         {
                             track.Dispose();

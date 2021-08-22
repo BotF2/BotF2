@@ -15,7 +15,6 @@ namespace Supremacy.VFS
     /// </summary>
     public static class VirtualFileInfoExtensions
     {
-#pragma warning disable 1591
         /// <summary>
         /// Gets a <see cref="FileSecurity"/> object that encapsulates the access control list (ACL) entries for the file.
         /// </summary>
@@ -600,6 +599,5 @@ namespace Supremacy.VFS
                 return false;
             }
         }
-#pragma warning restore 1591
     }
 }

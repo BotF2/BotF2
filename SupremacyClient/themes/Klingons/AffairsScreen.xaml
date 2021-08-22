@@ -156,7 +156,7 @@
                             <Border.Background>
                               <ImageBrush>
                                 <ImageBrush.ImageSource>
-                                  <BitmapImage UriSource="vfs:///Resources/UI/Klingons/AffairsScreen/Officers.png"/>
+                                  <BitmapImage UriSource="vfs:///Resources/Specific_Empires_UI/Klingons/AffairsScreen/Officers.png"/>
                                 </ImageBrush.ImageSource>
                               </ImageBrush>
                             </Border.Background>
@@ -221,7 +221,7 @@
                             <Border.Background>
                               <ImageBrush>
                                 <ImageBrush.ImageSource>
-                                  <BitmapImage UriSource="vfs:///Resources/UI/Klingons/AffairsScreen/InternalAffairs.png"/>
+                                  <BitmapImage UriSource="vfs:///Resources/Specific_Empires_UI/Klingons/AffairsScreen/InternalAffairs.png"/>
                                 </ImageBrush.ImageSource>
                               </ImageBrush>
                             </Border.Background>
@@ -286,7 +286,7 @@
                             <Border.Background>
                               <ImageBrush>
                                 <ImageBrush.ImageSource>
-                                  <BitmapImage UriSource="vfs:///Resources/UI/Klingons/AffairsScreen/ExternalAffairs.png"/>
+                                  <BitmapImage UriSource="vfs:///Resources/Specific_Empires_UI/Klingons/AffairsScreen/ExternalAffairs.png"/>
                                 </ImageBrush.ImageSource>
                               </ImageBrush>
                             </Border.Background>

@@ -35,7 +35,7 @@ namespace Supremacy.Client.Context
     public class AppContext : IAppContext, IDisposable
     {
         #region Fields
-        private const string DefaultMusicLibraryPath = "Resources/UI/Default/MusicPacks.xml";
+        private const string DefaultMusicLibraryPath = "Resources/Specific_Empires_UI/Default/MusicPacks.xml";
 
         //private readonly int ASpecialWidth1 = 576;
         //private readonly int ASpecialHeight1 = 480;

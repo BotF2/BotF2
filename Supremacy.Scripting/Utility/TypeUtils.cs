@@ -518,7 +518,6 @@ namespace Supremacy.Scripting.Utility
             return source == destination;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         internal static bool IsImplicitNumericConversion(Type source, Type destination)
         {
             TypeCode tcSource = Type.GetTypeCode(source);

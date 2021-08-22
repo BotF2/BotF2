@@ -163,7 +163,7 @@ namespace Supremacy.Client
 
 
                 //int _dicCount = MergedDictionaries.Count;
-                string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;888888" + Environment.NewLine;
+                string _text = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;888888" + Environment.NewLine;
                 int _allValue = 0;
                 string _text0 = Current.Resources.MergedDictionaries[0].Source.ToString();
 
@@ -178,11 +178,12 @@ namespace Supremacy.Client
                         string _text2 = key.ToString();
                         //Console.WriteLine(_text1 + "-" + _text2);
                         _allValue += +1;
-                        _allText += _text0 + ";" + _text1 + ";" + _allValue + ";" + _text2 + Environment.NewLine;
+                        _text += _text0 + ";" + _text1 + ";" + _allValue + ";" + _text2 + Environment.NewLine;
 
                     }
                 }
-                GameLog.Client.UIDetails.DebugFormat(_allText);
+                //Console.WriteLine(this._text);
+                //GameLog.Client.UIDetails.DebugFormat(_text);
             }
             catch
             {

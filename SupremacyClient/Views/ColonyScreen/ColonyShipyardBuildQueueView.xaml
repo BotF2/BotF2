@@ -29,7 +29,7 @@
                     </Grid.ToolTip>
                     <Border x:Name="ImageBorder"
                               Grid.Column="0"
-                              BorderBrush="White"
+                              BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                               BorderThickness="1"
                               CornerRadius="4"
                               Width="40"
@@ -85,9 +85,11 @@
                          DockPanel.Dock="Top"
                          Grid.Row="1"
                          ItemClicked="OnShipyardBuildQueueItemClicked"
+
                          ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildQueue}"
                          ItemTemplate="{StaticResource ShipyardBuildQueueListItemTemplate}"
                          HorizontalContentAlignment="Stretch" />
+                         <!--MouseDoubleClick="OnShipyardBuildQueueItemDoubleClicked"-->            
         </ScrollViewer>
     </DockPanel>
 </scc:ThemedUserControl>

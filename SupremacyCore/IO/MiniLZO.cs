@@ -160,7 +160,7 @@ namespace Supremacy.IO.Compression
             uint tmp;
             if (srcLength <= M2_MAX_LEN + 5)
             {
-                tmp = (uint)srcLength;
+                tmp = srcLength;
                 dstlen = 0;
             }
             else
@@ -352,7 +352,7 @@ namespace Supremacy.IO.Compression
             }
             if (tmp > 0)
             {
-                uint ii = (uint)srcLength - tmp + srcstart;
+                uint ii = srcLength - tmp + srcstart;
                 if (dstlen == 0 && tmp <= 238)
                 {
                     dst[dstlen++] = (byte)(17 + tmp);

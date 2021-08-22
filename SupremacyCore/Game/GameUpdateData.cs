@@ -116,7 +116,7 @@ namespace Supremacy.Game
 
             GameUpdateData data = new GameUpdateData();
 
-            GameLog.Server.GameData.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
+            GameLog.Server.MultiplayDetails.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
 
             GameContext.PushThreadContext(game);
             try
@@ -147,7 +147,7 @@ namespace Supremacy.Game
         #region IOwnedDataSerializable Members
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
-            GameLog.Server.GameData.DebugFormat("try to SerializeOwnedData GameUpdateData");
+            GameLog.Server.MultiplayDetails.DebugFormat("try to SerializeOwnedData GameUpdateData");
             writer.WriteOptimized(_turnNumber);
             _objects.SerializeOwnedData(writer, context);
             writer.WriteObject(_civManagers);

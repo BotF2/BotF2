@@ -65,24 +65,19 @@ namespace Supremacy.Xna
 
             backBufferFormat = DetectSurfaceFormat(deviceType);
 
-            if (adapter.CheckDepthStencilMatch(
+            depthFormat = adapter.CheckDepthStencilMatch(
                 deviceType,
                 adapter.CurrentDisplayMode.Format,
                 backBufferFormat,
-                DepthFormat.Depth24))
-            {
-                depthFormat = DepthFormat.Depth24;
-            }
-            else
-            {
-                depthFormat = adapter.CheckDepthStencilMatch(
+                DepthFormat.Depth24)
+                ? DepthFormat.Depth24
+                : adapter.CheckDepthStencilMatch(
                                 deviceType,
                                 adapter.CurrentDisplayMode.Format,
                                 backBufferFormat,
                                 DepthFormat.Depth16)
                     ? DepthFormat.Depth16
                     : DepthFormat.Unknown;
-            }
         }
 
         public static GraphicsDeviceManager CreateDeviceManager(XnaComponent owner)

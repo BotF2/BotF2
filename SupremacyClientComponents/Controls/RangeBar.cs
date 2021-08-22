@@ -197,16 +197,11 @@ namespace Supremacy.Client.Controls
                 return;
             }
 
-            if (position.X < 0)
-            {
-                Value = Minimum;
-            }
-            else
-            {
-                Value = position.X > RenderSize.Width
+            Value = position.X < 0
+                ? Minimum
+                : position.X > RenderSize.Width
                     ? Maximum
                     : Math.Round(Minimum + (position.X / RenderSize.Width * (Maximum - Minimum)), Precision);
-            }
 
             if (!BindingOperations.IsDataBound(this, ValueProperty))
             {

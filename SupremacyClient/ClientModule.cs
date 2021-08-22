@@ -47,7 +47,7 @@ namespace Supremacy.Client
         public const string ModuleName = "Supremacy.Client.ClientModule";
 
         #region Fields
-        private const string MusicThemeBasePath = "Resources/UI";
+        private const string MusicThemeBasePath = "Resources/Specific_Empires_UI";
         private const string MusicPackFileName = "MusicPacks.xml";
 
         private readonly IClientApplication _app;
@@ -102,6 +102,8 @@ namespace Supremacy.Client
         private readonly DelegateCommand<SavedGameHeader> _deleteManualSavedGameCommand;
         private readonly DelegateCommand<object> _showCreditsDialogCommand;
         private readonly DelegateCommand<object> _showSettingsFileCommand;
+        private readonly DelegateCommand<object> _showPlayersHistoryFileCommand;
+        private readonly DelegateCommand<object> _showAllHistoryFileCommand;
         private readonly DelegateCommand<MultiplayerConnectParameters> _joinMultiplayerGameCommand;
         private readonly DelegateCommand<string> _hostMultiplayerGameCommand;
         private readonly DelegateCommand<bool> _exitCommand;
@@ -202,6 +204,8 @@ namespace Supremacy.Client
             _deleteManualSavedGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteDeleteManualSavedGameCommand);
             _showCreditsDialogCommand = new DelegateCommand<object>(ExecuteShowCreditsDialogCommand);
             _showSettingsFileCommand = new DelegateCommand<object>(ExecuteShowSettingsFileCommand);
+            _showPlayersHistoryFileCommand = new DelegateCommand<object>(ExecuteShowPlayersHistoryFileCommand);
+            _showAllHistoryFileCommand = new DelegateCommand<object>(ExecuteShowAllHistoryFileCommand);
             _joinMultiplayerGameCommand = new DelegateCommand<MultiplayerConnectParameters>(ExecuteJoinMultiplayerGameCommand);
             _hostMultiplayerGameCommand = new DelegateCommand<string>(ExecuteHostMultiplayerGameCommand);
         }
@@ -452,7 +456,142 @@ namespace Supremacy.Client
             //MessageBox.Show(_restText);
 
         }
+
+        private void ExecuteShowPlayersHistoryFileCommand(object obj)
+        {
+            if (GameContext.Current == null || GameContext.Current.TurnNumber == 1)
+                return;
+
+            string file = Path.Combine(
+                ResourceManager.GetResourcePath(""),
+                "PlayersHistory.txt");
+            file = file.Replace(".\\", "");
+            //string _text1;
+
+            
+
+            StreamWriter streamWriter = new StreamWriter(file);
+            streamWriter.Write(_resultText);
+            streamWriter.Close();
+
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            {
+                _ = new FileStream(
+                    file,
+                    FileMode.Open,
+                    FileAccess.Read);
+
+                //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
+                if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                {
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
+
+                    try { _ = Process.Start(processStartInfo); }
+                    catch { _ = MessageBox.Show("Could not load Text-File about Players History"); }
+                }
+            }
+        }
+
+        private void ExecuteShowAllHistoryFileCommand(object obj)
+        {
+            if (GameContext.Current == null || GameContext.Current.TurnNumber == 1)
+            {
+                return;
+            }
+
+            string file = Path.Combine(
+                ResourceManager.GetResourcePath(".\\lib"),
+                "AllHistory");
+            //file = file.Replace(".\\", "");
+            //string _text1;
+            _text = "";
+
+            foreach (var civ in GameContext.Current.CivilizationManagers)
+            {
+
+                var _hist = civ._civHist_List.ToList();
+                _text += newline;
+
+                foreach (var item in _hist)
+                {
+
+                    _text +=
+                          //newline + "   " + 
+                          "Civ+Turn:;_" + item.CivIDHistAndTurn
+
+                        + ";Research;" + item.ResearchHist
+
+                        + ";IntelProd;" + item.IntelProdHist
+
+                        + ";IDef;" + item.IDefHist
+                        + ";IAtt;" + item.IAttHist
+
+                        + ";Dil;" + item.DilithiumHist
+                        + ";Deut;" + item.DeuteriumHist
+                        + ";Dur;" + item.DuraniumHist
+                        + ";Morale:;" + item.MoraleHist
+                        + ";Col:; " + item.ColoniesHist
+                        + ";Pop:; " + item.PopulationHist
+
+                        + ";Credits; " + item.CreditsHist
+                        //+ ";Change;" + item.Credits.CurrentChange  // always 0
+                        + ";LT; " + item.CreditsHist_LT
+                        + ";Maint; " + item.CreditsHist_Maint
+
+                        //+ ";for;" + item.Civilization.CivilizationType + ";"
+
+                        + ";" + item.CivKeyHist
+                        + ";" + item.CivIDHist
+                        //+ ";" + item.c
+                        + newline
+                        ;
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
+                }
+            }
+
+            StreamWriter streamWriter = new StreamWriter(file + ".csv");
+            streamWriter.Write(_text);
+            streamWriter.Close();
+            Thread.Sleep(500);
+
+            //finally
+            file += ".txt";
+            StreamWriter streamWriter2 = new StreamWriter(file);
+            streamWriter2.Write(_text);
+            streamWriter2.Close();
+
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            {
+                _ = new FileStream(
+                    file,
+                    FileMode.Open,
+                    FileAccess.Read);
+
+                //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
+                if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                {
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
+
+                    try { _ = Process.Start(processStartInfo); }
+                    catch { _ = MessageBox.Show("Could not load Text-File about Players History"); }
+                }
+            }
+
+            Thread.Sleep(1500);
+            string fileCSV_BAT = Path.Combine(
+                ResourceManager.GetResourcePath(".\\lib"),
+                "AllHistoryCSV.bat");
+            if (!string.IsNullOrEmpty(fileCSV_BAT) && File.Exists(fileCSV_BAT))
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = fileCSV_BAT };
+
+                try { _ = Process.Start(processStartInfo); }
+                catch { _ = MessageBox.Show("Could not load Text-File about Players History"); }
+            }
+        }
         #endregion
+
 
         #region Methods
         private void Exit(bool showConfirmation)
@@ -880,6 +1019,8 @@ namespace Supremacy.Client
             _errorTxtCommand.IsActive = true;
             _showCreditsDialogCommand.IsActive = true;
             _showSettingsFileCommand.IsActive = true;
+            _showPlayersHistoryFileCommand.IsActive = true;
+            _showAllHistoryFileCommand.IsActive = true;
             _startSinglePlayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _joinMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _hostMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
@@ -1093,6 +1234,8 @@ namespace Supremacy.Client
             ClientCommands.SaveGameDeleteManualSaved.RegisterCommand(_deleteManualSavedGameCommand);
             ClientCommands.ShowCreditsDialog.RegisterCommand(_showCreditsDialogCommand);
             ClientCommands.ShowSettingsFileCommand.RegisterCommand(_showSettingsFileCommand);
+            ClientCommands.ShowPlayersHistoryFileCommand.RegisterCommand(_showPlayersHistoryFileCommand);
+            ClientCommands.ShowAllHistoryFileCommand.RegisterCommand(_showAllHistoryFileCommand);
             ClientCommands.Exit.RegisterCommand(_exitCommand);
         }
         private void ExecuteSP_DirectlyGameCommand(int _id)

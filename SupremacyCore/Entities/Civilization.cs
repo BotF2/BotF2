@@ -201,7 +201,7 @@ namespace Supremacy.Entities
                 ushort convRatio = Number.ParseUInt16(indConvRation);
                 if (convRatio > 0)
                 {
-                    _industryToCreditsConversionRatio = (float)convRatio / 100.0f;
+                    _industryToCreditsConversionRatio = convRatio / 100.0f;
                 }
             }
 

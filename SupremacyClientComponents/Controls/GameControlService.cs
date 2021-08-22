@@ -544,7 +544,7 @@ namespace Supremacy.Client.Controls
                         string label = GetLabel(element);
                         if (!string.IsNullOrEmpty(label))
                         {
-                            object oldForeground = (object)TextElement.GetForeground(element);
+                            object oldForeground = TextElement.GetForeground(element);
                             FrameworkElement frameworkElement = element as FrameworkElement;
                             if ((!element.IsEnabled) && (frameworkElement != null))
                             {

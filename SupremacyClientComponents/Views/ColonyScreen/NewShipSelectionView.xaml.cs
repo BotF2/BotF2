@@ -69,7 +69,7 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        public string ShipFunctionPath => "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
+        public string ShipFunctionPath => "vfs:///Resources/Specific_Empires_UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
 
         public int SpecialWidth1 => Context.DesignTimeAppContext.Instance.ASpecialWidth1;// ActualWidthProperty;
         public int SpecialHeight1 => Context.DesignTimeAppContext.Instance.ASpecialHeight1;

@@ -151,17 +151,7 @@ namespace Supremacy.Universe
                         return Credits;
                     }
 
-                    Colony colony;
-
-                    if (SourceColony.OwnerID == empire.CivID)
-                    {
-                        colony = SourceColony;
-                    }
-                    else
-                    {
-                        colony = TargetColony.OwnerID == empire.CivID ? TargetColony : null;
-                    }
-
+                    Colony colony = SourceColony.OwnerID == empire.CivID ? SourceColony : TargetColony.OwnerID == empire.CivID ? TargetColony : null;
                     if (colony == null)
                     {
                         GameLog.Core.General.DebugFormat("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);

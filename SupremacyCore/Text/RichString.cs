@@ -85,10 +85,10 @@ namespace Supremacy.Text
                     length,
                     string.Format(
                         "The substring (offset={2}, length={3}) must fall within the parent RichText string of length {1}, “{0}”.",
-                        (object)richtext.Text,
-                        (object)parentLength,
-                        (object)offset,
-                        (object)length));
+                        richtext.Text,
+                        parentLength,
+                        offset,
+                        length));
             }
 
             _offset = offset;
@@ -130,10 +130,10 @@ namespace Supremacy.Text
             throw new ArgumentOutOfRangeException(
                 string.Format(
                     "The substring (offset={2}, length={3}) must fall within the parent RichText string of length {1}, “{0}”.",
-                    (object)RichText.Text,
-                    (object)parentLength,
-                    (object)_offset,
-                    (object)_length));
+                    RichText.Text,
+                    parentLength,
+                    _offset,
+                    _length));
         }
 
         public void Dump(XmlWriter writer)

@@ -448,8 +448,6 @@ namespace Supremacy.Client.Controls
         /// <summary>
         /// Initializes the <c>InlineWindow</c> class.
         /// </summary>
-        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling"),
-         SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static InlineWindow()
         {
             // Override default properties

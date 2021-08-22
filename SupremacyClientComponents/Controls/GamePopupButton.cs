@@ -119,7 +119,6 @@ namespace Supremacy.Client.Controls
             remove { RemoveHandler(PopupOpeningEvent, value); }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static PopupButtonBase()
         {
             PopupControlService.HasPopupProperty.OverrideMetadata(typeof(PopupButtonBase), new FrameworkPropertyMetadata(true));
@@ -378,7 +377,6 @@ namespace Supremacy.Client.Controls
 
         #endregion
 
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static GamePopupButton()
         {
             ClickModeProperty.OverrideMetadata(typeof(GamePopupButton), new FrameworkPropertyMetadata(ClickMode.Press));

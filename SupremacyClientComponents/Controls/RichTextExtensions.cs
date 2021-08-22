@@ -39,12 +39,12 @@ namespace Supremacy.Client.Controls
             Span span = new Span();
             int length = -1;
             IStack<Span> stack = ImmutableStack<Span>.Empty;
-            Uri currentUri = (Uri)null;
+            Uri currentUri = null;
 
             foreach (RichString part in richText.GetFormattedParts())
             {
                 string substring = richText.Text.Substring(part.Offset, part.Length);
-                Inline inline = (Inline)null;
+                Inline inline = null;
 
                 System.Collections.Generic.IList<Uri> linkData = richText.GetUserData<Uri>(part.Offset, part.Offset + part.Length);
 
@@ -139,7 +139,7 @@ namespace Supremacy.Client.Controls
                     inline.Background = part.Style.Background;
                 }
 
-                Pen pen = (Pen)null;
+                Pen pen = null;
 
                 if (part.Style.EffectBrush != null && part.Style.EffectBrush != part.Style.Foreground)
                 {

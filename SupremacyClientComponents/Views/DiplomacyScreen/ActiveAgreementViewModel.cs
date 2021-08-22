@@ -47,8 +47,8 @@ namespace Supremacy.Client.Views
                                        {
                                            new RuntimeScriptParameter(_descriptionParameters[0], _agreement.Proposal.Sender),
                                            new RuntimeScriptParameter(_descriptionParameters[1], _agreement.Proposal.Recipient),
-                                           new RuntimeScriptParameter(_descriptionParameters[2], (int)_agreement.StartTurn),
-                                           new RuntimeScriptParameter(_descriptionParameters[3], (int)_agreement.EndTurn),
+                                           new RuntimeScriptParameter(_descriptionParameters[2], _agreement.StartTurn),
+                                           new RuntimeScriptParameter(_descriptionParameters[3], _agreement.EndTurn),
                                        };
 
             UpdateDescription();
@@ -238,15 +238,13 @@ namespace Supremacy.Client.Views
             {
                 leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionGift : DiplomacyStringID.ActiveAgreementDescriptionGiftNoDuration;
             }
-            else if (proposal.IsDemand())
-            {
-                leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionDemand : DiplomacyStringID.ActiveAgreementDescriptionDemandNoDuration;
-            }
             else
             {
-                leadInId = !proposal.HasTreaty()
-                    ? hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionExchange : DiplomacyStringID.ActiveAgreementDescriptionExchangeNoDuration
-                    : hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionTreaty : DiplomacyStringID.ActiveAgreementDescriptionTreatyNoDuration;
+                leadInId = proposal.IsDemand()
+                    ? hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionDemand : DiplomacyStringID.ActiveAgreementDescriptionDemandNoDuration
+                    : !proposal.HasTreaty()
+                                    ? hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionExchange : DiplomacyStringID.ActiveAgreementDescriptionExchangeNoDuration
+                                    : hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionTreaty : DiplomacyStringID.ActiveAgreementDescriptionTreatyNoDuration;
             }
 
             _descriptionScript.ScriptCode = DiplomacyMessageViewModel.QuoteString(

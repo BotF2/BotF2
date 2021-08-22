@@ -53,8 +53,8 @@ namespace Supremacy.Xna
             _hdrEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_HDR");
 
             // Initialize our buffers
-            float width = (float)graphicsDevice.PresentationParameters.BackBufferWidth;
-            float height = (float)graphicsDevice.PresentationParameters.BackBufferHeight;
+            float width = graphicsDevice.PresentationParameters.BackBufferWidth;
+            float height = graphicsDevice.PresentationParameters.BackBufferHeight;
 
             // Two buffers we'll swap between, so we can adapt the luminance            
             _currentFrameLuminance = new RenderTarget2D(

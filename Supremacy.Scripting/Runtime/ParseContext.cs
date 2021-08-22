@@ -352,16 +352,11 @@ namespace Supremacy.Scripting.Runtime
                 : ns.TryGetValue((SymbolId)name, out tracker);
             if (found)
             {
-                if (tracker is NamespaceTracker namespaceTracker)
-                {
-                    fne = new NamespaceExpression(namespaceTracker);
-                }
-                else
-                {
-                    fne = tracker is TypeGroup typeGroup
+                fne = tracker is NamespaceTracker namespaceTracker
+                    ? new NamespaceExpression(namespaceTracker)
+                    : (FullNamedExpression)(tracker is TypeGroup typeGroup
                         ? new TypeExpression(typeGroup.GetTypeForArity(genericArity).Type, location)
-                        : new TypeExpression(((TypeTracker)tracker).Type);
-                }
+                        : new TypeExpression(((TypeTracker)tracker).Type));
             }
 
             if (fne != null)

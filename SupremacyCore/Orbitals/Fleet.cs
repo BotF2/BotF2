@@ -64,14 +64,9 @@ namespace Supremacy.Orbitals
 
                 if (_ships.Count == 1)
                 {
-                    if (_ships[0].IsCloaked == true)
-                    {
-                        _NameString = _ships[0].Name + " " + ResourceManager.GetString("CLOAKED");
-                    }
-                    else
-                    {
-                        _NameString = _ships[0].IsCamouflaged == true ? _ships[0].Name + " " + ResourceManager.GetString("CAMOUFLAGED") : _ships[0].Name;
-                    }
+                    _NameString = _ships[0].IsCloaked == true
+                        ? _ships[0].Name + " " + ResourceManager.GetString("CLOAKED")
+                        : _ships[0].IsCamouflaged == true ? _ships[0].Name + " " + ResourceManager.GetString("CAMOUFLAGED") : _ships[0].Name;
                 }
 
                 if (_ships.Count > 1)
@@ -1059,6 +1054,6 @@ namespace Supremacy.Orbitals
 
         public int ActivityStart { get; private set; }
 
-        public int ActivityDuration => Activity != UnitActivity.NoActivity ? (int)(GameContext.Current.TurnNumber - ActivityStart) : 0;
+        public int ActivityDuration => Activity != UnitActivity.NoActivity ? GameContext.Current.TurnNumber - ActivityStart : 0;
     }
 }

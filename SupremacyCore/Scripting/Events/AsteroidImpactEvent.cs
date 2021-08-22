@@ -34,9 +34,9 @@ namespace Supremacy.Scripting.Events
             _affectedProjects = new List<BuildProject>();
 
             // keep the following to avoid error messages while "Build"
-            bool fake;
-            fake = _productionFinished;
-            fake = _shipProductionFinished;
+            //bool fake;
+            //fake = _productionFinished;
+            //fake = _shipProductionFinished;
         }
 
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;

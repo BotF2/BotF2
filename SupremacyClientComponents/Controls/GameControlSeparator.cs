@@ -117,7 +117,6 @@ namespace Supremacy.Client.Controls
 
         #endregion
 
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static GameControlSeparator()
         {
             DefaultStyleKeyProperty.OverrideMetadata(

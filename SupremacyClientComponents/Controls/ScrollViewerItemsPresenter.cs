@@ -7,7 +7,6 @@ namespace Supremacy.Client.Controls
 {
     public class ScrollViewerItemsPresenter : ItemsPresenter
     {
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static ScrollViewerItemsPresenter()
         {
             KeyboardNavigation.IsTabStopProperty.OverrideMetadata(

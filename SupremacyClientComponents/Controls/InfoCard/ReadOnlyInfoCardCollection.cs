@@ -53,7 +53,6 @@ namespace Supremacy.Client.Controls
             }
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers")]
         public InfoCard this[Guid uniqueId]
         {
             get

@@ -157,12 +157,12 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
 
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
-
-            //                                                      CheatMenu uses CTRL + C
+            
+                        //                                                      CheatMenu uses CTRL + C
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
             //InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control))); - see above - from Mike
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowPlayersHistoryFileCommand, Key.H, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.I, ModifierKeys.Control));
             //InputBindings.Add(new KeyBinding(ClientCommands.ShowShipOverview, Key.D1, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.LogTxtCommand, Key.L, ModifierKeys.Control));
@@ -176,12 +176,17 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(ClientCommands.FakeCommand, Key.F11, ModifierKeys.Control));
 
 
-            //ALT
+            // Modifier "Shift" - not supported by some unknown reason
+
+
+            // Modifier "ALT"
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowAllHistoryFileCommand, Key.H, ModifierKeys.Alt));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Alt));
 
             //CommandBindings
-
             _ = CommandBindings.Add(
                 new CommandBinding(
                     ClientCommands.EscapeCommand,
@@ -231,7 +236,7 @@ namespace Supremacy.Client
                             heapSize,
                             GC.GetTotalMemory(false));
 
-                        GameLog.Client.GameData.DebugFormat(
+                        GameLog.Client.General.DebugFormat(
                             "[working set [{0:#,#,} K -> {1:#,#,} K], managed heap [{2:#,#,} K -> {3:#,#,} K]]",
                             workingSet,
                             process.WorkingSet64,

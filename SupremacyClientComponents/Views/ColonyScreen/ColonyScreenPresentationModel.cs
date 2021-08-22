@@ -358,9 +358,14 @@ namespace Supremacy.Client.Views
                 {
                     return;
                 }
-
-                _addToShipyardBuildQueueCommand = value;
-                OnAddToShipyardBuildQueueCommandChanged();
+                int _howMany = 5;
+                for (int i = 0; i < _howMany; i++)
+                {
+                    _addToShipyardBuildQueueCommand = value;
+                    OnAddToShipyardBuildQueueCommandChanged();
+                }
+                //_addToShipyardBuildQueueCommand = value;
+                //OnAddToShipyardBuildQueueCommandChanged();
             }
         }
         #endregion
