@@ -32,6 +32,7 @@ namespace Supremacy.Resources
         private static readonly StringTable _defaultStrings;
         private static readonly GameMod _commandLineMod;
         private static readonly IVfsService _vfsService;
+        private static string _text;
 
         public static string WorkingDirectory { get; private set; }
 
@@ -49,6 +50,7 @@ namespace Supremacy.Resources
                 GameContext gameContext = GameContext.Peek();
                 if (gameContext != null)
                 {
+                    _text += _text + gameContext.GameMod.ToString(); // Dummy, do not remove
                     return gameContext.GameMod;
                 }
                 //GameLog.Print("GameMod CurrentMod is null");
@@ -100,6 +102,11 @@ namespace Supremacy.Resources
 
             _defaultStrings = StringTable.Load(
                 GetResourcePath(@"Resources\Data\" + NeutralLocale + ".txt"));
+
+            //for (int i = 0; i < _defaultStrings.Keys.Count; i++)
+            //{
+            //    _text = _defaultStrings.Keys.[i]
+            //}
 
             if (CurrentLocale == NeutralLocale)
             {

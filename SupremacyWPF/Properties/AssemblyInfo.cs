@@ -47,8 +47,8 @@ using System.Windows.Markup;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2021.17.0.2")]
-[assembly: AssemblyFileVersion("2021.17.0.2")]
+[assembly: AssemblyVersion("1.7.0.3")]
+[assembly: AssemblyFileVersion("1.7.0.3")]
 
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]
 [assembly: XmlnsDefinition("http://schemas.startreksupremacy.com/xaml/core", "Supremacy.Client")]

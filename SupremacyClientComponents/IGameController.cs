@@ -1,4 +1,4 @@
-// IGameController.cs
+// File:IGameController.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -32,6 +32,11 @@ using Supremacy.Game;
 using System.Linq;
 using Supremacy.Client.Context;
 using Supremacy.Utility;
+using System.IO;
+using System.Reflection;
+using Supremacy.Resources;
+using System.Diagnostics;
+using System.Windows;
 
 namespace Supremacy.Client
 {
@@ -73,6 +78,7 @@ namespace Supremacy.Client
         private bool _isDisposed;
         private bool _firstTurnStarted;
         private string _text;
+        private readonly string newline = Environment.NewLine;
 
         public GameController(
             [NotNull] IUnityContainer container,
@@ -392,15 +398,30 @@ namespace Supremacy.Client
 
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
+            _text = "";
             foreach (var item in _sitRepDialog.SitRepEntries)
             {
-                _text = "Turn;" + GameContext.Current.TurnNumber
+                _text += newline + "Turn;" + GameContext.Current.TurnNumber
                     + ";" + item.Priority
                     + ";" + item.SummaryText
-
+                    //+ newline
                     ;
-                GameLog.Core.SitReps.InfoFormat(_text);
             }
+            GameLog.Core.SitReps.InfoFormat(_text);
+
+            SaveSUMMARY_TXT(_text);
+            //// \lib\_SUMMARY.txt
+            //string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //string file = appDir + "\\lib\\" + "_SUMMARY.txt";
+
+            ////if (!File.Exists(file))
+            ////{
+            ////    //streamWriter;
+            //    StreamWriter streamWriter = new StreamWriter(file);
+            //    streamWriter.WriteLine(_text);
+            //    streamWriter.Close();
+            ////}
+
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
@@ -419,6 +440,83 @@ namespace Supremacy.Client
             }
         }
 
+        private void SaveSUMMARY_TXT(string _text)
+        {
+            if (GameContext.Current == null || GameContext.Current.TurnNumber == 1)
+            {
+                return;
+            }
+
+            string file = Path.Combine(
+                ResourceManager.GetResourcePath(".\\lib"),
+                "_SUMMARY");
+        //file = file.Replace(".\\", "");
+        //string _text1;
+        //_text = "";
+
+        nextTry:
+            try
+            {
+            StreamWriter streamWriter = new StreamWriter(file + ".csv");
+            streamWriter.Write(_text);
+            streamWriter.Close();
+            Thread.Sleep(500);
+            }
+            catch
+            {
+                //string _ask = 
+                MessageDialogResult result = MessageDialog.Show(
+                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE"),
+                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE") 
+                    + " " + file
+                    + " " + ResourceManager.GetString("RETRY_QUESTION"),
+                    MessageDialogButtons.YesNo);
+                if (result == MessageDialogResult.Yes)
+                {
+                    goto nextTry;
+                }
+            }
+
+
+            //finally
+            file += ".txt";
+            StreamWriter streamWriter2 = new StreamWriter(file);
+            streamWriter2.Write(_text);
+            streamWriter2.Close();
+
+            bool autoOpenSummaryTxt = false;
+            if (autoOpenSummaryTxt)
+            {
+                if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                {
+                    _ = new FileStream(
+                        file,
+                        FileMode.Open,
+                        FileAccess.Read);
+
+                    //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
+                    if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                    {
+                        ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
+
+                        try { _ = Process.Start(processStartInfo); }
+                        catch { _ = MessageBox.Show("Could not load Text-File about SUMMARY"); }
+                    }
+                }
+
+                Thread.Sleep(1500);
+                string fileCSV_BAT = Path.Combine(
+                    ResourceManager.GetResourcePath(".\\lib"),
+                    "_SUMMARY.bat");
+                if (!string.IsNullOrEmpty(fileCSV_BAT) && File.Exists(fileCSV_BAT))
+                {
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = fileCSV_BAT };
+
+                    try { _ = Process.Start(processStartInfo); }
+                    catch { _ = MessageBox.Show("Could not load Text-File about SUMMARY"); }
+                }
+            }
+        }
 
         private void ClearTurnWaitCursor()
         {

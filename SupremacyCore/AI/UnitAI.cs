@@ -1379,8 +1379,8 @@ namespace Supremacy.AI
                         foreach (var item in objectsAlongCenterAxis)
                         {
                             _text = item.Location
-                                + item.Name
-                                + item.ObjectID
+                                + " " + item.Name
+                                + " " + item.ObjectID
 
                                 ;
                             Console.WriteLine(_text);
@@ -1398,6 +1398,9 @@ namespace Supremacy.AI
 
                         try
                         {
+                            _text = "try objectsAlongCenterAxis... for fleet" + fleet.ObjectID + " " + fleet.Name + " " + fleet.ClassName;
+                            Console.WriteLine(_text);
+
                             objectsAlongCenterAxis.Sort((a, b) =>
                            GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
                            .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));

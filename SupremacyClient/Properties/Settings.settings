@@ -170,7 +170,6 @@
     <Setting Name="TracesXML2VSCOutput" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <!--Details-->
     <Setting Name="TracesAIDetails" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -274,6 +273,9 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="TracesXML2VSCOutputDetails" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TracesSystemAssaultDetailsDetails" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

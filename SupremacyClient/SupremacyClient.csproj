@@ -258,11 +258,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="f_Pages\f08_Dialog.xaml.cs">
-      <DependentUpon>f08_Dialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="f_Pages\f09_Dialog.xaml.cs">
       <DependentUpon>f09_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Dialog.xaml.cs">
+      <DependentUpon>f08_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_1.xaml.cs">
+      <DependentUpon>f08_Tab_1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_2.xaml.cs">
+      <DependentUpon>f08_Tab_2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_3.xaml.cs">
+      <DependentUpon>f08_Tab_3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_4.xaml.cs">
+      <DependentUpon>f08_Tab_4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_5.xaml.cs">
+      <DependentUpon>f08_Tab_5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_6.xaml.cs">
+      <DependentUpon>f08_Tab_6.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_7.xaml.cs">
+      <DependentUpon>f08_Tab_7.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_8.xaml.cs">
+      <DependentUpon>f08_Tab_8.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f08_Dialog\f08_Tab_9.xaml.cs">
+      <DependentUpon>f08_Tab_9.xaml</DependentUpon>
     </Compile>
     <Compile Include="f_Pages\f11_Dialog\f11_Dialog.xaml.cs">
       <DependentUpon>f11_Dialog.xaml</DependentUpon>
@@ -451,11 +478,47 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f08_Dialog.xaml">
+    <Page Include="f_Pages\f09_Dialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f09_Dialog.xaml">
+    <Page Include="f_Pages\f08_Dialog\f08_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_5.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_6.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_7.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_8.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f08_Dialog\f08_Tab_9.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

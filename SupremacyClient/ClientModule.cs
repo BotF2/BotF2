@@ -760,6 +760,18 @@ namespace Supremacy.Client
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GraphicsOptionsPage));  // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GeneralOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
+
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_1));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_2));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_3));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_4));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_5));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_6));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_7));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_8));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_9));
+
+
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_1));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_2));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_3));

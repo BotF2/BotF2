@@ -3270,7 +3270,7 @@ namespace Supremacy.Client
 
                 if (value)
                 {
-                    value = false;
+                    //value = false;
                     // "General" shows the Log.txt-lines for all the others
                     //SetValue(TracesGeneralProperty, true); 
                     GameLog.SetRepositoryToDebug("General");

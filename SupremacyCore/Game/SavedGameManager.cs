@@ -28,11 +28,13 @@ namespace Supremacy.Game
     public static class SavedGameManager
     {
         public const string AutoSaveFileName = ".autosav";
+        private static readonly string newline=Environment.NewLine;
 
         public static string SavedGameDirectory
         {
             get
             {
+
                 string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames_V", Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 _text = _text.Replace("V\\", "V");
                 _text = _text.Replace(".\\", "");
@@ -337,20 +339,28 @@ namespace Supremacy.Game
 
         public static bool SaveGameDeleteManualSaved()
         {
-            string fileName = Path.Combine(SavedGameDirectory, FixFileName("_manual_save(CTRL+S).sav"));
+            string file = Path.Combine(Environment.CurrentDirectory + "\\" + SavedGameDirectory, FixFileName("_manual_save_(CTRL+S).sav"));
+
+            //ResourceManager.GetString("Do you really want to delete > ")
+            var result = MessageBox.Show(
+                "ALT+S: Do you really want to delete > "
+                + " " + file,"REALLY ?",
+                MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No)
+            {
+                return false;
+            }
 
             try
             {
-
-
-                if (File.Exists(fileName))
+                if (File.Exists(file))
                 {
-                    File.Delete(fileName);
-                    _ = MessageBox.Show("Deleted: " + fileName);
+                    File.Delete(file);
+                    _ = MessageBox.Show("Deleted: " + file + newline + "Create again with CTRL+S");
                     return true;
                 }
             }
-            catch { _ = MessageBox.Show("Problem at deleting: " + fileName); ; return false; }
+            catch { _ = MessageBox.Show("Problem at deleting: " + file); ; return false; }
             return false;
         }
 
