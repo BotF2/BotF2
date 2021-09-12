@@ -83,9 +83,9 @@ namespace Supremacy.Client
 
                 value = DiplomacyHelper.GetForeignPowerStatus(appContext.LocalPlayer.Empire, civ);
             }
-            else if (value is ForeignPowerStatus)
+            else if (value is ForeignPowerStatus status)
             {
-                switch ((ForeignPowerStatus)value)
+                switch (status)
                 {
                     case ForeignPowerStatus.OwnerIsSubjugated:
                     case ForeignPowerStatus.CounterpartyIsSubjugated:

@@ -858,6 +858,8 @@ namespace Supremacy.Game
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 
+                string _text; 
+
                 ScriptedEventDatabase scriptedEventDatabase = ScriptedEventDatabase.Load();
 
                 string _eventOptionsGameLogText = "";
@@ -920,6 +922,9 @@ namespace Supremacy.Game
                 {
                     foreach (Colony colony in civManager.Colonies)
                     {
+                        _text = "Generating HomeSystems...";
+                        Console.WriteLine(_text + " > " + colony.Name);
+                        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
                         // get the home system settings
                         Civilization civ = colony.Owner;
 

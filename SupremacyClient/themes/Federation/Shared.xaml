@@ -118,7 +118,7 @@
                        Fill="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
                         <!--Fill="{StaticResource GrayDarkGradient_Top_Bottom}" />    o r Orange-->
                         <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
-                                     Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}">
+                                     Background="{StaticResource {x:Static scc:ClientResources.ControlDisabledBorderBrushKey}}">
                             <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
                         </scc:PixelSnappingBorder>
                     </Grid>

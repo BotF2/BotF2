@@ -36,9 +36,9 @@ namespace Supremacy.Economy
         public Meter Deuterium => _values[(int)ResourceType.Deuterium];
 
         /// <summary>
-        /// Gets the Raw Materials stockpile.
+        /// Gets the DURANIUM stockpile.
         /// </summary>
-        /// <value>The Raw Materials stockpile.</value>
+        /// <value>The DURANIUM stockpile.</value>
         public Meter Duranium => _values[(int)ResourceType.Duranium];
 
         /// <summary>

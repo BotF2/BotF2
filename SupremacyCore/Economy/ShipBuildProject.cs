@@ -21,7 +21,7 @@ namespace Supremacy.Economy
     [Serializable]
     public class ShipBuildProject : BuildProject
     {
-        private int _shipyardId;
+        private readonly int _shipyardId;
 
         /// <summary>
         /// Gets the description of the ship under construction.
@@ -54,15 +54,15 @@ namespace Supremacy.Economy
         public int DeuteriumUsed => ResourcesInvested[ResourceType.Deuterium];
 
         /// <summary>
-        /// Gets the raw materials needed.
+        /// Gets the DURANIUM needed.
         /// </summary>
-        /// <value>The raw materials needed.</value>
+        /// <value>The DURANIUM needed.</value>
         public int DuraniumNeeded => ResourcesRequired[ResourceType.Duranium];
 
         /// <summary>
-        /// Gets the raw materials used.
+        /// Gets the DURANIUM used.
         /// </summary>
-        /// <value>The raw materials used.</value>
+        /// <value>The DURANIUM used.</value>
         public int DuraniumUsed => ResourcesInvested[ResourceType.Duranium];
 
         public bool HasDuraniumShortage
@@ -125,7 +125,7 @@ namespace Supremacy.Economy
     [Serializable]
     public class ShipUpgradeProject : ShipBuildProject
     {
-        private int _upgradeTargetId;
+        private readonly int _upgradeTargetId;
 
         //private bool _shipUpgradeProjectTracing = true;
 

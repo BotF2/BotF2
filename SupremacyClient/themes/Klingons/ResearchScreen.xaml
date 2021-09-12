@@ -216,7 +216,7 @@
               <TextBlock Text="{s:StringResource Key=PROGRESS}"/>
                           <TextBlock Text=": "/>
               <!--<TextBlock Text="{Binding Path=CurrentProject.Application.ResearchCost}"/>-->
-              <TextBlock Text="{Binding Path=Progress}"/>
+              <TextBlock Foreground="Yellow" Text="{Binding Path=Progress}"/>
               <!--<TextBlock Text="{s:StringResource Key=AT}"/>
               <TextBlock Text="{Binding Path=TechLevel}"/>   Level is the reached one, not the current 'in progress'-->   
           </TextBlock>

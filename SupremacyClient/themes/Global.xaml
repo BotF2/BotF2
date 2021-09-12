@@ -61,7 +61,27 @@
     <SolidColorBrush Color="#FFFB6B1F" x:Key="WarningBrush" />
     <SolidColorBrush Color="#ffe7d490" x:Key="BeigeTextBrush" />
     <SolidColorBrush Color="#ff70A3D0" x:Key="GlobalBlueBrush"/>
-    
+
+    <!-- Usage: ="{StaticResource DilithiumColor}"-->
+    <SolidColorBrush Color="Pink" x:Key="DilithiumColor"/>
+    <SolidColorBrush Color="SkyBlue" x:Key="DeuteriumColor"/>
+    <SolidColorBrush Color="Silver" x:Key="DuraniumColor"/>
+
+    <SolidColorBrush Color="Aqua" x:Key="RankingColor"/>
+
+    <SolidColorBrush Color="Goldenrod" x:Key="PopulationColor"/>
+    <SolidColorBrush Color="SkyBlue" x:Key="HealthColor"/>
+    <SolidColorBrush Color="Aquamarine" x:Key="InhabitantsColor"/> <!--not impelmented yet-->
+    <SolidColorBrush Color="SandyBrown" x:Key="MaintColor"/>
+
+
+    <!--<SolidColorBrush Color="Blue" x:Key="ResearchColor"/>--> 
+    <SolidColorBrush Color="LightGreen" x:Key="FoodColor"/> <!--not impelmented yet - Race specific color used-->
+    <SolidColorBrush Color="SlateGray" x:Key="IndustryColor"/><!--not impelmented yet - Race specific color used-->
+    <SolidColorBrush Color="Goldenrod" x:Key="EnergyColor"/><!--not impelmented yet - Race specific color used-->
+    <SolidColorBrush Color="CornflowerBlue" x:Key="ResearchColor"/>
+    <SolidColorBrush Color="Gray" x:Key="IntelColor"/>
+
     <!--unused-->
     <SolidColorBrush Color="#ff70A3D0" x:Key="unused_Global_1" />
     <SolidColorBrush Color="#FF47478e" x:Key="unused_Global_2" />

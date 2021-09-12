@@ -177,7 +177,7 @@
               <TextBlock Text="{s:StringResource Key=RESEARCH_PROGRESS}"/>
                           <TextBlock Text=": "/>
               <!--<TextBlock Text="{Binding Path=CurrentProject.Application.ResearchCost}"/>-->
-              <TextBlock Text="{Binding Path=Progress}"/>
+              <TextBlock Text="{Binding Path=Progress}" Foreground="Red"/>
           </TextBlock>
           <!--<ToggleButton DockPanel.Dock="Right"
                         Focusable="False"

@@ -316,7 +316,7 @@ namespace Supremacy.Tech
         /// </summary>
         DilithiumBonus = 0x00800000,
         /// <summary>
-        /// A Raw Materials source must be present in the star system.
+        /// A DURANIUM source must be present in the star system.
         /// </summary>
         DuraniumBonus = 0x01000000,
         /// <summary>

@@ -396,13 +396,16 @@ namespace Supremacy.Orbitals
             get
             {
                 int scanStrength = 0;
-                foreach (Ship ship in Ships)
+                if (Ships.Count > 0)
                 {
-                    if (ship.ShipDesign.ScanStrength > scanStrength)
+                    foreach (Ship ship in Ships)
                     {
-                        scanStrength = ship.ShipDesign.ScanStrength;
+                        if (ship.ShipDesign.ScanStrength > scanStrength)
+                        {
+                            scanStrength = ship.ShipDesign.ScanStrength;
+                        }
                     }
-                }
+            }
                 return scanStrength;
             }
         }

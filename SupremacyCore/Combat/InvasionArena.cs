@@ -230,6 +230,11 @@ namespace Supremacy.Combat
         {
             Orbital orbital = Source;
 
+            if (orbital == null)
+            {
+                return;
+            }
+
             if (IsDestroyed)
             {
                 orbital.Destroy();

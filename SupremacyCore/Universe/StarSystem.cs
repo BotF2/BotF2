@@ -72,10 +72,10 @@ namespace Supremacy.Universe
         public bool HasDilithiumBonus => (_bonuses & SystemBonus.Dilithium) == SystemBonus.Dilithium;
 
         /// <summary>
-        /// Gets a value indicating whether this instance has a Raw Materials bonus.
+        /// Gets a value indicating whether this instance has a DURANIUM bonus.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance has a Raw Materials bonus; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance has a DURANIUM bonus; otherwise, <c>false</c>.
         /// </value>
         public bool HasDuraniumBonus => (_bonuses & SystemBonus.Duranium) == SystemBonus.Duranium;
 

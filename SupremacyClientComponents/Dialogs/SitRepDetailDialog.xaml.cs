@@ -19,19 +19,15 @@ namespace Supremacy.Client.Dialogs
         private SitRepDetailDialog(SitRepEntry sitRepEntry)
         {
             _sitRepEntry = sitRepEntry;
-            if (sitRepEntry == null)
-            {
-                throw new ArgumentNullException("sitRepEntry");
-            }
 
-            GameLog.Core.SitReps.InfoFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
-                , sitRepEntry.Owner
-                , sitRepEntry.HeaderText
-                , sitRepEntry.HasSoundEffect
-                , GameContext.Current.TurnNumber
-                );
+            //GameLog.Core.SitReps.InfoFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
+            //    , sitRepEntry.Owner
+            //    , sitRepEntry.HeaderText
+            //    , sitRepEntry.HasSoundEffect
+            //    , GameContext.Current.TurnNumber
+            //    );
 
-            DataContext = sitRepEntry;
+            DataContext = sitRepEntry ?? throw new ArgumentNullException("sitRepEntry");
             InitializeComponent();
 
             if (_sitRepEntry.DetailImage == null)

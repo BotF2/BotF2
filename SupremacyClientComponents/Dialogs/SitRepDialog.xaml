@@ -106,6 +106,10 @@
                     <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_yellow_red.png" />
                 </DataTrigger>
 
+                <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="Yellow">
+                    <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_yellow.png" />
+                </DataTrigger>
+
                 <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="BlueDark">
                     <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_blue_dark.png" />
                 </DataTrigger>

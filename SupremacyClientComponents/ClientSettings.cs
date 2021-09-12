@@ -1832,7 +1832,7 @@ namespace Supremacy.Client
             typeof(bool),
             typeof(ClientSettings),
             new FrameworkPropertyMetadata(
-                false,
+                true,
                 FrameworkPropertyMetadataOptions.None));
 
         public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesSitRepsChanged;

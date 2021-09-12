@@ -155,10 +155,10 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            if (!fleet.HasTroopTransports)
-            {
-                return false;
-            }
+            //if (!fleet.HasTroopTransports)
+            //{
+            //    return false;
+            //}
 
             StarSystem system = GameContext.Current.Universe.Map[fleet.Location].System;
             if (system == null || !system.IsInhabited)
@@ -417,11 +417,11 @@ namespace Supremacy.Orbitals
                 //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
                 //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
 
-                _text = "we provided through " + Fleet.Name + " (Medical Ship): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " (before: " + oldHealth + ")";
-                GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _text));
+                _text = Fleet.Location + " > " + Fleet.Name + " (our Medical Ship) provided help: new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
+                GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
 
-                _text = "we got by " + Fleet.Name + " (" + Fleet.Owner.ShortName + " Medical Ship): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " (before: " + oldHealth + ")";
-                GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _text));
+                _text = Fleet.Location + " > We got medical help from " + Fleet.Name + " ( " + Fleet.Owner.ShortName + " Medical Ship ): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
+                GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
             }
 
             //If the colony is not ours, just doing small medical help + increase regard + trust etc

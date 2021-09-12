@@ -319,7 +319,14 @@ namespace Supremacy.Client
             if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
                 double fileSize = new FileInfo(errorFile).Length;
-                if (fileSize == 0) { _ = MessageBox.Show("Error.txt is empty - nothing to load"); return; }
+                _text = "Error.txt is empty - nothing to load"
+                    + newline
+                    + newline + "> see file > 'Error-txt - First Run.txt'"
+                    + newline + "> on start: rename 'SupremacyClient..Settings.xaml' ... will be re-created"
+                    + newline
+                    + newline + "> NOW please shot down the program... sorry"
+                    ;
+                if (fileSize == 0) { _ = MessageBox.Show(_text); return; }
                 if (fileSize < 0) { _ = MessageBox.Show("Could not load Error.txt"); return; }
 
                 ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = errorFile };
@@ -530,6 +537,7 @@ namespace Supremacy.Client
                         + ";Deut;" + item.DeuteriumHist
                         + ";Dur;" + item.DuraniumHist
                         + ";Morale:;" + item.MoraleHist
+                        + ";MoraleG:;" + item.MoraleGlobalHist
                         + ";Col:; " + item.ColoniesHist
                         + ";Pop:; " + item.PopulationHist
 
@@ -561,12 +569,13 @@ namespace Supremacy.Client
             streamWriter2.Write(_text);
             streamWriter2.Close();
 
+            // this blocks following bat file "*.txt" already in usage
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
-                _ = new FileStream(
-                    file,
-                    FileMode.Open,
-                    FileAccess.Read);
+                //_ = new FileStream(
+                //    file,
+                //    FileMode.Open,
+                //    FileAccess.Read);
 
                 //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
                 if (!string.IsNullOrEmpty(file) && File.Exists(file))
@@ -578,7 +587,7 @@ namespace Supremacy.Client
                 }
             }
 
-            Thread.Sleep(1500);
+            //Thread.Sleep(1500);
             string fileCSV_BAT = Path.Combine(
                 ResourceManager.GetResourcePath(".\\lib"),
                 "AllHistoryCSV.bat");

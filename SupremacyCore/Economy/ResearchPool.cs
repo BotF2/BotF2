@@ -403,12 +403,15 @@ namespace Supremacy.Economy
                     ;
             //distributionSummary += "- Gained = " + researchPoints;
 
-            if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
-            {
-                civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, distributionSummary));  // Percentage each field
-                civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));  // Points each field
+            //if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
+            //{
+                //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, distributionSummary));  // Percentage each field
+                //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));  // Points each field
 
-            }
+                civManager.SitRepEntries.Add(new Report_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
+                civManager.SitRepEntries.Add(new Report_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
+
+            //}
 
             _cumulativePoints.UpdateAndReset();
             //GameLog.Client.ResearchDetails.InfoFormat("UpdatingResearch...DONE");

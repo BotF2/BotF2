@@ -104,5 +104,21 @@ namespace Supremacy.Client.Views
 
             DialogResult = true;
         }
+
+        //private void OnBuildProjectHowManyChanged(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (!(e.OriginalSource is DependencyObject source))
+        //    {
+        //        return;
+        //    }
+
+        //    ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
+        //    if (contanier == null)
+        //    {
+        //        return;
+        //    }
+
+        //    DialogResult = true;
+        //}
     }
 }

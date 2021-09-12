@@ -68,6 +68,7 @@ namespace Supremacy.WCF
         private int _isProcessingTurn;
         private GameEngine _gameEngine;
         private IDisposable _heartbeat;
+        private string _text;
         #endregion
 
         #region Constructors
@@ -526,7 +527,7 @@ namespace Supremacy.WCF
 
                 }
 
-                GameLog.Server.General.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
+                GameLog.Server.GeneralDetails.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
 
                 stopwatch.Restart();
             OH:
@@ -536,7 +537,7 @@ namespace Supremacy.WCF
                 }
                 catch (Exception)
                 {
-                    GameLog.Core.General.DebugFormat("Hit await, ************** issue #398 *******************");
+                    GameLog.Core.GeneralDetails.DebugFormat("Hit await, ************** issue #398 *******************");
                     Thread.Sleep(0050);
                     goto OH;
                 }
@@ -618,7 +619,7 @@ namespace Supremacy.WCF
             GameUpdateMessage message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
             TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
-            GameLog.Server.GameData.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
+            GameLog.Server.GameDataDetails.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
 
             IDisposable subscription = Observable
                 .ToAsync(() => callback.NotifyGameDataUpdated(message), _scheduler)()
@@ -1686,7 +1687,7 @@ namespace Supremacy.WCF
                 if (_alreadyDidCivAsAI == null || _alreadyDidCivAsAI != invasionArena.Invader)
                 {
                     _alreadyDidCivAsAI = invasionArena.Invader;
-                    GameLog.Client.AI.DebugFormat("_alreadyDidCivAsAI = {0}", invasionArena.Invader.Key);
+                    GameLog.Client.SystemAssaultDetails.DebugFormat("_alreadyDidCivAsAI = {0}", invasionArena.Invader.Key);
                     if (_invasionEngine == null)
                     {
                         _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
@@ -1705,7 +1706,21 @@ namespace Supremacy.WCF
 
                 if (_invasionEngine != null)
                 {
-                    _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                    try
+                    {
+                        _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                    }
+                    catch (Exception)
+                    {
+                        _text =
+                            "SystemAssault doesn't work - "
+                            + invasionArena.Colony.Name
+                            + invasionArena.Colony.Location
+                            ;
+                        Console.WriteLine(_text);
+                        //throw;
+                    }
+                
                 }
 
                 doneOnceAlready = true;

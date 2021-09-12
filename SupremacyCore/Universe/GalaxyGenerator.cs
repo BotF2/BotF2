@@ -891,7 +891,7 @@ namespace Supremacy.Universe
             }
 
             /*
-             * Dilithium and Raw Materials System Bonuses
+             * Dilithium and DURANIUM System Bonuses
              */
             if (system.IsInhabited && system.Colony.Owner.CanExpand)
             {

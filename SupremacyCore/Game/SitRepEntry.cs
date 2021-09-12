@@ -28,6 +28,11 @@ namespace Supremacy.Game
     /// </summary>
     public enum SitRepPriority
     {
+
+        /// <summary>
+        /// A special event, like a battle, or an event.
+        /// </summary>
+        Blue,        
         /// <summary>
         /// A green situation report entry reflects a normal or informal status message.
         /// </summary>
@@ -40,10 +45,6 @@ namespace Supremacy.Game
         /// A red siutation report entry reflects a urgend status message. The play must react.
         /// </summary>
         Red,
-        /// <summary>
-        /// A special event, like a battle, or an event.
-        /// </summary>
-        Blue,
         /// <summary>
         /// A special event, like a battle, or an event.
         /// </summary>
@@ -2179,25 +2180,25 @@ namespace Supremacy.Game
 
     //TODO: This needs fleshing out a bit more - needs a definite pop up,
     // image of graveyard or something
-    [Serializable]
-    public class PopulationDiedSitRepEntry : SitRepEntry
-    {
-        private readonly MapLocation _loc;
-        private readonly string _note;
-        public PopulationDiedSitRepEntry(Civilization owner, MapLocation loc, string note) : base(owner)//, SitRepPriority.Red)
-        {
-            _loc = loc; _note = note;
-        }
+    //[Serializable]
+    //public class PopulationDiedSitRepEntry : SitRepEntry
+    //{
+    //    private readonly MapLocation _loc;
+    //    private readonly string _note;
+    //    public PopulationDiedSitRepEntry(Civilization owner, MapLocation loc, string note) : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        _loc = loc; _note = note;
+    //    }
 
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => _note;
-        public override bool IsPriority => true;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
+    //    public override bool IsPriority => true;
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     //TODO: This needs fleshing out. Need a definite popup,
     //image with something to do with medical or death
@@ -2763,26 +2764,26 @@ namespace Supremacy.Game
     //    public override SitRepPriority Priority { get; set; }
     //}
 
-    [Serializable]
-    public class ShipAssimilatedSitRepEntry : SitRepEntry
-    {
-        private readonly string _note;
-        private readonly MapLocation _loc;
+    //[Serializable]
+    //public class ShipAssimilatedSitRepEntry : SitRepEntry
+    //{
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
 
-        public ShipAssimilatedSitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner)//, SitRepPriority.Purple)
-        { _loc = loc; _note = Note; }
+    //    public ShipAssimilatedSitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner)//, SitRepPriority.Purple)
+    //    { _loc = loc; _note = Note; }
 
-        public string Note => _note;
-        public override SitRepCategory Categories => SitRepCategory.Military;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => _note;
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Military;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
 
-        public override SitRepPriority Priority { get; set; }
-    }
-    // End of SitRepEntry
+    //    public override SitRepPriority Priority { get; set; }
+    //}
+    //// End of SitRepEntry
 
     [Serializable]
     public class ShipDestroyedInWormholeSitRepEntry : SitRepEntry
@@ -2801,45 +2802,45 @@ namespace Supremacy.Game
     }
     // End of SitRepEntry
 
-    [Serializable]
-    public class ShipMedicalHelpProvidedSitRepEntry : SitRepEntry
-    {
-        private readonly MapLocation _location;
-        private readonly string _note;
-        public ShipMedicalHelpProvidedSitRepEntry(Civilization owner, MapLocation location, string note) : base(owner)//, SitRepPriority.Blue)
-        { _location = location; _note = note; }
-        //public string Note => _note;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_location];
-        public override SitRepCategory Categories => SitRepCategory.General;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_SHIP_MEDICAL_HELP_PROVIDED"), _location, _note);
+    //[Serializable]
+    //public class ShipMedicalHelpProvidedSitRepEntry : SitRepEntry
+    //{
+    //    private readonly MapLocation _location;
+    //    private readonly string _note;
+    //    public ShipMedicalHelpProvidedSitRepEntry(Civilization owner, MapLocation location, string note) : base(owner)//, SitRepPriority.Blue)
+    //    { _location = location; _note = note; }
+    //    //public string Note => _note;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_location];
+    //    public override SitRepCategory Categories => SitRepCategory.General;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_SHIP_MEDICAL_HELP_PROVIDED"), _location, _note);
 
-        public override SitRepPriority Priority { get; set; }
-    }
-    // End of SitRepEntry
+    //    public override SitRepPriority Priority { get; set; }
+    //}
+    //// End of SitRepEntry
 
-    [Serializable]
-    public class ShipStatusSitRepEntry : SitRepEntry
-    {
-        private readonly string _note;
-        private readonly MapLocation _location;
+    //[Serializable]
+    //public class ShipStatusSitRepEntry : SitRepEntry
+    //{
+    //    private readonly string _note;
+    //    private readonly MapLocation _location;
 
-        public ShipStatusSitRepEntry(Civilization owner, MapLocation location, string Note) : base(owner)//, SitRepPriority.Pink)
-        { _location = location; _note = Note; }
+    //    public ShipStatusSitRepEntry(Civilization owner, MapLocation location, string Note) : base(owner)//, SitRepPriority.Pink)
+    //    { _location = location; _note = Note; }
 
-        public string Note => _note;
-        public override SitRepCategory Categories => SitRepCategory.Military;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_location];
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => _note;
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Military;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_location];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
 
-        public override SitRepPriority Priority { get; set; }
-    }
-    // End of SitRepEntry
+    //    public override SitRepPriority Priority { get; set; }
+    //}
+    //// End of SitRepEntry
 
     //[Serializable]
     //public class ShipSummarySitRepEntry : SitRepEntry

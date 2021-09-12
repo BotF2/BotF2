@@ -80,7 +80,7 @@
 
             <ColumnDefinition MaxWidth="3" />
             <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn8" />
-            <!--Industry + Raw Materials-->            
+            <!--Industry + DURANIUM-->            
             <ColumnDefinition MaxWidth="3" />
             <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn9" />
             
@@ -334,7 +334,7 @@
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
                   Label="{Binding Path=NetDilithium}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOLTIP}" />
-      <TextBlock Text="RAW MATERIALS ="
+      <TextBlock Text="DURANIUM ="
                   Grid.Row="2" Grid.Column="14"
                   HorizontalAlignment="Right"/>
       <scc:GameLabel Grid.Column="16"

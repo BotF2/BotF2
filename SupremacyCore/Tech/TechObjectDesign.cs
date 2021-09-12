@@ -372,9 +372,9 @@ namespace Supremacy.Tech
         }
 
         /// <summary>
-        /// Gets or sets the raw materials cost of an object of this design.
+        /// Gets or sets the DURANIUM cost of an object of this design.
         /// </summary>
-        /// <value>The raw materials.</value>
+        /// <value>The DURANIUM.</value>
         public int Duranium
         {
             get => BuildResourceCosts[ResourceType.Duranium];

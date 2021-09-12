@@ -399,10 +399,16 @@ namespace Supremacy.Client
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
             _text = "";
-            foreach (var item in _sitRepDialog.SitRepEntries)
+            foreach (SitRepEntry item in _sitRepDialog.SitRepEntries)
             {
+                string _prio = item.Priority.ToString();
+                while (_prio.Length < 10)  // length 10 for better reading
+                {
+                    _prio += " ";
+                }
+
                 _text += newline + "Turn;" + GameContext.Current.TurnNumber
-                    + ";" + item.Priority
+                    + ";" + _prio
                     + ";" + item.SummaryText
                     //+ newline
                     ;

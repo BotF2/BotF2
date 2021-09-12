@@ -498,7 +498,8 @@ namespace Supremacy.UI
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            _laborBar.SetValue(Grid.ColumnProperty, 2);
+            _laborBar.SetValue(Grid.ColumnProperty, 1);
+            _laborBar.SetValue(Grid.ColumnSpanProperty, 4);
             _laborBar.SetValue(Grid.RowProperty, 5);
             _laborBar.VerticalAlignment = VerticalAlignment.Top;
             _laborBar.Margin = new Thickness(0, rowSpacing * 2, 0, rowSpacing);
@@ -508,7 +509,7 @@ namespace Supremacy.UI
             _laborBar.Foreground = Brushes.Red;
 
             _laborPoolText = new TextBlock();
-            _laborPoolText.SetValue(Grid.ColumnProperty, 1);
+            _laborPoolText.SetValue(Grid.ColumnProperty, 0);
             _laborPoolText.SetValue(Grid.RowProperty, 5);
             _laborPoolText.VerticalAlignment = VerticalAlignment.Top;
             _laborPoolText.HorizontalAlignment = HorizontalAlignment.Right;

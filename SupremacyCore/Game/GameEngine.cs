@@ -8,6 +8,7 @@
 
 using Supremacy.AI;
 using Supremacy.Annotations;
+using Supremacy.Buildings;
 using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Data;
@@ -43,6 +44,7 @@ namespace Supremacy.Game
         public string blank = " ";
         public readonly List<CivValue> CivValueList = new List<CivValue>();
         public readonly List<CivRank> CivRankList = new List<CivRank>();
+        public List<int> moraleBuildingsID = new List<int>();
         public string newline = Environment.NewLine;
         public int AAASpecialWidth1;
         public int AAASpecialHeight1;
@@ -53,8 +55,13 @@ namespace Supremacy.Game
         private string _owner;
         private int _r_Credits_BestValue;
         private int _r_Credits_Average_5;
-        private int _r_maint_BestValue;
-        private int _r_maint_Average_5;
+        private int _r_Maint_BestValue;
+        private int _r_Maint_Average_5;
+        private int _r_Research_BestValue;
+        private int _r_Research_Average_5;
+        private int _r_IntelAttack_BestValue;
+        private int _r_IntelAttack_Average_5;
+        private int _globalMorale;
 
         //private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
@@ -1437,7 +1444,8 @@ namespace Supremacy.Game
                             + " " + colony.Name
                             + " > Population have died from illness, and the colony has been lost.";
 
-                            civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(colony.Owner, colony.Sector.Location, _note));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _note, "", "", SitRepPriority.Red));
+                            //civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(colony.Owner, colony.Sector.Location, _note));
                             colony.Destroy();
                             civManager.EnsureSeatOfGovernment();
                             return;
@@ -1563,7 +1571,23 @@ namespace Supremacy.Game
                         {
                             continue;
                         }
-                    }
+                    
+
+                    int healthBonus = (from building in colony.Buildings
+                                       where building.IsActive
+                                       from bonus in building.BuildingDesign.Bonuses
+                                       where bonus.BonusType == BonusType.PercentPopulationHealth
+                                       select bonus.Amount).Sum();
+                        //int _healthPlus = colony.Health; * healthBonus;
+
+                        if (healthBonus > 0)
+                        {
+                            healthBonus = 1 + (healthBonus / 10);
+                        colony.Health.AdjustCurrent(healthBonus);
+                        colony.Health.UpdateAndReset();
+                        }
+
+                }
 
                     civManager.EnsureSeatOfGovernment();
                 }
@@ -2201,6 +2225,8 @@ namespace Supremacy.Game
 
                         _coloniesToDo -= 1;  // counting down ... do not double minus like '-= -1'
 
+                        //if(colony.Morale < 50)
+
                         string prevProject = "";
 
                         //See if there is actually anything to build for this colony
@@ -2252,6 +2278,8 @@ namespace Supremacy.Game
                             //: string.Format(
                             //ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
                             //Colony.Name, Colony.Location);
+
+                            _text = "2-" + _text;
                             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
                             //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
                         }
@@ -2274,6 +2302,9 @@ namespace Supremacy.Game
                                     ;
                             }
 
+                            if (_colonyBuildProject_SameTurn > 6)
+                                break;
+
 
                             //Check to see if the colony has reached the limit for this building
                             if (TechTreeHelper.IsBuildLimitReached(colony, colony.BuildSlots[0].Project.BuildDesign))
@@ -2283,8 +2314,8 @@ namespace Supremacy.Game
                                 break;
                             }
 
-                            if (colony.BuildSlots[0].Project.IsPaused) { }
-                            //TODO: Not sure how to handle this
+                            if (colony.BuildSlots[0].Project.IsPaused) { break; }
+                            //TODO: Not sure how to handle this > break
 
                             GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "       Turn {8}: Income TradeRoute={4}, Tax={3}, Deuterium={5}, Dilithium={6}, Duranium={7} available for {0} before construction of {1} on {2}" + Environment.NewLine,
                                 civ.Name,
@@ -2305,15 +2336,17 @@ namespace Supremacy.Game
                             if (colony.BuildSlots[0].Project.IsRushed)
                             {
                                 // Rushing a project should have no impact on the industry of colony (since it's all been paid for)
-                                int tmpIndustry = colony.BuildSlots[0].Project.GetCurrentIndustryCost();
+                                int tmpIndustry = 3 * colony.BuildSlots[0].Project.GetCurrentIndustryCost();
                                 ResourceValueCollection tmpResources = new ResourceValueCollection
                                 {
                                     [ResourceType.Deuterium] = 999999,
                                     [ResourceType.Dilithium] = 999999,
                                     [ResourceType.Duranium] = 999999
                                 };
-                                _ = civManager.Credits.AdjustCurrent(colony.BuildSlots[0].Project.GetTotalCreditsCost());
+                                _ = civManager.Credits.AdjustCurrent(colony.BuildSlots[0].Project.GetTotalCreditsCost() * 3);
+
                                 colony.BuildSlots[0].Project.Advance(ref tmpIndustry, tmpResources);
+                                
                                 GameLog.Core.ProductionDetails.DebugFormat("Turn {4}: BUY: {0} credits applied to {1} on {2} ({3})",
                                     tmpIndustry,
                                     colony.BuildSlots[0].Project.BuildDesign.Name,
@@ -2321,6 +2354,8 @@ namespace Supremacy.Game
                                     civ.Name,
                                     GameContext.Current.TurnNumber
                                     );
+
+                                
                             }
                             else
                             {
@@ -2410,7 +2445,7 @@ namespace Supremacy.Game
                             //Console.WriteLine(_text);
                             //GameLog.Core.Production.DebugFormat(_text);
                             _text = string.Format(
-                        ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
+                        ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
                         colony.Name, colony.Location);
                             //? string.Format(
                             //    ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
@@ -2539,6 +2574,17 @@ namespace Supremacy.Game
                                   GameLog.Core.ShipProductionDetails.DebugFormat(/*Environment.NewLine + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ Environment.NewLine*/,
                                       deuteriumUsed, dilithiumUsed, duraniumUsed, slot.Project, colony, GameContext.Current.TurnNumber, colony.Owner);
 
+                                  _text = colony.Location
+                                  + " " + colony.Name
+                                  + " > Shipyard-Slot " + slot.SlotID
+                                  + ":  " + slot.Project.BuildDesign
+                                  + "  is " + slot.Project.PercentComplete
+                                  + " complete "
+                                  ;
+
+                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Gray));
+
+
                                   if (slot.Project.IsCompleted)
                                   {
                                       GameLog.Core.ShipProductionDetails.DebugFormat("Turn {4}: {0} in Shipyard Slot {1} on {2} ({3}) is finished",
@@ -2553,7 +2599,7 @@ namespace Supremacy.Game
                                   }
                                   else
                                   {
-                                      //if there is a gap for raw materials than code would go into never ending loop without the break
+                                      //if there is a gap for DURANIUM than code would go into never ending loop without the break
                                       break;
                                   }
                               }
@@ -2592,6 +2638,9 @@ namespace Supremacy.Game
                           {
                               globalMorale += bonus.Amount;
                           }
+                          // EmpireWide Morale > see CivHistory
+                          //_text = "EmpireWide Morale = "
+                          //GameLog.Core.Production.DebugFormat(_text);
                       }
 
                       /* Iterate through each colony. */
@@ -2608,6 +2657,43 @@ namespace Supremacy.Game
                                              select bonus.Amount).Sum();
 
                           _ = colony.Morale.AdjustCurrent(colonyBonus);
+
+                          if (colony.Morale.CurrentValue < 50)
+                          {
+                              _ = colony.Morale.AdjustCurrent(1);
+
+                              moraleBuildingsID = (List<int>)(from building in colony.Buildings
+                                                 where building.IsActive 
+                                                 from bonus in building.BuildingDesign.Bonuses
+                                                 where bonus.BonusType == BonusType.Morale
+                                                 select building.ObjectID).ToList()
+                                                 ;
+
+                              foreach (var objID in moraleBuildingsID)
+                              {
+                                  var b = GameContext.Current.Universe.Objects[objID] as Building;
+                                  b.IsActive = false;
+                                  _text = b.Location
+                                    + b.Sector.Name
+                                    + " > "
+                                    + b.Name
+                                    + "was de-activated due to low morale level"
+                                    ;
+                                  Console.WriteLine(_text);
+                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, colony, _text, "", "", SitRepPriority.Red));
+                                  
+                                  //if (b.)
+                                  //{
+
+                                  //}
+                              }
+
+                          }
+
+                          if (colony.Morale.CurrentValue < 25)
+                          {
+                              _ = colony.Morale.AdjustCurrent(1);  // another 1 + 1 from 50 = +2
+                          }
 
                           /*
                            * If morale has not changed in this colony for any reason, then we will
@@ -2804,7 +2890,7 @@ namespace Supremacy.Game
                   catch (Exception e)
                   {
 
-                      GameLog.Core.Production.DebugFormat(string.Format("DoTrade failed for {0}",
+                      GameLog.Core.ProductionDetails.DebugFormat(string.Format("DoTrade failed for {0}",
                           civ.Name),
                           e);
                   }
@@ -3073,9 +3159,11 @@ namespace Supremacy.Game
             //List<CivRank> rankLists = new List<CivRank>();
             foreach (CivilizationManager civ in GameContext.Current.CivilizationManagers)
             {
-                _ = int.TryParse(civ.Credits.ToString(), out int cred);
-                _ = int.TryParse(civ.MaintenanceCostLastTurn.ToString(), out int maint);
-                CivRankList.Add(new CivRank(civ.Civilization.Key, cred, maint));
+                _ = int.TryParse(civ.Credits.ToString(), out int _cred);
+                _ = int.TryParse(civ.MaintenanceCostLastTurn.ToString(), out int _maint);
+                _ = int.TryParse(civ.Research.CumulativePoints.ToString(), out int _research);
+                _ = int.TryParse(civ.TotalIntelligenceAttackingAccumulated.ToString(), out int _intelAttack);
+                CivRankList.Add(new CivRank(civ.Civilization.Key, _cred, _maint, _research, _intelAttack));
                     
                     //);
                 
@@ -3104,22 +3192,62 @@ namespace Supremacy.Game
             // Ranking Maintenance = Military Power
             List<CivRank> r_maintList = CivRankList.OrderByDescending(o => o.R_MAINT).ToList();
             PrintCivRank(r_maintList);
-            _r_maint_BestValue = r_maintList[0].R_MAINT;
+            _r_Maint_BestValue = r_maintList[0].R_MAINT;
             if (r_maintList.Count > 6)
             {
-                _r_maint_Average_5 = r_maintList[1].R_MAINT  // first = [0] already know, so average of place 2 - 6
+                _r_Maint_Average_5 = r_maintList[1].R_MAINT  // first = [0] already know, so average of place 2 - 6
                     + r_maintList[2].R_MAINT
                     + r_maintList[3].R_MAINT
                     + r_maintList[4].R_MAINT
                     + r_maintList[5].R_MAINT
                     ;
-                _r_maint_Average_5 /= 5;
+                _r_Maint_Average_5 /= 5;
             }
             else
             {
-                _r_maint_Average_5 = 99999;
+                _r_Maint_Average_5 = 99999;
             }
             r_maintList.Clear();
+
+            // Ranking Research Total Points
+            List<CivRank> r_researchList = CivRankList.OrderByDescending(o => o.R_RESEARCH).ToList();
+            PrintCivRank(r_researchList);
+            _r_Research_BestValue = r_researchList[0].R_RESEARCH;
+            if (r_researchList.Count > 6)
+            {
+                _r_Research_Average_5 = r_researchList[1].R_RESEARCH  // first = [0] already know, so average of place 2 - 6
+                    + r_researchList[2].R_RESEARCH
+                    + r_researchList[3].R_RESEARCH
+                    + r_researchList[4].R_RESEARCH
+                    + r_researchList[5].R_RESEARCH
+                    ;
+                _r_Research_Average_5 /= 5;
+            }
+            else
+            {
+                _r_Research_Average_5 = 99999;
+            }
+            r_researchList.Clear();
+
+            // Ranking Intel Attack Power = 70% of Intel Production
+            List<CivRank> r_intelAttackList = CivRankList.OrderByDescending(o => o.R_INTEL_ATTACK).ToList();
+            PrintCivRank(r_intelAttackList);
+            _r_IntelAttack_BestValue = r_intelAttackList[0].R_INTEL_ATTACK;
+            if (r_intelAttackList.Count > 6)
+            {
+                _r_IntelAttack_Average_5 = r_intelAttackList[1].R_INTEL_ATTACK  // first = [0] already know, so average of place 2 - 6
+                    + r_intelAttackList[2].R_INTEL_ATTACK
+                    + r_intelAttackList[3].R_INTEL_ATTACK
+                    + r_intelAttackList[4].R_INTEL_ATTACK
+                    + r_intelAttackList[5].R_INTEL_ATTACK
+                    ;
+                _r_IntelAttack_Average_5 /= 5;
+            }
+            else
+            {
+                _r_IntelAttack_Average_5 = 99999;
+            }
+            r_intelAttackList.Clear();
 
             //var allCivs = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
             foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
@@ -3151,6 +3279,14 @@ namespace Supremacy.Game
                 PrintCivRank(r_maintList);
                 int _rankingMaintPositon = 1 + r_maintList.FindIndex(o => o.CIV_KEY == civManager.Civilization.Key); // +1: 1 = Place 2
 
+                r_researchList = CivRankList.OrderByDescending(o => o.R_RESEARCH).ToList();
+                PrintCivRank(r_researchList);
+                int _rankingResearchPositon = 1 + r_researchList.FindIndex(o => o.CIV_KEY == civManager.Civilization.Key); // +1: 1 = Place 2
+
+                r_intelAttackList = CivRankList.OrderByDescending(o => o.R_INTEL_ATTACK).ToList();
+                PrintCivRank(r_intelAttackList);
+                int _rankingIntelAttackPositon = 1 + r_intelAttackList.FindIndex(o => o.CIV_KEY == civManager.Civilization.Key); // +1: 1 = Place 2
+
                 //CivHistory = logging civs value from turn 1 (and once making curves like in BotF)
 
                 //CivValue for comparing civs in current turn
@@ -3166,6 +3302,8 @@ namespace Supremacy.Game
                     , civManager.TotalIntelligenceProduction
                     , _rankingCreditsPositon
                     , _rankingMaintPositon
+                    //, _rankingResearchPositon
+                    //, _rankingIntelAttackPositon
                     );
 
                 _text = "Empire"
@@ -3173,11 +3311,8 @@ namespace Supremacy.Game
                     + ": Col>" + civManager.Colonies.Count
                     + ", Pop>" + _totalPopulation
                     + "/ Mor>" + civManager.AverageMorale
-
-
                     //+ "+" + civManager.Credits.CurrentChange
-                    + ", Res> " + civManager.Research.CumulativePoints.LastChange
-                    + ", Int> " + civManager.TotalIntelligenceProduction
+
                     + ", Dil> " + civManager.Resources.Dilithium.CurrentValue
                     + " /" + civManager.Resources.Dilithium.LastChange
                     + ", Deu> " + civManager.Resources.Deuterium.CurrentValue
@@ -3185,7 +3320,10 @@ namespace Supremacy.Game
                     + ", Dur> " + civManager.Resources.Duranium.CurrentValue
                     + " /" + civManager.Resources.Duranium.LastChange
 
-                    + " , Maint." + civManager.MaintenanceCostLastTurn
+                    + ", Res> " + civManager.Research.CumulativePoints.LastChange
+                    + ", Int> " + civManager.TotalIntelligenceProduction
+
+                    + " , Maint. " + civManager.MaintenanceCostLastTurn
                     + ", Credits> " + civManager.Credits.CurrentValue
                     + " / " + civManager.Credits.LastChange
 
@@ -3208,19 +3346,31 @@ namespace Supremacy.Game
                     + ", Deu> " + col.NetDeuterium
                     + ", Dur> " + col.NetDuranium
 
-                    + ", Food> " + col.FoodReserves
-                    + " / " + col.FoodReserves.LastChange
-                    + ", Ind> " + col.NetIndustry
-                    + ", En> " + col.NetEnergy
                     + ", Res> " + col.NetResearch
                     + ", Int> " + col.NetIntelligence
+
+                    + ", Ind> " + col.NetIndustry
+                    + ", En> " + col.NetEnergy
+
+
+                    + ", Food> " + col.FoodReserves
+                    + " / " + col.FoodReserves.LastChange
 
                     + "  for " + col.Name
                     ;
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, col.Location, _text, "", "", SitRepPriority.Brown));
                 }
 
-                
+                foreach (Bonus bonus in civManager.GlobalBonuses)
+                {
+                    if (bonus.BonusType == BonusType.MoraleEmpireWide)
+                    {
+                        _globalMorale += bonus.Amount;
+                    }
+                    // EmpireWide Morale > see CivHistory
+                    //_text = "EmpireWide Morale = "
+                    //GameLog.Core.Production.DebugFormat(_text);
+                }
 
                 civManager.AddCivHist(civManager.CivilizationID
                     , civManager.Civilization.Key
@@ -3231,6 +3381,7 @@ namespace Supremacy.Game
                     , civManager.Colonies.Count
                     , _totalPopulation
                     , civManager.AverageMorale
+                    , _globalMorale
                     , civManager.Resources.Dilithium.CurrentValue
                     , civManager.Resources.Deuterium.CurrentValue
                     , civManager.Resources.Duranium.CurrentValue
@@ -3240,13 +3391,17 @@ namespace Supremacy.Game
                     , _totalIDef
                     , _totalIAtt
                     , _rankingCreditsPositon
+                    , _rankingMaintPositon
+                    , _rankingResearchPositon
+                    , _rankingIntelAttackPositon
 
-                                          //, civManager.MaintenanceCostLastTurn
-                                          //, civManager.MaintenanceCostLastTurn
-                                          //, civManager.MaintenanceCostLastTurn
+                    //, civManager.MaintenanceCostLastTurn
+                    //, civManager.MaintenanceCostLastTurn
+                    //, civManager.MaintenanceCostLastTurn
 
                     //, civManager.SitRepEntries.ToString()
                     );
+
 
                 if (civManager.HomeSystem.Owner != null)
                 {
@@ -3273,6 +3428,7 @@ namespace Supremacy.Game
                     + ";Deut;" + civManager.Resources.Deuterium.CurrentValue
                     + ";Dur;" + civManager.Resources.Duranium.CurrentValue
                     + ";Morale:;" + civManager.AverageMorale
+                    + ";MoraleGlobal:;" + _globalMorale
                     + ";Col:; " + civManager.Colonies.Count
                     + ";Pop:; " + civManager.TotalPopulation
 
@@ -3286,6 +3442,10 @@ namespace Supremacy.Game
                     + ";" + civManager.CivilizationID
                     //+ newline
                     ;
+
+                // set back to zero
+                _globalMorale = 0;
+
                 Console.WriteLine(_text);
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
@@ -3297,17 +3457,37 @@ namespace Supremacy.Game
                     + "  -  Best: " + _r_Credits_BestValue
 
                     ;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
 
                 _text = "Ranking: Maint > " + civManager.Civilization.Name
                     + " = * " + _rankingMaintPositon
                     + " * = " + civManager.MaintenanceCostLastTurn
-                    + "  -  Rivals: " + _r_maint_Average_5
-                    + "  -  Best: " + _r_maint_BestValue
+                    + "  -  Rivals: " + _r_Maint_Average_5
+                    + "  -  Best: " + _r_Maint_BestValue
 
                     ;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
+                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+
+                _text = "Ranking: Research > " + civManager.Civilization.Name
+                    + " = * " + _rankingResearchPositon
+                    + " * = " + civManager.Research.CumulativePoints
+                    + "  -  Rivals: " + _r_Research_Average_5
+                    + "  -  Best: " + _r_Research_BestValue
+
+                    ;
+                //Console.WriteLine(_text);
+                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+
+                _text = "Ranking: Intelligence > " + civManager.Civilization.Name
+                    + " = * " + _rankingIntelAttackPositon
+                    + " * = " + civManager.TotalIntelligenceAttackingAccumulated
+                    + "  -  Rivals: " + _r_IntelAttack_Average_5
+                    + "  -  Best: " + _r_IntelAttack_BestValue
+
+                    ;
+                //Console.WriteLine(_text);
                 civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
             }
 
@@ -3325,8 +3505,11 @@ namespace Supremacy.Game
             {
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
 
-                string _rep = station.Location + " > Station " + station.ObjectID + ": Maint. " + station.Design.MaintenanceCost; ;
-                _rep += " > * " /*+ station.ObjectID + blank */+ station.Name + " *"  /*( Maint." + station.Design.MaintenanceCost + " )"*/;
+                string _rep = station.Location + " > Station " + station.ObjectID 
+                    + ": " + station.Design 
+                    + " ___ Maint. " + station.Design.MaintenanceCost
+                    + " > * " /*+ station.ObjectID + blank */+ station.Name 
+                    + " *"  /*( Maint." + station.Design.MaintenanceCost + " )"*/;
                 civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, station.Location, _rep, "", "", SitRepPriority.Pink));
             }
 
@@ -3375,17 +3558,22 @@ namespace Supremacy.Game
 
         private void PrintCivRank(List<CivRank> list)
         {
-            Console.WriteLine(newline);
-            foreach (var item in list)
-            {
-                _text = "CivRankList;"
-                    + item.CIV_KEY
-                    + ";" + item.R_CRED
-                    + ";" + item.R_MAINT
-                    ;
-                Console.WriteLine(_text);
-            }
-        }
+            _ = list.Count.ToString(); // dummy
+            // not necassary at the moment
+            //Console.WriteLine(newline);
+            //foreach (var item in list)
+            //{
+            //    //    _text = "CivRankList;"
+            //    //        + item.CIV_KEY
+            //    //        + ";" + item.R_CRED
+            //    //        + ";" + item.R_MAINT
+            //    //        + ";" + item.R_RESEARCH
+            //    //        + ";" + item.R_INTEL_ATTACK
+            //    //        ;
+            //    //    Console.WriteLine(_text);
+                
+            //}
+    }
         #endregion
 
         #region DoAIPlayers() Method
@@ -3476,7 +3664,9 @@ namespace Supremacy.Game
 
                 if (combat[i].CombatShips != null)
                 {
-                    _text += combat[i].CombatShips.Count + " Combat Ships";
+                    _text += combat[i].CombatShips.Count + " Combat Ship";
+                    if (combat[i].CombatShips.Count > 1)
+                        _text += "s"; // plural s
                 }
 
                 if (combat[i].Station != null)
@@ -3490,7 +3680,7 @@ namespace Supremacy.Game
             {
                 //CivilizationManager civManager = GameContext.Current.CivilizationManagers[combat[i].OwnerID];
                 //GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportOutput_RedYellow_CoS_SitRepEntry(combat[i].Owner, combat[i].Location, _text));
-                GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportEntry_CoS(combat[i].Owner, combat[i].Location, _text, "", "", SitRepPriority.Yellow));
+                GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportEntry_CoS(combat[i].Owner, combat[i].Location, _text, "", "", SitRepPriority.RedYellow));
             }
 
             CombatOccurring?.Invoke(combat);
@@ -3612,6 +3802,8 @@ namespace Supremacy.Game
             //public int IPROD;
             public int R_CRED;
             public int R_MAINT;
+            public int R_RESEARCH;
+            public int R_INTEL_ATTACK;
 
             public CivRank(
                 //int aa_civ_ID
@@ -3626,6 +3818,8 @@ namespace Supremacy.Game
                 //, int iprod
                 , int r_cred
                 , int r_maint
+                , int r_research
+                , int r_intel_attack
                 )
             {
                 //AA_CIV_ID = aa_civ_ID;
@@ -3639,10 +3833,12 @@ namespace Supremacy.Game
                 //IPROD = iprod;
                 R_CRED = r_cred;
                 R_MAINT = r_maint;
+                R_RESEARCH = r_research;
+                R_INTEL_ATTACK = r_intel_attack;
             }
         }
 
-        public void AddCivRank(/*int civID, */string civKey/*, int TotPop, int Mor, int TotVal, int cred, int TotRes, int IProd*/, int r_cred, int r_maint)
+        public void AddCivRank(/*int civID, */string civKey/*, int TotPop, int Mor, int TotVal, int cred, int TotRes, int IProd*/, int r_cred, int r_maint, int r_research, int r_intel_attack)
         {
             CivRank civRankNew = new CivRank(
                 //civID
@@ -3654,6 +3850,8 @@ namespace Supremacy.Game
                 //, cred
                 , r_cred
                 , r_maint
+                , r_research
+                , r_intel_attack
                 //, TotRes
                 //, IProd
 

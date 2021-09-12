@@ -211,15 +211,19 @@ namespace Supremacy.Orbitals
                         _percent = slot.Project.PercentComplete.ToString();
                     }
 
-                    _text =
-                    "Slot= " + slot.SlotID
-                    + " at " + slot.Shipyard.Name
-                    + " " + slot.Shipyard.Location
-                    + " " + _percent
-                    + " done for " + _design
-                    ;
-                    Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    if (_percent != "0 %")
+                    {
+                        _text =
+                            "Slot= " + slot.SlotID
+                            + " at " + slot.Shipyard.Name
+                            + " " + slot.Shipyard.Location
+                            + " " + _percent
+                            + " done for " + _design
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    }
+
                 }
             }
             catch { };

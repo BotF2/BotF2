@@ -140,19 +140,19 @@
             -->
         </DockPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,15,0,0">
+        <!--<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,15,0,0">
          <TextBlock Text="(not working yet) - How many ?  >  "/>   
-            <!--<RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"-->
+            --><!--<RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"-->
 
-            <!---->
+            <!----><!--
             <RadioButton Name="OneTime"          
         GroupName="Project_Amount" Margin="15,0,0,0"
                   Content="1"
-        ToolTip="{local:StringResource SETTINGS_TRACES_SET_SOME_TOOLTIP}" 
-        />
-            
 
-            <!--IsChecked="{Binding Source=HowMany, Mode=TwoWay}"-->
+        />
+      
+
+            --><!--IsChecked="{Binding Source=HowMany, Mode=TwoWay}"--><!--
             <RadioButton Name="TwoTimes"           
         GroupName="Project_Amount" Content="2" Margin="15,0,0,0"
                  
@@ -168,8 +168,8 @@
         GroupName="Project_Amount" Content="10" Margin="15,0,0,0"
                  
         />
-            <!--ToolTip="{local:StringResource SETTINGS_TRACES_SET_SOME_TOOLTIP}"-->             
-        </StackPanel>
+        
+        </StackPanel>-->
 
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">

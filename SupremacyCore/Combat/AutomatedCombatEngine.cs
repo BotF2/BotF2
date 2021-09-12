@@ -1949,10 +1949,10 @@ namespace Supremacy.Combat
                                 Assets.DestroyedShips.Add(combatent.Item1);
                                 _text = combatent.Item1.Source.Location
                                 + " " + combatent.Item1.Source.Sector.Name
-                                + " > " + combatent.Item1.Source.ObjectID
-                                + " " + combatent.Item1.Name
-                                + " (" + combatent.Item1.Source.Design
-                                + ") destroyed."
+                                + " > Ship " + combatent.Item1.Source.ObjectID
+                                + " * " + combatent.Item1.Name
+                                + " * (" + combatent.Item1.Source.Design
+                                + " ) destroyed."
                                 ;
 
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
@@ -1971,11 +1971,11 @@ namespace Supremacy.Combat
                             Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
                             //CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
                             _text = ship.Item1.Source.Location
-                                + " > " + ship.Item1.Source.Sector.Name
+                                + " " + ship.Item1.Source.Sector.Name
                                 + " > Ship " + ship.Item1.Source.ObjectID
                                 + ": * " + ship.Item1.Name
                                 + " * (" + ship.Item1.Source.Design
-                                + ") escaped."
+                                + " ) escaped."
                                 ;
 
                             civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
@@ -2103,27 +2103,26 @@ namespace Supremacy.Combat
 
                             CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
                             _text = ship.Item1.Source.Location
-                                + " " + ship.Item1.Source.ObjectID
-                                + " ( " + ship.Item1.Source.Design
-                                + " ) " + ship.Item1.Name
-
+                                + " > " + ship.Item1.Source.ObjectID
+                                + " * " + ship.Item1.Name
+                                + " * ( " + ship.Item1.Source.Design + " ) "
                                 + " escaped."
                                 ;
-                            //civManager.SitRepEntries.Add(new ReportEntryCoS(firstShipOwner, ship.Item1.Source.Location, _text,  SitRepPriority.RedYellow));
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "","", SitRepPriority.RedYellow));
                         }
 
                     }
                 }
             }
 
-            foreach (int item in ownerIDs)
-            {
+            //foreach (int item in ownerIDs)
+            //{
 
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[item];
-                if (civManager.Civilization.IsEmpire)
-                    civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, _sector, _text, "", "", SitRepPriority.Red));
-                //_text = 
-            }
+            //    CivilizationManager civManager = GameContext.Current.CivilizationManagers[item];
+            //    if (civManager.Civilization.IsEmpire)
+            //        civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, _sector, _text, "", "", SitRepPriority.Red));
+            //    //_text = 
+            //}
             //CivilizationManager civManager = GameContext.Current.CivilizationManagers[GetAssets.];
 
             GameLog.Core.CombatDetails.DebugFormat("AutomatedCombatEngine ends");

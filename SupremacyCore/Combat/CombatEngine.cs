@@ -608,16 +608,19 @@ namespace Supremacy.Combat
                     newfleet.Name = "Assimilated Assets";
                     GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
-                    string _text = "Ship assimilated: " + ship.ObjectID + " " + ship.Name + " ( " + ship.Design + " ).";
+                    string _text = ship.Location 
+                        + " > Ship assimilated: " + ship.ObjectID + " * " + ship.Name + " * ( " + ship.Design + " ).";
 
                     GameLog.Core.CombatDetails.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
                         ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
 
-                    GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _text));
+                    GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ReportEntry_CoS(assimilatedCiv, ship.Location, _text, "", "", SitRepPriority.Red));
+                    //GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _text));
 
                     //for Borg only: 
-                    _text += "We gained " + gainedResearchPoints + " research points.";
-                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(borg, ship.Location, _text));
+                    _text += " We gained " + gainedResearchPoints + " research points.";
+                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ReportEntry_CoS(borg, ship.Location, _text,"", "", SitRepPriority.Green));
+                    //GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(borg, ship.Location, _text));
 
                 }
             }

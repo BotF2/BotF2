@@ -44,6 +44,7 @@ namespace Supremacy.Game
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
+        private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
 
@@ -59,6 +60,9 @@ namespace Supremacy.Game
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
         private string _text;
+        private int _rankMaint;
+        private int _rankResearch;
+        private int _rankIntelAttack;
         private readonly string newline = Environment.NewLine;
 
         //private readonly IPlayer _localPlayer;
@@ -80,6 +84,7 @@ namespace Supremacy.Game
             public int ColoniesHist;
             public int PopulationHist;
             public int MoraleHist;
+            public int MoraleGlobalHist;
             public int DilithiumHist;
             public int DeuteriumHist;
             public int DuraniumHist;
@@ -89,6 +94,9 @@ namespace Supremacy.Game
             public int IDefHist;
             public int IAttHist;
             public int R_CredHist;
+            public int R_MaintHist;
+            public int R_ResearchHist;
+            public int R_IntelAttackHist;
 
             public CivHistory
                 (
@@ -101,6 +109,7 @@ namespace Supremacy.Game
                 , int coloniesHist
                 , int populationHist
                 , int moraleHist
+                , int moraleGlobalHist
                 , int diHist
                 , int deHist
                 , int duHist
@@ -110,6 +119,9 @@ namespace Supremacy.Game
                 , int iDefHist
                 , int iAttHist
                 , int r_CredHist
+                , int r_MaintHist
+                , int r_ResearchHist
+                , int r_IntelAttackHist
                 //, string sitrepsHist
                 )
             {
@@ -122,6 +134,7 @@ namespace Supremacy.Game
                 ColoniesHist = coloniesHist;
                 PopulationHist = populationHist;
                 MoraleHist = moraleHist;
+                MoraleGlobalHist = moraleGlobalHist;
                 DilithiumHist = diHist;
                 DeuteriumHist = deHist;
                 DuraniumHist = duHist;
@@ -131,6 +144,9 @@ namespace Supremacy.Game
                 IDefHist = iDefHist;
                 IAttHist = iAttHist;
                 R_CredHist = r_CredHist;
+                R_MaintHist = r_MaintHist;
+                R_ResearchHist = r_ResearchHist;
+                R_IntelAttackHist = r_IntelAttackHist;
                 //SitRepsHist = sitrepsHist;
             }
         }
@@ -143,6 +159,7 @@ namespace Supremacy.Game
             , int coloniesHist
             , int populationHist
             , int moraleHist
+            , int moraleGlobalHist
             , int dilithiumHist
             , int deHist
             , int duHist
@@ -152,6 +169,9 @@ namespace Supremacy.Game
             , int iDefHist
             , int iAttHist
             , int r_CredHist
+            , int r_MaintHist
+            , int r_ResearchHist
+            , int r_IntelAttackHist
             //, string sitrepsHist
             )
         {
@@ -169,6 +189,7 @@ namespace Supremacy.Game
                 , coloniesHist
                 , populationHist
                 , moraleHist
+                , moraleGlobalHist
                 , dilithiumHist
                 , deHist
                 , duHist
@@ -178,6 +199,9 @@ namespace Supremacy.Game
                 , iDefHist
                 , iAttHist
                 , r_CredHist
+                , r_MaintHist
+                , r_ResearchHist
+                , r_IntelAttackHist
                 //, sitrepsHist  // not here
                 //, blank, blank, blank, blank, blank, blank, blank  // 11
                 );
@@ -201,6 +225,9 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
+            //_rankCredits = 0;
+
+
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
 
@@ -310,7 +337,74 @@ namespace Supremacy.Game
             set => _maintenanceCostLastTurn = value;
         }
 
+        /// <summary>
+        /// Gets the civilization's ranking for Credits.
+        /// </summary>
+        public int RankingCredits
+        {
+            get 
+            {
+                _rankCredits = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List; 
 
+                if (CivHist.Count != 0)
+                {
+                    _rankCredits = CivHist[CivHist.Count - 1].R_CredHist;
+                }
+                return _rankCredits;
+            }
+        }
+
+        /// <summary>
+        /// Gets the civilization's ranking for Credits.
+        /// </summary>
+        public int RankingMaint
+        {
+            get 
+            {
+                _rankMaint = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List; 
+                if (CivHist.Count != 0)
+                {
+                    _rankMaint = CivHist[CivHist.Count - 1].R_MaintHist;
+                }
+                return _rankMaint;
+            }
+        }
+
+        /// <summary>
+        /// Gets the civilization's ranking for Credits.
+        /// </summary>
+        public int RankingResearch
+        {
+            get
+            {
+                _rankResearch = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List;
+                if (CivHist.Count != 0)
+                {
+                    _rankResearch = CivHist[CivHist.Count - 1].R_ResearchHist;
+                }
+                return _rankResearch;
+            }
+        }
+
+        /// <summary>
+        /// Gets the civilization's ranking for Intelligence_Attacking.
+        /// </summary>
+        public int RankingIntelAttack
+        {
+            get
+            {
+                _rankIntelAttack = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List;
+                if (CivHist.Count != 0)
+                {
+                    _rankIntelAttack = CivHist[CivHist.Count - 1].R_IntelAttackHist;
+                }
+                return _rankIntelAttack;
+            }
+        }
 
         /// <summary>
         /// Gets the civilization's resource pool.
@@ -390,6 +484,7 @@ namespace Supremacy.Game
                     }
 
                 }
+                _ = _sitRepEntries.Distinct();
                 return _sitRepEntries;
             }
         }
