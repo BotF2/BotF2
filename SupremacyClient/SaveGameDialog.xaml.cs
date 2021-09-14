@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,23 +35,23 @@ namespace Supremacy.Client
             InitializeComponent();
             SaveButton.IsEnabled = true;
             IsVisibleChanged += SaveGameDialogIsVisibleChanged;
-            
-            InputBindings.Add(
+
+            _ = InputBindings.Add(
                 new KeyBinding(GenericCommands.CancelCommand,
                                Key.Escape,
                                ModifierKeys.None));
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(GenericCommands.AcceptCommand,
                                Key.Enter,
                                ModifierKeys.None));
 
-            CommandBindings.Add(new CommandBinding(
+            _ = CommandBindings.Add(new CommandBinding(
                                     GameCommands.SaveGameCommand,
                                     GameCommandsSaveGameCommandExecuted));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(GenericCommands.CancelCommand,
                                    GenericCommandsCancelCommandExecuted));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(GenericCommands.AcceptCommand,
                                    GenericCommandsAcceptCommandExecuted,
                                    GenericCommandsAcceptCommandCanExecute));
@@ -62,8 +61,7 @@ namespace Supremacy.Client
 
         private void SaveGameListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var header = SaveGameList.SelectedItem as SavedGameHeader;
-            if (header != null)
+            if (SaveGameList.SelectedItem is SavedGameHeader header)
             {
                 SaveGameFilename.Text = header.FileName;
                 SaveGameInfoText.Visibility = Visibility.Visible;
@@ -79,7 +77,7 @@ namespace Supremacy.Client
         {
             try
             {
-                e.CanExecute = !String.IsNullOrEmpty(Path.GetFileName(SaveGameFilename.Text.Trim()));
+                e.CanExecute = !string.IsNullOrEmpty(Path.GetFileName(SaveGameFilename.Text.Trim()));
                 SaveButton.IsEnabled = true;
             }
             catch
@@ -104,16 +102,18 @@ namespace Supremacy.Client
         {
             try
             {
-                if (!String.IsNullOrEmpty(Path.GetFileName(SaveGameFilename.Text.Trim())))
+                if (!string.IsNullOrEmpty(Path.GetFileName(SaveGameFilename.Text.Trim())))
                 {
                     if (File.Exists(SaveGameFilename.Text + ".sav"))
                     {
-                        var overwriteResponse = MessageDialog.Show(
+                        MessageDialogResult overwriteResponse = MessageDialog.Show(
                             ResourceManager.GetString("SAVE_OVERWRITE_CONFIRM_HEADER"),
                             ResourceManager.GetString("SAVE_OVERWRITE_CONFIRM_MESSAGE"),
                             MessageDialogButtons.YesNo);
                         if (overwriteResponse == MessageDialogResult.No)
+                        {
                             return;
+                        }
                     }
                     IsEnabled = false;
                     ClientCommands.SaveGame.Execute(SaveGameFilename.Text);
@@ -122,7 +122,7 @@ namespace Supremacy.Client
             }
             catch
             {
-                MessageDialog.Show(
+                _ = MessageDialog.Show(
                     ResourceManager.GetString("SAVE_ERROR_INVALID_FILE_NAME_HEADER"),
                     ResourceManager.GetString("SAVE_ERROR_INVALID_FILE_NAME_MESSAGE"),
                     MessageDialogButtons.Ok);
@@ -136,29 +136,31 @@ namespace Supremacy.Client
 
         private void SaveGameDialogIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!((bool)e.NewValue))
+            if (!(bool)e.NewValue)
+            {
                 return;
+            }
+
             SaveButton.IsEnabled = true;
             DataContext = SavedGameManager.FindSavedGames(includeAutoSave: false);
 
             SaveGameFilename.Clear();
             SaveGameFilename.Text = GenerateFileName(GameContext.Current);
-            SaveGameFilename.Focus();
+            _ = SaveGameFilename.Focus();
             SaveGameFilename.SelectAll();
         }
 
         private string GenerateFileName(GameContext game)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
-            if (game.IsMultiplayerGame)
-                sb.Append("MP ");
-            else
-                sb.Append("SP ");
+            _ = game.IsMultiplayerGame ? sb.Append("MP ") : sb.Append("SP ");
 
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             if (appContext != null)
-                sb.Append(appContext.LocalPlayer.Empire.ShortName).Append(' ');
+            {
+                _ = sb.Append(appContext.LocalPlayer.Empire.ShortName).Append(' ');
+            }
 
             return sb.Append(game.Options.GalaxySize)
                      .Append(' ')

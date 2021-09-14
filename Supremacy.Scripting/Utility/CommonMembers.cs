@@ -72,7 +72,10 @@ namespace Supremacy.Scripting.Utility
             get
             {
                 if (_stringConcat == null)
+                {
                     _stringConcat = TypeManager.CoreTypes.String.GetMethod("Concat", new[] { typeof(object).MakeArrayType() });
+                }
+
                 return _stringConcat;
             }
         }

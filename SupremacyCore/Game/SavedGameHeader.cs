@@ -21,13 +21,7 @@ namespace Supremacy.Game
     /// </summary>
     public sealed class SavedGameHeader
     {
-        public string Title
-        {
-            get
-            {
-                return IsAutoSave ? ResourceManager.GetString("AUTO_SAVE_GAME_TITLE") : FileName;
-            }
-        }
+        public string Title => IsAutoSave ? ResourceManager.GetString("AUTO_SAVE_GAME_TITLE") : FileName;
 
         public bool IsAutoSave { get; set; }
 
@@ -61,13 +55,7 @@ namespace Supremacy.Game
         /// Gets the name of the empire.
         /// </summary>
         /// <value>The name of the empire.</value>
-        public string LocalPlayerEmpireName
-        {
-            get
-            {
-                return "Game";
-            }
-        }
+        public string LocalPlayerEmpireName => "Game";
 
         /// <summary>
         /// Gets the turn number.
@@ -105,9 +93,14 @@ namespace Supremacy.Game
         public SavedGameHeader(IGameContext game, Player localPlayer)
         {
             if (game == null)
+            {
                 throw new ArgumentNullException("game");
+            }
+
             if (localPlayer == null)
+            {
                 throw new ArgumentNullException("localPlayer");
+            }
 
             IsMultiplayerGame = game.IsMultiplayerGame;
             LocalPlayerName = localPlayer.Name;
@@ -117,7 +110,7 @@ namespace Supremacy.Game
             Timestamp = DateTimeOffset.Now;
             GameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            var empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
+            Entities.Civilization[] empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
 
             EmpireIDs = new int[empires.Length];
             EmpireNames = new string[empires.Length];
@@ -136,7 +129,6 @@ namespace Supremacy.Game
         /// Writes this <see cref="SavedGameHeader"/> to the specified output stream.
         /// </summary>
         /// <param name="output">The output stream.</param>
-        [SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "TODO: Requires further investigation")]
         public void Write(Stream output)
         {
             if (!output.CanWrite)
@@ -144,7 +136,7 @@ namespace Supremacy.Game
                 throw new InvalidOperationException("Cannot write to stream");
             }
 
-            var writer = new BinaryWriter(output);
+            BinaryWriter writer = new BinaryWriter(output);
             Options.Write(writer);
             writer.Write(IsMultiplayerGame);
             writer.Write(LocalPlayerName);
@@ -154,13 +146,13 @@ namespace Supremacy.Game
             writer.Write(Timestamp.Offset.Ticks);
             writer.Write(GameVersion);
 
-            var empireCount = (byte)EmpireIDs.Length;
+            byte empireCount = (byte)EmpireIDs.Length;
 
             writer.Write(empireCount);
 
             for (int i = 0; i < empireCount; i++)
             {
-                GameLog.Core.SaveLoad.DebugFormat("Writing Empires: empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, {0}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
+                GameLog.Core.SaveLoadDetails.DebugFormat("Writing Empires: empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, {0}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
                 writer.Write(EmpireIDs[i]);
                 writer.Write(EmpireNames[i]);
                 writer.Write((byte)SlotClaims[i]);
@@ -180,12 +172,12 @@ namespace Supremacy.Game
                 throw new InvalidOperationException("Cannot read from stream");
             }
 
-            var reader = new BinaryReader(input);
-            var options = new GameOptions();
+            BinaryReader reader = new BinaryReader(input);
+            GameOptions options = new GameOptions();
 
             options.Read(reader);
 
-            var header = new SavedGameHeader
+            SavedGameHeader header = new SavedGameHeader
             {
                 Options = options,
                 IsMultiplayerGame = reader.ReadBoolean(),
@@ -196,7 +188,7 @@ namespace Supremacy.Game
                 GameVersion = reader.ReadString()
             };
 
-            var empireCount = reader.ReadByte();
+            byte empireCount = reader.ReadByte();
 
             header.EmpireIDs = new int[empireCount];
             header.EmpireNames = new string[empireCount];
@@ -218,7 +210,7 @@ namespace Supremacy.Game
 
                 /*+ Environment.NewLine + ";FileName   ;" + reader.   --- no filename available here*/
                 ;
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 
             return header;
         }

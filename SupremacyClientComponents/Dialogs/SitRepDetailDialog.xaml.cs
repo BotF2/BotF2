@@ -19,23 +19,26 @@ namespace Supremacy.Client.Dialogs
         private SitRepDetailDialog(SitRepEntry sitRepEntry)
         {
             _sitRepEntry = sitRepEntry;
-            if (sitRepEntry == null)
-                throw new ArgumentNullException("sitRepEntry");
-            GameLog.Core.SitReps.DebugFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
-                , sitRepEntry.Owner
-                , sitRepEntry.HeaderText
-                , sitRepEntry.HasSoundEffect
-                , GameContext.Current.TurnNumber
-                );
-            
-            DataContext = sitRepEntry;
+
+            //GameLog.Core.SitReps.InfoFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
+            //    , sitRepEntry.Owner
+            //    , sitRepEntry.HeaderText
+            //    , sitRepEntry.HasSoundEffect
+            //    , GameContext.Current.TurnNumber
+            //    );
+
+            DataContext = sitRepEntry ?? throw new ArgumentNullException("sitRepEntry");
             InitializeComponent();
 
             if (_sitRepEntry.DetailImage == null)
+            {
                 DetailImage.Visibility = Visibility.Collapsed;
+            }
 
             if (!_sitRepEntry.HasSoundEffect)
+            {
                 return;
+            }
 
             _mediaPlayer = new MediaPlayer();
             _mediaPlayer.Open(new Uri(ResourceManager.GetResourcePath(_sitRepEntry.SoundEffect), UriKind.Relative));
@@ -51,7 +54,7 @@ namespace Supremacy.Client.Dialogs
                 GameLog.Core.SitReps.DebugFormat("##### problem at Sitrep for {0}: {1}, sound = {2}", sitRepEntry.Owner, sitRepEntry.HeaderText, sitRepEntry.HasSoundEffect);
                 throw new ArgumentNullException("sitRepEntry");
             }
-            new SitRepDetailDialog(sitRepEntry).ShowDialog();
+            _ = new SitRepDetailDialog(sitRepEntry).ShowDialog();
         }
 
         private void ExecuteCloseCommand(object sender, ExecutedRoutedEventArgs e)

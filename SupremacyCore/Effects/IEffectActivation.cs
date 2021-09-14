@@ -21,20 +21,17 @@ namespace Supremacy.Effects
 
         public EffectActivation([CanBeNull] string descriptionExpression, [NotNull] string valueExpression)
         {
-            Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
+            _ = Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
 
             DescriptionExpression = descriptionExpression;
             ValueExpression = valueExpression;
         }
 
-        public bool HasDescription
-        {
-            get { return !string.IsNullOrWhiteSpace(DescriptionExpression); }
-        }
+        public bool HasDescription => !string.IsNullOrWhiteSpace(DescriptionExpression);
 
         public string DescriptionExpression
         {
-            get { return _descriptionExpression; }
+            get => _descriptionExpression;
             set
             {
                 VerifyInitializing();
@@ -44,7 +41,7 @@ namespace Supremacy.Effects
 
         public string ValueExpression
         {
-            get { return _valueExpression; }
+            get => _valueExpression;
             set
             {
                 VerifyInitializing();

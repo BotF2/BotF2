@@ -153,7 +153,7 @@ namespace Supremacy.AI
                 }
                 else // left or straight
                 {
-                    view.RemoveAt(1);
+                    _ = view.RemoveAt(1);
                     slide = view.Offset != 0 ? -1 : 0;
                 }
             }

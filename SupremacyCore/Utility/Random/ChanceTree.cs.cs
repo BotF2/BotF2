@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
 using System.Collections.Generic;
 
 namespace Supremacy.Utility
@@ -39,15 +38,9 @@ namespace Supremacy.Utility
             _chances = new List<Chance<TItem>>();
         }
 
-        protected IList<Chance<TItem>> Chances
-        {
-            get { return _chances; }
-        }
+        protected IList<Chance<TItem>> Chances => _chances;
 
-        public bool IsEmpty
-        {
-            get { return _count == 0 || _chances.TrueForAll(o => o.CurrentWeight <= 0); }
-        }
+        public bool IsEmpty => _count == 0 || _chances.TrueForAll(o => o.CurrentWeight <= 0);
 
         public void AddChance(int chance, TItem item)
         {
@@ -60,8 +53,8 @@ namespace Supremacy.Utility
                 return;
             }
 
-            var current = _root;
-            var child = new Chance<TItem>(chance, chance, item);
+            Chance<TItem> current = _root;
+            Chance<TItem> child = new Chance<TItem>(chance, chance, item);
 
             _chances.Add(child);
 
@@ -81,28 +74,30 @@ namespace Supremacy.Utility
                     break;
                 }
 
-                if (current.Left.GrowthWeight > current.Right.GrowthWeight)
-                    current = current.Right;
-                else
-                    current = current.Left;
+                current = current.Left.GrowthWeight > current.Right.GrowthWeight ? current.Right : current.Left;
             }
         }
 
         public TItem Get()
         {
             if (_count == 0)
-                return default(TItem);
+            {
+                return default;
+            }
+
             return _chances[FindNode(RandomProvider.Shared.Next(_chances[0].GrowthWeight))].Item;
         }
 
         public TItem Take()
         {
             if (_count == 0)
-                return default(TItem);
+            {
+                return default;
+            }
 
-            var probability = RandomProvider.Shared.Next(_chances[0].GrowthWeight);
-            var index = FindNode(probability);
-            var chance = _chances[index];
+            int probability = RandomProvider.Shared.Next(_chances[0].GrowthWeight);
+            int index = FindNode(probability);
+            Chance<TItem> chance = _chances[index];
 
             ModifyChances(index, -chance.CurrentWeight);
 
@@ -112,7 +107,7 @@ namespace Supremacy.Utility
         protected void ModifyChances(int index, int modifyBy)
         {
             // Get the prior growth
-            var priorGrowth = _chances[index].GrowthWeight;
+            int priorGrowth = _chances[index].GrowthWeight;
 
             _chances[index].CurrentWeight += modifyBy;
             _chances[index].GrowthWeight += modifyBy;
@@ -124,7 +119,7 @@ namespace Supremacy.Utility
                 if (_count != index)
                 {
                     // First remove the last node from the list
-                    var swapIndex = _count;
+                    int swapIndex = _count;
 
                     while (swapIndex > 0)
                     {
@@ -136,23 +131,30 @@ namespace Supremacy.Utility
                     _chances[index] = _chances[_count];
 
                     // Get the new growth weight
-                    var child = (index << 1) + 1;
+                    int child = (index << 1) + 1;
                     _chances[index].GrowthWeight = _chances[index].CurrentWeight;
 
                     if (child < _count)
+                    {
                         _chances[index].GrowthWeight += _chances[child++].GrowthWeight;
+                    }
+
                     if (child < _count)
+                    {
                         _chances[index].GrowthWeight += _chances[child].GrowthWeight;
+                    }
                 }
             }
 
             // Feed back up the tree
-            var feedWeight = _chances[index].GrowthWeight - priorGrowth;
+            int feedWeight = _chances[index].GrowthWeight - priorGrowth;
             if (feedWeight == 0)
+            {
                 return;
+            }
 
             // Parent Weight
-            var pIndex = index;
+            int pIndex = index;
             while (pIndex > 0)
             {
                 pIndex = (pIndex - 1) >> 1;
@@ -162,17 +164,19 @@ namespace Supremacy.Utility
 
         protected int FindNode(int chance)
         {
-            var index = 0;
-            var prior = 0;
+            int index = 0;
+            int prior = 0;
 
             while (true)
             {
                 prior += _chances[index].CurrentWeight;
-                
-                if (chance < prior)
-                    return index;
 
-                var nextIndex = (index << 1) + 1;
+                if (chance < prior)
+                {
+                    return index;
+                }
+
+                int nextIndex = (index << 1) + 1;
                 if (nextIndex < _count && chance < (prior + _chances[nextIndex].GrowthWeight))
                 {
                     index = nextIndex;

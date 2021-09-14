@@ -18,11 +18,16 @@ namespace Supremacy.Resources
         public static string GetStringFormat([NotNull] this IResourceManager self, [NotNull] string key, params object[] args)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            if (key == null)
-                throw new ArgumentNullException("key");
+            }
 
-            return String.Format(self.GetString(key), args);
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
+            return string.Format(self.GetString(key), args);
         }
     }
 }

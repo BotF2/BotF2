@@ -39,7 +39,7 @@ namespace Supremacy.Client.Controls
                 "BorderThickness",
                 typeof(Thickness),
                 typeof(DropShadowChrome),
-                new FrameworkPropertyMetadata(new Thickness(5), 
+                new FrameworkPropertyMetadata(new Thickness(5),
                     FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
@@ -53,7 +53,7 @@ namespace Supremacy.Client.Controls
             "CornerRadius",
             typeof(CornerRadius),
             typeof(DropShadowChrome),
-            new FrameworkPropertyMetadata(new CornerRadius(0), 
+            new FrameworkPropertyMetadata(new CornerRadius(0),
                 FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty XOffsetProperty = DependencyProperty.Register(
@@ -80,15 +80,15 @@ namespace Supremacy.Client.Controls
 
         private GradientStopCollection CreateStops(double offsetPercentage)
         {
-            var color = Color;
-            var alpha = color.A;
+            Color color = Color;
+            byte alpha = color.A;
 
-            var gradientAmount = 1.0 - offsetPercentage;
+            double gradientAmount = 1.0 - offsetPercentage;
 
-            var stops = new GradientStopCollection
+            GradientStopCollection stops = new GradientStopCollection
                         {
                             new GradientStop(
-                                color, 
+                                color,
                                 offsetPercentage + 0.0 * gradientAmount),
                             new GradientStop(
                                 Color.FromArgb((byte)(0.74336 * alpha), color.R, color.G, color.B),
@@ -118,9 +118,11 @@ namespace Supremacy.Client.Controls
             Sides side)
         {
             if ((width <= 0) || (height <= 0))
+            {
                 return;
+            }
 
-            var bounds = new Rect(left, top, width, height);
+            Rect bounds = new Rect(left, top, width, height);
 
             Point startPoint;
             Point endPoint;
@@ -145,7 +147,7 @@ namespace Supremacy.Client.Controls
                     break;
             }
 
-            var brush = new LinearGradientBrush(CreateStops(0.0), startPoint, endPoint);
+            LinearGradientBrush brush = new LinearGradientBrush(CreateStops(0.0), startPoint, endPoint);
             brush.Freeze();
 
             drawingContext.DrawRectangle(brush, null, bounds);
@@ -160,10 +162,12 @@ namespace Supremacy.Client.Controls
             Corners corner)
         {
             if ((width <= 0) || (height <= 0))
+            {
                 return;
+            }
 
-            var bounds = new Rect(left, top, width, height);
-            var offsetPercentage = 0.0;
+            Rect bounds = new Rect(left, top, width, height);
+            double offsetPercentage = 0.0;
 
             switch (corner)
             {
@@ -185,8 +189,8 @@ namespace Supremacy.Client.Controls
                     break;
             }
 
-            var brush = new RadialGradientBrush(CreateStops(offsetPercentage));
-            
+            RadialGradientBrush brush = new RadialGradientBrush(CreateStops(offsetPercentage));
+
             switch (corner)
             {
                 case Corners.TopLeft:
@@ -213,54 +217,58 @@ namespace Supremacy.Client.Controls
 
         public Thickness BorderThickness
         {
-            get { return (Thickness)GetValue(BorderThicknessProperty); }
-            set { SetValue(BorderThicknessProperty, value); }
+            get => (Thickness)GetValue(BorderThicknessProperty);
+            set => SetValue(BorderThicknessProperty, value);
         }
 
         public Color Color
         {
-            get { return (Color)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            get => (Color)GetValue(ColorProperty);
+            set => SetValue(ColorProperty, value);
         }
 
         public CornerRadius CornerRadius
         {
-            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
-            set { SetValue(CornerRadiusProperty, value); }
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             if (Color.A == 0.0)
+            {
                 return;
+            }
 
-            var bounds = new Rect(new Point(XOffset, YOffset), RenderSize);
+            Rect bounds = new Rect(new Point(XOffset, YOffset), RenderSize);
 
             bounds.Inflate(ZOffset, ZOffset);
 
             if ((bounds.Width <= 0) || (bounds.Height <= 0))
+            {
                 return;
+            }
 
-            var innerBounds = new Rect(
+            Rect innerBounds = new Rect(
                 bounds.Left + BorderThickness.Left,
                 bounds.Top + BorderThickness.Top,
                 Math.Max(0, bounds.Width - BorderThickness.Left - BorderThickness.Right),
                 Math.Max(0, bounds.Height - BorderThickness.Top - BorderThickness.Bottom));
 
-            var guidelinesX = new[] { bounds.Left, innerBounds.Left, innerBounds.Right, bounds.Right };
-            var guidelinesY = new[] { bounds.Top, innerBounds.Top, innerBounds.Bottom, bounds.Bottom };
+            double[] guidelinesX = new[] { bounds.Left, innerBounds.Left, innerBounds.Right, bounds.Right };
+            double[] guidelinesY = new[] { bounds.Top, innerBounds.Top, innerBounds.Bottom, bounds.Bottom };
 
             drawingContext.PushGuidelineSet(new GuidelineSet(guidelinesX, guidelinesY));
 
             if ((innerBounds.Width > 0) && (innerBounds.Height > 0))
             {
-                var brush = new SolidColorBrush(Color);
+                SolidColorBrush brush = new SolidColorBrush(Color);
                 brush.Freeze();
 
-                var figure = new PathFigure
-                             {
-                                 StartPoint = new Point(innerBounds.Left + CornerRadius.TopLeft, innerBounds.Top)
-                             };
+                PathFigure figure = new PathFigure
+                {
+                    StartPoint = new Point(innerBounds.Left + CornerRadius.TopLeft, innerBounds.Top)
+                };
                 figure.Segments.Add(
                     new LineSegment(
                         new Point(
@@ -329,7 +337,7 @@ namespace Supremacy.Client.Controls
                         true));
                 figure.IsClosed = true;
 
-                var path = new PathGeometry();
+                PathGeometry path = new PathGeometry();
                 path.Figures.Add(figure);
                 path.Freeze();
                 drawingContext.DrawGeometry(brush, null, path);
@@ -398,20 +406,20 @@ namespace Supremacy.Client.Controls
 
         public double XOffset
         {
-            get { return (double)GetValue(XOffsetProperty); }
-            set { SetValue(XOffsetProperty, value); }
+            get => (double)GetValue(XOffsetProperty);
+            set => SetValue(XOffsetProperty, value);
         }
 
         public double YOffset
         {
-            get { return (double)GetValue(YOffsetProperty); }
-            set { SetValue(YOffsetProperty, value); }
+            get => (double)GetValue(YOffsetProperty);
+            set => SetValue(YOffsetProperty, value);
         }
 
         public double ZOffset
         {
-            get { return (double)GetValue(ZOffsetProperty); }
-            set { SetValue(ZOffsetProperty, value); }
+            get => (double)GetValue(ZOffsetProperty);
+            set => SetValue(ZOffsetProperty, value);
         }
     }
 }

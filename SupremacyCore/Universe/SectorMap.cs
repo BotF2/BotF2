@@ -23,20 +23,14 @@ namespace Supremacy.Universe
         /// Gets the width of a <see cref="SectorMap"/>.
         /// </summary>
         /// <value>The width.</value>
-        public int Width
-        {
-            get { return _sectors.GetLength(0); }
-        }
+        public int Width => _sectors.GetLength(0);
 
         /// <summary>
         /// Gets the height of a <see cref="SectorMap"/>.
         /// </summary>
         /// <value>The height.</value>
-        public int Height
-        {
-            get { return _sectors.GetLength(1); }
-        }
-        
+        public int Height => _sectors.GetLength(1);
+
         /// <summary>
         /// Gets the <see cref="Sector"/> in the <see cref="SectorMap"/> at the specified location
         /// </summary>
@@ -73,7 +67,10 @@ namespace Supremacy.Universe
         public Quadrant GetQuadrant(Sector sector)
         {
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
+
             return GetQuadrant(sector.Location);
         }
 
@@ -87,23 +84,31 @@ namespace Supremacy.Universe
             if (location.X < (Width / 2))
             {
                 if (location.Y < (Height / 2))
+                {
                     return Quadrant.Gamma;
+                }
+
                 return Quadrant.Alpha;
             }
             if (location.Y < (Height / 2))
+            {
                 return Quadrant.Delta;
+            }
+
             return Quadrant.Beta;
         }
 
         public void Reset()
         {
-            var width = _sectors.GetLength(0);
-            var height = _sectors.GetLength(1);
-            
-            for (var x = 0; x < width; x++)
+            int width = _sectors.GetLength(0);
+            int height = _sectors.GetLength(1);
+
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
+                {
                     _sectors[x, y].Reset();
+                }
             }
         }
 

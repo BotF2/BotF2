@@ -6,7 +6,7 @@
              xmlns:client="clr-namespace:Supremacy.Client"
              UseLayoutRounding="True">
   <Grid>
-    <Image Source="../../Resources/UI/Federation/GalaxyScreen/Emblem.png" />
+    <Image Source="../../Resources/Specific_Empires_UI/Federation/GalaxyScreen/Emblem.png" />
     <gauge:CircularGauge Name="gauge"
                          Margin="{Binding ElementName=userControl, Path=ClockMargin, FallbackValue='15,3,15,10'}"
                          FrameType="CircularEclipseShade"

@@ -25,15 +25,15 @@ namespace Supremacy.WCF
 
         public IList<Order> Orders
         {
-            get 
+            get
             {
-                var orders = StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer));
-                foreach (var item in orders)
+                IList<Order> orders = StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer));
+                foreach (Order item in orders)
                 {
-                    GameLog.Core.SaveLoad.DebugFormat("Order: owner = {0}, IsExecuted = {1}", item.Owner, item.IsExecuted);
+                    GameLog.Core.SaveLoadDetails.DebugFormat("Order: owner = {0}, IsExecuted = {1}", item.Owner, item.IsExecuted);
                 }
 /*                GameLog.Core.SaveLoad.DebugFormat("{0}", gamelogText)*/;
-                return StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer)); 
+                return StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer));
             }
         }
 
@@ -43,7 +43,10 @@ namespace Supremacy.WCF
         public PlayerOrdersMessage(IList<Order> orders, bool autoTurn)
         {
             if (orders == null)
+            {
                 throw new ArgumentNullException("data");
+            }
+
             _buffer = Convert.ToBase64String(StreamUtility.Write(orders));
             AutoTurn = autoTurn;
         }

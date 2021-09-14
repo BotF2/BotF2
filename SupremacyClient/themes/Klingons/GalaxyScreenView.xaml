@@ -68,7 +68,8 @@
                     <DockPanel LastChildFill="True"
                      Grid.IsSharedSizeScope="True">
                         <DockPanel.Background>
-                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Klingons/GalaxyScreen/Starmap.png">
+                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Images/UI/Backgrounds/Starmap.png">
+                                <!--<ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Specific_Empires_UI/Borg/GalaxyScreen/Starmap.png">-->
                             </ImageBrush>
                         </DockPanel.Background>
             <Grid DockPanel.Dock="Top"
@@ -95,6 +96,7 @@
               <Button x:Name="PART_TurnButton"
                       Grid.Column="0"
                       Grid.Row="0"
+                      FontSize="16pt"  
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                 <Button.Content>
                   <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -105,7 +107,7 @@
                     <Style.Triggers>
                       <!--<EventTrigger RoutedEvent="Button.Click">
                         <EventTrigger.Actions>
-                          <SoundPlayerAction Source="Resources/UI/Klingons/Sounds/Turn.wav" />
+                          <SoundPlayerAction Source="Resources/Specific_Empires_UI/Klingons/Sounds/Turn.wav" />
                         </EventTrigger.Actions>
                       </EventTrigger>-->
                     </Style.Triggers>
@@ -120,20 +122,14 @@
                       Content="{s:StringResource Key=KLING_INTEL_BUTTON_TEXT, Case=Upper}"
                       Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"
                       Margin="0,4,0,0" />
-              <Rectangle Grid.Column="1"
-                         Grid.Row="0"
-                         Margin="3,0,0,0"
-                         Height="28"
-                         Width="28">
+              <Rectangle Grid.Column="1" Grid.Row="0" Margin="3,0,0,0" Height="28" Width="28">
                                 <Rectangle.RenderTransform>
-                                <ScaleTransform ScaleX="-1"
-                                  ScaleY="1"
-                                  CenterX="14" />
+                                <ScaleTransform ScaleX="-1" ScaleY="1" CenterX="14" />
                                 </Rectangle.RenderTransform>
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource LCARS_KlingYellowGradientOne_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_Right_Left}"
                                                              Geometry="F1 M 0,0L 10,0L 10,15L 28,3L 20,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -152,7 +148,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource LCARS_KlingYellowGradientOne_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_Right_Left}"
                                        Geometry="F1 M 0,0L  19,0L 28,0L 19,0L 10,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -161,14 +157,14 @@
                 <!--<Border x:Name="TopLeftBorder"
                       Grid.Column="1"
                       Grid.Row="0"
-                      Background="{StaticResource LCARS_KlingRed1Gradient_TopLeft_BottomRight}"
+                      Background="{StaticResource Kling1Gradient_TopLeft_BottomRight}"
                       CornerRadius="14,0,0,14"
                       Width="21"
                       Margin="3,0,0,0" />
               <Border x:Name="BottomLeftBorder"
                       Grid.Column="1"
                       Grid.Row="1"
-                      Background="{StaticResource LCARS_KlingRed1Gradient_TopLeft_BottomRight}"
+                      Background="{StaticResource Kling1Gradient_TopLeft_BottomRight}"
                       CornerRadius="14,0,0,14"
                       Width="21"
                       Margin="3,4,0,0" />-->
@@ -176,10 +172,10 @@
                       Grid.Row="0"
                       Padding="14,0,14,0"
                       Margin="3,0,0,0"
-                      Background="{StaticResource LCARS_KlingRed3Gradient_Top_Bottom}">
+                      Background="{StaticResource Kling3Gradient_Top_Bottom}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource Borg1Gradient_Bottom_Top}"
                            Text="{s:StringResource SECTOR_TEXT}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -187,10 +183,10 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource LCARS_KlingRed2Gradient_Bottom_Top}">
+                      Background="{StaticResource Kling2Gradient_Bottom_Top}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="Orange"
                            Text="{Binding Path=SelectedSector, Mode=OneWay, Converter={StaticResource SectorNameConverter}, ConverterParameter=UpperCase}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -198,20 +194,20 @@
                          Grid.Row="0"
                          Width="14"
                          Margin="3,0,0,0"
-                         Fill="{StaticResource LCARS_KlingYellowGradientTwo_Top_Bottom}" />
+                         Fill="{StaticResource KlingYellow1Gradient_Top_Bottom}" />
               <Rectangle Grid.Column="3"
                          Grid.Row="1"
                          Width="14"
                          Margin="3,4,0,0"
-                         Fill="{StaticResource LCARS_KlingYellowGradientTwo_Top_Bottom}" />
+                         Fill="{StaticResource KlingYellow1Gradient_Bottom_Top}" />
               <Border Grid.Column="4"
                       Grid.Row="0"
                       Padding="14,0,14,0"
                       Margin="3,0,0,0"
-                      Background="{StaticResource LCARS_KlingRed3Gradient_Top_Bottom}">
+                      Background="{StaticResource Kling3Gradient_Top_Bottom}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource Borg1Gradient_Bottom_Top}"
                            Text="{s:StringResource AFFILIATION_TEXT}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -219,11 +215,11 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource LCARS_KlingRed2Gradient_Bottom_Top}">
+                      Background="{StaticResource Kling2Gradient_Bottom_Top}">
                 <TextBlock x:Name="SectorOwnerText"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="Orange"
                            Text="{Binding Path=SelectedSectorAllegiance, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -233,7 +229,7 @@
                       Margin="3,0,0,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="{StaticResource LCARS_HeaderBrush}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                            Text="{s:StringResource SCAN_TEXT}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -252,11 +248,11 @@
                          Margin="3,0,0,0"
                          Height="28"
                          VerticalAlignment="Bottom"
-                         Background="{StaticResource LCARS_KlingRed3Gradient_Top_Bottom}"
+                         Background="{StaticResource Kling2Gradient_Bottom_Top}"
                          Padding="14,0,14,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="Orange"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource KLINGON_HEADLINE}"
                                            />
@@ -266,11 +262,11 @@
                          Margin="3,4,0,0"
                          Height="28"
                          VerticalAlignment="Top"
-                         Background="{StaticResource LCARS_KlingRed2Gradient_Bottom_Top}"
+                         Background="{StaticResource Kling3Gradient_Bottom_Top}"
                          Padding="14,0,14,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource Borg1Gradient_Top_Bottom}"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource KLINGON_SUBLINE}"
                                            />
@@ -288,11 +284,11 @@
                       Margin="3,0,0,0"
                       Height="28"
                       VerticalAlignment="Top"
-                      Background="{StaticResource LCARS_KlingRed3Gradient_Top_Bottom}"
+                      Background="{StaticResource Kling3Gradient_Top_Bottom}"
                       Padding="14,0,14,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource Borg1Gradient_Bottom_Top}"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource DIPLOMACY_TEXT}" 
                            />
@@ -311,15 +307,11 @@
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
                </Border>
-              <Rectangle Grid.Column="9"
-                         Grid.Row="0"
-                         Margin="3,0,0,0"
-                         Height="28"
-                         Width="28">
+              <Rectangle Grid.Column="9" Grid.Row="0" Margin="3,0,0,0" Height="28" Width="28">
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource LCARS_KlingYellowGradientOne_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,0L 10,0L 10,15L 28,3L 20,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -333,7 +325,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource LCARS_KlingYellowGradientOne_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,0L  19,0L 28,0L 19,0L 10,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -404,7 +396,7 @@
                     <Rectangle.Fill>
                       <DrawingBrush>
                         <DrawingBrush.Drawing>
-                          <GeometryDrawing Brush="{StaticResource LCARS_GrayGradient_Top_Bottom}"
+                          <GeometryDrawing Brush="{StaticResource GrayGradient_Top_Bottom}"
                                            Geometry="F1 M 0,21L 4,15L 0,0L 11,5L 15,0L 21,0L 21,28L 18,32L 21,42L 11,38L 7,42L 0,42 Z" />
                         </DrawingBrush.Drawing>
                       </DrawingBrush>
@@ -416,7 +408,7 @@
                                   Margin="7,0,0,0"
                                   FontSize="18pt">
                     <TextBlock FontSize="18pt"
-                               Foreground="{StaticResource LCARS_RedTextBrush}"
+                               Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                                FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                Text="{s:StringResource TASK_FORCES_TEXT}" />
                   </ContentControl>
@@ -424,14 +416,14 @@
                              Grid.Row="0"
                              Height="28"
                              VerticalAlignment="Top"
-                             Fill="{StaticResource LCARS_KlingYellowGradientOne_Right_Left}"
+                             Fill="{StaticResource Kling1Gradient_Right_Left}"
                              Margin="7,0,0,0" />
                   <Rectangle Grid.Column="3"
                              Grid.Row="0"
                              Width="14"
                              Height="28"
                              VerticalAlignment="Top"
-                             Fill="{StaticResource LCARS_KlingRedGradient_Left_Right}"
+                             Fill="{StaticResource Kling4Gradient_Left_Right}"
                              Margin="3,0,0,0" />
                   <Rectangle Grid.Column="4"
                              Grid.Row="0"
@@ -442,7 +434,7 @@
                     <Rectangle.Fill>
                       <DrawingBrush>
                         <DrawingBrush.Drawing>
-                                     <GeometryDrawing Brush="{StaticResource LCARS_KlingYellowGradientOne_TopLeft_BottomRight}"
+                                     <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}"
                                            Geometry="F1 M 0,0L 7,0L 10,7L 21,14L 10,21L 7,28L 0,28 Z" />
                         </DrawingBrush.Drawing>
                       </DrawingBrush>
@@ -464,10 +456,10 @@
                     <RowDefinition Height="Auto"
                                    MaxHeight="28" />
                   </Grid.RowDefinitions>
-                  <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_KlingRed1Gradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
+                  <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource Kling1Gradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
                   <Rectangle Grid.Column="0"
                              Grid.Row="1"
-                             Fill="{StaticResource LCARS_KlingRed1Gradient_Left_Right}"
+                             Fill="{StaticResource Kling1Gradient_Left_Right}"
                              Width="7"
                              Margin="0,3,0,3"
                              Stretch="Fill" />
@@ -480,13 +472,13 @@
                     <Rectangle.Fill>
                       <DrawingBrush>
                         <DrawingBrush.Drawing>
-                          <GeometryDrawing Brush="{StaticResource LCARS_GrayGradient_Top_Bottom}"
+                          <GeometryDrawing Brush="{StaticResource GrayGradient_Top_Bottom}"
                                            Geometry="F1 M 17,14L 21,0L 10,5L 6,0L 0,0L 0,28L 3,32L 0,42L 10,38L 14,42L 21,42L 21,14 Z" />
                         </DrawingBrush.Drawing>
                       </DrawingBrush>
                     </Rectangle.Fill>
                   </Rectangle>
-                  <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_KlingRed1Gradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
+                  <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource Kling1Gradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
                   <Button x:Name="RedeployButton"
                           Grid.Column="2"
                           Grid.Row="3"
@@ -506,7 +498,7 @@
                     <Rectangle.Fill>
                       <DrawingBrush>
                         <DrawingBrush.Drawing>
-                                  <GeometryDrawing Brush="{StaticResource LCARS_KlingYellowGradientOne_TopLeft_BottomRight}"
+                                  <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}"
                                            Geometry="F1 M 0,0L 7,0L 10,7L 21,14L 10,21L 7,28L 0,28 Z" />
                         </DrawingBrush.Drawing>
                       </DrawingBrush>
@@ -529,13 +521,23 @@
                                   Width="48"
                                   Height="40"
                                   Margin="0,0,7,0"
-                                  BorderBrush="White"
+                                  BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                                   BorderThickness="2"
                                   CornerRadius="4">
                             <Border.Background>
                               <ImageBrush Stretch="UniformToFill"
                                           ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
                             </Border.Background>
+                                <Border.ToolTip>
+                                    <Border x:Name="ImageToolTipBorder" Width="576" Height="480"
+                                        Grid.Column="0" VerticalAlignment="Center"
+                                        BorderThickness="2" CornerRadius="4" BorderBrush="{StaticResource HeaderTextBrush}"
+                                    ><Border.Background>
+                                            <ImageBrush ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
+                                        </Border.Background>
+                                    </Border>
+                                </Border.ToolTip>
+                            </Border>
                             <Image x:Name="ScrapIndicator"
                                    Margin="3"
                                    HorizontalAlignment="Right"
@@ -544,8 +546,7 @@
                                    Height="16"
                                    Source="{DynamicResource Scrap_Indicator_Glyph}"
                                    Visibility="Hidden"
-                                   IsHitTestVisible="False" />
-                          </Border>
+                                   IsHitTestVisible="False" />                            
                           <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                                        FontSize="14"
@@ -605,7 +606,7 @@
                 <Rectangle.Fill>
                   <DrawingBrush>
                     <DrawingBrush.Drawing>
-                      <GeometryDrawing Brush="{StaticResource LCARS_GrayGradient_Top_Bottom}"
+                      <GeometryDrawing Brush="{StaticResource GrayGradient_Top_Bottom}"
                                        Geometry="F1 M 0,21L 4,15L 0,0L 11,5L 15,0L 21,0L 21,28L 18,32L 21,42L 11,38L 7,42L 0,42 Z" />
                     </DrawingBrush.Drawing>
                   </DrawingBrush>
@@ -623,11 +624,11 @@
                                 <Rectangle x:Name="TopEdge"
                            Grid.Column="0"
                            Margin="3,0,0,0"
-                           Fill="{StaticResource LCARS_KlingRed2Gradient_Top_Bottom}" />
+                           Fill="{StaticResource Kling2Gradient_Top_Bottom}" />
 
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="13pt"
-                           Foreground="Black"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource INFO_SHORTCUTS}" />
@@ -638,8 +639,8 @@
                          Height="28"
                          VerticalAlignment="Top"
                          Margin="3,0,0,0"
-                         Fill="{StaticResource LCARS_KlingRed2Gradient_Top_Bottom}" />-->
-              <!--<Rectangle x:Name="CenterTopEdge" Grid.Column="2" Grid.Row="0" Height="28" Margin="3,0,3,0" VerticalAlignment="Top" Fill="{StaticResource LCARS_KlingRed3Gradient_Top_Bottom}"/>-->
+                         Fill="{StaticResource Kling2Gradient_Top_Bottom}" />-->
+              <!--<Rectangle x:Name="CenterTopEdge" Grid.Column="2" Grid.Row="0" Height="28" Margin="3,0,3,0" VerticalAlignment="Top" Fill="{StaticResource Kling3Gradient_Top_Bottom}"/>-->
               <Grid Grid.Column="2"
                     Grid.Row="0"
                     Height="28"
@@ -653,7 +654,7 @@
                   
                 <Rectangle x:Name="LeftCenterTopEdge"
                            Grid.Column="0"
-                           Fill="{StaticResource LCARS_KlingRed1Gradient_Top_Bottom}" />
+                           Fill="{StaticResource Kling1Gradient_Top_Bottom}" />
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             Margin="0,0,0,0">
@@ -729,6 +730,83 @@
                                             </Button.ToolTip>
                                         </Button>
 
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterHomeButton"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnHomeSector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_HOME_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_HOME_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center1Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn1}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_1_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_1_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center2Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn2}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_2_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_2_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center3Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn3}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_3_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_3_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center4Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn4}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_4_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_4_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="SummaryOnOff"
+                            Command="{x:Static scc:GalaxyScreenCommands.SummaryOnOff}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=SUMMARY_ON_OFF_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource SUMMARY_ON_OFF_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
 
                                     </StackPanel>
 
@@ -755,7 +833,7 @@
                                 <Rectangle x:Name="RightCenterTopEdge"
                            Grid.Column="2"
                            Margin="0,0,0,0"
-                           Fill="{StaticResource LCARS_KlingRed1Gradient_Top_Bottom}" />
+                           Fill="{StaticResource Kling1Gradient_Top_Bottom}" />
               </Grid>
               <Grid Grid.Column="3"
                     Grid.Row="0"
@@ -769,11 +847,11 @@
                                 <Rectangle x:Name="RightTopEdge"
                            Grid.Column="0"
                            Margin="0,0,0,0"
-                           Fill="{StaticResource LCARS_KlingRed2Gradient_Top_Bottom}" />
+                           Fill="{StaticResource Kling2Gradient_Top_Bottom}" />
                 <TextBlock x:Name="InhabitantsText"
                            Grid.Column="1"
                            Margin="7,0,4,0"
-                           Foreground="{StaticResource LCARS_HeaderBrush}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                            VerticalAlignment="Center"
                            Text="{Binding Path=SelectedSector.System.Colony.Inhabitants.PluralName, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
@@ -792,7 +870,7 @@
                 <Rectangle.Fill>
                   <DrawingBrush>
                     <DrawingBrush.Drawing>
-                      <GeometryDrawing Brush="{StaticResource LCARS_GrayGradient_Top_Bottom}"
+                      <GeometryDrawing Brush="{StaticResource GrayGradient_Top_Bottom}"
                                        Geometry="F1 M 0,21L 4,15L 0,0L 11,5L 15,0L 21,0L 21,28L 18,32L 21,42L 11,38L 7,42L 0,42 Z" />
                     </DrawingBrush.Drawing>
                   </DrawingBrush>
@@ -804,14 +882,14 @@
                          Width="7"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Left"
-                         Fill="{StaticResource LCARS_KlingRed2Gradient_Left_Right}" />
+                         Fill="{StaticResource Kling2Gradient_Left_Right}" />
               <Rectangle x:Name="RightEdge"
                          Grid.Column="4"
                          Grid.Row="1"
                          Width="7"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Right"
-                         Fill="{StaticResource LCARS_KlingRed2Gradient_Left_Right}" />
+                         Fill="{StaticResource Kling2Gradient_Left_Right}" />
               <Rectangle x:Name="BottomLeftCorner"
                          Grid.Column="0"
                          Grid.Row="2"
@@ -821,7 +899,7 @@
                 <Rectangle.Fill>
                   <DrawingBrush Stretch="Fill">
                     <DrawingBrush.Drawing>
-                      <GeometryDrawing Brush="{StaticResource LCARS_GrayGradient_Top_Bottom}"
+                      <GeometryDrawing Brush="{StaticResource GrayGradient_Top_Bottom}"
                                        Geometry="F1 M 0,0L 7,0L 7,7L 21,0L 14,14L 21,14L 21,21L 0,21 Z" />
                     </DrawingBrush.Drawing>
                   </DrawingBrush>
@@ -833,21 +911,21 @@
                          Height="7"
                          Margin="3,0,0,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource LCARS_KlingRed2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource Kling2Gradient_Top_Bottom}" />
               <Rectangle x:Name="CenterBottomEdge"
                          Grid.Column="2"
                          Grid.Row="2"
                          Height="7"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource LCARS_KlingYellowGradientTwo_Top_Bottom}" />
+                         Fill="{StaticResource KlingYellow1Gradient_Top_Bottom}" />
               <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"
                          Grid.Row="2"
                          Height="7"
                          Margin="0,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource LCARS_KlingRed2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource Kling2Gradient_Top_Bottom}" />
                 
               <Rectangle x:Name="BottomRightCorner"
                          Grid.Column="4"
@@ -862,7 +940,7 @@
                 <Rectangle.Fill>
                   <DrawingBrush Stretch="Fill">
                     <DrawingBrush.Drawing>
-                      <GeometryDrawing Brush="{StaticResource LCARS_GrayGradient_Top_Bottom}"
+                      <GeometryDrawing Brush="{StaticResource GrayGradient_Top_Bottom}"
                                        Geometry="F1 M 0,0L 7,0L 7,7L 21,0L 14,14L 21,14L 21,21L 0,21 Z " />
                     </DrawingBrush.Drawing>
                   </DrawingBrush>
@@ -905,7 +983,7 @@
                                 DockPanel.Dock="Left"
                                 Margin="7,7,7,0"
                                 VerticalAlignment="Top"
-                                Style="{StaticResource LCARS_KlingThinBorderStyle}"
+                                Style="{StaticResource KlingThinBorderStyle}"
                                 DataContext="{Binding Path=SelectedShip}"
                                 cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.ShipStats}" />
                 <ContentControl DockPanel.Dock="Right"
@@ -980,20 +1058,22 @@
               <Setter TargetName="RedeployPanel"
                       Property="Visibility"
                       Value="Visible" />
-              <Setter TargetName="BottomPanel"
-                      Property="Visibility"
-                      Value="Collapsed" />
-              <!--<Setter TargetName="PART_ChatPanel"
-                      Property="Visibility"GSP
-                      Value="Hidden" />
-              <Setter TargetName="AssignedShipListRegion"
-                      Property="Visibility"
-                      Value="Visible" />-->
+              <Setter TargetName="BottomPanel" Property="Visibility" Value="Collapsed" />
+                     
+                     
+              <!--<Setter TargetName="PART_ChatPanel" Property="Visibility" Value="Hidden" />
+                     
+                     
+              <Setter TargetName="AssignedShipListRegion" Property="Visibility" Value="Visible" />-->
+                     
+                     
             </DataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
                 <!--<Condition Binding="{Binding Path=InputMode}"
                            Value="{x:Static scc:GalaxyScreenInputMode.RedeployShips}" />-->
+                  
+                  
                 <Condition Binding="{Binding Path=SelectedTaskForce, Converter={StaticResource IsNullOrEmptyConverter}}"
                            Value="False" />
               </MultiDataTrigger.Conditions>
@@ -1021,7 +1101,7 @@
                       Value="Visible" />
               <Setter TargetName="EconomyButton"
                       Property="Background"
-                      Value="{StaticResource LCARS_KlingYellowGradientTwo_Top_Bottom}" />
+                      Value="{StaticResource KlingYellow2Gradient_Top_Bottom}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=OverviewMode}"
                          Value="{x:Static scc:GalaxyScreenOverviewMode.Military}">
@@ -1030,7 +1110,7 @@
                       Value="Visible" />
               <Setter TargetName="MilitaryButton"
                       Property="Background"
-                      Value="{StaticResource LCARS_KlingYellowGradientTwo_Top_Bottom}" />
+                      Value="{StaticResource KlingYellow2Gradient_Top_Bottom}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=SelectedShip}"
                          Value="{x:Null}">

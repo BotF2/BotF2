@@ -24,7 +24,7 @@ namespace Supremacy.Client
         private static IResourceManager s_resourceManager;
         private static IAppContext s_appContext;
 
-        // ReSharper disable MemberCanBeMadeStatic.Global
+
         protected IResourceManager ResourceManager
         {
             get
@@ -52,11 +52,11 @@ namespace Supremacy.Client
                 return appContext;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Global
+
 
         #region Implementation of IValueConverter
         public abstract object Convert(object value, Type targetType, object parameter, CultureInfo culture);
-        
+
         public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;

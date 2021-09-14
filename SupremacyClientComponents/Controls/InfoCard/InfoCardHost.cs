@@ -32,8 +32,8 @@ namespace Supremacy.Client.Controls
         #region InfoCardSite Property
         public InfoCardSite InfoCardSite
         {
-            get { return InfoCardSite.GetInfoCardSite((this)); }
-            internal set { InfoCardSite.SetInfoCardSite(this, value); }
+            get => InfoCardSite.GetInfoCardSite(this);
+            internal set => InfoCardSite.SetInfoCardSite(this, value);
         }
         #endregion
 
@@ -51,14 +51,20 @@ namespace Supremacy.Client.Controls
         public static InfoCardHost GetInfoCardHost(DependencyObject d)
         {
             if (d == null)
+            {
                 throw new ArgumentNullException("d");
+            }
+
             return (InfoCardHost)d.GetValue(InfoCardHostProperty);
         }
 
         protected static void SetInfoCardHost(DependencyObject d, InfoCardHost value)
         {
             if (d == null)
+            {
                 throw new ArgumentNullException("d");
+            }
+
             d.SetValue(InfoCardHostPropertyKey, value);
         }
         #endregion
@@ -77,27 +83,31 @@ namespace Supremacy.Client.Controls
 
         private static void OnInfoCardWindowPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var container = d as InfoCardHost;
-            if (container != null)
+            if (d is InfoCardHost container)
+            {
                 container.OnInfoCardWindowChanged(e.OldValue as IInfoCardWindow, e.NewValue as IInfoCardWindow);
+            }
         }
 
-        internal IInfoCardWindow InfoCardWindow
-        {
-            get { return GetInfoCardWindow(this); }
-        }
+        internal IInfoCardWindow InfoCardWindow => GetInfoCardWindow(this);
 
         internal static IInfoCardWindow GetInfoCardWindow(DependencyObject d)
         {
             if (d == null)
+            {
                 throw new ArgumentNullException("d");
+            }
+
             return (IInfoCardWindow)d.GetValue(InfoCardWindowProperty);
         }
 
         internal static void SetInfoCardWindow(DependencyObject d, IInfoCardWindow value)
         {
             if (d == null)
+            {
                 throw new ArgumentNullException("d");
+            }
+
             d.SetValue(InfoCardWindowPropertyKey, value);
         }
         #endregion
@@ -105,8 +115,8 @@ namespace Supremacy.Client.Controls
         #region UniqueId Property
         public Guid UniqueId
         {
-            get { return (Guid)GetValue(InfoCardSite.UniqueIdProperty); }
-            internal set { SetValue(InfoCardSite.UniqueIdPropertyKey, value); }
+            get => (Guid)GetValue(InfoCardSite.UniqueIdProperty);
+            internal set => SetValue(InfoCardSite.UniqueIdPropertyKey, value);
         }
         #endregion
 
@@ -117,9 +127,7 @@ namespace Supremacy.Client.Controls
             Location = InfoCardWindow.Location;
             UpdateToolWindowInfoCardLocations();
 
-            var handler = Activated;
-            if (handler != null)
-                handler(this, e);
+            Activated?.Invoke(this, e);
         }
 
         private void OnInfoCardWindowChanged(IInfoCardWindow oldInfoCardWindow, IInfoCardWindow newInfoCardWindow)
@@ -131,7 +139,9 @@ namespace Supremacy.Client.Controls
             }
 
             if (newInfoCardWindow == null)
+            {
                 return;
+            }
 
             newInfoCardWindow.Activated += OnInfoCardActivated;
             newInfoCardWindow.LocationChanged += OnInfoCardWindowLocationChanged;
@@ -145,11 +155,13 @@ namespace Supremacy.Client.Controls
 
         private void UpdateToolWindowInfoCardLocations()
         {
-            var infoCard = InfoCardSite.GetInfoCardFromHost(this);
+            InfoCard infoCard = InfoCardSite.GetInfoCardFromHost(this);
             if (infoCard != null)
+            {
                 infoCard.Location = Location;
+            }
         }
-        
+
         public Point? Location { get; internal set; }
     }
 }

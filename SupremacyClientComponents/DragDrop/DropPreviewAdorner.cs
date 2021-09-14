@@ -37,82 +37,82 @@ using System.Windows.Media;
 
 namespace Supremacy.Client.DragDrop
 {
-	public class DropPreviewAdorner : Adorner
-	{
+    public class DropPreviewAdorner : Adorner
+    {
         private readonly ContentPresenter _presenter;
 
-		private double _left;
-		private double _top;
+        private double _left;
+        private double _top;
 
-		public DropPreviewAdorner(UIElement feedbackElement, UIElement adornedElt) : base(adornedElt)
-		{
-		    _presenter = new ContentPresenter
-		                 {
-		                     Content = feedbackElement,
-		                     IsHitTestVisible = false
-		                 };
-		}
+        public DropPreviewAdorner(UIElement feedbackElement, UIElement adornedElt) : base(adornedElt)
+        {
+            _presenter = new ContentPresenter
+            {
+                Content = feedbackElement,
+                IsHitTestVisible = false
+            };
+        }
 
-		public double Left
-		{
-			get { return _left; }
-			set
-			{
-				_left = value;
-				UpdatePosition();
-			}
-		}
+        public double Left
+        {
+            get => _left;
+            set
+            {
+                _left = value;
+                UpdatePosition();
+            }
+        }
 
-		public double Top
-		{
-			get { return _top; }
-			set
-			{
-				_top = value;
-				UpdatePosition();
-			}
-		}
+        public double Top
+        {
+            get => _top;
+            set
+            {
+                _top = value;
+                UpdatePosition();
+            }
+        }
 
-		protected override int VisualChildrenCount
-		{
-			get { return 1; }
-		}
+        protected override int VisualChildrenCount => 1;
 
-		private void UpdatePosition()
-		{
-			var layer = Parent as AdornerLayer;
-		    if (layer != null)
-		        layer.Update(AdornedElement);
-		}
+        private void UpdatePosition()
+        {
+            if (Parent is AdornerLayer layer)
+            {
+                layer.Update(AdornedElement);
+            }
+        }
 
-		protected override Size MeasureOverride(Size constraint)
-		{
-			_presenter.Measure(constraint);
-			return _presenter.DesiredSize;
-		}
+        protected override Size MeasureOverride(Size constraint)
+        {
+            _presenter.Measure(constraint);
+            return _presenter.DesiredSize;
+        }
 
-		protected override Size ArrangeOverride(Size finalSize)
-		{
-			_presenter.Arrange(new Rect(finalSize));
-			return finalSize;
-		}
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            _presenter.Arrange(new Rect(finalSize));
+            return finalSize;
+        }
 
-		protected override Visual GetVisualChild(int index)
-		{
-			return _presenter;
-		}
+        protected override Visual GetVisualChild(int index)
+        {
+            return _presenter;
+        }
 
-		public override GeneralTransform GetDesiredTransform(GeneralTransform transform)
-		{
-			var result = new GeneralTransformGroup();
+        public override GeneralTransform GetDesiredTransform(GeneralTransform transform)
+        {
+            GeneralTransformGroup result = new GeneralTransformGroup();
 
-			result.Children.Add(new TranslateTransform(Left, Top));
+            result.Children.Add(new TranslateTransform(Left, Top));
             result.Children.Add(base.GetDesiredTransform(transform));
 
-			if (Left > 0) 
+            if (Left > 0)
+            {
                 Visibility = Visibility.Visible;
+            }
 
-			return result;
-		}
-	}
+            return result;
+        }
+    }
 }

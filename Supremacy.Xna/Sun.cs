@@ -92,7 +92,7 @@ namespace Supremacy.Xna
             _scale = new Vector3(1f, 1f, 1f);
 
             Position = Vector3.Zero;
-            
+
             CreateStarMaps();
         }
 
@@ -190,7 +190,7 @@ namespace Supremacy.Xna
 
             device.VertexDeclaration = _vertexDecl;
             device.Vertices[0].SetSource(_buffer, 0, VertexPositionColor.SizeInBytes);
-            
+
             _worldParam.SetValue(World);
             _worldViewProjectionParam.SetValue(World * _camera.View * _camera.Projection);
 

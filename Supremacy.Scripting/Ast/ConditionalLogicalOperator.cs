@@ -60,7 +60,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             ExpressionClass = ExpressionClass.Value;
-            
+
             return this;
         }
     }

@@ -8,7 +8,6 @@
 // All other rights reserved.
 
 using Supremacy.Combat;
-using Supremacy.Intelligence;
 
 namespace Supremacy.Client
 {
@@ -16,7 +15,7 @@ namespace Supremacy.Client
 
     internal delegate void SendCombatOrdersDelegate(CombatOrders orders);
 
-   // internal delegate void SendIntelOrdersDelegate(IntelOrders orders);
+    // internal delegate void SendIntelOrdersDelegate(IntelOrders orders);
 
     internal delegate void SendCombatTarget1Delegate(CombatTargetPrimaries target1);
 

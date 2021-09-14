@@ -22,20 +22,17 @@ namespace Supremacy.Client
             _innerReference = new WeakReference(target);
         }
 
-        public bool IsAlive
-        {
-            get { return _innerReference.IsAlive; }
-        }
+        public bool IsAlive => _innerReference.IsAlive;
 
-        public T Target
-        {
-            get { return (T)_innerReference.Target; }
-        }
+        public T Target => (T)_innerReference.Target;
 
         public static implicit operator T([NotNull] WeakReference<T> weakReference)
         {
             if (weakReference == null)
+            {
                 throw new ArgumentNullException("weakReference");
+            }
+
             return weakReference.Target;
         }
     }

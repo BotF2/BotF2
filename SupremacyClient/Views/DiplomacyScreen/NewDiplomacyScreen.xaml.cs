@@ -1,24 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
-using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using Microsoft.Practices.Composite.Presentation.Commands;
-using Microsoft.Practices.Composite.Regions;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Xna.Framework.Graphics;
-using Obtics.Collections;
-using Supremacy.AI;
 using Supremacy.Client.Context;
 using Supremacy.Client.Controls;
 using Supremacy.Diplomacy;
-using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.UI;
 using Supremacy.Utility;
@@ -45,14 +32,16 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (value == _isActive)
+                {
                     return;
+                }
 
                 _isActive = value;
-                
+
                 IsActiveChanged.Raise(this);
             }
         }
@@ -67,8 +56,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
         public DiplomacyScreenViewModel Model
         {
-            get { return DataContext as DiplomacyScreenViewModel; }
-            set { DataContext = value; }
+            get => DataContext as DiplomacyScreenViewModel;
+            set => DataContext = value;
         }
 
         public void OnCreated() { }
@@ -79,19 +68,23 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
         private void OnMessageParameterLinkClick(object sender, HyperlinkClickedEventArgs e)
         {
-            var hyperlink = e.OriginalSource as Hyperlink;
-            if (hyperlink == null)
+            if (!(e.OriginalSource is Hyperlink hyperlink))
+            {
                 return;
+            }
 
-            var element = hyperlink.DataContext as DiplomacyMessageElement;
-            if (element == null)
+            if (!(hyperlink.DataContext is DiplomacyMessageElement element))
+            {
                 return;
+            }
 
-            var parameter = element.SelectedParameter;
-            var contentTemplate = parameter != null ? TryFindResource(parameter.GetType()) as DataTemplate : null;
+            object parameter = element.SelectedParameter;
+            DataTemplate contentTemplate = parameter != null ? TryFindResource(parameter.GetType()) as DataTemplate : null;
 
             if (element.EditParameterCommand.CanExecute(contentTemplate))
+            {
                 element.EditParameterCommand.Execute(contentTemplate);
+            }
         }
 
         private void SelecteForeignPower_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -114,49 +107,56 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             get
             {
                 if (_instance == null)
+                {
                     _instance = new DiplomacyGraphPenSelector();
+                }
+
                 return _instance;
             }
         }
 
         static DiplomacyGraphPenSelector()
         {
-            var converter = new RelationshipStatusBrushConverter();
+            RelationshipStatusBrushConverter converter = new RelationshipStatusBrushConverter();
 
             _pens = new Dictionary<ForeignPowerStatus, Pen>();
             _fallbackPen = new Pen(Brushes.Gainsboro, PenThickness);
 
             if (_fallbackPen.CanFreeze)
-                _fallbackPen.Freeze();
-
-            foreach (var status in EnumHelper.GetValues<ForeignPowerStatus>())
             {
-                var brush = converter.Convert(status, null, null, null) as Brush;
-                if (brush == null)
+                _fallbackPen.Freeze();
+            }
+
+            foreach (ForeignPowerStatus status in EnumHelper.GetValues<ForeignPowerStatus>())
+            {
+                if (!(converter.Convert(status, null, null, null) is Brush brush))
+                {
                     continue;
+                }
 
                 if (brush.CanFreeze)
+                {
                     brush.Freeze();
+                }
 
                 _pens[status] = new Pen(brush, PenThickness);
                 _pens[status].TryFreeze();
             }
         }
 
-    #region INodeGraphPenSelector Members
-    public Pen GetPen(object parentNode, object childNode)
+        #region INodeGraphPenSelector Members
+        public Pen GetPen(object parentNode, object childNode)
         {
-            var node1 = parentNode as DiplomacyGraphNode;
-            var node2 = childNode as DiplomacyGraphNode;
-
-            if (node1 == null || node2 == null)
+            if (!(parentNode is DiplomacyGraphNode node1) || !(childNode is DiplomacyGraphNode node2))
+            {
                 return _fallbackPen;
+            }
 
-            Pen pen;
-            IDiplomacyData data;
 
-            if (GameContext.Current.DiplomacyData.TryGetValue(node1.Civilization, node2.Civilization, out data))
-                return _pens.TryGetValue(data.Status, out pen) ? pen : _fallbackPen;
+            if (GameContext.Current.DiplomacyData.TryGetValue(node1.Civilization, node2.Civilization, out IDiplomacyData data))
+            {
+                return _pens.TryGetValue(data.Status, out Pen pen) ? pen : _fallbackPen;
+            }
 
             return _fallbackPen;
         }

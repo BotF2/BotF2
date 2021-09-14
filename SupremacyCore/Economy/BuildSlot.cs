@@ -45,7 +45,7 @@ namespace Supremacy.Economy
         /// <value>The project under construction.</value>
         public virtual BuildProject Project
         {
-            get { return _project; }
+            get => _project;
             set
             {
                 _project = value;
@@ -54,15 +54,9 @@ namespace Supremacy.Economy
             }
         }
 
-        public bool HasProject
-        {
-            get { return (_project != null); }
-        }
+        public bool HasProject => _project != null;
 
-        public bool AllShipsToQueue
-        {
-            get { return true; }
-        }
+        public bool AllShipsToQueue => true;
 
         [ContractInvariantMethod, UsedImplicitly]
         private void Invariants()
@@ -76,7 +70,7 @@ namespace Supremacy.Economy
         /// <value>The project priority.</value>
         public BuildPriority Priority
         {
-            get { return _priority; }
+            get => _priority;
             set
             {
                 _priority = value;
@@ -89,10 +83,7 @@ namespace Supremacy.Economy
         /// <see cref="BuildSlot"/> is on hold.
         /// </summary>
         /// <value><c>true</c> if project is on hold; otherwise, <c>false</c>.</value>
-        public virtual bool OnHold
-        {
-            get { return HasProject && _project.IsPaused; }
-        }
+        public virtual bool OnHold => HasProject && _project.IsPaused;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildSlot"/> class.
@@ -120,8 +111,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

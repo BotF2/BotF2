@@ -14,7 +14,7 @@ namespace Supremacy.Scripting.Ast
         {
             _child = child;
             _unwrap = unwrap;
-            
+
             Type = type;
             Span = child.Span;
         }

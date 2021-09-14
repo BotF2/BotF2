@@ -36,7 +36,7 @@
                           SharedSizeGroup="LobbyPlayerInfoColumn5"/>
       </Grid.ColumnDefinitions>
       <Border Grid.Column="0"
-              Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+              Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
               CornerRadius="14,0,0,14"
               Width="21"
               Margin="0,0,0,0"/>
@@ -45,10 +45,10 @@
                  Margin="4,0,4,0"
                  FontSize="18pt"
                  FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                 Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                 Foreground="{StaticResource BeigeTextBrush}"
                  VerticalAlignment="Center"/>
       <Border Grid.Column="2"
-              Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+              Background="{StaticResource AzureGradient_Top_Bottom}"
               Width="21"
               Margin="0,0,0,0"/>
       <ComboBox x:Name="EmpireList"
@@ -59,10 +59,10 @@
                 HorizontalAlignment="Stretch"
                 ItemTemplate="{StaticResource KeyValuePairTemplate}"/>
       <Border Grid.Column="4"
-              Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+              Background="{StaticResource BlueGradient_Top_Bottom}"
               Margin="4,0,4,0"/>
       <Border Grid.Column="5"
-              Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+              Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
               CornerRadius="0,14,14,0"
               Width="21"
               Margin="0,0,0,0"/>

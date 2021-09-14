@@ -1,4 +1,4 @@
-// <!-- File:f10_Tab_3.xaml.cs
+// <!-- File:f11_Dialog.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,58 +7,58 @@
 //
 // All other rights reserved.
 
-using System.Windows.Input;
 using Supremacy.Utility;
+using System.Windows.Input;
 
 namespace Supremacy.Client
 {
     /// <summary>
-    /// Interaction logic for f10_Tab_3.xaml.cs
+    /// Interaction logic for f11_Dialog.xaml.cs
     /// </summary>
-    public partial class f10_Tab_3
+    public partial class F11_Dialog
     {
-        public f10_Tab_3()
+        public F11_Dialog()
         {
-            GameLog.Client.UI.InfoFormat("Initialize TAB for Dialog...");
-
             InitializeComponent();
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GenericCommands.CancelCommand,
-                    Key.Escape,
-                    ModifierKeys.None));
+            //InputBindings.Add(
+            //    new KeyBinding(
+            //        GenericCommands.CancelCommand,
+            //        Key.Escape,
+            //        ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.CancelCommand,
-                    OnGenericCommandsCancelCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.CancelCommand,
+            //        OnGenericCommandsCancelCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetAllwithoutDetailsCommand,
-                    OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetAllwithoutDetailsCommand,
+            //        OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetSomeCommand,
-                    OnGenericCommandsTracesSetSomeCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetSomeCommand,
+            //        OnGenericCommandsTracesSetSomeCommandExecuted));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetNoneCommand,
-                    OnGenericCommandsTracesSetNoneCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetNoneCommand,
+            //        OnGenericCommandsTracesSetNoneCommandExecuted));
+
+            GameLog.Client.UIDetails.DebugFormat("F11-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)

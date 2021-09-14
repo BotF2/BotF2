@@ -15,7 +15,7 @@
              xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
-             TextBlock.Foreground="{StaticResource LCARS_ParagraphBrush}"
+             TextBlock.Foreground="{StaticResource ParagraphBrush}"
              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
              TextBlock.FontSize="14pt">
     <Grid IsEnabled="{Binding Path=IsFrozen, Converter={StaticResource IsFalseValueConverter}}">
@@ -49,7 +49,7 @@
         <TextBlock Grid.Column="0"
             Grid.ColumnSpan="2"
             Grid.Row="0"
-            Background="{StaticResource LCARS_PurpleGradient_Right_Left}"  
+            Background="{StaticResource PurpleGradient_Right_Left}"  
             
             FontSize="18pt"
             MinHeight="24"
@@ -180,7 +180,7 @@
             Height="24"
                     Width="119"
             HorizontalAlignment="Right"
-            Background="YellowGreen"
+            Background="#FF9acd32"
             VerticalAlignment="Center" />
 
         <Border Grid.Column="1"
@@ -202,7 +202,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="10"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource GALAXY_SHAPE}"
             Background="DodgerBlue"
 
@@ -215,7 +215,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="11"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource GALAXY_SIZE}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -227,7 +227,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="12"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource PLANET_DENSITY}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -239,7 +239,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="13"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource STAR_DENSITY}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -251,7 +251,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="14"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource MINOR_RACES}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -264,7 +264,7 @@
             Grid.Row="15"
             Margin="5,7,0,0"
 
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource GALAXY_CANON}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -276,7 +276,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="16"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
 
             Text="{s:StringResource TECH_LEVEL}"
             Background="DodgerBlue"
@@ -492,7 +492,7 @@
               IsReadOnly="True"
               VerticalAlignment="Center" />
 
-        <TextBlock Grid.Column="3"
+        <!--<TextBlock Grid.Column="3"
             Grid.Row="1"
             Margin="7,0,0,6"
             Text="{s:StringResource MODIFIER_HEADER}"
@@ -503,7 +503,7 @@
             Width="122"
             HorizontalAlignment="Left"
             VerticalAlignment="Center" />
-        <!--ComboBoxes-->
+        --><!--ComboBoxes--><!--
         <ComboBox x:Name="lstFederationModifier"
               Grid.Column="2"
               Grid.Row="2"
@@ -559,12 +559,12 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" />-->
 
-        <TextBlock Grid.Column="2"
+        <!--<TextBlock Grid.Column="2"
             Grid.Row="10"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource EMPIRES_MODIFIER_RECURRING_BALANCING}"
             Background="DarkBlue"
             TextAlignment="Center"
@@ -586,7 +586,7 @@
       <TextBlock Grid.Column="2"
             Grid.Row="12"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource GAME_PACE}"
             Background="DarkBlue"
             TextAlignment="Center"
@@ -608,7 +608,7 @@
       <TextBlock Grid.Column="2"
             Grid.Row="14"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Foreground="{StaticResource ParagraphBrush}"
             Text="{s:StringResource TURN_TIMER}"
             Background="DarkBlue"
             TextAlignment="Center"
@@ -625,7 +625,7 @@
             Margin="7,2,0,0"
             IsEditable="False"
             IsReadOnly="True"
-            VerticalAlignment="Center" />
+            VerticalAlignment="Center" />-->
 
         <!--<Label x:Name="PlayerNameSP"
             Grid.Column="1"

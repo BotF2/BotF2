@@ -15,56 +15,47 @@ namespace Supremacy.Diplomacy.Visitors
     {
         public static readonly object TransferredColoniesDataKey = new NamedGuid(new Guid("2BDDF322-714E-46AF-B7A1-6D337DE9956B"), "TransferredColonies");
 
-        private readonly IProposal _proposal;
-        private readonly Dictionary<object, object> _agreementData;
-
         private AcceptProposalVisitor([NotNull] IProposal proposal)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
-            _proposal = proposal;
-            _agreementData = new Dictionary<object, object>();
+            Proposal = proposal ?? throw new ArgumentNullException("proposal");
+            AgreementData = new Dictionary<object, object>();
         }
 
-        protected IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        protected IProposal Proposal { get; }
 
-        protected Dictionary<object, object> AgreementData
-        {
-            get { return _agreementData; }
-        }
+        protected Dictionary<object, object> AgreementData { get; }
 
         public static IAgreement Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {
             if (proposal == null)
+            {
                 throw new ArgumentNullException("proposal");
-            GameLog.Client.Diplomacy.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
+            }
+
+            GameLog.Client.DiplomacyDetails.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
                 , proposal.Sender.Key
                 , proposal.Recipient.Key
                 , proposal.Clauses[0].ClauseType
-                
+
                 );
 
-            var visitor = new AcceptProposalVisitor(proposal);
+            AcceptProposalVisitor visitor = new AcceptProposalVisitor(proposal);
 
             proposal.Accept(visitor);
 
-            var agreement = new NewAgreement(
+            NewAgreement agreement = new NewAgreement(
                 proposal,
                 turnAccepted == 0 ? GameContext.Current.TurnNumber : turnAccepted,
-                visitor._agreementData);
+                visitor.AgreementData);
 
-            var diplomat = Diplomat.Get(proposal.Recipient);
-            var foreignPower = diplomat.GetForeignPower(proposal.Sender);
+            Diplomat diplomat = Diplomat.Get(proposal.Recipient);
+            ForeignPower foreignPower = diplomat.GetForeignPower(proposal.Sender);
 
             GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
-            var response = new Response(ResponseType.Accept, proposal);
+            Response response = new Response(ResponseType.Accept, proposal);
 
-            GameLog.Core.Diplomacy.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
+            GameLog.Core.DiplomacyDetails.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
                 agreement.Recipient, agreement.Sender, agreement.Proposal.TurnSent, proposal.Clauses.Count, response.ResponseType.ToString());
 
             foreignPower.ResponseSent = response;
@@ -75,28 +66,34 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected void MoveTrappedShips(Civilization owner)
         {
-            var universe = GameContext.Current.Universe;
-            var fleets = universe.FindOwned<Fleet>(owner);
-            var spaceOwner = owner == Proposal.Sender ? Proposal.Recipient : Proposal.Sender;
-            var sectorClaims = GameContext.Current.SectorClaims;
+            UniverseManager universe = GameContext.Current.Universe;
+            HashSet<Fleet> fleets = universe.FindOwned<Fleet>(owner);
+            Civilization spaceOwner = owner == Proposal.Sender ? Proposal.Recipient : Proposal.Sender;
+            SectorClaimGrid sectorClaims = GameContext.Current.SectorClaims;
 
-            var fleetsToMove = new List<Fleet>();
+            List<Fleet> fleetsToMove = new List<Fleet>();
 
-            foreach (var fleet in fleets)
+            foreach (Fleet fleet in fleets)
             {
-                var sectorOwner = fleet.Sector.Owner;
+                Civilization sectorOwner = fleet.Sector.Owner;
                 if (sectorOwner == null)
+                {
                     sectorOwner = sectorClaims.GetOwner(fleet.Location);
+                }
 
                 if (sectorOwner == spaceOwner)
+                {
                     fleetsToMove.Add(fleet);
+                }
             }
 
-            foreach (var fleet in fleetsToMove)
+            foreach (Fleet fleet in fleetsToMove)
             {
-                var destination = universe.FindNearestOwned<Colony>(fleet.Location, owner);
+                Colony destination = universe.FindNearestOwned<Colony>(fleet.Location, owner);
                 if (destination == null)
+                {
                     continue;
+                }
 
                 fleet.Route = null;
                 fleet.Location = destination.Location;
@@ -126,34 +123,38 @@ namespace Supremacy.Diplomacy.Visitors
         protected override void VisitRequestHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         //protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }
         //protected override void VisitRequestEndEmbargoClause(IClause clause) { /* TODO */ }
-        
+
         protected override void VisitWarPactClause(IClause clause)
         {
-            var senderDiplomat = Diplomat.Get(Proposal.Sender);
-            var recipientDiplomat = Diplomat.Get(Proposal.Recipient);
+            Diplomat senderDiplomat = Diplomat.Get(Proposal.Sender);
+            Diplomat recipientDiplomat = Diplomat.Get(Proposal.Recipient);
 
-            var target = clause.Data as Civilization; // target civilization of war pact
+            Civilization target = clause.Data as Civilization; // target civilization of war pact
             if (target == null)
             {
                 GameLog.Client.Diplomacy.ErrorFormat(
                     "Civilization {0} sent a war pact proposal to {1} without a valid target.",
                     senderDiplomat.Owner.ShortName,
                     recipientDiplomat.Owner.ShortName);
-                
+
                 return;
             }
-          
-            var senderForeignPower = senderDiplomat.GetForeignPower(target);
-            if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
-                senderForeignPower.DeclareWar();
 
-            var recipientForeignPower = recipientDiplomat.GetForeignPower(target);
+            ForeignPower senderForeignPower = senderDiplomat.GetForeignPower(target);
+            if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
+            {
+                senderForeignPower.DeclareWar();
+            }
+
+            ForeignPower recipientForeignPower = recipientDiplomat.GetForeignPower(target);
             if (recipientForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
+            {
                 recipientForeignPower.DeclareWar();
+            }
         }
 
         protected override void VisitTreatyCeaseFireClause(IClause clause) { /* TODO */ }
-        
+
         protected override void VisitTreatyNonAggressionClause(IClause clause)
         {
             /*
@@ -167,7 +168,7 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected override void VisitTreatyOpenBordersClause(IClause clause)
         {
-            /* TODO */ 
+            /* TODO */
         }
         protected override void VisitTreatyTradePactClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyResearchPactClause(IClause clause) { /* TODO */ }
@@ -191,9 +192,9 @@ namespace Supremacy.Diplomacy.Visitors
                 member = Proposal.Sender;
             }
 
-            var transferredColonyIds = new List<int>();
+            List<int> transferredColonyIds = new List<int>();
             // Transferr Ship Owner in GameEngine DoDiplomacy
-            foreach (var colony in GameContext.Current.Universe.FindOwned<Colony>(member))
+            foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(member))
             {
                 colony.TakeOwnership(empire, false);
                 transferredColonyIds.Add(colony.ObjectID);

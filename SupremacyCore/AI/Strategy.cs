@@ -215,7 +215,7 @@ namespace Supremacy.AI
         public int? FearColonyDefense
         {
             get => _fearColonyDefense ?? (Parent?.FearColonyDefense);
-            set { _fearColonyDefense = value; }
+            set => _fearColonyDefense = value;
         }
 
         public int? FearRaiding

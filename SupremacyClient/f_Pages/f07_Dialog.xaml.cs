@@ -21,14 +21,12 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Supremacy.Client.Views;
-using Supremacy.Diplomacy;
 using Supremacy.Encyclopedia;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Utility;
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client.Context;
-using AppContext = System.AppContext;
 
 namespace Supremacy.Client
 {
@@ -76,29 +74,31 @@ namespace Supremacy.Client
             InitializeComponent();
             //LoadEncyclopediaEntries();
             OnApplyTemplate();
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.CancelCommand,
                     Key.Escape,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.CancelCommand,
                     OnGenericCommandsCancelCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
+
+            GameLog.Client.UIDetails.DebugFormat("F07-Dialog initialized");
 
         }
 
@@ -143,41 +143,41 @@ namespace Supremacy.Client
         {
             //int playerCivId = 0;
             //var playerCiv = GameContext.Current.CivilizationManagers[playerCivId].Civilization;
-            var civManager = GameContext.Current.CivilizationManagers[0];
-            var techTree = new TechTree();
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[0];
+            TechTree techTree = new TechTree();
 
             techTree.Merge(civManager.TechTree);
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
                 //if (DiplomacyHelper.IsMember(civ, playerCiv))
-                    techTree.Merge(GameContext.Current.TechTrees[civ]);
+                techTree.Merge(GameContext.Current.TechTrees[civ]);
             }
 
-            var groups = (
+            IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
                              from civ in GameContext.Current.Civilizations
-                             //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
-                             //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+                                 //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+                                 //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
                              let raceEntry = civ.Race as IEncyclopediaEntry
                              where raceEntry != null
                              select raceEntry
                          )
                 .Concat(
-                (
+
                     from design in techTree
                     where TechTreeHelper.MeetsTechLevels(civManager, design)
                     let designEntry = design as IEncyclopediaEntry
                     where designEntry != null
                     select designEntry
-                ))
+                )
                 .OrderBy(o => o.EncyclopediaHeading)
                 .GroupBy(o => o.EncyclopediaCategory)
                 .OrderBy(o => o.Key);
 
-            var groupStyle = new Style(
+            Style groupStyle = new Style(
                 typeof(TreeViewItem),
                 Application.Current.FindResource(typeof(TreeViewItem)) as Style);
-            var itemStyle = new Style(
+            Style itemStyle = new Style(
                 typeof(TreeViewItem),
                 Application.Current.FindResource(typeof(TreeViewItem)) as Style);
 
@@ -201,20 +201,22 @@ namespace Supremacy.Client
             itemStyle.Seal();
 
             if (_encyclopediaEntryListView == null)
+            {
                 return;
+            }
 
             _encyclopediaEntryListView.Items.Clear();
 
-            foreach (var item in groups)
+            foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> item in groups)
             {
                 //item.Key
                 GameLog.Client.Research.DebugFormat("F07_Tree Item = {0}", item.Key);
             }
 
-            foreach (var group in groups)
+            foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> group in groups)
             {
-                var groupItem = new TreeViewItem();
-                var entriesView = CollectionViewSource.GetDefaultView(group);
+                TreeViewItem groupItem = new TreeViewItem();
+                ICollectionView entriesView = CollectionViewSource.GetDefaultView(group);
                 entriesView.Filter = FilterEncyclopediaEntry;
                 groupItem.Style = groupStyle;
                 groupItem.SetResourceReference(
@@ -224,34 +226,39 @@ namespace Supremacy.Client
                 groupItem.Header = group.Key;
                 groupItem.ItemsSource = entriesView;
                 groupItem.IsExpanded = true;
-                _encyclopediaEntryListView.Items.Add(groupItem);
+                _ = _encyclopediaEntryListView.Items.Add(groupItem);
                 //GameLog.Client.Research.DebugFormat("");
             }
         }
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            var entry = value as IEncyclopediaEntry;
-            var searchText = String.Empty;
+            string searchText = string.Empty;
 
-            if (entry == null)
+            if (!(value is IEncyclopediaEntry entry))
+            {
                 return false;
+            }
 
             if (_searchText != null)
+            {
                 searchText = _searchText.Text.Trim();
+            }
 
-            if (searchText == String.Empty)
+            if (searchText == string.Empty)
+            {
                 return true;
+            }
 
-            var words = searchText.Split(
+            string[] words = searchText.Split(
                 new[] { ' ', ',', ';' },
                 StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var word in words)
+            foreach (string word in words)
             {
-                var lcWord = word.ToLowerInvariant();
-                return (entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
-                        || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord));
+                string lcWord = word.ToLowerInvariant();
+                return entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
+                        || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord);
             }
 
             return false;
@@ -259,7 +266,7 @@ namespace Supremacy.Client
 
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 (Action)RefreshEncyclopediaEntries);
         }
@@ -267,23 +274,27 @@ namespace Supremacy.Client
         private void RefreshEncyclopediaEntries()
         {
             if (_encyclopediaEntryListView == null)
+            {
                 return;
+            }
 
-            var groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
-                              select groupItem.ItemsSource).OfType<ICollectionView>();
+            System.Collections.Generic.IEnumerable<ICollectionView> groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
+                                                                                  select groupItem.ItemsSource).OfType<ICollectionView>();
 
-            foreach (var groupView in groupViews)
+            foreach (ICollectionView groupView in groupViews)
+            {
                 groupView.Refresh();
+            }
         }
 
         private void EncyclopediaEntryListView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if ((_encyclopediaViewer != null)
                 && (_encyclopediaEntryListView.SelectedItem != null)
-                && (_encyclopediaEntryListView.SelectedItem is IEncyclopediaEntry))
+                && (_encyclopediaEntryListView.SelectedItem is IEncyclopediaEntry entry))
             {
                 _encyclopediaViewer.Document = GenerateEncyclopediaDocument(
-                    (IEncyclopediaEntry)_encyclopediaEntryListView.SelectedItem);
+                    entry);
             }
         }
 
@@ -291,15 +302,17 @@ namespace Supremacy.Client
         private FlowDocument GenerateEncyclopediaDocument(IEncyclopediaEntry entry)
         {
             if (entry == null)
+            {
                 return new FlowDocument();
+            }
 
-            var design = entry as TechObjectDesign;
-            var doc = new FlowDocument();
-            var imageConverter = new EncyclopediaImageConverter();
-            var fiendImageConverter = new ResearchFieldImageConverter();
+            TechObjectDesign design = entry as TechObjectDesign;
+            FlowDocument doc = new FlowDocument();
+            EncyclopediaImageConverter imageConverter = new EncyclopediaImageConverter();
+            ResearchFieldImageConverter fiendImageConverter = new ResearchFieldImageConverter();
 
-            var headerRun = new Run(entry.EncyclopediaHeading);
-            var headerBlock = new Paragraph(headerRun)
+            Run headerRun = new Run(entry.EncyclopediaHeading);
+            Paragraph headerBlock = new Paragraph(headerRun)
             {
                 FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
                 FontSize = 16d * 96d / 72d,
@@ -314,30 +327,29 @@ namespace Supremacy.Client
             doc.TextAlignment = TextAlignment.Left;
 
             // EncyclopediaImage
-            var image = new Border();
-            var imageSource = imageConverter.Convert(
-                entry.EncyclopediaImage,
-                typeof(BitmapImage),
-                null,
-                null) as BitmapImage;
+            Border image = new Border();
 
-            var paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
+            System.Collections.Generic.List<Paragraph> paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
                 new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries).Select(o => new Paragraph(new Run(o))).ToList();
 
-            var firstParagraph = paragraphs.FirstOrDefault();
+            Paragraph firstParagraph = paragraphs.FirstOrDefault();
             if (firstParagraph == null)
             {
                 firstParagraph = new Paragraph();
                 doc.Blocks.Add(firstParagraph);
             }
 
-            if (imageSource != null)
+            if (imageConverter.Convert(
+                entry.EncyclopediaImage,
+                typeof(BitmapImage),
+                null,
+                null) is BitmapImage imageSource)
             {
-                var imageWidth = imageSource.Width;
-                var imageHeight = imageSource.Height;
+                double imageWidth = imageSource.Width;
+                double imageHeight = imageSource.Height;
 
-                var imageRatio = imageWidth / imageHeight;
+                double imageRatio = imageWidth / imageHeight;
                 if (imageRatio >= 1.0)
                 {
                     imageWidth = Math.Max(200, Math.Min(imageWidth, 270));
@@ -356,8 +368,8 @@ namespace Supremacy.Client
                 image.CornerRadius = new CornerRadius(14.0);
                 image.Background = new ImageBrush(imageSource) { Stretch = Stretch.UniformToFill };
 
-                var imageMargin = new Thickness(14, 0, 0, 14);
-                var imageFloater = new Floater
+                Thickness imageMargin = new Thickness(14, 0, 0, 14);
+                Floater imageFloater = new Floater
                 {
                     Blocks = { new BlockUIContainer(image) },
                     Margin = imageMargin,
@@ -367,16 +379,20 @@ namespace Supremacy.Client
                 };
 
                 if (firstParagraph.Inlines.Any())
+                {
                     firstParagraph.Inlines.InsertBefore(firstParagraph.Inlines.First(), imageFloater);
+                }
                 else
+                {
                     firstParagraph.Inlines.Add(imageFloater);
+                }
             }
 
             doc.Blocks.AddRange(paragraphs);
 
             if (design != null)
             {
-                var statsControl = new ContentControl
+                ContentControl statsControl = new ContentControl
                 {
                     Margin = new Thickness(0, 14, 0, 0),
                     Width = 320,
@@ -390,7 +406,7 @@ namespace Supremacy.Client
 
 
 
-        var statsBlock = new Paragraph(new InlineUIContainer(statsControl))
+                Paragraph statsBlock = new Paragraph(new InlineUIContainer(statsControl))
                 {
                     TextAlignment = TextAlignment.Center,
                     Margin = new Thickness(0)
@@ -398,21 +414,23 @@ namespace Supremacy.Client
 
                 doc.Blocks.Add(statsBlock);
 
-                var techTable = new Table();
+                Table techTable = new Table();
                 techTable.RowGroups.Add(new TableRowGroup());
                 techTable.RowGroups[0].Rows.Add(new TableRow());
-                foreach (var field in GameContext.Current.ResearchMatrix.Fields)
+                foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
                 {
-                    var techCategory = field.TechCategory;
-                    var column = new TableColumn();
-                    var techIcon = new Border();
-                    var techTextShadow = new TextBlock { Effect = new BlurEffect { Radius = 6 } };
-                    var techText = new TextBlock();
+                    TechCategory techCategory = field.TechCategory;
+                    TableColumn column = new TableColumn();
+                    Border techIcon = new Border();
+                    TextBlock techTextShadow = new TextBlock { Effect = new BlurEffect { Radius = 6 } };
+                    TextBlock techText = new TextBlock();
 
                     if (design.TechRequirements[techCategory] < 1)
+                    {
                         techIcon.Opacity = 0.25;
+                    }
 
-                    var imageBrush = new ImageBrush(
+                    ImageBrush imageBrush = new ImageBrush(
                         fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
                         as ImageSource)
                     { Stretch = Stretch.Uniform };
@@ -445,7 +463,7 @@ namespace Supremacy.Client
                     techText.VerticalAlignment = VerticalAlignment.Bottom;
 
                     techIcon.Child = new Grid { Children = { techTextShadow, techText } };
-                    techIcon.ToolTip = String.Format(
+                    techIcon.ToolTip = string.Format(
                         "{0} Level {1}",
                         ResourceManager.GetString(field.Name),
                         design.TechRequirements[techCategory]);
@@ -453,7 +471,7 @@ namespace Supremacy.Client
                     techIcon.UseLayoutRounding = true;
                     techIcon.CacheMode = new BitmapCache { SnapsToDevicePixels = true };
 
-                    BindingOperations.SetBinding(
+                    _ = BindingOperations.SetBinding(
                         techIcon.CacheMode,
                         BitmapCache.RenderAtScaleProperty,
                         new Binding
@@ -463,7 +481,7 @@ namespace Supremacy.Client
                             Mode = BindingMode.OneWay
                         });
 
-                    var techIconContainer = new BlockUIContainer(techIcon);
+                    BlockUIContainer techIconContainer = new BlockUIContainer(techIcon);
 
                     techTable.Columns.Add(column);
                     techTable.RowGroups[0].Rows[0].Cells.Add(new TableCell(techIconContainer));

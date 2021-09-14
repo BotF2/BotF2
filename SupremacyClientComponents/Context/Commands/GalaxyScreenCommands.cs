@@ -29,11 +29,9 @@ namespace Supremacy.Client.Commands
 
         public TargetSelectionArgs([CanBeNull] string title, [CanBeNull] string displayMember, [NotNull] IEnumerable targetList)
         {
-            if (targetList == null)
-                throw new ArgumentNullException("targetList");
             Prompt = title;
             TargetDisplayMember = displayMember;
-            TargetList = targetList;
+            TargetList = targetList ?? throw new ArgumentNullException("targetList");
         }
     }
 
@@ -48,6 +46,12 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand RemoveShipFromTaskForce = new CompositeCommand();
         public static readonly CompositeCommand SelectSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOnSector = new CompositeCommand();
+        public static readonly CompositeCommand CenterOnHomeSector = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn1 = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn2 = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn3 = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn4 = new CompositeCommand();
+        public static readonly CompositeCommand SummaryOnOff = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCloak = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCamouflage = new CompositeCommand();
         public static readonly CompositeCommand IssueTaskForceOrder = new CompositeCommand();
@@ -58,32 +62,20 @@ namespace Supremacy.Client.Commands
 
     public class RedeployShipCommandArgs
     {
-        private readonly Ship _ship;
         private readonly Fleet _targetFleet;
 
-        public Ship Ship
-        {
-            get { return _ship; }
-        }
+        public Ship Ship { get; }
 
-        public Fleet TargetFleet
-        {
-            get { return _targetFleet; }
-        }
+        public Fleet TargetFleet => _targetFleet;
 
-        public bool HasTargetFleet
-        {
-            get { return (_targetFleet != null); }
-        }
+        public bool HasTargetFleet => _targetFleet != null;
 
         public RedeployShipCommandArgs([NotNull] Ship ship)
             : this(ship, null) { }
 
         public RedeployShipCommandArgs([NotNull] Ship ship, [CanBeNull] Fleet targetFleet)
         {
-            if (ship == null)
-                throw new ArgumentNullException("ship");
-            _ship = ship;
+            Ship = ship ?? throw new ArgumentNullException("ship");
             _targetFleet = targetFleet;
         }
     }
@@ -96,7 +88,9 @@ namespace Supremacy.Client.Commands
         public ScrapCommandArgs([NotNull] TechObject @object)
         {
             if (@object == null)
+            {
                 throw new ArgumentNullException("object");
+            }
 
             _objects = new ArrayWrapper<TechObject>(new[] { @object });
 
@@ -106,7 +100,9 @@ namespace Supremacy.Client.Commands
         public ScrapCommandArgs([NotNull] IEnumerable<TechObject> objects)
         {
             if (objects == null)
+            {
                 throw new ArgumentNullException("objects");
+            }
 
             _objects = new ArrayWrapper<TechObject>(objects.ToArray());
 
@@ -115,18 +111,10 @@ namespace Supremacy.Client.Commands
 
         private void SetInitialScrapValue()
         {
-            if (_objects.All(o => o.Scrap))
-                _scrap = true;
-            else if (_objects.Any(o => o.Scrap))
-                _scrap = null;
-            else
-                _scrap = false;
+            _scrap = _objects.All(o => o.Scrap) ? true : _objects.Any(o => o.Scrap) ? null : (bool?)false;
         }
 
-        public IIndexedCollection<TechObject> Objects
-        {
-            get { return _objects; }
-        }
+        public IIndexedCollection<TechObject> Objects => _objects;
 
         #region Implementation of ICheckableCommandParameter
         public event EventHandler InnerParameterChanged;
@@ -136,7 +124,7 @@ namespace Supremacy.Client.Commands
 
         public bool? IsChecked
         {
-            get { return _scrap; }
+            get => _scrap;
             set
             {
                 _scrap = value ?? false;

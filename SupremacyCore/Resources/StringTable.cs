@@ -15,7 +15,6 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 using Supremacy.Types;
-using Supremacy.Utility;
 
 namespace Supremacy.Resources
 {
@@ -25,21 +24,17 @@ namespace Supremacy.Resources
         private static readonly Regex KeyRegex = new Regex(@"^\[([^\[]+)\]$", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private readonly Dictionary<string, string> _strings;
+        private static string _text;
+        private static readonly string newline = Environment.NewLine;
 
-        public ICollection<string> Keys
-        {
-            get { return _strings.Keys; }
-        }
+        public ICollection<string> Keys => _strings.Keys;
 
-        public ICollection<string> Values
-        {
-            get { return _strings.Values; }
-        }
+        public ICollection<string> Values => _strings.Values;
 
         public string this[string key]
         {
-            get { return _strings.ContainsKey(key) ? _strings[key] : null; }
-            set { _strings[key] = value; }
+            get => _strings.ContainsKey(key) ? _strings[key] : null;
+            set => _strings[key] = value;
         }
 
         public StringTable()
@@ -62,22 +57,24 @@ namespace Supremacy.Resources
                 Console.WriteLine(_text);
 
                 throw new FileNotFoundException(
-                    "String table file could not be located: " 
+                    "String table file could not be located: "
                     + fileName);
             }
-            
-            String key = null;
-            var result = new StringTable();
-            var buffer = new StringBuilder();
-            var state = ReadState.ReadKey;
-            var lines = new List<string>(File.ReadAllLines(fileName).Select(o => o.Trim()));
+
+            string key = null;
+            StringTable result = new StringTable();
+            StringBuilder buffer = new StringBuilder();
+            ReadState state = ReadState.ReadKey;
+            List<string> lines = new List<string>(File.ReadAllLines(fileName).Select(o => o.Trim()));
 
             for (int i = 0; i < lines.Count; i++)
             {
-                var line = lines[i];
+                string line = lines[i];
 
                 if ((line.Length == 0) || line.StartsWith("#"))
+                {
                     continue;
+                }
 
                 if (state == ReadState.ReadKey)
                 {
@@ -102,10 +99,40 @@ namespace Supremacy.Resources
                 else
                 {
                     if (buffer.Length > 0)
-                        buffer.AppendLine();
-                    buffer.Append(line);
+                    {
+                        _ = buffer.AppendLine();
+                    }
+
+                    _ = buffer.Append(line);
                 }
+
             }
+
+            _text = "EN.txt_Content-Key;Value;empty1;empty2;empty3";
+            foreach (var item in result._strings)
+            {
+                _text += newline + item.Key + ";\"" + item.Value + "\"";
+            }
+            string file = Path.Combine(ResourceManager.GetResourcePath("Resources\\Data"),"EN-Txt-Content");
+    
+    
+            //file = file.Replace(".\\", "");
+            try
+            {
+                StreamWriter streamWriter = new StreamWriter(file + ".txt");
+                streamWriter.Write(_text);
+                streamWriter.Close();
+
+                streamWriter = new StreamWriter(file + ".csv");
+                streamWriter.Write(_text);
+                streamWriter.Close();
+            }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+
             return result;
         }
 

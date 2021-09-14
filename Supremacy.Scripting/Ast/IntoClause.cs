@@ -64,12 +64,12 @@ namespace Supremacy.Scripting.Ast
             //ec.CurrentScope = this.Scope;
 
             Expression nestedFrom = new QueryStartClause
-                             {
-                                 RangeVariable = RangeVariable,
-                                 Initializer = Initializer,
-                                 Next = Next,
-                                 Scope = Scope
-                             }.DoResolve(ec);
+            {
+                RangeVariable = RangeVariable,
+                Initializer = Initializer,
+                Next = Next,
+                Scope = Scope
+            }.DoResolve(ec);
 
             //ec.CurrentScope = currentScope;
 

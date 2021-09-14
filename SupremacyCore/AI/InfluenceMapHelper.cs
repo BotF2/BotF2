@@ -35,7 +35,7 @@ namespace Supremacy.AI
 
             InfluenceMap map = new InfluenceMap(game);
 
-            game.Civilizations
+            _ = game.Civilizations
                 .AsParallel()
                 .Where(c => (owner != c) && DiplomacyHelper.AreAllied(owner, c))
                 .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
@@ -43,7 +43,7 @@ namespace Supremacy.AI
                 .SelectMany(f => GetFleetInfluence(game, f))
                 .ForEach(o => map.AddAllied(o.Item1, o.Item2));
 
-            game.Civilizations
+            _ = game.Civilizations
                 .AsParallel()
                 .Where(c => (owner != c) && DiplomacyHelper.AreAtWar(owner, c))
                 .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
@@ -75,7 +75,6 @@ namespace Supremacy.AI
 
             for (int x = startX; x <= endX; x++)
             {
-                // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
                 for (int y = startY; x <= endY; y++)
                 {
                     yield return new ValueTuple<MapLocation, int>(

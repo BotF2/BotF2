@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 using Supremacy.Collections;
-using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
@@ -16,12 +15,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
+using Supremacy.Universe;
+using Supremacy.Resources;
 
 namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly int[,] empiresInBattle;
+#pragma warning restore IDE0052 // Remove unread private members
+
+        private string _text;
+        //private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
@@ -34,6 +40,7 @@ namespace Supremacy.Combat
         protected override void ResolveCombatRoundCore()
         {
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count);
+            MapLocation _sector = _assets.FirstOrDefault().Location;
             bool activeBattle = true; // false when less than two civs remaining
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 7) // multiplayer starts at round 5 // always true
@@ -41,12 +48,15 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
                 //  Once a ship has retreated, its important that it does not do it again..
                 List<Tuple<CombatUnit, CombatWeapon[]>> easyRetreatShips = _combatShips
-                    .Where(s => (s.Item1.IsCloaked == true || s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") || (s.Item1.Source.OrbitalDesign.ShipType == "Scout")) && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat) //  Destroyed ships cannot retreat
+                    .Where(s => (s.Item1.IsCloaked == true
+                    || s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE")
+                    || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in easyRetreatShips)
                 {
-                    if (!RandomHelper.Chance(5) && (ship.Item1 != null)) // 25% to reatreat // Project Minichange
+                    if (!RandomHelper.Chance(5) && (ship.Item1 != null))
                     {
                         CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
                         if (!ownerAssets.EscapedShips.Contains(ship.Item1)) // escaped ships cannot escape again
@@ -62,7 +72,11 @@ namespace Supremacy.Combat
                 }
                 // other ships with retreat order have a lesser chance to retreat
                 List<Tuple<CombatUnit, CombatWeapon[]>> hardRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked != true && !s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") && s.Item1.Source.OrbitalDesign.ShipType != "Scout" && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat) //  Destroyed ships cannot retreat
+                    .Where(s => s.Item1.IsCloaked != true
+                    && !s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE")
+                    && s.Item1.Source.OrbitalDesign.ShipType != "Scout"
+                    && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
+
                     .ToList();
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in hardRetreatShips)
@@ -92,7 +106,7 @@ namespace Supremacy.Combat
                 }
 
                 //Resistance is futile, try assimilation before you attack then retreat if assimilated & no spy or diplomtic assimilated
-                bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.ShortName == "Borg");
+                bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.Key == "BORG");
                 bool assimilationSuccessful = false;
                 List<Tuple<CombatUnit, CombatWeapon[]>> notDaBorg = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg").Select(xborg => xborg).ToList();
                 if (foundDaBorg)
@@ -128,13 +142,13 @@ namespace Supremacy.Combat
 
             #region Construct empires (civs) in battle and Ships per empires arrays
             int[,] empiresInBattle = new int[12, 3]; // An Array of who is in the battle with what targets.
-                                                    // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
-                                                    // 12 Elements can hold 12 participating empires (civilizations CivID OwnerID). 
-                                                    //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
-                                                    //empiresInBattle[0, 1] contains the Target1 of that empire (civ As CivID as well)
-                                                    //empiresInBattle[0, 2] contains the Target2 of that empire.
-                                                    // Re-Start Array with 999 everywhere
-                                                    // Initialize first Array  // UPDATE X 25 june 2019 changed 11 to 12  
+                                                     // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
+                                                     // 12 Elements can hold 12 participating empires (civilizations CivID OwnerID). 
+                                                     //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
+                                                     //empiresInBattle[0, 1] contains the Target1 of that empire (civ As CivID as well)
+                                                     //empiresInBattle[0, 2] contains the Target2 of that empire.
+                                                     // Re-Start Array with 999 everywhere
+                                                     // Initialize first Array  // UPDATE X 25 june 2019 changed 11 to 12  
             for (int i = 0; i < 12; i++)
             {
                 for (int i2 = 0; i2 < 3; i2++)
@@ -299,7 +313,7 @@ namespace Supremacy.Combat
                                     //int shipFirepower = 0;
             int howOftenContinued = 0;
 
-            GameLog.Core.Combat.DebugFormat("Main While is starting");
+            GameLog.Core.CombatDetails.DebugFormat("Main While is starting");
 
             #region top of Battle while loop to attacker while loop
             // ENTIRE BATTTLE
@@ -377,7 +391,7 @@ namespace Supremacy.Combat
                 if (AttackingShips.Count > 0 && AttackingShips != null) // UPDATE 07 july 2019 make sure it does not crash, use count >0
                 {
                     AttackingShip = AttackingShips.RandomElementOrDefault();
-                    GameLog.Core.Combat.DebugFormat("Current Attacking Ship {0}", AttackingShip.Item1.Name);
+                    GameLog.Core.CombatDetails.DebugFormat("Current Attacking Ship {0}", AttackingShip.Item1.Name);
                 }
                 // COUNT ACTICE FIREROUND PER EMPIRE
                 shipsPerEmpire[indexOfAttackerEmpires, 2]++;
@@ -436,7 +450,7 @@ namespace Supremacy.Combat
                 double FavorTheBoldAttackBonus = 1.0;
 
                 // Update X 18 august Flavor the bold modfiier
-                // Calculate and save EmpireDurability for later use in Flavor the Bold
+                // Calculate and save EmpireDurability for later use in Favor the Bold
                 int[,] EmpireTotalDurabilities = new int[12, 2];
 
                 // Initialize Array
@@ -988,7 +1002,7 @@ namespace Supremacy.Combat
                         combatOrderBonusMalus += AttackingShip.Item1.RemainingFirepower * 0.17;
                     }
 
-                    Convert.ToInt32(combatOrderBonusMalus);
+                    _ = Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
                     if (
                     ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
@@ -1638,7 +1652,7 @@ namespace Supremacy.Combat
                         combatOrderBonusMalus += applyDamage * 0.17;
                     }
 
-                    Convert.ToInt32(combatOrderBonusMalus);
+                    _ = Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
                     if (
                         ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
@@ -1919,10 +1933,12 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("IsDestroid = {2} (Hull = {3}) for combatent {0} {1} if true see second line ", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                 if (combatent.Item1.IsDestroyed)
                 {
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[combatent.Item1.Owner.CivID];
                     //GameLog.Core.CombatDetails.DebugFormat("Combatent {0} {1} IsDestroid ={2} if true see second line Hull ={3}", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                     CombatAssets Assets = GetAssets(combatent.Item1.Owner);
                     _ = Assets.AssimilatedShips.Remove(combatent.Item1);
                     GameLog.Core.Combat.DebugFormat("Combatent {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
+                    
                     if (combatent.Item1.Source is Ship)
                     {
                         if (Assets != null)
@@ -1931,7 +1947,17 @@ namespace Supremacy.Combat
                             if (!Assets.DestroyedShips.Contains(combatent.Item1))
                             {
                                 Assets.DestroyedShips.Add(combatent.Item1);
+                                _text = combatent.Item1.Source.Location
+                                + " " + combatent.Item1.Source.Sector.Name
+                                + " > Ship " + combatent.Item1.Source.ObjectID
+                                + " * " + combatent.Item1.Name
+                                + " * (" + combatent.Item1.Source.Design
+                                + " ) destroyed."
+                                ;
+
+                                civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                             }
+
                             if (combatent.Item1.Source.IsCombatant)
                             {
                                 countDestroyed++;
@@ -1942,6 +1968,17 @@ namespace Supremacy.Combat
                             {
                                 _ = Assets.NonCombatShips.Remove(combatent.Item1);
                             }
+                            Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
+                            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
+                            _text = ship.Item1.Source.Location
+                                + " " + ship.Item1.Source.Sector.Name
+                                + " > Ship " + ship.Item1.Source.ObjectID
+                                + ": * " + ship.Item1.Name
+                                + " * (" + ship.Item1.Source.Design
+                                + " ) escaped."
+                                ;
+
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                         }
                         else
                         {
@@ -1953,6 +1990,16 @@ namespace Supremacy.Combat
                         if (!Assets.DestroyedShips.Contains(combatent.Item1))
                         {
                             Assets.DestroyedShips.Add(combatent.Item1);
+                            _text = combatent.Item1.Source.Location
+                            + " " + combatent.Item1.Source.Sector.Name
+                            + " > " + combatent.Item1.Source.ObjectID
+                            + " " + combatent.Item1.Name
+                            + " " + combatent.Item1.Source.Design
+                            + " destroyed."
+                            ;
+
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+
                         }
                     }
                 }
@@ -1962,6 +2009,9 @@ namespace Supremacy.Combat
             //if (true) // End Combat after 3 While loops
             //{
             GameLog.Core.CombatDetails.DebugFormat("NOW FORCE ALL TO RETREAT THAT WHERE NOT DESTROYED, Number of destroyed ships in total: {0}", countDestroyed);
+
+
+
             //GameLog.Core.CombatDetails.DebugFormat("round# ={0}", _roundNumber);
             //_roundNumber += 1;
             //GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
@@ -1974,45 +2024,106 @@ namespace Supremacy.Combat
             List<Tuple<CombatUnit, CombatWeapon[]>> _stayingThereShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             List<Tuple<CombatUnit, CombatWeapon[]>> _allRetreatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
-            // cases:    (minors as well)
+            Civilization firstShipOwner = _combatShipsTempNotDestroyed.FirstOrDefault()?.Item1.Owner;
 
-            // Attacker   CARD + ROM
-            // Defense    FED + Kling
-
-            Civilization firstShipOwner = null; // Dummy, not all sectors have a Sector owner
-
-            foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
+            List<Tuple<CombatUnit, CombatWeapon[]>> constructOrColonyShips = _combatShips
+                    .Where(s => ((s.Item1.Source.OrbitalDesign.ShipType == "Construction")
+                    || (s.Item1.Source.OrbitalDesign.ShipType == "Colony"))
+                    && !s.Item1.IsDestroyed)
+                    .ToList();
+            if (_combatShipsTempNotDestroyed.Count() > 0)
             {
-                firstShipOwner = _combatShipsTempNotDestroyed.FirstOrDefault()?.Item1.Owner;
 
-                if (!CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
-                    {
-                    _stayingThereShips.Add(ship);
-                    //GameLog.Core.CombatDetails.DebugFormat("added to _stayingThereShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
-                }
-                else
+                Sector theSector = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector;
+                string systemName = "";
+                if (theSector.System != null)
                 {
-                    _allRetreatShips.Add(ship);
+                    systemName = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector.System.Name;
+                    // if combat is in a system what is it's name?
+                }
+
+                bool foundStation = false;
+                if (_combatStation != null && !_combatStation.Item1.IsDestroyed)
+                {
+                    foundStation = true;
+                }
+
+                foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
+                {
+                    if (systemName != "" && (systemName == ship.Item1.Owner.HomeSystemName || (theSector.System.Owner != null && !CombatHelper.WillEngage(ship.Item1.Owner, theSector.System.Owner))))
+                    {
+                        _stayingThereShips.Add(ship); // at a home system to defend
+                    }
+                    else if (foundStation && !CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
+                    {
+                        _stayingThereShips.Add(ship); // at a station to defend
+                    }
+                    else if (constructOrColonyShips.Count() > 0) //
+                    {
+                        CombatUnit firstConstrutorOrColonyCombatUnit = constructOrColonyShips.FirstOrDefault()?.Item1;
+                        if (ship.Item1.Owner == firstConstrutorOrColonyCombatUnit.Owner || !CombatHelper.WillEngage(ship.Item1.Owner, firstConstrutorOrColonyCombatUnit.Owner))
+                        {
+                            _stayingThereShips.Add(ship); // first owner of a colony or construction ship stays
+                        }
+                        else
+                        {
+                            _allRetreatShips.Add(ship);
+                        }
+                    }
+                    else if (firstShipOwner != null && !CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
+                    {
+                        //2021-08-21: changed this
+                        //_stayingThereShips.Add(ship); // otherwise who is first stays
+                        _allRetreatShips.Add(ship);
+                    }
+                    else
+                    {
+                        _stayingThereShips.Add(ship); // otherwise who is first stays
+                        //_allRetreatShips.Add(ship);
+                    }
                     //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+
                 }
             }
-
-            foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _allRetreatShips)
+            if (_allRetreatShips.Count() > 0)
             {
-                if (ship.Item1 != null)
+                foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _allRetreatShips)
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("END retreated ship = {0} {1}", ship.Item1.Name, ship.Item1.Description);
-                    CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
-                    if (!ownerAssets.EscapedShips.Contains(ship.Item1))
+                    if (ship.Item1 != null)
                     {
-                        GameLog.Core.CombatDetails.DebugFormat("END EscapedShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
-                        ownerAssets.EscapedShips.Add(ship.Item1);
-                        _ = ownerAssets.CombatShips.Remove(ship.Item1);
-                        _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
-                        _ = _combatShips.Remove(ship);
+                        GameLog.Core.CombatDetails.DebugFormat("END retreated ship = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                        CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
+                        if (!ownerAssets.EscapedShips.Contains(ship.Item1))
+                        {
+                            GameLog.Core.CombatDetails.DebugFormat("END EscapedShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                            ownerAssets.EscapedShips.Add(ship.Item1);
+                            _ = ownerAssets.CombatShips.Remove(ship.Item1);
+                            _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
+                            _ = _combatShips.Remove(ship);
+
+                            CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
+                            _text = ship.Item1.Source.Location
+                                + " > " + ship.Item1.Source.ObjectID
+                                + " * " + ship.Item1.Name
+                                + " * ( " + ship.Item1.Source.Design + " ) "
+                                + " escaped."
+                                ;
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "","", SitRepPriority.RedYellow));
+                        }
+
                     }
                 }
             }
+
+            //foreach (int item in ownerIDs)
+            //{
+
+            //    CivilizationManager civManager = GameContext.Current.CivilizationManagers[item];
+            //    if (civManager.Civilization.IsEmpire)
+            //        civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, _sector, _text, "", "", SitRepPriority.Red));
+            //    //_text = 
+            //}
+            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[GetAssets.];
 
             GameLog.Core.CombatDetails.DebugFormat("AutomatedCombatEngine ends");
         }

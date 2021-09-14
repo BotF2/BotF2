@@ -82,7 +82,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public override MSAst.Expression TransformCore(ScriptGenerator generator)
-		{
+        {
             //if (_arguments.Count != 2)
             //    throw new InvalidOperationException("arguments.Count != 2");
 
@@ -94,7 +94,7 @@ namespace Supremacy.Scripting.Ast
             //    _arguments[0].Value.Transform(generator),
             //    _arguments[1].Value.Transform(generator),
             //    CommonMembers.StringConcat);
-		}
+        }
 
         public override void Dump(SourceWriter sw, int indentChange)
         {

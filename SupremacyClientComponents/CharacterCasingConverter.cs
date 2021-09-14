@@ -30,7 +30,10 @@ namespace Supremacy.Client
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return value;
+            }
+
             switch (Casing)
             {
                 case CharacterCasing.Lower:

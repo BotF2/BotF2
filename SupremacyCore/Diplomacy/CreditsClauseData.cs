@@ -16,15 +16,9 @@ namespace Supremacy.Diplomacy
             _recurringAmount = recurringAmount;
         }
 
-        public int ImmediateAmount
-        {
-            get { return _immediateAmount; }
-        }
+        public int ImmediateAmount => _immediateAmount;
 
-        public int RecurringAmount
-        {
-            get { return _recurringAmount; }
-        }
+        public int RecurringAmount => _recurringAmount;
 
         #region Implementation of IOwnedDataSerializable
 

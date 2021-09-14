@@ -145,7 +145,7 @@ namespace Supremacy.Scripting.Utility
                         break;
                     }
 
-                    list.Add(entry);
+                    _ = list.Add(entry);
                 }
             }
         }
@@ -293,7 +293,10 @@ namespace Supremacy.Scripting.Utility
                 if (_overrides.Count > 0)
                 {
                     foreach (object t in _overrides)
+                    {
                         TypeManager.RegisterOverride((MethodBase)t, curr);
+                    }
+
                     _overrides.Clear();
                 }
 
@@ -447,7 +450,7 @@ namespace Supremacy.Scripting.Utility
 
             public override string ToString()
             {
-                return String.Format(
+                return string.Format(
                     "CacheEntry ({0}:{1}:{2})",
                     Container.Name,
                     EntryType,
@@ -750,7 +753,7 @@ namespace Supremacy.Scripting.Utility
                         candidates = new ArrayList(2);
                     }
 
-                    candidates.Add(mb);
+                    _ = candidates.Add(mb);
                     //}
                 }
             }
@@ -837,7 +840,7 @@ namespace Supremacy.Scripting.Utility
             foreach (DictionaryEntry entry in MemberHash)
             {
                 ArrayList members = (ArrayList)entry.Value;
-                foreach (var t in members)
+                foreach (object t in members)
                 {
                     CacheEntry memberEntry = (CacheEntry)t;
 

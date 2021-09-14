@@ -13,11 +13,11 @@ namespace Supremacy.Scripting
         {
             _parameter = parameter;
 
-            var valueIsNull = (value == null);
+            bool valueIsNull = value == null;
 
             if (!_parameter.IsValidValue(ref value))
             {
-                var parameterTypeName = _parameter.Type.Name;
+                string parameterTypeName = _parameter.Type.Name;
 
                 if (valueIsNull)
                 {
@@ -40,15 +40,9 @@ namespace Supremacy.Scripting
         }
 
         [ConstructorArgument("parameter")]
-        public ScriptParameter Parameter
-        {
-            get { return _parameter; }
-        }
+        public ScriptParameter Parameter => _parameter;
 
         [ConstructorArgument("value")]
-        public object Value
-        {
-            get { return _value; }
-        }
+        public object Value => _value;
     }
 }

@@ -40,7 +40,7 @@ namespace Supremacy.Scripting.Ast
                        ((Arguments == null) || (Arguments.Count == 0));
 
         public static ConstantExpression Constantify(Type t)
-		{
+        {
             if (t == TypeManager.CoreTypes.Int32)
             {
                 return new ConstantExpression<int>(0);
@@ -222,7 +222,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             Constructor = memberLookup as MethodGroupExpression;
-            
+
             if (Constructor == null)
             {
                 memberLookup.OnErrorUnexpectedKind(ec, ResolveFlags.MethodGroup, Span);

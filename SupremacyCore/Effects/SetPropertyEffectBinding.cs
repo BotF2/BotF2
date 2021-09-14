@@ -27,15 +27,9 @@ namespace Supremacy.Effects
             _propertyModifier = new EffectPropertyModifier(this);
         }
 
-        public new SetPropertyEffect Effect
-        {
-            get { return (SetPropertyEffect)base.Effect; }
-        }
+        public new SetPropertyEffect Effect => (SetPropertyEffect)base.Effect;
 
-        public new DynamicObject Target
-        {
-            get { return (DynamicObject)base.Target; }
-        }
+        public new DynamicObject Target => (DynamicObject)base.Target;
 
         protected override void AttachCore()
         {
@@ -59,7 +53,7 @@ namespace Supremacy.Effects
 
         protected override IEffectParameterBindingCollection BindSystemParameters(ParameterBindingContext bindingContext)
         {
-            var additionalBindings = new[]
+            EffectParameterBinding[] additionalBindings = new[]
                                      {
                                          new EffectParameterBinding(
                                              Effect.SystemParameters[SetPropertyEffect.ParameterNameBaseValue],
@@ -76,24 +70,17 @@ namespace Supremacy.Effects
 
         internal sealed class ParameterBindingContext
         {
-            private readonly TValue _baseValue;
             private readonly TValue _currentValue;
 
             public ParameterBindingContext(TValue baseValue, TValue currentValue)
             {
-                _baseValue = baseValue;
+                BaseValue = baseValue;
                 _currentValue = currentValue;
             }
 
-            public TValue BaseValue
-            {
-                get { return _baseValue; }
-            }
+            public TValue BaseValue { get; }
 
-            public TValue CurrentValue
-            {
-                get { return _currentValue; }
-            }
+            public TValue CurrentValue => _currentValue;
         }
 
         #region Nested Class: EffectPropertyModifier
@@ -102,15 +89,12 @@ namespace Supremacy.Effects
         private class EffectPropertyModifier : DynamicPropertyModifier<TValue>
         {
             private readonly SetPropertyEffectBinding<TValue> _effectBinding;
-            
+
             private IValueProvider<TValue> _currentValueProvider;
 
             internal EffectPropertyModifier([NotNull] SetPropertyEffectBinding<TValue> effectBinding)
             {
-                if (effectBinding == null)
-                    throw new ArgumentNullException("effectBinding");
-
-                _effectBinding = effectBinding;
+                _effectBinding = effectBinding ?? throw new ArgumentNullException("effectBinding");
             }
 
             internal void UpdateTarget()
@@ -118,24 +102,25 @@ namespace Supremacy.Effects
                 lock (EffectSystem.SyncRoot)
                 {
                     if (EffectSystem.IsSuspended)
+                    {
                         return;
+                    }
 
                     Invalidate();
                 }
             }
 
-            protected override string Description
-            {
-                get { return _effectBinding.Description ?? base.Description; }
-            }
+            protected override string Description => _effectBinding.Description ?? base.Description;
 
             protected override TValue ProvideValueCore(TValue baseValue, TValue currentValue)
             {
                 if (_currentValueProvider != null)
+                {
                     ((INotifyPropertyChanged)_currentValueProvider).PropertyChanged -= OnObservableValueChanged;
-                
-                var context = new ParameterBindingContext(baseValue, currentValue);
-                var mergedRuntimeScriptParameters = _effectBinding.GetMergedRuntimeScriptParameters(context);
+                }
+
+                ParameterBindingContext context = new ParameterBindingContext(baseValue, currentValue);
+                Scripting.RuntimeScriptParameters mergedRuntimeScriptParameters = _effectBinding.GetMergedRuntimeScriptParameters(context);
 
                 _currentValueProvider = _effectBinding.Effect.ValueScript.Evaluate<IValueProvider<TValue>>(
                     mergedRuntimeScriptParameters);

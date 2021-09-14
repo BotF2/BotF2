@@ -32,27 +32,33 @@ namespace Supremacy.Universe
         public PlanetTypeFlags([NotNull] IEnumerable<PlanetType> planetTypes)
         {
             if (planetTypes == null)
+            {
                 throw new ArgumentNullException("planetTypes");
+            }
 
             _flags = 0;
 
-            foreach (var planetType in planetTypes)
+            foreach (PlanetType planetType in planetTypes)
+            {
                 _flags |= 1 << (int)planetType;
+            }
         }
 
         public PlanetTypeFlags(params PlanetType[] planetTypes)
         {
             _flags = 0;
 
-            foreach (var planetType in planetTypes)
+            foreach (PlanetType planetType in planetTypes)
+            {
                 _flags |= 1 << (int)planetType;
+            }
         }
 
         public bool this[PlanetType planetType]
         {
             get
             {
-                var mask = 1 << (int)planetType;
+                int mask = 1 << (int)planetType;
                 return (_flags & mask) == mask;
             }
         }
@@ -64,18 +70,20 @@ namespace Supremacy.Universe
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
+            {
                 return false;
+            }
 
-            var other = obj as PlanetTypeFlags?;
+            PlanetTypeFlags? other = obj as PlanetTypeFlags?;
             return other.HasValue && Equals(other.GetValueOrDefault());
         }
 
         public override int GetHashCode()
         {
-            // ReSharper disable NonReadonlyFieldInGetHashCode
+
             return _flags;
-            // ReSharper restore NonReadonlyFieldInGetHashCode
+
         }
 
         public static bool operator ==(PlanetTypeFlags left, PlanetTypeFlags right)

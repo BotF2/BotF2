@@ -34,13 +34,13 @@ using System.Windows;
 
 namespace Supremacy.Client.DragDrop
 {
-	public interface IDropTargetAdvisor
-	{
-		UIElement TargetElement { get; set; }
-		bool ApplyMouseOffset { get; }
-		bool IsValidDataObject(IDataObject obj);
-		void OnDropCompleted(IDataObject obj, Point dropPoint);
-		UIElement GetVisualFeedback(IDataObject obj);
-		UIElement GetTopContainer();
-	}
+    public interface IDropTargetAdvisor
+    {
+        UIElement TargetElement { get; set; }
+        bool ApplyMouseOffset { get; }
+        bool IsValidDataObject(IDataObject obj);
+        void OnDropCompleted(IDataObject obj, Point dropPoint);
+        UIElement GetVisualFeedback(IDataObject obj);
+        UIElement GetTopContainer();
+    }
 }

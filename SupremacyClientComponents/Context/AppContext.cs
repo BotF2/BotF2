@@ -27,12 +27,18 @@ namespace Supremacy.Client.Context
     {
         MusicLibrary DefaultMusicLibrary { get; }
         MusicLibrary ThemeMusicLibrary { get; }
+
+        //int  ASpecialWidth1 { get; }
+        //int ASpecialHeight1 { get; }
     }
 
     public class AppContext : IAppContext, IDisposable
     {
         #region Fields
-        private const string DefaultMusicLibraryPath = "Resources/UI/Default/MusicPacks.xml";
+        private const string DefaultMusicLibraryPath = "Resources/Specific_Empires_UI/Default/MusicPacks.xml";
+
+        //private readonly int ASpecialWidth1 = 576;
+        //private readonly int ASpecialHeight1 = 480;
 
         private readonly ReaderWriterLockSlim _accessLock;
         private readonly Dispatcher _dispatcher;
@@ -42,13 +48,13 @@ namespace Supremacy.Client.Context
         private bool _isConnected;
         private bool _isDisposed;
         private bool _isSinglePlayerGame;
-        private bool _isBorgPlayable = false;
-        private bool _isTerranEmpirePlayable = false;
-        private bool _isFederationPlayable = false;
-        private bool _isRomulanPlayable = false;
-        private bool _isKlingonPlayable = false;
-        private bool _isCardassianPlayable = false;
-        private bool _isDominionPlayable = false;
+        private readonly bool _isBorgPlayable = false;
+        private readonly bool _isTerranEmpirePlayable = false;
+        private readonly bool _isFederationPlayable = false;
+        private readonly bool _isRomulanPlayable = false;
+        private readonly bool _isKlingonPlayable = false;
+        private readonly bool _isCardassianPlayable = false;
+        private readonly bool _isDominionPlayable = false;
         public bool _audioTrace;
         private bool _isGameHost;
         private bool _isGameEnding;
@@ -57,20 +63,26 @@ namespace Supremacy.Client.Context
         private IPlayer _localPlayer;
         private IEnumerable<IPlayer> _remotePlayers;
         private ILobbyData _lobbyData;
-        private MusicLibrary _defaultMusicLibrary = new MusicLibrary();
+#pragma warning disable IDE0044 // Add readonly modifier
         private MusicLibrary _themeMusicLibrary = new MusicLibrary();
+#pragma warning restore IDE0044 // Add readonly modifier
+
         #endregion
 
         #region Properties
-        public MusicLibrary DefaultMusicLibrary
-        {
-            get { return _defaultMusicLibrary; }
-        }
+        public MusicLibrary DefaultMusicLibrary { get; } = new MusicLibrary();
 
-        public MusicLibrary ThemeMusicLibrary
-        {
-            get { return _themeMusicLibrary; }
-        }
+        public MusicLibrary ThemeMusicLibrary => _themeMusicLibrary;
+
+        //public int ASpecialWidth1
+        //{
+        //    get { return 576; }
+        //}
+
+        //public int ASpecialHeight1
+        //{
+        //    get { return 480; }
+        //}
         #endregion
 
         #region Constructors and Finalizers
@@ -79,7 +91,7 @@ namespace Supremacy.Client.Context
             _accessLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _dispatcher = Dispatcher.CurrentDispatcher;
             _allPlayers = new KeyedCollectionBase<int, IPlayer>(o => o.PlayerID);
-            _defaultMusicLibrary.Load(DefaultMusicLibraryPath);
+            DefaultMusicLibrary.Load(DefaultMusicLibraryPath);
             _audioTrace = false;    // just tracing audio into Log.txt
             HookEventHandlers();
         }
@@ -93,8 +105,7 @@ namespace Supremacy.Client.Context
         #region Public and Protected Methods
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -108,7 +119,9 @@ namespace Supremacy.Client.Context
         protected virtual void Dispose(bool isDisposing)
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             try
             {
@@ -124,17 +137,17 @@ namespace Supremacy.Client.Context
         #region Private Methods
         private void HookEventHandlers()
         {
-            ClientEvents.ClientConnected.Subscribe(OnClientConnected);
-            ClientEvents.ClientDisconnected.Subscribe(OnClientConnectionClosed);
-            ClientEvents.ClientConnectionFailed.Subscribe(OnClientConnectionClosed, ThreadOption.UIThread);
-            ClientEvents.LocalPlayerJoined.Subscribe(OnLocalPlayerJoined, ThreadOption.PublisherThread);
-            ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated);
-            ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.PublisherThread);
-            ClientEvents.GameUpdateDataReceived.Subscribe(OnGameUpdateDataReceived, ThreadOption.UIThread);
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
-            ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded);
-            ClientEvents.GameEnding.Subscribe(OnGameEnding);
-            ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread);
+            _ = ClientEvents.ClientConnected.Subscribe(OnClientConnected);
+            _ = ClientEvents.ClientDisconnected.Subscribe(OnClientConnectionClosed);
+            _ = ClientEvents.ClientConnectionFailed.Subscribe(OnClientConnectionClosed, ThreadOption.UIThread);
+            _ = ClientEvents.LocalPlayerJoined.Subscribe(OnLocalPlayerJoined, ThreadOption.PublisherThread);
+            _ = ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated);
+            _ = ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.PublisherThread);
+            _ = ClientEvents.GameUpdateDataReceived.Subscribe(OnGameUpdateDataReceived, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded);
+            _ = ClientEvents.GameEnding.Subscribe(OnGameEnding);
+            _ = ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread);
         }
 
         private void OnGameUpdateDataReceived(ClientDataEventArgs<GameUpdateData> args)
@@ -142,7 +155,7 @@ namespace Supremacy.Client.Context
             _accessLock.EnterWriteLock();
             try
             {
-                args.Value.UpdateLocalGame((GameContext) _currentGame);
+                args.Value.UpdateLocalGame((GameContext)_currentGame);
             }
             finally
             {
@@ -167,10 +180,12 @@ namespace Supremacy.Client.Context
 
         private void OnLocalPlayerJoined(LocalPlayerJoinedEventArgs args)
         {
-            var localPlayer = args.Player;
+            IPlayer localPlayer = args.Player;
 
             if (localPlayer == null)
+            {
                 return;
+            }
 
             _accessLock.EnterWriteLock();
             try
@@ -216,7 +231,7 @@ namespace Supremacy.Client.Context
             {
                 if (_currentGame != null)
                 {
-                    _dispatcher.Invoke(
+                    _ = _dispatcher.Invoke(
                         (Func<GameContext, bool>)GameContext.CheckAndPop,
                         DispatcherPriority.Send,
                         _currentGame);
@@ -290,7 +305,7 @@ namespace Supremacy.Client.Context
             try
             {
                 _currentGame = args.Value.CreateLocalGame();
-                _dispatcher.Invoke(
+                _ = _dispatcher.Invoke(
                     (Action<GameContext>)GameContext.PushThreadContext,
                     DispatcherPriority.Send,
                     _currentGame);
@@ -307,7 +322,7 @@ namespace Supremacy.Client.Context
 
         private void OnLobbyUpdated(DataEventArgs<ILobbyData> args)
         {
-            var lobbyData = args.Value;
+            ILobbyData lobbyData = args.Value;
             if (lobbyData != null)
             {
                 _accessLock.EnterUpgradeableReadLock();
@@ -375,7 +390,8 @@ namespace Supremacy.Client.Context
         #region Implementation of IAppContext
         public bool IsConnected
         {
-            get {
+            get
+            {
                 _accessLock.EnterReadLock();
                 try
                 {
@@ -644,7 +660,10 @@ namespace Supremacy.Client.Context
                 try
                 {
                     if ((_localPlayer == null) || (_currentGame == null))
+                    {
                         return null;
+                    }
+
                     return _currentGame.CivilizationManagers[_localPlayer.EmpireID];
                 }
                 finally

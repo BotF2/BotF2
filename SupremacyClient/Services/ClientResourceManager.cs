@@ -24,12 +24,12 @@ namespace Supremacy.Client.Services
 
         public string GetSystemResourcePath(string path)
         {
-            return ResourceManager.GetSystemResourcePath((path));
+            return ResourceManager.GetSystemResourcePath(path);
         }
 
         public Uri GetResourceUri(string path)
         {
-            return ResourceManager.GetResourceUri((path));
+            return ResourceManager.GetResourceUri(path);
         }
         #endregion
     }

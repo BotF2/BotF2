@@ -24,10 +24,10 @@ namespace Supremacy.Scripting.Ast
         private readonly Type _queriedType;
         private MethodBase _bestCandidate;
         private Type _delegateType;
-        
+
 
         public MethodGroupExpression(MemberInfo[] members, Type type, SourceSpan span, bool inacessibleCandidatesOnly)
-            : this(members, type,  span)
+            : this(members, type, span)
         {
             _hasInaccessibleCandidatesOnly = inacessibleCandidatesOnly;
         }
@@ -102,7 +102,7 @@ namespace Supremacy.Scripting.Ast
         private static int BetterExpressionConversion(ParseContext ec, Argument a, Type p, Type q)
         {
             Type argumentType = a.Value.Type;
-            
+
             if (a.Value is LambdaExpression)
             {
                 // Uwrap delegate from Expression<T>
@@ -666,7 +666,7 @@ namespace Supremacy.Scripting.Ast
 
                     for (int i = argumentCount; i < paramCount; ++i)
                     {
-                        resized.Add(null);
+                        _ = resized.Add(null);
                     }
 
                     arguments = resized;
@@ -682,13 +682,15 @@ namespace Supremacy.Scripting.Ast
                 {
                     argumentCount = arguments.Count;
 
-                    for (var i = 0; i < argumentCount; ++i)
+                    for (int i = 0; i < argumentCount; ++i)
                     {
                         bool argMoved = false;
                         while (true)
                         {
                             if (!(arguments[i] is NamedArgument namedArgument))
+                            {
                                 break;
+                            }
 
                             int index = pd.GetParameterIndexByName(namedArgument.Name);
 
@@ -740,7 +742,9 @@ namespace Supremacy.Scripting.Ast
                 {
                     Type[] genericArguments = candidate.GetGenericArguments();
                     if (genericArguments.Length != TypeArguments.Count)
+                    {
                         return int.MaxValue - 20000 + Math.Abs(TypeArguments.Count - genericArguments.Length);
+                    }
 
                     // TODO: Don't create new method, create Parameters only
                     method = ((MethodInfo)candidate).MakeGenericMethod(TypeArguments.ResolvedTypes);
@@ -1665,7 +1669,7 @@ namespace Supremacy.Scripting.Ast
                 {
                     if (CustomErrorHandler != null)
                     {
-                        CustomErrorHandler.NoExactMatch(ec, BestCandidate);
+                        _ = CustomErrorHandler.NoExactMatch(ec, BestCandidate);
                     }
                     else
                     {

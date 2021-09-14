@@ -122,6 +122,7 @@
         </DockPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
+
             <Button Margin="6,0,3,0"
               IsCancel="True"
               Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">

@@ -294,7 +294,7 @@ namespace Supremacy.UI
             _materials = new Dictionary<PlanetType, List<CachedBitmap>>();
             _atmospheres = new Dictionary<PlanetType, List<CachedBitmap>>();
             _moonImages = new Dictionary<MoonShape, CachedBitmap>();
-            
+
             try { _planetSizeTypeFormat = ResourceManager.GetString("PLANET_SIZE_TYPE_FORMAT"); }
             catch { _planetSizeTypeFormat = "{0} {1}"; }
 
@@ -411,11 +411,11 @@ namespace Supremacy.UI
             _transforms.Children.Add(_rotation);
 
             _light = new ModelVisual3D
-                     {
-                         Content = new DirectionalLight(
+            {
+                Content = new DirectionalLight(
                              Colors.White,
                              new Vector3D(0.85, -0.15, 1))
-                     };
+            };
 
             _viewport.ClipToBounds = false;
             _viewport.IsHitTestVisible = false;
@@ -455,22 +455,22 @@ namespace Supremacy.UI
                 new Vector3D(0, 0, 1),
                 new Vector3D(0, 1, 0),
                 (double)OrthographicCamera.WidthProperty.DefaultMetadata.DefaultValue)
-                      {
-                          NearPlaneDistance = (-1),
-                          FarPlaneDistance = 1,
-                          Transform = _cameraAngle
-                      };
+            {
+                NearPlaneDistance = -1,
+                FarPlaneDistance = 1,
+                Transform = _cameraAngle
+            };
 
             _camera.Freeze();
 
             _viewport.Camera = _camera;
 
             _axisAnimation = new DoubleAnimation
-                             {
-                                 From = 0,
-                                 To = 360,
-                                 RepeatBehavior = RepeatBehavior.Forever
-                             };
+            {
+                From = 0,
+                To = 360,
+                RepeatBehavior = RepeatBehavior.Forever
+            };
 
             _ = BindingOperations.SetBinding(
                 _axisAnimation,
@@ -560,7 +560,7 @@ namespace Supremacy.UI
             set => SetLightSourceDirection(this, value);
         }
 
-        // ReSharper disable MemberCanBeMadeStatic.Local
+
         private IAppContext AppContext
         {
             get
@@ -575,7 +575,6 @@ namespace Supremacy.UI
                 return appContext;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Local
 
         protected override int VisualChildrenCount => 1;
 
@@ -675,7 +674,7 @@ namespace Supremacy.UI
                 switch (planet.PlanetSize)
                 {
                     case PlanetSize.Large:
-                        dimension = (2d / 3d) * BaseDimension;
+                        dimension = 2d / 3d * BaseDimension;
                         break;
                     case PlanetSize.Medium:
                         dimension = .5d * BaseDimension;
@@ -687,7 +686,7 @@ namespace Supremacy.UI
                         dimension = .25d * BaseDimension;
                         break;
                     case PlanetSize.Giant:
-                        dimension = (5d / 6d) * BaseDimension;
+                        dimension = 5d / 6d * BaseDimension;
                         break;
                 }
             }
@@ -834,7 +833,7 @@ namespace Supremacy.UI
             {
                 _overlay.ClearValue(VisibilityProperty);
                 _overlay.RenderTransform = new ScaleTransform(-1d, 1d);
-                
+
                 _light.Content = new DirectionalLight(
                     Colors.White,
                     new Vector3D(-0.85, -0.15, 1));
@@ -1168,14 +1167,14 @@ namespace Supremacy.UI
                 });
 
             AsteroidsTemplate = new DataTemplate(typeof(Planet))
-                                {
-                                    VisualTree = asteroids
-                                };
+            {
+                VisualTree = asteroids
+            };
 
             PlanetTemplate = new DataTemplate(typeof(Planet))
-                             {
-                                 VisualTree = planet
-                             };
+            {
+                VisualTree = planet
+            };
         }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)

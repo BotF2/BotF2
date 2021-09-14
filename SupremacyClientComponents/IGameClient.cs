@@ -66,29 +66,36 @@ namespace Supremacy.Client
     {
         #region Extension Methods
         public static void Connect(
-            [NotNull] this IGameClient self, 
-            [NotNull] string playerName, 
+            [NotNull] this IGameClient self,
+            [NotNull] string playerName,
             [NotNull] string remoteServerHostName)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            if (playerName == null)
-                throw new ArgumentNullException("playerName");
-            if (remoteServerHostName == null)
-                throw new ArgumentNullException("remoteServerHostName");
+            }
 
-            IPAddress hostAddress;
-            if (IPAddress.TryParse(remoteServerHostName, out hostAddress))
+            if (playerName == null)
+            {
+                throw new ArgumentNullException("playerName");
+            }
+
+            if (remoteServerHostName == null)
+            {
+                throw new ArgumentNullException("remoteServerHostName");
+            }
+
+            if (IPAddress.TryParse(remoteServerHostName, out IPAddress hostAddress))
             {
                 self.Connect(playerName, hostAddress);
             }
             else
             {
-                var hostEntry = NetUtility.Resolve(remoteServerHostName);
+                IPHostEntry hostEntry = NetUtility.Resolve(remoteServerHostName);
                 bool succeeded = false;
                 if (hostEntry != null)
                 {
-                    foreach (var address in hostEntry.AddressList.Where(o => o.AddressFamily == AddressFamily.InterNetwork))
+                    foreach (IPAddress address in hostEntry.AddressList.Where(o => o.AddressFamily == AddressFamily.InterNetwork))
                     {
                         try
                         {
@@ -116,24 +123,31 @@ namespace Supremacy.Client
             [NotNull] string remoteServerHostName)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            if (initData == null)
-                throw new ArgumentNullException("initData");
-            if (remoteServerHostName == null)
-                throw new ArgumentNullException("remoteServerHostName");
+            }
 
-            IPAddress hostAddress;
-            if (IPAddress.TryParse(remoteServerHostName, out hostAddress))
+            if (initData == null)
+            {
+                throw new ArgumentNullException("initData");
+            }
+
+            if (remoteServerHostName == null)
+            {
+                throw new ArgumentNullException("remoteServerHostName");
+            }
+
+            if (IPAddress.TryParse(remoteServerHostName, out IPAddress hostAddress))
             {
                 self.HostAndConnect(initData, hostAddress);
             }
             else
             {
-                var hostEntry = NetUtility.Resolve(remoteServerHostName);
-                var succeeded = false;
+                IPHostEntry hostEntry = NetUtility.Resolve(remoteServerHostName);
+                bool succeeded = false;
                 if (hostEntry != null)
                 {
-                    foreach (var address in hostEntry.AddressList)
+                    foreach (IPAddress address in hostEntry.AddressList)
                     {
                         try
                         {

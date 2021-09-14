@@ -20,15 +20,9 @@ namespace Supremacy.Text
         private StringTableEntryCollection _entries;
         private List<StringTableNode> _nodes;
 
-        public IList<StringTableNode> Nodes
-        {
-            get { return _nodes; }
-        }
+        public IList<StringTableNode> Nodes => _nodes;
 
-        internal StringTableEntryCollection Entries
-        {
-            get { return _entries; }
-        }
+        internal StringTableEntryCollection Entries => _entries;
 
         internal StringTableDocument()
         {
@@ -41,7 +35,10 @@ namespace Supremacy.Text
             lock (_entries)
             {
                 if (_entries.Contains(key))
+                {
                     return _entries[key];
+                }
+
                 return null;
             }
         }
@@ -51,8 +48,11 @@ namespace Supremacy.Text
             lock (_entries)
             {
                 if (_entries.Contains(key))
+                {
                     return _entries[key];
-                return CreateEntry(key, String.Empty);
+                }
+
+                return CreateEntry(key, string.Empty);
             }
         }
 
@@ -61,9 +61,14 @@ namespace Supremacy.Text
             lock (_entries)
             {
                 if (key == null)
+                {
                     throw new ArgumentNullException("key");
+                }
+
                 if (_entries.Contains(key))
+                {
                     throw new InvalidOperationException("entry already exists: " + key);
+                }
 
                 StringTableNode keyNode = StringTableNode.CreateKey(key);
                 StringTableNode valueNode = StringTableNode.CreateValue(value);
@@ -79,23 +84,25 @@ namespace Supremacy.Text
                         {
                             if (node.Content.EndsWith(Environment.NewLine))
                             {
-                                whitespace.AppendLine();
+                                _ = whitespace.AppendLine();
                             }
                             else
                             {
-                                whitespace.AppendLine();
-                                whitespace.AppendLine();
+                                _ = whitespace.AppendLine();
+                                _ = whitespace.AppendLine();
                             }
                         }
                     }
                     else
                     {
-                        whitespace.AppendLine();
-                        whitespace.AppendLine();
+                        _ = whitespace.AppendLine();
+                        _ = whitespace.AppendLine();
                     }
 
                     if (whitespace.Length > 0)
+                    {
                         _nodes.Add(StringTableNode.CreateWhitespace(whitespace.ToString()));
+                    }
                 }
 
                 _nodes.Add(keyNode);
@@ -123,10 +130,14 @@ namespace Supremacy.Text
         public bool RemoveEntry(StringTableEntry entry)
         {
             if ((entry == null) || !_entries.Contains(entry))
+            {
                 return false;
+            }
 
             if (!Nodes.Contains(entry.KeyNode))
+            {
                 return false;
+            }
 
             int start = Nodes.IndexOf(entry.KeyNode);
             int range = Nodes.IndexOf(entry.ValueNode) - start;
@@ -137,7 +148,7 @@ namespace Supremacy.Text
                 continue;
             }
 
-            _entries.Remove(entry);
+            _ = _entries.Remove(entry);
 
             return true;
         }
@@ -145,7 +156,9 @@ namespace Supremacy.Text
         internal void OnLoaded()
         {
             foreach (StringTableEntry entry in Entries)
+            {
                 entry.KeyChanged += Entry_KeyChanged;
+            }
         }
 
         void Entry_KeyChanged(object sender, KeyChangedEventArgs e)
@@ -154,7 +167,7 @@ namespace Supremacy.Text
             {
                 try
                 {
-                    _entries.Remove(e.OldKey);
+                    _ = _entries.Remove(e.OldKey);
                     _entries.Add((StringTableEntry)sender);
                 }
                 catch

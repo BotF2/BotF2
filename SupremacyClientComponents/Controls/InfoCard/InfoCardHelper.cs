@@ -32,9 +32,12 @@ namespace Supremacy.Client.Controls
         /// <returns>The <see cref="Binding"/> that was created.</returns>
         internal static Binding CreateBinding(object source, DependencyProperty dp, BindingMode mode)
         {
-            var binding = new Binding { Source = source };
+            Binding binding = new Binding { Source = source };
             if (dp != null)
+            {
                 binding.Path = new PropertyPath(dp);
+            }
+
             binding.Mode = mode;
             return binding;
         }
@@ -91,7 +94,7 @@ namespace Supremacy.Client.Controls
         /// </returns>
         internal static bool IsEmpty(Size size)
         {
-            return (size.IsEmpty) || ((size.Width == 0) && (size.Height == 0));
+            return size.IsEmpty || ((size.Width == 0) && (size.Height == 0));
         }
 
         /// <summary>
@@ -116,10 +119,12 @@ namespace Supremacy.Client.Controls
         internal static bool IsWindowActive(DependencyObject obj)
         {
             if (BrowserInteropHelper.IsBrowserHosted)
+            {
                 return true;
+            }
 
-            var window = Window.GetWindow(obj);
-            return (window == null) || (window.IsActive);
+            Window window = Window.GetWindow(obj);
+            return (window == null) || window.IsActive;
         }
 
         /// <summary>
@@ -132,10 +137,12 @@ namespace Supremacy.Client.Controls
         internal static bool IsWindowVisible(DependencyObject obj)
         {
             if (BrowserInteropHelper.IsBrowserHosted)
+            {
                 return true;
+            }
 
-            var window = Window.GetWindow(obj);
-            return (window == null) || (window.IsVisible);
+            Window window = Window.GetWindow(obj);
+            return (window == null) || window.IsVisible;
         }
 
         /// <summary>
@@ -170,16 +177,23 @@ namespace Supremacy.Client.Controls
         /// </remarks>
         internal static void ResetFocus(DependencyObject control)
         {
-            if ((control == null) || (BrowserInteropHelper.IsBrowserHosted))
+            if ((control == null) || BrowserInteropHelper.IsBrowserHosted)
+            {
                 return;
-            if (!((bool)control.GetValue(UIElement.IsKeyboardFocusWithinProperty)))
-                return;
+            }
 
-            var window = Window.GetWindow(control);
+            if (!(bool)control.GetValue(UIElement.IsKeyboardFocusWithinProperty))
+            {
+                return;
+            }
+
+            Window window = Window.GetWindow(control);
             if (window != null)
+            {
                 FocusManager.SetFocusedElement(window, null);
+            }
 
-            Keyboard.Focus(null);
+            _ = Keyboard.Focus(null);
         }
 
         /// <summary>

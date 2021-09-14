@@ -150,8 +150,8 @@ namespace Supremacy.Game
         /// <value>The player ID.</value>
         public int PlayerID
         {
-            get { return _playerId; }
-            set { _playerId = value; }
+            get => _playerId;
+            set => _playerId = value;
         }
 
         /// <summary>
@@ -160,8 +160,8 @@ namespace Supremacy.Game
         /// <value>The player name.</value>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         /// <summary>
@@ -170,10 +170,7 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if the player is human; <c>false</c> if the player is AI-controlled.
         /// </value>
-        public bool IsHumanPlayer
-        {
-            get { return (_playerId >= GameHostID); }
-        }
+        public bool IsHumanPlayer => _playerId >= GameHostID;
 
         /// <summary>
         /// Gets or sets the selected empire ID.
@@ -181,8 +178,8 @@ namespace Supremacy.Game
         /// <value>The selected empire ID.</value>
         public int EmpireID
         {
-            get { return _empireId; }
-            set { _empireId = value; }
+            get => _empireId;
+            set => _empireId = value;
         }
 
         /// <summary>
@@ -194,9 +191,13 @@ namespace Supremacy.Game
             get
             {
                 if (GameContext.Current != null)
+                {
                     return GameContext.Current.Civilizations[EmpireID];
+                }
                 else
+                {
                     return PlayerContext.Current.Players[0].Empire;
+                }
 
                 // ToDo: solve the crashes out of Multi Player Start
             }
@@ -217,10 +218,7 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if this <see cref="Player"/> is the game host; otherwise, <c>false</c>.
         /// </value>
-        public bool IsGameHost
-        {
-            get { return _playerId == GameHostID; }
-        }
+        public bool IsGameHost => _playerId == GameHostID;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="Player"/>.
@@ -244,10 +242,16 @@ namespace Supremacy.Game
         public bool Equals(IPlayer other)
         {
             if (ReferenceEquals(this, other))
+            {
                 return true;
-            if (ReferenceEquals(null, other))
+            }
+
+            if (other is null)
+            {
                 return false;
-            return (other.PlayerID == _playerId);
+            }
+
+            return other.PlayerID == _playerId;
         }
 
         /// <summary>
@@ -298,10 +302,7 @@ namespace Supremacy.Game
 
         #region Implementation of ICivIdentity
 
-        int ICivIdentity.CivID
-        {
-            get { return _empireId; }
-        }
+        int ICivIdentity.CivID => _empireId;
 
         #endregion
     }

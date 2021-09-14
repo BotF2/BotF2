@@ -17,18 +17,13 @@ namespace Supremacy.Client
     public class ClientCommandLineArguments : IClientCommandLineArguments, ICmdArgs
     {
         #region Fields
-        private PresentationTraceLevel _traceLevel = PresentationTraceLevel.None;
         #endregion
 
         #region Properties
         [CmdArg(
            RequiredValue = CmdArgRequiredValue.Yes,
            Description = "Sets the WPF presentation trace level.")]
-        public PresentationTraceLevel TraceLevel
-        {
-            get { return _traceLevel; }
-            set { _traceLevel = value; }
-        }
+        public PresentationTraceLevel TraceLevel { get; set; } = PresentationTraceLevel.None;
 
         [CmdArg(
             RequiredValue = CmdArgRequiredValue.Yes,
@@ -80,14 +75,16 @@ namespace Supremacy.Client
         public void Validate()
         {
             if (ShowUsage)
+            {
                 return;
+            }
         }
         #endregion
 
         #region Methods
         public static ClientCommandLineArguments Parse(string[] args)
         {
-            var options = new ClientCommandLineArguments();
+            ClientCommandLineArguments options = new ClientCommandLineArguments();
             Parse(options, args);
             return options;
         }
@@ -102,13 +99,15 @@ namespace Supremacy.Client
             {
                 if (!options.ShowUsage)
                 {
-                    options.Usage("Unrecognized command line argument: '" + e.Args.InvalidCmdArg  + "'.");
+                    options.Usage("Unrecognized command line argument: '" + e.Args.InvalidCmdArg + "'.");
                     ClientApp.Current.Shutdown();
                 }
             }
-            
+
             if (!options.ShowUsage)
+            {
                 return;
+            }
 
             options.Usage(null);
             ClientApp.Current.Shutdown();

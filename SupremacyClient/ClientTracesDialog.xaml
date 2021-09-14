@@ -15,31 +15,38 @@
             xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
             xmlns:cal="http://www.codeplex.com/CompositeWPF"
-            Width="580"
-            Height="550"
+            Width="680"
+            Height="650"
             Background="Transparent"
             SnapsToDevicePixels="True">
   <DockPanel LastChildFill="True">
     <StackPanel DockPanel.Dock="Top"
                 Margin="0,0,0,5"
                 Orientation="Horizontal"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
                 >
-            <TextBlock Text="Traces Settings    -           " Grid.Row="0" Grid.Column="0"
+            <TextBlock Text="    " Grid.Row="0" Grid.Column="0"
                            Foreground="{DynamicResource HeaderTextBrush}"
                            FontSize="24"
-                           HorizontalAlignment="Left"
-                           >
-
-            </TextBlock>
+                           HorizontalAlignment="Center"
+                           ></TextBlock>
             <Button x:Name="AcceptButton"
               Command="{x:Static local:GenericCommands.AcceptCommand}"
               Style="{DynamicResource LCARS_StandardButtonStyle}"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
               IsCancel="True"
               Margin="0,0,6,0">
         <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-      </Button>
+      </Button>       
+        
+            <TextBlock Text="                  Traces Settings" Grid.Row="0" Grid.Column="0"
+                           Foreground="{DynamicResource HeaderTextBrush}"
+                           FontSize="24"
+                           HorizontalAlignment="Center"
+                           ></TextBlock>
+
+            
+
     </StackPanel>        
         
       <!-- CANCEL makes trouble while running out of Visual Studio ....

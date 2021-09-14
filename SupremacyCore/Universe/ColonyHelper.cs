@@ -8,17 +8,21 @@ namespace Supremacy.Universe
 {
     public static class ColonyHelper
     {
+        private static string _text;
+
         public static int ColonyValue(this Colony colony)
         {
             if (colony == null)
+            {
                 return 0;
+            }
 
-            var total = 0;
+            int total = 0;
 
             /*
              * Include the value of all buildings.
              */
-            foreach (var building in colony.Buildings)
+            foreach (Buildings.Building building in colony.Buildings)
             {
                 total += building.Design.BuildCost;
                 total += EnumHelper.GetValues<ResourceType>().Sum(r => EconomyHelper.ComputeResourceValue(r, building.Design.BuildResourceCosts[r]));
@@ -27,7 +31,7 @@ namespace Supremacy.Universe
             /*
              * Include the value of the shipyard, but not the ships under construction within (see below).
              */
-            var shipyard = colony.Shipyard;
+            Orbitals.Shipyard shipyard = colony.Shipyard;
             int shipyardBuildSlotsCount = 0;
 
             if (shipyard != null)
@@ -37,7 +41,7 @@ namespace Supremacy.Universe
                 shipyardBuildSlotsCount = shipyard.BuildSlots.Count;
             }
 
-            var buildSlots = colony.BuildSlots.Concat(shipyard != null ? shipyard.BuildSlots : IndexedEnumerable.Empty<BuildSlot>());
+            IIndexedEnumerable<BuildSlot> buildSlots = colony.BuildSlots.Concat(shipyard != null ? shipyard.BuildSlots : IndexedEnumerable.Empty<BuildSlot>());
 
             /*
              * Include the resources invested in partially completed construction.
@@ -69,19 +73,20 @@ namespace Supremacy.Universe
 
             total += colony.Population.CurrentValue * 100;
 
-
-            GameLog.Core.Production.DebugFormat("Turn {0};{1};{2} ({3});Value=;{4};Pop=;{5};ShipYardSlots=;{6};Buildings={7};"
+            _text = colony.Population.CurrentValue.ToString();
+            if (_text.Length == 2) _text = " " + _text;
+            GameLog.Core.CivsAndRacesDetails.DebugFormat("Turn {0};{4};Pop;{5};ShipYardSlots;{6};Buildings;ColonyValue= {7};{1};{2};{3}"
                 , GameContext.Current.TurnNumber
                 , colony.Owner
                 , colony.Name
                 , colony.Location
-                , colony.Population.CurrentValue
+                , _text
                 , shipyardBuildSlotsCount
                 , colony.Buildings.Count
-                , total 
+                , total
                 );
 
-            // ReSharper restore AccessToModifiedClosure
+
 
             return total;
         }

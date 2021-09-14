@@ -20,7 +20,6 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 
 namespace Supremacy.Game
 {
@@ -40,11 +39,14 @@ namespace Supremacy.Game
         /// <value>The owner ID.</value>
         public int OwnerID
         {
-            get { return _ownerId; }
+            get => _ownerId;
             set
             {
                 if (value < 0)
+                {
                     value = Civilization.InvalidID;
+                }
+
                 _ownerId = (short)value;
             }
         }
@@ -58,9 +60,14 @@ namespace Supremacy.Game
             get
             {
                 if (_executionContext == null && GameContext.Current != null)
+                {
                     return GameContext.Current.Civilizations[_ownerId];
+                }
+
                 if (_executionContext != null)
+                {
                     return _executionContext.Civilizations[_ownerId];
+                }
                 //if (_ownerId == Civilization.InvalidID)
                 //    return null;
                 //if (_executionContext != null)
@@ -84,10 +91,7 @@ namespace Supremacy.Game
         /// Gets the execution context.
         /// </summary>
         /// <value>The execution context.</value>
-        protected GameContext ExecutionContext
-        {
-            get { return _executionContext; }
-        }
+        protected GameContext ExecutionContext => _executionContext;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Order"/> has been executed.
@@ -95,10 +99,7 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if this <see cref="Order"/> has been executed; otherwise, <c>false</c>.
         /// </value>
-        public bool IsExecuted
-        {
-            get { return _isExecuted; }
-        }
+        public bool IsExecuted => _isExecuted;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Order"/> class.
@@ -107,7 +108,10 @@ namespace Supremacy.Game
         protected Order(Civilization owner)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
+            }
+
             _ownerId = (short)owner.CivID;
             _executionContext = null;
             _isExecuted = false;
@@ -178,7 +182,9 @@ namespace Supremacy.Game
         private void Execute(GameContext game, bool setExecuted)
         {
             if (_isExecuted)
+            {
                 return;
+            }
 
             lock (this)
             {
@@ -189,11 +195,13 @@ namespace Supremacy.Game
                 try
                 {
                     if (DoExecute() && setExecuted)
+                    {
                         _isExecuted = true;
+                    }
                 }
                 finally
                 {
-                    GameContext.PopThreadContext();
+                    _ = GameContext.PopThreadContext();
                 }
             }
         }
@@ -204,7 +212,10 @@ namespace Supremacy.Game
         public void Undo()
         {
             if (!_isExecuted)
+            {
                 return;
+            }
+
             lock (this)
             {
                 GameContext.PushThreadContext(_executionContext);
@@ -218,7 +229,7 @@ namespace Supremacy.Game
                 }
                 finally
                 {
-                    GameContext.PopThreadContext();
+                    _ = GameContext.PopThreadContext();
                 }
             }
         }
@@ -241,7 +252,10 @@ namespace Supremacy.Game
             : base(owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
             _location = fleet.Location;
         }
@@ -250,7 +264,10 @@ namespace Supremacy.Game
             : base(fleet.Owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
             _location = fleet.Location;
         }
@@ -258,14 +275,16 @@ namespace Supremacy.Game
         public override bool DoExecute()
         {
             if (GameContext.Current.Universe.Objects[_fleetId] != null)
+            {
                 return false;
+            }
 
-            var fleet = new Fleet
-                        {
-                            ObjectID = _fleetId,
-                            OwnerID = OwnerID,
-                            Location = _location
-                        };
+            Fleet fleet = new Fleet
+            {
+                ObjectID = _fleetId,
+                OwnerID = OwnerID,
+                Location = _location
+            };
 
             GameContext.Current.Universe.Objects.Add(fleet);
 
@@ -286,9 +305,15 @@ namespace Supremacy.Game
             : base(owner)
         {
             if (ship == null)
+            {
                 throw new ArgumentNullException("ship");
+            }
+
             if (targetFleet == null)
+            {
                 throw new ArgumentNullException("targetFleet");
+            }
+
             _shipId = ship.ObjectID;
             _targetFleetId = targetFleet.ObjectID;
         }
@@ -300,30 +325,38 @@ namespace Supremacy.Game
             : base(ship.Owner)
         {
             if (ship == null)
+            {
                 throw new ArgumentNullException("ship");
+            }
+
             if (targetFleet == null)
+            {
                 throw new ArgumentNullException("targetFleet");
+            }
+
             _shipId = ship.ObjectID;
             _targetFleetId = targetFleet.ObjectID;
         }
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as RedeployShipOrder;
-
-            if (otherOrder == null)
+            if (!(o is RedeployShipOrder otherOrder))
+            {
                 return false;
+            }
 
-            return ((otherOrder._shipId == _shipId)
-                    && (otherOrder._targetFleetId == _targetFleetId));
+            return (otherOrder._shipId == _shipId)
+                    && (otherOrder._targetFleetId == _targetFleetId);
         }
         public override bool DoExecute()
         {
-            var ship = GameContext.Current.Universe.Objects[_shipId] as Ship;
-            var targetFleet = GameContext.Current.Universe.Objects[_targetFleetId] as Fleet;
+            Ship ship = GameContext.Current.Universe.Objects[_shipId] as Ship;
+            Fleet targetFleet = GameContext.Current.Universe.Objects[_targetFleetId] as Fleet;
 
             if ((ship == null) || (targetFleet == null))
+            {
                 return false;
+            }
 
             ship.Fleet = targetFleet;
             return true;
@@ -340,7 +373,10 @@ namespace Supremacy.Game
             : base(colony.Owner)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             Initialize(colony);
         }
 
@@ -348,7 +384,10 @@ namespace Supremacy.Game
             : base(owner)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             Initialize(colony);
         }
 
@@ -356,32 +395,40 @@ namespace Supremacy.Game
         {
             _colonyId = colony.ObjectID;
 
-            var productionCategories = EnumUtilities.GetValues<ProductionCategory>();
+            EnumValueCollection<ProductionCategory> productionCategories = EnumUtilities.GetValues<ProductionCategory>();
 
             _activeFacilities = new int[productionCategories.Count];
 
-            foreach (var category in productionCategories)
+            foreach (ProductionCategory category in productionCategories)
+            {
                 _activeFacilities[(int)category] = colony.GetActiveFacilities(category);
+            }
         }
 
         public override bool DoExecute()
         {
-            var colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
+            Colony colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
 
             if (colony == null)
-                return false;
-
-            foreach (ProductionCategory category in EnumUtilities.GetValues<ProductionCategory>())
             {
-                while (colony.DeactivateFacility(category))
-                    continue;
+                return false;
             }
 
             foreach (ProductionCategory category in EnumUtilities.GetValues<ProductionCategory>())
             {
-                var facilitiesToActivate = _activeFacilities[(int)category];
+                while (colony.DeactivateFacility(category))
+                {
+                    continue;
+                }
+            }
+
+            foreach (ProductionCategory category in EnumUtilities.GetValues<ProductionCategory>())
+            {
+                int facilitiesToActivate = _activeFacilities[(int)category];
                 while (facilitiesToActivate-- > 0)
-                    colony.ActivateFacility(category);
+                {
+                    _ = colony.ActivateFacility(category);
+                }
             }
 
             return true;
@@ -389,12 +436,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as SetColonyProductionOrder;
-
-            if (otherOrder == null)
+            if (!(o is SetColonyProductionOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._colonyId == _colonyId);
+            return otherOrder._colonyId == _colonyId;
         }
     }
 
@@ -409,7 +456,10 @@ namespace Supremacy.Game
             : base(owner)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             Initialize(source);
         }
 
@@ -417,7 +467,10 @@ namespace Supremacy.Game
             : base(source.Owner)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             Initialize(source);
         }
 
@@ -430,12 +483,12 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var source = GameContext.Current.Universe.Objects[_sourceId] as IProductionCenter;
-
-            if (source == null)
+            if (!(GameContext.Current.Universe.Objects[_sourceId] is IProductionCenter source))
+            {
                 return false;
+            }
 
-            for (var i = 0; i < _slots.Length && i < source.BuildSlots.Count; i++)
+            for (int i = 0; i < _slots.Length && i < source.BuildSlots.Count; i++)
             {
                 source.BuildSlots[i].Project = _slots[i].Project;
                 source.BuildSlots[i].Priority = _slots[i].Priority;
@@ -449,12 +502,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as UpdateProductionOrder;
-
-            if (otherOrder == null)
+            if (!(o is UpdateProductionOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._sourceId == _sourceId);
+            return otherOrder._sourceId == _sourceId;
         }
     }
 
@@ -467,7 +520,10 @@ namespace Supremacy.Game
             : base(owner)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             Initialize(source);
         }
 
@@ -475,7 +531,10 @@ namespace Supremacy.Game
             : base(source.Owner)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             Initialize(source);
         }
 
@@ -486,24 +545,27 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var source = GameContext.Current.Universe.Objects[_sourceId] as IProductionCenter;
-            if (source == null)
+            if (!(GameContext.Current.Universe.Objects[_sourceId] is IProductionCenter source))
+            {
                 return false;
+            }
 
             if ((source.BuildSlots.Count > 0) && (source.BuildSlots[0].Project != null))
+            {
                 source.BuildSlots[0].Project.IsRushed = true;
+            }
 
             return true;
         }
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as RushProductionOrder;
-
-            if (otherOrder == null)
+            if (!(o is RushProductionOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._sourceId == _sourceId);
+            return otherOrder._sourceId == _sourceId;
         }
     }
 
@@ -518,7 +580,10 @@ namespace Supremacy.Game
             : base(building.Owner)
         {
             if (building == null)
+            {
                 throw new ArgumentNullException("building");
+            }
+
             Initialize(building);
         }
 
@@ -531,23 +596,20 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var building = GameContext.Current.Universe.Objects[_buildingId] as Building;
+            Building building = GameContext.Current.Universe.Objects[_buildingId] as Building;
 
             if (building == null)
+            {
                 return false;
+            }
 
             building.Scrap = _scrap;
 
             if (_isActive != building.IsActive)
             {
-                if (_isActive)
-                {
-                    building.Sector.System.Colony.ActivateBuilding(building);
-                }
-                else
-                {
-                    building.Sector.System.Colony.DeactivateBuilding(building);
-                }
+                _ = _isActive
+                    ? building.Sector.System.Colony.ActivateBuilding(building)
+                    : building.Sector.System.Colony.DeactivateBuilding(building);
             }
 
             return true;
@@ -555,12 +617,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as UpdateBuildingOrder;
-
-            if (otherOrder == null)
+            if (!(o is UpdateBuildingOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._buildingId == _buildingId);
+            return otherOrder._buildingId == _buildingId;
         }
     }
 
@@ -574,7 +636,9 @@ namespace Supremacy.Game
             : base(colony.Owner)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
             _colonyId = colony.ObjectID;
             _activeCount = colony.ActiveOrbitalBatteries;
@@ -582,27 +646,37 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
+            Colony colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
             if (colony == null)
+            {
                 return false;
+            }
 
-            var activeCountDifference = _activeCount - colony.ActiveOrbitalBatteries;
+            int activeCountDifference = _activeCount - colony.ActiveOrbitalBatteries;
 
             while (activeCountDifference != 0)
             {
                 if (activeCountDifference > 0)
                 {
                     if (colony.ActivateOrbitalBattery())
+                    {
                         --activeCountDifference;
+                    }
                     else
+                    {
                         break;
+                    }
                 }
                 else
                 {
                     if (colony.DeactivateOrbitalBattery())
+                    {
                         ++activeCountDifference;
+                    }
                     else
+                    {
                         break;
+                    }
                 }
             }
 
@@ -611,11 +685,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as UpdateOrbitalBatteriesOrder;
-            if (otherOrder == null)
+            if (!(o is UpdateOrbitalBatteriesOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._colonyId == _colonyId);
+            return otherOrder._colonyId == _colonyId;
         }
     }
 
@@ -636,26 +711,33 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var shipyard = GameContext.Current.Universe.Objects[_shipyardId] as Shipyard;
+            Shipyard shipyard = GameContext.Current.Universe.Objects[_shipyardId] as Shipyard;
             if (shipyard == null)
+            {
                 return false;
+            }
 
             if (_slotId >= shipyard.BuildSlots.Count)
+            {
                 return false;
+            }
 
-            var buildSlot = shipyard.BuildSlots[_slotId];
+            ShipyardBuildSlot buildSlot = shipyard.BuildSlots[_slotId];
 
             if (_isActive)
+            {
                 return shipyard.Sector.System.Colony.ActivateShipyardBuildSlot(buildSlot);
+            }
 
             return shipyard.Sector.System.Colony.DeactivateShipyardBuildSlot(buildSlot);
         }
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as ToggleShipyardBuildSlotOrder;
-            if (otherOrder == null)
+            if (!(o is ToggleShipyardBuildSlotOrder otherOrder))
+            {
                 return false;
+            }
 
             return otherOrder._shipyardId == _shipyardId &&
                    otherOrder._slotId == _slotId;
@@ -679,22 +761,30 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var shipyard = GameContext.Current.Universe.Objects[_shipyardId] as Shipyard;
+            Shipyard shipyard = GameContext.Current.Universe.Objects[_shipyardId] as Shipyard;
             if (shipyard == null)
+            {
                 return false;
+            }
 
             if (_slotId >= shipyard.BuildSlots.Count)
+            {
                 return false;
+            }
 
-            var buildSlot = shipyard.BuildSlots[_slotId];
+            ShipyardBuildSlot buildSlot = shipyard.BuildSlots[_slotId];
 
             if (buildSlot.HasProject)
             {
                 if (buildSlot.Project == _project)
+                {
                     return true;
+                }
 
                 if (!buildSlot.Project.IsCancelled)
+                {
                     buildSlot.Project.Cancel();
+                }
 
                 buildSlot.Project = null;
             }
@@ -706,9 +796,10 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as SetShipyardBuildSlotProjectOrder;
-            if (otherOrder == null)
+            if (!(o is SetShipyardBuildSlotProjectOrder otherOrder))
+            {
                 return false;
+            }
 
             return otherOrder._shipyardId == _shipyardId &&
                    otherOrder._slotId == _slotId;
@@ -725,7 +816,10 @@ namespace Supremacy.Game
             : base(owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
             _route = fleet.Route;
         }
@@ -734,21 +828,28 @@ namespace Supremacy.Game
             : base(fleet.Owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
 
             if (fleet.Order is AssaultSystemOrder)
+            {
                 fleet.Order = fleet.GetDefaultOrder();
-            
+            }
+
             _route = fleet.Route;
         }
 
         public override bool DoExecute()
         {
-            var fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
+            Fleet fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
 
             if (fleet == null)
+            {
                 return false;
+            }
 
             fleet.SetRoute(_route);
 
@@ -757,12 +858,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as SetFleetRouteOrder;
-
-            if (otherOrder == null)
+            if (!(o is SetFleetRouteOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._fleetId == _fleetId);
+            return otherOrder._fleetId == _fleetId;
         }
     }
 
@@ -776,7 +877,10 @@ namespace Supremacy.Game
             : base(owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
             _order = fleet.Order;
         }
@@ -785,17 +889,22 @@ namespace Supremacy.Game
             : base(fleet.Owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
             _order = fleet.Order;
         }
 
         public override bool DoExecute()
         {
-            var fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
+            Fleet fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
 
             if (fleet == null)
+            {
                 return false;
+            }
 
             fleet.SetOrder(_order);
             _order.UpdateReferences();
@@ -805,12 +914,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as SetFleetOrderOrder;
-
-            if (otherOrder == null)
+            if (!(o is SetFleetOrderOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._fleetId == _fleetId);
+            return otherOrder._fleetId == _fleetId;
         }
     }
 
@@ -825,9 +934,15 @@ namespace Supremacy.Game
             : base(route.SourceColony.Owner)
         {
             if (route == null)
+            {
                 throw new ArgumentNullException("route");
+            }
+
             if (route.SourceColony == null)
+            {
                 throw new ArgumentException("TradeRoute cannot have null SourceColony");
+            }
+
             _colonyId = route.SourceColony.ObjectID;
             _routeId = route.SourceColony.TradeRoutes.IndexOf(route);
             _targetId = route.IsAssigned ? route.TargetColony.ObjectID : -1;
@@ -835,29 +950,31 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
+            Colony colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
 
             if (colony == null)
+            {
                 return false;
+            }
+
             if (_routeId >= colony.TradeRoutes.Count)
+            {
                 return false;
+            }
 
-            var route = colony.TradeRoutes[_routeId];
+            TradeRoute route = colony.TradeRoutes[_routeId];
 
-            if (_targetId == -1)
-                route.TargetColony = null;
-            else
-                route.TargetColony = GameContext.Current.Universe.Objects[_targetId] as Colony;
+            route.TargetColony = _targetId == -1 ? null : GameContext.Current.Universe.Objects[_targetId] as Colony;
 
             return true;
         }
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as SetTradeRouteOrder;
-
-            if (otherOrder == null)
+            if (!(o is SetTradeRouteOrder otherOrder))
+            {
                 return false;
+            }
 
             return otherOrder._colonyId == _colonyId &&
                    otherOrder._routeId == _routeId;
@@ -875,17 +992,22 @@ namespace Supremacy.Game
             : base(fleet.Owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
             _cloaked = fleet.IsCloaked;
         }
 
         public override bool DoExecute()
         {
-            var fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
+            Fleet fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
 
             if (fleet == null)
+            {
                 return false;
+            }
 
             fleet.IsCloaked = _cloaked;
             //fleet.IsCamouflaged = _camouflaged;
@@ -895,12 +1017,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as CloakFleetOrder;
-
-            if (otherOrder == null)
+            if (!(o is CloakFleetOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._fleetId == _fleetId);
+            return otherOrder._fleetId == _fleetId;
         }
     }
     [Serializable]
@@ -913,17 +1035,22 @@ namespace Supremacy.Game
             : base(fleet.Owner)
         {
             if (fleet == null)
+            {
                 throw new ArgumentNullException("fleet");
+            }
+
             _fleetId = fleet.ObjectID;
             _camouflaged = fleet.IsCamouflaged;
         }
 
         public override bool DoExecute()
         {
-            var fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
+            Fleet fleet = GameContext.Current.Universe.Objects[_fleetId] as Fleet;
 
             if (fleet == null)
+            {
                 return false;
+            }
 
             fleet.IsCamouflaged = _camouflaged;
 
@@ -932,12 +1059,12 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as CamouflageFleetOrder;
-
-            if (otherOrder == null)
+            if (!(o is CamouflageFleetOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._fleetId == _fleetId);
+            return otherOrder._fleetId == _fleetId;
         }
     }
     [Serializable]
@@ -950,39 +1077,47 @@ namespace Supremacy.Game
             : base(colony.Owner)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
-            
+            }
+
             _colonyId = colony.ObjectID;
-            
-            var productionCategories = EnumUtilities.GetValues<ProductionCategory>();
-            
+
+            EnumValueCollection<ProductionCategory> productionCategories = EnumUtilities.GetValues<ProductionCategory>();
+
             _scrappedFacilities = new int[productionCategories.Count];
-            
-            foreach (var category in productionCategories)
+
+            foreach (ProductionCategory category in productionCategories)
+            {
                 _scrappedFacilities[(int)category] = colony.GetScrappedFacilities(category);
+            }
         }
 
         public override bool DoExecute()
         {
-            var colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
+            Colony colony = GameContext.Current.Universe.Objects[_colonyId] as Colony;
 
             if (colony == null)
+            {
                 return false;
+            }
 
-            foreach (var category in EnumUtilities.GetValues<ProductionCategory>())
+            foreach (ProductionCategory category in EnumUtilities.GetValues<ProductionCategory>())
+            {
                 colony.SetScrappedFacilities(category, _scrappedFacilities[(int)category]);
+            }
 
             return true;
         }
 
         public override bool Overrides(Order o)
         {
-            var otherOrder = o as FacilityScrapOrder;
-
-            if (otherOrder == null)
+            if (!(o is FacilityScrapOrder otherOrder))
+            {
                 return false;
+            }
 
-            return (otherOrder._colonyId == _colonyId);
+            return otherOrder._colonyId == _colonyId;
         }
     }
 
@@ -992,10 +1127,7 @@ namespace Supremacy.Game
         private readonly bool _scrap;
         private readonly int _targetId;
 
-        public TechObject Target
-        {
-            get { return GameContext.Current.Universe.Get<TechObject>(_targetId); }
-        }
+        public TechObject Target => GameContext.Current.Universe.Get<TechObject>(_targetId);
 
         public ScrapOrder(TechObject target)
             : this(true, target) { }
@@ -1004,7 +1136,9 @@ namespace Supremacy.Game
             : base(target.Owner)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
 
             _scrap = scrap;
             _targetId = target.ObjectID;
@@ -1012,19 +1146,24 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var target = Target;
+            TechObject target = Target;
             if (target == null)
+            {
                 return false;
+            }
+
             target.Scrap = _scrap;
             return true;
         }
 
         public override bool Overrides(Order otherOrder)
         {
-            var otherScrapOrder = otherOrder as ScrapOrder;
-            if (otherScrapOrder == null)
+            if (!(otherOrder is ScrapOrder otherScrapOrder))
+            {
                 return false;
-            return (otherScrapOrder._targetId == _targetId);
+            }
+
+            return otherScrapOrder._targetId == _targetId;
         }
     }
 
@@ -1034,23 +1173,23 @@ namespace Supremacy.Game
         private readonly int _targetId;
         private readonly string _name;
 
-        public UniverseObject Target
-        {
-            get { return GameContext.Current.Universe.Get<UniverseObject>(_targetId); }
-        }
+        public UniverseObject Target => GameContext.Current.Universe.Get<UniverseObject>(_targetId);
 
         public SetObjectNameOrder([NotNull] UniverseObject target, string name)
             : base(target.Owner)
         {
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
+
             _targetId = target.ObjectID;
             _name = name;
         }
 
         public override bool DoExecute()
         {
-            var target = Target;
+            UniverseObject target = Target;
             if (target != null)
             {
                 target.Name = _name;
@@ -1061,11 +1200,16 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order otherOrder)
         {
-            var order = otherOrder as SetObjectNameOrder;
-            if (order == null)
+            if (!(otherOrder is SetObjectNameOrder order))
+            {
                 return false;
+            }
+
             if (order._targetId == _targetId)
+            {
                 return true;
+            }
+
             return false;
         }
     }
@@ -1079,7 +1223,7 @@ namespace Supremacy.Game
         public UpdateResearchOrder(Civilization owner)
             : base(owner)
         {
-            var civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
             if (civManager == null)
             {
                 throw new InvalidOperationException(
@@ -1087,7 +1231,7 @@ namespace Supremacy.Game
             }
             _values = new Percentage[GameContext.Current.ResearchMatrix.Fields.Count];
             _locked = new bool[GameContext.Current.ResearchMatrix.Fields.Count];
-            for (var i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
+            for (int i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
             {
                 _locked[i] = civManager.Research.Distributions[i].IsLocked;
                 _values[i] = civManager.Research.Distributions[i].Value;
@@ -1096,15 +1240,15 @@ namespace Supremacy.Game
 
         public override bool Overrides(Order o)
         {
-            return (o is UpdateResearchOrder);
+            return o is UpdateResearchOrder;
         }
 
         public override bool DoExecute()
         {
-            var civManager = GameContext.Current.CivilizationManagers[Owner];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
             if (civManager != null)
             {
-                for (var i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
+                for (int i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
                 {
                     civManager.Research.Distributions[i].IsLocked = _locked[i];
                     civManager.Research.Distributions[i].SetValueInternal(_values[i]);
@@ -1120,29 +1264,27 @@ namespace Supremacy.Game
     {
         private readonly IProposal _proposal;
 
-        public IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        public IProposal Proposal => _proposal;
 
         public SendProposalOrder([NotNull] IProposal proposal)
             : base(proposal.Sender)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
-            _proposal = proposal;
+            _proposal = proposal ?? throw new ArgumentNullException("proposal");
         }
 
         public override bool DoExecute()
         {
-            var diplomat = Diplomat.Get(OwnerID);
+            Diplomat diplomat = Diplomat.Get(OwnerID);
             if (diplomat == null)
+            {
                 return false;
+            }
 
-            var foreignPower = diplomat.GetForeignPower(_proposal.Recipient);
+            ForeignPower foreignPower = diplomat.GetForeignPower(_proposal.Recipient);
             if (foreignPower == null)
+            {
                 return false;
+            }
 
             foreignPower.ProposalSent = _proposal;
             //foreignPower.CounterpartyForeignPower.ProposalReceived = _proposal;
@@ -1156,29 +1298,27 @@ namespace Supremacy.Game
     {
         private readonly Statement _statement;
 
-        public Statement Statement
-        {
-            get { return _statement; }
-        }
+        public Statement Statement => _statement;
 
         public SendStatementOrder([NotNull] Statement statement)
             : base(statement.Sender)
         {
-            if (statement == null)
-                throw new ArgumentNullException("statement");
-
-            _statement = statement;
+            _statement = statement ?? throw new ArgumentNullException("statement");
         }
 
         public override bool DoExecute()
         {
-            var diplomat = Diplomat.Get(OwnerID);
+            Diplomat diplomat = Diplomat.Get(OwnerID);
             if (diplomat == null)
+            {
                 return false;
+            }
 
-            var foreignPower = diplomat.GetForeignPower(_statement.Recipient);
+            ForeignPower foreignPower = diplomat.GetForeignPower(_statement.Recipient);
             if (foreignPower == null)
+            {
                 return false;
+            }
 
             foreignPower.StatementSent = _statement;
 
@@ -1199,11 +1339,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var civManager = ExecutionContext.CivilizationManagers[OwnerID];
+            CivilizationManager civManager = ExecutionContext.CivilizationManagers[OwnerID];
             if (civManager == null)
+            {
                 return false;
+            }
 
-            civManager.Credits.AdjustCurrent(_amount);
+            _ = civManager.Credits.AdjustCurrent(_amount);
 
             return true;
         }
@@ -1222,11 +1364,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            var civManager = ExecutionContext.CivilizationManagers[OwnerID];
+            CivilizationManager civManager = ExecutionContext.CivilizationManagers[OwnerID];
             if (civManager == null)
+            {
                 return false;
+            }
 
-            civManager.Resources[_resourceType].AdjustCurrent(_amount);
+            _ = civManager.Resources[_resourceType].AdjustCurrent(_amount);
             return true;
         }
     }

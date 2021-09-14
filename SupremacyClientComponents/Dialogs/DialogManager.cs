@@ -37,12 +37,7 @@ namespace Supremacy.Client.Dialogs
 
         protected static readonly DependencyPropertyKey ActiveDialogPropertyKey;
         protected static readonly DependencyPropertyDescriptor TabOnceActiveElementPropertyDescriptor;
-
-        private readonly IRegionManager _rootRegionManager;
-
         private IRegion _modalDialogsRegion;
-
-        private ContentPresenter _activeDialogPresenter;
 
         static DialogManager()
         {
@@ -74,9 +69,11 @@ namespace Supremacy.Client.Dialogs
         public DialogManager()
         {
             if (Designer.IsInDesignMode)
+            {
                 return;
+            }
 
-            _rootRegionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+            RootRegionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
         }
 
         private static DependencyPropertyDescriptor GetTabOnceActiveElementPropertyDescriptor()
@@ -96,29 +93,23 @@ namespace Supremacy.Client.Dialogs
 
         public Dialog ActiveDialog
         {
-            get { return GetValue(ActiveDialogProperty) as Dialog; }
-            protected set { SetValue(ActiveDialogPropertyKey, value); }
+            get => GetValue(ActiveDialogProperty) as Dialog;
+            protected set => SetValue(ActiveDialogPropertyKey, value);
         }
 
-        internal ContentPresenter ActiveDialogPresenter
-        {
-            get { return _activeDialogPresenter; }
-        }
+        internal ContentPresenter ActiveDialogPresenter { get; private set; }
 
-        protected IRegionManager RootRegionManager
-        {
-            get { return _rootRegionManager; }
-        }
+        protected IRegionManager RootRegionManager { get; }
 
         private IRegion ModalDialogsRegion
         {
             get
             {
-                if ((_modalDialogsRegion == null) && 
-                    (_rootRegionManager != null) &&
-                    _rootRegionManager.Regions.ContainsRegionWithName(ClientRegions.ModalDialogs))
+                if ((_modalDialogsRegion == null) &&
+                    (RootRegionManager != null) &&
+                    RootRegionManager.Regions.ContainsRegionWithName(ClientRegions.ModalDialogs))
                 {
-                    _modalDialogsRegion = _rootRegionManager.Regions[ClientRegions.ModalDialogs];
+                    _modalDialogsRegion = RootRegionManager.Regions[ClientRegions.ModalDialogs];
                 }
                 return _modalDialogsRegion;
             }
@@ -126,26 +117,27 @@ namespace Supremacy.Client.Dialogs
 
         public DialogOrderingMode OrderingMode
         {
-            get { return (DialogOrderingMode)GetValue(OrderingModeProperty); }
-            set { SetValue(OrderingModeProperty, value); }
+            get => (DialogOrderingMode)GetValue(OrderingModeProperty);
+            set => SetValue(OrderingModeProperty, value);
         }
 
         private static void OnActiveDialogChanged(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            var oldDialog = args.OldValue as Dialog;
-            var newDialog = args.NewValue as Dialog;
-
-            if (oldDialog != null)
+            if (args.OldValue is Dialog oldDialog)
+            {
                 oldDialog.IsActive = false;
+            }
 
-            if (newDialog != null)
+            if (args.NewValue is Dialog newDialog)
+            {
                 newDialog.IsActive = true;
+            }
         }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            _activeDialogPresenter = GetTemplateChild("PART_ActiveDialogPresenter") as ContentPresenter;
+            ActiveDialogPresenter = GetTemplateChild("PART_ActiveDialogPresenter") as ContentPresenter;
             UpdateActiveDialog();
         }
 
@@ -158,10 +150,14 @@ namespace Supremacy.Client.Dialogs
         private void OnGeneratorStatusChanged(object sender, EventArgs e)
         {
             if (ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+            {
                 return;
+            }
 
             if (HasItems && (SelectedIndex < 0))
+            {
                 SelectedIndex = 0;
+            }
 
             UpdateActiveDialog();
         }
@@ -171,42 +167,52 @@ namespace Supremacy.Client.Dialogs
             base.OnItemsChanged(e);
 
             if ((e.Action != NotifyCollectionChangedAction.Remove) || (SelectedIndex != -1))
+            {
                 return;
+            }
 
-            var nextDialog = FindNextDialog();
+            Dialog nextDialog = FindNextDialog();
             if (nextDialog != null)
+            {
                 SelectedItem = nextDialog;
+            }
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
             UpdateActiveDialog();
 
-            var activeDialog = ActiveDialog;
+            Dialog activeDialog = ActiveDialog;
             if (activeDialog != null)
+            {
                 activeDialog.Loaded += OnActiveDialogLoaded;
+            }
 
             base.OnSelectionChanged(e);
         }
 
         private void OnActiveDialogLoaded(object sender, RoutedEventArgs args)
         {
-            var sourceDialog = (Dialog)args.Source;
-            var activeDialog = ActiveDialog;
+            Dialog sourceDialog = (Dialog)args.Source;
+            Dialog activeDialog = ActiveDialog;
 
             sourceDialog.Loaded -= OnActiveDialogLoaded;
 
             if (sourceDialog != activeDialog)
+            {
                 return;
+            }
 
-            var setFocus = IsKeyboardFocusWithin;
+            bool setFocus = IsKeyboardFocusWithin;
             if (!setFocus)
             {
                 if (Equals(RegionManager.GetRegionName(this), ClientRegions.ModalDialogs))
+                {
                     setFocus = true;
+                }
                 else if (Equals(RegionManager.GetRegionName(this), ClientRegions.ModelessDialogs))
                 {
-                    var modalDialogRegion = ModalDialogsRegion;
+                    IRegion modalDialogRegion = ModalDialogsRegion;
                     if ((modalDialogRegion != null) &&
                         !modalDialogRegion.ActiveViews.Any())
                     {
@@ -216,20 +222,25 @@ namespace Supremacy.Client.Dialogs
             }
 
             if (!setFocus)
+            {
                 return;
+            }
 
-            activeDialog.SetFocus();
+            _ = activeDialog.SetFocus();
         }
 
         private Dialog GetActiveDialog()
         {
-            var selectedItem = SelectedItem;
+            object selectedItem = SelectedItem;
             if (selectedItem == null)
+            {
                 return null;
+            }
 
-            var activeDialog = selectedItem as Dialog;
-            if (activeDialog == null)
+            if (!(selectedItem is Dialog activeDialog))
+            {
                 activeDialog = ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as Dialog;
+            }
 
             return activeDialog;
         }
@@ -243,12 +254,13 @@ namespace Supremacy.Client.Dialogs
                 return;
             }
 
-            var activeDialog = GetActiveDialog();
+            Dialog activeDialog = GetActiveDialog();
             if (activeDialog == null)
+            {
                 return;
+            }
 
-            var parent = VisualTreeHelper.GetParent(activeDialog) as FrameworkElement;
-            if ((parent != null) && (TabOnceActiveElementPropertyDescriptor != null))
+            if ((VisualTreeHelper.GetParent(activeDialog) is FrameworkElement parent) && (TabOnceActiveElementPropertyDescriptor != null))
             {
                 TabOnceActiveElementPropertyDescriptor.SetValue(parent, activeDialog);
                 TabOnceActiveElementPropertyDescriptor.SetValue(this, parent);
@@ -261,7 +273,7 @@ namespace Supremacy.Client.Dialogs
 
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
-            return (item is Dialog);
+            return item is Dialog;
         }
 
         protected override DependencyObject GetContainerForItemOverride()
@@ -271,9 +283,12 @@ namespace Supremacy.Client.Dialogs
 
         private Dialog FindNextDialog()
         {
-            var dialogs = Items.OfType<Dialog>();
+            System.Collections.Generic.IEnumerable<Dialog> dialogs = Items.OfType<Dialog>();
             if (OrderingMode == DialogOrderingMode.Stack)
+            {
                 dialogs = dialogs.Reverse();
+            }
+
             return dialogs.FirstOrDefault();
         }
     }

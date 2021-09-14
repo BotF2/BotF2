@@ -53,7 +53,7 @@ namespace Supremacy.Scripting.Ast
 
             if (parent != null)
             {
-                base.CheckParentConflictName(parent.TopLevel, lt.VariableName, lt.Span);
+                _ = base.CheckParentConflictName(parent.TopLevel, lt.VariableName, lt.Span);
             }
         }
 

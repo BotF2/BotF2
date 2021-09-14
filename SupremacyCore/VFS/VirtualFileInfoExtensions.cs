@@ -15,7 +15,6 @@ namespace Supremacy.VFS
     /// </summary>
     public static class VirtualFileInfoExtensions
     {
-#pragma warning disable 1591
         /// <summary>
         /// Gets a <see cref="FileSecurity"/> object that encapsulates the access control list (ACL) entries for the file.
         /// </summary>
@@ -33,7 +32,10 @@ namespace Supremacy.VFS
         public static FileSecurity GetAccessControl([NotNull] this IVirtualFileInfo source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             return source.GetAccessControl(AccessControlSections.Group | AccessControlSections.Owner | AccessControlSections.Access);
         }
 
@@ -44,9 +46,11 @@ namespace Supremacy.VFS
             get
             {
                 if (_utf8NoBOM != null)
+                {
                     return _utf8NoBOM;
+                }
 
-                var encoding = new UTF8Encoding(false, true);
+                UTF8Encoding encoding = new UTF8Encoding(false, true);
                 Thread.MemoryBarrier();
                 _utf8NoBOM = encoding;
                 return _utf8NoBOM;
@@ -78,7 +82,10 @@ namespace Supremacy.VFS
         public static Stream Open([NotNull] this IVirtualFileInfo self, FileAccess fileAccess)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             return self.Open(fileAccess, GetDefaultFileShare(fileAccess));
         }
 
@@ -116,7 +123,10 @@ namespace Supremacy.VFS
         public static bool TryOpenRead([NotNull] this IVirtualFileInfo self, FileShare fileShare, out Stream stream)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             return self.TryOpen(FileAccess.Read, fileShare, out stream);
         }
 
@@ -204,13 +214,12 @@ namespace Supremacy.VFS
         {
             try
             {
-                Stream stream;
-                if (!self.TryOpenRead(out stream))
+                if (!self.TryOpenRead(out Stream stream))
                 {
                     text = null;
                     return false;
                 }
-                using (var textReader = new StreamReader(stream, encoding))
+                using (StreamReader textReader = new StreamReader(stream, encoding))
                 {
                     text = textReader.ReadToEnd();
                     return true;
@@ -243,9 +252,11 @@ namespace Supremacy.VFS
         public static string ReadAllText([NotNull] this IVirtualFileInfo self, [NotNull] Encoding encoding)
         {
             if (encoding == null)
+            {
                 throw new ArgumentNullException("encoding");
+            }
 
-            using (var textReader = new StreamReader(self.OpenRead(), encoding))
+            using (StreamReader textReader = new StreamReader(self.OpenRead(), encoding))
             {
                 return textReader.ReadToEnd();
             }
@@ -269,8 +280,8 @@ namespace Supremacy.VFS
         /// <returns>A string array containing all lines of the file.</returns>
         public static string[] ReadAllLines([NotNull] this IVirtualFileInfo self, Encoding encoding)
         {
-            var list = new List<string>();
-            using (var textReader = new StreamReader(self.OpenRead(), encoding))
+            List<string> list = new List<string>();
+            using (StreamReader textReader = new StreamReader(self.OpenRead(), encoding))
             {
                 string line;
                 while ((line = textReader.ReadLine()) != null)
@@ -315,14 +326,13 @@ namespace Supremacy.VFS
         {
             try
             {
-                Stream stream;
-                if (!self.TryOpenRead(out stream))
+                if (!self.TryOpenRead(out Stream stream))
                 {
                     lines = null;
                     return false;
                 }
-                var list = new List<string>();
-                using (var textReader = new StreamReader(stream, encoding))
+                List<string> list = new List<string>();
+                using (StreamReader textReader = new StreamReader(stream, encoding))
                 {
                     string line;
                     while ((line = textReader.ReadLine()) != null)
@@ -361,8 +371,11 @@ namespace Supremacy.VFS
         public static void WriteAllText([NotNull] this IVirtualFileInfo self, string text, Encoding encoding)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            using (var textWriter = new StreamWriter(self.Create(), encoding))
+            }
+
+            using (StreamWriter textWriter = new StreamWriter(self.Create(), encoding))
             {
                 textWriter.Write(text);
             }
@@ -378,10 +391,13 @@ namespace Supremacy.VFS
         public static void WriteAllLines([NotNull] this IVirtualFileInfo self, string[] lines, Encoding encoding)
         {
             if (self == null)
-                throw new ArgumentNullException("self");
-            using (var textWriter = new StreamWriter(self.Create(), encoding))
             {
-                foreach (var line in lines)
+                throw new ArgumentNullException("self");
+            }
+
+            using (StreamWriter textWriter = new StreamWriter(self.Create(), encoding))
+            {
+                foreach (string line in lines)
                 {
                     textWriter.WriteLine(line);
                 }
@@ -474,10 +490,16 @@ namespace Supremacy.VFS
         public static void WriteAllBytes([NotNull] this IVirtualFileInfo self, [NotNull] byte[] bytes)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             if (bytes == null)
+            {
                 throw new ArgumentNullException("bytes");
-            using (var writeStream = self.Create())
+            }
+
+            using (Stream writeStream = self.Create())
             {
                 writeStream.Write(bytes, 0, bytes.Length);
             }
@@ -493,13 +515,19 @@ namespace Supremacy.VFS
         public static bool TryWriteAllBytes([NotNull] this IVirtualFileInfo self, [NotNull] byte[] bytes)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             if (bytes == null)
+            {
                 throw new ArgumentNullException("bytes");
-            
-            Stream writeStream;
-            if (!self.TryCreate(out writeStream))
+            }
+
+            if (!self.TryCreate(out Stream writeStream))
+            {
                 return false;
+            }
 
             try
             {
@@ -526,11 +554,14 @@ namespace Supremacy.VFS
         public static byte[] ReadAllBytes([NotNull] this IVirtualFileInfo self)
         {
             if (self == null)
-                throw new ArgumentNullException("self");
-            var buffer = new byte[self.Length];
-            using (var readStream = self.OpenRead())
             {
-                readStream.Read(buffer, 0, buffer.Length);
+                throw new ArgumentNullException("self");
+            }
+
+            byte[] buffer = new byte[self.Length];
+            using (Stream readStream = self.OpenRead())
+            {
+                _ = readStream.Read(buffer, 0, buffer.Length);
             }
             return buffer;
         }
@@ -544,9 +575,11 @@ namespace Supremacy.VFS
         public static bool TryReadAllBytes([NotNull] this IVirtualFileInfo self, out byte[] bytes)
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            Stream readStream;
-            if (!self.TryOpenRead(out readStream))
+            }
+
+            if (!self.TryOpenRead(out Stream readStream))
             {
                 bytes = null;
                 return false;
@@ -556,7 +589,7 @@ namespace Supremacy.VFS
                 using (readStream)
                 {
                     bytes = new byte[self.Length];
-                    readStream.Read(bytes, 0, bytes.Length);
+                    _ = readStream.Read(bytes, 0, bytes.Length);
                 }
                 return true;
             }
@@ -566,6 +599,5 @@ namespace Supremacy.VFS
                 return false;
             }
         }
-#pragma warning restore 1591
     }
 }

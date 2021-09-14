@@ -4,7 +4,6 @@ using Supremacy.Annotations;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Intelligence;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -15,14 +14,11 @@ namespace Supremacy.Client.Views
 
         #region Overrides of GameScreenPresenterBase<AssetsScreenPresentationModel,IAssetsScreenView>
 
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.IntelScreen; }
-        }
+        protected override string ViewName => StandardGameScreens.IntelScreen;
 
         protected override void RegisterCommandAndEventHandlers()
         {
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
         }
 
         protected override void UnregisterCommandAndEventHandlers()
@@ -61,7 +57,7 @@ namespace Supremacy.Client.Views
         private void Update()
         {
             //GameLog.Core.Test.DebugFormat("Update on Turn Started at line 61");
-            Model.Colonies = IntelHelper.LocalCivManager.Colonies; 
+            Model.Colonies = IntelHelper.LocalCivManager.Colonies;
             Model.SpiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;

@@ -12,22 +12,110 @@
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
                     xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib"> 
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-        <!--Usage: {StaticResource HeaderTextBrush}-->
-    <SolidColorBrush x:Key="BorderBrush"
-                   Color="YellowGreen" />
+    <!--somewhere here inside....-->
+    <!--Buttons: Main: <Style TargetType="{x:Type scc:GameButton}">
+                 more: LCARS_BorderButtonStyle / LCARS_SimpleButtonStyle / LCARS_BorderToggleButtonStyle / LCARS_StandardButtonStyle
+    Foreground:  {StaticResource HeaderTextBrush}
+    IsEnabled:   {StaticResource Borg1Gradient_Top_Bottom}
+    IsMouseOver: {StaticResource Borg2Gradient_Top_Bottom}
+    IsPressed:   {StaticResource Borg3Gradient_Bottom_Top}
+    IsChecked:   {StaticResource Borg3Gradient_Bottom_Top}
+    
+    GameButton - Templates: // e.g. Economy
+    <Trigger Property="Context" Value="HorizontalGroupItem">
+    <Trigger Property="DisplayMode" Value="GroupedHorizontally">
+    <Trigger Property="DisplayMode" Value="GroupedVertically">
+    <Trigger Property="Context" Value="VerticalGroupItem">
+    <Trigger Property="DisplayMode" Value="CheckBox">
+    <Trigger Property="DisplayMode" Value="Hyperlink">
+    <Trigger Property="DisplayMode" Value="Minimal">
+    <Trigger Property="DisplayMode" Value="Tiny">
+    
+    -->
 
-    <SolidColorBrush x:Key="HeaderTextBrush"
-                   Color="#ff00ff7f"/>
-    <SolidColorBrush x:Key="LCARS_HeaderBrush"
-                   Color="#ff00ff7f"/>
-    <SolidColorBrush x:Key="DefaultTextBrush"
-                   Color="#ff9bd811"/>
-    <SolidColorBrush x:Key="DisabledTextBrush"
-                   Color="#FF85B20E"/>
-    <SolidColorBrush x:Key="SelectionBrush"
-                   Color="#7f87DB7A" />
+    <!-- used >> Gradients in Global.xaml
+    - Borg1Gradient
+    - Borg2Gradient
+    - Borg3Gradient
+    
+    -->
+
+    <!--Usage: {StaticResource HeaderTextBrush}-->
+    <!--<SolidColorBrush Color="#ff00ff7f" x:Key="WhiteHeaderBrush"/>-->
+    <SolidColorBrush Color="#ff00ff7f" x:Key="HeaderTextBrush"/>
+    <SolidColorBrush Color="#ff9bd811" x:Key="DefaultTextBrush"/>
+    <SolidColorBrush Color="#FF85B20E" x:Key="DisabledTextBrush"/>
+    <SolidColorBrush Color="#7f9acd32" x:Key="SelectionBrush"/>
+    <SolidColorBrush Color="#ffdfdfff" x:Key="WhiteHeaderBrush"/>
+
+    <SolidColorBrush Color="#FF9acd32" x:Key="BorderBrush" />    
+    
+    <SolidColorBrush Color="#ff000000" x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"/>   <!--Black-->
+    <SolidColorBrush Color="#ff77DC60" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>   <!--LightGreen-->
+    <SolidColorBrush Color="#ff36E50E" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>  <!--Green-->
+
+    <!--<SolidColorBrush Color="#ffadff2f" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/>    --><!--GreenYellow-->
+    <SolidColorBrush Color="#FF598D0D" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/> <!--GreenYellow-->
+    <SolidColorBrush Color="#FF00ff7f" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>   <!--DarkGreen-->
+    <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"/>   <!--Transparent-->
+    <SolidColorBrush Color="#FFB90E0A" x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#7F9acd32" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"/>  <!--Transparent-->
+    <SolidColorBrush Color="#7f9acd32" x:Key="{x:Static SystemColors.HighlightBrushKey}" />  <!--Transparent-->
+
+    <SolidColorBrush Color="#ffe7d490" x:Key="BeigeTextBrush"/>
+    <!--<SolidColorBrush Color="#ff999999" x:Key="DisabledTextBrush"/>-->
+
+    <!--Unused-->
+    <SolidColorBrush Color="#ffed9300" x:Key="unused_1"/>
+
+    <!--LinearGradientBrush-->
+    <LinearGradientBrush x:Key="SeparatorBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF598D0D" Offset="0" />
+        <GradientStop Color="#ff9bd811" Offset="1" />
+    </LinearGradientBrush>    
+    
+    <LinearGradientBrush x:Key="HorizontalBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ff9bd811" Offset="0" />
+        <GradientStop Color="#FF00ff7f" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="VerticalBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ff9bd811" Offset="0" />
+        <GradientStop Color="#FF00ff7f" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Horizontal_Left_Right_Brush}" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ff9bd811" Offset="0" />
+        <GradientStop Color="#FF00ff7f" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Horizontal_Right_Left_Brush}" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF00ff7f" Offset="0" />
+        <GradientStop Color="#ff9bd811" Offset="1" />
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ff9bd811" Offset="1" />
+        <GradientStop Color="#FF00ff7f" Offset="0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Bottom_Top_Brush}" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF00ff7f" Offset="0" />
+        <GradientStop Color="#ff9bd811" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.ControlDisabledBorderBrushKey}" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#7F9acd32" Offset="1" />
+    </LinearGradientBrush>
+
+    <ImageBrush x:Key="FleetSelectionBorderBrush"
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Borg/GalaxyScreen/FleetSelectionBorder.png" />
+
+    <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Borg/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
 
 
     <!--HeaderFont-->
@@ -45,82 +133,10 @@
     <system:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</system:Double>    
     <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Normal</FontWeight>
 
-    <!--SmallFont--><!--
+    <!--SmallFont - not implemented --><!--
     <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
     <system:Double x:Key="{x:Static scc:ClientResources.SmallFontSizeKey}">10</system:Double>
     <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>-->
-
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
-                    Color="#ff000000" />   <!--Black-->
-    <!--<SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
-                    Color="#ff77DC60" />  --><!--LightGreen-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"
-                    Color="#ff77DC60" />   <!--LightGreen-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"
-                    Color="#ff36E50E" />  <!--Green-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"
-                    Color="GreenYellow" /> <!--GreenYellow-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"
-                    Color="#ff41A52A" />   <!--DarkGreen-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"
-                    Color="#7f87DB7A" />  <!--Transparent-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"
-                    Color="#7f666666" />   <!--Transparent-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"
-                    Color="#FFB90E0A" />
-    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                    Color="#7f87DB7A" />  <!--Transparent-->
-
-    <!--LinearGradientBrush-->
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#ffCF88DF"
-                  Offset="0" />
-        <GradientStop Color="#ffD335F6"
-                  Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#ffD335F6"
-                  Offset="1" />
-        <GradientStop Color="#ffCF88DF"
-                  Offset="0" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.ControlDisabledBorderBrushKey}"
-                     PresentationOptions:Freeze="True"
-                     StartPoint="0,0"
-                     EndPoint="0,1">
-        <GradientStop Color="#afcccccc"
-                  Offset="0" />
-        <GradientStop Color="#af666666"
-                  Offset="1" />
-    </LinearGradientBrush>
-
-    <SolidColorBrush x:Key="LCARS_BeigeTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffe7d490" />
-    <SolidColorBrush x:Key="LCARS_DisabledTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ff999999" />
-
-    <!--
-    
-    ###### BUTTONS ######
-    
-    - GameButton   // e.g. Economy
-    - LCARS_BorderButtonStyle
-    - LCARS_BorderToggleButtonStyle"    // e.g. CHAT Button in GalaxyMapView
-    - LCARS_SimpleButtonStyle          // e.g. REDEPLOY-Button
-    - LCARS_SimpleToggleButtonStyle
-    
-    
-    -->
 
 
     <Style TargetType="{x:Type scc:GameButton}"><!--Borg GameButton-->
@@ -129,7 +145,7 @@
         <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
         <Setter Property="FontSize" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
         <!--<Setter Property="FontWeight" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />-->
-        <Setter Property="Foreground" Value="{StaticResource HeaderTextBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -189,10 +205,7 @@
         </Style.Triggers>
     </Style>
 
-    <!--
-    GameButton Style
-  -->
-
+    <!--  GameButton Style -->
     <ControlTemplate x:Key="{x:Static scc:GameButton.NormalTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
         <Grid>
@@ -202,21 +215,16 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0"
-              Background="{StaticResource LCARS_Borg1Gradient_TopLeft_BottomRight}"
-              CornerRadius="14,0,0,14"
-              Width="21" />
-
-            <DockPanel Grid.Column="1"
-                 LastChildFill="True">
+            
+            <Border Grid.Column="0" CornerRadius="14,0,0,14" Width="21" 
+              Background="{StaticResource Borg1Gradient_TopLeft_BottomRight}" />
+            
+            <DockPanel Grid.Column="1" Margin="3,0,0,0" LastChildFill="True">
+                
                 <Image DockPanel.Dock="Left"
-               MinWidth="16"
-               MinHeight="16"
-               MaxWidth="24"
-               MaxHeight="24"
-               Margin="3,0,0,0"
-               Stretch="Uniform"
-               StretchDirection="DownOnly"
+               MinWidth="16" MaxWidth="24"
+               MinHeight="16" MaxHeight="24"
+               Stretch="Uniform" StretchDirection="DownOnly"
                VerticalAlignment="Center"
                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Image.Source>
@@ -231,7 +239,7 @@
                 <Border x:Name="ContentBorder"
                 Margin="3,0,3,0"
                 Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                Background="{StaticResource LCARS_Borg1Gradient_Left_Right}">
+                Background="{StaticResource Borg1Gradient_Left_Right}">
                     <ContentPresenter RecognizesAccessKey="True">
                         <ContentPresenter.Content>
                             <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
@@ -243,11 +251,11 @@
             </DockPanel>
             <Rectangle Grid.Column="2"
                  Stretch="Fill"
-                 Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                 Fill="{StaticResource Borg1Gradient_Left_Right}"
                  Margin="0,0,3,0"
                  Width="14" />
             <Border Grid.Column="3"
-              Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+              Background="{StaticResource Borg1Gradient_Left_Right}"
               CornerRadius="0,14,14,0"
               Width="21" />
         </Grid>
@@ -260,57 +268,40 @@
             </Trigger>
             <Trigger Property="IsMouseOver"
                Value="True">
-                <Setter TargetName="ContentBorder"
-                Property="Background"
-                Value="{StaticResource LCARS_BorgHoverGreenGradient_Left_Right}" />
+                <Setter TargetName="ContentBorder" Property="Background"
+                Value="{StaticResource Borg3Gradient_Left_Right}" />
             </Trigger>
             <Trigger Property="IsPressed"
                Value="True">
-                <Setter TargetName="ContentBorder"
-                Property="Background"
-                Value="{StaticResource LCARS_BlueGradient_Right_Left}" />
+                <Setter TargetName="ContentBorder" Property="Background"
+                Value="{StaticResource Borg3Gradient_Left_Right}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--used in StartScreen-->
+
+    <!--used in StartScreen, in DiplomaticScreen-->
     <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
         <DockPanel LastChildFill="True">
-            <Border x:Name="CheckRectangle"
-                 DockPanel.Dock="Left"
-                       BorderBrush="YellowGreen"
-                    BorderThickness="2"
-                 Width="12"
-                 Margin="0,0,2,0" />
-
+            <Border x:Name="CheckRectangle" Width="12" BorderBrush="#FF9acd32" BorderThickness="2" DockPanel.Dock="Left" Margin="0,0,2,0" />
             <ui:ButtonChrome x:Name="ButtonChrome"
-                       Background="{StaticResource LCARS_BlueGradient_Left_Right}"
-                       DisabledBackground="{StaticResource LCARS_BlueGradient_Left_Right}"
-                       HoverBackground="{StaticResource LCARS_HoverBlueGradient_Left_Right}"
-                       PressedBackground="{StaticResource LCARS_BlueGradient_Right_Left}"
+                       Background="{StaticResource Borg2Gradient_Left_Right}"
+                       DisabledBackground="{StaticResource Borg1Gradient_Left_Right}"
+                       HoverBackground="{StaticResource BorgHoverGradient_Left_Right}"
+                       PressedBackground="{StaticResource Borg3Gradient_Left_Right}"
                        RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
                        RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
+
                 <DockPanel LastChildFill="True">
-                    <Border x:Name="Decorations"
-                  DockPanel.Dock="Right"
-                  Margin="4"
-                  Padding="2"
-                  Background="Black"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Center"
+                    <Border x:Name="Decorations" DockPanel.Dock="Right" Margin="4" Padding="2"
+                  Background="Black" HorizontalAlignment="Right" VerticalAlignment="Center"
                   Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Image Width="16"
-                   Height="16"
-                   Stretch="Uniform"
-                   StretchDirection="DownOnly"
-                   VerticalAlignment="Center">
+                        <Image Width="16" Height="16" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
                             <Image.Source>
                                 <MultiBinding Converter="{scc:CoalesceConverter}">
-                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                           Path="ImageSourceSmall" />
-                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                           Path="ImageSourceLarge" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
                                 </MultiBinding>
                             </Image.Source>
                         </Image>
@@ -325,45 +316,92 @@
                             VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
                             </ContentPresenter.Content>
                         </ContentPresenter>
-
                     </Border>
                 </DockPanel>
             </ui:ButtonChrome>
         </DockPanel>
         <ControlTemplate.Triggers>
-            <Trigger Property="DisplayMode"
-               Value="Minimal">
-                <Setter TargetName="Decorations"
-                Property="Visibility"
-                Value="Collapsed" />
+            <!--DisplayMode" Value="Minimal"-->
+            <Trigger Property="DisplayMode" Value="Minimal">
+                <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
             </Trigger>
-            <Trigger Property="IsChecked"
-               Value="False">
-                <Setter TargetName="CheckRectangle"
-                Property="Opacity"
-                Value="0.5" />
+            <!--IsChecked-->
+            <Trigger Property="IsChecked" Value="False">
+                <Setter TargetName="CheckRectangle" Property="Opacity" Value="0.5" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <!--End of GameButton.GroupedVerticallyTemplateKey-->
+
+    <!--used in StartScreen-->
+    <!--<ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <DockPanel LastChildFill="True">
+            <Border x:Name="CheckRectangle" Width="12" BorderBrush="#FF9acd32" BorderThickness="2" DockPanel.Dock="Left" Margin="0,0,2,0" />
+            <ui:ButtonChrome x:Name="ButtonChrome"
+                       Background="{StaticResource Borg2Gradient_Left_Right}"
+                       DisabledBackground="{StaticResource Borg1Gradient_Left_Right}"
+                       HoverBackground="{StaticResource BorgHoverGradient_Left_Right}"
+                       PressedBackground="{StaticResource Borg3Gradient_Left_Right}"
+                       RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
+                       RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
+                <DockPanel LastChildFill="True">
+                    <Border x:Name="Decorations"
+                  DockPanel.Dock="Right"
+                  Margin="4"
+                  Padding="2"
+                  Background="{StaticResource Borg1Gradient_Left_Right}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Width="16"
+                               Height="16"
+                               Stretch="Uniform"
+                               StretchDirection="DownOnly"
+                               VerticalAlignment="Center">
+                            <Image.Source>
+                                <MultiBinding Converter="{scc:CoalesceConverter}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <Border x:Name="ContentBorder"
+                  Background="{Binding ElementName=ButtonChrome, Path=RenderBackground}"
+                  Padding="{TemplateBinding Padding}">
+                        <ContentPresenter RecognizesAccessKey="True">
+                            <ContentPresenter.Content>
+                                <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                            VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
+                    </Border>
+                </DockPanel>
+            </ui:ButtonChrome>
+        </DockPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="DisplayMode" Value="Minimal">
+                <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter TargetName="CheckRectangle" Property="Opacity" Value="0.5" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>-->
 
     <!--e.g. CHAT Button in GalaxyMapView-->
     <Style x:Key="LCARS_BorderToggleButtonStyle"
          TargetType="{x:Type ToggleButton}"
          BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="FontFamily"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
-        <Setter Property="FontSize"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
-        <Setter Property="FontWeight"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
-        <Setter Property="FontSize"
-            Value="16pt" />
-        <Setter Property="ClipToBounds"
-            Value="False" />
-        <Setter Property="Focusable"
-            Value="False" />
-        <Setter Property="Background"
-            Value="{StaticResource LCARS_Borg1Gradient_Top_Bottom}" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="FontSize" Value="16pt" />
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="{StaticResource Borg2Gradient_Top_Bottom}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -371,41 +409,35 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="ContentBorder"
-                    Grid.Column="0"
-                    Margin="0"
-                    Padding="7,2,7,2"
-                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+                        <Border x:Name="ContentBorder" Grid.Column="0" Margin="0" Padding="7,2,7,2"
+                            Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                RecognizesAccessKey="True" />
+                                HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled"
-                     Value="False">
-                            <Setter TargetName="ContentBorder"
-                      Property="Opacity"
-                      Value="0.33" />
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ContentBorder" Property="Opacity" Value="0.33" />
                         </Trigger>
-                        <Trigger Property="IsMouseOver"
-                     Value="True">
-                            <Setter TargetName="ContentBorder"
-                      Property="Background"
-                      Value="{StaticResource LCARS_Borg2Gradient_Top_Bottom}" />
+                        <!--IsEnabled = True -->
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource Borg2Gradient_Top_Bottom}" />
                         </Trigger>
-                        <Trigger Property="IsPressed"
-                     Value="True">
-                            <Setter TargetName="ContentBorder"
-                      Property="Background"
-                      Value="{StaticResource LCARS_Borg3Gradient_Bottom_Top}" />
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background"
+                                  Value="{StaticResource Borg2Gradient_Top_Bottom}" />
                         </Trigger>
-                        <Trigger Property="IsChecked"
-                     Value="True">
-                            <Setter TargetName="ContentBorder"
-                      Property="Background"
-                      Value="{StaticResource LCARS_Borg3Gradient_Bottom_Top}" />
+                        <!--IsPressed-->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background"
+                                  Value="{StaticResource Borg3Gradient_Bottom_Top}" />
+                        </Trigger>
+                        <!--IsChecked-->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background"
+                                   Value="{StaticResource Borg3Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -417,29 +449,17 @@
     <Style x:Key="LCARS_BorderButtonStyle"  
          TargetType="{x:Type Button}"
          BasedOn="{StaticResource LCARS_BaseButtonStyle}">
-        <Setter Property="FontFamily"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
-        <Setter Property="FontSize"
-            Value="16pt" />
-        <Setter Property="ClipToBounds"
-            Value="False" />
-        <Setter Property="Focusable"
-            Value="False" />
-        <Setter Property="Background"
-            Value="DarkGray" />
-        <Setter Property="BorderBrush"
-            Value="YellowGreen" />
-        <Setter Property="BorderThickness"
-            Value="2" />
-        <Setter Property="Foreground"
-            Value="{StaticResource LCARS_BorgTextBrush}" />
-        <Setter Property="FontFamily"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
-        <Setter Property="FontSize"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
-        <Setter Property="FontWeight"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
-
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="16pt" />
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="{StaticResource Borg1Gradient_Top_Bottom}" />
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -447,53 +467,90 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="ContentBorder"
-                    Grid.Column="0"
-                    Margin="0"
-                    Padding="7,2,7,2"
-                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
-                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                RecognizesAccessKey="True" />
+                        <Border x:Name="ContentBorder" Background="{StaticResource Borg1Gradient_Top_Bottom}" Grid.Column="0" Margin="0" Padding="7,2,7,2">
+                            <!--Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">-->
+                    <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-
-                            <Trigger Property="IsEnabled"
-                     Value="False">
-                                <Setter TargetName="ContentBorder"
-                      Property="Opacity"
-                      Value="0.33" />
-
+                        <!--IsEnabled = False -->
+                        <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ContentBorder" Property="Opacity" Value="0.33" />
                             </Trigger>
-                            <Trigger Property="IsEnabled"
-                     Value="True">
-
-                            <Setter TargetName="ContentBorder"
-                      Property="Background"
-                      Value="Transparent" />
+                        <!--IsEnabled = True -->
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource Borg2Gradient_Top_Bottom}" />
                         </Trigger>
-                            <Trigger Property="IsMouseOver"
-                     Value="True">
-                                <Setter TargetName="ContentBorder"
-                      Property="Background"
-                      Value="{StaticResource LCARS_BorgHoverGreenGradient_Top_Bottom}" />
+                        <!--IsMouseOver-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background"
+                                Value="{StaticResource Borg2Gradient_Bottom_Top}" />
                             </Trigger>
-                            <Trigger Property="IsPressed"
-                     Value="True">
-                                <Setter TargetName="ContentBorder"
-                      Property="Background"
-                      Value="{StaticResource LCARS_Borg3Gradient_Bottom_Top}" />
+                        <!--IsPressed-->
+                            <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background"
+                                Value="{StaticResource Borg3Gradient_Bottom_Top}" />
                             </Trigger>
-
-                        </ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="LCARS_BorgSmallButtonStyle"
+    <!--used for game inside, upper left (CombatScreen>"COMMIT"-->
+    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <DockPanel LastChildFill="True">
+            <Rectangle DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
+                 Fill="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"/>
+            <ui:ButtonChrome x:Name="ButtonChrome"
+                       Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                       DisabledBackground="{StaticResource GrayGradient_Left_Right}"
+                       HoverBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                       PressedBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                       RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
+                       RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
+                <DockPanel LastChildFill="True">
+                    <Border x:Name="Decorations" DockPanel.Dock="Right" Margin="4" Padding="2"
+                  Background="Black" HorizontalAlignment="Right" VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Width="16" Height="16" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
+                            <Image.Source>
+                                <MultiBinding Converter="{scc:CoalesceConverter}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <Border x:Name="ContentBorder"
+                  Background="{Binding ElementName=ButtonChrome, Path=RenderBackground}"
+                  Padding="{TemplateBinding Padding}">
+                        <ContentPresenter RecognizesAccessKey="True">
+                            <ContentPresenter.Content>
+                                <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                            Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                            VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
+                    </Border>
+                </DockPanel>
+            </ui:ButtonChrome>
+        </DockPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="DisplayMode" Value="Minimal">
+                <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter TargetName="Decorations" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--End of GroupedHorizontallyTemplateKey-->
+
+    <!--<Style x:Key="LCARS_BorgSmallButtonStyle"
          TargetType="{x:Type Button}"
          BasedOn="{StaticResource LCARS_BaseButtonStyle}">
         <Setter Property="FontFamily"
@@ -526,25 +583,25 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_Borg1Gradient_Bottom_Top}" />
+                      Value="{StaticResource Borg1Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BorgHoverGreenGradient_Top_Bottom}" />
+                      Value="{StaticResource BorgHoverGradient_Top_Bottom}" />
                         </Trigger>
                         <Trigger Property="IsPressed"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_Borg3Gradient_Bottom_Top}" />
+                      Value="{StaticResource Borg3Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <!-- e.g. BORG REDEPLOY-Button -->
     <Style x:Key="LCARS_SimpleButtonStyle"
@@ -554,8 +611,8 @@
         <Setter Property="FontSize" Value="16pt" />
         <Setter Property="ClipToBounds" Value="False" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="Foreground" Value="{StaticResource LCARS_BorgTextBrush}" />
-        <Setter Property="BorderBrush" Value="YellowGreen" />
+        <Setter Property="Foreground" Value="{StaticResource GreenDarkTextBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Padding" Value="16,2,16,2" />
         <Setter Property="Template">
@@ -574,10 +631,10 @@
                             <Setter TargetName="ContentBorder" Property="Opacity" Value="0.33" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource LCARS_Borg1Gradient_Top_Bottom}" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource Borg1Gradient_Top_Bottom}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource BORG_GreenGradient_Bottom_Top}" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource Borg4Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -615,7 +672,7 @@
                     Grid.Column="0"
                     Margin="0"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="{StaticResource LCARS_Borg1Gradient_Left_Right}">
+                    Background="{StaticResource Borg1Gradient_Left_Right}">
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                 HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
                                 VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
@@ -633,13 +690,13 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BorgHoverGreenGradient_Left_Right}" />
+                      Value="{StaticResource BorgHoverGradient_Left_Right}" />
                         </Trigger>
                         <Trigger Property="IsChecked"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_Borg3Gradient_Left_Right}" />
+                      Value="{StaticResource Borg3Gradient_Left_Right}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -648,7 +705,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ToggleButton.Click">
                 <!--<EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
         </EventTrigger.Actions>-->
             </EventTrigger>
         </Style.Triggers>
@@ -706,25 +763,24 @@
                        Width="8"
                        Margin="0,3,0,3"
                        HorizontalAlignment="Left"
-                       Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}" />
+                       Fill="{StaticResource Borg2Gradient_Left_Right}" />
                         <Rectangle x:Name="RightEdge"
                        Grid.Column="2"
                        Grid.Row="1"
                        Width="8"
                        Margin="0,3,0,3"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}" />
+                       Fill="{StaticResource Borg2Gradient_Left_Right}" />
 
 
-                        <!--Fill="{StaticResource LCARS_Borg2Gradient_Top_Bottom}"-->
-                        <Rectangle x:Name="BottomEdge"
+                        <!--Fill="{StaticResource Borg2Gradient_Top_Bottom}"-->
+                        <Rectangle x:Name="BottomEdge" Opacity="0.5"
                        Grid.Column="1"
                        Grid.Row="2"
                        Height="28"
                        Margin="3,0,3,0"
                        VerticalAlignment="Bottom"
-                       Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}"
-                        />
+                       Fill="{StaticResource Borg2Gradient_Top_Bottom}"></Rectangle>
 
                         <Grid Grid.Column="1"
                   Grid.Row="0"
@@ -744,10 +800,10 @@
                         Background="Transparent"
                         SnapsToDevicePixels="True" />
 
-                            <!--Fill="{StaticResource LCARS_Borg5Gradient_Right_Left}"-->
-                            <Rectangle Grid.Column="1"
-                                Margin="3,0,3,0"
-                                Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}"
+                            <!--Fill="{StaticResource Borg5Gradient_Right_Left}"-->
+                            <Rectangle Grid.Column="1" Margin="3,0,3,0" Opacity="0.5"
+                               
+                                Fill="{StaticResource Borg2Gradient_Left_Right}"
                           />
                         </Grid>
 
@@ -761,22 +817,14 @@
     </Style>
 
     <!--TabItemStyle (Production and more, but only Header line)-->
-    <Style TargetType="{x:Type TabItem}"
-         BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="Height"
-            Value="28" />
-        <Setter Property="Margin"
-            Value="2,0,0,0" />
-        <Setter Property="FontFamily"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
-        <Setter Property="FontSize"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
-        <Setter Property="FontWeight"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
-        <Setter Property="KeyboardNavigation.IsTabStop"
-            Value="False" />
-        <Setter Property="FocusVisualStyle"
-            Value="{x:Null}" />
+    <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Margin" Value="2,0,0,0" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -789,51 +837,31 @@
                         <Rectangle Grid.Column="0"
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_Borg3Gradient_Left_Right}" />
+                       Fill="{StaticResource Borg3Gradient_Left_Right}" />
                         <scc:PixelSnappingBorder x:Name="Border"
                                      Grid.Column="1"
                                      Margin="3,0,0,0"
                                      Padding="7,0,7,0"
                                      SnapsToDevicePixels="True"
-                                     Background="{StaticResource LCARS_Borg2Gradient_Left_Right}">
+                                     Background="{StaticResource Borg2Gradient_Left_Right}">
                             <ContentPresenter ContentSource="Header"
                                 VerticalAlignment="Center"
                                 SnapsToDevicePixels="True" />
                         </scc:PixelSnappingBorder>
-                        <!--Column 2 is new-->
-                        <!--
-                        <Rectangle Grid.Column="2"
-                       Width="14"
-                       SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
-              -->
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver"
-                     Value="True">
-                            <Setter TargetName="Border"
-                      Property="Background"
-                      Value="YellowGreen" />
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#FF9acd32" />
                         </Trigger>
-                        <Trigger Property="IsSelected"
-                     Value="True">
-                            <!--<Setter Property="Panel.ZIndex"
-                      Value="100" />-->
-                            <Setter TargetName="Border"
-                      Property="Background"
-                      Value="YellowGreen" />
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#FF9acd32" />                    
+                            <!--<Setter Property="Panel.ZIndex" Value="100" />-->
                         </Trigger>
-                        <!--<Trigger Property="IsMouseDown"
-                     Value="True">
-              <Setter TargetName="Border"
-                      Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Right_Left}"/>
-            </Trigger>-->
-                        <Trigger Property="IsEnabled"
-                     Value="False">
-                            <Setter TargetName="Border"
-                      Property="Opacity"
-                      Value="0.25" />
+                        <!--<Trigger Property="IsMouseDown" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#FF9acd32" /> 
+                        </Trigger>-->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.25" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -842,255 +870,19 @@
     </Style>
     <!--End of TabStyle-->
 
-    <!--Borg1 Gradient
-    <LinearGradientBrush x:Key="LCARS_Borg1Gradient_TopLeft_BottomRight"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,1">
-        <GradientStop Color="#FF2F2F2F"
-                  Offset="0" />
-        <GradientStop Color="#FF535c52"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg1Gradient_BottomLeft_TopRight"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="1,1"
-                       EndPoint="0,0">
-        <GradientStop Color="#FF2F2F2F"
-                  Offset="0" />
-        <GradientStop Color="#FF535c52"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg1Gradient_Top_Bottom"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FF2F2F2F"
-                  Offset="0" />
-        <GradientStop Color="#FF535c52"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg1Gradient_Bottom_Top"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,1"
-                       EndPoint="0,0">
-        <GradientStop Color="#FF2F2F2F"
-                  Offset="0" />
-        <GradientStop Color="#FF535c52"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg1Gradient_Left_Right"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#FF2F2F2F"
-                  Offset="0" />
-        <GradientStop Color="#FF535c52"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg1Gradient_Right_Left"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#FF2F2F2F"
-                  Offset="1" />
-        <GradientStop Color="#FF535c52"
-                  Offset="0" />
-    </LinearGradientBrush>
-
-    Borg2 Gradient
-    <LinearGradientBrush x:Key="LCARS_Borg2Gradient_TopLeft_BottomRight"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,1">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg2Gradient_BottomLeft_TopRight"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="1,1"
-                       EndPoint="0,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg2Gradient_Top_Bottom"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg2Gradient_Bottom_Top"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,1"
-                       EndPoint="0,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg2Gradient_Left_Right"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg2Gradient_Right_Left"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="1" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="0" />
-    </LinearGradientBrush>
-
-    Borg3 Gradient
-    <LinearGradientBrush x:Key="LCARS_Borg3Gradient_TopLeft_BottomRight"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,1">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg3Gradient_BottomLeft_TopRight"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="1,1"
-                       EndPoint="0,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg3Gradient_Top_Bottom"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg3Gradient_Bottom_Top"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,1"
-                       EndPoint="0,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg3Gradient_Left_Right"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="0" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Borg3Gradient_Right_Left"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#FF008b45"
-                  Offset="1" />
-        <GradientStop Color="#FF00ff7f"
-                  Offset="0" />
-    </LinearGradientBrush>-->
-    
-  <!--<LinearGradientBrush x:Key="BORG_GreenGradient_Top_Bottom"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-    <GradientStop Color="#FF09935f"
-                  Offset="0" />
-    <GradientStop Color="#FF075e2b"
-                  Offset="1" />
-  </LinearGradientBrush>
-
-  <LinearGradientBrush x:Key="BORG_GreenGradient_Bottom_Top"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-    <GradientStop Color="#FF075e2b"
-                  Offset="0" />
-    <GradientStop Color="#FF09935f"
-                  Offset="1" />
-  </LinearGradientBrush>
-
-  <LinearGradientBrush x:Key="LCARS_BorgHoverGreenGradient_Top_Bottom"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-    <GradientStop Color="#FF37D680"
-                  Offset="0" />
-    <GradientStop Color="#FF019245"
-                  Offset="1" />
-  </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="LCARS_BorgHoverGreenGradient_Bottom_Top"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FF37D680"
-                  Offset="1" />
-        <GradientStop Color="#FF019245"
-                  Offset="0" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="LCARS_BorgHoverGreenGradient_Left_Right"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FF37D680"
-                  Offset="0,0" />
-        <GradientStop Color="#FF019245"
-                  Offset="1,1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="LCARS_BorgHoverGreenGradient_Right_Left"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FF37D680"
-                  Offset="1,1" />
-        <GradientStop Color="#FF019245"
-                  Offset="0,0" />
-    </LinearGradientBrush>-->
-
-
-    <!--<LinearGradientBrush x:Key="BORG_PurpleGradient_Top_Bottom"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-    <GradientStop Color="#FF835FBA"
-                  Offset="0" />
-    <GradientStop Color="#FF531093"
-                  Offset="1" />
-  </LinearGradientBrush>-->
-
     <Style x:Key="LCARS_BaseButtonStyle"
          TargetType="{x:Type Button}"
          BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="MinHeight"
-            Value="28" />
-        <Setter Property="FontFamily"
-            Value="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
-        <Setter Property="FontSize"
-            Value="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
-        <Setter Property="FontWeight"
-            Value="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="FontFamily" Value="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight" Value="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="Button.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={DynamicResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Federation/Sounds/ButtonClick.wav', Converter={DynamicResource PathToUriConverter}}" />
         </EventTrigger.Actions>
-      </EventTrigger>-->
+        </EventTrigger>-->
         </Style.Triggers>
     </Style>
 
@@ -1099,17 +891,11 @@
     <Style x:Key="LCARS_StandardButtonStyle"
          BasedOn="{StaticResource LCARS_BaseButtonStyle}"
          TargetType="{x:Type Button}">
-        <Setter
-            Property="Foreground"
-            Value="{StaticResource LCARS_BorgHoverGreenGradient_Top_Bottom}" />
-    <Setter Property="ClipToBounds"
-            Value="False" />
-    <Setter Property="Focusable"
-            Value="False" />
-    <Setter Property="MinHeight"
-            Value="28" />
-    <Setter Property="Padding"
-            Value="16,0,16,0" />
+    <Setter Property="Foreground" Value="{StaticResource BorgHoverGradient_Top_Bottom}" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="Padding" Value="16,0,16,0" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
@@ -1122,14 +908,12 @@
                 <Border x:Name="ContentBorder"
                     Grid.Column="1"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="Transparent"
+                    Background="{StaticResource Borg1Gradient_Top_Bottom}"
                     BorderBrush="GreenYellow"
                     BorderThickness="2"
                         >
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                RecognizesAccessKey="True" />
+                                HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
             </Border>
               <!--Begin of Drawing-->
                         <Path x:Name="LeftEdge" Stroke="SpringGreen" StrokeThickness="2" Opacity="0.5" >
@@ -1227,7 +1011,7 @@
 
                         <Path x:Name="RightEdge"
                   Grid.Column="2"
-                  Fill="{StaticResource LCARS_Borg1Gradient_Top_Bottom}"
+                  Fill="{StaticResource Borg1Gradient_Top_Bottom}"
                   Data="F1 M 0,37 L  8,37 28,28  28,18 28,9 8,0 0,0 Z"                             
                   VerticalAlignment="Center"
                   Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
@@ -1244,26 +1028,26 @@
                      Value="True">
               <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_Borg1Gradient_Top_Bottom}" 
+                      Value="{StaticResource Borg1Gradient_Top_Bottom}" 
                       />
               <Setter TargetName="LeftEdge"
                       Property="Fill"
-                      Value="{StaticResource LCARS_RedGradient_Top_Bottom}" />
+                      Value="{StaticResource PurpleDarkGradient_Top_Bottom}" />
               <Setter TargetName="RightEdge"
                       Property="Fill"
-                      Value="{StaticResource LCARS_BorgHoverGreenGradient_Top_Bottom}" />
+                      Value="{StaticResource BorgHoverGradient_Top_Bottom}" />
             </Trigger>
             <Trigger Property="IsPressed"
                      Value="True">
               <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource BORG_GreenGradient_Bottom_Top}" />
+                      Value="{StaticResource Borg4Gradient_Bottom_Top}" />
               <Setter TargetName="LeftEdge"
                       Property="Fill"
-                      Value="{StaticResource BORG_GreenGradient_Bottom_Top}" />
+                      Value="{StaticResource Borg4Gradient_Bottom_Top}" />
               <Setter TargetName="RightEdge"
                       Property="Fill"
-                      Value="{StaticResource BORG_GreenGradient_Bottom_Top}" />
+                      Value="{StaticResource Borg4Gradient_Bottom_Top}" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1278,37 +1062,6 @@
   <Style TargetType="{x:Type Button}"
          BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
 
-  <LinearGradientBrush x:Key="SeparatorBackgroundBrush"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FF598D0D"
-                  Offset="0" />
-        <GradientStop Color="#FF598D0D"
-                  Offset="1" />
-  </LinearGradientBrush>
-    <!--old SeparatorBackgroundBrush
-    <GradientStop Color="#FF598D0D"
-                  Offset="0" />
-    <GradientStop Color="#ffed9300"
-                  Offset="1" />-->
-
-    <ImageBrush x:Key="FleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/FleetSelectionBorder.png" />
-
-    <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
-
-    <!--<ImageBrush x:Key="LeftRepeatButton1"
-              ImageSource="vfs:///Resources/UI/Borg/Shared/LeftRepeatButton1.png" />
-
-  <ImageBrush x:Key="LeftRepeatButton2"
-              ImageSource="vfs:///Resources/UI/Borg/Shared/LeftRepeatButton2.png" />
-    
-  <ImageBrush x:Key="RightRepeatButton1"
-              ImageSource="vfs:///Resources/UI/Borg/Shared/RightRepeatButton1.png" />
-
-  <ImageBrush x:Key="RightRepeatButton2"
-              ImageSource="vfs:///Resources/UI/Borg/Shared/RightRepeatButton2.png" />-->
 
   <Style x:Key="LockToggleButtonStyle"
          TargetType="{x:Type ToggleButton}">
@@ -1326,13 +1079,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Image x:Name="LockImage"
-                 Source="vfs:///Resources/UI/Borg/Shared/Unlocked.png"/>
+                 Source="vfs:///Resources/Specific_Empires_UI/Borg/Shared/Unlocked.png"/>
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked"
                      Value="True">
               <Setter TargetName="LockImage"
                       Property="Source"
-                      Value="vfs:///Resources/UI/Borg/Shared/Locked.png"/>
+                      Value="vfs:///Resources/Specific_Empires_UI/Borg/Shared/Locked.png"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1341,7 +1094,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Borg/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/Specific_Empires_UI/Borg/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>
@@ -1353,8 +1106,14 @@
             <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
                            TargetType="{x:Type RepeatButton}">
                 <Border x:Name="LeftButton"
-                     Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"
+                     Background="{StaticResource Borg1Gradient_Left_Right}"
                      CornerRadius="0,0,0,0" />
+                <!--<Ellipse x:Name="LeftButton1" Height="28" Width="28" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Fill="Green" Opacity="0.3" StrokeThickness="4" Stroke="#1ffe36"
+                         Background=""/>-->
+                <!--<Ellipse  Height="9" Width="9" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                         Canvas.Top="15" Canvas.Left="5"
+                                         Fill="#cce259" Opacity="0.6" StrokeThickness="2" Stroke="#1fe336"/>-->
                 <ControlTemplate.Triggers>
                     <MultiTrigger>
                         <MultiTrigger.Conditions>
@@ -1365,32 +1124,15 @@
                         </MultiTrigger.Conditions>
                         <Setter TargetName="LeftButton"
                             Property="Background"
-                            Value="{StaticResource LCARS_Borg2Gradient_TopLeft_BottomRight}" />
+                            Value="{StaticResource Borg3Gradient_TopLeft_BottomRight}" />
                     </MultiTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            <!--<ControlTemplate x:Key="RightRepeatButtonTemplate"
-                           TargetType="{x:Type RepeatButton}">
-            <Border x:Name="RightButton"
-                    Background="{StaticResource RightRepeatButton1 }" />
-                <ControlTemplate.Triggers>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsMouseOver"
-                             Value="True" />
-                            <Condition Property="IsPressed"
-                             Value="False" />
-                        </MultiTrigger.Conditions>
-                        <Setter TargetName="RightButton"
-                            Property="Background"
-                            Value="{DynamicResource RightRepeatButton2 }" />
-                    </MultiTrigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>-->
+
             <ControlTemplate x:Key="RightRepeatButtonTemplate"
                            TargetType="{x:Type RepeatButton}">
             <Border x:Name="RightButton"
-                    Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"
+                    Background="{StaticResource Borg1Gradient_Right_Left}"
                     CornerRadius="0,0,0,0" />
             <ControlTemplate.Triggers>
               <MultiTrigger>
@@ -1402,13 +1144,13 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="RightButton"
                         Property="Background"
-                        Value="{StaticResource LCARS_Borg2Gradient_TopLeft_BottomRight}" />
+                        Value="{StaticResource Borg3Gradient_TopLeft_BottomRight}" />
               </MultiTrigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Style.Resources>
     <Setter Property="UnitBrush"
-            Value="{StaticResource LCARS_BorgTextBrush}" />
+            Value="{StaticResource Borg3Gradient_TopLeft_BottomRight}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type s:UnitActivationBar}">
@@ -1509,7 +1251,7 @@
                                     HorizontalAlignment="Stretch" />
                 </Border>
                 <Border x:Name="BackgroundBorder"
-                        Background="{StaticResource LCARS_Borg2Gradient_Top_Bottom}"
+                        Background="{StaticResource Borg2Gradient_Top_Bottom}"
                         MinWidth="14"
                         HorizontalAlignment="Stretch" />
               </DockPanel>
@@ -1538,13 +1280,13 @@
                      Value="True">
               <Setter TargetName="BackgroundBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BorgHoverGreenGradient_Top_Bottom}" />
+                      Value="{StaticResource BorgHoverGradient_Top_Bottom}" />
             </Trigger>
             <Trigger Property="IsPressed"
                      Value="True">
               <Setter TargetName="BackgroundBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                      Value="{StaticResource Borg1Gradient_Top_Bottom}" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1593,7 +1335,7 @@
                 <xcdg:FixedCellPanel x:Name="PART_CellsHost"
                                      DockPanel.Dock="Left"
                                      Margin="{TemplateBinding BorderThickness}" />
-                <Rectangle Fill="{StaticResource LCARS_Borg3Gradient_Top_Bottom}" />
+                <Rectangle Fill="{StaticResource Borg2Gradient_Top_Bottom}" />
               </DockPanel>
             </Decorator>
           </Grid>
@@ -1866,7 +1608,7 @@
         <Setter Property="ExpandDirection"
             Value="Down" />
         <Setter Property="Foreground"
-            Value="{StaticResource LCARS_GreenTextBrush}" />
+            Value="{StaticResource GreenTextBrush}" />
         <Setter Property="FontFamily"
             Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
         <Setter Property="FontSize"
@@ -1914,14 +1656,8 @@
                                         </DrawingBrush>
                                     </Rectangle.Fill>
                     </Rectangle>
-                <Path x:Name="TopLeftCollapsed"
-                      Grid.Column="0"
-                      Grid.Row="0"
-                      Width="21"
-                      Height="28"
-                      Stretch="Fill"
-                      Fill="DarkGreen"
-                      Data="F1 M 28,0L0,5 0,23 28,28 28,0 z" />
+                <Path x:Name="TopLeftCollapsed" Grid.Column="0" Grid.Row="0" Width="21" Height="28"
+                      Data="F1 M 28,0L0,5 0,23 28,28 28,0 z" Stretch="Fill" Fill="DarkGreen" />
                 <ContentControl Grid.Column="1"
                                 Grid.Row="0"
                                 VerticalAlignment="Top"
@@ -1937,26 +1673,23 @@
                            Grid.Row="0"
                            Height="28"
                            VerticalAlignment="Top"
+                           Opacity="0.5"
                            Fill="DarkGreen"
                            Margin="7,0,0,0" />
                 <Rectangle Grid.Column="3"
                            Grid.Row="0"
                            Width="14"
                            Height="28"
+                           Opacity="0.5"
                            VerticalAlignment="Top"
-                           Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}"
+                           Fill="{StaticResource Borg2Gradient_Left_Right}"
                            Margin="3,0,0,0" />
-                <Rectangle Grid.Column="4"
-                           Grid.Row="0"
-                           Width="21"
-                           Height="28"
-                           VerticalAlignment="Top"
-                           Margin="3,0,0,0">
+                <Rectangle Grid.Column="4" Grid.Row="0" Width="21" Height="28" VerticalAlignment="Top" Margin="3,0,0,0">
                                     <Rectangle.Fill>
                                         <DrawingBrush>
                                             <DrawingBrush.Drawing>
                                                 <GeometryDrawing PresentationOptions:Freeze="True"
-                                         Brush="{StaticResource LCARS_Borg2Gradient_TopLeft_BottomRight}"
+                                         Brush="{StaticResource Borg2Gradient_TopLeft_BottomRight}"
                                          Geometry="F1  M 0,0 28, 5 28, 23 0,28 Z  " />
                                             </DrawingBrush.Drawing>
                                         </DrawingBrush>
@@ -1980,10 +1713,10 @@
                                 <RowDefinition Height="Auto"
                                MaxHeight="28" />
                             </Grid.RowDefinitions>
-                            <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
+                            <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource PurpleGradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
                             <Rectangle Grid.Column="0"
                          Grid.Row="1"
-                         Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}"
+                         Fill="{StaticResource Borg2Gradient_Left_Right}"
                          Width="7"
                          Margin="0,3,0,3"
                          Stretch="Fill" />
@@ -1997,13 +1730,13 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource LCARS_Rom2Gradient_TopLeft_BottomRight}"
+                                       Brush="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,0 L 0,36 20,56 26,56 26,18 10,18 10,0 0,0 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
+                            <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
                     <Border Grid.Column="2"
                          Grid.Row="3"
                          Background="Transparent"
@@ -2067,7 +1800,7 @@
         <Setter Property="FocusVisualStyle"
             Value="{x:Null}" />
         <Setter Property="Foreground"
-            Value="{StaticResource LCARS_BorgTextBrush}" />
+            Value="{StaticResource GreenDarkTextBrush}" />
         <Setter Property="FontFamily"
             Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
         <Setter Property="FontSize"
@@ -2100,7 +1833,7 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
-                                         Brush="{StaticResource LCARS_Borg2Gradient_TopLeft_BottomRight}"
+                                         Brush="{StaticResource Borg2Gradient_TopLeft_BottomRight}"
                                          Geometry="F1 M 0,56L 0,20L 10,0 L26,0 L26,38  L18,38 L10,56 Z " />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -2110,7 +1843,7 @@
                               Grid.Row="0"
                                             VerticalAlignment="Top"
                               Margin="7,0,0,0"
-                              Foreground="YellowGreen"
+                              Foreground="#FF9acd32"
                               FontSize="18pt">
                                 <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header}" />
                             </ContentControl>
@@ -2118,14 +1851,14 @@
                          Grid.Row="0"
                                        Height="28"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}"
+                         Fill="{StaticResource Borg2Gradient_Left_Right}"
                          Margin="7,0,0,0" />
                             <Rectangle Grid.Column="3"
                          Grid.Row="0"
                                        Width="14"
                          Height="28"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}"
+                         Fill="{StaticResource Borg2Gradient_Left_Right}"
                          Margin="3,0,0,0" />
                             <Rectangle Grid.Column="4"
                          Grid.Row="0"
@@ -2137,7 +1870,7 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource LCARS_Borg2Gradient_TopLeft_BottomRight}"
+                                       Brush="{StaticResource Borg2Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,37 L 20,37 28,30 28,18 28,8 20,0 0,0 Z  " />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -2159,10 +1892,10 @@
                                 <RowDefinition Height="Auto"
                                MaxHeight="28" />
                             </Grid.RowDefinitions>
-                            <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
+                            <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource Borg2Gradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
                             <Rectangle Grid.Column="0"
                          Grid.Row="1"
-                         Fill="{StaticResource LCARS_Borg2Gradient_Left_Right}"
+                         Fill="{StaticResource Borg2Gradient_Left_Right}"
                          Width="7"
                          Margin="0,3,0,3"
                          Stretch="Fill" />
@@ -2176,16 +1909,16 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource LCARS_Borg2Gradient_TopLeft_BottomRight}"
+                                       Brush="{StaticResource Borg2Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M0,0L0,36 10,56 26,56 26,18 18,18 10,0 0,0 Z  " />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
+                            <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource Borg3Gradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
                             <Rectangle Grid.Column="2"
                          Grid.Row="3"
-                         Fill="{StaticResource LCARS_Borg2Gradient_Right_Left}"
+                         Fill="{StaticResource Borg2Gradient_Right_Left}"
                          Margin="3,0,0,0"
                          Height="28"
                          Stretch="Fill" />
@@ -2199,7 +1932,7 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource LCARS_Borg2Gradient_TopLeft_BottomRight}"
+                                       Brush="{StaticResource Borg2Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,37 L 20,37 28,30 28,18 28,8 20,0 0,0 Z  " />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -2219,12 +1952,13 @@
         </Setter>
     </Style>
 
-    <!--<ControlTemplate x:Key="LCARS_ComboBoxToggleButton"
+    <!--Start of ComboText at all-->
+    <ControlTemplate x:Key="LCARS_ComboBoxToggleButton"
                    TargetType="{x:Type ToggleButton}">
         <Grid>
             <Border x:Name="Border"
               Width="21"
-              Background="{StaticResource Borderbrush}">
+              Background="{StaticResource Borg3Gradient_Bottom_Top}">
                 <Path x:Name="Arrow"
               Grid.Column="1"
               Fill="Black"
@@ -2244,13 +1978,13 @@
                Value="True">
                 <Setter TargetName="Border"
                 Property="Background"
-                Value="{StaticResource LCARS_Borg2Gradient_Bottom_Top}" />
+                Value="{StaticResource Borg3Gradient_Top_Bottom}" />
             </Trigger>
-            <Trigger Property="IsEnabled"
-               Value="False">
+            <!--IsEnabled-->
+            <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="Border"
                 Property="Background"
-                Value="{StaticResource LCARS_Borg1Gradient_Top_Bottom}" />
+                Value="{StaticResource Borg1Gradient_Bottom_Top}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -2258,7 +1992,7 @@
     <ControlTemplate x:Key="LCARS_ComboBoxTextBox"
                    TargetType="{x:Type TextBox}">
         <Border x:Name="Border"
-            BorderBrush="{StaticResource LCARS_Borg3Gradient_Top_Bottom}"
+            BorderBrush="{StaticResource Borg3Gradient_Bottom_Top}"
             Background="#FF000000"
             BorderThickness="2"
             Focusable="False" />
@@ -2272,7 +2006,7 @@
         <Setter Property="FontSize"
             Value="16pt" />
         <Setter Property="Foreground"
-            Value="{StaticResource LCARS_HeaderTextBrush}" />
+            Value="{StaticResource BeigeTextBrush}" />
         <Setter Property="SnapsToDevicePixels"
             Value="true" />
         <Setter Property="OverridesDefaultStyle"
@@ -2309,7 +2043,7 @@
                         </ToggleButton>
                         <Border x:Name="Border"
                     Grid.Column="0"
-                    BorderBrush="{StaticResource LCARS_Borg2Gradient_Top_Bottom}"
+                    BorderBrush="{StaticResource Borg2Gradient_Bottom_Top}"
                     Background="#FF000000"
                     BorderThickness="2"
                     Focusable="False">
@@ -2363,35 +2097,35 @@
                                     <Border Grid.Column="0"
                           Grid.Row="0"
                           CornerRadius="14,0,0,0"
-                          Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Borg3Gradient_Bottom_Top}" />
                                     <Border Grid.Column="2"
                           Grid.Row="0"
                           CornerRadius="0,14,0,0"
-                          Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Borg3Gradient_Bottom_Top}" />
                                     <Border Grid.Column="2"
                           Grid.Row="2"
                           CornerRadius="0,0,14,0"
-                          Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Borg3Gradient_Bottom_Top}" />
                                     <Border Grid.Column="0"
                           Grid.Row="2"
                           CornerRadius="0,0,0,14"
-                          Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Borg3Gradient_Bottom_Top}" />
                                     <Border Grid.Column="0"
                           Grid.Row="1"
                           Margin="0,2,0,2"
-                          Background="{StaticResource LCARS_Borg2Gradient_Left_Right}" />
+                          Background="{StaticResource Borg2Gradient_Bottom_Top}" />
                                     <Border Grid.Column="2"
                           Grid.Row="1"
                           Margin="0,2,0,2"
-                          Background="{StaticResource LCARS_Borg2Gradient_Left_Right}" />
+                          Background="{StaticResource Borg2Gradient_Bottom_Top}" />
                                     <Border Grid.Column="1"
                           Grid.Row="0"
                           Margin="2,0,2,0"
-                          Background="{StaticResource LCARS_Borg2Gradient_Top_Bottom}" />
+                          Background="{StaticResource Borg2Gradient_Bottom_Top}" />
                                     <Border Grid.Column="1"
                           Grid.Row="2"
                           Margin="2,0,2,0"
-                          Background="{StaticResource LCARS_Borg2Gradient_Top_Bottom}" />
+                          Background="{StaticResource Borg2Gradient_Bottom_Top}" />
                                     <ScrollViewer Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="2,2,2,0"
@@ -2454,11 +2188,11 @@
                     Width="14"
                     Visibility="Collapsed"
                     Margin="0,0,3,0"
-                    Background="{StaticResource LCARS_Borg2Gradient_Left_Right}"
+                    Background="{StaticResource Borg2Gradient_Bottom_Top}"
                     SnapsToDevicePixels="True" />
                         <Border x:Name="Border"
                     Grid.Column="1"
-                    Background="{StaticResource LCARS_Borg3Gradient_Left_Right}"
+                    Background="{StaticResource Borg2Gradient_Bottom_Top}"
                     Padding="2"
                     SnapsToDevicePixels="True">
                             <ContentPresenter Margin="7,0,7,0" />
@@ -2469,7 +2203,7 @@
                      Value="true">
                             <Setter TargetName="Border"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverGreenGradient_Left_Right}" />
+                      Value="{StaticResource Borg2Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsEnabled"
                      Value="false">
@@ -2480,7 +2214,165 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
+    <!--End of ComboText at all-->
+
+
+    <!-- Begin of ListBox-->
+    <!--ListBox Styles-->
+    <Style x:Key="{x:Type ListBox}" TargetType="ListBox" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource DefaultTextBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="MinWidth" Value="4" />
+        <Setter Property="MinHeight" Value="4" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Name="Border"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}"
+                  BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}">
+                        <ScrollViewer Margin="0" Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+        <Setter Property="FontSize"  Value="12pt" />
+        <Setter Property="Padding" Value="6,2,6,2" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
+                        <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                              ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
+                              ContentTemplateSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplateSelector}"
+                              HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                              VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
+                              SnapsToDevicePixels="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background"
+                      Value="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource BaseStyle}">
+
+        <Style.Resources>
+            <SolidColorBrush Color="#7f146bdc"  x:Key="{x:Static SystemColors.HighlightBrushKey}"/>
+            <SolidColorBrush Color="#7f146bdc"  x:Key="{x:Static SystemColors.ControlBrushKey}"/>
+            <SolidColorBrush Color="#ffe7d490"  x:Key="{x:Static SystemColors.ControlTextBrushKey}"/>
+            <SolidColorBrush Color="#ffe7d490"  x:Key="{x:Static SystemColors.HighlightTextBrushKey}"/>
+        </Style.Resources>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="12pt" />
+        <Setter Property="Padding" Value="4,2,4,2" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+
+        <!--<Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ListViewItem}">
+          <Border x:Name="Border"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
+            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                              ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
+                              ContentTemplateSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplateSelector}"
+                              HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                              VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
+                              SnapsToDevicePixels="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SnapsToDevicePixels}" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected"
+                     Value="True">
+              <Setter TargetName="Border"
+                      Property="Background"
+                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>-->
+    </Style>
+
+    <!--ListView-->
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="MinWidth" Value="4" />
+        <Setter Property="MinHeight" Value="4" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+
+        <!--<Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListView">
+          <Border Name="Border"
+                  Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Margin}"
+                  BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}"
+                  BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+            <ScrollViewer>
+              <ItemsPresenter />
+            </ScrollViewer>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsGrouping"
+                     Value="true">
+              <Setter Property="ScrollViewer.CanContentScroll"
+                      Value="false" />
+            </Trigger>
+            <Trigger Property="IsEnabled"
+                     Value="false">
+              <Setter TargetName="Border"
+                      Property="BorderBrush"
+                      Value="{StaticResource GrayGradient_Top_Bottom}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>-->
+    </Style>
+    
+    <!--End of ListBox-->
 
 
 </ResourceDictionary>

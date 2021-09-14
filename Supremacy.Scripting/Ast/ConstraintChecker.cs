@@ -60,18 +60,18 @@ namespace Supremacy.Scripting.Ast
                 GenericConstraints agc = TypeManager.GetTypeParameterConstraints(atype);
                 if (agc != null)
                 {
-/*
-                    if (agc is Constraints)
-                    {
-                        // FIXME: No constraints can be resolved here, we are in
-                        // completely wrong/different context. This path is hit
-                        // when resolving base type of unresolved generic type
-                        // with constraints. We are waiting with CheckConsttraints
-                        // after type-definition but not in this case
-                        if (!((Constraints)agc).Resolve(null, null, Report))
-                            return true;
-                    }
-*/
+                    /*
+                                        if (agc is Constraints)
+                                        {
+                                            // FIXME: No constraints can be resolved here, we are in
+                                            // completely wrong/different context. This path is hit
+                                            // when resolving base type of unresolved generic type
+                                            // with constraints. We are waiting with CheckConsttraints
+                                            // after type-definition but not in this case
+                                            if (!((Constraints)agc).Resolve(null, null, Report))
+                                                return true;
+                                        }
+                    */
                     isClass = agc.IsReferenceType;
                     isStruct = agc.IsValueType;
                 }
@@ -323,7 +323,7 @@ namespace Supremacy.Scripting.Ast
             SourceSpan loc,
             bool silent = false)
         {
-            var checker = new MethodConstraintChecker(
+            MethodConstraintChecker checker = new MethodConstraintChecker(
                 definition,
                 instantiated.DeclaringType,
                 definition.GetGenericArguments(),

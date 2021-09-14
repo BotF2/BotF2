@@ -18,7 +18,7 @@ namespace Supremacy.Xna
     /// </summary>
     public class SunView3D : XnaComponent
     {
-        // ReSharper disable InconsistentNaming
+
         private Matrix _projectionMatrix;
         private RenderTarget2D _tempBuffer;
         private float _dt;
@@ -26,7 +26,7 @@ namespace Supremacy.Xna
         private bool _usePostProcessor;
         private Sun _sun;
 
-        // ReSharper restore Inconsist
+
 
         public SunView3D(StarType starType)
             : base(false, false, false, new Int32Rect(0, 0, 128, 128), ExitRunScopeBehavior.Suspend)
@@ -97,7 +97,7 @@ namespace Supremacy.Xna
         protected override void UnloadContent()
         {
             base.UnloadContent();
-            
+
             if (_sun != null)
             {
                 _sun.Dispose();

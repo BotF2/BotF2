@@ -54,7 +54,7 @@ namespace Supremacy.VFS
         /// Gets the name of the <see cref="IVfsService"/>.
         /// </summary>
         /// <value>The name.</value>
-        string Name { get;}
+        string Name { get; }
 
         /// <summary>
         /// Gets or sets the file resolution mode used by the <see cref="IVfsService"/>.
@@ -83,7 +83,7 @@ namespace Supremacy.VFS
         /// <param name="sourceName">Name of the <see cref="IWritableFilesSource"/> to get.</param>
         /// <returns>The selected <see cref="IWritableFilesSource"/>.</returns>
         IWritableFilesSource GetWritableSource(string sourceName);
-        
+
         /// <summary>
         /// Gets a handle to the requested file.
         /// </summary>

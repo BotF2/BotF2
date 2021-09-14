@@ -14,7 +14,7 @@ namespace Supremacy.Scripting.Ast
         public SideEffectConstantExpression(ConstantExpression value, Expression sideEffect, SourceSpan location)
         {
             ConstantValue = value;
-            
+
             while (sideEffect is SideEffectConstantExpression)
             {
                 sideEffect = ((SideEffectConstantExpression)sideEffect).SideEffect;

@@ -22,13 +22,8 @@ namespace Supremacy.Utility
 
         public GameScheduler([NotNull] IScheduler baseScheduler, [NotNull] Func<GameContext> gameContextCallback)
         {
-            if (baseScheduler == null)
-                throw new ArgumentNullException("baseScheduler");
-            if (gameContextCallback == null)
-                throw new ArgumentNullException("gameContextCallback");
-
-            _baseScheduler = baseScheduler;
-            _gameContextCallback = gameContextCallback;
+            _baseScheduler = baseScheduler ?? throw new ArgumentNullException("baseScheduler");
+            _gameContextCallback = gameContextCallback ?? throw new ArgumentNullException("gameContextCallback");
         }
 
         public IDisposable Schedule(Action action)
@@ -36,9 +31,11 @@ namespace Supremacy.Utility
             return _baseScheduler.Schedule(
                 () =>
                 {
-                    var gameContext = _gameContextCallback();
+                    GameContext gameContext = _gameContextCallback();
                     if (gameContext != null)
+                    {
                         GameContext.PushThreadContext(gameContext);
+                    }
 
                     try
                     {
@@ -47,7 +44,9 @@ namespace Supremacy.Utility
                     finally
                     {
                         if (gameContext != null)
-                            GameContext.PopThreadContext();
+                        {
+                            _ = GameContext.PopThreadContext();
+                        }
                     }
                 });
         }
@@ -57,9 +56,11 @@ namespace Supremacy.Utility
             return _baseScheduler.Schedule(
                 () =>
                 {
-                    var gameContext = _gameContextCallback();
+                    GameContext gameContext = _gameContextCallback();
                     if (gameContext != null)
+                    {
                         GameContext.PushThreadContext(gameContext);
+                    }
 
                     try
                     {
@@ -68,16 +69,15 @@ namespace Supremacy.Utility
                     finally
                     {
                         if (gameContext != null)
-                            GameContext.PopThreadContext();
+                        {
+                            _ = GameContext.PopThreadContext();
+                        }
                     }
                 },
                 dueTime);
         }
 
-        public DateTimeOffset Now
-        {
-            get { return _baseScheduler.Now; }
-        }
+        public DateTimeOffset Now => _baseScheduler.Now;
     }
 
     public static class SchedulerExtensions
@@ -85,9 +85,14 @@ namespace Supremacy.Utility
         public static GameScheduler AsGameScheduler([NotNull] this IScheduler scheduler, [NotNull] Func<GameContext> gameContextCallback)
         {
             if (scheduler == null)
+            {
                 throw new ArgumentNullException("scheduler");
+            }
+
             if (gameContextCallback == null)
+            {
                 throw new ArgumentNullException("gameContextCallback");
+            }
 
             return new GameScheduler(scheduler, gameContextCallback);
         }

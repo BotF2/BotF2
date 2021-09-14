@@ -12,7 +12,7 @@ using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Utility;
 
-// ReSharper disable InvocationIsSkipped
+
 
 namespace Supremacy.Text
 {
@@ -23,22 +23,23 @@ namespace Supremacy.Text
         private List<RichString> _parts = new List<RichString>(1);
         private string _string = string.Empty;
 
-        public static RichText Empty
-        {
-            get { return new RichText(); }
-        }
+        public static RichText Empty => new RichText();
 
         public Brush BackgroundBrush
         {
             get
             {
-                var color = default(Brush);
-                foreach (var richString in _parts)
+                Brush color = default;
+                foreach (RichString richString in _parts)
                 {
                     if (color == default(Brush))
+                    {
                         color = richString.Style.Background;
+                    }
                     else if (color != richString.Style.Background)
-                        return default(Brush);
+                    {
+                        return default;
+                    }
                 }
                 return color;
             }
@@ -48,42 +49,42 @@ namespace Supremacy.Text
         {
             get
             {
-                var color = default(Brush);
-                foreach (var richString in _parts)
+                Brush color = default;
+                foreach (RichString richString in _parts)
                 {
                     if (color == default(Brush))
+                    {
                         color = richString.Style.Foreground;
+                    }
                     else if (color != richString.Style.Foreground)
-                        return default(Brush);
+                    {
+                        return default;
+                    }
                 }
                 return color;
             }
         }
 
-        public bool IsEmpty
-        {
-            get { return string.IsNullOrEmpty(_string); }
-        }
+        public bool IsEmpty => string.IsNullOrEmpty(_string);
 
-        public int Length
-        {
-            get { return _string.Length; }
-        }
+        public int Length => _string.Length;
 
         public string Text
         {
-            get { return _string; }
+            get => _string;
             set
             {
                 if (value == null)
+                {
                     throw new ArgumentNullException("value");
-                
+                }
+
                 AssertValid();
 
                 _string = string.Empty;
                 _parts.Clear();
 
-                Append(value);
+                _ = Append(value);
             }
         }
 
@@ -106,19 +107,19 @@ namespace Supremacy.Text
 
         private RichText(string text, ICollection<RichString> parts)
         {
-            if (text == null)
-                throw new ArgumentNullException("text");
             if (parts == null)
+            {
                 throw new ArgumentNullException("parts");
+            }
 
-            _string = text;
+            _string = text ?? throw new ArgumentNullException("text");
             _parts = new List<RichString>(parts.Count);
 
-            var offset = 0;
+            int offset = 0;
 
-            foreach (var part in parts)
+            foreach (RichString part in parts)
             {
-                var partCopy = new RichString(offset, part.Length, part.Style, this);
+                RichString partCopy = new RichString(offset, part.Length, part.Style, this);
                 _parts.Add(partCopy);
                 offset += partCopy.Length;
             }
@@ -130,7 +131,10 @@ namespace Supremacy.Text
         public static implicit operator string([CanBeNull] RichText richtext)
         {
             if (richtext == null)
+            {
                 return null;
+            }
+
             return richtext.Text;
         }
 
@@ -138,7 +142,10 @@ namespace Supremacy.Text
         public static implicit operator RichText([CanBeNull] string text)
         {
             if (text == null)
+            {
                 return null;
+            }
+
             return new RichText(text);
         }
 
@@ -148,12 +155,18 @@ namespace Supremacy.Text
             if (a == null)
             {
                 if (b != null)
+                {
                     return b.Clone();
+                }
+
                 return null;
             }
-            var result = a.Clone();
+            RichText result = a.Clone();
             if (b != null)
-                result.Append(b);
+            {
+                _ = result.Append(b);
+            }
+
             return result;
         }
 
@@ -163,12 +176,18 @@ namespace Supremacy.Text
             if (a == null)
             {
                 if (b != null)
+                {
                     return new RichText(b);
+                }
+
                 return null;
             }
-            var result = a.Clone();
+            RichText result = a.Clone();
             if (b != null)
-                result.Append(b);
+            {
+                _ = result.Append(b);
+            }
+
             return result;
         }
 
@@ -178,33 +197,46 @@ namespace Supremacy.Text
             if (b == null)
             {
                 if (a != null)
+                {
                     return new RichText(a);
+                }
+
                 return null;
             }
-            var result = b.Clone();
+            RichText result = b.Clone();
             if (a != null)
-                result.Prepend(a);
+            {
+                _ = result.Prepend(a);
+            }
+
             return result;
         }
 
         public static bool IsNullOrEmpty(RichText richtext)
         {
             if (richtext == null)
+            {
                 return true;
+            }
+
             return richtext.IsEmpty;
         }
 
         public RichText Append(string s, TextStyle style)
         {
             if (s == null)
+            {
                 throw new ArgumentNullException("s");
+            }
 
             if (s.Length == 0)
+            {
                 return this;
+            }
 
-            var originalLength = _string.Length;
+            int originalLength = _string.Length;
 
-            _string = _string + s;
+            _string += s;
             _parts.Add(new RichString(originalLength, s.Length, style, this));
 
             AssertValid();
@@ -220,16 +252,20 @@ namespace Supremacy.Text
         public RichText Append(RichText richText)
         {
             if (richText == null)
+            {
                 throw new ArgumentNullException("richText");
+            }
 
             richText.AssertValid();
 
-            var originalLength = _string.Length;
+            int originalLength = _string.Length;
 
-            _string = _string + richText._string;
+            _string += richText._string;
 
-            foreach (var richString in richText._parts)
+            foreach (RichString richString in richText._parts)
+            {
                 _parts.Add(new RichString(originalLength + richString.Offset, richString.Length, richString.Style, this));
+            }
 
             AssertValid();
 
@@ -239,13 +275,15 @@ namespace Supremacy.Text
         [Conditional("DEBUG")]
         public void AssertValid()
         {
-            var start = 0;
-            var previousEnd = 0;
+            int start = 0;
+            int previousEnd = 0;
 
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
             {
                 if (!ReferenceEquals(richString.RichText, this))
+                {
                     throw new InvalidOperationException(string.Format("Invalid RichText: the part #{0} has a questionable parentage.", start));
+                }
 
                 if (richString.Offset != previousEnd)
                 {
@@ -273,7 +311,9 @@ namespace Supremacy.Text
             }
 
             if (previousEnd == Text.Length)
+            {
                 return;
+            }
 
             if (previousEnd < Text.Length)
             {
@@ -301,12 +341,14 @@ namespace Supremacy.Text
 
         public string DumpToString()
         {
-            var output = new StringBuilder();
+            StringBuilder output = new StringBuilder();
 
-            using (var writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            using (XmlWriter writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            {
                 DumpToXaml(writer);
+            }
 
-            return (output).ToString();
+            return output.ToString();
         }
 
         public void DumpToXaml(XmlWriter writer)
@@ -315,8 +357,10 @@ namespace Supremacy.Text
             writer.WriteAttributeString("Text", Text);
             writer.WriteStartElement("RichText.Parts");
 
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
+            {
                 richString.Dump(writer);
+            }
 
             writer.WriteEndElement();
             writer.WriteEndElement();
@@ -330,16 +374,22 @@ namespace Supremacy.Text
 
         public IList<T> GetUserData<T>(int startOffset, int endOffset)
         {
-            var length = Length;
+            int length = Length;
 
             if (endOffset == -1)
+            {
                 endOffset = length;
+            }
 
             if (startOffset < 0)
+            {
                 throw new ArgumentOutOfRangeException("startOffset", startOffset, "The starting offset must be non-negative.");
+            }
 
             if (endOffset < 0)
+            {
                 throw new ArgumentOutOfRangeException("endOffset", endOffset, "The ending offset must be non-negative.");
+            }
 
             if (startOffset > length)
             {
@@ -370,7 +420,7 @@ namespace Supremacy.Text
                         endOffset));
             }
 
-            var list = (IList<T>)null;
+            IList<T> list = null;
 
             foreach (TextRangeDataRecord textRangeDataRecord in _data)
             {
@@ -379,7 +429,10 @@ namespace Supremacy.Text
                     textRangeDataRecord.Object is T)
                 {
                     if (list == null)
+                    {
                         list = new List<T>();
+                    }
+
                     list.Add((T)textRangeDataRecord.Object);
                 }
             }
@@ -390,16 +443,22 @@ namespace Supremacy.Text
         public RichText Prepend(string s, TextStyle style)
         {
             if (s == null)
+            {
                 throw new ArgumentNullException("s");
+            }
 
             if (s.Length == 0)
+            {
                 return this;
+            }
 
             _string = s + _string;
 
-            var length = s.Length;
-            foreach (var richString in _parts)
+            int length = s.Length;
+            foreach (RichString richString in _parts)
+            {
                 richString.Offset += length;
+            }
 
             _parts.Insert(0, new RichString(0, s.Length, style, this));
 
@@ -416,19 +475,25 @@ namespace Supremacy.Text
         public RichText Prepend(RichText richText)
         {
             if (richText == null)
+            {
                 throw new ArgumentNullException("richText");
+            }
 
             richText.AssertValid();
 
             _string = richText._string + _string;
 
-            var length = richText._string.Length;
-            foreach (var richString in _parts)
+            int length = richText._string.Length;
+            foreach (RichString richString in _parts)
+            {
                 richString.Offset += length;
+            }
 
-            var list = new List<RichString>(richText._parts.Count);
-            foreach (var richString in richText._parts)
+            List<RichString> list = new List<RichString>(richText._parts.Count);
+            foreach (RichString richString in richText._parts)
+            {
                 list.Add(new RichString(richString.Offset, richString.Length, richString.Style, this));
+            }
 
             list.AddRange(_parts);
             _parts = list;
@@ -440,10 +505,12 @@ namespace Supremacy.Text
 
         public void PutUserData(int startOffset, int endOffset, object data)
         {
-            var length = Length;
+            int length = Length;
 
             if (endOffset == -1)
+            {
                 endOffset = length;
+            }
 
             if (startOffset < 0)
             {
@@ -490,14 +557,14 @@ namespace Supremacy.Text
                         endOffset));
             }
 
-            _data.Add(new TextRangeDataRecord(startOffset, endOffset, data));
+            _ = _data.Add(new TextRangeDataRecord(startOffset, endOffset, data));
         }
 
         public void SetBackground(Brush background, int startOffset, int length)
         {
-            foreach (var richString in GetPartsFromRangeAndSplit(startOffset, length))
+            foreach (RichString richString in GetPartsFromRangeAndSplit(startOffset, length))
             {
-                var style = richString.Style;
+                TextStyle style = richString.Style;
                 style.Background = background;
                 richString.Style = style;
             }
@@ -505,9 +572,9 @@ namespace Supremacy.Text
 
         public void SetBackground(Brush background)
         {
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
             {
-                var style = richString.Style;
+                TextStyle style = richString.Style;
                 style.Background = background;
                 richString.Style = style;
             }
@@ -517,9 +584,9 @@ namespace Supremacy.Text
         {
             AssertValid();
 
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
             {
-                var style = richString.Style;
+                TextStyle style = richString.Style;
 
                 style.Background = background;
                 style.Foreground = foreground;
@@ -531,9 +598,9 @@ namespace Supremacy.Text
 
         public void SetBrushes(Brush foreground, Brush background, int startOffset, int length)
         {
-            foreach (var richString in GetPartsFromRangeAndSplit(startOffset, length))
+            foreach (RichString richString in GetPartsFromRangeAndSplit(startOffset, length))
             {
-                var style = richString.Style;
+                TextStyle style = richString.Style;
 
                 style.Background = background;
                 style.Foreground = foreground;
@@ -547,9 +614,9 @@ namespace Supremacy.Text
         {
             AssertValid();
 
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
             {
-                var style = richString.Style;
+                TextStyle style = richString.Style;
                 style.Foreground = foreground;
                 richString.Style = style;
             }
@@ -557,9 +624,9 @@ namespace Supremacy.Text
 
         public void SetForeground(Brush foreground, int startOffset, int length)
         {
-            foreach (var richString in GetPartsFromRangeAndSplit(startOffset, length))
+            foreach (RichString richString in GetPartsFromRangeAndSplit(startOffset, length))
             {
-                var style = richString.Style;
+                TextStyle style = richString.Style;
                 style.Foreground = foreground;
                 richString.Style = style;
             }
@@ -567,13 +634,15 @@ namespace Supremacy.Text
 
         public void SetStyle(TextStyle style, int startOffset, int length)
         {
-            foreach (var richString in GetPartsFromRangeAndSplit(startOffset, length))
+            foreach (RichString richString in GetPartsFromRangeAndSplit(startOffset, length))
+            {
                 richString.Style = style;
+            }
         }
 
         public void SetStyle(FontStyle style, int startOffset, int length)
         {
-            foreach (var richString in GetPartsFromRangeAndSplit(startOffset, length))
+            foreach (RichString richString in GetPartsFromRangeAndSplit(startOffset, length))
             {
                 richString.Style = new TextStyle(
                     style,
@@ -589,7 +658,7 @@ namespace Supremacy.Text
         {
             AssertValid();
 
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
             {
                 richString.Style = new TextStyle(
                     style,
@@ -605,10 +674,10 @@ namespace Supremacy.Text
         {
             AssertValid();
 
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
             {
                 richString.Style = new TextStyle(
-                    richString.Style.FontStyle, 
+                    richString.Style.FontStyle,
                     weight,
                     richString.Style.Foreground,
                     richString.Style.Background,
@@ -619,14 +688,14 @@ namespace Supremacy.Text
 
         public void SetStyle(TextStyle style)
         {
-            var text = Text;
+            string text = Text;
             Clear();
-            Append(text, style);
+            _ = Append(text, style);
         }
 
         public void SetStyle(TextEffectStyle effect, Brush effectBrush, int startOffset, int length)
         {
-            foreach (var richString in GetPartsFromRangeAndSplit(startOffset, length))
+            foreach (RichString richString in GetPartsFromRangeAndSplit(startOffset, length))
             {
                 richString.Style = new TextStyle(
                     richString.Style.FontStyle,
@@ -641,7 +710,7 @@ namespace Supremacy.Text
         public void SetStyle(TextEffectStyle effect, Brush effectBrush)
         {
             AssertValid();
-            foreach (var richString in _parts)
+            foreach (RichString richString in _parts)
             {
                 richString.Style = new TextStyle(
                     richString.Style.FontStyle,
@@ -684,10 +753,10 @@ namespace Supremacy.Text
 
             AssertValid();
 
-            var head = new List<RichString>(_parts.Count);
-            var tail = new List<RichString>(_parts.Count);
+            List<RichString> head = new List<RichString>(_parts.Count);
+            List<RichString> tail = new List<RichString>(_parts.Count);
 
-            foreach (var part in _parts)
+            foreach (RichString part in _parts)
             {
                 if (part.Offset + part.Length <= offset)
                 {
@@ -700,7 +769,7 @@ namespace Supremacy.Text
                     continue;
                 }
 
-                var brokenPart = BreakString(part, offset - part.Offset, false);
+                IList<RichString> brokenPart = BreakString(part, offset - part.Offset, false);
 
                 head.Add(brokenPart[0]);
                 tail.Add(brokenPart[1]);
@@ -720,23 +789,29 @@ namespace Supremacy.Text
 
         public RichText TrimEnd(params char[] trimchars)
         {
-            var trimmed = Text.TrimEnd(trimchars);
+            string trimmed = Text.TrimEnd(trimchars);
             if (trimmed.Length == Length)
+            {
                 return this;
+            }
+
             return Split(trimmed.Length)[0];
         }
 
         public RichText TrimStart(params char[] trimchars)
         {
-            var trimmed = Text.TrimStart(trimchars);
+            string trimmed = Text.TrimStart(trimchars);
             if (trimmed.Length == Length)
+            {
                 return this;
+            }
+
             return Split(Length - trimmed.Length)[1];
         }
 
         private IList<RichString> BreakString(RichString part, int nLocalOffset, bool bModifyPartsCollection)
         {
-            var length = part.Length;
+            int length = part.Length;
 
             if (nLocalOffset < 0 || nLocalOffset > length)
             {
@@ -749,12 +824,16 @@ namespace Supremacy.Text
             }
 
             if (nLocalOffset == 0 || nLocalOffset == length)
+            {
                 return new[] { part };
+            }
 
             if (!ReferenceEquals(part.RichText, this))
+            {
                 throw new InvalidOperationException("The given part has a wrong parent.");
+            }
 
-            var richStringArray = new[]
+            RichString[] richStringArray = new[]
                                   {
                                       new RichString(part.Offset, nLocalOffset, part.Style, this),
                                       new RichString(part.Offset + nLocalOffset, length - nLocalOffset, part.Style, this)
@@ -762,8 +841,8 @@ namespace Supremacy.Text
 
             if (bModifyPartsCollection)
             {
-                var index = _parts.IndexOf(part);
-                _parts.Remove(part);
+                int index = _parts.IndexOf(part);
+                _ = _parts.Remove(part);
                 _parts.InsertRange(index, richStringArray);
             }
 
@@ -777,16 +856,24 @@ namespace Supremacy.Text
             AssertValid();
 
             if (length == -1)
+            {
                 length = Length - startOffset;
+            }
 
             if (length == 0)
+            {
                 return ArrayWrapper<RichString>.Empty;
+            }
 
             if (startOffset < 0)
+            {
                 throw new ArgumentOutOfRangeException("startOffset", startOffset, "The starting offset must be non-negative.");
+            }
 
             if (length < 0)
+            {
                 throw new ArgumentOutOfRangeException("length", length, "The length must be non-negative.");
+            }
 
             if (startOffset > Length)
             {
@@ -803,34 +890,36 @@ namespace Supremacy.Text
                 throw new ArgumentException(
                     string.Format(
                         "The offset plus length give {0}+{1}={2}, which is beyond the string length {3}.",
-                        (object)startOffset,
-                        (object)length,
-                        (object)(startOffset + length),
-                        (object)Length));
+                        startOffset,
+                        length,
+                        startOffset + length,
+                        Length));
             }
 
-            var end = startOffset + length;
-            var list = new List<RichString>();
+            int end = startOffset + length;
+            List<RichString> list = new List<RichString>();
 
-            for (var index = 0; index < _parts.Count; ++index)
+            for (int index = 0; index < _parts.Count; ++index)
             {
-                var part = _parts[index];
-                var offset = part.Offset;
-                var partEnd = offset + part.Length;
+                RichString part = _parts[index];
+                int offset = part.Offset;
+                int partEnd = offset + part.Length;
 
                 if (partEnd <= startOffset || offset >= end)
+                {
                     continue;
+                }
 
                 if (startOffset > offset && startOffset < partEnd)
                 {
-                    BreakString(part, startOffset - offset, true);
+                    _ = BreakString(part, startOffset - offset, true);
                     --index;
                     continue;
                 }
 
                 if (end > offset && end < partEnd)
                 {
-                    BreakString(part, end - offset, true);
+                    _ = BreakString(part, end - offset, true);
                     --index;
                     continue;
                 }
@@ -854,33 +943,22 @@ namespace Supremacy.Text
 
         private class TextRangeDataRecord
         {
-            private readonly int _endOffset;
-            private readonly object _object;
             private readonly int _startOffset;
 
-            public int EndOffset
-            {
-                get { return _endOffset; }
-            }
+            public int EndOffset { get; }
 
-            public object Object
-            {
-                get { return _object; }
-            }
+            public object Object { get; }
 
-            public int StartOffset
-            {
-                get { return _startOffset; }
-            }
+            public int StartOffset => _startOffset;
 
             public TextRangeDataRecord(int startOffset, int endOffset, object @object)
             {
                 _startOffset = startOffset;
-                _endOffset = endOffset;
-                _object = @object;
+                EndOffset = endOffset;
+                Object = @object;
             }
         }
     }
 }
 
-// ReSharper restore InvocationIsSkipped
+

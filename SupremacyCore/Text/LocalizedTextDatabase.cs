@@ -18,77 +18,82 @@ namespace Supremacy.Text
     [ContentProperty("Groups")]
     public sealed class LocalizedTextDatabase : SupportInitializeBase
     {
-        private readonly LocalizedTextGroupCollection _groups;
-
         public LocalizedTextDatabase()
         {
-            _groups = new LocalizedTextGroupCollection();
+            Groups = new LocalizedTextGroupCollection();
         }
 
         public string GetString(object groupKey, object stringkey)
         {
-            LocalizedTextGroup group;
-            LocalizedString entry;
 
-            if (_groups.TryGetValue(groupKey, out group) && group.Entries.TryGetValue(stringkey, out entry))
+            if (Groups.TryGetValue(groupKey, out LocalizedTextGroup group) && group.Entries.TryGetValue(stringkey, out LocalizedString entry))
+            {
                 return entry.LocalText;
+            }
 
             return null;
         }
 
-        public LocalizedTextGroupCollection Groups
-        {
-            get { return _groups; }
-        }
+        public LocalizedTextGroupCollection Groups { get; }
 
         public void Merge([NotNull] LocalizedTextDatabase database, bool overwrite = false)
         {
             if (database == null)
+            {
                 throw new ArgumentNullException("database");
+            }
 
-            foreach (var group in database.Groups)
+            foreach (LocalizedTextGroup group in database.Groups)
+            {
                 Merge(group, overwrite);
+            }
         }
 
         public void Merge([NotNull] LocalizedTextGroup group, bool overwrite = false)
         {
             if (group == null)
-                throw new ArgumentNullException("group");
-
-            LocalizedTextGroup existingGroup;
-
-            if (_groups.TryGetValue(group.Key, out existingGroup))
             {
-                foreach (var entry in group.Entries)
-                {
-                    LocalizedString existingEntry;
+                throw new ArgumentNullException("group");
+            }
 
-                    if (existingGroup.Entries.TryGetValue(entry.Name, out existingEntry))
+
+            if (Groups.TryGetValue(group.Key, out LocalizedTextGroup existingGroup))
+            {
+                foreach (LocalizedString entry in group.Entries)
+                {
+
+                    if (existingGroup.Entries.TryGetValue(entry.Name, out LocalizedString existingEntry))
+                    {
                         existingEntry.Merge(entry, overwrite);
+                    }
                     else
+                    {
                         existingGroup.Entries.Add(entry);
+                    }
                 }
             }
             else
             {
-                _groups.Add(group);
+                Groups.Add(group);
             }
         }
 
         public static IEnumerable<Uri> LocateTextFiles()
         {
-            var vfsService = ResourceManager.VfsService;
+            IVfsService vfsService = ResourceManager.VfsService;
             if (vfsService == null)
+            {
                 return Enumerable.Empty<Uri>();
+            }
 
             return LocateTextFiles(vfsService);
         }
 
         private static IEnumerable<Uri> LocateTextFiles(IVfsService vfsService)
         {
-            var files = new List<Uri>();
-            
-            var fileNames =
+            List<Uri> files = new List<Uri>();
+
+            IEnumerable<string> fileNames =
                 (
                     from source in vfsService.Sources
                     from fileName in source.GetFiles(@"Resources\Data", true, "*.xaml")
@@ -102,43 +107,39 @@ namespace Supremacy.Text
 
         private static readonly Lazy<LocalizedTextDatabase> _instance = new Lazy<LocalizedTextDatabase>(Load, LazyThreadSafetyMode.PublicationOnly);
 
-        public static LocalizedTextDatabase Instance
-        {
-            get { return _instance.Value; }
-        }
+        public static LocalizedTextDatabase Instance => _instance.Value;
 
         public static LocalizedTextDatabase Load()
         {
-            var vfsService = ResourceManager.VfsService;
+            IVfsService vfsService = ResourceManager.VfsService;
 
-            var files = LocateTextFiles(vfsService);
-            var database = new LocalizedTextDatabase();
+            IEnumerable<Uri> files = LocateTextFiles(vfsService);
+            LocalizedTextDatabase database = new LocalizedTextDatabase();
 
-            foreach (var file in files)
+            foreach (Uri file in files)
             {
                 try
                 {
-                    IVirtualFileInfo fileInfo;
 
-                    if (!vfsService.TryGetFileInfo(file, out fileInfo))
+                    if (!vfsService.TryGetFileInfo(file, out IVirtualFileInfo fileInfo))
+                    {
                         continue;
+                    }
 
                     object content;
 
-                    using (var stream = fileInfo.OpenRead())
+                    using (System.IO.Stream stream = fileInfo.OpenRead())
                     {
                         content = XamlServices.Load(stream);
                     }
 
-                    var databaseContent = content as LocalizedTextDatabase;
-                    if (databaseContent != null)
+                    if (content is LocalizedTextDatabase databaseContent)
                     {
                         database.Merge(databaseContent);
                         continue;
                     }
 
-                    var textGroup = content as LocalizedTextGroup;
-                    if (textGroup != null)
+                    if (content is LocalizedTextGroup textGroup)
                     {
                         database.Merge(textGroup);
                         continue;
@@ -158,7 +159,7 @@ namespace Supremacy.Text
                         "Could not determine the content type of text file '{0}'.  " +
                         "The file will be ignored for LocalizedText tasks.",
                         file);
-                        
+
                 }
                 catch (Exception e)
                 {
@@ -182,64 +183,33 @@ namespace Supremacy.Text
 
     public static class LocalizedTextGroups
     {
-        private static readonly object _galaxyScreen = new StandardLocalizedTextGroupKey("GalaxyScreen");
-        private static readonly object _colonyScreen = new StandardLocalizedTextGroupKey("ColonyScreen");
-        private static readonly object _invasionScreen = new StandardLocalizedTextGroupKey("InvasionScreen");
-        private static readonly object _assetsScreen = new StandardLocalizedTextGroupKey("AssetsScreen");
-        private static readonly object _diplomacyScreen = new StandardLocalizedTextGroupKey("DiplomacyScreen");
         private static readonly object _diplomacyText = new StandardLocalizedTextGroupKey("DiplomacyText");
 
-        public static object GalaxyScreen
-        {
-            get { return _galaxyScreen; }
-        }
+        public static object GalaxyScreen { get; } = new StandardLocalizedTextGroupKey("GalaxyScreen");
 
-        public static object ColonyScreen
-        {
-            get { return _colonyScreen; }
-        }
+        public static object ColonyScreen { get; } = new StandardLocalizedTextGroupKey("ColonyScreen");
 
-        public static object InvasionScreen
-        {
-            get { return _invasionScreen; }
-        }
+        public static object InvasionScreen { get; } = new StandardLocalizedTextGroupKey("InvasionScreen");
 
-        public static object AssetsScreen
-        {
-            get { return _assetsScreen; }
-        }
+        public static object AssetsScreen { get; } = new StandardLocalizedTextGroupKey("AssetsScreen");
 
-        public static object DiplomacyScreen
-        {
-            get { return _diplomacyScreen; }
-        }
+        public static object DiplomacyScreen { get; } = new StandardLocalizedTextGroupKey("DiplomacyScreen");
 
-        public static object DiplomacyText
-        {
-            get { return _diplomacyText; }
-        }
+        public static object DiplomacyText => _diplomacyText;
 
         [TypeConverter(typeof(LocalizedTextGroupKeyConverter))]
         public sealed class StandardLocalizedTextGroupKey
         {
-            private readonly string _name;
-
             internal StandardLocalizedTextGroupKey([NotNull] string name)
             {
-                if (name == null)
-                    throw new ArgumentNullException("name");
-
-                _name = name;
+                Name = name ?? throw new ArgumentNullException("name");
             }
 
-            public string Name
-            {
-                get { return _name; }
-            }
+            public string Name { get; }
 
             public override string ToString()
             {
-                return _name;
+                return Name;
             }
         }
 
@@ -248,20 +218,21 @@ namespace Supremacy.Text
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
             {
                 if (destinationType == typeof(MarkupExtension))
+                {
                     return true;
+                }
+
                 return base.CanConvertTo(context, destinationType);
             }
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                var standardKey = value as StandardLocalizedTextGroupKey;
-                if (standardKey != null &&
+                if (value is StandardLocalizedTextGroupKey standardKey &&
                     destinationType == typeof(MarkupExtension))
                 {
-                    var serializerContext = context as IValueSerializerContext;
-                    if (serializerContext != null)
+                    if (context is IValueSerializerContext serializerContext)
                     {
-                        var typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
+                        ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                         if (typeSerializer != null)
                         {
                             return new StaticExtension(
@@ -271,10 +242,10 @@ namespace Supremacy.Text
                         }
                     }
                     return new StaticExtension
-                           {
-                               MemberType = typeof(LocalizedTextGroups),
-                               Member = standardKey.Name
-                           };
+                    {
+                        MemberType = typeof(LocalizedTextGroups),
+                        Member = standardKey.Name
+                    };
                 }
                 return base.ConvertTo(context, culture, value, destinationType);
             }
@@ -295,7 +266,7 @@ namespace Supremacy.Text
 
         public object Key
         {
-            get { return _key; }
+            get => _key;
             set
             {
                 VerifyInitializing();
@@ -304,17 +275,16 @@ namespace Supremacy.Text
             }
         }
 
-        public LocalizedStringCollection Entries
-        {
-            get { return _entries; }
-        }
+        public LocalizedStringCollection Entries => _entries;
 
         public LocalizedString DefaultEntry
         {
             get
             {
                 if (_entries.Count == 0)
+                {
                     return null;
+                }
 
                 return _entries[0];
             }
@@ -324,9 +294,11 @@ namespace Supremacy.Text
         {
             get
             {
-                var defaultEntry = DefaultEntry;
+                LocalizedString defaultEntry = DefaultEntry;
                 if (defaultEntry == null)
+                {
                     return null;
+                }
 
                 return defaultEntry.LocalText;
             }
@@ -334,9 +306,11 @@ namespace Supremacy.Text
 
         public string GetString(object entryKey)
         {
-            LocalizedString entry;
-            if (_entries.TryGetValue(entryKey, out entry))
+            if (_entries.TryGetValue(entryKey, out LocalizedString entry))
+            {
                 return entry.LocalText;
+            }
+
             return null;
         }
     }
@@ -354,23 +328,25 @@ namespace Supremacy.Text
         {
             get
             {
-                LocalizedString value;
-                if (TryGetValue(key, out value))
+                if (TryGetValue(key, out LocalizedString value))
+                {
                     return value;
+                }
+
                 return null;
             }
         }
 
         internal object GroupKey
         {
-            // ReSharper disable MemberCanBePrivate.Local
-            get { return _groupKey; }
+
+            get => _groupKey;
             set
             {
                 VerifyInitializing();
                 _groupKey = value;
             }
-            // ReSharper restore MemberCanBePrivate.Local
+
         }
 
         protected override void OnKeyCollision(object key, LocalizedString item)
@@ -392,17 +368,22 @@ namespace Supremacy.Text
 
         private string FormatGroupKey()
         {
-            var groupKey = GroupKey;
+            object groupKey = GroupKey;
             if (groupKey == null)
+            {
                 return string.Empty;
+            }
 
-            var typeKey = groupKey as Type;
+            Type typeKey = groupKey as Type;
             if (typeKey != null)
+            {
                 return string.Format("{{{0}}}", typeKey.Name);
+            }
 
-            var nameTypeKey = groupKey as NameTypeTextGroupKey;
-            if (nameTypeKey != null)
+            if (groupKey is NameTypeTextGroupKey nameTypeKey)
+            {
                 return string.Format("{{{0}, {1}}}", nameTypeKey.Type.Name, nameTypeKey.Name);
+            }
 
             return string.Format("{0}", groupKey);
         }
@@ -412,7 +393,9 @@ namespace Supremacy.Text
         private void VerifyInitializing()
         {
             if (!_isInitialized)
+            {
                 return;
+            }
 
             throw new InvalidOperationException(SR.InvalidOperationException_AlreadyInitialized);
         }
@@ -431,10 +414,14 @@ namespace Supremacy.Text
             lock (SyncRoot)
             {
                 if (_isInitialized)
+                {
                     return;
+                }
 
                 if (_groupKey == null)
+                {
                     throw new InvalidOperationException("Localized text groups must have a key defined.");
+                }
 
                 _isInitialized = true;
 
@@ -449,7 +436,9 @@ namespace Supremacy.Text
             get
             {
                 lock (SyncRoot)
+                {
                     return _isInitialized;
+                }
             }
         }
 
@@ -458,73 +447,53 @@ namespace Supremacy.Text
 
         private void OnInitialized()
         {
-            EventHandler handler = Initialized;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Initialized?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }
-    
+
     public sealed class NameTypeTextGroupKey
     {
-        private readonly Type _type;
         private readonly string _name;
 
         public NameTypeTextGroupKey([NotNull] Type type, [NotNull] string name)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            _type = type;
-            _name = name;
+            Type = type ?? throw new ArgumentNullException("type");
+            _name = name ?? throw new ArgumentNullException("name");
         }
 
-        public Type Type
-        {
-            get { return _type; }
-        }
+        public Type Type { get; }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
     }
 
     public sealed class ContextualTextEntryKey : IEquatable<ContextualTextEntryKey>
     {
-        private readonly object _baseKey;
         private readonly object _context;
 
         public ContextualTextEntryKey([NotNull] object context, [NotNull] object baseKey)
         {
-            if (baseKey == null)
-                throw new ArgumentNullException("baseKey");
-            if (context == null)
-                throw new ArgumentNullException("context");
-
-            _baseKey = baseKey;
-            _context = context;
+            BaseKey = baseKey ?? throw new ArgumentNullException("baseKey");
+            _context = context ?? throw new ArgumentNullException("context");
         }
 
-        public object BaseKey
-        {
-            get { return _baseKey; }
-        }
+        public object BaseKey { get; }
 
-        public object Context
-        {
-            get { return _context; }
-        }
+        public object Context => _context;
 
         public bool Equals(ContextualTextEntryKey other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
-            return Equals(other._baseKey, _baseKey) &&
+            }
+
+            return Equals(other.BaseKey, BaseKey) &&
                    Equals(other._context, _context);
         }
 
@@ -537,7 +506,7 @@ namespace Supremacy.Text
         {
             unchecked
             {
-                return (_baseKey.GetHashCode() * 397) ^ _context.GetHashCode();
+                return (BaseKey.GetHashCode() * 397) ^ _context.GetHashCode();
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Supremacy.Annotations;
 using Supremacy.Resources;
 
@@ -14,15 +13,10 @@ namespace Supremacy.Client.OptionsPages
 
         public AllOptionsPage([NotNull] IResourceManager resourceManager)
         {
-            if (resourceManager == null)
-                throw new ArgumentNullException("resourceManager");
-            _resourceManager = resourceManager;
+            _resourceManager = resourceManager ?? throw new ArgumentNullException("resourceManager");
             InitializeComponent();
         }
 
-        public string Header
-        {
-            get { return _resourceManager.GetString("SETTINGS_ALL_TAB"); }
-        }
+        public string Header => _resourceManager.GetString("SETTINGS_ALL_TAB");
     }
 }

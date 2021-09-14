@@ -40,19 +40,33 @@ namespace Supremacy.Game
         private readonly ResourcePool _resources;
         private readonly List<SitRepEntry> _sitRepEntries;
         private readonly Meter _totalPopulation;
+        private readonly Meter _totalValue;
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
+        private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
-        private List<Civilization> _spiedCivList;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
+
+#pragma warning disable IDE0044 // Add readonly modifier
+        private List<Civilization> _spiedCivList;
+#pragma warning restore IDE0044 // Add readonly modifier
+
 
         private int _homeColonyId;
         private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
-        private Meter _totalIntelligenceAttackingAccumulated;
-        private Meter _totalIntelligenceDefenseAccumulated;
+        private readonly Meter _totalIntelligenceAttackingAccumulated;
+        private readonly Meter _totalIntelligenceDefenseAccumulated;
+        private string _text;
+        private int _rankMaint;
+        private int _rankResearch;
+        private int _rankIntelAttack;
+        private readonly string newline = Environment.NewLine;
+
+        //private readonly IPlayer _localPlayer;
+        //private readonly AppContext _appContext;
 
         #endregion Fields
 
@@ -65,36 +79,103 @@ namespace Supremacy.Game
             public int CivIDHist;
             public string CivKeyHist;
             public int CreditsHist;
+            public int CreditsHist_LT;
+            public int CreditsHist_Maint;
             public int ColoniesHist;
             public int PopulationHist;
-            public int MaintenanceHist;
+            public int MoraleHist;
+            public int MoraleGlobalHist;
+            public int DilithiumHist;
+            public int DeuteriumHist;
+            public int DuraniumHist;
+            public int TotalValueHist;
             public int ResearchHist;
+            public int IntelProdHist;
+            public int IDefHist;
+            public int IAttHist;
+            public int R_CredHist;
+            public int R_MaintHist;
+            public int R_ResearchHist;
+            public int R_IntelAttackHist;
+
             public CivHistory
                 (
                 string civIDHistAndTurn  // Index of civID and Turn
                 , int civIDHist   // just civID
                 , string civKeyHist
                 , int creditsHist
+                , int creditsHist_lt
+                , int creditsHist_maint
                 , int coloniesHist
                 , int populationHist
-                , int maintenanceHist
+                , int moraleHist
+                , int moraleGlobalHist
+                , int diHist
+                , int deHist
+                , int duHist
+                , int totalValueHist
                 , int researchHist
+                , int intelProdHist
+                , int iDefHist
+                , int iAttHist
+                , int r_CredHist
+                , int r_MaintHist
+                , int r_ResearchHist
+                , int r_IntelAttackHist
+                //, string sitrepsHist
                 )
-                    {
-                        CivIDHistAndTurn = civIDHistAndTurn;
-                        CivIDHist = civIDHist;
+            {
+                CivIDHistAndTurn = civIDHistAndTurn;
+                CivIDHist = civIDHist;
                 CivKeyHist = civKeyHist;
                 CreditsHist = creditsHist;
+                CreditsHist_LT = creditsHist_lt;
+                CreditsHist_Maint = creditsHist_maint;
                 ColoniesHist = coloniesHist;
                 PopulationHist = populationHist;
-                MaintenanceHist = maintenanceHist;
+                MoraleHist = moraleHist;
+                MoraleGlobalHist = moraleGlobalHist;
+                DilithiumHist = diHist;
+                DeuteriumHist = deHist;
+                DuraniumHist = duHist;
+                TotalValueHist = totalValueHist;
                 ResearchHist = researchHist;
+                IntelProdHist = intelProdHist;
+                IDefHist = iDefHist;
+                IAttHist = iAttHist;
+                R_CredHist = r_CredHist;
+                R_MaintHist = r_MaintHist;
+                R_ResearchHist = r_ResearchHist;
+                R_IntelAttackHist = r_IntelAttackHist;
+                //SitRepsHist = sitrepsHist;
             }
         }
 
-        public void AddCivHist(int civIDHist, string civKeyHist, int creditsHist, int coloniesHist, int populationHist, int maintenanceHist, int researchHist)
+        public void AddCivHist(int civIDHist
+            , string civKeyHist
+            , int creditsHist
+            , int creditsHist_lt
+            , int creditsHist_maint
+            , int coloniesHist
+            , int populationHist
+            , int moraleHist
+            , int moraleGlobalHist
+            , int dilithiumHist
+            , int deHist
+            , int duHist
+            , int totalValueHist
+            , int researchHist
+            , int intelProdHist
+            , int iDefHist
+            , int iAttHist
+            , int r_CredHist
+            , int r_MaintHist
+            , int r_ResearchHist
+            , int r_IntelAttackHist
+            //, string sitrepsHist
+            )
         {
-            string _tn = "";
+            string _tn;
             _tn = GameContext.Current.TurnNumber.ToString();
             string civIDHistAndTurn = civIDHist + "-" + _tn;
             CivHistory civHist_New = new CivHistory(
@@ -103,36 +184,39 @@ namespace Supremacy.Game
                 , civIDHist
                 , civKeyHist
                 , creditsHist
+                , creditsHist_lt
+                , creditsHist_maint
                 , coloniesHist
                 , populationHist
-                , maintenanceHist
+                , moraleHist
+                , moraleGlobalHist
+                , dilithiumHist
+                , deHist
+                , duHist
+                , totalValueHist
                 , researchHist
+                , intelProdHist
+                , iDefHist
+                , iAttHist
+                , r_CredHist
+                , r_MaintHist
+                , r_ResearchHist
+                , r_IntelAttackHist
+                //, sitrepsHist  // not here
                 //, blank, blank, blank, blank, blank, blank, blank  // 11
                 );
+
+            _text = newline; // dummy - do not remove
 
             if (_civHist_List != null)
             {
                 _civHist_List.Add(civHist_New);
-                foreach (var item in _civHist_List)
-                {
-                    GameLog.Core.CivsAndRaces.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
-                        , _tn
-
-                        , item.CivIDHistAndTurn
-                        , item.CivIDHist
-                        , item.CivKeyHist
-
-                        , item.CreditsHist
-                        , item.ColoniesHist
-                        , item.PopulationHist
-                        , item.MaintenanceHist
-
-                        , item.ResearchHist
-                        );
-                }
+                // Output > try ALT + H ingame
             }
 
         }
+        //private AppContext _appContext => _appContext;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CivilizationManager"/> class.
         /// </summary>
@@ -141,6 +225,9 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
+            //_rankCredits = 0;
+
+
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
 
@@ -150,6 +237,9 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
+
+            _totalValue = new Meter();
+            _totalValue.PropertyChanged += OnTotalValuePropertyChanged;
 
             _totalResearch = new Meter();
             _totalResearch.PropertyChanged += OnTotalResearchPropertyChanged;
@@ -167,8 +257,8 @@ namespace Supremacy.Game
             _resources.Deuterium.Reset();
             _resources.Dilithium.BaseValue = 10;
             _resources.Dilithium.Reset();
-            _resources.RawMaterials.BaseValue = 1000;
-            _resources.RawMaterials.Reset();
+            _resources.Duranium.BaseValue = 1000;
+            _resources.Duranium.Reset();
             _resources.UpdateAndReset();
 
             //_stealCreditsSpyOperation = new List<StealCredits>();
@@ -182,7 +272,9 @@ namespace Supremacy.Game
         public CivilizationManager(IGameContext game, Civilization civilization) : this()
         {
             if (civilization == null)
+            {
                 throw new ArgumentNullException("civilization");
+            }
 
             _civId = civilization.CivID;
             _research = new ResearchPool(civilization, game.ResearchMatrix);
@@ -199,95 +291,141 @@ namespace Supremacy.Game
         /// Gets the civilization ID.
         /// </summary>
         /// <value>The civilization ID.</value>
-        public int CivilizationID
-        {
-            get { return _civId; }
-        }
+        public int CivilizationID => _civId;
 
         /// <summary>
         /// Gets the civilization.
         /// </summary>
         /// <value>The civilization.</value>
-        public Civilization Civilization
-        {
-            get { return GameContext.Current.Civilizations[_civId]; }
-        }
+        public Civilization Civilization => GameContext.Current.Civilizations[_civId];
 
         /// <summary>
         /// Gets the total population of all the civilization's colonies.
         /// </summary>
         /// <value>The total population.</value>
-        public Meter TotalPopulation
-        {
-            get { return _totalPopulation; }
-        }
+        public Meter TotalPopulation => _totalPopulation;
+
+        /// <summary>
+        /// Gets the total value of all the civilization's colonies for compare issues
+        /// </summary>
+        /// <value>The total value for compare issues.</value>
+        public Meter TotalValue => _totalValue;
 
         /// <summary>
         /// Gets the total research of all the civilization's colonies.
         /// </summary>
         /// <value>The total population.</value>
-        public Meter TotalResearch
-        {
-            get { return _totalResearch; }
-        }
+        public Meter TotalResearch => _totalResearch;
 
         /// <summary>
         /// Gets the credits in the civilization's treasury.
         /// </summary>
         /// <value>The credits.</value>
-        public Meter Credits
-        {
-            get { return _credits; }
-        }
+        public Meter Credits => _credits;
 
         /// <summary>
         /// Gets the civilization's treasury.
         /// </summary>
-        public Treasury Treasury
-        {
-            get { return _treasury; }
-        }
+        public Treasury Treasury => _treasury;
 
         /// <summary>
         /// Gets the civilization's MaintenanceCostLastTurn.
         /// </summary>
         public int MaintenanceCostLastTurn
         {
-            get { return _maintenanceCostLastTurn; }
-            set { _maintenanceCostLastTurn = value; }
+            get => _maintenanceCostLastTurn;
+            set => _maintenanceCostLastTurn = value;
         }
 
-
-
-/// <summary>
-/// Gets the civilization's resource pool.
-/// </summary>
-/// <value>The resource pool.</value>
-[NotNull]
-        public ResourcePool Resources
+        /// <summary>
+        /// Gets the civilization's ranking for Credits.
+        /// </summary>
+        public int RankingCredits
         {
-            get { return _resources; }
+            get 
+            {
+                _rankCredits = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List; 
+
+                if (CivHist.Count != 0)
+                {
+                    _rankCredits = CivHist[CivHist.Count - 1].R_CredHist;
+                }
+                return _rankCredits;
+            }
         }
+
+        /// <summary>
+        /// Gets the civilization's ranking for Credits.
+        /// </summary>
+        public int RankingMaint
+        {
+            get 
+            {
+                _rankMaint = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List; 
+                if (CivHist.Count != 0)
+                {
+                    _rankMaint = CivHist[CivHist.Count - 1].R_MaintHist;
+                }
+                return _rankMaint;
+            }
+        }
+
+        /// <summary>
+        /// Gets the civilization's ranking for Credits.
+        /// </summary>
+        public int RankingResearch
+        {
+            get
+            {
+                _rankResearch = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List;
+                if (CivHist.Count != 0)
+                {
+                    _rankResearch = CivHist[CivHist.Count - 1].R_ResearchHist;
+                }
+                return _rankResearch;
+            }
+        }
+
+        /// <summary>
+        /// Gets the civilization's ranking for Intelligence_Attacking.
+        /// </summary>
+        public int RankingIntelAttack
+        {
+            get
+            {
+                _rankIntelAttack = -1;
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List;
+                if (CivHist.Count != 0)
+                {
+                    _rankIntelAttack = CivHist[CivHist.Count - 1].R_IntelAttackHist;
+                }
+                return _rankIntelAttack;
+            }
+        }
+
+        /// <summary>
+        /// Gets the civilization's resource pool.
+        /// </summary>
+        /// <value>The resource pool.</value>
+        [NotNull]
+        public ResourcePool Resources => _resources;
 
         /// <summary>
         /// Gets the civilization's research pool.
         /// </summary>
         /// <value>The research pool.</value>
         [NotNull]
-        public ResearchPool Research
-        {
-            get { return _research; }
-        }
+        public ResearchPool Research => _research;
 
         /// <summary>
         /// Gets a list of the civilization's colonies.
         /// </summary>
         /// <value>The colonies.</value>
         [NotNull]
-        public UniverseObjectList<Colony> Colonies
-        {
-            get { return _colonies; }
-        }
+        public UniverseObjectList<Colony> Colonies => _colonies;
 
         [NotNull]
         public Colony SeatOfGovernment
@@ -295,7 +433,9 @@ namespace Supremacy.Game
             get
             {
                 if (_seatOfGovernmentId == -1)
+                {
                     return null;
+                }
 
                 return GameContext.Current.Universe.Objects[_seatOfGovernmentId] as Colony;
             }
@@ -310,25 +450,46 @@ namespace Supremacy.Game
         {
             get
             {
-                foreach (var rep in _sitRepEntries)
+                foreach (SitRepEntry rep in _sitRepEntries)
                 {
-                    //var playerID = Player.GameHostID;
-                    //if (GameContext.Current.IsMultiplayerGame == false)
-                    //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
-                    //CivilizationManager.
+                    int _player = 789;
 
-                    if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
-                        GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
+                    if (LocalPlayer != null)
+                    {
+                        _player = LocalPlayer.CivID;
+                    }
+
+                    if (_player != 789)
+                    {
+                        CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_player];
+                        if (playerCivManager != null && rep.Owner.ToString() == playerCivManager.ToString())
+                        {
+                            _text = "SitRep Turn "
+                                + GameContext.Current.TurnNumber
+                                + " Cat= " + rep.Categories
+                                + " " + rep.Priority
+                                + " Action= " + rep.Action
+                                + " for " + rep.Owner
+                                + ":" + Environment.NewLine
+                                + "                    SitRep: " + rep.SummaryText
+                                + " Cat= " + rep.Categories
+                                + Environment.NewLine
+                                ;
+
+                            Console.WriteLine(_text);
+                            GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                                "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
+
+                        }
+                    }
+
                 }
+                _ = _sitRepEntries.Distinct();
                 return _sitRepEntries;
-            } 
+            }
         }
 
-        public List<Civilization> SpiedCivList
-        {
-            get { return _spiedCivList; }
-        }
+        public List<Civilization> SpiedCivList => _spiedCivList;
 
 
         /// <summary>
@@ -339,9 +500,30 @@ namespace Supremacy.Game
         {
             get
             {
-                var totalPopulation = _totalPopulation.CurrentValue;
-                var totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * ((1d / totalPopulation) * colony.Population.CurrentValue));
+                int totalPopulation = _totalPopulation.CurrentValue;
+                double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * (1d / totalPopulation * colony.Population.CurrentValue));
                 return (int)totalMorale;
+            }
+        }
+
+        /// <summary>
+        /// Gets the average techlevel of research fields.
+        /// </summary>
+        /// <value>The average morale.</value>
+        public int AverageTechLevel
+        {
+            get
+            {
+                int _averageTechlevel =
+                    Research.GetTechLevel(TechCategory.BioTech)
+                    + Research.GetTechLevel(TechCategory.Computers)
+                    + Research.GetTechLevel(TechCategory.Construction)
+                    + Research.GetTechLevel(TechCategory.Energy)
+                    + Research.GetTechLevel(TechCategory.Propulsion)
+                    + Research.GetTechLevel(TechCategory.Weapons)
+                    ;
+
+                return _averageTechlevel / 6;
             }
         }
 
@@ -354,7 +536,7 @@ namespace Supremacy.Game
             get
             {
                 int baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
-                foreach (var bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
+                foreach (Bonus bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
                 {
                     baseIntel *= bonus.Amount;
                 }
@@ -366,7 +548,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var updateMeter = _totalIntelligenceAttackingAccumulated;
+                Meter updateMeter = _totalIntelligenceAttackingAccumulated;
 
                 if (_totalIntelligenceAttackingAccumulated.CurrentValue == 0)
                 {
@@ -381,7 +563,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var updateMeter = _totalIntelligenceDefenseAccumulated;
+                Meter updateMeter = _totalIntelligenceDefenseAccumulated;
                 //works   GameLog.Client.Intel.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
@@ -395,9 +577,12 @@ namespace Supremacy.Game
         {
             get
             {
-                var homeSystem = HomeSystem;
+                StarSystem homeSystem = HomeSystem;
                 if (homeSystem == null)
+                {
                     return false;
+                }
+
                 return homeSystem.OwnerID == CivilizationID;
             }
         }
@@ -406,11 +591,13 @@ namespace Supremacy.Game
         {
             get
             {
-                var homeSystem = HomeSystem;
+                StarSystem homeSystem = HomeSystem;
                 if (homeSystem == null)
+                {
                     return false;
+                }
 
-                var colony = homeSystem.Colony;
+                Colony colony = homeSystem.Colony;
                 return colony == null ||
                        colony.ObjectID != _homeColonyId;
             }
@@ -422,13 +609,15 @@ namespace Supremacy.Game
         /// <value>The home colony.</value>
         public Colony HomeColony
         {
-            get { return GameContext.Current.Universe.Get<Colony>(_homeColonyId); }
+            get => GameContext.Current.Universe.Get<Colony>(_homeColonyId);
             internal set
             {
                 _homeColonyId = (value != null) ? value.ObjectID : -1;
 
                 if (value != null)
+                {
                     _homeColonyLocation = value.Location;
+                }
             }
         }
 
@@ -441,7 +630,10 @@ namespace Supremacy.Game
             get
             {
                 if (!_homeColonyLocation.HasValue)
+                {
                     return null;
+                }
+
                 return GameContext.Current.Universe.Map[_homeColonyLocation.Value].System;
             }
         }
@@ -452,27 +644,21 @@ namespace Supremacy.Game
         /// <value>The tech tree.</value>
         public TechTree TechTree
         {
-            get { return GameContext.Current.TechTrees[_civId]; }
-            internal set { GameContext.Current.TechTrees[_civId] = value; }
+            get => GameContext.Current.TechTrees[_civId];
+            internal set => GameContext.Current.TechTrees[_civId] = value;
         }
 
         /// <summary>
         /// Gets the civilization's global bonuses.
         /// </summary>
         /// <value>The global bonuses.</value>
-        public IList<Bonus> GlobalBonuses
-        {
-            get { return _globalBonuses; }
-        }
+        public IList<Bonus> GlobalBonuses => _globalBonuses;
 
         /// <summary>
         /// Gets the map data for the civilization.
         /// </summary>
         /// <value>The map data.</value>
-        public CivilizationMapData MapData
-        {
-            get { return _mapData; }
-        }
+        public CivilizationMapData MapData => _mapData;
 
         /// <summary>
         /// Gets the desired borders for the civilization.
@@ -508,25 +694,30 @@ namespace Supremacy.Game
         /// <param name="location">The location at which the event occurred.</param>
         public void ApplyMoraleEvent(MoraleEvent eventType, MapLocation location)
         {
-            var moraleTable = GameContext.Current.Tables.MoraleTables["MoraleEventResults"];
+            Data.Table moraleTable = GameContext.Current.Tables.MoraleTables["MoraleEventResults"];
             if (moraleTable == null)
+            {
                 return;
+            }
 
             const float multiplier = 1.0f;
 
-            var tableValue = moraleTable[eventType.ToString()][_civId] ??
+            string tableValue = moraleTable[eventType.ToString()][_civId] ??
                              moraleTable[eventType.ToString()][0];
 
             if (tableValue == null)
+            {
                 return;
-
+            }
 
             if (!int.TryParse(tableValue, out int change))
-                return;
-
-            foreach (var colony in Colonies)
             {
-                colony.Morale.AdjustCurrent((int)(multiplier * change));
+                return;
+            }
+
+            foreach (Colony colony in Colonies)
+            {
+                _ = colony.Morale.AdjustCurrent((int)(multiplier * change));
             }
         }
 
@@ -550,25 +741,26 @@ namespace Supremacy.Game
 
         public void EnsureSeatOfGovernment()
         {
-            var seatOfGovernment = SeatOfGovernment;
+            Colony seatOfGovernment = SeatOfGovernment;
             if (seatOfGovernment == null || seatOfGovernment.OwnerID != CivilizationID)
             {
-                var homeColonyLocation = _homeColonyLocation;
+                MapLocation? homeColonyLocation = _homeColonyLocation;
 
-                var rankHueristic = (Func<Colony, double>)
-                                    (c =>
-                                     {
-                                         if (!homeColonyLocation.HasValue)
-                                             return 1d;
+                double rankHueristic(Colony c)
+                {
+                    if (!homeColonyLocation.HasValue)
+                    {
+                        return 1d;
+                    }
 
-                                         var distanceFactor = Math.Min(
-                                             0.2,
-                                             Math.Max(
-                                                 1d,
-                                                 2d / MapLocation.GetDistance(c.Location, homeColonyLocation.Value)));
+                    double distanceFactor = Math.Min(
+                        0.2,
+                        Math.Max(
+                            1d,
+                            2d / MapLocation.GetDistance(c.Location, homeColonyLocation.Value)));
 
-                                         return c.ColonyValue() * distanceFactor;
-                                     });
+                    return c.ColonyValue() * distanceFactor;
+                }
 
                 seatOfGovernment = (
                                        from c in Colonies
@@ -577,15 +769,14 @@ namespace Supremacy.Game
                                        select c
                                    ).FirstOrDefault();
 
-                if (seatOfGovernment != null)
-                    _seatOfGovernmentId = seatOfGovernment.ObjectID;
-                else
-                    _seatOfGovernmentId = -1;
+                _seatOfGovernmentId = seatOfGovernment != null ? seatOfGovernment.ObjectID : -1;
             }
 
-            var diplomat = GameContext.Current.Diplomats[_civId];
+            Diplomacy.Diplomat diplomat = GameContext.Current.Diplomats[_civId];
             if (diplomat != null)
+            {
                 diplomat.SeatOfGovernment = seatOfGovernment;
+            }
         }
 
         /// <summary>
@@ -594,43 +785,58 @@ namespace Supremacy.Game
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
         /// Handles the PropertyChanged event of the TotalPopulation property.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnTotalPopulationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
-                OnPropertyChanged("AverageMorale");
+            {
+                OnPropertyChanged("TotalPopulation");
+            }
+        }
+        private void OnTotalValuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+            {
+                OnPropertyChanged("TotalValue");
+            }
         }
         private void OnTotalResearchPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
-                OnPropertyChanged("AverageMorale");
+            {
+                OnPropertyChanged("TotalResearch");
+            }
         }
         private void OnInstallingSpyNetworkPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("InstallingSpyNetwork");
+            }
         }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.Intel.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            //GameLog.Client.IntelDetails.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
+            }
         }
 
         private void OnTotalIntelligenceDefenseAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.Intel.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            //GameLog.Client.IntelDetails.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
+            {
                 OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
+            }
         }
 
         #endregion
@@ -648,14 +854,20 @@ namespace Supremacy.Game
         public static CivilizationManager For([NotNull] Civilization civ)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
+
             return GameContext.Current.CivilizationManagers[civ];
         }
 
         public static CivilizationManager For([NotNull] string civKey)
         {
             if (civKey == null)
+            {
                 throw new ArgumentNullException("civKey");
+            }
+
             return GameContext.Current.CivilizationManagers[civKey];
         }
 
@@ -668,12 +880,12 @@ namespace Supremacy.Game
 
         #region Implementation of ICivIdentity
 
-        int ICivIdentity.CivID
-        {
-            get { return _civId; }
-        }
+        int ICivIdentity.CivID => _civId;
 
         public List<int> IntelIDs { get => _IntelIDs; set => _IntelIDs = value; }
+        public object AppContextProperty { get; private set; }
+        public Civilization LocalPlayer { get; private set; }
+
 
         #endregion
     }
@@ -703,8 +915,11 @@ namespace Supremacy.Game
             get
             {
                 if (civilization == null)
+                {
                     throw new ArgumentNullException("civilization");
-                TryGetValue(civilization.CivID, out TValue value);
+                }
+
+                _ = TryGetValue(civilization.CivID, out TValue value);
                 return value;
             }
         }
@@ -717,7 +932,7 @@ namespace Supremacy.Game
         {
             get
             {
-                TryGetValue(civKey, out TValue value);
+                _ = TryGetValue(civKey, out TValue value);
                 return value;
             }
         }
@@ -742,7 +957,7 @@ namespace Supremacy.Game
                     return true;
                 }
             }
-            value = typeof(TValue).IsValueType ? Activator.CreateInstance<TValue>() : default(TValue);
+            value = typeof(TValue).IsValueType ? Activator.CreateInstance<TValue>() : default;
             return false;
         }
 

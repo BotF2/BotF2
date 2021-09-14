@@ -24,7 +24,7 @@ namespace Supremacy.Scripting.Ast
 
         public Severity Severity { get; }
 
-        public bool IsError => (Severity >= Severity.Error);
+        public bool IsError => Severity >= Severity.Error;
 
         public string FormatMessage(params object[] args)
         {

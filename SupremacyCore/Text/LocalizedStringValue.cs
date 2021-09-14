@@ -18,7 +18,7 @@ namespace Supremacy.Text
 
         public string Text
         {
-            get { return _text; }
+            get => _text;
             set
             {
                 VerifyInitializing();
@@ -29,7 +29,7 @@ namespace Supremacy.Text
         [TypeConverter(typeof(LanguageConverter))]
         public CultureInfo Language
         {
-            get { return _language; }
+            get => _language;
             set
             {
                 VerifyInitializing();

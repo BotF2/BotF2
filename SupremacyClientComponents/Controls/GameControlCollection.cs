@@ -6,17 +6,15 @@ namespace Supremacy.Client.Controls
 {
     public class GameControlCollection<T> : DeferrableObservableCollection<T> where T : DependencyObject
     {
-        private readonly GameControlContext _context;
         private VariantSize? _itemVariantSize;
-        private readonly object _owner;
 
         public GameControlCollection() { }
 
         public GameControlCollection(object owner, GameControlContext context)
             : this()
         {
-            _owner = owner;
-            _context = context;
+            Owner = owner;
+            Context = context;
         }
 
         public GameControlCollection(object owner, GameControlContext context, VariantSize? itemVariantSize)
@@ -27,13 +25,15 @@ namespace Supremacy.Client.Controls
 
         public void AddRange(T[] items)
         {
-            foreach (var item in items)
+            foreach (T item in items)
+            {
                 Add(item);
+            }
         }
 
         protected override void ClearItems()
         {
-            var itemArray = new T[Count];
+            T[] itemArray = new T[Count];
 
             Items.CopyTo(itemArray, 0);
             base.ClearItems();
@@ -46,62 +46,69 @@ namespace Supremacy.Client.Controls
 
         public bool Contains(string label)
         {
-            return (IndexOf(label) != -1);
+            return IndexOf(label) != -1;
         }
 
-        public GameControlContext Context
-        {
-            get { return _context; }
-        }
+        public GameControlContext Context { get; }
 
         public int IndexOf(string label)
         {
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (GameControlService.GetLabel(this[index]) == label)
+                {
                     return index;
+                }
             }
             return -1;
         }
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            var logicalParent = _owner as ILogicalParent;
+            ILogicalParent logicalParent = Owner as ILogicalParent;
 
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
-                {
-                    foreach (var newItem in e.NewItems)
                     {
-                        var variantControl = newItem as IVariantControl;
-                        if (variantControl != null)
+                        foreach (object newItem in e.NewItems)
                         {
-                            if (_context != GameControlContext.None)
-                                variantControl.Context = _context;
-                            if (_itemVariantSize.HasValue)
-                                variantControl.VariantSize = _itemVariantSize.Value;
+                            if (newItem is IVariantControl variantControl)
+                            {
+                                if (Context != GameControlContext.None)
+                                {
+                                    variantControl.Context = Context;
+                                }
+
+                                if (_itemVariantSize.HasValue)
+                                {
+                                    variantControl.VariantSize = _itemVariantSize.Value;
+                                }
+                            }
+                            if (logicalParent != null)
+                            {
+                                logicalParent.AddLogicalChild(newItem);
+                            }
                         }
-                        if (logicalParent != null)
-                            logicalParent.AddLogicalChild(newItem);
+                        break;
                     }
-                    break;
-                }
             }
 
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
-                {
-                    if (logicalParent != null)
                     {
-                        foreach (var oldItem in e.OldItems)
-                            logicalParent.RemoveLogicalChild(oldItem);
+                        if (logicalParent != null)
+                        {
+                            foreach (object oldItem in e.OldItems)
+                            {
+                                logicalParent.RemoveLogicalChild(oldItem);
+                            }
+                        }
+                        break;
                     }
-                    break;
-                }
             }
 
             try
@@ -111,16 +118,13 @@ namespace Supremacy.Client.Controls
             catch (ArgumentOutOfRangeException) { }
         }
 
-        public object Owner
-        {
-            get { return _owner; }
-        }
+        public object Owner { get; }
 
         public T this[string label]
         {
             get
             {
-                var index = IndexOf(label);
+                int index = IndexOf(label);
                 return (index != -1) ? this[index] : null;
             }
         }

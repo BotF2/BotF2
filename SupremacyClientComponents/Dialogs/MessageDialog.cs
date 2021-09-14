@@ -52,8 +52,8 @@ namespace Supremacy.Client.Dialogs
 
         public MessageDialogButtons Buttons
         {
-            get { return (MessageDialogButtons)GetValue(ButtonsProperty); }
-            set { SetValue(ButtonsProperty, value); }
+            get => (MessageDialogButtons)GetValue(ButtonsProperty);
+            set => SetValue(ButtonsProperty, value);
         }
         #endregion
 
@@ -70,11 +70,12 @@ namespace Supremacy.Client.Dialogs
 
         private static object CoerceResult(DependencyObject d, object value)
         {
-            var messageDialog = d as MessageDialog;
-            if (messageDialog == null)
+            if (!(d is MessageDialog messageDialog))
+            {
                 return value;
+            }
 
-            var result = (MessageDialogResult)value;
+            MessageDialogResult result = (MessageDialogResult)value;
             if ((result == MessageDialogResult.None) &&
                 Equals(messageDialog.ReadLocalValue(ResultProperty), MessageDialogResult.None) &&
                 ((messageDialog.Buttons & MessageDialogButtons.Cancel) == MessageDialogButtons.Cancel))
@@ -87,9 +88,10 @@ namespace Supremacy.Client.Dialogs
 
         private static void OnResultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var messageDialog = d as MessageDialog;
-            if (messageDialog == null)
+            if (!(d is MessageDialog messageDialog))
+            {
                 return;
+            }
 
             switch ((MessageDialogResult)e.NewValue)
             {
@@ -109,8 +111,8 @@ namespace Supremacy.Client.Dialogs
 
         public MessageDialogResult Result
         {
-            get { return (MessageDialogResult)GetValue(ResultProperty); }
-            private set { SetValue(ResultPropertyKey, value); }
+            get => (MessageDialogResult)GetValue(ResultProperty);
+            private set => SetValue(ResultPropertyKey, value);
         }
         #endregion
 
@@ -123,7 +125,7 @@ namespace Supremacy.Client.Dialogs
 
         private MessageDialog()
         {
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     SetMessageDialogResultCommand,
                     ExecuteSetMessageDialogResultCommand));
@@ -131,11 +133,13 @@ namespace Supremacy.Client.Dialogs
 
         private void ExecuteSetMessageDialogResultCommand(object sender, ExecutedRoutedEventArgs args)
         {
-            var parameter = args.Parameter;
+            object parameter = args.Parameter;
             if (!(parameter is MessageDialogButtons))
+            {
                 return;
+            }
 
-            var button = (MessageDialogButtons)parameter;
+            MessageDialogButtons button = (MessageDialogButtons)parameter;
             switch (button)
             {
                 case MessageDialogButtons.Ok:
@@ -166,12 +170,15 @@ namespace Supremacy.Client.Dialogs
 
         public static MessageDialogResult Show(string header, object content, MessageDialogButtons buttons)
         {
-            var dialog = new MessageDialog { Header = header, Content = content, Buttons = buttons };
-            var dialogResult = dialog.ShowDialog();
+            MessageDialog dialog = new MessageDialog { Header = header, Content = content, Buttons = buttons };
+            bool? dialogResult = dialog.ShowDialog();
             if (!dialogResult.HasValue)
             {
                 if ((buttons & MessageDialogButtons.Cancel) == MessageDialogButtons.Cancel)
+                {
                     return MessageDialogResult.Cancel;
+                }
+
                 return MessageDialogResult.None;
             }
             return dialog.Result;

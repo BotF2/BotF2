@@ -17,7 +17,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public InternalErrorException(string message, params object[] args)
-            : base(String.Format(message, args))
+            : base(string.Format(message, args))
         { }
 
         public InternalErrorException(Exception e, SourceSpan location)

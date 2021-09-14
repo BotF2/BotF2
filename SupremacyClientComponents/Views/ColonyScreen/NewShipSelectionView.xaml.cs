@@ -1,8 +1,5 @@
 ﻿using Supremacy.Economy;
-using Supremacy.Game;
 using Supremacy.Tech;
-using Supremacy.Utility;
-using Supremacy.Client;
 using System.Linq;
 
 using System.Windows;
@@ -27,7 +24,7 @@ namespace Supremacy.Client.Views
 
             BuildProjectList.ItemsSource = shipList;
 
-            SetBinding(
+            _ = SetBinding(
                 SelectedBuildProjectProperty,
                 new Binding
                 {
@@ -37,7 +34,9 @@ namespace Supremacy.Client.Views
                 });
 
             if (BuildProjectList.Items.Count > 0)
+            {
                 BuildProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
+            }
         }
 
         #region SelectedBuildProject Property
@@ -49,8 +48,8 @@ namespace Supremacy.Client.Views
 
         public ShipBuildProject SelectedBuildProject // Change in this is seen at ColonyScreenPresenter inside of ExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
         {
-            get { return (ShipBuildProject)GetValue(SelectedBuildProjectProperty); }
-            set { SetValue(SelectedBuildProjectProperty, value); }
+            get => (ShipBuildProject)GetValue(SelectedBuildProjectProperty);
+            set => SetValue(SelectedBuildProjectProperty, value);
         }
         #endregion
 
@@ -65,42 +64,61 @@ namespace Supremacy.Client.Views
 
         public object AdditionalContent
         {
-            get { return GetValue(AdditionalContentProperty); }
-            set { SetValue(AdditionalContentProperty, value); }
+            get => GetValue(AdditionalContentProperty);
+            set => SetValue(AdditionalContentProperty, value);
         }
         #endregion
 
-        public string ShipFunctionPath
-        {
-            get
-            {
-                return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
-            }
-        }
+        public string ShipFunctionPath => "vfs:///Resources/Specific_Empires_UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
+
+        public int SpecialWidth1 => Context.DesignTimeAppContext.Instance.ASpecialWidth1;// ActualWidthProperty;
+        public int SpecialHeight1 => Context.DesignTimeAppContext.Instance.ASpecialHeight1;
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (SelectedBuildProject != null);
+            e.CanExecute = SelectedBuildProject != null;
         }
 
         private void ExecuteAcceptCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (SelectedBuildProject == null)
+            {
                 return;
+            }
+
             DialogResult = true;
         }
 
         private void OnBuildProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var source = e.OriginalSource as DependencyObject;
-            if (source == null)
+            if (!(e.OriginalSource is DependencyObject source))
+            {
                 return;
+            }
 
-            var contanier = source.FindVisualAncestorByType<ListBoxItem>();
+            ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
             if (contanier == null)
+            {
                 return;
+            }
 
             DialogResult = true;
         }
+
+        //private void OnBuildProjectHowManyChanged(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (!(e.OriginalSource is DependencyObject source))
+        //    {
+        //        return;
+        //    }
+
+        //    ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
+        //    if (contanier == null)
+        //    {
+        //        return;
+        //    }
+
+        //    DialogResult = true;
+        //}
     }
 }

@@ -1,10 +1,5 @@
 ﻿using Supremacy.Universe;
-using Supremacy.Utility;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supremacy.Game
 {
@@ -32,19 +27,31 @@ namespace Supremacy.Game
         public CivilizationMapData(int width, int height)
         {
             if (width > MapLocation.MaxValue)
+            {
                 throw new ArgumentException("width cannot be greater than MapLocation.MaxValue");
+            }
+
             if (width < MapLocation.MinValue)
+            {
                 throw new ArgumentException("width cannot be less than MapLocation.MinValue");
+            }
+
             if (height > MapLocation.MaxValue)
+            {
                 throw new ArgumentException("height cannot be greater than MapLocation.MaxValue");
+            }
+
             if (height < MapLocation.MinValue)
+            {
                 throw new ArgumentException("height cannot be less than MapLocation.MinValue");
+            }
+
             _mapData = new int[width, height];
         }
 
         public int GetFuelRange(MapLocation location)
         {
-            return (_mapData[location.X, location.Y] & FuelRangeMask);
+            return _mapData[location.X, location.Y] & FuelRangeMask;
         }
 
         public int GetScanStrength(MapLocation location)
@@ -98,7 +105,7 @@ namespace Supremacy.Game
             //        );
             //}
 
-            return ((_mapData[location.X, location.Y] & ExploredMask) != 0);  // ExploredMask = 16384;  // binary 100.000.000.000.000
+            return (_mapData[location.X, location.Y] & ExploredMask) != 0;  // ExploredMask = 16384;  // binary 100.000.000.000.000
         }
 
         public bool IsScanned(MapLocation location)
@@ -122,7 +129,7 @@ namespace Supremacy.Game
             //        );
             //}
 
-            return ((_mapData[location.X, location.Y] & ScannedMask) != 0); // ScannedMask = 32768;  // hex 3F00   // binary  1.000.000.000.000.000
+            return (_mapData[location.X, location.Y] & ScannedMask) != 0; // ScannedMask = 32768;  // hex 3F00   // binary  1.000.000.000.000.000
         }
 
         public void ResetScanStrengthAndFuelRange()
@@ -130,13 +137,13 @@ namespace Supremacy.Game
             int maxX = _mapData.GetLength(0);
             int maxY = _mapData.GetLength(1);
 
-            for (int x = 0; (x < maxX); x++)
+            for (int x = 0; x < maxX; x++)
             {
-                for (int y = 0; (y < maxY); y++)
+                for (int y = 0; y < maxY; y++)
                 {
-                    _mapData[x, y] = ((_mapData[x, y] & ~ScanStrengthMask & ~FuelRangeMask) |
+                    _mapData[x, y] = (_mapData[x, y] & ~ScanStrengthMask & ~FuelRangeMask) |
                                       (MaxFuelRange << FuelRangeOffset) |
-                                      (ScanStrengthAdjustment << ScanStrengthOffset));
+                                      (ScanStrengthAdjustment << ScanStrengthOffset);
                 }
             }
         }
@@ -218,22 +225,28 @@ namespace Supremacy.Game
             //value = value - 8;  // binary 1000
 
             if (value < MinScanStrength)
+            {
                 value = MinScanStrength;
+            }
 
             if (value > MaxScanStrength)
+            {
                 value = MaxScanStrength;
+            }
 
             int adjustedValue = Math.Min(value + ScanStrengthAdjustment, MaxAdjustedScanStrength);
 
-            _mapData[location.X, location.Y] = ((_mapData[location.X, location.Y] & ~ScanStrengthMask) |
-                                               (adjustedValue << ScanStrengthOffset));
+            _mapData[location.X, location.Y] = (_mapData[location.X, location.Y] & ~ScanStrengthMask) |
+                                               (adjustedValue << ScanStrengthOffset);
             //if (value > 0)
             //GameLog.Core.MapData.DebugFormat("({0},{1}) is SET to new ScanStrength = {2}", location.X, location.Y, GetScanStrength(location),
             //    value
             //    );
 
             if (value > 0)
+            {
                 SetScanned(location, true);
+            }
         }
 
         public void UpgradeFuelRange(MapLocation location, int value)
@@ -262,7 +275,7 @@ namespace Supremacy.Game
 
         public void UpgradeScanStrength(MapLocation location, int value)
         {
-            if ((value > GetScanStrength(location)))
+            if (value > GetScanStrength(location))
             {
                 SetScanStrength(location, value);
             }
@@ -297,7 +310,7 @@ namespace Supremacy.Game
                 for (int y = startY; y <= endY; y++)
                 {
                     MapLocation targetLocation = new MapLocation(x, y);
-                    UpgradeScanStrength(targetLocation, Math.Max(minValue, (value - (falloff * MapLocation.GetDistance(location, targetLocation)))));
+                    UpgradeScanStrength(targetLocation, Math.Max(minValue, value - (falloff * MapLocation.GetDistance(location, targetLocation))));
                 }
             }
         }
@@ -332,10 +345,14 @@ namespace Supremacy.Game
             int height = _mapData.GetLength(1);
 
             if (other == null)
+            {
                 throw new ArgumentNullException("other");
+            }
 
             if (!combineVisibility && !combineFuelRange)
+            {
                 return;
+            }
 
             MapLocation location;
 
@@ -350,7 +367,7 @@ namespace Supremacy.Game
 
                     if (combineVisibility)
                     {
-                        currentData |= (otherData & (ExploredMask | ScannedMask));
+                        currentData |= otherData & (ExploredMask | ScannedMask);
 
                         int scanStrength = Math.Max(
                             ((currentData & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment,
@@ -358,7 +375,7 @@ namespace Supremacy.Game
 
                         scanStrength = Math.Min(scanStrength + ScanStrengthAdjustment, MaxAdjustedScanStrength);
 
-                        currentData = ((currentData & ~ScanStrengthMask) | (scanStrength << ScanStrengthOffset));
+                        currentData = (currentData & ~ScanStrengthMask) | (scanStrength << ScanStrengthOffset);
                     }
 
                     if (combineFuelRange)

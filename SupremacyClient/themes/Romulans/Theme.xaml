@@ -1,15 +1,13 @@
-<!--
-  
-   Theme.xaml
-  
+<!-- File:Theme.xaml for Roumlans
+
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
+   All other rights reserved.-->
   
-  -->
+  
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Supremacy.Client">
@@ -24,13 +22,23 @@
     <ResourceDictionary Source="GalaxyScreenView.xaml" />
     <ResourceDictionary Source="AffairsScreen.xaml"/>
     <ResourceDictionary Source="Dialogs.xaml" />
+      
+    <!--<ResourceDictionary Source="ROM-Shared.xaml"/>
+    <ResourceDictionary Source="ROM-GameContextMenu.xaml"/>
+    <ResourceDictionary Source="ROM-TechObjectInfo.xaml"/>
+    <ResourceDictionary Source="ROM-InfoCard.xaml" />
+    <ResourceDictionary Source="ROM-ResearchScreen.xaml"/>
+    <ResourceDictionary Source="ROM-SystemScreen.xaml"/>
+    <ResourceDictionary Source="ROM-GalaxyScreenView.xaml" />
+    <ResourceDictionary Source="ROM-AffairsScreen.xaml"/>
+    <ResourceDictionary Source="ROM-Dialogs.xaml" />-->
   </ResourceDictionary.MergedDictionaries>
  
   <Style TargetType="{x:Type local:CombatWindow}"
-         BasedOn="{StaticResource LCARS_RomThinBorderStyle}"/>
+         BasedOn="{StaticResource RomThinBorderStyle}"/>
 
   <Style x:Key="DialogBorderStyle"
          TargetType="{x:Type ContentControl}"
-         BasedOn="{StaticResource LCARS_RomThinBorderStyle}" />
+         BasedOn="{StaticResource RomThinBorderStyle}" />
 
 </ResourceDictionary>

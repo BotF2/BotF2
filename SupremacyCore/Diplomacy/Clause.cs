@@ -11,7 +11,6 @@ using System;
 
 using Supremacy.Annotations;
 using Supremacy.Diplomacy.Visitors;
-using Supremacy.Economy;
 using Supremacy.Types;
 
 namespace Supremacy.Diplomacy
@@ -34,9 +33,11 @@ namespace Supremacy.Diplomacy
         public static IClause Clone([NotNull] this IClause clause)
         {
             if (clause == null)
+            {
                 throw new ArgumentNullException("clause");
+            }
 
-            var clone = clause.IsDataInitialized ? new Clause(clause.ClauseType, clause.Data) : new Clause(clause.ClauseType);
+            Clause clone = clause.IsDataInitialized ? new Clause(clause.ClauseType, clause.Data) : new Clause(clause.ClauseType);
 
             clone.Duration = clause.Duration;
 
@@ -45,33 +46,36 @@ namespace Supremacy.Diplomacy
 
         public static T GetData<T>(this IClause clause)
         {
-            if (clause.Data is T)
-                return (T)clause.Data;
-            return default(T);
+            if (clause.Data is T t)
+            {
+                return t;
+            }
+
+            return default;
         }
 
         public static bool TryGetData<T>(this IClause clause, out T data)
         {
             if (clause == null)
             {
-                data = default(T);
+                data = default;
                 return false;
             }
-            if (clause.Data is T)
+            if (clause.Data is T t)
             {
-                data = (T)clause.Data;
+                data = t;
                 return true;
             }
-            data = default(T);
+            data = default;
             return false;
         }
 
         public static void InitializeData(this IClause clause)
         {
             if (clause.IsDataInitialized)
+            {
                 return;
-
-            var clauseInternal = clause as IClauseInternal;
+            }
 
             switch (clause.ClauseType)
             {
@@ -90,16 +94,23 @@ namespace Supremacy.Diplomacy
                     break;
             }
 
-            if (clauseInternal != null)
+            if (clause is IClauseInternal clauseInternal)
+            {
                 clauseInternal.SetDataInitialized();
+            }
         }
 
         public static void Accept([NotNull] this IClause clause, [NotNull] IClauseVisitor visitor)
         {
             if (clause == null)
+            {
                 throw new ArgumentNullException("clause");
+            }
+
             if (visitor == null)
+            {
                 throw new ArgumentNullException("visitor");
+            }
 
             switch (clause.ClauseType)
             {
@@ -204,7 +215,10 @@ namespace Supremacy.Diplomacy
         public Clause(ClauseType clauseType)
         {
             if (clauseType == ClauseType.NoClause)
+            {
                 throw new ArgumentException("cannot be NoClause", "clauseType");
+            }
+
             _isDataInitialized = new IsSetFlag(false);
             ClauseType = clauseType;
             this.InitializeData();
@@ -217,9 +231,9 @@ namespace Supremacy.Diplomacy
 
         protected internal void SetDataInitialized()
         {
-            // ReSharper disable ImpureMethodCallOnReadonlyValueField
+
             _isDataInitialized.Set();
-            // ReSharper restore ImpureMethodCallOnReadonlyValueField
+
         }
 
         #region IClauseInternal Members
@@ -229,21 +243,23 @@ namespace Supremacy.Diplomacy
 
         public int Duration
         {
-            get { return _duration; }
+            get => _duration;
             set
             {
                 if (value > MaxFiniteDuration)
+                {
                     value = MaxFiniteDuration;
+                }
                 else if (value < ImmediateDuration)
+                {
                     value = ImmediateDuration;
+                }
+
                 _duration = value;
             }
         }
 
-        public bool IsDataInitialized
-        {
-            get { return _isDataInitialized.IsSet; }
-        }
+        public bool IsDataInitialized => _isDataInitialized.IsSet;
 
         void IClauseInternal.SetDataInitialized()
         {

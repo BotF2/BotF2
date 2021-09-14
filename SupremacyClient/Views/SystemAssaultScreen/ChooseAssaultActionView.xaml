@@ -13,11 +13,11 @@
     <Border DockPanel.Dock="Left"
             Width="16"
             CornerRadius="16,0,0,16"
-            Background="{StaticResource LCARS_HeaderBrush}" />
+            Background="{StaticResource HeaderTextBrush}" />
     <Border DockPanel.Dock="Right"
             Width="16"
             CornerRadius="0,16,16,0"
-            Background="{StaticResource LCARS_HeaderBrush}" />
+            Background="{StaticResource HeaderTextBrush}" />
     <StackPanel Orientation="Vertical"
                 scc:GameControlService.Context="VerticalGroupItem"
                 Margin="2,0">

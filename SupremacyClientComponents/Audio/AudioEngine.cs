@@ -23,7 +23,9 @@ namespace Supremacy.Client.Audio
         public static void Check(RESULT result)
         {
             if (result == RESULT.OK)
+            {
                 return;
+            }
 
             throw new ApplicationException("FMOD error! " + result + " - " + Error.String(result));
         }
@@ -55,9 +57,6 @@ namespace Supremacy.Client.Audio
 
         private readonly List<FMODGrouping> _channelGroups = new List<FMODGrouping>();
         private readonly List<FMODAudioTrack> _tracks = new List<FMODAudioTrack>();
-
-        private readonly object _updateLock = new object();
-        private readonly IScheduler _scheduler = null;
         private readonly IObservable<long> _updateTimer = null;
         private IDisposable _updateTimerSubscription = null;
         #endregion
@@ -68,36 +67,27 @@ namespace Supremacy.Client.Audio
             get
             {
                 if (_instance == null)
+                {
                     _instance = new FMODAudioEngine();
+                }
+
                 return _instance;
             }
         }
 
-        public FMOD.System System
-        {
-            get { return _system; }
-        }
-        
-        public IScheduler Scheduler
-        {
-            get { return _scheduler; }
-        }
+        public FMOD.System System => _system;
 
-        public IAudioGrouping Master
-        {
-            get { return _masterChannelGroup; }
-        }
+        public IScheduler Scheduler { get; } = null;
+
+        public IAudioGrouping Master => _masterChannelGroup;
 
         public float Volume
         {
-            get { return _masterChannelGroup.Volume; }
-            set { _masterChannelGroup.Volume = value; }
+            get => _masterChannelGroup.Volume;
+            set => _masterChannelGroup.Volume = value;
         }
 
-        public object Lock
-        {
-            get { return _updateLock; }
-        }
+        public object Lock { get; } = new object();
         #endregion
 
         #region Construction & Lifetime
@@ -121,18 +111,20 @@ namespace Supremacy.Client.Audio
             FMODErr.Check(_system.getMasterChannelGroup(ref channelGroup));
             _masterChannelGroup = new FMODGrouping(this, channelGroup);
 
-            _scheduler = new EventLoopScheduler("AudioEngine");
-            _updateTimer = Observable.Interval(TimeSpan.FromMilliseconds(UpdateInterval), _scheduler).Do(_ => Update());
+            Scheduler = new EventLoopScheduler("AudioEngine");
+            _updateTimer = Observable.Interval(TimeSpan.FromMilliseconds(UpdateInterval), Scheduler).Do(_ => Update());
         }
 
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisposed = true;
 
-            lock (_updateLock)
+            lock (Lock)
             {
                 try
                 {
@@ -144,7 +136,7 @@ namespace Supremacy.Client.Audio
                 }
 
                 // reverse iterate to allow remove by Dispose()
-                for ( int i = _channelGroups.Count - 1; i >= 0; --i )
+                for (int i = _channelGroups.Count - 1; i >= 0; --i)
                 {
                     try
                     {
@@ -174,7 +166,10 @@ namespace Supremacy.Client.Audio
                 try
                 {
                     if (_system != null)
-                        _system.release();
+                    {
+                        _ = _system.release();
+                    }
+
                     _system = null;
                 }
                 catch (Exception e)
@@ -189,7 +184,7 @@ namespace Supremacy.Client.Audio
         public IAudioGrouping CreateGrouping(string name)
         {
             FMODGrouping cg = null;
-            lock (_updateLock)
+            lock (Lock)
             {
                 cg = new FMODGrouping(this, name);
                 cg.Parent = Master;
@@ -203,7 +198,7 @@ namespace Supremacy.Client.Audio
             FMODAudioTrack track = null;
             if (File.Exists(fileName))
             {
-                lock (_updateLock)
+                lock (Lock)
                 {
                     track = new FMODAudioTrack(this, fileName);
                     _tracks.Add(track);
@@ -223,10 +218,12 @@ namespace Supremacy.Client.Audio
         {
             try
             {
-                lock (_updateLock)
+                lock (Lock)
                 {
                     if (_updateTimerSubscription == null)
+                    {
                         _updateTimerSubscription = _updateTimer.Subscribe();
+                    }
 
                     GameLog.Client.Audio.Debug("Starting....");
                 }
@@ -239,7 +236,7 @@ namespace Supremacy.Client.Audio
 
         public void Stop()
         {
-            lock (_updateLock)
+            lock (Lock)
             {
                 if (_updateTimerSubscription != null)
                 {
@@ -247,7 +244,7 @@ namespace Supremacy.Client.Audio
                     _updateTimerSubscription = null;
                 }
 
-                foreach (var track in _tracks)
+                foreach (FMODAudioTrack track in _tracks)
                 {
                     try
                     {
@@ -264,11 +261,11 @@ namespace Supremacy.Client.Audio
 
         public void Update()
         {
-            lock (_updateLock)
+            lock (Lock)
             {
                 try
                 {
-                    _system.update();
+                    _ = _system.update();
                 }
                 catch
                 {
@@ -276,12 +273,12 @@ namespace Supremacy.Client.Audio
                 }
             }
         }
-        
+
         internal void RemoveGrouping(FMODGrouping channelGroup)
         {
             try
             {
-                _channelGroups.Remove(channelGroup);
+                _ = _channelGroups.Remove(channelGroup);
             }
             catch (Exception e)
             {
@@ -293,7 +290,7 @@ namespace Supremacy.Client.Audio
         {
             try
             {
-                _tracks.Remove(audioTrack);
+                _ = _tracks.Remove(audioTrack);
             }
             catch (Exception e)
             {

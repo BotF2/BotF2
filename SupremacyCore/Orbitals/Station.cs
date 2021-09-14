@@ -33,10 +33,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public sealed override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Station; }
-        }
+        public sealed override UniverseObjectType ObjectType => UniverseObjectType.Station;
 
         /// <summary>
         /// Gets or sets the station design.
@@ -44,8 +41,8 @@ namespace Supremacy.Orbitals
         /// <value>The station design.</value>
         public StationDesign StationDesign
         {
-            get { return Design as StationDesign; }
-            set { Design = value; }
+            get => Design as StationDesign;
+            set => Design = value;
         }
 
         public Station() { }
@@ -54,7 +51,7 @@ namespace Supremacy.Orbitals
         /// Initializes a new instance of the <see cref="Station"/> class using the specified design.
         /// </summary>
         /// <param name="design">The design.</param>
-        public Station(StationDesign design) 
+        public Station(StationDesign design)
             : base(design)
         {
             _buildQueue = new List<BuildQueueItem>();
@@ -67,10 +64,7 @@ namespace Supremacy.Orbitals
         /// Gets the build slots at this <see cref="Station"/>.
         /// </summary>
         /// <value>The build slots.</value>
-        public IIndexedEnumerable<BuildSlot> BuildSlots
-        {
-            get { return _buildSlots; }
-        }
+        public IIndexedEnumerable<BuildSlot> BuildSlots => _buildSlots;
 
         /// <summary>
         /// Gets the build output for the specified build slot number.
@@ -86,10 +80,7 @@ namespace Supremacy.Orbitals
         /// Gets the build queue at this <see cref="Station"/>.
         /// </summary>
         /// <value>The build queue.</value>
-        public IList<BuildQueueItem> BuildQueue
-        {
-            get { return _buildQueue; }
-        }
+        public IList<BuildQueueItem> BuildQueue => _buildQueue;
 
         /// <summary>
         /// Remove any completed projects from the build slots and dequeue new projects
@@ -98,20 +89,20 @@ namespace Supremacy.Orbitals
         public void ProcessQueue() { }
         #endregion
 
-		public override void SerializeOwnedData(SerializationWriter writer, object context)
-		{
-			base.SerializeOwnedData(writer, context);
-			writer.WriteOptimized(_buildSlots.ToArray());
-			writer.WriteOptimized(_buildOutput);
-			writer.Write(_buildQueue);
-		}
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            base.SerializeOwnedData(writer, context);
+            writer.WriteOptimized(_buildSlots.ToArray());
+            writer.WriteOptimized(_buildOutput);
+            writer.Write(_buildQueue);
+        }
 
-		public override void DeserializeOwnedData(SerializationReader reader, object context)
-		{
-			base.DeserializeOwnedData(reader, context);
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
             _buildSlots = new ArrayWrapper<BuildSlot>((BuildSlot[])reader.ReadOptimizedObjectArray(typeof(BuildSlot)));
-			_buildOutput = reader.ReadOptimizedInt32();
-			_buildQueue = reader.ReadList<BuildQueueItem>();
-		}
+            _buildOutput = reader.ReadOptimizedInt32();
+            _buildQueue = reader.ReadList<BuildQueueItem>();
+        }
     }
 }

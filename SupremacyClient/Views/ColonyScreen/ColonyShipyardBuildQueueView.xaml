@@ -7,8 +7,7 @@
                        TextElement.FontFamily="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontFamilyKey}}"
                        TextElement.FontWeight="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontWeightKey}}">
     <UserControl.Resources>
-
-        <DataTemplate x:Key="ShipyardBuildQueueItemTemplate"
+        <DataTemplate x:Key="ShipyardBuildQueueListItemTemplate"
                   DataType="s:BuildQueueItem">
             <Border Padding="0,3,0,3">
                 <Grid x:Name="ItemGrid">
@@ -30,7 +29,7 @@
                     </Grid.ToolTip>
                     <Border x:Name="ImageBorder"
                               Grid.Column="0"
-                              BorderBrush="White"
+                              BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                               BorderThickness="1"
                               CornerRadius="4"
                               Width="40"
@@ -42,13 +41,13 @@
                         </Border.Background>
                     </Border>
                     <TextBlock x:Name="TextArea"
-                         Grid.Column="1"
-                         TextWrapping="Wrap"
-                         VerticalAlignment="Top"
-                         Margin="7,0,0,0"
-                         TextTrimming="CharacterEllipsis"
-                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                         FontSize="14pt">
+                             Grid.Column="1"
+                             TextWrapping="Wrap"
+                             VerticalAlignment="Top"
+                             Margin="7,0,0,0"
+                             TextTrimming="CharacterEllipsis"
+                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                             FontSize="14pt">
             <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                        TextWrapping="Wrap"
                        Text="{Binding Path=Description, Converter={StaticResource UpperCaseConverter}}" />
@@ -81,22 +80,16 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel>
-        
-        <!--<s:HoverItemsControl x:Name="BuildSlotList"
-                         DockPanel.Dock="Top"
-                         ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
-                         ItemClicked="OnBuildListItemClicked"
-                         Background="Transparent"
-                         ItemTemplate="{StaticResource ShipyardBuildSlotTemplate}" />-->
-        <!--<ScrollViewer DockPanel.Dock="Bottom">-->
-        <s:HoverItemsControl x:Name="BuildQueue"
+        <ScrollViewer DockPanel.Dock="Bottom">
+            <s:HoverItemsControl x:Name="ShipyardBuildQueue"
                          DockPanel.Dock="Top"
                          Grid.Row="1"
-                         ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildQueue, Mode=OneWay}"
-                         ItemClicked="OnBuildQueueItemClicked"
-                         Background="Transparent"
-                         ItemTemplate="{StaticResource ShipyardBuildQueueItemTemplate}" />
-       
-        <!--</ScrollViewer>-->
+                         ItemClicked="OnShipyardBuildQueueItemClicked"
+
+                         ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildQueue}"
+                         ItemTemplate="{StaticResource ShipyardBuildQueueListItemTemplate}"
+                         HorizontalContentAlignment="Stretch" />
+                         <!--MouseDoubleClick="OnShipyardBuildQueueItemDoubleClicked"-->            
+        </ScrollViewer>
     </DockPanel>
 </scc:ThemedUserControl>

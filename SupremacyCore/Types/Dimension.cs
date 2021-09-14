@@ -21,14 +21,14 @@ namespace Supremacy.Types
 
         public int Width
         {
-            get { return width; }
-            set { width = Math.Max(0, value); }
+            get => width;
+            set => width = Math.Max(0, value);
         }
 
         public int Height
         {
-            get { return height; }
-            set { height = Math.Max(0, value); }
+            get => height;
+            set => height = Math.Max(0, value);
         }
 
         public Dimension(int width, int height)
@@ -39,21 +39,24 @@ namespace Supremacy.Types
 
         public override int GetHashCode()
         {
-            return ((width << 8) | height);
+            return (width << 8) | height;
         }
 
         public override bool Equals(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
+
             Dimension other = (Dimension)obj;
-            return ((other.width == width)
-                && (other.height == height));
+            return (other.width == width)
+                && (other.height == height);
         }
 
         public static bool operator ==(Dimension a, Dimension b)
         {
-            return ((a.width == b.width) && (a.height == b.height));
+            return (a.width == b.width) && (a.height == b.height);
         }
 
         public static bool operator !=(Dimension a, Dimension b)

@@ -33,7 +33,7 @@
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type ListBox}">
             <Border x:Name="Border"
-                    BorderBrush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    BorderBrush="{StaticResource PurpleGradient_TopLeft_BottomRight}"
                     BorderThickness="2"
                     >
               <ScrollViewer Margin="0"
@@ -46,7 +46,7 @@
                        Value="False">
                 <Setter TargetName="Border"
                         Property="BorderBrush"
-                        Value="{StaticResource LCARS_GrayGradient_TopLeft_BottomRight}" />
+                        Value="{StaticResource GrayGradient_TopLeft_BottomRight}" />
               </Trigger>
               <Trigger Property="IsGrouping"
                        Value="True">
@@ -77,12 +77,12 @@
                        Value="True">
                 <Setter TargetName="Border"
                         Property="Background"
-                        Value="{StaticResource LCARS_GrayGradient_Top_Bottom}"/>
+                        Value="{StaticResource GrayGradient_Top_Bottom}"/>
               </Trigger>
               <Trigger Property="IsEnabled"
                        Value="False">
                 <Setter Property="Foreground"
-                        Value="{StaticResource LCARS_DisabledTextBrush}"/>
+                        Value="{StaticResource DisabledTextBrush}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -99,7 +99,7 @@
     <DockPanel DockPanel.Dock="Top"
                Margin="0,0,0,0">
       <Label DockPanel.Dock="Left"
-             Foreground="{StaticResource LCARS_BlueTextBrush}"
+             Foreground="{StaticResource BlueTextBrush}"
              VerticalAlignment="Center"
              Padding="0"
              Target="{Binding ElementName=PlayerName}">
@@ -108,7 +108,7 @@
       <TextBox x:Name="PlayerName"
                DockPanel.Dock="Right"
                Margin="7,0,0,0"
-               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               Foreground="{StaticResource BeigeTextBrush}"
                VerticalAlignment="Center"
                Background="#00000000"/>
             <!--<Button x:Name="HostGameButton"
@@ -152,7 +152,7 @@
                    
                LastChildFill="True">
       <Label DockPanel.Dock="Left"
-             Foreground="{StaticResource LCARS_BlueTextBrush}"
+             Foreground="{StaticResource BlueTextBrush}"
              VerticalAlignment="Center"
              BorderThickness="2"
              Padding="0"
@@ -168,12 +168,12 @@
       <TextBox x:Name="DirectConnectAddress"
                DockPanel.Dock="Left"
                Margin="7,0,0,0"
-               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               Foreground="{StaticResource BeigeTextBrush}"
                VerticalAlignment="Center"
                Background="#00000000"/>
     </DockPanel>
     <Label DockPanel.Dock="Top"
-           Foreground="{StaticResource LCARS_BlueTextBrush}"
+           Foreground="{StaticResource BlueTextBrush}"
            Margin="0,21,0,0"
            Target="{Binding ElementName=PART_ServerList}">
             <AccessText Text="{s:StringResource MP_SETUP_SERVER_LIST}" Foreground="Aqua"/>
@@ -181,7 +181,7 @@
     <ListBox x:Name="PART_ServerList"
              DockPanel.Dock="Top"
              Margin="0,2,0,0"
-             Foreground="{StaticResource LCARS_BeigeTextBrush}"
+             Foreground="{StaticResource BeigeTextBrush}"
              Background="#00000000"
              Height="120"/>
     <DockPanel DockPanel.Dock="Bottom"

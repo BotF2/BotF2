@@ -34,15 +34,15 @@ using System.Windows;
 
 namespace Supremacy.Client.DragDrop
 {
-	public interface IDragSourceAdvisor
-	{
-		UIElement SourceElement { get; set; }
+    public interface IDragSourceAdvisor
+    {
+        UIElement SourceElement { get; set; }
 
-		DragDropEffects SupportedEffects { get; }
+        DragDropEffects SupportedEffects { get; }
 
         DataObject GetDataObject(UIElement draggedElement);
         void FinishDrag(UIElement draggedElement, DragDropEffects finalEffects);
         bool IsDraggable(UIElement draggedElement);
-		UIElement GetTopContainer();
-	}
+        UIElement GetTopContainer();
+    }
 }

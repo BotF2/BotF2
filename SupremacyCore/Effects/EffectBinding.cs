@@ -13,7 +13,7 @@ using Supremacy.Utility;
 namespace Supremacy.Effects
 {
     [Serializable]
-    public abstract class EffectBinding: INotifyPropertyChanged
+    public abstract class EffectBinding : INotifyPropertyChanged
     {
         private readonly Effect _effect;
         private readonly EffectGroupBinding _effectGroupBinding;
@@ -32,16 +32,9 @@ namespace Supremacy.Effects
             [NotNull] IEffectTarget target)
             : this()
         {
-            if (effect == null)
-                throw new ArgumentNullException("effect");
-            if (effectGroupBinding == null)
-                throw new ArgumentNullException("effectGroupBinding");
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            _effect = effect;
-            _effectGroupBinding = effectGroupBinding;
-            _target = target;
+            _effect = effect ?? throw new ArgumentNullException("effect");
+            _effectGroupBinding = effectGroupBinding ?? throw new ArgumentNullException("effectGroupBinding");
+            _target = target ?? throw new ArgumentNullException("target");
         }
 
         private EffectBinding()
@@ -56,32 +49,33 @@ namespace Supremacy.Effects
             get
             {
                 if (_description != null)
+                {
                     return _description.Value as string;
+                }
+
                 return null;
             }
         }
 
-        public IEffectTarget Target
-        {
-            get { return _target; }
-        }
+        public IEffectTarget Target => _target;
 
-        public Effect Effect
-        {
-            get { return _effect; }
-        }
+        public Effect Effect => _effect;
 
         public EffectState State
         {
             get
             {
                 lock (EffectSystem.SyncRoot)
+                {
                     return _state;
+                }
             }
             private set
             {
                 lock (EffectSystem.SyncRoot)
+                {
                     _state = value;
+                }
             }
         }
 
@@ -89,8 +83,10 @@ namespace Supremacy.Effects
         {
             get
             {
-                lock (EffectSystem.SyncRoot) 
-                    return (_state != EffectState.Detached);
+                lock (EffectSystem.SyncRoot)
+                {
+                    return _state != EffectState.Detached;
+                }
             }
         }
 
@@ -99,35 +95,23 @@ namespace Supremacy.Effects
             get
             {
                 lock (EffectSystem.SyncRoot)
-                    return (_state == EffectState.Attached);
+                {
+                    return _state == EffectState.Attached;
+                }
             }
         }
 
-        public EffectGroupBinding EffectGroupBinding
-        {
-            get { return _effectGroupBinding; }
-        }
-        
-        protected ScriptParameters SystemScriptParameters
-        {
-            get { return _systemScriptParameters.Value; }
-        }
+        public EffectGroupBinding EffectGroupBinding => _effectGroupBinding;
 
-        protected ScriptParameters MergedScriptParameters
-        {
-            get { return _mergedScriptParameters.Value; }
-        }
+        protected ScriptParameters SystemScriptParameters => _systemScriptParameters.Value;
+
+        protected ScriptParameters MergedScriptParameters => _mergedScriptParameters.Value;
 
         private void UpdateState()
         {
             lock (EffectSystem.SyncRoot)
             {
-                if (_suspendScope.IsWithin)
-                    State = EffectState.Suspended;
-                else if (_isAttached)
-                    State = EffectState.Attached;
-                else
-                    State = EffectState.Detached;
+                State = _suspendScope.IsWithin ? EffectState.Suspended : _isAttached ? EffectState.Attached : EffectState.Detached;
             }
         }
 
@@ -149,7 +133,9 @@ namespace Supremacy.Effects
         public void UpdateTarget()
         {
             lock (EffectSystem.SyncRoot)
+            {
                 UpdateTargetCore();
+            }
         }
 
         public void Attach()
@@ -157,7 +143,9 @@ namespace Supremacy.Effects
             lock (EffectSystem.SyncRoot)
             {
                 if (_isAttached)
+                {
                     return;
+                }
 
                 GameLog.Core.General.DebugFormat(
                     "Attaching effect to object {{{0}}}: {1}",
@@ -211,9 +199,10 @@ namespace Supremacy.Effects
 
         private void DetachDescription()
         {
-            var observableDescription = _description as INotifyPropertyChanged;
-            if (observableDescription == null)
+            if (!(_description is INotifyPropertyChanged observableDescription))
+            {
                 return;
+            }
 
             observableDescription.PropertyChanged -= OnDescriptionPropertyChanged;
         }
@@ -228,7 +217,9 @@ namespace Supremacy.Effects
             lock (EffectSystem.SyncRoot)
             {
                 if (!_isAttached)
+                {
                     return;
+                }
 
                 GameLog.Core.General.DebugFormat(
                     "Detaching effect to object {{{0}}}: {1}",
@@ -249,52 +240,54 @@ namespace Supremacy.Effects
 
         #region INotifyPropertyChanged Members
 
-        [field: NonSerializedAttribute]
+        [field: NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeCombine)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeRemove)
+                    {
                         return;
+                    }
                 }
             }
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

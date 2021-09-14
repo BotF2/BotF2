@@ -19,50 +19,50 @@ namespace Supremacy.Client.Views
     {
         public ColonyScreenView([NotNull] IUnityContainer container) : base(container)
         {
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.PreviousColonyCommand,
                     Key.Left,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.NextColonyCommand,
                     Key.Right,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.PreviousColonyCommand,
                     Key.BrowserBack,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.NextColonyCommand,
                     Key.BrowserForward,
                     ModifierKeys.None));
 
             // ToDo: Numeric 1 to 4  should toggles between Tab 1 to 4  (not done yet)
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.NextColonyCommand,
                     Key.D1,
                     ModifierKeys.Control));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.NextColonyCommand,
                     Key.D2,
                     ModifierKeys.Control));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.NextColonyCommand,
                     Key.D3,
                     ModifierKeys.Control));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     ColonyScreenCommands.NextColonyCommand,
                     Key.D3,

@@ -34,37 +34,43 @@ namespace Supremacy.Client.Behaviors
 
         private static void OnVisibilityGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var scopeBehavior = d as VisibilityGroupScopeBehavior;
-            if (scopeBehavior != null)
+            if (d is VisibilityGroupScopeBehavior scopeBehavior)
             {
                 scopeBehavior.ClearVisibilityBindings();
                 scopeBehavior.AddVisibilityBindings();
                 return;
             }
 
-            var element = d as UIElement;
-            if (element == null)
+            if (!(d is UIElement element))
+            {
                 return;
+            }
 
-            var oldScope = GetVisibilityGroupScope(element);
-            var newGroup = e.NewValue as string;
+            VisibilityGroupScopeBehavior oldScope = GetVisibilityGroupScope(element);
+            string newGroup = e.NewValue as string;
 
             if (oldScope != null && oldScope.VisibilityGroup != newGroup)
+            {
                 oldScope.ClearVisibilityBindings(element);
+            }
 
             if (newGroup == null)
+            {
                 return;
+            }
 
-            var newScopeElement = element.FindVisualAncestorsByType<FrameworkElement>(
+            FrameworkElement newScopeElement = element.FindVisualAncestorsByType<FrameworkElement>(
                 includeStartElement: true,
                 predicate: o => GetHasVisibilityGroupScope(o) &&
                                 Interaction.GetBehaviors(o).OfType<VisibilityGroupScopeBehavior>().Any(b => b.VisibilityGroup == newGroup))
                 .FirstOrDefault();
 
             if (newScopeElement == null || !newScopeElement.IsLoaded)
+            {
                 return;
+            }
 
-            var newScope = Interaction
+            VisibilityGroupScopeBehavior newScope = Interaction
                 .GetBehaviors(newScopeElement)
                 .OfType<VisibilityGroupScopeBehavior>()
                 .First(b => b.VisibilityGroup == newGroup);
@@ -130,16 +136,16 @@ namespace Supremacy.Client.Behaviors
 
         public Visibility Visibility
         {
-            get { return (Visibility)GetValue(VisibilityProperty); }
-            set { SetValue(VisibilityProperty, value); }
+            get => (Visibility)GetValue(VisibilityProperty);
+            set => SetValue(VisibilityProperty, value);
         }
 
         #endregion
 
         public string VisibilityGroup
         {
-            get { return (string)GetValue(VisibilityGroupProperty); }
-            set { SetValue(VisibilityGroupProperty, value); }
+            get => (string)GetValue(VisibilityGroupProperty);
+            set => SetValue(VisibilityGroupProperty, value);
         }
 
         protected override void OnAttached()
@@ -152,7 +158,9 @@ namespace Supremacy.Client.Behaviors
             AssociatedObject.Unloaded += OnAssociatedObjectUnloaded;
 
             if (AssociatedObject.IsLoaded)
+            {
                 AddVisibilityBindings();
+            }
         }
 
         protected override void OnDetaching()
@@ -178,11 +186,11 @@ namespace Supremacy.Client.Behaviors
 
         private void ClearVisibilityBindings()
         {
-            var scopedElements = _scopedElements.ToArray();
+            UIElement[] scopedElements = _scopedElements.ToArray();
 
-            for (var i = scopedElements.Length - 1; i >= 0; i--)
+            for (int i = scopedElements.Length - 1; i >= 0; i--)
             {
-                var scopedElement = scopedElements[i];
+                UIElement scopedElement = scopedElements[i];
                 ClearVisibilityBindings(scopedElement);
             }
         }
@@ -190,35 +198,43 @@ namespace Supremacy.Client.Behaviors
         private void ClearVisibilityBindings(UIElement target)
         {
             if (GetVisibilityGroupScope(target) != this)
+            {
                 return;
+            }
 
-            var binding = BindingOperations.GetBinding(target, UIElement.VisibilityProperty);
+            Binding binding = BindingOperations.GetBinding(target, UIElement.VisibilityProperty);
             if (binding != null && binding.Source == this)
+            {
                 BindingOperations.ClearBinding(target, UIElement.VisibilityProperty);
+            }
 
             ClearVisibilityGroupScope(target);
 
-            _scopedElements.Remove(target);
+            _ = _scopedElements.Remove(target);
         }
 
         private void AddVisibilityBindings()
         {
             if (AssociatedObject == null || VisibilityGroup == null)
+            {
                 return;
+            }
 
             Debug.Assert(_scopedElements.Count == 0, "Illegal state for VisibilityGroupScope: _scopedElements.Count != 0");
 
-            var descendants = AssociatedObject.FindVisualDescendantsByType<UIElement>(
+            IEnumerable<UIElement> descendants = AssociatedObject.FindVisualDescendantsByType<UIElement>(
                 includeStartElement: false,
                 predicate: o => GetVisibilityGroup(o) == VisibilityGroup);
 
-            foreach (var descendant in descendants)
+            foreach (UIElement descendant in descendants)
+            {
                 AddVisibilityBindings(descendant);
+            }
         }
 
         private void AddVisibilityBindings(UIElement target)
         {
-            BindingOperations.SetBinding(
+            _ = BindingOperations.SetBinding(
                 target,
                 UIElement.VisibilityProperty,
                 new Binding

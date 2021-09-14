@@ -55,10 +55,7 @@ namespace Supremacy.Universe
         /// Gets the map location of this <see cref="Sector"/>.
         /// </summary>
         /// <value>The map location.</value>
-        public MapLocation Location
-        {
-            get { return _location; }
-        }
+        public MapLocation Location => _location;
 
         /// <summary>
         /// Gets the system located in this <see cref="Sector"/>.
@@ -66,7 +63,7 @@ namespace Supremacy.Universe
         /// <value>The system.</value>
         public StarSystem System
         {
-            get { return _system.Value; }
+            get => _system.Value;
             internal set
             {
                 _system = new Lazy<StarSystem>(() => value);
@@ -84,7 +81,7 @@ namespace Supremacy.Universe
         /// <value>The station.</value>
         public Station Station
         {
-            get { return _station.Value; }
+            get => _station.Value;
             internal set
             {
                 _station = new Lazy<Station>(() => value);
@@ -100,23 +97,24 @@ namespace Supremacy.Universe
             get
             {
                 if (System == null || System.Colony == null)
+                {
                     return 99;
+                }
 
-                Table popReqTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopReq"];
-                Table popModTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
+                Table popReqTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopReq"];
+                //Table popModTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopMultipliers"];
 
                 int popForTradeRoute;
 
-                var civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
 
                 /*
                  * See what the minimum population level is for a new trade route for the
                  * current civilization.  If one is not specified, use the default.
                  */
-                if (popReqTable[civManager.Civilization.Key] != null)
-                    popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
-                else
-                    popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
+                popForTradeRoute = popReqTable[civManager.Civilization.Key] != null
+                    ? Number.ParseInt32(popReqTable[civManager.Civilization.Key][0])
+                    : Number.ParseInt32(popReqTable[0][0]);
 
                 int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;
 
@@ -133,9 +131,11 @@ namespace Supremacy.Universe
         {
             get
             {
-                var system = System;
+                StarSystem system = System;
                 if (system != null)
+                {
                     return system.Name;
+                }
 
                 return string.Format("({0}, {1})", _location.X, _location.Y);
             }
@@ -145,19 +145,13 @@ namespace Supremacy.Universe
         /// Gets a value indicating whether this <see cref="Sector"/> is owned.
         /// </summary>
         /// <value><c>true</c> if this <see cref="Sector"/> is owned; otherwise, <c>false</c>.</value>
-        public bool IsOwned
-        {
-            get { return (Owner != null); }
-        }
+        public bool IsOwned => Owner != null;
 
         /// <summary>
         /// Gets the owner of this <see cref="Sector"/>.
         /// </summary>
         /// <value>The owner.</value>
-        public Civilization Owner
-        {
-            get { return this.GetOwner(); }
-        }
+        public Civilization Owner => this.GetOwner();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sector"/> class.
@@ -198,12 +192,12 @@ namespace Supremacy.Universe
         /// <returns>The neighboring <see cref="Sector"/>s.</returns>
         public IIndexedEnumerable<Sector> GetNeighbors()
         {
-            var mapDirections = EnumHelper.GetValues<MapDirection>();
-            var neighbors = new Sector[mapDirections.Length];
-            
-            var count = 0;
+            MapDirection[] mapDirections = EnumHelper.GetValues<MapDirection>();
+            Sector[] neighbors = new Sector[mapDirections.Length];
 
-            mapDirections
+            int count = 0;
+
+            _ = mapDirections
                 .Select(GetNeighbor)
                 .Where(neighbor => neighbor != null)
                 .ForEach(
@@ -269,7 +263,7 @@ namespace Supremacy.Universe
                 return null;
             }
 
-            var location = new MapLocation(
+            MapLocation location = new MapLocation(
                 _location.X + dx,
                 _location.Y + dy);
 
@@ -294,13 +288,15 @@ namespace Supremacy.Universe
         /// <c>true</c> if <paramref name="sector"/> is equal to this <see cref="Sector"/>;
         /// otherwise, <c>false</c>.
         /// </returns>
-        
+
         public virtual bool Equals(Sector sector)
         {
-            if (ReferenceEquals(sector, null))
+            if (sector is null)
+            {
                 return false;
+            }
 
-            return (sector._location == _location); //&& sector._station == _station && sector._system == _system);
+            return sector._location == _location; //&& sector._station == _station && sector._system == _system);
         }
 
         /// <summary>
@@ -324,10 +320,16 @@ namespace Supremacy.Universe
         public static bool operator ==(Sector a, Sector b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            }
+
+            if (a is null || b is null)
+            {
                 return false;
-            return (a._location == b._location);
+            }
+
+            return a._location == b._location;
         }
 
         /// <summary>
@@ -339,10 +341,16 @@ namespace Supremacy.Universe
         public static bool operator !=(Sector a, Sector b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return false;
-            if (((object)a == null) || ((object)b == null))
+            }
+
+            if ((a is null) || (b is null))
+            {
                 return true;
-            return (a._location != b._location);
+            }
+
+            return a._location != b._location;
         }
 
         /// <summary>
@@ -358,7 +366,7 @@ namespace Supremacy.Universe
             return Equals(obj as Sector);
         }
 
-    
+
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
@@ -376,9 +384,7 @@ namespace Supremacy.Universe
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }
@@ -388,19 +394,25 @@ namespace Supremacy.Universe
         public static Civilization GetOwner([NotNull] this Sector sector)
         {
             if (sector == null)
-                throw new ArgumentNullException("sector");
-
-            var system = sector.System;
-            if (system != null)
             {
-                var colony = system.Colony;
-                if (colony != null)
-                    return colony.Owner;
+                throw new ArgumentNullException("sector");
             }
 
-            var station = sector.Station;
+            StarSystem system = sector.System;
+            if (system != null)
+            {
+                Colony colony = system.Colony;
+                if (colony != null)
+                {
+                    return colony.Owner;
+                }
+            }
+
+            Station station = sector.Station;
             if (station != null)
+            {
                 return station.Owner;
+            }
 
             return null;
         }
@@ -408,7 +420,9 @@ namespace Supremacy.Universe
         public static IEnumerable<Fleet> GetFleets([NotNull] this Sector sector)
         {
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
 
             return GameContext.Current.Universe.FindAt<Fleet>(sector.Location);
         }
@@ -416,9 +430,14 @@ namespace Supremacy.Universe
         public static IEnumerable<Fleet> GetOwnedFleets([NotNull] this Sector sector, [NotNull] Civilization civ)
         {
             if (sector == null)
+            {
                 throw new ArgumentNullException("sector");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             return GameContext.Current.Universe.FindAt<Fleet>(sector.Location)
                 .Where(f => f.Owner == civ);

@@ -39,15 +39,17 @@ namespace Supremacy.Client.Controls
 
         public RoundMode HorizontalRoundMode
         {
-            get { return (RoundMode)GetValue(HorizontalRoundModeProperty); }
-            set { SetValue(HorizontalRoundModeProperty, value); }
+            get => (RoundMode)GetValue(HorizontalRoundModeProperty);
+            set => SetValue(HorizontalRoundModeProperty, value);
         }
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var child = Child;
+            UIElement child = Child;
             if (child == null)
+            {
                 return new Size();
+            }
 
             child.Measure(constraint);
 
@@ -58,8 +60,8 @@ namespace Supremacy.Client.Controls
 
         public RoundMode VerticalRoundMode
         {
-            get { return (RoundMode)GetValue(VerticalRoundModeProperty); }
-            set { SetValue(VerticalRoundModeProperty, value); }
+            get => (RoundMode)GetValue(VerticalRoundModeProperty);
+            set => SetValue(VerticalRoundModeProperty, value);
         }
     }
 }

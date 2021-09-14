@@ -19,16 +19,12 @@ namespace Supremacy.Scripting.Events
     {
 
         private int _occurrenceChance = 200;
-        public override bool CanExecute
-        {
-            get { return _occurrenceChance > 0 && base.CanExecute; }
-        }
+        public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -46,25 +42,25 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations  && GameContext.Current.TurnNumber >30)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 30)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
                         c.IsEmpire &&
                         c.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     if (GameContext.Current.TurnNumber < 400)
                     {
@@ -72,11 +68,11 @@ namespace Supremacy.Scripting.Events
                         {
                             return;
                         }
-                    }                    
-                    var targetCiv = target.Owner;
+                    }
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    var population = target.Population.CurrentValue;
-                    var health = target.Health.CurrentValue;
+                    int population = target.Population.CurrentValue;
+                    int health = target.Health.CurrentValue;
 
                     GameLog.Core.Events.DebugFormat("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
 
@@ -92,9 +88,9 @@ namespace Supremacy.Scripting.Events
                     }
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    target.Population.AdjustCurrent(- (population / 3));
+                    _ = target.Population.AdjustCurrent(-(population / 3));
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(- (health / 2));
+                    _ = target.Health.AdjustCurrent(-(health / 2));
                     target.Health.UpdateAndReset();
 
                     GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);

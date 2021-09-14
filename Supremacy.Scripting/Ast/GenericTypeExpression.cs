@@ -155,7 +155,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             sw.Write(TypeManager.GetCSharpName(ReflectionUtils.GetNormalizedTypeName(_openType), _openType));
-            
+
             sw.Write("<");
 
             int i = 0;

@@ -25,13 +25,13 @@ namespace Supremacy.Utility
     {
         public static object NextEnum(Type enumType)
         {
-            var values = Enum.GetValues(enumType);
+            Array values = Enum.GetValues(enumType);
             return values.GetValue(RandomProvider.Shared.Next(values.Length));
         }
 
         public static T NextEnum<T>() where T : struct
         {
-            var values = GetValues<T>();
+            EnumValueCollection<T> values = GetValues<T>();
             return values[RandomProvider.Shared.Next(values.Count)];
         }
 
@@ -41,30 +41,37 @@ namespace Supremacy.Utility
 
         private static CacheEntry<T> GetEntry<T>() where T : struct
         {
-            var type = typeof(T);
+            Type type = typeof(T);
 
             if (!type.IsEnum)
+            {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName));
+            }
 
-            object value;
 
-            var cache = _cache;
-            if (cache.TryGetValue(type, out value))
+            Dictionary<Type, object> cache = _cache;
+            if (cache.TryGetValue(type, out object value))
+            {
                 return (CacheEntry<T>)value;
+            }
 
-            var newEntry = new CacheEntry<T>();
+            CacheEntry<T> newEntry = new CacheEntry<T>();
 
             while (true)
             {
-                var newCache = new Dictionary<Type, object>(cache) { { type, newEntry } };
-                
+                Dictionary<Type, object> newCache = new Dictionary<Type, object>(cache) { { type, newEntry } };
+
                 if (Interlocked.CompareExchange(ref _cache, newCache, cache) == cache)
+                {
                     return newEntry;
+                }
 
                 cache = _cache;
-                
+
                 if (cache.TryGetValue(type, out value))
+                {
                     return (CacheEntry<T>)value;
+                }
             }
         }
 
@@ -97,24 +104,24 @@ namespace Supremacy.Utility
 
         public static string GetName<T>(T value) where T : struct
         {
-            var cacheEntry = GetEntry<T>();
-            var ordinal = cacheEntry.OrdinalLookup[value];
+            CacheEntry<T> cacheEntry = GetEntry<T>();
+            int ordinal = cacheEntry.OrdinalLookup[value];
 
             return cacheEntry.Names[ordinal];
         }
 
         public static FieldInfo GetField<T>(T value) where T : struct
         {
-            var cacheEntry = GetEntry<T>();
-            var ordinal = cacheEntry.OrdinalLookup[value];
+            CacheEntry<T> cacheEntry = GetEntry<T>();
+            int ordinal = cacheEntry.OrdinalLookup[value];
 
             return cacheEntry.Fields[ordinal];
         }
 
         public static AttributeCollection GetAttributes<T>(T value) where T : struct
         {
-            var cacheEntry = GetEntry<T>();
-            var ordinal = cacheEntry.OrdinalLookup[value];
+            CacheEntry<T> cacheEntry = GetEntry<T>();
+            int ordinal = cacheEntry.OrdinalLookup[value];
 
             return cacheEntry.ValueAttributes[ordinal];
         }
@@ -127,7 +134,9 @@ namespace Supremacy.Utility
         public static ulong ToUInt64<T>(T value) where T : struct
         {
             if (!typeof(T).IsEnum)
+            {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", typeof(T).FullName));
+            }
 
             return ToUInt64Internal(value);
         }
@@ -141,20 +150,20 @@ namespace Supremacy.Utility
                 case TypeCode.Boolean:
                 case TypeCode.SByte:
                 case TypeCode.Byte:
-                    return **((byte**)&r);
+                    return **(byte**)&r;
 
                 case TypeCode.Char:
                 case TypeCode.Int16:
                 case TypeCode.UInt16:
-                    return **((ushort**)&r);
+                    return **(ushort**)&r;
 
                 case TypeCode.Int32:
                 case TypeCode.UInt32:
-                    return **((uint**)&r);
+                    return **(uint**)&r;
 
                 case TypeCode.Int64:
                 case TypeCode.UInt64:
-                    return **((ulong**)&r);
+                    return **(ulong**)&r;
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -163,7 +172,7 @@ namespace Supremacy.Utility
 
         #region CacheEntry Class
 
-        private sealed class CacheEntry<T> where T : struct 
+        private sealed class CacheEntry<T> where T : struct
         {
             public readonly T[] Values;
             public readonly string[] Names;
@@ -185,18 +194,18 @@ namespace Supremacy.Utility
                 TypeAttributes = new AttributeCollection(Attribute.GetCustomAttribute(typeof(T), typeof(Attribute), false));
                 IsFlagType = TypeAttributes.Matches(new FlagsAttribute());
 
-                var valueCount = Values.Length;
+                int valueCount = Values.Length;
 
                 Fields = new FieldInfo[valueCount];
                 RawValues = new ulong[valueCount];
                 ValueAttributes = new AttributeCollection[valueCount];
 
-                var fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static).ToDictionary(f => f.Name);
+                Dictionary<string, FieldInfo> fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static).ToDictionary(f => f.Name);
 
-                for (var i = 0; i < Names.Length; i++)
+                for (int i = 0; i < Names.Length; i++)
                 {
-                    var value = Values[i];
-                    var field = fields[Names[i]];
+                    T value = Values[i];
+                    FieldInfo field = fields[Names[i]];
 
                     RawValues[i] = ToUInt64Internal(value);
                     Fields[i] = field;

@@ -35,20 +35,18 @@ namespace Supremacy.Client.Controls
         #region Constructors and Finalizers
         protected InfoCardSubject([NotNull] Func<object> dataResolver)
         {
-            if (dataResolver == null)
-                throw new ArgumentNullException("dataResolver");
-            DataResolver = dataResolver;
+            DataResolver = dataResolver ?? throw new ArgumentNullException("dataResolver");
         }
 
         protected InfoCardSubject() { }
         #endregion
 
         #region Properties
-        
+
         #region DataResolver Property
         protected Func<object> DataResolver
         {
-            get { return _dataResolver; }
+            get => _dataResolver;
             set
             {
                 _dataResolver = value;
@@ -79,33 +77,34 @@ namespace Supremacy.Client.Controls
 
         private object CoerceData()
         {
-            var dataResolver = DataResolver;
+            Func<object> dataResolver = DataResolver;
             if (dataResolver == null)
+            {
                 return null;
+            }
+
             return dataResolver();
         }
 
         public static readonly DependencyProperty DataProperty = DataPropertyKey.DependencyProperty;
 
-        public object Data
-        {
-            get { return GetValue(DataProperty); }
-        }
+        public object Data => GetValue(DataProperty);
         #endregion
 
         public event EventHandler DataChanged;
 
         private void OnDataChanged()
         {
-            var handler = DataChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            DataChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public bool Matches(InfoCard infoCard)
         {
             if (infoCard == null)
+            {
                 return false;
+            }
+
             return Equals(infoCard.DataContext, Data);
         }
 
@@ -137,7 +136,7 @@ namespace Supremacy.Client.Controls
 
         public UniverseObject Target
         {
-            set { SetValue(TargetProperty, value); }
+            set => SetValue(TargetProperty, value);
         }
         #endregion
 
@@ -152,7 +151,10 @@ namespace Supremacy.Client.Controls
         protected static Func<object> CreateDataResolver(UniverseObject target)
         {
             if (target == null)
+            {
                 return () => null;
+            }
+
             return () => GameContext.Current.Universe.Objects[target.ObjectID];
         }
     }

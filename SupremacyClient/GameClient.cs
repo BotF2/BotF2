@@ -15,7 +15,6 @@ using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Combat;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Messages;
 using Supremacy.Messaging;
 using Supremacy.Utility;
@@ -42,10 +41,7 @@ namespace Supremacy.Client
 
         public GameClientCallback([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-
-            _appContext = appContext;
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
             _gameUpdateWaitHandle = new AutoResetEvent(false);
             _localPlayerJoinedWaitHandle = new ManualResetEvent(false);
             _scheduler = Scheduler.ClientEventLoop;
@@ -54,42 +50,42 @@ namespace Supremacy.Client
         #region Implementation of ISupremacyCallback
         public void NotifyOnJoin(Player localPlayer, LobbyData lobbyData)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () =>
                 {
                     ClientEvents.LocalPlayerJoined.Publish(new LocalPlayerJoinedEventArgs(localPlayer, lobbyData));
-                    _localPlayerJoinedWaitHandle.Set();
+                    _ = _localPlayerJoinedWaitHandle.Set();
                     ClientEvents.PlayerJoined.Publish(new ClientDataEventArgs<IPlayer>(localPlayer));
                 },
                 _scheduler)();
-            
+
             //ClientEvents.LobbyUpdated.Publish(new ClientDataEventArgs<ILobbyData>(lobbyData));
         }
 
         public void NotifyPlayerJoined(Player player)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.PlayerJoined.Publish(new ClientDataEventArgs<IPlayer>(player)),
                 _scheduler)();
         }
 
         public void NotifyPlayerExited(Player player)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.PlayerExited.Publish(new ClientDataEventArgs<IPlayer>(player)),
                 _scheduler)();
         }
 
         public void NotifyGameStarting()
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.GameStarting.Publish(ClientEventArgs.Default),
                 _scheduler)();
         }
 
         public void NotifyGameStarted(GameStartMessage startMessage)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () =>
                 {
                     ClientEvents.GameStarted.Publish(new ClientDataEventArgs<GameStartData>(startMessage.Data));
@@ -101,7 +97,7 @@ namespace Supremacy.Client
 
         public void NotifyTurnProgressChanged(TurnPhase phase)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () =>
                 {
                     Channel.Publish(new TurnProgressChangedMessage(phase));
@@ -112,21 +108,21 @@ namespace Supremacy.Client
 
         public void NotifyGameDataUpdated(GameUpdateMessage updateMessage)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.GameUpdateDataReceived.Publish(new ClientDataEventArgs<GameUpdateData>(updateMessage.Data)),
                 _scheduler)();
         }
 
         public void NotifyAllTurnEnded()
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.AllTurnEnded.Publish(new GameContextEventArgs(_appContext, _appContext.CurrentGame)),
                 _scheduler)();
         }
 
         public void NotifyTurnFinished()
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () =>
                 {
                     Channel.Publish(new TurnStartedMessage());
@@ -137,15 +133,17 @@ namespace Supremacy.Client
 
         public void NotifyChatMessageReceived(int senderId, string message, int recipientId)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () =>
                 {
-                    var sender = GetPlayerFromID(senderId);
+                    IPlayer sender = GetPlayerFromID(senderId);
                     if (sender == null)
+                    {
                         return;
-                    
-                    var recipient = GetPlayerFromID(recipientId);
-                    
+                    }
+
+                    IPlayer recipient = GetPlayerFromID(recipientId);
+
                     ClientEvents.ChatMessageReceived.Publish(
                         new ClientDataEventArgs<ChatMessage>(
                             new ChatMessage(sender, message, recipient)));
@@ -155,60 +153,68 @@ namespace Supremacy.Client
 
         private IPlayer GetPlayerFromID(int senderId)
         {
-            var localPlayer = _appContext.LocalPlayer;
+            IPlayer localPlayer = _appContext.LocalPlayer;
             if ((localPlayer != null) && (localPlayer.PlayerID == senderId))
+            {
                 return localPlayer;
+            }
+
             return _appContext.RemotePlayers.FirstOrDefault(o => o.PlayerID == senderId);
         }
 
         public void NotifyLobbyUpdated(LobbyData lobbyData)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.LobbyUpdated.Publish(new ClientDataEventArgs<ILobbyData>(lobbyData)),
                 _scheduler)();
         }
 
         public void NotifyDisconnected()
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () =>
                 {
-                    var client = Client;
+                    IGameClient client = Client;
                     if (client != null)
+                    {
                         client.Disconnect();
+                    }
                 },
                 _scheduler)();
         }
 
         public void Ping()
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.ServerHeartbeat.Publish(ClientEventArgs.Default),
                 _scheduler)();
         }
 
         public void NotifyCombatUpdate(CombatUpdate update)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.CombatUpdateReceived.Publish(new ClientDataEventArgs<CombatUpdate>(update)),
                 _scheduler)();
         }
 
         public void NotifyInvasionUpdate(InvasionArena update)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () => ClientEvents.InvasionUpdateReceived.Publish(new ClientDataEventArgs<InvasionArena>(update)),
                 _scheduler)();
         }
 
         public void NotifyPlayerFinishedTurn(int empireId)
         {
-            Observable.ToAsync(
+            _ = Observable.ToAsync(
                 () =>
                 {
-                    var player = _appContext.Players.FirstOrDefault(o => o.EmpireID == empireId);
+                    IPlayer player = _appContext.Players.FirstOrDefault(o => o.EmpireID == empireId);
                     if (player == null)
+                    {
                         return;
+                    }
+
                     Channel.Publish(new PlayerTurnFinishedMessage(player), true);
                     ClientEvents.PlayerTurnFinished.Publish(new ClientDataEventArgs<IPlayer>(player));
                 },
@@ -220,8 +226,8 @@ namespace Supremacy.Client
         public void Dispose()
         {
             Client = null;
-            _localPlayerJoinedWaitHandle.Set();
-            _gameUpdateWaitHandle.Set();
+            _ = _localPlayerJoinedWaitHandle.Set();
+            _ = _gameUpdateWaitHandle.Set();
         }
         #endregion
     }
@@ -243,7 +249,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<CombatOrders> _sendCombatOrdersCommand;
         private readonly DelegateCommand<CombatTargetPrimaries> _sendCombatTarget1Command;
         private readonly DelegateCommand<CombatTargetSecondaries> _sendCombatTarget2Command;
-       // private readonly DelegateCommand<IntelOrders> _sendIntelOrdersCommand;
+        // private readonly DelegateCommand<IntelOrders> _sendIntelOrdersCommand;
         private readonly DelegateCommand<InvasionOrders> _sendInvasionOrdersCommand;
         private readonly DelegateCommand<object> _endInvasionCommand;
         private readonly DelegateCommand<string> _saveGameCommand;
@@ -262,20 +268,15 @@ namespace Supremacy.Client
         private bool _isDisposed;
 
         public GameClient(
-            [NotNull] ISupremacyCallback clientCallback, 
+            [NotNull] ISupremacyCallback clientCallback,
             [NotNull] IPlayerOrderService playerOrderService)
-            //[NotNull] IPlayerTarget1Service playerTarget1Service,
-            //[NotNull] IPlayerTarget2Service playerTarget2Service)
+        //[NotNull] IPlayerTarget1Service playerTarget1Service,
+        //[NotNull] IPlayerTarget2Service playerTarget2Service)
         {
-            if (clientCallback == null)
-                throw new ArgumentNullException("clientCallback");
-            if (playerOrderService == null)
-                throw new ArgumentNullException("playerOrderService");
-
             _clientLock = new object();
             _eventLock = new object();
-            _playerOrderService = playerOrderService;
-            _clientCallback = clientCallback;
+            _playerOrderService = playerOrderService ?? throw new ArgumentNullException("playerOrderService");
+            _clientCallback = clientCallback ?? throw new ArgumentNullException("clientCallback");
             _scheduler = Scheduler.ClientEventLoop;
 
             ((GameClientCallback)_clientCallback).Client = this;
@@ -284,7 +285,7 @@ namespace Supremacy.Client
             _sendCombatOrdersCommand = new DelegateCommand<CombatOrders>(ExecuteSendCombatOrdersCommand) { IsActive = true };
             _sendCombatTarget1Command = new DelegateCommand<CombatTargetPrimaries>(ExecuteSendCombatTarget1Command) { IsActive = true };
             _sendCombatTarget2Command = new DelegateCommand<CombatTargetSecondaries>(ExecuteSendCombatTarget2Command) { IsActive = true };
-           // _sendIntelOrdersCommand = new DelegateCommand<IntelOrders>(ExecuteSendIntelOrdersCommand) { IsActive = true };
+            // _sendIntelOrdersCommand = new DelegateCommand<IntelOrders>(ExecuteSendIntelOrdersCommand) { IsActive = true };
             _sendInvasionOrdersCommand = new DelegateCommand<InvasionOrders>(ExecuteSendInvasionOrdersCommand) { IsActive = true };
             _endInvasionCommand = new DelegateCommand<object>(ExecuteEndInvasionCommand) { IsActive = true };
             _saveGameCommand = new DelegateCommand<string>(ExecuteSaveGameCommand) { IsActive = false };
@@ -320,18 +321,24 @@ namespace Supremacy.Client
             ExecuteRemoteCommand(() => _serviceClient.AssignPlayerSlot(slotAndPlayerId.First, slotAndPlayerId.Second));
         }
 
-        protected void ExecuteRemoteCommand(Action remoteCommand) {
+        protected void ExecuteRemoteCommand(Action remoteCommand)
+        {
             ServiceClient serviceClient;
 
             lock (_clientLock)
             {
                 if (!_isConnected)
+                {
                     return;
+                }
+
                 serviceClient = _serviceClient;
             }
 
             if (serviceClient == null)
+            {
                 return;
+            }
 
             try
             {
@@ -366,9 +373,14 @@ namespace Supremacy.Client
         public void Connect([NotNull] string playerName, [NotNull] IPAddress remoteServerAddress)
         {
             if (playerName == null)
+            {
                 throw new ArgumentNullException("playerName");
+            }
+
             if (remoteServerAddress == null)
+            {
                 throw new ArgumentNullException("remoteServerAddress");
+            }
 
             CheckDisposed();
 
@@ -376,7 +388,7 @@ namespace Supremacy.Client
             {
                 _serviceClient = new ServiceClient(
                         new InstanceContext(_clientCallback),
-                        String.Empty,
+                        string.Empty,
                         string.Format(RemoteAddressFormat, remoteServerAddress));
 
                 _serviceClient.InnerChannel.Closed += OnChannelClosed;
@@ -393,13 +405,13 @@ namespace Supremacy.Client
 
                 OnConnected();
 
-                var operationFailed = false;
+                bool operationFailed = false;
 
-                var joinGameResult = _serviceClient.JoinGame(playerName, out Player localPlayer, out LobbyData lobbyData);
+                JoinGameResult joinGameResult = _serviceClient.JoinGame(playerName, out Player localPlayer, out LobbyData lobbyData);
                 switch (joinGameResult)
                 {
                     case JoinGameResult.Success:
-                        Observable.ToAsync(
+                        _ = Observable.ToAsync(
                             () => ClientEvents.LobbyUpdated.Publish(new ClientDataEventArgs<ILobbyData>(lobbyData)),
                             _scheduler)();
                         break;
@@ -423,7 +435,9 @@ namespace Supremacy.Client
                 }
 
                 if (operationFailed)
+                {
                     Disconnect();
+                }
             }
             catch
             {
@@ -435,7 +449,9 @@ namespace Supremacy.Client
         protected void CheckDisposed()
         {
             if (_isDisposed)
+            {
                 throw new ObjectDisposedException("GameClient");
+            }
         }
 
         private void OnChannelClosed(object sender, EventArgs e)
@@ -443,21 +459,34 @@ namespace Supremacy.Client
             lock (_clientLock)
             {
                 if (!_connectionEstablished)
+                {
                     return;
+                }
             }
             if (_isDisconnecting)
+            {
                 return;
+            }
+
             if (!_disconnectReason.HasValue)
+            {
                 _disconnectReason = ClientDisconnectReason.ConnectionClosed;
+            }
+
             Disconnect();
         }
 
         public void HostAndConnect(GameInitData initData, IPAddress remoteServerAddress)
         {
             if (initData == null)
+            {
                 throw new ArgumentNullException("initData");
+            }
+
             if (remoteServerAddress == null)
+            {
                 throw new ArgumentNullException("remoteServerAddress");
+            }
 
             CheckDisposed();
 
@@ -482,13 +511,13 @@ namespace Supremacy.Client
 
                 bool operationFailed = false;
 
-                var hostGameResult = _serviceClient.HostGame(initData, out Player localPlayer, out LobbyData lobbyData);
+                HostGameResult hostGameResult = _serviceClient.HostGame(initData, out Player localPlayer, out LobbyData lobbyData);
 
                 switch (hostGameResult)
                 {
                     case HostGameResult.Success:
                         _saveGameCommand.IsActive = true;
-                        Observable.ToAsync(
+                        _ = Observable.ToAsync(
                             () => ClientEvents.LobbyUpdated.Publish(new ClientDataEventArgs<ILobbyData>(lobbyData)),
                             _scheduler)();
                         break;
@@ -509,7 +538,9 @@ namespace Supremacy.Client
                 }
 
                 if (operationFailed)
+                {
                     Disconnect();
+                }
             }
             catch
             {
@@ -528,7 +559,9 @@ namespace Supremacy.Client
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisconnecting = true;
 
@@ -541,7 +574,10 @@ namespace Supremacy.Client
                 lock (_clientLock)
                 {
                     if (_isConnected && !_disconnectReason.HasValue)
+                    {
                         _disconnectReason = ClientDisconnectReason.Disconnected;
+                    }
+
                     _isConnected = false;
                     serviceClient = Interlocked.Exchange(ref _serviceClient, null);
                 }
@@ -560,7 +596,7 @@ namespace Supremacy.Client
                         GameLog.Client.General.Error(e);
                     }
 
-            if (!serviceClient.IsClosed)
+                    if (!serviceClient.IsClosed)
                     {
                         try
                         {
@@ -575,14 +611,16 @@ namespace Supremacy.Client
                         {
                             serviceClient.Close();
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             GameLog.Client.General.Error(e);
                         }
                     }
-                    
+
                     if (_connectionEstablished)
+                    {
                         OnDisconnected();
+                    }
                 }
 
                 ((GameClientCallback)_clientCallback).Dispose();
@@ -598,9 +636,7 @@ namespace Supremacy.Client
         {
             HookCommandAndEventHandlers();
 
-            var handler = Connected;
-            if (handler != null)
-                handler(ClientEventArgs.Default);
+            Connected?.Invoke(ClientEventArgs.Default);
         }
 
         private void HookCommandAndEventHandlers()
@@ -608,13 +644,15 @@ namespace Supremacy.Client
             lock (_eventLock)
             {
                 if (_eventAndCommandHandlersHooked)
+                {
                     return;
+                }
 
                 ClientCommands.SendChatMessage.RegisterCommand(_sendChatMessageCommand);
                 ClientCommands.SendCombatOrders.RegisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.RegisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.RegisterCommand(_sendCombatTarget2Command);
-               // ClientCommands.SendIntelOrders.RegisterCommand(_sendIntelOrdersCommand);
+                // ClientCommands.SendIntelOrders.RegisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.RegisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.RegisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.RegisterCommand(_saveGameCommand);
@@ -624,10 +662,10 @@ namespace Supremacy.Client
                 ClientCommands.StartMultiplayerGame.RegisterCommand(_startMultiplayerGameCommand);
                 ClientCommands.SendUpdatedGameOptions.RegisterCommand(_sendUpdatedGameOptionsCommand);
 
-                ClientEvents.TurnEnded.Subscribe(OnTurnEnded, ThreadOption.BackgroundThread);
-                ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.BackgroundThread);
-                ClientEvents.ServerHeartbeat.Subscribe(OnServerHeartbeat, ThreadOption.BackgroundThread);
-                ClientEvents.GameObjectIDRequested.Subscribe(OnGameObjectIDRequested, ThreadOption.BackgroundThread);
+                _ = ClientEvents.TurnEnded.Subscribe(OnTurnEnded, ThreadOption.BackgroundThread);
+                _ = ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.BackgroundThread);
+                _ = ClientEvents.ServerHeartbeat.Subscribe(OnServerHeartbeat, ThreadOption.BackgroundThread);
+                _ = ClientEvents.GameObjectIDRequested.Subscribe(OnGameObjectIDRequested, ThreadOption.BackgroundThread);
 
                 _eventAndCommandHandlersHooked = true;
             }
@@ -636,14 +674,17 @@ namespace Supremacy.Client
         private void OnGameObjectIDRequested(GameObjectIDRequestEventArgs args)
         {
             if (args == null)
+            {
                 return;
+            }
+
             ExecuteRemoteCommand(() => args.Value = _serviceClient.GetNewObjectID());
-            args.WaitHandle.Set();
+            _ = args.WaitHandle.Set();
         }
 
         private void ExecuteSendCombatOrdersCommand(CombatOrders orders)
         {
-            if (orders != null && _serviceClient !=null)
+            if (orders != null && _serviceClient != null)
             {
                 ExecuteRemoteCommand(() => _serviceClient.SendCombatOrders(orders));
             }
@@ -707,15 +748,20 @@ namespace Supremacy.Client
             lock (_clientLock)
             {
                 if (!_isConnected)
+                {
                     return;
+                }
+
                 serviceClient = Interlocked.CompareExchange(ref _serviceClient, null, null);
             }
             if (serviceClient == null)
+            {
                 return;
+            }
 
             try
             {
-                var messageOrder = new PlayerOrdersMessage(_playerOrderService.Orders, _playerOrderService.AutoTurn);
+                PlayerOrdersMessage messageOrder = new PlayerOrdersMessage(_playerOrderService.Orders, _playerOrderService.AutoTurn);
                 serviceClient.EndTurn(messageOrder);
             }
             catch (Exception e)
@@ -737,7 +783,9 @@ namespace Supremacy.Client
             lock (_eventLock)
             {
                 if (!_eventAndCommandHandlersHooked)
+                {
                     return;
+                }
 
                 _eventAndCommandHandlersHooked = false;
 
@@ -745,7 +793,7 @@ namespace Supremacy.Client
                 ClientCommands.SendCombatOrders.UnregisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.UnregisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.UnregisterCommand(_sendCombatTarget2Command);
-             //   ClientCommands.SendIntelOrders.UnregisterCommand(_sendIntelOrdersCommand);
+                //   ClientCommands.SendIntelOrders.UnregisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.UnregisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.UnregisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.UnregisterCommand(_saveGameCommand);
@@ -769,12 +817,17 @@ namespace Supremacy.Client
             lock (_clientLock)
             {
                 if (!_isConnected)
+                {
                     return;
+                }
+
                 serviceClient = _serviceClient;
             }
 
             if (serviceClient == null)
+            {
                 return;
+            }
 
             try { serviceClient.Pong(0); }
             catch (Exception e)
@@ -782,7 +835,10 @@ namespace Supremacy.Client
                 lock (_clientLock)
                 {
                     if (!_isConnected)
+                    {
                         return;
+                    }
+
                     GameLog.Client.General.WarnFormat("Exception occurred while responding to service heartbeat: {0}", e);
                 }
             }
@@ -797,9 +853,7 @@ namespace Supremacy.Client
                 _disconnectReason = ClientDisconnectReason.ConnectionBroken;
             }
 
-            var handler = Disconnected;
-            if (handler != null)
-                handler(new ClientDataEventArgs<ClientDisconnectReason>(_disconnectReason.Value));
+            Disconnected?.Invoke(new ClientDataEventArgs<ClientDisconnectReason>(_disconnectReason.Value));
         }
 
         private void OnChannelFaulted(object sender, EventArgs e)
@@ -807,12 +861,17 @@ namespace Supremacy.Client
             lock (_clientLock)
             {
                 if (!_connectionEstablished)
+                {
                     return;
+                }
+
                 _isConnected = false;
             }
 
             if (!_disconnectReason.HasValue)
+            {
                 _disconnectReason = ClientDisconnectReason.ConnectionBroken;
+            }
 
             UnhookCommandAndEventHandlers();
 

@@ -4,8 +4,6 @@
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
-using Supremacy.Utility;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,7 +29,7 @@ namespace Supremacy.Combat
 
         public TakeSidesAssets(MapLocation location)
         {
-            List<Fleet> fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+            List<Fleet> fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList(); // ToDo - part of altering collection while using, CombatHelper.cs line 58 
 
             if (fleetsAtLocation != null)
             {
@@ -42,9 +40,13 @@ namespace Supremacy.Combat
                         if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner)) // ToDo 3+ directional scan
                         {
                             if (OppositionFleets.Contains(fleetsAtLocation[j]))
+                            {
                                 continue;
+                            }
                             else
-                            OppositionFleets.Add(fleetsAtLocation[j]);
+                            {
+                                OppositionFleets.Add(fleetsAtLocation[j]);
+                            }
                             //_ = OppositionFleets.Distinct();
                         }
 

@@ -13,7 +13,6 @@ using System.ServiceModel.Channels;
 
 using Supremacy.Combat;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.WCF;
 
 namespace Supremacy.Client
@@ -26,22 +25,22 @@ namespace Supremacy.Client
     {
         #region Constructors
 
-        public ServiceClient(InstanceContext callbackInstance) 
+        public ServiceClient(InstanceContext callbackInstance)
             : base(callbackInstance)
         {
         }
-        
-        public ServiceClient(InstanceContext callbackInstance, string endpointConfigurationName) 
+
+        public ServiceClient(InstanceContext callbackInstance, string endpointConfigurationName)
             : base(callbackInstance, endpointConfigurationName)
         {
         }
-        
-        public ServiceClient(InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) 
+
+        public ServiceClient(InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress)
             : base(callbackInstance, endpointConfigurationName, remoteAddress)
         {
         }
-        
-        public ServiceClient(InstanceContext callbackInstance, string endpointConfigurationName, EndpointAddress remoteAddress) 
+
+        public ServiceClient(InstanceContext callbackInstance, string endpointConfigurationName, EndpointAddress remoteAddress)
             : base(callbackInstance, endpointConfigurationName, remoteAddress)
         {
         }
@@ -95,22 +94,19 @@ namespace Supremacy.Client
             catch (FaultException) { }
         }
 
-        public bool IsClosing
-        {
-            get { return (InnerChannel.State == CommunicationState.Closing); }
-        }
+        public bool IsClosing => InnerChannel.State == CommunicationState.Closing;
 
-        public bool IsClosed
-        {
-            get { return (InnerChannel.State == CommunicationState.Closed); }
-        }
+        public bool IsClosed => InnerChannel.State == CommunicationState.Closed;
 
         public void Pong(int pingId)
         {
             try
             {
                 if (IsClosing || IsClosed)
+                {
                     return;
+                }
+
                 Channel.Pong(pingId);
             }
             catch (CommunicationException) { }
@@ -169,7 +165,7 @@ namespace Supremacy.Client
 
         public void SendCombatOrders(CombatOrders orders)
         {
-            if (orders != null && Channel !=null)
+            if (orders != null && Channel != null)
             {
                 try { Channel.SendCombatOrders(orders); }
                 catch (FaultException) { }

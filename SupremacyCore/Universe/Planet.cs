@@ -1,3 +1,4 @@
+// File:Planet.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -38,17 +39,19 @@ namespace Supremacy.Universe
         private PlanetBonus _bonuses;
         private BitVector32 _data;
         private string _name;
+        private string _text;
+        private readonly string newline = Environment.NewLine;
         #endregion
 
         #region Constructors
         static Planet()
         {
-            var sizes = EnumUtilities.GetValues<PlanetSize>();
-            var types = EnumUtilities.GetValues<PlanetType>();
+            Collections.EnumValueCollection<PlanetSize> sizes = EnumUtilities.GetValues<PlanetSize>();
+            Collections.EnumValueCollection<PlanetType> types = EnumUtilities.GetValues<PlanetType>();
             MoonShapeSections = new BitVector32.Section[MaxMoonsPerPlanet];
             MoonSizeSections = new BitVector32.Section[MaxMoonsPerPlanet];
 
-            PlanetSizeSection = BitVector32.CreateSection((short)(sizes[sizes.Count - 1] - 1), default(BitVector32.Section));
+            PlanetSizeSection = BitVector32.CreateSection((short)(sizes[sizes.Count - 1] - 1), default);
             PlanetTypeSection = BitVector32.CreateSection((short)(types[types.Count - 1] - 1), PlanetSizeSection);
             VariationSection = BitVector32.CreateSection(3, PlanetTypeSection);
             MoonCountSection = BitVector32.CreateSection(MaxMoonsPerPlanet, VariationSection);
@@ -79,8 +82,8 @@ namespace Supremacy.Universe
         /// <value>The planet's name.</value>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         /// <summary>
@@ -89,8 +92,8 @@ namespace Supremacy.Universe
         /// <value>The bonuses.</value>
         public PlanetBonus Bonuses
         {
-            get { return _bonuses; }
-            set { _bonuses = value; }
+            get => _bonuses;
+            set => _bonuses = value;
         }
 
         /// <summary>
@@ -99,8 +102,8 @@ namespace Supremacy.Universe
         /// <value>The design of the planet.</value>
         public PlanetType PlanetType
         {
-            get { return (PlanetType)_data[PlanetTypeSection]; }
-            set { _data[PlanetTypeSection] = (int)value; }
+            get => (PlanetType)_data[PlanetTypeSection];
+            set => _data[PlanetTypeSection] = (int)value;
         }
 
         /// <summary>
@@ -109,8 +112,8 @@ namespace Supremacy.Universe
         /// <value>The size of the planet.</value>
         public PlanetSize PlanetSize
         {
-            get { return (PlanetSize)_data[PlanetSizeSection]; }
-            set { _data[PlanetSizeSection] = (int)value; }
+            get => (PlanetSize)_data[PlanetSizeSection];
+            set => _data[PlanetSizeSection] = (int)value;
         }
 
         /// <summary>
@@ -119,8 +122,8 @@ namespace Supremacy.Universe
         /// <value>The variation.</value>
         public int Variation
         {
-            get { return _data[VariationSection]; }
-            set { _data[VariationSection] = value; }
+            get => _data[VariationSection];
+            set => _data[VariationSection] = value;
         }
 
         /// <summary>
@@ -170,6 +173,8 @@ namespace Supremacy.Universe
                     }
                 }
             }
+
+
         }
 
         /// <summary>
@@ -178,10 +183,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="Planet"/> has a food bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasFoodBonus
-        {
-            get { return (_bonuses & PlanetBonus.Food) == PlanetBonus.Food; }
-        }
+        public bool HasFoodBonus => (_bonuses & PlanetBonus.Food) == PlanetBonus.Food;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Planet"/> has an energy bonus.
@@ -189,10 +191,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="Planet"/> has an energy bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasEnergyBonus
-        {
-            get { return (_bonuses & PlanetBonus.Energy) == PlanetBonus.Energy; }
-        }
+        public bool HasEnergyBonus => (_bonuses & PlanetBonus.Energy) == PlanetBonus.Energy;
         #endregion
 
         #region Methods
@@ -212,6 +211,9 @@ namespace Supremacy.Universe
         /// <returns>The environment.</returns>
         public PlanetEnvironment GetEnvironment(PlanetType homePlanetType)
         {
+            _text = "";
+            _text = _text + _text + newline;  // dummy - do not remove
+
             switch (PlanetType)
             {
                 case PlanetType.Asteroids:
@@ -220,21 +222,38 @@ namespace Supremacy.Universe
                 case PlanetType.Demon:
                     return PlanetEnvironment.Uninhabitable;
 
+                case PlanetType.Jungle:
+                case PlanetType.Oceanic:
+                case PlanetType.Terran:
+                    return PlanetEnvironment.Ideal;
+
+                case PlanetType.Arctic:
+                case PlanetType.Barren:
+                case PlanetType.Desert:
                 case PlanetType.Rogue:
+                case PlanetType.Volcanic:
                     if (homePlanetType == PlanetType.Rogue)
-                        return PlanetEnvironment.Ideal;
+                    {
+                        return PlanetEnvironment.Ideal;  // e.g. for Dominion
+                    }
                     return PlanetEnvironment.Hostile;
 
                 default:
                     int result;
                     Wheel<PlanetType> envs = new Wheel<PlanetType>();
                     for (int i = 0; i < (int)PlanetType.Rogue; i++)
+                    {
                         envs.Insert((PlanetType)i);
+                    }
+
                     result = envs.GetDistance(
                         PlanetType,
                         homePlanetType);
                     if (result >= (int)PlanetEnvironment.Uninhabitable)
+                    {
                         return PlanetEnvironment.Uninhabitable;
+                    }
+
                     return (PlanetEnvironment)result;
             }
         }
@@ -246,9 +265,7 @@ namespace Supremacy.Universe
         /// <returns>The environment.</returns>
         public PlanetEnvironment GetEnvironment(Race race)
         {
-            if (race == null)
-                throw new ArgumentNullException("race");
-            return GetEnvironment(race.HomePlanetType);
+            return race == null ? throw new ArgumentNullException("race") : GetEnvironment(race.HomePlanetType);
         }
 
         /// <summary>
@@ -259,7 +276,7 @@ namespace Supremacy.Universe
         /// <returns>The growth rate.</returns>
         public Percentage GetGrowthRate(PlanetType homePlanetType)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
             return Percentage.Parse(table[GetEnvironment(homePlanetType).ToString()][0]);
         }
 
@@ -271,7 +288,7 @@ namespace Supremacy.Universe
         /// <returns>The growth rate.</returns>
         public Percentage GetGrowthRate(Race race)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
             return Percentage.Parse(table[GetEnvironment(race).ToString()][0]);
         }
 
@@ -283,23 +300,31 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(PlanetType homePlanetType)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
 
             // OK to return null here! Do not need to fix
-            //int maxPop = 0;
-            //try
-            //{
-            //    if (PlanetSize == PlanetSize.NoWorld)
-            //    maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
-            //        [GetEnvironment(homePlanetType).ToString()]);
-            //}
-            //catch(Exception ex)
-            //{
-            //    GameLog.Client.GalaxyGenerator.DebugFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
-            //}
-            //return maxPop;
-            return Number.ParseInt32(table[PlanetSize.ToString()]
-                   [GetEnvironment(homePlanetType).ToString()]);
+            // 2021-02-21 reg: well, making trouble time by time - we should keep this coding
+            int maxPop = 99;
+            try
+            {
+                maxPop = PlanetSize == PlanetSize.NoWorld
+                    ? 0
+                    : Number.ParseInt32(table[PlanetSize.ToString()]
+                    [GetEnvironment(homePlanetType).ToString()]);
+            }
+            catch (Exception ex)
+            {
+                GameLog.Client.GalaxyGenerator.ErrorFormat("Generated at HomeSystem with 99 Population due to avoid crash > GetMaxPopulation");
+                GameLog.Client.GalaxyGenerator.ErrorFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
+            }
+            //_text = /*newline + */"GetMaxPopulation by homePlanetType " + homePlanetType.ToString() + " > " + maxPop;
+            ////Console.WriteLine(_text);
+            //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
+
+            return maxPop;
+            //return Number.ParseInt32(table[PlanetSize.ToString()]
+            //       [GetEnvironment(homePlanetType).ToString()]);
+            // Botha are maybe outcommented in HomeSystem.xml - so the game crashes for missing Planet Size
         }
 
         /// <summary>
@@ -310,9 +335,16 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(Race race)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
-            return Number.ParseInt32(table[PlanetSize.ToString()]
+            _text = "GetMaxPopulation by race " + race.Key;
+            //Console.WriteLine(_text);
+            //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
+
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
+
+            int _pop = Number.ParseInt32(table[PlanetSize.ToString()]
                 [GetEnvironment(race).ToString()]);
+
+            return _pop;
         }
 
         /// <summary>

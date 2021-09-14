@@ -27,11 +27,8 @@ namespace Supremacy.Diplomacy
 
         public MotivationType Type { get; set; }
         public int Priority { get; set; }
-        
-        public bool IsValid
-        {
-            get { return (Type != MotivationType.NoMotivation); }
-        }
+
+        public bool IsValid => Type != MotivationType.NoMotivation;
 
         public override bool Equals(object obj)
         {
@@ -40,15 +37,18 @@ namespace Supremacy.Diplomacy
 
         public override int GetHashCode()
         {
-            return (((int)Type << 16) | Priority);
+            return ((int)Type << 16) | Priority;
         }
 
         #region IEquatable<Motivation> Members
         public bool Equals(Motivation other)
         {
             if (other == null)
+            {
                 return false;
-            return ((other.Type == Type) && (other.Priority == Priority));
+            }
+
+            return (other.Type == Type) && (other.Priority == Priority);
         }
         #endregion
     }

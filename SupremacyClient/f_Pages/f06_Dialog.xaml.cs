@@ -19,46 +19,48 @@ namespace Supremacy.Client
     {
         public F06_Dialog()
         {
-            GameLog.Client.UI.InfoFormat("Initialize Dialog...");
-                
+            GameLog.Client.UIDetails.DebugFormat("Initialize Dialog...");
+
             InitializeComponent();
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.CancelCommand,
                     Key.Escape,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.CancelCommand,
                     OnGenericCommandsCancelCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.TracesSetAllwithoutDetailsCommand,
                     OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.TracesSetSomeCommand,
                     OnGenericCommandsTracesSetSomeCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.TracesSetNoneCommand,
                     OnGenericCommandsTracesSetNoneCommandExecuted));
+
+            GameLog.Client.UIDetails.DebugFormat("F06-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)

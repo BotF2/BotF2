@@ -17,7 +17,6 @@ using Microsoft.Practices.ServiceLocation;
 
 using Supremacy.Annotations;
 using Supremacy.Combat;
-using Supremacy.Intelligence;
 using Supremacy.Game;
 using Supremacy.Client.Context;
 
@@ -29,26 +28,17 @@ namespace Supremacy.Client.Events
 
         public ViewActivatingEventArgs([NotNull] object view)
         {
-            if (view == null)
-                throw new ArgumentNullException("view");
-            View = view;
+            View = view ?? throw new ArgumentNullException("view");
         }
     }
 
     public class ScreenActivatedEventArgs : ClientEventArgs
     {
-        private readonly string _screenName;
-
-        public string ScreenName
-        {
-            get { return _screenName; }
-        }
+        public string ScreenName { get; }
 
         public ScreenActivatedEventArgs([NotNull] string screenName)
         {
-            if (screenName == null)
-                throw new ArgumentNullException("screenName");
-            _screenName = screenName;
+            ScreenName = screenName ?? throw new ArgumentNullException("screenName");
         }
     }
 
@@ -65,9 +55,7 @@ namespace Supremacy.Client.Events
 
         public ClientCancelEventArgs([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            AppContext = appContext;
+            AppContext = appContext ?? throw new ArgumentNullException("appContext");
         }
 
         public ClientCancelEventArgs() : this(ServiceLocator.Current.GetInstance<IAppContext>()) { }
@@ -86,10 +74,7 @@ namespace Supremacy.Client.Events
 
         public ClientEventArgs([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-
-            AppContext = appContext;
+            AppContext = appContext ?? throw new ArgumentNullException("appContext");
         }
 
         public ClientEventArgs()
@@ -106,9 +91,7 @@ namespace Supremacy.Client.Events
 
         public ClientDataEventArgs([NotNull] IAppContext appContext, TData value) : base(value)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            AppContext = appContext;
+            AppContext = appContext ?? throw new ArgumentNullException("appContext");
         }
 
         public ClientDataEventArgs(TData value) : this(ServiceLocator.Current.GetInstance<IAppContext>(), value) { }
@@ -118,15 +101,11 @@ namespace Supremacy.Client.Events
     {
         public LocalPlayerJoinedEventArgs([NotNull] IAppContext appContext, [NotNull] IPlayer player, [NotNull] ILobbyData lobbyData) : base(appContext)
         {
-            if (player == null)
-                throw new ArgumentNullException("player");
-            if (lobbyData == null)
-                throw new ArgumentNullException("lobbyData");
-            Player = player;
-            LobbyData = lobbyData;
+            Player = player ?? throw new ArgumentNullException("player");
+            LobbyData = lobbyData ?? throw new ArgumentNullException("lobbyData");
         }
 
-        public LocalPlayerJoinedEventArgs([NotNull] IPlayer player, [NotNull] ILobbyData lobbyData) 
+        public LocalPlayerJoinedEventArgs([NotNull] IPlayer player, [NotNull] ILobbyData lobbyData)
             : this(ServiceLocator.Current.GetInstance<IAppContext>(), player, lobbyData) { }
 
         public IPlayer Player { get; private set; }
@@ -159,43 +138,29 @@ namespace Supremacy.Client.Events
 
     public class GameContextEventArgs : ClientEventArgs
     {
-        private readonly IGameContext _gameContext;
-
         public GameContextEventArgs(
             [NotNull] IAppContext appContext,
             [NotNull] IGameContext gameContext)
             : base(appContext)
         {
-            if (gameContext == null)
-                throw new ArgumentNullException("gameContext");
-            _gameContext = gameContext;
+            GameContext = gameContext ?? throw new ArgumentNullException("gameContext");
         }
 
-        public IGameContext GameContext
-        {
-            get { return _gameContext; }
-        }
+        public IGameContext GameContext { get; }
     }
 
     public class GameContextEventArgs<TData> : ClientDataEventArgs<TData>
     {
-        private readonly IGameContext _gameContext;
-
         public GameContextEventArgs(
             [NotNull] IAppContext appContext,
             [NotNull] IGameContext gameContext,
             TData value)
             : base(appContext, value)
         {
-            if (gameContext == null)
-                throw new ArgumentNullException("gameContext");
-            _gameContext = gameContext;
+            GameContext = gameContext ?? throw new ArgumentNullException("gameContext");
         }
 
-        public IGameContext GameContext
-        {
-            get { return _gameContext; }
-        }
+        public IGameContext GameContext { get; }
     }
 
     public sealed class ServerInitializationFailedEvent : CompositePresentationEvent<ClientEventArgs> { }
@@ -264,7 +229,7 @@ namespace Supremacy.Client.Events
 
         static ClientEvents()
         {
-            var eventAggregator = Designer.IsInDesignMode ? new EventAggregator() : ServiceLocator.Current.GetInstance<IEventAggregator>();
+            IEventAggregator eventAggregator = Designer.IsInDesignMode ? new EventAggregator() : ServiceLocator.Current.GetInstance<IEventAggregator>();
 
             ServerInitializationFailed = eventAggregator.GetEvent<ServerInitializationFailedEvent>();
             ClientInitializationFailed = eventAggregator.GetEvent<ClientInitializationFailedEvent>();
@@ -273,7 +238,7 @@ namespace Supremacy.Client.Events
             ClientConnectionBroken = eventAggregator.GetEvent<ClientConnectionBrokenEvent>();
             ClientDisconnected = eventAggregator.GetEvent<ClientDisconnectedEvent>();
             CombatUpdateReceived = eventAggregator.GetEvent<CombatUpdateReceivedEvent>();
-           // IntelUpdateReceived = eventAggregator.GetEvent<IntelUpdateReceivedEvent>();
+            // IntelUpdateReceived = eventAggregator.GetEvent<IntelUpdateReceivedEvent>();
             InvasionUpdateReceived = eventAggregator.GetEvent<InvasionUpdateReceivedEvent>();
             LocalPlayerJoined = eventAggregator.GetEvent<LocalPlayerJoinedEvent>();
             PlayerJoined = eventAggregator.GetEvent<PlayerJoinedEvent>();

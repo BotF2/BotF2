@@ -31,48 +31,48 @@ namespace Supremacy.Resources
         private static readonly StringTable _localStrings;
         private static readonly StringTable _defaultStrings;
         private static readonly GameMod _commandLineMod;
-        private static readonly string _workingDirectory;
         private static readonly IVfsService _vfsService;
+        private static string _text;
 
-        public static string WorkingDirectory
-        {
-            get { return _workingDirectory; }
-        }
+        public static string WorkingDirectory { get; private set; }
 
         // checks whether commandLineArguments are done and more
         public static GameMod CurrentMod
         {
             get
             {
-                
+
                 if (_commandLineMod != null)
+                {
                     return _commandLineMod;
-                var gameContext = GameContext.Peek();
+                }
+
+                GameContext gameContext = GameContext.Peek();
                 if (gameContext != null)
+                {
+                    _text += _text + gameContext.GameMod.ToString(); // Dummy, do not remove
                     return gameContext.GameMod;
+                }
                 //GameLog.Print("GameMod CurrentMod is null");
                 return null;
             }
         }
 
-        public static IVfsService VfsService
-        {
-            get { return _vfsService; }
-        }
+        public static IVfsService VfsService => _vfsService;
 
         static ResourceManager()
         {
-            _workingDirectory = PathHelper.GetWorkingDirectory();
+            WorkingDirectory = PathHelper.GetWorkingDirectory();
             _vfsService = new VfsService();
 
-            var defaultSource = new ReadOnlyHardDiskSource(
+            ReadOnlyHardDiskSource defaultSource = new ReadOnlyHardDiskSource(
                 "Default",
-                _workingDirectory);
+                WorkingDirectory);
 
-            var modSource = new ReadOnlyHardDiskSource("CurrentMod", null)
-                            {
-                                PathResolver = ResolveModVfsRoot
-                            };
+            ReadOnlyHardDiskSource modSource = new ReadOnlyHardDiskSource("CurrentMod", null)
+            {
+                PathResolver = ResolveModVfsRoot
+            };
 
             /*
              * We want to probe the currently loaded mod's directory structure before the
@@ -80,8 +80,8 @@ namespace Supremacy.Resources
              */
             _vfsService.AddSource(modSource);
             _vfsService.AddSource(defaultSource);
-            
-            AppDomain.CurrentDomain.SetData("DataDirectory", _workingDirectory);
+
+            AppDomain.CurrentDomain.SetData("DataDirectory", WorkingDirectory);
 
             NeutralCulture = CultureInfo.GetCultureInfo("en");
             CurrentCulture = CultureInfo.CurrentCulture;
@@ -102,6 +102,11 @@ namespace Supremacy.Resources
 
             _defaultStrings = StringTable.Load(
                 GetResourcePath(@"Resources\Data\" + NeutralLocale + ".txt"));
+
+            //for (int i = 0; i < _defaultStrings.Keys.Count; i++)
+            //{
+            //    _text = _defaultStrings.Keys.[i]
+            //}
 
             if (CurrentLocale == NeutralLocale)
             {
@@ -124,13 +129,17 @@ namespace Supremacy.Resources
 
         private static string ResolveModVfsRoot()
         {
-            var currentMod = CurrentMod;
+            GameMod currentMod = CurrentMod;
             if (currentMod == null)
+            {
                 return null;
+            }
 
-            var rootPath = currentMod.RootPath;
+            string rootPath = currentMod.RootPath;
             if (Directory.Exists(rootPath))
+            {
                 return rootPath;
+            }
 
             return null;
         }
@@ -144,9 +153,15 @@ namespace Supremacy.Resources
         {
             string result = null;
             if (_localStrings != null)
+            {
                 result = _localStrings[key];
+            }
+
             if (result == null)
+            {
                 result = _defaultStrings[key];
+            }
+
             return result ?? key;
         }
 
@@ -158,8 +173,11 @@ namespace Supremacy.Resources
         public static string GetInternalResourcePath(string path)
         {
             if (path == null)
+            {
                 return null;
-            path = EvaluateRelativePath(_workingDirectory, GetSystemPathFormat(path));
+            }
+
+            path = EvaluateRelativePath(WorkingDirectory, GetSystemPathFormat(path));
             if (CurrentMod != null)
             {
                 string modRelativePath = GetSystemPathFormat(CurrentMod.RootPath);
@@ -167,51 +185,59 @@ namespace Supremacy.Resources
                 if (Path.IsPathRooted(modRelativePath))
                 {
                     modAbsolutePath = modRelativePath;
-                    modRelativePath = EvaluateRelativePath(_workingDirectory, modRelativePath);
+                    modRelativePath = EvaluateRelativePath(WorkingDirectory, modRelativePath);
                 }
                 else
                 {
-                    modAbsolutePath = Path.Combine(_workingDirectory, modRelativePath);
+                    modAbsolutePath = Path.Combine(WorkingDirectory, modRelativePath);
                 }
                 if (File.Exists(modAbsolutePath))
                 {
                     return GetInternalPathFormat(modRelativePath);
                 }
             }
-            return GetInternalPathFormat(Path.Combine(_workingDirectory, path));
+            return GetInternalPathFormat(Path.Combine(WorkingDirectory, path));
         }
 
         public static string GetSystemResourcePath(string path)
         {
             if (path == null)
+            {
                 return null;
-            
-            Uri uri;
-            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
-                path = uri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
-            else
-                path = GetSystemPathFormat(path);
+            }
+
+            path = Uri.TryCreate(path, UriKind.Absolute, out Uri uri)
+                ? uri.GetComponents(UriComponents.Path, UriFormat.Unescaped)
+                : GetSystemPathFormat(path);
 
             if (Path.IsPathRooted(path))
-                path = EvaluateRelativePath(_workingDirectory, path);
+            {
+                path = EvaluateRelativePath(WorkingDirectory, path);
+            }
 
             if (CurrentMod != null)
             {
-                var modPath = GetSystemPathFormat(CurrentMod.RootPath);
-                
+                string modPath = GetSystemPathFormat(CurrentMod.RootPath);
+
                 if (!Path.IsPathRooted(modPath))
-                    modPath = Path.Combine(_workingDirectory, modPath);
+                {
+                    modPath = Path.Combine(WorkingDirectory, modPath);
+                }
 
                 if (Directory.Exists(modPath))
                 {
-                    var modFile = EvaluateRelativePath(_workingDirectory, Path.Combine(modPath, path));
+                    string modFile = EvaluateRelativePath(WorkingDirectory, Path.Combine(modPath, path));
                     if (File.Exists(modFile))
+                    {
                         return modFile;
+                    }
                 }
             }
 
             if (!Path.IsPathRooted(path))
-                path = Path.Combine(_workingDirectory, path);
+            {
+                path = Path.Combine(WorkingDirectory, path);
+            }
 
             path = EvaluateRelativePath(Environment.CurrentDirectory, path);
 
@@ -223,25 +249,31 @@ namespace Supremacy.Resources
         public static Uri GetResourceUri(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
+            {
                 return null;
-            
-            Uri uri;
-            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
+            }
+
+            if (Uri.TryCreate(path, UriKind.Absolute, out Uri uri))
             {
                 if (uri.Scheme == "vfs")
+                {
                     return uri;
+                }
+
                 path = uri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
             }
 
             if (path[0] != '/')
+            {
                 path = '/' + path;
+            }
 
             return new UriBuilder
-                   {
-                       Scheme = "vfs",
-                       Path = path,
-                       Host = null
-                   }.Uri;
+            {
+                Scheme = "vfs",
+                Path = path,
+                Host = null
+            }.Uri;
         }
 
         private static string GetInternalPathFormat(string path)
@@ -279,11 +311,14 @@ namespace Supremacy.Resources
             if (sameCounter == 0)
             {
                 while (absoluteFilePath.StartsWith("." + Path.DirectorySeparatorChar))
+                {
                     absoluteFilePath = absoluteFilePath.Substring(2);
+                }
+
                 return absoluteFilePath;
             }
 
-            string newPath = String.Empty;
+            string newPath = string.Empty;
             for (int i = sameCounter; i < firstPathParts.Length; i++)
             {
                 if (i > sameCounter)
@@ -303,7 +338,9 @@ namespace Supremacy.Resources
             }
 
             while (newPath.StartsWith("." + Path.DirectorySeparatorChar))
+            {
                 newPath = newPath.Substring(2);
+            }
 
             return newPath;
         }

@@ -4,16 +4,11 @@ namespace Supremacy.Messages
 {
     public class GameSavedMessage
     {
-        private readonly SavedGameHeader _savedGameHeader;
-
         public GameSavedMessage(SavedGameHeader savedGameHeader = null)
         {
-            _savedGameHeader = savedGameHeader;
+            SavedGameHeader = savedGameHeader;
         }
 
-        public SavedGameHeader SavedGameHeader
-        {
-            get { return _savedGameHeader; }
-        }
+        public SavedGameHeader SavedGameHeader { get; }
     }
 }

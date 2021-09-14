@@ -96,8 +96,8 @@ namespace Supremacy.Scripting.Ast
             }
 
             SourceLocationConverter converter = SourceLocationConverter.Instance;
-            
-            return (converter.ConvertToInvariantString(span.Start) + '#' + converter.ConvertToInvariantString(span.End));
+
+            return converter.ConvertToInvariantString(span.Start) + '#' + converter.ConvertToInvariantString(span.End);
         }
     }
 

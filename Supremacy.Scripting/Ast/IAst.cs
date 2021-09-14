@@ -6,7 +6,7 @@ namespace Supremacy.Scripting.Ast
     {
         void CloneTo<T>(CloneContext cloneContext, T target) where T : class, IAst;
         T GetEnclosingAst<T>() where T : class, IAst;
-    
+
         void Walk(AstVisitor prefix, AstVisitor postfix);
 
         IAst ParentAst { get; set; }

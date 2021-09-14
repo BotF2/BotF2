@@ -17,19 +17,24 @@ namespace Supremacy.Utility
         public static string TrimParagraphs(string text)
         {
             if (text == null)
+            {
                 return null;
-            if (text.Length == 0)
-                return text;
+            }
 
-            var result = new StringBuilder(text.Length);
-            var reader = new StringReader(text);
+            if (text.Length == 0)
+            {
+                return text;
+            }
+
+            StringBuilder result = new StringBuilder(text.Length);
+            StringReader reader = new StringReader(text);
 
             string line;
             while ((line = reader.ReadLine()) != null)
             {
                 if ((line.Length > 0) || (result.Length > 0))
                 {
-                    result.AppendLine(line.Trim());
+                    _ = result.AppendLine(line.Trim());
                 }
             }
 

@@ -10,7 +10,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using System.Security.Policy;
 using System.Threading;
 using Supremacy.Annotations;
 using Supremacy.Collections;
@@ -66,10 +65,7 @@ namespace Supremacy.Diplomacy
         private int _lastStatusChange;
         private ForeignPowerStatus _diplomacyStatus;
 
-        protected static TableMap DiplomacyTables
-        {
-            get { return GameContext.Current.Tables.DiplomacyTables; }
-        }
+        //protected static TableMap GameOptionTables => GameContext.Current.Tables.GameOptionTables;
 
         public DiplomacyData(int ownerId, int counterpartyId)
         {
@@ -93,63 +89,51 @@ namespace Supremacy.Diplomacy
             OnPropertyChanged("EffectiveRegard");
         }
 
-        public int OwnerID
-        {
-            get { return _ownerId; }
-        }
+        public int OwnerID => _ownerId;
 
-        public int CounterpartyID
-        {
-            get { return _counterpartyId; }
-        }
+        public int CounterpartyID => _counterpartyId;
 
-        public Meter Regard
-        {
-            get { return _regard; }
-        }
+        public Meter Regard => _regard;
 
-        public Meter Trust
-        {
-            get { return _trust; }
-        }
+        public Meter Trust => _trust;
 
-        public RegardLevel EffectiveRegard
-        {
-            get { return CalculateRegardLevel(_regard.CurrentValue); }
-        }
+        public RegardLevel EffectiveRegard => CalculateRegardLevel(_regard.CurrentValue);
 
         public int ContactTurn
         {
-            get { return _contactTurn; }
-            internal set { _contactTurn = value; }
+            get => _contactTurn;
+            internal set => _contactTurn = value;
         }
 
         public bool FirstDiplomaticAction
         {
-            get { return _firstDiplomaticAction; }
-            set { _firstDiplomaticAction = value; }
+            get => _firstDiplomaticAction;
+            set => _firstDiplomaticAction = value;
         }
-        
+
         public int ContactDuration
         {
             get
             {
                 if (_contactTurn == 0)
+                {
                     return -1;
+                }
+
                 return GameContext.Current.TurnNumber - _contactTurn;
             }
         }
 
         public ForeignPowerStatus Status
         {
-            get { return _diplomacyStatus; }
-            internal set { _diplomacyStatus = value; }
+            get => _diplomacyStatus;
+            internal set => _diplomacyStatus = value;
         }
 
         public int LastStatusChange
         {
-            get { return _lastStatusChange; }
-            internal set { _lastStatusChange = value; }
+            get => _lastStatusChange;
+            internal set => _lastStatusChange = value;
         }
 
         public int TurnsSinceLastStatusChange
@@ -157,20 +141,17 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (Status == ForeignPowerStatus.NoContact)
+                {
                     return 0;
+                }
+
                 return GameContext.Current.TurnNumber - LastStatusChange;
             }
         }
 
-        public bool AtWar
-        {
-            get { return Status == ForeignPowerStatus.AtWar; }
-        }
+        public bool AtWar => Status == ForeignPowerStatus.AtWar;
 
-        public RegardLevel EffectiveTrust
-        {
-            get { return CalculateRegardLevel(_trust.CurrentValue); }
-        }
+        public RegardLevel EffectiveTrust => CalculateRegardLevel(_trust.CurrentValue);
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
@@ -181,17 +162,21 @@ namespace Supremacy.Diplomacy
 
         public static RegardLevel CalculateRegardLevel(int regard)
         {
-            var regardLevel = RegardLevel.Detested;
-            var regardLevelsTable = DiplomacyTables["RegardLevels"];
+            RegardLevel regardLevel = RegardLevel.Detested;
+            Table regardLevelsTable = GameContext.Current.Tables.GameOptionTables["RegardLevels"];
 
-            foreach (var enumValue in EnumHelper.GetValues<RegardLevel>())
+            foreach (RegardLevel enumValue in EnumHelper.GetValues<RegardLevel>())
             {
-                var lowerBound = (int?)regardLevelsTable.GetValue(enumValue.ToString(), 0);
+                int? lowerBound = (int?)regardLevelsTable.GetValue(enumValue.ToString(), 0);
                 if (lowerBound == null)
+                {
                     continue;
+                }
 
                 if (regard >= lowerBound && enumValue > regardLevel)
+                {
                     regardLevel = enumValue;
+                }
             }
 
             return regardLevel;
@@ -200,7 +185,9 @@ namespace Supremacy.Diplomacy
         public void UpdateFrom([NotNull] IDiplomacyData diplomacyData)
         {
             if (diplomacyData == null)
+            {
                 throw new ArgumentNullException("diplomacyData");
+            }
 
             _regard.SetValues(diplomacyData.Regard);
             _trust.SetValues(diplomacyData.Trust);
@@ -216,22 +203,26 @@ namespace Supremacy.Diplomacy
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

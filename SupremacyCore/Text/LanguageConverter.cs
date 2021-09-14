@@ -24,22 +24,24 @@ namespace Supremacy.Text
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return (destinationType == typeof(string));
+            return destinationType == typeof(string);
         }
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return (sourceType == typeof(string));
+            return sourceType == typeof(string);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var stringValue = value as string;
-            
-            if (string.IsNullOrWhiteSpace(stringValue))
-                return null;
+            string stringValue = value as string;
 
-            // ReSharper disable AssignNullToNotNullAttribute
+            if (string.IsNullOrWhiteSpace(stringValue))
+            {
+                return null;
+            }
+
+
             try
             {
                 return CultureInfo.GetCultureInfo(stringValue);
@@ -50,14 +52,15 @@ namespace Supremacy.Text
             }
 
             return null;
-            // ReSharper restore AssignNullToNotNullAttribute
+
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var language = value as CultureInfo;
-            if (language == null)
+            if (!(value is CultureInfo language))
+            {
                 return null;
+            }
 
             return language.Name;
         }

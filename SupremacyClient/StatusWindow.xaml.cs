@@ -39,26 +39,28 @@ namespace Supremacy.Client
 
             try
             {
-                var enumTables = GameTables.Load().EnumTables;
+                TableMap enumTables = GameTables.Load().EnumTables;
                 if (enumTables != null)
+                {
                     _turnStrings = enumTables["TurnPhase"];
+                }
             }
             catch
             {
                 _turnStrings = null;
             }
 
-            Channel<TurnProgressChangedMessage>.Public.Subscribe(
+            _ = Channel<TurnProgressChangedMessage>.Public.Subscribe(
                 onNext: o => ProcessTurnPhaseChange(o.TurnPhase),
                 threadOption: ChannelThreadOption.UIThread);
 
             //ClientEvents.TurnPhaseChanged.Subscribe(OnTurnPhaseChanged, ThreadOption.UIThread);
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
-            ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
-            ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.UIThread);
-            ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread);
-            ClientEvents.ClientDisconnected.Subscribe(OnClientDisconnected, ThreadOption.UIThread);
-            ClientEvents.ViewActivating.Subscribe(OnViewActivating, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
+            _ = ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.UIThread);
+            _ = ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread);
+            _ = ClientEvents.ClientDisconnected.Subscribe(OnClientDisconnected, ThreadOption.UIThread);
+            _ = ClientEvents.ViewActivating.Subscribe(OnViewActivating, ThreadOption.UIThread);
         }
 
         private void OnViewActivating(ViewActivatingEventArgs e)
@@ -66,12 +68,16 @@ namespace Supremacy.Client
             if (e.View is ISystemAssaultScreenView)
             {
                 if (IsOpen)
+                {
                     Close();
+                }
             }
             else
             {
                 if (_shouldBeOpen && !IsOpen)
+                {
                     Show();
+                }
             }
         }
 
@@ -83,7 +89,9 @@ namespace Supremacy.Client
             _shouldBeOpen = false;
 
             if (IsOpen)
+            {
                 Close();
+            }
         }
 
         private void OnGameEnded(EventArgs t)
@@ -91,7 +99,9 @@ namespace Supremacy.Client
             _shouldBeOpen = false;
 
             if (IsOpen)
+            {
                 Close();
+            }
         }
 
         private void OnGameStarted(DataEventArgs<GameStartData> t)
@@ -104,7 +114,9 @@ namespace Supremacy.Client
             _shouldBeOpen = false;
 
             if (IsOpen)
+            {
                 Close();
+            }
         }
 
         private void OnAllTurnEnded(EventArgs t)
@@ -112,9 +124,15 @@ namespace Supremacy.Client
             _shouldBeOpen = true;
 
             if (IsActive)
+            {
                 return;
+            }
+
             if (!IsOpen)
+            {
                 Show();
+            }
+
             Activate();
         }
 
@@ -122,10 +140,7 @@ namespace Supremacy.Client
         {
             Header = ResourceManager.GetString("PROCESSING_TURN");
 
-            if (_turnStrings != null && _turnStrings[phase.ToString()] != null)
-                Content = _turnStrings[phase.ToString()][0] + "...";
-            else
-                Content = phase + "...";
+            Content = _turnStrings != null && _turnStrings[phase.ToString()] != null ? _turnStrings[phase.ToString()][0] + "..." : phase + "...";
         }
         #endregion
     }

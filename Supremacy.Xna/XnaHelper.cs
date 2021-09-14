@@ -65,26 +65,19 @@ namespace Supremacy.Xna
 
             backBufferFormat = DetectSurfaceFormat(deviceType);
 
-            if (adapter.CheckDepthStencilMatch(
+            depthFormat = adapter.CheckDepthStencilMatch(
                 deviceType,
                 adapter.CurrentDisplayMode.Format,
                 backBufferFormat,
-                DepthFormat.Depth24))
-            {
-                depthFormat = DepthFormat.Depth24;
-            }
-            else if (adapter.CheckDepthStencilMatch(
-                deviceType,
-                adapter.CurrentDisplayMode.Format,
-                backBufferFormat,
-                DepthFormat.Depth16))
-            {
-                depthFormat = DepthFormat.Depth16;
-            }
-            else
-            {
-                depthFormat = DepthFormat.Unknown;
-            }
+                DepthFormat.Depth24)
+                ? DepthFormat.Depth24
+                : adapter.CheckDepthStencilMatch(
+                                deviceType,
+                                adapter.CurrentDisplayMode.Format,
+                                backBufferFormat,
+                                DepthFormat.Depth16)
+                    ? DepthFormat.Depth16
+                    : DepthFormat.Unknown;
         }
 
         public static GraphicsDeviceManager CreateDeviceManager(XnaComponent owner)
@@ -160,19 +153,19 @@ namespace Supremacy.Xna
             }
 
             PresentationParameters presentationParameters = new PresentationParameters
-                                         {
-                                             AutoDepthStencilFormat = depthFormat,
-                                             BackBufferCount = 1,
-                                             BackBufferFormat = backBufferFormat,
-                                             BackBufferWidth = backBufferSize.Width,
-                                             BackBufferHeight = backBufferSize.Height,
-                                             EnableAutoDepthStencil = enableDepthStencil,
-                                             IsFullScreen = false,
-                                             SwapEffect = SwapEffect.Discard,
-                                             MultiSampleType = MultiSampleType.None,
-                                             MultiSampleQuality = 0,
-                                             PresentOptions = PresentOptions.None
-                                         };
+            {
+                AutoDepthStencilFormat = depthFormat,
+                BackBufferCount = 1,
+                BackBufferFormat = backBufferFormat,
+                BackBufferWidth = backBufferSize.Width,
+                BackBufferHeight = backBufferSize.Height,
+                EnableAutoDepthStencil = enableDepthStencil,
+                IsFullScreen = false,
+                SwapEffect = SwapEffect.Discard,
+                MultiSampleType = MultiSampleType.None,
+                MultiSampleQuality = 0,
+                PresentOptions = PresentOptions.None
+            };
 
             if (preferMultiSampling &&
                 deviceType == DeviceType.Hardware)
@@ -218,7 +211,7 @@ namespace Supremacy.Xna
                     device.SamplerStates[0].MinFilter = TextureFilter.Anisotropic;
                     device.SamplerStates[0].MagFilter = TextureFilter.Anisotropic;
                     device.SamplerStates[0].MaxAnisotropy = Math.Min(
-                        graphicsCapabilities.MaxAnisotropy, 
+                        graphicsCapabilities.MaxAnisotropy,
                         DesiredMaxAnisotropy);
                 }
             }

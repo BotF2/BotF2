@@ -68,11 +68,9 @@ namespace Supremacy.Effects
             : this()
         {
             if (sourceType == null)
+            {
                 throw new ArgumentNullException("sourceType");
-            if (scope == null)
-                throw new ArgumentNullException("scope");
-            if (effects == null)
-                throw new ArgumentNullException("effects");
+            }
 
             if (!typeof(IEffectSource).IsAssignableFrom(sourceType))
             {
@@ -85,77 +83,38 @@ namespace Supremacy.Effects
 
             _sourceType = sourceType;
             _activation = activation;
-            _scope = scope;
-            _effects = effects;
+            _scope = scope ?? throw new ArgumentNullException("scope");
+            _effects = effects ?? throw new ArgumentNullException("effects");
             _customParameterBindings = customParameterBindings ?? new EffectParameterBindingCollection();
 
-            _effects.ForEach(o => o.EffectGroup = this);
-        }
-        
-        internal EffectParameterCollection SystemParameters
-        {
-            get { return _systemParameters.Value; }
+            _ = _effects.ForEach(o => o.EffectGroup = this);
         }
 
-        internal ScriptParameter SourceScriptParameter
-        {
-            get { return _sourceScriptParameter.Value; }
-        }
+        internal EffectParameterCollection SystemParameters => _systemParameters.Value;
 
-        internal ScriptParameters SystemScriptParameters
-        {
-            get { return _systemScriptParameters.Value; }
-        }
+        internal ScriptParameter SourceScriptParameter => _sourceScriptParameter.Value;
 
-        public IEffectActivation Activation
-        {
-            get { return _activation; }
-        }
+        internal ScriptParameters SystemScriptParameters => _systemScriptParameters.Value;
 
-        public IEffectScope Scope
-        {
-            get { return _scope; }
-        }
+        public IEffectActivation Activation => _activation;
 
-        public IIndexedCollection<Effect> Effects
-        {
-            get { return _effects; }
-        }
+        public IEffectScope Scope => _scope;
 
-        public IEffectParameterBindingCollection CustomParameterBindings
-        {
-            get { return _customParameterBindings; }
-        }
+        public IIndexedCollection<Effect> Effects => _effects;
 
-        internal ScriptParameters CustomScriptParameters
-        {
-            get { return _customScriptParameters.Value; }
-        }
+        public IEffectParameterBindingCollection CustomParameterBindings => _customParameterBindings;
 
-        internal RuntimeScriptParameters CustomRuntimeScriptParameters
-        {
-            get { return _customRuntimeScriptParameters.Value; }
-        }
+        internal ScriptParameters CustomScriptParameters => _customScriptParameters.Value;
 
-        internal ScriptExpression ActivationScript
-        {
-            get { return _activationScript.Value; }
-        }
+        internal RuntimeScriptParameters CustomRuntimeScriptParameters => _customRuntimeScriptParameters.Value;
 
-        internal ScriptExpression ScopeScript
-        {
-            get { return _scopeScript.Value; }
-        }
-        
-        internal string ActivationDescription
-        {
-            get { return _activationDescription.Value; }
-        }
+        internal ScriptExpression ActivationScript => _activationScript.Value;
 
-        internal string ScopeDescription
-        {
-            get { return _scopeDescription.Value; }
-        }
+        internal ScriptExpression ScopeScript => _scopeScript.Value;
+
+        internal string ActivationDescription => _activationDescription.Value;
+
+        internal string ScopeDescription => _scopeDescription.Value;
 
         public EffectGroupBinding Bind(IEffectSource source)
         {
@@ -168,22 +127,24 @@ namespace Supremacy.Effects
         private ScriptExpression EvaluateActivation()
         {
             if (_activation == null)
+            {
                 return null;
+            }
 
             return new ScriptExpression
-                   {
-                       ScriptCode = _activation.ValueExpression,
-                       Parameters = new ScriptParameters(SourceScriptParameter)
-                   };
+            {
+                ScriptCode = _activation.ValueExpression,
+                Parameters = new ScriptParameters(SourceScriptParameter)
+            };
         }
 
         private ScriptExpression EvaluateScope()
         {
             return new ScriptExpression
-                   {
-                       ScriptCode = _scope.ValueExpression,
-                       Parameters = new ScriptParameters(_sourceScriptParameter.Value)
-                   };
+            {
+                ScriptCode = _scope.ValueExpression,
+                Parameters = new ScriptParameters(_sourceScriptParameter.Value)
+            };
         }
 
         private string EvaluateActivationDescription()
@@ -228,20 +189,24 @@ namespace Supremacy.Effects
 
         private EffectParameter CreateTargetParameter()
         {
-            var targetType = ScopeScript.ReturnType;
+            Type targetType = ScopeScript.ReturnType;
 
             if (targetType.IsGenericType)
             {
-                var openType = TypeManager.DropGenericTypeArguments(targetType);
+                Type openType = TypeManager.DropGenericTypeArguments(targetType);
                 if (typeof(IValueProvider<>).IsAssignableFrom(openType))
+                {
                     targetType = targetType.GetGenericArguments()[0];
+                }
             }
 
             if (targetType.IsGenericType)
             {
-                var openType = TypeManager.DropGenericTypeArguments(targetType);
+                Type openType = TypeManager.DropGenericTypeArguments(targetType);
                 if (typeof(IEnumerable<>).IsAssignableFrom(openType))
+                {
                     targetType = targetType.GetGenericArguments()[0];
+                }
             }
 
             return new EffectParameter(Effect.ParameterNameTarget, targetType);

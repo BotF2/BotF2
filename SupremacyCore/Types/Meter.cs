@@ -29,10 +29,7 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties
-        public Meter Meter
-        {
-            get { return _meter; }
-        }
+        public Meter Meter => _meter;
         #endregion
     }
 
@@ -98,25 +95,21 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties
-        public bool IsMaximized
-        {
-            get { return (CurrentValue == Maximum); }
-        }
+        public bool IsMaximized => CurrentValue == Maximum;
 
-        public bool IsMinimized
-        {
-            get { return (CurrentValue == Minimum); }
-        }
+        public bool IsMinimized => CurrentValue == Minimum;
 
         public bool AutoClamp
         {
-            get { return _autoClamp; }
+            get => _autoClamp;
             set
             {
                 _autoClamp = value;
                 OnPropertyChanged("AutoClamp");
                 if (_autoClamp)
+                {
                     Clamp();
+                }
             }
         }
 
@@ -125,7 +118,7 @@ namespace Supremacy.Types
         /// </summary>
         public int CurrentValue
         {
-            get { return Math.Max(Minimum, Math.Min(Maximum, _currentValue)); }
+            get => Math.Max(Minimum, Math.Min(Maximum, _currentValue));
             set
             {
                 _currentValue = value;
@@ -143,14 +136,12 @@ namespace Supremacy.Types
         /// </summary>
         public Percentage PercentFilled
         {
-            // ReSharper disable PossibleLossOfFraction
+
             get
             {
-                if (IsMinimized)
-                    return 0f; 
-                return 0.01f * (((CurrentValue - Minimum) * 100) / (Maximum - Minimum));
+                return IsMinimized ? (Percentage)0f : (Percentage)(0.01f * ((CurrentValue - Minimum) * 100 / (Maximum - Minimum)));
             }
-            // ReSharper restore PossibleLossOfFraction
+
         }
 
         /// <summary>
@@ -159,31 +150,26 @@ namespace Supremacy.Types
         /// </summary>
         public Percentage PercentFilledLogarithmic
         {
-            // ReSharper disable PossibleLossOfFraction
+
             get
             {
-                if (IsMinimized)
-                    return 0f;
-                return (Percentage)(1d + Math.Log(PercentFilled, 10d));
+                return IsMinimized ? (Percentage)0f : (Percentage)(1d + Math.Log(PercentFilled, 10d));
             }
-            // ReSharper restore PossibleLossOfFraction
+
         }
 
         /// <summary>
         /// The difference between the current and base values
         /// </summary>
-        public int CurrentChange
-        {
-            get { return CurrentValue - BaseValue; }
-        }
+        public int CurrentChange => CurrentValue - BaseValue;
 
         /// <summary>
         /// The base efficiency of the Meter
         /// </summary>
         public int BaseValue
         {
-            get { return Math.Max(Minimum, Math.Min(Maximum, _baseValue)); }
-            set { SetBaseValue(value); }
+            get => Math.Max(Minimum, Math.Min(Maximum, _baseValue));
+            set => SetBaseValue(value);
         }
 
         /// <summary>
@@ -191,7 +177,7 @@ namespace Supremacy.Types
         /// </summary>
         public int Minimum
         {
-            get { return _minimum; }
+            get => _minimum;
             set
             {
                 _minimum = Math.Min(MaxValue, Math.Max(MinValue, Math.Min(Maximum, value)));
@@ -214,7 +200,7 @@ namespace Supremacy.Types
         /// </summary>
         public int Maximum
         {
-            get { return _maximum; }
+            get => _maximum;
             set
             {
                 _maximum = Math.Max(MinValue, Math.Min(MaxValue, Math.Max(Minimum, value)));
@@ -235,17 +221,14 @@ namespace Supremacy.Types
         /// <summary>
         /// The change between the current value and last value
         /// </summary>
-        public int LastChange
-        {
-            get { return (CurrentValue - LastValue); }
-        }
+        public int LastChange => CurrentValue - LastValue;
 
         /// <summary>
         /// The last (adjusted) efficiency of the Meter
         /// </summary>
         public int LastValue
         {
-            get { return _lastValue; }
+            get => _lastValue;
             protected set
             {
                 _lastValue = value;
@@ -263,7 +246,7 @@ namespace Supremacy.Types
         #endregion
 
         #region INotifyPropertyChanged Members
-        [field : NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
@@ -291,7 +274,10 @@ namespace Supremacy.Types
         public int ApplyModifier(ValueModifier modifier)
         {
             if (modifier != null)
+            {
                 CurrentValue = modifier.Apply(BaseValue, CurrentValue);
+            }
+
             return CurrentValue;
         }
 
@@ -303,7 +289,9 @@ namespace Supremacy.Types
         public void SetValues(Meter meter)
         {
             if (meter == null)
+            {
                 throw new ArgumentNullException("meter");
+            }
 
             _autoClamp = meter._autoClamp;
             _minimum = meter._minimum;
@@ -388,12 +376,7 @@ namespace Supremacy.Types
         {
             if (_autoClamp)
             {
-                if (value > Maximum)
-                    CurrentValue = Maximum;
-                else if (value < _minimum)
-                    CurrentValue = Minimum;
-                else
-                    CurrentValue = value;
+                CurrentValue = value > Maximum ? Maximum : value < _minimum ? Minimum : value;
             }
             else
             {
@@ -405,25 +388,32 @@ namespace Supremacy.Types
         public void Clamp()
         {
             if (BaseValue < Minimum)
+            {
                 BaseValue = Minimum;
+            }
             else if (BaseValue > Maximum)
+            {
                 BaseValue = Maximum;
+            }
+
             if (CurrentValue < Minimum)
+            {
                 CurrentValue = Minimum;
+            }
             else if (CurrentValue > Maximum)
+            {
                 CurrentValue = Maximum;
+            }
         }
 
         protected void OnCurrentValueChanged()
         {
-            if (CurrentValueChanged != null)
-                CurrentValueChanged(this, new MeterChangedEventArgs(this));
+            CurrentValueChanged?.Invoke(this, new MeterChangedEventArgs(this));
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

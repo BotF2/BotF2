@@ -31,34 +31,31 @@ namespace Supremacy.Client.Audio
         #region Properties
         public float Volume
         {
-            get { return _channelGroup.Volume; }
-            set { _channelGroup.Volume = value; }
+            get => _channelGroup.Volume;
+            set => _channelGroup.Volume = value;
         }
         #endregion
 
         #region Construction & Lifetime
         public SoundPlayer([NotNull] IAudioEngine engine, [NotNull] IAppContext appContext)
         {
-            if (engine == null)
-                throw new ArgumentNullException("engine");
-            if (appContext == null)
-                throw new ArgumentNullException("musicLibrary");
-
-            _engine = engine;
-            _appContext = appContext;
+            _engine = engine ?? throw new ArgumentNullException("engine");
+            _appContext = appContext ?? throw new ArgumentNullException("musicLibrary");
             _channelGroup = _engine.CreateGrouping("sound");
         }
 
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisposed = true;
 
-            lock(_updateLock)
+            lock (_updateLock)
             {
-                foreach (var track in _audioTracks)
+                foreach (IAudioTrack track in _audioTracks)
                 {
                     try
                     {
@@ -86,7 +83,10 @@ namespace Supremacy.Client.Audio
         public void Play(string pack, string sound)
         {
             MusicEntry track = _appContext.ThemeMusicLibrary.LookupTrack(pack, sound);
-            if(track == null) track = _appContext.DefaultMusicLibrary.LookupTrack(pack, sound);
+            if (track == null)
+            {
+                track = _appContext.DefaultMusicLibrary.LookupTrack(pack, sound);
+            }
 
             if (track != null)
             {
@@ -101,13 +101,14 @@ namespace Supremacy.Client.Audio
 
         public void PlayAny(string pack)
         {
-            MusicPack musicPack = null;
-            if(!_appContext.ThemeMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack))
-                _appContext.DefaultMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack);
+            if (!_appContext.ThemeMusicLibrary.MusicPacks.TryGetValue(pack, out MusicPack musicPack))
+            {
+                _ = _appContext.DefaultMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack);
+            }
 
             if (musicPack != null)
             {
-                var track = musicPack.Random();
+                KeyValuePair<int, MusicEntry> track = musicPack.Random();
                 PlayFile(track.Value.FileName);
                 GameLog.Client.Audio.DebugFormat("PlayAny musicPack={0}, Filename={1}", musicPack.Name, track.Value.FileName);
             }
@@ -120,9 +121,11 @@ namespace Supremacy.Client.Audio
         public void PlayFile(string fileName)
         {
             if (fileName == null)
+            {
                 throw new ArgumentNullException("fileName");
+            }
 
-            var resourcePath = ResourceManager.GetResourcePath(fileName);
+            string resourcePath = ResourceManager.GetResourcePath(fileName);
 
             if (!File.Exists(resourcePath))
             {
@@ -132,7 +135,7 @@ namespace Supremacy.Client.Audio
 
             lock (_updateLock)
             {
-                var audioTrack = _engine.CreateTrack(resourcePath);
+                IAudioTrack audioTrack = _engine.CreateTrack(resourcePath);
                 if (audioTrack != null)
                 {
                     audioTrack.Group = _channelGroup;
@@ -150,7 +153,7 @@ namespace Supremacy.Client.Audio
                 try
                 {
                     track.Dispose();
-                    _audioTracks.Remove(track);
+                    _ = _audioTracks.Remove(track);
                 }
                 catch (Exception e)
                 {

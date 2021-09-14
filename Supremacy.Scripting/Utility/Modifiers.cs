@@ -49,7 +49,7 @@ namespace Supremacy.Scripting.Utility
 
         public static string Name(int i)
         {
-            var s = "";
+            string s = "";
 
             switch (i)
             {

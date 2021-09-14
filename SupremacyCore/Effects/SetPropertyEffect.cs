@@ -18,8 +18,8 @@ namespace Supremacy.Effects
 
         public SetPropertyEffect([NotNull] DynamicProperty targetProperty, [NotNull] string valueExpression)
         {
-            Guard.ArgumentNotNull(targetProperty, "targetProperty");
-            Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
+            _ = Guard.ArgumentNotNull(targetProperty, "targetProperty");
+            _ = Guard.ArgumentNotNullOrWhiteSpace(valueExpression, "valueExpression");
 
             _targetProperty = targetProperty;
             _valueExpression = valueExpression;
@@ -28,29 +28,23 @@ namespace Supremacy.Effects
 
         private ScriptExpression CreateValueScript()
         {
-            var mergedParameters = SystemScriptParameters.Merge(EffectGroup.CustomScriptParameters);
+            ScriptParameters mergedParameters = SystemScriptParameters.Merge(EffectGroup.CustomScriptParameters);
 
             return new ScriptExpression
-                   {
-                       ScriptCode = _valueExpression,
-                       Parameters = mergedParameters
-                   };
+            {
+                ScriptCode = _valueExpression,
+                Parameters = mergedParameters
+            };
         }
 
-        public DynamicProperty TargetProperty
-        {
-            get { return _targetProperty; }
-        }
+        public DynamicProperty TargetProperty => _targetProperty;
 
-        public ScriptExpression ValueScript
-        {
-            get { return _valueScript.Value; }
-        }
+        public ScriptExpression ValueScript => _valueScript.Value;
 
         protected override EffectBinding BindCore(EffectGroupBinding effectGroupBinding, IEffectTarget effectTarget)
         {
-            var propertyType = _targetProperty.PropertyType;
-            var bindingType = typeof(SetPropertyEffectBinding<>).MakeGenericType(propertyType);
+            Type propertyType = _targetProperty.PropertyType;
+            Type bindingType = typeof(SetPropertyEffectBinding<>).MakeGenericType(propertyType);
 
             return (EffectBinding)Activator.CreateInstance(
                 bindingType,
@@ -61,7 +55,7 @@ namespace Supremacy.Effects
 
         protected override EffectParameterCollection CreateSystemParameters()
         {
-            var baseParameters = base.CreateSystemParameters();
+            EffectParameterCollection baseParameters = base.CreateSystemParameters();
 
             baseParameters.Add(new EffectParameter(ParameterNameBaseValue, _targetProperty.PropertyType));
             baseParameters.Add(new EffectParameter(ParameterNameCurrentValue, _targetProperty.PropertyType));

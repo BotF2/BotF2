@@ -33,8 +33,8 @@ namespace Supremacy.Client.Views
 
         public TechObjectDesign Design
         {
-            get { return (TechObjectDesign)GetValue(DesignProperty); }
-            set { SetValue(DesignProperty, value); }
+            get => (TechObjectDesign)GetValue(DesignProperty);
+            set => SetValue(DesignProperty, value);
         }
         #endregion
 
@@ -47,8 +47,8 @@ namespace Supremacy.Client.Views
 
         public Civilization Civilization
         {
-            get { return (Civilization)GetValue(CivilizationProperty); }
-            set { SetValue(CivilizationProperty, value); }
+            get => (Civilization)GetValue(CivilizationProperty);
+            set => SetValue(CivilizationProperty, value);
         }
         #endregion
 
@@ -67,8 +67,8 @@ namespace Supremacy.Client.Views
 
         public MapLocation? Location
         {
-            get { return (MapLocation?)GetValue(LocationProperty); }
-            set { SetValue(LocationProperty, value); }
+            get => (MapLocation?)GetValue(LocationProperty);
+            set => SetValue(LocationProperty, value);
         }
         #endregion
 
@@ -85,23 +85,20 @@ namespace Supremacy.Client.Views
 
         public static readonly DependencyProperty UpgradeableDesignsResolvedProperty = UpgradeableDesignsResolvedPropertyKey.DependencyProperty;
 
-        public ReadOnlyCollection<TechObjectDesign> UpgradeableDesignsResolved
-        {
-            get { return (ReadOnlyCollection<TechObjectDesign>)GetValue(UpgradeableDesignsResolvedProperty); }
-        }
+        public ReadOnlyCollection<TechObjectDesign> UpgradeableDesignsResolved => (ReadOnlyCollection<TechObjectDesign>)GetValue(UpgradeableDesignsResolvedProperty);
 
         private static object CoerceUpgradeableDesignsResolved(DependencyObject d, object baseValue)
         {
-            var viewModel = (TechObjectDesignViewModel)d;
+            TechObjectDesignViewModel viewModel = (TechObjectDesignViewModel)d;
 
-            var design = viewModel.Design;
+            TechObjectDesign design = viewModel.Design;
             if (design == null)
+            {
                 return baseValue;
+            }
 
-            TechTree primaryTechTree;
-            TechTree secondaryTechTree;
 
-            viewModel.GetTechTrees(out primaryTechTree, out secondaryTechTree);
+            viewModel.GetTechTrees(out TechTree primaryTechTree, out TechTree secondaryTechTree);
 
             return design.UpgradableDesigns
                 .Where(
@@ -125,23 +122,20 @@ namespace Supremacy.Client.Views
 
         public static readonly DependencyProperty ObsoletedDesignsResolvedProperty = ObsoletedDesignsResolvedPropertyKey.DependencyProperty;
 
-        public ReadOnlyCollection<TechObjectDesign> ObsoletedDesignsResolved
-        {
-            get { return (ReadOnlyCollection<TechObjectDesign>)GetValue(ObsoletedDesignsResolvedProperty); }
-        }
+        public ReadOnlyCollection<TechObjectDesign> ObsoletedDesignsResolved => (ReadOnlyCollection<TechObjectDesign>)GetValue(ObsoletedDesignsResolvedProperty);
 
         private static object CoerceObsoletedDesignsResolved(DependencyObject d, object baseValue)
         {
-            var viewModel = (TechObjectDesignViewModel)d;
+            TechObjectDesignViewModel viewModel = (TechObjectDesignViewModel)d;
 
-            var design = viewModel.Design;
+            TechObjectDesign design = viewModel.Design;
             if (design == null)
+            {
                 return baseValue;
+            }
 
-            TechTree primaryTechTree;
-            TechTree secondaryTechTree;
 
-            viewModel.GetTechTrees(out primaryTechTree, out secondaryTechTree);
+            viewModel.GetTechTrees(out TechTree primaryTechTree, out TechTree secondaryTechTree);
 
             return design.ObsoletedDesigns
                 .Where(
@@ -158,44 +152,61 @@ namespace Supremacy.Client.Views
             primaryTechTree = null;
             secondaryTechTree = null;
 
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             if (appContext == null)
+            {
                 return;
+            }
 
-            var gameContext = appContext.CurrentGame;
+            Game.IGameContext gameContext = appContext.CurrentGame;
             if (gameContext == null)
+            {
                 return;
+            }
 
-            var design = Design;
+            TechObjectDesign design = Design;
             if (design == null)
+            {
                 return;
+            }
 
-            var civilization = Civilization;
+            Civilization civilization = Civilization;
             if (civilization == null)
             {
-                var localPlayerEmpire = appContext.LocalPlayerEmpire;
+                Game.CivilizationManager localPlayerEmpire = appContext.LocalPlayerEmpire;
                 if (localPlayerEmpire == null)
+                {
                     return;
+                }
+
                 civilization = localPlayerEmpire.Civilization;
             }
 
             primaryTechTree = gameContext.TechTrees[civilization];
 
-            var location = Location;
+            MapLocation? location = Location;
             if ((!(design is BuildingDesign)) || !location.HasValue)
+            {
                 return;
+            }
 
-            var system = gameContext.Universe.Map[location.Value].System;
+            StarSystem system = gameContext.Universe.Map[location.Value].System;
             if (system == null)
+            {
                 return;
+            }
 
-            var colony = system.Colony;
+            Colony colony = system.Colony;
             if (colony == null)
+            {
                 return;
+            }
 
-            var originalOwner = colony.OriginalOwner;
+            Civilization originalOwner = colony.OriginalOwner;
             if (originalOwner != civilization)
+            {
                 secondaryTechTree = gameContext.TechTrees[civilization];
+            }
         }
         #endregion
 

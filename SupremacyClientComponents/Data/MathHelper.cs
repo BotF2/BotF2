@@ -27,9 +27,15 @@ namespace Supremacy.Client.Data
                     value = Math.Ceiling(value);
 
                     if ((mode == RoundMode.CeilingToEven) && (value % 2 == 1))
+                    {
                         value++;
+                    }
+
                     if ((mode == RoundMode.CeilingToOdd) && (value % 2 == 0))
+                    {
                         value++;
+                    }
+
                     break;
                 case RoundMode.Floor:
                 case RoundMode.FloorToEven:
@@ -38,48 +44,54 @@ namespace Supremacy.Client.Data
                     value = Math.Floor(value);
 
                     if ((mode == RoundMode.FloorToEven) && (value % 2 == 1))
+                    {
                         value--;
+                    }
+
                     if ((mode == RoundMode.FloorToOdd) && (value % 2 == 0))
+                    {
                         value--;
+                    }
+
                     break;
                 case RoundMode.Round:
 
                     value = Math.Round(value);
                     break;
                 case RoundMode.RoundToEven:
-                {
-                    var roundedValue = Math.Round(value);
-                    if (roundedValue % 2 == 0)
                     {
-                        value = roundedValue;
+                        double roundedValue = Math.Round(value);
+                        if (roundedValue % 2 == 0)
+                        {
+                            value = roundedValue;
+                        }
+                        else if (value == roundedValue)
+                        {
+                            value++;
+                        }
+                        else
+                        {
+                            value = roundedValue + (roundedValue < value ? 1 : -1);
+                        }
+                        break;
                     }
-                    else if (value == roundedValue)
-                    {
-                        value++;
-                    }
-                    else
-                    {
-                        value = roundedValue + (roundedValue < value ? 1 : -1);
-                    }
-                    break;
-                }
                 case RoundMode.RoundToOdd:
-                {
-                    var roundedValue = Math.Round(value);
-                    if (roundedValue % 2 == 1)
                     {
-                        value = roundedValue;
+                        double roundedValue = Math.Round(value);
+                        if (roundedValue % 2 == 1)
+                        {
+                            value = roundedValue;
+                        }
+                        else if (value == roundedValue)
+                        {
+                            value++;
+                        }
+                        else
+                        {
+                            value = roundedValue + (roundedValue < value ? 1 : -1);
+                        }
+                        break;
                     }
-                    else if (value == roundedValue)
-                    {
-                        value++;
-                    }
-                    else
-                    {
-                        value = roundedValue + (roundedValue < value ? 1 : -1);
-                    }
-                    break;
-                }
             }
             return value;
         }

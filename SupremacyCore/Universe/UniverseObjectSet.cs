@@ -15,10 +15,10 @@ namespace Supremacy.Universe
 {
     /// <summary>
     /// Represents an observable collection of <see cref="UniverseObject"/>s, keyed
-    /// on <see cref="Supremacy.Universe.UniverseObject.ObjectID"/>.
+    /// on <see cref="UniverseObject.ObjectID"/>.
     /// </summary>
     [Serializable]
-    public class UniverseObjectSet : 
+    public class UniverseObjectSet :
         IndexedCollection<UniverseObject>,
         IKeyedCollection<int, UniverseObject>,
         IOwnedDataSerializableAndRecreatable
@@ -26,7 +26,7 @@ namespace Supremacy.Universe
         [NonSerialized]
         private Index _objectIdIndex;
 
-        public UniverseObjectSet() 
+        public UniverseObjectSet()
             : base(InfiniteMaxKeyCount)
         {
             IsChangeNotificationEnabled = true;
@@ -58,11 +58,15 @@ namespace Supremacy.Universe
 
             try
             {
-                var itemIndex = ((IList<UniverseObject>)this).IndexOf(item);
+                int itemIndex = ((IList<UniverseObject>)this).IndexOf(item);
                 if (itemIndex >= 0)
+                {
                     ReplaceItem(itemIndex, item, true);
+                }
                 else
+                {
                     InsertItem(Count, item, true);
+                }
             }
             finally
             {
@@ -79,10 +83,12 @@ namespace Supremacy.Universe
                 int hashCode = GetIndexableHashCode(objectId);
                 if (_objectIdIndex.LookupTable.ContainsKey(hashCode))
                 {
-                    foreach (var item in _objectIdIndex.LookupTable[hashCode])
+                    foreach (UniverseObject item in _objectIdIndex.LookupTable[hashCode])
                     {
                         if (item.ObjectID == objectId)
+                        {
                             return item;
+                        }
                     }
                 }
                 return null;
@@ -114,12 +120,14 @@ namespace Supremacy.Universe
 
             try
             {
-                var count = Count;
-                var internalCollection = InternalCollection;
-                var cloneInternalCollection = new List<UniverseObject>(count);
+                int count = Count;
+                IList<UniverseObject> internalCollection = InternalCollection;
+                List<UniverseObject> cloneInternalCollection = new List<UniverseObject>(count);
 
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
+                {
                     cloneInternalCollection[i] = internalCollection[i];
+                }
 
                 return new UniverseObjectSet(cloneInternalCollection);
             }
@@ -138,7 +146,7 @@ namespace Supremacy.Universe
             SyncLock.EnterReadLock();
             try
             {
-                var array = new UniverseObject[Count];
+                UniverseObject[] array = new UniverseObject[Count];
                 CopyTo(array, 0);
                 return array;
             }
@@ -170,15 +178,12 @@ namespace Supremacy.Universe
 
         bool IKeyedLookup<int, UniverseObject>.Contains(int key)
         {
-            var @this = (IKeyedCollection<int, UniverseObject>)this;
+            IKeyedCollection<int, UniverseObject> @this = this;
 
             return @this.TryGetValue(key, out UniverseObject item);
         }
 
-        IEqualityComparer<int> IKeyedLookup<int, UniverseObject>.KeyComparer
-        {
-            get { return EqualityComparer<int>.Default; }
-        }
+        IEqualityComparer<int> IKeyedLookup<int, UniverseObject>.KeyComparer => EqualityComparer<int>.Default;
 
         IEnumerable<int> IKeyedCollection<int, UniverseObject>.Keys
         {
@@ -202,7 +207,7 @@ namespace Supremacy.Universe
             try
             {
                 value = GetObjectById(key);
-                return (value != null);
+                return value != null;
             }
             finally
             {

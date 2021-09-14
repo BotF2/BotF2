@@ -12,9 +12,11 @@ namespace Supremacy.Markup
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var designKey = DesignKey;
+            string designKey = DesignKey;
             if (designKey == null)
+            {
                 throw new InvalidOperationException("DesignKey must be set.");
+            }
 
             return new TechObjectTextGroupKey(designKey);
         }

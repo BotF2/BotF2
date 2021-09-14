@@ -53,6 +53,7 @@ namespace Supremacy.Collections
         private int _keyCount;
 
         private Func<TValue, TKey> _keyRetriever;
+        private string _text;
 
         public KeyedCollectionBase(Func<TValue, TKey> keyRetriever)
             : this(keyRetriever, null, DefaultDictionaryCreationThreshold) { }
@@ -90,11 +91,43 @@ namespace Supremacy.Collections
             {
                 if (key == null)
                 {
+                    _text = "Searched Key was null";
+                    Console.WriteLine(_text);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text);
                     throw new ArgumentNullException(nameof(key));
                 }
 
+                //searching for crashes
+                if (key.ToString() == "-1")
+                {
+                    _text = "Searched Key was -1, sometimes this crashes";
+                    Console.WriteLine(_text);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                }
+
+                //searching for crashes
+                if (key.ToString() == "999")
+                {
+                    _text = "Searched Key was '999', sometimes this crashes";
+                    Console.WriteLine(_text);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                }
+
+                //searching for crashes
+                if (key.ToString() == "789")
+                {
+                    _text = "Searched Key was '789', sometimes this crashes";
+                    Console.WriteLine(_text);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                }
+
+
                 if ((_keyValueMap != null) && _keyValueMap.TryGetValue(key, out TValue value))
                 {
+                    // works - but a lot of output    GameLog.Client.General.ErrorFormat("Searching Key = {0}", key.ToString());
                     return value;
                 }
 
@@ -373,7 +406,7 @@ namespace Supremacy.Collections
 
             if (_keyValueMap != null)
             {
-                _keyValueMap.Remove(key);
+                _ = _keyValueMap.Remove(key);
             }
             else
             {

@@ -31,7 +31,6 @@ using Supremacy.Xna;
 
 using System.Linq;
 using Supremacy.Client.Context;
-using Supremacy.Utility;
 
 namespace Supremacy.UI
 {
@@ -54,7 +53,7 @@ namespace Supremacy.UI
         private static readonly CachedBitmap EnergyBonusImage;
         private static readonly CachedBitmap FoodBonusImage;
         private static readonly CachedBitmap NebulaImage;
-        private static readonly CachedBitmap RawMaterialsBonusImage;
+        private static readonly CachedBitmap DuraniumBonusImage;
         public static readonly DependencyProperty ShowStatsProperty;
         #endregion
 
@@ -115,14 +114,14 @@ namespace Supremacy.UI
                 BitmapCacheOption.OnLoad);
             DilithiumBonusImage.Freeze();
 
-            RawMaterialsBonusImage = new CachedBitmap(
+            DuraniumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
                         "Resources/Images/UI/ScreenIcons/rawmaterials.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
-            RawMaterialsBonusImage.Freeze();
+            DuraniumBonusImage.Freeze();
         }
         #endregion
 
@@ -197,7 +196,7 @@ namespace Supremacy.UI
         #endregion
 
         #region Properties and Indexers
-        // ReSharper disable MemberCanBeMadeStatic.Local
+
         private IAppContext AppContext
         {
             get
@@ -223,8 +222,6 @@ namespace Supremacy.UI
                 return s_resourceManager;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Local
-
         public Sector Sector => _regionContext.Value as Sector;
 
         public bool ShowStats
@@ -258,7 +255,7 @@ namespace Supremacy.UI
             }
             //GameLog.Client.UI.DebugFormat("refreshing StarSystemPanel");
             if ((system != null) && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system)) // && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system))
-                {
+            {
                 //GameLog.Client.UI.DebugFormat("refreshing PlanetView");
                 DisplayVisuals(system);
             }
@@ -382,6 +379,13 @@ namespace Supremacy.UI
                                             = orbitals.Foreground
                                             = Brushes.Beige;
 
+                        race.Foreground = Brushes.Aquamarine;
+                        population.Foreground = Brushes.Goldenrod;
+                        growth.Foreground = Brushes.LightGreen;
+                        health.Foreground = Brushes.LightBlue;
+                        orbitals.Foreground = Brushes.LightGray;
+                        morale.Foreground = Brushes.YellowGreen;
+
                         name.Text = system.StarType == StarType.Nebula
                             ? string.Format(
                                 ResourceManager.GetString("NEBULA_NAME_FORMAT"),
@@ -403,12 +407,12 @@ namespace Supremacy.UI
                             health.Text = string.Format("{0}: {1:0.#}%",
                                 ResourceManager.GetString("SYSTEM_HEALTH"), populationHealth * 100);
 
-                            morale.ToolTip = ResourceManager.GetString("MORALE_TOOL_TIP");
+                            morale.ToolTip = ResourceManager.GetString("MORALE_TOOLTIP");
                             growth.ToolTip = ResourceManager.GetString("SYSTEM_GROWTH_RATE_TOOLTIP");
                             health.ToolTip = ResourceManager.GetString("SYSTEM_HEALTH_TOOLTIP");
                             orbitals.ToolTip = ResourceManager.GetString("SYSTEM_SHIELDS_TOOLTIP");
 
-                            orbitals.SetBinding(
+                            _ = orbitals.SetBinding(
                                 TextBlock.TextProperty,
                                 new MultiBinding
                                 {
@@ -488,7 +492,7 @@ namespace Supremacy.UI
                     if (planet.PlanetType == PlanetType.Asteroids)
                     {
                         AsteroidsView asteroids = new AsteroidsView { Margin = new Thickness(0, 0, 14, 0) };
-                        visuals.Children.Add(asteroids);
+                        _ = visuals.Children.Add(asteroids);
                     }
                     else
                     {
@@ -592,18 +596,18 @@ namespace Supremacy.UI
 
             if (IsExplored(system.Sector))
             {
-                if (system.HasRawMaterialsBonus)
+                if (system.HasDuraniumBonus)
                 {
                     Image bonusIcon = new Image
                     {
-                        Source = RawMaterialsBonusImage,
+                        Source = DuraniumBonusImage,
                         Width = SystemBonusIconSize,
                         Height = SystemBonusIconSize,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
                         ToolTip = GameContext.Current.Tables.EnumTables
                             [typeof(SystemBonus).Name]
-                            [SystemBonus.RawMaterials.ToString()][0]
+                            [SystemBonus.Duranium.ToString()][0]
                     };
                     _ = starContainer.Children.Add(bonusIcon);
                 }
@@ -615,7 +619,7 @@ namespace Supremacy.UI
                         Width = SystemBonusIconSize,
                         Height = SystemBonusIconSize,
                         Margin = new Thickness(
-                            (system.HasRawMaterialsBonus ? SystemBonusIconSize : 0),
+                            system.HasDuraniumBonus ? SystemBonusIconSize : 0,
                             0,
                             0,
                             0),
@@ -631,7 +635,7 @@ namespace Supremacy.UI
 
             star.ToolTip = starToolTip;
 
-            visuals.Children.Add(starContainer);
+            _ = visuals.Children.Add(starContainer);
 
             view.SetValue(Grid.ColumnProperty, 1);
             view.Stretch = Stretch.Uniform;
@@ -643,12 +647,12 @@ namespace Supremacy.UI
 
         private bool IsExplored(Sector sector)
         {
-            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
+            return sector != null && AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
         }
 
         private bool IsScanned(Sector sector)
         {
-            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
+            return sector != null && AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
         }
         #endregion
     }

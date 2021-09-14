@@ -25,10 +25,7 @@ namespace Supremacy.Types
     {
         private readonly SupremacyExceptionAction _action;
 
-        public SupremacyExceptionAction Action
-        {
-            get { return _action; }
-        }
+        public SupremacyExceptionAction Action => _action;
 
         public SupremacyException()
         {

@@ -15,23 +15,31 @@ namespace Supremacy.Client.Themes
         {
             resources = null;
 
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
-            var clientApplication = ServiceLocator.Current.GetInstance<IClientApplication>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IClientApplication clientApplication = ServiceLocator.Current.GetInstance<IClientApplication>();
 
             if (clientApplication?.IsShuttingDown != false)
+            {
                 return false;
+            }
 
-            var theme = appContext?.LocalPlayer?.Empire?.Key;
+            string theme = appContext?.LocalPlayer?.Empire?.Key;
             if (theme == null)
+            {
                 return false;
+            }
 
-            var themeUri = new Uri(
+            Uri themeUri = new Uri(
                 $"/SupremacyClient;Component/themes/{theme}/Theme.xaml",
                 UriKind.RelativeOrAbsolute);
 
+            string _text = "including Theme > " + themeUri.ToString();
+            //Console.WriteLine(_text);
+            GameLog.Client.UIDetails.DebugFormat(_text);
+
             try
             {
-                var sharedResources = new SharedResourceDictionary();
+                SharedResourceDictionary sharedResources = new SharedResourceDictionary();
 
                 sharedResources.BeginInit();
 
@@ -44,9 +52,9 @@ namespace Supremacy.Client.Themes
             }
             catch (Exception e)
             {
-                GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: problem at try sharedResources Exception {0} {1}", e.Message, e.StackTrace);
+                GameLog.Client.GameData.ErrorFormat("ThemeHelper.cs: problem at try sharedResources Exception {0} {1}", e.Message, e.StackTrace);
             }
-            
+
             resources = null;
             return false;
         }

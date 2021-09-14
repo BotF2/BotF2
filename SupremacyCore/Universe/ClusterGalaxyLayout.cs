@@ -31,8 +31,8 @@ namespace Supremacy.Universe
             int i;
             int attempts;
 
-            List<Tuple<Tuple<double, double>, Tuple<double, double>>> clustersPosition = 
-                new List<Tuple<Tuple<double,double>,Tuple<double,double>>>();
+            List<Tuple<Tuple<double, double>, Tuple<double, double>>> clustersPosition =
+                new List<Tuple<Tuple<double, double>, Tuple<double, double>>>();
 
             int averageClusters = Math.Min(width, height) / 20;
             int clusters;
@@ -42,12 +42,12 @@ namespace Supremacy.Universe
                 averageClusters = 2;
             }
 
-            clusters = random.Next((averageClusters * 8) / 10, (averageClusters * 12) / 10) + 1;
+            clusters = random.Next(averageClusters * 8 / 10, averageClusters * 12 / 10) + 1;
 
             for (i = 0, attempts = 0; (i < clusters) && (attempts < MaxStarPlacementAttempts); i++, attempts++)
             {
-                double x = (((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0)) * clusters;
-                double y = (((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0)) * clusters;
+                double x = ((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0) * clusters;
+                double y = ((random.NextDouble() * 2.0) - 1.0) / (clusters + 1.0) * clusters;
 
                 int j;
                 for (j = 0; j < clustersPosition.Count; j++)
@@ -90,14 +90,7 @@ namespace Supremacy.Universe
                     double angle = random.NextDouble() * 2.0 * Math.PI;
                     double x1, y1;
 
-                    if (clustersPosition.Count == 0)
-                    {
-                        cluster = 0;
-                    }
-                    else
-                    {
-                        cluster = i % clustersPosition.Count;
-                    }
+                    cluster = clustersPosition.Count == 0 ? 0 : i % clustersPosition.Count;
 
                     x1 = radius * Math.Cos(angle);
                     y1 = radius * Math.Sign(angle) * ellipseWidthVsHeight;
@@ -111,15 +104,15 @@ namespace Supremacy.Universe
                     y = (y / Math.Sqrt(clusters)) + clustersPosition[cluster].Item1.Item2;
                 }
 
-                x = ((x + 1) * width) / 2.0;
-                y = ((y + 1) * height) / 2.0;
+                x = (x + 1) * width / 2.0;
+                y = (y + 1) * height / 2.0;
 
                 if ((x < 0) || (width <= x) || (y < 0) || (height <= y))
                 {
                     continue;
                 }
 
-                var newNode = new MapLocationQuadtreeNode(new MapLocation((int)x, (int)y));
+                MapLocationQuadtreeNode newNode = new MapLocationQuadtreeNode(new MapLocation((int)x, (int)y));
 
                 if ((FindNearestNeighborDistance(newNode, positions)
                     < GalaxyGenerator.MinDistanceBetweenStars) && (attempts < (MaxStarPlacementAttempts - 1)))
@@ -128,24 +121,26 @@ namespace Supremacy.Universe
                     continue;
                 }
 
-                var dominionLocation = new MapLocation(3, 3);
-                var dominionNode = new MapLocationQuadtreeNode(dominionLocation);
+                MapLocation dominionLocation = new MapLocation(3, 3);
+                MapLocationQuadtreeNode dominionNode = new MapLocationQuadtreeNode(dominionLocation);
                 positions.Add(dominionNode);
 
                 int borgX = width - (width / 8);
-                int borgY = (height / 8);
-                var borgLocation = new MapLocation(borgX, borgY);
-                var borgNode = new MapLocationQuadtreeNode(borgLocation);
+                int borgY = height / 8;
+                MapLocation borgLocation = new MapLocation(borgX, borgY);
+                MapLocationQuadtreeNode borgNode = new MapLocationQuadtreeNode(borgLocation);
 
                 positions.Add(borgNode);
 
                 if (newNode.Location != dominionLocation && newNode.Location != borgLocation)
+                {
                     positions.Add(newNode);
+                }
 
                 attempts = 0;
             }
 
-            return (positions.Count - initialPositions);
+            return positions.Count - initialPositions;
         }
     }
 }

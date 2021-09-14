@@ -4,26 +4,30 @@ using Supremacy.Messaging.Internal;
 
 namespace Supremacy.Messaging
 {
-    public class WeakChannelSubscription<T> 
-		 : ChannelSubscriptionBase<T>
+    public class WeakChannelSubscription<T>
+         : ChannelSubscriptionBase<T>
     {
         WeakReference _subscriber;
 
         public WeakChannelSubscription(ChannelThreadOption threadOption, IObserver<T> subscriber)
-		 : base(threadOption)
+         : base(threadOption)
         {
             Guard.ArgumentNotNull(subscriber, "subscriber");
             _subscriber = new WeakReference(subscriber);
         }
 
-#region Overrides
+        #region Overrides
 
         public override IObserver<T> Subscriber
         {
-            get 
+            get
             {
-                if (_subscriber == null || !_subscriber.IsAlive) return null;
-                var subscriberObj = _subscriber.Target as IObserver<T>;
+                if (_subscriber == null || !_subscriber.IsAlive)
+                {
+                    return null;
+                }
+
+                IObserver<T> subscriberObj = _subscriber.Target as IObserver<T>;
                 return subscriberObj;
             }
         }
@@ -40,7 +44,7 @@ namespace Supremacy.Messaging
             }
         }
 
-#endregion
+        #endregion
 
     }
 }

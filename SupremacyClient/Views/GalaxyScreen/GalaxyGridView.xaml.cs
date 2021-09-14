@@ -34,10 +34,7 @@ namespace Supremacy.Client.Views
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-
-            _container = container;
+            _container = container ?? throw new ArgumentNullException("container");
             _appContext = _container.Resolve<IAppContext>();
             _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
 
@@ -54,7 +51,7 @@ namespace Supremacy.Client.Views
             GalaxyGrid.SectorDoubleClicked += OnSectorDoubleClicked;
 
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
-            
+
             _revealMapCommand = new DelegateCommand<object>(ExecuteRevealMapCommand);
             _cheatMenuCommand = new DelegateCommand<object>(ExecuteCheatMenuCommand);
             _f12_ScreenCommand = new DelegateCommand<object>(Execute_f12_ScreenCommand);
@@ -95,21 +92,29 @@ namespace Supremacy.Client.Views
         private void OnLocalPlayerEmpireChanged()
         {
             if (!_appContext.IsGameInPlay || _appContext.IsGameEnding)
+            {
                 return;
+            }
 
-            var localPlayerEmpire = _appContext.LocalPlayerEmpire;
+            CivilizationManager localPlayerEmpire = _appContext.LocalPlayerEmpire;
             if (localPlayerEmpire == null)
+            {
                 return;
+            }
         }
 
         private void OnSectorDoubleClicked(Sector sector)
         {
             if ((sector == null) || (sector.System == null))
+            {
                 return;
+            }
 
-            var colony = sector.System.Colony;
+            Colony colony = sector.System.Colony;
             if (colony == null)
+            {
                 return;
+            }
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
         }
@@ -117,11 +122,13 @@ namespace Supremacy.Client.Views
         private void ExecuteRevealMapCommand(object t)
         {
             if (!_appContext.IsSinglePlayerGame)
+            {
                 return;
+            }
 
-            var map = _appContext.CurrentGame.Universe.Map;
-            var playerCiv = _appContext.LocalPlayer.Empire;
-            var mapData = _appContext.LocalPlayerEmpire.MapData;
+            SectorMap map = _appContext.CurrentGame.Universe.Map;
+            Entities.Civilization playerCiv = _appContext.LocalPlayer.Empire;
+            CivilizationMapData mapData = _appContext.LocalPlayerEmpire.MapData;
 
             for (int x = 0; x < map.Width; x++)
             {
@@ -129,18 +136,23 @@ namespace Supremacy.Client.Views
                 {
                     MapLocation loc = new MapLocation(x, y);
                     mapData.SetExplored(loc, true);
-                    mapData.SetScanStrength(loc, 99); 
+                    mapData.SetScanStrength(loc, 99);
                 }
             }
 
-            var diplomat = Diplomat.Get(playerCiv);
+            Diplomat diplomat = Diplomat.Get(playerCiv);
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ == playerCiv)
+                {
                     continue;
+                }
+
                 if (diplomat.GetForeignPower(civ).DiplomacyData.Status == ForeignPowerStatus.NoContact)
+                {
                     diplomat.GetForeignPower(civ).DiplomacyData.Status = ForeignPowerStatus.Neutral;
+                }
             }
             GalaxyGrid.Update();
         }
@@ -151,14 +163,14 @@ namespace Supremacy.Client.Views
             // to do: just check whether IsHumanPlayer more than one (whenever SP is started by MP-Screen)
             //if (PlayerContext.Current.Players.Count)
             //    if (PlayerContext.Current.Players.Contains)
-                    if (!_appContext.IsSinglePlayerGame)
-                    {
-                MessageDialog.Show("Cheat Menu is not available in MultiPlayer", "INFO", MessageDialogButtons.Ok);
+            if (!_appContext.IsSinglePlayerGame)
+            {
+                _ = MessageDialog.Show("Cheat Menu is not available in MultiPlayer", "INFO", MessageDialogButtons.Ok);
                 return;
             }
 
-            var cheatMenu = new CheatMenu(_appContext);
-            cheatMenu.ShowDialog();
+            CheatMenu cheatMenu = new CheatMenu(_appContext);
+            _ = cheatMenu.ShowDialog();
         }
 
         private void Execute_f12_ScreenCommand(object t)
@@ -166,24 +178,24 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f12_Screen = new GameInfoScreen(_appContext);
-            _f12_Screen.ShowDialog();
+            GameInfoScreen _f12_Screen = new GameInfoScreen(_appContext);
+            _ = _f12_Screen.ShowDialog();
         }
         private void Execute_f11_ScreenCommand(object t)
         {
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f11_Screen = new GameInfoScreen(_appContext);
-            _f11_Screen.ShowDialog();
+            GameInfoScreen _f11_Screen = new GameInfoScreen(_appContext);
+            _ = _f11_Screen.ShowDialog();
         }
         private void Execute_f10_ScreenCommand(object t)
         {
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f10_Screen = new GameInfoScreen(_appContext);
-            _f10_Screen.ShowDialog();
+            GameInfoScreen _f10_Screen = new GameInfoScreen(_appContext);
+            _ = _f10_Screen.ShowDialog();
         }
 
         private void Execute_f09_ScreenCommand(object t)
@@ -193,8 +205,8 @@ namespace Supremacy.Client.Views
 
             //var _f09_Screen = new GameInfoScreen(_appContext);
             //_f09_Screen.ShowDialog();
-            var GameInfoScreen = new GameInfoScreen(_appContext);
-            GameInfoScreen.ShowDialog();
+            GameInfoScreen GameInfoScreen = new GameInfoScreen(_appContext);
+            _ = GameInfoScreen.ShowDialog();
         }
 
         private void Execute_f08_ScreenCommand(object t)
@@ -202,8 +214,8 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f08_Screen = new ColonyInfoScreen(_appContext);
-            _f08_Screen.ShowDialog();
+            ColonyInfoScreen _f08_Screen = new ColonyInfoScreen(_appContext);
+            _ = _f08_Screen.ShowDialog();
         }
 
         private void Execute_f07_ScreenCommand(object t)
@@ -211,8 +223,8 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f07_Screen = new GameInfoScreen(_appContext);
-            _f07_Screen.ShowDialog();
+            GameInfoScreen _f07_Screen = new GameInfoScreen(_appContext);
+            _ = _f07_Screen.ShowDialog();
         }
 
         private void Execute_f06_ScreenCommand(object t)
@@ -220,21 +232,22 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f06_Screen = new ColorInfoScreen(_appContext);
-            _f06_Screen.ShowDialog();
+            ColorInfoScreen _f06_Screen = new ColorInfoScreen(_appContext);
+            _ = _f06_Screen.ShowDialog();
         }
         #endregion
 
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            IAppContext appContext = sender as IAppContext;
-            
-            if (appContext == null)
+            if (!(sender is IAppContext appContext))
+            {
                 return false;
+            }
 
-            PropertyChangedEventArgs propertyChangedEventArgs = e as PropertyChangedEventArgs;
-            if (propertyChangedEventArgs == null)
+            if (!(e is PropertyChangedEventArgs propertyChangedEventArgs))
+            {
                 return false;
+            }
 
             switch (propertyChangedEventArgs.PropertyName)
             {

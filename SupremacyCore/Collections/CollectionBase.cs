@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
@@ -487,7 +486,7 @@ namespace Supremacy.Collections
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (_suppressChangeNotificationsScope.IsWithin)
+            if (_suppressChangeNotificationsScope == null || _suppressChangeNotificationsScope.IsWithin)
             {
                 return;
             }

@@ -22,15 +22,9 @@ namespace Supremacy.Effects
 
         #region Implementation of IEffectParameterBinding
 
-        public IEffectParameter Parameter
-        {
-            get { return _parameter; }
-        }
+        public IEffectParameter Parameter => _parameter;
 
-        public object Value
-        {
-            get { return _value; }
-        }
+        public object Value => _value;
 
         #endregion
     }

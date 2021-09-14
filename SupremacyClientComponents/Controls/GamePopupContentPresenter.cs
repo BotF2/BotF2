@@ -7,21 +7,20 @@ namespace Supremacy.Client.Controls
 {
     public class GamePopupContentPresenter : ContentPresenter
     {
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static GamePopupContentPresenter()
         {
             Control.IsTabStopProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(false));
-            
+
             KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
-            
+
             KeyboardNavigation.TabNavigationProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
-         
+
             FocusableProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(true));
@@ -29,9 +28,12 @@ namespace Supremacy.Client.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var scrollViewer = this.FindVisualAncestorByType<GamePopupScrollViewer>();
+            GamePopupScrollViewer scrollViewer = this.FindVisualAncestorByType<GamePopupScrollViewer>();
             if (scrollViewer != null)
+            {
                 constraint.Width = scrollViewer.MeasureConstraint.Width;
+            }
+
             return base.MeasureOverride(constraint);
         }
 

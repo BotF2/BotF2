@@ -7,13 +7,12 @@ namespace Supremacy.Client.Controls
 {
     public class ScrollViewerItemsPresenter : ItemsPresenter
     {
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static ScrollViewerItemsPresenter()
         {
             KeyboardNavigation.IsTabStopProperty.OverrideMetadata(
                 typeof(ScrollViewerItemsPresenter),
                 new FrameworkPropertyMetadata(false));
-            
+
             FocusableProperty.OverrideMetadata(
                 typeof(ScrollViewerItemsPresenter),
                 new FrameworkPropertyMetadata(true));
@@ -22,23 +21,25 @@ namespace Supremacy.Client.Controls
         internal static void ProcessKeyDown(FrameworkElement presenter, KeyEventArgs e)
         {
             if (e.Handled)
+            {
                 return;
+            }
 
-            var direction = FocusNavigationDirection.Next;
+            FocusNavigationDirection direction = FocusNavigationDirection.Next;
             switch (e.Key)
             {
                 case Key.Down:
                     direction = FocusNavigationDirection.Down;
                     break;
                 case Key.Left:
-                    direction = (presenter.FlowDirection == FlowDirection.LeftToRight
+                    direction = presenter.FlowDirection == FlowDirection.LeftToRight
                                      ? FocusNavigationDirection.Left
-                                     : FocusNavigationDirection.Right);
+                                     : FocusNavigationDirection.Right;
                     break;
                 case Key.Right:
-                    direction = (presenter.FlowDirection == FlowDirection.LeftToRight
+                    direction = presenter.FlowDirection == FlowDirection.LeftToRight
                                      ? FocusNavigationDirection.Right
-                                     : FocusNavigationDirection.Left);
+                                     : FocusNavigationDirection.Left;
                     break;
                 case Key.Up:
                     direction = FocusNavigationDirection.Up;
@@ -46,18 +47,22 @@ namespace Supremacy.Client.Controls
             }
 
             if (direction == FocusNavigationDirection.Next)
+            {
                 return;
+            }
 
-            var focusedElement = Keyboard.FocusedElement as UIElement;
-            if (focusedElement == null)
+            if (!(Keyboard.FocusedElement is UIElement focusedElement))
+            {
                 return;
+            }
 
-            var predictedFocus = focusedElement.PredictFocus(direction) as IInputElement;
-            if (predictedFocus == null)
+            if (!(focusedElement.PredictFocus(direction) is IInputElement predictedFocus))
+            {
                 return;
+            }
 
             e.Handled = true;
-            predictedFocus.Focus();
+            _ = predictedFocus.Focus();
             return;
         }
 

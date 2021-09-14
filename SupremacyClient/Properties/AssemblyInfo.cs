@@ -11,7 +11,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2020 Rise of the UFP Team")]
+[assembly: AssemblyCopyright("Copyright (c) 2021 Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -27,11 +27,11 @@ using System.Windows.Markup;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-    //(used if a resource is not found in the page, 
-    // or application resource dictionaries)
+                                     //(used if a resource is not found in the page, 
+                                     // or application resource dictionaries)
     ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
-    //(used if a resource is not found in the page, 
-    // app, or any theme specific resource dictionaries)
+                                              //(used if a resource is not found in the page, 
+                                              // app, or any theme specific resource dictionaries)
 )]
 
 
@@ -46,9 +46,9 @@ using System.Windows.Markup;
 // by using the '*' as shown below:
 
 
-    // seems Version is affecting the available list of saved games
-[assembly: AssemblyVersion("2020.17.0.1")]
-[assembly: AssemblyFileVersion("2020.17.0.1")]
+// seems Version is affecting the available list of saved games
+[assembly: AssemblyVersion("1.7.0.3")]
+[assembly: AssemblyFileVersion("1.7.0.3")]
 
 [assembly: Dependency("WindowsBase,", LoadHint.Always)]
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]

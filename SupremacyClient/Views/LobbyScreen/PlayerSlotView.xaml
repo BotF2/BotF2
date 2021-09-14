@@ -23,7 +23,7 @@
                         SharedSizeGroup="LobbyPlayerInfoColumn6"/>
     </Grid.ColumnDefinitions>
     <Border Grid.Column="0"
-            Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
             CornerRadius="14,0,0,14"
             Width="21"
             Margin="0,0,0,0"/>
@@ -38,11 +38,11 @@
                Margin="4,0,4,0"
                FontSize="18pt"
                FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               Foreground="{StaticResource BeigeTextBrush}"
                VerticalAlignment="Center"
                Text="{Binding Path=(local:PlayerSlotView.Slot).EmpireName, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PlayerSlotView}}, Converter={StaticResource UpperCaseConverter}}"/>
     <Border Grid.Column="3"
-            Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+            Background="{StaticResource AzureGradient_Top_Bottom}"
             Width="21"
             Margin="0,0,0,0"/>
     <ComboBox x:Name="PlayerList"
@@ -56,10 +56,10 @@
               SelectedItem="{Binding Path=(local:PlayerSlotView.AssignedPlayer), Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PlayerSlotView}}}"
               DisplayMemberPath="Name" />
     <Border Grid.Column="5"
-            Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+            Background="{StaticResource BlueGradient_Top_Bottom}"
             Margin="4,0,4,0"/>
     <Border Grid.Column="6"
-            Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
             CornerRadius="0,14,14,0"
             Width="21"
             Margin="0,0,0,0"/>

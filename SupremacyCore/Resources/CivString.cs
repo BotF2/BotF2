@@ -55,20 +55,32 @@ namespace Supremacy.Resources
 
         public CivString(string category, string key) : this(null, category, key) { }
 
-        public CivString([CanBeNull] Civilization civilization, [CanBeNull] Civilization civilization2, [NotNull] string category, [NotNull] string key) :this(civilization, civilization2, category, key, null) {}
+        public CivString([CanBeNull] Civilization civilization, [CanBeNull] Civilization civilization2, [NotNull] string category, [NotNull] string key) : this(civilization, civilization2, category, key, null) { }
 
         public CivString([CanBeNull] Civilization civilization, [NotNull] string category, [NotNull] string key) : this(civilization, null, category, key, null) { }
 
         public CivString([CanBeNull] Civilization civilization, [CanBeNull] Civilization civilization2, [NotNull] string category, [NotNull] string key, Tone? demeanor)
         {
-            if (String.IsNullOrEmpty(category))
+            if (string.IsNullOrEmpty(category))
+            {
                 throw new ArgumentException("category must be a non-null, non-empty string.", "category");
-            if (String.IsNullOrEmpty(key))
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
                 throw new ArgumentException("key must be a non-null, non-empty string.", "key");
+            }
+
             if (civilization != null)
+            {
                 _civKey = civilization.Key;
+            }
+
             if (civilization2 != null)
+            {
                 _civKey = civilization.Key;
+            }
+
             _category = category;
             _stringKey = key;
             _randomIndex = RandomProvider.Shared.Next(255);
@@ -77,50 +89,47 @@ namespace Supremacy.Resources
         #endregion
 
         #region Properties
-        // ReSharper disable MemberCanBeMadeStatic.Global
+
         protected IClientContext ClientContext
         {
             get
             {
                 if (s_clientContext == null)
+                {
                     s_clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
+                }
+
                 return s_clientContext;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Global
+
 
         public Civilization Civilization
         {
-            get { return GameContext.Current.Civilizations[_civKey]; }
+            get => GameContext.Current.Civilizations[_civKey];
             set
             {
-                _civKey = (value != null) ? value.Key : null;
+                _civKey = value?.Key;
                 OnPropertyChanged("Civilization");
                 OnPropertyChanged("Value");
             }
         }
 
-        public Tone? Tone
-        {
-            get { return _demeanor; }
-        }
+        public Tone? Tone => _demeanor;
 
-        public string Category
-        {
-            get { return _category; }
-        }
+        public string Category => _category;
 
-        public string Key
-        {
-            get { return _stringKey; }
-        }
+        public string Key => _stringKey;
 
         public string Value
         {
             get
             {
                 if (!_cachedValuePresent)
+                {
                     LookupValue();
+                }
+
                 return _cachedValue ?? _stringKey;
             }
         }
@@ -130,8 +139,11 @@ namespace Supremacy.Resources
             get
             {
                 if (!_cachedValuePresent)
+                {
                     LookupValue();
-                return (_cachedValue != null);
+                }
+
+                return _cachedValue != null;
             }
         }
         #endregion
@@ -139,9 +151,12 @@ namespace Supremacy.Resources
         #region Methods
         protected void LookupValue()
         {
-            var civ = Civilization;
+            Civilization civ = Civilization;
             if ((civ == null) && (ClientContext != null) && (ClientContext.LocalPlayer != null))
+            {
                 civ = ClientContext.LocalPlayer.Empire;
+            }
+
             _cachedValue = CivStringDatabase.GetString(civ, Category, _stringKey, _demeanor, _randomIndex);
             _cachedValuePresent = true;
         }
@@ -157,8 +172,7 @@ namespace Supremacy.Resources
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }
@@ -175,7 +189,7 @@ namespace Supremacy.Resources
         {
             try
             {
-                var ns = XNamespace.Get("Supremacy:CivStringDatabase.xsd");
+                XNamespace ns = XNamespace.Get("Supremacy:CivStringDatabase.xsd");
 
                 s_databaseXml = XDocument.Load(
                     ResourceManager.GetResourcePath("vfs:///Resources/Data/CivStringDatabase.xml"),
@@ -238,7 +252,7 @@ namespace Supremacy.Resources
                                              .Elements(ns + "Category")
                                              .Where(o => string.Equals(category, (string)o.Attribute("Name"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "CivString")
-                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) && 
+                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) &&
                                                          string.Equals(demeanor.HasValue ? demeanor.ToString() : null, (string)o.Attribute("Tone"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "Value")
                                              .Where(o => IsNeutralLanguage((string)o.Attribute("Language")))
@@ -260,7 +274,7 @@ namespace Supremacy.Resources
                                              .Elements(ns + "Category")
                                              .Where(o => string.Equals(category, (string)o.Attribute("Name"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "CivString")
-                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) && 
+                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) &&
                                                          string.Equals(demeanor.HasValue ? demeanor.ToString() : null, (string)o.Attribute("Tone"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "Value")
                                              .Where(o => IsNeutralLanguage((string)o.Attribute("Language")))
@@ -290,7 +304,9 @@ namespace Supremacy.Resources
         {
             // An empty string matches InvariantCulture.  We recognize null in the same way.
             if (string.IsNullOrEmpty(language))
+            {
                 return true;
+            }
 
             CultureInfo specifiedCulture;
 
@@ -305,14 +321,20 @@ namespace Supremacy.Resources
             }
 
             if (Equals(specifiedCulture, ResourceManager.NeutralCulture))
+            {
                 return true;
+            }
 
-            var specifiedNeutralCulture = specifiedCulture;
+            CultureInfo specifiedNeutralCulture = specifiedCulture;
             while (!specifiedNeutralCulture.IsNeutralCulture)
+            {
                 specifiedNeutralCulture = specifiedNeutralCulture.Parent;
+            }
 
             if (Equals(specifiedNeutralCulture, ResourceManager.NeutralCulture))
+            {
                 return true;
+            }
 
             return Equals(specifiedNeutralCulture, CultureInfo.InvariantCulture);
         }
@@ -320,7 +342,9 @@ namespace Supremacy.Resources
         private static bool IsValidLanguageForUser(string language)
         {
             if (language == null)
+            {
                 return false;
+            }
 
             CultureInfo specifiedCulture;
 
@@ -328,19 +352,21 @@ namespace Supremacy.Resources
             {
                 specifiedCulture = CultureInfo.GetCultureInfo(language);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 GameLog.Core.GameData.Error(e);
                 return false;
             }
-            
-            var currentCulture = ResourceManager.CurrentCulture;
-            if (Equals(currentCulture, specifiedCulture))
-                return true;
 
-            var currentNeutralCulture = currentCulture;
-            var specifiedNeutralCulture = specifiedCulture;
-            
+            CultureInfo currentCulture = ResourceManager.CurrentCulture;
+            if (Equals(currentCulture, specifiedCulture))
+            {
+                return true;
+            }
+
+            CultureInfo currentNeutralCulture = currentCulture;
+            CultureInfo specifiedNeutralCulture = specifiedCulture;
+
             while (!currentNeutralCulture.IsNeutralCulture &&
                    (currentNeutralCulture.Parent != currentNeutralCulture))
             {
@@ -358,12 +384,12 @@ namespace Supremacy.Resources
 
         public static string GetString(Civilization civ, string category, string key, int randomIndex)
         {
-            return GetString((civ != null) ? civ.Key : null, category, key, null, randomIndex);
+            return GetString(civ?.Key, category, key, null, randomIndex);
         }
 
         public static string GetString(Civilization civ, string category, string key, Tone? demeanor, int randomIndex)
         {
-            return GetString((civ != null) ? civ.Key : null, category, key, randomIndex);
+            return GetString(civ?.Key, category, key, randomIndex);
         }
 
         public static string GetString(string civKey, string category, string key, int randomIndex)
@@ -374,16 +400,19 @@ namespace Supremacy.Resources
         public static string GetString(string civKey, string category, string key, Tone? demeanor, int randomIndex)
         {
             if (key == null)
+            {
                 throw new ArgumentNullException("key");
+            }
 
-            var result = s_searchFunctions
+            IEnumerable<string> result = s_searchFunctions
                 .Select(searchFunction => searchFunction(civKey, category, key, demeanor))
-                .Where(results => results.Any())
-                .FirstOrDefault();
+.FirstOrDefault(results => results.Any());
 
             if (result != null)
+            {
                 return result.ElementAt(randomIndex % result.Count());
-            
+            }
+
             return key;
         }
         #endregion

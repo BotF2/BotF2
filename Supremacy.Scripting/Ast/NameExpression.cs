@@ -75,7 +75,7 @@ namespace Supremacy.Scripting.Ast
             _inTransit = true;
 
             Expression e = DoSimpleNameResolve(ec);
-            
+
             _inTransit = false;
 
             if (e == null)
@@ -87,7 +87,7 @@ namespace Supremacy.Scripting.Ast
                 ((e is ParameterReference) && (((ParameterReference)e).Parameter is QueryScope.TransparentParameter)) ||
                 ec.CurrentScope.CheckInvariantMeaningInBlock(Name, e, Span)
                 ? e
-                : (this);
+                : this;
         }
 
         private Expression DoSimpleNameResolve(ParseContext ec)

@@ -22,16 +22,11 @@ namespace Supremacy.VFS
     {
         private readonly Uri _requestUri;
 
-        public override Uri RequestUri
-        {
-            get { return _requestUri; }
-        }
+        public override Uri RequestUri => _requestUri;
 
         public VfsWebRequest([NotNull] Uri requestUri)
         {
-            if (requestUri == null)
-                throw new ArgumentNullException("requestUri");
-            _requestUri = requestUri;
+            _requestUri = requestUri ?? throw new ArgumentNullException("requestUri");
         }
 
         public override WebResponse GetResponse()
@@ -49,7 +44,9 @@ namespace Supremacy.VFS
             lock (typeof(VfsWebRequestFactory))
             {
                 if (UriParser.IsKnownScheme("vfs"))
+                {
                     return;
+                }
 
                 UriParser.Register(
                     new GenericUriParser(
@@ -61,10 +58,10 @@ namespace Supremacy.VFS
                     Scheme,
                     -1);
 
-                WebRequest.RegisterPrefix(Scheme, new VfsWebRequestFactory());
+                _ = WebRequest.RegisterPrefix(Scheme, new VfsWebRequestFactory());
             }
         }
-        
+
         #region Implementation of IWebRequestCreate
         public WebRequest Create(Uri uri)
         {
@@ -77,35 +74,27 @@ namespace Supremacy.VFS
     {
         private readonly Uri _responseUri;
 
-        public sealed override Uri ResponseUri
-        {
-            get { return _responseUri; }
-        }
+        public sealed override Uri ResponseUri => _responseUri;
 
         public VfsWebResponse([NotNull] Uri responseUri)
         {
-            if (responseUri == null)
-                throw new ArgumentNullException("responseUri");
-
-            _responseUri = responseUri;
+            _responseUri = responseUri ?? throw new ArgumentNullException("responseUri");
         }
 
         private readonly Lazy<IVfsService> _vfsService = new Lazy<IVfsService>(() => ResourceManager.VfsService);
 
-        protected IVfsService VfsService
-        {
-            get { return _vfsService.Value; }
-        }
+        protected IVfsService VfsService => _vfsService.Value;
 
         public override Stream GetResponseStream()
         {
-            var vfsService = VfsService;
+            IVfsService vfsService = VfsService;
             if (vfsService == null)
+            {
                 throw new InvalidOperationException("Could not resolve VFS service.");
+            }
 
-            IVirtualFileInfo virtualFileInfo;
 
-            if (!vfsService.TryGetFileInfo(_responseUri, out virtualFileInfo))
+            if (!vfsService.TryGetFileInfo(_responseUri, out IVirtualFileInfo virtualFileInfo))
             {
                 throw new FileNotFoundException(
                     string.Format(

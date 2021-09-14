@@ -46,28 +46,19 @@ namespace Supremacy.Game
         /// Gets the sender.
         /// </summary>
         /// <value>The sender.</value>
-        public IPlayer Sender
-        {
-            get { return _sender; }
-        }
+        public IPlayer Sender => _sender;
 
         /// <summary>
         /// Gets the recipient.
         /// </summary>
         /// <value>The recipient.</value>
-        public IPlayer Recipient
-        {
-            get { return _recipient; }
-        }
+        public IPlayer Recipient => _recipient;
 
         /// <summary>
         /// Gets the message.
         /// </summary>
         /// <value>The message.</value>
-        public string Message
-        {
-            get { return _message; }
-        }
+        public string Message => _message;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="ChatMessage"/> is global message.
@@ -75,9 +66,6 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if this <see cref="ChatMessage"/> is global message; otherwise, <c>false</c>.
         /// </value>
-        public bool IsGlobalMessage
-        {
-            get { return (_recipient == null); }
-        }
+        public bool IsGlobalMessage => _recipient == null;
     }
 }

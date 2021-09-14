@@ -22,11 +22,13 @@ namespace Supremacy.Universe
             MapLocationQuadtreeNode source,
             Quadtree<MapLocationQuadtreeNode> neighbors)
         {
-            var radius = 2;
-            var region = neighbors.Region;
+            int radius = 2;
+            MapRectangle region = neighbors.Region;
 
             if (!neighbors.Any())
+            {
                 return double.MaxValue;
+            }
 
             while (true)
             {
@@ -36,17 +38,22 @@ namespace Supremacy.Universe
                     Math.Min(region.MaxX, source.Location.X + radius),
                     Math.Min(region.MaxY, source.Location.Y + radius));
 
-                var candidates = neighbors.Find(boundingBox);
+                IEnumerable<MapLocationQuadtreeNode> candidates = neighbors.Find(boundingBox);
                 if (candidates.Any())
                 {
-                    var result = candidates.Min(o => GetDistance(o.Location, source.Location));
+                    double result = candidates.Min(o => GetDistance(o.Location, source.Location));
                     if (neighbors.Contains(source) && result != 0)
+                    {
                         System.Diagnostics.Debugger.Break();
+                    }
+
                     return result;
                 }
 
                 if (boundingBox.Contains(region))
+                {
                     break;
+                }
 
                 radius *= 2;
             }
@@ -72,8 +79,8 @@ namespace Supremacy.Universe
             int width,
             int height)
         {
-            var quadtree = new Quadtree<MapLocationQuadtreeNode>(new MapRectangle(0, 0, width, height));
-            var result = GetStarPositionsInternal(quadtree, number, width, height);
+            Quadtree<MapLocationQuadtreeNode> quadtree = new Quadtree<MapLocationQuadtreeNode>(new MapRectangle(0, 0, width, height));
+            int result = GetStarPositionsInternal(quadtree, number, width, height);
             positions = quadtree.Select(o => o.Location).Distinct().ToList();
             return result;
         }

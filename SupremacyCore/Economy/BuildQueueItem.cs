@@ -27,20 +27,21 @@ namespace Supremacy.Economy
         /// Gets the number of equivalent projects that are enqueued.
         /// </summary>
         /// <value>The number of equivalent projects.</value>
-        public int Count
-        {
-            get { return _count; }
-        }
+        public int Count => _count;
 
         public string Description
         {
             get
             {
                 if (Project == null)
+                {
                     return null;
+                }
 
                 if (_count > 1)
-                    return String.Format("{0}x {1}", _count, Project.Description);
+                {
+                    return string.Format("{0}x {1}", _count, Project.Description);
+                }
 
                 return Project.Description;
             }
@@ -50,19 +51,13 @@ namespace Supremacy.Economy
         /// Gets the queued project.
         /// </summary>
         /// <value>The queued project.</value>
-        public BuildProject Project
-        {
-            get { return _project; }
-        }
+        public BuildProject Project => _project;
 
         /// <summary>
         /// Gets the total number of turns remaining until all items in this entry are completed.
         /// </summary>
         /// <value>The turns remaining.</value>
-        public int TurnsRemaining
-        {
-            get { return _project.TurnsRemaining * _count; }
-        }
+        public int TurnsRemaining => _project.TurnsRemaining * _count;
 
         /// <summary>
         /// When called notifies all listeners that the number of turns remaining has changed
@@ -80,9 +75,7 @@ namespace Supremacy.Economy
         /// <param name="project">The queued project.</param>
         public BuildQueueItem(BuildProject project)
         {
-            if (project == null)
-                throw new ArgumentNullException("project");
-            _project = project;
+            _project = project ?? throw new ArgumentNullException("project");
             _count = 1;
             OnPropertyChanged("Count");
             OnPropertyChanged("Project");
@@ -136,8 +129,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

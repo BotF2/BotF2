@@ -38,7 +38,7 @@ namespace Supremacy.Client
         /// </summary>
         private void ErrorProvider_Loaded(object sender, RoutedEventArgs e)
         {
-            Validate();
+            _ = Validate();
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Supremacy.Client
         /// </summary>
         public void Clear()
         {
-            ClearInternal();
+            _ = ClearInternal();
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Supremacy.Client
             {
                 return;
             }
-            Validate();
+            _ = Validate();
         }
 
         /// <summary>

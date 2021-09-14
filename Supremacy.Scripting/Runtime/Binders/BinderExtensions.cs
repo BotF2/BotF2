@@ -17,10 +17,10 @@ namespace Supremacy.Scripting.Runtime.Binders
 
                 case NarrowingLevel.Two:
                     return ConversionResultKind.ImplicitTry;
-                
+
                 case NarrowingLevel.Three:
                     return ConversionResultKind.ExplicitCast;
-                
+
                 case NarrowingLevel.All:
                 default:
                     return ConversionResultKind.ExplicitTry;

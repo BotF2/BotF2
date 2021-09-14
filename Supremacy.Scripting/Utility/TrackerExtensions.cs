@@ -18,16 +18,16 @@ namespace Supremacy.Scripting.Utility
             {
                 case TrackerTypes.None:
                     return null;
-                
+
                 case TrackerTypes.Constructor:
                     return (ConstructorInfo)CtorField.GetValue(tracker);
-                
+
                 case TrackerTypes.Event:
                     return ((EventTracker)tracker).Event;
-                
+
                 case TrackerTypes.Field:
                     return ((FieldTracker)tracker).Field;
-                
+
                 case TrackerTypes.Method:
                     return ((MethodTracker)tracker).Method;
 
@@ -73,6 +73,6 @@ namespace Supremacy.Scripting.Utility
                 case TrackerTypes.All:
                     return null;
             }
-        } 
+        }
     }
 }

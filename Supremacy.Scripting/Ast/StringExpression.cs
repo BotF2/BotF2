@@ -36,7 +36,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             clone._contents.Clear();
-            clone._contents.AddRange(Clone<Expression>(cloneContext, _contents));
+            clone._contents.AddRange(Clone(cloneContext, _contents));
         }
 
         public override Expression DoResolve(ParseContext parseContext)

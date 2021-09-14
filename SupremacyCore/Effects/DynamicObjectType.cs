@@ -20,7 +20,9 @@ namespace Supremacy.Effects
         public static DynamicObjectType FromSystemType([NotNull] Type systemType)
         {
             if (systemType == null)
+            {
                 throw new ArgumentNullException("systemType");
+            }
 
             if (!typeof(DynamicObject).IsAssignableFrom(systemType))
             {
@@ -57,24 +59,28 @@ namespace Supremacy.Effects
             return result;
         }
 
-         /*
-          * The caller must wrap this routine inside a locked block.  This recursive routine manipulates
-          * the static hashtable DTypeFromCLRTypeand it must not be allowed to do this across multiple
-          * threads  simultaneously.
-          */
+        /*
+         * The caller must wrap this routine inside a locked block.  This recursive routine manipulates
+         * the static hashtable DTypeFromCLRTypeand it must not be allowed to do this across multiple
+         * threads  simultaneously.
+         */
         private static DynamicObjectType FromSystemTypeRecursive(Type systemType)
         {
-            var dType = (DynamicObjectType)ClrTypeMappings[systemType];
-            
+            DynamicObjectType dType = (DynamicObjectType)ClrTypeMappings[systemType];
+
             if (dType != null)
+            {
                 return dType;
+            }
 
             dType = new DynamicObjectType { _systemType = systemType };
 
             ClrTypeMappings[systemType] = dType;
 
             if (systemType != typeof(DynamicObject))
+            {
                 dType._baseDType = FromSystemTypeRecursive(systemType.BaseType);
+            }
 
             dType._id = DynamicObjectTypeCount++;
 
@@ -87,25 +93,22 @@ namespace Supremacy.Effects
         /// <remarks> 
         ///     There is no guarantee on this value. It can vary between application runs.
         /// </remarks>
-        public int Id { get { return _id; } }
+        public int Id => _id;
 
         /// <summary>
         /// The system (CLR) type that this DynamicObjectType represents 
         /// </summary> 
-        public Type SystemType { get { return _systemType; } }
+        public Type SystemType => _systemType;
 
         /// <summary>
         /// The DynamicObjectType of the base class
         /// </summary>
-        public DynamicObjectType BaseType
-        {
-            get { return _baseDType; }
-        }
+        public DynamicObjectType BaseType => _baseDType;
 
         /// <summary>
         ///     Returns the name of the represented system (CLR) type 
         /// </summary>
-        public string Name { get { return SystemType.Name; } }
+        public string Name => SystemType.Name;
 
         /// <summary>
         ///     Determines whether the specifed object is an instance of the current DynamicObjectType 
@@ -119,11 +122,13 @@ namespace Supremacy.Effects
         {
             if (dependencyObject != null)
             {
-                var dynamicObjectType = dependencyObject.DynamicObjectType;
+                DynamicObjectType dynamicObjectType = dependencyObject.DynamicObjectType;
                 do
                 {
                     if (dynamicObjectType.Id == Id)
+                    {
                         return true;
+                    }
 
                     dynamicObjectType = dynamicObjectType._baseDType;
                 }
@@ -151,12 +156,14 @@ namespace Supremacy.Effects
             if (dynamicObjectType != null)
             {
                 // A DynamicObjectType isn't considered a subclass of itself, so start with base type 
-                var dynamicObjectType1 = _baseDType;
+                DynamicObjectType dynamicObjectType1 = _baseDType;
 
                 while (dynamicObjectType1 != null)
                 {
                     if (dynamicObjectType1.Id == dynamicObjectType.Id)
+                    {
                         return true;
+                    }
 
                     dynamicObjectType1 = dynamicObjectType1._baseDType;
                 }

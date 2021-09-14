@@ -27,16 +27,12 @@ namespace Supremacy.Scripting.Events
         {
         }
 
-        public override bool CanExecute
-        {
-            get { return _occurrenceChance > 0 && base.CanExecute; }
-        }
+        public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -62,29 +58,29 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
                         c.IsEmpire &&
                         c.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
                     GameLog.Client.GameData.DebugFormat("ProductionOutput(ProductionCategory.Food): {0}", target.GetProductionOutput(ProductionCategory.Food));
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    var population = target.Population.CurrentValue;
+                    int population = target.Population.CurrentValue;
 
                     List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
                     tmpBuildings.AddRange(target.Buildings);
@@ -92,11 +88,11 @@ namespace Supremacy.Scripting.Events
 
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves before : {0}", target.FoodReserves);
 
-                    target.FoodReserves.AdjustCurrent(-1 * target.FoodReserves.CurrentValue);
+                    _ = target.FoodReserves.AdjustCurrent(-1 * target.FoodReserves.CurrentValue);
                     target.FoodReserves.UpdateAndReset();
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves after : {0}", target.FoodReserves);
 
-                    target.DeactivateFacility(ProductionCategory.Food);
+                    _ = target.DeactivateFacility(ProductionCategory.Food);
 
                     OnUnitTargeted(target);
 

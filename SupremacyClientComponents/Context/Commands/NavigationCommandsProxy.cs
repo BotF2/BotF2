@@ -14,20 +14,11 @@ namespace Supremacy.Client.Commands
     public class NavigationCommandsProxy : INavigationCommandsProxy
     {
         #region INavigationCommandsProxy Implementation
-        public CompositeCommand ActivateScreen
-        {
-            get { return NavigationCommands.ActivateScreen; }
-        }
+        public CompositeCommand ActivateScreen => NavigationCommands.ActivateScreen;
 
-        public CompositeCommand NavigateToColony
-        {
-            get { return NavigationCommands.NavigateToColony; }
-        }
+        public CompositeCommand NavigateToColony => NavigationCommands.NavigateToColony;
 
-        public CompositeCommand RushColonyProduction
-        {
-            get { return NavigationCommands.RushColonyProduction; }
-        }
+        public CompositeCommand RushColonyProduction => NavigationCommands.RushColonyProduction;
         #endregion
     }
 }

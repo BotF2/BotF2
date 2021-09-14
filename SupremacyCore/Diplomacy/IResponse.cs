@@ -35,52 +35,28 @@ namespace Supremacy.Diplomacy
 
         public Response(ResponseType responseType, [NotNull] IProposal proposal, [CanBeNull] IProposal counterProposal = null, int turnSent = 0)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
             _turnSent = turnSent == 0 ? GameContext.Current.TurnNumber + 1 : turnSent;
             _responseType = responseType;
-            _proposal = proposal;
+            _proposal = proposal ?? throw new ArgumentNullException("proposal");
             _counterProposal = counterProposal;
             _turnSent = turnSent;
         }
 
         #region Implementation of IResponse
 
-        public int TurnSent
-        {
-            get { return _turnSent; }
-        }
+        public int TurnSent => _turnSent;
 
-        public Civilization Sender
-        {
-            get { return _proposal.Recipient; }
-        }
+        public Civilization Sender => _proposal.Recipient;
 
-        public Civilization Recipient
-        {
-            get { return _proposal.Sender; }
-        }
+        public Civilization Recipient => _proposal.Sender;
 
-        public ResponseType ResponseType
-        {
-            get { return _responseType; }
-        }
+        public ResponseType ResponseType => _responseType;
 
-        public IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        public IProposal Proposal => _proposal;
 
-        public IProposal CounterProposal
-        {
-            get { return _counterProposal; }
-        }
+        public IProposal CounterProposal => _counterProposal;
 
-        public Tone Tone
-        {
-            get { return Tone.Calm; }
-        }
+        public Tone Tone => Tone.Calm;
 
         #endregion
 
@@ -125,15 +101,21 @@ namespace Supremacy.Diplomacy
         public static bool IsValid(this IResponse response)
         {
             if (response == null)
+            {
                 return false;
-            return (response.ResponseType != ResponseType.NoResponse);
+            }
+
+            return response.ResponseType != ResponseType.NoResponse;
         }
 
         private static bool TestResponseType(IResponse response, ResponseType responseType)
         {
             if (response == null)
+            {
                 return false;
-            return (response.ResponseType == responseType);
+            }
+
+            return response.ResponseType == responseType;
         }
     }
 }

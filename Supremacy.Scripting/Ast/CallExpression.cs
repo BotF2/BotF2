@@ -85,7 +85,7 @@ namespace Supremacy.Scripting.Ast
         public override MSAst TransformCore(ScriptGenerator generator)
         {
             Expression target = Target;
-            Type type = (Type)null;
+            Type type = null;
 
             MSAst transformedTarget;
 
@@ -179,7 +179,9 @@ namespace Supremacy.Scripting.Ast
                 Argument argument = Arguments[i];
 
                 if (i != 0)
+                {
                     sw.Write(", ");
+                }
 
                 argument.Dump(sw, indentChange);
             }

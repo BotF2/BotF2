@@ -20,7 +20,7 @@ namespace Supremacy.Xna
 
         public void Start(bool usingHardwareDevice)
         {
-            CheckAccess();
+            _ = CheckAccess();
 
             if (_started)
             {
@@ -41,7 +41,7 @@ namespace Supremacy.Xna
 
         public void Stop()
         {
-            CheckAccess();
+            _ = CheckAccess();
 
             if (!_started)
             {

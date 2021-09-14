@@ -30,14 +30,15 @@ namespace Supremacy.Tech
         /// <param name="element">The XML data.</param>
         protected PlanetaryTechObjectDesign(XmlElement element) : base(element)
         {
-            var propertyElement = element["BuildLimit"];
+            XmlElement propertyElement = element["BuildLimit"];
 
             if (propertyElement != null)
             {
-                BuildLimitScope buildLimitScope;
 
-                if (EnumHelper.TryParse(propertyElement.GetAttribute("Scope"), out buildLimitScope))
+                if (EnumHelper.TryParse(propertyElement.GetAttribute("Scope"), out BuildLimitScope buildLimitScope))
+                {
                     BuildLimitScope = buildLimitScope;
+                }
 
                 BuildLimit = Number.ParseInt32(propertyElement.GetAttribute("Value"));
             }
@@ -48,11 +49,10 @@ namespace Supremacy.Tech
             {
                 foreach (XmlElement xmlRestriction in propertyElement.GetElementsByTagName("Restriction"))
                 {
-                    BuildRestriction restriction;
 
-                    var restrictionText = xmlRestriction.InnerText.Trim();
+                    string restrictionText = xmlRestriction.InnerText.Trim();
 
-                    if (!EnumHelper.TryParse(restrictionText, out restriction))
+                    if (!EnumHelper.TryParse(restrictionText, out BuildRestriction restriction))
                     {
                         GameLog.Core.GameData.WarnFormat(
                             "Invalid build restriction specified for design '{0}': {1}",
@@ -69,14 +69,16 @@ namespace Supremacy.Tech
             propertyElement = element["CaptureResult"];
 
             if (propertyElement != null)
-                EnumHelper.TryParse(propertyElement.InnerText.Trim(), out _captureResult);
+            {
+                _ = EnumHelper.TryParse(propertyElement.InnerText.Trim(), out _captureResult);
+            }
         }
 
         protected internal override void AppendXml(XmlElement baseElement)
         {
             base.AppendXml(baseElement);
 
-            var doc = baseElement.OwnerDocument;
+            XmlDocument doc = baseElement.OwnerDocument;
 
             Debug.Assert(doc != null);
 
@@ -87,7 +89,7 @@ namespace Supremacy.Tech
                 newElement = doc.CreateElement("BuildLimit");
                 newElement.SetAttribute("Scope", BuildLimitScope.ToString());
                 newElement.SetAttribute("Value", BuildLimit.ToString(ResourceManager.NeutralCulture));
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (_restriction != BuildRestriction.None)
@@ -97,22 +99,26 @@ namespace Supremacy.Tech
                 foreach (BuildRestriction restriction in EnumUtilities.GetValues<BuildRestriction>())
                 {
                     if ((_restriction & restriction) != restriction)
+                    {
                         continue;
+                    }
 
-                    var subElement = doc.CreateElement("Restriction");
+                    XmlElement subElement = doc.CreateElement("Restriction");
                     subElement.InnerText = restriction.ToString();
-                    newElement.AppendChild(subElement);
+                    _ = newElement.AppendChild(subElement);
                 }
 
                 if (newElement.ChildNodes.Count > 0)
-                    baseElement.AppendChild(newElement);
+                {
+                    _ = baseElement.AppendChild(newElement);
+                }
             }
 
-            if (CaptureResult != default(CaptureResult))
+            if (CaptureResult != default)
             {
                 newElement = doc.CreateElement("CaptureResult");
                 doc.InnerText = CaptureResult.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
         }
 
@@ -125,8 +131,11 @@ namespace Supremacy.Tech
             get
             {
                 if (BuildLimitScope == BuildLimitScope.None)
+                {
                     return 0;
-                return ((_buildLimit & BuildLimitCountMask) >> BuildLimitCountOffset);
+                }
+
+                return (_buildLimit & BuildLimitCountMask) >> BuildLimitCountOffset;
             }
             set
             {
@@ -147,7 +156,7 @@ namespace Supremacy.Tech
         /// <value>The scope of the build limit.</value>
         public BuildLimitScope BuildLimitScope
         {
-            get { return (BuildLimitScope)(_buildLimit & BuildLimitScopeMask); }
+            get => (BuildLimitScope)(_buildLimit & BuildLimitScopeMask);
             set
             {
                 _buildLimit = (byte)((byte)value | (_buildLimit & BuildLimitCountMask));
@@ -162,8 +171,8 @@ namespace Supremacy.Tech
         /// <value>The restriction.</value>
         public BuildRestriction Restriction
         {
-            get { return _restriction; }
-            set { _restriction = value; }
+            get => _restriction;
+            set => _restriction = value;
         }
 
         public bool HasRestriction(BuildRestriction restriction)
@@ -179,8 +188,8 @@ namespace Supremacy.Tech
         /// <value>The capture result.</value>
         public virtual CaptureResult CaptureResult
         {
-            get { return _captureResult; }
-            set { _captureResult = value; }
+            get => _captureResult;
+            set => _captureResult = value;
         }
     }
 
@@ -307,9 +316,9 @@ namespace Supremacy.Tech
         /// </summary>
         DilithiumBonus = 0x00800000,
         /// <summary>
-        /// A Raw Materials source must be present in the star system.
+        /// A DURANIUM source must be present in the star system.
         /// </summary>
-        RawMaterialsBonus = 0x01000000,
+        DuraniumBonus = 0x01000000,
         /// <summary>
         /// At least one planet in the star system must have moons.
         /// </summary>

@@ -127,15 +127,9 @@ namespace Supremacy.Scripting.Utility
                 return false;
             }
 
-            bool result;
-            if (type.IsArray)
-            {
-                result = IsClsCompliant(type);
-            }
-            else
-            {
-                result = TypeManager.IsNullableType(type) ? IsClsCompliant(type.GetGenericArguments()[0]) : AnalyzeTypeCompliance(type);
-            }
+            bool result = type.IsArray
+                ? IsClsCompliant(type)
+                : TypeManager.IsNullableType(type) ? IsClsCompliant(type.GetGenericArguments()[0]) : AnalyzeTypeCompliance(type);
             _analyzedTypes.Add(type, result ? True : False);
             return result;
         }
@@ -284,7 +278,7 @@ namespace Supremacy.Scripting.Utility
             }
 
             ObsoleteAttribute obsoleteAttribute = Attribute.GetCustomAttribute(
-                mi, 
+                mi,
                 TypeManager.PredefinedAttributes.Obsolete,
                 false) as ObsoleteAttribute;
 

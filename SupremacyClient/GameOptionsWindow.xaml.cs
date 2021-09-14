@@ -27,14 +27,11 @@ namespace Supremacy.Client
 
         void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            GameOptionsManager.SaveDefaults(Options);
+            _ = GameOptionsManager.SaveDefaults(Options);
             DialogResult = true;
         }
 
-        public GameOptions Options
-        {
-            get { return OptionsPanel.Options; }
-        }
+        public GameOptions Options => OptionsPanel.Options;
 
     }
 }

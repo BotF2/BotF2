@@ -308,7 +308,7 @@ namespace Supremacy.Xna
             }
         }
 
-        // ReSharper disable UnusedMember.Local
+
         //private void CheckForAvailableSupportedHardware()
         //{
         //    var deviceFound = false;
@@ -356,7 +356,7 @@ namespace Supremacy.Xna
         //    }
         //}
 
-        // ReSharper restore UnusedMember.Local
+
 
         private DepthFormat ChooseDepthStencilFormat(GraphicsAdapter adapter, DeviceType deviceType, SurfaceFormat adapterFormat)
         {
@@ -508,7 +508,7 @@ namespace Supremacy.Xna
 
         private bool EnsureDevice()
         {
-            return GraphicsDevice == null ? false : EnsureDevicePlatform();
+            return GraphicsDevice != null && EnsureDevicePlatform();
         }
 
         private bool EnsureDevicePlatform()
@@ -611,9 +611,8 @@ namespace Supremacy.Xna
 
         private static bool IsValidShaderProfile(ShaderProfile capsShaderProfile, ShaderProfile minimumShaderProfile)
         {
-            return capsShaderProfile == ShaderProfile.PS_2_B && minimumShaderProfile == ShaderProfile.PS_2_A
-                ? false
-                : capsShaderProfile >= minimumShaderProfile;
+            return (capsShaderProfile != ShaderProfile.PS_2_B || minimumShaderProfile != ShaderProfile.PS_2_A)
+&& capsShaderProfile >= minimumShaderProfile;
         }
 
         private static void MassagePresentParameters(PresentationParameters pp)
@@ -775,7 +774,7 @@ namespace Supremacy.Xna
                 case SwapEffect.Discard:
                 case SwapEffect.Flip:
                 case SwapEffect.Copy:
-                {
+                    {
                         if (!adapter.CheckDeviceMultiSampleType(
                             deviceType,
                             acceptedBackBufferFormat,
@@ -790,29 +789,29 @@ namespace Supremacy.Xna
                         }
 
                         if (presentationParameters.MultiSampleQuality >= qualityLevels)
-                    {
+                        {
                             throw new ArgumentException(
                             "The selected MultiSampleQualityLevel value is invalid for the " +
                             "selected MultiSampleType.");
-                    }
+                        }
 
                         if (presentationParameters.MultiSampleType != MultiSampleType.None &&
                         presentationParameters.SwapEffect != SwapEffect.Discard)
-                    {
+                        {
                             throw new ArgumentException(
                             "Must use SwapEffect.Discard when enabling multisampling.");
-                    }
+                        }
 
                         if ((presentationParameters.PresentOptions & PresentOptions.DiscardDepthStencil) != PresentOptions.None &&
                         !presentationParameters.EnableAutoDepthStencil)
-                    {
+                        {
                             throw new ArgumentException(
                             "When PresentOptions.DiscardDepthStencil is set, " +
                             "EnabledAutoDepthStencil must be true.");
-                    }
+                        }
 
                         if (presentationParameters.EnableAutoDepthStencil)
-                    {
+                        {
                             if (!adapter.CheckDeviceFormat(
                             deviceType,
                             deviceFormat,
@@ -820,47 +819,47 @@ namespace Supremacy.Xna
                             QueryUsages.None,
                             ResourceType.DepthStencilBuffer,
                             presentationParameters.AutoDepthStencilFormat))
-                        {
+                            {
                                 throw new ArgumentException(
                                 "The specified DepthStencilFormat is not supported as " +
                                 "a depth/stencil format for the selected adapter.");
-                        }
+                            }
 
                             if (!adapter.CheckDepthStencilMatch(
                             deviceType,
                             deviceFormat,
                             acceptedBackBufferFormat,
                             presentationParameters.AutoDepthStencilFormat))
-                        {
+                            {
                                 throw new ArgumentException(
                                 "The specified DepthStencilFormat is not supported as " +
                                 "a depth/stencil format when using the selected BackBufferFormat.");
+                            }
                         }
-                    }
 
                         if (!presentationParameters.IsFullScreen)
-                    {
-                            switch (presentationParameters.PresentationInterval)
                         {
+                            switch (presentationParameters.PresentationInterval)
+                            {
                                 case PresentInterval.Default:
                                 case PresentInterval.One:
                                 case PresentInterval.Immediate:
                                     return;
-                        }
+                            }
 
                             throw new ArgumentException(
                             "When IsFullScreen is false, PresentationInterval must be " +
                             "one of the following: Default, Immediate, or One.");
-                    }
+                        }
 
                         break;
-                }
+                    }
                 default:
-                {
+                    {
                         throw new ArgumentException(
                         "SwapEffect must be one of the following: SwapEffect.Copy, " +
                         "SwapEffect.Discard, or SwapEffect.Flip.");
-                }
+                    }
             }
         }
 
@@ -1068,12 +1067,12 @@ namespace Supremacy.Xna
 
                     if (preferredFormatIndex == -1)
                     {
-                        return (ValidBackBufferFormats.Length - formatIndex);
+                        return ValidBackBufferFormats.Length - formatIndex;
                     }
 
                     if (formatIndex >= preferredFormatIndex)
                     {
-                        return (formatIndex - preferredFormatIndex);
+                        return formatIndex - preferredFormatIndex;
                     }
                 }
 
@@ -1085,7 +1084,7 @@ namespace Supremacy.Xna
 
         public object GetService(Type serviceType)
         {
-            return serviceType == typeof(IGraphicsDeviceService) ? (this) : null;
+            return serviceType == typeof(IGraphicsDeviceService) ? this : null;
         }
 
         #endregion

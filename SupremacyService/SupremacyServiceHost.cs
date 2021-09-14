@@ -36,7 +36,7 @@ namespace Supremacy.WCF
                 for (int j = 0; j < _serviceHost.Description.Endpoints[i].Contract.Operations.Count; j++)
                 {
                     OperationDescription od = _serviceHost.Description.Endpoints[i].Contract.Operations[j];
-                    od.Behaviors.Remove<DataContractSerializerOperationBehavior>();
+                    _ = od.Behaviors.Remove<DataContractSerializerOperationBehavior>();
                     od.Behaviors.Add(new PORDCSOB(od));
                 }
             }
@@ -46,7 +46,9 @@ namespace Supremacy.WCF
                 for (int i = 0; i < _serviceHost.Description.Endpoints.Count; i++)
                 {
                     if (_serviceHost.Description.Endpoints[i].Binding is NetTcpBinding)
+                    {
                         _serviceHost.Description.Endpoints.RemoveAt(i--);
+                    }
                 }
             }
 
@@ -59,23 +61,17 @@ namespace Supremacy.WCF
 
         private void OnServiceFaulted(object sender, EventArgs e)
         {
-            var handler = ServiceFaulted;
-            if (handler != null)
-                handler(EventArgs.Empty);
+            ServiceFaulted?.Invoke(EventArgs.Empty);
         }
 
         private void OnServiceOpened(object sender, EventArgs e)
         {
-            var handler = ServiceOpened;
-            if (handler != null)
-                handler(EventArgs.Empty);
+            ServiceOpened?.Invoke(EventArgs.Empty);
         }
 
         private void OnServiceClosed(object sender, EventArgs e)
         {
-            var handler = ServiceClosed;
-            if (handler != null)
-                handler(EventArgs.Empty);
+            ServiceClosed?.Invoke(EventArgs.Empty);
         }
 
         public void StopService()

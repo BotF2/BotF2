@@ -33,30 +33,31 @@ namespace Supremacy.Client.Controls
             string imageSourceLarge,
             string imageSourceSmall,
             InputGestureCollection inputGestures)
-            :this(name,
+            : this(name,
                      ownerType,
                      label,
-                     (!string.IsNullOrEmpty(imageSourceLarge)
+                     !string.IsNullOrEmpty(imageSourceLarge)
                           ? new BitmapImage(new Uri(imageSourceLarge, UriKind.RelativeOrAbsolute))
-                          : null),
-                     (!string.IsNullOrEmpty(imageSourceSmall)
+                          : null,
+                     !string.IsNullOrEmpty(imageSourceSmall)
                           ? new BitmapImage(new Uri(imageSourceSmall, UriKind.RelativeOrAbsolute))
-                          : null),
-                     inputGestures) { }
+                          : null,
+                     inputGestures)
+        { }
 
         public GameCommand(
-            string name, 
-            Type ownerType, 
-            string label, 
-            ImageSource imageSourceLarge, 
+            string name,
+            Type ownerType,
+            string label,
+            ImageSource imageSourceLarge,
             ImageSource imageSourceSmall)
-            : this(name, ownerType, label,imageSourceLarge,imageSourceSmall, null) { }
+            : this(name, ownerType, label, imageSourceLarge, imageSourceSmall, null) { }
 
         public GameCommand(
-            string name, 
-            Type ownerType, 
-            string label, 
-            ImageSource imageSourceLarge, 
+            string name,
+            Type ownerType,
+            string label,
+            ImageSource imageSourceLarge,
             ImageSource imageSourceSmall,
             InputGestureCollection inputGestures)
             : base(name, ownerType, inputGestures)
@@ -73,32 +74,38 @@ namespace Supremacy.Client.Controls
 
         internal static bool CanExecuteCommandSource(ICommandSource commandSource, IInputElement alternateTarget)
         {
-            var command = commandSource.Command;
+            ICommand command = commandSource.Command;
             if (command == null)
+            {
                 return true;
+            }
 
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = command as RoutedCommand;
+            object parameter = commandSource.CommandParameter;
 
-            if (routedCommand == null)
+            if (!(command is RoutedCommand routedCommand))
+            {
                 return command.CanExecute(parameter);
-            
+            }
+
             return routedCommand.CanExecute(
-                parameter, 
+                parameter,
                 commandSource.CommandTarget ?? alternateTarget);
         }
 
         internal static bool CanExecuteCommandSource(ICommandSource commandSource, ICommand alternateCommand)
         {
             if (alternateCommand == null)
+            {
                 return true;
+            }
 
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = alternateCommand as RoutedCommand;
-            
-            if (routedCommand == null)
+            object parameter = commandSource.CommandParameter;
+
+            if (!(alternateCommand is RoutedCommand routedCommand))
+            {
                 return alternateCommand.CanExecute(parameter);
-            
+            }
+
             return routedCommand.CanExecute(
                 parameter,
                 commandSource.CommandTarget ?? commandSource as IInputElement);
@@ -106,18 +113,21 @@ namespace Supremacy.Client.Controls
 
         internal static void ExecuteCommandSource(ICommandSource commandSource)
         {
-            var command = commandSource.Command;
+            ICommand command = commandSource.Command;
             if (command == null)
-                return;
-
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = command as RoutedCommand;
-            
-            if (routedCommand != null)
             {
-                var commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
+                return;
+            }
+
+            object parameter = commandSource.CommandParameter;
+
+            if (command is RoutedCommand routedCommand)
+            {
+                IInputElement commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
                 if (routedCommand.CanExecute(parameter, commandTarget))
+                {
                     routedCommand.Execute(parameter, commandTarget);
+                }
             }
             else if (command.CanExecute(parameter))
             {
@@ -128,15 +138,18 @@ namespace Supremacy.Client.Controls
         internal static void ExecuteCommandSource(ICommandSource commandSource, ICommand alternateCommand)
         {
             if (alternateCommand == null)
-                return;
-
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = alternateCommand as RoutedCommand;
-            if (routedCommand != null)
             {
-                var commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
+                return;
+            }
+
+            object parameter = commandSource.CommandParameter;
+            if (alternateCommand is RoutedCommand routedCommand)
+            {
+                IInputElement commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
                 if (routedCommand.CanExecute(parameter, commandTarget))
+                {
                     routedCommand.Execute(parameter, commandTarget);
+                }
             }
             else if (alternateCommand.CanExecute(parameter))
             {
@@ -146,11 +159,14 @@ namespace Supremacy.Client.Controls
 
         public ImageSource ImageSourceLarge
         {
-            get { return _imageSourceLarge; }
+            get => _imageSourceLarge;
             set
             {
                 if (_imageSourceLarge == value)
+                {
                     return;
+                }
+
                 _imageSourceLarge = value;
                 NotifyPropertyChanged("ImageSourceLarge");
             }
@@ -158,11 +174,14 @@ namespace Supremacy.Client.Controls
 
         public ImageSource ImageSourceSmall
         {
-            get { return _imageSourceSmall; }
+            get => _imageSourceSmall;
             set
             {
                 if (_imageSourceSmall == value)
+                {
                     return;
+                }
+
                 _imageSourceSmall = value;
                 NotifyPropertyChanged("ImageSourceSmall");
             }
@@ -171,11 +190,14 @@ namespace Supremacy.Client.Controls
         [Localizability(LocalizationCategory.Label)]
         public string Label
         {
-            get { return _label; }
+            get => _label;
             set
             {
                 if (_label == value)
+                {
                     return;
+                }
+
                 _label = value;
                 NotifyPropertyChanged("Label");
             }
@@ -183,9 +205,7 @@ namespace Supremacy.Client.Controls
 
         protected void NotifyPropertyChanged(string name)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public object Tag { get; set; }

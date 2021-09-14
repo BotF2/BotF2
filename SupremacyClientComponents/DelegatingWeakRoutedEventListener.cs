@@ -9,17 +9,17 @@ namespace Supremacy.Client
 
         internal DelegatingWeakRoutedEventListener(RoutedEventHandler handler)
         {
-            if (handler == null)
-                throw new ArgumentNullException("handler");
-            _handler = handler;
+            _handler = handler ?? throw new ArgumentNullException("handler");
         }
 
         #region Implementation of IWeakEventListener
         bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            var args = e as RoutedEventArgs;
-            if (args == null)
+            if (!(e is RoutedEventArgs args))
+            {
                 return false;
+            }
+
             _handler(sender, args);
             return true;
         }

@@ -31,41 +31,43 @@ namespace Supremacy.Client.Data
         {
             get
             {
-                var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
                 if (appContext == null)
+                {
                     return null;
+                }
+
                 return appContext.LocalPlayer.Empire;
             }
         }
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var tradeRoute = value as TradeRoute;
-            if (tradeRoute == null || !tradeRoute.IsAssigned)
+            if (!(value is TradeRoute tradeRoute) || !tradeRoute.IsAssigned)
+            {
                 return 0;
+            }
 
             return GetCreditsForTradeRoute(tradeRoute);
         }
 
         private int GetCreditsForTradeRoute(TradeRoute tradeRoute)
         {
-            var empire = LocalPlayerEmpire;
+            Civilization empire = LocalPlayerEmpire;
             if (empire == null)
+            {
                 return tradeRoute.Credits;
+            }
 
-            Colony colony;
-
-            if (tradeRoute.SourceColony.OwnerID == empire.CivID)
-                colony = tradeRoute.SourceColony;
-            else if (tradeRoute.TargetColony.OwnerID == empire.CivID)
-                colony = tradeRoute.TargetColony;
-            else
-                colony = null;
-
+            Colony colony = tradeRoute.SourceColony.OwnerID == empire.CivID
+                ? tradeRoute.SourceColony
+                : tradeRoute.TargetColony.OwnerID == empire.CivID ? tradeRoute.TargetColony : null;
             if (colony == null)
+            {
                 return tradeRoute.Credits;
+            }
 
-            var bonus = colony.Buildings
+            double bonus = colony.Buildings
                               .Where(o => o.IsActive)
                               .SelectMany(o => o.BuildingDesign.Bonuses)
                               .Where(o => o.BonusType == BonusType.PercentTradeIncome)
@@ -82,15 +84,18 @@ namespace Supremacy.Client.Data
         public override object MultiConvert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values == null)
-                return null;
-
-            var total = 0;
-
-            for (var i = 0; i < values.Length; i++)
             {
-                var tradeRoute = values[i] as TradeRoute;
-                if (tradeRoute != null && tradeRoute.IsAssigned)
+                return null;
+            }
+
+            int total = 0;
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (values[i] is TradeRoute tradeRoute && tradeRoute.IsAssigned)
+                {
                     total += GetCreditsForTradeRoute(tradeRoute);
+                }
             }
 
             return total;

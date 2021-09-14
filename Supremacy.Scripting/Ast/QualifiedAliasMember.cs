@@ -34,7 +34,7 @@ namespace Supremacy.Scripting.Ast
 
             int errorCount = ec.CompilerErrorCount;
             Left = ec.LookupNamespaceAlias(Alias);
-            
+
             if (Left == null)
             {
                 if (errorCount == ec.CompilerErrorCount)

@@ -55,7 +55,9 @@ namespace Supremacy.UI
 
             UpdateDistressIndicator();
             if (owners.Contains(playerCiv))
+            {
                 UpdateToolTip();
+            }
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
@@ -147,7 +149,7 @@ namespace Supremacy.UI
                                        from fleet in _fleets
                                        where fleet.IsPresenceKnown && fleet.Source.IsInDistress() && fleet.Ships[0].Source.Owner == _playerCiv
                                        select fleet;
-                                   
+
 
             if (!fleetsInDistress.Any())
             {
@@ -172,14 +174,14 @@ namespace Supremacy.UI
                 null,
                 new Duration(TimeSpan.FromSeconds(3)),
                 RepeatBehavior.Forever)
-                           {
-                               Children =
+            {
+                Children =
                                    {
                                        widthAnimation,
                                        heightAnimation,
                                        opacityAnimation
                                    }
-                           };
+            };
 
             _clockGroup = timeline.CreateClock();
 
@@ -197,7 +199,7 @@ namespace Supremacy.UI
                 new Rect(new Size(GalaxyGridPanel.FleetIconSize, GalaxyGridPanel.FleetIconSize)));
             if (_owners.Length == 1)
             {
-                var s_textTypeface = new Typeface(
+                Typeface s_textTypeface = new Typeface(
                         new FontFamily("#Resources/Fonts/Calibri"),
                         FontStyles.Normal,
                         FontWeights.Normal,
@@ -206,21 +208,17 @@ namespace Supremacy.UI
                 int _countHolder = _fleets.Sum(o => o.Ships.Count);
                 string _countString = _countHolder.ToString();
                 IEnumerable<FleetView> fleetsCloaked = from fleet in _fleets
-                    where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
-                    select fleet;
+                                                       where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
+                                                       select fleet;
 
                 if (fleetsCloaked.Count() > 0)
                 {
-                    _countHolder = _countHolder - _fleets.Sum(o => o.Ships.Where(s => s.Source.IsCloaked == true).Count());
-                    if (_countHolder != 0)
-                    {
-                        _countString = _countHolder.ToString();
-                    }
-                    else _countString = "";
+                    _countHolder -= _fleets.Sum(o => o.Ships.Count(s => s.Source.IsCloaked == true));
+                    _countString = _countHolder != 0 ? _countHolder.ToString() : "";
                 }
-                var _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
-                var _fleetView = _fleets.First();
-                var _fleetCiv = _fleetView.Source.Owner;
+                CivilizationMapData _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
+                FleetView _fleetView = _fleets.First();
+                Civilization _fleetCiv = _fleetView.Source.Owner;
                 if (_mapData.GetScanStrength(_location) > 0 || _playerCiv == _fleetCiv)
                 {
                     if (_playerCiv == _fleetCiv || DiplomacyHelper.IsContactMade(_playerCiv, _fleetCiv) && !DiplomacyHelper.IsScanBlocked(_playerCiv, _fleetView.Source.Sector))

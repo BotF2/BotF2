@@ -13,9 +13,14 @@ namespace Supremacy.Client.Markup
         public EnumValueCollectionExtension([NotNull] Type enumType)
         {
             if (enumType == null)
+            {
                 throw new ArgumentNullException("enumType");
+            }
+
             if (!enumType.IsEnum)
+            {
                 throw new ArgumentException(string.Format("'{0}' is not an enum type.", enumType.FullName), "enumType");
+            }
 
             _enumType = enumType;
         }

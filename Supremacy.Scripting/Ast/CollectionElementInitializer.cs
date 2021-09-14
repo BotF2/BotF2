@@ -56,12 +56,12 @@ namespace Supremacy.Scripting.Ast
                 Span = span;
             }
 
-            // ReSharper disable UnusedMember.Local
+
             internal AddMemberAccessExpression()
             {
                 // For cloning purposes only.
             }
-            // ReSharper restore UnusedMember.Local
+
         }
     }
 }

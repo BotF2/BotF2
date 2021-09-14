@@ -1,4 +1,4 @@
-// GalaxyScreenPresentationModel.cs
+// File:GalaxyScreenPresentationModel.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -21,7 +21,6 @@ using Supremacy.Resources;
 using Supremacy.Diplomacy;
 using Supremacy.Client.Context;
 using Supremacy.Game;
-using Supremacy.Utility;
 using Supremacy.Combat;
 
 namespace Supremacy.Client.Views
@@ -30,16 +29,14 @@ namespace Supremacy.Client.Views
     {
         private Sector _sector = null;
         private Civilization _playerCiv = null;
-        private string _stationName = "";
         private string _stationStatus = "";
-        private BitmapImage _stationImage = null;
         private bool _stationScrapVisibility;
 
         public Sector Sector
         {
-            get { return _sector; }
-            set 
-            { 
+            get => _sector;
+            set
+            {
                 _sector = value;
                 Update();
             }
@@ -50,36 +47,26 @@ namespace Supremacy.Client.Views
             get
             {
                 Civilization _playerCiv = AppContext.LocalPlayer.Empire;
-                return _playerCiv; }
-            set 
-            { 
+                return _playerCiv;
+            }
+            set
+            {
                 _playerCiv = value;
                 Update();
             }
         }
 
-        public string StationName
-        {
-            get { return _stationName; }
-        }
+        public string StationName { get; private set; } = "";
 
-        public string StationStatus
-        {
-            get { return _stationStatus; }
-        }
+        public string StationStatus => _stationStatus;
 
-        public BitmapImage StationImage
-        {
-            get { return _stationImage; }
-        }
+        public BitmapImage StationImage { get; private set; } = null;
 
         public bool StationScrapVisibility
         {
-            get 
+            get
             {
-                if (Sector != null && Sector.Owner == PlayerCiv)
-                    _stationScrapVisibility = true;
-                else { _stationScrapVisibility = false; }
+                _stationScrapVisibility = Sector != null && Sector.Owner == PlayerCiv;
                 return _stationScrapVisibility;
             }
         }
@@ -93,55 +80,64 @@ namespace Supremacy.Client.Views
 
         private void Update()
         {
-            _stationImage = null;
-            _stationName = "Unknown in station";
+            StationImage = null;
+            StationName = "Unknown in station";
             _stationStatus = "";
             if (Sector == null || PlayerCiv == null)
+            {
                 return;
+            }
 
             if (Sector.Station == null)
+            {
                 return;
+            }
 
             string imagePath = "";
 
             if ((Sector.Station.Owner == PlayerCiv) || DiplomacyHelper.IsContactMade(PlayerCiv, Sector.Station.Owner))
             {
-                _stationName = Sector.Station.Name;
+                StationName = Sector.Station.Name;
                 _stationStatus = "Operational";
                 imagePath = Sector.Station.Design.Image;
             }
 
             if (string.IsNullOrEmpty(imagePath))
+            {
                 imagePath = "Resources/Images/Insignias/__unknown.png";
+            }
 
-            Uri uri;
-            if (!Uri.TryCreate(imagePath, UriKind.Absolute, out uri))
+            if (!Uri.TryCreate(imagePath, UriKind.Absolute, out Uri uri))
             {
                 string tmpPath = ResourceManager.GetResourcePath(imagePath);
                 if (!File.Exists(tmpPath))
                 {
                     tmpPath = ResourceManager.GetResourcePath(@"Resources\Images\__image_missing.png");
                     if (!File.Exists(tmpPath))
+                    {
                         return;
+                    }
                 }
 
                 uri = ResourceManager.GetResourceUri(tmpPath);
             }
-            _stationImage = ImageCache.Current.Get(uri);
+            StationImage = ImageCache.Current.Get(uri);
         }
 
-        private BitmapImage GetImage(string insigniaPath)
-        {
-            Uri imageUri;
-            var imagePath = insigniaPath.ToLowerInvariant();
+        //#pragma warning disable IDE0051 // Remove unused private members
+        //        private BitmapImage GetImage(string insigniaPath)
+        //#pragma warning restore IDE0051 // Remove unused private members
+        //        {
+        //            Uri imageUri;
+        //            //var imagePath = insigniaPath.ToLowerInvariant();
 
-            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
-                imageUri = ResourceManager.GetResourceUri(insigniaPath);
-            else
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
+        //            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
+        //                imageUri = ResourceManager.GetResourceUri(insigniaPath);
+        //            else
+        //                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
 
-            return ImageCache.Current.Get(imageUri);
-        }
+        //            return ImageCache.Current.Get(imageUri);
+        //        }
     }
 
     public class GalaxyScreenPresentationModel : PresentationModelBase
@@ -166,7 +162,6 @@ namespace Supremacy.Client.Views
         private IEnumerable<FleetViewWrapper> _iSpyTaskForces;
         private IEnumerable<TradeRoute> _tradeRoutes;
         private readonly EmpirePlayerStatusCollection _empirePlayers;
-        private StationPresentationModel _selectedSectorStation;
         #endregion
 
         #region Events
@@ -194,33 +189,33 @@ namespace Supremacy.Client.Views
             : base(appContext)
         {
             _empirePlayers = new EmpirePlayerStatusCollection();
-            
+
             _empirePlayers.AddRange(
                 from civ in appContext.CurrentGame.Civilizations
                 where civ.IsEmpire
                 select new EmpirePlayerStatus(appContext, civ)
-                       {
-                           Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
-                       }
+                {
+                    Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
+                }
                 );
 
-            _selectedSectorStation = new StationPresentationModel(appContext);
+            SelectedSectorStation = new StationPresentationModel(appContext);
         }
         #endregion
 
         #region Properties and Indexers
-        public IEmpirePlayerStatusCollection EmpirePlayers
-        {
-            get { return _empirePlayers; }
-        }
+        public IEmpirePlayerStatusCollection EmpirePlayers => _empirePlayers;
 
         public IEnumerable<Ship> AvailableShips
         {
-            get { return _availableShips; }
+            get => _availableShips;
             set
             {
                 if (Equals(_availableShips, value))
+                {
                     return;
+                }
+
                 _availableShips = value;
                 OnAvailableShipsChanged();
             }
@@ -228,11 +223,14 @@ namespace Supremacy.Client.Views
 
         public GalaxyScreenInputMode InputMode
         {
-            get { return _inputMode; }
+            get => _inputMode;
             set
             {
                 if (Equals(_inputMode, value))
+                {
                     return;
+                }
+
                 _inputMode = value;
                 OnInputModeChanged();
             }
@@ -240,11 +238,14 @@ namespace Supremacy.Client.Views
 
         public GalaxyScreenOverviewMode OverviewMode
         {
-            get { return _overviewMode; }
+            get => _overviewMode;
             set
             {
                 if (Equals(_overviewMode, value))
+                {
                     return;
+                }
+
                 _overviewMode = value;
                 OnOverviewModeChanged();
             }
@@ -252,7 +253,7 @@ namespace Supremacy.Client.Views
 
         public Sector SelectedSector
         {
-            get { return _selectedSector; }
+            get => _selectedSector;
             set
             {
                 if (Equals(_selectedSector, value))
@@ -261,28 +262,25 @@ namespace Supremacy.Client.Views
                 }
                 _selectedSector = value;
                 OnSelectedSectorChanged();
-                
-                _selectedSectorStation.Sector = _selectedSector;
-               // _stationScrapVisibility = _selectedSectorStation.ScrapVisibility;
+
+                SelectedSectorStation.Sector = _selectedSector;
+                // _stationScrapVisibility = _selectedSectorStation.ScrapVisibility;
                 OnSelectedSectorStationChanged();
             }
         }
 
-        public StationPresentationModel SelectedSectorStation
-        {
-            get
-            {
-                return _selectedSectorStation;
-            }
-        }
+        public StationPresentationModel SelectedSectorStation { get; }
 
         public Sector HoveredSector
         {
-            get { return _hoveredSector; }
+            get => _hoveredSector;
             set
             {
                 if (Equals(_hoveredSector, value))
+                {
                     return;
+                }
+
                 _hoveredSector = value;
                 OnHoveredSectorChanged();
             }
@@ -290,24 +288,27 @@ namespace Supremacy.Client.Views
 
         internal Sector SelectedSectorInternal
         {
-            get { return _selectedSector; }
+            get => _selectedSector;
             set
             {
                 _selectedSector = value;
                 OnSelectedSectorChanged();
 
-                _selectedSectorStation.Sector = _selectedSector;
+                SelectedSectorStation.Sector = _selectedSector;
                 OnSelectedSectorStationChanged();
             }
         }
 
         public string SelectedSectorAllegiance
         {
-            get { return _selectedSectorAllegiance; }
+            get => _selectedSectorAllegiance;
             set
             {
                 if (Equals(_selectedSectorAllegiance, value))
+                {
                     return;
+                }
+
                 _selectedSectorAllegiance = value;
                 OnSelectedSectorAllegianceChanged();
             }
@@ -315,11 +316,14 @@ namespace Supremacy.Client.Views
 
         public string SelectedSectorInhabitants
         {
-            get { return _selectedSectorInhabitants; }
+            get => _selectedSectorInhabitants;
             set
             {
                 if (Equals(_selectedSectorInhabitants, value))
+                {
                     return;
+                }
+
                 _selectedSectorInhabitants = value;
                 OnSelectedSectorInhabitantsChanged();
             }
@@ -327,14 +331,14 @@ namespace Supremacy.Client.Views
 
         public Ship SelectedShip
         {
-            get
-            {
-                return _selectedShipResolved ?? _selectedShip;  
-            }
+            get => _selectedShipResolved ?? _selectedShip;
             set
             {
                 if (Equals(_selectedShip, value) && Equals(_selectedShipResolved, value))
+                {
                     return;
+                }
+
                 _selectedShip = value;
                 _selectedShipResolved = value;
                 OnSelectedShipChanged();
@@ -343,33 +347,36 @@ namespace Supremacy.Client.Views
 
         public ShipView SelectedShipInTaskForce
         {
-            get
-            {
-                return _selectedShipInTaskForce;
-            }
+            get => _selectedShipInTaskForce;
             set
             {
                 if (Equals(_selectedShipInTaskForce, value))
+                {
                     return;
+                }
 
                 _selectedShipInTaskForce = value;
                 OnSelectedShipInTaskForceChanged();
 
                 if ((_selectedShipInTaskForce == null) || !_selectedShipInTaskForce.IsOwned)
+                {
                     return;
+                }
 
                 _selectedShipResolved = _selectedShipInTaskForce.Source;
                 OnSelectedShipChanged();
             }
         }
 
-        public IEnumerable<ShipView> SelectedShipsInTaskForce 
+        public IEnumerable<ShipView> SelectedShipsInTaskForce
         {
             get
             {
                 Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
                 if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                {
                     _selectedShipsInTaskForce = null; // Enumerable.Empty<ShipView>();
+                }
 
                 return _selectedShipsInTaskForce ?? Enumerable.Empty<ShipView>();
             }
@@ -377,7 +384,9 @@ namespace Supremacy.Client.Views
             {
 
                 if (Equals(_selectedShipInTaskForce, value))
+                {
                     return;
+                }
 
                 _selectedShipsInTaskForce = value;
                 OnSelectedShipsInTaskForceChanged();
@@ -387,14 +396,14 @@ namespace Supremacy.Client.Views
         public FleetViewWrapper SelectedTaskForce
         {
             get
-            {           
+            {
                 if (_selectedSector != null && _selectedTaskForce != null)
                 {
 
                     if (_selectedTaskForce.View != null && _selectedTaskForce.View.Ships != null && _selectedTaskForce.View.Ships.FirstOrDefault().Source != null)
                     {
                         Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
-                        var owner = _selectedTaskForce.View.Ships.FirstOrDefault().Source.Owner;
+                        Civilization owner = _selectedTaskForce.View.Ships.FirstOrDefault().Source.Owner;
                         if (owner != localPlayer && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
                         {
                             _selectedTaskForce = null;
@@ -406,7 +415,10 @@ namespace Supremacy.Client.Views
             set
             {
                 if (Equals(_selectedTaskForce, value))
+                {
                     return;
+                }
+
                 _selectedTaskForce = value;
                 OnSelectedTaskForceChanged();
             }
@@ -414,11 +426,14 @@ namespace Supremacy.Client.Views
 
         public TradeRoute SelectedTradeRoute
         {
-            get { return _selectedTradeRoute; }
+            get => _selectedTradeRoute;
             set
             {
                 if (Equals(_selectedTradeRoute, value))
+                {
                     return;
+                }
+
                 _selectedTradeRoute = value;
                 OnSelectedTradeRouteChanged();
             }
@@ -426,11 +441,14 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> TaskForces
         {
-            get { return _taskForces; }
+            get => _taskForces;
             set
             {
                 if (Equals(_taskForces, value))
+                {
                     return;
+                }
+
                 _taskForces = value;
                 OnTaskForcesChanged();
             }
@@ -438,11 +456,14 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> LocalPlayerTaskForces
         {
-            get { return _localPlayerTaskForces; }
+            get => _localPlayerTaskForces;
             set
             {
                 if (Equals(_localPlayerTaskForces, value))
+                {
                     return;
+                }
+
                 _localPlayerTaskForces = value;
                 OnLocalPlayerTaskForcesChanged();
             }
@@ -450,16 +471,22 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> VisibleTaskForces
         {
-            get 
+            get
             {
                 if (_localPlayerTaskForces == null)
+                {
                     return _otherVisibleTaskForces;
+                }
+
                 return _localPlayerTaskForces.Union(_otherVisibleTaskForces);
             }
             set
             {
                 if (Equals(_otherVisibleTaskForces, value))
+                {
                     return;
+                }
+
                 _otherVisibleTaskForces = value;
                 OnVisibleTaskForcesChanged();
             }
@@ -467,19 +494,22 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> ISpyTaskForces
         {
-            get { return _iSpyTaskForces; } // do we need to union this to _localPlayerTaskFoces like above?
+            get => _iSpyTaskForces;  // do we need to union this to _localPlayerTaskFoces like above?
             set
             {
                 if (Equals(_iSpyTaskForces, value))
+                {
                     return;
+                }
+
                 _iSpyTaskForces = value;
                 OnISpyTaskForcesChanged();
             }
         }
-        
+
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
-            var mapData = AppContext.LocalPlayerEmpire.MapData;
+            CivilizationMapData mapData = AppContext.LocalPlayerEmpire.MapData;
             List<FleetViewWrapper> playerList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> otherVisibleList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> iSpyList = new List<FleetViewWrapper>();
@@ -494,7 +524,7 @@ namespace Supremacy.Client.Views
                         fleetView.InsigniaImage = GetInsigniaImage(playerCiv.InsigniaPath);
                         playerList.Add(fleetView);
                     }
-                    else if (SelectedSector.Station != null                        
+                    else if (SelectedSector.Station != null
                         && DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
                     {
                         //works
@@ -513,7 +543,10 @@ namespace Supremacy.Client.Views
                             // GameLog.Client.Intel.DebugFormat("IsUnScannable was True so got Insignia _ScanBlock & count++ ={0}", count);
                             iSpyList.Add(fleetView);
                         }
-                        else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        else
+                        {
+                            fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        }
                     }
                     else if (mapData.GetScanStrength(fleetView.View.Source.Location) > 0)
                     {
@@ -522,9 +555,12 @@ namespace Supremacy.Client.Views
                             fleetView.IsUnknown = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/__unknown.png");
                             count++;
-                       
+
                         }
-                        else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        else
+                        {
+                            fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
+                        }
                     }
 
                     if (count <= 1)
@@ -542,24 +578,25 @@ namespace Supremacy.Client.Views
 
         public BitmapImage GetInsigniaImage(string insigniaPath)
         {
-            Uri imageUri;
-            var imagePath =   insigniaPath.ToLowerInvariant();
+            Uri imageUri = File.Exists(ResourceManager.GetResourcePath(insigniaPath))
+                ? ResourceManager.GetResourceUri(insigniaPath)
+                : ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
+            //var imagePath =   insigniaPath.ToLowerInvariant();
 
-            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
-                imageUri = ResourceManager.GetResourceUri(insigniaPath);
-            else
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
 
             return ImageCache.Current.Get(imageUri);
         }
 
         public IEnumerable<TradeRoute> TradeRoutes
         {
-            get { return _tradeRoutes; }
+            get => _tradeRoutes;
             set
             {
                 if (Equals(_tradeRoutes, value))
+                {
                     return;
+                }
+
                 _tradeRoutes = value;
                 OnTradeRoutesChanged();
             }
@@ -570,128 +607,92 @@ namespace Supremacy.Client.Views
 
         private void OnAvailableShipsChanged()
         {
-            var handler = AvailableShipsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            AvailableShipsChanged?.Invoke(this, EventArgs.Empty);
         }
-        
+
         private void OnInputModeChanged()
         {
-            var handler = InputModeChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            InputModeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnOverviewModeChanged()
         {
-            var handler = OverviewModeChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            OverviewModeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorAllegianceChanged()
         {
-            var handler = SelectedSectorAllegianceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorAllegianceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorChanged()
         {
-            var handler = SelectedSectorChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnHoveredSectorChanged()
         {
-            var handler = HoveredSectorChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            HoveredSectorChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorInhabitantsChanged()
         {
-            var handler = SelectedSectorInhabitantsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorInhabitantsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorStationChanged()
         {
-            var handler = SelectedSectorStationChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorStationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedShipChanged()
         {
-            var handler = SelectedShipChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipChanged?.Invoke(this, EventArgs.Empty);
         }
-        
+
         private void OnSelectedShipInTaskForceChanged()
         {
-            var handler = SelectedShipInTaskForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipInTaskForceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedShipsInTaskForceChanged()
         {
-            var handler = SelectedShipsInTaskForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipsInTaskForceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedTaskForceChanged()
         {
-            var handler = SelectedTaskForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedTaskForceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedTradeRouteChanged()
         {
-            var handler = SelectedTradeRouteChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedTradeRouteChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnTaskForcesChanged()
         {
-            var handler = TaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            TaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnLocalPlayerTaskForcesChanged()
         {
-            var handler = LocalPlayerTaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            LocalPlayerTaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnVisibleTaskForcesChanged()
         {
-            var handler = VisibleTaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            VisibleTaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnISpyTaskForcesChanged()
         {
-            var handler = VisibleTaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            VisibleTaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnTradeRoutesChanged()
         {
-            var handler = TradeRoutesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            TradeRoutesChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

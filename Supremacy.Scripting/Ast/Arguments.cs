@@ -141,7 +141,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public static MSAst[] Transform(Arguments arguments, ScriptGenerator generator)
-		{
+        {
             return arguments == null ? (new MSAst[0]) : arguments.Transform(generator);
         }
 
@@ -159,7 +159,9 @@ namespace Supremacy.Scripting.Ast
 
             MSAst[] transformedArguments = new MSAst[_arguments.Count];
             for (int i = 0; i < _arguments.Count; i++)
+            {
                 transformedArguments[i] = _arguments[i].Value.Transform(generator);
+            }
 
             return transformedArguments;
         }
@@ -208,9 +210,9 @@ namespace Supremacy.Scripting.Ast
                         break;
                 }
                 _ = delegateArguments.Add(new Argument(new TypeExpression(argumentType) { Span = location })
-                    {
-                        ArgumentType = typeModifier
-                    });
+                {
+                    ArgumentType = typeModifier
+                });
             }
             return delegateArguments;
         }

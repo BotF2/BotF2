@@ -57,17 +57,16 @@ namespace Supremacy.Types
         /// <returns></returns>
         public static T Clone<T>(T source, ICloneContext context) where T : Cloneable
         {
-            var clone = source.CreateInstance(context);
+            Cloneable clone = source.CreateInstance(context);
             clone.CloneFrom(source, context);
             return (T)clone;
         }
 
         public static IEnumerable<T> CloneAll<T>(IEnumerable<T> sourceObjects, ICloneContext context) where T : Cloneable
         {
-            var indexedEnumerable = sourceObjects as IIndexedEnumerable<T>;
-            if (indexedEnumerable != null)
+            if (sourceObjects is IIndexedEnumerable<T> indexedEnumerable)
             {
-                var resultArray = new ArrayWrapper<T>(indexedEnumerable.Count);
+                ArrayWrapper<T> resultArray = new ArrayWrapper<T>(indexedEnumerable.Count);
                 sourceObjects.SelectInto(o => Clone(o, context), resultArray);
                 return resultArray;
             }
@@ -184,17 +183,25 @@ namespace Supremacy.Types
         public void AddMapping<T>([NotNull] T source, [NotNull] T target) where T : class
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
 
             if (_mappings == null)
+            {
                 _mappings = new Dictionary<object, object>();
+            }
 
-            object existingMapping;
 
-            if (_mappings.TryGetValue(source, out existingMapping) && !ReferenceEquals(existingMapping, target))
+            if (_mappings.TryGetValue(source, out object existingMapping) && !ReferenceEquals(existingMapping, target))
+            {
                 throw new ArgumentException("A mapping has already been created for the specified object.", "source");
+            }
 
             _mappings[source] = target;
         }
@@ -208,7 +215,6 @@ namespace Supremacy.Types
         /// <returns><c>true</c> if a mapping exists; otherwise <c>false</c>.</returns>
         public bool TryRemap<T>(T source, out T target) where T : class
         {
-            object untypedTarget;
 
             if (_mappings == null)
             {
@@ -216,8 +222,10 @@ namespace Supremacy.Types
                 return false;
             }
 
-            if (_mappings.TryGetValue(source, out untypedTarget))
-                return ((target = untypedTarget as T) != null);
+            if (_mappings.TryGetValue(source, out object untypedTarget))
+            {
+                return (target = untypedTarget as T) != null;
+            }
 
             target = null;
             return false;
@@ -231,8 +239,7 @@ namespace Supremacy.Types
         /// <returns>The mapped object if one exists; otherwise, the source object.</returns>
         public T Remap<T>(T source) where T : class
         {
-            T target;
-            return TryRemap(source, out target) ? target : source;
+            return TryRemap(source, out T target) ? target : source;
         }
 
         /// <summary>
@@ -250,14 +257,19 @@ namespace Supremacy.Types
         public T RemapOrClone<T>([NotNull] T source) where T : class, ICloneable
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
 
-            T clone;
 
             if (_mappings == null)
+            {
                 _mappings = new Dictionary<object, object>();
-            else if (TryRemap(source, out clone))
+            }
+            else if (TryRemap(source, out T clone))
+            {
                 return clone;
+            }
 
             return CloneAndMapCore(source);
         }
@@ -273,11 +285,14 @@ namespace Supremacy.Types
         public T CloneAnMap<T>([NotNull] T source) where T : class, ICloneable
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
-
+            }
 
             if (_mappings != null && _mappings.TryGetValue(source, out object existingMapping))
+            {
                 throw new ArgumentException("A mapping already exists for the specified object.", "source");
+            }
 
             return CloneAndMapCore(source);
         }
@@ -296,14 +311,7 @@ namespace Supremacy.Types
         /// </remarks>
         protected T CloneAndMapCore<T>(T source) where T : class, ICloneable
         {
-            T clone;
-
-            var cloneable = source as Cloneable;
-            if (cloneable != null)
-                clone = Cloneable.Clone(cloneable, this) as T;
-            else
-                clone = (T)source.Clone();
-
+            T clone = source is Cloneable cloneable ? Cloneable.Clone(cloneable, this) as T : (T)source.Clone();
             _mappings[source] = clone;
 
             return clone;
@@ -315,7 +323,7 @@ namespace Supremacy.Types
 
             public object UserContext
             {
-                get { return null; }
+                get => null;
                 set { }
             }
 
@@ -332,23 +340,29 @@ namespace Supremacy.Types
                 return source;
             }
 
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            // ReSharper disable HeuristicUnreachableCode
+
+
             public T RemapOrClone<T>(T source) where T : class, ICloneable
             {
                 if (source == null)
+                {
                     return null;
+                }
+
                 return source.Clone() as T;
             }
 
             public T CloneAnMap<T>(T source) where T : class, ICloneable
             {
                 if (source == null)
+                {
                     return null;
+                }
+
                 return source.Clone() as T;
             }
-            // ReSharper restore HeuristicUnreachableCode
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+
+
 
             #endregion
         }

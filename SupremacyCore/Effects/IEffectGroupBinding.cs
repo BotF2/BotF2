@@ -25,43 +25,27 @@ namespace Supremacy.Effects
             [NotNull] EffectGroup effectGroup,
             IEffectParameterBindingCollection customParameterBindings)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (effectGroup == null)
-                throw new ArgumentNullException("effectGroup");
-
-            _source = source;
-            _effectGroup = effectGroup;
+            _source = source ?? throw new ArgumentNullException("source");
+            _effectGroup = effectGroup ?? throw new ArgumentNullException("effectGroup");
             _customParameterBindings = customParameterBindings;
             _targetEffectBindings = new KeyedCollectionBase<IEffectTarget, TargetEffectBinding>(o => o.Target);
         }
 
-        public IEffectSource Source
-        {
-            get { return _source; }
-        }
+        public IEffectSource Source => _source;
 
-        public EffectGroup EffectGroup
-        {
-            get { return _effectGroup; }
-        }
+        public EffectGroup EffectGroup => _effectGroup;
 
-        public IEffectParameterBindingCollection CustomParameterBindings
-        {
-            get { return _customParameterBindings; }
-        }
+        public IEffectParameterBindingCollection CustomParameterBindings => _customParameterBindings;
 
-        public IEnumerable<EffectBinding> EffectBindings
-        {
-            get { return _targetEffectBindings.SelectMany(o => o.EffectBindings); }
-        }
+        public IEnumerable<EffectBinding> EffectBindings => _targetEffectBindings.SelectMany(o => o.EffectBindings);
 
         public IIndexedCollection<EffectBinding> GetEffectBindings(IEffectTarget target)
         {
-            TargetEffectBinding targetEffectBinding;
 
-            if (_targetEffectBindings.TryGetValue(target, out targetEffectBinding))
+            if (_targetEffectBindings.TryGetValue(target, out TargetEffectBinding targetEffectBinding))
+            {
                 return targetEffectBinding.EffectBindings;
+            }
 
             return ArrayWrapper<EffectBinding>.Empty;
         }
@@ -69,13 +53,14 @@ namespace Supremacy.Effects
         internal void AttachTarget([NotNull] IEffectTarget effectTarget)
         {
             if (effectTarget == null)
+            {
                 throw new ArgumentNullException("effectTarget");
+            }
 
             lock (EffectSystem.SyncRoot)
             {
-                TargetEffectBinding targetEffectBinding;
-                
-                if (_targetEffectBindings.TryGetValue(effectTarget, out targetEffectBinding))
+
+                if (_targetEffectBindings.TryGetValue(effectTarget, out TargetEffectBinding targetEffectBinding))
                 {
                     throw new InvalidOperationException(
                         string.Format(
@@ -83,45 +68,50 @@ namespace Supremacy.Effects
                             effectTarget));
                 }
 
-                var effects = EffectGroup.Effects;
-                var effectBindings = new EffectBinding[effects.Count];
+                IIndexedCollection<Effect> effects = EffectGroup.Effects;
+                EffectBinding[] effectBindings = new EffectBinding[effects.Count];
 
                 effects.Select(o => o.Bind(this, effectTarget)).CopyTo(effectBindings);
 
-                var targetBindings = new TargetEffectBinding(
+                TargetEffectBinding targetBindings = new TargetEffectBinding(
                     effectTarget,
                     new ArrayWrapper<EffectBinding>(effectBindings));
 
                 _targetEffectBindings.Add(targetBindings);
 
-                var internalTarget = effectTarget as IEffectTargetInternal;
-                if (internalTarget != null)
+                if (effectTarget is IEffectTargetInternal internalTarget)
+                {
                     internalTarget.EffectBindingsInternal.AddRange(effectBindings);
+                }
 
-                effectBindings.ForEach(o => o.Attach());
+                _ = effectBindings.ForEach(o => o.Attach());
             }
         }
 
         internal void DetachTarget([NotNull] IEffectTarget effectTarget)
         {
             if (effectTarget == null)
+            {
                 throw new ArgumentNullException("effectTarget");
-
-            var internalTarget = effectTarget as IEffectTargetInternal;
+            }
 
             lock (EffectSystem.SyncRoot)
             {
                 if (!_targetEffectBindings.TryGetValue(effectTarget, out TargetEffectBinding targetEffectBinding))
+                {
                     return;
+                }
 
-                foreach (var effectBinding in targetEffectBinding.EffectBindings)
+                foreach (EffectBinding effectBinding in targetEffectBinding.EffectBindings)
                 {
                     try
                     {
                         effectBinding.Detach();
 
-                        if (internalTarget != null)
-                            internalTarget.EffectBindingsInternal.Remove(effectBinding);
+                        if (effectTarget is IEffectTargetInternal internalTarget)
+                        {
+                            _ = internalTarget.EffectBindingsInternal.Remove(effectBinding);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -129,13 +119,13 @@ namespace Supremacy.Effects
                     }
                 }
 
-                _targetEffectBindings.Remove(effectTarget);
+                _ = _targetEffectBindings.Remove(effectTarget);
             }
         }
 
         internal RuntimeScriptParameters BindActivationScriptRuntimeParameters()
         {
-            var parameters = new RuntimeScriptParameters
+            RuntimeScriptParameters parameters = new RuntimeScriptParameters
                              {
                                  new RuntimeScriptParameter(EffectGroup.SourceScriptParameter, Source)
                              };
@@ -147,43 +137,47 @@ namespace Supremacy.Effects
 
         #region INotifyPropertyChanged Members
 
-        [field: NonSerializedAttribute]
+        [field: NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeCombine)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeRemove)
+                    {
                         return;
+                    }
                 }
             }
         }
@@ -191,9 +185,7 @@ namespace Supremacy.Effects
         [UsedImplicitly]
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
@@ -208,24 +200,13 @@ namespace Supremacy.Effects
 
             public TargetEffectBinding([NotNull] IEffectTarget target, [NotNull] IIndexedCollection<EffectBinding> effectBindings)
             {
-                if (target == null)
-                    throw new ArgumentNullException("target");
-                if (effectBindings == null)
-                    throw new ArgumentNullException("effectBindings");
-
-                _target = target;
-                _effectBindings = effectBindings;
+                _target = target ?? throw new ArgumentNullException("target");
+                _effectBindings = effectBindings ?? throw new ArgumentNullException("effectBindings");
             }
 
-            public IEffectTarget Target
-            {
-                get { return _target; }
-            }
+            public IEffectTarget Target => _target;
 
-            public IIndexedCollection<EffectBinding> EffectBindings
-            {
-                get { return _effectBindings; }
-            }
+            public IIndexedCollection<EffectBinding> EffectBindings => _effectBindings;
         }
 
         #endregion

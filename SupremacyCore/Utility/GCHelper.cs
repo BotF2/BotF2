@@ -19,13 +19,17 @@ namespace Supremacy.Utility
 
         static GCHelper()
         {
-            var weakEventTableClass = typeof(WeakEventManager).Assembly.GetType("MS.Internal.WeakEventTable");
+            Type weakEventTableClass = typeof(WeakEventManager).Assembly.GetType("MS.Internal.WeakEventTable");
             if (weakEventTableClass == null)
+            {
                 return;
+            }
 
-            var cleanupMethod = weakEventTableClass.GetMethod("Cleanup", BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo cleanupMethod = weakEventTableClass.GetMethod("Cleanup", BindingFlags.NonPublic | BindingFlags.Static);
             if (cleanupMethod == null)
+            {
                 return;
+            }
 
             _purgeWeakEventHandlers = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), cleanupMethod);
         }
@@ -36,9 +40,11 @@ namespace Supremacy.Utility
             GC.WaitForPendingFinalizers();
 
             if (_purgeWeakEventHandlers == null)
+            {
                 return;
+            }
 
-            _purgeWeakEventHandlers();
+            _ = _purgeWeakEventHandlers();
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();

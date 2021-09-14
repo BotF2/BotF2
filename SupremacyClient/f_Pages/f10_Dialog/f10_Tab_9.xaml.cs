@@ -1,4 +1,4 @@
-// <!-- File:f10_Dialog.xaml.cs
+// <!-- File:f10_Tab_9.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -12,47 +12,47 @@ using System.Windows.Input;
 namespace Supremacy.Client
 {
     /// <summary>
-    /// Interaction logic for f10_Dialog.xaml.cs
+    /// Interaction logic for f10_Tab_9.xaml.cs
     /// </summary>
-    public partial class F10_Dialog
+    public partial class F10_Tab_9
     {
-        public F10_Dialog()
+        public F10_Tab_9()
         {
             InitializeComponent();
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.CancelCommand,
                     Key.Escape,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GenericCommands.AcceptCommand,
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.CancelCommand,
                     OnGenericCommandsCancelCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.TracesSetAllwithoutDetailsCommand,
                     OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.TracesSetSomeCommand,
                     OnGenericCommandsTracesSetSomeCommandExecuted));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.TracesSetNoneCommand,
                     OnGenericCommandsTracesSetNoneCommandExecuted));
@@ -98,6 +98,11 @@ namespace Supremacy.Client
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
+        }
+
+        private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
         }
     }
 }

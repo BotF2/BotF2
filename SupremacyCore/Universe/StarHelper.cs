@@ -152,7 +152,7 @@ namespace Supremacy.Universe
                                              }
                                          }
                                      },
-                                     
+
                                      {
                                          StarType.BlackHole,
                                          new [,,] { { { -8 } } }
@@ -168,12 +168,12 @@ namespace Supremacy.Universe
                                          new [,,] { { { -4 } } }
                                      },
 
-									 {
+                                     {
                                          StarType.NeutronStar,
                                          new [,,] { { { -8 } } }
                                      },
-									 
-									 {
+
+                                     {
                                          StarType.Quasar,
                                          new[,,]
                                          {
@@ -192,7 +192,9 @@ namespace Supremacy.Universe
         public static bool CanAddPlanet(StarSystem starSystem, PlanetType planetType, PlanetSize planetSize)
         {
             if (starSystem == null)
+            {
                 return false;
+            }
 
             return CanAddPlanet(starSystem.StarType, starSystem.Planets, planetType, planetSize);
         }
@@ -203,32 +205,38 @@ namespace Supremacy.Universe
             PlanetType planetType,
             PlanetSize planetSize)
         {
-            var attribute = Attribute.GetCustomAttribute(
+            if (!(Attribute.GetCustomAttribute(
                 typeof(StarType).GetField(starType.ToString()),
-                typeof(SupportsPlanetsAttribute)) as SupportsPlanetsAttribute;
-
-            if (attribute == null)
+                typeof(SupportsPlanetsAttribute)) is SupportsPlanetsAttribute attribute))
+            {
                 return false;
+            }
 
             if (attribute.IsAllowedTypesDefined)
             {
-                var isPlanetTypeAllowed = attribute.AllowedTypes.Any(allowedType => allowedType == planetType);
+                bool isPlanetTypeAllowed = attribute.AllowedTypes.Any(allowedType => allowedType == planetType);
                 if (!isPlanetTypeAllowed)
+                {
                     return false;
+                }
             }
 
             if (attribute.IsAllowedSizesDefined)
             {
-                var isPlanetSizeAllowed = attribute.AllowedSizes.Any(allowedSize => allowedSize == planetSize);
+                bool isPlanetSizeAllowed = attribute.AllowedSizes.Any(allowedSize => allowedSize == planetSize);
                 if (!isPlanetSizeAllowed)
+                {
                     return false;
+                }
             }
 
             if (existingPlanets != null)
             {
-                var currentPlanetCount = existingPlanets.Count();
+                int currentPlanetCount = existingPlanets.Count();
                 if (currentPlanetCount > attribute.MaxNumberOfPlanets)
+                {
                     return false;
+                }
             }
 
             return true;
@@ -236,17 +244,16 @@ namespace Supremacy.Universe
 
         public static int MaxNumberOfPlanets(StarType starType)
         {
-            var supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
-            if (supportsPlanetsAttribute != null)
-                return supportsPlanetsAttribute.MaxNumberOfPlanets;
-
-            return StarSystem.MaxPlanetsPerSystem;
+            SupportsPlanetsAttribute supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
+            return supportsPlanetsAttribute != null ? supportsPlanetsAttribute.MaxNumberOfPlanets : StarSystem.MaxPlanetsPerSystem;
         }
 
         public static int MaxNumberOfPlanets(StarSystem starSystem)
         {
             if (starSystem == null)
+            {
                 return 0;
+            }
 
             return MaxNumberOfPlanets(starSystem.StarType);
         }
@@ -254,7 +261,9 @@ namespace Supremacy.Universe
         public static bool SupportsPlanets(StarSystem starSystem)
         {
             if (starSystem == null)
+            {
                 return false;
+            }
 
             switch (starSystem.StarType)
             {
@@ -276,24 +285,29 @@ namespace Supremacy.Universe
             [NotNull] IIndexedEnumerable<MapLocation> homeLocations)
         {
             if (homeLocations == null)
+            {
                 throw new ArgumentNullException("homeLocations");
+            }
 
             if (homeLocations.Count == 0)
+            {
                 return true;
-
+            }
 
             if (!InterferenceFrames.TryGetValue(starType, out int[,,] interferenceFrames))
+            {
                 return true;
+            }
 
-            var minDistance = GalaxyGenerator.MinHomeworldDistanceFromInterference;
+            int minDistance = GalaxyGenerator.MinHomeworldDistanceFromInterference;
             if (minDistance > 0)
             {
                 // TODO
-/*
-                minDistance += Math.Max(
-                    interferenceFrames.GetLength(1) / 2,
-                    interferenceFrames.GetLength(2) / 2);
-*/
+                /*
+                                minDistance += Math.Max(
+                                    interferenceFrames.GetLength(1) / 2,
+                                    interferenceFrames.GetLength(2) / 2);
+                */
             }
 
             return homeLocations.All(o => MapLocation.GetDistance(o, location) >= minDistance);
@@ -309,52 +323,66 @@ namespace Supremacy.Universe
             [NotNull] StarSystem starSystem)
         {
             if (interference == null)
+            {
                 throw new ArgumentNullException("interference");
+            }
+
             if (starSystem == null)
+            {
                 throw new ArgumentNullException("starSystem");
+            }
 
-            int[,,] interferenceFrames;
 
-            if (!InterferenceFrames.TryGetValue(starSystem.StarType, out interferenceFrames))
+            if (!InterferenceFrames.TryGetValue(starSystem.StarType, out int[,,] interferenceFrames))
+            {
                 return;
+            }
 
-            var frameCount = interferenceFrames.GetLength(0);
+            int frameCount = interferenceFrames.GetLength(0);
 
             /*
              * Rather than deriving the frame number directly from the turn number, we mix things up
              * a bit and base it off the turn number and the star's object ID.  We do this to avoid,
              * for example, the rotation of every pulsar in the galaxy being in sync.
              */
-            var i = (GameContext.Current.TurnNumber + (starSystem.ObjectID % frameCount)) % frameCount;
+            int i = (GameContext.Current.TurnNumber + (starSystem.ObjectID % frameCount)) % frameCount;
 
-            var origin = starSystem.Location;
-            var map = GameContext.Current.Universe.Map;
+            MapLocation origin = starSystem.Location;
+            SectorMap map = GameContext.Current.Universe.Map;
 
-            var maxX = map.Width - 1;
-            var maxY = map.Height - 1;
+            int maxX = map.Width - 1;
+            int maxY = map.Height - 1;
 
-            var startX = origin.X - interferenceFrames.GetLength(2) / 2;
-            var endX = Math.Min(origin.X + interferenceFrames.GetLength(2) / 2, maxX);
-            var startY = origin.Y - interferenceFrames.GetLength(2) / 2;
-            var endY = Math.Min(origin.Y + interferenceFrames.GetLength(2) / 2, maxY);
+            int startX = origin.X - interferenceFrames.GetLength(2) / 2;
+            int endX = Math.Min(origin.X + interferenceFrames.GetLength(2) / 2, maxX);
+            int startY = origin.Y - interferenceFrames.GetLength(2) / 2;
+            int endY = Math.Min(origin.Y + interferenceFrames.GetLength(2) / 2, maxY);
 
-            for (var y = startY; y <= endY; y++)
+            for (int y = startY; y <= endY; y++)
             {
                 if (y < 0)
+                {
                     continue;
+                }
 
-                for (var x = startX; x <= endX; x++)
+                for (int x = startX; x <= endX; x++)
                 {
                     if (x < 0)
+                    {
                         continue;
+                    }
 
-                    var value = interferenceFrames[i, y - startY, x - startX];
+                    int value = interferenceFrames[i, y - startY, x - startX];
                     if (value >= 0)
+                    {
                         continue;
+                    }
 
-                    var current = interference[x, y];
+                    int current = interference[x, y];
                     if (value < current)
+                    {
                         interference[x, y] = value;
+                    }
                 }
             }
         }

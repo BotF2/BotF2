@@ -11,7 +11,6 @@ namespace Supremacy.Client.Controls
     {
         #region Fields
         private InfoCardCloseReason _closeReason = InfoCardCloseReason.InfoCardWindowClosed;
-        private bool _isClosing;
         private Window _popupSiteWindow;
         #endregion
 
@@ -21,19 +20,19 @@ namespace Supremacy.Client.Controls
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(typeof(InfoCardWindowControl)));
-            
+
             VisibilityProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(Visibility.Collapsed));
-            
+
             DropShadowColorProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(Color.FromArgb(0x38, 0, 0, 0)));
-            
+
             HasDropShadowProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(true));
-            
+
             WindowStyleProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(WindowStyle.None));
@@ -43,12 +42,10 @@ namespace Supremacy.Client.Controls
                 new FrameworkPropertyMetadata(ResizeMode.NoResize));
         }
 
-        public InfoCardWindowControl(InfoCardHost container) {
-            if (container == null)
-                throw new ArgumentNullException("container");
+        public InfoCardWindowControl(InfoCardHost container)
+        {
+            InfoCardHost = container ?? throw new ArgumentNullException("container");
 
-            InfoCardHost = container;
-            
             InfoCardHost.SetInfoCardWindow(this, this);
 
             Setup(container.Location);
@@ -81,20 +78,11 @@ namespace Supremacy.Client.Controls
             remove { PopupWindowClosedEvent -= value; }
         }
 
-        public InfoCardSite InfoCardSite
-        {
-            get { return InfoCardHost.InfoCardSite; }
-        }
+        public InfoCardSite InfoCardSite => InfoCardHost.InfoCardSite;
 
-        public bool IsClosing
-        {
-            get { return _isClosing; }
-        }
+        public bool IsClosing { get; private set; }
 
-        public Point Location
-        {
-            get { return new Point(Left, Top); }
-        }
+        public Point Location => new Point(Left, Top);
 
         event EventHandler IInfoCardWindow.LocationChanged
         {
@@ -104,47 +92,67 @@ namespace Supremacy.Client.Controls
 
         public InfoCardHost InfoCardHost
         {
-            get { return Content as InfoCardHost; }
-            private set { Content = value; }
+            get => Content as InfoCardHost;
+            private set => Content = value;
         }
 
         public void Setup(Point? position)
         {
             if (!position.HasValue)
+            {
                 return;
+            }
+
             Left = position.Value.X;
             Top = position.Value.Y;
         }
 
         public void SnapToScreen()
         {
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite == null)
+            {
                 return;
+            }
 
-            var bounds = new Rect(Left, Top, Width, Height);
-            var workingArea = new Rect(new Point(), popupSite.RenderSize);
+            Rect bounds = new Rect(Left, Top, Width, Height);
+            Rect workingArea = new Rect(new Point(), popupSite.RenderSize);
 
             if (bounds.Right > workingArea.Right)
+            {
                 bounds.Offset(workingArea.Right - bounds.Right, 0);
+            }
+
             if (bounds.Left < workingArea.Left)
+            {
                 bounds.Offset(workingArea.Left - bounds.Left, 0);
+            }
 
             if (bounds.Bottom > workingArea.Bottom)
+            {
                 bounds.Offset(0, workingArea.Bottom - bounds.Bottom);
+            }
+
             if (bounds.Top < workingArea.Top)
+            {
                 bounds.Offset(0, workingArea.Top - bounds.Top);
+            }
 
             if (Left != bounds.Left)
+            {
                 Left = bounds.Left;
+            }
+
             if (Top != bounds.Top)
+            {
                 Top = bounds.Top;
+            }
         }
 
         bool IInfoCardWindow.Activate()
         {
-            return (bool) Dispatcher.Invoke(
-                (Func<bool>)base.Activate,
+            return Dispatcher.Invoke(
+                Activate,
                 DispatcherPriority.Input);
         }
 
@@ -158,25 +166,25 @@ namespace Supremacy.Client.Controls
         {
             base.OnActivated(e);
 
-            var handler = PopupWindowActivatedEvent;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            PopupWindowActivatedEvent?.Invoke(this, EventArgs.Empty);
 
-            var dropShadowColor = DropShadowColor;
+            Color dropShadowColor = DropShadowColor;
             dropShadowColor.A *= 2;
             DropShadowColor = dropShadowColor;
 
             // Bring this window to the front
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
+            {
                 popupSite.BringToFront(this);
+            }
         }
 
         protected override void OnOpened(RoutedEventArgs e)
         {
             base.OnOpened(e);
 
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
             {
                 popupSite.AddCanvasChild(this);
@@ -192,19 +200,24 @@ namespace Supremacy.Client.Controls
 
         private void OnPopupSitePreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite == null)
+            {
                 return;
+            }
 
-            var popup = popupSite.GetInfoCardFromHost(InfoCardHost);
+            InfoCard popup = popupSite.GetInfoCardFromHost(InfoCardHost);
             if ((popup == null) || popup.IsPinned)
+            {
                 return;
+            }
 
-            var hitTestResult = popupSite.InputHitTest(e.GetPosition(popupSite)) as DependencyObject;
-            if ((hitTestResult != null) && this.IsVisualAncestorOf(hitTestResult))
+            if ((popupSite.InputHitTest(e.GetPosition(popupSite)) is DependencyObject hitTestResult) && this.IsVisualAncestorOf(hitTestResult))
+            {
                 return;
+            }
 
-            popup.Close();
+            _ = popup.Close();
         }
 
         protected override void OnClosed(RoutedEventArgs e)
@@ -217,21 +230,21 @@ namespace Supremacy.Client.Controls
 
             Visibility = Visibility.Collapsed;
 
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
+            {
                 popupSite.RemoveCanvasChild(this);
+            }
 
             InfoCardHost = null;
 
             base.OnClosed(e);
 
-            var handler = PopupWindowClosedEvent;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            PopupWindowClosedEvent?.Invoke(this, EventArgs.Empty);
 
-            _isClosing = false;
+            IsClosing = false;
         }
-        
+
         protected override void OnClosing(CancelRoutedEventArgs e)
         {
             base.OnClosing(e);
@@ -242,22 +255,24 @@ namespace Supremacy.Client.Controls
                 return;
             }
 
-            _isClosing = true;
+            IsClosing = true;
 
-            var cancel = false;
+            bool cancel = false;
 
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
             {
-                var popup = popupSite.GetInfoCardFromHost(InfoCardHost);
+                InfoCard popup = popupSite.GetInfoCardFromHost(InfoCardHost);
                 if (popup != null)
-                    cancel |= (!popupSite.Close(popup, _closeReason, false));
+                {
+                    cancel |= !popupSite.Close(popup, _closeReason, false);
+                }
             }
 
             if (cancel)
             {
                 e.Cancel = true;
-                _isClosing = false;
+                IsClosing = false;
                 return;
             }
 
@@ -272,11 +287,15 @@ namespace Supremacy.Client.Controls
             ClearValue(DropShadowColorProperty);
 
             if (!IsVisible)
+            {
                 return;
+            }
 
-            var popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
+            InfoCard popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
             if ((popup != null) && !popup.IsPinned)
-                popup.Close();
+            {
+                _ = popup.Close();
+            }
         }
 
         /// <summary>
@@ -287,9 +306,7 @@ namespace Supremacy.Client.Controls
         {
             base.OnLocationChanged(e);
 
-            var handler = PopupWindowLocationChangedEvent;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            PopupWindowLocationChangedEvent?.Invoke(this, EventArgs.Empty);
 
             Canvas.SetLeft(this, Left);
             Canvas.SetTop(this, Top);

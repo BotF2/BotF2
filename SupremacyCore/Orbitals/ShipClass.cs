@@ -18,15 +18,13 @@ namespace Supremacy.Orbitals
     {
         [NonCombatant] Colony = 0,
         [NonCombatant] Construction,
-        [NonCombatant] Transport,
         [NonCombatant] Medical,
+        [NonCombatant] Transport,
         [NonCombatant] Spy,
-        [NonCombatant] Raider,   // not ingame at the moment
         [NonCombatant] Diplomatic,
-        [NonCombatant] Sabotage, // not ingame at this time
         Science,
         Scout,
-        FastAttack,
+        FastAttack, // Destroyer and Frigate
         Cruiser,
         HeavyCruiser,
         StrikeCruiser,
@@ -38,8 +36,8 @@ namespace Supremacy.Orbitals
     /// indicates that a the ship type is non-combatant.
     /// </summary>
     [AttributeUsage(
-        AttributeTargets.Enum | AttributeTargets.Field, 
-        AllowMultiple = false, 
+        AttributeTargets.Enum | AttributeTargets.Field,
+        AllowMultiple = false,
         Inherited = false)]
     public sealed class NonCombatantAttribute : Attribute
     {
@@ -54,9 +52,15 @@ namespace Supremacy.Orbitals
         public override bool Match(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
+
             if (obj is NonCombatantAttribute)
+            {
                 return true;
+            }
+
             return false;
         }
     }

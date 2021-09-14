@@ -81,7 +81,7 @@ namespace Supremacy.Scripting.Ast
                     _ = memberBinding.DoResolve(parseContext);
                 }
             }
-               
+
             parseContext.CurrentInitializerVariable = previous;
 
             return baseResolved;
@@ -193,7 +193,7 @@ namespace Supremacy.Scripting.Ast
         {
             sw.Write(Member.Name);
             sw.Write(" = ");
-            DumpChild(Initializer, sw, indentChange);           
+            DumpChild(Initializer, sw, indentChange);
         }
 
         public override Expression DoResolve(ParseContext parseContext)

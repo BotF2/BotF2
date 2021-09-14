@@ -25,8 +25,7 @@ namespace Supremacy.Pathfinding
 
         public void Enqueue(TPriority priority, TValue value)
         {
-            Queue<TValue> q;
-            if (!_list.TryGetValue(priority, out q))
+            if (!_list.TryGetValue(priority, out Queue<TValue> q))
             {
                 q = new Queue<TValue>();
                 _list.Add(priority, q);
@@ -37,17 +36,17 @@ namespace Supremacy.Pathfinding
         public TValue Dequeue()
         {
             // will throw if there isn’t any first element!
-            var pair = _list.First();
-            var v = pair.Value.Dequeue();
+            KeyValuePair<TPriority, Queue<TValue>> pair = _list.First();
+            TValue v = pair.Value.Dequeue();
             if (pair.Value.Count == 0) // nothing left of the top priority.
-                _list.Remove(pair.Key);
+            {
+                _ = _list.Remove(pair.Key);
+            }
+
             return v;
         }
 
-        public bool IsEmpty
-        {
-            get { return !_list.Any(); }
-        }
+        public bool IsEmpty => !_list.Any();
     }
 
     //[Serializable]

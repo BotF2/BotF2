@@ -29,10 +29,11 @@ namespace Supremacy.Client
         public void HandleError(Exception exception)
         {
             if (exception is AppDomainUnloadedException)
+            {
                 return;
+            }
 
-            var supremacyException = exception as SupremacyException;
-            if (supremacyException != null)
+            if (exception is SupremacyException supremacyException)
             {
                 _errorService.HandleError(supremacyException);
                 Environment.Exit(Environment.ExitCode);
@@ -42,7 +43,7 @@ namespace Supremacy.Client
                 string errors = "";
                 lock (_syncLock)
                 {
-                    var innerException = exception;
+                    Exception innerException = exception;
 
                     while (innerException != null)
                     {
@@ -54,7 +55,7 @@ namespace Supremacy.Client
 
                     Console.Error.WriteLine(errors);
                     Console.Error.Flush();
-                    MessageBox.Show(
+                    _ = MessageBox.Show(
                         "An unhandled exception has occurred.  Detailed error information is "
                         + "available in the 'Log.txt' file.",
                         "Unhandled Exception",
@@ -77,13 +78,14 @@ namespace Supremacy.Client
         /// </summary>
         public void ReportError(string stackTrace)
         {
-            using (var client = new WebClient())
+            using (WebClient client = new WebClient())
             {
-                var values = new NameValueCollection();
-
-                values["Version"] = ClientApp.ClientVersion.ToString();
-                values["Title"] = stackTrace.Split('\n')[0];
-                values["StackTrace"] = stackTrace;
+                NameValueCollection values = new NameValueCollection
+                {
+                    ["Version"] = ClientApp.ClientVersion.ToString(),
+                    ["Title"] = stackTrace.Split('\n')[0],
+                    ["StackTrace"] = stackTrace
+                };
 
                 string _text = Environment.NewLine + Environment.NewLine
                     + DateTime.Now + " #### ERROR " /*+ Environment.NewLine*/
@@ -91,35 +93,19 @@ namespace Supremacy.Client
                     + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + Environment.NewLine
                     + "StackTrace complete:;" + stackTrace;
 
-                GameLog.Core.General.ErrorFormat(_text);
+                GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
                 Console.WriteLine(_text);
-
 
                 try
                 {
-                    //var to = new MailAddress;
-                    //MailMessage message = new MailMessage(
-                    //   "fromemail@contoso.com",
-                    //   "85244@gmx.de",
-                    //   "Subject goes here",
-                    //   "Body goes here");
-
-                    //MailMessage reply = new MailMessage(new MailAddress(imapUser, "Sender"), source.From);
-                    //MailAddressApp
-                    //    mailAddressApp.
-                    //System.Diagnostics.Process.Start.message.
-
-                    string mt = "reportError.bat Fehler " + _text;
-                    mt = ".\\lib\\reportError.bat";
-                    //"mailto:85244@gmx.de?subject=[An_Error_occured]";
-                    //GameLog.Client.General.InfoFormat("Try to run " + mt);
-                    System.Diagnostics.Process.Start(mt);  //> batch doesn't work yet
+                    _ = System.Diagnostics.Process.Start(".\\Resources\\reportError.bat");
+                    // batch opens a web site with email function, 
+                    // but just if batch file is activated = rem is removed before web adress
+                    // opens Win10 mail function which might be connected to Google Mail account or any other
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                catch (Exception ex) { throw ex; }
 
+                // old code
                 //try
                 //{
                 //    //var response = client.UploadValues(_reportErrorURL, "POST", values);
@@ -138,7 +124,6 @@ namespace Supremacy.Client
                 //    }
                 //    //Don't bother doing anything
                 //}
-
             }
         }
         #endregion

@@ -17,18 +17,14 @@ namespace Supremacy.Scripting.Events
     [Serializable]
     public class SupernovaEvent : UnitScopedEvent<Colony>
     {
-        
+
         private int _occurrenceChance = 200;
-        public override bool CanExecute
-        {
-            get { return _occurrenceChance > 0 && base.CanExecute; }
-        }
+        public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -48,33 +44,33 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
                         c.IsEmpire &&
                         c.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
                     {
                         return;
                     }
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    var population = target.Population.CurrentValue;
-                    var health = target.Health.CurrentValue;
+                    int population = target.Population.CurrentValue;
+                    int health = target.Health.CurrentValue;
 
                     // only when many colonies are there
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 4)
@@ -82,16 +78,16 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
                     }
 
-                    var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
                     {
                         civManager.SitRepEntries.Add(new SupernovaSitRepEntry(civManager.Civilization, target));
                     }
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    target.Population.AdjustCurrent( - population/6 * 3);
+                    _ = target.Population.AdjustCurrent(-population / 6 * 3);
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(-health/ 5);
+                    _ = target.Health.AdjustCurrent(-health / 5);
                     target.Health.UpdateAndReset();
 
                     GameContext.Current.Universe.UpdateSectors();

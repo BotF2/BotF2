@@ -10,14 +10,10 @@ namespace Supremacy.Types
         private readonly Func<T, T, bool> _equalityComparison;
         private readonly Func<T, int> _hashCodeResolver;
 
-        public DelegatingEqualityComparer([NotNull] Func<T, T, bool> equalityComparison, [NotNull] Func<T,int> hashCodeResolver)
+        public DelegatingEqualityComparer([NotNull] Func<T, T, bool> equalityComparison, [NotNull] Func<T, int> hashCodeResolver)
         {
-            if (equalityComparison == null)
-                throw new ArgumentNullException("equalityComparison");
-            if (hashCodeResolver == null)
-                throw new ArgumentNullException("hashCodeResolver");
-            _equalityComparison = equalityComparison;
-            _hashCodeResolver = hashCodeResolver;
+            _equalityComparison = equalityComparison ?? throw new ArgumentNullException("equalityComparison");
+            _hashCodeResolver = hashCodeResolver ?? throw new ArgumentNullException("hashCodeResolver");
         }
 
         #region Implementation of IEqualityComparer<T>
@@ -28,8 +24,11 @@ namespace Supremacy.Types
 
         public int GetHashCode(T obj)
         {
-            if (ReferenceEquals(obj, null))
+            if (obj == null)
+            {
                 return 0;
+            }
+
             return _hashCodeResolver(obj);
         }
         #endregion

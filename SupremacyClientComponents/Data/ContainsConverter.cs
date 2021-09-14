@@ -12,11 +12,14 @@ namespace Supremacy.Client.Data
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (parameter == null)
+            {
                 return false;
+            }
 
-            var collection = value as IEnumerable;
-            if (collection != null)
+            if (value is IEnumerable collection)
+            {
                 return collection.Cast<object>().Contains(parameter);
+            }
 
             return false;
         }

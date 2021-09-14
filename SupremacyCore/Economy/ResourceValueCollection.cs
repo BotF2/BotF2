@@ -28,13 +28,15 @@ namespace Supremacy.Economy
 
         public ResourceValueCollection()
         {
-            EnumHelper.GetValues<ResourceType>().ForEach(r => base.Add(r, 0));
+            _ = EnumHelper.GetValues<ResourceType>().ForEach(r => base.Add(r, 0));
         }
 
         public bool MeetsOrExceeds(ResourceValueCollection resources)
         {
             if (resources == null)
+            {
                 throw new ArgumentNullException("resources");
+            }
 
             return !EnumHelper.GetValues<ResourceType>().Any(o => this[o] < resources[o]);
         }
@@ -47,16 +49,20 @@ namespace Supremacy.Economy
         public void Add(ResourceValueCollection resources)
         {
             if (resources == null)
+            {
                 throw new ArgumentNullException("resources");
+            }
 
-            foreach (var resource in EnumHelper.GetValues<ResourceType>())
+            foreach (ResourceType resource in EnumHelper.GetValues<ResourceType>())
+            {
                 this[resource] += resources[resource];
+            }
         }
 
         public ResourceValueCollection Clone()
         {
-            var clone = new ResourceValueCollection();
-            EnumHelper.GetValues<ResourceType>().ForEach(r => clone[r] = this[r]);
+            ResourceValueCollection clone = new ResourceValueCollection();
+            _ = EnumHelper.GetValues<ResourceType>().ForEach(r => clone[r] = this[r]);
             return clone;
         }
 
@@ -72,8 +78,8 @@ namespace Supremacy.Economy
 
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
-            var data = reader.ReadDictionary<ResourceType, int>();
-            EnumHelper.GetValues<ResourceType>().ForEach(r => this[r] = data[r]);
+            Dictionary<ResourceType, int> data = reader.ReadDictionary<ResourceType, int>();
+            _ = EnumHelper.GetValues<ResourceType>().ForEach(r => this[r] = data[r]);
         }
 
         public ResourceValueCollection(SerializationInfo info, StreamingContext context) : base(info, context)

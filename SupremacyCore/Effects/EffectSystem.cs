@@ -25,7 +25,7 @@ using Supremacy.Collections;
 using Supremacy.Utility;
 
 namespace Supremacy.Effects
-{       
+{
     public static class EffectSystem
     {
         private static readonly StateScope SuspendEffectsScope;
@@ -33,7 +33,7 @@ namespace Supremacy.Effects
         private static CompositeDisposer SuspendedEffectsHandle;
 
         public static object SyncRoot { get; private set; }
-        
+
         static EffectSystem()
         {
             SyncRoot = new object();
@@ -49,7 +49,7 @@ namespace Supremacy.Effects
             {
                 if (SuspendEffectsScope.IsWithin)
                 {
-                    var suspendHandles = RegisteredSources
+                    IEnumerable<IDisposable> suspendHandles = RegisteredSources
                         .SelectMany(o => o.Key.EffectGroupBindings)
                         .SelectMany(g => g.EffectBindings)
                         .Select(e => e.Suspend());
@@ -57,41 +57,49 @@ namespace Supremacy.Effects
                 }
                 else
                 {
-                    var disposer = Interlocked.Exchange(ref SuspendedEffectsHandle, null);
+                    CompositeDisposer disposer = Interlocked.Exchange(ref SuspendedEffectsHandle, null);
                     if (disposer != null)
+                    {
                         disposer.Dispose();
+                    }
                 }
-                
+
             }
         }
 
         public static void RegisterEffectSource([NotNull] IEffectSource effectSource)
         {
             if (effectSource == null)
+            {
                 throw new ArgumentNullException("effectSource");
-            
+            }
+
             lock (SyncRoot)
             {
                 if (RegisteredSources.ContainsKey(effectSource))
+                {
                     return;
+                }
 
-                var effectGroups = effectSource.EffectGroupBindings;
+                IEffectGroupBindingCollection effectGroups = effectSource.EffectGroupBindings;
 
                 if (SuspendEffectsScope.IsWithin)
                 {
-                    effectGroups
+                    _ = effectGroups
                         .SelectMany(o => o.EffectBindings)
                         .Select(o => o.Suspend())
                         .ForEach(o => SuspendedEffectsHandle.AddChild(o));
                 }
 
-                var workers = new EffectGroupWorker[effectGroups.Count];
+                EffectGroupWorker[] workers = new EffectGroupWorker[effectGroups.Count];
 
                 for (int i = 0; i < workers.Length; i++)
                 {
                     workers[i] = new EffectGroupWorker(effectSource, effectGroups[i]);
                     if (IsEnabled)
+                    {
                         workers[i].Activate();
+                    }
                 }
 
                 RegisteredSources.Add(effectSource, workers);
@@ -101,22 +109,29 @@ namespace Supremacy.Effects
         public static void UnregisterEffectSource([NotNull] IEffectSource effectSource)
         {
             if (effectSource == null)
+            {
                 throw new ArgumentNullException("effectSource");
+            }
 
             lock (SyncRoot)
             {
-                EffectGroupWorker[] workers;
 
-                if (!RegisteredSources.TryGetValue(effectSource, out workers))
+                if (!RegisteredSources.TryGetValue(effectSource, out EffectGroupWorker[] workers))
+                {
                     return;
+                }
 
-                RegisteredSources.Remove(effectSource);
+                _ = RegisteredSources.Remove(effectSource);
 
                 if (!IsEnabled)
+                {
                     return;
+                }
 
-                foreach (var effectGroupWorker in workers)
+                foreach (EffectGroupWorker effectGroupWorker in workers)
+                {
                     effectGroupWorker.Deactivate();
+                }
             }
         }
 
@@ -125,11 +140,13 @@ namespace Supremacy.Effects
             lock (SyncRoot)
             {
                 if (IsEnabled)
+                {
                     return;
+                }
 
                 try
                 {
-                    RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Activate());
+                    _ = RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Activate());
                 }
                 finally
                 {
@@ -143,11 +160,13 @@ namespace Supremacy.Effects
             lock (SyncRoot)
             {
                 if (!IsEnabled)
+                {
                     return;
+                }
 
                 try
                 {
-                    RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Deactivate());
+                    _ = RegisteredSources.SelectMany(o => o.Value).ForEach(o => o.Deactivate());
                 }
                 finally
                 {
@@ -156,10 +175,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public static bool IsSuspended
-        {
-            get { return SuspendEffectsScope.IsWithin; }
-        }
+        public static bool IsSuspended => SuspendEffectsScope.IsWithin;
 
         public static IDisposable SuspendEffects()
         {
@@ -180,26 +196,26 @@ namespace Supremacy.Effects
 
             internal EffectGroupWorker([NotNull] IEffectSource source, [NotNull] EffectGroupBinding effectGroupBinding)
             {
-                if (source == null)
-                    throw new ArgumentNullException("source");
-                if (effectGroupBinding == null)
-                    throw new ArgumentNullException("effectGroupBinding");
-
-                _source = source;
-                _effectGroupBinding = effectGroupBinding;
+                _source = source ?? throw new ArgumentNullException("source");
+                _effectGroupBinding = effectGroupBinding ?? throw new ArgumentNullException("effectGroupBinding");
                 _attachedTargets = new HashSet<object>();
             }
 
             private void SetScopeObservation(object scope, bool enableObservation)
             {
-                var observableScope = scope as INotifyCollectionChanged;
-                if (observableScope == null)
+                if (!(scope is INotifyCollectionChanged observableScope))
+                {
                     return;
+                }
 
                 if (enableObservation && !_isObservingScope)
+                {
                     observableScope.CollectionChanged += OnScopeChanged;
+                }
                 else if (!enableObservation && _isObservingScope)
+                {
                     observableScope.CollectionChanged -= OnScopeChanged;
+                }
 
                 _isObservingScope = enableObservation;
             }
@@ -207,11 +223,13 @@ namespace Supremacy.Effects
             internal void Activate()
             {
                 if (_isActive)
+                {
                     return;
+                }
 
                 try
                 {
-                    var runtimeScriptParameters = _effectGroupBinding.BindActivationScriptRuntimeParameters();
+                    Scripting.RuntimeScriptParameters runtimeScriptParameters = _effectGroupBinding.BindActivationScriptRuntimeParameters();
 
                     _activationTest = _effectGroupBinding.EffectGroup.ActivationScript.Evaluate<IValueProvider<bool>>(runtimeScriptParameters);
                     _scope = _effectGroupBinding.EffectGroup.ScopeScript.Evaluate<IValueProvider>(runtimeScriptParameters);
@@ -229,17 +247,21 @@ namespace Supremacy.Effects
 
             private void ChangeScope()
             {
-                var oldScope = _lastScopeValue;
+                object oldScope = _lastScopeValue;
                 if (oldScope != null)
+                {
                     SetScopeObservation(oldScope, false);
+                }
 
-                var scopeValue = _lastScopeValue = _scope.Value;
+                object scopeValue = _lastScopeValue = _scope.Value;
 
-                var oldItems = _attachedTargets.ToList();
-                var newItems = scopeValue as IEnumerable ??
+                List<object> oldItems = _attachedTargets.ToList();
+                IEnumerable newItems = scopeValue as IEnumerable ??
                                ((scopeValue == null) ? null : new[] { scopeValue });
                 if (_isActive)
+                {
                     SetScopeObservation(_scope.Value, true);
+                }
 
                 UpdateTargets(oldItems, newItems);
             }
@@ -253,19 +275,19 @@ namespace Supremacy.Effects
             {
                 if (oldItems != null)
                 {
-                    foreach (var oldItem in oldItems.OfType<IEffectTarget>())
+                    foreach (IEffectTarget oldItem in oldItems.OfType<IEffectTarget>())
                     {
                         _effectGroupBinding.DetachTarget(oldItem);
-                        _attachedTargets.Remove(oldItem);
+                        _ = _attachedTargets.Remove(oldItem);
                     }
                 }
 
                 if (newItems != null)
                 {
-                    foreach (var newItem in newItems.OfType<IEffectTarget>())
+                    foreach (IEffectTarget newItem in newItems.OfType<IEffectTarget>())
                     {
                         _effectGroupBinding.AttachTarget(newItem);
-                        _attachedTargets.Add(newItem);
+                        _ = _attachedTargets.Add(newItem);
                     }
                 }
             }
@@ -275,34 +297,34 @@ namespace Supremacy.Effects
                 IEnumerable oldItems;
                 IEnumerable newItems;
 
-                var scope = (IEnumerable)sender;
+                IEnumerable scope = (IEnumerable)sender;
 
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Remove:
                     case NotifyCollectionChangedAction.Replace:
-                    {
-                        newItems = e.NewItems;
-                        oldItems = e.OldItems;
-                        break;
-                    }
-                
+                        {
+                            newItems = e.NewItems;
+                            oldItems = e.OldItems;
+                            break;
+                        }
+
                     case NotifyCollectionChangedAction.Reset:
-                    {
-                        var currentItems = scope.OfType<object>().ToHashSet();
-                        
-                        currentItems.ExceptWith(_attachedTargets);
-                        newItems = currentItems;
+                        {
+                            HashSet<object> currentItems = scope.OfType<object>().ToHashSet();
 
-                        currentItems = scope.OfType<object>().ToHashSet();
-                        _attachedTargets.ExceptWith(currentItems);
-                        oldItems = _attachedTargets;
+                            currentItems.ExceptWith(_attachedTargets);
+                            newItems = currentItems;
 
-                        _attachedTargets.Clear();
+                            currentItems = scope.OfType<object>().ToHashSet();
+                            _attachedTargets.ExceptWith(currentItems);
+                            oldItems = _attachedTargets;
 
-                        break;
-                    }
+                            _attachedTargets.Clear();
+
+                            break;
+                        }
 
                     default:
                     case NotifyCollectionChangedAction.Move:
@@ -315,7 +337,9 @@ namespace Supremacy.Effects
             internal void Deactivate()
             {
                 if (!_isActive)
+                {
                     return;
+                }
 
                 try
                 {
@@ -327,7 +351,7 @@ namespace Supremacy.Effects
                     _activationTest = null;
                     _scope = null;
                     _lastScopeValue = null;
-                    
+
                 }
                 finally
                 {

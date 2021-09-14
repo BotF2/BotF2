@@ -20,9 +20,7 @@ namespace Supremacy.Types
 
         public Disposer([NotNull] Action disposeAction)
         {
-            if (disposeAction == null)
-                throw new ArgumentNullException("disposeAction");
-            _disposeAction = disposeAction;
+            _disposeAction = disposeAction ?? throw new ArgumentNullException("disposeAction");
         }
 
         ~Disposer()
@@ -34,7 +32,9 @@ namespace Supremacy.Types
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             try
             {

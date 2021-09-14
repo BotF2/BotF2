@@ -161,7 +161,7 @@ namespace Supremacy.Client
                     iconFile = Path.Combine(currentMod.RootPath, iconDirectory, defaultIconName);
 
                     GameLog.Client.General.DebugFormat("defaultIcon {0} is used ...maybe check \\Resources\\Shell", defaultIconName);
-                    
+
                     if (File.Exists(iconFile))
                     {
                         return iconFile;

@@ -86,7 +86,7 @@ namespace Supremacy.Combat
                 return;
             }
 
-            _orders.Remove(source.ObjectID);
+            _ = _orders.Remove(source.ObjectID);
         }
 
         public void Clear()

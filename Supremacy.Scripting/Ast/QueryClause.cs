@@ -49,8 +49,8 @@ namespace Supremacy.Scripting.Ast
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
-		{
-			base.CloneTo (cloneContext, target);
+        {
+            base.CloneTo(cloneContext, target);
 
             if (!(target is QueryClause targetQueryClause))
             {
@@ -79,7 +79,7 @@ namespace Supremacy.Scripting.Ast
             CreateArguments(ec, out Arguments arguments);
 
             leftSide = CreateQueryExpression(leftSide, arguments);
-            
+
             if (Next != null)
             {
                 if ((!(Next is SelectClause selectClause)) || selectClause.IsRequired)

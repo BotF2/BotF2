@@ -14,9 +14,6 @@ namespace Supremacy.Client.Controls
     internal sealed class GamePopupRoot : FrameworkElement
     {
         private static readonly Thickness ZeroThickness = new Thickness(0);
-
-        private readonly GamePopup _popup;
-
         private AdornerDecorator _adornerDecorator;
         private Decorator _transformDecorator;
 
@@ -38,40 +35,37 @@ namespace Supremacy.Client.Controls
                     GamePopup.ClosePopupCommand,
                     (sender, args) =>
                     {
-                        var popup = (GamePopupRoot)sender;
-                        popup._popup.IsOpen = false;
+                        GamePopupRoot popup = (GamePopupRoot)sender;
+                        popup.Popup.IsOpen = false;
                         args.Handled = true;
                     },
                     (sender, args) =>
                     {
-                        var popup = (GamePopupRoot)sender;
-                        args.CanExecute = popup._popup.IsOpen;
+                        GamePopupRoot popup = (GamePopupRoot)sender;
+                        args.CanExecute = popup.Popup.IsOpen;
                         args.Handled = true;
                     }));
         }
 
         internal GamePopupRoot(GamePopup popup)
         {
-            _popup = popup;
+            Popup = popup;
             Initialize();
         }
 
-        internal GamePopup Popup
-        {
-            get { return _popup; }
-        }
+        internal GamePopup Popup { get; }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
-            _popup.Reposition();
+            Popup.Reposition();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key == Key.Escape && _popup.IsOpen)
+            if (e.Key == Key.Escape && Popup.IsOpen)
             {
-                _popup.IsOpen = false;
+                Popup.IsOpen = false;
                 e.Handled = true;
                 return;
             }
@@ -101,7 +95,7 @@ namespace Supremacy.Client.Controls
 
         protected override DependencyObject GetUIParentCore()
         {
-            return _popup ?? base.GetUIParentCore();
+            return Popup ?? base.GetUIParentCore();
         }
 
         protected override Size MeasureOverride(Size constraint)
@@ -111,14 +105,14 @@ namespace Supremacy.Client.Controls
                     double.PositiveInfinity,
                     double.PositiveInfinity));
 
-            var desiredSize = _transformDecorator.DesiredSize;
+            Size desiredSize = _transformDecorator.DesiredSize;
 
             return desiredSize;
         }
 
         internal void SetupFadeAnimation(Duration duration, bool visible)
         {
-            var animation = new DoubleAnimation(
+            DoubleAnimation animation = new DoubleAnimation(
                 visible ? 0.0 : 1.0,
                 visible ? 1.0 : 0.0,
                 duration,
@@ -129,7 +123,7 @@ namespace Supremacy.Client.Controls
 
         internal void SetupLayoutBindings(GamePopup popup)
         {
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 WidthProperty,
                 new Binding
                 {
@@ -138,7 +132,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(WidthProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 HeightProperty,
                 new Binding
                 {
@@ -147,7 +141,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(HeightProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MinWidthProperty,
                 new Binding
                 {
@@ -156,7 +150,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MinWidthProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MinHeightProperty,
                 new Binding
                 {
@@ -165,7 +159,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MinHeightProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MaxWidthProperty,
                 new Binding
                 {
@@ -174,7 +168,7 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MaxWidthProperty)
                 });
 
-            _adornerDecorator.SetBinding(
+            _ = _adornerDecorator.SetBinding(
                 MaxHeightProperty,
                 new Binding
                 {
@@ -183,8 +177,8 @@ namespace Supremacy.Client.Controls
                     Path = new PropertyPath(MaxHeightProperty),
                 });
 
-            _adornerDecorator.SetBinding(
-                ClipToBoundsProperty, 
+            _ = _adornerDecorator.SetBinding(
+                ClipToBoundsProperty,
                 new Binding
                 {
                     Mode = BindingMode.OneWay,
@@ -195,12 +189,13 @@ namespace Supremacy.Client.Controls
 
         internal void SetupTranslateAnimations(PopupAnimation animationType, Duration duration, bool animateFromRight, bool animateFromBottom)
         {
-            var child = Child;
+            UIElement child = Child;
             if (child == null)
+            {
                 return;
+            }
 
-            var renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
-            if (renderTransform == null)
+            if (!(_adornerDecorator.RenderTransform is TranslateTransform renderTransform))
             {
                 renderTransform = new TranslateTransform();
                 _adornerDecorator.RenderTransform = renderTransform;
@@ -208,24 +203,26 @@ namespace Supremacy.Client.Controls
 
             if (animationType == PopupAnimation.Scroll)
             {
-                var direction = (FlowDirection)child.GetValue(FlowDirectionProperty);
-                var flowDirection = FlowDirection;
-                
-                if (direction != flowDirection)
-                    animateFromRight = !animateFromRight;
+                FlowDirection direction = (FlowDirection)child.GetValue(FlowDirectionProperty);
+                FlowDirection flowDirection = FlowDirection;
 
-                var width = _adornerDecorator.RenderSize.Width;
-                var horizontalAnimation = new DoubleAnimation(
+                if (direction != flowDirection)
+                {
+                    animateFromRight = !animateFromRight;
+                }
+
+                double width = _adornerDecorator.RenderSize.Width;
+                DoubleAnimation horizontalAnimation = new DoubleAnimation(
                     animateFromRight ? width : -width,
                     0.0,
                     duration,
                     FillBehavior.Stop);
-                
+
                 renderTransform.BeginAnimation(TranslateTransform.XProperty, horizontalAnimation);
             }
 
-            var height = _adornerDecorator.RenderSize.Height;
-            var verticalAnimation = new DoubleAnimation(
+            double height = _adornerDecorator.RenderSize.Height;
+            DoubleAnimation verticalAnimation = new DoubleAnimation(
                 animateFromBottom ? height : -height,
                 0.0,
                 duration,
@@ -237,10 +234,11 @@ namespace Supremacy.Client.Controls
         internal void StopAnimations()
         {
             BeginAnimation(OpacityProperty, null);
-            
-            var renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
-            if (renderTransform == null)
+
+            if (!(_adornerDecorator.RenderTransform is TranslateTransform renderTransform))
+            {
                 return;
+            }
 
             renderTransform.BeginAnimation(TranslateTransform.XProperty, null);
             renderTransform.BeginAnimation(TranslateTransform.YProperty, null);
@@ -250,28 +248,27 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
-                if (renderTransform != null)
+                if (_adornerDecorator.RenderTransform is TranslateTransform renderTransform)
+                {
                     return new Vector(renderTransform.X, renderTransform.Y);
+                }
+
                 return new Vector();
             }
         }
 
         internal UIElement Child
         {
-            get { return _adornerDecorator.Child; }
-            set { _adornerDecorator.Child = value; }
+            get => _adornerDecorator.Child;
+            set => _adornerDecorator.Child = value;
         }
 
         internal Transform Transform
         {
-            set { _transformDecorator.LayoutTransform = value; }
+            set => _transformDecorator.LayoutTransform = value;
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         public override void OnApplyTemplate()
         {
@@ -280,143 +277,157 @@ namespace Supremacy.Client.Controls
             _mainContainer = GetTemplateChild("PART_MainContainer") as DockPanel;
         }
 
-        private Thickness MainContainerMargin
-        {
-            get { return _mainContainer != null ? _mainContainer.Margin : ZeroThickness; }
-        }
+        private Thickness MainContainerMargin => _mainContainer != null ? _mainContainer.Margin : ZeroThickness;
 
         internal void SetPosition(PlacementMode preferedPlacement, UIElement placementTarget, Point mousePosition, bool secondSetPositionCall = false)
         {
-            var visualRoot = this.FindVisualRoot() as UIElement;
-            if (visualRoot == null)
+            if (!(this.FindVisualRoot() is UIElement visualRoot))
+            {
                 return;
+            }
 
-            var screenBounds = new Rect(visualRoot.RenderSize);
+            Rect screenBounds = new Rect(visualRoot.RenderSize);
 
             _relativeToTargetPoint = placementTarget == null
                                          ? mousePosition
                                          : placementTarget.TransformToVisual(visualRoot).Transform(new Point(0.0, 0.0));
 
-            _relativeToTargetPoint.Offset(_popup.HorizontalOffset, _popup.VerticalOffset);
+            _relativeToTargetPoint.Offset(Popup.HorizontalOffset, Popup.VerticalOffset);
 
-            var arrowWidth = _arrow != null ? _arrow.ActualWidth : 0d;
-            var arrowMargin = _arrow != null ? _arrow.Margin : ZeroThickness;
+            double arrowWidth = _arrow != null ? _arrow.ActualWidth : 0d;
+            Thickness arrowMargin = _arrow != null ? _arrow.Margin : ZeroThickness;
 
-            var horizontalOffset = placementTarget != null
+            double horizontalOffset = placementTarget != null
                                        ? placementTarget.RenderSize.Width / 2.0 - arrowWidth / 2.0 + MainContainerMargin.Left * 0.5
                                        : arrowWidth / 2.0;
 
             switch (preferedPlacement)
             {
                 case PlacementMode.Bottom:
-                {
-                    if (ActualHeight * _dpiYfactor + _relativeToTargetPoint.Y > screenBounds.Top + screenBounds.Height)
                     {
-                        PositionTop(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
-                    }
-                    else
-                    {
-                        _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
-                        PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
-                    }
+                        if (ActualHeight * _dpiYfactor + _relativeToTargetPoint.Y > screenBounds.Top + screenBounds.Height)
+                        {
+                            PositionTop(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
+                            }
+                        }
+                        else
+                        {
+                            _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
+                            PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
+                            }
+                        }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                        {
+                            break;
+                        }
+
+                        SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
 
                 case PlacementMode.Right:
-                {
-                    if (ActualWidth * _dpiXfactor + _relativeToTargetPoint.X > screenBounds.Left + screenBounds.Width)
                     {
-                        _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
-                        PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        if (ActualWidth * _dpiXfactor + _relativeToTargetPoint.X > screenBounds.Left + screenBounds.Width)
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Right;
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
+                            PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Right;
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            }
                         }
-                    }
-                    else
-                    {
-                        PositionRight(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        else
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Left;
-                            _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            PositionRight(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Left;
+                                _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            }
                         }
-                    }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                        {
+                            break;
+                        }
+
+                        SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
 
                 case PlacementMode.Left:
-                {
-                    if (screenBounds.Left > _relativeToTargetPoint.X - ActualWidth * _dpiXfactor)
                     {
-                        PositionRight(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        if (screenBounds.Left > _relativeToTargetPoint.X - ActualWidth * _dpiXfactor)
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Left;
-                            _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            PositionRight(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Left;
+                                _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            }
                         }
-                    }
-                    else
-                    {
-                        _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
-                        PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        else
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Right;
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
+                            PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Right;
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            }
                         }
-                    }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                        {
+                            break;
+                        }
+
+                        SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
 
                 case PlacementMode.Top:
-                {
-                    if (ActualHeight * _dpiYfactor - _relativeToTargetPoint.Y > screenBounds.Top)
                     {
-                        _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
-                        PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
-                    }
-                    else
-                    {
-                        PositionTop(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
-                    }
+                        if (ActualHeight * _dpiYfactor - _relativeToTargetPoint.Y > screenBounds.Top)
+                        {
+                            _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
+                            PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
+                            }
+                        }
+                        else
+                        {
+                            PositionTop(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
+                            }
+                        }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                        {
+                            break;
+                        }
+
+                        SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
             }
         }
 
         private void PositionTop(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var y = relativePoint.Y - ActualHeight * _dpiYfactor;
+            double y = relativePoint.Y - ActualHeight * _dpiYfactor;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Bottom);
@@ -427,7 +438,7 @@ namespace Supremacy.Client.Controls
 
         private void PositionBottom(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var y = relativePoint.Y;
+            double y = relativePoint.Y;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Top);
@@ -438,7 +449,7 @@ namespace Supremacy.Client.Controls
 
         private void PositionLeft(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var x = relativePoint.X - ActualWidth * _dpiXfactor;
+            double x = relativePoint.X - ActualWidth * _dpiXfactor;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Right);
@@ -449,7 +460,7 @@ namespace Supremacy.Client.Controls
 
         private void PositionRight(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var x = relativePoint.X;
+            double x = relativePoint.X;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Left);

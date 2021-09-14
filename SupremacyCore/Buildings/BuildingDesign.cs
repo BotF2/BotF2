@@ -35,7 +35,7 @@ namespace Supremacy.Buildings
     public class BuildingDesign : PlanetaryTechObjectDesign
     {
         public const int MaxEnergyCost = 4000;
-        public const int MaxRawMaterials = 1000000;
+        public const int MaxDuranium = 1000000;
 
         private const byte AlwaysOnlineFlag = 0x01;
         private const byte IsPermanentFlag = 0x02;
@@ -244,7 +244,7 @@ namespace Supremacy.Buildings
             building.Location = system.Colony.Location;
 
             system.Colony.AddBuilding(building);
-            system.Colony.ActivateBuilding(building);
+            _ = system.Colony.ActivateBuilding(building);
 
             GameContext.Current.Universe.Objects.Add(building);
             //building.EffectBindingsInternal.AddRange(this.Effects);

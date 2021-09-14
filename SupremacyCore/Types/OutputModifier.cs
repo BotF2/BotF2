@@ -19,14 +19,14 @@ namespace Supremacy.Types
 
         public int Bonus
         {
-            get { return _bonus; }
-            set { _bonus = value; }
+            get => _bonus;
+            set => _bonus = value;
         }
 
         public Percentage Efficiency
         {
-            get { return _efficiency; }
-            set { _efficiency = value; }
+            get => _efficiency;
+            set => _efficiency = value;
         }
 
         public OutputModifier() : this(0, 0f) { }

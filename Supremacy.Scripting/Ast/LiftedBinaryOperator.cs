@@ -118,15 +118,9 @@ namespace Supremacy.Scripting.Ast
             return DoResolveCore(ec, left_orig, right_orig);
         }
 
-        bool IsBitwiseBoolean
-        {
-            get
-            {
-                return Operator.IsBitwise() && left_unwrap != null && right_unwrap != null &&
+        bool IsBitwiseBoolean => Operator.IsBitwise() && left_unwrap != null && right_unwrap != null &&
                        left_unwrap.Type == TypeManager.CoreTypes.Boolean &&
                        right_unwrap.Type == TypeManager.CoreTypes.Boolean;
-            }
-        }
 
         private Expression LiftResult(ParseContext ec, Expression res_expr)
         {

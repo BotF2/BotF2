@@ -19,35 +19,38 @@ namespace Supremacy.Client.Controls
 
         private static void OnHyperlinkClick(object sender, RoutedEventArgs e)
         {
-            var link = sender as Hyperlink;
-            if (link == null)
+            if (!(sender is Hyperlink link))
+            {
                 return;
+            }
 
-            var args = new HyperlinkClickedEventArgs(link.NavigateUri, link, link.DataContext);
-            
+            HyperlinkClickedEventArgs args = new HyperlinkClickedEventArgs(link.NavigateUri, link, link.DataContext);
+
             link.RaiseEvent(args);
-            
+
             if (args.Handled)
+            {
                 e.Handled = true;
+            }
         }
 
         public static Span ToSpan(this RichText richText, bool handleAccessKeyCharacter = true)
         {
-            var span = new Span();
-            var length = -1;
-            var stack = ImmutableStack<Span>.Empty;
-            var currentUri = (Uri)null;
+            Span span = new Span();
+            int length = -1;
+            IStack<Span> stack = ImmutableStack<Span>.Empty;
+            Uri currentUri = null;
 
-            foreach (var part in richText.GetFormattedParts())
+            foreach (RichString part in richText.GetFormattedParts())
             {
-                var substring = richText.Text.Substring(part.Offset, part.Length);
-                var inline = (Inline)null;
+                string substring = richText.Text.Substring(part.Offset, part.Length);
+                Inline inline = null;
 
-                var linkData = richText.GetUserData<Uri>(part.Offset, part.Offset + part.Length);
+                System.Collections.Generic.IList<Uri> linkData = richText.GetUserData<Uri>(part.Offset, part.Offset + part.Length);
 
                 if (currentUri != null && (linkData.Count == 0 || linkData[0] != currentUri))
                 {
-                    var hyperlink = (Hyperlink)span;
+                    Hyperlink hyperlink = (Hyperlink)span;
                     span = stack.Peek();
                     stack = stack.Pop();
                     span.Inlines.Add(hyperlink);
@@ -61,7 +64,9 @@ namespace Supremacy.Client.Controls
                     span = new Hyperlink();
 
                     if (currentUri != RichTextConverter.EmptyLinkUri)
+                    {
                         ((Hyperlink)span).NavigateUri = currentUri;
+                    }
 
                     GenericWeakEventManager.AddListener(
                         span,
@@ -83,21 +88,21 @@ namespace Supremacy.Client.Controls
                     }
                     else
                     {
-                        var head = new Run(substring.Substring(0, length));
-                        var mnemonic = new Run(substring.Substring(length + 1, 1));
-                        var tail = new Run(substring.Substring(length + 2));
+                        Run head = new Run(substring.Substring(0, length));
+                        Run mnemonic = new Run(substring.Substring(length + 1, 1));
+                        Run tail = new Run(substring.Substring(length + 2));
 
                         mnemonic.TextDecorations.Add(TextDecorations.Underline);
 
                         inline = new Span
-                                 {
-                                     Inlines =
+                        {
+                            Inlines =
                                          {
                                              head,
                                              mnemonic,
                                              tail
                                          }
-                                 };
+                        };
 
                         handleAccessKeyCharacter = false;
                     }
@@ -108,30 +113,38 @@ namespace Supremacy.Client.Controls
                 }
 
                 if (inline == null)
+                {
                     continue;
+                }
 
                 span.Inlines.Add(inline);
 
-                // ReSharper disable RedundantCheckBeforeAssignment
-
                 if (part.Style.FontWeight != inline.FontWeight)
+                {
                     inline.FontWeight = part.Style.FontWeight;
+                }
 
                 if (part.Style.FontStyle != inline.FontStyle)
+                {
                     inline.FontStyle = part.Style.FontStyle;
+                }
 
                 if (part.Style.Foreground != null && part.Style.Foreground != inline.Foreground)
+                {
                     inline.Foreground = part.Style.Foreground;
+                }
 
                 if (part.Style.Background != null && part.Style.Background != inline.Background)
+                {
                     inline.Background = part.Style.Background;
+                }
 
-                // ReSharper restore RedundantCheckBeforeAssignment
-
-                var pen = (Pen)null;
+                Pen pen = null;
 
                 if (part.Style.EffectBrush != null && part.Style.EffectBrush != part.Style.Foreground)
+                {
                     pen = new Pen { Brush = part.Style.EffectBrush };
+                }
 
                 switch (part.Style.Effect)
                 {

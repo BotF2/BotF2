@@ -15,7 +15,6 @@ using System.Linq;
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Entities;
-using Supremacy.Game;
 using Supremacy.IO.Serialization;
 
 namespace Supremacy.Diplomacy
@@ -33,15 +32,16 @@ namespace Supremacy.Diplomacy
         public void AddAgreement(IAgreement agreement)
         {
             if (agreement == null)
+            {
                 throw new ArgumentNullException("agreement");
+            }
 
-            var firstCivId = agreement.SenderID;
-            var secondCivId = agreement.RecipientID;
+            int firstCivId = agreement.SenderID;
+            int secondCivId = agreement.RecipientID;
 
             ReorderCivIds(ref firstCivId, ref secondCivId);
 
-            var activeAgreements = _map[firstCivId, secondCivId] as CollectionBase<IAgreement>;
-            if (activeAgreements == null)
+            if (!(_map[firstCivId, secondCivId] is CollectionBase<IAgreement> activeAgreements))
             {
                 activeAgreements = new CollectionBase<IAgreement>();
                 _map[firstCivId, secondCivId] = activeAgreements;
@@ -53,9 +53,14 @@ namespace Supremacy.Diplomacy
         public bool IsAgreementActive(ICivIdentity firstCiv, ICivIdentity secondCiv, ClauseType clauseType)
         {
             if (firstCiv == null)
+            {
                 throw new ArgumentNullException("firstCiv");
+            }
+
             if (secondCiv == null)
+            {
                 throw new ArgumentNullException("secondCiv");
+            }
 
             return IsAgreementActive(firstCiv.CivID, secondCiv.CivID, clauseType);
         }
@@ -68,9 +73,14 @@ namespace Supremacy.Diplomacy
         public IAgreement FindAgreement([NotNull] ICivIdentity firstCiv, [NotNull] ICivIdentity secondCiv, ClauseType clauseType)
         {
             if (firstCiv == null)
+            {
                 throw new ArgumentNullException("firstCiv");
+            }
+
             if (secondCiv == null)
+            {
                 throw new ArgumentNullException("secondCiv");
+            }
 
             return FindAgreement(firstCiv.CivID, secondCiv.CivID, clauseType);
         }
@@ -83,9 +93,14 @@ namespace Supremacy.Diplomacy
         public IAgreement FindAgreement([NotNull] ICivIdentity firstCiv, [NotNull] ICivIdentity secondCiv, Func<IAgreement, bool> predicate)
         {
             if (firstCiv == null)
+            {
                 throw new ArgumentNullException("firstCiv");
+            }
+
             if (secondCiv == null)
+            {
                 throw new ArgumentNullException("secondCiv");
+            }
 
             return FindAgreement(firstCiv.CivID, secondCiv.CivID, predicate);
         }
@@ -98,7 +113,9 @@ namespace Supremacy.Diplomacy
         public void Remove(IAgreement agreement)
         {
             if (agreement == null)
+            {
                 return;
+            }
 
             Remove(agreement.SenderID, agreement.RecipientID, agreement.Equals);
         }
@@ -106,9 +123,14 @@ namespace Supremacy.Diplomacy
         public void Remove(Civilization firstCiv, Civilization secondCiv, Func<IAgreement, bool> predicate)
         {
             if (firstCiv == null)
+            {
                 throw new ArgumentNullException("firstCiv");
+            }
+
             if (secondCiv == null)
+            {
                 throw new ArgumentNullException("secondCiv");
+            }
 
             Remove(firstCiv.CivID, secondCiv.CivID, predicate);
         }
@@ -116,13 +138,16 @@ namespace Supremacy.Diplomacy
         public void Remove(int firstCivId, int secondCivId, Func<IAgreement, bool> predicate)
         {
             if (predicate == null)
+            {
                 throw new ArgumentNullException("predicate");
+            }
 
             ReorderCivIds(ref firstCivId, ref secondCivId);
 
-            var agreements = _map[firstCivId, secondCivId] as CollectionBase<IAgreement>;
-            if (agreements != null)
-                agreements.RemoveWhere(predicate);
+            if (_map[firstCivId, secondCivId] is CollectionBase<IAgreement> agreements)
+            {
+                _ = agreements.RemoveWhere(predicate);
+            }
         }
 
         public IIndexedCollection<IAgreement> this[ICivIdentity firstCiv, ICivIdentity secondCiv]
@@ -130,9 +155,14 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (firstCiv == null)
+                {
                     throw new ArgumentNullException("firstCiv");
+                }
+
                 if (secondCiv == null)
+                {
                     throw new ArgumentNullException("secondCiv");
+                }
 
                 return this[firstCiv.CivID, secondCiv.CivID];
             }
@@ -142,12 +172,13 @@ namespace Supremacy.Diplomacy
         {
             get
             {
-                IIndexedCollection<IAgreement> value;
 
                 ReorderCivIds(ref firstCivId, ref secondCivId);
 
-                if (!_map.TryGetValue(firstCivId, secondCivId, out value))
+                if (!_map.TryGetValue(firstCivId, secondCivId, out IIndexedCollection<IAgreement> value))
+                {
                     value = ArrayWrapper<IAgreement>.Empty;
+                }
 
                 return value;
             }
@@ -156,9 +187,11 @@ namespace Supremacy.Diplomacy
         protected void ReorderCivIds(ref int firstCivId, ref int secondCivId)
         {
             if (secondCivId >= firstCivId)
+            {
                 return;
+            }
 
-            var temp = firstCivId;
+            int temp = firstCivId;
             firstCivId = secondCivId;
             secondCivId = temp;
         }

@@ -41,13 +41,20 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
+                {
                     //return "unknown";
                     return string.Format(ResourceManager.GetString("UNKNOWN"));
+                }
+
                 if (IsUnScannable)
+                {
                     //return "scan blocked";
                     return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
+                }
                 else
+                {
                     return View.Name;
+                }
             }
         }
 
@@ -56,13 +63,20 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
+                {
                     // return "unknown";
-                return string.Format(ResourceManager.GetString("UNKNOWN"));
+                    return string.Format(ResourceManager.GetString("UNKNOWN"));
+                }
+
                 if (IsUnScannable)
+                {
                     return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
-                    //return "scan blocked";
+                }
+                //return "scan blocked";
                 else
+                {
                     return View.ClassName;
+                }
             }
         }
     }
@@ -83,44 +97,38 @@ namespace Supremacy.Orbitals
         #endregion
 
         #region Properties and Indexers
-        public bool IsDesignOfShipsKnown
-        {
-            get { return _ships.All(ship => ship.IsDesignKnown); }
-        }
+        public bool IsDesignOfShipsKnown => _ships.All(ship => ship.IsDesignKnown);
 
-        public bool IsNumberOfShipsKnown
-        {
-            get { return _ships.All(ship => ship.IsPresenceKnown); }
-        }
+        public bool IsNumberOfShipsKnown => _ships.All(ship => ship.IsPresenceKnown);
 
-        public bool IsOwned
-        {
-            get { return _isOwned; }
-        }
+        public bool IsOwned => _isOwned;
 
-        public bool IsOwnerKnown
-        {
-            get { return _isOwnerKnown; }
-        }
+        public bool IsOwnerKnown => _isOwnerKnown;
 
-        public bool IsPresenceKnown
-        {
-            get { return _isPresenceKnown; }
-        }
+        public bool IsPresenceKnown => _isPresenceKnown;
 
         public string Name
         {
             get
             {
                 if (IsOwned || IsDesignOfShipsKnown)
+                {
                     return Source.Name;
+                }
+
                 if (IsNumberOfShipsKnown)
+                {
                     return _ships.Count + " in Nebula, Cloaked or Camouflaged";
+                }
+
                 if (IsOwnerKnown)
                 {
                     string ownerName = Source.Owner.ShortName;
                     if (ownerName.EndsWith("s"))
+                    {
                         ownerName = ownerName.Substring(0, ownerName.Length - 1);
+                    }
+
                     return ownerName + " Fleet";
                 }
                 return string.Format(ResourceManager.GetString("UNKNOWN_FLEET")); //"Unknown Fleet";
@@ -148,31 +156,30 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public IIndexedCollection<ShipView> Ships
-        {
-            get { return _ships; }
-        }
+        public IIndexedCollection<ShipView> Ships => _ships;
 
-        public Fleet Source
-        {
-            get { return GameContext.Current.Universe.Get<Fleet>(_sourceId); }
-        }
+        public Fleet Source => GameContext.Current.Universe.Get<Fleet>(_sourceId);
         #endregion
 
         #region Public and Protected Methods
         public static FleetView Create(Civilization owner, Fleet fleet)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
-            if (fleet == null)
-                throw new ArgumentNullException("fleet");
+            }
 
-            var ships = new List<ShipView>();
-            var fleetView = new FleetView
-                {
-                    _sourceId = fleet.ObjectID,
-                    _isOwned = (fleet.OwnerID == owner.CivID)
-                };
+            if (fleet == null)
+            {
+                throw new ArgumentNullException("fleet");
+            }
+
+            List<ShipView> ships = new List<ShipView>();
+            FleetView fleetView = new FleetView
+            {
+                _sourceId = fleet.ObjectID,
+                _isOwned = fleet.OwnerID == owner.CivID
+            };
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
 
@@ -217,7 +224,7 @@ namespace Supremacy.Orbitals
                 }
                 if (netScanStrength >= 1)
                 {
-                    isDesignKnown = (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector));
+                    isDesignKnown = DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector);
                     //if(DiplomacyHelper.IsScanBlocked(owner, fleet.Sector) == true)
                     //GameLog.Client.Intel.DebugFormat("scanblocking = {0}, Contact ={1} isDesignKnown ={2}",
                     //    DiplomacyHelper.IsScanBlocked(owner, fleet.Sector), (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector)));
@@ -253,9 +260,12 @@ namespace Supremacy.Orbitals
         #region Implementation of IEquatable<FleetView>
         public bool Equals(FleetView other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
+            {
                 return false;
-            return (other._sourceId == _sourceId);
+            }
+
+            return other._sourceId == _sourceId;
         }
         #endregion
     }
@@ -272,15 +282,18 @@ namespace Supremacy.Orbitals
 
         #region Constructors and Finalizers
         public ShipView(
-            // ReSharper disable SuggestBaseTypeForParameter
+
             Ship source,
-            // ReSharper restore SuggestBaseTypeForParameter
+
             bool isPresenceKnown,
             bool isDesignKnown,
             bool isOwned)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             _sourceId = source.ObjectID;
             _isPresenceKnown = isPresenceKnown;
             _isDesignKnown = isDesignKnown;
@@ -289,25 +302,13 @@ namespace Supremacy.Orbitals
         #endregion
 
         #region Properties and Indexers
-        public bool IsDesignKnown
-        {
-            get { return _isDesignKnown; }
-        }
+        public bool IsDesignKnown => _isDesignKnown;
 
-        public bool IsOwned
-        {
-            get { return _isOwned; }
-        }
+        public bool IsOwned => _isOwned;
 
-        public bool IsPresenceKnown
-        {
-            get { return _isPresenceKnown; }
-        }
+        public bool IsPresenceKnown => _isPresenceKnown;
 
-        public Ship Source
-        {
-            get { return GameContext.Current.Universe.Get<Ship>(_sourceId); }
-        }
+        public Ship Source => GameContext.Current.Universe.Get<Ship>(_sourceId);
         #endregion
 
         #region Public and Protected Methods
@@ -325,9 +326,12 @@ namespace Supremacy.Orbitals
         #region Implementation of IEquatable<ShipView>
         public bool Equals(ShipView other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
+            {
                 return false;
-            return (other._sourceId == _sourceId);
+            }
+
+            return other._sourceId == _sourceId;
         }
         #endregion
     }

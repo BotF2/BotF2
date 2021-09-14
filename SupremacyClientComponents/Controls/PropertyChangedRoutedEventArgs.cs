@@ -4,7 +4,6 @@ namespace Supremacy.Client
 {
     public class PropertyChangedRoutedEventArgs<T> : RoutedEventArgs
     {
-        private readonly T _newValue;
         private readonly T _oldValue;
 
         public PropertyChangedRoutedEventArgs(T oldValue, T newValue) : this(null, oldValue, newValue) { }
@@ -16,17 +15,11 @@ namespace Supremacy.Client
             : base(routedEvent, source)
         {
             _oldValue = oldValue;
-            _newValue = newValue;
+            NewValue = newValue;
         }
 
-        public T NewValue
-        {
-            get { return _newValue; }
-        }
+        public T NewValue { get; }
 
-        public T OldValue
-        {
-            get { return _oldValue; }
-        }
+        public T OldValue => _oldValue;
     }
 }

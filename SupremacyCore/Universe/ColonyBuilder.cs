@@ -28,63 +28,63 @@ namespace Supremacy.Universe
             float growth = colony.System.GetGrowthRate(colony.Inhabitants);
 
             int foodNeeded = (int)(pop * (1 + (3 * growth)));
-            var foodFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Food);
+            ProductionFacilityDesign foodFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Food);
             if (foodFacility != null)
             {
-                var facilityCount = Math.Max(2, foodNeeded / (foodFacility.UnitOutput + 1) + 1);
+                int facilityCount = Math.Max(2, foodNeeded / (foodFacility.UnitOutput + 1) + 1);
                 colony.SetFacilityType(ProductionCategory.Food, foodFacility);
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Food);
-                    colony.ActivateFacility(ProductionCategory.Food);
+                    _ = colony.ActivateFacility(ProductionCategory.Food);
                 }
             }
 
-            var industryFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Industry);
+            ProductionFacilityDesign industryFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Industry);
             if (industryFacility != null)
             {
-                var facilityCount = pop / industryFacility.LaborCost;
+                int facilityCount = pop / industryFacility.LaborCost;
                 colony.SetFacilityType(ProductionCategory.Industry, industryFacility);
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Industry);
-                    colony.ActivateFacility(ProductionCategory.Industry);
+                    _ = colony.ActivateFacility(ProductionCategory.Industry);
                 }
             }
 
-            var energyFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Energy);
+            ProductionFacilityDesign energyFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Energy);
             if (energyFacility != null)
             {
-                var facilityCount = pop / energyFacility.LaborCost / 2;
+                int facilityCount = pop / energyFacility.LaborCost / 2;
                 colony.SetFacilityType(ProductionCategory.Energy, energyFacility);
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Energy);
-                    colony.ActivateFacility(ProductionCategory.Energy);
+                    _ = colony.ActivateFacility(ProductionCategory.Energy);
                 }
             }
 
-            var researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
+            ProductionFacilityDesign researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
             if (researchFacility != null)
             {
-                var facilityCount = pop / researchFacility.LaborCost / 2;
+                int facilityCount = pop / researchFacility.LaborCost / 2;
                 colony.SetFacilityType(ProductionCategory.Research, researchFacility);
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Research);
-                    colony.ActivateFacility(ProductionCategory.Research);
+                    _ = colony.ActivateFacility(ProductionCategory.Research);
                 }
             }
 
-            var intelligenceFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Intelligence);
+            ProductionFacilityDesign intelligenceFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Intelligence);
             if (intelligenceFacility != null)
             {
-                var facilityCount = pop / (intelligenceFacility.LaborCost * 10);
+                int facilityCount = pop / (intelligenceFacility.LaborCost * 10);
                 colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Intelligence);
-                    colony.ActivateFacility(ProductionCategory.Intelligence);
+                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
                 }
             }
         }

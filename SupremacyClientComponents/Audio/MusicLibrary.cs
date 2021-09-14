@@ -12,7 +12,7 @@ namespace Supremacy.Client.Audio
     {
         Dictionary<string, MusicPack> MusicPacks { get; }
 
-        void Load(String libraryPath);
+        void Load(string libraryPath);
         void Load(XmlElement xmlNode);
         void Clear();
 
@@ -28,10 +28,7 @@ namespace Supremacy.Client.Audio
         #endregion
 
         #region Properties
-        public Dictionary<string, MusicPack> MusicPacks
-        {
-            get { return _musicPacks; }
-        }
+        public Dictionary<string, MusicPack> MusicPacks => _musicPacks;
         #endregion
 
         #region Methods
@@ -50,9 +47,9 @@ namespace Supremacy.Client.Audio
             }
             catch (Exception e)
             {
-                
+
                 GameLog.Client.GameData.DebugFormat("MusicLibrary.cs: MusicPacks.xml is missing ({0} exception {1} {2})", libraryPath, e.Message, e.StackTrace);
-                MessageBox.Show("MusicPacks.xml is missing for played empire", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show("MusicPacks.xml is missing for played empire", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -61,7 +58,7 @@ namespace Supremacy.Client.Audio
             _musicPacks.Clear();
             foreach (XmlElement xmlPack in xmlNode.GetElementsByTagName(PackDefName))
             {
-                var musicPack = new MusicPack();
+                MusicPack musicPack = new MusicPack();
                 musicPack.Load(xmlPack);
                 _musicPacks.Add(musicPack.Name, musicPack);
 
@@ -76,19 +73,20 @@ namespace Supremacy.Client.Audio
 
         public MusicEntry LookupTrack(string packName, string trackName)
         {
-            MusicPack pack;
-            MusicPacks.TryGetValue(packName, out pack);
+            _ = MusicPacks.TryGetValue(packName, out MusicPack pack);
 
             if (pack != null)
             {
-                MusicEntry track = null;
-                pack.Dictionary.TryGetValue(trackName, out track);
+                _ = pack.Dictionary.TryGetValue(trackName, out MusicEntry track);
 
                 GameLog.Client.Audio.DebugFormat("trackName={0}, track.FileName={1}", trackName, track.FileName);
 
                 return track;
             }
-            else return null;
+            else
+            {
+                return null;
+            }
         }
         #endregion
     }

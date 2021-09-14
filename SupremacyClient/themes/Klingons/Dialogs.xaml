@@ -5,7 +5,7 @@
 
   <Style x:Key="{x:Static scc:ClientResources.DialogContainerStyleKey}"
          TargetType="{x:Type ContentControl}"
-         BasedOn="{StaticResource LCARS_KlingThinBorderStyle}" />
+         BasedOn="{StaticResource KlingThinBorderStyle}" />
 
   <Style x:Key="{x:Static scc:ClientResources.MessageDialogButtonStyleKey}"
          TargetType="{x:Type Button}"

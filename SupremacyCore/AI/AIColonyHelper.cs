@@ -47,7 +47,7 @@ namespace Supremacy.AI
 
             return GameContext.Current.Universe.FindAt<Orbital>(colony.Location)
                 .Where(o => o.Owner == colony.Owner).ToList();
-                
+
         }
 
         public static int GetProjectedPopulation(Colony colony, int numberOfTurns)

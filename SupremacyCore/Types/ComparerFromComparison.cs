@@ -26,9 +26,7 @@ namespace Supremacy.Types
         /// <param name="comparison">The <see cref="Comparison&lt;T&gt;"/> to be wrapped.</param>
         public ComparerFromComparison(Comparison<T> comparison)
         {
-            if (comparison == null)
-                throw new ArgumentNullException("comparison");
-            _comparison = comparison;
+            _comparison = comparison ?? throw new ArgumentNullException("comparison");
         }
 
         /// <summary>

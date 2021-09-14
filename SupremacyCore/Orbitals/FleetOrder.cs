@@ -38,13 +38,15 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsAssigned
         {
-            get { return TurnAssigned != 0; }
+            get => TurnAssigned != 0;
             private set
             {
                 if (value)
                 {
                     if (!IsAssigned)
+                    {
                         TurnAssigned = Math.Max(1, GameContext.Current.TurnNumber);
+                    }
                 }
                 else
                 {
@@ -55,10 +57,10 @@ namespace Supremacy.Orbitals
 
         public int TurnAssigned
         {
-            get { return _turnAssigned; }
+            get => _turnAssigned;
             private set
             {
-                 _turnAssigned = value;
+                _turnAssigned = value;
                 OnPropertyChanged("TurnAssigned");
                 OnPropertyChanged("IsAssigned");
             }
@@ -69,8 +71,11 @@ namespace Supremacy.Orbitals
             get
             {
                 if (!IsAssigned)
+                {
                     return 0;
-                return (TurnAssigned - GameContext.Current.TurnNumber);
+                }
+
+                return TurnAssigned - GameContext.Current.TurnNumber;
             }
         }
 
@@ -94,10 +99,7 @@ namespace Supremacy.Orbitals
         /// <c>TargetDisplayMember</c> is typically a property name, and is used primarily for data-binding
         /// in the game client.
         /// </remarks>
-        public virtual string TargetDisplayMember
-        {
-            get { return "."; }
-        }
+        public virtual string TargetDisplayMember => ".";
 
         /// <summary>
         /// Gets the complete status text that should be displayed in the task forces list in the game.
@@ -109,27 +111,20 @@ namespace Supremacy.Orbitals
             {
                 string displayText;
                 Percentage? percentComplete = PercentComplete;
-                
-                if (Fleet.IsInTow)
-                {
-                    displayText = String.Format(
+
+                displayText = Fleet.IsInTow
+                    ? string.Format(
                         ResourceManager.GetString("ORDER_IN_TOW"),
-                        Status);
-                }
-                else if (Fleet.IsStranded)
-                {
-                    displayText = String.Format(
-                        ResourceManager.GetString("ORDER_STRANDED"),
-                        Status);
-                }
-                else
-                {
-                    displayText = Status;
-                }
+                        Status)
+                    : Fleet.IsStranded
+                        ? string.Format(
+                                            ResourceManager.GetString("ORDER_STRANDED"),
+                                            Status)
+                        : Status;
 
                 if (percentComplete.HasValue)
                 {
-                    displayText = String.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                    displayText = string.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
                 }
 
                 if (!Fleet.Route.IsEmpty)
@@ -137,12 +132,13 @@ namespace Supremacy.Orbitals
                     int turns = Fleet.Route.Length / Fleet.Speed;
                     string formatString;
                     if ((Fleet.Route.Length % Fleet.Speed) != 0)
+                    {
                         turns++;
-                    if (turns == 1)
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURN");
-                    else
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURNS");
-                    displayText = String.Format(formatString, displayText, turns);
+                    }
+
+                    formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN") : ResourceManager.GetString("ORDER_ETA_TURNS");
+
+                    displayText = string.Format(formatString, displayText, turns);
                 }
 
                 return displayText;
@@ -155,7 +151,7 @@ namespace Supremacy.Orbitals
         /// <value>The fleet.</value>
         public Fleet Fleet
         {
-            get { return GameContext.Current.Universe.Objects[_fleetId] as Fleet; }
+            get => GameContext.Current.Universe.Objects[_fleetId] as Fleet;
             internal set
             {
                 _fleetId = (value == null) ? -1 : value.ObjectID;
@@ -169,39 +165,30 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="FleetOrder"/> has been completed; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsComplete
-        {
-            get { return false; }
-        }
+        public virtual bool IsComplete => false;
 
         /// <summary>
         /// Gets the percentage of completion of this <see cref="FleetOrder"/> (if applicable).
         /// </summary>
         /// <value>The percentage of completion, or <c>null</c> if not applicable.</value>
-        public virtual Percentage? PercentComplete
-        {
-            get { return null; }
-        }
+        public virtual Percentage? PercentComplete => null;
 
         /// <summary>
         /// Gets the number of turns remaining until this <see cref="FleetOrder"/> has been completed.
         /// </summary>
         /// <value>The number of turns remaining.</value>
-        public virtual int? TurnsRemaining
-        {
-            get { return null; }
-        }
+        public virtual int? TurnsRemaining => null;
 
         /// <summary>
         /// Gets or sets the object that is the target of this <see cref="FleetOrder"/> (if applicable).
         /// </summary>
         /// <value>The target, or <c>null</c> if not applicable.</value>
-        public virtual Object Target
+        public virtual object Target
         {
-            get { return null; }
-            // ReSharper disable ValueParameterNotUsed
+            get => null;
+
             set { }
-            // ReSharper restore ValueParameterNotUsed
+
         }
 
         /// <summary>
@@ -223,10 +210,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if the route is cancelled; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsRouteCancelledOnAssign
-        {
-            get { return false; }
-        }
+        public virtual bool IsRouteCancelledOnAssign => false;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FleetOrder"/> is cancelled when the
@@ -235,10 +219,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="FleetOrder"/> is cancelled; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsCancelledOnRouteChange
-        {
-            get { return false; }
-        }
+        public virtual bool IsCancelledOnRouteChange => false;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FleetOrder"/> is cancelled when the
@@ -246,10 +227,7 @@ namespace Supremacy.Orbitals
         /// </summary>
         /// <value>
         /// <c>true</c> if this <see cref="FleetOrder"/> is cancelled; otherwise, <c>false</c></value>.
-        public virtual bool IsCancelledOnMove
-        {
-            get { return false; }
-        }
+        public virtual bool IsCancelledOnMove => false;
 
         /// <summary>
         /// Gets a value indicating whether a fleet will engage hostiles when assigned this <see cref="FleetOrder"/>.
@@ -261,9 +239,14 @@ namespace Supremacy.Orbitals
             {
                 //GameLog.Print("Fleet.Owner={0}, Fleet.Name={1})", Fleet.Owner, Fleet.Name);
                 if (Fleet == null)
+                {
                     return false;
+                }
+
                 if (Fleet.IsInTow)
+                {
                     return false;
+                }
                 //if (this.Fleet.IsCamouflaged)
                 //    return false;
                 return true;
@@ -295,11 +278,14 @@ namespace Supremacy.Orbitals
         public virtual bool IsValidOrder(Fleet fleet)
         {
             if (fleet != null)
-            {   
+            {
                 if (IsTargetRequired(fleet))
                 {
                     if (Target != null)
+                    {
                         return true;
+                    }
+
                     return FindTargets(fleet).Any();
                 }
                 return true;
@@ -326,7 +312,9 @@ namespace Supremacy.Orbitals
         {
             IsAssigned = true;
             if ((Fleet != null) && IsRouteCancelledOnAssign)
+            {
                 Fleet.SetRouteInternal(TravelRoute.Empty);
+            }
         }
 
         /// <summary>
@@ -345,7 +333,8 @@ namespace Supremacy.Orbitals
         /// <summary>
         /// Called when a fleet moves while this <see cref="FleetOrder"/> is assigned.
         /// </summary>
-        public virtual void OnFleetMoved() {
+        public virtual void OnFleetMoved()
+        {
             Fleet fleet = Fleet;
             if ((fleet != null) && IsCancelledOnMove)
             {
@@ -397,7 +386,9 @@ namespace Supremacy.Orbitals
                 {
                     Fleet.SetOrder(Fleet.GetDefaultOrder());
                     if (Fleet.Order != null)
+                    {
                         Fleet.Order.OnTurnBeginning();
+                    }
                 }
             }
         }
@@ -431,7 +422,7 @@ namespace Supremacy.Orbitals
         /// <summary>
         /// Occurs when a property value is changed.
         /// </summary>
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -440,8 +431,7 @@ namespace Supremacy.Orbitals
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

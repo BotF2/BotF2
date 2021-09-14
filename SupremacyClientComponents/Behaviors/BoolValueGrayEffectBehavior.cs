@@ -18,8 +18,8 @@ namespace Supremacy.Client.Behaviors
 
         public bool Value
         {
-            get { return (bool)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => (bool)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
         private void UpdateEffect()
@@ -31,7 +31,9 @@ namespace Supremacy.Client.Behaviors
             }
 
             if (_monochromeEffect == null)
+            {
                 _monochromeEffect = new MonochromeEffect { FilterColor = Colors.White };
+            }
 
             AssociatedObject.Effect = _monochromeEffect;
         }
@@ -44,7 +46,9 @@ namespace Supremacy.Client.Behaviors
         protected override void OnDetaching()
         {
             if (AssociatedObject.Effect == _monochromeEffect)
+            {
                 AssociatedObject.ClearValue(UIElement.EffectProperty);
+            }
         }
 
         protected override Freezable CreateInstanceCore()

@@ -83,16 +83,16 @@
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_15}" ></TextBlock>
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_17}" ></TextBlock>
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_19}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_21}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_23}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_25}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_27}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_29}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_31}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_33}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_35}" ></TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_37}" ></TextBlock>
-        <TextBlock Grid.ColumnSpan="3"  HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_39}" ></TextBlock>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_21}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_23}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_25}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_27}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_29}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_31}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_33}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_35}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_37}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_39}" ></TextBox>
         <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_41}" ></TextBox>
         <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_43}" ></TextBox>
         </StackPanel>

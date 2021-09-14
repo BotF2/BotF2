@@ -29,32 +29,26 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(object))]
     public sealed class StringResourceExtension : MarkupExtension
     {
-        private string _key;
-
         [ConstructorArgument("key")]
-        public string Key
-        {
-            get { return _key; }
-            set { _key = value; }
-        }
+        public string Key { get; set; }
 
         public StringCase Case { get; set; }
 
         public StringResourceExtension()
         {
-            _key = string.Empty;
+            Key = string.Empty;
             Case = StringCase.Original;
         }
 
         public StringResourceExtension(string key)
         {
-            _key = key;
+            Key = key;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var text = ResourceManager.GetString(_key);
-            
+            string text = ResourceManager.GetString(Key);
+
             switch (Case)
             {
                 case StringCase.Lower:
@@ -64,13 +58,12 @@ namespace Supremacy.Client
                     text = text.ToUpper();
                     break;
             }
-            
-            var provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-            
-            if (provideValueTarget != null)
+
+
+            if (serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget provideValueTarget)
             {
-                var property = provideValueTarget.TargetProperty;
-                
+                object property = provideValueTarget.TargetProperty;
+
                 if (!(property is DependencyProperty) &&
                     !(property is PropertyInfo) &&
                     !(property is PropertyDescriptor))
@@ -79,7 +72,9 @@ namespace Supremacy.Client
                 }
 
                 if (Equals(property, ContentControl.ContentProperty))
+                {
                     return new AccessText { Text = text };
+                }
             }
 
             return text;

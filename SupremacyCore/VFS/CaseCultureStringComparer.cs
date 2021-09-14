@@ -33,158 +33,164 @@ using System.Globalization;
 
 namespace Supremacy.VFS.Utilities
 {
-	/// <summary>
-	/// Class that performs string comparisons taking into account case and culture.
-	/// </summary>
-	public class CaseCultureStringComparer : IComparer<string>, IEqualityComparer<string>
-	{
-		#region Fields and Properties
+    /// <summary>
+    /// Class that performs string comparisons taking into account case and culture.
+    /// </summary>
+    public class CaseCultureStringComparer : IComparer<string>, IEqualityComparer<string>
+    {
+        #region Fields and Properties
 
-		private bool _isCaseSensitive;
-		/// <summary>
-		/// Gets or sets a value indicating whether this instance uses case sensitive comparisons.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance uses case sensitive comparisons; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsCaseSensitive
-		{
-			get { return _isCaseSensitive; }
-			set { _isCaseSensitive = value; }
-		}
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance uses case sensitive comparisons.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance uses case sensitive comparisons; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsCaseSensitive { get; set; }
 
-		private bool _isInvariantCulture;
-		/// <summary>
-		/// Gets or sets a value indicating whether this instance uses invariant culture comparisons.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance uses invariant culture comparisons; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsInvariantCulture
-		{
-			get { return _isInvariantCulture; }
-			set
-			{
-				if (_isInvariantCulture == value)
-					return;
+        private bool _isInvariantCulture;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance uses invariant culture comparisons.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance uses invariant culture comparisons; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsInvariantCulture
+        {
+            get => _isInvariantCulture;
+            set
+            {
+                if (_isInvariantCulture == value)
+                {
+                    return;
+                }
 
-				_isInvariantCulture = value;
+                _isInvariantCulture = value;
 
-				if (_isInvariantCulture)
-					_cultureInfo = CultureInfo.InvariantCulture;
-				else
-					_cultureInfo = new CultureInfo(_cultureName);
-			}
-		}
+                CultureInfo = _isInvariantCulture ? CultureInfo.InvariantCulture : new CultureInfo(_cultureName);
+            }
+        }
 
-		private CultureInfo _cultureInfo;
-		/// <summary>
-		/// Gets the current culture.
-		/// </summary>
-		/// <value>The current culture.</value>
-		public CultureInfo CultureInfo
-		{
-			get { return _cultureInfo; }
-		}
+        /// <summary>
+        /// Gets the current culture.
+        /// </summary>
+        /// <value>The current culture.</value>
+        public CultureInfo CultureInfo { get; private set; }
 
-		/// <summary>
-		/// Name of the current culture.
-		/// </summary>
-		private string _cultureName;
+        /// <summary>
+        /// Name of the current culture.
+        /// </summary>
+        private string _cultureName;
 
-		#endregion
+        #endregion
 
-		#region Constructors
+        #region Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CaseCultureStringComparer"/> class.
-		/// </summary>
-		/// <param name="isCaseSensitive">If set to <c>true</c> the equality is case sensitive.</param>
-		/// <param name="isInvariantCulture">If set to <c>true</c> the culture is the invariant culture.</param>
-		/// <param name="culture">The name of the culture to use for culture-based comparisons.</param>
-		public CaseCultureStringComparer(bool isCaseSensitive, bool isInvariantCulture, string culture)
-		{
-			_isCaseSensitive = isCaseSensitive;
-			_isInvariantCulture = isInvariantCulture;
-			_cultureName = culture;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CaseCultureStringComparer"/> class.
+        /// </summary>
+        /// <param name="isCaseSensitive">If set to <c>true</c> the equality is case sensitive.</param>
+        /// <param name="isInvariantCulture">If set to <c>true</c> the culture is the invariant culture.</param>
+        /// <param name="culture">The name of the culture to use for culture-based comparisons.</param>
+        public CaseCultureStringComparer(bool isCaseSensitive, bool isInvariantCulture, string culture)
+        {
+            IsCaseSensitive = isCaseSensitive;
+            _isInvariantCulture = isInvariantCulture;
+            _cultureName = culture;
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		/// <summary>
-		/// Sets the culture name.
-		/// </summary>
-		/// <param name="cultureName">Name of the culture.</param>
-		public void SetCultureName(string cultureName)
-		{
-			_cultureName = cultureName;
+        /// <summary>
+        /// Sets the culture name.
+        /// </summary>
+        /// <param name="cultureName">Name of the culture.</param>
+        public void SetCultureName(string cultureName)
+        {
+            _cultureName = cultureName;
 
-			if (!_isInvariantCulture)
-				_cultureInfo = new CultureInfo(_cultureName);
-		}
+            if (!_isInvariantCulture)
+            {
+                CultureInfo = new CultureInfo(_cultureName);
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region IEqualityComparer<string> Members
+        #region IEqualityComparer<string> Members
 
-		/// <summary>
-		/// Equalses the specified x.
-		/// </summary>
-		/// <param name="x">The x.</param>
-		/// <param name="y">The y.</param>
-		/// <returns></returns>
-		public bool Equals(string x, string y)
-		{
-			if (_isCaseSensitive && _isInvariantCulture)
-				return x.Equals(y, StringComparison.InvariantCulture);
+        /// <summary>
+        /// Equalses the specified x.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns></returns>
+        public bool Equals(string x, string y)
+        {
+            if (IsCaseSensitive && _isInvariantCulture)
+            {
+                return x.Equals(y, StringComparison.InvariantCulture);
+            }
 
-			if (!_isCaseSensitive && _isInvariantCulture)
-				return x.Equals(y, StringComparison.InvariantCultureIgnoreCase);
+            if (!IsCaseSensitive && _isInvariantCulture)
+            {
+                return x.Equals(y, StringComparison.InvariantCultureIgnoreCase);
+            }
 
-			if (_isCaseSensitive && !_isInvariantCulture)
-				return x.Equals(y, StringComparison.CurrentCulture);
+            if (IsCaseSensitive && !_isInvariantCulture)
+            {
+                return x.Equals(y, StringComparison.CurrentCulture);
+            }
 
-			if (!_isCaseSensitive && !_isInvariantCulture)
-				return x.Equals(y, StringComparison.CurrentCultureIgnoreCase);
+            if (!IsCaseSensitive && !_isInvariantCulture)
+            {
+                return x.Equals(y, StringComparison.CurrentCultureIgnoreCase);
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		/// <summary>
-		/// Returns a hash code for the specified object.
-		/// </summary>
-		/// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param>
-		/// <returns>A hash code for the specified object.</returns>
-		public int GetHashCode(string obj)
-		{
-			if (_isCaseSensitive)
-				return obj.GetHashCode();
+        /// <summary>
+        /// Returns a hash code for the specified object.
+        /// </summary>
+        /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param>
+        /// <returns>A hash code for the specified object.</returns>
+        public int GetHashCode(string obj)
+        {
+            if (IsCaseSensitive)
+            {
+                return obj.GetHashCode();
+            }
 
-			if (_isInvariantCulture)
-				return obj.ToLowerInvariant().GetHashCode();
+            if (_isInvariantCulture)
+            {
+                return obj.ToLowerInvariant().GetHashCode();
+            }
 
-			return obj.ToLower().GetHashCode();
-		}
+            return obj.ToLower().GetHashCode();
+        }
 
-		#endregion
+        #endregion
 
-		#region IComparer<string> Members
+        #region IComparer<string> Members
 
-		/// <summary>
-		/// Compares the specified x.
-		/// </summary>
-		/// <param name="x">The x.</param>
-		/// <param name="y">The y.</param>
-		/// <returns></returns>
-		public int Compare(string x, string y)
-		{
-		    if (_isCaseSensitive)
-				return _cultureInfo.CompareInfo.Compare(x, y, CompareOptions.None);
+        /// <summary>
+        /// Compares the specified x.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns></returns>
+        public int Compare(string x, string y)
+        {
+            if (IsCaseSensitive)
+            {
+                return CultureInfo.CompareInfo.Compare(x, y, CompareOptions.None);
+            }
 
-		    return _cultureInfo.CompareInfo.Compare(x, y, CompareOptions.IgnoreCase);
-		}
-	    #endregion
-	}
+            return CultureInfo.CompareInfo.Compare(x, y, CompareOptions.IgnoreCase);
+        }
+        #endregion
+    }
 }

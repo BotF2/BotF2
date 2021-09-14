@@ -8,14 +8,12 @@
 // All other rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
-using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
 using Supremacy.Utility;
@@ -44,7 +42,9 @@ namespace Supremacy.Game
         public void UpdateLocalGame([NotNull] GameContext game)
         {
             if (game == null)
+            {
                 throw new ArgumentNullException("game");
+            }
 
             GameContext.PushThreadContext(game);
             try
@@ -66,19 +66,22 @@ namespace Supremacy.Game
 
                 if (_diplomats != null)
                 {
-                    foreach (var diplomat in _diplomats)
+                    foreach (Diplomat diplomat in _diplomats)
                     {
-                        var ownerId = diplomat.OwnerID;
+                        int ownerId = diplomat.OwnerID;
 
                         //game.Diplomats.Add(diplomat);
                         //diplomat.IntelOrdersGoingToHost.AddRange(_ListofIntelOrders);
                         game.Diplomats.Add(diplomat);
 
-                        foreach (var civ in game.Civilizations)
+                        foreach (Civilization civ in game.Civilizations)
                         {
                             if (civ.CivID == ownerId)
+                            {
                                 continue;
-                            var foreignPower = diplomat.GetForeignPower(civ);
+                            }
+
+                            ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                             _diplomacyData[ownerId, civ.CivID] = foreignPower.DiplomacyData;
                         }
                     }
@@ -88,7 +91,7 @@ namespace Supremacy.Game
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
 
@@ -102,13 +105,18 @@ namespace Supremacy.Game
         public static GameUpdateData Create(GameContext game, Player player)
         {
             if (game == null)
+            {
                 throw new ArgumentNullException("game");
+            }
+
             if (player == null)
+            {
                 throw new ArgumentNullException("player");
+            }
 
-            var data = new GameUpdateData();
+            GameUpdateData data = new GameUpdateData();
 
-            GameLog.Server.GameData.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
+            GameLog.Server.MultiplayDetails.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
 
             GameContext.PushThreadContext(game);
             try
@@ -123,14 +131,14 @@ namespace Supremacy.Game
                 data._diplomats = game.Diplomats.ToArray();//new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
 
                 //var _diplomat = data._diplomats;  // just for have a look
-                
+
                 //GameLog.Core.Intel.DebugFormat("", _diplomat.);
 
-                data._civManagers.ForEach(o => o.Compact());
+                _ = data._civManagers.ForEach(o => o.Compact());
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
 
             return data;
@@ -139,7 +147,7 @@ namespace Supremacy.Game
         #region IOwnedDataSerializable Members
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
-            GameLog.Server.GameData.DebugFormat("try to SerializeOwnedData GameUpdateData");
+            GameLog.Server.MultiplayDetails.DebugFormat("try to SerializeOwnedData GameUpdateData");
             writer.WriteOptimized(_turnNumber);
             _objects.SerializeOwnedData(writer, context);
             writer.WriteObject(_civManagers);

@@ -3,15 +3,47 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
                        xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                       Background="Black"
                        TextElement.FontSize="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontSizeKey}}"
                        TextElement.FontFamily="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontFamilyKey}}"
                        TextElement.FontWeight="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontWeightKey}}">
   <TabControl x:Name="RootTabControl">
-    <TabItem Header="{Binding Source=TECH_OBJECT_DESCRIPTION, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}">
+        <TabItem Header="{Binding Source=TECH_OBJECT_STATISTICS, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}"
+             Background="Black" IsSelected="True">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto"
+                    Width="235">
+                <DockPanel LastChildFill="True" 
+                   Margin="0,0,0,7">
+                    
+                    <TextBlock DockPanel.Dock="Top"
+                     Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Background="Black"
+                     FontSize="14pt"
+                     Margin="0,0,0,14"
+                     TextWrapping="Wrap"
+                     Text="{Binding Path=BuildDesign.Name, Converter={StaticResource StringResourceConverter}}" />
+
+                    <ContentControl FontSize="12pt" Background="Black"
+                          Style="{DynamicResource TechObjectInfoPanelStyle}">
+                        <ContentControl.Content>
+                            <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildProject.BuildDesign)}"
+                                             Location="{Binding Path=(s:BuildProject.Location)}"
+                                             Civilization="{Binding Path=(s:BuildProject.Builder)}" />
+                            
+                        </ContentControl.Content>
+                    </ContentControl>
+                </DockPanel>
+            </ScrollViewer>
+        </TabItem>
+      
+        <TabItem Header="{Binding Source=TECH_OBJECT_DESCRIPTION, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto"
-                    CanContentScroll="False"
-                    Width="270">
+                    Background="Black"
+                    CanContentScroll="True"
+                    Width="235">
         <DockPanel LastChildFill="True">
           <TextBlock DockPanel.Dock="Top"
                      Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
@@ -22,6 +54,7 @@
                      Text="{Binding Path=BuildDesign.Name, Mode=OneWay, Converter={StaticResource StringResourceConverter}}" />
           <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Background="Black"
                      FontSize="11pt"
                      Margin="0,7,0,0"
                      TextWrapping="Wrap"
@@ -29,31 +62,13 @@
         </DockPanel>
       </ScrollViewer>
     </TabItem>
-    <TabItem Header="{Binding Source=TECH_OBJECT_STATISTICS, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}"
-             IsSelected="True">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+        <TabItem Header="X">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto"
-                    Width="270">
-        <DockPanel LastChildFill="True"
-                   Margin="0,0,7,0">
-          <TextBlock DockPanel.Dock="Top"
-                     Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                     FontSize="14pt"
-                     Margin="0,0,0,14"
-                     TextWrapping="Wrap"
-                     Text="{Binding Path=BuildDesign.Name, Converter={StaticResource StringResourceConverter}}" />
-          <ContentControl FontSize="12pt"
-                          Style="{DynamicResource TechObjectInfoPanelStyle}">
-            <ContentControl.Content>
-              <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildProject.BuildDesign)}"
-                                             Location="{Binding Path=(s:BuildProject.Location)}"
-                                             Civilization="{Binding Path=(s:BuildProject.Builder)}" />
-            </ContentControl.Content>
-          </ContentControl>
-        </DockPanel>
-      </ScrollViewer>
-    </TabItem>
-  </TabControl>
+                    CanContentScroll="False"
+                    Width="1">
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
 
 </scc:ThemedUserControl>

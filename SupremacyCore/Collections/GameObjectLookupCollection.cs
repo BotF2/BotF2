@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Supremacy.Annotations;
-using Supremacy.Game;
 using Supremacy.IO.Serialization;
 
 namespace Supremacy.Collections

@@ -31,21 +31,21 @@ namespace Supremacy.Diplomacy
             get
             {
                 if (_civilizationKey == null)
+                {
                     return null;
+                }
+
                 return GameContext.Current.Civilizations[_civilizationKey];
             }
             set
             {
                 VerifyInitializing();
-                _civilizationKey = (value != null) ? value.Key : null;
+                _civilizationKey = value?.Key;
                 OnPropertyChanged("Civilization");
             }
         }
 
-        public RelationshipMemoryWeightCollection MemoryWeights
-        {
-            get { return _memoryWeights; }
-        }
+        public RelationshipMemoryWeightCollection MemoryWeights => _memoryWeights;
 
         protected override void BeginInitCore()
         {
@@ -69,7 +69,7 @@ namespace Supremacy.Diplomacy
         [DefaultValue(MemoryType.None)]
         public MemoryType MemoryType
         {
-            get { return _memoryType; }
+            get => _memoryType;
             set
             {
                 VerifyInitializing();
@@ -81,7 +81,7 @@ namespace Supremacy.Diplomacy
         [DefaultValue(0)]
         public int Weight
         {
-            get { return _weight; }
+            get => _weight;
             set
             {
                 VerifyInitializing();
@@ -93,12 +93,15 @@ namespace Supremacy.Diplomacy
         [DefaultValue(5)]
         public int MaxConcurrentMemories
         {
-            get { return _maxConcurrentMemories; }
+            get => _maxConcurrentMemories;
             set
             {
                 VerifyInitializing();
                 if (value < 0)
+                {
                     throw new ArgumentOutOfRangeException("value", "Value must be non-negative.");
+                }
+
                 _maxConcurrentMemories = value;
                 OnPropertyChanged("MaxConcurrentMemories");
             }
@@ -132,7 +135,7 @@ namespace Supremacy.Diplomacy
 
         public DiplomacyProfile DefaultProfile
         {
-            get { return _defaultProfile; }
+            get => _defaultProfile;
             set
             {
                 VerifyInitializing();
@@ -141,37 +144,39 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public DiplomacyProfileCollection CivilizationProfiles
-        {
-            get { return _civilizationProfiles; }
-        }
+        public DiplomacyProfileCollection CivilizationProfiles => _civilizationProfiles;
 
         public static DiplomacyDatabase Load()
         {
-            var gameContext = GameContext.Current;
+            GameContext gameContext = GameContext.Current;
             if (gameContext == null)
+            {
                 gameContext = GameContext.Create(GameOptionsManager.LoadDefaults(), false);
+            }
 
             GameContext.PushThreadContext(gameContext);
 
             try
             {
-                IVirtualFileInfo fileInfo;
 
-                if (!ResourceManager.VfsService.TryGetFileInfo(new Uri("vfs:///Resources/Data/DiplomacyDatabase.xaml"), out fileInfo))
+                if (!ResourceManager.VfsService.TryGetFileInfo(new Uri("vfs:///Resources/Data/DiplomacyDatabase.xaml"), out IVirtualFileInfo fileInfo))
+                {
                     return null;
+                }
 
                 if (!fileInfo.Exists)
+                {
                     return null;
+                }
 
-                using (var stream = fileInfo.OpenRead())
+                using (System.IO.Stream stream = fileInfo.OpenRead())
                 {
                     return (DiplomacyDatabase)XamlServices.Load(stream);
                 }
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
     }

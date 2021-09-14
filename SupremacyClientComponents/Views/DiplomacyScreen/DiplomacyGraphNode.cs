@@ -11,39 +11,22 @@ namespace Supremacy.Client.Views
 {
     public class DiplomacyGraphNode : INotifyPropertyChanged
     {
-        private readonly Civilization _civilization;
-        private readonly ICommand _selectNodeCommand;
         private readonly ObservableCollection<DiplomacyGraphNode> _children;
 
         public DiplomacyGraphNode(Civilization civilization, ICommand selectNodeCommand)
         {
-            if (civilization == null)
-                throw new ArgumentNullException("civilization");
-
-            _civilization = civilization;
-            _selectNodeCommand = selectNodeCommand;
+            Civilization = civilization ?? throw new ArgumentNullException("civilization");
+            SelectNodeCommand = selectNodeCommand;
             _children = new ObservableCollection<DiplomacyGraphNode>();
         }
 
-        public Civilization Civilization
-        {
-            get { return _civilization; }
-        }
+        public Civilization Civilization { get; }
 
-        public ICommand SelectNodeCommand
-        {
-            get { return _selectNodeCommand; }
-        }
+        public ICommand SelectNodeCommand { get; }
 
-        public ObservableCollection<DiplomacyGraphNode> Children
-        {
-            get { return _children; }
-        }
+        public ObservableCollection<DiplomacyGraphNode> Children => _children;
 
-        public string ToolTip
-        {
-            get { return _civilization.ShortName; }
-        }
+        public string ToolTip => Civilization.ShortName;
 
         #region Implementation of INotifyPropertyChanged
 
@@ -55,22 +38,26 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

@@ -22,8 +22,8 @@ namespace Supremacy.Tech
 
         public TechTree Default
         {
-            get { return _default; }
-            set { _default = value; }
+            get => _default;
+            set => _default = value;
         }
 
         public TechTreeMap()
@@ -36,13 +36,19 @@ namespace Supremacy.Tech
             get
             {
                 if (civ == null)
+                {
                     throw new ArgumentNullException("civ");
+                }
+
                 return this[civ.CivID];
             }
             set
             {
                 if (civ == null)
+                {
                     throw new ArgumentNullException("civ");
+                }
+
                 this[civ.CivID] = value;
             }
         }
@@ -51,16 +57,20 @@ namespace Supremacy.Tech
         {
             get
             {
-                TechTree value;
-                if (!_map.TryGetValue(civId, out value))
+                if (!_map.TryGetValue(civId, out TechTree value))
+                {
                     value = Default;
+                }
+
                 return value;
             }
             set
             {
-                _map.Remove(civId);
+                _ = _map.Remove(civId);
                 if (value != null)
+                {
                     _map[civId] = value;
+                }
             }
         }
     }

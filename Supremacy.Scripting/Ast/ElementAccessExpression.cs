@@ -59,14 +59,16 @@ namespace Supremacy.Scripting.Ast
                 MSAst instance = null;
 
                 if (propertyExpression.InstanceExpression != null)
+                {
                     instance = propertyExpression.InstanceExpression.TransformCore(generator);
+                }
 
-                // ReSharper disable AssignNullToNotNullAttribute
+
                 return MSAst.MakeIndex(
                     instance,
                     propertyExpression.PropertyInfo,
                     arguments);
-                // ReSharper restore AssignNullToNotNullAttribute
+
             }
 
             return MSAst.ArrayIndex(
@@ -143,7 +145,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             Arguments.Resolve(parseContext);
-            
+
             return this;
         }
 
@@ -174,7 +176,7 @@ namespace Supremacy.Scripting.Ast
                 if (i != 0)
                 {
                     sw.Write(",");
-                    
+
                     if (argument.Span.Start.Line != lastStartLine)
                     {
                         sw.WriteLine();

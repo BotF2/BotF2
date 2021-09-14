@@ -273,14 +273,29 @@ namespace Supremacy.Client
 
         #region HorizontalSeparatorBackgroundBrush Resource Key
 
-        private static ComponentResourceKey _horizontalSeparatorBackgroundBrushKey;
+        private static ComponentResourceKey _Horizontal_Left_Right_Brush;
 
-        public static ComponentResourceKey HorizontalSeparatorBackgroundBrushKey
+        public static ComponentResourceKey Horizontal_Left_Right_Brush
         {
             get
             {
-                EnsureResource("HorizontalSeparatorBackgroundBrush", ref _horizontalSeparatorBackgroundBrushKey);
-                return _horizontalSeparatorBackgroundBrushKey;
+                EnsureResource("HorizontalSeparatorBackgroundBrush", ref _Horizontal_Left_Right_Brush);
+                return _Horizontal_Left_Right_Brush;
+            }
+        }
+
+        #endregion
+
+        #region HorizontalRightLeftSeparatorBackgroundBrush Resource Key
+
+        private static ComponentResourceKey _Horizontal_Right_Left_Brush;
+
+        public static ComponentResourceKey Horizontal_Right_Left_Brush
+        {
+            get
+            {
+                EnsureResource("HorizontalRightLeftSeparatorBackgroundBrush", ref _Horizontal_Right_Left_Brush);
+                return _Horizontal_Right_Left_Brush;
             }
         }
 
@@ -288,14 +303,29 @@ namespace Supremacy.Client
 
         #region VerticalSeparatorBackgroundBrush Resource Key
 
-        private static ComponentResourceKey _verticalSeparatorBackgroundBrushKey;
+        private static ComponentResourceKey _Vertical_Top_Bottom_Brush;
 
-        public static ComponentResourceKey VerticalSeparatorBackgroundBrushKey
+        public static ComponentResourceKey Vertical_Top_Bottom_Brush
         {
             get
             {
-                EnsureResource("VerticalSeparatorBackgroundBrush", ref _verticalSeparatorBackgroundBrushKey);
-                return _verticalSeparatorBackgroundBrushKey;
+                EnsureResource("VerticalSeparatorBackgroundBrush", ref _Vertical_Top_Bottom_Brush);
+                return _Vertical_Top_Bottom_Brush;
+            }
+        }
+
+        #endregion
+
+        #region VerticalBottomUpSeparatorBackgroundBrush Resource Key
+
+        private static ComponentResourceKey _Vertical_Bottom_Top_Brush;
+
+        public static ComponentResourceKey Vertical_Bottom_Top_Brush
+        {
+            get
+            {
+                EnsureResource("VerticalBottomUpSeparatorBackgroundBrush", ref _Vertical_Bottom_Top_Brush);
+                return _Vertical_Bottom_Top_Brush;
             }
         }
 
@@ -379,9 +409,15 @@ namespace Supremacy.Client
         private static void EnsureResource([NotNull] string resourceName, ref ComponentResourceKey resourceKey)
         {
             if (string.IsNullOrEmpty(resourceName))
+            {
                 throw new ArgumentException("Argument cannot be null or empty.", "resourceName");
+            }
+
             if (resourceKey != null)
+            {
                 return;
+            }
+
             resourceKey = new ComponentResourceKey(typeof(ClientResources), resourceName);
         }
     }

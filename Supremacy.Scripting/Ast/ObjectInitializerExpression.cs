@@ -72,7 +72,7 @@ namespace Supremacy.Scripting.Ast
                     if (!isCollectionInitialization)
                     {
                         Debug.Assert(elementNames != null);
-                        
+
                         if (elementNames.Contains(elementInitializer.MemberName))
                         {
                             parseContext.ReportError(

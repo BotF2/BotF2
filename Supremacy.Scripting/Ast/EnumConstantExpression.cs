@@ -63,7 +63,7 @@ namespace Supremacy.Scripting.Ast
             if (thisType == type)
             {
                 Type childType = TypeManager.DropGenericTypeArguments(_child.Type);
-                
+
                 if (type.UnderlyingSystemType != childType)
                 {
                     _child = _child.ConvertImplicitly(type.UnderlyingSystemType);

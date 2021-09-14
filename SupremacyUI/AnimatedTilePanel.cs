@@ -105,7 +105,7 @@ namespace Supremacy.UI
         public double ItemHeight
         {
             get => (double)GetValue(ItemHeightProperty);
-            set { SetValue(ItemHeightProperty, value); }
+            set => SetValue(ItemHeightProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for ItemHeight.  This enables animation, styling, binding, etc...

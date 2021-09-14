@@ -91,16 +91,16 @@ namespace Supremacy.Utility
         /// Creates a new pseudo-random number generator with a given seed.
         /// </summary>
         /// <param name="seed">A value to use as a seed.</param>
-        public MersenneTwister(Int32 seed)
+        public MersenneTwister(int seed)
         {
-            init((UInt32)seed);
+            init((uint)seed);
         }
 
         /// <summary>
         /// Creates a new pseudo-random number generator with a default seed.
         /// </summary>
         /// <remarks>
-        /// <c>new <see cref="System.Random"/>().<see cref="Random.Next()"/></c> 
+        /// <c>new <see cref="Random"/>().<see cref="Random.Next()"/></c> 
         /// is used for the seed.
         /// </remarks>
         public MersenneTwister()
@@ -111,108 +111,111 @@ namespace Supremacy.Utility
         /// Creates a pseudo-random number generator initialized with the given array.
         /// </summary>
         /// <param name="initKey">The array for initializing keys.</param>
-        public MersenneTwister(Int32[] initKey)
+        public MersenneTwister(int[] initKey)
         {
             if (initKey == null)
             {
                 throw new ArgumentNullException("initKey");
             }
 
-            UInt32[] initArray = new UInt32[initKey.Length];
+            uint[] initArray = new uint[initKey.Length];
 
             for (int i = 0; i < initKey.Length; ++i)
             {
-                initArray[i] = (UInt32)initKey[i];
+                initArray[i] = (uint)initKey[i];
             }
 
             init(initArray);
         }
 
         /// <summary>
-        /// Returns the next pseudo-random <see cref="UInt32"/>.
+        /// Returns the next pseudo-random <see cref="uint"/>.
         /// </summary>
-        /// <returns>A pseudo-random <see cref="UInt32"/> value.</returns>
+        /// <returns>A pseudo-random <see cref="uint"/> value.</returns>
         [CLSCompliant(false)]
-        public virtual UInt32 NextUInt32()
+        public virtual uint NextUInt32()
         {
             return GenerateUInt32();
         }
 
         /// <summary>
-        /// Returns the next pseudo-random <see cref="UInt32"/> 
+        /// Returns the next pseudo-random <see cref="uint"/> 
         /// up to <paramref name="maxValue"/>.
         /// </summary>
         /// <param name="maxValue">
         /// The maximum value of the pseudo-random number to create.
         /// </param>
         /// <returns>
-        /// A pseudo-random <see cref="UInt32"/> value which is at most <paramref name="maxValue"/>.
+        /// A pseudo-random <see cref="uint"/> value which is at most <paramref name="maxValue"/>.
         /// </returns>
         [CLSCompliant(false)]
-        public virtual UInt32 NextUInt32(UInt32 maxValue)
+        public virtual uint NextUInt32(uint maxValue)
         {
-            return (UInt32)(GenerateUInt32() / ((Double)UInt32.MaxValue / maxValue));
+            return (uint)(GenerateUInt32() / ((double)uint.MaxValue / maxValue));
         }
 
         /// <summary>
-        /// Returns the next pseudo-random <see cref="UInt32"/> at least 
+        /// Returns the next pseudo-random <see cref="uint"/> at least 
         /// <paramref name="minValue"/> and up to <paramref name="maxValue"/>.
         /// </summary>
         /// <param name="minValue">The minimum value of the pseudo-random number to create.</param>
         /// <param name="maxValue">The maximum value of the pseudo-random number to create.</param>
         /// <returns>
-        /// A pseudo-random <see cref="UInt32"/> value which is at least 
+        /// A pseudo-random <see cref="uint"/> value which is at least 
         /// <paramref name="minValue"/> and at most <paramref name="maxValue"/>.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
         /// </exception>
         [CLSCompliant(false)]
-        public virtual UInt32 NextUInt32(UInt32 minValue, UInt32 maxValue) /* throws ArgumentOutOfRangeException */
+        public virtual uint NextUInt32(uint minValue, uint maxValue) /* throws ArgumentOutOfRangeException */
         {
             if (minValue >= maxValue)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            return (UInt32)(GenerateUInt32() / ((Double)UInt32.MaxValue / (maxValue - minValue)) + minValue);
+            return (uint)(GenerateUInt32() / ((double)uint.MaxValue / (maxValue - minValue)) + minValue);
         }
 
         /// <summary>
-        /// Returns the next pseudo-random <see cref="Int32"/>.
+        /// Returns the next pseudo-random <see cref="int"/>.
         /// </summary>
-        /// <returns>A pseudo-random <see cref="Int32"/> value.</returns>
-        public override Int32 Next()
+        /// <returns>A pseudo-random <see cref="int"/> value.</returns>
+        public override int Next()
         {
-            return Next(Int32.MaxValue);
+            return Next(int.MaxValue);
         }
 
         /// <summary>
-        /// Returns the next pseudo-random <see cref="Int32"/> up to <paramref name="maxValue"/>.
+        /// Returns the next pseudo-random <see cref="int"/> up to <paramref name="maxValue"/>.
         /// </summary>
         /// <param name="maxValue">The maximum value of the pseudo-random number to create.</param>
         /// <returns>
-        /// A pseudo-random <see cref="Int32"/> value which is at most <paramref name="maxValue"/>.
+        /// A pseudo-random <see cref="int"/> value which is at most <paramref name="maxValue"/>.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// When <paramref name="maxValue"/> &lt; 0.
         /// </exception>
-        public override Int32 Next(Int32 maxValue)
+        public override int Next(int maxValue)
         {
             if (maxValue <= 1)
             {
                 if (maxValue < 0)
+                {
                     throw new ArgumentOutOfRangeException();
+                }
+
                 return 0;
             }
 
-            var result = (int)(NextDouble() * maxValue);
+            int result = (int)(NextDouble() * maxValue);
             Debug.Assert(result < maxValue);
             return result;
         }
 
         /// <summary>
-        /// Returns the next pseudo-random <see cref="Int32"/> 
+        /// Returns the next pseudo-random <see cref="int"/> 
         /// at least <paramref name="minValue"/> 
         /// and up to <paramref name="maxValue"/>.
         /// </summary>
@@ -223,7 +226,7 @@ namespace Supremacy.Utility
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
         /// </exception>
-        public override Int32 Next(Int32 minValue, Int32 maxValue)
+        public override int Next(int minValue, int maxValue)
         {
             if (maxValue <= minValue)
             {
@@ -245,7 +248,7 @@ namespace Supremacy.Utility
         /// <exception cref="ArgumentNullException">
         /// If <c><paramref name="buffer"/> == <see langword="null"/></c>.
         /// </exception>
-        public override void NextBytes(Byte[] buffer)
+        public override void NextBytes(byte[] buffer)
         {
             // [codekaizen: corrected this to check null before checking length.]
             if (buffer == null)
@@ -253,16 +256,16 @@ namespace Supremacy.Utility
                 throw new ArgumentNullException();
             }
 
-            Int32 bufLen = buffer.Length;
+            int bufLen = buffer.Length;
 
-            for (Int32 idx = 0; idx < bufLen; ++idx)
+            for (int idx = 0; idx < bufLen; ++idx)
             {
-                buffer[idx] = (Byte)Next(256);
+                buffer[idx] = (byte)Next(256);
             }
         }
 
         /// <summary>
-        /// Returns the next pseudo-random <see cref="Double"/> value.
+        /// Returns the next pseudo-random <see cref="double"/> value.
         /// </summary>
         /// <returns>A pseudo-random double floating point value.</returns>
         /// <remarks>
@@ -289,7 +292,7 @@ namespace Supremacy.Utility
         /// </code>
         /// </para>
         /// </remarks>
-        public override Double NextDouble()
+        public override double NextDouble()
         {
             return compute53BitRandom(0, InverseOnePlus53BitsOf1s);
         }
@@ -312,7 +315,7 @@ namespace Supremacy.Utility
         /// returns a double-precision pseudo-random number greater than or equal to zero and
         /// strictly less than one.
         /// </returns>
-        public Double NextDouble(Boolean includeOne)
+        public double NextDouble(bool includeOne)
         {
             return includeOne ? compute53BitRandom(0, Inverse53BitsOf1s) : NextDouble();
         }
@@ -321,7 +324,7 @@ namespace Supremacy.Utility
         /// Returns a pseudo-random number greater than 0.0 and less than 1.0.
         /// </summary>
         /// <returns>A pseudo-random number greater than 0.0 and less than 1.0.</returns>
-        public Double NextDoublePositive()
+        public double NextDoublePositive()
         {
             return compute53BitRandom(0.5, Inverse53BitsOf1s);
         }
@@ -333,9 +336,9 @@ namespace Supremacy.Utility
         /// A single-precision floating point number greater than or equal to 0.0, 
         /// and less than 1.0.
         /// </returns>
-        public Single NextSingle()
+        public float NextSingle()
         {
-            return (Single)NextDouble();
+            return (float)NextDouble();
         }
 
         /// <summary>
@@ -355,35 +358,35 @@ namespace Supremacy.Utility
         /// this method returns a single-precision pseudo-random number greater than or equal to zero and
         /// strictly less than one.
         /// </returns>
-        public Single NextSingle(Boolean includeOne)
+        public float NextSingle(bool includeOne)
         {
-            return (Single)NextDouble(includeOne);
+            return (float)NextDouble(includeOne);
         }
 
         /// <summary>
         /// Returns a pseudo-random number greater than 0.0 and less than 1.0.
         /// </summary>
         /// <returns>A pseudo-random number greater than 0.0 and less than 1.0.</returns>
-        public Single NextSinglePositive()
+        public float NextSinglePositive()
         {
-            return (Single)NextDoublePositive();
+            return (float)NextDoublePositive();
         }
 
         /// <summary>
-        /// Generates a new pseudo-random <see cref="UInt32"/>.
+        /// Generates a new pseudo-random <see cref="uint"/>.
         /// </summary>
-        /// <returns>A pseudo-random <see cref="UInt32"/>.</returns>
+        /// <returns>A pseudo-random <see cref="uint"/>.</returns>
         [CLSCompliant(false)]
-        protected UInt32 GenerateUInt32()
+        protected uint GenerateUInt32()
         {
-            UInt32 y;
+            uint y;
 
             lock (_syncLock)
             {
                 /* _mag01[x] = x * MatrixA  for x=0,1 */
                 if (_mti >= N) /* generate N words at one time */
                 {
-                    Int16 kk = 0;
+                    short kk = 0;
 
                     for (; kk < N - M; ++kk)
                     {
@@ -415,43 +418,43 @@ namespace Supremacy.Utility
         }
 
         /* Period parameters */
-        private const Int32 N = 624;
-        private const Int32 M = 397;
-        private const UInt32 MatrixA = 0x9908b0df; /* constant vector a */
-        private const UInt32 UpperMask = 0x80000000; /* most significant w-r bits */
-        private const UInt32 LowerMask = 0x7fffffff; /* least significant r bits */
+        private const int N = 624;
+        private const int M = 397;
+        private const uint MatrixA = 0x9908b0df; /* constant vector a */
+        private const uint UpperMask = 0x80000000; /* most significant w-r bits */
+        private const uint LowerMask = 0x7fffffff; /* least significant r bits */
 
         /* Tempering parameters */
-        private const UInt32 TemperingMaskB = 0x9d2c5680;
-        private const UInt32 TemperingMaskC = 0xefc60000;
+        private const uint TemperingMaskB = 0x9d2c5680;
+        private const uint TemperingMaskC = 0xefc60000;
 
-        private static UInt32 temperingShiftU(UInt32 y)
+        private static uint temperingShiftU(uint y)
         {
-            return (y >> 11);
+            return y >> 11;
         }
 
-        private static UInt32 temperingShiftS(UInt32 y)
+        private static uint temperingShiftS(uint y)
         {
-            return (y << 7);
+            return y << 7;
         }
 
-        private static UInt32 temperingShiftT(UInt32 y)
+        private static uint temperingShiftT(uint y)
         {
-            return (y << 15);
+            return y << 15;
         }
 
-        private static UInt32 temperingShiftL(UInt32 y)
+        private static uint temperingShiftL(uint y)
         {
-            return (y >> 18);
+            return y >> 18;
         }
 
         private readonly object _syncLock = new object();
-        private readonly UInt32[] _mt = new UInt32[N]; /* the array for the state vector  */
-        private Int16 _mti;
+        private readonly uint[] _mt = new uint[N]; /* the array for the state vector  */
+        private short _mti;
 
-        private static readonly UInt32[] s_mag01 = { 0x0, MatrixA };
+        private static readonly uint[] s_mag01 = { 0x0, MatrixA };
 
-        private void init(UInt32 seed)
+        private void init(uint seed)
         {
             lock (_syncLock)
             {
@@ -469,7 +472,7 @@ namespace Supremacy.Utility
             }
         }
 
-        private void init(UInt32[] key)
+        private void init(uint[] key)
         {
             lock (_syncLock)
             {
@@ -478,12 +481,12 @@ namespace Supremacy.Utility
                 int keyLength = key.Length;
                 int i = 1;
                 int j = 0;
-                int k = (N > keyLength ? N : keyLength);
+                int k = N > keyLength ? N : keyLength;
 
                 for (; k > 0; k--)
                 {
                     _mt[i] = (uint)((_mt[i] ^ ((_mt[i - 1] ^ (_mt[i - 1] >> 30)) * 1664525U)) + key[j] + j);
-                        /* non linear */
+                    /* non linear */
                     _mt[i] &= 0xffffffffU; // for WORDSIZE > 32 machines
                     i++;
                     j++;
@@ -493,7 +496,9 @@ namespace Supremacy.Utility
                         i = 1;
                     }
                     if (j >= keyLength)
+                    {
                         j = 0;
+                    }
                 }
 
                 for (k = N - 1; k > 0; k--)
@@ -518,22 +523,22 @@ namespace Supremacy.Utility
 
         // 9007199254740991.0 is the maximum double value which the 53 significand
         // can hold when the exponent is 0.
-        private const Double FiftyThreeBitsOf1s = 9007199254740991.0;
+        private const double FiftyThreeBitsOf1s = 9007199254740991.0;
         // Multiply by inverse to (vainly?) try to avoid a division.
-        private const Double Inverse53BitsOf1s = 1.0 / FiftyThreeBitsOf1s;
-        private const Double OnePlus53BitsOf1s = FiftyThreeBitsOf1s + 1;
-        private const Double InverseOnePlus53BitsOf1s = 1.0 / OnePlus53BitsOf1s;
+        private const double Inverse53BitsOf1s = 1.0 / FiftyThreeBitsOf1s;
+        private const double OnePlus53BitsOf1s = FiftyThreeBitsOf1s + 1;
+        private const double InverseOnePlus53BitsOf1s = 1.0 / OnePlus53BitsOf1s;
 
-        private Double compute53BitRandom(Double translate, Double scale)
+        private double compute53BitRandom(double translate, double scale)
         {
             // get 27 pseudo-random bits
-            UInt64 a = (UInt64)GenerateUInt32() >> 5;
+            ulong a = (ulong)GenerateUInt32() >> 5;
             // get 26 pseudo-random bits
-            UInt64 b = (UInt64)GenerateUInt32() >> 6;
+            ulong b = (ulong)GenerateUInt32() >> 6;
 
             // shift the 27 pseudo-random bits (a) over by 26 bits (* 67108864.0) and
             // add another pseudo-random 26 bits (+ b).
-            return ((a * 67108864.0 + b) + translate) * scale;
+            return (a * 67108864.0 + b + translate) * scale;
 
             // What about the following instead of the above? Is the multiply better? 
             // Why? (Is it the FMUL instruction? Does this count in .Net? Will the JITter notice?)

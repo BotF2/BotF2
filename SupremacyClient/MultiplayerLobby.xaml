@@ -22,9 +22,9 @@
         <StackPanel DockPanel.Dock="Left"
                     Orientation="Horizontal"
                     VerticalAlignment="Top">
-          <TextBlock Foreground="{StaticResource LCARS_BlueTextBrush}"
+          <TextBlock Foreground="{StaticResource BlueTextBrush}"
                      Text="{Binding Path=Sender.Name}" />
-          <TextBlock Foreground="{StaticResource LCARS_BlueTextBrush}"
+          <TextBlock Foreground="{StaticResource BlueTextBrush}"
                      Text=":" />
         </StackPanel>
         <TextBlock DockPanel.Dock="Right"
@@ -55,7 +55,7 @@
                DockPanel.Dock="Left"
                FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                FontSize="12pt"
-               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               Foreground="{StaticResource BeigeTextBrush}"
                Background="Black"
                VerticalAlignment="Center"/>
     </DockPanel>
@@ -79,7 +79,7 @@
           <StackPanel x:Name="ChatPanel"
                                   Orientation="Vertical"
                                   TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                  TextBlock.Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                                  TextBlock.Foreground="{StaticResource BeigeTextBrush}"
                                   TextBlock.FontSize="12pt"
                                   CanHorizontallyScroll="False"
                                   HorizontalAlignment="Stretch" />

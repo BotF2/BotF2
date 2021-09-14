@@ -12,50 +12,53 @@ namespace Supremacy.Diplomacy.Visitors
 
         private CreditObligationFulfillmentVisitor([NotNull] IAgreement agreement)
         {
-            if (agreement == null)
-                throw new ArgumentNullException("agreement");
-
-            _agreement = agreement;
+            _agreement = agreement ?? throw new ArgumentNullException("agreement");
         }
 
-        public new static void Visit(IAgreement agreement)
+        public static new void Visit(IAgreement agreement)
         {
             ((AgreementVisitor)new CreditObligationFulfillmentVisitor(agreement)).Visit(agreement);
         }
 
         protected override void VisitOfferGiveCreditsClause(IClause clause)
         {
-            var creditsData = clause.GetData<CreditsClauseData>();
+            CreditsClauseData creditsData = clause.GetData<CreditsClauseData>();
             if (creditsData == null)
+            {
                 return;
+            }
 
             TransferCredits(creditsData, _agreement.Proposal.Sender, _agreement.Proposal.Recipient);
         }
 
         protected override void VisitRequestGiveCreditsClause(IClause clause)
         {
-            var creditsData = clause.GetData<CreditsClauseData>();
+            CreditsClauseData creditsData = clause.GetData<CreditsClauseData>();
             if (creditsData == null)
+            {
                 return;
+            }
 
             TransferCredits(creditsData, _agreement.Proposal.Recipient, _agreement.Proposal.Sender);
         }
 
         private void TransferCredits(CreditsClauseData creditsData, Civilization sender, Civilization recipient)
         {
-            var senderDiplomat = Diplomat.Get(sender);
-            var recipientDiplomat = Diplomat.Get(recipient);
+            Diplomat senderDiplomat = Diplomat.Get(sender);
+            Diplomat recipientDiplomat = Diplomat.Get(recipient);
 
-            var creditsToTransfer = creditsData.RecurringAmount;
+            int creditsToTransfer = creditsData.RecurringAmount;
 
             if (GameContext.Current.TurnNumber == _agreement.StartTurn)
+            {
                 creditsToTransfer += creditsData.ImmediateAmount;
+            }
 
             //senderDiplomat.OwnerTreasury.Subtract(creditsToTransfer);
             //recipientDiplomat.OwnerTreasury.Add(creditsToTransfer);
 
-            CivilizationManager.For(senderDiplomat.Owner).Credits.AdjustCurrent(-creditsToTransfer);
-            CivilizationManager.For(recipientDiplomat.Owner).Credits.AdjustCurrent(creditsToTransfer);
+            _ = CivilizationManager.For(senderDiplomat.Owner).Credits.AdjustCurrent(-creditsToTransfer);
+            _ = CivilizationManager.For(recipientDiplomat.Owner).Credits.AdjustCurrent(creditsToTransfer);
         }
     }
 }

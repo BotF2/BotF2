@@ -8,7 +8,6 @@
 // All other rights reserved.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 using Supremacy.Entities;
@@ -45,7 +44,10 @@ namespace Supremacy.Combat
         public void SetTargetTwoCiv(Orbital source, Civilization targetTwo)
         {
             if (source == null)
+            {
                 GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetTwoCiv");
+            }
+
             GameLog.Core.CombatDetails.DebugFormat("for SetTargetTwoCiv source civ attaker {0} and Civilization target Name = {1}", source.Owner, targetTwo);
             _targetSecondaries[source.ObjectID] = targetTwo; // Ditctionary of orbital shooter object id and its civ target
         }
@@ -57,7 +59,7 @@ namespace Supremacy.Combat
                 return;
             }
 
-            _targetSecondaries.Remove(source.ObjectID);
+            _ = _targetSecondaries.Remove(source.ObjectID);
         }
 
         public void Clear()

@@ -29,10 +29,7 @@ namespace Supremacy.Economy
         /// Gets the colony at which construction is taking place.
         /// </summary>
         /// <value>The colony.</value>
-        public Colony Colony
-        {
-            get { return GameContext.Current.Universe.Objects[_colonyId] as Colony; }
-        }
+        public Colony Colony => GameContext.Current.Universe.Objects[_colonyId] as Colony;
 
         /// <summary>
         /// Gets the amount of industry available for investment during the current turn.
@@ -79,39 +76,27 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c>
         /// </value>
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         /// <summary>
         /// Gets the description of the target building design
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
+        public override string Description => string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the target upgrade design.
         /// </summary>
         /// <value>The target upgrade design.</value>
-        public Building UpgradeTarget
-        {
-            get { return GameContext.Current.Universe.Objects[_upgradeTargetId] as Building; }
-        }
+        public Building UpgradeTarget => GameContext.Current.Universe.Objects[_upgradeTargetId] as Building;
 
         /// <summary>
         /// Finishes this <see cref="StructureUpgradeProject"/> and creates the newly constructed item.
         /// </summary>
         public override void Finish()
         {
-            GameContext.Current.Universe.Destroy(UpgradeTarget);
+            _ = GameContext.Current.Universe.Destroy(UpgradeTarget);
             base.Finish();
         }
 
@@ -151,23 +136,14 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c>
         /// </value>
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         /// <summary>
         /// Gets the description of the target building design
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
+        public override string Description => string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the target upgrade design.
@@ -177,9 +153,12 @@ namespace Supremacy.Economy
         {
             get
             {
-                var shipyard = Colony.Shipyard;
+                Shipyard shipyard = Colony.Shipyard;
                 if (shipyard == null || shipyard.ObjectID != _upgradeTargetId)
+                {
                     return null;
+                }
+
                 return shipyard;
             }
         }
@@ -189,9 +168,9 @@ namespace Supremacy.Economy
         /// </summary>
         public override void Finish()
         {
-            for (var i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
+            for (int i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
             {
-                var slot = UpgradeTarget.BuildSlots[i];
+                ShipyardBuildSlot slot = UpgradeTarget.BuildSlots[i];
 
                 if (slot.HasProject && slot.Project.IsPartiallyComplete)
                 {
@@ -201,8 +180,8 @@ namespace Supremacy.Economy
             }
 
             // next is to scrap Upgrade target which might not be available any more
-            var _scrapped = UpgradeTarget.Name;            
-            GameContext.Current.Universe.Destroy(UpgradeTarget);
+            string _scrapped = UpgradeTarget.Name;
+            _ = GameContext.Current.Universe.Destroy(UpgradeTarget);
             base.Finish();
         }
 

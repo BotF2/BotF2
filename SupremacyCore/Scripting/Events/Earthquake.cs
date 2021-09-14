@@ -5,7 +5,6 @@
 //
 // All other rights reserved.
 
-using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Universe;
@@ -22,7 +21,7 @@ namespace Supremacy.Scripting.Events
         private bool _productionFinished;
         private bool _shipProductionFinished;
         private int _occurrenceChance = 100000;
-        
+
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
 
@@ -31,16 +30,12 @@ namespace Supremacy.Scripting.Events
             _affectedProjects = new List<BuildProject>();
         }
 
-        public override bool CanExecute
-        {
-            get { return _occurrenceChance > 0 && base.CanExecute; }
-        }
+        public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
-            object value;
 
-            if (options.TryGetValue("OccurrenceChance", out value))
+            if (options.TryGetValue("OccurrenceChance", out object value))
             {
                 try
                 {
@@ -66,23 +61,23 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
                         c.IsEmpire &&
                         c.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
                     _affectedProjects = target.BuildSlots
@@ -91,28 +86,28 @@ namespace Supremacy.Scripting.Events
                         .Select(o => o.Project)
                         .ToList();
 
-                    foreach (var affectedProject in _affectedProjects)
+                    foreach (BuildProject affectedProject in _affectedProjects)
                     {
                         GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    var population = target.Population.CurrentValue;
-                    var health = target.Health.CurrentValue;
+                    int population = target.Population.CurrentValue;
+                    int health = target.Health.CurrentValue;
 
                     OnUnitTargeted(target);
 
-                    target.Morale.AdjustCurrent(-5);
+                    _ = target.Morale.AdjustCurrent(-5);
 
                     // Population
                     //Don't reduce the population if it is already low
                     if (population >= 65)
                     {
-                        target.Population.AdjustCurrent(-5);
+                        _ = target.Population.AdjustCurrent(-5);
                     }
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(-(health / 6));
+                    _ = target.Health.AdjustCurrent(-(health / 6));
                     target.Health.UpdateAndReset();
 
                     // Facilities

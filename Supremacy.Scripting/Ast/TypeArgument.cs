@@ -126,8 +126,8 @@ namespace Supremacy.Scripting.Ast
         }
 
         public TypeArguments Clone()
-		{
-            return this == Empty ? (this) : new TypeArguments(_arguments.ToArray());
+        {
+            return this == Empty ? this : new TypeArguments(_arguments.ToArray());
         }
 
         public TypeArguments Clone(CloneContext cloneContext)
@@ -144,10 +144,10 @@ namespace Supremacy.Scripting.Ast
             {
                 if (i != 0)
                 {
-                    sb.Append(',');
+                    _ = sb.Append(',');
                 }
 
-                sb.Append(_arguments[i].GetSignatureForError());
+                _ = sb.Append(_arguments[i].GetSignatureForError());
             }
             return sb.ToString();
         }

@@ -9,27 +9,21 @@ namespace Supremacy.Diplomacy.Visitors
 {
     public class BreakAgreementVisitor : AgreementVisitor
     {
-        private readonly IAgreement _agreement;
-
         private BreakAgreementVisitor([NotNull] IAgreement agreement)
         {
-            if (agreement == null)
-                throw new ArgumentNullException("agreement");
-
-            _agreement = agreement;
+            Agreement = agreement ?? throw new ArgumentNullException("agreement");
         }
 
-        protected IAgreement Agreement
-        {
-            get { return _agreement; }
-        }
+        protected IAgreement Agreement { get; }
 
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {
             if (agreement == null)
+            {
                 throw new ArgumentNullException("agreement");
+            }
 
-            var visitor = new BreakAgreementVisitor(agreement);
+            BreakAgreementVisitor visitor = new BreakAgreementVisitor(agreement);
 
             // TODO: Process penalties for breaking agreements
             visitor.Visit(agreement);
@@ -39,23 +33,25 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected override void VisitTreatyMembershipClause(IClause clause)
         {
-            object dataEntry;
 
-            var data = Agreement.Data;
-            if (data == null || !data.TryGetValue(AcceptProposalVisitor.TransferredColoniesDataKey, out dataEntry))
-                return;
-
-            var transferredColonyIds = dataEntry as List<int>;
-            if (transferredColonyIds == null)
-                return;
-
-            var sender = Agreement.Proposal.Sender;
-            var empire = sender.IsEmpire ? sender : Agreement.Proposal.Recipient;
-            var minorRace = sender.IsEmpire ? Agreement.Proposal.Recipient : sender;
-
-            foreach (var transferredColonyId in transferredColonyIds)
+            IDictionary<object, object> data = Agreement.Data;
+            if (data == null || !data.TryGetValue(AcceptProposalVisitor.TransferredColoniesDataKey, out object dataEntry))
             {
-                var colony = GameContext.Current.Universe.Get<Colony>(transferredColonyId);
+                return;
+            }
+
+            if (!(dataEntry is List<int> transferredColonyIds))
+            {
+                return;
+            }
+
+            Entities.Civilization sender = Agreement.Proposal.Sender;
+            Entities.Civilization empire = sender.IsEmpire ? sender : Agreement.Proposal.Recipient;
+            Entities.Civilization minorRace = sender.IsEmpire ? Agreement.Proposal.Recipient : sender;
+
+            foreach (int transferredColonyId in transferredColonyIds)
+            {
+                Colony colony = GameContext.Current.Universe.Get<Colony>(transferredColonyId);
                 if (colony != null &&
                     colony.Owner == empire &&
                     colony.LastOwnershipChange == Agreement.StartTurn)

@@ -29,80 +29,80 @@ using System.IO.Compression;
 
 namespace Supremacy.VFS
 {
-	public class MemoryFileStream : StreamDecorator<Stream>
-	{
-		#region Fields and Properties
+    public class MemoryFileStream : StreamDecorator<Stream>
+    {
+        #region Fields and Properties
 
-		private MemorySource _parent;
-		private CompressionAlgorithm _compression;
+        private MemorySource _parent;
+        private CompressionAlgorithm _compression;
 
-		#endregion
+        #endregion
 
-		#region Constructor
+        #region Constructor
 
-        // ReSharper disable SuggestBaseTypeForParameter
-		public MemoryFileStream(
+
+        public MemoryFileStream(
             MemorySource parent,
             string resolvedPath,
             MemoryStream stream,
             FileAccess access,
             FileShare share)
-        // ReSharper restore SuggestBaseTypeForParameter
-			: base(resolvedPath, stream, access, share)
-		{
-			_parent = parent;
-		}
 
-		#endregion
+            : base(resolvedPath, stream, access, share)
+        {
+            _parent = parent;
+        }
 
-		#region Methods
+        #endregion
 
-		protected override void OnClosed()
-		{
-			_parent.UpdateFileBuffer(this);
-			base.OnClosed();
-		}
+        #region Methods
 
-		internal void SetCompression(CompressionAlgorithm compression, CompressionMode mode)
-		{
-			_compression = compression;
+        protected override void OnClosed()
+        {
+            _parent.UpdateFileBuffer(this);
+            base.OnClosed();
+        }
 
-			switch (_compression)
-			{
-				case CompressionAlgorithm.None:
-					break;
+        internal void SetCompression(CompressionAlgorithm compression, CompressionMode mode)
+        {
+            _compression = compression;
 
-				case CompressionAlgorithm.GZip:
-					BaseStream = new GZipStream(BaseStream, mode);
-					break;
+            switch (_compression)
+            {
+                case CompressionAlgorithm.None:
+                    break;
 
-				case CompressionAlgorithm.Deflate:
-					BaseStream = new DeflateStream(BaseStream, mode);
-					break;
+                case CompressionAlgorithm.GZip:
+                    BaseStream = new GZipStream(BaseStream, mode);
+                    break;
 
-				default:
-					throw new NotSupportedException("Not supported compression algorithm used");
-			}
-		}
+                case CompressionAlgorithm.Deflate:
+                    BaseStream = new DeflateStream(BaseStream, mode);
+                    break;
 
-		internal byte[] GetBuffer()
-		{
-			switch (_compression)
-			{
-				case CompressionAlgorithm.None:
-					return ((MemoryStream) BaseStream).GetBuffer();
+                default:
+                    throw new NotSupportedException("Not supported compression algorithm used");
+            }
+        }
 
-				case CompressionAlgorithm.GZip:
-					return ((MemoryStream) ((GZipStream) BaseStream).BaseStream).GetBuffer();
+        internal byte[] GetBuffer()
+        {
+            switch (_compression)
+            {
+                case CompressionAlgorithm.None:
+                    return ((MemoryStream)BaseStream).GetBuffer();
 
-				case CompressionAlgorithm.Deflate:
-					return ((MemoryStream) ((DeflateStream) BaseStream).BaseStream).GetBuffer();
+                case CompressionAlgorithm.GZip:
+                    return ((MemoryStream)((GZipStream)BaseStream).BaseStream).GetBuffer();
 
-				default:
-					return null;
-			}
-		}
+                case CompressionAlgorithm.Deflate:
+                    return ((MemoryStream)((DeflateStream)BaseStream).BaseStream).GetBuffer();
 
-		#endregion
-	}
+                default:
+                    return null;
+            }
+        }
+
+        #endregion
+    }
 }

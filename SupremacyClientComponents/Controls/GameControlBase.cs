@@ -90,8 +90,7 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceVisibility(DependencyObject d, object baseValue)
         {
-            var gameControl = d as GameControlBase;
-            if (gameControl != null &&
+            if (d is GameControlBase gameControl &&
                 gameControl.VariantSize == VariantSize.Collapsed)
             {
                 return Visibility.Collapsed;
@@ -119,10 +118,7 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region IGameControl Implementation
-        bool IGameControl.CanUpdateCanExecuteWhenHidden
-        {
-            get { return CanUpdateCanExecuteWhenHidden; }
-        }
+        bool IGameControl.CanUpdateCanExecuteWhenHidden => CanUpdateCanExecuteWhenHidden;
 
         object IGameControl.CoerceCommandParameter(DependencyObject obj, object value)
         {
@@ -131,21 +127,18 @@ namespace Supremacy.Client.Controls
 
         EventHandler IGameControl.CommandCanExecuteHandler { get; set; }
 
-        GameControlService.GameControlFlagManager IGameControl.Flags
-        {
-            get { return _flags; }
-        }
+        GameControlService.GameControlFlagManager IGameControl.Flags => _flags;
 
         bool IGameControl.HasImage
         {
-            get { return HasImage; }
-            set { HasImage = value; }
+            get => HasImage;
+            set => HasImage = value;
         }
 
         bool IGameControl.HasLabel
         {
-            get { return HasLabel; }
-            set { HasLabel = value; }
+            get => HasLabel;
+            set => HasLabel = value;
         }
 
         void IGameControl.OnCanExecuteChanged(object sender, EventArgs e)
@@ -175,95 +168,92 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region Properties
-        protected virtual bool CanUpdateCanExecuteWhenHidden
-        {
-            get { return false; }
-        }
-        
+        protected virtual bool CanUpdateCanExecuteWhenHidden => false;
+
         public ICommand Command
         {
-            get { return (ICommand)GetValue(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
         }
 
         public object CommandParameter
         {
-            get { return GetValue(CommandParameterProperty); }
-            set { SetValue(CommandParameterProperty, value); }
+            get => GetValue(CommandParameterProperty);
+            set => SetValue(CommandParameterProperty, value);
         }
 
         public IInputElement CommandTarget
         {
-            get { return (IInputElement)GetValue(CommandTargetProperty); }
-            set { SetValue(CommandTargetProperty, value); }
+            get => (IInputElement)GetValue(CommandTargetProperty);
+            set => SetValue(CommandTargetProperty, value);
         }
 
         public bool HasImage
         {
-            get { return (bool)GetValue(HasImageProperty); }
-            private set { SetValue(HasImageProperty, value); }
+            get => (bool)GetValue(HasImageProperty);
+            private set => SetValue(HasImageProperty, value);
         }
 
         public bool HasLabel
         {
-            get { return (bool)GetValue(HasLabelProperty); }
-            private set { SetValue(HasLabelProperty, value); }
+            get => (bool)GetValue(HasLabelProperty);
+            private set => SetValue(HasLabelProperty, value);
         }
 
         [Localizability(LocalizationCategory.NeverLocalize)]
         public string Id
         {
-            get { return (string)GetValue(IdProperty); }
-            set { SetValue(IdProperty, value); }
+            get => (string)GetValue(IdProperty);
+            set => SetValue(IdProperty, value);
         }
 
         public ImageSource ImageSourceLarge
         {
-            get { return (ImageSource)GetValue(ImageSourceLargeProperty); }
-            set { SetValue(ImageSourceLargeProperty, value); }
+            get => (ImageSource)GetValue(ImageSourceLargeProperty);
+            set => SetValue(ImageSourceLargeProperty, value);
         }
 
         public ImageSource ImageSourceSmall
         {
-            get { return (ImageSource)GetValue(ImageSourceSmallProperty); }
-            set { SetValue(ImageSourceSmallProperty, value); }
+            get => (ImageSource)GetValue(ImageSourceSmallProperty);
+            set => SetValue(ImageSourceSmallProperty, value);
         }
 
         public bool IsHighlighted
         {
-            get { return (bool)GetValue(IsHighlightedProperty); }
-            set { SetValue(IsHighlightedProperty, value); }
+            get => (bool)GetValue(IsHighlightedProperty);
+            set => SetValue(IsHighlightedProperty, value);
         }
 
         [Localizability(LocalizationCategory.Label)]
         public string Label
         {
-            get { return (string)GetValue(LabelProperty); }
-            set { SetValue(LabelProperty, value); }
+            get => (string)GetValue(LabelProperty);
+            set => SetValue(LabelProperty, value);
         }
 
         public TextTrimming LabelTextTrimming
         {
-            get { return (TextTrimming)GetValue(LabelTextTrimmingProperty); }
-            set { SetValue(LabelTextTrimmingProperty, value); }
+            get => (TextTrimming)GetValue(LabelTextTrimmingProperty);
+            set => SetValue(LabelTextTrimmingProperty, value);
         }
 
         public TextWrapping LabelTextWrapping
         {
-            get { return (TextWrapping)GetValue(LabelTextWrappingProperty); }
-            set { SetValue(LabelTextWrappingProperty, value); }
+            get => (TextWrapping)GetValue(LabelTextWrappingProperty);
+            set => SetValue(LabelTextWrappingProperty, value);
         }
 
         public VariantSize VariantSize
         {
-            get { return (VariantSize)GetValue(VariantSizeProperty); }
-            set { SetValue(VariantSizeProperty, value); }
+            get => (VariantSize)GetValue(VariantSizeProperty);
+            set => SetValue(VariantSizeProperty, value);
         }
 
         public GameControlContext Context
         {
-            get { return (GameControlContext)GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
+            get => (GameControlContext)GetValue(ContextProperty);
+            set => SetValue(ContextProperty, value);
         }
         #endregion
 
@@ -272,9 +262,9 @@ namespace Supremacy.Client.Controls
             DependencyObject obj,
             DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameControlBase)obj;
-            var oldVariantSize = (VariantSize)e.OldValue;
-            var newVariantSize = (VariantSize)e.NewValue;
+            GameControlBase control = (GameControlBase)obj;
+            VariantSize oldVariantSize = (VariantSize)e.OldValue;
+            VariantSize newVariantSize = (VariantSize)e.NewValue;
 
             control.OnVariantSizeChanged(oldVariantSize, newVariantSize);
             control.CoerceValue(VisibilityProperty);
@@ -284,9 +274,9 @@ namespace Supremacy.Client.Controls
             DependencyObject obj,
             DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameControlBase)obj;
-            var oldContext = (GameControlContext)e.OldValue;
-            var newContext = (GameControlContext)e.NewValue;
+            GameControlBase control = (GameControlBase)obj;
+            GameControlContext oldContext = (GameControlContext)e.OldValue;
+            GameControlContext newContext = (GameControlContext)e.NewValue;
 
             control.OnContextChanged(oldContext, newContext);
         }
@@ -299,9 +289,13 @@ namespace Supremacy.Client.Controls
         protected override void OnAccessKey(AccessKeyEventArgs e)
         {
             if (e.IsMultiple)
+            {
                 base.OnAccessKey(e);
+            }
             else
+            {
                 RaiseClickEvent(new ExecuteRoutedEventArgs(ExecuteReason.Keyboard));
+            }
         }
 
         protected virtual void OnClick(ExecuteRoutedEventArgs e)
@@ -319,15 +313,19 @@ namespace Supremacy.Client.Controls
         protected virtual void OnCommandParameterChanged(object oldValue, object newValue)
         {
             if (ReferenceEquals(oldValue, newValue))
+            {
                 return;
+            }
 
-            var oldCheckableCommandParameter = oldValue as ICheckableCommandParameter;
-            if (oldCheckableCommandParameter != null)
+            if (oldValue is ICheckableCommandParameter oldCheckableCommandParameter)
+            {
                 oldCheckableCommandParameter.InnerParameterChanged -= OnInnerCommandParameterChanged;
+            }
 
-            var newCheckableCommandParameter = newValue as ICheckableCommandParameter;
-            if (newCheckableCommandParameter != null)
+            if (newValue is ICheckableCommandParameter newCheckableCommandParameter)
+            {
                 newCheckableCommandParameter.InnerParameterChanged += OnInnerCommandParameterChanged;
+            }
 
             UpdateCanExecute();
         }
@@ -347,7 +345,10 @@ namespace Supremacy.Client.Controls
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             if (e.Property == IsVisibleProperty)
+            {
                 GameControlService.HookCommands(this, Command, Command);
+            }
+
             base.OnPropertyChanged(e);
         }
 
@@ -358,7 +359,7 @@ namespace Supremacy.Client.Controls
         {
             OnPreviewClick(e);
 
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Render,
                 (Action<ExecuteRoutedEventArgs>)OnClick,
                 e);

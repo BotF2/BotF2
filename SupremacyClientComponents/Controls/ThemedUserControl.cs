@@ -14,9 +14,7 @@ namespace Supremacy.Client.Controls
 
         protected void InjectThemeResources()
         {
-            ResourceDictionary themeResources;
-
-            if (ThemeHelper.TryLoadThemeResources(out themeResources))
+            if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
             {
                 Resources.MergedDictionaries.Add(themeResources);
             }

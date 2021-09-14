@@ -6,7 +6,8 @@ using Supremacy.Collections;
 namespace Supremacy.Effects
 {
     public interface IEffectParameterBindingCollection
-        : IIndexedKeyedCollection<string, IEffectParameterBinding> { }
+        : IIndexedKeyedCollection<string, IEffectParameterBinding>
+    { }
 
     [Serializable]
     internal class EffectParameterBindingCollection
