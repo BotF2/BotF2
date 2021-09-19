@@ -107,22 +107,22 @@ namespace Supremacy.Collections
                 }
 
                 //searching for crashes
-                if (key.ToString() == "999")
-                {
-                    _text = "Searched Key was '999', sometimes this crashes";
-                    Console.WriteLine(_text);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text);
-                    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
-                }
+                //if (key.ToString() == "999")
+                //{
+                //    _text = "Searched Key was '999', sometimes this crashes";
+                //    Console.WriteLine(_text);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                //}
 
                 //searching for crashes
-                if (key.ToString() == "789")
-                {
-                    _text = "Searched Key was '789', sometimes this crashes";
-                    Console.WriteLine(_text);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text);
-                    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
-                }
+                //if (key.ToString() == "789")
+                //{
+                //    _text = "Searched Key was '789', sometimes this crashes";
+                //    Console.WriteLine(_text);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                //}
 
 
                 if ((_keyValueMap != null) && _keyValueMap.TryGetValue(key, out TValue value))
