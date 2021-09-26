@@ -32,6 +32,7 @@ namespace Supremacy.AI
 
             .Concat(GameContext.Current.Universe.FindStarType<Sector>(StarType.NeutronStar).ToList());
         private static string _text;
+        private static readonly string newline;
 
         public static void DoTurn([NotNull] Civilization civ)
         {
@@ -1265,31 +1266,46 @@ namespace Supremacy.AI
                 bestSector = null;
                 return false;
             }
-
+            _text = "GetBestSectorForStation: ";
             int halfMapWidthX = GameContext.Current.Universe.Map.Width / 2;
-            _text = halfMapWidthX.ToString();
-            Console.WriteLine(halfMapWidthX);
+            _text += newline + "halfMapWidthX" + halfMapWidthX.ToString();
+            //Console.WriteLine(halfMapWidthX);
 
             int halfMapHeightY = GameContext.Current.Universe.Map.Height / 2;
-            Console.WriteLine(halfMapHeightY);
+            _text += newline + "halfMapHeightY" + halfMapHeightY.ToString();
+            //Console.WriteLine(halfMapHeightY);
+
             int thirdMapWidthX = GameContext.Current.Universe.Map.Width / 3;
-            Console.WriteLine(thirdMapWidthX);
+            _text += newline + "thirdMapWidthX" + thirdMapWidthX.ToString();
+            //Console.WriteLine(thirdMapWidthX);
+
             int thirdMapHeightY = GameContext.Current.Universe.Map.Height / 3;
-            Console.WriteLine(thirdMapHeightY);
+            _text += newline + "thirdMapHeightY" + thirdMapHeightY.ToString();
+            //Console.WriteLine(thirdMapHeightY);
+
             int quarterMapWidthX = GameContext.Current.Universe.Map.Width / 4;
-            Console.WriteLine(quarterMapWidthX);
+            _text += newline + "quarterMapWidthX" + quarterMapWidthX.ToString();
+            //Console.WriteLine(quarterMapWidthX);
+
             int quarterMapHeightY = GameContext.Current.Universe.Map.Height / 4;
-            Console.WriteLine(quarterMapHeightY);
+            _text += newline + "quarterMapHeightY" + quarterMapHeightY.ToString();
+            //Console.WriteLine(quarterMapHeightY);
+
             int lengthQuarterMap = (int)Math.Sqrt((int)Math.Pow(quarterMapWidthX, 2) + (int)Math.Pow(quarterMapHeightY, 2));
-            Console.WriteLine(lengthQuarterMap);
+            _text += newline + "lengthQuarterMap" + lengthQuarterMap.ToString();
+            //Console.WriteLine(lengthQuarterMap);
+
             int lengthThirdMap = (int)Math.Sqrt((int)Math.Pow(thirdMapWidthX, 2) + (int)Math.Pow(thirdMapHeightY, 2));
-            Console.WriteLine(lengthThirdMap);
+            _text += newline + "lengthThirdMap" + lengthThirdMap.ToString();
+            //Console.WriteLine(lengthThirdMap);
+
+            //Console.WriteLine(_text);
 
             switch (fleet.Owner.Key)
             {
                 case "BORG":
                     {
-                        _text = "GetBestSectorForStation: GetBorg";
+                        _text = "GetBestSectorForStation for Borg";
                         Console.WriteLine(_text);
                         //GameLog.Client;.AIDetails.DebugFormat(_text);
                         int borgX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
@@ -1348,7 +1364,7 @@ namespace Supremacy.AI
                             return false;
                         }
 
-                        _text = "Borg station selected sector  at " + bestSector.Location + bestSector.Name;
+                        _text = "Borg station selected sector  at " + bestSector.Location + " " + bestSector.Name;
                         Console.WriteLine(_text);
                         // GameLog.Core.AIDetails.DebugFormat(_text);
                         return true;
@@ -1360,13 +1376,13 @@ namespace Supremacy.AI
                         Console.WriteLine(_text);
                         //GameLog.Client.AIDetails.DebugFormat("Dominion");
                         int domX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
-                        Console.WriteLine(domX);
+                        //Console.WriteLine(domX);
                         int domXDelta = Math.Abs(halfMapWidthX - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X) / 4;
-                        Console.WriteLine(domXDelta);
+                        //Console.WriteLine(domXDelta);
                         int domY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
-                        Console.WriteLine(domY);
+                        //Console.WriteLine(domY);
                         int domYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y) / 4;
-                        Console.WriteLine(domYDelta);
+                        //Console.WriteLine(domYDelta);
 
                         List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
                             // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
@@ -1376,17 +1392,17 @@ namespace Supremacy.AI
                             && s.Location.Y <= halfMapHeightY - domYDelta && s.Location.Y > domY)
                             // find a list of objects in some sector around Dom side of galactic center
                             .ToList();
-                        foreach (var item in objectsAlongCenterAxis)
-                        {
-                            _text = item.Location
-                                + " " + item.Name
-                                + " " + item.ObjectID
+                        //foreach (var item in objectsAlongCenterAxis)
+                        //{
+                        //    _text = item.Location
+                        //        + " " + item.Name
+                        //        + " " + item.ObjectID
 
-                                ;
-                            Console.WriteLine(_text);
+                        //        ;
+                        //    Console.WriteLine(_text);
 
-                            //if (item.ObjectType != )
-                        }
+                        //    //if (item.ObjectType != )
+                        //}
 
 
                         if (objectsAlongCenterAxis.Count == 0)

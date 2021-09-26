@@ -78,6 +78,8 @@ namespace Supremacy.Client
         private bool _isDisposed;
         private bool _firstTurnStarted;
         private string _text;
+        private int _lastOneDone;
+        private string _contentHistoryFile = "";
         private readonly string newline = Environment.NewLine;
 
         public GameController(
@@ -398,36 +400,41 @@ namespace Supremacy.Client
 
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
-            _text = "";
-            foreach (SitRepEntry item in _sitRepDialog.SitRepEntries)
+            //string _lastOneDone;
+            if (GameContext.Current.TurnNumber > _lastOneDone)
             {
-                string _prio = item.Priority.ToString();
-                while (_prio.Length < 10)  // length 10 for better reading
+
+                _text = "";
+                foreach (SitRepEntry item in _sitRepDialog.SitRepEntries)
                 {
-                    _prio += " ";
+                    string _prio = item.Priority.ToString();
+                    while (_prio.Length < 10)  // length 10 for better reading
+                    {
+                        _prio += " ";
+                    }
+
+                    _text += newline + "Turn;" + GameContext.Current.TurnNumber
+                        + ";" + _prio
+                        + ";" + item.SummaryText
+                        //+ newline
+                        ;
                 }
+                GameLog.Core.SitReps.InfoFormat(_text);
 
-                _text += newline + "Turn;" + GameContext.Current.TurnNumber
-                    + ";" + _prio
-                    + ";" + item.SummaryText
-                    //+ newline
-                    ;
+                SaveSUMMARY_TXT(_text);
+                _lastOneDone = GameContext.Current.TurnNumber;
+                //// \lib\_SUMMARY.txt
+                //string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                //string file = appDir + "\\lib\\" + "_SUMMARY.txt";
+
+                ////if (!File.Exists(file))
+                ////{
+                ////    //streamWriter;
+                //    StreamWriter streamWriter = new StreamWriter(file);
+                //    streamWriter.WriteLine(_text);
+                //    streamWriter.Close();
+                ////}
             }
-            GameLog.Core.SitReps.InfoFormat(_text);
-
-            SaveSUMMARY_TXT(_text);
-            //// \lib\_SUMMARY.txt
-            //string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            //string file = appDir + "\\lib\\" + "_SUMMARY.txt";
-
-            ////if (!File.Exists(file))
-            ////{
-            ////    //streamWriter;
-            //    StreamWriter streamWriter = new StreamWriter(file);
-            //    streamWriter.WriteLine(_text);
-            //    streamWriter.Close();
-            ////}
-
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
@@ -448,7 +455,7 @@ namespace Supremacy.Client
 
         private void SaveSUMMARY_TXT(string _text)
         {
-            if (GameContext.Current == null || GameContext.Current.TurnNumber == 1)
+            if (GameContext.Current == null)
             {
                 return;
             }
@@ -463,17 +470,17 @@ namespace Supremacy.Client
         nextTry:
             try
             {
-            StreamWriter streamWriter = new StreamWriter(file + ".csv");
-            streamWriter.Write(_text);
-            streamWriter.Close();
-            Thread.Sleep(500);
+                StreamWriter streamWriter = new StreamWriter(file + ".csv");
+                streamWriter.Write(_text);
+                streamWriter.Close();
+                //Thread.Sleep(500);
             }
             catch
             {
                 //string _ask = 
                 MessageDialogResult result = MessageDialog.Show(
                     ResourceManager.GetString("FILE_ALREADY_IN_USAGE"),
-                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE") 
+                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE")
                     + " " + file
                     + " " + ResourceManager.GetString("RETRY_QUESTION"),
                     MessageDialogButtons.YesNo);
@@ -521,6 +528,69 @@ namespace Supremacy.Client
                     try { _ = Process.Start(processStartInfo); }
                     catch { _ = MessageBox.Show("Could not load Text-File about SUMMARY"); }
                 }
+            }
+            // end of autoOpenSummaryTxt
+
+            file = Path.Combine(
+                ResourceManager.GetResourcePath(".\\lib"),
+                "_SUMMARY.hist");
+
+            if (GameContext.Current.TurnNumber == 1)
+            {
+                if (File.Exists(file))
+                {
+                    _contentHistoryFile = "NEW started..." 
+                        + "-" + GameContext.Current.Options.StartingTechLevel
+                        + "-" + GameContext.Current.Options.GalaxySize
+                        //+ "-" + GameContext.Current.Options.
+                        ;
+                }
+            }
+            else
+            {
+                ReadPlayersHistoryFile(file);
+                _contentHistoryFile += _text;
+
+                ////////if(GameContext.Current.
+                try
+                {
+                    StreamWriter streamWriter3 = new StreamWriter(file);
+                    streamWriter3.Write(_contentHistoryFile);
+                    streamWriter3.Close();
+                }
+                catch (Exception)
+                {
+
+                    _ = MessageBox.Show(file + " is already in usage");
+                }
+
+            }
+
+
+
+
+        }
+
+        public void ReadPlayersHistoryFile(string file)
+        {
+            _contentHistoryFile = "";
+
+            if (!File.Exists(file))
+            {
+                return;
+            }
+
+            using (StreamReader reader = new StreamReader(file))
+            {
+                Console.WriteLine("---------------");
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (line == null)
+                        break;
+                    _contentHistoryFile += line + newline;
+                }
+                reader.Close();
             }
         }
 

@@ -461,7 +461,7 @@ namespace Supremacy.Economy
                 {
                     GameLog.Core.Production.DebugFormat(" Turn {3}: {1} built at {2} > {0} (spawned)",
                         BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
-                    newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Red);
+                    newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
                 }
             }
             

@@ -403,8 +403,10 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[shipyard.Key] = shipyard.DesignID;
+
                 //GameLog works
-                //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: shipyard.DesignID={0}, {1}", shipyard.DesignID, shipyard.LocalizedName);
+                //GameLog.Client.GameDataDetails.DebugFormat("TechDatabase.cs: shipyard.DesignID={0}, {1}", shipyard.DesignID, shipyard.LocalizedName);
+                
                 db.ShipyardDesigns.Add(shipyard);
             }
             foreach (XmlElement xmlShipyard in xmlShipyards.GetElementsByTagName("Shipyard"))
@@ -424,6 +426,8 @@ namespace Supremacy.Tech
                         }
                     }
                 }
+                if (sourceKey == "CARD_SHIPYARD_II")
+                    ;
                 if (xmlShipyard["Prerequisites"] != null)
                 {
                     foreach (XmlElement xmlEquivPrereq in
@@ -445,6 +449,8 @@ namespace Supremacy.Tech
                         }
                     }
                 }
+                if (sourceKey == "CARD_SHIPYARD_II")
+                    ;
                 if (xmlShipyard["UpgradeOptions"] != null)
                 {
                     foreach (XmlElement xmlUpgrade in

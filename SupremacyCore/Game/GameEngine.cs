@@ -51,7 +51,6 @@ namespace Supremacy.Game
         public int _buyMod;
         public int _taxMod;
         private string _text;
-        private string _note;
         private string _owner;
         private int _r_Credits_BestValue;
         private int _r_Credits_Average_5;
@@ -1440,11 +1439,11 @@ namespace Supremacy.Game
                         // and no colony ships
                         if (colony.Population.CurrentValue == 0)
                         {
-                            _note = colony.Location
+                            _text = colony.Location
                             + " " + colony.Name
                             + " > Population have died from illness, and the colony has been lost.";
 
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _note, "", "", SitRepPriority.Red));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Red));
                             //civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(colony.Owner, colony.Sector.Location, _note));
                             colony.Destroy();
                             civManager.EnsureSeatOfGovernment();
@@ -1543,7 +1542,7 @@ namespace Supremacy.Game
                         + " - Intel: " + colony.ActiveIntelligenceFacilities + " / " + colony.TotalIntelligenceFacilities
                         + " - Pop: " + colony.Population.CurrentValue + " / " + colony.MaxPopulation;
                         ;
-                        Console.WriteLine(_text);
+                        //Console.WriteLine(_text);
 
                         if (civManager.Civilization.CivID == colony.Owner.CivID)
                         {
@@ -1700,6 +1699,7 @@ namespace Supremacy.Game
                       researchGained *= GameContext.Current.CivilizationManagers[scienceShip.Owner].AverageTechLevel;
 
                       GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
+                      //GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.
 
 
                       //works   GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
@@ -2116,7 +2116,7 @@ namespace Supremacy.Game
         #endregion
 
         #region DoProduction() Method
-        void DoProduction(GameContext game)
+        private void DoProduction(GameContext game)
         {
             /*
              * Break down production by civilization.  We want to use resources
@@ -2266,22 +2266,12 @@ namespace Supremacy.Game
 
                         if (colony.BuildQueue.IsEmpty())
                         {
-                            //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
-
-                            //Console.WriteLine(_text);
-                            //GameLog.Core.Production.DebugFormat(_text);
                             _text = string.Format(ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
                                 colony.Name, colony.Location);
-                            //? string.Format(
-                            //    ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
-                            //    Colony.Name, Colony.Location)
-                            //: string.Format(
-                            //ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
-                            //Colony.Name, Colony.Location);
+                            //Console.WriteLine(_text);
+                            //GameLog.Core.Production.DebugFormat(_text);
 
-                            _text = "2-" + _text;
                             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
-                            //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
                         }
 
                         //Start going through the queue
@@ -2400,12 +2390,12 @@ namespace Supremacy.Game
 
                                 if (colony.BuildSlots[0].Project.PercentComplete < 1)
                                 {
-                                    _note =
+                                    _text =
                                         colony.Location + " " + colony.Name + " > "
                                         + colony.BuildSlots[0].Project.BuildDesign.LocalizedName + " - "
                                         + colony.BuildSlots[0].Project.PercentComplete + " done";
 
-                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _note, "", "", SitRepPriority.Gray));
+                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
                                     //civManager.SitRepEntries.Add(new BuildProjectStatusSitRepEntry(colony.Owner, colony.Location, _note, "", "", SitRepPriority.Gray));
                                 }
 
@@ -3106,7 +3096,9 @@ namespace Supremacy.Game
                 _text += ";" + civ.CIV_KEY;
                 //_text += newline + "   " + civValueShipSummary;
                 //_text += newline + "   " + civValueShipSummary2;
-                Console.WriteLine(_text);
+                
+                
+                //Console.WriteLine(_text);
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
             }

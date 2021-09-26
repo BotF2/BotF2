@@ -746,57 +746,57 @@ namespace Supremacy.Game
         public override SitRepPriority Priority { get; set; }
     }
 
-    [Serializable]
-    public class EnergyShutdownSitRepEntry : SitRepEntry
-    {
-        private readonly int _colonyID;
-        public EnergyShutdownSitRepEntry(Civilization owner, Colony colony)
-            : base(owner)//, SitRepPriority.Pink)
-        {
-            if (colony == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class EnergyShutdownSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _colonyID;
+    //    public EnergyShutdownSitRepEntry(Civilization owner, Colony colony)
+    //        : base(owner)//, SitRepPriority.Pink)
+    //    {
+    //        if (colony == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _colonyID = colony.ObjectID;
-        }
-        public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
+    //        _colonyID = colony.ObjectID;
+    //    }
+    //    public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
 
-        public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
-        public override SitRepAction Action => SitRepAction.ShowColony;
-        public override object ActionTarget => Colony;
-        public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_HEADER_TEXT"), Colony.Name, Colony.Location);
-        public override string DetailText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_DETAIL_TEXT"), Colony.Name, Colony.Location);
-        public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Earthquake.png";
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_SUMMARY_TEXT"), Colony.Name, Colony.Location);
-        public override bool IsPriority => true;
+    //    public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
+    //    public override SitRepAction Action => SitRepAction.ShowColony;
+    //    public override object ActionTarget => Colony;
+    //    public override bool HasDetails => true; // turn on/off for extra Dialog window
+    //    public override string HeaderText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_HEADER_TEXT"), Colony.Name, Colony.Location);
+    //    public override string DetailText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_DETAIL_TEXT"), Colony.Name, Colony.Location);
+    //    public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Earthquake.png";
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_SHIPYARD_SUMMARY_TEXT"), Colony.Name, Colony.Location);
+    //    public override bool IsPriority => true;
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
-    [Serializable]
-    public class EnergyShutdownBuildingSitRepEntry : SitRepEntry
-    {
-        private readonly int _colonyID;
-        private readonly Colony _colony;
-        public EnergyShutdownBuildingSitRepEntry(Civilization owner, Colony colony)
-            : base(owner)//, SitRepPriority.Pink)
-        {
-            _colony = colony ?? throw new ArgumentNullException("colony");
-            _colonyID = colony.ObjectID;
-        }
-        public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
-        public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
-        public override SitRepAction Action => SitRepAction.ShowColony;
-        public override object ActionTarget => Colony;
-        public override string SitRepComment { get; set; }
-        public override bool IsPriority => true;
-        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), _colony.Name, _colony.Location);
+    //[Serializable]
+    //public class EnergyShutdownBuildingSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _colonyID;
+    //    private readonly Colony _colony;
+    //    public EnergyShutdownBuildingSitRepEntry(Civilization owner, Colony colony)
+    //        : base(owner)//, SitRepPriority.Pink)
+    //    {
+    //        _colony = colony ?? throw new ArgumentNullException("colony");
+    //        _colonyID = colony.ObjectID;
+    //    }
+    //    public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
+    //    public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
+    //    public override SitRepAction Action => SitRepAction.ShowColony;
+    //    public override object ActionTarget => Colony;
+    //    public override string SitRepComment { get; set; }
+    //    public override bool IsPriority => true;
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), _colony.Name, _colony.Location);
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     [Serializable]
     public sealed class DiplomaticSitRepEntry : SitRepEntry
@@ -1463,6 +1463,7 @@ namespace Supremacy.Game
             }
 
             _colonyID = colony.ObjectID;
+            _priority = SitRepPriority.Green;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
         public override SitRepCategory Categories => SitRepCategory.NewColony;
@@ -1470,10 +1471,8 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), Colony.Sector.Name, Colony.Location);
-
         public override bool IsPriority => true;
-
-        public override SitRepPriority Priority { get; set; }
+        public override SitRepPriority Priority { get => SitRepPriority.Green; set => _priority = SitRepPriority.Green; }
     }
 
     [Serializable]

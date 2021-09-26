@@ -740,7 +740,7 @@ namespace Supremacy.Diplomacy
         }
         public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted, int turn)  // called from AI
         {
-            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+            //int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
 
             if (_acceptRejectDictionary.ContainsKey(foreignPowerID))
@@ -750,7 +750,7 @@ namespace Supremacy.Diplomacy
             }
             else { _acceptRejectDictionary.Add(foreignPowerID, accepted); }
 
-            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+            GameLog.Client.DiplomacyDetails.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                 , GameContext.Current.TurnNumber
                 , _acceptRejectDictionary.Count
                 , foreignPowerID
@@ -758,7 +758,7 @@ namespace Supremacy.Diplomacy
         }
         public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn) // creat ditionary entry
         {
-            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+            //int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
 
             if (_acceptRejectDictionary.ContainsKey(civIDs))
             {
@@ -768,7 +768,7 @@ namespace Supremacy.Diplomacy
             else { _acceptRejectDictionary.Add(civIDs, accepted); }
 
             //if (_acceptRejectDictionary != null)
-            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+            GameLog.Client.DiplomacyDetails.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                 , GameContext.Current.TurnNumber
                 , _acceptRejectDictionary.Count
                 , civIDs);
@@ -916,11 +916,11 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("sector");
             }
 
-            Civilization sectorOwner = sector.Owner;
-            if (sectorOwner == null)
-            {
-                sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
-            }
+            //Civilization sectorOwner = sector.Owner;
+            //if (sectorOwner == null)
+            //{
+            //    sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
+            //}
 
             //GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 

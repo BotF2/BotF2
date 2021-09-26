@@ -18,6 +18,7 @@ using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
+using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
@@ -89,28 +90,31 @@ namespace Supremacy.Universe
         public const int BaseFoodProduction = 10;
 
         private IValueProvider<int>[] _activeFacilities;
+        private IValueProvider<int>[] _unusedFacilities;
         private IValueProvider<int>[] _scrappedFacilities;
         private IValueProvider<int>[] _totalFacilities;
+
         private IValueProvider<int> _activeOrbitalBatteries;
         private IValueProvider<int> _scrappedOrbitalBatteries;
         private IValueProvider<int> _totalOrbitalBatteries;
 
-        private IValueProvider<int> _activeFoodFacilities;
-        private IValueProvider<int> _totalFoodFacilities;
+        //private IValueProvider<int> _activeFoodFacilities;
+        //private IValueProvider<int> _totalFoodFacilities;
 
-        private IValueProvider<int> _activeIndustryFacilities;
-        private IValueProvider<int> _totalIndustryFacilities;
+        //private IValueProvider<int> _activeIndustryFacilities;
+        //private IValueProvider<int> _totalIndustryFacilities;
 
-        private IValueProvider<int> _activeEnergyFacilities;
-        private IValueProvider<int> _totalEnergyFacilities;
+        //private IValueProvider<int> _activeEnergyFacilities;
+        //private IValueProvider<int> _totalEnergyFacilities;
 
-        private IValueProvider<int> _activeResearchFacilities;
-        private IValueProvider<int> _totalResearchFacilities;
+        //private IValueProvider<int> _activeResearchFacilities;
+        //private IValueProvider<int> _totalResearchFacilities;
 
-        private IValueProvider<int> _activeIntelligenceFacilities;
-        private IValueProvider<int> _totalIntelligenceFacilities;
+        //private IValueProvider<int> _activeIntelligenceFacilities;
+        //private IValueProvider<int> _totalIntelligenceFacilities;
 
         private ColonyFacilitiesAccessor _activeFacilitiesProvider;
+        private ColonyFacilitiesAccessor _unusedFacilitiesProvider;
         private ColonyFacilitiesAccessor _scrappedFacilitiesProvider;
         private ColonyFacilitiesAccessor _totalFacilitiesProvider;
 
@@ -269,16 +273,16 @@ namespace Supremacy.Universe
         }
 
         public ColonyFacilitiesAccessor ActiveFacilities => _activeFacilitiesProvider;
-
+        public ColonyFacilitiesAccessor UnusedFacilities => _unusedFacilitiesProvider;
         public ColonyFacilitiesAccessor ScrappedFacilities => _scrappedFacilitiesProvider;
-
         public ColonyFacilitiesAccessor TotalFacilities => _totalFacilitiesProvider;
 
-        public ColonyFacilitiesAccessor FoodActiveFacilities => _activeFacilitiesProvider;
-        public ColonyFacilitiesAccessor IndustryActiveFacilities => _activeFacilitiesProvider;
-        public ColonyFacilitiesAccessor EnergyActiveFacilities => _activeFacilitiesProvider;
-        public ColonyFacilitiesAccessor ResearchActiveFacilities => _activeFacilitiesProvider;
-        public ColonyFacilitiesAccessor IntelligenceActiveFacilities => _activeFacilitiesProvider;
+        //next ones needed to be shown somewhere (in F5-Screen, AmbientValueAttribute deactivated atm)
+        //public ColonyFacilitiesAccessor FoodActiveFacilities => _activeFacilitiesProvider;
+        //public ColonyFacilitiesAccessor IndustryActiveFacilities => _activeFacilitiesProvider;
+        //public ColonyFacilitiesAccessor EnergyActiveFacilities => _activeFacilitiesProvider;
+        //public ColonyFacilitiesAccessor ResearchActiveFacilities => _activeFacilitiesProvider;
+        //public ColonyFacilitiesAccessor IntelligenceActiveFacilities => _activeFacilitiesProvider;
         public int AvailableLabor
         {
             get
@@ -625,7 +629,8 @@ namespace Supremacy.Universe
                 // OLD - 2019-JUL-19  > *3 to *3.5 and +500
                 // OLD - 2021-JUN-21 > (147 * 1 * 1) + 0 + (Ind 100 * 1.5) * 200 = 497 first turn BORG at EARLY   1000 up to 1497
                 // NEW - 2021-JUN-21 > Tax out of pop just 50% ans Ind. 100%, + base value 200 independend from Tech, Ind and Pop
-                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + NetIndustry/* * 1.5*/ + 200);
+                // NEW - 2021-SEP-26 > Industry devided by ten
+                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (NetIndustry / 10)/* * 1.5*/ + 200);
 
                 // TaxCredits minus Maintenance = Credits plus
 
@@ -1577,6 +1582,16 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
+        /// Gets the number of active facilities for the specified category.
+        /// </summary>
+        /// <param name="category">The production category.</param>
+        /// <returns>The number of active facilities.</returns>
+        public int GetUnusedFacilities(ProductionCategory category)
+        {
+            return _unusedFacilities[(int)category].Value;
+        }
+
+        /// <summary>
         /// Gets the total number of facilities for the specified category.
         /// </summary>
         /// <param name="category">The production category.</param>
@@ -1649,6 +1664,7 @@ namespace Supremacy.Universe
                 }
 
                 _activeFacilities[(int)category].Value++;
+                _unusedFacilities[(int)category].Value--;
             }
             switch (category)
             {
@@ -1692,6 +1708,7 @@ namespace Supremacy.Universe
                 }
 
                 _activeFacilities[(int)category].Value--;
+                _unusedFacilities[(int)category].Value++;
             }
             switch (category)
             {
@@ -1786,15 +1803,15 @@ namespace Supremacy.Universe
         /// </summary>
         public void HandlePF()
         {
-            int _laborpool_unused = AvailableLabor;
-            int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
-            int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
+            //int _laborpool_unused = AvailableLabor;
+            //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
+            //int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
             // already comes in ... 
-            int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
-            int _researchPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Research);
-            int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
+            //int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
+            //int _researchPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Research);
+            //int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
 
-            int _orbBat_used = this.ActiveOrbitalBatteries;
+            int _orbBat_used = ActiveOrbitalBatteries;
 
 
             //        var energyBuildings = Buildings.
@@ -1802,10 +1819,46 @@ namespace Supremacy.Universe
             //        var energyBuildingAvailable = Buildings
             //.           Where(o => !o.IsActive && !o.BuildingDesign.AlwaysOnline && 
             //                o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList()); // || b.BonusType == BonusType.PercentEnergy));
+            _ = int.TryParse(FoodReserves.ToString(), out int _foodReserves);
 
-            //if (this.)
+            if (_foodReserves < 2000)
+            {
+                if (GetUnusedFacilities(ProductionCategory.Food) > 0)
+                {
+                    if (AvailableLabor < 1)
+                    {
+                        ReduceOneOtherPF();
+                    }
+
+                    _ = ActivateFacility(ProductionCategory.Food);
+                    _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
+                    DoSitRepGray(_text);
+                }
+            }
+
+            if (_foodReserves > 2000)
+            {
+                if (GetUnusedFacilities(ProductionCategory.Food) > 0)
+                {
+                    ReduceOneOtherPF();
+                    _ = ActivateFacility(ProductionCategory.Food);
+                    _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
+                    DoSitRepGray(_text);
+                }
+            }
+
+            //if (_foodReserves > 2000)
+            //{
+            //    if (GetUnusedFacilities(ProductionCategory.Food) > 0)
+            //    {
+            //        ReduceOneOtherPF();
+            //        ActivateFacility(ProductionCategory.Food);
+            //        DoSitRepGray(_text);
+            //    }
+            //}
+
+
             Report(this);
-
 
             int shutDown = 0;
             Shipyard shipyard = Shipyard;
@@ -1899,54 +1952,82 @@ namespace Supremacy.Universe
             }
         }
 
+        private void DoSitRepGray(string text)
+        {
+            GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+        }
+
+        private void ReduceOneOtherPF()
+        {
+            if (GetActiveFacilities(ProductionCategory.Research) > 0)
+            {
+                _ = DeactivateFacility(ProductionCategory.Research);
+                _text = Location + " " + Name + " > one Research facility deactivated - labours sent to other duties";
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+            }
+            else if (GetActiveFacilities(ProductionCategory.Intelligence) > 0)
+            {
+                _ = DeactivateFacility(ProductionCategory.Intelligence);
+                _text = Location + " " + Name + " > one Intelligence facility deactivated - labours sent to other duties";
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+            }
+            else if (GetActiveFacilities(ProductionCategory.Industry) > 0)
+            {
+                _ = DeactivateFacility(ProductionCategory.Industry);
+                _text = Location + " " + Name + " > one Industry facility deactivated - labours sent to other duties";
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+            }
+        }
+
         private void Report(Colony colony)
         {
             //int _laborpool_unused = this.AvailableLabor;
             _text = colony.Name + ": AvailableLabor:" + AvailableLabor.ToString();
-            int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
+            //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
             _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + TotalFoodFacilities; // _foodPF_unused;
-            int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
+            //int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
             _text += ", Prod: " + GetActiveFacilities(ProductionCategory.Industry) + "/" + TotalIndustryFacilities; // _industryPF_unused;
             // already comes in ... 
-            int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
+            //int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
             _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + TotalEnergyFacilities; // _energyPF_unused;
-            int _researchPF_unused = TotalResearchFacilities - GetActiveFacilities(ProductionCategory.Research);
+            //int _researchPF_unused = TotalResearchFacilities - GetActiveFacilities(ProductionCategory.Research);
             _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + TotalResearchFacilities; // _researchPF_unused;
-            int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
+            //int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
             _text += ", Int: " + GetActiveFacilities(ProductionCategory.Intelligence) + "/" + TotalIntelligenceFacilities; // _intelPF_unused;
             //int _orbBatused = colony.ActiveOrbitalBatteries;
             _text += ", OrbB: " + colony.ActiveOrbitalBatteries.ToString();
 
-            //Console.WriteLine(_text);
+            Console.WriteLine(_text);
+            ;
             //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
 
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            int dummy = _foodPF_unused
+//#pragma warning disable IDE0059 // Unnecessary assignment of a value
+//            int dummy = _foodPF_unused
 
-                + _industryPF_unused
-                + _energyPF_unused
-                + _researchPF_unused
-                + _intelPF_unused;
+//                + _industryPF_unused
+//                + _energyPF_unused
+//                + _researchPF_unused
+//                + _intelPF_unused;
 
-            IValueProvider<int> dummy2 = _activeFoodFacilities;
-            IValueProvider<int> dummy3 = _activeIndustryFacilities;
-            IValueProvider<int> dummy4 = _activeEnergyFacilities;
-            IValueProvider<int> dummy5 = _activeResearchFacilities;
-            IValueProvider<int> dummy6 = _activeIntelligenceFacilities;
+//            IValueProvider<int> dummy2 = _activeFoodFacilities;
+//            IValueProvider<int> dummy3 = _activeIndustryFacilities;
+//            IValueProvider<int> dummy4 = _activeEnergyFacilities;
+//            IValueProvider<int> dummy5 = _activeResearchFacilities;
+//            IValueProvider<int> dummy6 = _activeIntelligenceFacilities;
 
-            IValueProvider<int> dummy11 = _totalFoodFacilities;
-            IValueProvider<int> dummy12 = _totalIndustryFacilities;
-            IValueProvider<int> dummy13 = _totalEnergyFacilities;
-            IValueProvider<int> dummy14 = _totalResearchFacilities;
-            IValueProvider<int> dummy15 = _totalIntelligenceFacilities;
+//            IValueProvider<int> dummy11 = _totalFoodFacilities;
+//            IValueProvider<int> dummy12 = _totalIndustryFacilities;
+//            IValueProvider<int> dummy13 = _totalEnergyFacilities;
+//            IValueProvider<int> dummy14 = _totalResearchFacilities;
+//            IValueProvider<int> dummy15 = _totalIntelligenceFacilities;
 
-            int dummy21 = _foodPF_unused;
-            int dummy22 = _industryPF_unused;
-            int dummy23 = _energyPF_unused;
-            int dummy24 = _researchPF_unused;
-            int dummy25 = _intelPF_unused;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+//            int dummy21 = _foodPF_unused;
+//            int dummy22 = _industryPF_unused;
+//            int dummy23 = _energyPF_unused;
+//            int dummy24 = _researchPF_unused;
+//            int dummy25 = _intelPF_unused;
+//#pragma warning restore IDE0059 // Unnecessary assignment of a value
 
         }
 
@@ -2133,12 +2214,7 @@ namespace Supremacy.Universe
             {
                 try
                 {
-                    if (OrbitalBatteryDesign != null)
-                    {
-                        return OrbitalBatteryDesign.UnitEnergyCost;
-                    }
-
-                    return 0;
+                    return OrbitalBatteryDesign != null ? OrbitalBatteryDesign.UnitEnergyCost : 0;
                 }
                 catch { return 0; }
             }
@@ -2339,9 +2415,11 @@ namespace Supremacy.Universe
         public bool DeactivateBuilding(Building building)
         {
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[building.OwnerID];
-            civManager.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(civManager.Civilization, building.Sector.System.Colony));
+            //civManager.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(civManager.Civilization, building.Sector.System.Colony));
+            _text = string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Name, Location);
+            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.RedYellow));
 
-            GameLog.Core.Energy.DebugFormat("Turn {0};Shutdown due to missing energy for;{1} {2};at;{3} ({4});{5}"
+            GameLog.Core.EnergyDetails.DebugFormat("Turn {0};Shutdown due to missing energy for;{1} {2};at;{3} ({4});{5}"
                 , GameContext.Current.TurnNumber
                 , building.ObjectID
                 , building.Name
@@ -2641,6 +2719,7 @@ namespace Supremacy.Universe
             writer.WriteOptimized(TradeRoutes.ToArray());
             writer.WriteBytesDirect(_scrappedFacilities.Select(o => (byte)o.Value).ToArray());
             writer.WriteBytesDirect(_activeFacilities.Select(o => (byte)o.Value).ToArray());
+            writer.WriteBytesDirect(_unusedFacilities.Select(o => (byte)o.Value).ToArray());
             writer.WriteBytesDirect(_totalFacilities.Select(o => (byte)o.Value).ToArray());
             writer.WriteOptimized(_facilityTypes);
             _creditsFromTrade.SerializeOwnedData(writer, context);
@@ -2696,12 +2775,14 @@ namespace Supremacy.Universe
             int categoryCount = categories.Count;
 
             _activeFacilities = new IValueProvider<int>[categoryCount];
+            _unusedFacilities = new IValueProvider<int>[categoryCount];
             _totalFacilities = new IValueProvider<int>[categoryCount];
             _scrappedFacilities = new IValueProvider<int>[categoryCount];
 
             for (int i = 0; i < categoryCount; i++)
             {
                 _activeFacilities[i] = new ObservableValueProvider<int>();
+                _unusedFacilities[i] = new ObservableValueProvider<int>();
                 _totalFacilities[i] = new ObservableValueProvider<int>();
                 _scrappedFacilities[i] = new ObservableValueProvider<int>();
             }
@@ -2711,23 +2792,24 @@ namespace Supremacy.Universe
             _scrappedOrbitalBatteries = new ObservableValueProvider<int>();
 
             _activeFacilitiesProvider = new ColonyFacilitiesAccessor(_activeFacilities);
+            _unusedFacilitiesProvider = new ColonyFacilitiesAccessor(_unusedFacilities);
             _scrappedFacilitiesProvider = new ColonyFacilitiesAccessor(_scrappedFacilities);
             _totalFacilitiesProvider = new ColonyFacilitiesAccessor(_totalFacilities);
 
-            _activeFoodFacilities = new ObservableValueProvider<int>();
-            _totalFoodFacilities = new ObservableValueProvider<int>();
+            //_activeFoodFacilities = new ObservableValueProvider<int>();
+            //_totalFoodFacilities = new ObservableValueProvider<int>();
 
-            _activeIndustryFacilities = new ObservableValueProvider<int>();
-            _totalIndustryFacilities = new ObservableValueProvider<int>();
+            //_activeIndustryFacilities = new ObservableValueProvider<int>();
+            //_totalIndustryFacilities = new ObservableValueProvider<int>();
 
-            _activeEnergyFacilities = new ObservableValueProvider<int>();
-            _totalEnergyFacilities = new ObservableValueProvider<int>();
+            //_activeEnergyFacilities = new ObservableValueProvider<int>();
+            //_totalEnergyFacilities = new ObservableValueProvider<int>();
 
-            _activeResearchFacilities = new ObservableValueProvider<int>();
-            _totalResearchFacilities = new ObservableValueProvider<int>();
+            //_activeResearchFacilities = new ObservableValueProvider<int>();
+            //_totalResearchFacilities = new ObservableValueProvider<int>();
 
-            _activeIntelligenceFacilities = new ObservableValueProvider<int>();
-            _totalIntelligenceFacilities = new ObservableValueProvider<int>();
+            //_activeIntelligenceFacilities = new ObservableValueProvider<int>();
+            //_totalIntelligenceFacilities = new ObservableValueProvider<int>();
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)
@@ -2751,6 +2833,7 @@ namespace Supremacy.Universe
             _tradeRoutes.AddRange((TradeRoute[])reader.ReadOptimizedObjectArray(typeof(TradeRoute)));
             _ = reader.ReadBytesDirect(_scrappedFacilities.Length).ForEach((o, i) => _scrappedFacilities[i].Value = o);
             _ = reader.ReadBytesDirect(_activeFacilities.Length).ForEach((o, i) => _activeFacilities[i].Value = o);
+            _ = reader.ReadBytesDirect(_unusedFacilities.Length).ForEach((o, i) => _unusedFacilities[i].Value = o);
             _ = reader.ReadBytesDirect(_totalFacilities.Length).ForEach((o, i) => _totalFacilities[i].Value = o);
             reader.ReadOptimizedInt32Array().CopyTo(_facilityTypes, 0);
             _creditsFromTrade.DeserializeOwnedData(reader, context);
@@ -2794,6 +2877,7 @@ namespace Supremacy.Universe
             OnPropertyChanged("IsProductionAutomated");
 
             _ = typedSource._activeFacilities.ForEach((v, i) => _activeFacilities[i].Value = v.Value);
+            _ = typedSource._unusedFacilities.ForEach((v, i) => _unusedFacilities[i].Value = v.Value);
             _ = typedSource._totalFacilities.ForEach((v, i) => _totalFacilities[i].Value = v.Value);
             _ = typedSource._scrappedFacilities.ForEach((v, i) => _scrappedFacilities[i].Value = v.Value);
 

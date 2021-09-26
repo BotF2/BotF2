@@ -401,31 +401,6 @@ namespace Supremacy.Client
                 if (!item.Contains("True") && !item.Contains("False")) { _rest.Add(item); }
             }
 
-            //_resultText = "";
-            //int columnsize = 40;
-            //_length = _trues.Count;
-            //if (_false.Count > _length) _length = _false.Count;
-            //if (_rest.Count > _length) _length = _rest.Count;
-
-            //for (int i = 0; i < _length; i++)
-            //{
-            //    truesText = "";
-            //    falseText = "";
-            //    restText = "";
-            //    try { 
-            //    if (_trues[i] != null) truesText = _trues[i];
-
-            //        while (truesText.Length < columnsize) { truesText += " ";}
-
-            //    if (_false[i] != null) falseText = _false[i];
-            //        while (falseText.Length < columnsize) { falseText += " "; }
-            //        if (_rest[i] != null) restText = _rest[i];
-            //    } catch { 
-            //        // ss
-            //    }
-
-            //_resultText += truesText + falseText + restText + newline;
-            //}
             _resultText = "CONTENT OF SupremacyClient..Settings.xaml " + DateTime.Now + newline;
 
             _resultText += newline + "VALUES" + newline + "======" + newline;
@@ -437,8 +412,6 @@ namespace Supremacy.Client
             _resultText += newline + "FALSE" + newline + "=====" + newline;
             foreach (string item in _false) { _resultText += item + newline; }
 
-            //_resultText += newline + "REST" + newline + "====" + newline;
-            //foreach (var item in _rest) { _resultText += item + newline; }
 
             _resultText += newline + newline;
 
@@ -454,14 +427,6 @@ namespace Supremacy.Client
                 try { _ = Process.Start(processStartInfo); }
                 catch { _ = MessageBox.Show("Could not load Text-File about Settings"); }
             }
-
-
-            //var result = MessageDialog.Show(_resultText, MessageDialogButtons.YesNo);
-            //MessageBox.Show(_resultText);
-            //MessageBox.Show(_trueText);
-            //MessageBox.Show(_falseText);
-            //MessageBox.Show(_restText);
-
         }
 
         private void ExecuteShowPlayersHistoryFileCommand(object obj)
@@ -471,22 +436,16 @@ namespace Supremacy.Client
 
             string file = Path.Combine(
                 ResourceManager.GetResourcePath(""),
-                "PlayersHistory.txt");
+                "PlayersHistory");
             file = file.Replace(".\\", "");
             //string _text1;
 
-            
 
-            StreamWriter streamWriter = new StreamWriter(file);
-            streamWriter.Write(_resultText);
-            streamWriter.Close();
 
-            if (!string.IsNullOrEmpty(file) && File.Exists(file))
-            {
-                _ = new FileStream(
-                    file,
-                    FileMode.Open,
-                    FileAccess.Read);
+            //StreamWriter streamWriter = new StreamWriter(file);
+            //streamWriter.Write(_resultText);
+            //streamWriter.Close();
+            file += ".bat";
 
                 //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
                 if (!string.IsNullOrEmpty(file) && File.Exists(file))
@@ -496,7 +455,7 @@ namespace Supremacy.Client
                     try { _ = Process.Start(processStartInfo); }
                     catch { _ = MessageBox.Show("Could not load Text-File about Players History"); }
                 }
-            }
+            
         }
 
         private void ExecuteShowAllHistoryFileCommand(object obj)
@@ -572,12 +531,6 @@ namespace Supremacy.Client
             // this blocks following bat file "*.txt" already in usage
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
-                //_ = new FileStream(
-                //    file,
-                //    FileMode.Open,
-                //    FileAccess.Read);
-
-                //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
                 if (!string.IsNullOrEmpty(file) && File.Exists(file))
                 {
                     ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
