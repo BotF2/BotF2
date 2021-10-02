@@ -31,16 +31,6 @@ namespace Supremacy.Diplomacy
             return proposal.Clauses.Any(o => o.ClauseType == ClauseType.TreatyWarPact);
         }
 
-        public static bool IsMemebership(this IProposal proposal)
-        {
-            if (proposal == null)
-            {
-                return false;
-            }
-
-            return proposal.Clauses.Any(o => o.ClauseType == ClauseType.TreatyMembership);
-        }
-
         public static bool IncludesTreaty(this IProposal proposal)
         {
             if (proposal == null)
