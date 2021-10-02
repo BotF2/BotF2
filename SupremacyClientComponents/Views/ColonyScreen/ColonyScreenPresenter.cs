@@ -792,8 +792,10 @@ namespace Supremacy.Client.Views
                 _ = MessageDialog.Show(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_HEADER"), message, MessageDialogButtons.Ok);
                 _text = message
                     + " - project.GetCurrentIndustryCost() = " + project.GetCurrentIndustryCost()
-                    + "; civMan.Credits.CurrentValue=" + civMan.Credits.CurrentValue;
-                Console.Write(_text);
+                    + "; civMan.Credits.CurrentValue=" + civMan.Credits.CurrentValue
+                    + " "
+                    ;
+                Console.WriteLine(_text);
                 return false;
             }
 

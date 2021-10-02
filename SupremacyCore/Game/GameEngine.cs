@@ -1464,7 +1464,7 @@ namespace Supremacy.Game
                                 _ = colony.ActivateFacility(ProductionCategory.Industry);
                                 newLabors -= 1;
                                 _text = colony.Location + blank + colony.Name
-                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " > Population growing (now " + curPop + " / " + maxPop
                                 + " ) - one labor unit was added to Industry Production.";
                                 Console.WriteLine(_text);
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
@@ -1479,7 +1479,7 @@ namespace Supremacy.Game
                                 _ = colony.ActivateFacility(ProductionCategory.Research);
                                 newLabors -= 1;
                                 _text = colony.Location + blank + colony.Name
-                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " > Population growing (now " + curPop + " / " + maxPop
                                 + " ) - one labor unit was added to Research Facility.";
                                 Console.WriteLine(_text);
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
@@ -1494,7 +1494,7 @@ namespace Supremacy.Game
                                 _ = colony.ActivateFacility(ProductionCategory.Intelligence);
                                 newLabors -= 1;
                                 _text = colony.Location + blank + colony.Name
-                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " > Population growing (now " + curPop + " / " + maxPop
                                   + " ) - one labor unit was added to Intelligence Facility.";
                                 Console.WriteLine(_text);
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
@@ -1509,7 +1509,7 @@ namespace Supremacy.Game
                                 _ = colony.ActivateFacility(ProductionCategory.Energy);
                                 newLabors -= 1;
                                 _text = colony.Location + blank + colony.Name
-                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " > Population growing (now " + curPop + " / " + maxPop
                                     + " ) - one labor unit was added to Energy Production.";
                                 Console.WriteLine(_text);
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
@@ -1524,7 +1524,7 @@ namespace Supremacy.Game
                                 _ = colony.ActivateFacility(ProductionCategory.Food);
                                 newLabors -= 1;
                                 _text = colony.Location + blank + colony.Name
-                                + " > population growing (now " + curPop + " / " + maxPop
+                                + " > Population growing (now " + curPop + " / " + maxPop
                                 + " ) - one labor unit was added to Food Production.";
                                 Console.WriteLine(_text);
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
