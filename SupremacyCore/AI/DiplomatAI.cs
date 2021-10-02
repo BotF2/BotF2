@@ -13,6 +13,7 @@ namespace Supremacy.AI
 
     public static class DiplomatAI
     {
+        private static bool onlyMemberOnce = true;
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
 
@@ -300,9 +301,10 @@ namespace Supremacy.AI
                                 switch (clause.ClauseType)
                                 {
                                     case ClauseType.TreatyMembership:
-                                        if (regard > 899 && trust > 899)
+                                        if (regard > 899 && trust > 899 && onlyMemberOnce)
                                         {
                                             accepted = true;
+                                            onlyMemberOnce = false;
                                         }
 
                                         break;
