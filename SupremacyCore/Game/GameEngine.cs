@@ -758,7 +758,7 @@ namespace Supremacy.Game
                 {
                     DiplomacyHelper.AcceptingRejecting(civ1);
                 }
-
+                bool onlyOneMembership = true;
                 foreach (Civilization civ2 in GameContext.Current.Civilizations)
                 {
                     if (civ1 == civ2)
@@ -822,10 +822,12 @@ namespace Supremacy.Game
                                     , civ2
                                     , foreignPower.PendingAction.ToString());
 
-                                if (foreignPower.ProposalReceived != null)
+                                if (foreignPower.ProposalReceived != null && onlyOneMembership) //ProposalReceived.IsWarPact)
                                 {
                                     _ = AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
                                 }
+                                if (foreignPower.ProposalReceived.IsMemebership())
+                                    onlyOneMembership = false;
 
                                 foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                                 foreignPower.ProposalReceived = null;
