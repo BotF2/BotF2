@@ -13,6 +13,7 @@ namespace Supremacy.AI
 
     public static class DiplomatAI
     {
+        private static List<ForeignPower> AlreadyMinorMember = new List<ForeignPower>(); 
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
 
@@ -297,12 +298,15 @@ namespace Supremacy.AI
 
                             foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
                             {
+       
                                 switch (clause.ClauseType)
                                 {
                                     case ClauseType.TreatyMembership:
-                                        if (regard > 899 && trust > 899)
+                 
+                                        if (regard > 899 && trust > 899 && !AlreadyMinorMember.Contains(foreignPower))
                                         {
                                             accepted = true;
+                                            AlreadyMinorMember.Add(foreignPower);
                                         }
 
                                         break;
