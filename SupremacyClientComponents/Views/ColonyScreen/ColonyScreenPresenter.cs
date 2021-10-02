@@ -533,6 +533,7 @@ namespace Supremacy.Client.Views
         }
 
         private bool _updatingOrbitalBatteries;
+        private string _text;
 
         private void UpdateOrbitalBatteries()
         {
@@ -785,9 +786,14 @@ namespace Supremacy.Client.Views
 
             if (civMan.Credits.CurrentValue < project.GetTotalCreditsCost() * 5)  // 5 times expensive
             {
-                int missingCredits = project.GetCurrentIndustryCost() - civMan.Credits.CurrentValue;
+                //int missingCredits = project.GetCurrentIndustryCost() - civMan.Credits.CurrentValue * 5;
+                int missingCredits = (project.GetCurrentIndustryCost() - project.IndustryInvested) * 5;
                 string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"), missingCredits);
                 _ = MessageDialog.Show(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_HEADER"), message, MessageDialogButtons.Ok);
+                _text = message
+                    + " - project.GetCurrentIndustryCost() = " + project.GetCurrentIndustryCost()
+                    + "; civMan.Credits.CurrentValue=" + civMan.Credits.CurrentValue;
+                Console.Write(_text);
                 return false;
             }
 

@@ -1467,7 +1467,7 @@ namespace Supremacy.Game
                                 + " > population growing (now " + curPop + " / " + maxPop
                                 + " ) - one labor unit was added to Industry Production.";
                                 Console.WriteLine(_text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1482,7 +1482,7 @@ namespace Supremacy.Game
                                 + " > population growing (now " + curPop + " / " + maxPop
                                 + " ) - one labor unit was added to Research Facility.";
                                 Console.WriteLine(_text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1497,7 +1497,7 @@ namespace Supremacy.Game
                                 + " > population growing (now " + curPop + " / " + maxPop
                                   + " ) - one labor unit was added to Intelligence Facility.";
                                 Console.WriteLine(_text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1512,7 +1512,7 @@ namespace Supremacy.Game
                                 + " > population growing (now " + curPop + " / " + maxPop
                                     + " ) - one labor unit was added to Energy Production.";
                                 Console.WriteLine(_text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1527,7 +1527,7 @@ namespace Supremacy.Game
                                 + " > population growing (now " + curPop + " / " + maxPop
                                 + " ) - one labor unit was added to Food Production.";
                                 Console.WriteLine(_text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Golden));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }

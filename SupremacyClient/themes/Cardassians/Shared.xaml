@@ -741,7 +741,7 @@
               ImageSource="vfs:///Resources/Specific_Empires_UI/Cardassians/GalaxyScreen/FleetSelectionBorder.png" />
 
     <ImageBrush x:Key="CamouflagedFleetSelectionBorderPinkBrush"
-              ImageSource="vfs:///Resources/Specific_Empires_UI/Cardassians/GalaxyScreen/CamouflagedFleetSelectionBorderPink.png" />
+              ImageSource="vfs:///Resources/Specific_Empires_UI/Cardassians/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
     
     
     <Style x:Key="LockToggleButtonStyle"
@@ -1689,6 +1689,9 @@
                      Value="false">
                             <Setter Property="Opacity"
                       Value="0.25" />
+                            <Setter TargetName="Border"
+                      Property="Background"
+                      Value="{StaticResource CardHoverGradient_Left_Right}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

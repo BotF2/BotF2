@@ -629,8 +629,8 @@ namespace Supremacy.Universe
                 // OLD - 2019-JUL-19  > *3 to *3.5 and +500
                 // OLD - 2021-JUN-21 > (147 * 1 * 1) + 0 + (Ind 100 * 1.5) * 200 = 497 first turn BORG at EARLY   1000 up to 1497
                 // NEW - 2021-JUN-21 > Tax out of pop just 50% ans Ind. 100%, + base value 200 independend from Tech, Ind and Pop
-                // NEW - 2021-SEP-26 > Industry devided by ten
-                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (NetIndustry / 10)/* * 1.5*/ + 200);
+                // NEW - 2021-SEP-26 > Industry devided by two
+                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (NetIndustry / 2)/* * 1.5*/ + 200);
 
                 // TaxCredits minus Maintenance = Credits plus
 
@@ -650,6 +650,23 @@ namespace Supremacy.Universe
                 );
 
                 return _taxCredits;
+            }
+        }
+
+        /// <summary>
+        /// Gets the credits the civilization<see cref="Colony"/>.
+        /// </summary>
+        /// <value>The credits.</value>
+        public int CreditsEmpire
+        {
+            get
+            {
+                _ = int.TryParse(GameContext.Current.CivilizationManagers[Owner].Credits.ToString(), out int creditsForSpyScreen);
+
+                GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner].Civilization.Key,
+                    Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
+
+                return creditsForSpyScreen;
             }
         }
 

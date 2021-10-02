@@ -103,5 +103,13 @@
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource DuraniumColor}" 
                        Text="{Binding Path=SelectedColony.NetDuranium, Mode=OneWay}" />
         </DockPanel>
+
+        <!-- CreditsEmpire -->
+        <DockPanel HorizontalAlignment="Stretch">
+            <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource CreditsColor}" 
+                       Text="{Binding Source={s:StringResource CREDITS_EMPIRE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource CreditsColor}" 
+                       Text="{Binding Path=SelectedColony.CreditsEmpire, Mode=OneWay}" />
+        </DockPanel>
     </StackPanel>
 </scc:ThemedUserControl>
