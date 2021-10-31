@@ -79,10 +79,19 @@ namespace Supremacy.Orbitals
                         {
                             design = ship.ShipDesign;
 
-                            _NameString = string.Format(
-                                "{0}x {1}",
-                                _ships.Count,
-                                ResourceManager.GetString(design.Name));
+                            if (design == null)
+                            {
+                                _NameString = string.Format(
+                                    "{0}x {1}",
+                                    _ships.Count, " Unknown ShipDesign");
+                            }
+                            else
+                            {
+                                _NameString = string.Format(
+                                    "{0}x {1}",
+                                    _ships.Count,
+                                    ResourceManager.GetString(design.Name));
+                            }
                         }
 
                         if (design != ship.ShipDesign)

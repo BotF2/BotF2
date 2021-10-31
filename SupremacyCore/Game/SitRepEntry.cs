@@ -32,7 +32,7 @@ namespace Supremacy.Game
         /// <summary>
         /// A special event, like a battle, or an event.
         /// </summary>
-        Blue,        
+        Blue,
         /// <summary>
         /// A green situation report entry reflects a normal or informal status message.
         /// </summary>

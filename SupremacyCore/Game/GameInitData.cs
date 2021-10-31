@@ -33,6 +33,10 @@ namespace Supremacy.Game
         private string _saveGameFilename;
         private SlotClaim[] _slotClaims;
         private SlotStatus[] _slotStatus;
+
+        private string _loadGameText;
+        private readonly string newline = Environment.NewLine;
+        //private int _count;
         #endregion
 
         protected GameInitData() { }
@@ -191,6 +195,8 @@ namespace Supremacy.Game
             GameLog.Client.SaveLoad.DebugFormat("Loading Time = {0}", DateTime.Now - _time);
             Console.WriteLine("Loading Time = {0}", DateTime.Now - _time);
 
+
+
             return new GameInitData
             {
                 LocalPlayerEmpireID = savedGameHeader.LocalPlayerEmpireID,
@@ -217,6 +223,7 @@ namespace Supremacy.Game
                 _localPlayerEmpireID = value;
                 OnPropertyChanged("LocalPlayerEmpireID");
                 GameLog.Core.General.InfoFormat("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
+                _loadGameText += value + ";;LocalPlayerEmpireID;" + newline;
             }
         }
 
@@ -227,6 +234,7 @@ namespace Supremacy.Game
             {
                 _localPlayerName = value;
                 OnPropertyChanged("LocalPlayerName");
+                _loadGameText += value + ";;LocalPlayerName;" + newline;
             }
         }
 
@@ -237,6 +245,14 @@ namespace Supremacy.Game
             {
                 _empireIDs = value;
                 OnPropertyChanged("EmpireIDs");
+                //_count = 0;
+                //foreach (var item in _empireIDs)
+                //{
+
+                //    _loadGameText += value[_count] + ";;EmpireIDs;" +_count + newline;
+                //    _count += 1;
+                //}
+                
             }
         }
 
@@ -248,6 +264,14 @@ namespace Supremacy.Game
                 _empireNames = value;
                 OnPropertyChanged("EmpireNames");
                 //GameLog.Client.GameData.DebugFormat("GameInitData.cs: _empireNames: {0}", _empireNames);
+                // nonsense
+                //_count = 0;
+                //foreach (var item in _empireNames)
+                //{
+                //    _loadGameText += value[_count] + ";;EmpireNames;" +_count + newline;
+                //    _count += 1;
+                //}
+                //Console.WriteLine("Step 222: " + _loadGameText);
             }
         }
 
@@ -258,6 +282,7 @@ namespace Supremacy.Game
             {
                 _gameName = value;
                 OnPropertyChanged("GameName");
+                _loadGameText += value + ";;GameName;" + newline;
             }
         }
 
@@ -269,6 +294,8 @@ namespace Supremacy.Game
                 _gameType = value;
                 OnPropertyChanged("GameType");
                 OnPropertyChanged("IsMultiplayerGame");
+                _loadGameText += value + ";;GameType" + newline;
+                _loadGameText += value + ";;IsMultiplayerGame" + newline;
             }
         }
 
@@ -279,6 +306,12 @@ namespace Supremacy.Game
             {
                 _options = value;
                 OnPropertyChanged("Options");
+                //foreach (var item in _options)
+                //{
+                //_loadGameText += item.value + ";;Options:" + item + newline;
+                _loadGameText += _options.ToString();
+                //}
+                Console.WriteLine("Step 223" + _loadGameText);
             }
         }
 

@@ -327,12 +327,24 @@
                 Grid.Row="0"
                 Margin="6,6,5,6"
                 Orientation="Vertical">
-            <TextBlock x:Name="HeaderText"
-                 FontSize="20pt"
-                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                 Foreground="{DynamicResource DefaultTextBrush}"
-                 HorizontalAlignment="Left"/>
-            <!--Foreground="{DynamicResource HeaderTextBrush}"-->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="HeaderText"
+                     FontSize="20pt"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Foreground="{DynamicResource DefaultTextBrush}"
+                     HorizontalAlignment="Left"/>
+                <TextBlock Text=" at "
+                     FontSize="20pt"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Foreground="{DynamicResource DefaultTextBrush}"
+                     />
+                <TextBlock Text="{Binding Path=Sector.Location}"
+                     FontSize="20pt"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Foreground="{DynamicResource DefaultTextBrush}"
+                     />
+            </StackPanel>
+        <!--Foreground="{DynamicResource HeaderTextBrush}"-->
             <TextBlock x:Name="SubHeaderText"
                  TextWrapping="Wrap"
                  FontSize="14pt"

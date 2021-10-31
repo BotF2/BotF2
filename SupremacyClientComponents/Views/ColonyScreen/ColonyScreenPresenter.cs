@@ -27,6 +27,7 @@ namespace Supremacy.Client.Views
     {
         private readonly DelegateCommand<BuildProject> _addToPlanetaryBuildQueueCommand;
         private readonly DelegateCommand<BuildProject> _addToShipyardBuildQueueCommand;
+        //private readonly DelegateCommand<BuildProject> _addOneMoreToShipyardBuildQueueCommand;
         private readonly DelegateCommand<BuildQueueItem> _removeFromPlanetaryBuildQueueCommand;
         private readonly DelegateCommand<BuildQueueItem> _removeFromShipyardBuildQueueCommand;
         private readonly DelegateCommand<BuildProject> _cancelBuildProjectCommand;
@@ -58,6 +59,10 @@ namespace Supremacy.Client.Views
             _addToShipyardBuildQueueCommand = new DelegateCommand<BuildProject>(
                 ExecuteAddToShipyardBuildQueueCommand,
                 CanExecuteAddToShipyardBuildQueueCommand);
+
+            //_addOneMoreToShipyardBuildQueueCommand = new DelegateCommand<BuildProject>(
+            //    ExecuteAddOneMoreToShipyardBuildQueueCommand,
+            //    CanExecuteAddOneMoreToShipyardBuildQueueCommand);
 
             _removeFromPlanetaryBuildQueueCommand = new DelegateCommand<BuildQueueItem>(
                 ExecuteRemoveFromPlanetaryBuildQueueCommand,
@@ -276,6 +281,59 @@ namespace Supremacy.Client.Views
             }
 
             ShipBuildProject project = view.SelectedBuildProject;
+            if (project == null)
+            {
+                return;
+            }
+            //var _buildQueueItem = new BuildQueueItem(project);
+            AddProjectToBuildSlotQueue(project, colony.Shipyard);
+            //AddProjectToBuildQueue(project, colony);
+            //buildSlot.Shipyard.BuildQueue.Add(_buildQueueItem);
+            //buildSlot.Shipyard.ProcessQueue();
+            //buildSlot.Project = project;
+
+            PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        private void ExecuteAddOneMoreShipBuildProjectCommand(ShipyardBuildSlot buildSlot, ShipBuildProject project)
+        {
+            if (buildSlot == null)
+            {
+                return;
+            }
+
+            Colony colony = Model.SelectedColony;
+            if (colony == null || colony.Shipyard != buildSlot.Shipyard)
+            {
+                return;
+            }
+
+            //if (!buildSlot.IsActive || buildSlot.HasProject)
+            //    return;
+
+            //NewShipSelectionView view = new NewShipSelectionView(buildSlot);
+            //TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
+
+            //_ = BindingOperations.SetBinding(
+            //    statsViewModel,
+            //    TechObjectDesignViewModel.DesignProperty,
+            //    new Binding
+            //    {
+            //        Source = view,
+            //        Path = new PropertyPath("SelectedBuildProject.BuildDesign")
+            //    });
+
+            //view.AdditionalContent = statsViewModel;
+
+            //bool? result = view.ShowDialog();
+
+            //if (!result.HasValue || !result.Value)
+            //{
+            //    return;
+            //}
+
+            //ShipBuildProject project = view.SelectedBuildProject;
             if (project == null)
             {
                 return;
@@ -638,6 +696,7 @@ namespace Supremacy.Client.Views
 
             _addToPlanetaryBuildQueueCommand.RaiseCanExecuteChanged();
             _addToShipyardBuildQueueCommand.RaiseCanExecuteChanged();
+            //_addOneMoreToShipyardBuildQueueCommand.RaiseCanExecuteChanged();
             _removeFromPlanetaryBuildQueueCommand.RaiseCanExecuteChanged();
             _removeFromShipyardBuildQueueCommand.RaiseCanExecuteChanged();
             _cancelBuildProjectCommand.RaiseCanExecuteChanged();
@@ -659,6 +718,7 @@ namespace Supremacy.Client.Views
 
             Model.AddToPlanetaryBuildQueueCommand = _addToPlanetaryBuildQueueCommand;
             Model.AddToShipyardBuildQueueCommand = _addToShipyardBuildQueueCommand;
+            //Model.AddOneMoreToShipyardBuildQueueCommand = _addOneMoreToShipyardBuildQueueCommand;
             Model.RemoveFromPlanetaryBuildQueueCommand = _removeFromPlanetaryBuildQueueCommand;
             Model.RemoveFromShipyardBuildQueueCommand = _removeFromShipyardBuildQueueCommand;
             Model.CancelBuildProjectCommand = _cancelBuildProjectCommand;
@@ -786,9 +846,11 @@ namespace Supremacy.Client.Views
 
             if (civMan.Credits.CurrentValue < project.GetTotalCreditsCost() * 5)  // 5 times expensive
             {
-                //int missingCredits = project.GetCurrentIndustryCost() - civMan.Credits.CurrentValue * 5;
-                int missingCredits = (project.GetCurrentIndustryCost() - project.IndustryInvested) * 5;
+                int missingCredits = (5 * project.GetCurrentIndustryCost()) - civMan.Credits.CurrentValue;
+                //int missingCredits = (5 * project.GetCurrentIndustryCost()) - project.IndustryInvested;
                 string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"), missingCredits);
+
+                //string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"));
                 _ = MessageDialog.Show(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_HEADER"), message, MessageDialogButtons.Ok);
                 _text = message
                     + " - project.GetCurrentIndustryCost() = " + project.GetCurrentIndustryCost()
@@ -890,8 +952,30 @@ namespace Supremacy.Client.Views
         //{
         //    return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         //}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        private bool CanExecuteAddOneMoreToShipyardBuildQueueCommand(BuildProject project)
+        {
+            return (Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null);
+        }
 
         private void ExecuteAddToShipyardBuildQueueCommand(BuildProject project)
+        {
+            Colony colony = Model.SelectedColony;
+            if (colony == null)
+            {
+                return;
+            }
+
+            if (colony.Shipyard == null)
+            {
+                return;
+            }
+
+            AddProjectToBuildQueue(project, colony.Shipyard);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        private void ExecuteAddOneMoreToShipyardBuildQueueCommand(BuildProject project)
         {
             Colony colony = Model.SelectedColony;
             if (colony == null)
@@ -1037,6 +1121,7 @@ namespace Supremacy.Client.Views
 
             Model.AddToPlanetaryBuildQueueCommand = null;
             Model.AddToShipyardBuildQueueCommand = null;
+            //Model.AddOneMoreToShipyardBuildQueueCommand = null;
 
             Model.RemoveFromPlanetaryBuildQueueCommand = null;
             Model.RemoveFromShipyardBuildQueueCommand = null;

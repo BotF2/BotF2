@@ -411,7 +411,7 @@
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
                 Text="Shipyard 2:  " />
-            <TextBlock Grid.Column="3"
+            <!--<TextBlock Grid.Column="3"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
@@ -420,12 +420,12 @@
                 Grid.Row="1"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
-                Text=" Shipyard 4:  " />
-            <TextBlock Grid.Column="4"
+                Text=" Shipyard 4:  " />-->
+            <!--<TextBlock Grid.Column="4"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
-                Text="Shipyard 5:  " />
+                Text="Shipyard 5:  " />-->
             <!--<TextBlock Grid.Column="10"
                 Grid.Row="5"
                 Grid.ColumnSpan="2"
@@ -461,7 +461,7 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[1].Project}" />
-            <TextBlock Grid.Column="3"
+            <!--<TextBlock Grid.Column="3"
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 VerticalAlignment="Center"
@@ -471,12 +471,12 @@
                 Grid.Row="1"              
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[3].Project}" />
-            <TextBlock Grid.Column="5"
+                Text="{Binding Path=Shipyard.BuildSlots[3].Project}" />-->
+            <!--<TextBlock Grid.Column="5"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />
+                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />-->
             <!--<TextBlock Grid.Column="11"
                 Grid.Row="5"
                 Grid.ColumnSpan="2" 

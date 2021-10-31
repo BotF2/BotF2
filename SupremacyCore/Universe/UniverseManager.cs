@@ -57,6 +57,8 @@ namespace Supremacy.Universe
         private UniverseObjectSet _objects;
         private GameObjectLookupCollection<Civilization, Colony> _homeColonyLookup;
         private string _text;
+        private bool _checkLoading = true;
+        //private readonly string newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the map of the game universe.
@@ -129,8 +131,8 @@ namespace Supremacy.Universe
         {
             // works 
             //GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
-            _text = "Searching for Crash: Find(UniverseObjectType objectType) - 2 where T";
-            Console.WriteLine(_text);
+            //_text = "Searching for Crash: Find(UniverseObjectType objectType) - 2 where T";
+            //Console.WriteLine(_text);
             return _objects.Where(o => o.ObjectType == objectType).OfType<T>().ToHashSet();
         }
 
@@ -455,7 +457,7 @@ namespace Supremacy.Universe
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public bool Destroy(UniverseObject item)
         {
-            if (item == null)
+            if (item == null || item.ObjectID == -1)
             {
                 return false;
             }
@@ -588,6 +590,8 @@ namespace Supremacy.Universe
             UpdateSectors();
 
             GameLog.Core.SaveLoad.DebugFormat("Deserializing ships and fleets...");
+            GameLog.Core.SaveLoad.DebugFormat(";Objects following from _checkLoading");
+            Console.WriteLine(";Objects following from _checkLoading");  
             foreach (UniverseObject item in _objects)
             {
                 item.OnDeserialized();
@@ -602,29 +606,39 @@ namespace Supremacy.Universe
                 if ((fleet != null) && !fleet.Ships.Contains(ship))
                 {
                     fleet.AddShipInternal(ship);
+
+                    _text = ";"
+                        + ship.Location
+                        + ";ship adding;" + ship.ObjectID + ";" + ship.Design + ";" + ship.Name
+                        + ";to Fleet; " + fleet.Name
+                        + ";" + ship.Owner
+                        ;
+                    _checkLoading = true; if (_checkLoading == true) Console.WriteLine(_text);
                 }
+
+                _text = "";
 
                 // Gamelog 
-                string ownerString = "not set";
-                try
-                {
-                    ownerString = item.Owner.Key;
-                }
-                catch
-                {
-                    ownerString = "no owner";
-                }
+                //string ownerString = "not set";
+                //try
+                //{
+                //    ownerString = item.Owner.Key;
+                //}
+                //catch
+                //{
+                //    ownerString = "no owner";
+                //}
 
 
-                string locationString = "not set";
-                try
-                {
-                    locationString = item.Location.ToString();
-                }
-                catch
-                {
-                    locationString = "no location";
-                }
+                //string locationString = "not set";
+                //try
+                //{
+                //    locationString = item.Location.ToString();
+                //}
+                //catch
+                //{
+                //    locationString = "no location";
+                //}
             }
 
             IEnumerable<Colony> colonies = _objects.OfType<Colony>();
@@ -634,6 +648,16 @@ namespace Supremacy.Universe
             GameLog.Core.SaveLoad.DebugFormat("Deserialized: item=Colony;Location;Owner;Name;Population");
             foreach (Colony colony in colonies)
             {
+                String _col =
+                    /*";Colony;" */
+                    "; " 
+                    + colony.Location
+                    + ";" + colony.Name
+                    + ";" + colony.Owner
+                    + ";Colony;"
+                    ;
+                Console.WriteLine(_col);
+
                 StarSystem system = systemLocationLookup[colony.Location].FirstOrDefault();
                 if (system == null)
                 {
@@ -646,7 +670,21 @@ namespace Supremacy.Universe
                 foreach (Building building in buildingLocationLookup[colony.Location])
                 {
                     colony.BuildingsInternal.Add(building);
+                    _text =
+                        _col
+                        //";" + colony.Location
+                        //+ "; " + colony.Name
+                        //+ "; " + colony.Owner
+                        + "; Building"
+                        + "; " + building.ObjectID
+                        + "; " + building.Design
+                        +";" + building.IsActive + "_for_Active"
+                        //+ "; " + building.TurnCreated
+
+                        ;
+                    _checkLoading = true; if(_checkLoading == true) Console.WriteLine(_text);
                 }
+
             }
         }
 
@@ -686,6 +724,12 @@ namespace Supremacy.Universe
         {
             _objects = new UniverseObjectSet();
             _map = new SectorMap(reader.ReadByte(), reader.ReadByte());
+
+            //foreach (var item in _map)
+            //{
+            //    item.
+            //}
+
             _homeColonyLookup = new GameObjectLookupCollection<Civilization, Colony>(
                 civilization => civilization.CivID,
                 colony => colony.OriginalOwner,
@@ -693,6 +737,18 @@ namespace Supremacy.Universe
                 id => _objects[id] as Colony);
             _objects.DeserializeOwnedData(reader, context);
             _homeColonyLookup.DeserializeOwnedData(reader, context);
+
+            // no big result
+            //foreach (var item in _homeColonyLookup.Keys)
+            //{
+            //    _text = newline + "Deserialized _homeColonyLookup: "
+            //        + item.CivID
+            //        + ";" + item.Key
+            //        //+ ";" + item.
+
+            //        ;
+            //    Console.WriteLine(_text);
+            //}
 
             GameLog.Core.SaveLoad.DebugFormat("Deserializing _objects...");
             GameLog.Core.SaveLoad.DebugFormat("Deserializing _homeColonyLookup...");

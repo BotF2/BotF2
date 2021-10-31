@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
 using Supremacy.Universe;
-using Supremacy.Resources;
+
 
 namespace Supremacy.Combat
 {
@@ -1956,6 +1956,7 @@ namespace Supremacy.Combat
                                 ;
 
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+
                             }
 
                             if (combatent.Item1.Source.IsCombatant)
@@ -1963,10 +1964,12 @@ namespace Supremacy.Combat
                                 countDestroyed++;
 
                                 _ = Assets.CombatShips.Remove(combatent.Item1);
+                                continue;
                             }
                             else
                             {
                                 _ = Assets.NonCombatShips.Remove(combatent.Item1);
+                                continue;
                             }
                             Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
                             //CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
@@ -1975,10 +1978,10 @@ namespace Supremacy.Combat
                                 + " > Ship " + ship.Item1.Source.ObjectID
                                 + ": * " + ship.Item1.Name
                                 + " * (" + ship.Item1.Source.Design
-                                + " ) escaped."
+                                + " ) survived."
                                 ;
 
-                            civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Golden));
                         }
                         else
                         {
@@ -2105,10 +2108,10 @@ namespace Supremacy.Combat
                             _text = ship.Item1.Source.Location
                                 + " > " + ship.Item1.Source.ObjectID
                                 + " * " + ship.Item1.Name
-                                + " * ( " + ship.Item1.Source.Design + " ) "
-                                + " escaped."
+                                + " * ( " + ship.Item1.Source.Design + " )"
+                                + " retreated."
                                 ;
-                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "","", SitRepPriority.RedYellow));
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "","", SitRepPriority.Golden));
                         }
 
                     }

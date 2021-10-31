@@ -375,7 +375,13 @@ namespace Supremacy.Universe
                 ////Console.WriteLine(_text);
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
-                return Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
+                Percentage _PercentageGrowthRate = Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
+                if(_PercentageGrowthRate > 0.06)
+                {
+                    _PercentageGrowthRate = (Percentage)0.06;
+                }
+
+                return _PercentageGrowthRate;
             }
         }
 
@@ -630,7 +636,8 @@ namespace Supremacy.Universe
                 // OLD - 2021-JUN-21 > (147 * 1 * 1) + 0 + (Ind 100 * 1.5) * 200 = 497 first turn BORG at EARLY   1000 up to 1497
                 // NEW - 2021-JUN-21 > Tax out of pop just 50% ans Ind. 100%, + base value 200 independend from Tech, Ind and Pop
                 // NEW - 2021-SEP-26 > Industry devided by two
-                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (NetIndustry / 2)/* * 1.5*/ + 200);
+                // NEW - 2021-OCT-09 > Industry devided by ten
+                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (NetIndustry / 10)/* * 1.5*/ + 200);
 
                 // TaxCredits minus Maintenance = Credits plus
 
@@ -1821,7 +1828,7 @@ namespace Supremacy.Universe
         public void HandlePF()
         {
             //int _laborpool_unused = AvailableLabor;
-            //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
+            int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
             //int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
             // already comes in ... 
             //int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
@@ -1837,12 +1844,24 @@ namespace Supremacy.Universe
             //.           Where(o => !o.IsActive && !o.BuildingDesign.AlwaysOnline && 
             //                o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList()); // || b.BonusType == BonusType.PercentEnergy));
             _ = int.TryParse(FoodReserves.ToString(), out int _foodReserves);
+            int _TechLevel = this.Population.CurrentValue;
+            //_ = int.TryParse((Population.CurrentValue*2), out _TechLevel);
+            //this.Population
+            Report(this);
 
-            if (_foodReserves < 2000)
+            //int _foodReservesIntended = 100 * _TechLevel;
+            if (NetFood < 0 && _foodReserves < (Population.CurrentValue * 2))
             {
-                if (GetUnusedFacilities(ProductionCategory.Food) > 0)
+                if (_foodPF_unused > 0)
                 {
                     if (AvailableLabor < 1)
+                    {
+                        _text = "No free Labour (from Pool)";
+                        Console.WriteLine(_text);
+                        ReduceOneOtherPF();
+                    }
+                    int _AvailableLabor = GetAvailableLabor();
+                    if (_AvailableLabor < 10)
                     {
                         ReduceOneOtherPF();
                     }
@@ -1851,147 +1870,170 @@ namespace Supremacy.Universe
                     _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     DoSitRepGray(_text);
                 }
-            }
-
-            if (_foodReserves > 2000)
-            {
-                if (GetUnusedFacilities(ProductionCategory.Food) > 0)
+                else if (_foodPF_unused == 0)
+                    {
+                        _text = "No free food facility";
+                        Console.WriteLine(_text);
+                    if (!Owner.IsHuman)
+                        AddFacilities(ProductionCategory.Food, 1);
+                        //; // ToDo - how to build up a build project
+                }
+                else
                 {
                     ReduceOneOtherPF();
+
                     _ = ActivateFacility(ProductionCategory.Food);
                     _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     DoSitRepGray(_text);
                 }
-            }
+                //else
+                //if (_foodReserves > (Population.CurrentValue * 2))
+                //{
+                //    if (GetUnusedFacilities(ProductionCategory.Food) > 0)
+                //    {
+                //        ReduceOneOtherPF();
+                //        _ = ActivateFacility(ProductionCategory.Food);
+                //        _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
+                //        DoSitRepGray(_text);
+                //    }
+                //}
 
-            //if (_foodReserves > 2000)
-            //{
-            //    if (GetUnusedFacilities(ProductionCategory.Food) > 0)
-            //    {
-            //        ReduceOneOtherPF();
-            //        ActivateFacility(ProductionCategory.Food);
-            //        DoSitRepGray(_text);
-            //    }
+                //if (_foodReserves > 2000)
+                //{
+                //    if (GetUnusedFacilities(ProductionCategory.Food) > 0)
+                //    {
+                //        ReduceOneOtherPF();
+                //        ActivateFacility(ProductionCategory.Food);
+                //        DoSitRepGray(_text);
+                //    }
             //}
 
 
             Report(this);
 
-            int shutDown = 0;
-            Shipyard shipyard = Shipyard;
+                int shutDown = 0;
+                Shipyard shipyard = Shipyard;
 
-            while (true)
-            {
-                int netEnergy = NetEnergy;
-                if (netEnergy >= 0)  // no energy shortage !
+                while (true)
                 {
-                    break;
-                }
-
-                foreach (var orb in OrbitalBatteries)
-                {
-                    orb.IsActive = false;
-                    _text = "OrbitalBattery shutted down";
-                    Console.WriteLine(_text);
-                }
-                OnPropertyChanged("ActiveOrbitalBatteries");
-
-                /*
-                 * First try to shut down any unutilized shipyard build slots.  Those can be considered
-                 * less critical than active buildings.
-                 */
-                if (shipyard != null)
-                {
-                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
-                        .Where(o => o.IsActive && !o.HasProject)
-                        .FirstOrDefault(DeactivateShipyardBuildSlot);
-
-                    if (deactivatedBuildSlot != null)
+                    int netEnergy = NetEnergy;
+                    if (netEnergy >= 0)  // no energy shortage !
                     {
-                        ++shutDown;
-                        goto Next;
+                        break;
                     }
-                }
 
-                /*
-                 * Next, try to shut down some buildings.  First check to see if we can get away with shutting
-                 * down just one building.  If not, start with the most expensive active building in hopes of
-                 * minimizing the number we have to shut down.
-                 */
-                Building mostCostlyBuilding = Buildings
-                    .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
-                    .OrderBy(o => o.BuildingDesign.EnergyCost)
-                    .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -netEnergy);
+                    foreach (var orb in OrbitalBatteries)
+                    {
+                        orb.IsActive = false;
+                        _text = "OrbitalBattery shutted down";
+                        Console.WriteLine(_text);
+                    }
+                    OnPropertyChanged("ActiveOrbitalBatteries");
 
-                if (mostCostlyBuilding == null)
-                {
-                    mostCostlyBuilding = Buildings
+                    /*
+                     * First try to shut down any unutilized shipyard build slots.  Those can be considered
+                     * less critical than active buildings.
+                     */
+                    if (shipyard != null)
+                    {
+                        ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
+                            .Where(o => o.IsActive && !o.HasProject)
+                            .FirstOrDefault(DeactivateShipyardBuildSlot);
+
+                        if (deactivatedBuildSlot != null)
+                        {
+                            ++shutDown;
+                            goto Next;
+                        }
+                    }
+
+                    /*
+                     * Next, try to shut down some buildings.  First check to see if we can get away with shutting
+                     * down just one building.  If not, start with the most expensive active building in hopes of
+                     * minimizing the number we have to shut down.
+                     */
+                    Building mostCostlyBuilding = Buildings
                         .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
-                        .OrderByDescending(o => o.BuildingDesign.EnergyCost)
-                        .FirstOrDefault();
-                }
+                        .OrderBy(o => o.BuildingDesign.EnergyCost)
+                        .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -netEnergy);
 
-                if (mostCostlyBuilding != null &&
-                    DeactivateBuilding(mostCostlyBuilding))
-                {
-                    shutDown++;
-                    goto Next;
-                }
+                    if (mostCostlyBuilding == null)
+                    {
+                        mostCostlyBuilding = Buildings
+                            .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
+                            .OrderByDescending(o => o.BuildingDesign.EnergyCost)
+                            .FirstOrDefault();
+                    }
 
-                foreach (Building building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
-                {
-                    if (DeactivateBuilding(building))
+                    if (mostCostlyBuilding != null &&
+                        DeactivateBuilding(mostCostlyBuilding))
                     {
                         shutDown++;
                         goto Next;
                     }
-                }
 
-                /*
-                 * Lastly, try to shut down some shipyard build slots.  To be fair to the player, we'll favor
-                 * shutting down build slots with the least build progress.
-                 */
-                if (shipyard != null)
-                {
-                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
-                        .Where(o => o.IsActive && !o.HasProject)
-                        .FirstOrDefault(DeactivateShipyardBuildSlot);
-
-                    if (deactivatedBuildSlot != null)
+                    foreach (Building building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
                     {
-                        ++shutDown;
-                        goto Next;
+                        if (DeactivateBuilding(building))
+                        {
+                            shutDown++;
+                            goto Next;
+                        }
                     }
+
+                    /*
+                     * Lastly, try to shut down some shipyard build slots.  To be fair to the player, we'll favor
+                     * shutting down build slots with the least build progress.
+                     */
+                    if (shipyard != null)
+                    {
+                        ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
+                            .Where(o => o.IsActive && !o.HasProject)
+                            .FirstOrDefault(DeactivateShipyardBuildSlot);
+
+                        if (deactivatedBuildSlot != null)
+                        {
+                            ++shutDown;
+                            goto Next;
+                        }
+                    }
+                    break;
+                Next:
+                    continue;
                 }
-                break;
-            Next:
-                continue;
             }
         }
 
-        private void DoSitRepGray(string text)
+        private void DoSitRepGray(string _text)
         {
             GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
         }
 
         private void ReduceOneOtherPF()
         {
+
             if (GetActiveFacilities(ProductionCategory.Research) > 0)
             {
                 _ = DeactivateFacility(ProductionCategory.Research);
-                _text = Location + " " + Name + " > one Research facility deactivated - labours sent to other duties";
+                _text = Location + " " + Name + " > One Research facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Intelligence) > 0)
             {
                 _ = DeactivateFacility(ProductionCategory.Intelligence);
-                _text = Location + " " + Name + " > one Intelligence facility deactivated - labours sent to other duties";
+                _text = Location + " " + Name + " > One Intelligence facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Industry) > 0)
             {
                 _ = DeactivateFacility(ProductionCategory.Industry);
-                _text = Location + " " + Name + " > one Industry facility deactivated - labours sent to other duties";
+                _text = Location + " " + Name + " > One Industry facility deactivated - labours sent to other duties";
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+            }
+            else if (GetActiveFacilities(ProductionCategory.Energy) > 0)
+            {
+                _ = DeactivateFacility(ProductionCategory.Energy);
+                _text = Location + " " + Name + " > One Energy facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
             }
         }
@@ -1999,7 +2041,7 @@ namespace Supremacy.Universe
         private void Report(Colony colony)
         {
             //int _laborpool_unused = this.AvailableLabor;
-            _text = colony.Name + ": AvailableLabor:" + AvailableLabor.ToString();
+            _text = colony.Name + " ( "+ colony.Population.CurrentValue + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
             _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + TotalFoodFacilities; // _foodPF_unused;
             //int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
@@ -2161,7 +2203,7 @@ namespace Supremacy.Universe
             if (OrbitalBatteries.Count > 0)
             {
                 int Activate_OrbBat = netEnergy / OrbitalBatteries[0].Design.UnitEnergyCost;
-                if (Activate_OrbBat > 2) Activate_OrbBat = 2;  // in peace two active OrbBat are enough
+                if (Activate_OrbBat > 0) Activate_OrbBat -= 1;  // in peace two active OrbBat are enough
                 for (int i = 0; i < Activate_OrbBat; i++)
                 {
                     _ = ActivateOrbitalBattery();

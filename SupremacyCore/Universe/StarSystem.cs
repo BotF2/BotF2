@@ -32,7 +32,9 @@ namespace Supremacy.Universe
         private Colony _colony;
         private ArrayWrapper<Planet> _planets;
         private StarType _starType;
-        public readonly string _text;
+        public string _text;
+        public bool _checkLoading = true;
+        public readonly string newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -364,9 +366,49 @@ namespace Supremacy.Universe
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
             base.DeserializeOwnedData(reader, context);
+            // to often
+            //_text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";
+            //Console.WriteLine(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
+
+            string _col = "";
+            if (Colony != null)
+            {
+                _col = Environment.NewLine + Colony.Location + ";" + Colony.Name + ";" + Colony.OwnerID;
+            }
+
             _bonuses = (SystemBonus)reader.ReadByte();
+            _text = _col;// + _bonuses;
+            //Console.WriteLine(_bonuses);
             _planets = new ArrayWrapper<Planet>((Planet[])reader.ReadOptimizedObjectArray(typeof(Planet)));
+            foreach (var item in _planets)
+            {
+                _text += Environment.NewLine
+                    + ";FoodBonus=" + item.HasFoodBonus
+                    + "; EnergyBonus=" + item.HasEnergyBonus               
+                    + "; Planet; " + item.Name.ToString()
+                    + " ;" + item.PlanetType.ToString() + ";" + item.PlanetSize.ToString() /*+ ";" + item.Variation.ToString()*/
+                    //+ ");Habitable=" + item.IsHabitable
+
+                    
+                    ;
+                for (int i = 1; i < item.Moons.Length; i++)
+                {
+                    _text += "; Moon-" + i + "-Size=;" + item.Moons[i].GetSize();
+                }
+
+                //foreach (var item in item.Moons)
+                //{
+                //    _text += "MoonSize" item.GetSize()
+                //}
+                //Console.WriteLine(_text);
+            }
+            
             _starType = (StarType)reader.ReadByte();
+            _text += Environment.NewLine + ";" + _starType + ";Bonus;"  + ";" + _bonuses + ";-------";
+
+            _checkLoading = true; if (_checkLoading == true) Console.WriteLine(_text);
+                
         }
 
         public MapLocation? WormholeDestination { get; set; }

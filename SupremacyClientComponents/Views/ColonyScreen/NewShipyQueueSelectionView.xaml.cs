@@ -1,4 +1,5 @@
-﻿using Supremacy.Economy;
+﻿//File:NewShipQueueSelectionView.xaml.cs
+using Supremacy.Economy;
 using Supremacy.Tech;
 using System.Linq;
 
@@ -68,6 +69,14 @@ namespace Supremacy.Client.Views
             set => SetValue(AdditionalQueueContentProperty, value);
         }
         #endregion
+
+        public ShipBuildProject BuildOneMoreProject
+        {
+            set => SetValue(SelectedBuildSlotQueueProjectProperty, value);
+            //set => 
+            //    ExecuteAddShipBuildProjectCommand(SelectedBuildSlotQueueProject.Builder, SelectedBuildSlotQueueProject.BuildDesign);
+
+        }
 
         public string ShipQueueFunctionPath => "vfs:///Resources/Specific_Empires_UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
 

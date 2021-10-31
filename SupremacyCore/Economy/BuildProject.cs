@@ -46,7 +46,7 @@ namespace Supremacy.Economy
 
         private int _buildTypeId;
         private int _industryInvested;
-        private int _howMany;
+        private int _howMany = 0;
         private MapLocation _location;
         private int _ownerId;
         private byte _priority;
@@ -94,7 +94,10 @@ namespace Supremacy.Economy
 
         public override string ToString()
         {
-            return BuildDesign.LocalizedName;
+            if (BuildDesign != null)
+                return BuildDesign.LocalizedName;
+            else
+                return null;
         }
 
         /// <summary>
@@ -216,7 +219,7 @@ namespace Supremacy.Economy
                     if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
                     {
                         _text = _location + " > " + BuildDesign + " not complete... " + PercentComplete.ToString() + " done";
-                        civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Golden));
+                        civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Gray));
                         //GameLog.Core.Stations.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
                         //BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
 
@@ -348,6 +351,8 @@ namespace Supremacy.Economy
         /// <value>The turns remaining.</value>
         public virtual int TurnsRemaining => GetTimeEstimate();
 
+        public virtual int IndustryRemaining => IndustryRequired - IndustryInvested;
+
         protected bool GetFlag(BuildProjectFlags flag)
         {
             return (_flags & flag) == flag;
@@ -447,7 +452,15 @@ namespace Supremacy.Economy
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
 
             //if(BuildDesign == StationDes)
-            GameLog.Core.ProductionDetails.DebugFormat(" Turn {3}: Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
+            _text = " Turn " + GameContext.Current.TurnNumber
+                + ": Trying to finish BuildProject ########## " + BuildDesign
+                + " by " + Builder
+                + " at " + Location
+                ;
+            Console.WriteLine(_text);
+            //GameLog.Core.ProductionDetails.DebugFormat(_text);
+            
+            // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
             if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out TechObject spawnedInstance))  // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
             {
                 return; // If we do or do not spawn does that change a collection to give out of range?
@@ -459,19 +472,29 @@ namespace Supremacy.Economy
             {
                 if (spawnedInstance.ObjectType == UniverseObjectType.Building)
                 {
-                    GameLog.Core.Production.DebugFormat(" Turn {3}: {1} built at {2} > {0} (spawned)",
-                        BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
+
                     newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
+                  
+                    _text = " Turn " + GameContext.Current.TurnNumber
+                        + ": " + Builder
+                        + " built at " + Location + " > " + BuildDesign + " (spawned)"
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Production.DebugFormat(_text);
                 }
             }
             
             if (newEntry == null)
             {
-                //_text = ReportEntry_ShowColony(Builder, Location)
-                GameLog.Core.Production.DebugFormat(" Turn {3}: {1} built at {2} > {0}",
-                    BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
+                _text = " Turn " + GameContext.Current.TurnNumber
+                    + ": " + Builder
+                    + " built at " + Location + " > " + BuildDesign
+                    ;
+
                 newEntry = new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green);
-                //newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green);
+                //old: newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green);
+                Console.WriteLine(_text);
+                //GameLog.Core.Production.DebugFormat(_text);
             }
 
             civManager.SitRepEntries.Add(newEntry);
@@ -612,8 +635,17 @@ namespace Supremacy.Economy
                 if (timeEstimate == 1)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    GameLog.Core.Production.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
-                        , resource.ToString(), delta.ToString(), BuildDesign, GameContext.Current.TurnNumber);
+                    _text = " Turn " + GameContext.Current.TurnNumber
+                        + ": " + Location
+                        + ": Estimated One Turn... for " + BuildDesign
+                        ;
+                        //+ " by " + Builder
+                        //+ " at " + Location
+                        //;
+                    //GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
+                    //    , resource.ToString(), delta.ToString(), BuildDesign, GameContext.Current.TurnNumber);
+                    Console.WriteLine(_text);
+                    //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
                     if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
                     {

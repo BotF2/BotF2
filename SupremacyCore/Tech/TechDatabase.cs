@@ -45,6 +45,8 @@ namespace Supremacy.Tech
         [NonSerialized]
         private Dictionary<string, int> _designIdMap;
         private static string _text;
+        private static string _maintText;
+        private static string _buildCostText;
         private static readonly string newline = Environment.NewLine;
 
         /// <summary>
@@ -426,8 +428,7 @@ namespace Supremacy.Tech
                         }
                     }
                 }
-                if (sourceKey == "CARD_SHIPYARD_II")
-                    ;
+
                 if (xmlShipyard["Prerequisites"] != null)
                 {
                     foreach (XmlElement xmlEquivPrereq in
@@ -449,8 +450,8 @@ namespace Supremacy.Tech
                         }
                     }
                 }
-                if (sourceKey == "CARD_SHIPYARD_II")
-                    ;
+                //if (sourceKey == "CARD_SHIPYARD_II")
+                //    ;
                 if (xmlShipyard["UpgradeOptions"] != null)
                 {
                     foreach (XmlElement xmlUpgrade in
@@ -484,8 +485,15 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[ship.Key] = ship.DesignID;
+                CalculateBuildCosts(ship);
+                CalculateMaintenanceCosts(ship);
                 db.ShipDesigns.Add(ship);
             }
+
+            GameLog.Core.Production.DebugFormat("Ships BuildCost + Maintenance calculated inside Code - ignoring file values");
+            //GameLog.Core.Production.DebugFormat(_buildCostText);
+            //GameLog.Core.Production.DebugFormat(_maintText);
+
             foreach (XmlElement xmlShip in xmlShips.GetElementsByTagName("Ship"))
             {
                 string sourceKey = xmlShip.GetAttribute("Key");
@@ -537,6 +545,7 @@ namespace Supremacy.Tech
                         }
                     }
                 }
+                
             }
             GameLog.Core.XMLCheck.InfoFormat("lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
             //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
@@ -1110,7 +1119,7 @@ namespace Supremacy.Tech
                         "CE_Duranium" + separator +
                         "CE_MaintenanceCost" + separator +
 
-                        "CE_HullStrength" + separator +
+                        //"CE_HullStrength" + separator +  // double
                         "CE_PopulationHealth" + separator +
                         "CE_IsUniversallyAvailable" + separator +
 
@@ -1154,6 +1163,7 @@ namespace Supremacy.Tech
                         ;
                     //"CE_SecondaryWeapon.Damage" + separator +
 
+                    strHeader = strHeader.Replace("CE_","");
 
 
                     streamWriter.WriteLine(strHeader);
@@ -1199,7 +1209,7 @@ namespace Supremacy.Tech
                             item.BuildCost + separator +
                             item.Duranium + separator +
                             item.MaintenanceCost + separator +
-                            item.HullStrength + separator +
+                            //item.HullStrength + separator +
                             item.PopulationHealth + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export
                             item.IsUniversallyAvailable + separator +
 
@@ -2039,6 +2049,96 @@ namespace Supremacy.Tech
             //}
 
             return db;
+        }
+
+        private static void CalculateBuildCosts(ShipDesign ship)
+        {
+            int _weapon1 = 0;
+            int _weapon2 = 0;
+            int _buildCostsFromFile = ship.BuildCost;
+            if (ship.PrimaryWeapon != null)
+            {
+                _weapon1 = ship.PrimaryWeapon.Count * ship.PrimaryWeapon.Damage / 4;
+            }
+            if (ship.SecondaryWeapon != null)
+            {
+                _weapon2 = ship.SecondaryWeapon.Count * ship.SecondaryWeapon.Damage / 4;
+            }
+            int _buildcosts = (ship.Duranium * 5)
+                + (ship.HullStrength * 5) + (ship.ShieldStrength)
+                + (ship.Speed * 40 )
+                + (ship.Maneuverability * 20)
+                + ship.CrewSize
+                + _weapon1 + (_weapon2 )
+                ;
+            _buildcosts = 1500 + _buildcosts;// * ship.TechRequirements.HighestTechLevel;// + (ship.CrewSize * 2) / 4000;
+
+            _text = ship.Key
+                + "; BC old:; " + _buildCostsFromFile
+                + "; - new:; " + _buildcosts
+                + "; Du= " + ship.Duranium
+                + "; Hu= " + ship.HullStrength
+                + "; Sh= " + ship.ShieldStrength
+                + "; Sp= " + ship.Speed
+                + "; Ra= " + ship.Range
+                + "; MV= " + ship.Maneuverability
+                //+ " BC= " + ship.BuildCost
+                //+ " BC= " + ship.BuildCost
+                //+ " BC= " + ship.BuildCost
+                + "; W1= " + _weapon1
+                + "; W2= " + _weapon2
+                + "; Cr= " + ship.CrewSize
+
+                ;
+            _buildCostText += newline + _text;
+            //GameLog.Core.Production.DebugFormat(_buildCostText);
+            //Console.WriteLine(_text);
+            //GameLog.Core.Production.DebugFormat(_text);
+            ship.BuildCost = _buildcosts;
+        }
+
+        private static void CalculateMaintenanceCosts(ShipDesign ship)
+        {
+            int _weapon1 = 0;
+            int _weapon2 = 0;
+            int _maintFromFile = ship.MaintenanceCost;
+            
+            if (ship.PrimaryWeapon != null)
+            {
+                _weapon1 = ship.PrimaryWeapon.Count * ship.PrimaryWeapon.Damage /40;
+            }
+            if (ship.SecondaryWeapon != null)
+            {
+                _weapon2 = ship.SecondaryWeapon.Count * ship.SecondaryWeapon.Damage /60;
+            }
+            int _maint = (ship.Duranium/30) 
+                + (ship.HullStrength/20)  + (ship.ShieldStrength / 100)
+                + (ship.Speed + ship.Range + ship.FuelCapacity) 
+                + _weapon1 + _weapon2
+                ;
+            _maint = 10 + _maint + (ship.CrewSize/30);// / 60000;
+
+            _text = ship.Key
+                + "; Maint old:; " + _maintFromFile
+                + "; - new:; " + _maint
+                + "; Du= " + ship.Duranium / 30
+                + "; Hu= " + ship.HullStrength / 20
+                + "; Sh= " + ship.ShieldStrength / 100
+                + "; Sp= " + ship.Speed
+                + "; Ra= " + ship.Range
+                + "; Fu= " + ship.FuelCapacity
+                //+ " BC= " + ship.BuildCost
+                //+ " BC= " + ship.BuildCost
+                //+ " BC= " + ship.BuildCost
+                + "; W1= " + _weapon1
+                + "; W2= " + _weapon2
+                + "; Cr= " + ship.CrewSize / 30
+
+                ;
+            _maintText += newline + _text ;
+            //GameLog.Core.Production.DebugFormat(_maintText);
+            Console.WriteLine(_text);
+            ship.MaintenanceCost = _maint;
         }
 
         /// <summary>

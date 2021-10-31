@@ -39,7 +39,7 @@
                     <MultiBinding StringFormat="{}{0} / [f {1}]{2}[/]">
                         <Binding Path="SelectedColony.FoodReserves.CurrentValue" Mode="OneWay" />
                         <Binding Path="SelectedColony.NetFood" Mode="OneWay" Converter="{StaticResource NetValueBrushConverter}" ConverterParameter="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
-                        <Binding Path="SelectedColony.NetFood" Mode="OneWay" Converter="{StaticResource NetValueConverter}" />
+                        <Binding Path="SelectedColony.NetFood" Mode="TwoWay" Converter="{StaticResource NetValueConverter}" />
                     </MultiBinding>
                 </scc:TextBlockExtensions.FormattedText>
             </TextBlock>
@@ -109,7 +109,9 @@
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource CreditsColor}" 
                        Text="{Binding Source={s:StringResource CREDITS_EMPIRE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource CreditsColor}" 
-                       Text="{Binding Path=SelectedColony.CreditsEmpire, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.CreditsEmpire, Mode=OneWay}"/>
+            <!--, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" />-->
+
         </DockPanel>
     </StackPanel>
 </scc:ThemedUserControl>

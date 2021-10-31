@@ -137,39 +137,44 @@ namespace Supremacy.Universe
                 //var clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
                 try
                 {
-                    IPlayer clientContext = ServiceLocator.Current.GetInstance<IPlayer>();
-                    //var clientContext = Game.IPlayer.
-                    if (clientContext == null)
-                    {
-                        GameLog.Core.General.DebugFormat("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                        return Credits;
-                    }
-                    Civilization empire = clientContext.Empire;//.LocalPlayer.Empire;
-                    if (empire == null)
-                    {
-                        GameLog.Core.General.DebugFormat("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                        return Credits;
-                    }
+                    //clientContext crashes  !!
+
+                    //IPlayer clientContext = ServiceLocator.Current.GetInstance<IPlayer>();
+                    ////var clientContext = Game.IPlayer.
+                    //if (clientContext == null)
+                    //{
+                    //    GameLog.Core.TradeRoutesDetails.DebugFormat("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    //    return Credits;
+                    //}
+                    Civilization empire = SourceColony.Owner;//.LocalPlayer.Empire;
+                    //if (empire == null)
+                    //{
+                    //    GameLog.Core.TradeRoutesDetails.DebugFormat("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    //    return Credits;
+                    //}
 
                     Colony colony = SourceColony.OwnerID == empire.CivID ? SourceColony : TargetColony.OwnerID == empire.CivID ? TargetColony : null;
-                    if (colony == null)
-                    {
-                        GameLog.Core.General.DebugFormat("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                        return Credits;
-                    }
+                    //if (colony == null)
+                    //{
+                    //    GameLog.Core.TradeRoutesDetails.DebugFormat("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    //    return Credits;
+                    //}
 
-                    double bonus = colony.Buildings
+                    double bonus = 0;
+
+                    bonus = colony.Buildings
                                       .Where(o => o.IsActive)
                                       .SelectMany(o => o.BuildingDesign.Bonuses)
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
                                       .Sum(o => 0.01 * o.Amount);
 
-                    GameLog.Core.General.DebugFormat("Turn {0}, Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                    return (int)((1.0 + bonus) * Credits);
+                    GameLog.Core.TradeRoutesDetails.DebugFormat("Turn {0}, Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    // 2021-10-16: Credits devided by 4
+                    return (int)((1.0 + bonus) * Credits / 4);
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.General.ErrorFormat(string.Format(Environment.NewLine + "   #### problem with TradeRoute - ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits",
+                    GameLog.Core.TradeRoutes.ErrorFormat(string.Format(Environment.NewLine + "   #### problem with TradeRoute - ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits",
                         Credits),
                         e);
                     return Credits;

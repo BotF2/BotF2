@@ -33,7 +33,11 @@ namespace Supremacy.Orbitals
     public static class FleetOrders
     {
         public static readonly EngageOrder EngageOrder;
+        public static readonly AssaultSystemOrder AssaultSystemOrder;
         public static readonly AvoidOrder AvoidOrder;
+        public static readonly IdleOrder IdleOrder;
+        public static readonly DefendOrder DefendOrder;
+        public static readonly RedeploySameOrder RedeploySameOrder;
         public static readonly ColonizeOrder ColonizeOrder;
         // public static readonly RaidOrder RaidOrder;
         public static readonly SabotageOrder SabotageOrder;
@@ -46,7 +50,7 @@ namespace Supremacy.Orbitals
         //public static readonly EscortOrder EscortOrder;
         public static readonly BuildStationOrder BuildStationOrder;
         public static readonly ExploreOrder ExploreOrder;
-        public static readonly AssaultSystemOrder AssaultSystemOrder;
+
 
         private static readonly List<FleetOrder> _orders;
         public static string _text;
@@ -55,7 +59,11 @@ namespace Supremacy.Orbitals
         static FleetOrders()
         {
             EngageOrder = new EngageOrder();
+            AssaultSystemOrder = new AssaultSystemOrder();
             AvoidOrder = new AvoidOrder();
+            IdleOrder = new IdleOrder();
+            DefendOrder = new DefendOrder();
+            RedeploySameOrder = new RedeploySameOrder();  // not working yet
             ColonizeOrder = new ColonizeOrder();
             // RaidOrder = new RaidOrder();
             SabotageOrder = new SabotageOrder();
@@ -68,12 +76,16 @@ namespace Supremacy.Orbitals
             //EscortOrder = new EscortOrder();
             BuildStationOrder = new BuildStationOrder();
             ExploreOrder = new ExploreOrder();
-            AssaultSystemOrder = new AssaultSystemOrder();
+
 
             _orders = new List<FleetOrder>
                       {
                           EngageOrder,
+                          AssaultSystemOrder,
                           AvoidOrder,
+                          IdleOrder,
+                          DefendOrder,
+                          RedeploySameOrder,
                           ColonizeOrder,
                           //RaidOrder,
                           SabotageOrder,
@@ -86,7 +98,7 @@ namespace Supremacy.Orbitals
                           // EscortOrder, // this is done in UnitAI by adding escort to fleet as non combat ships (fleet) get order to leave home system
                           BuildStationOrder,
                           ExploreOrder,
-                          AssaultSystemOrder,
+
                       };
 
         }
@@ -178,24 +190,104 @@ namespace Supremacy.Orbitals
     }
     #endregion
 
-    #region Avoid Order
-
+    #region AvoidOrder
     [Serializable]
     public sealed class AvoidOrder : FleetOrder
     {
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_AVOID");
-
         public override string Status => ResourceManager.GetString("FLEET_ORDER_AVOID");
-
         public override bool WillEngageHostiles => false;
-
         public override FleetOrder Create()
         {
             return new AvoidOrder();
         }
     }
+    #endregion AvoidOrder
 
-    #endregion
+
+    #region IdleOrder
+    [Serializable]
+    public sealed class IdleOrder : FleetOrder
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_IDLE");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_IDLE");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new IdleOrder();
+        }
+    }
+    #endregion IdleOrder
+
+    #region RedeploySameOrder
+    [Serializable]
+    public sealed class RedeploySameOrder : FleetOrder
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new RedeploySameOrder();
+        }
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            _text = "ShipOrder 'RedeploySameOrder' is turned off due to not working yet";
+            Console.WriteLine(_text);
+            //GameLog.Core.Production.DebugFormat(_text);
+            return false;
+
+            //if (!base.IsValidOrder(fleet))
+            //{
+            //    return false;
+            //}
+
+            //if (fleet.Sector.System == null)
+            //{
+            //    return false;
+            //}
+
+            //if (fleet.Sector.System.HasColony)
+            //{
+            //    return false;
+            //}
+
+            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
+
+            return true;
+        }
+    }
+    #endregion RedeploySameOrder
+
+
+    #region DefendOrder
+    [Serializable]
+    public sealed class DefendOrder : FleetOrder
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_DEFEND");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_DEFEND");
+        public override bool WillEngageHostiles => true;
+        public override FleetOrder Create()
+        {
+            return new DefendOrder();
+        }
+    }
+    #endregion IdleOrder
 
     #region ColonizeOrder
 
@@ -420,7 +512,7 @@ namespace Supremacy.Orbitals
                 _text = Fleet.Location + " > " + Fleet.Name + " (our Medical Ship) provided help: new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
                 GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
 
-                _text = Fleet.Location + " > We got medical help from " + Fleet.Name + " ( " + Fleet.Owner.ShortName + " Medical Ship ): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
+                _text = Fleet.Location + " > We got medical supply from " + Fleet.Name + " ( " + Fleet.Owner.ShortName + " Medical Ship ): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
                 GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
             }
 

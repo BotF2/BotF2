@@ -203,6 +203,7 @@ namespace Supremacy.Game
                         }
                         GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileName);
                         _ = memoryStream.Seek(0, SeekOrigin.Begin);
+                        Console.WriteLine("reading memoryStream into game");
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }
                 }

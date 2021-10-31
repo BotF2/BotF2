@@ -37,6 +37,12 @@ namespace Supremacy.Universe
         private string _name;
         private int _turnCreated;
         private int _lastOwnershipChange;
+
+        //private string _text;
+        //private readonly string newline = Environment.NewLine;
+
+
+
         [field: NonSerialized]
         public event EventHandler LocationChanged;
         [field: NonSerialized]
@@ -266,6 +272,19 @@ namespace Supremacy.Universe
             _turnCreated = reader.ReadOptimizedUInt16();
 
             DeserializeEffectData(reader, context);
+
+            // to often
+            //Console.WriteLine("UniverseObjects: DeserializeOwnedData... ");
+
+            // no big result
+            //_text = newline
+            //    + ";" + _location
+            //    + ";" + _name
+            //    + ";" + _ownerId
+            //    + ";" + _turnCreated
+            //    ;
+            //if (_checkLoading == true)
+            //    Console.WriteLine(_text);
         }
 
         public override void SerializeOwnedData(SerializationWriter writer, object context)
@@ -398,17 +417,7 @@ namespace Supremacy.Universe
         /// </returns>
         public static bool operator ==(UniverseObject a, UniverseObject b)
         {
-            if (ReferenceEquals(a, b))
-            {
-                return true;
-            }
-
-            if (((object)a == null) || ((object)b == null))
-            {
-                return false;
-            }
-
-            return a.ObjectID == b.ObjectID;
+            return ReferenceEquals(a, b) || (a is object && b is object && a.ObjectID == b.ObjectID);
         }
 
         /// <summary>

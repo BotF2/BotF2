@@ -111,10 +111,12 @@ namespace Supremacy.Client
         private string localEmpire = "";
         private int startTechLvl = -1;
 
+        public bool _checkLoading = true;
+
         private bool _isExiting;
         private IGameController _gameController;
-        private string _text;
-        private readonly string newline = Environment.NewLine;
+        public string _text;
+        public readonly string newline = Environment.NewLine;
 
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;
@@ -254,12 +256,14 @@ namespace Supremacy.Client
         private void ExecuteLoadGameCommand(SavedGameHeader header)
         {
             GameInitData initData = GameInitData.CreateFromSavedGame(header);
-            GameLog.Client.GeneralDetails.Debug("doing ExecuteLoadGameCommand ...");
+            GameLog.Client.General.Debug("doing ExecuteLoadGameCommand ...");
             RunGameController(gameController => gameController.RunLocal(initData), initData.IsMultiplayerGame);
             GameLog.Client.GeneralDetails.Debug("doing gameController.RunLocal(initData) ...");
 
             startTechLvl = GetStartTechLvl(initData.Options.StartingTechLevel.ToString());
             localEmpire = GetLocalEmpireShortage(initData.LocalPlayerEmpireID, out string localempire);
+            GameLog.Client.General.Debug("playing " + localempire + " ( StartLevel " + startTechLvl + " )");
+
         }
 
         private void ExecuteDeleteManualSavedGameCommand(object obj)
@@ -623,7 +627,7 @@ namespace Supremacy.Client
 
             UIHelpers.IsAutomaticBrowserLaunchEnabled = true;
 
-            if (AutoLoadSavedGame())
+            if (AutoLoadSavedGame())   // don't show Start Screen
             {
                 return;
             }

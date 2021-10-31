@@ -321,6 +321,13 @@ namespace Supremacy.Client
 
             IPlayer localPlayer = AppContext.LocalPlayer;
 
+            if (AppContext.LocalPlayer == null)
+            {
+                _text = "ERROR: AppContext.LocalPlayer == null";
+                Console.WriteLine(_text);
+                GameLog.Client.General.DebugFormat(_text);
+            }
+
 
             if (AppContext.IsSinglePlayerGame)
             {
@@ -410,6 +417,7 @@ namespace Supremacy.Client
 
         #region Implementation of IActiveAware
         private bool _isActive;
+        private string _text;
 
         public event EventHandler IsActiveChanged;
 

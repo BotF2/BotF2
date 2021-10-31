@@ -358,7 +358,7 @@ namespace Supremacy.Universe
                     Console.WriteLine(_text);
                     GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
 
-                    _text = "Searching for Crash: systemNamesList";
+                    _text = "Searching for Crash: systemNamesList 222";
                     Console.WriteLine(_text);
                     IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
 
@@ -1230,7 +1230,7 @@ namespace Supremacy.Universe
                 }
 
                 _text = "Searching for Crash: systemNamesList";
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
 
                 //foreach (var pos in positions)

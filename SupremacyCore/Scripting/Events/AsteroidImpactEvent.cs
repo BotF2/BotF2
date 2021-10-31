@@ -20,8 +20,11 @@ namespace Supremacy.Scripting.Events
     [Serializable]
     public class AsteroidImpactEvent : UnitScopedEvent<Colony>
     {
+#pragma warning disable IDE0052 // Remove unread private members
         private bool _productionFinished;         // this is necassary !!!
         private bool _shipProductionFinished;     // this is necassary !!!
+#pragma warning restore IDE0052 // Remove unread private members
+
 
         private int _occurrenceChance = 200;
 

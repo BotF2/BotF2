@@ -32,7 +32,7 @@ namespace Supremacy.AI
 
             .Concat(GameContext.Current.Universe.FindStarType<Sector>(StarType.NeutronStar).ToList());
         private static string _text;
-        private static readonly string newline;
+        private static readonly string newline = Environment.NewLine;
 
         public static void DoTurn([NotNull] Civilization civ)
         {

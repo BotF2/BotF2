@@ -358,14 +358,14 @@ namespace Supremacy.Client.Views
                 {
                     return;
                 }
-                int _howMany = 5;
-                for (int i = 0; i < _howMany; i++)
-                {
-                    _addToShipyardBuildQueueCommand = value;
-                    OnAddToShipyardBuildQueueCommandChanged();
-                }
-                //_addToShipyardBuildQueueCommand = value;
-                //OnAddToShipyardBuildQueueCommandChanged();
+                //int _howMany = 5;
+                //for (int i = 0; i < _howMany; i++)
+                //{
+                //    _addToShipyardBuildQueueCommand = value;
+                //    OnAddToShipyardBuildQueueCommandChanged();
+                //}
+                _addToShipyardBuildQueueCommand = value;
+                OnAddToShipyardBuildQueueCommandChanged();
             }
         }
         #endregion
@@ -690,18 +690,18 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        #region DedeactivateOrbitalBatteryCommand Command
+        #region DeactivateOrbitalBatteryCommand Command
         private ICommand _deactivateOrbitalBatteryCommand;
 
-        public event EventHandler DedeactivateOrbitalBatteryCommandChanged;
+        public event EventHandler DeactivateOrbitalBatteryCommandChanged;
 
-        private void OnDedeactivateOrbitalBatteryCommandChanged()
+        private void OnDeactivateOrbitalBatteryCommandChanged()
         {
-            DedeactivateOrbitalBatteryCommandChanged?.Invoke(this, EventArgs.Empty);
-            OnPropertyChanged("DedeactivateOrbitalBatteryCommand");
+            DeactivateOrbitalBatteryCommandChanged?.Invoke(this, EventArgs.Empty);
+            OnPropertyChanged("DeactivateOrbitalBatteryCommand");
         }
 
-        public ICommand DedeactivateOrbitalBatteryCommand
+        public ICommand DeactivateOrbitalBatteryCommand
         {
             get => _deactivateOrbitalBatteryCommand;
             set
@@ -712,7 +712,7 @@ namespace Supremacy.Client.Views
                 }
 
                 _deactivateOrbitalBatteryCommand = value;
-                OnDedeactivateOrbitalBatteryCommandChanged();
+                OnDeactivateOrbitalBatteryCommandChanged();
             }
         }
         #endregion
