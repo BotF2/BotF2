@@ -407,8 +407,15 @@ namespace Supremacy.Universe
             _starType = (StarType)reader.ReadByte();
             _text += Environment.NewLine + ";" + _starType + ";Bonus;"  + ";" + _bonuses + ";-------";
 
-            _checkLoading = true; if (_checkLoading == true) Console.WriteLine(_text);
-                
+            //_checkLoading = true; 
+            //if (_checkLoading == true)
+            //{
+            //    Console.WriteLine(_text);
+            //}
+            //else
+            //{
+                //Console.WriteLine("Print of List of systems from saved game is turned off");
+            //}
         }
 
         public MapLocation? WormholeDestination { get; set; }

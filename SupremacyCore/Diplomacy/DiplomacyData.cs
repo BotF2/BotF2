@@ -1,4 +1,4 @@
-// DiplomacyData.cs
+// File:DiplomacyData.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -63,6 +63,7 @@ namespace Supremacy.Diplomacy
         private int _contactTurn;
         private bool _firstDiplomaticAction;
         private int _lastStatusChange;
+        private string _text;
         private ForeignPowerStatus _diplomacyStatus;
 
         //protected static TableMap GameOptionTables => GameContext.Current.Tables.GameOptionTables;
@@ -244,6 +245,23 @@ namespace Supremacy.Diplomacy
             _firstDiplomaticAction = reader.ReadBoolean();
             _diplomacyStatus = (ForeignPowerStatus)reader.ReadOptimizedInt32();
             _lastStatusChange = reader.ReadOptimizedInt32();
+
+            if(_diplomacyStatus != ForeignPowerStatus.NoContact)
+            {
+                _text = "OwnerID;" + _ownerId
+                + ";_counterpartyId;" + _counterpartyId
+                + ";_regard;" + _regard
+                + ";_trust;" + _trust
+                + ";_contactTurn;" + _contactTurn
+                + ";_firstDiplomaticAction;" + _firstDiplomaticAction
+                + ";_diplomacyStatus;" + _diplomacyStatus
+                + ";_lastStatusChange;" + _lastStatusChange
+                //+ ";_counterpartyId;" + _counterpartyId
+
+                ;
+            Console.WriteLine(_text); //GameLog.Core.Stations.DebugFormat(_text);
+            }
+
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

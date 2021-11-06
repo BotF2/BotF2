@@ -32,6 +32,7 @@ namespace Supremacy.Diplomacy
         private IProposal _proposal;
         private IProposal _counterProposal;
         private int _turnSent;
+        private string _text;
 
         public Response(ResponseType responseType, [NotNull] IProposal proposal, [CanBeNull] IProposal counterProposal = null, int turnSent = 0)
         {
@@ -68,6 +69,14 @@ namespace Supremacy.Diplomacy
             _responseType = (ResponseType)reader.ReadByte();
             _proposal = reader.Read<IProposal>();
             _counterProposal = reader.Read<IProposal>();
+
+            _text = "Turn sent; " + _turnSent
+                + ";Response; " + _responseType.ToString()
+                + ";_proposal; " + _proposal.ToString()
+                + ";_counterProposal; " + _counterProposal.ToString()
+                ;
+            Console.WriteLine(_text);
+            //GameLog.Core.Stations.DebugFormat(_text);
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
@@ -77,7 +86,7 @@ namespace Supremacy.Diplomacy
             writer.WriteObject(_proposal);
             writer.WriteObject(_counterProposal);
         }
-
+        
         #endregion
     }
 

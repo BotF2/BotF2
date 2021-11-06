@@ -607,13 +607,21 @@ namespace Supremacy.Universe
                 {
                     fleet.AddShipInternal(ship);
 
-                    _text = ";"
-                        + ship.Location
-                        + ";ship adding;" + ship.ObjectID + ";" + ship.Design + ";" + ship.Name
-                        + ";to Fleet; " + fleet.Name
-                        + ";" + ship.Owner
-                        ;
-                    _checkLoading = true; if (_checkLoading == true) Console.WriteLine(_text);
+                    //_text = ";"
+                    //    + ship.Location
+                    //    + ";ship adding;" + ship.ObjectID + ";" + ship.Design + ";" + ship.Name
+                    //    + ";to Fleet; " + fleet.Name
+                    //    + ";" + ship.Owner
+                    //    ;
+                    //_checkLoading = true;
+                    //if (_checkLoading == true)
+                    //{
+                    //Console.WriteLine(_text);
+                    //}
+                    //else
+                    //{
+                        //Console.WriteLine("Print of List of ships and fleets from saved game is turned off");
+                    //}
                 }
 
                 _text = "";
@@ -656,7 +664,7 @@ namespace Supremacy.Universe
                     + ";" + colony.Owner
                     + ";Colony;"
                     ;
-                Console.WriteLine(_col);
+                //Console.WriteLine(_col);
 
                 StarSystem system = systemLocationLookup[colony.Location].FirstOrDefault();
                 if (system == null)
@@ -672,17 +680,22 @@ namespace Supremacy.Universe
                     colony.BuildingsInternal.Add(building);
                     _text =
                         _col
-                        //";" + colony.Location
-                        //+ "; " + colony.Name
-                        //+ "; " + colony.Owner
                         + "; Building"
                         + "; " + building.ObjectID
                         + "; " + building.Design
                         +";" + building.IsActive + "_for_Active"
-                        //+ "; " + building.TurnCreated
+                        + "; since Turn;" + building.TurnCreated
 
                         ;
-                    _checkLoading = true; if(_checkLoading == true) Console.WriteLine(_text);
+                    //_checkLoading = true; 
+                    //if(_checkLoading == true)
+                    //{
+                    //    Console.WriteLine(_text);
+                    //}
+                    //else
+                    //{
+                        //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
+                    //}
                 }
 
             }

@@ -758,7 +758,7 @@ namespace Supremacy.Diplomacy
         }
         public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn) // creat ditionary entry
         {
-            //int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
 
             if (_acceptRejectDictionary.ContainsKey(civIDs))
             {

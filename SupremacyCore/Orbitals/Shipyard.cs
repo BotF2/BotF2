@@ -31,6 +31,7 @@ namespace Supremacy.Orbitals
         // private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
         private string _text;
+        private readonly string newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -235,6 +236,36 @@ namespace Supremacy.Orbitals
 
             _buildQueue = new ObservableCollection<BuildQueueItem>((BuildQueueItem[])reader.ReadObjectArray(typeof(BuildQueueItem)));
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>((ShipyardBuildSlot[])reader.ReadOptimizedObjectArray(typeof(ShipyardBuildSlot)));
+
+            foreach (var item in _buildSlots)
+            {
+                if (item.Shipyard != null)
+                {
+                    _text = item.Shipyard.Location
+                    + ";" + item.Shipyard.Design
+
+                    ;
+                }
+
+                if (!item.HasProject)
+                {
+                    _text += "Shipyard_buildSlot: No Project" + newline;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Stations.DebugFormat(_text);
+                }
+                else
+                {
+                    if (item.Project != null)
+                    {
+                        _text += item.Project.Builder 
+                            + "; " + item.Project.BuildDesign
+                            + newline
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Stations.DebugFormat(_text);
+                    }
+                }
+            }
 
             UpdateBuildSlots();
         }
