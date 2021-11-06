@@ -1,4 +1,4 @@
-// <!-- File:f08_Dialog.xaml.cs
+// <!-- File:f09_Dialog.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -13,11 +13,11 @@ using System.Windows.Input;
 namespace Supremacy.Client
 {
     /// <summary>
-    /// Interaction logic for f08_Dialog.xaml.cs
+    /// Interaction logic for f09_Dialog.xaml.cs
     /// </summary>
-    public partial class F08_Dialog
+    public partial class F09_Dialog
     {
-        public F08_Dialog()
+        public F09_Dialog()
         {
             InitializeComponent();
 
@@ -45,6 +45,16 @@ namespace Supremacy.Client
 
             //_ = CommandBindings.Add(
             //    new CommandBinding(
+            //        GenericCommands.CancelCommand,
+            //        OnGenericCommandsCancelCommandExecuted));
+
+            //_ = CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.AcceptCommand,
+            //        OnGenericCommandsAcceptCommandExecuted));
+
+            //_ = CommandBindings.Add(
+            //    new CommandBinding(
             //        GenericCommands.TracesSetAllwithoutDetailsCommand,
             //        OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
 
@@ -58,7 +68,7 @@ namespace Supremacy.Client
             //        GenericCommands.TracesSetNoneCommand,
             //        OnGenericCommandsTracesSetNoneCommandExecuted));
 
-            GameLog.Client.UIDetails.DebugFormat("F10-Dialog initialized");
+            GameLog.Client.UIDetails.DebugFormat("F09-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
@@ -73,11 +83,11 @@ namespace Supremacy.Client
             Close();
         }
 
-        private void SaveChangesAndHide()
-        {
-            //ClientSettings.Current.Save();
-            Close();
-        }
+        //private void SaveChangesAndHide()
+        //{
+        //    ClientSettings.Current.Save();
+        //    Close();
+        //}
 
         //private void OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
         //{

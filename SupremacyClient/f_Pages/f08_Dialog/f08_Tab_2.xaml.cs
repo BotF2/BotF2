@@ -32,77 +32,77 @@ namespace Supremacy.Client
                     Key.Enter,
                     ModifierKeys.None));
 
-            _ = CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.CancelCommand,
-                    OnGenericCommandsCancelCommandExecuted));
+            //_ = CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.CancelCommand,
+            //        OnGenericCommandsCancelCommandExecuted));
 
-            _ = CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.AcceptCommand,
-                    OnGenericCommandsAcceptCommandExecuted));
+            //_ = CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.AcceptCommand,
+            //        OnGenericCommandsAcceptCommandExecuted));
 
-            _ = CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetAllwithoutDetailsCommand,
-                    OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
+            //_ = CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetAllwithoutDetailsCommand,
+            //        OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
 
-            _ = CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetSomeCommand,
-                    OnGenericCommandsTracesSetSomeCommandExecuted));
+            //_ = CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetSomeCommand,
+            //        OnGenericCommandsTracesSetSomeCommandExecuted));
 
-            _ = CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetNoneCommand,
-                    OnGenericCommandsTracesSetNoneCommandExecuted));
+            //_ = CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetNoneCommand,
+            //        OnGenericCommandsTracesSetNoneCommandExecuted));
         }
 
-        private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
-        {
-            ClientSettings.Current.Reload();
-            Close();
-        }
+        //private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        //{
+        //    ClientSettings.Current.Reload();
+        //    Close();
+        //}
 
-        private void OnGenericCommandsAcceptCommandExecuted(object source, ExecutedRoutedEventArgs e)
-        {
-            SaveChangesAndHide();
-        }
+        //private void OnGenericCommandsAcceptCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        //{
+        //    SaveChangesAndHide();
+        //}
 
-        private void SaveChangesAndHide()
-        {
-            ClientSettings.Current.Save();
-            Close();
-        }
+        //private void SaveChangesAndHide()
+        //{
+        //    ClientSettings.Current.Save();
+        //    Close();
+        //}
 
-        private void OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
-        {
-            ClientSettings.Current.TracesAudio = true;
+        //private void OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        //{
+        //    ClientSettings.Current.TracesAudio = true;
 
-            ClientSettings.Current.Save();
-            ClientSettings.Current.Reload();
-        }
+        //    ClientSettings.Current.Save();
+        //    ClientSettings.Current.Reload();
+        //}
 
-        private void OnGenericCommandsTracesSetSomeCommandExecuted(object source, ExecutedRoutedEventArgs e)
-        {
-            ClientSettings.Current.TracesAudio = false;
+        //private void OnGenericCommandsTracesSetSomeCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        //{
+        //    ClientSettings.Current.TracesAudio = false;
 
-            ClientSettings.Current.Save();
-            ClientSettings.Current.Reload();
-        }
+        //    ClientSettings.Current.Save();
+        //    ClientSettings.Current.Reload();
+        //}
 
-        private void OnGenericCommandsTracesSetNoneCommandExecuted(object source, ExecutedRoutedEventArgs e)
-        {
-            //ClientSettings.Traces_ClearAllProperty();
-            ClientSettings.Current.TracesAudio = false;
+        //private void OnGenericCommandsTracesSetNoneCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        //{
+        //    //ClientSettings.Traces_ClearAllProperty();
+        //    ClientSettings.Current.TracesAudio = false;
 
-            ClientSettings.Current.Save();
-            ClientSettings.Current.Reload();
-        }
+        //    ClientSettings.Current.Save();
+        //    ClientSettings.Current.Reload();
+        //}
 
-        private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
+        //private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        //{
 
-        }
+        //}
     }
 }

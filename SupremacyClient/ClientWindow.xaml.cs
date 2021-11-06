@@ -149,7 +149,7 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F5, ModifierKeys.None))
             { CommandParameter = StandardGameScreens.IntelScreen });
 
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.F06_Command, Key.F6, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.F6, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None));
@@ -160,6 +160,7 @@ namespace Supremacy.Client
 
             // CTRL + Fx
             _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F06_Command, Key.F6, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.Control));  // old F9-Dialog, not used anymore
 
 
             //                                                      CheatMenu uses CTRL + C

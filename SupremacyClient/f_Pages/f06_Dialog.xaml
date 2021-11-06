@@ -1,4 +1,4 @@
-﻿<!-- File:f06_Dialog.xaml - Header="F6 Dialog = Colors"
+﻿<!-- File:f06_Dialog.xaml --> <!--Not used > F6 is now SUMMARY Dialog
     
    Copyright (c) 2007 Mike Strobel
   
@@ -19,6 +19,8 @@
             ScrollViewer.HorizontalScrollBarVisibility="Auto"
             Background="Black"
             SnapsToDevicePixels="True">
+    
+    <!--Not used > F6 is now SUMMARY Dialog-->
 
     
   <DockPanel LastChildFill="True">

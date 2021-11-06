@@ -778,6 +778,15 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_8));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_9));
 
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_1));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_2));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_3));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_4));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_5));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_6));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_7));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_8));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_9));
 
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_1));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_2));
