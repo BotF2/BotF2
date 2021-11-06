@@ -73,11 +73,11 @@ namespace Supremacy.Client
             Close();
         }
 
-        private void SaveChangesAndHide()
-        {
-            //ClientSettings.Current.Save();
-            Close();
-        }
+        //private void SaveChangesAndHide()
+        //{
+        //    //ClientSettings.Current.Save();
+        //    Close();
+        //}
 
         //private void OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
         //{

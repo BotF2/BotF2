@@ -257,10 +257,10 @@ namespace Supremacy.Orbitals
                 {
                     if (item.Project != null)
                     {
-                        _text += item.Project.Builder 
-                            + "; " + item.Project.BuildDesign
-                            + newline
-                        ;
+                        //_text += item.Project.Builder
+                        //    //+ "; " + item.Project.BuildDesign
+                        //    + newline
+                        //;
                     Console.WriteLine(_text);
                     //GameLog.Core.Stations.DebugFormat(_text);
                     }
