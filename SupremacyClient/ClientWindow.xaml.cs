@@ -157,8 +157,12 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
 
-            
-                        //                                                      CheatMenu uses CTRL + C
+
+            // CTRL + Fx
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F06_Command, Key.F6, ModifierKeys.Control));
+
+
+            //                                                      CheatMenu uses CTRL + C
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
             //InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control))); - see above - from Mike

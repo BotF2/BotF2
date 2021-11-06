@@ -29,6 +29,20 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand F11_Command = new CompositeCommand(true);
         public static readonly CompositeCommand F12_Command = new CompositeCommand(true);
 
+
+        public static readonly CompositeCommand CTRL_F01_Command = new CompositeCommand(true);  // F1 + CTRL
+        public static readonly CompositeCommand CTRL_F02_Command = new CompositeCommand(true);  // F2 + CTRL
+        public static readonly CompositeCommand CTRL_F03_Command = new CompositeCommand(true);  // F3 + CTRL
+        public static readonly CompositeCommand CTRL_F04_Command = new CompositeCommand(true);  // F4 + CTRL
+        public static readonly CompositeCommand CTRL_F05_Command = new CompositeCommand(true);  // F5 + CTRL
+        public static readonly CompositeCommand CTRL_F06_Command = new CompositeCommand(true);  // F6 + CTRL
+        public static readonly CompositeCommand CTRL_F07_Command = new CompositeCommand(true);  // F7 + CTRL
+        public static readonly CompositeCommand CTRL_F08_Command = new CompositeCommand(true);  // F8 + CTRL
+        public static readonly CompositeCommand CTRL_F09_Command = new CompositeCommand(true);  // F9 + CTRL
+        public static readonly CompositeCommand CTRL_F10_Command = new CompositeCommand(true); // 
+        public static readonly CompositeCommand CTRL_F11_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_F12_Command = new CompositeCommand(true);
+
         public static readonly CompositeCommand S0_Command = new CompositeCommand(true);  // Start Single Player Empire x
         public static readonly CompositeCommand S1_Command = new CompositeCommand(true);
         public static readonly CompositeCommand S2_Command = new CompositeCommand(true);

@@ -74,6 +74,15 @@ namespace Supremacy.Client
         private readonly F12_Dialog _f12_Dialog;
         private readonly FakeDialog _fakeDialog;
 
+        private readonly CTRL_F06_Dialog _ctrl_f06_Dialog;
+        //private readonly F07_Dialog _encyclopedia_Dialog;
+        private readonly CTRL_F07_Dialog _ctrl_f07_Dialog;
+        private readonly CTRL_F08_Dialog _ctrl_f08_Dialog;
+        private readonly CTRL_F09_Dialog _ctrl_f09_Dialog;
+        private readonly CTRL_F10_Dialog _ctrl_f10_Dialog;
+        private readonly CTRL_F11_Dialog _ctrl_f11_Dialog;
+        private readonly CTRL_F12_Dialog _ctrl_f12_Dialog;
+
         private readonly DelegateCommand<object> _optionsCommand;
         private readonly DelegateCommand<object> _tracesCommand;
         private readonly DelegateCommand<object> _f06_Command;
@@ -83,6 +92,19 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _f10_Command;
         private readonly DelegateCommand<object> _f11_Command;
         private readonly DelegateCommand<object> _f12_Command;
+
+        private readonly DelegateCommand<object> _ctrl_f01_Command;
+        private readonly DelegateCommand<object> _ctrl_f02_Command;
+        private readonly DelegateCommand<object> _ctrl_f03_Command;
+        private readonly DelegateCommand<object> _ctrl_f04_Command;
+        private readonly DelegateCommand<object> _ctrl_f05_Command;
+        private readonly DelegateCommand<object> _ctrl_f06_Command;
+        private readonly DelegateCommand<object> _ctrl_f07_Command;
+        private readonly DelegateCommand<object> _ctrl_f08_Command;
+        private readonly DelegateCommand<object> _ctrl_f09_Command;
+        private readonly DelegateCommand<object> _ctrl_f10_Command;
+        private readonly DelegateCommand<object> _ctrl_f11_Command;
+        private readonly DelegateCommand<object> _ctrl_f12_Command;
 
         private readonly DelegateCommand<object> _s0_Command;   // start Single Player Empire 0
         private readonly DelegateCommand<object> _s1_Command;
@@ -184,6 +206,10 @@ namespace Supremacy.Client
             _f12_Command = new DelegateCommand<object>(
                 Execute_f12_Command);
 
+            _ctrl_f06_Dialog = new CTRL_F06_Dialog();
+            _ctrl_f06_Command = new DelegateCommand<object>(
+                Execute_ctrl_f06_Command);
+
             _s0_Command = new DelegateCommand<object>(Execute_s0_Command); // start Single Player Empire 0
             _s1_Command = new DelegateCommand<object>(Execute_s1_Command);
             _s2_Command = new DelegateCommand<object>(Execute_s2_Command);
@@ -228,10 +254,10 @@ namespace Supremacy.Client
 
             //MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
 
-            string file = "Credits_for_Rise_of_the_UFP.pdf";
+            string file = ".\\Resources\\Credits_for_Rise_of_the_UFP.pdf";
             try
             {
-                if (System.IO.File.Exists(file))
+                if (File.Exists(file))
                 {
                     _ = Process.Start(file);
                 }
@@ -281,6 +307,21 @@ namespace Supremacy.Client
         private void Execute_f10_Command(object obj) { _ = _f10_Dialog.ShowDialog(); }
         private void Execute_f11_Command(object obj) { _ = _f11_Dialog.ShowDialog(); }
         private void Execute_f12_Command(object obj) { _ = _f12_Dialog.ShowDialog(); }
+
+
+        //private void Execute_ctrl_f01_Command(object obj) { _ = _ctrl_f01_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f02_Command(object obj) { _ = _ctrl_f02_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f03_Command(object obj) { _ = _ctrl_f03_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f04_Command(object obj) { _ = _ctrl_f04_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f05_Command(object obj) { _ = _ctrl_f05_Dialog.ShowDialog(); }
+        private void Execute_ctrl_f06_Command(object obj) { _ = _ctrl_f06_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f07_Command(object obj) { _ = _ctrl_f07_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f08_Command(object obj) { _ = _ctrl_f08_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f09_Command(object obj) { _ = _ctrl_f09_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f10_Command(object obj) { _ = _ctrl_f10_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f11_Command(object obj) { _ = _ctrl_f11_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f12_Command(object obj) { _ = _ctrl_f12_Dialog.ShowDialog(); }
+
 
         private void Execute_s0_Command(object obj) { ExecuteSP_DirectlyGameCommand(0); }
         private void Execute_s1_Command(object obj) { ExecuteSP_DirectlyGameCommand(1); }
@@ -985,6 +1026,18 @@ namespace Supremacy.Client
             _f10_Command.IsActive = true;
             _f11_Command.IsActive = true;
             _f12_Command.IsActive = true;
+            //_ctrl_f01_Command.IsActive = true;
+            //_ctrl_f02_Command.IsActive = true;
+            //_ctrl_f03_Command.IsActive = true;
+            //_ctrl_f04_Command.IsActive = true;
+            //_ctrl_f05_Command.IsActive = true;
+            _ctrl_f06_Command.IsActive = true;
+            //_ctrl_f07_Command.IsActive = true;
+            //_ctrl_f08_Command.IsActive = true;
+            //_ctrl_f09_Command.IsActive = true;
+            //_ctrl_f10_Command.IsActive = true;
+            //_ctrl_f11_Command.IsActive = true;
+            //_ctrl_f12_Command.IsActive = true;
             _s0_Command.IsActive = true;
             _s1_Command.IsActive = true;
             _s2_Command.IsActive = true;
@@ -1191,6 +1244,19 @@ namespace Supremacy.Client
             ClientCommands.F10_Command.RegisterCommand(_f10_Command);
             ClientCommands.F11_Command.RegisterCommand(_f11_Command);
             ClientCommands.F12_Command.RegisterCommand(_f12_Command);
+
+            //ClientCommands.CTRL_F01_Command.RegisterCommand(_ctrl_f01_Command);
+            //ClientCommands.CTRL_F02_Command.RegisterCommand(_ctrl_f02_Command);
+            //ClientCommands.CTRL_F03_Command.RegisterCommand(_ctrl_f03_Command);
+            //ClientCommands.CTRL_F04_Command.RegisterCommand(_ctrl_f04_Command);
+            //ClientCommands.CTRL_F05_Command.RegisterCommand(_ctrl_f05_Command);
+            ClientCommands.CTRL_F06_Command.RegisterCommand(_ctrl_f06_Command);
+            //ClientCommands.CTRL_F07_Command.RegisterCommand(_ctrl_f07_Command);
+            //ClientCommands.CTRL_F08_Command.RegisterCommand(_ctrl_f08_Command);
+            //ClientCommands.CTRL_F09_Command.RegisterCommand(_ctrl_f09_Command);
+            //ClientCommands.CTRL_F10_Command.RegisterCommand(_ctrl_f10_Command);
+            //ClientCommands.CTRL_F11_Command.RegisterCommand(_ctrl_f11_Command);
+            //ClientCommands.CTRL_F12_Command.RegisterCommand(_ctrl_f12_Command);
 
             ClientCommands.S0_Command.RegisterCommand(_s0_Command);
             ClientCommands.S1_Command.RegisterCommand(_s1_Command);
