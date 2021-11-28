@@ -328,21 +328,23 @@
                 Margin="6,6,5,6"
                 Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Sector.Location}"
+                     FontSize="20pt"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Foreground="{DynamicResource DefaultTextBrush}"
+                     />                
+                <TextBlock Text=" >  "
+                     FontSize="20pt"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Foreground="{DynamicResource DefaultTextBrush}"
+                     />                
                 <TextBlock x:Name="HeaderText"
                      FontSize="20pt"
                      FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      Foreground="{DynamicResource DefaultTextBrush}"
                      HorizontalAlignment="Left"/>
-                <TextBlock Text=" at "
-                     FontSize="20pt"
-                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                     Foreground="{DynamicResource DefaultTextBrush}"
-                     />
-                <TextBlock Text="{Binding Path=Sector.Location}"
-                     FontSize="20pt"
-                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                     Foreground="{DynamicResource DefaultTextBrush}"
-                     />
+
+
             </StackPanel>
         <!--Foreground="{DynamicResource HeaderTextBrush}"-->
             <TextBlock x:Name="SubHeaderText"

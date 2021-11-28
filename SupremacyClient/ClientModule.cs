@@ -39,6 +39,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace Supremacy.Client
 {
@@ -76,12 +77,12 @@ namespace Supremacy.Client
 
         private readonly CTRL_F06_Dialog _ctrl_f06_Dialog;
         //private readonly F07_Dialog _encyclopedia_Dialog;
-        private readonly CTRL_F07_Dialog _ctrl_f07_Dialog;
-        private readonly CTRL_F08_Dialog _ctrl_f08_Dialog;
-        private readonly CTRL_F09_Dialog _ctrl_f09_Dialog;
-        private readonly CTRL_F10_Dialog _ctrl_f10_Dialog;
-        private readonly CTRL_F11_Dialog _ctrl_f11_Dialog;
-        private readonly CTRL_F12_Dialog _ctrl_f12_Dialog;
+        //private readonly CTRL_F07_Dialog _ctrl_f07_Dialog;
+        //private readonly CTRL_F08_Dialog _ctrl_f08_Dialog;
+        //private readonly CTRL_F09_Dialog _ctrl_f09_Dialog;
+        //private readonly CTRL_F10_Dialog _ctrl_f10_Dialog;
+        //private readonly CTRL_F11_Dialog _ctrl_f11_Dialog;
+        //private readonly CTRL_F12_Dialog _ctrl_f12_Dialog;
 
         private readonly DelegateCommand<object> _optionsCommand;
         private readonly DelegateCommand<object> _tracesCommand;
@@ -93,18 +94,18 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _f11_Command;
         private readonly DelegateCommand<object> _f12_Command;
 
-        private readonly DelegateCommand<object> _ctrl_f01_Command;
-        private readonly DelegateCommand<object> _ctrl_f02_Command;
-        private readonly DelegateCommand<object> _ctrl_f03_Command;
-        private readonly DelegateCommand<object> _ctrl_f04_Command;
-        private readonly DelegateCommand<object> _ctrl_f05_Command;
+        //private readonly DelegateCommand<object> _ctrl_f01_Command;
+        //private readonly DelegateCommand<object> _ctrl_f02_Command;
+        //private readonly DelegateCommand<object> _ctrl_f03_Command;
+        //private readonly DelegateCommand<object> _ctrl_f04_Command;
+        //private readonly DelegateCommand<object> _ctrl_f05_Command;
         private readonly DelegateCommand<object> _ctrl_f06_Command;
-        private readonly DelegateCommand<object> _ctrl_f07_Command;
-        private readonly DelegateCommand<object> _ctrl_f08_Command;
-        private readonly DelegateCommand<object> _ctrl_f09_Command;
-        private readonly DelegateCommand<object> _ctrl_f10_Command;
-        private readonly DelegateCommand<object> _ctrl_f11_Command;
-        private readonly DelegateCommand<object> _ctrl_f12_Command;
+        //private readonly DelegateCommand<object> _ctrl_f07_Command;
+        //private readonly DelegateCommand<object> _ctrl_f08_Command;
+        //private readonly DelegateCommand<object> _ctrl_f09_Command;
+        //private readonly DelegateCommand<object> _ctrl_f10_Command;
+        //private readonly DelegateCommand<object> _ctrl_f11_Command;
+        //private readonly DelegateCommand<object> _ctrl_f12_Command;
 
         private readonly DelegateCommand<object> _s0_Command;   // start Single Player Empire 0
         private readonly DelegateCommand<object> _s1_Command;
@@ -920,7 +921,7 @@ namespace Supremacy.Client
 
             statusWindow.Content = Environment.NewLine
             + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
-            + Environment.NewLine + "For more information on game play please read the manual."
+            + Environment.NewLine + "For more information on game play please read the manual or press F9-Key."
             + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
             + Environment.NewLine + "Star Trek and all related marks, logos and characters are solely owned by CBS Studios Inc."
             + Environment.NewLine + "This fan production is not endorsed by, sponsored by, nor affiliated with CBS, Paramount Pictures, or"
@@ -929,7 +930,7 @@ namespace Supremacy.Client
             + Environment.NewLine + "against CBS or Paramount Pictures."
             + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
             + Environment.NewLine + "This work is licensed under the Creative Commons"
-            + Environment.NewLine + "Attribution - NonCommercial - ShareAlike 4.0 International (CC BY - NC - SA 4.0)"
+            + Environment.NewLine + "Attribution - NonCommercial - ShareAlike 4.0 International ( CC BY - NC - SA 4.0 )"
             ;
 
             //string techlvl = "3";
@@ -979,6 +980,17 @@ namespace Supremacy.Client
             catch { introText = ""; }
 
             statusWindow.Content = introText + statusWindow.Content + Environment.NewLine;
+
+            //var _red = statusWindow.
+
+////Brush GlobalBlueBrush = Brush.;
+//            switch (localEmpire)
+//            {
+//                default:
+//                    statusWindow.Background = Path. GlobalBlueBrush;
+//                    break;
+//            }
+            
 
 
 

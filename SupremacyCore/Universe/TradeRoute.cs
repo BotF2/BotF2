@@ -30,6 +30,8 @@ namespace Supremacy.Universe
         //private readonly MapLocation _tradeRouteLocation;
         private int _targetColonyId;
         private int _credits;
+        private string _text;
+        private readonly string newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the <see cref="Colony"/> from which the <see cref="TradeRoute"/> originates.
@@ -168,15 +170,25 @@ namespace Supremacy.Universe
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
                                       .Sum(o => 0.01 * o.Amount);
 
-                    GameLog.Core.TradeRoutesDetails.DebugFormat("Turn {0}, Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    int _creditsFromTradeRoute = (int)((1.0 + bonus) * Credits);
+
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + ": Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute=" 
+                        + _creditsFromTradeRoute
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.TradeRoutesDetails.DebugFormat(_text);
                     // 2021-10-16: Credits devided by 4
-                    return (int)((1.0 + bonus) * Credits / 4);
+                    return _creditsFromTradeRoute;
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.TradeRoutes.ErrorFormat(string.Format(Environment.NewLine + "   #### problem with TradeRoute - ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits",
-                        Credits),
-                        e);
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + "#### problem with TradeRoute "
+                        + Credits
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.TradeRoutes.ErrorFormat(_text + newline + e);
                     return Credits;
                 }
 

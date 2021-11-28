@@ -506,7 +506,7 @@ namespace Supremacy.Universe
                 + blank + buildSlot.SlotID
                 + buildSlot.Project.BuildDesign.ToString()
                 ;
-            Console.WriteLine("SR: " + _text);
+            Console.WriteLine("SR:; " + _text);
             civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
             //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
 

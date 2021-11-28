@@ -1959,6 +1959,18 @@ namespace Supremacy.Combat
 
                             }
 
+
+                            Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
+                            _text = ship.Item1.Source.Location
+                                + " " + ship.Item1.Source.Sector.Name
+                                + " > Ship " + ship.Item1.Source.ObjectID
+                                + ": * " + ship.Item1.Name
+                                + " * (" + ship.Item1.Source.Design
+                                + " ) survived."
+                                ;
+
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Gray));
+
                             if (combatent.Item1.Source.IsCombatant)
                             {
                                 countDestroyed++;
@@ -1971,17 +1983,7 @@ namespace Supremacy.Combat
                                 _ = Assets.NonCombatShips.Remove(combatent.Item1);
                                 continue;
                             }
-                            Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
-                            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
-                            _text = ship.Item1.Source.Location
-                                + " " + ship.Item1.Source.Sector.Name
-                                + " > Ship " + ship.Item1.Source.ObjectID
-                                + ": * " + ship.Item1.Name
-                                + " * (" + ship.Item1.Source.Design
-                                + " ) survived."
-                                ;
 
-                            civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Golden));
                         }
                         else
                         {
@@ -2105,13 +2107,14 @@ namespace Supremacy.Combat
                             _ = _combatShips.Remove(ship);
 
                             CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
-                            _text = ship.Item1.Source.Location
-                                + " > " + ship.Item1.Source.ObjectID
-                                + " * " + ship.Item1.Name
-                                + " * ( " + ship.Item1.Source.Design + " )"
-                                + " retreated."
+                            _text = "Combat at " + ship.Item1.Source.Location
+                                + " > " + ship.Item1.Source.Design 
+                                + "  " + ship.Item1.Source.ObjectID
+                                + " * " + ship.Item1.Name + " * "
+                                
+                                + "retreated."
                                 ;
-                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "","", SitRepPriority.Golden));
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "","", SitRepPriority.Yellow));
                         }
 
                     }

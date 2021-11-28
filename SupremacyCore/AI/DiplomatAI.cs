@@ -55,7 +55,7 @@ namespace Supremacy.AI
                     continue;
                 }
 
-                #region Foriegn Traits List
+                #region Foreign Traits List
 
                 string traitsOfForeignCiv = otherCiv.Traits;
                 string[] foreignTraits = traitsOfForeignCiv.Split(',');
@@ -107,6 +107,8 @@ namespace Supremacy.AI
 
                 if (true)//(!aCiv.IsHuman)
                 {
+                    //_text = "## Beging DiplomacyAI ......................." + foreignPower.Owner + " vs " + foreignPower.Counterparty;
+                    //Console.WriteLine(_text);
                     //GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
                     #region First Impression
                     /*
@@ -150,8 +152,8 @@ namespace Supremacy.AI
                             + " for " + foreignPower.Counterparty.Key
                             + " BEFORE First Impression from " + foreignPower.Owner.Key
                             ;
-                        //Console.WriteLine(_text);
-                        GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
 
                         TrustAndRegardByTraits(foreignPower, impact, similarTraits);
@@ -163,8 +165,8 @@ namespace Supremacy.AI
                             + " for " + foreignPower.Counterparty.Key
                             + " AFTER First Impression from " + foreignPower.Owner.Key
                             ;
-                        //Console.WriteLine(_text);
-                        GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
 
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower CounterParty ={0} regard ={1} trust ={2}", foreignPower.Counterparty.Key, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
@@ -209,22 +211,15 @@ namespace Supremacy.AI
                     }
                     //foreignPower.UpdateRegardAndTrustMeters();
 
-                    GameLog.Client.DiplomacyDetails.DebugFormat("## Turn {4}: regard= {2} trust= {3} after Ongoing Impression from {1} to {0} "
-                          , foreignPower.Counterparty.Key
-                          , foreignPower.Owner.Key
-                          , foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
-                          , foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
-                          , GameContext.Current.TurnNumber
-                          );
 
-                    _text = "Turn: " + GameContext.Current.TurnNumber
+                    _text = "Turn " + GameContext.Current.TurnNumber
                         + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                         + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                         + " for " + foreignPower.Counterparty.Key
                         + " AFTER Ongoing Impression " + foreignPower.Owner.Key
                         ;
-                    //Console.WriteLine(_text);
-                    GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+                    Console.WriteLine(_text);
+                    //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
                     // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                     //foreignPower.UpdateStatus();
@@ -244,6 +239,7 @@ namespace Supremacy.AI
                         DiplomacyHelper.ApplyRegardChange(secondCiv, firstCiv, foreignPower.CounterpartyForeignPower.DiplomacyData.Regard.CurrentValue * -1);
                     }
                     #endregion
+
                     #region Proposal Treaty to AI aCiv
                     /*
                       proposals TREATY
@@ -251,7 +247,8 @@ namespace Supremacy.AI
                     if (foreignPower.ProposalReceived != null)
                     {
                         if (aCiv == foreignPower.ProposalReceived.Recipient)
-                        {// give credit regard and trust
+                        {
+                            // give credit regard and trust
                             foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
                             {
                                 if (clause.ClauseType == ClauseType.OfferGiveCredits)
@@ -295,6 +292,20 @@ namespace Supremacy.AI
                             int regard = foreignPower.DiplomacyData.Regard.CurrentValue;
                             int trust = foreignPower.DiplomacyData.Regard.CurrentValue;
                             //bool traits = RandomHelper.Chance(similarTraits);
+
+                            // first check for credits (gift or demand)
+                            //foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
+                            //{
+                            //    switch (clause.ClauseType)
+                            //    {
+                            //        case ClauseType.OfferGiveCredits:
+                            //            int credits = clause.Data;
+                            //            break;
+                            //        //case ClauseType.TreatyWarPact
+                            //        case ClauseType.RequestGiveCredits:
+                            //            break;
+                            //    }
+                            //}
 
                             foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
                             {
@@ -370,12 +381,15 @@ namespace Supremacy.AI
 
                                             break;
                                         }
-                                    case ClauseType.OfferGiveCredits:
-                                        accepted = true;
-                                        break;
-                                    //case ClauseType.TreatyWarPact
-                                    case ClauseType.RequestGiveCredits:
-                                        break;
+                                        
+                                    // case for Credits are done before...
+
+                                    //case ClauseType.OfferGiveCredits:
+                                    //    accepted = true;
+                                    //    break;
+                                    ////case ClauseType.TreatyWarPact
+                                    //case ClauseType.RequestGiveCredits:
+                                    //    break;
 
                                     default:
                                         break;

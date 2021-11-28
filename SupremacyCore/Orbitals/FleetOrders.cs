@@ -237,7 +237,7 @@ namespace Supremacy.Orbitals
             _text = "ShipOrder 'RedeploySameOrder' is turned off due to not working yet";
             Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);
-            return false;
+            //return false;
 
             //if (!base.IsValidOrder(fleet))
             //{
@@ -254,10 +254,16 @@ namespace Supremacy.Orbitals
             //    return false;
             //}
 
-            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
-            //{
-            //    return false;
-            //}
+            if (fleet.Owner != null)
+            {
+                foreach (var item in fleet.Sector.GetFleets())
+                {
+                    if (fleet.Owner == item.Owner)
+                        return true;
+                }
+
+                //return false;
+            }
 
             //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
             //{
@@ -269,7 +275,74 @@ namespace Supremacy.Orbitals
             //    return false;
             //}
 
-            return true;
+            return true;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()
+        {
+            base.OnTurnBeginning();
+            //if (_isComplete)
+            //{
+            //    return;
+            //}
+            Fleet fleet = Fleet;
+
+            foreach (var item in fleet.Sector.GetFleets())
+            {
+                if (fleet.Owner == item.Owner)
+                {
+                    foreach (var ship in item.Ships)
+                    {
+                        fleet.AddShip(ship);
+                        _text = "RedeploySame:;"
+                            + "Fleet; " + fleet.Name 
+                            + " Ship:;" + ship.ObjectID 
+                            + " " + ship.Name
+                            + " " + ship.Design
+                            
+                            ;
+                        Console.WriteLine(_text);
+                    }
+                }
+                    
+            }
+
+            //fleet
+            //Fleet fleet = 
+
+            //Ship colonyShip = FindBestColonyShip();
+            //if (colonyShip == null)
+            //{
+            //    return;
+            //}
+
+            //Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
+            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
+
+            //colony.ObjectID = GameContext.Current.GenerateID();
+            //colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity;
+            //colony.Population.Reset();
+            //colony.Name = Fleet.Sector.System.Name;
+            //colony.Owner = Fleet.Owner;
+
+            //Fleet.Sector.System.Owner = Fleet.Owner;
+            //Fleet.Sector.System.Colony = colony;
+
+            //GameContext.Current.Universe.Objects.Add(colony);
+            //civManager.Colonies.Add(colony);
+            //colony.Morale.BaseValue = civManager.Civilization.BaseMoraleLevel;
+
+            //colony.Morale.Reset();
+
+            //ColonyBuilder.Build(colony);
+
+            //civManager.MapData.SetScanned(colony.Location, true, 1);
+            //civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
+
+            //_text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
+            //civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, "", "", SitRepPriority.Green));
+            //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
+
+            //_ = GameContext.Current.Universe.Destroy(colonyShip);
         }
     }
     #endregion RedeploySameOrder

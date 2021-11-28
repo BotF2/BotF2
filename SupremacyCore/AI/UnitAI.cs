@@ -26,12 +26,13 @@ namespace Supremacy.AI
 {
     public static class UnitAI
     {
-#pragma warning disable IDE0044 // Add readonly modifier
-        private static IEnumerable<Sector> _deathStars = GameContext.Current.Universe.FindStarType<Sector>(StarType.BlackHole).ToList()
-#pragma warning restore IDE0044 // Add readonly modifier
-
+//#pragma warning disable IDE0044 // Add readonly modifier
+        private readonly static IEnumerable<Sector> _deathStars = GameContext.Current.Universe.FindStarType<Sector>(StarType.BlackHole).ToList()
             .Concat(GameContext.Current.Universe.FindStarType<Sector>(StarType.NeutronStar).ToList());
+//#pragma warning restore IDE0044 // Add readonly modifier
+
         private static string _text;
+        private static readonly string blank = " ";
         private static readonly string newline = Environment.NewLine;
 
         public static void DoTurn([NotNull] Civilization civ)
@@ -41,7 +42,7 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(civ));
             }
 
-            if (civ.CivID <= 6) // unit AI only for empires
+            if (civ.CivID < 999) // unit AI only for empires
             {
                 List<Ship> allAttackWarShips = new List<Ship>();
                 List<Fleet> allCivFleets = GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList();
@@ -64,11 +65,21 @@ namespace Supremacy.AI
                 if (civ.TargetCivilization != null)
                 {
                     othersHomeSystem = GameContext.Current.CivilizationManagers[civ.TargetCivilization].HomeSystem;
+                    _text = homeSystem.Location
+                        + " " + civ.Name
+                        + " has TargetCivilization " + civ.TargetCivilization.Name
+                        + " - HomeSystem at " + othersHomeSystem.Location;
+                    Console.WriteLine(_text);
                 }
+
+                _text = "--------------------";
+                Console.WriteLine(_text);
 
                 // **** The UnitAI fleet by fleet looping 
                 foreach (Fleet fleet in allCivFleets) // each fleet of the current civ
                 {
+                    string _fleetText = blank + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name + blank + fleet.Location;
+                    Console.WriteLine(_text);
                     if (fleet.Ships.Count > 0)
                     {
                         //Make sure all fleets are cloaked
@@ -78,10 +89,22 @@ namespace Supremacy.AI
                             //, GameContext.Current.TurnNumber.ToString(), ship.ObjectID, ship.Name, ship.ClassName);
                             ship.IsCloaked = true;
                         }
+                        //_text = "UnitAI-DoTurn for; " 
+                        //    + fleet.ObjectID + "; "
+                        //    + fleet.Name + "; "
+                        //    + fleet.Owner + "; "
+                        //    + fleet.Location + "; "
+                        //    + "TargetCiv=" + civ.TargetCivilization
+                        //    ;
+                        //Console.WriteLine(_text);
 
                         // Have target civilization
                         if (civ.TargetCivilization != null)
                         {
+                            _text = "UnitAI-DoTurn; "
+                                + "TargetCiv=" + civ.TargetCivilization + " (not null)"
+                                ;
+                            Console.WriteLine(_text);
                             // Is there a systemattack fleet, YES
                             if (fleet.UnitAIType == UnitAIType.SystemAttack && homeSystem != othersHomeSystem)
                             {
@@ -268,8 +291,17 @@ namespace Supremacy.AI
                         // ****  No TargetCiv
                         else if (civ.TargetCivilization == null)
                         {
+                            _text = "UnitAI-DoTurn; "
+                                + "TargetCiv IS NULL"
+                                ;
+                            Console.WriteLine(_text);
                             if (fleet.UnitAIType == UnitAIType.SystemAttack) // call off attack
                             {
+                                _text = /*"UnitAI-DoTurn; "*/
+                                    /*+ */"UnitAIType == SystemAttack" + _fleetText
+                                    ;
+                                Console.WriteLine(_text);
+
                                 List<Ship> shipList = fleet.Ships.ToList();
                                 if (shipList.Count() > 0)  //&& fleet.UnitAIType != UnitAIType.SystemDefense )
                                 {
@@ -298,12 +330,14 @@ namespace Supremacy.AI
                             }
                             else if (fleet.IsScout) //(fleet.Ships.Where(o => o.ShipType == ShipType.Scout).Any())
                             {
+                                _text = "fleet.IsScout > EXPLORE  " + _fleetText;
+                                Console.WriteLine(_text);
                                 // exlore is really set in FleetOrders OnTurnBegining()
                                 fleet.SetOrder(new ExploreOrder());
                                 fleet.UnitAIType = UnitAIType.Explorer;
                                 fleet.Activity = UnitActivity.Mission;
                             }
-                            else if (GameContext.Current.TurnNumber > 4 &&
+                            else if (GameContext.Current.TurnNumber > 0 &&    // before > 4 = why just from turn 5 on ?
                              !fleet.Ships.Any(o => o.ShipType == ShipType.Colony
                              || o.ShipType == ShipType.Construction
                              || o.ShipType == ShipType.Medical
@@ -346,6 +380,9 @@ namespace Supremacy.AI
                         {
                             if (fleet.IsColonizer || fleet.UnitAIType == UnitAIType.Colonizer)
                             {
+                                _text = "fleet.IsColonizer: " + _fleetText;
+                                Console.WriteLine(_text);
+
                                 if (fleet.Sector == homeSystem.Sector && (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)) // || fleet.Activity == UnitActivity.Mission
                                 {
                                     if (GetBestSystemToColonize(fleet, out StarSystem bestSystemToColonize))
@@ -359,6 +396,12 @@ namespace Supremacy.AI
                                         {
                                             GetFleetEscort(fleet, bestSystemToColonize.Sector);
                                         }
+                                        _text = "Fleet at HomeSystem: Colonizing: Ordering "
+                                            + _fleetText
+                                            + " to go to " + bestSystemToColonize.Name
+                                            + " " + bestSystemToColonize.Location
+                                            ;
+                                        Console.WriteLine(_text);
                                         // GameLog.Core.AIDetails.DebugFormat("Ordering {0} colonizer {1} to go to {2} {3}", fleet.Owner, fleet.Name, bestSystemToColonize.Name, bestSystemToColonize.Location);
                                     }
                                     //else if (fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
@@ -366,14 +409,28 @@ namespace Supremacy.AI
                                     //    RemoveEscortShips(fleet, ShipType.Colony);
                                     //}
                                 }
+
                                 if (fleet.Sector != homeSystem.Sector) // only colonize when not at homesystem 
                                 {
+                                    _text = "Colonizer on the road: " + _fleetText;
+                                    Console.WriteLine(_text);
+
+                                    _text = _fleetText + ": WeAreAtSystemToColonize=" + WeAreAtSystemToColonize(fleet);
+                                    Console.WriteLine(_text);
+
+                                    _text = _fleetText + ": SystemNotAlreadyTaken=" + SystemNotAlreadyTaken(fleet);
+                                    Console.WriteLine(_text);
+
                                     if (WeAreAtSystemToColonize(fleet) && SystemNotAlreadyTaken(fleet))
                                     {
                                         if (fleet.Ships.Any(a => a.ShipType == ShipType.Colony))
                                         {
+                                            _text = _fleetText + ": AnyColonyShip > ok" ;
+                                            Console.WriteLine(_text);
                                             //fleet.Route.Clear();
                                             fleet.SetOrder(new ColonizeOrder());
+                                            _text = "ColonizeOrder for " + _fleetText;
+                                            Console.WriteLine(_text);
                                             if (!fleet.Ships.Any(x => x.ShipType == ShipType.Colony))
                                             {
                                                 RemoveEscortShips(fleet, ShipType.Colony);
@@ -389,8 +446,11 @@ namespace Supremacy.AI
 
                                     }
                                     else if ((WeAreAtSystemToColonize(fleet) && !SystemNotAlreadyTaken(fleet))
-                                        || fleet.Route.IsEmpty || fleet.Route == null)
+                                        && fleet.Route.IsEmpty || fleet.Route == null)
                                     {
+                                        _text = "Colonizing aim reached: " + _fleetText;
+                                            
+                                        Console.WriteLine(_text);
                                         if (GetBestSystemToColonize(fleet, out StarSystem bestSystemToColonize))
                                         {
                                             //GetFleetOwner(fleet);
@@ -418,6 +478,13 @@ namespace Supremacy.AI
 
                             if (fleet.IsConstructor || fleet.UnitAIType == UnitAIType.Constructor || (fleet.Ships.Any(a => a.ShipType == ShipType.Construction) && fleet.Ships.Count() == 2))
                             {
+                                _text = "fleet.IsConstructor: " + _fleetText
+                                        //+ " " + fleet.ObjectID
+                                        //+ " " + fleet.Name
+                                        ////+ " to go to " + bestSystemToColonize.Name
+                                        //+ " " + fleet.Location
+                                        ;
+                                Console.WriteLine(_text);
                                 //GameLog.Client.AIDetails.DebugFormat("*////*Top of Constuctor, Owner ={0}, shiptype ={1}, #Ships ={2}, Activity ={3} duration ={4} Route empty ={5}",
                                 //         fleet.Owner.Key, fleet.Ships[0].ShipType, fleet.Ships.Count(), fleet.Activity, fleet.ActivityDuration, fleet.Route.IsEmpty);
                                 if (fleet.Ships.Any(x => x.ShipType == ShipType.Construction)) // a fleet that really has a constuctor
@@ -509,6 +576,14 @@ namespace Supremacy.AI
 
                             if (fleet.IsMedical)
                             {
+                                _text = "fleet.IsMedical: " + _fleetText
+                                    //+ " " + fleet.ObjectID
+                                    //+ " " + fleet.Name
+                                    ////+ " to go to " + bestSystemToColonize.Name
+                                    //+ " " + fleet.Location
+                                    ;
+                                Console.WriteLine(_text);
+
                                 if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                                 {
                                     if (GetBestColonyForMedical(fleet, out Colony bestSystemForMedical))
@@ -540,6 +615,13 @@ namespace Supremacy.AI
 
                             if (fleet.IsDiplomatic)
                             {
+                                _text = "fleet.IsDiplomatic: " + _fleetText
+                                    //+ " " + fleet.ObjectID
+                                    //+ " " + fleet.Name
+                                    ////+ " to go to " + bestSystemToColonize.Name
+                                    //+ " " + fleet.Location
+                                    ;
+                                Console.WriteLine(_text);
                                 // Send diplomatic ship and influence order, but what do we do with race traits and diplomacy?
                                 if (fleet.Owner.Traits.Contains(CivTraits.Peaceful.ToString()) || fleet.Owner.Traits.Contains(CivTraits.Kindness.ToString()))
                                 {
@@ -578,6 +660,13 @@ namespace Supremacy.AI
 
                             if (fleet.IsSpy) // install spy network
                             {
+                                _text = "fleet.IsSpy: " + _fleetText
+                                        //+ " " + fleet.ObjectID
+                                        //+ " " + fleet.Name
+                                        ////+ " to go to " + bestSystemToColonize.Name
+                                        //+ " " + fleet.Location
+                                    ;
+                                Console.WriteLine(_text);
                                 if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                                 {
                                     if (GetBestColonyForSpying(fleet, out Colony bestSystemForSpying))
@@ -615,6 +704,13 @@ namespace Supremacy.AI
 
                             if (fleet.IsScience)
                             {
+                                _text = "fleet.IsScience: " + _fleetText
+                                    //+ " " + fleet.ObjectID
+                                    //+ " " + fleet.Name
+                                    ////+ " to go to " + bestSystemToColonize.Name
+                                    //+ " " + fleet.Location
+                                    ;
+                                Console.WriteLine(_text);
                                 if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                                 {
                                     if (GetBestSystemForScience(fleet, out StarSystem bestSystemForScience))
@@ -761,7 +857,9 @@ namespace Supremacy.AI
             //Get a list of all systems that we can colonise
             List<StarSystem> systems = GameContext.Current.Universe.Find<StarSystem>()
             //We need to know about it (no cheating)
-            .Where(r => mapData.IsScanned(r.Location) && mapData.IsExplored(r.Location))
+
+            // AI: numbers of IsScanned && IsExplored might be low
+            // test - .Where(r => mapData.IsScanned(r.Location)) //&& mapData.IsExplored(r.Location))
             .Where(s => !s.IsOwned || s.Owner == fleet.Owner)
             .Where(t => !t.IsInhabited && !t.HasColony)
             .Where(u => u.IsHabitable(fleet.Owner.Race))
@@ -779,15 +877,68 @@ namespace Supremacy.AI
             //Where a ship isn't there and colonizing
             .ToList();
 
+            // find out the reasons for low count of > available systems
+
+            
+
+            List<StarSystem> systemsToCheck = GameContext.Current.Universe.Find<StarSystem>()
+                .Where(r => mapData.IsScanned(r.Location) && mapData.IsExplored(r.Location))
+                .Where(w => FleetHelper.IsSectorWithinFuelRange(w.Sector, fleet))
+                .ToList();
+            _text = "GetBestSystemToColonize:; Available systems with FuelRange: " + systemsToCheck.Count
+                + " for " + fleet
+                ;
+            Console.WriteLine(_text);
+
+            foreach (var item in systemsToCheck)
+            {
+                _text = "GetBestSystemToColonize:; "
+                    + " for " + fleet.Location
+                    + " " + fleet.Name
+                    + " > " + item.Location
+                    + " " + item.Name
+                    + " Dist: " + GetDistanceTo(fleet.Location, item.Location)
+                    + ", Inhabited=" + item.IsInhabited
+                    ;
+                Console.WriteLine(_text);
+            }
+
+            //_text = "GetBestSystemToColonize:; Available systems: " + systems.Count;
+            //Console.WriteLine(_text);
+
+            //_text = "GetBestSystemToColonize:; Available systems: " + systems.Count;
+            //Console.WriteLine(_text);
+
+            //_text = "GetBestSystemToColonize:; Available systems: " + systems.Count;
+            //Console.WriteLine(_text);
+
+            //_text = "GetBestSystemToColonize:; Available systems: " + systems.Count;
+            //Console.WriteLine(_text);
+
+            //_text = "GetBestSystemToColonize:; Available systems: " + systems.Count;
+            //Console.WriteLine(_text);
+
             if (systems.Count == 0)
             {
+                _text = "systems.Count = 0 for"
+                    + ": " + fleet.Location + blank
+                    + fleet.Name
+                    ;
+                Console.WriteLine(_text);
                 result = null;
                 return false;
             }
+
             List<StarSystem> enemySystems = new List<StarSystem>() { systems.FirstOrDefault() };
             //StarSystem placeholder = enemySystems.FirstOrDefault();
             foreach (StarSystem system in systems)
             {
+                _text = "Colonizing-Aim of " + systems.Count
+                    + ": " + system.Location + blank
+                    + system.Name
+                    ;
+                Console.WriteLine(_text);
+
                 if (system.Owner != null && GameContext.Current.Universe.FindAt<Orbital>(system.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, system.Owner)))
                 {
                     enemySystems.Add(system);
@@ -796,6 +947,11 @@ namespace Supremacy.AI
             foreach (StarSystem removeSystem in enemySystems)
             {
                 _ = systems.Remove(removeSystem);
+                _text = "Colonizing-Aim of " + systems.Count
+                    + " (REMOVED): " + removeSystem.Location + blank
+                    + removeSystem.Name
+                    ;
+                Console.WriteLine(_text);
             }
             //foreach (var system in systems)
             //{
@@ -809,7 +965,7 @@ namespace Supremacy.AI
             }
 
             IOrderedEnumerable<StarSystem> sortResults = from system in systems
-                                                         orderby GetColonizeValue(system, fleet.Owner)
+                                                         orderby GetColonizeValue(system, fleet)
                                                          select system;
 
             result = sortResults.Last();
@@ -827,24 +983,26 @@ namespace Supremacy.AI
 
             List<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(o => o.IsColonizer || o.MultiFleetHasAColonizer).ToList();
-            List<Fleet> otherFleets = colonizerFleets.Where(o => o != fleet).ToList(); // other colony ships
-            _ = otherFleets.Remove(fleet);
-            if (otherFleets.Count != 0)
-            {
-                bool anotherColonyShipGoing = GameContext.Current.Universe.Objects
-                .Where(x => !otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == x.Location || x.Location == f.Location && f.Order is ColonizeOrder))
-                .Any();
-                if (anotherColonyShipGoing)
-                {
-                    return false;
-                }
-            }
+
+            // is next working correctly and not disturbing each other
+            //List<Fleet> otherFleets = colonizerFleets.Where(o => o != fleet).ToList(); // other colony ships
+            //_ = otherFleets.Remove(fleet);
+            //if (otherFleets.Count != 0)
+            //{
+            //    bool anotherColonyShipGoing = GameContext.Current.Universe.Objects
+            //    .Where(x => !otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == x.Location || x.Location == f.Location && f.Order is ColonizeOrder))
+            //    .Any();
+            //    if (anotherColonyShipGoing)
+            //    {
+            //        return false;
+            //    }
+            //}
 
             bool systemAtLocation = GameContext.Current.Universe.Objects
                 .Where(a => a.Sector == fleet.Sector)
                 .Where(b => b.ObjectType == UniverseObjectType.StarSystem)
                 .Where(c => c.Sector.System.StarType != StarType.RadioPulsar && c.Sector.System.StarType != StarType.NeutronStar)
-.Any(c => c.Sector.System.IsHabitable(fleet.Owner.Race));
+                .Any(c => c.Sector.System.IsHabitable(fleet.Owner.Race));
 
             return systemAtLocation;
         }
@@ -856,23 +1014,25 @@ namespace Supremacy.AI
         /// <param name="system"></param>
         /// <param name="civ"></param>
         /// <returns></returns>
-        public static float GetColonizeValue(StarSystem system, Civilization civ)
+        public static float GetColonizeValue(StarSystem system, Fleet fleet)
         {
             if (system == null)
             {
                 throw new ArgumentNullException(nameof(system));
             }
 
-            if (civ == null)
+            if (fleet == null)
             {
-                throw new ArgumentNullException(nameof(civ));
+                throw new ArgumentNullException(nameof(fleet));
             }
+
 
             //Alter this to alter priority
             const int DilithiumBonusValue = 20;
             const int DuraniumBonusValue = 20;
 
             float value = 0;
+            value += 2000 - (100 * GetDistanceTo(fleet.Location, system.Location));
 
             if (system.HasDilithiumBonus)
             {
@@ -884,7 +1044,7 @@ namespace Supremacy.AI
                 value += DuraniumBonusValue;
             }
 
-            value += system.GetMaxPopulation(civ.Race) * system.GetGrowthRate(civ.Race);
+            value += system.GetMaxPopulation(fleet.Owner.Race) * system.GetGrowthRate(fleet.Owner.Race);
             //GameLog.Core.AIDetails.DebugFormat("Colonize value for {0} is {1} for {2}", system, value, civ.Name);
             return value;
         }
@@ -1098,7 +1258,7 @@ namespace Supremacy.AI
         public static bool SystemNotAlreadyTaken(Fleet fleet)
         {
             GetFleetOwner(fleet);
-            //_text = "Searching for Crash: SystemNotAlreadyTaken-1=Colonies";
+            //_text = "Check for SystemNotAlreadyTaken....";
             //Console.WriteLine(_text);
             bool otherColony = GameContext.Current.Universe.Objects.Where(o => o.Location == fleet.Location && o.ObjectType == UniverseObjectType.Colony && o.Owner != fleet.Owner).Any();
             //_text = "Searching for Crash: SystemNotAlreadyTaken-2=Station";

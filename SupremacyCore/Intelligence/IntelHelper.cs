@@ -272,8 +272,8 @@ namespace Supremacy.Intelligence
         public static void SabotageStealCredits(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // coming from Buttons in each of the six expanders
-            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            //CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            //CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
             SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealCredits, Tone.Enraged, blamed, GameContext.Current.TurnNumber))
             {
                 Owner = attackingCiv
@@ -319,7 +319,7 @@ namespace Supremacy.Intelligence
             //Effect of steal // value needed for SitRep
 
             _ = int.TryParse(attackedCivManager.Credits.ToString(), out int stolenCredits);
-            int attackedCreditsBefore = stolenCredits;
+            //int attackedCreditsBefore = stolenCredits;
 
             if (stolenCredits < 100)  // they have not enough credits worth stealing, especially avoid negative stuff !!!
             {
@@ -342,7 +342,7 @@ namespace Supremacy.Intelligence
                 blamed = Blame(attackingCiv, attackedCiv, blamed, 4);
                 ratioLevel = 1;
             }
-            if (ratio > 10 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 15 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 if (!RandomHelper.Chance(2))
                 {
@@ -351,7 +351,7 @@ namespace Supremacy.Intelligence
                     ratioLevel = 2;
                 }
             }
-            if (ratio > 20 && !RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 30 && !RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 stolenCredits *= 2;
                 blamed = Blame(attackingCiv, attackedCiv, blamed, 10);
@@ -428,8 +428,8 @@ namespace Supremacy.Intelligence
         public static void SabotageStealResearch(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // coming from Buttons in each of the six expanders
-            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            //CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            //CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
             SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealResearch, Tone.Enraged, blamed, GameContext.Current.TurnNumber))
             {
                 Owner = attackingCiv
@@ -500,7 +500,7 @@ namespace Supremacy.Intelligence
 
             stolenResearchPoints = stolenResearchPoints / 100 * 1; // default JUST 1 percent
 
-            if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 stolenResearchPoints *= 2;  // 2 percent, but base is CumulativePoints, so all research points ever yielded
                 blamed = Blame(attackingCiv, attackedCiv, blamed, 4);
@@ -661,7 +661,7 @@ namespace Supremacy.Intelligence
             }
 
             //if ratio > 2 than remove one more  FoodFacility
-            if (ratio > 10 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Food) > 2)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 20 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Food) > 3)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeFoodFacilities += 1;  //  2 and one from before
                 colony.RemoveFacilities(ProductionCategory.Food, 1);
@@ -670,7 +670,7 @@ namespace Supremacy.Intelligence
             }
 
             // if ratio > 3 than remove one more  FoodFacility
-            if (ratio > 20 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Food) > 3)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 40 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Food) > 5)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeFoodFacilities += 1;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 colony.RemoveFacilities(ProductionCategory.Food, 1);
@@ -807,7 +807,7 @@ namespace Supremacy.Intelligence
             //Effect of sabotage // value needed for SitRep
             GameLog.Core.Intel.DebugFormat("**** Before Sabotage Energy at {0}: TotalEnergyFacilities before={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
             //if ratio > 1 than remove one more  EnergyFacility
-            if (ratio > 1 /*&& RandomHelper.Chance(4)*/ && colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 10 /*&& RandomHelper.Chance(4)*/ && colony.GetTotalFacilities(ProductionCategory.Energy) > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
@@ -816,7 +816,7 @@ namespace Supremacy.Intelligence
             }
 
             //if ratio > 2 than remove one more  EnergyFacility
-            if (ratio > 10 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 40 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Energy) > 4)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities += 1;  //  2 and one from before
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
@@ -825,7 +825,7 @@ namespace Supremacy.Intelligence
             }
 
             // if ratio > 3 than remove one more  EnergyFacility
-            if (ratio > 20 && !RandomHelper.Chance(2) && colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 80 && !RandomHelper.Chance(2) && colony.GetTotalFacilities(ProductionCategory.Energy) > 5)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
@@ -945,7 +945,7 @@ namespace Supremacy.Intelligence
 
             //Effect of sabotage // value needed for SitRep
             //if ratio > 1 than remove one more  IndustryFacility
-            if (ratio > 1 /*&& !RandomHelper.Chance(2)*/ && colony.GetTotalFacilities(ProductionCategory.Industry) > 1)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 10 /*&& !RandomHelper.Chance(2)*/ && colony.GetTotalFacilities(ProductionCategory.Industry) > 3)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeIndustryFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Industry, 1);
@@ -954,7 +954,7 @@ namespace Supremacy.Intelligence
             }
 
             //if ratio > 2 than remove one more  IndustryFacility
-            if (ratio > 10 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Industry) > 2)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 20 && !RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Industry) > 4)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeIndustryFacilities += 1;  //  2 and one from before
                 colony.RemoveFacilities(ProductionCategory.Industry, 1);
@@ -963,7 +963,7 @@ namespace Supremacy.Intelligence
             }
 
             // if ratio > 3 than remove one more  IndustryFacility
-            if (ratio > 20 && !RandomHelper.Chance(6) && colony.GetTotalFacilities(ProductionCategory.Industry) > 3)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 30 && !RandomHelper.Chance(6) && colony.GetTotalFacilities(ProductionCategory.Industry) > 5)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeIndustryFacilities += 1;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 colony.RemoveFacilities(ProductionCategory.Industry, 1);

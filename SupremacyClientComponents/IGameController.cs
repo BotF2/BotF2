@@ -493,6 +493,7 @@ namespace Supremacy.Client
 
         private void SaveSUMMARY_TXT(string _text)
         {
+            _text += " "; // dummy - please keep
             _text = "SaveSUMMARY_TXT...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);

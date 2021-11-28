@@ -452,12 +452,14 @@ namespace Supremacy.Economy
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
 
             //if(BuildDesign == StationDes)
-            _text = " Turn " + GameContext.Current.TurnNumber
-                + ": Trying to finish BuildProject ########## " + BuildDesign
-                + " by " + Builder
-                + " at " + Location
-                ;
-            Console.WriteLine(_text);
+
+            // works
+            //_text = " Turn " + GameContext.Current.TurnNumber
+            //    + ": Trying to finish BuildProject ########## " + BuildDesign
+            //    + " by " + Builder
+            //    + " at " + Location
+            //    ;
+            //Console.WriteLine(_text);
             //GameLog.Core.ProductionDetails.DebugFormat(_text);
             
             // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 

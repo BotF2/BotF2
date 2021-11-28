@@ -139,7 +139,8 @@ namespace Supremacy.Types
         {
             if (IsLocked)
             {
-                throw new InvalidOperationException("Value cannot be set while locked.");
+                return false;
+                //throw new InvalidOperationException("Value cannot be set while locked.");
             }
 
             if (newValue == Value)

@@ -450,7 +450,7 @@
                    Grid.Row="3" Grid.Column="21" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Gray"/>
         <TextBlock Grid.Row="3" Grid.Column="22" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="3" Grid.Column="23" VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/rawmaterials.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/duranium.png"
                    Label="{Binding Path=NetDuranium}"
                    ToolTip="{s:StringResource Key=DURANIUM_TOOLTIP}" />
 

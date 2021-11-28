@@ -68,7 +68,7 @@ namespace Supremacy.Game
         /// <summary>
         /// Shutdowns due to Energy or something else
         /// </summary>
-        Golden,
+        Yellow,
         /// <summary>
         /// Shutdowns due to Energy or something else
         /// </summary>
@@ -80,9 +80,7 @@ namespace Supremacy.Game
         /// <summary>
         /// Shutdowns due to Energy or something else
         /// </summary>
-        BlueDark,
-
-        Yellow // Yellow is needed for old Saved Games
+        BlueDark
     }
 
     //public enum SitRepDone
@@ -330,6 +328,18 @@ namespace Supremacy.Game
             {
                 throw new ArgumentNullException("loc");
             }
+
+            string _text = "";
+            if (report == null) _text = "Error";
+            if (report == "") _text = "Error";
+            if (report == " ") _text = "Error";
+
+            if (_text == "Error")
+            {
+                Console.WriteLine(_text + " - no text inside SitRep");
+                //continue;
+            }
+
 
             _loc = loc;
             _report = report;
@@ -895,6 +905,7 @@ namespace Supremacy.Game
 
         private DiplomacySitRepStringKey? ResolveTextKey(bool detailed)
         {
+            // \Resources\Data\DiplomacyText.xaml
             IProposal proposal = _exchange as IProposal;
             IResponse response = _exchange as IResponse;
 
@@ -1392,6 +1403,7 @@ namespace Supremacy.Game
 
             _itemTypeId = itemType.DesignID;
             _location = location;
+            _priority = priority;
             //GameLog.Client.SitReps.DebugFormat("SR: "+ SummaryText);
         }
         public TechObjectDesign ItemType => GameContext.Current.TechDatabase[_itemTypeId];
@@ -1403,7 +1415,7 @@ namespace Supremacy.Game
             , Location
             , ResourceManager.GetString(ItemType.Name));
 
-        public override SitRepPriority Priority { get; set; }
+        public override SitRepPriority Priority { get => _priority; set { } }
     }
 
     [Serializable]
@@ -1537,26 +1549,26 @@ namespace Supremacy.Game
         }
     }
 
-    [Serializable]
-    public class CombatSummarySitRepEntry : SitRepEntry
-    {
-        private readonly string _note;
-        private readonly MapLocation _loc;
+    //[Serializable]
+    //public class CombatSummarySitRepEntry : SitRepEntry
+    //{
+    //    private readonly string _note;
+    //    private readonly MapLocation _loc;
 
-        public CombatSummarySitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner)//, SitRepPriority.Purple)
-        { _loc = loc; _note = Note; }
+    //    public CombatSummarySitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner)//, SitRepPriority.Purple)
+    //    { _loc = loc; _note = Note; }
 
-        public string Note => _note;
-        public override SitRepCategory Categories => SitRepCategory.Military;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => _note;
+    //    public string Note => _note;
+    //    public override SitRepCategory Categories => SitRepCategory.Military;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _note;
 
-        public override SitRepPriority Priority { get; set; }
-    }
-    // End of SitRepEntry
+    //    public override SitRepPriority Priority { get; set; }
+    //}
+    //// End of SitRepEntry
 
 
     [Serializable]
@@ -3140,32 +3152,32 @@ namespace Supremacy.Game
         public override SitRepPriority Priority { get; set; }
     }
 
-    [Serializable]
-    public class UnassignedTradeRoute : SitRepEntry
-    {
-        private readonly TradeRoute _tradeRoute;
-        private readonly int _systemId;
-        public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner)//, SitRepPriority.Orange)
-        {
-            if (route == null)
-            {
-                throw new ArgumentException("TradeRoute");
-            }
+    //[Serializable]
+    //public class UnassignedTradeRoute : SitRepEntry
+    //{
+    //    private readonly TradeRoute _tradeRoute;
+    //    private readonly int _systemId;
+    //    public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner)//, SitRepPriority.Orange)
+    //    {
+    //        if (route == null)
+    //        {
+    //            throw new ArgumentException("TradeRoute");
+    //        }
 
-            _systemId = route.SourceColony.ObjectID;
-            _tradeRoute = route;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public TradeRoute TradeRoute => _tradeRoute;
-        public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => TradeRoute.SourceColony.Sector;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_UNASSIGNED_TRADE_ROUTE"), TradeRoute.SourceColony, TradeRoute.SourceColony.Location);
+    //        _systemId = route.SourceColony.ObjectID;
+    //        _tradeRoute = route;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public TradeRoute TradeRoute => _tradeRoute;
+    //    public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => TradeRoute.SourceColony.Sector;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_UNASSIGNED_TRADE_ROUTE"), TradeRoute.SourceColony, TradeRoute.SourceColony.Location);
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     [Serializable]
     public class WarDeclaredSitRepEntry : SitRepEntry

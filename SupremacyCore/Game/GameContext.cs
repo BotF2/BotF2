@@ -204,29 +204,50 @@ namespace Supremacy.Game
                 GameLog.Core.SaveLoad.DebugFormat("--------------------------------------------------");
                 GameLog.Core.SaveLoad.DebugFormat("########### Deserialising GameContext...");
                 IsMultiplayerGame = reader.ReadBoolean();
+                Console.WriteLine("reading IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
                 GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
+
                 _nextObjectId = reader.ReadOptimizedInt32();
+                Console.WriteLine("reading _nextObjectId.....");
                 _turnNumber = reader.ReadOptimizedUInt16();
+                Console.WriteLine("reading _turnNumber..... > " + _turnNumber);
                 GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
+
                 _options = reader.Read<GameOptions>();
+                Console.WriteLine("reading _options.....");
                 _gameMod = reader.Read<GameMod>();
+                Console.WriteLine("reading _gameMod.....");
                 _civilizations = reader.Read<CivDatabase>();
+                Console.WriteLine("reading _civilizations.....");
                 // CivDatabase = basic Civs (like ShortName etc)
                 _civManagers = reader.Read<CivilizationManagerMap>();
+                Console.WriteLine("reading _civManagers.....");
                 // _civManagers = basic Civs (like ShortName etc)
                 _races = reader.Read<RaceDatabase>();
+                Console.WriteLine("reading _races.....");
                 _universe = reader.Read<UniverseManager>();
                 GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
+
                 _techDatabase = reader.Read<TechDatabase>();
+                Console.WriteLine("reading _techDatabase.....");
                 _researchMatrix = reader.Read<ResearchMatrix>();
+                Console.WriteLine("reading _researchMatrix.....");
                 _sectorClaims = reader.Read<SectorClaimGrid>();
+                Console.WriteLine("reading _sectorClaims.....");
                 _techTrees = reader.Read<TechTreeMap>();
+                Console.WriteLine("reading _techTrees.....");
                 _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
+                Console.WriteLine("reading _diplomacyData.....");
                 _agreementMatrix = reader.Read<AgreementMatrix>();
+                Console.WriteLine("reading _agreementMatrix.....");
                 _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
+                Console.WriteLine("reading _diplomats.....");
                 _strategyDatabase = reader.Read<StrategyDatabase>();
+                Console.WriteLine("reading _strategyDatabase.....");
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
+                Console.WriteLine("reading _scriptedEvents.....");
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
+                Console.WriteLine("reading _diplomacyDatabase.....");
 
 
                 FixupDiplomacyData();

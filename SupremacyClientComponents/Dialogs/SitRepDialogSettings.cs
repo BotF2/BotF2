@@ -141,7 +141,6 @@ namespace Supremacy.Client.Dialogs
 
         #endregion ShowGrayItems Attached Property
 
-
         #region ShowPurpleItems Attached Property
 
         public static readonly DependencyProperty ShowPurpleItemsProperty = DependencyProperty.RegisterAttached(
@@ -169,32 +168,32 @@ namespace Supremacy.Client.Dialogs
 
         #endregion ShowPurpleItems Attached Property
 
-        #region ShowGoldenItems Attached Property
+        #region ShowYellowItems Attached Property
 
-        public static readonly DependencyProperty ShowGoldenItemsProperty = DependencyProperty.RegisterAttached(
-            "ShowGoldenItems",
+        public static readonly DependencyProperty ShowYellowItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowYellowItems",
             typeof(bool),
             typeof(SitRepDialogSettings),
             new FrameworkPropertyMetadata(
                 true,
                 FrameworkPropertyMetadataOptions.None));
 
-        public static bool GetShowGoldenItems(DependencyObject source)
+        public static bool GetShowYellowItems(DependencyObject source)
         {
-            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowGoldenItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowYellowItemsProperty);
         }
 
-        public static void SetShowGoldenItems(DependencyObject source, bool value)
+        public static void SetShowYellowItems(DependencyObject source, bool value)
         {
             if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
 
-            source.SetValue(ShowGoldenItemsProperty, value);
+            source.SetValue(ShowYellowItemsProperty, value);
         }
 
-        #endregion ShowGoldenItems Attached Property
+        #endregion ShowYellowItems Attached Property
 
         #region ShowCrimsonItems Attached Property
 
@@ -222,7 +221,6 @@ namespace Supremacy.Client.Dialogs
         }
 
         #endregion ShowCrimsonItems Attached Property
-
 
         #region ShowPinkItems Attached Property
 

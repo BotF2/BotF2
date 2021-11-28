@@ -49,11 +49,26 @@ namespace Supremacy.UI
         #endregion
 
         #region Constants
-        private static readonly CachedBitmap DilithiumBonusImage;
-        private static readonly CachedBitmap EnergyBonusImage;
-        private static readonly CachedBitmap FoodBonusImage;
+
+        private static readonly CachedBitmap BlueStarImage;
+        private static readonly CachedBitmap OrangeStarImage;
+        private static readonly CachedBitmap RedStarImage;
+        private static readonly CachedBitmap WhiteStarImage;
+        private static readonly CachedBitmap YellowStarImage;
+
+        private static readonly CachedBitmap BlackHoleImage;
         private static readonly CachedBitmap NebulaImage;
+        private static readonly CachedBitmap NeutronStarImage;
+        private static readonly CachedBitmap QuasarImage;
+        private static readonly CachedBitmap RadioPulsarImage;
+        private static readonly CachedBitmap WormholeImage;
+        private static readonly CachedBitmap XRayPulsarImage;
+
+        private static readonly CachedBitmap FoodBonusImage;
+        private static readonly CachedBitmap EnergyBonusImage;
         private static readonly CachedBitmap DuraniumBonusImage;
+        private static readonly CachedBitmap DilithiumBonusImage;
+
         public static readonly DependencyProperty ShowStatsProperty;
         #endregion
 
@@ -78,6 +93,65 @@ namespace Supremacy.UI
                     true,
                     ShowStatsChangedCallback));
 
+            BlueStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Blue.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            BlueStarImage.Freeze();
+
+            OrangeStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Orange.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            OrangeStarImage.Freeze();
+
+
+            RedStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Red.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            RedStarImage.Freeze();
+
+
+            WhiteStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_White.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            WhiteStarImage.Freeze();
+
+
+            YellowStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Yellow.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            YellowStarImage.Freeze();
+
+
+            BlackHoleImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/BlackHole.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            BlackHoleImage.Freeze();
+
+
             NebulaImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
@@ -86,6 +160,53 @@ namespace Supremacy.UI
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
             NebulaImage.Freeze();
+
+            NeutronStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/NeutronStar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            NeutronStarImage.Freeze();
+
+            QuasarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Quasar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            QuasarImage.Freeze();
+
+            RadioPulsarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/RadioPulsar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            RadioPulsarImage.Freeze();
+
+
+
+            WormholeImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Wormhole.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            WormholeImage.Freeze();
+
+            XRayPulsarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/XRayPulsar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            XRayPulsarImage.Freeze();
 
             FoodBonusImage = new CachedBitmap(
                 new BitmapImage(
@@ -117,7 +238,7 @@ namespace Supremacy.UI
             DuraniumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/UI/ScreenIcons/rawmaterials.png",
+                        "Resources/Images/UI/ScreenIcons/duranium.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -554,15 +675,63 @@ namespace Supremacy.UI
 
             FrameworkElement star;
             string starToolTip = "";
+            Image starImage = new Image { Source = NebulaImage };
+            star = starImage;
 
             if (system.StarType == StarType.Nebula)
             {
-                Image starImage = new Image { Source = NebulaImage };
+                starImage = new Image { Source = NebulaImage };
                 star = starImage;
             }
             else
             {
-                star = new SunView3DRenderer { StarType = system.StarType };
+                if (ClientSettings.Current.EnableAnimation == true)
+                {
+                    star = new SunView3DRenderer { StarType = system.StarType };
+                }
+                else
+                {
+                    switch (system.StarType)
+                    {
+                        case StarType.White:
+                            starImage = new Image { Source = WhiteStarImage }; star = starImage;
+                            break;
+                        case StarType.Blue:
+                            starImage = new Image { Source = BlueStarImage }; star = starImage;
+                            break;
+                        case StarType.Yellow:
+                            starImage = new Image { Source = YellowStarImage }; star = starImage;
+                            break;
+                        case StarType.Orange:
+                            starImage = new Image { Source = OrangeStarImage }; star = starImage;
+                            break;
+                        case StarType.Red:
+                            starImage = new Image { Source = RedStarImage }; star = starImage;
+                            break;
+                        case StarType.Wormhole:
+                            starImage = new Image { Source = WormholeImage }; star = starImage;
+                            break;
+                        case StarType.NeutronStar:
+                            starImage = new Image { Source = NeutronStarImage }; star = starImage;
+                            break;
+                        case StarType.RadioPulsar:
+                            starImage = new Image { Source = RadioPulsarImage }; star = starImage;
+                            break;
+                        case StarType.XRayPulsar:
+                            starImage = new Image { Source = XRayPulsarImage }; star = starImage;
+                            break;
+                        case StarType.Quasar:
+                            starImage = new Image { Source = QuasarImage }; star = starImage;
+                            break;
+                        case StarType.BlackHole:
+                            starImage = new Image { Source = BlackHoleImage }; star = starImage;
+                            break;
+                    }
+                    //Image starImage = new Image { Source = system.StarType };
+                    //star = starImage;
+                }
+            
+                
             }
 
             if (system.StarType == StarType.Nebula)

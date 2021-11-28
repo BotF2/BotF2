@@ -16,6 +16,7 @@
             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
             Background="Transparent"
             Header="Status"
+            Foreground="Aqua"
             IsModal="True"
             Width="750"
             HorizontalContentAlignment="Center"

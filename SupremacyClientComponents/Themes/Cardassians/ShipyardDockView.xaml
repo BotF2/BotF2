@@ -214,13 +214,14 @@
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="ToolTip" Value="Build Same Again" />
 
-        <Setter Property="Width" Value="100" />
-        <Setter Property="MaxHeight" Value="40" />
+        <Setter Property="Width" Value="90" />
+        <Setter Property="MaxHeight" Value="37" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <DockPanel>
-                        <Border CornerRadius="3" BorderThickness="1" DockPanel.Dock="Left" Width="100" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Border CornerRadius="3" BorderThickness="1" DockPanel.Dock="Left" Width="90" Height="36" 
+                                VerticalAlignment="Center" HorizontalAlignment="Left">
                             <Border.Background>
                                 <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.2">
                                     <GradientStop Color="#FFC8C8C8" Offset="0"/>
@@ -243,11 +244,9 @@
                        HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
                                 <TextBlock x:Name="BuildOneMore"
                            Text="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILD_ONE_MORE}" 
-                           Foreground="LightGreen"
-                           FontWeight="SemiBold"
-                                      
-                           Margin="3,0,3,3"
-                           HorizontalAlignment="Center" FontSize="12" />
+                           Foreground="LightGreen" FontWeight="SemiBold" FontSize="12"
+                           Margin="2,0,3,3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           />
                             </StackPanel>
                         </Border>
                     </DockPanel>
@@ -424,15 +423,15 @@
                            Mode="OneWay" />
                 </TextBlock.Text>
               </TextBlock>
-                                <Button x:Name="BuildOneMoreButton" 
+              <Button x:Name="BuildOneMoreButton" 
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Grid.Row="3"
                     Style="{StaticResource BuildOneMoreButton}" 
-                    Width="100" Height="40" 
-                    VerticalAlignment="Top" 
+                    Width="90" Height="37" 
+                    VerticalAlignment="Center" 
                     HorizontalAlignment="Left" 
-                    Margin="1,5,0,0" 
+                    Margin="1,-30,0,0" 
                     Visibility="Visible"                      
                     ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" 
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" 

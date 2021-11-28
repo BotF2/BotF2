@@ -4775,6 +4775,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="context">An optional, arbitrary object to allow context to be provided.</param>
         public void ReadOwnedData(IOwnedDataSerializable target, object context)
         {
+            //Console.WriteLine("----- ReadOwnedData -----");   // to often
             target.DeserializeOwnedData(this, context);
         }
 
