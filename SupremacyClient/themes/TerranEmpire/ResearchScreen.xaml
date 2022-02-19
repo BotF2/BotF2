@@ -183,7 +183,7 @@
                 <TextBlock Text="{s:StringResource Key=RESEARCH_PROGRESS}"/>
                 <TextBlock Text=": "/>
                 <!--<TextBlock Text="{Binding Path=CurrentProject.Application.ResearchCost}"/>-->
-                <TextBlock Text="{Binding Path=Progress}"/>
+                <TextBlock Foreground="Red" Text="{Binding Path=Progress}"/>
                 </TextBlock>
                 
           </DockPanel>

@@ -376,7 +376,7 @@ namespace Supremacy.Tech
             else
             {
                 OrbitalBatteryDesign currentBuild = civManager.TechTree.OrbitalBatteryDesigns
-.FirstOrDefault(colony.IsBuilding);
+                    .FirstOrDefault(colony.IsBuilding);
 
                 if (currentBuild != null)
                 {
@@ -961,6 +961,9 @@ namespace Supremacy.Tech
             //
             // SYSTEM RESOURCE BONUS RESTRICTIONS
             //
+
+            if (design.IsUniversallyAvailable && colony.OwnerID == 6)  // 2021: Borg not allowed to build universal stuff
+                return false;
 
             if ((design.Restriction & BuildRestriction.DilithiumBonus) == BuildRestriction.DilithiumBonus)
             {

@@ -8,7 +8,8 @@
                 xmlns:controls="clr-namespace:Supremacy.Client.Controls"
                 IsModal="False"
                 Height="700"
-                Width="1280">
+                Margin="220,0,0,0"
+                Width="1230">
 
   <dialogs:Dialog.Resources>
     <DataTemplate x:Key="SitRepEntryTemplate"
@@ -87,7 +88,7 @@
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="Golden">
-                    <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_yellow.png" />
+                    <Setter TargetName="PriorityIcon" Property="Source" Value="vfs:///Resources/Images/UI/ScreenIcons/hand_golden.png" />
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}" Value="Crimson">
@@ -441,16 +442,16 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <CheckBox x:Name="GoldenCheck" Foreground="Khaki" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
+                <CheckBox x:Name="YellowCheck" Foreground="Khaki" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Margin="14,0,0,0"
                 DockPanel.Dock="Left"
-                Content="{scc:StringResource Key=SITREP_DIALOG_GOLDEN_CHECKBOX}"
+                Content="{scc:StringResource Key=SITREP_DIALOG_YELLOW_CHECKBOX}"
                 
                 Checked="OnFilterItemIsCheckedChanged"
                 Unchecked="OnFilterItemIsCheckedChanged"
-                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowGoldenItems), Mode=TwoWay}" 
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowYellowItems), Mode=TwoWay}" 
                       >
                     <CheckBox.ToolTip>
-                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_GOLDEN_CHECKBOX_TOOLTIP}" 
+                        <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_YELLOW_CHECKBOX_TOOLTIP}" 
                                FontSize="18"/>
                     </CheckBox.ToolTip>
                 </CheckBox>

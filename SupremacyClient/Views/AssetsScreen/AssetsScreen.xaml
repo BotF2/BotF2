@@ -182,7 +182,7 @@
                         VerticalAlignment="Top"
                         Width="20"
                         Height="20"
-                        Source="vfs:///Resources/Images/UI/ScreenIcons/rawmaterials.png"
+                        Source="vfs:///Resources/Images/UI/ScreenIcons/duranium.png"
                         />
                     <TextBlock 
                         Grid.Column="37" Text="{Binding Path=TotalDuranium, Mode=OneWay}" 

@@ -35,19 +35,15 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            //if (this)
-
-            int _howMany = 5;
-
             ICommand command = presentationModel.AddToShipyardBuildQueueCommand;
 
             if ((command != null) && command.CanExecute(selectedProject))
             {
-                for (int i = 0; i < _howMany; i++)
-                {
+                //for (int i = 0; i < _howMany; i++)
+                //{
                     command.Execute(selectedProject);
 
-                }
+                //}
             }
         }
 

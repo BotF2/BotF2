@@ -31,6 +31,7 @@ namespace Supremacy.Orbitals
         // private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
         private string _text;
+        private readonly string newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -137,15 +138,38 @@ namespace Supremacy.Orbitals
         public void ProcessQueue()
         {
             int count = 0;
+            //if (_buildQueue.Count > 0)
+            //{
+                
+            //    _text = "BuildQueue.Count= " + BuildQueue.Count; 
+            //    Console.WriteLine(_text);
+            //    //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
+            //}
+
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                GameLog.Client.ShipProductionDetails.DebugFormat("Shipyard before BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
+                _text = "buildQueueItem= " + buildQueueItem.Description + ", index " + count 
+                    + ", TurnsRemaining " + buildQueueItem.TurnsRemaining 
+                    + " at " + buildQueueItem.Project.Location 
+                    + " at " + buildQueueItem.Project.ProductionCenter;
+                Console.WriteLine(_text);
+                //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
                 count++;
             }
             //int bays = BuildSlots.Count();
             int baysWithProjects = 0;
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
+                _text = "checking " + slot.Shipyard.Design /*+ ", index " + count*/
+
+                    + " Slot= " + slot.SlotID
+                    + " at " + slot.Shipyard.Location
+                    + ", Owner=" + slot.Shipyard.Owner
+
+                    ;
+                Console.WriteLine(_text);
+                //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
+
                 if (slot.HasProject && slot.Project.IsCancelled)
                 {
                     slot.Project = null;
@@ -181,6 +205,9 @@ namespace Supremacy.Orbitals
             int afterCount = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
+                _text = "Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
+                Console.WriteLine(_text);
+                //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
                 GameLog.Client.ShipProductionDetails.DebugFormat("Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
                 afterCount++;
             }
@@ -199,6 +226,7 @@ namespace Supremacy.Orbitals
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
 
+            //Console.WriteLine("------------");
             try
             {
                 foreach (ShipyardBuildSlot slot in _buildSlots)
@@ -213,11 +241,11 @@ namespace Supremacy.Orbitals
 
                     if (_percent != "0 %")
                     {
-                        _text =
-                            "Slot= " + slot.SlotID
+                        _text = slot.Shipyard.Location + 
+                            " > Slot= " + slot.SlotID
                             + " at " + slot.Shipyard.Name
-                            + " " + slot.Shipyard.Location
-                            + " " + _percent
+                            //+ " " + 
+                            + " > " + _percent
                             + " done for " + _design
                             ;
                         Console.WriteLine(_text);
@@ -235,6 +263,99 @@ namespace Supremacy.Orbitals
 
             _buildQueue = new ObservableCollection<BuildQueueItem>((BuildQueueItem[])reader.ReadObjectArray(typeof(BuildQueueItem)));
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>((ShipyardBuildSlot[])reader.ReadOptimizedObjectArray(typeof(ShipyardBuildSlot)));
+
+            for (int i = 0; i < _buildQueue.Count; i++)
+            {
+                if (_buildQueue[i].Project != null)
+                {
+                    _text = _buildQueue[i].Project.Location
+                        //+ "; " + _buildQueue[i].Project.ProductionCenter   // crashes
+                        //+ "; " + _buildQueue[i].Project.ProductionCenter.Owner
+                        + ";Shipyard-Slot-BuildQueue;" + i
+                        //+ ";" + _buildQueue[i].Project.Builder
+                        + ";"
+                        //+ ";" + _buildQueue[i].Project.TurnsRemaining
+
+
+                    ;
+                }
+
+                //if (!item.HasProject)
+                //{
+                //    _text += "Shipyard_buildSlot: No Project" + newline;
+                //    Console.WriteLine(_text);
+                //    //GameLog.Core.Stations.DebugFormat(_text);
+                //}
+                //else
+                //{
+                //    if (item.Project != null)
+                //    {
+                        //_text += item.Project.Builder
+                        //    //+ "; " + item.Project.BuildDesign
+                        //    + newline
+                        //;
+                        Console.WriteLine(_text);
+                        //GameLog.Core.Stations.DebugFormat(_text);
+                    //}
+                //}
+            }
+
+
+            foreach (var item in _buildSlots)
+            {
+                if (item.Project != null)
+                {
+                    _text = item.Project.Location
+                        //+ "; " + item.Project.ProductionCenter   // crashes
+                        //+ "; " + item.Project.ProductionCenter.Owner
+                        + ";" + newline/*+ item.Project.Design*/
+
+                    ;
+                }
+                //else
+                //{
+                //    _text = item.
+                //}
+
+
+                if (!item.HasProject)
+                {
+                    //_text += item
+                    //    //+ "; " + item.Shipyard.Location// crashes
+                    //    //+ "; " + item.Shipyard.Design
+                    //    + " > BuildSlot: No Project" + newline;
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.Stations.DebugFormat(_text);
+                    _text = "";
+                }
+                else
+                {
+                    if (item.Project != null)
+                    {
+                        string _builder = "";
+                        // still crashing....
+                        //try 
+                        //{ 
+                        //    if (item.Project.Builder != null && item.Project.Builder.Key != null)
+                        //        _builder = item.Project.Builder.Key; 
+                        //} catch { }
+                                
+                        _text += _builder
+                            + "; " + item
+                            + "; " + item.Project
+                            + "; "
+                        ;
+                        Console.WriteLine(_text);
+                    //GameLog.Core.Stations.DebugFormat(_text);
+                    }
+                    else
+                    {
+                        _text += ""; //   ??
+                        Console.WriteLine(_text);
+                    }
+                }
+                //_text = "";
+            }
 
             UpdateBuildSlots();
         }

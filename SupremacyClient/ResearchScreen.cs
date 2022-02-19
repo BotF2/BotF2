@@ -93,15 +93,23 @@ namespace Supremacy.Client
                 }
             }
 
+            //IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
+            //                 from civ in GameContext.Current.Civilizations
+            //                 let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+            //                 where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+            //                 let raceEntry = civ.Race as IEncyclopediaEntry
+            //                 where raceEntry != null
+            //                 select raceEntry
+            //             )
             IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
-                             from civ in GameContext.Current.Civilizations
-                             let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
-                             where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
-                             let raceEntry = civ.Race as IEncyclopediaEntry
-                             where raceEntry != null
-                             select raceEntry
-                         )
-                .Concat(
+                 from civ in GameContext.Current.Civilizations
+                 let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+                 where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+                 let raceEntry = civ.Race as IEncyclopediaEntry
+                 where raceEntry != null
+                 select raceEntry
+             )
+    .Concat(
 
                     from design in techTree
                     where TechTreeHelper.MeetsTechLevels(civManager, design)
@@ -158,9 +166,12 @@ namespace Supremacy.Client
                 groupItem.Resources.Add(typeof(TreeViewItem), itemStyle);
                 groupItem.Header = group.Key;
                 groupItem.ItemsSource = entriesView;
-                //groupItem.IsExpanded = true;
-                groupItem.IsExpanded = false;
+                groupItem.IsExpanded = true;  // EncyclopediaGroups
+                //groupItem.IsExpanded = false;
                 _ = _encyclopediaEntryListView.Items.Add(groupItem);
+
+                //_text = groupItem
+                //Console.WriteLine(_text);
             }
         }
 

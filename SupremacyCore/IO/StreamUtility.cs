@@ -7,11 +7,12 @@
 //
 // All other rights reserved.
 
+using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
-
+using System.Text;
 using Supremacy.IO.Compression;
 using Supremacy.IO.Serialization;
 
@@ -19,6 +20,9 @@ namespace Supremacy.IO
 {
     public static class StreamUtility
     {
+        private static string _text;
+        private static int _count;
+
         internal static BinaryFormatter CreateFormatter()
         {
             return new BinaryFormatter
@@ -34,6 +38,14 @@ namespace Supremacy.IO
         {
             using (SerializationReader sin = new SerializationReader(MiniLZO.Decompress(buffer)))
             {
+                for (int i = 35; i < 48; i++)
+                {
+                    char c = (char)buffer[i];
+                    _text += c;
+                    //Console.WriteLine(i + ": " + c + " = " + buffer[i].ToString("X2") + ", dec: " + buffer[i]);
+                }
+                Console.WriteLine("HEX-Reading: " + _text + ", out of savedgame");
+
                 return sin.ReadObject() as T;
             }
         }

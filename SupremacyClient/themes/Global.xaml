@@ -66,6 +66,7 @@
     <SolidColorBrush Color="Pink" x:Key="DilithiumColor"/>
     <SolidColorBrush Color="SkyBlue" x:Key="DeuteriumColor"/>
     <SolidColorBrush Color="Silver" x:Key="DuraniumColor"/>
+    <SolidColorBrush Color="Gold" x:Key="CreditsColor"/>
 
     <SolidColorBrush Color="Aqua" x:Key="RankingColor"/>
 

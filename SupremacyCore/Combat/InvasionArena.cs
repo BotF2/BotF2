@@ -837,12 +837,19 @@ namespace Supremacy.Combat
 
             _invasionArena.Update();
 
-            int defenderCombatStrength = _invasionArena.DefenderCombatStrength;
-            //GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? : defenderCombatStrength = {0}, attacking Transports = {1}",
-            //    defenderCombatStrength, transports.Count);
+
 
             Colony colony = _invasionArena.Colony;
             Civilization invader = GameContext.Current.Civilizations[_invasionArena.InvaderID];
+
+            int defenderCombatStrength = _invasionArena.DefenderCombatStrength;
+            _text = colony.Location
+                + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
+                + " defenderCombatStrength= " + defenderCombatStrength
+                ;
+            Console.WriteLine(_text);
+            //GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? : defenderCombatStrength = {0}, attacking Transports = {1}",
+            //    defenderCombatStrength, transports.Count);
 
             while (defenderCombatStrength > 0 &&
                    transports.Count != 0)
@@ -870,6 +877,8 @@ namespace Supremacy.Combat
                     transportCombatStrength, randomResult);
 
                 defenderCombatStrength -= transportCombatStrength;
+                colony.Population.AdjustCurrent(transportCombatStrength / 2 * -1);
+                colony.Population.UpdateAndReset();
 
                 if (defenderCombatStrength >= 0)
                 {

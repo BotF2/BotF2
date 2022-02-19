@@ -65,7 +65,15 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />                    
+                    <RowDefinition Height="70"/>
+                    
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+
                     <RowDefinition Height="Auto"
                      MinHeight="01" />
                     <!--MinHeight before 27-->
@@ -83,6 +91,12 @@
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="60"/>
+                    <!--<ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>-->
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
@@ -242,6 +256,17 @@
 
                 <TextBlock Grid.Row="13" Text="{s:StringResource DIALOG_F12_TEXT_2}" Foreground="{DynamicResource HeaderTextBrush}"
                            Grid.ColumnSpan="13" TextWrapping="Wrap"  Background="#FF000000" Margin="20,0,20,0" HorizontalAlignment="Left" />
+                
+                <TextBox Grid.Row="14" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_21}" ></TextBox>
+                <TextBox Grid.Row="15" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_23}" ></TextBox>
+                <TextBox Grid.Row="16" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_25}" ></TextBox>
+                <TextBox Grid.Row="17" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_27}" ></TextBox>
+                <TextBox Grid.Row="18" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_29}" ></TextBox>
 
                 <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
                 <!--<TextBlock Grid.Row="6" Text="Dummy" Margin="20,0,0,0"/>

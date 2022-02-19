@@ -136,6 +136,7 @@ namespace Supremacy.Client.Context
     {
         private static CivilizationManager _spiedCivDummy;
         private static bool _subedSix = false;
+        private static string _text;
 
         /// <summary>
         /// Host Civilization Manager has been used as a substitute for a civ not in the game
@@ -319,6 +320,8 @@ namespace Supremacy.Client.Context
             {
                 SectorClaimGrid claims = GameContext.Current.SectorClaims;
                 Civilization owner = CivilizationManager.Civilization;
+                _text = "Search for ControlledSystems";
+                Console.WriteLine(_text);
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }

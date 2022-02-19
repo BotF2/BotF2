@@ -14,6 +14,7 @@ namespace Supremacy.Diplomacy.Visitors
     public class AcceptProposalVisitor : ProposalVisitor
     {
         public static readonly object TransferredColoniesDataKey = new NamedGuid(new Guid("2BDDF322-714E-46AF-B7A1-6D337DE9956B"), "TransferredColonies");
+        private string _text;
 
         private AcceptProposalVisitor([NotNull] IProposal proposal)
         {
@@ -172,7 +173,48 @@ namespace Supremacy.Diplomacy.Visitors
         }
         protected override void VisitTreatyTradePactClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyResearchPactClause(IClause clause) { /* TODO */ }
-        protected override void VisitTreatyAffiliationClause(IClause clause) { /* TODO */ }
+        protected override void VisitTreatyAffiliationClause(IClause clause) 
+        {
+            Diplomat senderDiplomat = Diplomat.Get(Proposal.Sender);
+            Diplomat recipientDiplomat = Diplomat.Get(Proposal.Recipient);
+
+            //Civilization target = clause.Data as Civilization; // target civilization of war pact
+            //if (target == null)
+            //{
+
+            _text = "Civilization " + senderDiplomat.Owner.ShortName
+                + " sent a affiliation proposal to " + recipientDiplomat.Owner.ShortName
+                ;
+            Console.WriteLine(_text);
+
+            //GameLog.Client.Diplomacy.ErrorFormat(
+            //    "Civilization {0} sent a affiliation proposal to {1} without a valid target.",
+            //    senderDiplomat.Owner.ShortName,
+            //    recipientDiplomat.Owner.ShortName);
+
+            //return;
+            //}
+
+            //ForeignPower senderForeignPower = senderDiplomat.GetForeignPower(Proposal.Recipient);
+            //ForeignPower recipientForeignPower = recipientDiplomat.GetForeignPower(Proposal.Sender);
+
+            //if (senderForeignPower != null)
+
+
+            //if (senderDiplomat.GetForeignPower(recipientDiplomat) != null)
+
+            //ForeignPower senderForeignPower = senderDiplomat.GetForeignPower(target);
+            //if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
+            //{
+            //    senderForeignPower.DeclareWar();
+            //}
+
+            //ForeignPower recipientForeignPower = recipientDiplomat.GetForeignPower(target);
+            //if (recipientForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
+            //{
+            //    recipientForeignPower.DeclareWar();
+            //}
+        }
         protected override void VisitTreatyDefensiveAllianceClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyFullAllianceClause(IClause clause) { /* TODO */ }
 

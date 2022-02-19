@@ -13,6 +13,8 @@ using Supremacy.Universe;
 using Supremacy.Client.Views.GalaxyScreen;
 using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
+using System.IO;
+using Supremacy.Resources;
 
 namespace Supremacy.Client.Views
 {
@@ -22,6 +24,7 @@ namespace Supremacy.Client.Views
         private readonly IAppContext _appContext;
         private readonly INavigationCommandsProxy _navigationCommands;
         private readonly DelegateCommand<object> _revealMapCommand;
+        private readonly DelegateCommand<object> _outputMapCommand;
         private readonly DelegateCommand<object> _cheatMenuCommand;
         private readonly DelegateCommand<object> _f12_ScreenCommand;
         private readonly DelegateCommand<object> _f11_ScreenCommand;
@@ -30,6 +33,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _f08_ScreenCommand;
         private readonly DelegateCommand<object> _f07_ScreenCommand;
         private readonly DelegateCommand<object> _f06_ScreenCommand;
+        private readonly string newline = Environment.NewLine;
 
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
@@ -53,6 +57,7 @@ namespace Supremacy.Client.Views
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
 
             _revealMapCommand = new DelegateCommand<object>(ExecuteRevealMapCommand);
+            _outputMapCommand = new DelegateCommand<object>(ExecuteOutputMapCommand);
             _cheatMenuCommand = new DelegateCommand<object>(ExecuteCheatMenuCommand);
             _f12_ScreenCommand = new DelegateCommand<object>(Execute_f12_ScreenCommand);
             _f11_ScreenCommand = new DelegateCommand<object>(Execute_f11_ScreenCommand);
@@ -63,6 +68,7 @@ namespace Supremacy.Client.Views
             _f06_ScreenCommand = new DelegateCommand<object>(Execute_f06_ScreenCommand);
 
             DebugCommands.RevealMap.RegisterCommand(_revealMapCommand);
+            DebugCommands.OutputMap.RegisterCommand(_outputMapCommand);
             DebugCommands.CheatMenu.RegisterCommand(_cheatMenuCommand);
             DebugCommands.F12_Screen.RegisterCommand(_f12_ScreenCommand);
             DebugCommands.F11_Screen.RegisterCommand(_f11_ScreenCommand);
@@ -79,6 +85,7 @@ namespace Supremacy.Client.Views
             Content = null;
             GalaxyGrid = null;
             DebugCommands.RevealMap.UnregisterCommand(_revealMapCommand);
+            DebugCommands.OutputMap.UnregisterCommand(_outputMapCommand);
             DebugCommands.CheatMenu.UnregisterCommand(_cheatMenuCommand);
             DebugCommands.F12_Screen.UnregisterCommand(_f12_ScreenCommand);
             DebugCommands.F11_Screen.UnregisterCommand(_f11_ScreenCommand);
@@ -152,9 +159,103 @@ namespace Supremacy.Client.Views
                 if (diplomat.GetForeignPower(civ).DiplomacyData.Status == ForeignPowerStatus.NoContact)
                 {
                     diplomat.GetForeignPower(civ).DiplomacyData.Status = ForeignPowerStatus.Neutral;
+                    //diplomat.GetForeignPower(civ).DiplomacyData.ContactTurn = 999999;   // ships are not visible yet
                 }
             }
             GalaxyGrid.Update();
+        }
+
+        private void ExecuteOutputMapCommand(object t)
+        {
+            //if (!_appContext.IsSinglePlayerGame)
+            //{
+            //    return;
+            //}
+
+            SectorMap map = _appContext.CurrentGame.Universe.Map;
+
+            string _text = "";
+            _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   " 
+                + newline
+                + newline
+                + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55-------------60" + newline
+                + newline
+                ;
+            int yhalf = map.Height / 2;
+            int xhalf = map.Width / 2;
+
+            for (int y = 0; y < map.Height; y++)
+            {
+                if (y < 10) _text += " ";  // 1 to 9 getting a blank before
+
+                if (y == yhalf) _text += "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------" + newline;
+                _text += y + ":  ";
+                for (int x = 0; x < map.Width; x++)
+                {
+                    if (x == xhalf) _text += "| ";
+                    string owner = ".";
+                    if (map[x, y].Owner != null)
+                    {
+                        owner = map[x, y].Owner.CivID.ToString();
+                        if (map[x, y].Owner.CivID > 6) owner = "M"; // Minor
+                    }
+
+                    string type = ".";
+                    if (map[x, y].System != null)
+                    {
+                        type = map[x, y].System.StarType.ToString().Substring(0,1);
+                        if (map[x, y].System.StarType == StarType.BlackHole) type = "b";
+                        if (map[x, y].System.StarType == StarType.NeutronStar) type = "n";
+                        //if (map[x, y].System.StarType == StarType.Quasar) type = "Q";
+                        if (map[x, y].System.StarType == StarType.RadioPulsar) type = "r";
+                        if (map[x, y].System.StarType == StarType.XRayPulsar) type = "x";
+                        if (map[x, y].System.StarType == StarType.Wormhole) type = "w";
+                    }
+                    _text += owner + type + " ";
+                    //Console.WriteLine(_text);
+                }
+                _text += newline;
+                //Console.WriteLine(_text);
+            }
+
+            _text += 
+                newline + "---------------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55-------------60" + newline
+                + newline 
+                + "1st character:                                     2nd character: StarSystem" + newline
+                + "   0 = Federation                                     B = Blue star" + newline//" + newline
+                + "   1 = Terrans                                        O = Orange star" + newline//" + newline
+                + "   2 = Romulans                                       N = Nebula" + newline//" + newline
+                + "   3 = Klingons                                       R = Red star" + newline//" + newline
+                + "   4 = Cardassian                                     Y = Yellow star" + newline//" + newline
+                + "   5 = Dominion                                       W = White star" + newline//" + newline
+                + "   6 = Borg                                           B = Blue star" + newline//" + newline
+                + newline /*+ newline*/
+                + "   M = Minor                                          b = black hole" + newline
+                + "                                                      n = Neutron star" + newline
+                + "                                                      Q = Quasar" + newline
+                + "                                                      r = Radio Pulsar" + newline
+                + "                                                      w = worm hole" + newline
+                + "                                                      x = x-ray Pulsar" + newline
+                //+ "2nd character: StarSystem" + newline
+                //+ "   B = Blue star" + newline
+                //+ "   O = Orange star" + newline
+                //+ "   N = Nebula" + newline
+                //+ "   R = Red star" + newline
+                //+ "   Y = Yellow star" + newline
+                //+ "   W = White star" + newline
+                //+ newline
+                ;
+            Console.WriteLine(_text);   // Output here as well
+
+            string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"),"MapData.txt");
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            {
+                StreamWriter streamWriter = new StreamWriter(file);
+                streamWriter.Write(_text);
+                streamWriter.Close();
+                _text = "output of MapData done to " + file;
+                Console.WriteLine(_text);
+            }
         }
 
         private void ExecuteCheatMenuCommand(object t)

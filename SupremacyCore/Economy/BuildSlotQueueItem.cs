@@ -50,7 +50,9 @@ namespace Supremacy.Economy
         /// Gets the queued project.
         /// </summary>
         /// <value>The queued project.</value>
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public BuildProject Project => _project;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
         /// <summary>
         /// Gets the total number of turns remaining until all items in this entry are completed.
@@ -123,25 +125,33 @@ namespace Supremacy.Economy
         /// Occurs when a property value changes.
         /// </summary>
         [field: NonSerialized]
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
         /// <summary>
         /// Raises the <see cref="PropertyChanged"/> event.
         /// </summary>
         /// <param name="propertyName">Name of the property that changed.</param>
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         protected void OnPropertyChanged(string propertyName)
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public void SerializeOwnedData(SerializationWriter writer, object context)
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         {
             writer.WriteOptimized(_count);
             writer.WriteObject(_project);
         }
 
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public void DeserializeOwnedData(SerializationReader reader, object context)
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         {
             _count = reader.ReadOptimizedInt32();
             _project = reader.Read<BuildProject>();

@@ -450,18 +450,12 @@ namespace Supremacy.Game
         {
             get
             {
-                foreach (SitRepEntry rep in _sitRepEntries)
-                {
-                    int _player = 789;
-
                     if (LocalPlayer != null)
                     {
-                        _player = LocalPlayer.CivID;
-                    }
+                foreach (SitRepEntry rep in _sitRepEntries)
+                {
 
-                    if (_player != 789)
-                    {
-                        CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_player];
+                        CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[LocalPlayer.CivID];
                         if (playerCivManager != null && rep.Owner.ToString() == playerCivManager.ToString())
                         {
                             _text = "SitRep Turn "

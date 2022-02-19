@@ -71,7 +71,7 @@ namespace Supremacy.Client.Views
 
         public string ShipFunctionPath => "vfs:///Resources/Specific_Empires_UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
 
-        public int SpecialWidth1 => Context.DesignTimeAppContext.Instance.ASpecialWidth1;// ActualWidthProperty;
+        public int SpecialWidth1 => Context.DesignTimeAppContext.Instance.ASpecialWidth1;// ActualWidthProperty;  // used in view
         public int SpecialHeight1 => Context.DesignTimeAppContext.Instance.ASpecialHeight1;
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -102,7 +102,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            DialogResult = true;
+            DialogResult = true;   // just trying to solve the HowMany Ships to build by keeping screen open
         }
 
         //private void OnBuildProjectHowManyChanged(object sender, MouseButtonEventArgs e)

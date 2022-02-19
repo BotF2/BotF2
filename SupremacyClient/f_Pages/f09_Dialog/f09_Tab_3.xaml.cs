@@ -1,4 +1,4 @@
-// <!-- File:f09_Dialog.xaml.cs
+// <!-- File:f09_Tab_3.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,17 +7,16 @@
 //
 // All other rights reserved.
 
-using Supremacy.Utility;
 using System.Windows.Input;
 
 namespace Supremacy.Client
 {
     /// <summary>
-    /// Interaction logic for f09_Dialog.xaml.cs
+    /// Interaction logic for f09_Tab_3.xaml.cs
     /// </summary>
-    public partial class F09_Dialog
+    public partial class F09_Tab_3
     {
-        public F09_Dialog()
+        public F09_Tab_3()
         {
             InitializeComponent();
 
@@ -57,8 +56,6 @@ namespace Supremacy.Client
                 new CommandBinding(
                     GenericCommands.TracesSetNoneCommand,
                     OnGenericCommandsTracesSetNoneCommandExecuted));
-
-            GameLog.Client.UIDetails.DebugFormat("F09-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
@@ -101,6 +98,11 @@ namespace Supremacy.Client
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
+        }
+
+        private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
         }
     }
 }

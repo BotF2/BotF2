@@ -1,0 +1,15 @@
+diff a/SupremacyCore/Game/GameEngine.cs b/SupremacyCore/Game/GameEngine.cs	(rejected hunks)
+@@ -822,10 +822,12 @@
+                                     , civ2
+                                     , foreignPower.PendingAction.ToString());
+ 
+-                                if (foreignPower.ProposalReceived != null)
++                                if (foreignPower.ProposalReceived != null) // && onlyOneMembership)
+                                 {
+                                     _ = AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
+                                 }
++                                if (foreignPower.ProposalReceived.IsMemebership())
++                                    //onlyOneMembership = false;
+ 
+                                 foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                                 foreignPower.ProposalReceived = null;

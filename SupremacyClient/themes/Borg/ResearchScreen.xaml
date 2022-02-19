@@ -122,9 +122,9 @@
                     <Setter TargetName="Border"
                             Property="Background"
                             Value="{DynamicResource Borg3Gradient_Left_Right}"/>
-                    <Trigger.EnterActions>
+                    <!--<Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/ButtonClick.wav"/>
-                    </Trigger.EnterActions>
+                    </Trigger.EnterActions>-->
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
@@ -157,9 +157,9 @@
                     <Setter TargetName="Border"
                             Property="Background"
                             Value="{DynamicResource Borg3Gradient_Left_Right}"/>
-                    <Trigger.EnterActions>
+                    <!--<Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/ButtonClick.wav"/>
-                    </Trigger.EnterActions>
+                    </Trigger.EnterActions>-->
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
@@ -279,7 +279,7 @@
 
     <!--Details-->
   <DataTemplate DataType="{x:Type local:ResearchApplicationDetails}">
-    <ScrollViewer CanContentScroll="False" Height="220" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer CanContentScroll="False" Height="Auto" VerticalScrollBarVisibility="Auto">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="0.5*"/>
@@ -622,13 +622,18 @@
                 <TabControl Margin="4,0,0,0">
                 <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
                   <Grid>
+                                        <!--<Grid.ColumnDefinitions>
+                                            <ColumnDefinition Height="Auto"/>
+                                            <ColumnDefinition Height="140"/>
+                                            <ColumnDefinition Height="Auto"/>
+                                        </Grid.ColumnDefinitions>-->
                     <Grid.RowDefinitions>
                       <RowDefinition Height="Auto"/>
                                             <!--<RowDefinition Height="2*"-->
-                      <RowDefinition Height="1*"
+                      <RowDefinition Height="*"
                                                                           MinHeight="20"/>
                                      <!--MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>-->
-                      <RowDefinition Height="*"
+                      <RowDefinition Height="160"
                                      MinHeight="20"/>
                     </Grid.RowDefinitions>
                     <Border x:Name="PART_ResearchFieldItemsHost"

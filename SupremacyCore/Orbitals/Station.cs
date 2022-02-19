@@ -1,4 +1,4 @@
-// Station.cs
+// File:Station.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -28,6 +28,7 @@ namespace Supremacy.Orbitals
         private IIndexedEnumerable<BuildSlot> _buildSlots;
         private int _buildOutput;
         private List<BuildQueueItem> _buildQueue;
+        private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -103,6 +104,28 @@ namespace Supremacy.Orbitals
             _buildSlots = new ArrayWrapper<BuildSlot>((BuildSlot[])reader.ReadOptimizedObjectArray(typeof(BuildSlot)));
             _buildOutput = reader.ReadOptimizedInt32();
             _buildQueue = reader.ReadList<BuildQueueItem>();
+
+
+            foreach (var item in _buildSlots)
+            {
+                if (item == null)
+                    continue;
+
+                if (!item.HasProject)
+                {
+                    _text = "Station_buildSlot: No Project";
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Stations.DebugFormat(_text);
+                }
+                else
+                {
+                    _text = item.Project.ProductionCenter.Location
+                        + item.Project.ProductionCenter.ToString()
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Stations.DebugFormat(_text);
+                }
+            }
         }
     }
 }

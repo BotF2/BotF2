@@ -39,6 +39,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace Supremacy.Client
 {
@@ -74,6 +75,15 @@ namespace Supremacy.Client
         private readonly F12_Dialog _f12_Dialog;
         private readonly FakeDialog _fakeDialog;
 
+        private readonly CTRL_F06_Dialog _ctrl_f06_Dialog;
+        //private readonly F07_Dialog _encyclopedia_Dialog;
+        //private readonly CTRL_F07_Dialog _ctrl_f07_Dialog;
+        //private readonly CTRL_F08_Dialog _ctrl_f08_Dialog;
+        //private readonly CTRL_F09_Dialog _ctrl_f09_Dialog;
+        //private readonly CTRL_F10_Dialog _ctrl_f10_Dialog;
+        //private readonly CTRL_F11_Dialog _ctrl_f11_Dialog;
+        //private readonly CTRL_F12_Dialog _ctrl_f12_Dialog;
+
         private readonly DelegateCommand<object> _optionsCommand;
         private readonly DelegateCommand<object> _tracesCommand;
         private readonly DelegateCommand<object> _f06_Command;
@@ -83,6 +93,19 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _f10_Command;
         private readonly DelegateCommand<object> _f11_Command;
         private readonly DelegateCommand<object> _f12_Command;
+
+        //private readonly DelegateCommand<object> _ctrl_f01_Command;
+        //private readonly DelegateCommand<object> _ctrl_f02_Command;
+        //private readonly DelegateCommand<object> _ctrl_f03_Command;
+        //private readonly DelegateCommand<object> _ctrl_f04_Command;
+        //private readonly DelegateCommand<object> _ctrl_f05_Command;
+        private readonly DelegateCommand<object> _ctrl_f06_Command;
+        //private readonly DelegateCommand<object> _ctrl_f07_Command;
+        //private readonly DelegateCommand<object> _ctrl_f08_Command;
+        //private readonly DelegateCommand<object> _ctrl_f09_Command;
+        //private readonly DelegateCommand<object> _ctrl_f10_Command;
+        //private readonly DelegateCommand<object> _ctrl_f11_Command;
+        //private readonly DelegateCommand<object> _ctrl_f12_Command;
 
         private readonly DelegateCommand<object> _s0_Command;   // start Single Player Empire 0
         private readonly DelegateCommand<object> _s1_Command;
@@ -100,6 +123,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<bool> _endGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _loadGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _deleteManualSavedGameCommand;
+        private readonly DelegateCommand<SavedGameHeader> _deleteAutoSavedGameCommand;
         private readonly DelegateCommand<object> _showCreditsDialogCommand;
         private readonly DelegateCommand<object> _showSettingsFileCommand;
         private readonly DelegateCommand<object> _showPlayersHistoryFileCommand;
@@ -108,13 +132,16 @@ namespace Supremacy.Client
         private readonly DelegateCommand<string> _hostMultiplayerGameCommand;
         private readonly DelegateCommand<bool> _exitCommand;
 
-        private string localEmpire = "";
+        public string localEmpire = "";
         private int startTechLvl = -1;
+
+        public bool _checkLoading = true;
 
         private bool _isExiting;
         private IGameController _gameController;
-        private string _text;
-        private readonly string newline = Environment.NewLine;
+        public string _text;
+        public readonly string newline = Environment.NewLine;
+        public int localCivID;
 
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;
@@ -182,6 +209,10 @@ namespace Supremacy.Client
             _f12_Command = new DelegateCommand<object>(
                 Execute_f12_Command);
 
+            _ctrl_f06_Dialog = new CTRL_F06_Dialog();
+            _ctrl_f06_Command = new DelegateCommand<object>(
+                Execute_ctrl_f06_Command);
+
             _s0_Command = new DelegateCommand<object>(Execute_s0_Command); // start Single Player Empire 0
             _s1_Command = new DelegateCommand<object>(Execute_s1_Command);
             _s2_Command = new DelegateCommand<object>(Execute_s2_Command);
@@ -202,6 +233,7 @@ namespace Supremacy.Client
             _exitCommand = new DelegateCommand<bool>(ExecuteExitCommand);
             _loadGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteLoadGameCommand);
             _deleteManualSavedGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteDeleteManualSavedGameCommand);
+            _deleteAutoSavedGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteDeleteAutoSavedGameCommand);
             _showCreditsDialogCommand = new DelegateCommand<object>(ExecuteShowCreditsDialogCommand);
             _showSettingsFileCommand = new DelegateCommand<object>(ExecuteShowSettingsFileCommand);
             _showPlayersHistoryFileCommand = new DelegateCommand<object>(ExecuteShowPlayersHistoryFileCommand);
@@ -226,10 +258,10 @@ namespace Supremacy.Client
 
             //MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
 
-            string file = "Credits_for_Rise_of_the_UFP.pdf";
+            string file = ".\\Resources\\Credits_for_Rise_of_the_UFP.pdf";
             try
             {
-                if (System.IO.File.Exists(file))
+                if (File.Exists(file))
                 {
                     _ = Process.Start(file);
                 }
@@ -254,17 +286,24 @@ namespace Supremacy.Client
         private void ExecuteLoadGameCommand(SavedGameHeader header)
         {
             GameInitData initData = GameInitData.CreateFromSavedGame(header);
-            GameLog.Client.GeneralDetails.Debug("doing ExecuteLoadGameCommand ...");
+            GameLog.Client.General.Debug("doing ExecuteLoadGameCommand ...");
             RunGameController(gameController => gameController.RunLocal(initData), initData.IsMultiplayerGame);
             GameLog.Client.GeneralDetails.Debug("doing gameController.RunLocal(initData) ...");
 
             startTechLvl = GetStartTechLvl(initData.Options.StartingTechLevel.ToString());
             localEmpire = GetLocalEmpireShortage(initData.LocalPlayerEmpireID, out string localempire);
+            GameLog.Client.General.Debug("playing " + localempire + " ( StartLevel " + startTechLvl + " )");
+
         }
 
         private void ExecuteDeleteManualSavedGameCommand(object obj)
         {
             _ = SavedGameManager.SaveGameDeleteManualSaved();
+        }
+
+        private void ExecuteDeleteAutoSavedGameCommand(object obj)
+        {
+            _ = SavedGameManager.SaveGameDeleteAutoSaved();
         }
 
         private void ExecuteOptionsCommand(object obj) { _ = _optionsDialog.ShowDialog(); }
@@ -277,6 +316,21 @@ namespace Supremacy.Client
         private void Execute_f10_Command(object obj) { _ = _f10_Dialog.ShowDialog(); }
         private void Execute_f11_Command(object obj) { _ = _f11_Dialog.ShowDialog(); }
         private void Execute_f12_Command(object obj) { _ = _f12_Dialog.ShowDialog(); }
+
+
+        //private void Execute_ctrl_f01_Command(object obj) { _ = _ctrl_f01_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f02_Command(object obj) { _ = _ctrl_f02_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f03_Command(object obj) { _ = _ctrl_f03_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f04_Command(object obj) { _ = _ctrl_f04_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f05_Command(object obj) { _ = _ctrl_f05_Dialog.ShowDialog(); }
+        private void Execute_ctrl_f06_Command(object obj) { _ = _ctrl_f06_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f07_Command(object obj) { _ = _ctrl_f07_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f08_Command(object obj) { _ = _ctrl_f08_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f09_Command(object obj) { _ = _ctrl_f09_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f10_Command(object obj) { _ = _ctrl_f10_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f11_Command(object obj) { _ = _ctrl_f11_Dialog.ShowDialog(); }
+        //private void Execute_ctrl_f12_Command(object obj) { _ = _ctrl_f12_Dialog.ShowDialog(); }
+
 
         private void Execute_s0_Command(object obj) { ExecuteSP_DirectlyGameCommand(0); }
         private void Execute_s1_Command(object obj) { ExecuteSP_DirectlyGameCommand(1); }
@@ -401,31 +455,6 @@ namespace Supremacy.Client
                 if (!item.Contains("True") && !item.Contains("False")) { _rest.Add(item); }
             }
 
-            //_resultText = "";
-            //int columnsize = 40;
-            //_length = _trues.Count;
-            //if (_false.Count > _length) _length = _false.Count;
-            //if (_rest.Count > _length) _length = _rest.Count;
-
-            //for (int i = 0; i < _length; i++)
-            //{
-            //    truesText = "";
-            //    falseText = "";
-            //    restText = "";
-            //    try { 
-            //    if (_trues[i] != null) truesText = _trues[i];
-
-            //        while (truesText.Length < columnsize) { truesText += " ";}
-
-            //    if (_false[i] != null) falseText = _false[i];
-            //        while (falseText.Length < columnsize) { falseText += " "; }
-            //        if (_rest[i] != null) restText = _rest[i];
-            //    } catch { 
-            //        // ss
-            //    }
-
-            //_resultText += truesText + falseText + restText + newline;
-            //}
             _resultText = "CONTENT OF SupremacyClient..Settings.xaml " + DateTime.Now + newline;
 
             _resultText += newline + "VALUES" + newline + "======" + newline;
@@ -437,8 +466,6 @@ namespace Supremacy.Client
             _resultText += newline + "FALSE" + newline + "=====" + newline;
             foreach (string item in _false) { _resultText += item + newline; }
 
-            //_resultText += newline + "REST" + newline + "====" + newline;
-            //foreach (var item in _rest) { _resultText += item + newline; }
 
             _resultText += newline + newline;
 
@@ -454,14 +481,6 @@ namespace Supremacy.Client
                 try { _ = Process.Start(processStartInfo); }
                 catch { _ = MessageBox.Show("Could not load Text-File about Settings"); }
             }
-
-
-            //var result = MessageDialog.Show(_resultText, MessageDialogButtons.YesNo);
-            //MessageBox.Show(_resultText);
-            //MessageBox.Show(_trueText);
-            //MessageBox.Show(_falseText);
-            //MessageBox.Show(_restText);
-
         }
 
         private void ExecuteShowPlayersHistoryFileCommand(object obj)
@@ -471,22 +490,16 @@ namespace Supremacy.Client
 
             string file = Path.Combine(
                 ResourceManager.GetResourcePath(""),
-                "PlayersHistory.txt");
+                "PlayersHistory");
             file = file.Replace(".\\", "");
             //string _text1;
 
-            
 
-            StreamWriter streamWriter = new StreamWriter(file);
-            streamWriter.Write(_resultText);
-            streamWriter.Close();
 
-            if (!string.IsNullOrEmpty(file) && File.Exists(file))
-            {
-                _ = new FileStream(
-                    file,
-                    FileMode.Open,
-                    FileAccess.Read);
+            //StreamWriter streamWriter = new StreamWriter(file);
+            //streamWriter.Write(_resultText);
+            //streamWriter.Close();
+            file += ".bat";
 
                 //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
                 if (!string.IsNullOrEmpty(file) && File.Exists(file))
@@ -496,7 +509,7 @@ namespace Supremacy.Client
                     try { _ = Process.Start(processStartInfo); }
                     catch { _ = MessageBox.Show("Could not load Text-File about Players History"); }
                 }
-            }
+            
         }
 
         private void ExecuteShowAllHistoryFileCommand(object obj)
@@ -572,12 +585,6 @@ namespace Supremacy.Client
             // this blocks following bat file "*.txt" already in usage
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
-                //_ = new FileStream(
-                //    file,
-                //    FileMode.Open,
-                //    FileAccess.Read);
-
-                //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
                 if (!string.IsNullOrEmpty(file) && File.Exists(file))
                 {
                     ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
@@ -670,7 +677,7 @@ namespace Supremacy.Client
 
             UIHelpers.IsAutomaticBrowserLaunchEnabled = true;
 
-            if (AutoLoadSavedGame())
+            if (AutoLoadSavedGame())   // don't show Start Screen
             {
                 return;
             }
@@ -780,6 +787,15 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_8));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f08_Pages, typeof(F08_Tab_9));
 
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_1));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_2));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_3));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_4));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_5));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_6));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_7));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_8));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f09_Pages, typeof(F09_Tab_9));
 
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_1));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_2));
@@ -913,7 +929,7 @@ namespace Supremacy.Client
 
             statusWindow.Content = Environment.NewLine
             + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
-            + Environment.NewLine + "For more information on game play please read the manual."
+            + Environment.NewLine + "For more information on game play please read the manual or press F9-Key."
             + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
             + Environment.NewLine + "Star Trek and all related marks, logos and characters are solely owned by CBS Studios Inc."
             + Environment.NewLine + "This fan production is not endorsed by, sponsored by, nor affiliated with CBS, Paramount Pictures, or"
@@ -922,7 +938,7 @@ namespace Supremacy.Client
             + Environment.NewLine + "against CBS or Paramount Pictures."
             + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
             + Environment.NewLine + "This work is licensed under the Creative Commons"
-            + Environment.NewLine + "Attribution - NonCommercial - ShareAlike 4.0 International (CC BY - NC - SA 4.0)"
+            + Environment.NewLine + "Attribution - NonCommercial - ShareAlike 4.0 International ( CC BY - NC - SA 4.0 )"
             ;
 
             //string techlvl = "3";
@@ -972,6 +988,17 @@ namespace Supremacy.Client
             catch { introText = ""; }
 
             statusWindow.Content = introText + statusWindow.Content + Environment.NewLine;
+
+            //var _red = statusWindow.
+
+////Brush GlobalBlueBrush = Brush.;
+//            switch (localEmpire)
+//            {
+//                default:
+//                    statusWindow.Background = Path. GlobalBlueBrush;
+//                    break;
+//            }
+            
 
 
 
@@ -1028,6 +1055,18 @@ namespace Supremacy.Client
             _f10_Command.IsActive = true;
             _f11_Command.IsActive = true;
             _f12_Command.IsActive = true;
+            //_ctrl_f01_Command.IsActive = true;
+            //_ctrl_f02_Command.IsActive = true;
+            //_ctrl_f03_Command.IsActive = true;
+            //_ctrl_f04_Command.IsActive = true;
+            //_ctrl_f05_Command.IsActive = true;
+            _ctrl_f06_Command.IsActive = true;
+            //_ctrl_f07_Command.IsActive = true;
+            //_ctrl_f08_Command.IsActive = true;
+            //_ctrl_f09_Command.IsActive = true;
+            //_ctrl_f10_Command.IsActive = true;
+            //_ctrl_f11_Command.IsActive = true;
+            //_ctrl_f12_Command.IsActive = true;
             _s0_Command.IsActive = true;
             _s1_Command.IsActive = true;
             _s2_Command.IsActive = true;
@@ -1047,6 +1086,7 @@ namespace Supremacy.Client
             _hostMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _loadGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _deleteManualSavedGameCommand.IsActive = true;
+            _deleteAutoSavedGameCommand.IsActive = true;
             _continueGameCommand.IsActive = isGameInPlay;
             _endGameCommand.IsActive = isConnected && !isGameEnding;
         }
@@ -1060,31 +1100,40 @@ namespace Supremacy.Client
                 if (_appContext.LocalPlayer.Empire.Key == "FEDERATION")
                 {
                     LoadTheme("Federation");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "ROMULANS")
-                {
-                    LoadTheme("Romulans");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "KLINGONS")
-                {
-                    LoadTheme("Klingons");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "CARDASSIANS")
-                {
-                    LoadTheme("Cardassians");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "DOMINION")
-                {
-                    LoadTheme("Dominion");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "BORG")
-                {
-                    LoadTheme("Borg");
+                    localCivID = 0;
                 }
                 else if (_appContext.LocalPlayer.Empire.Key == "TERRANEMPIRE")
                 {
                     LoadTheme("TerranEmpire");
+                    localCivID = 1;
                 }
+                else if (_appContext.LocalPlayer.Empire.Key == "ROMULANS")
+                {
+                    LoadTheme("Romulans");
+                    localCivID = 2;
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "KLINGONS")
+                {
+                    LoadTheme("Klingons");
+                    localCivID = 3;
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "CARDASSIANS")
+                {
+                    LoadTheme("Cardassians");
+                    localCivID = 4;
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "DOMINION")
+                {
+                    LoadTheme("Dominion");
+                    localCivID = 5;
+                    LocalCivID();
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "BORG")
+                {
+                    LoadTheme("Borg");
+                    localCivID = 6;
+                }
+
                 else
                 {
                     _ = MessageBox.Show("Empire is set to NOT-Playable - falling back to Default - Please restart, Select Single Player Menu and set Empire Playable to YES");
@@ -1092,6 +1141,12 @@ namespace Supremacy.Client
                 }
 
             }
+        }
+
+        // hopefully info about played empire public available
+        private int LocalCivID()
+        {
+            return localCivID;
         }
 
         public void LoadDefaultTheme()
@@ -1235,6 +1290,19 @@ namespace Supremacy.Client
             ClientCommands.F11_Command.RegisterCommand(_f11_Command);
             ClientCommands.F12_Command.RegisterCommand(_f12_Command);
 
+            //ClientCommands.CTRL_F01_Command.RegisterCommand(_ctrl_f01_Command);
+            //ClientCommands.CTRL_F02_Command.RegisterCommand(_ctrl_f02_Command);
+            //ClientCommands.CTRL_F03_Command.RegisterCommand(_ctrl_f03_Command);
+            //ClientCommands.CTRL_F04_Command.RegisterCommand(_ctrl_f04_Command);
+            //ClientCommands.CTRL_F05_Command.RegisterCommand(_ctrl_f05_Command);
+            ClientCommands.CTRL_F06_Command.RegisterCommand(_ctrl_f06_Command);
+            //ClientCommands.CTRL_F07_Command.RegisterCommand(_ctrl_f07_Command);
+            //ClientCommands.CTRL_F08_Command.RegisterCommand(_ctrl_f08_Command);
+            //ClientCommands.CTRL_F09_Command.RegisterCommand(_ctrl_f09_Command);
+            //ClientCommands.CTRL_F10_Command.RegisterCommand(_ctrl_f10_Command);
+            //ClientCommands.CTRL_F11_Command.RegisterCommand(_ctrl_f11_Command);
+            //ClientCommands.CTRL_F12_Command.RegisterCommand(_ctrl_f12_Command);
+
             ClientCommands.S0_Command.RegisterCommand(_s0_Command);
             ClientCommands.S1_Command.RegisterCommand(_s1_Command);
             ClientCommands.S2_Command.RegisterCommand(_s2_Command);
@@ -1253,6 +1321,7 @@ namespace Supremacy.Client
             ClientCommands.HostMultiplayerGame.RegisterCommand(_hostMultiplayerGameCommand);
             ClientCommands.LoadGame.RegisterCommand(_loadGameCommand);
             ClientCommands.SaveGameDeleteManualSaved.RegisterCommand(_deleteManualSavedGameCommand);
+            ClientCommands.SaveGameDeleteAutoSaved.RegisterCommand(_deleteAutoSavedGameCommand);
             ClientCommands.ShowCreditsDialog.RegisterCommand(_showCreditsDialogCommand);
             ClientCommands.ShowSettingsFileCommand.RegisterCommand(_showSettingsFileCommand);
             ClientCommands.ShowPlayersHistoryFileCommand.RegisterCommand(_showPlayersHistoryFileCommand);

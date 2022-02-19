@@ -794,6 +794,22 @@ namespace Supremacy.Client.Views
                 dialog.Close();
             }
 
+            foreach (var item in _destroyedInvadingUnits)
+            {
+                _text = 
+                    item.Unit.Source.Location
+                    + " > " + item.Unit.ObjectID
+                    + " * " + item.Name
+                    + " * was destroyed during System Assault."
+
+
+
+                    ;
+                Console.WriteLine(_text);
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[item.Unit.OwnerID];
+                civManager.SitRepEntries.Add(new Report_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
+            }
+
             _currentUpdate = null;
             _invadingUnits.Clear();
             _ = _troopTransports.ForEach(o => o.IsSelectedChanged -= OnTroopTransportIsSelectedChanged);
@@ -859,6 +875,8 @@ namespace Supremacy.Client.Views
                         break;
                 }
             }
+
+            
 
             string soundEffect = null;
             TimeSpan playbackDuration = TimeSpan.Zero;

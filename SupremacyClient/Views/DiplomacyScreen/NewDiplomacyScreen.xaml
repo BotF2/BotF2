@@ -1,4 +1,4 @@
-﻿<!--File:NewDiplomacySreen.xaml-->
+﻿<!--File:NewDiplomacyScreen.xaml-->
 <scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
                        x:Name="_self"
                        x:FieldModifier="private"
@@ -200,9 +200,10 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Immediate Payment"
+                <!--<TextBlock Text="Immediate Payment"-->
+                <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OneTurnTransferText'}"
                          TextWrapping="NoWrap"
-                         VerticalAlignment="Center"
+                         VerticalAlignment="Center" Margin="0,0,20,0"
                          TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                          TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                          TextBlock.FontSize="12pt" />
@@ -234,18 +235,21 @@
                              Grid.Column="4"
                              Text="{Binding Path=ImmediateAmount, Mode=OneWay, StringFormat='#,0'}"
                              TextWrapping="NoWrap"
-                             VerticalAlignment="Center"
+                             VerticalAlignment="Center" Margin="20,0,0,0"
                              TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                              TextBlock.FontSize="12pt" />
-                <TextBlock Grid.Row="1"
+                
+                
+                <!--No RecurringPayment anymore-->
+                <!--<TextBlock Grid.Row="1"
                              Text="Recurring Payment"
                              TextWrapping="NoWrap"
                              VerticalAlignment="Center"
                              TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                             TextBlock.FontSize="12pt" />
-                <RepeatButton Grid.Row="1"
+                             TextBlock.FontSize="12pt" />-->
+                <!--<RepeatButton Grid.Row="1"
                             Grid.Column="1"
                             Command="{x:Static scc:RangeBar.DecrementCommand}"
                             CommandTarget="{Binding ElementName=RecurringRangeBar}"
@@ -268,15 +272,15 @@
                             Command="{x:Static scc:RangeBar.IncrementCommand}"
                             CommandTarget="{Binding ElementName=RecurringRangeBar}"
                             IsEnabled="{Binding ElementName=RecurringRangeBar}"     
-                            Style="{DynamicResource BlockBarIncrementButtonStyle}" />
-                <TextBlock Grid.Row="1"
+                            Style="{DynamicResource BlockBarIncrementButtonStyle}" />-->
+                <!--<TextBlock Grid.Row="1"
                              Grid.Column="4"
                              Text="{Binding Path=RecurringAmount, Mode=OneWay, StringFormat='#,0'}"
                              TextWrapping="NoWrap"
                              VerticalAlignment="Center"
                              TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                             TextBlock.FontSize="12pt" />
+                             TextBlock.FontSize="12pt" />-->
             </Grid>
         </DataTemplate>
 
@@ -778,9 +782,10 @@
                                     TextTrimming="CharacterEllipsis"
                                     FontSize="17pt"
                                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    Foreground="LightGoldenrodYellow"
+                                    Foreground="Aqua"
                                     FontWeight="Normal"
-                                    Margin="3,0,3,0">
+                                    Margin="5,-2,5,0">
+                            <!--Foreground="LightGoldenrodYellow"-->
                             <TextBlock.Text>
                                 <Binding Path="SelectedForeignPower.Counterparty.ShortName"
                                                  Converter="{StaticResource UpperCaseConverter}" />
@@ -1261,7 +1266,7 @@
                                                                                     TextWrapping="Wrap"            
                                                                                     TextTrimming="CharacterEllipsis"
                                                                                     FontSize="14pt"
-                                                                                    Foreground="LightYellow"
+                                                                                    Foreground="Aqua"
                                                                                     Margin="0,0,0,0"
                                                                                     Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SendHeader}" 
                                                                                     Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -1819,6 +1824,11 @@
                             <ImageBrush ImageSource="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivImageConverter}}"
                           Stretch="UniformToFill" />
                         </Border.Background>
+                        <Border.ToolTip>
+                            <Image x:Name="InsigniaTooltip" Width="540" Height="540" Source="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivImageConverter}}" Margin="5,0,5,0"/>
+                            <!--<Image ImageSource="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivImageConverter}}"
+                          Stretch="UniformToFill" ima/>-->
+                        </Border.ToolTip>
                     </Border>
 
 

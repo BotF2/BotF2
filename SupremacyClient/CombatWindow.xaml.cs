@@ -28,6 +28,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Supremacy.Entities;
 using Supremacy.Game;
+using System;
 
 namespace Supremacy.Client
 {
@@ -45,6 +46,7 @@ namespace Supremacy.Client
         private readonly Civilization _onlyFireIfFiredAppone;
         private Civilization _theTargeted1Civ;
         private Civilization _theTargeted2Civ;
+        private string _text;
         private readonly IAppContext _appContext;
 
 
@@ -143,36 +145,46 @@ namespace Supremacy.Client
 
                 if (_update.IsStandoff)
                 {
-                    string _standoffText = string.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
-                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-                        + _standoffText;
+                    _text = string.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
+                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
+                        + _text;
                     SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
                         _update.Sector.Name);
-                    _text += _standoffText + " - no winner";
+                    _text += _text + " - no winner";
 
                     CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location, _text));
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
 
-                    playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
-                        string.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
+                    //playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
+                    //    string.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
 
                 }
                 else if (_playerAssets.HasSurvivingAssets)
                 {
-                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
+                    _text = string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
+                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
                         + string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
                     SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_VICTORY"),
                         _update.Sector.Name);
+                    _text += _text + " - we were victorious !";
+
+                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
                 }
                 else
                 {
-                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
+                    _text = string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
+                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
                         + string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
                     SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_DEFEAT"),
                         _update.Sector.Name);
+                    _text += _text + " - we were not victorious !";
+
+                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
                 }
             }
             else
@@ -462,7 +474,13 @@ namespace Supremacy.Client
                 Close();
             }
 
-            GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);
+            _text = _playerAssets.Location + " > Combat at " + _playerAssets.Sector + " > " + order + " button was clicked by player";
+            Console.WriteLine(_text);
+            GameLog.Client.Combat.DebugFormat(_text);
+
+            CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+            playerCivManager.SitRepEntries.Add(new Report_NoAction(playerCivManager.Civilization, _text, "", "", SitRepPriority.Red));
+
 
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;

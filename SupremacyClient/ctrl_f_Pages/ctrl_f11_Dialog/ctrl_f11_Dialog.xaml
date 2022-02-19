@@ -1,0 +1,117 @@
+﻿<!-- File:ctrl_f11_Dialog.xaml
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.CTRL_F11_Dialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:cal="http://www.codeplex.com/CompositeWPF"
+            Width="980"
+            Height="750"
+            Background="Black"
+            SnapsToDevicePixels="True">
+
+
+
+    <DockPanel LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Top"
+                Margin="0,0,0,10"
+                Orientation="Horizontal"
+                HorizontalAlignment="Left"
+                >
+            
+            <Button x:Name="AcceptButton"
+              Command="{x:Static local:GenericCommands.AcceptCommand}" IsCancel="True"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+                    HorizontalAlignment="Right" Margin="0,0,56,0" MinWidth="150"
+             >
+                <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+            </Button>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{s:StringResource DIALOG_CTRL_F11_HEADER}" 
+                           Foreground="{DynamicResource HeaderTextBrush}"
+                           FontSize="24" HorizontalAlignment="Left"
+                           >
+            </TextBlock>
+
+        </StackPanel>
+
+
+        <!--<StackPanel DockPanel.Dock="Bottom"
+                Margin="0,12,0,0"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+            <Button x:Name="AcceptButton"
+              Command="{x:Static local:GenericCommands.AcceptCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,6,0">
+                <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+            </Button>
+        </StackPanel>-->            
+            
+            <!-- CANCEL makes trouble while running out of Visual Studio ....
+        <Button x:Name="CancelButton"
+              Command="{x:Static local:GenericCommands.CancelCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,0,0">
+        <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
+      </Button>-->
+
+
+        <!--<TabControl x:Name="OptionsRegion"
+                cal:RegionManager.RegionName="{x:Static scc:ClientRegions.OptionsPages}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+                    <Setter Property="Header"
+                  Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />
+                </Style>
+            </TabControl.ItemContainerStyle>
+        </TabControl>-->
+
+        <TabControl x:Name="OptionsRegion"
+                cal:RegionManager.RegionName="{x:Static scc:ClientRegions.f11_Pages}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+                    <!--<Setter Property="Header" Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />-->
+                    <Setter Property="Header" Value="-- Tab --- " />
+
+                           
+                            <!--Value="{s:StringResource DIALOG_F11_TAB_1_HEADER}" />-->                    
+                    
+                  <!--Value="Tab 1" />-->
+                    <!--we use IClientOptionsPage.cs ... no need to do a If11_Page.cs-->
+                </Style>
+            </TabControl.ItemContainerStyle>
+        </TabControl>
+
+    </DockPanel>
+
+
+
+
+
+
+        <!-- CANCEL makes trouble while running out of Visual Studio ....
+        <Button x:Name="CancelButton"
+              Command="{x:Static local:GenericCommands.CancelCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,0,0">
+        <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
+      </Button>-->
+    <!--</StackPanel>-->
+      
+
+      
+  <!--</DockPanel>-->
+</scc:Dialog>

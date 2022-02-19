@@ -30,6 +30,8 @@ namespace Supremacy.Universe
         //private readonly MapLocation _tradeRouteLocation;
         private int _targetColonyId;
         private int _credits;
+        private string _text;
+        private readonly string newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the <see cref="Colony"/> from which the <see cref="TradeRoute"/> originates.
@@ -137,41 +139,56 @@ namespace Supremacy.Universe
                 //var clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
                 try
                 {
-                    IPlayer clientContext = ServiceLocator.Current.GetInstance<IPlayer>();
-                    //var clientContext = Game.IPlayer.
-                    if (clientContext == null)
-                    {
-                        GameLog.Core.General.DebugFormat("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                        return Credits;
-                    }
-                    Civilization empire = clientContext.Empire;//.LocalPlayer.Empire;
-                    if (empire == null)
-                    {
-                        GameLog.Core.General.DebugFormat("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                        return Credits;
-                    }
+                    //clientContext crashes  !!
+
+                    //IPlayer clientContext = ServiceLocator.Current.GetInstance<IPlayer>();
+                    ////var clientContext = Game.IPlayer.
+                    //if (clientContext == null)
+                    //{
+                    //    GameLog.Core.TradeRoutesDetails.DebugFormat("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    //    return Credits;
+                    //}
+                    Civilization empire = SourceColony.Owner;//.LocalPlayer.Empire;
+                    //if (empire == null)
+                    //{
+                    //    GameLog.Core.TradeRoutesDetails.DebugFormat("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    //    return Credits;
+                    //}
 
                     Colony colony = SourceColony.OwnerID == empire.CivID ? SourceColony : TargetColony.OwnerID == empire.CivID ? TargetColony : null;
-                    if (colony == null)
-                    {
-                        GameLog.Core.General.DebugFormat("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                        return Credits;
-                    }
+                    //if (colony == null)
+                    //{
+                    //    GameLog.Core.TradeRoutesDetails.DebugFormat("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    //    return Credits;
+                    //}
 
-                    double bonus = colony.Buildings
+                    double bonus = 0;
+
+                    bonus = colony.Buildings
                                       .Where(o => o.IsActive)
                                       .SelectMany(o => o.BuildingDesign.Bonuses)
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
                                       .Sum(o => 0.01 * o.Amount);
 
-                    GameLog.Core.General.DebugFormat("Turn {0}, Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
-                    return (int)((1.0 + bonus) * Credits);
+                    int _creditsFromTradeRoute = (int)((1.0 + bonus) * Credits);
+
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + ": Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute=" 
+                        + _creditsFromTradeRoute
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.TradeRoutesDetails.DebugFormat(_text);
+                    // 2021-10-16: Credits devided by 4
+                    return _creditsFromTradeRoute;
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.General.ErrorFormat(string.Format(Environment.NewLine + "   #### problem with TradeRoute - ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits",
-                        Credits),
-                        e);
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + "#### problem with TradeRoute "
+                        + Credits
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.TradeRoutes.ErrorFormat(_text + newline + e);
                     return Credits;
                 }
 

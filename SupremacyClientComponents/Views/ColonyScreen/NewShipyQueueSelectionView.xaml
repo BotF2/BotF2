@@ -1,4 +1,5 @@
-﻿<Dialogs:Dialog x:Class="Supremacy.Client.Views.NewShipQueueSelectionView"
+﻿ <!--File:NewShipQueueSelectionView.xaml-->
+ <Dialogs:Dialog x:Class="Supremacy.Client.Views.NewShipQueueSelectionView"
              x:Name="_selfQueue"
              x:FieldModifier="private"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

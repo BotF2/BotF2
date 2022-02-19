@@ -167,6 +167,11 @@ namespace Supremacy.Game
         /// <returns></returns>
         public static SavedGameHeader Read(Stream input)
         {
+
+            string _text = "trying to read HEADER ...";
+            //Console.WriteLine(_text);
+            //GameLog.Client.SaveLoad.DebugFormat(_text);
+
             if (!input.CanRead)
             {
                 throw new InvalidOperationException("Cannot read from stream");
@@ -204,12 +209,14 @@ namespace Supremacy.Game
                 header.SlotStatus[i] = (SlotStatus)reader.ReadByte();
             }
 
-            string _text = "   "
+            _text = "   SavedGame"
                 /*+ Environment.NewLine*/ + ";GameVersion;" + header.GameVersion
                 /*+ Environment.NewLine*/ + ";Turn;" + header.TurnNumber
+                /*+ Environment.NewLine*/ + ";" + header.Title
 
                 /*+ Environment.NewLine + ";FileName   ;" + reader.   --- no filename available here*/
                 ;
+            //Console.WriteLine(_text);
             GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 
             return header;

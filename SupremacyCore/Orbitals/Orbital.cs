@@ -13,6 +13,7 @@ using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -30,6 +31,7 @@ namespace Supremacy.Orbitals
         private Meter _cloakStrength;
         private Meter _camouflagedMeter;
         private Meter _firePower;
+        private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -335,6 +337,20 @@ namespace Supremacy.Orbitals
             _camouflagedMeter = (Meter)reader.ReadObject();
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
             _firePower = (Meter)reader.ReadObject();
+
+
+            _text = "Orbital: " 
+                + "crew=" + _crew
+                + ", exp=" + _experienceLevel
+                + ", hull=" + _hullStrength
+                + ", sh=" + _shieldStrength
+                + ", cloa=" + _cloakStrength
+                + ", camo=" + _shieldStrength
+                + ", crew+-= nv" /*+ Crew_CurrentValueChanged.tostring()*/
+                + ", firepower=" + _firePower
+                ;
+            //Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
         }
     }
 

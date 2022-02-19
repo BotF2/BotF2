@@ -379,7 +379,7 @@ namespace Supremacy.Client
 
             Licenser.LicenseKey = "DGF20-AUTJ7-3K8MD-DNNA";
 
-            Console.WriteLine("Next: DesiredAnimationFrameRate");   // File.IO.error next
+            Console.WriteLine("Next: DesiredAnimationFrameRate and checking for local en.txt - mostly not existing e.g. 'de.txt'");   // File.IO.error next
             Timeline.DesiredFrameRateProperty.OverrideMetadata(
                typeof(Timeline),
                new FrameworkPropertyMetadata(ClientSettings.Current.DesiredAnimationFrameRate));
@@ -734,7 +734,7 @@ namespace Supremacy.Client
                 //Console.SetError
                 //errorFile.WriteLine("Hello");
                 //errorFile.WriteLine(DateTime.Now.ToString());
-                Console.WriteLine(DateTime.Now);
+                Console.WriteLine("Time 111: " + DateTime.Now);
                 //just starts an empty file 
                 // System.Diagnostics.Process.Start("Error.txt");
             }
@@ -785,13 +785,13 @@ namespace Supremacy.Client
 
             VfsWebRequestFactory.EnsureRegistered();
 
-            Console.WriteLine(DateTime.Now.ToString());
+            Console.WriteLine("Time 112: " + DateTime.Now.ToString());
 
             ClientApp app = new ClientApp();
             app.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             app.InitializeComponent();
             _ = app.Run();
-            Console.Error.WriteLine(DateTime.Now.ToString());
+            Console.Error.WriteLine("Time113: " + DateTime.Now.ToString());
         }
 
         private static void ShowSplashScreen()

@@ -29,6 +29,7 @@ namespace Supremacy.Game
     {
         public const string AutoSaveFileName = ".autosav";
         private static readonly string newline=Environment.NewLine;
+        private static string _text;
 
         public static string SavedGameDirectory
         {
@@ -140,9 +141,9 @@ namespace Supremacy.Game
                 SavedGameHeader header;
                 using (FileStream fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    GameLog.Client.SaveLoad.DebugFormat(/*Environment.NewLine + "                       */"reading HEADER of {0}"/* + Environment.NewLine*/
-                        , fileName
-                        );
+                    _text = "reading HEADER of " + fileName;
+                    Console.WriteLine(_text);
+                    GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 
                     header = SavedGameHeader.Read(fileStream);
                 }
@@ -203,6 +204,7 @@ namespace Supremacy.Game
                         }
                         GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileName);
                         _ = memoryStream.Seek(0, SeekOrigin.Begin);
+                        Console.WriteLine("reading memoryStream into game");
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }
                 }
@@ -364,6 +366,36 @@ namespace Supremacy.Game
             return false;
         }
 
+        public static bool SaveGameDeleteAutoSaved()
+        {
+            string file = Path.Combine(Environment.CurrentDirectory + "\\" + SavedGameDirectory, FixFileName(".autosav"));
+
+            //ResourceManager.GetString("Do you really want to delete > ")
+            var result = MessageBox.Show(
+                "ALT+Y: Do you really want to delete > "
+                + " " + file, "REALLY ?",
+                MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No)
+            {
+                return false;
+            }
+
+            try
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                    _text = "Deleted: " + file;
+                    Console.WriteLine(_text);
+                
+                //_ = MessageBox.Show("Deleted: " + file /*+ newline + "Create again with CTRL+S"*/);
+                return true;
+                }
+            }
+            catch { _ = MessageBox.Show("Problem at deleting: " + file); ; return false; }
+            return false;
+        }
+
         /// <summary>
         /// Automatically saves the current game.
         /// </summary>
@@ -386,8 +418,8 @@ namespace Supremacy.Game
 
 
                 string file_autosav_current = SavedGameFolder + ".autosav";
-                string file_autosav_one_turn_ago = SavedGameFolder + ".autosav_one_turn_ago.sav";
-                string file_autosav_two_turns_ago = SavedGameFolder + ".autosav_two_turns_ago";
+                string file_autosav_one_turn_ago = SavedGameFolder + "autosav_one_turn_ago.sav";
+                string file_autosav_two_turns_ago = SavedGameFolder + "autosav_two_turns_ago";
 
                 GameLog.Core.General.InfoFormat("saving {0}", file_autosav_current);
 

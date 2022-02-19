@@ -216,9 +216,9 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Crimson);
             }
 
-            if (GoldenCheck.IsChecked.HasValue && GoldenCheck.IsChecked.Value)
+            if (YellowCheck.IsChecked.HasValue && YellowCheck.IsChecked.Value)
             {
-                visiblePriorities.Add(SitRepPriority.Golden);
+                visiblePriorities.Add(SitRepPriority.Yellow);
             }
 
             if (BlueDarkCheck.IsChecked.HasValue && BlueDarkCheck.IsChecked.Value)

@@ -1,4 +1,4 @@
-// ShipDesign.cs
+// File:ShipDesign.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -38,7 +38,7 @@ namespace Supremacy.Orbitals
         private Percentage _raidAbility;
         private readonly Dictionary<string, int> _possibleNames;
         private ShipType _shipClass;
-        private readonly string _text;
+        private string _text;
 
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace Supremacy.Orbitals
 
                     //_text = "ShipNames - Possible Name for " + Name + " " + name.InnerText.Trim();
                     //Console.WriteLine(_text);
-                    //GameLog.Core.GameData.DebugFormat("ShipNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
+                    //GameLog.Core.GameData.DebugFormat(_text);
                 }
             }
         }
@@ -551,6 +551,10 @@ namespace Supremacy.Orbitals
             if (fuelNeeded > 0)
             {
                 _ = ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+
+                _text = ship.ObjectID + " " + ship.Name + " ( " + ship.ShipDesign + " ) got " + fuelNeeded + "fuel (=Dilithium)";
+                Console.WriteLine(_text);
+                GameLog.Core.DeuteriumDetails.DebugFormat(_text);
             }
 
             // default we want to be "camouflaged"

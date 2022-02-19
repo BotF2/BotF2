@@ -1,4 +1,4 @@
-// CivilizationPairedMap.cs
+// File:CivilizationPairedMap.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -27,6 +27,7 @@ namespace Supremacy.Entities
     public sealed class CivilizationPairedMap<TValue> : IOwnedDataSerializableAndRecreatable, IEnumerable<TValue>
     {
         private Dictionary<int, TValue> _map;
+        private string _text;
 
         public CivilizationPairedMap()
         {
@@ -174,7 +175,15 @@ namespace Supremacy.Entities
             for (int i = 0; i < count; i++)
             {
                 _map.Add(reader.ReadInt32(), reader.Read<TValue>());
+
             }
+            //foreach (var item in _map)
+            //{
+            //    _text = "CivilizationPairedMap:; " + item.Key 
+            //        + "; " + item.Value.ToString()
+            //        ;
+            //    Console.WriteLine(_text);
+            //}
         }
 
         #endregion

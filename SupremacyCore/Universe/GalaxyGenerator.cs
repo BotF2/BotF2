@@ -29,6 +29,7 @@ namespace Supremacy.Universe
 
         private static TableMap UniverseTables;
         private static string _text;
+        private static bool bool_output_done;
         private static readonly Dictionary<StarType, int> StarTypeDist;
         private static readonly Dictionary<Tuple<StarType, PlanetSize>, int> StarTypeModToPlanetSizeDist;
         private static readonly Dictionary<Tuple<int, PlanetSize>, int> SlotModToPlanetSizeDist;
@@ -340,14 +341,18 @@ namespace Supremacy.Universe
                     }
 
                     int count = 0;
+                    bool_output_done = false;
                     for (int x = 0; x < mapSize.Height; x++)
                     {
                         for (int y = 0; y < mapSize.Width; y++)
                         {
                             Sector loc = GameContext.Current.Universe.Map[y, x];
-                            if (!loc.Name.Contains("("))  // emtpy sector are named e.g. (0,0)
+                            if (!loc.Name.Contains("(") && !bool_output_done == true)  // emtpy sector are named e.g. (0,0)
                             {
-                                _text = ";MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType;
+                                _text = ";MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType
+                                    + " - no more output or deactivate this line and the boolean"
+                                    ;
+                                bool_output_done = true;
                                 Console.WriteLine(_text);
                                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text); // hiding info in Log.txt
                                 count += 1;
@@ -358,7 +363,7 @@ namespace Supremacy.Universe
                     Console.WriteLine(_text);
                     GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
 
-                    _text = "Searching for Crash: systemNamesList";
+                    _text = "Searching for Crash: next: systemNamesList";
                     Console.WriteLine(_text);
                     IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
 
@@ -382,15 +387,22 @@ namespace Supremacy.Universe
                     }
 
                     count = 0;
+                    bool_output_done = false;
                     foreach (UniverseObject item in systemNamesList)
                     {
-
-                        _text = "Systems:;inhabited=" + item.Sector.System.IsInhabited + item.Location + ";" + item.Name + ";";
+                        if (!bool_output_done)
+                        {
+                        _text = "Systems:;inhabited=" + item.Sector.System.IsInhabited + ";" + item.Location + ";" + item.Name + ";"
+                                + " - no more output or deactivate the boolean"
+                                ;
+                            bool_output_done = true;
                         if (item.Sector.System.Colony != null)
                             _text += ";" + item.Sector.System.Colony.MaxPopulation;
                         Console.WriteLine(_text);
                         //GameLog.Core.GalaxyGenerator.DebugFormat(_text);  // hiding info in Log.txt
                         count += 1;
+                        }
+
                     }
                     _text = "### Systems-Count:;" + count;
                     Console.WriteLine(_text);
@@ -1230,7 +1242,7 @@ namespace Supremacy.Universe
                 }
 
                 _text = "Searching for Crash: systemNamesList";
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
 
                 //foreach (var pos in positions)

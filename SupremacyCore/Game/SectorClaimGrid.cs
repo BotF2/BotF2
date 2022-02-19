@@ -1,4 +1,4 @@
-// SectorClaimGrid.cs
+// File:SectorClaimGrid.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

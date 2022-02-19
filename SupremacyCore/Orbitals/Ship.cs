@@ -1,4 +1,4 @@
-// Ship.cs
+// File:Ship.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -31,9 +31,12 @@ namespace Supremacy.Orbitals
         private byte _camouflagedStrength;
         private bool _isCamouflaged;
         private bool _isAssimilated;
-        private byte _scanStrength;
         private Meter _fuelReserve;
         private ShipType _shipType;
+#pragma warning disable IDE0052 // Remove unread private members
+        private byte _scanStrength;
+#pragma warning restore IDE0052 // Remove unread private members
+
         #endregion
 
         #region Properties

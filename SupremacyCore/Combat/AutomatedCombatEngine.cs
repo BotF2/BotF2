@@ -10,13 +10,13 @@ using Supremacy.Collections;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
+using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
+using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
-using Supremacy.Universe;
-using Supremacy.Resources;
+
 
 namespace Supremacy.Combat
 {
@@ -65,7 +65,15 @@ namespace Supremacy.Combat
                             _ = ownerAssets.CombatShips.Remove(ship.Item1);
                             _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
                             _ = _combatShips.Remove(ship);
-                            GameLog.Core.CombatDetails.DebugFormat("Easy retreated ={0}", ship.Item1.Name);
+
+                            _text =
+                                ship.Item1.Source.Location
+                                + ": " + ship.Item1.Name
+                                + " - " + ship.Item1.Source.Design
+                                + ": easy retreated."
+                                ;
+                            Console.WriteLine(_text);
+                            GameLog.Core.CombatDetails.DebugFormat(_text);
                             //SendUpdates();
                         }
                     }
@@ -81,7 +89,7 @@ namespace Supremacy.Combat
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in hardRetreatShips)
                 {
-                    if (!RandomHelper.Chance(2) && (ship.Item1 != null)) // 2 = 50% to reatreat
+                    if (!RandomHelper.Chance(2) && (ship.Item1 != null)) // 2 = 50% to retreat
                     {
                         CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
                         if (!ownerAssets.EscapedShips.Contains(ship.Item1)) // escaped ships cannot escape again
@@ -90,7 +98,15 @@ namespace Supremacy.Combat
                             _ = ownerAssets.CombatShips.Remove(ship.Item1);
                             _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
                             _ = _combatShips.Remove(ship);
-                            GameLog.Core.CombatDetails.DebugFormat("Hard retreated ={0}", ship.Item1.Name);
+
+                            _text =
+                                ship.Item1.Source.Location
+                                + ": " + ship.Item1.Name
+                                + " - " + ship.Item1.Source.Design
+                                + ": hard retreated."
+                                ;
+                            Console.WriteLine(_text);
+                            GameLog.Core.CombatDetails.DebugFormat(_text);
                         }
                     }
                 }
@@ -125,7 +141,15 @@ namespace Supremacy.Combat
                                 _ = ownerAssets.NonCombatShips.Remove(target.Item1);
                                 ownerAssets.AssimilatedShips.Add(target.Item1);
                                 _ = _combatShips.Remove(target);
-                                GameLog.Core.CombatDetails.DebugFormat("Assimilated ={0} found borg ={1} assimilationSuccessful ={2}, chance to Assimiate ={3}", target.Item1.Name, foundDaBorg, assimilationSuccessful, chanceToAssimilate);
+
+                                _text =
+                                    "Assimilated= " + target.Item1.Name
+                                    + " found borg=" + foundDaBorg
+                                    + " assimilationSuccessful=" + assimilationSuccessful
+                                    + " , chance to Assimiate= " + chanceToAssimilate
+                                    ;
+                                Console.WriteLine(_text);
+                                GameLog.Core.CombatDetails.DebugFormat(_text);
                             }
                         }
                     }
@@ -294,10 +318,10 @@ namespace Supremacy.Combat
                 //    GameLog.Core.CombatDetails.DebugFormat("Empire Civ in Battle: {0} FirstTarget = {1} 2nd Target = {2}", empiresInBattle[q, 0], empiresInBattle[q, 1], empiresInBattle[q, 2]);
             }
             #endregion
-            foreach (int item in ownerIDs)
-            {
-                GameLog.Core.CombatDetails.DebugFormat("ownerIDs contains = {0}", item);
-            }
+            //foreach (int item in ownerIDs)
+            //{
+            //    GameLog.Core.CombatDetails.DebugFormat("ownerIDs contains = {0}", item);
+            //}
 
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _combatShipsTemp.Clear(); // Initializing as nothing
@@ -1938,7 +1962,7 @@ namespace Supremacy.Combat
                     CombatAssets Assets = GetAssets(combatent.Item1.Owner);
                     _ = Assets.AssimilatedShips.Remove(combatent.Item1);
                     GameLog.Core.Combat.DebugFormat("Combatent {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
-                    
+
                     if (combatent.Item1.Source is Ship)
                     {
                         if (Assets != null)
@@ -1947,38 +1971,51 @@ namespace Supremacy.Combat
                             if (!Assets.DestroyedShips.Contains(combatent.Item1))
                             {
                                 Assets.DestroyedShips.Add(combatent.Item1);
-                                _text = combatent.Item1.Source.Location
-                                + " " + combatent.Item1.Source.Sector.Name
+                                _text = "Combat at "
+                                    + combatent.Item1.Source.Location
+                                //+ " " + combatent.Item1.Source.Sector.Name
                                 + " > Ship " + combatent.Item1.Source.ObjectID
                                 + " * " + combatent.Item1.Name
-                                + " * (" + combatent.Item1.Source.Design
+                                + " * ( " + combatent.Item1.Source.Design
                                 + " ) destroyed."
                                 ;
+                                Console.WriteLine("SR: " + _text);
 
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+
                             }
+                            else
+                            {
+                                Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
+                                _text = ship.Item1.Source.Location
+                                    + " " + ship.Item1.Source.Sector.Name
+                                    + " > Ship " + ship.Item1.Source.ObjectID
+                                    + ": * " + ship.Item1.Name
+                                    + " * (" + ship.Item1.Source.Design
+                                    + " ) survived."
+                                    ;
+                                Console.WriteLine("SR: " + _text);
+
+                                civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Gray));
+                            }
+
+
+
+
 
                             if (combatent.Item1.Source.IsCombatant)
                             {
                                 countDestroyed++;
 
                                 _ = Assets.CombatShips.Remove(combatent.Item1);
+                                continue;
                             }
                             else
                             {
                                 _ = Assets.NonCombatShips.Remove(combatent.Item1);
+                                continue;
                             }
-                            Tuple<CombatUnit, CombatWeapon[]> ship = combatent;
-                            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
-                            _text = ship.Item1.Source.Location
-                                + " " + ship.Item1.Source.Sector.Name
-                                + " > Ship " + ship.Item1.Source.ObjectID
-                                + ": * " + ship.Item1.Name
-                                + " * (" + ship.Item1.Source.Design
-                                + " ) escaped."
-                                ;
 
-                            civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                         }
                         else
                         {
@@ -1997,6 +2034,7 @@ namespace Supremacy.Combat
                             + " " + combatent.Item1.Source.Design
                             + " destroyed."
                             ;
+                            Console.WriteLine("SR: " + _text);
 
                             civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
 
@@ -2008,7 +2046,10 @@ namespace Supremacy.Combat
             // End the combat... at turn X = 5, by letting all sides reteat
             //if (true) // End Combat after 3 While loops
             //{
-            GameLog.Core.CombatDetails.DebugFormat("NOW FORCE ALL TO RETREAT THAT WHERE NOT DESTROYED, Number of destroyed ships in total: {0}", countDestroyed);
+            _text = "NOW FORCE ALL TO RETREAT THAT WHERE NOT DESTROYED, Number of destroyed ships in total: " + countDestroyed;
+            Console.WriteLine(_text);
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
+
 
 
 
@@ -2048,8 +2089,16 @@ namespace Supremacy.Combat
                     foundStation = true;
                 }
 
+
+
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
                 {
+                    _text =
+                        "_combatShipsTempNotDestroyed: " + ship.Item1.Source.Name
+                        + " - " + ship.Item1.Source.Design
+                        + " at " + ship.Item1.Source.Location
+                        ;
+                    Console.WriteLine(_text);
                     if (systemName != "" && (systemName == ship.Item1.Owner.HomeSystemName || (theSector.System.Owner != null && !CombatHelper.WillEngage(ship.Item1.Owner, theSector.System.Owner))))
                     {
                         _stayingThereShips.Add(ship); // at a home system to defend
@@ -2072,14 +2121,18 @@ namespace Supremacy.Combat
                     }
                     else if (firstShipOwner != null && !CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
                     {
-                        //2021-08-21: changed this
-                        //_stayingThereShips.Add(ship); // otherwise who is first stays
-                        _allRetreatShips.Add(ship);
+                        //2021-08-21: changed this and back on 2022-01-15
+                        _stayingThereShips.Add(ship); // otherwise who is first stays
+                        //_allRetreatShips.Add(ship);
                     }
-                    else
+                    else if (ship.Item1.RemainingFirepower > 100) 
                     {
                         _stayingThereShips.Add(ship); // otherwise who is first stays
                         //_allRetreatShips.Add(ship);
+                    }
+                    else
+                    {
+                        _allRetreatShips.Add(ship);
                     }
                     //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
 
@@ -2102,13 +2155,15 @@ namespace Supremacy.Combat
                             _ = _combatShips.Remove(ship);
 
                             CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
-                            _text = ship.Item1.Source.Location
-                                + " > " + ship.Item1.Source.ObjectID
-                                + " * " + ship.Item1.Name
-                                + " * ( " + ship.Item1.Source.Design + " ) "
-                                + " escaped."
+                            _text = "Combat at " + ship.Item1.Source.Location
+                                + " > #" + ship.Item1.Source.ObjectID
+                                + "  " + ship.Item1.Source.Design
+                                + " * " + ship.Item1.Name + " * "
+
+                                + "retreated."
                                 ;
-                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "","", SitRepPriority.RedYellow));
+                            Console.WriteLine("SR: " + _text);
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
                         }
 
                     }

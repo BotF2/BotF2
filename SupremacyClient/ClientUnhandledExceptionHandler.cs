@@ -23,6 +23,9 @@ namespace Supremacy.Client
 
         #region Fields
         private readonly object _syncLock = new object();
+        private string _text;
+        private string newline = Environment.NewLine;
+
         #endregion
 
         #region Implementation of IUnhandledExceptionHandler
@@ -57,7 +60,7 @@ namespace Supremacy.Client
                     Console.Error.Flush();
                     _ = MessageBox.Show(
                         "An unhandled exception has occurred.  Detailed error information is "
-                        + "available in the 'Log.txt' file.",
+                        + "available in the 'Log.txt' file. Missing files could be the reason as well",
                         "Unhandled Exception",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
@@ -87,10 +90,10 @@ namespace Supremacy.Client
                     ["StackTrace"] = stackTrace
                 };
 
-                string _text = Environment.NewLine + Environment.NewLine
+                _text = newline + newline
                     + DateTime.Now + " #### ERROR " /*+ Environment.NewLine*/
-                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + Environment.NewLine
-                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + Environment.NewLine
+                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + newline + newline
+                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + newline + newline
                     + "StackTrace complete:;" + stackTrace;
 
                 GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
@@ -103,7 +106,16 @@ namespace Supremacy.Client
                     // but just if batch file is activated = rem is removed before web adress
                     // opens Win10 mail function which might be connected to Google Mail account or any other
                 }
-                catch (Exception ex) { throw ex; }
+                catch (Exception ex) 
+                {
+                    _text = newline + newline
+                        + DateTime.Now + " #### ERROR - a missing file could be the reason as well" + newline; 
+                    Console.WriteLine(_text);
+                    GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
+
+
+                    throw ex; 
+                }
 
                 // old code
                 //try

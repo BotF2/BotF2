@@ -1,0 +1,94 @@
+﻿<!-- File:ctrl_f10_Tab_5.xaml
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.CTRL_F10_Tab_5"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:cal="http://www.codeplex.com/CompositeWPF"
+            Width="930"
+            Height="650"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            Background="Black"
+            SnapsToDevicePixels="True">
+    <!--Header="{s:StringResource DIALOG_CTRL_F10_TAB_5_HEADER}"-->
+
+    
+  <!--<DockPanel LastChildFill="True">-->
+
+        <!--<StackPanel DockPanel.Dock="Right"
+                Margin="0,12,0,0"
+                Orientation="Vertical"
+                HorizontalAlignment="Center">-->
+            <Grid ScrollViewer.VerticalScrollBarVisibility ="Auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--<RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="Auto"/>
+
+                    --><!--<RowDefinition Height="Auto"
+                     MinHeight="00" />
+                    MinHeight before 27-->
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="0,10,0,5"  >
+            <TextBlock Text="{s:StringResource DIALOG_CTRL_F10_TAB_1_HEADER}" 
+                       Foreground="{DynamicResource DefaultTextBrush}"
+                           
+                       ></TextBlock>
+
+
+            <TextBox Text="{s:StringResource DIALOG_CTRL_F10_TAB_5_TEXT_1}" MaxHeight="565" BorderBrush="Black" 
+                     VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+                            Grid.ColumnSpan="8" Foreground="{DynamicResource DefaultTextBrush}"
+                           ></TextBox>
+            
+        </StackPanel>
+       </Grid>
+
+        <!-- CANCEL makes trouble while running out of Visual Studio ....
+        <Button x:Name="CancelButton"
+              Command="{x:Static local:GenericCommands.CancelCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,0,0">
+        <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
+      </Button>-->
+    <!--</StackPanel>-->
+      
+    <!--<TabControl x:Name="OptionsRegion"
+                cal:RegionManager.RegionName="{x:Static scc:ClientRegions.TracesPages}">
+      <TabControl.ItemContainerStyle>
+        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+          <Setter Property="Header"
+                  Value="Traces Settings" />
+                  --><!--Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />--><!--
+        </Style>
+      </TabControl.ItemContainerStyle>
+    </TabControl>-->
+      
+  <!--</DockPanel>-->
+</scc:Dialog>

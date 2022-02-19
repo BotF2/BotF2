@@ -21,7 +21,7 @@ namespace Supremacy.Client.Views.GalaxyScreen
             _appContext = appContext;
         }
 
-        private string CheatText => "hello";
+        //private string CheatText => "hello";
 
         private void OnGrantCreditsButtonClicked(object sender, RoutedEventArgs e)
         {

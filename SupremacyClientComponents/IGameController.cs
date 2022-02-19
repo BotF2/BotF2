@@ -37,6 +37,7 @@ using System.Reflection;
 using Supremacy.Resources;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace Supremacy.Client
 {
@@ -78,6 +79,8 @@ namespace Supremacy.Client
         private bool _isDisposed;
         private bool _firstTurnStarted;
         private string _text;
+        private int _lastOneDone;
+        private string _contentHistoryFile = "";
         private readonly string newline = Environment.NewLine;
 
         public GameController(
@@ -343,6 +346,7 @@ namespace Supremacy.Client
             {
                 return;
             }
+            ProcessSitRepEntries();
 
             ClientEvents.ScreenRefreshRequired.Publish(ClientEventArgs.Default);
 
@@ -362,29 +366,44 @@ namespace Supremacy.Client
 
             _endTurnCommand.IsActive = true;
 
-            ProcessSitRepEntries();
+            //ProcessSitRepEntries();
         }
 
         private void ProcessSitRepEntries()
         {
+            _text = "ProcessSitRepEntries...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
             {
                 return;
             }
 
-            foreach (SitRepEntry sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
+            bool _showDetailDialog = false;
+            if (ClientSettings.Current != null && ClientSettings.Current.EnableSitRepDetailsScreen == true)
+                _showDetailDialog = true;
+
+            List<SitRepEntry> _sitRepsWithDetails = _appContext.LocalPlayerEmpire.SitRepEntries.Where(o => o.HasDetails).ToList();
+
+            //foreach (SitRepEntry sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
+            foreach (SitRepEntry sitRepEntry in _sitRepsWithDetails)
             {
-                if (sitRepEntry != null)
+                if (_showDetailDialog == true && sitRepEntry != null)
                 {
                     // got a null ref from this gamelog. Are we missing a sitRepEntry.SummaryText?
                     // GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
 
-                    if ((ClientSettings.Current != null) && sitRepEntry.HasDetails && ClientSettings.Current.EnableSitRepDetailsScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
+                    if (/*(ClientSettings.Current != null) && */sitRepEntry.HasDetails/* && ClientSettings.Current.EnableSitRepDetailsScreen*/)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
                     {
                         SitRepDetailDialog.Show(sitRepEntry);
                     }
                 }
             }
+
+            _text = "ProcessSitRepEntries... done ";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             ShowSummary(false);
         }
@@ -396,37 +415,13 @@ namespace Supremacy.Client
                 return;
             }
 
+            SendKeys.SendWait("{F1}");  // shows Map
+
+            _text = "ShowSummary...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
-
-            _text = "";
-            foreach (SitRepEntry item in _sitRepDialog.SitRepEntries)
-            {
-                string _prio = item.Priority.ToString();
-                while (_prio.Length < 10)  // length 10 for better reading
-                {
-                    _prio += " ";
-                }
-
-                _text += newline + "Turn;" + GameContext.Current.TurnNumber
-                    + ";" + _prio
-                    + ";" + item.SummaryText
-                    //+ newline
-                    ;
-            }
-            GameLog.Core.SitReps.InfoFormat(_text);
-
-            SaveSUMMARY_TXT(_text);
-            //// \lib\_SUMMARY.txt
-            //string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            //string file = appDir + "\\lib\\" + "_SUMMARY.txt";
-
-            ////if (!File.Exists(file))
-            ////{
-            ////    //streamWriter;
-            //    StreamWriter streamWriter = new StreamWriter(file);
-            //    streamWriter.WriteLine(_text);
-            //    streamWriter.Close();
-            ////}
 
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
@@ -440,15 +435,73 @@ namespace Supremacy.Client
                 // works but doubled
                 if (ClientSettings.Current.EnableSummaryScreen == true)   // only show SUMMARY if active (if not, a quicker game is possible)
                 {
-                    //GameLog.Client.General.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
+                    //GameLog.Client.GeneralDetails.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
                 }
             }
+
+            //SendKeys.SendWait("{F1}");
+
+            _text = "ShowSummary... before storing";
+            //Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
+            //string _lastOneDone;
+            if (GameContext.Current.TurnNumber > _lastOneDone)
+            {
+              
+                _text = "";
+                foreach (SitRepEntry item in _sitRepDialog.SitRepEntries)
+                {
+                    //string _prio = item.Priority.ToString();
+                    //while (_prio.Length < 10)  // length 10 for better reading
+                    //{
+                    //    _prio += " ";
+                    //}
+
+                    _text += newline + "Turn;" + GameContext.Current.TurnNumber
+                        //+ ";" + _prio
+                        + ";" + item.SummaryText
+                        //+ newline
+                        ;
+                }
+                GameLog.Core.SitReps.InfoFormat(_text);
+
+                _text = "SaveSUMMARY_TXT... offline - takes to long time";
+                Console.WriteLine(_text);
+                GameLog.Core.GeneralDetails.DebugFormat(_text);
+                //SaveSUMMARY_TXT(_text);
+                _lastOneDone = GameContext.Current.TurnNumber;
+                //// \lib\_SUMMARY.txt
+                //string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                //string file = appDir + "\\lib\\" + "_SUMMARY.txt";
+
+                ////if (!File.Exists(file))
+                ////{
+                ////    //streamWriter;
+                //    StreamWriter streamWriter = new StreamWriter(file);
+                //    streamWriter.WriteLine(_text);
+                //    streamWriter.Close();
+                ////}
+            }
+            _text = "ShowSummary... DONE";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
+
         }
 
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
+#pragma warning disable IDE0060 // Nicht verwendete Parameter entfernen
         private void SaveSUMMARY_TXT(string _text)
+#pragma warning restore IDE0060 // Nicht verwendete Parameter entfernen
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
         {
-            if (GameContext.Current == null || GameContext.Current.TurnNumber == 1)
+            //_text += " "; // dummy - please keep
+            _text = "SaveSUMMARY_TXT...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            if (GameContext.Current == null)
             {
                 return;
             }
@@ -463,17 +516,17 @@ namespace Supremacy.Client
         nextTry:
             try
             {
-            StreamWriter streamWriter = new StreamWriter(file + ".csv");
-            streamWriter.Write(_text);
-            streamWriter.Close();
-            Thread.Sleep(500);
+                StreamWriter streamWriter = new StreamWriter(file + ".csv");
+                streamWriter.Write(_text);
+                streamWriter.Close();
+                //Thread.Sleep(500);
             }
             catch
             {
                 //string _ask = 
                 MessageDialogResult result = MessageDialog.Show(
                     ResourceManager.GetString("FILE_ALREADY_IN_USAGE"),
-                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE") 
+                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE")
                     + " " + file
                     + " " + ResourceManager.GetString("RETRY_QUESTION"),
                     MessageDialogButtons.YesNo);
@@ -506,11 +559,11 @@ namespace Supremacy.Client
                         ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
 
                         try { _ = Process.Start(processStartInfo); }
-                        catch { _ = MessageBox.Show("Could not load Text-File about SUMMARY"); }
+                        catch { _ = System.Windows.MessageBox.Show("Could not load Text-File about SUMMARY"); }
                     }
                 }
 
-                Thread.Sleep(1500);
+                //Thread.Sleep(1500);
                 string fileCSV_BAT = Path.Combine(
                     ResourceManager.GetResourcePath(".\\lib"),
                     "_SUMMARY.bat");
@@ -519,8 +572,75 @@ namespace Supremacy.Client
                     ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = fileCSV_BAT };
 
                     try { _ = Process.Start(processStartInfo); }
-                    catch { _ = MessageBox.Show("Could not load Text-File about SUMMARY"); }
+                    catch { _ = System.Windows.MessageBox.Show("Could not load Text-File about SUMMARY"); }
                 }
+            }
+            // end of autoOpenSummaryTxt
+
+            file = Path.Combine(
+                ResourceManager.GetResourcePath(".\\lib"),
+                "_SUMMARY.hist");
+
+            if (GameContext.Current.TurnNumber == 1)
+            {
+                if (File.Exists(file))
+                {
+                    _contentHistoryFile = "NEW started..." 
+                        + "-" + GameContext.Current.Options.StartingTechLevel
+                        + "-" + GameContext.Current.Options.GalaxySize
+                        //+ "-" + GameContext.Current.Options.
+                        ;
+                }
+            }
+            else
+            {
+                ReadPlayersHistoryFile(file);
+                _contentHistoryFile += _text;
+
+                ////////if(GameContext.Current.
+                try
+                {
+                    StreamWriter streamWriter3 = new StreamWriter(file);
+                    streamWriter3.Write(_contentHistoryFile);
+                    streamWriter3.Close();
+                }
+                catch (Exception)
+                {
+
+                    _ = System.Windows.MessageBox.Show(file + " is already in usage");
+                }
+
+            }
+
+
+
+
+        }
+
+        public void ReadPlayersHistoryFile(string file)
+        {
+            _text = "ReadPlayersHistoryFile...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
+            _contentHistoryFile = "";
+
+            if (!File.Exists(file))
+            {
+                return;
+            }
+
+            using (StreamReader reader = new StreamReader(file))
+            {
+                Console.WriteLine("---------------");
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (line == null)
+                        break;
+                    _contentHistoryFile += line + newline;
+                }
+                reader.Close();
             }
         }
 

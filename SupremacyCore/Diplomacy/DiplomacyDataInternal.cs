@@ -1,3 +1,4 @@
+// File:DiplomacyDataInternal.cs
 using System;
 using Supremacy.Collections;
 using Supremacy.Game;
@@ -17,6 +18,8 @@ namespace Supremacy.Diplomacy
         public int LastTotalWarAttack { get; protected set; }
         public int LastColdWarAttack { get; protected set; }
         public int LastIncursion { get; protected set; }
+
+        private string _text;
 
         public DiplomacyDataInternal(int ownerId, int counterpartyid)
         {
@@ -161,6 +164,17 @@ namespace Supremacy.Diplomacy
             LastTotalWarAttack = reader.ReadOptimizedInt32();
             LastColdWarAttack = reader.ReadOptimizedInt32();
             LastIncursion = reader.ReadOptimizedInt32();
+
+            _text = "DiplomacyDataInternal.cs: Deserialize" 
+                //+ reader.BytesRemaining
+                + ", mot_Count= " + _motivations.Count
+                + ", mot_Count= " + _motivations.Count
+                + ", L_TW_Attack= " + LastTotalWarAttack
+                + ", L_CW_Attack= " + LastColdWarAttack
+                + ", L_Inc= " + LastIncursion
+                ;
+            //Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

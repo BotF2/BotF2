@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using Supremacy.Annotations;
+using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -23,11 +24,14 @@ namespace Supremacy.AI
 {
     public static class ColonyAI
     {
-        private const int NumScouts = 2;
-        private const int ColonyShipEveryTurns = 20;
-        private const int ColonyShipEveryTurnsMinor = 30;
+        private const int NumScouts = 1;
+        //private const int ColonyShipEveryTurns = 2;
+        private const int ColonyShipEveryTurnsMinor = 5;
         private const int MaxMinorColonyCount = 3;
-        private const int MaxEmpireColonyCount = 6;
+        private const int MaxEmpireColonyCount = 999;
+        private static string _text;
+        private static int neededColonizer;
+        private static bool need1Colonizer;
 
         public static void DoTurn([NotNull] Civilization civ)
         {
@@ -237,20 +241,37 @@ namespace Supremacy.AI
                     .Where(p => p.GetTimeEstimate() <= 1 || p.IsRushed)
                     .ToList();
 
-                int cost = otherProjects
-                    .Where(p => p.IsRushed)
-                    .Select(p => p.GetTotalCreditsCost())
-                    .DefaultIfEmpty()
-                    .Sum();
+                // what does this help? ...costs for the next projects??
+                //int cost = otherProjects
+                //    .Where(p => p.IsRushed)
+                //    .Select(p => p.GetTotalCreditsCost())
+                //    .DefaultIfEmpty()
+                //    .Sum();
 
-                if ((manager.Credits.CurrentValue - (cost * 0.2)) > s.Project.GetTotalCreditsCost())
+                int cost = s.Project.GetTotalCreditsCost() * 2;  // we take max half of the credits
+
+                //if ((manager.Credits.CurrentValue - (cost * 0.2)) > s.Project.GetTotalCreditsCost())
+                if ((manager.Credits.CurrentValue > cost))
                 {
                     double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput * colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue) * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
                     int maxProdFacility = Math.Min(colony.TotalFacilities[ProductionCategory.Industry].Value, (colony.GetAvailableLabor() / colony.GetFacilityType(ProductionCategory.Industry).LaborCost) + colony.ActiveFacilities[ProductionCategory.Intelligence].Value + colony.ActiveFacilities[ProductionCategory.Research].Value + colony.ActiveFacilities[ProductionCategory.Industry].Value);
                     int industryNeeded = colony.BuildSlots.Where(bs => bs.Project != null).Select(bs => bs.Project.IsRushed ? 0 : bs.Project.GetCurrentIndustryCost()).Sum();
                     int turnsNeeded = industryNeeded == 0 ? 0 : (int)Math.Ceiling(industryNeeded / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (maxProdFacility * prodOutput)));
-                    if (turnsNeeded > 0)
+                    
+                    
+                    if (turnsNeeded > 1 && turnsNeeded < 3)  // we buy when turnsNeede = 2
                     {
+                        _text = "HandleBuyBuild: "
+                            + "Credits.Current= " + manager.Credits.CurrentValue
+                            + ", Costs= " + cost
+                            + ", industryNeeded= " + industryNeeded
+                            + ", prodOutput= " + prodOutput.ToString()
+                            + ", turnsNeeded= " + turnsNeeded
+                            + " > IsRushed for " + s.Project 
+                            + " on " + colony.Name + " " + s.Project.Location
+                        ;
+                        Console.WriteLine(_text);
+
                         s.Project.IsRushed = true;
                         while (colony.DeactivateFacility(ProductionCategory.Industry)) { }
                     }
@@ -268,37 +289,71 @@ namespace Supremacy.AI
                 return;
             }
 
+            //>Check ShipProduction
+
             IList<BuildProject> potentialProjects = TechTreeHelper.GetShipyardBuildProjects(colony.Shipyard);
             List<ShipDesign> shipDesigns = GameContext.Current.TechTrees[colony.OwnerID].ShipDesigns.ToList();
             List<Fleet> fleets = GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList();
             Sector homeSector = GameContext.Current.CivilizationManagers[civ].SeatOfGovernment.Sector;
             List<Fleet> homeFleets = homeSector.GetOwnedFleets(civ).ToList();
 
+
+            IList<BuildProject> projects = TechTreeHelper.GetShipyardBuildProjects(colony.Shipyard);
+            //foreach (BuildProject project in projects)
+            //{
+            //    _text = "ShipProduction_2"
+            //        + " at " + colony.Location
+            //        + " - " + colony.Owner
+            //        + ": available= " + project.BuildDesign
+
+            //        ;
+            //    Console.WriteLine(_text);
+            //}
+
             if (colony.Sector == homeSector)
             {
-                // Exploration
-                if (!shipDesigns.Where(o => o.ShipType == ShipType.Scout).Any(colony.Shipyard.IsBuilding))
+                _text = "ShipProduction at " + colony.Location + " " + colony.Name
+                    //+ " - Not Habited: Habitation= "
+                    //+ item.HasColony
+                    //+ " at " + item.Location
+                    //+ " - " + item.Owner
+                    ;
+                Console.WriteLine(_text);
+
+                neededColonizer = 0;
+
+                CheckForColonizerBuildProject(colony);
+
+                if (neededColonizer > 1)
                 {
-                    for (int i = fleets.Count(o => o.IsScout); i < NumScouts; i++)
-                    {
-                        BuildProject project = potentialProjects.LastOrDefault(p => shipDesigns.Any(d => d.ShipType == ShipType.Scout && p.BuildDesign == d));
-                        if (project != null)
-                        {
-                            colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
-                        }
-                    }
+                    neededColonizer -= 1;
+                    need1Colonizer = true;
                 }
+
+
                 // Colonization
-                if (GameContext.Current.Universe.FindOwned<Colony>(civ).Count < MaxEmpireColonyCount &&
-                    GameContext.Current.TurnNumber % ColonyShipEveryTurns == 0 &&
+                //if (GameContext.Current.Universe.FindOwned<Colony>(civ).Count < MaxEmpireColonyCount &&
+                //    //GameContext.Current.TurnNumber % ColonyShipEveryTurns == 0 &&
+                //    //need1Colonizer &&
+                //    !shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(colony.Shipyard.IsBuilding))
+                if (colony.Sector.GetOwnedFleets(civ).All(o => !o.IsColonizer) &&
                     !shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(colony.Shipyard.IsBuilding))
                 {
                     BuildProject project = potentialProjects.LastOrDefault(p => shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
                     if (project != null)
                     {
                         colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
+                        _text = "ShipProduction "
+                            + " at " + colony.Location 
+                            + " " + colony.Name 
+                            + " - " + colony.Owner
+                            + ": Added Colonizer project..." + project.BuildDesign
+
+                            ;
+                        Console.WriteLine(_text);
                     }
                 }
+
                 // Construction
                 if (colony.Sector.Station == null &&
                     colony.Sector.GetOwnedFleets(civ).All(o => !o.IsConstructor) &&
@@ -308,8 +363,16 @@ namespace Supremacy.AI
                     if (project != null)
                     {
                         colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
+                        _text = "ShipProduction "
+                            + " at " + colony.Location
+                            + " - " + colony.Owner
+                            + ": Added Construction ship project..." + project.BuildDesign
+
+                            ;
+                        Console.WriteLine(_text);
                     }
                 }
+
                 // Military
                 Fleet defenseFleet = homeSector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense);
                 if ((defenseFleet?.HasCommandShip != true) &&
@@ -336,13 +399,122 @@ namespace Supremacy.AI
                         colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
                     }
                 }
+
+                // Exploration - HomeSector has Starting Scouts
+                if (!shipDesigns.Where(o => o.ShipType == ShipType.Scout).Any(colony.Shipyard.IsBuilding))
+                {
+                    for (int i = fleets.Count(o => o.IsScout); i < NumScouts; i++)
+                    {
+                        BuildProject project = potentialProjects.LastOrDefault(p => shipDesigns.Any(d => d.ShipType == ShipType.Scout && p.BuildDesign == d));
+                        if (project != null)
+                        {
+                            colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
+                        }
+                    }
+                }
+            } // end of HomeSector
+
+            // all Colonies - build colony ships
+    //        if (GameContext.Current.Universe.FindOwned<Colony>(civ).Count < MaxEmpireColonyCount &&
+    //GameContext.Current.TurnNumber % ColonyShipEveryTurns == 0 &&
+    //!shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(colony.Shipyard.IsBuilding))
+    //        {
+    //            BuildProject project = potentialProjects.LastOrDefault(p => shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
+    //            if (project != null)
+    //            {
+    //                colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
+    //            }
+    //        }
+
+            if (colony.Sector != homeSector && colony.Shipyard != null)
+            {
+                _text = "next: check for ShipProduction - not at HomeSector: "
+                    + colony.Shipyard.Design
+                    + " at " + colony.Location
+                    + " - " + colony.Owner
+                    ;
+                Console.WriteLine(_text);
+                CheckForColonizerBuildProject(colony);
             }
+
             if (colony.Shipyard.BuildSlots.All(t => t.Project == null) && colony.Shipyard.BuildQueue.Count == 0)
             {
-                IList<BuildProject> projects = TechTreeHelper.GetShipyardBuildProjects(colony.Shipyard);
+                IList<BuildProject> projects2 = TechTreeHelper.GetShipyardBuildProjects(colony.Shipyard);
+                //foreach (BuildProject project in projects2)
+                //{
+                //    _text = "ShipProduction at HomeSector: "
+                //        + " at " + colony.Location
+                //        + " - " + colony.Owner
+                //        + ": available= " + project.BuildDesign
+
+                //        ;
+                //    Console.WriteLine(_text);
+                //}
+
+                BuildProject newProject = potentialProjects.LastOrDefault(p => shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
+                if (newProject != null)
+                {
+                    colony.Shipyard.BuildQueue.Add(new BuildQueueItem(newProject));
+                    _text = "ShipProduction "
+                        + " at " + colony.Location
+                        + " - " + colony.Owner
+                        + ": Added Colonizer project..." + newProject.BuildDesign
+
+                        ;
+                    Console.WriteLine(_text);
+                }
+            }
+
+            foreach (var item in colony.Shipyard.BuildQueue)
+            {
+                _text = colony.Location
+                    + " > " + item.Project.BuildDesign
+                    + ", TurnsRemaining= " + item.Project.TurnsRemaining
+
+
+                    ;
+                Console.WriteLine(_text);
             }
 
             colony.Shipyard.ProcessQueue();
+        }
+
+        private static void CheckForColonizerBuildProject(Colony colony)
+        {
+            // need a fleet for getting a range for IsSectorWithinFuelRange
+            Fleet fleet = GameContext.Current.Universe.FindOwned<Fleet>(colony.Owner).Where(f => f.IsColonizer).FirstOrDefault();
+            if (fleet == null)
+                return;
+
+            _text = "CheckForColonizerBuildProject - using " + fleet.Location + " " + fleet.Ships[0].Design
+                    //+ " - Not Habited: Habitation Aim= "
+                    //+ item.HasColony
+                    //+ " at " + item.Location
+                    //+ " - " + item.Owner
+                    ;
+            Console.WriteLine(_text);
+
+            var possibleSystems = GameContext.Current.Universe.Find<StarSystem>()
+                .Where(c => c.Sector != null && c.IsInhabited == false && c.IsHabitable(colony.Owner.Race) == true 
+                && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet) && DiplomacyHelper.IsTravelAllowed(colony.Owner, c.Sector)) /*&& mapData.IsScanned(c.Location)*/
+                //&& mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
+                //)//Where other science ship is not already going
+                //.Where(d => !otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == d.Location || d.Location == f.Location))
+                .ToList();
+
+            neededColonizer = possibleSystems.Count;
+
+            foreach (var item in possibleSystems)
+            {
+                _text = "ShipProduction at " + colony.Location + " " + colony.Name
+                    + " - possible: " + possibleSystems.Count
+                    + " - Not Habited: Habitation Aim= "
+                    + item.HasColony
+                    + " at " + item.Location
+                    + " - " + item.Owner
+                    ;
+                Console.WriteLine(_text);
+            }
         }
 
         private static void HandleShipProductionMinor(Colony colony, Civilization civ)

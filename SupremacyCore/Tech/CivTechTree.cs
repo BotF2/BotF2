@@ -1,4 +1,4 @@
-// CivTechTree.cs
+// File:CivTechTree.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -23,6 +23,8 @@ using System.Xml.Schema;
 
 namespace Supremacy.Tech
 {
+    //private static IClientContext _clientContext;
+
     /// <summary>
     /// Represents the technology tree of a civilization.
     /// </summary>
@@ -38,6 +40,8 @@ namespace Supremacy.Tech
         private readonly HashSet<int> _productionFacilityDesigns;
         private readonly HashSet<int> _orbitalBatteryDesigns;
         private static string _text;
+        //private IClientContext _clientContext;
+
 
         /// <summary>
         /// Gets the subset of building designs in this <see cref="TechTree"/>.
@@ -99,6 +103,10 @@ namespace Supremacy.Tech
                        _stationDesigns.Count == 0 &&
                        _productionFacilityDesigns.Count == 0 &&
                        _orbitalBatteryDesigns.Count == 0;
+
+        //public int localPlayerID { get => _clientContext.LocalPlayer.CivID; private set => 0; }
+
+        //public int LocalPlayerEmpireID { get => _localPlayerEmpireID; }
 
         /// <summary>
         /// Determines whether this <see cref="TechTree"/> contains the specified <see cref="TechObjectDesign"/>.
@@ -177,11 +185,13 @@ namespace Supremacy.Tech
         public void Merge(TechTree tree)
         {
             TechDatabase techDatabase = GameContext.Current.TechDatabase;
-            ILookup<Tuple<ProductionCategory, int>, IGrouping<Tuple<ProductionCategory, int>, ProductionFacilityDesign>> nativeFacilities = (from id in _productionFacilityDesigns
-                                                                                                                                             let design = techDatabase.ProductionFacilityDesigns[id]
-                                                                                                                                             group design by new Tuple<ProductionCategory, int>(
-                                                                                                                                                 design.Category,
-                                                                                                                                                 GetMaxTechLevel(design))).ToLookup(o => o.Key, o => o);
+            ILookup<Tuple<ProductionCategory, int>, IGrouping<Tuple<ProductionCategory, int>
+                , ProductionFacilityDesign>> nativeFacilities =
+                (from id in _productionFacilityDesigns
+                 let design = techDatabase.ProductionFacilityDesigns[id]
+                 group design by new Tuple<ProductionCategory, int>(
+                     design.Category,
+                     GetMaxTechLevel(design))).ToLookup(o => o.Key, o => o);
 
             _productionFacilityDesigns.UnionWith(
                 tree.ProductionFacilityDesigns
@@ -195,6 +205,20 @@ namespace Supremacy.Tech
             _orbitalBatteryDesigns.UnionWith(tree.OrbitalBatteryDesigns.Select(o => o.DesignID));
         }
 
+        //private static IClientContext ClientContext
+        //{
+        //    get
+        //    {
+        //        if (_clientContext == null)
+        //        {
+        //            //_clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
+        //            _clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
+        //        }
+
+        //        return _clientContext;
+        //    }
+        //}
+
         private static int GetMaxTechLevel(IBuildable design)
         {
             return design.TechRequirements.Max(r => r.Value);
@@ -207,6 +231,7 @@ namespace Supremacy.Tech
         internal TechTree(XmlNode xmlElement) : this()
         {
             TechDatabase db = GameContext.Current.TechDatabase;
+            //LocalPlayer = ClientContext.LocalPlayerEmpire
 
             XmlElement xmlRoot = xmlElement["ProductionFacilities"];
             if (xmlRoot != null)
@@ -241,7 +266,18 @@ namespace Supremacy.Tech
                     BuildingDesign design = db.BuildingDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
                     {
+
+                        ///*var playerID = */int.TryParse(ClientConnectionState.AssignedID.ToString(), out int playerID);
+                        //    //_clientContext.LocalPlayer.CivID;
+                        //if (playerID != 6)
+                        //{
                         _ = _buildingDesigns.Add(design.DesignID);
+                        //}
+                        //else
+                        //{
+                        //    if (!design.IsUniversallyAvailable)
+                        //        _ = _buildingDesigns.Add(design.DesignID);
+                        //}
                     }
                 }
             }
@@ -434,6 +470,9 @@ namespace Supremacy.Tech
                         streamWriter.WriteLine(line);
                     }
                 }
+
+                _text = "written: _TechTrees_List(autoCreated).csv";
+                Console.WriteLine(_text);
 
             WriterClose:;
 

@@ -1,3 +1,4 @@
+// File:ForeignPowerStatus.cs
 namespace Supremacy.Diplomacy
 {
     public enum ForeignPowerStatus : byte
