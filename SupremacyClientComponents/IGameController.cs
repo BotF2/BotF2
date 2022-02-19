@@ -443,7 +443,7 @@ namespace Supremacy.Client
             //SendKeys.SendWait("{F1}");
 
             _text = "ShowSummary... before storing";
-            Console.WriteLine(_text);
+            //Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             //string _lastOneDone;

@@ -11,7 +11,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2021 Rise of the UFP Team")]
+[assembly: AssemblyCopyright("Copyright (c) 2022 Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,8 +33,8 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7.0.3")]
-[assembly: AssemblyFileVersion("1.7.0.3")]
+[assembly: AssemblyVersion("1.7.0.4")]
+[assembly: AssemblyFileVersion("1.7.0.4")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
