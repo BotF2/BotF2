@@ -57,7 +57,7 @@ namespace Supremacy.Universe
         private UniverseObjectSet _objects;
         private GameObjectLookupCollection<Civilization, Colony> _homeColonyLookup;
         private string _text;
-        private bool _checkLoading = true;
+        //private bool _checkLoading = true;
         //private readonly string newline = Environment.NewLine;
 
         /// <summary>

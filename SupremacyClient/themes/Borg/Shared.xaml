@@ -1107,7 +1107,7 @@
                            TargetType="{x:Type RepeatButton}">
                 <Border x:Name="LeftButton"
                      Background="{StaticResource Borg1Gradient_Left_Right}"
-                     CornerRadius="0,0,0,0" />
+                     CornerRadius="15,65,65,15" />
                 <!--<Ellipse x:Name="LeftButton1" Height="28" Width="28" VerticalAlignment="Center" HorizontalAlignment="Center"
                                          Fill="Green" Opacity="0.3" StrokeThickness="4" Stroke="#1ffe36"
                          Background=""/>-->
@@ -1133,7 +1133,7 @@
                            TargetType="{x:Type RepeatButton}">
             <Border x:Name="RightButton"
                     Background="{StaticResource Borg1Gradient_Right_Left}"
-                    CornerRadius="0,0,0,0" />
+                    CornerRadius="65,15,15,65" />
             <ControlTemplate.Triggers>
               <MultiTrigger>
                 <MultiTrigger.Conditions>

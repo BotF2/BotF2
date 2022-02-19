@@ -43,7 +43,7 @@
       </Grid.ColumnDefinitions>
       <Border Grid.Column="0"
               VerticalAlignment="Center"
-              BorderBrush="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+              BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
               BorderThickness="2"
               CornerRadius="4"
               Width="48"
@@ -294,7 +294,7 @@
                 <Border x:Name="ImageBorder"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        BorderBrush="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                         BorderThickness="2"
                         CornerRadius="4"
                         Width="35"

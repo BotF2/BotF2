@@ -911,7 +911,9 @@
                 UseLayoutRounding="False"
                 SnapsToDevicePixels="False">
                     <DockPanel LastChildFill="True">
-            <DockPanel DockPanel.Dock="Left"
+
+                        <!--Left = ColonyShieldStrength-->
+                        <DockPanel DockPanel.Dock="Left"
                        LastChildFill="True"
                        Background="Transparent">
               <DockPanel.ToolTip>
@@ -950,7 +952,11 @@
                 </s:BlockBar.LayoutTransform>
               </s:BlockBar>
             </DockPanel>
-            <DockPanel DockPanel.Dock="Right"
+                        
+                        <!--end of Left = ColonyShieldStrength-->
+                        
+                        <!--right-->
+                        <DockPanel DockPanel.Dock="Right"
                        LastChildFill="True">
               <Grid>
                 <Grid.RowDefinitions>
@@ -958,7 +964,9 @@
                   <RowDefinition Height="8" />
                   <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <DockPanel Grid.Row="0"
+
+                                <!--DefenderCombatStrength-->
+                                <DockPanel Grid.Row="2"
                            LastChildFill="True"
                            Background="Transparent">
                   <DockPanel.ToolTip>
@@ -997,7 +1005,10 @@
                   </s:BlockBar>
 
                                 </DockPanel>
-                <DockPanel Grid.Row="2"
+                                <!--end of DefenderCombatStrength-->
+                  
+                  
+                                <DockPanel Grid.Row="0"
                            LastChildFill="True"
                            Background="Transparent">
                   <DockPanel.ToolTip>

@@ -42,8 +42,13 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(civ));
             }
 
-            if (civ.CivID < 999) // unit AI only for empires
+
+
+            if (civ.CivID < 7) // unit AI only for empires >> 999 is 'for all', below '7' is just Empires
             {
+                _text = "##########################################   UnitAI for Empires or as well for minors...";
+                Console.WriteLine(_text);
+
                 List<Ship> allAttackWarShips = new List<Ship>();
                 List<Fleet> allCivFleets = GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList();
                 if (true)
@@ -72,14 +77,17 @@ namespace Supremacy.AI
                     Console.WriteLine(_text);
                 }
 
-                _text = "--------------------";
-                Console.WriteLine(_text);
+
+                //_text = "--------------------";
+                //Console.WriteLine(_text);
 
                 // **** The UnitAI fleet by fleet looping 
                 foreach (Fleet fleet in allCivFleets) // each fleet of the current civ
                 {
-                    string _fleetText = blank + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name + blank + fleet.Location;
-                    Console.WriteLine(_text);
+                    string _fleetText = fleet.Location + blank + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name 
+                        + blank + fleet.UnitAIType + ", TargetCiv=NULL" /*+ fleet.Owner.TargetCivilization*/ + blank + fleet.Order.ToString();
+                    Console.WriteLine(_fleetText);
+                    // as well go to CTRL+F and 'checking fleets'
                     if (fleet.Ships.Count > 0)
                     {
                         //Make sure all fleets are cloaked
@@ -291,14 +299,17 @@ namespace Supremacy.AI
                         // ****  No TargetCiv
                         else if (civ.TargetCivilization == null)
                         {
-                            _text = "UnitAI-DoTurn; "
-                                + "TargetCiv IS NULL"
-                                ;
-                            Console.WriteLine(_text);
+                            //_text = "UnitAI-DoTurn; "
+                            //    + "TargetCiv IS NULL for "
+                            //    + _fleetText
+                            //    ;
+                            //Console.WriteLine(_text);
+                            // >Check Fleets
+                            // if Type=SystemAttack and (before) no TargetCiv => return to HomeSystem
                             if (fleet.UnitAIType == UnitAIType.SystemAttack) // call off attack
                             {
                                 _text = /*"UnitAI-DoTurn; "*/
-                                    /*+ */"UnitAIType == SystemAttack" + _fleetText
+                                    /*+ */"UnitAIType == NoUnitAI: " + _fleetText
                                     ;
                                 Console.WriteLine(_text);
 
@@ -327,7 +338,8 @@ namespace Supremacy.AI
                                         }
                                     }
                                 }
-                            }
+                            } // end of if Type=SystemAttack and (before) no TargetCiv => return to HomeSystem
+                            // >Check Fleets
                             else if (fleet.IsScout) //(fleet.Ships.Where(o => o.ShipType == ShipType.Scout).Any())
                             {
                                 _text = "fleet.IsScout > EXPLORE  " + _fleetText;
@@ -378,7 +390,7 @@ namespace Supremacy.AI
                         // **** The non-combat ships, targetciv null or not null
                         if (fleet.Ships.Count() > 0)
                         {
-                            if (fleet.IsColonizer || fleet.UnitAIType == UnitAIType.Colonizer)
+                            if (fleet.IsColonizer)// || fleet.UnitAIType == UnitAIType.Colonizer)
                             {
                                 _text = "fleet.IsColonizer: " + _fleetText;
                                 Console.WriteLine(_text);
@@ -408,6 +420,7 @@ namespace Supremacy.AI
                                     //{
                                     //    RemoveEscortShips(fleet, ShipType.Colony);
                                     //}
+
                                 }
 
                                 if (fleet.Sector != homeSystem.Sector) // only colonize when not at homesystem 
@@ -418,10 +431,10 @@ namespace Supremacy.AI
                                     _text = _fleetText + ": WeAreAtSystemToColonize=" + WeAreAtSystemToColonize(fleet);
                                     Console.WriteLine(_text);
 
-                                    _text = _fleetText + ": SystemNotAlreadyTaken=" + SystemNotAlreadyTaken(fleet);
+                                    _text = _fleetText + ": SystemIsAlreadyTaken=" + SystemIsAlreadyTaken(fleet);
                                     Console.WriteLine(_text);
 
-                                    if (WeAreAtSystemToColonize(fleet) && SystemNotAlreadyTaken(fleet))
+                                    if (WeAreAtSystemToColonize(fleet) && !SystemIsAlreadyTaken(fleet))
                                     {
                                         if (fleet.Ships.Any(a => a.ShipType == ShipType.Colony))
                                         {
@@ -445,7 +458,7 @@ namespace Supremacy.AI
                                         }
 
                                     }
-                                    else if ((WeAreAtSystemToColonize(fleet) && !SystemNotAlreadyTaken(fleet))
+                                    else if ((WeAreAtSystemToColonize(fleet) && SystemIsAlreadyTaken(fleet))
                                         && fleet.Route.IsEmpty || fleet.Route == null)
                                     {
                                         _text = "Colonizing aim reached: " + _fleetText;
@@ -489,16 +502,26 @@ namespace Supremacy.AI
                                 //         fleet.Owner.Key, fleet.Ships[0].ShipType, fleet.Ships.Count(), fleet.Activity, fleet.ActivityDuration, fleet.Route.IsEmpty);
                                 if (fleet.Ships.Any(x => x.ShipType == ShipType.Construction)) // a fleet that really has a constuctor
                                 {
-                                    GameLog.Client.AIDetails.DebugFormat("Found Constuctor, fleet location ={0}, Owner ={1}, #Ships ={2}, Activity ={3} duration ={4} Route empty ={5}",
-                                            fleet.Sector.Name, fleet.Owner.Key, fleet.Ships.Count(), fleet.Activity, fleet.ActivityDuration, fleet.Route.IsEmpty);
                                     List<Fleet> allConstuctFleetsHere = allCivFleets
                                         .Where(a => a.Sector == fleet.Sector)
-                                        .Where(a => a.IsConstructor || (a.MultiFleetHasAConstructor && a.Ships.Count == 2)).ToList();
+                                        .Where(a => a.IsConstructor || (a.MultiFleetHasAConstructor /*&& a.Ships.Count == 2*/)).ToList();
                                     bool bestSector = GetBestSectorForStation(fleet, allConstuctFleetsHere, out Sector bestSectorForStation);
+
+                                    _text = "Found Constructor: " + _fleetText
+                                        + "; " + fleet.Activity.ToString()
+
+                                        + "; Route empty= " + fleet.Route.IsEmpty
+                                        + "; to go " + fleet.ActivityDuration
+                                        ;
+                                    Console.WriteLine(_text);
+                                    //GameLog.Client.AIDetails.DebugFormat("Found Constructor, fleet location ={0}, Owner ={1}, #Ships ={2}, Activity ={3} duration ={4} Route empty ={5}",
+                                    //        fleet.Sector.Name, fleet.Owner.Key, fleet.Ships.Count(), fleet.Activity, fleet.ActivityDuration, fleet.Route.IsEmpty);
                                     if (fleet.Activity == UnitActivity.BuildStation)
                                     {
-                                        GameLog.Client.AIDetails.DebugFormat("Start Constuction, fleet order ={0}, Owner ={1}, Sector ={2},{3}, Activity ={4} duration ={5} start ={6}",
-                                            fleet.Order.OrderName, fleet.Owner.Key, fleet.Sector.Name, fleet.Location, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
+                                        _text += " - Construction ongoing...";
+                                        Console.WriteLine(_text);
+                                        //GameLog.Client.AIDetails.DebugFormat("Start Construction, fleet order ={0}, Owner ={1}, Sector ={2},{3}, Activity ={4} duration ={5} start ={6}",
+                                            //fleet.Order.OrderName, fleet.Owner.Key, fleet.Sector.Name, fleet.Location, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                                     }
                                     if (fleet.IsStranded || !fleet.CanMove) // && fleet.UnitAIType != UnitAIType.Building) // && !systemOfEmpire(fleet)
                                     {
@@ -513,8 +536,10 @@ namespace Supremacy.AI
                                     {
                                         if (bestSectorForStation == fleet.Sector)
                                         {
-                                            if (fleet.Activity != UnitActivity.Hold && fleet.Activity != UnitActivity.BuildStation)
+                                            if (fleet.Activity == UnitActivity.Mission && fleet.Activity != UnitActivity.BuildStation)
                                             {
+                                                _text += " - Order to build a station...";
+                                                Console.WriteLine(_text);
                                                 BuildStation(fleet, allConstuctFleetsHere);
                                             }
                                         }
@@ -920,11 +945,12 @@ namespace Supremacy.AI
 
             if (systems.Count == 0)
             {
-                _text = "systems.Count = 0 for"
+                _text = "Found nothing to colonize > systems.Count = 0 for"
                     + ": " + fleet.Location + blank
                     + fleet.Name
                     ;
                 Console.WriteLine(_text);
+
                 result = null;
                 return false;
             }
@@ -1255,7 +1281,7 @@ namespace Supremacy.AI
         /*
          * NoOneElseTakingSystem
          */
-        public static bool SystemNotAlreadyTaken(Fleet fleet)
+        public static bool SystemIsAlreadyTaken(Fleet fleet)
         {
             GetFleetOwner(fleet);
             //_text = "Check for SystemNotAlreadyTaken....";
@@ -1266,10 +1292,10 @@ namespace Supremacy.AI
             bool otherStation = GameContext.Current.Universe.Objects.Where(o => o.Location == fleet.Location && o.ObjectType == UniverseObjectType.Station).Any();
             if (otherColony || otherStation)
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         /*
@@ -1413,15 +1439,15 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestSectorForStation(Fleet fleet, List<Fleet> constructionFleets, out Sector bestSector)
         {
-            //_text = "GetBestSectorForStation: " + fleet.Name + fleet.Location;
-            //Console.WriteLine(_text);
+            _text = "GetBestSectorForStation: " + fleet.Name + fleet.Location;
+            Console.WriteLine(_text);
             //GameLog.Client.AIDetails.DebugFormat(_text);
             GetFleetOwner(fleet);
             if (fleet == null)
             {
                 throw new ArgumentNullException(nameof(fleet));
             }
-            if (fleet.Ships.Count() == 0)
+            if (fleet.Ships.Count == 0)
             {
                 bestSector = null;
                 return false;
@@ -1596,7 +1622,7 @@ namespace Supremacy.AI
                             return false;
                         }
 
-                        _text = "Dominion station selected sector  at " + bestSector.Location + bestSector.Name;
+                        _text = "Dominion station selected sector  at " + bestSector.Location + " " + bestSector.Name;
                         Console.WriteLine(_text);
                         // GameLog.Core.AIDetails.DebugFormat(_text);
                         return true;

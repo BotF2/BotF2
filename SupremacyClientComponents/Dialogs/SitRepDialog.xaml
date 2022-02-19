@@ -9,7 +9,7 @@
                 IsModal="False"
                 Height="700"
                 Margin="220,0,0,0"
-                Width="1280">
+                Width="1230">
 
   <dialogs:Dialog.Resources>
     <DataTemplate x:Key="SitRepEntryTemplate"

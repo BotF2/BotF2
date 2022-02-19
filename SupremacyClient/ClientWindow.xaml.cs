@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -46,7 +47,7 @@ namespace Supremacy.Client
         private readonly IEventAggregator _eventAggregator;
         private readonly INavigationCommandsProxy _navigationCommands;
         private readonly object _waitCursorLock;
-        private readonly Cursor _defaultCursor;
+        private readonly System.Windows.Input.Cursor _defaultCursor;
         private readonly StateScope _settingsChangeScope;
         private readonly IAudioEngine _audioEngine;
         private readonly IMusicPlayer _musicPlayer;
@@ -91,7 +92,7 @@ namespace Supremacy.Client
             _waitCursorLock = new object();
             _settingsChangeScope = new StateScope();
 
-            _defaultCursor = new Cursor(Path.Combine(Environment.CurrentDirectory, @"Resources\Images\UI\Shell\cursor.cur"));
+            _defaultCursor = new System.Windows.Input.Cursor(Path.Combine(Environment.CurrentDirectory, @"Resources\Images\UI\Shell\cursor.cur"));
 
 
             InitializeComponent();
@@ -188,6 +189,7 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowAllHistoryFileCommand, Key.H, ModifierKeys.Alt));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteAutoSaved, Key.Y, ModifierKeys.Alt)); // deletes autosav file 
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Alt));
 
@@ -378,7 +380,7 @@ namespace Supremacy.Client
                 return;
             }
 
-            Control currentScreen = GameScreensRegion.CurrentScreen;
+            System.Windows.Controls.Control currentScreen = GameScreensRegion.CurrentScreen;
             _ = currentScreen != null ? currentScreen.Focus() : GameScreensRegion.Focus();
         }
 
@@ -559,6 +561,7 @@ namespace Supremacy.Client
         private void OnTurnStarted(ClientEventArgs e)
         {
             _soundPlayer.PlayFile("Resources/SoundFX/NewTurn.ogg");
+            SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
             _soundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
         }
 
@@ -660,7 +663,7 @@ namespace Supremacy.Client
             lock (_waitCursorLock)
             {
                 _waitCursorCount++;
-                Cursor = Cursors.Wait;
+                Cursor = System.Windows.Input.Cursors.Wait;
             }
             Mouse.UpdateCursor();
         }

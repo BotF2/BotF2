@@ -474,7 +474,7 @@ namespace Supremacy.Client
                 Close();
             }
 
-            _text = order + " button clicked by player";
+            _text = _playerAssets.Location + " > Combat at " + _playerAssets.Sector + " > " + order + " button was clicked by player";
             Console.WriteLine(_text);
             GameLog.Client.Combat.DebugFormat(_text);
 

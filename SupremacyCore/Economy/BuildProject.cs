@@ -46,7 +46,6 @@ namespace Supremacy.Economy
 
         private int _buildTypeId;
         private int _industryInvested;
-        private int _howMany = 0;
         private MapLocation _location;
         private int _ownerId;
         private byte _priority;
@@ -154,16 +153,6 @@ namespace Supremacy.Economy
                 }
 
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the amount of ordered projects, especially for ships.
-        /// </summary>
-        /// <value>The industry invested.</value>
-        public virtual int HowMany
-        {
-            get => _howMany;
-            protected set => _industryInvested = value;
         }
 
         /// <summary>
@@ -477,7 +466,7 @@ namespace Supremacy.Economy
 
                     newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
                   
-                    _text = " Turn " + GameContext.Current.TurnNumber
+                    _text = "Turn " + GameContext.Current.TurnNumber
                         + ": " + Builder
                         + " built at " + Location + " > " + BuildDesign + " (spawned)"
                         ;
@@ -488,7 +477,7 @@ namespace Supremacy.Economy
             
             if (newEntry == null)
             {
-                _text = " Turn " + GameContext.Current.TurnNumber
+                _text = "Turn " + GameContext.Current.TurnNumber
                     + ": " + Builder
                     + " built at " + Location + " > " + BuildDesign
                     ;
@@ -637,7 +626,7 @@ namespace Supremacy.Economy
                 if (timeEstimate == 1)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    _text = " Turn " + GameContext.Current.TurnNumber
+                    _text = "Turn " + GameContext.Current.TurnNumber
                         + ": " + Location
                         + ": Estimated One Turn... for " + BuildDesign
                         ;

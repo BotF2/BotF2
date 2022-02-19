@@ -68,6 +68,7 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand LoadGame = new CompositeCommand(true);
         public static readonly CompositeCommand SaveGame = new CompositeCommand(true);
         public static readonly CompositeCommand SaveGameDeleteManualSaved = new CompositeCommand(true);
+        public static readonly CompositeCommand SaveGameDeleteAutoSaved = new CompositeCommand(true);
         public static readonly CompositeCommand ShowSaveGameDialog = new CompositeCommand(true);
         public static readonly CompositeCommand CancelCommand = new CompositeCommand(true);
         public static readonly CompositeCommand EndTurn = new CompositeCommand(true);

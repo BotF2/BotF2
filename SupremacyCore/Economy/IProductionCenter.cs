@@ -68,6 +68,8 @@ namespace Supremacy.Economy
 
         public static void ClearBuildPrioritiesAndConsolidate(this IProductionCenter source)
         {
+
+            //Prior Build
             for (int i = 0; i < source.BuildQueue.Count; i++)
             {
                 source.BuildQueue[i].Project.Priority = BuildProject.MinPriority;
@@ -95,6 +97,7 @@ namespace Supremacy.Economy
             {
                 return;
             }
+            // >Check Build Projects
 
             if (suspendActiveProjects)
             {

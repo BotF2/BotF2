@@ -1,4 +1,4 @@
-// File:EncyclopediaScreen.cs
+// File:EncyclopediaScreen.cs - not used at the moment > see ResearchScreen.cs !!!!
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -49,251 +49,255 @@ namespace Supremacy.Client
     public sealed class EncyclopediaScreen
         : GameScreen<EncyclopediaScreenPresentationModel>, IEncyclopediaScreenView, IWeakEventListener
     {
-        private Border _researchFieldItemsControl;
-        private Border _researchMatrixHost;
+        //private Border _researchFieldItemsControl;
+        //private Border _researchMatrixHost;
         private Border _applicationDetailsHost;
-        private readonly Grid _researchFieldGrid;
-        private readonly Grid _researchMatrixGrid;
+        //private readonly Grid _researchFieldGrid;
+        //private readonly Grid _researchMatrixGrid;
         private DependencyObject _selectedApplication;
         private TreeView _researchEntryListView;
         private TextBox _searchText;
         private FlowDocumentScrollViewer _researchViewer;
+        //private string _text;
 
         public EncyclopediaScreen([NotNull] IUnityContainer container) : base(container)
         {
-            _researchFieldGrid = new Grid();
-            _researchMatrixGrid = new Grid();
-            _selectedApplication = null;
+            //_researchFieldGrid = new Grid();
+            //_researchMatrixGrid = new Grid();
+            //_selectedApplication = null;
 
-            LoadEncyclopediaEntries();
+            //LoadEncyclopediaEntries();
 
-            SetValue(Grid.IsSharedSizeScopeProperty, true);
+            //SetValue(Grid.IsSharedSizeScopeProperty, true);
 
-            if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
-            {
-                Resources.MergedDictionaries.Add(themeResources);
-            }
+            //if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
+            //{
+            //    Resources.MergedDictionaries.Add(themeResources);
+            //}
         }
 
         private void LoadEncyclopediaEntries()
         {
-            int playerCivId = AppContext.LocalPlayer.EmpireID;
-            Entities.Civilization playerCiv = AppContext.LocalPlayer.Empire;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[playerCivId];
-            TechTree techTree = new TechTree();
+            //int playerCivId = AppContext.LocalPlayer.EmpireID;
+            //Entities.Civilization playerCiv = AppContext.LocalPlayer.Empire;
+            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[playerCivId];
+            //TechTree techTree = new TechTree();
 
-            techTree.Merge(AppContext.LocalPlayerEmpire.TechTree);
+            //techTree.Merge(AppContext.LocalPlayerEmpire.TechTree);
 
-            foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
-            {
-                if (DiplomacyHelper.IsMember(civ, playerCiv))
-                {
-                    techTree.Merge(GameContext.Current.TechTrees[civ]);
-                }
-            }
+            //foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
+            //{
+            //    if (DiplomacyHelper.IsMember(civ, playerCiv))
+            //    {
+            //        techTree.Merge(GameContext.Current.TechTrees[civ]);
+            //    }
+            //}
 
-            IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
-                             from civ in GameContext.Current.Civilizations
-                             let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
-                             where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
-                             let raceEntry = civ.Race as IEncyclopediaEntry
-                             where raceEntry != null
-                             select raceEntry
-                         )
-                .Concat(
+            //IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
+            //                 from civ in GameContext.Current.Civilizations
+            //                 let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+            //                 where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+            //                 let raceEntry = civ.Race as IEncyclopediaEntry
+            //                 where raceEntry != null
+            //                 select raceEntry
+            //             )
+            //    .Concat(
 
-                    from design in techTree
-                    where TechTreeHelper.MeetsTechLevels(civManager, design)
-                    let designEntry = design as IEncyclopediaEntry
-                    where designEntry != null
-                    select designEntry
-                )
-                .OrderBy(o => o.EncyclopediaHeading)
-                .GroupBy(o => o.EncyclopediaCategory)
-                .OrderBy(o => o.Key);
+            //        from design in techTree
+            //        where TechTreeHelper.MeetsTechLevels(civManager, design)
+            //        let designEntry = design as IEncyclopediaEntry
+            //        where designEntry != null
+            //        select designEntry
+            //    )
+            //    .OrderBy(o => o.EncyclopediaHeading)
+            //    .GroupBy(o => o.EncyclopediaCategory)
+            //    .OrderBy(o => o.Key);
 
-            Style groupStyle = new Style(
-                typeof(TreeViewItem),
-                Application.Current.FindResource(typeof(TreeViewItem)) as Style);
-            Style itemStyle = new Style(
-                typeof(TreeViewItem),
-                Application.Current.FindResource(typeof(TreeViewItem)) as Style);
+            //Style groupStyle = new Style(
+            //    typeof(TreeViewItem),
+            //    Application.Current.FindResource(typeof(TreeViewItem)) as Style);
+            //Style itemStyle = new Style(
+            //    typeof(TreeViewItem),
+            //    Application.Current.FindResource(typeof(TreeViewItem)) as Style);
 
-            groupStyle.Triggers.Add(
-                new Trigger { Property = ItemsControl.HasItemsProperty, Value = false });
-            ((Trigger)groupStyle.Triggers[0]).Setters.Add(
-                new Setter(
-                    VisibilityProperty,
-                    Visibility.Collapsed));
+            //groupStyle.Triggers.Add(
+            //    new Trigger { Property = ItemsControl.HasItemsProperty, Value = false });
+            //((Trigger)groupStyle.Triggers[0]).Setters.Add(
+            //    new Setter(
+            //        VisibilityProperty,
+            //        Visibility.Collapsed));
 
-            itemStyle.Setters.Add(
-                new Setter(
-                    ForegroundProperty,
-                    new DynamicResourceExtension("DefaultTextBrush")));
-            itemStyle.Setters.Add(
-                new Setter(
-                    HeaderedContentControl.HeaderProperty,
-                    new Binding("EncyclopediaHeading")));
+            //itemStyle.Setters.Add(
+            //    new Setter(
+            //        ForegroundProperty,
+            //        new DynamicResourceExtension("DefaultTextBrush")));
+            //itemStyle.Setters.Add(
+            //    new Setter(
+            //        HeaderedContentControl.HeaderProperty,
+            //        new Binding("EncyclopediaHeading")));
 
-            groupStyle.Seal();
-            itemStyle.Seal();
+            //groupStyle.Seal();
+            //itemStyle.Seal();
 
-            if (_researchEntryListView == null)
-            {
-                return;
-            }
+            //if (_researchEntryListView == null)
+            //{
+            //    return;
+            //}
 
-            _researchEntryListView.Items.Clear();
+            //_researchEntryListView.Items.Clear();
 
-            foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> group in groups)
-            {
-                TreeViewItem groupItem = new TreeViewItem();
-                ICollectionView entriesView = CollectionViewSource.GetDefaultView(group);
-                entriesView.Filter = FilterEncyclopediaEntry;
-                groupItem.Style = groupStyle;
-                groupItem.SetResourceReference(
-                    ForegroundProperty,
-                    "HeaderTextBrush");
-                groupItem.Resources.Add(typeof(TreeViewItem), itemStyle);
-                groupItem.Header = group.Key;
-                groupItem.ItemsSource = entriesView;
-                groupItem.IsExpanded = false;
-                _ = _researchEntryListView.Items.Add(groupItem);
-            }
+            //foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> group in groups)
+            //{
+            //    TreeViewItem groupItem = new TreeViewItem();
+            //    ICollectionView entriesView = CollectionViewSource.GetDefaultView(group);
+            //    entriesView.Filter = FilterEncyclopediaEntry;
+            //    groupItem.Style = groupStyle;
+            //    groupItem.SetResourceReference(
+            //        ForegroundProperty,
+            //        "HeaderTextBrush");
+            //    groupItem.Resources.Add(typeof(TreeViewItem), itemStyle);
+            //    groupItem.Header = group.Key;
+            //    groupItem.ItemsSource = entriesView;
+            //    groupItem.IsExpanded = false;
+            //    _ = _researchEntryListView.Items.Add(groupItem);
+
+            //    //_text = groupItem.K
+            //    //Console.WriteLine(_text);
+            //}
         }
 
-        private bool FilterEncyclopediaEntry(object value)
-        {
-            string searchText = string.Empty;
+        //private bool FilterEncyclopediaEntry(object value)
+        //{
+        //    string searchText = string.Empty;
 
-            if (!(value is IEncyclopediaEntry entry))
-            {
-                return false;
-            }
+        //    if (!(value is IEncyclopediaEntry entry))
+        //    {
+        //        return false;
+        //    }
 
-            if (_searchText != null)
-            {
-                searchText = _searchText.Text.Trim();
-            }
+        //    if (_searchText != null)
+        //    {
+        //        searchText = _searchText.Text.Trim();
+        //    }
 
-            if (searchText == string.Empty)
-            {
-                return true;
-            }
+        //    if (searchText == string.Empty)
+        //    {
+        //        return true;
+        //    }
 
-            string[] words = searchText.Split(
-                new[] { ' ', ',', ';' },
-                StringSplitOptions.RemoveEmptyEntries);
+        //    string[] words = searchText.Split(
+        //        new[] { ' ', ',', ';' },
+        //        StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (string word in words)
-            {
-                string lcWord = word.ToLowerInvariant();
-                return entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
-                        || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord);
-            }
+        //    foreach (string word in words)
+        //    {
+        //        string lcWord = word.ToLowerInvariant();
+        //        return entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
+        //                || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord);
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            base.OnRenderSizeChanged(sizeInfo);
+        //protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        //{
+        //    base.OnRenderSizeChanged(sizeInfo);
 
-            if (_researchMatrixHost != null)
-            {
-                BuildApplicationMatrix();
-                _researchMatrixHost.Child = _researchMatrixGrid;
-            }
+        //    if (_researchMatrixHost != null)
+        //    {
+        //        BuildApplicationMatrix();
+        //        _researchMatrixHost.Child = _researchMatrixGrid;
+        //    }
 
-            if (_researchFieldItemsControl == null)
-            {
-                return;
-            }
+        //    if (_researchFieldItemsControl == null)
+        //    {
+        //        return;
+        //    }
 
-            BuildResearchFields();
-            _researchFieldItemsControl.Child = _researchFieldGrid;
-        }
+        //    BuildResearchFields();
+        //    _researchFieldItemsControl.Child = _researchFieldGrid;
+        //}
 
-        private void BuildResearchFields()
-        {
-            int column = 0;
-            ResearchPool pool = AppContext.LocalPlayerEmpire.Research;
-            _researchFieldGrid.Children.Clear();
-            _researchFieldGrid.ColumnDefinitions.Clear();
-            foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
-            {
-                ResearchFieldData data = new ResearchFieldData(field, pool);
-                ContentControl dataContainer = new ContentControl();
+        //private void BuildResearchFields()
+        //{
+        //    int column = 0;
+        //    ResearchPool pool = AppContext.LocalPlayerEmpire.Research;
+        //    _researchFieldGrid.Children.Clear();
+        //    _researchFieldGrid.ColumnDefinitions.Clear();
+        //    foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
+        //    {
+        //        ResearchFieldData data = new ResearchFieldData(field, pool);
+        //        ContentControl dataContainer = new ContentControl();
 
-                _researchFieldGrid.ColumnDefinitions.Add(new ColumnDefinition());
+        //        _researchFieldGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
-                dataContainer.IsTabStop = false;
-                dataContainer.Content = data;
-                dataContainer.SetValue(Grid.ColumnProperty, column++);
+        //        dataContainer.IsTabStop = false;
+        //        dataContainer.Content = data;
+        //        dataContainer.SetValue(Grid.ColumnProperty, column++);
 
-                _ = _researchFieldGrid.Children.Add(dataContainer);
-            }
-        }
+        //        _ = _researchFieldGrid.Children.Add(dataContainer);
+        //    }
+        //}
 
-        private void BuildApplicationMatrix()
-        {
-            ResearchPool pool = AppContext.LocalPlayerEmpire.Research;
-            _researchMatrixGrid.Children.Clear();
-            _researchMatrixGrid.ColumnDefinitions.Clear();
-            _researchMatrixGrid.RowDefinitions.Clear();
-            foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
-            {
-                Grid internalGrid = null;
-                int internalRow = 0;
-                int row = -1;
-                _researchMatrixGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                foreach (ResearchApplication application in field.Applications)
-                {
-                    ResearchApplicationData data = new ResearchApplicationData(application, pool);
-                    ContentControl dataContainer = new ContentControl();
-                    if (row != data.TechLevel)
-                    {
-                        if (internalGrid != null)
-                        {
-                            _ = _researchMatrixGrid.Children.Add(internalGrid);
-                        }
-                        row = data.TechLevel;
-                        internalRow = 0;
-                        if (row >= _researchMatrixGrid.RowDefinitions.Count)
-                        {
-                            _researchMatrixGrid.RowDefinitions.Add(new RowDefinition());
-                            _researchMatrixGrid.RowDefinitions[row].Height = new GridLength(1.0, GridUnitType.Auto);
-                        }
-                        internalGrid = new Grid
-                        {
-                            VerticalAlignment = VerticalAlignment.Stretch
-                        };
-                        internalGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                        internalGrid.SetValue(Grid.ColumnProperty, field.FieldID);
-                        internalGrid.SetValue(Grid.RowProperty, row);
-                        internalGrid.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
-                    }
-                    if (internalGrid != null)
-                    {
-                        internalGrid.RowDefinitions.Add(new RowDefinition());
-                        internalGrid.RowDefinitions[internalRow].SharedSizeGroup = "MatrixRow";
-                    }
-                    dataContainer.IsTabStop = false;
-                    dataContainer.Focusable = false;
-                    dataContainer.Content = data;
-                    dataContainer.SetValue(Grid.RowProperty, internalRow++);
-                    dataContainer.MouseLeftButtonDown += ApplicationContainer_MouseLeftButtonDown;
-                    if (internalGrid != null)
-                    {
-                        _ = internalGrid.Children.Add(dataContainer);
-                    }
-                }
-                if (internalGrid != null)
-                {
-                    _ = _researchMatrixGrid.Children.Add(internalGrid);
-                }
-            }
-        }
+        //private void BuildApplicationMatrix()
+        //{
+        //    ResearchPool pool = AppContext.LocalPlayerEmpire.Research;
+        //    _researchMatrixGrid.Children.Clear();
+        //    _researchMatrixGrid.ColumnDefinitions.Clear();
+        //    _researchMatrixGrid.RowDefinitions.Clear();
+        //    foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
+        //    {
+        //        Grid internalGrid = null;
+        //        int internalRow = 0;
+        //        int row = -1;
+        //        _researchMatrixGrid.ColumnDefinitions.Add(new ColumnDefinition());
+        //        foreach (ResearchApplication application in field.Applications)
+        //        {
+        //            ResearchApplicationData data = new ResearchApplicationData(application, pool);
+        //            ContentControl dataContainer = new ContentControl();
+        //            if (row != data.TechLevel)
+        //            {
+        //                if (internalGrid != null)
+        //                {
+        //                    _ = _researchMatrixGrid.Children.Add(internalGrid);
+        //                }
+        //                row = data.TechLevel;
+        //                internalRow = 0;
+        //                if (row >= _researchMatrixGrid.RowDefinitions.Count)
+        //                {
+        //                    _researchMatrixGrid.RowDefinitions.Add(new RowDefinition());
+        //                    _researchMatrixGrid.RowDefinitions[row].Height = new GridLength(1.0, GridUnitType.Auto);
+        //                }
+        //                internalGrid = new Grid
+        //                {
+        //                    VerticalAlignment = VerticalAlignment.Stretch
+        //                };
+        //                internalGrid.ColumnDefinitions.Add(new ColumnDefinition());
+        //                internalGrid.SetValue(Grid.ColumnProperty, field.FieldID);
+        //                internalGrid.SetValue(Grid.RowProperty, row);
+        //                internalGrid.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+        //            }
+        //            if (internalGrid != null)
+        //            {
+        //                internalGrid.RowDefinitions.Add(new RowDefinition());
+        //                internalGrid.RowDefinitions[internalRow].SharedSizeGroup = "MatrixRow";
+        //            }
+        //            dataContainer.IsTabStop = false;
+        //            dataContainer.Focusable = false;
+        //            dataContainer.Content = data;
+        //            dataContainer.SetValue(Grid.RowProperty, internalRow++);
+        //            dataContainer.MouseLeftButtonDown += ApplicationContainer_MouseLeftButtonDown;
+        //            if (internalGrid != null)
+        //            {
+        //                _ = internalGrid.Children.Add(dataContainer);
+        //            }
+        //        }
+        //        if (internalGrid != null)
+        //        {
+        //            _ = _researchMatrixGrid.Children.Add(internalGrid);
+        //        }
+        //    }
+        //}
 
         private void ApplicationContainer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -337,8 +341,8 @@ namespace Supremacy.Client
                 _searchText.TextChanged -= OnSearchTextChanged;
             }
 
-            _researchFieldItemsControl = GetTemplateChild("PART_ResearchFieldItemsHost") as Border;
-            _researchMatrixHost = GetTemplateChild("PART_ResearchMatrixHost") as Border;
+            //_researchFieldItemsControl = GetTemplateChild("PART_ResearchFieldItemsHost") as Border;
+            //_researchMatrixHost = GetTemplateChild("PART_ResearchMatrixHost") as Border;
             _applicationDetailsHost = GetTemplateChild("PART_ApplicationDetailsHost") as Border;
             _researchEntryListView = GetTemplateChild("PART_EncyclopediaEntries") as TreeView;
             _searchText = GetTemplateChild("PART_SearchText") as TextBox;
@@ -588,37 +592,37 @@ namespace Supremacy.Client
             }
         }
 
-        protected override Size ArrangeOverride(Size arrangeBounds)
-        {
-            Size result = base.ArrangeOverride(arrangeBounds);
-            foreach (ColumnDefinition column in _researchFieldGrid.ColumnDefinitions)
-            {
-                column.Width = new GridLength(
-                    1.0 / _researchFieldGrid.ColumnDefinitions.Count
-                    * _researchMatrixHost.ActualWidth,
-                    GridUnitType.Pixel);
-            }
-            foreach (ColumnDefinition column in _researchMatrixGrid.ColumnDefinitions)
-            {
-                column.Width = new GridLength(
-                    1.0 / _researchMatrixGrid.ColumnDefinitions.Count
-                    * _researchMatrixHost.ActualWidth,
-                    GridUnitType.Pixel);
-            }
-            return result;
-        }
+        //protected override Size ArrangeOverride(Size arrangeBounds)
+        //{
+        //    Size result = base.ArrangeOverride(arrangeBounds);
+        //    foreach (ColumnDefinition column in _researchFieldGrid.ColumnDefinitions)
+        //    {
+        //        column.Width = new GridLength(
+        //            1.0 / _researchFieldGrid.ColumnDefinitions.Count
+        //            * _researchMatrixHost.ActualWidth,
+        //            GridUnitType.Pixel);
+        //    }
+        //    foreach (ColumnDefinition column in _researchMatrixGrid.ColumnDefinitions)
+        //    {
+        //        column.Width = new GridLength(
+        //            1.0 / _researchMatrixGrid.ColumnDefinitions.Count
+        //            * _researchMatrixHost.ActualWidth,
+        //            GridUnitType.Pixel);
+        //    }
+        //    return result;
+        //}
 
         public override void RefreshScreen()
         {
             base.RefreshScreen();
-            if (_researchMatrixHost != null)
-            {
-                BuildApplicationMatrix();
-            }
-            if (_researchFieldItemsControl != null)
-            {
-                BuildResearchFields();
-            }
+            //if (_researchMatrixHost != null)
+            //{
+            //    BuildApplicationMatrix();
+            //}
+            //if (_researchFieldItemsControl != null)
+            //{
+            //    BuildResearchFields();
+            //}
             foreach (Distribution<int> distribution in
                 AppContext.LocalPlayerEmpire.Research.Distributions.Children)
             {
@@ -795,6 +799,7 @@ namespace Supremacy.Client
                         {
                             results.Add(design);
                         }
+
                     }
                     foreach (Buildings.BuildingDesign design in _civManager.TechTree.BuildingDesigns)
                     {

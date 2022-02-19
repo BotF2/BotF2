@@ -1,4 +1,4 @@
-// AgreementMatrix.cs
+// File:AgreementMatrix.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -23,6 +23,7 @@ namespace Supremacy.Diplomacy
     public class AgreementMatrix : IOwnedDataSerializableAndRecreatable, IEnumerable<IAgreement>
     {
         private CivilizationPairedMap<IIndexedCollection<IAgreement>> _map;
+        private string _text;
 
         public AgreementMatrix()
         {
@@ -206,6 +207,9 @@ namespace Supremacy.Diplomacy
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
             Initialize();
+            _text = "AgreementMatrix: DeserializeOwnedData...";
+            Console.WriteLine(_text);
+
             _map.DeserializeOwnedData(reader, context);
         }
 

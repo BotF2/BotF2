@@ -259,6 +259,8 @@ namespace Supremacy.Client.Views
             //if (!buildSlot.IsActive || buildSlot.HasProject)
             //    return;
 
+            OnceAgain:
+
             NewShipSelectionView view = new NewShipSelectionView(buildSlot);
             TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
 
@@ -293,6 +295,7 @@ namespace Supremacy.Client.Views
             //buildSlot.Project = project;
 
             PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
+            goto OnceAgain;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
@@ -663,6 +666,8 @@ namespace Supremacy.Client.Views
                 _updatingOrbitalBatteries = false;
             }
         }
+
+
 
         private void UpdateBuildLists()
         {

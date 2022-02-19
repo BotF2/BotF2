@@ -353,6 +353,8 @@ namespace Supremacy.Collections
 
             foreach (TValue item in Items)
             {
+                //_text = "GetKeyForItem= " + item;
+                //Console.WriteLine(_text);
                 AddKey(GetKeyForItem(item), item);
             }
         }
@@ -388,7 +390,10 @@ namespace Supremacy.Collections
 
         protected virtual void OnKeyCollision(TKey key, TValue item)
         {
-            GameLog.Core.General.ErrorFormat("KeyCollision: key={0}; item={1}", key.ToString(), item.ToString());
+            _text = "OnKeyCollision: key= " + key.ToString()
+                    + "item= " + item.ToString();
+            Console.WriteLine(_text);
+            GameLog.Core.General.ErrorFormat(_text);
             throw new ArgumentException("Collection already contains an item with the specified key.");
         }
 

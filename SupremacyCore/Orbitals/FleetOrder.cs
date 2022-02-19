@@ -124,7 +124,9 @@ namespace Supremacy.Orbitals
 
                 if (percentComplete.HasValue)
                 {
-                    displayText = string.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                    // Build station text
+                    displayText = string.Format(" ({0})" + displayText  + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                    //displayText = string.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
                 }
 
                 if (!Fleet.Route.IsEmpty)

@@ -3700,6 +3700,7 @@ namespace Supremacy.IO.Serialization
         private readonly int _endPosition;
         private readonly object[] _objectTokens;
         private readonly string[] _stringTokenList;
+        private string _text;
         #endregion
 
         #region Properties
@@ -3721,6 +3722,9 @@ namespace Supremacy.IO.Serialization
             {
                 return default;
             }
+            _text = "De-Serialized: " + result.ToString();
+            //Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
             return (T)result;
         }
@@ -4524,6 +4528,9 @@ namespace Supremacy.IO.Serialization
             int length = ReadOptimizedInt32();
             object[] result =
                 (object[])(elementType == null ? new object[length] : Array.CreateInstance(elementType, length));
+            _text = "De-Serializing: " + result.ToString();
+            //Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
             for (int i = 0; i < result.Length; i++)
             {
                 SerializedType t = (SerializedType)ReadByte();
@@ -4555,6 +4562,10 @@ namespace Supremacy.IO.Serialization
                     result[i] = ProcessObject(t);
                 }
             }
+            _text = "De-Serialized: " + result.ToString();
+            //Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+
             return result;
         }
 
@@ -5165,7 +5176,29 @@ namespace Supremacy.IO.Serialization
                                 result.SetValue(value, i);
                             }
                         }
+                        _text = "SerializedType= ";
+                        if (defaultElementType.Name == "MapLocation")
+                        {
+                            _text += "MapLocation=";
+                            foreach (var item in result)
+                            {
+                                _text += item.ToString();
+                            }
+                        }
+                        else if (defaultElementType.Name == "ForeignPower") 
+                            _text += "ForeignPower.Count=" + result.Length;
+                        else if (defaultElementType.Name == "Diplomat") 
+                            _text += "Diplomat.Count=" + result.Length;
+                        else
+                        {
+                            _text += " unknown defaultElementType.Name or default >> " + defaultElementType.Name;
+                        }
+                      
 
+
+                        //Console.WriteLine(_text);
+                        GameLog.Client.SaveLoadDetails.DebugFormat(_text);
+                        
                         return result;
                     }
             }
@@ -5280,6 +5313,8 @@ namespace Supremacy.IO.Serialization
                         case SerializedType.ZeroByteType:
                             return (byte)0;
                         case SerializedType.OtherType:
+                            //_text = "SerializedType.OtherType= ";// + reader.BytesRemaining;
+                            //Console.WriteLine(_text);
                             return _binaryFormatter.Deserialize(BaseStream);
                         case SerializedType.UInt16Type:
                             return ReadUInt16();
@@ -5349,9 +5384,28 @@ namespace Supremacy.IO.Serialization
                         case SerializedType.OwnedDataSerializableAndRecreatableType:
                             {
                                 Type structType = ReadOptimizedType();
-                                object result = PrepareNewObject(structType);
-                                ReadOwnedData((IOwnedDataSerializable)result, null);
-                                return result;
+                                _text = "SerializedType.OwnedDataSerializableAndRecreatableType= " + structType.ToString();
+                                if (
+                                    structType.ToString() != "Supremacy.Types.Meter" &&
+                                    structType.ToString() != "Supremacy.Universe.Planet" &&
+                                    structType.ToString() != "Supremacy.Universe.StarSystem" &&
+                                    !structType.ToString().Contains("Supremacy.Collections.CollectionBase") &&
+                                    !structType.ToString().Contains("Supremacy.Diplomacy") &&
+
+
+                                    structType.ToString() != "Supremacy.Diplomacy.DiplomacyData"
+
+                                        )
+                                {
+                                    //Console.WriteLine(_text);
+                                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                    _text += "";
+                                }
+
+                                    object result = PrepareNewObject(structType);
+                                    ReadOwnedData((IOwnedDataSerializable)result, null);
+                                    return result;
+                                
                             }
                         case SerializedType.OptimizedEnumType:
                             {
@@ -5412,6 +5466,8 @@ namespace Supremacy.IO.Serialization
                             }
                         default:
                             {
+                                _text = "switch (typeCode) FAILED";
+                                Console.WriteLine(_text);
                                 object result = ProcessArrayTypes(typeCode, null);
                                 if (result != null)
                                 {

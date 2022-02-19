@@ -15,6 +15,7 @@
              d:DesignWidth="1099"
              Height="690"
              Width="1130"
+             Margin="300,0,0,0"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
@@ -168,6 +169,12 @@
         
         </StackPanel>-->
 
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+               FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
+               Foreground="Aqua"
+               FontSize="20pt"
+               Text="{local:StringResource Key=NEW_AT_SELECT_A_SHIP_TO_CONSTRUCT}" />
+
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
 
@@ -175,7 +182,8 @@
             <Button Margin="6,0,3,0"
               IsCancel="True"
               Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
-                <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
+                <AccessText Text="{local:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}" />
+                <!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />-->
             </Button>
         </StackPanel>
     </Grid>

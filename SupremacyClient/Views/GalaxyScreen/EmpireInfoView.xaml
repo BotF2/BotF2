@@ -28,9 +28,9 @@
                />
       
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-            <TextBlock Foreground="{StaticResource RankingColor}" Text="* " />
+            <!--<TextBlock Foreground="{StaticResource RankingColor}" Text="* " />
             <TextBlock Foreground="{StaticResource RankingColor}" HorizontalAlignment="Right" Text="{Binding Path=RankingCredits, Mode=OneWay}" />
-            <TextBlock Foreground="{StaticResource RankingColor}" Text="    " />
+            <TextBlock Foreground="{StaticResource RankingColor}" Text="    " />-->
             <TextBlock Foreground="{Binding Path=Credits.CurrentValue, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
                HorizontalAlignment="Right"
                Text="{Binding Path=Credits.CurrentValue, Mode=OneWay}" 

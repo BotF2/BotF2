@@ -1,4 +1,4 @@
-﻿<!--File:NewDiplomacySreen.xaml-->
+﻿<!--File:NewDiplomacyScreen.xaml-->
 <scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
                        x:Name="_self"
                        x:FieldModifier="private"
@@ -201,7 +201,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <!--<TextBlock Text="Immediate Payment"-->
-                <TextBlock Text="One Turn Payment"
+                <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OneTurnTransferText'}"
                          TextWrapping="NoWrap"
                          VerticalAlignment="Center" Margin="0,0,20,0"
                          TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -782,9 +782,10 @@
                                     TextTrimming="CharacterEllipsis"
                                     FontSize="17pt"
                                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    Foreground="LightGoldenrodYellow"
+                                    Foreground="Aqua"
                                     FontWeight="Normal"
-                                    Margin="3,0,3,0">
+                                    Margin="5,-2,5,0">
+                            <!--Foreground="LightGoldenrodYellow"-->
                             <TextBlock.Text>
                                 <Binding Path="SelectedForeignPower.Counterparty.ShortName"
                                                  Converter="{StaticResource UpperCaseConverter}" />

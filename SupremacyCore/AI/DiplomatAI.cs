@@ -402,11 +402,14 @@ namespace Supremacy.AI
                         }
                         // foreignPower.UpdateRegardAndTrustMeters();
 
-                        GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} After Treaties from {1}",
-                            foreignPower.Counterparty.Key,
-                              foreignPower.Owner.Key,
-                              foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                              foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
+                        _text = "Turn " + GameContext.Current.TurnNumber
+                            + "; regard =" + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                            + "; trust =" + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                            + " AFTER Treaties from " + foreignPower.Owner.Key
+                            + " to " + foreignPower.Counterparty.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
                         #endregion Proposals
                     }

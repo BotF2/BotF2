@@ -13,7 +13,9 @@ namespace Supremacy.Client.Commands
 {
     public static class DebugCommands
     {
-        public static readonly CompositeCommand RevealMap = new CompositeCommand();  // F12
+        public static readonly CompositeCommand RevealMap = new CompositeCommand();  // ALT + F
+        public static readonly CompositeCommand OutputMap = new CompositeCommand();  // ALT + M
+
         public static readonly CompositeCommand CheatMenu = new CompositeCommand();  // ALT + C
         public static readonly CompositeCommand F12_Screen = new CompositeCommand(); // F12
         public static readonly CompositeCommand F11_Screen = new CompositeCommand(); // F11

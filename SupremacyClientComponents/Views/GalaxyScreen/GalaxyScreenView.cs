@@ -35,6 +35,7 @@ namespace Supremacy.Client.Views
 
             _ = InputBindings.Add(new KeyBinding(DebugCommands.RevealMap, Key.F, ModifierKeys.Control)); // lift Fog of War
             _ = InputBindings.Add(new KeyBinding(DebugCommands.CheatMenu, Key.C, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(DebugCommands.OutputMap, Key.M, ModifierKeys.Alt)); // Map output
 
             // _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.SetOverviewMode, Key.M, ModifierKeys.Control)); // Military view
             // _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.SetOverviewMode, Key.T, ModifierKeys.Control)); // Trade view = Economy

@@ -123,6 +123,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<bool> _endGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _loadGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _deleteManualSavedGameCommand;
+        private readonly DelegateCommand<SavedGameHeader> _deleteAutoSavedGameCommand;
         private readonly DelegateCommand<object> _showCreditsDialogCommand;
         private readonly DelegateCommand<object> _showSettingsFileCommand;
         private readonly DelegateCommand<object> _showPlayersHistoryFileCommand;
@@ -131,7 +132,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<string> _hostMultiplayerGameCommand;
         private readonly DelegateCommand<bool> _exitCommand;
 
-        private string localEmpire = "";
+        public string localEmpire = "";
         private int startTechLvl = -1;
 
         public bool _checkLoading = true;
@@ -140,6 +141,7 @@ namespace Supremacy.Client
         private IGameController _gameController;
         public string _text;
         public readonly string newline = Environment.NewLine;
+        public int localCivID;
 
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;
@@ -231,6 +233,7 @@ namespace Supremacy.Client
             _exitCommand = new DelegateCommand<bool>(ExecuteExitCommand);
             _loadGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteLoadGameCommand);
             _deleteManualSavedGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteDeleteManualSavedGameCommand);
+            _deleteAutoSavedGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteDeleteAutoSavedGameCommand);
             _showCreditsDialogCommand = new DelegateCommand<object>(ExecuteShowCreditsDialogCommand);
             _showSettingsFileCommand = new DelegateCommand<object>(ExecuteShowSettingsFileCommand);
             _showPlayersHistoryFileCommand = new DelegateCommand<object>(ExecuteShowPlayersHistoryFileCommand);
@@ -296,6 +299,11 @@ namespace Supremacy.Client
         private void ExecuteDeleteManualSavedGameCommand(object obj)
         {
             _ = SavedGameManager.SaveGameDeleteManualSaved();
+        }
+
+        private void ExecuteDeleteAutoSavedGameCommand(object obj)
+        {
+            _ = SavedGameManager.SaveGameDeleteAutoSaved();
         }
 
         private void ExecuteOptionsCommand(object obj) { _ = _optionsDialog.ShowDialog(); }
@@ -1078,6 +1086,7 @@ namespace Supremacy.Client
             _hostMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _loadGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _deleteManualSavedGameCommand.IsActive = true;
+            _deleteAutoSavedGameCommand.IsActive = true;
             _continueGameCommand.IsActive = isGameInPlay;
             _endGameCommand.IsActive = isConnected && !isGameEnding;
         }
@@ -1091,31 +1100,40 @@ namespace Supremacy.Client
                 if (_appContext.LocalPlayer.Empire.Key == "FEDERATION")
                 {
                     LoadTheme("Federation");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "ROMULANS")
-                {
-                    LoadTheme("Romulans");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "KLINGONS")
-                {
-                    LoadTheme("Klingons");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "CARDASSIANS")
-                {
-                    LoadTheme("Cardassians");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "DOMINION")
-                {
-                    LoadTheme("Dominion");
-                }
-                else if (_appContext.LocalPlayer.Empire.Key == "BORG")
-                {
-                    LoadTheme("Borg");
+                    localCivID = 0;
                 }
                 else if (_appContext.LocalPlayer.Empire.Key == "TERRANEMPIRE")
                 {
                     LoadTheme("TerranEmpire");
+                    localCivID = 1;
                 }
+                else if (_appContext.LocalPlayer.Empire.Key == "ROMULANS")
+                {
+                    LoadTheme("Romulans");
+                    localCivID = 2;
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "KLINGONS")
+                {
+                    LoadTheme("Klingons");
+                    localCivID = 3;
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "CARDASSIANS")
+                {
+                    LoadTheme("Cardassians");
+                    localCivID = 4;
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "DOMINION")
+                {
+                    LoadTheme("Dominion");
+                    localCivID = 5;
+                    LocalCivID();
+                }
+                else if (_appContext.LocalPlayer.Empire.Key == "BORG")
+                {
+                    LoadTheme("Borg");
+                    localCivID = 6;
+                }
+
                 else
                 {
                     _ = MessageBox.Show("Empire is set to NOT-Playable - falling back to Default - Please restart, Select Single Player Menu and set Empire Playable to YES");
@@ -1123,6 +1141,12 @@ namespace Supremacy.Client
                 }
 
             }
+        }
+
+        // hopefully info about played empire public available
+        private int LocalCivID()
+        {
+            return localCivID;
         }
 
         public void LoadDefaultTheme()
@@ -1297,6 +1321,7 @@ namespace Supremacy.Client
             ClientCommands.HostMultiplayerGame.RegisterCommand(_hostMultiplayerGameCommand);
             ClientCommands.LoadGame.RegisterCommand(_loadGameCommand);
             ClientCommands.SaveGameDeleteManualSaved.RegisterCommand(_deleteManualSavedGameCommand);
+            ClientCommands.SaveGameDeleteAutoSaved.RegisterCommand(_deleteAutoSavedGameCommand);
             ClientCommands.ShowCreditsDialog.RegisterCommand(_showCreditsDialogCommand);
             ClientCommands.ShowSettingsFileCommand.RegisterCommand(_showSettingsFileCommand);
             ClientCommands.ShowPlayersHistoryFileCommand.RegisterCommand(_showPlayersHistoryFileCommand);

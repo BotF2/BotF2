@@ -49,13 +49,21 @@ namespace Supremacy.Encyclopedia
         /// </summary>
         None,
         /// <summary>
+        /// Entry appears under the 'Stations' category.
+        /// </summary>
+        Stations,
+        /// <summary>
+        /// Entry appears under the 'Shipyards' category.
+        /// </summary>
+        Shipyards,
+        /// <summary>
         /// Entry appears under the 'Batteries' category.
         /// </summary>
         Batteries,
         /// <summary>
-        /// Entry appears under the 'Buildings' category.
+        /// Entry appears under the 'Ships' category.
         /// </summary>
-        Buildings,
+        Ships,
         /// <summary>
         /// Entry appears under the 'Civilizations' category.
         /// </summary>
@@ -65,16 +73,10 @@ namespace Supremacy.Encyclopedia
         /// </summary>
         Races,
         /// <summary>
-        /// Entry appears under the 'Ships' category.
+        /// Entry appears under the 'Buildings' category.
         /// </summary>
-        Ships,
-        /// <summary>
-        /// Entry appears under the 'Shipyards' category.
-        /// </summary>
-        Shipyards,
-        /// <summary>
-        /// Entry appears under the 'Stations' category.
-        /// </summary>
-        Stations,
+        Buildings,
+
+
     }
 }

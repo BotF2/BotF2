@@ -23,6 +23,7 @@
                  TextBlock.FontSize="14"
                  TextBlock.Foreground="{StaticResource ParagraphBrush}"
                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
+                
                 <Border DockPanel.Dock="Top"
                 VerticalAlignment="Top"
                 Margin="140,-30,0,0"
@@ -89,6 +90,7 @@
                          Opacity="0.25"
                          Fill="{StaticResource AzureGradient_TopLeft_BottomRight}"
                          Width="12" />
+                            
 
                             <Image DockPanel.Dock="Left"
                      Height="28"
@@ -96,6 +98,7 @@
                      Stretch="Uniform"
                      Margin="3,0,3,0"
                      Source="{Binding Converter={StaticResource CivInsigniaConverter}}" />
+                            
 
                             <ToggleButton Style="{DynamicResource LCARS_SimpleToggleButtonStyle}"
                             Padding="6,3,6,3"
@@ -104,6 +107,7 @@
                             FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                             Content="{Binding Path=ShortName, Converter={StaticResource UpperCaseConverter}}"
                             IsChecked="{Binding Path=(Selector.IsSelected), Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                            
                         </DockPanel>
 
                         <ControlTemplate.Triggers>
@@ -310,16 +314,17 @@
                  Grid.ColumnSpan="2"
                  Margin="0,1,0,0"
                  LastChildFill="True">
+                
                 <Border DockPanel.Dock="Top"
                         MinHeight="2">
+                    <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{s:StringResource SINGLE_PLAYER_SETUP_SELECT_EMPIRE}"  
+                               HorizontalAlignment="Left" FontSize="18pt" VerticalAlignment="Center" Margin="0,2,0,6" />
 
-                    <TextBlock Text="{s:StringResource SINGLE_PLAYER_SETUP_SELECT_EMPIRE}"  HorizontalAlignment="Left" FontSize="18pt" VerticalAlignment="Bottom" Margin="0,30,0,6" />
-                     
+
                     
-                    
-                     
-                    
-                    
+
+
                     <!--<TextBlock FontSize="14pt"
                      Foreground="Black"
                      VerticalAlignment="Bottom"
@@ -328,20 +333,42 @@
                      Text="{s:StringResource SINGLE_PLAYER_SETUP_PLAYABLE_EMPIRE}"    ->  that's the new string
                      Margin="6,3,6,3" />-->
 
+<!--HorizontalAlignment="Center"-->
+                        <Border CornerRadius="16,16,0,0" Margin="0,12,0,0" Width="134" HorizontalAlignment="Left" Height="16"
+                                    Background="{DynamicResource PurpleGradient_TopLeft_BottomRight}" />
+                        <!--<Border CornerRadius="0,0,16,16" Margin="0,200,0,0" Width="138" HorizontalAlignment="Left" Height="16"
+                                    Background="{DynamicResource PurpleGradient_TopLeft_BottomRight}" />-->
+
+                    </StackPanel>
+
                 </Border>
-                <!--CivSelector... bringing in an own tab-->
+
+                <StackPanel Orientation="Vertical" Width="160" HorizontalAlignment="Left" DockPanel.Dock="Left">
+                    <!--CivSelector... bringing in an own tab-->
                 <TabControl x:Name="CivSelector"
                     DockPanel.Dock="Left"
-                            
+                    Width="158"        
                     Margin="0,2,25,0"
                     BorderThickness="0"
                     Background="Transparent"
                     ItemStringFormat=""
                     ItemsSource="{Binding}"
                     IsSynchronizedWithCurrentItem="True" />
-
+                <Border CornerRadius="0,0,16,16" Margin="0,0,0,0" Width="134" HorizontalAlignment="Left" Height="16"
+                                    Background="{DynamicResource PurpleGradient_TopLeft_BottomRight}" />
+                    
+                </StackPanel>                    
+                <!--<StackPanel Orientation="Vertical">-->
                 <ContentControl Content="{Binding ElementName=CivSelector, Path=SelectedContent}"
                         ContentTemplate="{StaticResource CivSelectorContentTemplate}" />
+
+
+
+
+                <!--</StackPanel>-->
+
+                <!--<Border CornerRadius="0,0,16,16" Margin="0,2,0,0" Height="16"
+                                    Background="{DynamicResource PurpleGradient_TopLeft_BottomRight}" />-->
 
                 <!--blue vertikal bar ... before... between civs and GameOptions right side-->
                 <!--<Rectangle DockPanel.Dock="Right"

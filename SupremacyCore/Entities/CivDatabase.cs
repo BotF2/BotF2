@@ -40,6 +40,7 @@ namespace Supremacy.Entities
         private int _nextCivId;
         [NonSerialized]
         private Dictionary<string, Civilization> _reverseLookup;
+        private static string _text;
 
         //private readonly  _appContext;
 
@@ -203,12 +204,17 @@ namespace Supremacy.Entities
                     _reverseLookup[civ.Key] = civ;
 
                     // works 
-                    //GameLog.Core.CivsAndRacesDetails.DebugFormat("deserialize {0}", civ.Key);
+                    _text = "de-serialize civ " + civ.Key;
+                    //Console.WriteLine(_text);
+                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     if (civ.SpiedCivList != null)
                     {
                         foreach (Civilization spiedCiv in civ.SpiedCivList)
                         {
-                            GameLog.Core.CivsAndRacesDetails.DebugFormat("DeserializeOwnedData: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
+                            _text = "DeserializeOwnedData: civ.Key= " + civ.Key
+                                + ", spying on " + spiedCiv.Key;
+                            //Console.WriteLine(_text);
+                            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                         }
                     }
 
@@ -306,7 +312,9 @@ namespace Supremacy.Entities
                     try
                     {
                         // for problems with Civilizations.xml active ...
-                        // GameLog.Core.GameData.DebugFormat(string.Format("adding civilization {0} to CivDatabase", civElement.ToString()));
+                        //_text = "CivDatabase: adding civilization " + civElement.ToString();
+                        //Console.WriteLine(_text);
+                        // GameLog.Core.GameData.DebugFormat(_text);
 
                         civDatabase.Add(new Civilization(civElement));
                     }

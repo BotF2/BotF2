@@ -17,7 +17,7 @@
     <SolidColorBrush Color="#ffe7d490" x:Key="DefaultTextBrush"/>
     <SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ff999999" x:Key="DisabledTextBrush"/>
-    <SolidColorBrush Color="#ff999999" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#ff515151" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#7f146bdc" x:Key="SelectionBrush"/>
     <SolidColorBrush Color="#ffdfdfff" x:Key="WhiteHeaderBrush"/>
     <!--<SolidColorBrush Color="#ffdc961b" x:Key="WhiteHeaderBrush" />-->
@@ -71,8 +71,8 @@
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="{x:Static scc:ClientResources.ControlDisabledBorderBrushKey}" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#afcccccc" Offset="0" />
-        <GradientStop Color="#af666666" Offset="1" />
+        <GradientStop Color="#afd6d6d6" Offset="0" />
+        <GradientStop Color="#afcccccc" Offset="1" />
     </LinearGradientBrush>
 
     <!--Usage: {StaticResource HeaderTextBrush}-->
@@ -139,7 +139,7 @@
                         </Trigger>-->
                         <!--IsEnabled-->
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
                         </Trigger>
                         <!--<Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Left_Right}" />

@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Pathfinding;
 using Supremacy.Resources;
 using Supremacy.Tech;
@@ -25,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Supremacy.Intelligence;
 
 namespace Supremacy.Orbitals
 {
@@ -37,7 +37,9 @@ namespace Supremacy.Orbitals
         public static readonly AvoidOrder AvoidOrder;
         public static readonly IdleOrder IdleOrder;
         public static readonly DefendOrder DefendOrder;
+        public static readonly RedeployNoneOrder RedeployNoneOrder;
         public static readonly RedeploySameOrder RedeploySameOrder;
+        public static readonly RedeployAllOrder RedeployAllOrder;
         public static readonly ColonizeOrder ColonizeOrder;
         // public static readonly RaidOrder RaidOrder;
         public static readonly SabotageOrder SabotageOrder;
@@ -63,7 +65,9 @@ namespace Supremacy.Orbitals
             AvoidOrder = new AvoidOrder();
             IdleOrder = new IdleOrder();
             DefendOrder = new DefendOrder();
-            RedeploySameOrder = new RedeploySameOrder();  // not working yet
+            RedeployNoneOrder = new RedeployNoneOrder();
+            RedeploySameOrder = new RedeploySameOrder();
+            RedeployAllOrder = new RedeployAllOrder();
             ColonizeOrder = new ColonizeOrder();
             // RaidOrder = new RaidOrder();
             SabotageOrder = new SabotageOrder();
@@ -81,23 +85,35 @@ namespace Supremacy.Orbitals
             _orders = new List<FleetOrder>
                       {
                           EngageOrder,
-                          AssaultSystemOrder,
                           AvoidOrder,
-                          IdleOrder,
-                          DefendOrder,
-                          RedeploySameOrder,
+                          ExploreOrder,
                           ColonizeOrder,
-                          //RaidOrder,
+                          BuildStationOrder,
                           SabotageOrder,
                           InfluenceOrder,
                           MedicalOrder,
                           SpyOnOrder, // install spy network
-                          //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
+                          AssaultSystemOrder,
+
+                          // no action, just showing 'a status'
+                          IdleOrder,
+                          DefendOrder,
+
+                          // Redeploy
+                          RedeployNoneOrder,
+                          RedeploySameOrder,
+                          RedeployAllOrder,
+
+
+                          //RaidOrder,
+
+                          //TowOrder,
+
                           // EscortOrder, // this is done in UnitAI by adding escort to fleet as non combat ships (fleet) get order to leave home system
-                          BuildStationOrder,
-                          ExploreOrder,
+
+
 
                       };
 
@@ -219,23 +235,23 @@ namespace Supremacy.Orbitals
     }
     #endregion IdleOrder
 
-    #region RedeploySameOrder
+    #region RedeployNoneOrder
     [Serializable]
-    public sealed class RedeploySameOrder : FleetOrder
+    public sealed class RedeployNoneOrder : FleetOrder
     {
         private string _text;
 
-        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
-        public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_NONE");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_NONE");
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
-            return new RedeploySameOrder();
+            return new RedeployNoneOrder();
         }
         public override bool IsValidOrder(Fleet fleet)
         {
-            _text = "ShipOrder 'RedeploySameOrder' is turned off due to not working yet";
-            Console.WriteLine(_text);
+            //_text = "ShipOrder 'RedeployNoneOrder' is turned off due to not working yet";
+            //Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);
             //return false;
 
@@ -249,10 +265,10 @@ namespace Supremacy.Orbitals
             //    return false;
             //}
 
-            //if (fleet.Sector.System.HasColony)
-            //{
-            //    return false;
-            //}
+            if (fleet.Ships.Count < 2)
+            {
+                return false;
+            }
 
             if (fleet.Owner != null)
             {
@@ -277,75 +293,216 @@ namespace Supremacy.Orbitals
 
             return true;  // to be done: coding !!
         }
-        protected internal override void OnTurnBeginning()
+        protected internal override void OnTurnBeginning()   // RedeployNoneOrder
         {
-            base.OnTurnBeginning();
-            //if (_isComplete)
-            //{
-            //    return;
-            //}
-            Fleet fleet = Fleet;
+            base.OnTurnBeginning(); // Redeploy_NONE_Order
 
-            foreach (var item in fleet.Sector.GetFleets())
+            List<Ship> listOfShips = Fleet.Ships.ToList();
+
+            if (Fleet.Ships.Count > 1)
             {
-                if (fleet.Owner == item.Owner)
+                foreach (Ship ship in listOfShips)
                 {
-                    foreach (var ship in item.Ships)
-                    {
-                        fleet.AddShip(ship);
-                        _text = "RedeploySame:;"
-                            + "Fleet; " + fleet.Name 
-                            + " Ship:;" + ship.ObjectID 
-                            + " " + ship.Name
-                            + " " + ship.Design
-                            
-                            ;
-                        Console.WriteLine(_text);
-                    }
+                    ship.CreateFleet();
                 }
-                    
+            }
+        }
+    }
+    #endregion RedeployNoneOrder
+
+    #region RedeploySameOrder  
+    [Serializable]
+    public sealed class RedeploySameOrder : FleetOrder // Same Type = e.g. all the transport ships
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new RedeploySameOrder();
+        }
+        public override bool IsValidOrder(Fleet fleet)  // RedeploySame
+        {
+            //_text = "ShipOrder 'RedeploySameOrder' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+            //return false;
+
+            List<Fleet> fleets = fleet.Sector.GetFleets()
+                //.Where(f => f.s != null)
+                .ToList();
+
+            if (fleets.Count < 2)
+                return false;
+
+            //Fleet fleet = Fleet;
+            ShipType type = ShipType.StrikeCruiser; // dummy, rarely used
+            try
+            {
+                if (fleet != null && fleet.Ships[0] != null)
+                    type = fleet.Ships[0].ShipType;
+            }
+            catch { }
+
+            List<Fleet> fleetsSameType = fleets
+                .Where(f => f.Ships.Any(o => o.ShipType == type))
+                .ToList();
+
+            int howMany = 0;
+            foreach (var item in fleetsSameType)
+            {
+                if (item.Order/*.OrderName*/ == FleetOrders.RedeploySameOrder/*.OrderName*/ 
+                    || item.Order == FleetOrders.RedeployAllOrder 
+                    || item.Order == FleetOrders.RedeployNoneOrder)
+                    howMany += 1;
+            }
+            if (howMany > 0)
+                return false;
+
+            if (fleet.Owner != null)
+            {
+                foreach (var item in fleets)
+                {
+                    if (fleet.Owner == item.Owner)
+                        return true;
+                }
+
+                //return false;
             }
 
-            //fleet
-            //Fleet fleet = 
-
-            //Ship colonyShip = FindBestColonyShip();
-            //if (colonyShip == null)
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
             //{
-            //    return;
+            //    return false;
             //}
 
-            //Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
-            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
 
-            //colony.ObjectID = GameContext.Current.GenerateID();
-            //colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity;
-            //colony.Population.Reset();
-            //colony.Name = Fleet.Sector.System.Name;
-            //colony.Owner = Fleet.Owner;
+            return false;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // RedeploySameOrder
+        {
+            base.OnTurnBeginning();
 
-            //Fleet.Sector.System.Owner = Fleet.Owner;
-            //Fleet.Sector.System.Colony = colony;
+            Fleet fleet = Fleet;
+            ShipType type = ShipType.StrikeCruiser; // dummy, rarely used
 
-            //GameContext.Current.Universe.Objects.Add(colony);
-            //civManager.Colonies.Add(colony);
-            //colony.Morale.BaseValue = civManager.Civilization.BaseMoraleLevel;
 
-            //colony.Morale.Reset();
+            try
+            {
+                if (fleet != null && fleet.Ships[0] != null)
+                    type = fleet.Ships[0].ShipType;
+            }
+            catch { }
 
-            //ColonyBuilder.Build(colony);
+            List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
 
-            //civManager.MapData.SetScanned(colony.Location, true, 1);
-            //civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
+            foreach (Fleet aFeet in fleets)
+            {
+                Ship ship = aFeet.Ships.Last();
+                MapLocation location = ship.Location;
+                //aFeet.RemoveShip(ship);
+                if (ship.ShipType == type)
+                {
+                    fleet.AddShip(ship);
+                    fleet.Location = location;
 
-            //_text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
-            //civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, "", "", SitRepPriority.Green));
-            //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
-
-            //_ = GameContext.Current.Universe.Destroy(colonyShip);
+                    _text = "RedeploySame:;"
+                    + "Fleet; " + ship.Name
+                    + " Ship:;" + ship.ObjectID
+                    ;
+                    Console.WriteLine(_text);
+                }
+            }
+            fleet.Order = FleetOrders.EngageOrder;
         }
     }
     #endregion RedeploySameOrder
+
+    #region RedeployAllOrder  
+    [Serializable]
+    public sealed class RedeployAllOrder : FleetOrder // all = all own ships in the sector
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new RedeployAllOrder();
+        }
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            //_text = "ShipOrder 'RedeployAllOrder' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+            //return false;
+
+            List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            if (fleets.Count < 2)
+                return false;
+
+            if (fleet.Owner != null)
+            {
+                foreach (var item in fleets)
+                {
+                    if (fleet.Owner == item.Owner)
+                        return true;
+                }
+
+                //return false;
+            }
+
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
+
+            return false;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // RedeployAllOrder
+        {
+            base.OnTurnBeginning();
+
+            Fleet fleet = Fleet;
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            foreach (Fleet aFeet in fleets)
+            {
+                Ship ship = aFeet.Ships.Last();
+                MapLocation location = ship.Location;
+                //aFeet.RemoveShip(ship);
+                //if (ship.ShipType == type)
+                //{
+                fleet.AddShip(ship);
+                fleet.Location = location;
+
+                _text = "RedeployAll:;"
+                + "Fleet; " + ship.Name
+                + " Ship:;" + ship.ObjectID
+                ;
+                Console.WriteLine(_text);
+                //}
+            }
+            fleet.Order = FleetOrders.EngageOrder;
+        }
+    }
+    #endregion RedeployAllOrder
 
 
     #region DefendOrder
@@ -482,7 +639,7 @@ namespace Supremacy.Orbitals
             civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
 
             _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
-            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, "", "", SitRepPriority.Blue)) ;
+            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, "", "", SitRepPriority.Blue));
             //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
             _ = GameContext.Current.Universe.Destroy(colonyShip);

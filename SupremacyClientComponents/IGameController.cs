@@ -373,7 +373,7 @@ namespace Supremacy.Client
         {
             _text = "ProcessSitRepEntries...";
             Console.WriteLine(_text);
-            GameLog.Core.General.DebugFormat(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
             {
@@ -403,7 +403,7 @@ namespace Supremacy.Client
 
             _text = "ProcessSitRepEntries... done ";
             Console.WriteLine(_text);
-            GameLog.Core.General.DebugFormat(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             ShowSummary(false);
         }
@@ -491,9 +491,13 @@ namespace Supremacy.Client
 
         }
 
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
+#pragma warning disable IDE0060 // Nicht verwendete Parameter entfernen
         private void SaveSUMMARY_TXT(string _text)
+#pragma warning restore IDE0060 // Nicht verwendete Parameter entfernen
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
         {
-            _text += " "; // dummy - please keep
+            //_text += " "; // dummy - please keep
             _text = "SaveSUMMARY_TXT...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);

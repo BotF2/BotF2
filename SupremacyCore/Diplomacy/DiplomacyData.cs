@@ -197,6 +197,7 @@ namespace Supremacy.Diplomacy
         #region Implementation of INotifyPropertyChanged
 
         [NonSerialized] private PropertyChangedEventHandler _propertyChanged;
+        private int _count;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
@@ -246,7 +247,7 @@ namespace Supremacy.Diplomacy
             _diplomacyStatus = (ForeignPowerStatus)reader.ReadOptimizedInt32();
             _lastStatusChange = reader.ReadOptimizedInt32();
 
-            if(_diplomacyStatus != ForeignPowerStatus.NoContact)
+            if(_count > 2 && _diplomacyStatus != ForeignPowerStatus.NoContact)
             {
                 _text = "OwnerID;" + _ownerId
                 + ";_counterpartyId;" + _counterpartyId
@@ -259,8 +260,15 @@ namespace Supremacy.Diplomacy
                 //+ ";_counterpartyId;" + _counterpartyId
 
                 ;
+                _count += 1;
             Console.WriteLine(_text); //GameLog.Core.Stations.DebugFormat(_text);
+
             }
+            //else
+            //{
+            //    _text = "AgreementMatrix: DeserializeOwnedData > no more output";
+            //    Console.WriteLine(_text); //GameLog.Core.Stations.DebugFormat(_text);
+            //}
 
         }
 

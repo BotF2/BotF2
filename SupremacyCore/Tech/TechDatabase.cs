@@ -47,6 +47,7 @@ namespace Supremacy.Tech
         private static string _text;
         private static string _maintText;
         private static string _buildCostText;
+        private static bool maint_output_done;
         private static readonly string newline = Environment.NewLine;
 
         /// <summary>
@@ -177,6 +178,10 @@ namespace Supremacy.Tech
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
         public static TechDatabase Load()
         {
+            _text = "Loading Resources/Data/TechObjectDatabase.xml";
+            Console.WriteLine(_text);
+            GameLog.Client.General.InfoFormat(_text);
+
             XmlSchemaSet schemas = new XmlSchemaSet();
             TechDatabase db = new TechDatabase();
             XmlDocument xmlDoc = new XmlDocument();
@@ -204,6 +209,7 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[facility.Key] = facility.DesignID;
+                CalculateBuildCostsPF(facility);
                 db.ProductionFacilityDesigns.Add(facility);
             }
             foreach (XmlElement xmlFacility in xmlFacilities.GetElementsByTagName("ProductionFacility"))
@@ -485,7 +491,7 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[ship.Key] = ship.DesignID;
-                CalculateBuildCosts(ship);
+                CalculateBuildCostsShips(ship);
                 CalculateMaintenanceCosts(ship);
                 db.ShipDesigns.Add(ship);
             }
@@ -549,7 +555,7 @@ namespace Supremacy.Tech
             }
             GameLog.Core.XMLCheck.InfoFormat("lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
             //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
-            GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 394 were fine)", successfullyLoadedShipDesignCounter);
+            GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 391 were fine)", successfullyLoadedShipDesignCounter);
 
             /************
              * Stations *
@@ -2051,7 +2057,65 @@ namespace Supremacy.Tech
             return db;
         }
 
-        private static void CalculateBuildCosts(ShipDesign ship)
+        private static void CalculateBuildCostsPF(ProductionFacilityDesign pf)
+        {
+            //int _techLevel = 1;
+            //int _weapon2 = 0;
+            int _buildCostsFromFile = pf.BuildCost;
+            //if (pf.PrimaryWeapon != null)
+            //{
+            //    _weapon1 = pf.PrimaryWeapon.Count * pf.PrimaryWeapon.Damage / 4;
+            //}
+            //if (pf.SecondaryWeapon != null)
+            //{
+            //    _weapon2 = pf.SecondaryWeapon.Count * pf.SecondaryWeapon.Damage / 4;
+            //}
+
+            //if (pf.Category == ProductionCategory.Industry)
+            int _techLevel = pf.TechRequirements.HighestTechLevel;
+            int _buildcosts = 100 + pf.UnitOutput * (8 + ((_techLevel - 1) * 4));
+
+            // Base Value 100
+            // Base criteria = UnitOutput (sorry, Research might be getting quite cheap)
+            // Lvl 1 =  8  ( 8+0) 
+            // Lvl 2 = 12  ( 8+4) 
+            // Lvl 1 = 16  ( 8+8) 
+                
+                
+                //(pf.Duranium * 5)
+                //+ (pf.HullStrength * 5) + (pf.ShieldStrength)
+                //+ (pf.Speed * 40)
+                //+ (pf.Maneuverability * 20)
+                //+ pf.CrewSize
+                //+ _weapon1 + (_weapon2)
+                ;
+            //_buildcosts = 1500 + _buildcosts;// * pf.TechRequirements.HighestTechLevel;// + (pf.CrewSize * 2) / 4000;
+
+            _text = pf.Key
+                + "; BC old:; " + _buildCostsFromFile
+                + "; - new:; " + _buildcosts
+                //+ "; Du= " + pf.Duranium
+                //+ "; Hu= " + pf.HullStrength
+                //+ "; Sh= " + pf.ShieldStrength
+                //+ "; Sp= " + pf.Speed
+                //+ "; Ra= " + pf.Range
+                //+ "; MV= " + pf.Maneuverability
+                ////+ " BC= " + pf.BuildCost
+                ////+ " BC= " + pf.BuildCost
+                ////+ " BC= " + pf.BuildCost
+                //+ "; W1= " + _weapon1
+                //+ "; W2= " + _weapon2
+                //+ "; Cr= " + pf.CrewSize
+
+                ;
+            _buildCostText += newline + _text;
+            //GameLog.Core.Production.DebugFormat(_buildCostText);
+            Console.WriteLine(_text);
+            //GameLog.Core.Production.DebugFormat(_text);
+            pf.BuildCost = _buildcosts;
+        }
+
+        private static void CalculateBuildCostsShips(ShipDesign ship)
         {
             int _weapon1 = 0;
             int _weapon2 = 0;
@@ -2118,26 +2182,33 @@ namespace Supremacy.Tech
                 ;
             _maint = 10 + _maint + (ship.CrewSize/30);// / 60000;
 
-            _text = ship.Key
-                + "; Maint old:; " + _maintFromFile
-                + "; - new:; " + _maint
-                + "; Du= " + ship.Duranium / 30
-                + "; Hu= " + ship.HullStrength / 20
-                + "; Sh= " + ship.ShieldStrength / 100
-                + "; Sp= " + ship.Speed
-                + "; Ra= " + ship.Range
-                + "; Fu= " + ship.FuelCapacity
-                //+ " BC= " + ship.BuildCost
-                //+ " BC= " + ship.BuildCost
-                //+ " BC= " + ship.BuildCost
-                + "; W1= " + _weapon1
-                + "; W2= " + _weapon2
-                + "; Cr= " + ship.CrewSize / 30
+            
+            if (!maint_output_done)
+            {
+                _text = ship.Key
+                    + "; Maint old:; " + _maintFromFile
+                    + "; - new:; " + _maint
+                    + "; Du= " + ship.Duranium / 30
+                    + "; Hu= " + ship.HullStrength / 20
+                    + "; Sh= " + ship.ShieldStrength / 100
+                    + "; Sp= " + ship.Speed
+                    + "; Ra= " + ship.Range
+                    + "; Fu= " + ship.FuelCapacity
+                    //+ " BC= " + ship.BuildCost
+                    //+ " BC= " + ship.BuildCost
+                    //+ " BC= " + ship.BuildCost
+                    + "; W1= " + _weapon1
+                    + "; W2= " + _weapon2
+                    + "; Cr= " + ship.CrewSize / 30
+                    + " - no more output or deactivate this line and the boolean"
+                    ;
+                maint_output_done = true;
+                Console.WriteLine(_text);
 
-                ;
-            _maintText += newline + _text ;
-            //GameLog.Core.Production.DebugFormat(_maintText);
-            Console.WriteLine(_text);
+                _maintText += newline + _text;
+                //GameLog.Core.Production.DebugFormat(_maintText);
+            }
+
             ship.MaintenanceCost = _maint;
         }
 

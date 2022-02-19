@@ -644,7 +644,7 @@ namespace Supremacy.Universe
 
                 // only for LocalPlayer
                 //if (this.OwnerID == )
-                GameLog.Core.CreditsDetails.DebugFormat("########## Turn;{0};MoraleMOD =;{4};Effic.MOD =;{5};BonusMOD =;{7};Pop =;{3};NetIndustry =;{6};TaxCredits =;{8}; for ;{1};{2}"
+                GameLog.Core.CreditsDetails.DebugFormat("## Turn;{0};MoraleMOD=;{4};Effic.MOD=;{5};BonusMOD=;{7};Pop=;{3};NetIndustry=;{6};TaxCredits=;{8}; for ;{1};{2}"
                     , GameContext.Current.TurnNumber
                     , Name
                     , Location
@@ -670,8 +670,8 @@ namespace Supremacy.Universe
             {
                 _ = int.TryParse(GameContext.Current.CivilizationManagers[Owner].Credits.ToString(), out int creditsForSpyScreen);
 
-                GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner].Civilization.Key,
-                    Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
+                //GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner].Civilization.Key,
+                //    Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
 
                 return creditsForSpyScreen;
             }
@@ -687,8 +687,8 @@ namespace Supremacy.Universe
             {
                 _ = int.TryParse(GameContext.Current.CivilizationManagers[Owner].Credits.ToString(), out int creditsForSpyScreen);
 
-                GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner].Civilization.Key,
-                    Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
+                //GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner].Civilization.Key,
+                //    Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
 
                 return creditsForSpyScreen;
             }

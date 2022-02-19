@@ -47,6 +47,7 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv;
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
+        private string _text;
 
         public bool BattelInOwnTerritory { get; set; }
 
@@ -324,8 +325,16 @@ namespace Supremacy.Combat
                 Running = true;
 
                 _assets.ForEach(a => a.CombatID = CombatID); // assign combatID for each asset _assets
+                
                 CalculateEmpireStrengths();
-                GameLog.Core.CombatDetails.DebugFormat("_roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
+
+                _text = "_roundNumber = " + _roundNumber
+                    + "; AllSidesStandDown() = " + AllSidesStandDown()
+                    + "; IsCombatOver = " + IsCombatOver
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.CombatDetails.DebugFormat("_roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
                 RechargeWeapons();
                 ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
 
@@ -333,12 +342,24 @@ namespace Supremacy.Combat
                 {
                     PerformAssimilation();
                 }
-                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at PerformRetreat");
+                _text = "ResolveCombatRound - at PerformRetreat";
+                Console.WriteLine(_text);
+                GameLog.Core.CombatDetails.DebugFormat(_text);
+
                 PerformRetreat();
 
-                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at UpdateOrbitals");
+                _text = "ResolveCombatRound - at UpdateOrbitals";
+                Console.WriteLine(_text);
+                GameLog.Core.CombatDetails.DebugFormat(_text);
+
                 UpdateOrbitals();
-                GameLog.Core.CombatDetails.DebugFormat("If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
+
+                _text = "If IsCombatOver  = " + IsCombatOver
+                    + "then increment round number " + _roundNumber 
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.CombatDetails.DebugFormat("If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
                 if (!IsCombatOver)
                 {
                     //GameLog.Core.CombatDetails.DebugFormat("incrementing - round number {0} to {1}", _roundNumber, _roundNumber + 1);
@@ -608,8 +629,8 @@ namespace Supremacy.Combat
                     newfleet.Name = "Assimilated Assets";
                     GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
-                    string _text = ship.Location 
-                        + " > Ship assimilated: " + ship.ObjectID + " * " + ship.Name + " * ( " + ship.Design + " ).";
+                    _text = ship.Location 
+                        + " > Ship assimilated: " + ship.ObjectID + " * " + ship.Name + " * ( " + ship.Design + " )";
 
                     GameLog.Core.CombatDetails.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
                         ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
@@ -618,7 +639,7 @@ namespace Supremacy.Combat
                     //GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _text));
 
                     //for Borg only: 
-                    _text += " We gained " + gainedResearchPoints + " research points.";
+                    _text += ": We gained " + gainedResearchPoints + " research points.";
                     GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ReportEntry_CoS(borg, ship.Location, _text,"", "", SitRepPriority.Green));
                     //GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(borg, ship.Location, _text));
 

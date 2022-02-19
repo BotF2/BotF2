@@ -182,7 +182,7 @@ namespace Supremacy.Client
                         try
                         {
                             // filePath = SupremacyClient..Settings.xaml
-                            string _text = "for problems: just try to deleted " + filePath + " manually from your hard disk !";
+                            string _text = "for other problems: just try to deleted " + filePath + " manually from your hard disk !";
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
                             settings = XamlReader.Load(fileReader) as ClientSettings ?? new ClientSettings();

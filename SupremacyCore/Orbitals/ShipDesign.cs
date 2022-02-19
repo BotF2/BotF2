@@ -1,4 +1,4 @@
-// ShipDesign.cs
+// File:ShipDesign.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -352,7 +352,7 @@ namespace Supremacy.Orbitals
 
                     //_text = "ShipNames - Possible Name for " + Name + " " + name.InnerText.Trim();
                     //Console.WriteLine(_text);
-                    //GameLog.Core.GameData.DebugFormat("ShipNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
+                    //GameLog.Core.GameData.DebugFormat(_text);
                 }
             }
         }

@@ -13,6 +13,7 @@ using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 
 namespace Supremacy.Economy
@@ -168,21 +169,29 @@ namespace Supremacy.Economy
         /// </summary>
         public override void Finish()
         {
-            for (int i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
+            if (UpgradeTarget != null)
             {
-                ShipyardBuildSlot slot = UpgradeTarget.BuildSlots[i];
+                string _text = "ERROR - no upgradeTarget available";
+                Console.WriteLine(_text);
+                GameLog.Core.General.ErrorFormat(_text);
 
-                if (slot.HasProject && slot.Project.IsPartiallyComplete)
+
+                for (int i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
                 {
-                    slot.Project.Finish();
-                    slot.Project = null;
-                }
-            }
+                    ShipyardBuildSlot slot = UpgradeTarget.BuildSlots[i];
 
-            // next is to scrap Upgrade target which might not be available any more
-            string _scrapped = UpgradeTarget.Name;
-            _ = GameContext.Current.Universe.Destroy(UpgradeTarget);
-            base.Finish();
+                    if (slot.HasProject && slot.Project.IsPartiallyComplete)
+                    {
+                        slot.Project.Finish();
+                        slot.Project = null;
+                    }
+                }
+
+                // next is to scrap Upgrade target which might not be available any more
+                string _scrapped = UpgradeTarget.Name;
+                _ = GameContext.Current.Universe.Destroy(UpgradeTarget);
+                base.Finish();
+            }
         }
 
         /// <summary>

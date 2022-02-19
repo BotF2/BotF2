@@ -22,6 +22,7 @@ namespace Supremacy.Utility
         private readonly string _name;
 #pragma warning restore IDE0052 // Remove unread private members
         private static bool _initialized;
+        private static string _text;
         private static readonly object _syncLock;
 
         static GameLog()
@@ -43,7 +44,12 @@ namespace Supremacy.Utility
                 _ = BasicConfigurator.Configure(new ChannelLogAppender());
                 _initialized = true;
             }
+            _text = "sorry... Game is sending a F1-Key, and sometimes it's targetting Visual Studio > Browser... saying 'No special help available'";
+            Console.WriteLine(_text);
+
             Core.General.Info("Log Initialized");
+            Core.General.Info(_text);
+
             string now = "Possible file name prepared... (see next line)" + Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog.txt" + Environment.NewLine;
             Core.General.Info(now);  // new line for saving under Date
         }

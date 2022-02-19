@@ -23,7 +23,7 @@ namespace Supremacy.Game
         protected const string SinglePlayerGameName = "Single Player Game";
 
         #region Fields
-        private int _localPlayerEmpireID;
+        public int _localPlayerEmpireID;
         private string _localPlayerName;
         private int[] _empireIDs;
         private string[] _empireNames;
@@ -41,7 +41,10 @@ namespace Supremacy.Game
 
         protected GameInitData() { }
 
-        public static GameInitData CreateSinglePlayerGame([NotNull] GameOptions options, int localPlayerEmpireID)
+
+
+
+    public static GameInitData CreateSinglePlayerGame([NotNull] GameOptions options, int localPlayerEmpireID)
         {
             if (options == null)
             {
@@ -306,12 +309,13 @@ namespace Supremacy.Game
             {
                 _options = value;
                 OnPropertyChanged("Options");
-                //foreach (var item in _options)
+                //foreach (var item in value)
                 //{
-                //_loadGameText += item.value + ";;Options:" + item + newline;
+                //    //_loadGameText += item.value + ";;Options:" + item + newline;
                 _loadGameText += _options.ToString();
+                _loadGameText += "GameOptions are set...";
                 //}
-                Console.WriteLine("Step 223" + _loadGameText);
+                Console.WriteLine("Step_1200:; " + _loadGameText);
             }
         }
 
