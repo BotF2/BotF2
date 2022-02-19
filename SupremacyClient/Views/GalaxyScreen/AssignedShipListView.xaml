@@ -123,7 +123,36 @@
                         </StackPanel>
                       </s:BlockBar.ToolTip>
                     </s:BlockBar>
-                    <Border x:Name="ShipImageBorder"
+
+
+                                        <!--ExperienceBar-->
+                                        <s:BlockBar x:Name="ExperienceBar"
+                              DockPanel.Dock="Left"
+                              s:BlockBar.IsReadOnly="True"
+                              BlockCount="20"
+                              BlockMargin="3"
+                              BlockBrush="Aqua"
+                              Value="{Binding Path=Source.ExperiencePercent, Mode=OneWay}"
+                              Height="4"
+                              Margin="0,0,3,0"
+                              Width="45"
+                              VerticalAlignment="Top">
+                                            <s:BlockBar.LayoutTransform>
+                                                <RotateTransform Angle="270" />
+                                            </s:BlockBar.LayoutTransform>
+                                            <s:BlockBar.ToolTip>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{s:StringResource EXPERIENCE}" />
+                                                    <TextBlock Text=": " />
+                                                    <TextBlock Text="{Binding Path=Source.ExperienceLevel}" />
+                                                    <!--<TextBlock Text="/" />
+                                                <TextBlock Text="{Binding Path=FuelReserve.Maximum}" />-->
+                                                </StackPanel>
+                                            </s:BlockBar.ToolTip>
+                                        </s:BlockBar>
+                                        
+                      <!--ShipImageBorder-->
+                      <Border x:Name="ShipImageBorder"
                             Width="54"
                             Height="45"
                             BorderThickness="2"
@@ -132,11 +161,26 @@
                             >
                             <!--ToolTip="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}"-->
                             <Border.ToolTip>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}" />
-                                    <TextBlock Text=" - " />
-                                    <TextBlock Text="{Binding Path=Source.ClassName}"
-                                    />
+                                 <StackPanel Orientation="Vertical">
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                        <TextBlock Text="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}"  FontSize="24" />
+                                                        <TextBlock Text=" - "  FontSize="24" />
+                                                        <TextBlock Text="{Binding Path=Source.ClassName}" FontSize="24"/>
+                                                </StackPanel>
+                                                <Border x:Name="ImageToolTipBorder"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{StaticResource HeaderTextBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="4"
+                                                       
+                                        Width="576"
+                                        Height="480">
+
+                                                        <Border.Background>
+                                                        <ImageBrush ImageSource="{Binding Path=Source.ShipDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+                                                    </Border.Background>
+                                                </Border>
                                 </StackPanel>
                             </Border.ToolTip>
                       <Border.Background>
@@ -167,7 +211,11 @@
                     <Setter TargetName="FuelBar"
                             Property="Visibility"
                             Value="Collapsed" />
-                  </DataTrigger>
+                                        
+                      <Setter TargetName="ExperienceBar"
+                            Property="Visibility"
+                            Value="Collapsed" />
+                                    </DataTrigger>
                   <DataTrigger Binding="{Binding  Path=(s:ShipView.Source).(s:TechObject.Scrap)}"
                                Value="True">
                     <Setter TargetName="ScrapIndicator"
@@ -193,7 +241,7 @@
                       <Setter.Value>
                         <ImageBrush Stretch="Uniform">
                           <ImageBrush.ImageSource>
-                            <BitmapImage UriSource="vfs:///Resources/Images/TechObjects/__unknown.png" />
+                            <BitmapImage UriSource="vfs:///Resources/Images/__unknown.png" />
                           </ImageBrush.ImageSource>
                         </ImageBrush>
                       </Setter.Value>

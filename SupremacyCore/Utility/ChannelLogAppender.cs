@@ -20,18 +20,22 @@ namespace Supremacy.Utility
             lock (_syncLock)
             {
                 if (_isClosed)
+                {
                     return;
+                }
 
                 _isClosed = true;
             }
         }
 
         public void DoAppend(LoggingEvent loggingEvent)
-         {
+        {
             lock (_syncLock)
             {
                 if (_isClosed)
+                {
                     return;
+                }
 
                 Channel.Publish(loggingEvent);
             }

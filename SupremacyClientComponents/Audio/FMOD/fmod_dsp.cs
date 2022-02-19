@@ -17,14 +17,14 @@ namespace FMOD
     /* 
         DSP callbacks
     */
-    public delegate RESULT DSP_CREATECALLBACK         (ref DSP_STATE dsp_state);
-    public delegate RESULT DSP_RELEASECALLBACK        (ref DSP_STATE dsp_state);
-    public delegate RESULT DSP_RESETCALLBACK          (ref DSP_STATE dsp_state);
-    public delegate RESULT DSP_READCALLBACK           (ref DSP_STATE dsp_state, IntPtr inbuffer, IntPtr outbuffer, uint length, int inchannels, int outchannels);
-    public delegate RESULT DSP_SETPOSITIONCALLBACK    (ref DSP_STATE dsp_state, uint seeklen);
-    public delegate RESULT DSP_SETPARAMCALLBACK       (ref DSP_STATE dsp_state, int index, float val);
-    public delegate RESULT DSP_GETPARAMCALLBACK       (ref DSP_STATE dsp_state, int index, ref float val, StringBuilder valuestr);
-    public delegate RESULT DSP_DIALOGCALLBACK         (ref DSP_STATE dsp_state, IntPtr hwnd, bool show);
+    public delegate RESULT DSP_CREATECALLBACK(ref DSP_STATE dsp_state);
+    public delegate RESULT DSP_RELEASECALLBACK(ref DSP_STATE dsp_state);
+    public delegate RESULT DSP_RESETCALLBACK(ref DSP_STATE dsp_state);
+    public delegate RESULT DSP_READCALLBACK(ref DSP_STATE dsp_state, IntPtr inbuffer, IntPtr outbuffer, uint length, int inchannels, int outchannels);
+    public delegate RESULT DSP_SETPOSITIONCALLBACK(ref DSP_STATE dsp_state, uint seeklen);
+    public delegate RESULT DSP_SETPARAMCALLBACK(ref DSP_STATE dsp_state, int index, float val);
+    public delegate RESULT DSP_GETPARAMCALLBACK(ref DSP_STATE dsp_state, int index, ref float val, StringBuilder valuestr);
+    public delegate RESULT DSP_DIALOGCALLBACK(ref DSP_STATE dsp_state, IntPtr hwnd, bool show);
 
 
     /*
@@ -92,12 +92,12 @@ namespace FMOD
     */
     public struct DSP_PARAMETERDESC
     {
-        public float         min;             /* [in] Minimum value of the parameter (ie 100.0). */
-        public float         max;             /* [in] Maximum value of the parameter (ie 22050.0). */
-        public float         defaultval;      /* [in] Default value of parameter. */
-        public string        name;            /* [in] Name of the parameter to be displayed (ie "Cutoff frequency"). */
-        public string        label;           /* [in] Short string to be put next to value to denote the unit design (ie "hz"). */
-        public string        description;     /* [in] Description of the parameter to be displayed as a help item / tooltip for this parameter. */
+        public float min;             /* [in] Minimum value of the parameter (ie 100.0). */
+        public float max;             /* [in] Maximum value of the parameter (ie 22050.0). */
+        public float defaultval;      /* [in] Default value of parameter. */
+        public string name;            /* [in] Name of the parameter to be displayed (ie "Cutoff frequency"). */
+        public string label;           /* [in] Short string to be put next to value to denote the unit design (ie "hz"). */
+        public string description;     /* [in] Description of the parameter to be displayed as a help item / tooltip for this parameter. */
     }
 
 
@@ -125,24 +125,24 @@ namespace FMOD
     */
     public struct DSP_DESCRIPTION
     {
-        [MarshalAs(UnmanagedType.ByValArray,SizeConst=32)]
-        public char[]                      name;               /* [in] Name of the unit to be displayed in the network. */
-        public uint                        version;            /* [in] Plugin writer's version number. */
-        public int                         channels;           /* [in] Number of channels.  Use 0 to process whatever number of channels is currently in the network.  >0 would be mostly used if the unit is a unit that only generates sound. */
-        public DSP_CREATECALLBACK          create;             /* [in] Create callback.  This is called when DSP unit is created.  Can be null. */
-        public DSP_RELEASECALLBACK         release;            /* [in] Release callback.  This is called just before the unit is freed so the user can do any cleanup needed for the unit.  Can be null. */
-        public DSP_RESETCALLBACK           reset;              /* [in] Reset callback.  This is called by the user to reset any history buffers that may need resetting for a filter, when it is to be used or re-used for the first time to its initial clean state.  Use to avoid clicks or artifacts. */
-        public DSP_READCALLBACK            read;               /* [in] Read callback.  Processing is done here.  Can be null. */
-        public DSP_SETPOSITIONCALLBACK     setposition;        /* [in] Setposition callback.  This is called if the unit wants to update its position info but not process data.  Can be null. */
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+        public char[] name;               /* [in] Name of the unit to be displayed in the network. */
+        public uint version;            /* [in] Plugin writer's version number. */
+        public int channels;           /* [in] Number of channels.  Use 0 to process whatever number of channels is currently in the network.  >0 would be mostly used if the unit is a unit that only generates sound. */
+        public DSP_CREATECALLBACK create;             /* [in] Create callback.  This is called when DSP unit is created.  Can be null. */
+        public DSP_RELEASECALLBACK release;            /* [in] Release callback.  This is called just before the unit is freed so the user can do any cleanup needed for the unit.  Can be null. */
+        public DSP_RESETCALLBACK reset;              /* [in] Reset callback.  This is called by the user to reset any history buffers that may need resetting for a filter, when it is to be used or re-used for the first time to its initial clean state.  Use to avoid clicks or artifacts. */
+        public DSP_READCALLBACK read;               /* [in] Read callback.  Processing is done here.  Can be null. */
+        public DSP_SETPOSITIONCALLBACK setposition;        /* [in] Setposition callback.  This is called if the unit wants to update its position info but not process data.  Can be null. */
 
-        public int                         numparameters;      /* [in] Number of parameters used in this filter.  The user finds this with DSP::getNumParameters */
-        public DSP_PARAMETERDESC[]         paramdesc;          /* [in] Variable number of parameter structures. */
-        public DSP_SETPARAMCALLBACK        setparameter;       /* [in] This is called when the user calls DSP::setParameter.  Can be null. */
-        public DSP_GETPARAMCALLBACK        getparameter;       /* [in] This is called when the user calls DSP::getParameter.  Can be null. */
-        public DSP_DIALOGCALLBACK          config;             /* [in] This is called when the user calls DSP::showConfigDialog.  Can be used to display a dialog to configure the filter.  Can be null. */
-        public int                         configwidth;        /* [in] Width of config dialog graphic if there is one.  0 otherwise.*/
-        public int                         configheight;       /* [in] Height of config dialog graphic if there is one.  0 otherwise.*/
-        public IntPtr                      userdata;           /* [in] Optional. Specify 0 to ignore. This is user data to be attached to the DSP unit during creation.  Access via DSP::getUserData. */
+        public int numparameters;      /* [in] Number of parameters used in this filter.  The user finds this with DSP::getNumParameters */
+        public DSP_PARAMETERDESC[] paramdesc;          /* [in] Variable number of parameter structures. */
+        public DSP_SETPARAMCALLBACK setparameter;       /* [in] This is called when the user calls DSP::setParameter.  Can be null. */
+        public DSP_GETPARAMCALLBACK getparameter;       /* [in] This is called when the user calls DSP::getParameter.  Can be null. */
+        public DSP_DIALOGCALLBACK config;             /* [in] This is called when the user calls DSP::showConfigDialog.  Can be used to display a dialog to configure the filter.  Can be null. */
+        public int configwidth;        /* [in] Width of config dialog graphic if there is one.  0 otherwise.*/
+        public int configheight;       /* [in] Height of config dialog graphic if there is one.  0 otherwise.*/
+        public IntPtr userdata;           /* [in] Optional. Specify 0 to ignore. This is user data to be attached to the DSP unit during creation.  Access via DSP::getUserData. */
     }
 
 
@@ -165,8 +165,8 @@ namespace FMOD
     */
     public struct DSP_STATE
     {
-        public IntPtr   instance;      /* [out] Handle to the DSP hand the user created.  Not to be modified.  C++ users cast to FMOD::DSP to use.  */
-        public IntPtr   plugindata;    /* [in] Plugin writer created data the output author wants to attach to this object. */
+        public IntPtr instance;      /* [out] Handle to the DSP hand the user created.  Not to be modified.  C++ users cast to FMOD::DSP to use.  */
+        public IntPtr plugindata;    /* [in] Plugin writer created data the output author wants to attach to this object. */
     };
 
 
@@ -199,7 +199,7 @@ namespace FMOD
     public enum DSP_OSCILLATOR
     {
         TYPE,   /* Waveform design.  0 = sine.  1 = square. 2 = sawup. 3 = sawdown. 4 = triangle. 5 = noise.  */
-        RATE    /* Frequency of the sinewave in hz.  1.0 to 22000.0.  Default = 220.0. */         
+        RATE    /* Frequency of the sinewave in hz.  1.0 to 22000.0.  Default = 220.0. */
     }
 
 
@@ -593,10 +593,10 @@ namespace FMOD
     */
     public enum DSP_COMPRESSOR
     {
-        THRESHOLD,  /* Threshold level (dB)in the range from -60 through 0. The default value is 50. */ 
-        ATTACK,     /* Gain reduction attack time (milliseconds), in the range from 10 through 200. The default value is 50. */    
-        RELEASE,    /* Gain reduction release time (milliseconds), in the range from 20 through 1000. The default value is 50. */     
-        GAINMAKEUP /* Make-up gain applied after limiting, in the range from 0.0 through 100.0. The default value is 50. */   
+        THRESHOLD,  /* Threshold level (dB)in the range from -60 through 0. The default value is 50. */
+        ATTACK,     /* Gain reduction attack time (milliseconds), in the range from 10 through 200. The default value is 50. */
+        RELEASE,    /* Gain reduction release time (milliseconds), in the range from 20 through 1000. The default value is 50. */
+        GAINMAKEUP /* Make-up gain applied after limiting, in the range from 0.0 through 100.0. The default value is 50. */
     }
 }
 

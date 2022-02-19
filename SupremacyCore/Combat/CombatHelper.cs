@@ -36,14 +36,14 @@ namespace Supremacy.Combat
                 assets.Owner);
 
             IEnumerable<Sector> sectors =
-                (
+
                     from s in assets.Sector.GetNeighbors()
                     let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
                     let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
                     let hostileOrbitalPower = hostileOrbitals.Sum(o => o.Firepower())
                     orderby hostileOrbitalPower ascending, distance descending
                     select s
-                );
+                ;
 
             return sectors.FirstOrDefault();
         }
@@ -55,7 +55,7 @@ namespace Supremacy.Combat
             Dictionary<Civilization, CombatUnit> units = new Dictionary<Civilization, CombatUnit>();
             Sector sector = GameContext.Current.Universe.Map[location];
             List<Fleet> engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
+            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location); // part of an altering of collection while using, in TakeSidesAssets.cs line 34 and to GameEngine,cs line 1288
             int maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
             List<Fleet> oppositionFleets = ExposedAssets.OppositionFleets;
 
@@ -89,8 +89,9 @@ namespace Supremacy.Combat
                     }
                     if (sector.System != null && ship.Owner != sector.Owner && sector.Owner != null && sector.System.Colony != null && GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony && !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner))
                     {
-                        GameLog.Core.Combat.DebugFormat("Home Colony = {0}, Not at war ={1}",
-                            GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
+                        //GameLog.Core.Combat.DebugFormat("Home Colony = {0}, Not at war ={1}",
+                        //GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
+
                         continue; // for home worlds you need to declare war to get combat
                     }
                     if (!assets.ContainsKey(ship.Owner))
@@ -146,7 +147,7 @@ namespace Supremacy.Combat
 
                 assets[owner].Station = new CombatUnit(sector.Station);
 
-                DoNotIncludeStationsNotFullyBuilded:;
+            DoNotIncludeStationsNotFullyBuilded:;
             }
 
             results.AddRange(assets.Values);
@@ -271,7 +272,7 @@ namespace Supremacy.Combat
             IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
-                GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
+                //GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
                 return true;
             }
             else if (diplomacyData.Status == ForeignPowerStatus.AtWar)
@@ -463,14 +464,15 @@ namespace Supremacy.Combat
                 return 0;
             }
 
-            GameLog.Core.Combat.DebugFormat("Colony={0}, ComputeGroundDefenseMultiplier={1}",
-                colony.Name,
-                Math.Max(
-                0.1,
-                1.0 + (0.01 * colony.Buildings
-                                   .Where(o => o.IsActive)
-                                   .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
-                                   .Sum(b => b.Amount))));
+            GameLog.Core.SystemAssaultDetails.DebugFormat("ComputeGroundDefenseMultiplier...");
+            //GameLog.Core.SystemAssaultDetails.DebugFormat("Colony={0}, ComputeGroundDefenseMultiplier={1}",
+            //    colony.Name,
+            //    Math.Max(
+            //    0.1,
+            //    1.0 + (0.01 * colony.Buildings
+            //                       .Where(o => o.IsActive)
+            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
+            //                       .Sum(b => b.Amount))));
 
             return Math.Max(
                 0.1,
@@ -510,14 +512,14 @@ namespace Supremacy.Combat
 
             double result = population * weaponTechMod * raceMod * localGroundCombatMod;
 
-            GameLog.Core.Combat.DebugFormat("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
+            GameLog.Core.SystemAssaultDetails.DebugFormat("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
 
             return (int)result;
         }
 
         public static Civilization GetDefaultHoldFireCiv()
         {
-             // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
+            // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
 
             return new Civilization
             {

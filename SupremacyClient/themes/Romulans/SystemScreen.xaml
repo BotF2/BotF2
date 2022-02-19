@@ -1,15 +1,13 @@
-<!--
-  
-   SystemScreen.xaml
-  
+<!-- File:SystemScreen.xaml for Romulans
+
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
+   All other rights reserved.-->
   
-  -->
+  
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
@@ -58,16 +56,42 @@
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" />
                   <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                   <ColumnDefinition Width="*" />
                   <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_Rom2Gradient_TopLeft_BottomRight}"
+                        Background="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
                         CornerRadius="14,0,0,14"
                         Width="21"
-                        Margin="3,0,0,0" />
-                <ComboBox Grid.Column="1"
+                        Margin="5,0,0,0" />    
+                  
+                  <Rectangle Grid.Column="1"
+                             Margin="4,0,0,0" 
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
+                
+                  <Button Grid.Column="2"
+                        Margin="3,0,0,0" 
+                      Style="{StaticResource LCARS_BorderButtonStyle}"
+                      Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+                                   
+                  <Rectangle Grid.Column="3"
+                             Margin="3,0,0,0" 
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
+                                
+                  <ComboBox Grid.Column="4"
                           Grid.Row="0"
                           Margin="3,0,0,0"
                           IsEditable="False"
@@ -81,13 +105,43 @@
                     </DataTemplate>
                   </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Rectangle Grid.Column="2"
+
+                    <!--<Border Grid.Column="5"
+                           Grid.Row="0"
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
+                        CornerRadius="14,0,0,14"
+                        Width="21"
+                        Margin="5,0,0,0" />-->
+
+                                
+                  <Button Grid.Column="6"
+                        Margin="3,0,0,0" 
+                      Style="{StaticResource LCARS_BorderButtonStyle}"
+                      Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+
+                  <Rectangle Grid.Column="7"
+                             Margin="3,0,0,0" 
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
+                                
+                              
+                  <!--<Border Grid.Column="8"
+                        Grid.Row="0"
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
+                        CornerRadius="0,14,14,0"
+                        Width="21"
+                        Margin="3,0,0,0" />-->
+                  
+                                
+                  <Rectangle Grid.Column="9"
                            Grid.Row="0"
                            Margin="3,0,0,0"
-                           Fill="{StaticResource LCARS_Rom1Gradient_Top_Bottom}" />
-                <Border Grid.Column="3"
+                           Fill="{StaticResource Rom1Gradient_Top_Bottom}" />
+                <Border Grid.Column="10"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_Rom2Gradient_TopLeft_BottomRight}"
+                        Background="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
                         CornerRadius="0,14,14,0"
                         Width="21"
                         Margin="3,0,0,0" />
@@ -98,7 +152,9 @@
               <Grid Grid.Column="0"
                     Grid.Row="1"
                     Grid.RowSpan="2"
-                    Margin="0,4,0,0">
+                    Margin="0,4,0,0"
+                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto" />
                   <RowDefinition Height="*" />
@@ -115,7 +171,7 @@
                           Grid.RowSpan="2"
                           cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildQueue}"
                           Margin="0,4,0,0"
-                          Header="BUILD QUEUE"
+                          Header="{Binding Source={s:StringResource BUILD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                           IsExpanded="True">
                 </Expander>
                 <!-- END BUILD QUEUE AREA -->
@@ -137,7 +193,7 @@
                   </e:DataTrigger>
                 </i:Interaction.Triggers>
 
-                <TabItem x:Name="HandlingTab" Header="COLONY HANDLING">
+                <TabItem x:Name="HandlingTab" Header="COLONY MANAGEMENT">
                     <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.HandlingList}" />
                 </TabItem>
 
@@ -147,23 +203,24 @@
                 <TabItem x:Name="BuildListTab" Header="BUILD LIST">
                   <Grid>
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*" />
                       <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="Auto" />
                       <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <ContentControl Grid.Column="0"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
+                                        <ContentControl Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                    MaxWidth="700" MaxHeight="450" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                    ScrollViewer.VerticalScrollBarVisibility="Visible"
                                     cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildList}" />
-                                        <ContentControl Style="{StaticResource LCARS_RomThinBorderStyle}"
+
+                                        <!--<ContentControl Style="{StaticResource RomThinBorderStyle}"
                                     VerticalAlignment="Top"
                                     Grid.Column="1"
                                     Grid.Row="0"
-                                    Margin="14,0,0,0">
-                      <Image Stretch="Uniform"
+                                    Margin="14,0,0,0">-->
+                      <!--<Image Stretch="Uniform"
                              Width="270"
                              Height="225">
                         <Image.Source>
@@ -172,18 +229,60 @@
                                    Converter="{StaticResource TechObjectImageConverter}">
                           </Binding>
                         </Image.Source>
-                      </Image>
-                    </ContentControl>
-                    <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo}"
-                                    Grid.Column="1"
-                                    Grid.Row="1"
+                      </Image>-->
+                                        
+                      <!--Image-->
+                      <ContentControl Grid.Row="0"  Grid.Column="1" VerticalAlignment="Top" Margin="14,10,0,0"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <Image Stretch="Fill" MaxWidth="700" MaxHeight="580" 
+                                        VerticalAlignment="Bottom" HorizontalAlignment="Right" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                                                <Image.Source>
+                                                    <Binding Path="SelectedPlanetaryBuildProject.BuildDesign"
+                                               Mode="OneWay"
+                                               Converter="{StaticResource TechObjectImageConverter}">
+                                                    </Binding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ContentControl>
+                                        
+                      <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo}"
+                                    Grid.Column="1" Grid.Row="0" Margin="14,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                    Background="Black" ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     DataContext="{Binding Path=SelectedPlanetaryBuildProject, Mode=OneWay}"
-                                    Margin="14,4,0,0" />
-                  </Grid>
+                                    />
+                                    </Grid>
                 </TabItem>
+
+
+                <!--ShipbuildingTab-->
                 <TabItem x:Name="ShipbuildingTab" Header="SHIPBUILDING">
                   <Grid x:Name="ShipbuildingTabContent">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <!--<ColumnDefinition Width="1" />-->
+                    </Grid.ColumnDefinitions>
+
+                     <!--BEGIN SHIPYARD BUILD QUEUE AREA --> 
+                      
+                        <Expander Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ShipyardBuildQueue}"
+                                Margin="0,4,0,0"
+                                Header="{Binding Source={s:StringResource SHIPYARD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                                IsExpanded="True">
+                        </Expander>
+                                      
+                        <!--BEGIN SHIPYARD BAY AREAs -->
                     <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
+                                    Grid.Column="1"
+                                    Grid.Row="1"
                                   Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
                       <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -198,7 +297,7 @@
                     </ItemsControl>
                   </Grid>
                 </TabItem>
-
+                <!-- END SHIPYARD BUILD QUEUE AREA -->
                 <!--old StructuresTab, modified-->
 
                 <!--<TabItem x:Name="StructuresTab" Header="STRUCTURES">
@@ -210,7 +309,7 @@
 
 
               <!-- BEGIN SYSTEM VIEW -->
-                            <ContentControl Style="{StaticResource LCARS_RomThinBorderStyle}"
+                            <ContentControl Style="{StaticResource RomThinBorderStyle}"
                               Grid.Column="1"
                               Grid.Row="2"
                               Margin="4,0,0,0">

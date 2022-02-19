@@ -2,7 +2,7 @@ using System;
 
 namespace Supremacy.Scripting.Ast
 {
-    // ReSharper disable InconsistentNaming
+
     internal class Queryable
     {
         public Queryable<T> Cast<T>()
@@ -86,10 +86,7 @@ namespace Supremacy.Scripting.Ast
 
     internal class _Group<K, T> : Queryable<T>
     {
-        public K Key
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public K Key => throw new NotImplementedException();
     }
-    // ReSharper restore InconsistentNaming
+
 }

@@ -11,7 +11,7 @@ namespace Supremacy.Client.Views
 
         static NewDiplomacyScreenView()
         {
-            
+
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(NewDiplomacyScreenView),
                 new FrameworkPropertyMetadata(typeof(NewDiplomacyScreenView)));

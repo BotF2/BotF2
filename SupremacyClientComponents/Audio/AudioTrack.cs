@@ -51,7 +51,9 @@ namespace Supremacy.Client.Audio
             get
             {
                 if (_channel == null)
+                {
                     return false;
+                }
 
                 bool playing = false;
                 FMODErr.Check(_channel.isPlaying(ref playing));
@@ -63,7 +65,7 @@ namespace Supremacy.Client.Audio
         {
             get
             {
-                var paused = false;
+                bool paused = false;
                 FMODErr.Check(_channel.getPaused(ref paused));
                 return paused;
             }
@@ -81,7 +83,10 @@ namespace Supremacy.Client.Audio
             get
             {
                 if (_channel != null)
+                {
                     FMODErr.Check(_channel.getVolume(ref _volume));
+                }
+
                 return _volume;
             }
             set
@@ -89,7 +94,10 @@ namespace Supremacy.Client.Audio
                 lock (_engine.Lock)
                 {
                     if (_channel != null)
+                    {
                         FMODErr.Check(_channel.setVolume(value));
+                    }
+
                     _volume = value;
                 }
             }
@@ -119,17 +127,16 @@ namespace Supremacy.Client.Audio
 
         public IAudioGrouping Group
         {
-            get
-            {
-                return _group;
-            }
+            get => _group;
             set
             {
                 lock (_engine.Lock)
                 {
                     _group = value as FMODGrouping;
                     if (_channel != null)
-                        FMODErr.Check(_channel.setChannelGroup(_group != null ? _group.ChannelGroup : null));
+                    {
+                        FMODErr.Check(_channel.setChannelGroup(_group?.ChannelGroup));
+                    }
                 }
             }
         }
@@ -156,7 +163,9 @@ namespace Supremacy.Client.Audio
             lock (_engine.Lock)
             {
                 if (_isDisposed)
+                {
                     return;
+                }
 
                 _isDisposed = true;
 
@@ -198,10 +207,12 @@ namespace Supremacy.Client.Audio
                             true,
                             ref _channel));
                     if (_group != null)
+                    {
                         FMODErr.Check(_channel.setChannelGroup(_group.ChannelGroup));
+                    }
 
                     Volume = _volume;
-                    _channel.setCallback(CHANNEL_CALLBACKTYPE.END, _channelCallbackDelegate, 0);
+                    _ = _channel.setCallback(CHANNEL_CALLBACKTYPE.END, _channelCallbackDelegate, 0);
 
                     IsPaused = false;
                 }
@@ -210,7 +221,7 @@ namespace Supremacy.Client.Audio
             {
                 GameLog.Client.Audio.Error(e);
             }
-           
+
         }
 
         /// <summary>

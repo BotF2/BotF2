@@ -16,7 +16,6 @@ using Supremacy.Annotations;
 using Supremacy.Encyclopedia;
 using Supremacy.IO.Serialization;
 using Supremacy.Resources;
-using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 
@@ -34,7 +33,7 @@ namespace Supremacy.Entities
         protected const string MissingImageUri = "vfs:///Resources/Images/__image_missing.png";
 
         private PlanetType _homePlanetType;
-        private PlanetTypeFlags _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;
+        private readonly PlanetTypeFlags _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;
         private double _combatEffectiveness = 1.0;
 
         /// <summary>
@@ -59,10 +58,7 @@ namespace Supremacy.Entities
         /// Gets the display name of this <see cref="Race"/>.
         /// </summary>
         /// <value>The display name.</value>
-        public string Name
-        {
-            get { return PluralName; }
-        }
+        public string Name => PluralName;
 
         /// <summary>
         /// Gets or sets the description of this <see cref="Race"/>.
@@ -76,25 +72,25 @@ namespace Supremacy.Entities
         /// <value>The home planet type.</value>
         public PlanetType HomePlanetType
         {
-            get { return _homePlanetType; }
+            get => _homePlanetType;
             set
             {
                 if (!value.IsHabitable())
+                {
                     throw new ArgumentException("Planet type is marked as Uninhabitable: " + value);
+                }
+
                 _homePlanetType = value;
             }
         }
 
         public double CombatEffectiveness
         {
-            get { return _combatEffectiveness; }
-            set { _combatEffectiveness = value; }
+            get => _combatEffectiveness;
+            set => _combatEffectiveness = value;
         }
 
-        public PlanetTypeFlags HabitablePlanetTypes
-        {
-            get { return _habitablePlanetTypes; }
-        }
+        public PlanetTypeFlags HabitablePlanetTypes => _habitablePlanetTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Race"/> class.
@@ -111,35 +107,40 @@ namespace Supremacy.Entities
                 element.Document != null &&
                 element.Document.Root != null);
 
-            var ns = element.Document.Root.Name.Namespace;
+            XNamespace ns = element.Document.Root.Name.Namespace;
 
             Key = (string)element.Attribute("Key");
             SingularName = (string)element.Element(ns + "SingularName");
             PluralName = (string)element.Element(ns + "PluralName");
 
-            var description = (string)element.Element(ns + "Description");
+            string description = (string)element.Element(ns + "Description");
             if (!string.IsNullOrEmpty(description))
+            {
                 description = TextHelper.TrimParagraphs(description);
+            }
 
             Description = description ?? string.Empty;
             CombatEffectiveness = (double?)element.Element(ns + "CombatEffectiveness") ?? 1.0;
 
-            var homePlanetType = EnumHelper.Parse<PlanetType>((string)element.Element(ns + "HomePlanetType"));
+            PlanetType? homePlanetType = EnumHelper.Parse<PlanetType>((string)element.Element(ns + "HomePlanetType"));
             if (!homePlanetType.HasValue)
+            {
                 homePlanetType = PlanetType.Terran;
+            }
 
-            var habitablePlanetTypes = (string)element.Element(ns + "HabitablePlanetTypes");
+            string habitablePlanetTypes = (string)element.Element(ns + "HabitablePlanetTypes");
             if (habitablePlanetTypes != null)
             {
-                var planetTypeNames = habitablePlanetTypes.Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries);
-                var planetTypes = new List<PlanetType>();
+                string[] planetTypeNames = habitablePlanetTypes.Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries);
+                List<PlanetType> planetTypes = new List<PlanetType>();
 
-                foreach (var name in planetTypeNames)
+                foreach (string name in planetTypeNames)
                 {
-                    PlanetType planetType;
 
-                    if (EnumHelper.TryParse(name.Trim(), out planetType))
+                    if (EnumHelper.TryParse(name.Trim(), out PlanetType planetType))
+                    {
                         planetTypes.Add(planetType);
+                    }
                 }
 
                 if (planetTypes.Count == 0)
@@ -157,7 +158,7 @@ namespace Supremacy.Entities
             }
             else
             {
-                _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;                
+                _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;
             }
 
             HomePlanetType = homePlanetType.Value;
@@ -169,7 +170,7 @@ namespace Supremacy.Entities
         /// <param name="parentElement">The parent element.</param>
         public XContainer AppendXml(XElement parentElement)
         {
-            var ns = parentElement.Name.Namespace;
+            XNamespace ns = parentElement.Name.Namespace;
 
             parentElement.Add(
                 new XElement(
@@ -207,10 +208,7 @@ namespace Supremacy.Entities
         /// Gets the heading displayed in the Encyclopedia index.
         /// </summary>
         /// <value>The heading.</value>
-        public string EncyclopediaHeading
-        {
-            get { return ResourceManager.GetString(PluralName); }
-        }
+        public string EncyclopediaHeading => ResourceManager.GetString(PluralName);
 
         /// <summary>
         /// Gets the text displayed in the Encyclopedia entry.
@@ -220,7 +218,7 @@ namespace Supremacy.Entities
         {
             get
             {
-                var description = Description;
+                string description = Description;
 
                 /*
                    No sense in doing a potentially long string comparison to look up the description text
@@ -244,17 +242,19 @@ namespace Supremacy.Entities
         {
             get
             {
-                var searchPaths = new[]
+                string[] searchPaths = new[]
                                   {
                                       "vfs:///Resources/Images/Races/{0}.png",
                                       "vfs:///Resources/Images/Races/{0}.jpg"
                                   };
 
-                foreach (var searchPath in searchPaths)
+                foreach (string searchPath in searchPaths)
                 {
-                    var imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
+                    string imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
                     if (File.Exists(imagePath))
+                    {
                         return ResourceManager.GetResourceUri(imagePath).ToString();
+                    }
                 }
 
                 return MissingImageUri;
@@ -265,19 +265,13 @@ namespace Supremacy.Entities
         /// Gets the image displayed in the Encyclopedia entry.
         /// </summary>
         /// <value>The image.</value>
-        public string EncyclopediaImage
-        {
-            get { return ImagePath; }
-        }
+        public string EncyclopediaImage => ImagePath;
 
         /// <summary>
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Races; }
-        }
+        public EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Races;
 
         #endregion
 

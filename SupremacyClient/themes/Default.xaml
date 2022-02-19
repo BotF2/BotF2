@@ -1,18 +1,14 @@
-<!--
-  
-   Default.xaml
+<!-- File:Default.xaml for all ... Loading Global.xaml and more
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    >
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/SupremacyClient;component/themes/Global.xaml"/>
     <ResourceDictionary Source="/SupremacyClient;component/themes/MessageDialog.xaml"/>

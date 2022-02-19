@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 
@@ -12,12 +11,11 @@ namespace Supremacy.Economy
         private Shipyard _shipyard;
         [NonSerialized]
         private int _slotId;
-
         private bool _isActive;
 
         public Shipyard Shipyard
         {
-            get { return _shipyard; }
+            get => _shipyard;
             set
             {
                 _shipyard = value;
@@ -27,7 +25,7 @@ namespace Supremacy.Economy
 
         public int SlotID
         {
-            get { return _slotId; }
+            get => _slotId;
             set
             {
                 _slotId = value;
@@ -37,7 +35,7 @@ namespace Supremacy.Economy
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 _isActive = value;
@@ -50,14 +48,11 @@ namespace Supremacy.Economy
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
             base.DeserializeOwnedData(reader, context);
-            
+
             _isActive = reader.ReadBoolean();
         }
 
-        public override bool OnHold
-        {
-            get { return HasProject && (Project.IsPaused || !IsActive); }
-        }
+        public override bool OnHold => HasProject && (Project.IsPaused || !IsActive);
 
         public override void SerializeOwnedData(SerializationWriter writer, object context)
         {

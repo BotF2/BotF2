@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supremacy.Utility
 {
@@ -16,7 +12,7 @@ namespace Supremacy.Utility
         {
             double U = RandomProvider.Shared.NextDouble();
             double V = RandomProvider.Shared.NextDouble();
-            return Math.Sin(2 * Math.PI * V) * Math.Sqrt((-2 * Math.Log(1 - U)));
+            return Math.Sin(2 * Math.PI * V) * Math.Sqrt(-2 * Math.Log(1 - U));
         }
 
         /// <summary>

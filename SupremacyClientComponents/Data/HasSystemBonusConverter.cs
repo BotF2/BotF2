@@ -13,41 +13,37 @@ namespace Supremacy.Client.Data
         public static readonly object True = true;
         public static readonly object False = false;
 
-        private object _trueValue = True;
-        private object _falseValue = False;
+        public object TrueValue { get; set; } = True;
 
-        public object TrueValue
-        {
-            get { return _trueValue; }
-            set { _trueValue = value; }
-        }
-
-        public object FalseValue
-        {
-            get { return _falseValue; }
-            set { _falseValue = value; }
-        }
+        public object FalseValue { get; set; } = False;
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var bonuses = value as SystemBonus?;
+            SystemBonus? bonuses = value as SystemBonus?;
             if (!bonuses.HasValue)
+            {
                 return FalseValue;
+            }
 
-            var comparand = parameter as SystemBonus?;
+            SystemBonus? comparand = parameter as SystemBonus?;
             if (!comparand.HasValue)
             {
-                var comparandString = parameter as string;
-                if (comparandString == null)
+                if (!(parameter is string comparandString))
+                {
                     return FalseValue;
+                }
 
                 comparand = EnumHelper.Parse<SystemBonus>(comparandString);
                 if (!comparand.HasValue)
+                {
                     return FalseValue;
+                }
             }
 
             if ((bonuses.Value & comparand.Value) == comparand.Value)
+            {
                 return TrueValue;
+            }
 
             return FalseValue;
         }

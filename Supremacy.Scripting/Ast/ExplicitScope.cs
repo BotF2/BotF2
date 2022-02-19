@@ -11,9 +11,9 @@ namespace Supremacy.Scripting.Ast
 
         public ExplicitScope(CompilerContext compilerContext, Scope parent, SourceLocation start, SourceLocation end)
             : base(compilerContext, parent, start, end)
-		{
-			Explicit = this;
-		}
+        {
+            Explicit = this;
+        }
 
         internal void AddKnownVariable(string name, IKnownVariable variable)
         {

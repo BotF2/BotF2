@@ -17,42 +17,34 @@ namespace Supremacy.Types
     public class ParameterEventArgs<T> : EventArgs
     {
         #region Fields
-        private readonly T _parameter;
         #endregion
 
         #region Constructors
         public ParameterEventArgs(T parameter)
         {
-            _parameter = parameter;
+            Parameter = parameter;
         }
         #endregion
 
         #region Properties
-        public T Parameter
-        {
-            get { return _parameter; }
-        }
+        public T Parameter { get; }
         #endregion
     }
 
     public class ParameterCancelEventArgs<T> : CancelEventArgs
     {
         #region Fields
-        private readonly T _parameter;
         #endregion
 
         #region Constructors
         public ParameterCancelEventArgs(T parameter)
         {
-            _parameter = parameter;
+            Parameter = parameter;
         }
         #endregion
 
         #region Properties
-        public T Parameter
-        {
-            get { return _parameter; }
-        }
+        public T Parameter { get; }
         #endregion
     }
 

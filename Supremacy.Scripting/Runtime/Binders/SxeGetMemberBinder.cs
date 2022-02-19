@@ -3,7 +3,7 @@ using System.Dynamic;
 
 namespace Supremacy.Scripting.Runtime.Binders
 {
-    public class SxeGetMemberBinder :GetMemberBinder
+    public class SxeGetMemberBinder : GetMemberBinder
     {
         public SxeGetMemberBinder(BinderState binder, string name, bool isNoThrow)
             : base(name, false)

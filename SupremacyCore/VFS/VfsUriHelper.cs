@@ -18,10 +18,14 @@ namespace Supremacy.VFS
         private static Uri ValidateVfsUri(Uri vfsUri)
         {
             if (vfsUri == null)
+            {
                 throw new ArgumentNullException("vfsUri");
+            }
 
             if (!vfsUri.IsAbsoluteUri)
+            {
                 throw new ArgumentException("Uri should be absolute.");
+            }
 
             if (vfsUri.Scheme != VfsService.UriScheme)
             {
@@ -81,18 +85,22 @@ namespace Supremacy.VFS
             Debug.Assert(vfsUri != null, "vfsUri parameter cannot be null");
 
             //Step 1 - Get the authority part of the URI. This section represents that package URI
-            var hostAndPort = vfsUri.GetComponents(UriComponents.HostAndPort, UriFormat.UriEscaped);
+            string hostAndPort = vfsUri.GetComponents(UriComponents.HostAndPort, UriFormat.UriEscaped);
 
             //Step 2 - Replace the ',' with '/' to reconstruct the package URI
             hostAndPort = hostAndPort.Replace(',', '/');
 
             if (string.IsNullOrWhiteSpace(hostAndPort))
+            {
                 return null;
+            }
 
             //Step 3 - Unescape the special characters that we had escaped to construct the vfsUri
-            var sourceUri = new Uri(Uri.UnescapeDataString(hostAndPort));
-            if (sourceUri.Fragment != String.Empty)
+            Uri sourceUri = new Uri(Uri.UnescapeDataString(hostAndPort));
+            if (sourceUri.Fragment != string.Empty)
+            {
                 throw new ArgumentException(@"Uri cannot have a fragment.", "vfsUri");
+            }
 
             return sourceUri;
         }
@@ -101,10 +109,12 @@ namespace Supremacy.VFS
         {
             Debug.Assert(vfsUri != null, "vfsUri parameter cannot be null");
 
-            var partName = GetStringForFileUriFromAnyUri(vfsUri);
+            string partName = GetStringForFileUriFromAnyUri(vfsUri);
 
-            if (partName == String.Empty)
+            if (partName == string.Empty)
+            {
                 return null;
+            }
 
             return ValidateFileUri(new Uri(partName, UriKind.Relative));
         }
@@ -138,11 +148,13 @@ namespace Supremacy.VFS
 
             // Step 2: Get the canonically escaped Path with only ascii characters
             //Get the escaped string for the part name as part names should have only ascii characters 
-            var partName = safeUnescapedUri.GetComponents(UriComponents.SerializationInfoString, UriFormat.UriEscaped);
+            string partName = safeUnescapedUri.GetComponents(UriComponents.SerializationInfoString, UriFormat.UriEscaped);
 
             //The part name can be empty in cases where we were passed a pack URI that has no part component
             if (IsPartNameEmpty(partName))
-                return String.Empty;
+            {
+                return string.Empty;
+            }
 
             return partName;
         }
@@ -156,7 +168,9 @@ namespace Supremacy.VFS
             // This is Whidbey PS399695.  Until that is changed, we check for both cases - either an entirely empty string, 
             // or a single forward slash character.  Either case means there is no part name.
             if (partName.Length == 0 || ((partName.Length == 1) && (partName[0] == '/')))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -178,9 +192,8 @@ namespace Supremacy.VFS
         ///   or some characters that should be escaped are not escaped.</exception>
         internal static Uri ValidateFileUri(Uri resourceUri)
         {
-            string fileUriString;
 
-            var exception = GetExceptionIfFileUriInvalid(resourceUri, out fileUriString);
+            Exception exception = GetExceptionIfFileUriInvalid(resourceUri, out string fileUriString);
             if (exception != null)
             {
                 Debug.Assert(fileUriString != null && fileUriString.Length == 0);
@@ -194,37 +207,51 @@ namespace Supremacy.VFS
 
         private static Exception GetExceptionIfFileUriInvalid(Uri resourceUri, out string fileUriString)
         {
-            fileUriString = String.Empty;
+            fileUriString = string.Empty;
 
             if (resourceUri == null)
+            {
                 return new ArgumentNullException("resourceUri");
+            }
 
             if (resourceUri.IsAbsoluteUri)
+            {
                 return new ArgumentException("Resource URI cannot be an absolute URI.");
+            }
 
-            var partName = GetStringForFileUriFromAnyUri(resourceUri);
+            string partName = GetStringForFileUriFromAnyUri(resourceUri);
 
             //We need to make sure that the URI passed to us is not just "/"
             //"/" is a valid relative uri, but is not a valid partname
-            if (partName == String.Empty)
+            if (partName == string.Empty)
+            {
                 return new ArgumentException("Resource URI is empty.");
+            }
 
             if (partName[0] != '/')
+            {
                 return new ArgumentException("Resource URI should start with a forward slash.");
+            }
 
             if (partName.StartsWith("//"))
+            {
                 return new ArgumentException("Resource URI should not start with two slashes.");
+            }
 
             if (partName[partName.Length - 1] == '/')
+            {
                 return new ArgumentException("Resource URI should not end with a slash.");
+            }
 
             if (resourceUri.IsAbsoluteUri && !string.IsNullOrWhiteSpace(resourceUri.Fragment))
+            {
                 return new ArgumentException("Resource URI should not have a fragment.");
+            }
 
             //We test if the URI is wellformed and refined.
             //The relative URI that was passed to us may not be correctly escaped and so we test that. 
             //Also there might be navigation "/../" present in the URI which we need to detect.
-            var wellFormedPartName = new Uri(_defaultUri, partName).GetComponents(
+            string wellFormedPartName = new Uri(_defaultUri, partName).GetComponents(
                 UriComponents.Path |
                 UriComponents.KeepDelimiter,
                 UriFormat.UriEscaped);
@@ -240,7 +267,9 @@ namespace Supremacy.VFS
             //We perform the comparison in a case-insensitive manner, as at this point, 
             //only escaped hex digits (A-F) might vary in casing.
             if (string.Compare(resourceUri.ToString(), wellFormedPartName, StringComparison.OrdinalIgnoreCase) != 0)
+            {
                 return new ArgumentException("Invalid Resource URI.");
+            }
 
             //if we get here, the resourceUri is valid and so we return null, as there is no exception.
             fileUriString = partName;

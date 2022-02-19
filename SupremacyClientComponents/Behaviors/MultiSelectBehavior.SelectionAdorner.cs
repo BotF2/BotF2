@@ -17,7 +17,7 @@ namespace Supremacy.Client.Behaviors
                 : base(adornedElement)
             {
                 StartPoint = startPoint;
-                var fill = Colors.DodgerBlue;
+                Color fill = Colors.DodgerBlue;
                 fill.A = 31;
                 _fillBrush = new SolidColorBrush(fill);
                 _fillBrush.Freeze();
@@ -29,7 +29,7 @@ namespace Supremacy.Client.Behaviors
 
             public Point? EndPoint
             {
-                get { return _endPoint; }
+                get => _endPoint;
                 set
                 {
                     _endPoint = value;
@@ -42,15 +42,17 @@ namespace Supremacy.Client.Behaviors
                 base.OnRender(drawingContext);
 
                 if (!EndPoint.HasValue)
+                {
                     return;
+                }
 
-                var rect = new Rect
-                           {
-                               X = StartPoint.X + Math.Min(0, EndPoint.Value.X - StartPoint.X),
-                               Y = StartPoint.Y + Math.Min(0, EndPoint.Value.Y - StartPoint.Y),
-                               Width = Math.Abs(EndPoint.Value.X - StartPoint.X),
-                               Height = Math.Abs(EndPoint.Value.Y - StartPoint.Y)
-                           };
+                Rect rect = new Rect
+                {
+                    X = StartPoint.X + Math.Min(0, EndPoint.Value.X - StartPoint.X),
+                    Y = StartPoint.Y + Math.Min(0, EndPoint.Value.Y - StartPoint.Y),
+                    Width = Math.Abs(EndPoint.Value.X - StartPoint.X),
+                    Height = Math.Abs(EndPoint.Value.Y - StartPoint.Y)
+                };
 
                 drawingContext.PushGuidelineSet(
                     new GuidelineSet(

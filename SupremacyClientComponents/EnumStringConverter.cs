@@ -45,36 +45,37 @@ namespace Supremacy.Client
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
+            }
 
-            var enumValue = value as Enum;
-            var parameterIsTypeName = false;
+            bool parameterIsTypeName = false;
 
-            var typeName = (string)null;
-            var valueName = (string)null;
+            string typeName = null;
+            string valueName = null;
 
-            if (enumValue != null)
+            if (value is Enum enumValue)
             {
                 typeName = enumValue.GetType().Name;
                 valueName = enumValue.ToString();
             }
 
-            string result;
 
             if (typeName == null)
             {
-                var stringValue = value as string;
-                if (stringValue != null)
+                if (value is string stringValue)
                 {
                     try
                     {
-                        var parts = value.ToString().Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+                        string[] parts = value.ToString().Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
                         if (parts.Length < 2)
                         {
                             typeName = parameter as string;
 
                             if (typeName == null)
+                            {
                                 return value;
+                            }
 
                             parameterIsTypeName = true;
                         }
@@ -93,10 +94,14 @@ namespace Supremacy.Client
             }
 
             if (typeName == null)
+            {
                 return value;
+            }
 
-            if (!EnumTables.TryGetValue(typeName, valueName, 0, out result))
+            if (!EnumTables.TryGetValue(typeName, valueName, 0, out string result))
+            {
                 return value;
+            }
 
             if (!parameterIsTypeName &&
                 result != null &&
@@ -107,7 +112,9 @@ namespace Supremacy.Client
             }
 
             if (result != null)
+            {
                 result = result.Replace("&", AccessText ? "_" : "");
+            }
 
             return result;
         }
@@ -127,9 +134,11 @@ namespace Supremacy.Client
         {
             try
             {
-                var enumType = value as Type ?? Type.GetType(value.ToString());
+                Type enumType = value as Type ?? Type.GetType(value.ToString());
                 if (enumType != null)
+                {
                     return Enum.GetValues(enumType);
+                }
             }
             catch (Exception e)
             {
@@ -156,24 +165,17 @@ namespace Supremacy.Client
         #region Constructors
         public AltEnumStringConverter()
         {
-            if (GameContext.Current != null)
-            {
-                _enumTables = GameContext.Current.Tables.EnumTables;
-            }
-            else if (Designer.IsInDesignMode)
-            {
-                _enumTables = TableMap.ReadFromFile(
-                    Path.Combine(
-                        PathHelper.GetWorkingDirectory(),
-                        @"Resources\Data\EnumStrings.txt"));
-            }
-            else
-            {
-                _enumTables = TableMap.ReadFromFile(
-                    Path.Combine(
-                        Environment.CurrentDirectory,
-                        @"Resources\Data\EnumStrings.txt"));
-            }
+            _enumTables = GameContext.Current != null
+                ? GameContext.Current.Tables.EnumTables
+                : Designer.IsInDesignMode
+                    ? TableMap.ReadFromFile(
+                                    Path.Combine(
+                                        PathHelper.GetWorkingDirectory(),
+                                        @"Resources\Data\EnumStrings.txt"))
+                    : TableMap.ReadFromFile(
+                                    Path.Combine(
+                                        Environment.CurrentDirectory,
+                                        @"Resources\Data\EnumStrings.txt"));
         }
         #endregion
 

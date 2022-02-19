@@ -14,7 +14,7 @@ namespace Supremacy.Client.Views
 
         public CreditsDataViewModel(Treasury treasury)
         {
-            var stepSize = treasury.CurrentLevel / StepCount;
+            int stepSize = treasury.CurrentLevel / StepCount;
 
             ImmediateStepSize = stepSize;
             RecurringStepSize = stepSize;
@@ -39,11 +39,13 @@ namespace Supremacy.Client.Views
 
         public int Minimum
         {
-            get { return _minimum; }
+            get => _minimum;
             set
             {
                 if (Equals(value, _minimum))
+                {
                     return;
+                }
 
                 _minimum = value;
 
@@ -68,11 +70,13 @@ namespace Supremacy.Client.Views
 
         public int Maximum
         {
-            get { return _maximum; }
+            get => _maximum;
             private set
             {
                 if (Equals(value, _maximum))
+                {
                     return;
+                }
 
                 _maximum = value;
 
@@ -97,14 +101,18 @@ namespace Supremacy.Client.Views
 
         public int ImmediateAmount
         {
-            get { return _immediateAmount; }
+            get => _immediateAmount;
             set
             {
                 if (value < 0)
+                {
                     value = 0;
+                }
 
                 if (Equals(value, _immediateAmount))
+                {
                     return;
+                }
 
                 _immediateAmount = (int)Math.Round(value * 1.0d / _immediateStepSize) * _immediateStepSize;
 
@@ -130,14 +138,18 @@ namespace Supremacy.Client.Views
 
         public int RecurringAmount
         {
-            get { return _recurringAmount; }
+            get => _recurringAmount;
             set
             {
                 if (value < 0)
+                {
                     value = 0;
+                }
 
                 if (Equals(value, _recurringAmount))
+                {
                     return;
+                }
 
                 _recurringAmount = (int)Math.Round(value * 1.0d / _recurringStepSize) * _recurringStepSize;
 
@@ -163,11 +175,13 @@ namespace Supremacy.Client.Views
 
         public int ImmediateStepSize
         {
-            get { return _immediateStepSize; }
+            get => _immediateStepSize;
             private set
             {
                 if (Equals(value, _immediateStepSize))
+                {
                     return;
+                }
 
                 _immediateStepSize = value;
 
@@ -192,11 +206,13 @@ namespace Supremacy.Client.Views
 
         public int RecurringStepSize
         {
-            get { return _recurringStepSize; }
+            get => _recurringStepSize;
             private set
             {
                 if (Equals(value, _recurringStepSize))
+                {
                     return;
+                }
 
                 _recurringStepSize = value;
 
@@ -222,22 +238,26 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }
@@ -251,10 +271,7 @@ namespace Supremacy.Client.Views
 
         #region Implementation of IClauseParameterInfo
 
-        bool IClauseParameterInfo.IsParameterValid
-        {
-            get { return ImmediateAmount > 0 || RecurringAmount > 0; }
-        }
+        bool IClauseParameterInfo.IsParameterValid => ImmediateAmount > 0 || RecurringAmount > 0;
 
         object IClauseParameterInfo.GetParameterData()
         {

@@ -17,24 +17,28 @@ namespace Supremacy.Client.Views
         private void OnBuildListPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount < 2)
+            {
                 return;
+            }
 
-            var selectedProject = BuildList.SelectedItem as BuildProject;
-            if (selectedProject == null)
+            if (!(BuildList.SelectedItem is BuildProject selectedProject))
+            {
                 return;
+            }
 
-            var presentationModel = PresentationModel;
+            ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
+            {
                 return;
+            }
 
-            var command = presentationModel.AddToPlanetaryBuildQueueCommand;
+            ICommand command = presentationModel.AddToPlanetaryBuildQueueCommand;
             if (command != null && command.CanExecute(selectedProject))
+            {
                 command.Execute(selectedProject);
+            }
         }
 
-        private ColonyScreenPresentationModel PresentationModel
-        {
-            get { return DataContext as ColonyScreenPresentationModel; }
-        }
+        private ColonyScreenPresentationModel PresentationModel => DataContext as ColonyScreenPresentationModel;
     }
 }

@@ -16,152 +16,170 @@ namespace Supremacy.Types
 {
     public static class Number
     {
-        public static Int16 ParseInt16(String value)
+        public static short ParseInt16(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Int16 result;
-                if (Int16.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (short.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out short result))
+                {
                     return result;
+                }
             }
-            return default(Int16);
+            return default;
         }
 
-        public static Int32 ParseInt32(String value)
+        public static int ParseInt32(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Int32 result;
-                if (Int32.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (int.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out int result))
+                {
                     return result;
+                }
             }
-            return default(Int32);
+            return default;
         }
 
-        public static Int64 ParseInt64(String value)
+        public static long ParseInt64(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Int64 result;
-                if (Int64.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (long.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out long result))
+                {
                     return result;
+                }
             }
-            return default(Int64);
+            return default;
         }
 
-        public static UInt16 ParseUInt16(String value)
+        public static ushort ParseUInt16(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                UInt16 result;
-                if (UInt16.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (ushort.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out ushort result))
+                {
                     return result;
+                }
             }
-            return default(UInt16);
+            return default;
         }
 
-        public static UInt32 ParseUInt32(String value)
+        public static uint ParseUInt32(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                UInt32 result;
-                if (UInt32.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (uint.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out uint result))
+                {
                     return result;
+                }
             }
-            return default(UInt32);
+            return default;
         }
 
-        public static UInt64 ParseUInt64(String value)
+        public static ulong ParseUInt64(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                UInt64 result;
-                if (UInt64.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (ulong.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out ulong result))
+                {
                     return result;
+                }
             }
-            return default(UInt64);
+            return default;
         }
 
-        public static Single ParseSingle(String value)
+        public static float ParseSingle(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Single result;
-                if (Single.TryParse(value, NumberStyles.Float, ResourceManager.NeutralCulture, out result))
+                if (float.TryParse(value, NumberStyles.Float, ResourceManager.NeutralCulture, out float result))
+                {
                     return result;
+                }
             }
-            return default(Single);
+            return default;
         }
 
-        public static Double ParseDouble(String value)
+        public static double ParseDouble(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Double result;
-                if (Double.TryParse(value, NumberStyles.Float, ResourceManager.NeutralCulture, out result))
+                if (double.TryParse(value, NumberStyles.Float, ResourceManager.NeutralCulture, out double result))
+                {
                     return result;
+                }
             }
-            return default(Double);
+            return default;
         }
 
-        public static Decimal ParseDecimal(String value)
+        public static decimal ParseDecimal(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Decimal result;
-                if (Decimal.TryParse(value, NumberStyles.Currency, ResourceManager.NeutralCulture, out result))
+                if (decimal.TryParse(value, NumberStyles.Currency, ResourceManager.NeutralCulture, out decimal result))
+                {
                     return result;
+                }
             }
-            return default(Decimal);
+            return default;
         }
 
-        public static Byte ParseByte(String value)
+        public static byte ParseByte(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Byte result;
-                if (Byte.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (byte.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out byte result))
+                {
                     return result;
+                }
             }
-            return default(Byte);
+            return default;
         }
 
-        public static SByte ParseSByte(String value)
+        public static sbyte ParseSByte(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                SByte result;
-                if (SByte.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out result))
+                if (sbyte.TryParse(value, NumberStyles.Integer, ResourceManager.NeutralCulture, out sbyte result))
+                {
                     return result;
+                }
             }
-            return default(SByte);
+            return default;
         }
 
-        public static Percentage ParsePercentage(String value)
+        public static Percentage ParsePercentage(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                Percentage result;
-                if (Percentage.TryParse(value, out result))
+                if (Percentage.TryParse(value, out Percentage result))
+                {
                     return result;
+                }
             }
-            return default(Percentage);
+            return default;
         }
 
         public static bool ParseBoolean(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
+            {
                 return false;
+            }
 
             value = value.Trim();
 
-            if (string.Equals(Boolean.TrueString, value, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(bool.TrueString, value, StringComparison.OrdinalIgnoreCase))
+            {
                 return true;
+            }
 
-            if (string.Equals(Boolean.FalseString, value, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(bool.FalseString, value, StringComparison.OrdinalIgnoreCase))
+            {
                 return false;
+            }
 
-            return (ParseInt32(value) != 0);
+            return ParseInt32(value) != 0;
         }
     }
 }

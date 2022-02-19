@@ -28,13 +28,16 @@ namespace Supremacy.Client
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var accessText = new AccessText();
+            AccessText accessText = new AccessText();
 
-            var markupExtension = Text as MarkupExtension;
-            if (markupExtension != null)
+            if (Text is MarkupExtension markupExtension)
+            {
                 accessText.SetValue(AccessText.TextProperty, markupExtension.ProvideValue(serviceProvider));
+            }
             else
+            {
                 accessText.SetValue(AccessText.TextProperty, Text);
+            }
 
             return accessText;
         }

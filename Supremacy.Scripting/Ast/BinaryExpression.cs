@@ -836,7 +836,7 @@ namespace Supremacy.Scripting.Ast
                     return null;
                 }
 
-                return TypeManager.IsValueType(leftType) ? null : (this);
+                return TypeManager.IsValueType(leftType) ? null : this;
             }
 
             bool rightIsGenericParameter = TypeManager.IsGenericParameter(rightType);
@@ -979,10 +979,12 @@ namespace Supremacy.Scripting.Ast
             // E operator + (U x, E e)
             // E operator + (E e, U x)
             //
-            if (!((Operator.IsComparison() || Operator.IsBitwise()) ||
+            if (!(Operator.IsComparison() || Operator.IsBitwise() ||
                   (Operator == MSAst.ExpressionType.Subtract && leftIsEnum) ||
-                  (Operator == MSAst.ExpressionType.Add && (leftIsEnum != rightIsEnum || Type != null))))	// type != null for lifted null
+                  (Operator == MSAst.ExpressionType.Add && (leftIsEnum != rightIsEnum || Type != null))))   // type != null for lifted null
+            {
                 return null;
+            }
 
             Expression leftTemp = Left;
             Expression rightTemp = Right;
@@ -1016,15 +1018,13 @@ namespace Supremacy.Scripting.Ast
             {
                 underlyingType = Enum.GetUnderlyingType(leftType);
 
-                if (Left is ConstantExpression)
-                    Left = ((ConstantExpression)Left).ConvertExplicitly(false, underlyingType);
-                else
-                    Left = EmptyCastExpression.Create(Left, underlyingType);
+                Left = Left is ConstantExpression
+                    ? ((ConstantExpression)Left).ConvertExplicitly(false, underlyingType)
+                    : EmptyCastExpression.Create(Left, underlyingType);
 
-                if (Right is ConstantExpression)
-                    Right = ((ConstantExpression)Right).ConvertExplicitly(false, underlyingType);
-                else
-                    Right = EmptyCastExpression.Create(Right, underlyingType);
+                Right = Right is ConstantExpression
+                    ? ((ConstantExpression)Right).ConvertExplicitly(false, underlyingType)
+                    : EmptyCastExpression.Create(Right, underlyingType);
             }
             else if (leftIsEnum)
             {
@@ -1106,11 +1106,9 @@ namespace Supremacy.Scripting.Ast
                     underlyingType,
                     Span);
 
-                if (Operator == MSAst.ExpressionType.Subtract && rightIsEnum && leftIsEnum)
-                {
-                    resultType = underlyingType;
-                }
-                else resultType = Operator == MSAst.ExpressionType.Add && rightIsEnum ? rightType : leftType;
+                resultType = Operator == MSAst.ExpressionType.Subtract && rightIsEnum && leftIsEnum
+                    ? underlyingType
+                    : Operator == MSAst.ExpressionType.Add && rightIsEnum ? rightType : leftType;
             }
 
             expr = ResolveOperatorPredefined(ec, _standardOperators, true, resultType);
@@ -1343,14 +1341,9 @@ namespace Supremacy.Scripting.Ast
         //
         protected virtual Expression ResolveUserOperator(ParseContext ec, Type l, Type r)
         {
-            MSAst.ExpressionType userOper;
-
-            if (Operator == MSAst.ExpressionType.AndAlso)
-            {
-                userOper = MSAst.ExpressionType.And;
-            }
-            else userOper = Operator == MSAst.ExpressionType.OrElse ? MSAst.ExpressionType.Or : Operator;
-
+            MSAst.ExpressionType userOper = Operator == MSAst.ExpressionType.AndAlso
+                ? MSAst.ExpressionType.And
+                : Operator == MSAst.ExpressionType.OrElse ? MSAst.ExpressionType.Or : Operator;
             string methodName = OperatorInfo.GetOperatorInfo(userOper).SignatureName;
 
             MethodGroupExpression leftOperators = MemberLookup(ec, null, l, methodName, MemberTypes.Method, AllBindingFlags, Span) as MethodGroupExpression;
@@ -1377,29 +1370,18 @@ namespace Supremacy.Scripting.Ast
             Argument rightArg = new Argument(Right);
             _ = args.Add(rightArg);
 
-            MethodGroupExpression union;
+            MethodGroupExpression union = leftOperators != null && rightOperators != null
+                ? IsPredefinedUserOperator(l, userOper)
+                    ? rightOperators.OverloadResolve(ec, ref args, true, Span) ?? leftOperators
+                    : IsPredefinedUserOperator(r, userOper)
+                        ? leftOperators.OverloadResolve(ec, ref args, true, Span) ?? rightOperators
+                        : MethodGroupExpression.MakeUnionSet(leftOperators, rightOperators, Span)
+                : leftOperators ?? rightOperators;
 
             //
             // User-defined operator implementations always take precedence
             // over predefined operator implementations
             //
-            if (leftOperators != null && rightOperators != null)
-            {
-                if (IsPredefinedUserOperator(l, userOper))
-                {
-                    union = rightOperators.OverloadResolve(ec, ref args, true, Span) ?? leftOperators;
-                }
-                else
-                {
-                    union = IsPredefinedUserOperator(r, userOper)
-                        ? leftOperators.OverloadResolve(ec, ref args, true, Span) ?? rightOperators
-                        : MethodGroupExpression.MakeUnionSet(leftOperators, rightOperators, Span);
-                }
-            }
-            else
-            {
-                union = leftOperators ?? rightOperators;
-            }
 
             union = union.OverloadResolve(ec, ref args, true, Span);
             if (union == null)

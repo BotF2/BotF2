@@ -16,9 +16,6 @@ namespace Supremacy.Universe
     {
         #region Fields
         public static readonly SupportsPlanetsAttribute Default = new SupportsPlanetsAttribute();
-
-        private PlanetSize[] _allowedSizes;
-        private PlanetType[] _allowedTypes;
         private int _maxNumberOfPlanets = StarSystem.MaxPlanetsPerSystem;
         #endregion
 
@@ -26,45 +23,37 @@ namespace Supremacy.Universe
         #region Properties
         public int MaxNumberOfPlanets
         {
-            get { return _maxNumberOfPlanets; }
+            get => _maxNumberOfPlanets;
             set
             {
                 if (value < 0)
+                {
                     throw new ArgumentOutOfRangeException("value", "value must be a positive integer");
+                }
+
                 if (value > StarSystem.MaxPlanetsPerSystem)
+                {
                     throw new ArgumentOutOfRangeException("value", "value must be less than " + StarSystem.MaxPlanetsPerSystem);
+                }
+
                 _maxNumberOfPlanets = value;
             }
         }
 
-        public bool IsAllowedTypesDefined
-        {
-            get { return ((_allowedTypes != null) && (_allowedTypes.Length > 0)); }
-        }
+        public bool IsAllowedTypesDefined => (AllowedTypes != null) && (AllowedTypes.Length > 0);
 
-        public bool IsAllowedSizesDefined
-        {
-            get { return ((_allowedSizes != null) && (_allowedSizes.Length > 0)); }
-        }
+        public bool IsAllowedSizesDefined => (AllowedSizes != null) && (AllowedSizes.Length > 0);
 
-        public PlanetType[] AllowedTypes
-        {
-            get { return _allowedTypes; }
-            set { _allowedTypes = value; }
-        }
+        public PlanetType[] AllowedTypes { get; set; }
 
-        public PlanetSize[] AllowedSizes
-        {
-            get { return _allowedSizes; }
-            set { _allowedSizes = value; }
-        }
+        public PlanetSize[] AllowedSizes { get; set; }
         #endregion
 
         #region Methods
         public override bool Match(object obj)
         {
             GameLog.Core.UI.DebugFormat("Matching Attribut: incoming obj = {0}, matched with {1}", obj, obj is SupportsPlanetsAttribute);
-            return (obj is SupportsPlanetsAttribute);
+            return obj is SupportsPlanetsAttribute;
         }
 
         public override bool IsDefaultAttribute()

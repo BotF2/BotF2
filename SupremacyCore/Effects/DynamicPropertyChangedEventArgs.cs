@@ -17,9 +17,7 @@ namespace Supremacy.Effects
     {
         internal DynamicPropertyChangedEventArgs([NotNull] DynamicProperty<TValue> property, TValue oldValue, TValue newValue)
         {
-            if (property == null)
-                throw new ArgumentNullException("property");
-            Property = property;
+            Property = property ?? throw new ArgumentNullException("property");
             OldValue = oldValue;
             NewValue = newValue;
         }

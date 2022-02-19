@@ -36,59 +36,46 @@ namespace Supremacy.Effects
         protected static readonly Dictionary<FromNameKey, DynamicProperty> RegisteredProperties;
 
         private static int GlobalIndexCount;
-
-        private readonly int _globalIndex;
-        private readonly string _name;
-        private readonly Type _ownerType;
         private readonly Type _propertyType;
 
         protected DynamicProperty(string name, Type ownerType, Type propertyType)
         {
-            _name = name;
-            _ownerType = ownerType;
+            Name = name;
+            OwnerType = ownerType;
             _propertyType = propertyType;
 
             MetadataMap = new InsertionSortMap();
 
             lock (Synchronized)
             {
-                _globalIndex = GetUniqueGlobalIndex(ownerType, name);
+                GlobalIndex = GetUniqueGlobalIndex(ownerType, name);
             }
         }
 
-        public Type OwnerType
-        {
-            get { return _ownerType; }
-        }
+        public Type OwnerType { get; }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
-        public Type PropertyType
-        {
-            get { return _propertyType; }
-        }
+        public Type PropertyType => _propertyType;
 
-        internal int GlobalIndex
-        {
-            get { return _globalIndex; }
-        }
+        internal int GlobalIndex { get; }
 
         internal static DynamicProperty PropertyFromKey([NotNull] FromNameKey key)
         {
             if (key == null)
+            {
                 throw new ArgumentNullException("key");
+            }
 
             RuntimeHelpers.RunClassConstructor(key.OwnerType.TypeHandle);
 
             lock (Synchronized)
             {
-                DynamicProperty property;
 
-                if (RegisteredProperties.TryGetValue(key, out property))
+                if (RegisteredProperties.TryGetValue(key, out DynamicProperty property))
+                {
                     return property;
+                }
             }
 
             return null;
@@ -98,17 +85,22 @@ namespace Supremacy.Effects
         {
             lock (Synchronized)
             {
-                DynamicProperty registeredProperty;
 
-                if (RegisteredProperties.TryGetValue(new FromNameKey(name, ownerType), out registeredProperty))
+                if (RegisteredProperties.TryGetValue(new FromNameKey(name, ownerType), out DynamicProperty registeredProperty))
+                {
                     return registeredProperty.GlobalIndex;
+                }
             }
 
             if (GlobalIndexCount < 65535)
+            {
                 return GlobalIndexCount++;
+            }
 
             if (ownerType != null)
+            {
                 throw DynamicPropertyLimitExceeded(ownerType.Name + "." + name);
+            }
 
             throw DynamicPropertyLimitExceeded("ConstantProperty");
         }
@@ -130,35 +122,27 @@ namespace Supremacy.Effects
         #region Dependent Type: FromNameKey
         protected internal class FromNameKey : IEquatable<FromNameKey>
         {
-            private readonly string _name;
-            private readonly Type _ownerType;
             private readonly int _hashCode;
 
             public FromNameKey(string name, Type ownerType)
             {
-                _name = name;
-                _ownerType = ownerType;
-                _hashCode = _name.GetHashCode() ^ _ownerType.GetHashCode();
+                Name = name;
+                OwnerType = ownerType;
+                _hashCode = Name.GetHashCode() ^ OwnerType.GetHashCode();
             }
 
-            public string Name
-            {
-                get { return _name; }
-            }
+            public string Name { get; }
 
-            public Type OwnerType
-            {
-                get { return _ownerType; }
-            }
+            public Type OwnerType { get; }
 
             public override bool Equals(object o)
             {
-                return (((o != null) && (o is FromNameKey)) && Equals(o));
+                return (o != null) && (o is FromNameKey) && Equals(o);
             }
 
             public bool Equals(FromNameKey key)
             {
-                return (_name.Equals(key._name) && (_ownerType == key._ownerType));
+                return Name.Equals(key.Name) && (OwnerType == key.OwnerType);
             }
 
             public override int GetHashCode()
@@ -171,7 +155,6 @@ namespace Supremacy.Effects
 
     public sealed class DynamicProperty<TValue> : DynamicProperty
     {
-        private readonly DynamicPropertyMetadata<TValue> _defaultMetadata;
         private readonly ValidateValueCallback<TValue> _validateValueCallback;
 
         private DynamicProperty(
@@ -181,26 +164,20 @@ namespace Supremacy.Effects
             ValidateValueCallback<TValue> validateValueCallback)
             : base(name, ownerType, typeof(TValue))
         {
-            _defaultMetadata = defaultMetadata;
+            DefaultMetadata = defaultMetadata;
             _validateValueCallback = validateValueCallback;
         }
 
-        public DynamicPropertyMetadata<TValue> DefaultMetadata
-        {
-            get { return _defaultMetadata; }
-        }
+        public DynamicPropertyMetadata<TValue> DefaultMetadata { get; }
 
-        public ValidateValueCallback<TValue> ValidateValueCallback
-        {
-            get { return _validateValueCallback; }
-        }
+        public ValidateValueCallback<TValue> ValidateValueCallback => _validateValueCallback;
 
         private static TValue AutoGenerateDefaultValue(
             ValidateValueCallback<TValue> validateValueCallback,
             string name,
             Type ownerType)
         {
-            var defaultValue = default(TValue);
+            TValue defaultValue = default;
             ValidateDefaultValue(defaultValue, validateValueCallback, name, ownerType);
             return defaultValue;
         }
@@ -212,7 +189,9 @@ namespace Supremacy.Effects
             Type ownerType)
         {
             if ((validateValueCallback == null) || validateValueCallback(defaultValue))
+            {
                 return;
+            }
 
             throw new ArgumentException(
                 string.Format(
@@ -226,7 +205,7 @@ namespace Supremacy.Effects
             string name,
             Type ownerType)
         {
-            var defaultValue = default(TValue);
+            TValue defaultValue = default;
             if ((validateValueCallback != null) && !validateValueCallback(defaultValue))
             {
                 throw new ArgumentException(
@@ -259,20 +238,22 @@ namespace Supremacy.Effects
             DynamicPropertyMetadata<TValue> defaultMetadata = null;
 
             if ((typeMetadata != null) && typeMetadata.IsDefaultValueModified)
+            {
                 defaultMetadata = new DynamicPropertyMetadata<TValue>(typeMetadata.DefaultValue);
+            }
 
-            var property = RegisterCommon(name, ownerType, defaultMetadata, validateValueCallback);
+            DynamicProperty<TValue> property = RegisterCommon(name, ownerType, defaultMetadata, validateValueCallback);
             if (typeMetadata != null)
+            {
                 property.OverrideMetadata(ownerType, typeMetadata);
+            }
 
             return property;
         }
 
         public void OverrideMetadata(Type forType, DynamicPropertyMetadata<TValue> typeMetadata)
         {
-            DynamicPropertyMetadata<TValue> metadata;
-            DynamicObjectType type;
-            SetupOverrideMetadata(forType, typeMetadata, out type, out metadata);
+            SetupOverrideMetadata(forType, typeMetadata, out DynamicObjectType type, out DynamicPropertyMetadata<TValue> metadata);
             ProcessOverrideMetadata(forType, typeMetadata, type, metadata);
         }
 
@@ -305,13 +286,19 @@ namespace Supremacy.Effects
             out DynamicPropertyMetadata<TValue> baseMetadata)
         {
             if (forType == null)
+            {
                 throw new ArgumentNullException("forType");
+            }
 
             if (typeMetadata == null)
+            {
                 throw new ArgumentNullException("typeMetadata");
+            }
 
             if (typeMetadata.IsSealed)
+            {
                 throw new ArgumentException("Type metadata is already in use.");
+            }
 
             if (!typeof(DynamicObject).IsAssignableFrom(forType))
             {
@@ -341,7 +328,10 @@ namespace Supremacy.Effects
         internal static bool ValuesEqual(TValue first, TValue second)
         {
             if (typeof(TValue).IsValueType)
+            {
                 return Equals(first, second);
+            }
+
             return ReferenceEquals(first, second);
         }
 
@@ -361,7 +351,7 @@ namespace Supremacy.Effects
                 if (index < 0)
                 {
                     // No overrides or it's the base class 
-                    return _defaultMetadata;
+                    return DefaultMetadata;
                 }
 
                 if (index == 0)
@@ -424,24 +414,35 @@ namespace Supremacy.Effects
                     }
                 }
             }
-            return _defaultMetadata;
+            return DefaultMetadata;
         }
 
         public bool IsValidValue(TValue value)
         {
             if (_validateValueCallback != null)
+            {
                 return _validateValueCallback(value);
+            }
+
             return true;
         }
 
         private static void RegisterParameterValidation(string name, Type ownerType)
         {
             if (name == null)
+            {
                 throw new ArgumentNullException("name");
+            }
+
             if (name.Length == 0)
+            {
                 throw new ArgumentException("Value must be a non-null, non-empty string.", "name");
+            }
+
             if (ownerType == null)
+            {
                 throw new ArgumentNullException("ownerType");
+            }
         }
 
         private static DynamicProperty<TValue> RegisterCommon(
@@ -450,7 +451,7 @@ namespace Supremacy.Effects
             DynamicPropertyMetadata<TValue> defaultMetadata,
             ValidateValueCallback<TValue> validateValueCallback)
         {
-            var key = new FromNameKey(name, ownerType);
+            FromNameKey key = new FromNameKey(name, ownerType);
 
             lock (Synchronized)
             {
@@ -477,7 +478,7 @@ namespace Supremacy.Effects
                 }
             }
 
-            var property = new DynamicProperty<TValue>(name, ownerType, defaultMetadata, validateValueCallback);
+            DynamicProperty<TValue> property = new DynamicProperty<TValue>(name, ownerType, defaultMetadata, validateValueCallback);
 
             defaultMetadata.Seal(property, null);
 

@@ -23,28 +23,15 @@ namespace Supremacy.IO
         private const string UserProfileFolderName = ".";  // . = current folder
         private const string SettingsFilename = "Settings.dat";
 
-        public static string UserLocalProfileFolder
-        {
-            get
-            {
-                return Path.Combine(
+        public static string UserLocalProfileFolder => Path.Combine(
                     //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     ResourceManager.GetResourcePath(""),
-                    UserProfileFolderName);
-                //return UserProfileFolderName;
-            }
-        }
+                    UserProfileFolderName);//return UserProfileFolderName;
 
-        public static string UserRoamingProfileFolder
-        {
-            get
-            {
-                return Path.Combine(
+        public static string UserRoamingProfileFolder => Path.Combine(
                     //Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     ResourceManager.GetResourcePath(""),
                     UserProfileFolderName);
-            }
-        }
 
         private static IsolatedStorageFile OpenIsolatedStorage()
         {
@@ -117,9 +104,15 @@ namespace Supremacy.IO
                     }
                     catch (Exception e)
                     {
+                        string _text = "IsolatedStorageFile is just missing at first start - simply CONTINUE !!!";
+                        GameLog.Core.General.ErrorFormat(_text);
+                        Console.WriteLine(_text);
+
                         GameLog.Core.General.Error(e);
                     }
                 }
+
+
 
                 return (TValue)settings[key];
             }

@@ -55,7 +55,7 @@ namespace Supremacy.Effects
                 paramName);
         }
 
-        public abstract FrugalMapStoreState InsertEntry(int key, Object value);
+        public abstract FrugalMapStoreState InsertEntry(int key, object value);
 
         public abstract void RemoveEntry(int key);
 
@@ -63,7 +63,7 @@ namespace Supremacy.Effects
         /// Looks for an entry that contains the given key, null is returned if the
         /// key is not found. 
         /// </summary>
-        public abstract Object Search(int key);
+        public abstract object Search(int key);
 
         /// <summary> 
         /// A routine used by enumerators that need a sorted map
@@ -73,7 +73,7 @@ namespace Supremacy.Effects
         /// <summary>
         /// A routine used by enumerators to iterate through the map 
         /// </summary> 
-        public abstract void GetKeyValuePair(int index, out int key, out Object value);
+        public abstract void GetKeyValuePair(int index, out int key, out object value);
 
         /// <summary>
         /// A routine used to iterate through all the entries in the map
@@ -96,7 +96,7 @@ namespace Supremacy.Effects
         internal struct Entry
         {
             public int Key;
-            public Object Value;
+            public object Value;
         }
     }
 
@@ -111,7 +111,7 @@ namespace Supremacy.Effects
             _loneEntry.Value = DynamicProperty.UnsetValue;
         }
 
-        public override FrugalMapStoreState InsertEntry(int key, Object value)
+        public override FrugalMapStoreState InsertEntry(int key, object value)
         {
             // If we don't have any entries or the existing entry is being overwritten, 
             // then we can use this map.  Otherwise we have to promote. 
@@ -139,7 +139,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public override Object Search(int key)
+        public override object Search(int key)
         {
             if (key == _loneEntry.Key)
             {
@@ -153,7 +153,7 @@ namespace Supremacy.Effects
             // Single items are already sorted.
         }
 
-        public override void GetKeyValuePair(int index, out int key, out Object value)
+        public override void GetKeyValuePair(int index, out int key, out object value)
         {
             if (0 == index)
             {
@@ -190,7 +190,10 @@ namespace Supremacy.Effects
             get
             {
                 if (InvalidKey != _loneEntry.Key)
+                {
                     return 1;
+                }
+
                 return 0;
             }
         }
@@ -209,7 +212,7 @@ namespace Supremacy.Effects
     /// </remarks>
     internal sealed class ThreeObjectMap : FrugalMapBase
     {
-        public override FrugalMapStoreState InsertEntry(int key, Object value)
+        public override FrugalMapStoreState InsertEntry(int key, object value)
         {
             // Check to see if we are updating an existing entry 
             Debug.Assert(InvalidKey != key);
@@ -366,7 +369,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public override Object Search(int key)
+        public override object Search(int key)
         {
             Debug.Assert(InvalidKey != key);
             if (_count > 0)
@@ -423,7 +426,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public override void GetKeyValuePair(int index, out int key, out Object value)
+        public override void GetKeyValuePair(int index, out int key, out object value)
         {
             if (index < _count)
             {
@@ -501,15 +504,12 @@ namespace Supremacy.Effects
         }
 
         // Size of this data store 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         private const int Size = 3;
 
         // The number of items in the map.
-        private UInt16 _count;
+        private ushort _count;
 
         private bool _sorted;
         private Entry _entry0;
@@ -528,7 +528,7 @@ namespace Supremacy.Effects
     /// </remarks> 
     internal sealed class SixObjectMap : FrugalMapBase
     {
-        public override FrugalMapStoreState InsertEntry(int key, Object value)
+        public override FrugalMapStoreState InsertEntry(int key, object value)
         {
             // Check to see if we are updating an existing entry
             Debug.Assert(InvalidKey != key);
@@ -847,7 +847,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public override Object Search(int key)
+        public override object Search(int key)
         {
             Debug.Assert(InvalidKey != key);
             if (_count > 0)
@@ -959,7 +959,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public override void GetKeyValuePair(int index, out int key, out Object value)
+        public override void GetKeyValuePair(int index, out int key, out object value)
         {
             if (index < _count)
             {
@@ -1043,29 +1043,43 @@ namespace Supremacy.Effects
         public override void Promote(FrugalMapBase newMap)
         {
             if (FrugalMapStoreState.Success != newMap.InsertEntry(_entry0.Key, _entry0.Value))
+            {
                 throw TargetMapTooSmall("newMap");
+            }
+
             if (FrugalMapStoreState.Success != newMap.InsertEntry(_entry1.Key, _entry1.Value))
+            {
                 throw TargetMapTooSmall("newMap");
+            }
+
             if (FrugalMapStoreState.Success != newMap.InsertEntry(_entry2.Key, _entry2.Value))
+            {
                 throw TargetMapTooSmall("newMap");
+            }
+
             if (FrugalMapStoreState.Success != newMap.InsertEntry(_entry3.Key, _entry3.Value))
+            {
                 throw TargetMapTooSmall("newMap");
+            }
+
             if (FrugalMapStoreState.Success != newMap.InsertEntry(_entry4.Key, _entry4.Value))
+            {
                 throw TargetMapTooSmall("newMap");
+            }
+
             if (FrugalMapStoreState.Success != newMap.InsertEntry(_entry5.Key, _entry5.Value))
+            {
                 throw TargetMapTooSmall("newMap");
+            }
         }
 
         // Size of this data store 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         private const int Size = 6;
 
         // The number of items in the map.
-        private UInt16 _count;
+        private ushort _count;
 
         private bool _sorted;
         private Entry _entry0;
@@ -1083,10 +1097,10 @@ namespace Supremacy.Effects
     /// </summary> 
     internal sealed class ArrayObjectMap : FrugalMapBase
     {
-        public override FrugalMapStoreState InsertEntry(int key, Object value)
+        public override FrugalMapStoreState InsertEntry(int key, object value)
         {
             // Check to see if we are updating an existing entry
-            for (var index = 0; index < _count; ++index)
+            for (int index = 0; index < _count; ++index)
             {
                 Debug.Assert(InvalidKey != key);
 
@@ -1112,7 +1126,7 @@ namespace Supremacy.Effects
                     }
                     else
                     {
-                        var destEntries = new Entry[_entries.Length + Growth];
+                        Entry[] destEntries = new Entry[_entries.Length + Growth];
 
                         // Copy old array 
                         Array.Copy(_entries, 0, destEntries, 0, _entries.Length);
@@ -1143,12 +1157,12 @@ namespace Supremacy.Effects
 
         public override void RemoveEntry(int key)
         {
-            for (var index = 0; index < _count; ++index)
+            for (int index = 0; index < _count; ++index)
             {
                 if (_entries[index].Key == key)
                 {
                     // Shift entries down 
-                    var numToCopy = (_count - index) - 1;
+                    int numToCopy = _count - index - 1;
                     if (numToCopy > 0)
                     {
                         Array.Copy(_entries, index + 1, _entries, index, numToCopy);
@@ -1163,9 +1177,9 @@ namespace Supremacy.Effects
             }
         }
 
-        public override Object Search(int key)
+        public override object Search(int key)
         {
-            for (var index = 0; index < _count; ++index)
+            for (int index = 0; index < _count; ++index)
             {
                 if (key == _entries[index].Key)
                 {
@@ -1179,12 +1193,12 @@ namespace Supremacy.Effects
         {
             if ((false == _sorted) && (_count > 1))
             {
-                QSort(0, (_count - 1));
+                QSort(0, _count - 1);
                 _sorted = true;
             }
         }
 
-        public override void GetKeyValuePair(int index, out int key, out Object value)
+        public override void GetKeyValuePair(int index, out int key, out object value)
         {
             if (index < _count)
             {
@@ -1203,7 +1217,7 @@ namespace Supremacy.Effects
         {
             if (_count > 0)
             {
-                for (var i = 0; i < _count; i++)
+                for (int i = 0; i < _count; i++)
                 {
                     callback(list, _entries[i].Key, _entries[i].Value);
                 }
@@ -1212,47 +1226,53 @@ namespace Supremacy.Effects
 
         public override void Promote(FrugalMapBase newMap)
         {
-            for (var index = 0; index < _entries.Length; ++index)
+            for (int index = 0; index < _entries.Length; ++index)
             {
                 if (FrugalMapStoreState.Success == newMap.InsertEntry(_entries[index].Key, _entries[index].Value))
+                {
                     continue;
+                }
+
                 throw TargetMapTooSmall("newMap");
             }
         }
 
         // Size of this data store
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         // Compare two Entry nodes in the _entries array
         private int Compare(int left, int right)
         {
-            return (_entries[left].Key - _entries[right].Key);
+            return _entries[left].Key - _entries[right].Key;
         }
 
         // Partition the _entries array for QuickSort 
         private int Partition(int left, int right)
         {
-            var pivot = right;
-            var i = left - 1;
-            var j = right;
+            int pivot = right;
+            int i = left - 1;
+            int j = right;
             Entry temp;
 
             for (; ; )
             {
                 while (Compare(++i, pivot) < 0)
+                {
                     continue;
+                }
 
                 while (Compare(pivot, --j) < 0)
                 {
                     if (j == left)
+                    {
                         break;
+                    }
                 }
 
                 if (i >= j)
+                {
                     break;
+                }
 
                 temp = _entries[j];
                 _entries[j] = _entries[i];
@@ -1271,7 +1291,7 @@ namespace Supremacy.Effects
         {
             if (left < right)
             {
-                var pivot = Partition(left, right);
+                int pivot = Partition(left, right);
                 QSort(left, pivot - 1);
                 QSort(pivot + 1, right);
             }
@@ -1283,7 +1303,7 @@ namespace Supremacy.Effects
         private const int Growth = 3;
 
         // The number of items in the map.
-        private UInt16 _count;
+        private ushort _count;
 
         private bool _sorted;
         private Entry[] _entries;
@@ -1293,14 +1313,13 @@ namespace Supremacy.Effects
 
     internal sealed class SortedObjectMap : FrugalMapBase
     {
-        public override FrugalMapStoreState InsertEntry(int key, Object value)
+        public override FrugalMapStoreState InsertEntry(int key, object value)
         {
-            bool found;
 
             Debug.Assert(InvalidKey != key);
 
             // Check to see if we are updating an existing entry 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out bool found);
             if (found)
             {
                 _entries[index].Value = value;
@@ -1318,7 +1337,7 @@ namespace Supremacy.Effects
                     }
                     else
                     {
-                        var destEntries = new Entry[_entries.Length + Growth];
+                        Entry[] destEntries = new Entry[_entries.Length + Growth];
 
                         // Copy old array
                         Array.Copy(_entries, 0, destEntries, 0, _entries.Length);
@@ -1334,7 +1353,7 @@ namespace Supremacy.Effects
                 if (index < _count)
                 {
                     // Move higher valued keys to make room for the new key 
-                    Array.Copy(_entries, index, _entries, index + 1, (_count - index));
+                    Array.Copy(_entries, index, _entries, index + 1, _count - index);
                 }
                 else
                 {
@@ -1354,16 +1373,15 @@ namespace Supremacy.Effects
 
         public override void RemoveEntry(int key)
         {
-            bool found;
 
             Debug.Assert(InvalidKey != key);
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out bool found);
 
             if (found)
             {
                 // Shift entries down
-                var numToCopy = (_count - index) - 1;
+                int numToCopy = _count - index - 1;
                 if (numToCopy > 0)
                 {
                     Array.Copy(_entries, index + 1, _entries, index, numToCopy);
@@ -1394,11 +1412,10 @@ namespace Supremacy.Effects
             }
         }
 
-        public override Object Search(int key)
+        public override object Search(int key)
         {
-            bool found;
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out bool found);
             if (found)
             {
                 return _entries[index].Value;
@@ -1411,7 +1428,7 @@ namespace Supremacy.Effects
             // Always sorted. 
         }
 
-        public override void GetKeyValuePair(int index, out int key, out Object value)
+        public override void GetKeyValuePair(int index, out int key, out object value)
         {
             if (index < _count)
             {
@@ -1430,7 +1447,7 @@ namespace Supremacy.Effects
         {
             if (_count > 0)
             {
-                for (var i = 0; i < _count; i++)
+                for (int i = 0; i < _count; i++)
                 {
                     callback(list, _entries[i].Key, _entries[i].Value);
                 }
@@ -1439,17 +1456,20 @@ namespace Supremacy.Effects
 
         public override void Promote(FrugalMapBase newMap)
         {
-            for (var index = 0; index < _entries.Length; ++index)
+            for (int index = 0; index < _entries.Length; ++index)
             {
                 if (FrugalMapStoreState.Success == newMap.InsertEntry(_entries[index].Key, _entries[index].Value))
+                {
                     continue;
+                }
+
                 throw TargetMapTooSmall("newMap");
             }
         }
 
         private int FindInsertIndex(int key, out bool found)
         {
-            var iLo = 0;
+            int iLo = 0;
 
             // Only do the binary search if there is a chance of finding the key 
             // This also speeds insertion because we tend to insert at the end.
@@ -1457,12 +1477,12 @@ namespace Supremacy.Effects
             {
                 // The array index used for insertion is somewhere between 0
                 //  and _count-1 inclusive
-                var iHi = _count - 1;
+                int iHi = _count - 1;
 
                 // Do a binary search to find the insertion point 
                 do
                 {
-                    var iPv = (iHi + iLo) / 2;
+                    int iPv = (iHi + iLo) / 2;
                     if (key <= _entries[iPv].Key)
                     {
                         iHi = iPv;
@@ -1473,7 +1493,7 @@ namespace Supremacy.Effects
                     }
                 }
                 while (iLo < iHi);
-                found = (key == _entries[iLo].Key);
+                found = key == _entries[iLo].Key;
             }
             else
             {
@@ -1484,10 +1504,7 @@ namespace Supremacy.Effects
             return iLo;
         }
 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         // MinSize chosen to be larger than MaxSize of the ArrayObjectMap with some extra space for new values
         // The MaxSize and Growth are chosen to minimize memory usage as we grow the array 
@@ -1504,7 +1521,7 @@ namespace Supremacy.Effects
 
     internal sealed class HashObjectMap : FrugalMapBase
     {
-        public override FrugalMapStoreState InsertEntry(int key, Object value)
+        public override FrugalMapStoreState InsertEntry(int key, object value)
         {
             Debug.Assert(InvalidKey != key);
 
@@ -1529,9 +1546,9 @@ namespace Supremacy.Effects
             _entries.Remove(key);
         }
 
-        public override Object Search(int key)
+        public override object Search(int key)
         {
-            var value = _entries[key];
+            object value = _entries[key];
 
             return ((value != NullValue) && (value != null)) ? value : DynamicProperty.UnsetValue;
         }
@@ -1541,29 +1558,26 @@ namespace Supremacy.Effects
             // Always sorted. 
         }
 
-        public override void GetKeyValuePair(int index, out int key, out Object value)
+        public override void GetKeyValuePair(int index, out int key, out object value)
         {
             if (index < _entries.Count)
             {
-                var enumerator = _entries.GetEnumerator();
+                IDictionaryEnumerator enumerator = _entries.GetEnumerator();
 
                 // Move to first valid value 
-                enumerator.MoveNext();
+                _ = enumerator.MoveNext();
 
-                for (var i = 0; i < index; ++i)
-                    enumerator.MoveNext();
+                for (int i = 0; i < index; ++i)
+                {
+                    _ = enumerator.MoveNext();
+                }
 
                 key = (int)enumerator.Key;
 
-                if (enumerator.Value != NullValue &&
-                    enumerator.Value != null)
-                {
-                    value = enumerator.Value;
-                }
-                else
-                {
-                    value = DynamicProperty.UnsetValue;
-                }
+                value = enumerator.Value != NullValue &&
+                    enumerator.Value != null
+                    ? enumerator.Value
+                    : DynamicProperty.UnsetValue;
             }
             else
             {
@@ -1576,23 +1590,15 @@ namespace Supremacy.Effects
 
         public override void Iterate(ArrayList list, FrugalMapIterationCallback callback)
         {
-            var enumerator = _entries.GetEnumerator();
+            IDictionaryEnumerator enumerator = _entries.GetEnumerator();
 
             while (enumerator.MoveNext())
             {
-                var key = (int)enumerator.Key;
-                object value;
-
-                if (enumerator.Value != NullValue &&
-                    enumerator.Value != null)
-                {
-                    value = enumerator.Value;
-                }
-                else
-                {
-                    value = DynamicProperty.UnsetValue;
-                }
-
+                int key = (int)enumerator.Key;
+                object value = enumerator.Value != NullValue &&
+                    enumerator.Value != null
+                    ? enumerator.Value
+                    : DynamicProperty.UnsetValue;
                 callback(list, key, value);
             }
         }
@@ -1603,10 +1609,7 @@ namespace Supremacy.Effects
         }
 
         // Size of this data store
-        public override int Count
-        {
-            get { return _entries.Count; }
-        }
+        public override int Count => _entries.Count;
 
         // 163 is chosen because it is the first prime larger than 128, the MAXSIZE of SortedObjectMap
         internal const int MinSize = 163;
@@ -1627,7 +1630,9 @@ namespace Supremacy.Effects
             {
                 // If no entry, EntityField.UnsetValue is returned
                 if (_mapStore != null)
+                {
                     return _mapStore.Search(key);
+                }
 
                 return DynamicProperty.UnsetValue;
             }
@@ -1649,9 +1654,11 @@ namespace Supremacy.Effects
                         _mapStore = new SingleObjectMap();
                     }
 
-                    var myState = _mapStore.InsertEntry(key, value);
+                    FrugalMapStoreState myState = _mapStore.InsertEntry(key, value);
                     if (FrugalMapStoreState.Success == myState)
+                    {
                         return;
+                    }
 
                     // Need to move to a more complex storage
                     FrugalMapBase newStore;
@@ -1661,19 +1668,19 @@ namespace Supremacy.Effects
                         case FrugalMapStoreState.ThreeObjectMap:
                             newStore = new ThreeObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.SixObjectMap:
                             newStore = new SixObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.Array:
                             newStore = new ArrayObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.SortedArray:
                             newStore = new SortedObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.Hashtable:
                             newStore = new HashObjectMap();
                             break;
@@ -1687,7 +1694,7 @@ namespace Supremacy.Effects
 
                     // Insert the new value
                     _mapStore = newStore;
-                    _mapStore.InsertEntry(key, value);
+                    _ = _mapStore.InsertEntry(key, value);
                 }
                 else
                 {
@@ -1709,29 +1716,39 @@ namespace Supremacy.Effects
         public void Sort()
         {
             if (_mapStore == null)
+            {
                 return;
+            }
 
             _mapStore.Sort();
         }
 
-        public void GetKeyValuePair(int index, out int key, out Object value)
+        public void GetKeyValuePair(int index, out int key, out object value)
         {
             if (_mapStore == null)
+            {
                 throw new ArgumentOutOfRangeException("index");
-            
+            }
+
             _mapStore.GetKeyValuePair(index, out key, out value);
         }
 
         public void Iterate(ArrayList list, FrugalMapIterationCallback callback)
         {
             if (callback == null)
+            {
                 throw new ArgumentNullException("callback");
+            }
 
             if (list == null)
+            {
                 throw new ArgumentNullException("list");
+            }
 
             if (_mapStore != null)
+            {
                 _mapStore.Iterate(list, callback);
+            }
         }
 
         public int Count
@@ -1739,7 +1756,9 @@ namespace Supremacy.Effects
             get
             {
                 if (_mapStore != null)
+                {
                     return _mapStore.Count;
+                }
 
                 return 0;
             }
@@ -1752,14 +1771,13 @@ namespace Supremacy.Effects
 
     internal sealed class LargeSortedObjectMap : FrugalMapBase
     {
-        public override FrugalMapStoreState InsertEntry(int key, Object value)
+        public override FrugalMapStoreState InsertEntry(int key, object value)
         {
-            bool found;
 
             Debug.Assert(InvalidKey != key);
 
             // Check to see if we are updating an existing entry
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out bool found);
             if (found)
             {
                 _entries[index].Value = value;
@@ -1774,8 +1792,8 @@ namespace Supremacy.Effects
                 }
                 else
                 {
-                    var size = _entries.Length;
-                    var destEntries = new Entry[size + (size >> 1)];
+                    int size = _entries.Length;
+                    Entry[] destEntries = new Entry[size + (size >> 1)];
 
                     // Copy old array 
                     Array.Copy(_entries, 0, destEntries, 0, _entries.Length);
@@ -1791,7 +1809,7 @@ namespace Supremacy.Effects
             if (index < _count)
             {
                 // Move higher valued keys to make room for the new key
-                Array.Copy(_entries, index, _entries, index + 1, (_count - index));
+                Array.Copy(_entries, index, _entries, index + 1, _count - index);
             }
             else
             {
@@ -1807,16 +1825,15 @@ namespace Supremacy.Effects
 
         public override void RemoveEntry(int key)
         {
-            bool found;
 
             Debug.Assert(InvalidKey != key);
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out bool found);
 
             if (found)
             {
                 // Shift entries down 
-                var numToCopy = (_count - index) - 1;
+                int numToCopy = _count - index - 1;
                 if (numToCopy > 0)
                 {
                     Array.Copy(_entries, index + 1, _entries, index, numToCopy);
@@ -1847,11 +1864,10 @@ namespace Supremacy.Effects
             }
         }
 
-        public override Object Search(int key)
+        public override object Search(int key)
         {
-            bool found;
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out bool found);
             if (found)
             {
                 return _entries[index].Value;
@@ -1864,7 +1880,7 @@ namespace Supremacy.Effects
             // Always sorted.
         }
 
-        public override void GetKeyValuePair(int index, out int key, out Object value)
+        public override void GetKeyValuePair(int index, out int key, out object value)
         {
             if (index < _count)
             {
@@ -1883,7 +1899,7 @@ namespace Supremacy.Effects
         {
             if (_count > 0)
             {
-                for (var i = 0; i < _count; i++)
+                for (int i = 0; i < _count; i++)
                 {
                     callback(list, _entries[i].Key, _entries[i].Value);
                 }
@@ -1892,17 +1908,20 @@ namespace Supremacy.Effects
 
         public override void Promote(FrugalMapBase newMap)
         {
-            for (var index = 0; index < _entries.Length; ++index)
+            for (int index = 0; index < _entries.Length; ++index)
             {
                 if (FrugalMapStoreState.Success == newMap.InsertEntry(_entries[index].Key, _entries[index].Value))
+                {
                     continue;
+                }
+
                 throw TargetMapTooSmall("newMap");
             }
         }
 
         private int FindInsertIndex(int key, out bool found)
         {
-            var iLo = 0;
+            int iLo = 0;
 
             // Only do the binary search if there is a chance of finding the key
             // This also speeds insertion because we tend to insert at the end.
@@ -1910,12 +1929,12 @@ namespace Supremacy.Effects
             {
                 // The array index used for insertion is somewhere between 0 
                 //  and _count-1 inclusive 
-                var iHi = _count - 1;
+                int iHi = _count - 1;
 
                 // Do a binary search to find the insertion point
                 do
                 {
-                    var iPv = (iHi + iLo) / 2;
+                    int iPv = (iHi + iLo) / 2;
                     if (key <= _entries[iPv].Key)
                     {
                         iHi = iPv;
@@ -1926,7 +1945,7 @@ namespace Supremacy.Effects
                     }
                 }
                 while (iLo < iHi);
-                found = (key == _entries[iLo].Key);
+                found = key == _entries[iLo].Key;
             }
             else
             {
@@ -1937,10 +1956,7 @@ namespace Supremacy.Effects
             return iLo;
         }
 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         // MinSize chosen to be small, growth rate of 1.5 is slow at small sizes, but increasingly agressive as 
         // the array grows
@@ -1988,29 +2004,22 @@ namespace Supremacy.Effects
                         _mapStore = new LargeSortedObjectMap();
                     }
 
-                    var myState = _mapStore.InsertEntry(key, value);
+                    FrugalMapStoreState myState = _mapStore.InsertEntry(key, value);
                     if (FrugalMapStoreState.Success == myState)
                     {
                         return;
                     }
                     // Need to move to a more complex storage 
-                    LargeSortedObjectMap newStore;
-
-                    if (FrugalMapStoreState.SortedArray == myState)
-                    {
-                        newStore = new LargeSortedObjectMap();
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("FrugalMap cannot promote beyond Hashtable.");
-                    }
+                    LargeSortedObjectMap newStore = FrugalMapStoreState.SortedArray == myState
+                        ? new LargeSortedObjectMap()
+                        : throw new InvalidOperationException("FrugalMap cannot promote beyond Hashtable.");
 
                     // Extract the values from the old store and insert them into the new store 
                     _mapStore.Promote(newStore);
 
                     // Insert the new value
                     _mapStore = newStore;
-                    _mapStore.InsertEntry(key, value);
+                    _ = _mapStore.InsertEntry(key, value);
                 }
                 else
                 {
@@ -2036,7 +2045,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public void GetKeyValuePair(int index, out int key, out Object value)
+        public void GetKeyValuePair(int index, out int key, out object value)
         {
             if (_mapStore != null)
             {

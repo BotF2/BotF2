@@ -77,21 +77,26 @@ namespace Supremacy.Text
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (sourceType == typeof(string))
+            {
                 return true;
+            }
+
             return base.CanConvertFrom(context, sourceType);
         }
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(string))
+            {
                 return true;
+            }
+
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var stringValue = value as string;
-            if (stringValue != null)
+            if (value is string stringValue)
             {
                 try
                 {
@@ -107,37 +112,41 @@ namespace Supremacy.Text
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var richText = value as RichText;
-            if (richText != null && destinationType == typeof(string))
+            if (value is RichText richText && destinationType == typeof(string))
+            {
                 return richText.Text;
+            }
+
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
         private RichText ParseRichText(string source)
         {
             if (string.IsNullOrWhiteSpace(source))
-                return RichText.Empty;
-
-            var richText = new RichText();
-            var lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            var stack = new Stack<InlineType>();
-            var links = new Stack<RichTextLinkData>();
-            var styles = new Stack<TextStyle>();
-            var currentStyle = new TextStyle();
-
-            foreach (var line in lines)
             {
-                var sb = new StringBuilder();
+                return RichText.Empty;
+            }
 
-                for (var i = 0; i < line.Length; ++i)
+            RichText richText = new RichText();
+            string[] lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            Stack<InlineType> stack = new Stack<InlineType>();
+            Stack<RichTextLinkData> links = new Stack<RichTextLinkData>();
+            Stack<TextStyle> styles = new Stack<TextStyle>();
+            TextStyle currentStyle = new TextStyle();
+
+            foreach (string line in lines)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < line.Length; ++i)
                 {
-                    var current = line[i];
-                    var next = (i + 1 < line.Length) ? line[i + 1] : (char?)null;
+                    char current = line[i];
+                    char? next = (i + 1 < line.Length) ? line[i + 1] : (char?)null;
 
                     if (current == '[' && next != '[')
                     {
-                        var text = sb.ToString();
-                        var endOfPart = next == '/';
+                        string text = sb.ToString();
+                        bool endOfPart = next == '/';
 
                         sb.Length = 0;
                         i += endOfPart ? 2 : 1;
@@ -145,60 +154,71 @@ namespace Supremacy.Text
 
                         while (i < line.Length && current != ']')
                         {
-                            sb.Append(current);
+                            _ = sb.Append(current);
 
                             if (++i < line.Length)
+                            {
                                 current = line[i];
+                            }
                         }
 
-                        var partLength = text.Length;
+                        int partLength = text.Length;
                         if (partLength > 0)
-                            richText.Append(text, currentStyle);
+                        {
+                            _ = richText.Append(text, currentStyle);
+                        }
 
                         if (endOfPart && stack.Count != 0)
                         {
-                            var currentInlineType = stack.Pop();
+                            InlineType currentInlineType = stack.Pop();
                             if (currentInlineType == InlineType.Hyperlink)
                             {
-                                var linkData = links.Pop();
+                                RichTextLinkData linkData = links.Pop();
                                 if (richText.Length - linkData.StartOffset > 0)
+                                {
                                     richText.PutUserData(linkData.StartOffset, richText.Length, linkData.NavigateUri);
+                                }
                             }
                             if (styles.Count != 0)
+                            {
                                 currentStyle = styles.Pop();
+                            }
                         }
 
-                        var tag = sb.ToString();
-                       
+                        string tag = sb.ToString();
+
                         if (tag.Length > 0)
                         {
-                            var parameter = (string)null;
+                            string parameter = null;
 
-                            var parameterDelimiter = tag.IndexOf(' ');
+                            int parameterDelimiter = tag.IndexOf(' ');
                             if (parameterDelimiter > 0)
                             {
                                 parameter = tag.Substring(parameterDelimiter + 1);
                                 tag = tag.Substring(0, parameterDelimiter);
                             }
 
-                            var inlineType = GetInlineType(tag.TrimEnd('/'));
+                            InlineType inlineType = GetInlineType(tag.TrimEnd('/'));
                             if (inlineType == InlineType.LineBreak)
                             {
-                                richText.Append(Environment.NewLine);
+                                _ = richText.Append(Environment.NewLine);
                             }
                             else if (inlineType != InlineType.Run)
                             {
-                                Uri linkUri;
 
                                 if (stack.Count != 0)
+                                {
                                     styles.Push(currentStyle);
+                                }
 
-                                ResolveStyle(inlineType, parameter, ref currentStyle, out linkUri);
+                                ResolveStyle(inlineType, parameter, ref currentStyle, out Uri linkUri);
 
                                 stack.Push(inlineType);
 
                                 if (inlineType == InlineType.Hyperlink)
+                                {
                                     links.Push(new RichTextLinkData(richText.Length, linkUri));
+                                }
                             }
                         }
 
@@ -207,19 +227,23 @@ namespace Supremacy.Text
                     else
                     {
                         if (current == '[' && next == '[')
+                        {
                             ++i;
+                        }
 
-                        sb.Append(current);
+                        _ = sb.Append(current);
                     }
                 }
 
                 if (sb.Length > 0)
-                    richText.Append(sb.ToString(), currentStyle);
+                {
+                    _ = richText.Append(sb.ToString(), currentStyle);
+                }
             }
 
             while (links.Count != 0)
             {
-                var linkData = links.Pop();
+                RichTextLinkData linkData = links.Pop();
                 richText.PutUserData(linkData.StartOffset, richText.Length, linkData);
             }
 
@@ -256,49 +280,54 @@ namespace Supremacy.Text
             switch (inlineType)
             {
                 case InlineType.Hyperlink:
-                {
-                    if (!Uri.TryCreate(param, UriKind.Absolute, out navigateUri))
-                        navigateUri = EmptyLinkUri;
-                    break;
-                }
+                    {
+                        if (!Uri.TryCreate(param, UriKind.Absolute, out navigateUri))
+                        {
+                            navigateUri = EmptyLinkUri;
+                        }
+
+                        break;
+                    }
 
                 case InlineType.Bold:
-                {
-                    currentStyle.FontWeight = FontWeights.Bold;
-                    break;
-                }
+                    {
+                        currentStyle.FontWeight = FontWeights.Bold;
+                        break;
+                    }
 
                 case InlineType.Italic:
-                {
-                    currentStyle.FontStyle = FontStyles.Italic;
-                    break;
-                }
+                    {
+                        currentStyle.FontStyle = FontStyles.Italic;
+                        break;
+                    }
 
                 case InlineType.Underline:
-                {
-                    currentStyle.Effect = TextEffectStyle.StraightUnderline;
-                    break;
-                }
+                    {
+                        currentStyle.Effect = TextEffectStyle.StraightUnderline;
+                        break;
+                    }
 
                 case InlineType.Colored:
-                {
-                    currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
+                    {
+                        currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
 
-                    if (currentStyle.Foreground != null && currentStyle.Foreground.CanFreeze)
-                        currentStyle.Foreground.Freeze();
+                        if (currentStyle.Foreground != null && currentStyle.Foreground.CanFreeze)
+                        {
+                            currentStyle.Foreground.Freeze();
+                        }
 
-                    break;
-                }
+                        break;
+                    }
 
                 case InlineType.Foreground:
-                {
-                    var match = _resourceReferenceRegex.Match(param);
-                    if (match.Success)
-                        currentStyle.Foreground = Application.Current != null ? Application.Current.TryFindResource(match.Groups["ResourceKey"].Value) as Brush : null;
-                    else
-                        currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
-                    break;
-                }
+                    {
+                        Match match = _resourceReferenceRegex.Match(param);
+                        currentStyle.Foreground = match.Success
+                            ? Application.Current != null ? Application.Current.TryFindResource(match.Groups["ResourceKey"].Value) as Brush : null
+                            : (Brush)_brushConverter.ConvertFromInvariantString(param);
+
+                        break;
+                    }
             }
         }
 

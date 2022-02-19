@@ -31,27 +31,32 @@ namespace Supremacy.Types
             _syncRoot = syncRoot ?? new object();
         }
 
-        public object SyncRoot
-        {
-            get { return _syncRoot; }
-        }
+        public object SyncRoot => _syncRoot;
 
         protected T Synchronize<T>([NotNull] Func<T> function)
         {
             if (function == null)
+            {
                 throw new ArgumentNullException("function");
+            }
 
             lock (SyncRoot)
+            {
                 return function();
+            }
         }
 
         protected void Synchronize([NotNull] Action function)
         {
             if (function == null)
+            {
                 throw new ArgumentNullException("function");
+            }
 
             lock (SyncRoot)
+            {
                 function();
+            }
         }
 
         protected virtual void BeginInitCore() { }
@@ -60,10 +65,14 @@ namespace Supremacy.Types
         protected void VerifyInitializing()
         {
             if (_isInitializing)
+            {
                 return;
+            }
 
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
                 return;
+            }
 
             throw new InvalidOperationException("This operation can only be performed during initialization.");
         }
@@ -71,10 +80,14 @@ namespace Supremacy.Types
         public void EnsureInitialized()
         {
             if (IsInitialized)
+            {
                 return;
+            }
 
             if (!IsInitializing)
+            {
                 BeginInit();
+            }
 
             EndInit();
         }
@@ -87,7 +100,7 @@ namespace Supremacy.Types
                 _isInitialized = false;
                 _isInitializing = true;
 
-                BeginInitCore();                
+                BeginInitCore();
             }
         }
 
@@ -96,7 +109,9 @@ namespace Supremacy.Types
             lock (SyncRoot)
             {
                 if (_isInitialized)
+                {
                     return;
+                }
 
                 try
                 {
@@ -119,7 +134,9 @@ namespace Supremacy.Types
             get
             {
                 lock (SyncRoot)
+                {
                     return _isInitialized;
+                }
             }
         }
 
@@ -128,7 +145,9 @@ namespace Supremacy.Types
             get
             {
                 lock (SyncRoot)
+                {
                     return _isInitializing;
+                }
             }
         }
 
@@ -137,60 +156,60 @@ namespace Supremacy.Types
 
         private void OnInitialized()
         {
-            var handler = Initialized;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Initialized?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
         #region INotifyPropertyChanged Members
 
-        [field: NonSerializedAttribute]
+        [field: NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeCombine)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeRemove)
+                    {
                         return;
+                    }
                 }
             }
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

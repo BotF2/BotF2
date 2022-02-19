@@ -49,7 +49,7 @@
 
 <!--Row 0 = Headline-->
         <TextBlock Grid.Row="0" Grid.Column="1" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Background="{StaticResource LCARS_Ter1Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Ter1Gradient_TopLeft_BottomRight}" >
 TER_ColorInfoScreen
         </TextBlock>
 
@@ -89,60 +89,60 @@ _TopLeft_BottomRight
         <!--Row="1" -->
         <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
                    Foreground="{StaticResource HeaderTextBrush}" >
-LCARS_Ter1Gradient
+Ter1Gradient
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter1Gradient_Left_Right}" >
+                   Background="{StaticResource Ter1Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter1Gradient_Right_Left}" >
+                   Background="{StaticResource Ter1Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter1Gradient_Top_Bottom}" >
+                   Background="{StaticResource Ter1Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter1Gradient_Bottom_Top}" >
+                   Background="{StaticResource Ter1Gradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter1Gradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource Ter1Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter1Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Ter1Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
         <!--Row="2" -->
         <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
                    Foreground="{StaticResource HeaderTextBrush}" >
-LCARS_Ter2Gradient
+Ter2Gradient
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter2Gradient_Left_Right}" >
+                   Background="{StaticResource Ter2Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter2Gradient_Right_Left}" >
+                   Background="{StaticResource Ter2Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter2Gradient_Top_Bottom}" >
+                   Background="{StaticResource Ter2Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter2Gradient_Bottom_Top}" >
+                   Background="{StaticResource Ter2Gradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter2Gradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource Ter2Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Ter2Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Ter2Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
@@ -179,30 +179,30 @@ _TopLeft_BottomRight
         <!--Row="4" -->
         <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
                    Foreground="{StaticResource HeaderTextBrush}" >
-LCARS_Terran1Gradient
+Ter3Gradient
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Terran1Gradient_Left_Right}" >
+                   Background="{StaticResource Ter3Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Terran1Gradient_Right_Left}" >
+                   Background="{StaticResource Ter3Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Terran1Gradient_Top_Bottom}" >
+                   Background="{StaticResource Ter3Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Terran1Gradient_Bottom_Top}" >
+                   Background="{StaticResource Ter3Gradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Terran1Gradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource Ter3Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Terran1Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Ter3Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
@@ -300,8 +300,8 @@ SelectionBrush
 BorderBrush
         </TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_HeaderBrush}" >
-LCARS_HeaderBrush
+                   Foreground="{StaticResource WhiteHeaderBrush}" >
+WhiteHeaderBrush
         </TextBlock>
 
     </Grid>

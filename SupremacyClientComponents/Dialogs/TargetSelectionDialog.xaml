@@ -11,7 +11,7 @@
              SelectedItem="{Binding Path=SelectedTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:TargetSelectionDialog}}, Mode=TwoWay}"
              FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
              FontSize="12pt"
-             Foreground="{DynamicResource LCARS_BeigeTextBrush}"
+             Foreground="{DynamicResource BeigeTextBrush}"
              Background="Transparent"
              Height="128">
       
@@ -31,7 +31,7 @@
                            Value="True">
                     <Setter TargetName="ItemBorder"
                             Property="Background"
-                            Value="{DynamicResource LCARS_GrayGradient_Top_Bottom}" />
+                            Value="{DynamicResource GrayGradient_Top_Bottom}" />
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
@@ -43,17 +43,14 @@
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center"
                 Margin="0,12,0,0">
-            <!--<TextBlock Grid.ColumnSpan="1"
-               FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-               Foreground="Black"
-               Margin="1,1,0,0"
-               FontSize="24pt"
-               Text="{scc:StringResource Key=DOUBLE_CLICK}" />-->
+
             <TextBlock Grid.ColumnSpan="1"
                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="16pt"
+               FontSize="20pt" HorizontalAlignment="Left" VerticalAlignment="Center"
                Text="{scc:StringResource Key=DOUBLE_CLICK}" />
+               <!--Text="{scc:StringResource Key=DOUBLE_CLICK}" />-->
+        
                 <!-- OK button not working -->
       <!--<Button Margin="3,0,3,0"
               IsDefault="True"

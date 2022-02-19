@@ -10,19 +10,15 @@
 using System;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
+using Supremacy.Game;
 
 namespace Supremacy.Client.Views
 {
     public class PresentationModelBase : IPresentationModel
     {
-        private readonly IAppContext _appContext;
-
         public PresentationModelBase([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-
-            _appContext = appContext;
+            AppContext = appContext ?? throw new ArgumentNullException("appContext");
         }
 
         protected virtual void OnLoaded() { }
@@ -30,10 +26,9 @@ namespace Supremacy.Client.Views
 
         #region Implementation of IPresentationModel
 
-        public IAppContext AppContext
-        {
-            get { return _appContext; }
-        }
+        public IAppContext AppContext { get; }
+
+        public string TurnNumberText => "Turn " + GameContext.Current.TurnNumber;
 
         public void NotifyLoaded()
         {

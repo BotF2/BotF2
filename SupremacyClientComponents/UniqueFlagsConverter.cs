@@ -30,9 +30,9 @@ namespace Supremacy.Client
             {
                 if (_andTest == null)
                 {
-                    var p1 = Expression.Parameter(FlagsType, "p1");
-                    var p2 = Expression.Parameter(FlagsType, "p2");
-                    var test = Expression.Lambda(
+                    System.Linq.Expressions.ParameterExpression p1 = Expression.Parameter(FlagsType, "p1");
+                    System.Linq.Expressions.ParameterExpression p2 = Expression.Parameter(FlagsType, "p2");
+                    Delegate test = Expression.Lambda(
                         Expression.Equal(
                             Expression.And(
                                 Expression.Convert(p1, typeof(int)),
@@ -49,13 +49,17 @@ namespace Supremacy.Client
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             if (!FlagsType.IsAssignableFrom(value.GetType()))
+            {
                 return value;
+            }
 
-            var flagValues = Enum.GetValues(FlagsType).Cast<object>().OrderBy(o => o).ToList();
-            var innerFlagValues = flagValues;
+            System.Collections.Generic.List<object> flagValues = Enum.GetValues(FlagsType).Cast<object>().OrderBy(o => o).ToList();
+            System.Collections.Generic.List<object> innerFlagValues = flagValues;
             flagValues = flagValues.Where(a => AndTest(value, a) && innerFlagValues.Where(b => !Equals(a, b) && AndTest(a, b)).Count() == 0).ToList();
             return flagValues;
         }

@@ -96,8 +96,7 @@ namespace Supremacy.Client
         {
             if (dispatcher == null)
             {
-                var dispatcherObject = o as DispatcherObject;
-                if (dispatcherObject != null)
+                if (o is DispatcherObject dispatcherObject)
                 {
                     dispatcher = dispatcherObject.Dispatcher;
                 }
@@ -113,7 +112,7 @@ namespace Supremacy.Client
 
             if (!dispatcher.CheckAccess())
             {
-                dispatcher.Invoke(
+                _ = dispatcher.Invoke(
                     DispatcherPriority.Normal,
                     (Func<object, object[], object>)method.Invoke,
                     o,
@@ -156,9 +155,10 @@ namespace Supremacy.Client
 
         public static DependencyObject GetVisualParent(this DependencyObject o)
         {
-            var contentElement = o as FrameworkContentElement;
-            if (contentElement != null)
+            if (o is FrameworkContentElement contentElement)
+            {
                 return contentElement.Parent ?? ContentOperations.GetParent(contentElement);
+            }
 
             return VisualTreeHelper.GetParent(o);
         }
@@ -166,15 +166,20 @@ namespace Supremacy.Client
         public static DependencyObject GetLogicalParent(this DependencyObject o)
         {
             if (o == null)
+            {
                 return null;
+            }
 
-            var logicalParent = LogicalTreeHelper.GetParent(o);
+            DependencyObject logicalParent = LogicalTreeHelper.GetParent(o);
             if (logicalParent != null)
+            {
                 return logicalParent;
+            }
 
-            var frameworkElement = o as FrameworkElement;
-            if (frameworkElement != null)
+            if (o is FrameworkElement frameworkElement)
+            {
                 return frameworkElement.TemplatedParent;
+            }
 
             return null;
         }
@@ -188,12 +193,16 @@ namespace Supremacy.Client
         public static DependencyObject FindLogicalAncestor(this DependencyObject startElement, Func<DependencyObject, bool> predicate)
         {
             if (predicate == null)
+            {
                 throw new ArgumentNullException("predicate");
+            }
 
-            var o = startElement;
+            DependencyObject o = startElement;
 
             while ((o != null) && !predicate(o))
+            {
                 o = o.GetLogicalParent();
+            }
 
             return o;
         }
@@ -207,7 +216,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalAncestorsByType<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return startElement.FindLogicalAncestorsByType<T>(null);
         }
 
@@ -221,7 +233,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalAncestorsByType<T>(this DependencyObject startElement, Func<T, bool> predicate) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindLogicalAncestorsByType(startElement, predicate, false);
         }
 
@@ -235,7 +250,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalAncestorsByType<T>(this DependencyObject startElement, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindLogicalAncestorsByType<T>(startElement, null, includeStartElement);
         }
 
@@ -250,17 +268,20 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalAncestorsByType<T>(this DependencyObject startElement, Func<T, bool> predicate, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 yield break;
+            }
 
-            var currentElement = startElement;
+            DependencyObject currentElement = startElement;
 
             while (currentElement != null)
             {
                 if (includeStartElement)
                 {
-                    var resultCandidate = currentElement as T;
-                    if ((resultCandidate != null) && ((predicate == null) || predicate(resultCandidate)))
+                    if ((currentElement is T resultCandidate) && ((predicate == null) || predicate(resultCandidate)))
+                    {
                         yield return resultCandidate;
+                    }
                 }
 
                 includeStartElement = true;
@@ -278,7 +299,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalDescendantsByType<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindLogicalDescendantsByType<T>(startElement, null);
         }
 
@@ -292,7 +316,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalDescendantsByType<T>(this DependencyObject startElement, Func<T, bool> predicate) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindLogicalDescendantsByType(startElement, predicate, false);
         }
 
@@ -306,7 +333,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalDescendantsByType<T>(this DependencyObject startElement, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindLogicalDescendantsByType<T>(startElement, null, includeStartElement);
         }
 
@@ -321,16 +351,21 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindLogicalDescendantsByType<T>(this DependencyObject startElement, Func<T, bool> predicate, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
-                yield break;
-
-            var resultCandidate = startElement as T;
-            if (includeStartElement && (resultCandidate != null) && ((predicate == null) || predicate(resultCandidate)))
-                yield return resultCandidate;
-
-            foreach (var logicalChild in startElement.GetLogicalChildren())
             {
-                foreach (var result in FindLogicalDescendantsByType(logicalChild, predicate, true))
+                yield break;
+            }
+
+            if (includeStartElement && (startElement is T resultCandidate) && ((predicate == null) || predicate(resultCandidate)))
+            {
+                yield return resultCandidate;
+            }
+
+            foreach (DependencyObject logicalChild in startElement.GetLogicalChildren())
+            {
+                foreach (T result in FindLogicalDescendantsByType(logicalChild, predicate, true))
+                {
                     yield return result;
+                }
             }
         }
 
@@ -343,7 +378,10 @@ namespace Supremacy.Client
         public static T FindLogicalAncestorByType<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return null;
+            }
+
             return (T)FindLogicalAncestor(startElement, o => o is T);
         }
 
@@ -355,7 +393,10 @@ namespace Supremacy.Client
         public static DependencyObject FindLogicalRoot(this DependencyObject startElement)
         {
             if (startElement == null)
+            {
                 return null;
+            }
+
             return startElement.FindLogicalAncestorsByType<DependencyObject>().FirstOrDefault();
         }
 
@@ -368,14 +409,21 @@ namespace Supremacy.Client
         public static DependencyObject FindVisualAncestor(this DependencyObject startElement, Func<DependencyObject, bool> predicate)
         {
             if (startElement == null)
+            {
                 return null;
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            }
 
-            var o = startElement;
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            DependencyObject o = startElement;
 
             while ((o != null) && !predicate(o))
+            {
                 o = o.GetVisualParent();
+            }
 
             return o;
         }
@@ -389,7 +437,10 @@ namespace Supremacy.Client
         public static T FindVisualAncestorByType<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return null;
+            }
+
             return (T)FindVisualAncestor(startElement, o => o is T);
         }
 
@@ -402,7 +453,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualAncestorsByType<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return startElement.FindVisualAncestorsByType<T>(null);
         }
 
@@ -416,7 +470,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualAncestorsByType<T>(this DependencyObject startElement, Func<T, bool> predicate) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindVisualAncestorsByType(startElement, predicate, false);
         }
 
@@ -430,7 +487,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualAncestorsByType<T>(this DependencyObject startElement, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindVisualAncestorsByType<T>(startElement, null, includeStartElement);
         }
 
@@ -445,24 +505,29 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualAncestorsByType<T>(this DependencyObject startElement, Func<T, bool> predicate, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 yield break;
+            }
 
-            var currentElement = startElement;
+            DependencyObject currentElement = startElement;
 
             while (true)
             {
                 if (includeStartElement)
                 {
-                    var resultCandidate = currentElement as T;
-                    if ((resultCandidate != null) && ((predicate == null) || predicate(resultCandidate)))
+                    if ((currentElement is T resultCandidate) && ((predicate == null) || predicate(resultCandidate)))
+                    {
                         yield return resultCandidate;
+                    }
                 }
 
                 includeStartElement = true;
 
-                var parentElement = GetVisualParent(currentElement);
+                DependencyObject parentElement = GetVisualParent(currentElement);
                 if (parentElement == null)
+                {
                     break;
+                }
 
                 currentElement = parentElement;
             }
@@ -477,9 +542,14 @@ namespace Supremacy.Client
         public static DependencyObject FindVisualDescendant(this DependencyObject startElement, Func<DependencyObject, bool> predicate)
         {
             if (startElement == null)
+            {
                 return null;
+            }
+
             if (predicate == null)
+            {
                 throw new ArgumentNullException("predicate");
+            }
 
             return startElement.FindVisualDescendantsByType(predicate).FirstOrDefault();
         }
@@ -493,7 +563,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualDescendantsByType<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindVisualDescendantsByType<T>(startElement, null);
         }
 
@@ -507,7 +580,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualDescendantsByType<T>(this DependencyObject startElement, Func<T, bool> predicate) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindVisualDescendantsByType(startElement, predicate, false);
         }
 
@@ -521,7 +597,10 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualDescendantsByType<T>(this DependencyObject startElement, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return Enumerable.Empty<T>();
+            }
+
             return FindVisualDescendantsByType<T>(startElement, null, includeStartElement);
         }
 
@@ -536,17 +615,21 @@ namespace Supremacy.Client
         public static IEnumerable<T> FindVisualDescendantsByType<T>(this DependencyObject startElement, Func<T, bool> predicate, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
-                yield break;
-
-            var resultCandidate = startElement as T;
-
-            if (includeStartElement && (resultCandidate != null) && ((predicate == null) || predicate(resultCandidate)))
-                yield return resultCandidate;
-
-            foreach (var visualChild in startElement.GetVisualChildren())
             {
-                foreach (var result in FindVisualDescendantsByType(visualChild, predicate, true))
+                yield break;
+            }
+
+            if (includeStartElement && (startElement is T resultCandidate) && ((predicate == null) || predicate(resultCandidate)))
+            {
+                yield return resultCandidate;
+            }
+
+            foreach (DependencyObject visualChild in startElement.GetVisualChildren())
+            {
+                foreach (T result in FindVisualDescendantsByType(visualChild, predicate, true))
+                {
                     yield return result;
+                }
             }
         }
 
@@ -573,14 +656,19 @@ namespace Supremacy.Client
         public static T FindFirstFocusableDescendant<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return null;
+            }
+
             return startElement.FindFirstFocusableDescendant<T>(false);
         }
 
         public static T FindFirstFocusableDescendant<T>(this DependencyObject startElement, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return null;
+            }
 
             return startElement.FindVisualDescendantsByType<T>(
                 o => (bool)o.GetValue(UIElement.FocusableProperty) &&
@@ -590,20 +678,27 @@ namespace Supremacy.Client
         public static T FindLastFocusableDescendant<T>(this DependencyObject startElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return null;
+            }
+
             return startElement.FindLastFocusableDescendant<T>(false);
         }
 
         public static T FindLastFocusableDescendant<T>(this DependencyObject startElement, bool includeStartElement) where T : DependencyObject
         {
             if (startElement == null)
-                return null;
-
-            foreach (var child in GetVisualChildren(startElement, true))
             {
-                var childElement = FindLastFocusableDescendant<T>(child, true);
+                return null;
+            }
+
+            foreach (DependencyObject child in GetVisualChildren(startElement, true))
+            {
+                T childElement = FindLastFocusableDescendant<T>(child, true);
                 if (childElement != null)
+                {
                     return childElement;
+                }
 
                 if ((bool)child.GetValue(UIElement.FocusableProperty) &&
                     (bool)child.GetValue(UIElement.VisibilityProperty))
@@ -621,11 +716,14 @@ namespace Supremacy.Client
 
         public static bool IsVisualAncestorOf(this DependencyObject sourceElement, DependencyObject targetElement)
         {
-            var currentElement = targetElement;
+            DependencyObject currentElement = targetElement;
             while (currentElement != null)
             {
                 if (currentElement == sourceElement)
+                {
                     return true;
+                }
+
                 currentElement = GetVisualParent(currentElement);
             }
             return false;
@@ -633,11 +731,14 @@ namespace Supremacy.Client
 
         public static bool IsVisualDescendantOf(this DependencyObject sourceElement, DependencyObject targetElement)
         {
-            var currentElement = sourceElement;
+            DependencyObject currentElement = sourceElement;
             while (currentElement != null)
             {
                 if (currentElement == targetElement)
+                {
                     return true;
+                }
+
                 currentElement = GetVisualParent(currentElement);
             }
             return false;
@@ -651,23 +752,29 @@ namespace Supremacy.Client
         public static Popup FindPopup(this DependencyObject popupDescendant)
         {
             if (popupDescendant == null)
+            {
                 return null;
+            }
 
-            var popup = popupDescendant as Popup;
-            if (popup != null)
+            if (popupDescendant is Popup popup)
+            {
                 return popup;
+            }
 
-            var popupRoot = popupDescendant.FindVisualRoot() ?? popupDescendant;
+            DependencyObject popupRoot = popupDescendant.FindVisualRoot() ?? popupDescendant;
             return popupRoot.FindLogicalAncestorByType<Popup>();
         }
 
         public static bool IsLogicalAncestorOf(this DependencyObject sourceElement, DependencyObject targetElement)
         {
-            var currentElement = targetElement;
+            DependencyObject currentElement = targetElement;
             while (currentElement != null)
             {
                 if (currentElement == sourceElement)
+                {
                     return true;
+                }
+
                 currentElement = GetLogicalParent(currentElement);
             }
             return false;
@@ -675,17 +782,22 @@ namespace Supremacy.Client
 
         public static bool IsLogicalDescendantOf(this DependencyObject sourceElement, DependencyObject targetElement)
         {
-            var currentElement = sourceElement;
+            DependencyObject currentElement = sourceElement;
             while (currentElement != null)
             {
                 if (currentElement == targetElement)
+                {
                     return true;
+                }
+
                 currentElement = GetLogicalParent(currentElement);
             }
 
-            var popup = sourceElement.FindPopup();
+            Popup popup = sourceElement.FindPopup();
             if (popup != null)
+            {
                 return popup.IsLogicalDescendantOf(targetElement);
+            }
 
             return false;
         }
@@ -699,31 +811,36 @@ namespace Supremacy.Client
         public static T FindNextFocusable<T>(DependencyObject startElement, DependencyObject rootElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return null;
+            }
 
-            var descendantElement = FindFirstFocusableDescendant<T>(startElement);
+            T descendantElement = FindFirstFocusableDescendant<T>(startElement);
             if (descendantElement != null)
+            {
                 return descendantElement;
+            }
 
-            var currentElement = startElement;
+            DependencyObject currentElement = startElement;
 
             while ((currentElement != null) && (currentElement != rootElement))
             {
-                var sibling = FindNextSibling(currentElement);
+                DependencyObject sibling = FindNextSibling(currentElement);
 
                 while (sibling != null)
                 {
-                    var siblingCast = sibling as T;
-                    if ((siblingCast != null) &&
+                    if ((sibling is T siblingCast) &&
                         (bool)sibling.GetValue(UIElement.FocusableProperty) &&
                         (bool)sibling.GetValue(UIElement.IsVisibleProperty))
                     {
                         return siblingCast;
                     }
 
-                    var childElement = FindFirstFocusableDescendant<T>(sibling);
+                    T childElement = FindFirstFocusableDescendant<T>(sibling);
                     if (childElement != null)
+                    {
                         return childElement;
+                    }
 
                     sibling = FindNextSibling(sibling);
                 }
@@ -744,22 +861,25 @@ namespace Supremacy.Client
         public static T FindPreviousFocusable<T>(DependencyObject startElement, DependencyObject rootElement) where T : DependencyObject
         {
             if (startElement == null)
+            {
                 return null;
+            }
 
-            var currentElement = startElement;
+            DependencyObject currentElement = startElement;
 
             while ((currentElement != null) && (currentElement != rootElement))
             {
-                var sibling = FindPreviousSibling(currentElement) ;
+                DependencyObject sibling = FindPreviousSibling(currentElement);
 
                 while (sibling != null)
                 {
-                    var child = FindLastFocusableDescendant<T>(sibling);
+                    T child = FindLastFocusableDescendant<T>(sibling);
                     if (child != null)
+                    {
                         return child;
+                    }
 
-                    var siblingCast = sibling as T;
-                    if ((siblingCast != null) &&
+                    if ((sibling is T siblingCast) &&
                         (bool)sibling.GetValue(UIElement.FocusableProperty) &&
                         (bool)sibling.GetValue(UIElement.IsVisibleProperty))
                     {
@@ -783,21 +903,28 @@ namespace Supremacy.Client
         private static DependencyObject FindPreviousSibling(DependencyObject startElement)
         {
             if (startElement == null)
+            {
                 return null;
+            }
 
-            var parent = GetVisualParent(startElement);
+            DependencyObject parent = GetVisualParent(startElement);
             if (parent == null)
+            {
                 return null;
+            }
 
             DependencyObject previous = null;
 
-            foreach (var child in GetVisualChildren(parent)) 
+            foreach (DependencyObject child in GetVisualChildren(parent))
             {
                 if (child == startElement)
+                {
                     break;
+                }
+
                 previous = child;
             }
-            
+
             return previous;
         }
 
@@ -809,11 +936,13 @@ namespace Supremacy.Client
         private static DependencyObject FindNextSibling(DependencyObject startElement)
         {
             if (startElement == null)
+            {
                 return null;
+            }
 
-            var foundSource = false;
+            bool foundSource = false;
 
-            foreach (var child in GetVisualChildren(startElement))
+            foreach (DependencyObject child in GetVisualChildren(startElement))
             {
                 if (child == startElement)
                 {
@@ -822,7 +951,9 @@ namespace Supremacy.Client
                 }
 
                 if (!foundSource)
+                {
                     continue;
+                }
 
                 return child;
             }
@@ -869,8 +1000,7 @@ namespace Supremacy.Client
         /// <returns></returns>
         public static IEnumerable<DependencyObject> GetVisualChildren(this DependencyObject parent, bool reverseOrder)
         {
-            var popup = parent as Popup;
-            if (popup != null)
+            if (parent is Popup popup)
             {
                 yield return popup.Child;
                 yield break;
@@ -878,7 +1008,9 @@ namespace Supremacy.Client
 
             int count = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < count; ++i)
+            {
                 yield return VisualTreeHelper.GetChild(parent, i);
+            }
         }
 
         /// <summary>
@@ -899,15 +1031,16 @@ namespace Supremacy.Client
         /// <returns></returns>
         public static IEnumerable<DependencyObject> GetLogicalChildren(this DependencyObject parent, bool reverseOrder)
         {
-            var popup = parent as Popup;
-            if (popup != null)
+            if (parent is Popup popup)
             {
                 yield return popup.Child;
                 yield break;
             }
 
-            foreach (var child in LogicalTreeHelper.GetChildren(parent).OfType<DependencyObject>())
+            foreach (DependencyObject child in LogicalTreeHelper.GetChildren(parent).OfType<DependencyObject>())
+            {
                 yield return child;
+            }
         }
 
         #endregion
@@ -973,23 +1106,27 @@ namespace Supremacy.Client
         private static void EnsureDpiData()
         {
             if (_dpiX.HasValue)
+            {
                 return;
+            }
 
-            var desktopWindow = new HandleRef(null, IntPtr.Zero);
+            HandleRef desktopWindow = new HandleRef(null, IntPtr.Zero);
 
-            var deviceContext = NativeMethods.GetDC(desktopWindow);
+            IntPtr deviceContext = NativeMethods.GetDC(desktopWindow);
             if (deviceContext == IntPtr.Zero)
+            {
                 throw new Win32Exception();
+            }
 
             try
             {
-                var dpi = NativeMethods.GetDeviceCaps(new HandleRef(null, deviceContext), 90);
+                int dpi = NativeMethods.GetDeviceCaps(new HandleRef(null, deviceContext), 90);
                 _dpiX = dpi;
                 _dpiY = dpi;
             }
             finally
             {
-                NativeMethods.ReleaseDC(desktopWindow, new HandleRef(null, deviceContext));
+                _ = NativeMethods.ReleaseDC(desktopWindow, new HandleRef(null, deviceContext));
             }
 
             _dpiTransformToDevice = Matrix.Identity;
@@ -1011,7 +1148,9 @@ namespace Supremacy.Client
         public static IEnumerable<DependencyObject> GetItemContainers(this ItemsControl itemsControl)
         {
             for (int i = 0; i < itemsControl.Items.Count; i++)
+            {
                 yield return itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
+            }
         }
 
         #endregion
@@ -1038,41 +1177,49 @@ namespace Supremacy.Client
         public static void LaunchBrowser(Uri uri)
         {
             if (!uri.IsAbsoluteUri)
+            {
                 return;
+            }
 
             if (_launchBrowserRequests >= MaxBrowserRequests)
+            {
                 return;
+            }
 
-            Interlocked.Increment(ref _launchBrowserRequests);
-            ThreadPool.QueueUserWorkItem(LaunchBrowserCallback, uri);
+            _ = Interlocked.Increment(ref _launchBrowserRequests);
+            _ = ThreadPool.QueueUserWorkItem(LaunchBrowserCallback, uri);
         }
 
         private static void LaunchBrowserCallback(object state)
         {
             try
             {
-                var startInfo = new ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = true,
                     FileName = ((Uri)state).AbsoluteUri,
                 };
 
-                Process.Start(startInfo);
+                _ = Process.Start(startInfo);
             }
             finally
             {
-                Interlocked.Decrement(ref _launchBrowserRequests);
+                _ = Interlocked.Decrement(ref _launchBrowserRequests);
             }
         }
 
         private static void OnHyperlinkClick(object sender, RoutedEventArgs e)
         {
             if (!IsAutomaticBrowserLaunchEnabled)
+            {
                 return;
+            }
 
-            var uri = ((Hyperlink)e.Source).NavigateUri;
+            Uri uri = ((Hyperlink)e.Source).NavigateUri;
             if (uri != null)
+            {
                 LaunchBrowser(uri);
+            }
         }
 
         #endregion
@@ -1081,7 +1228,10 @@ namespace Supremacy.Client
         public static object GetDefaultStyleKey([NotNull] this FrameworkElement element)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             return FrameworkElementHelper.GetDefaultStyleKey(element);
         }
 
@@ -1091,7 +1241,10 @@ namespace Supremacy.Client
             internal static object GetDefaultStyleKey([NotNull] FrameworkElement element)
             {
                 if (element == null)
+                {
                     throw new ArgumentNullException("element");
+                }
+
                 return element.GetValue(DefaultStyleKeyProperty);
             }
         }

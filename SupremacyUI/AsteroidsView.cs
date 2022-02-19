@@ -23,7 +23,7 @@ namespace Supremacy.UI
     public sealed class AsteroidsView : FrameworkElement, IAnimationsHost
     {
         #region Constants
-        private const string ImagePath = "Resources/Images/Planets/Asteroids/";
+        private const string ImagePath = "Resources/Images/UI/Planets/Asteroids/";
         #endregion
 
         #region Fields

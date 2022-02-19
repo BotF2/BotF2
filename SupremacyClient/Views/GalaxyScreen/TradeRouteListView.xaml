@@ -1,4 +1,5 @@
-<scc:ThemedUserControl x:Class="Supremacy.Client.Views.TradeRouteListView"
+ <!--File:TradeRouteListView.xaml-->
+    <scc:ThemedUserControl x:Class="Supremacy.Client.Views.TradeRouteListView"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
@@ -36,7 +37,7 @@
                 <Border.Background>
                   <ImageBrush>
                     <ImageBrush.ImageSource>
-                      <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/trade_route_economy.png" />
+                      <BitmapImage UriSource="vfs:///Resources/Images/UI/ScreenIcons/trade_route_economy.png" />
                     </ImageBrush.ImageSource>
                   </ImageBrush>
                 </Border.Background>
@@ -49,7 +50,7 @@
                        Value="True">
                 <Setter TargetName="SelectionBorder"
                         Property="BorderBrush"
-                        Value="White" />
+                        Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -93,7 +94,7 @@
            KeyboardNavigation.DirectionalNavigation="None"
            KeyboardNavigation.IsTabStop="False"
            Foreground="{StaticResource DefaultTextBrush}"
-           Background="#7F0B2E03"
+           Background="#7F009999"
            BorderThickness="0"
            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
            ScrollViewer.VerticalScrollBarVisibility="Auto"

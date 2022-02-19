@@ -38,7 +38,7 @@ namespace Supremacy.Universe
         /// Initializes a new instance of the <see cref="TravelRoute"/> class.
         /// </summary>
         /// <param name="waypoints">The waypoints.</param>
-        public TravelRoute(IEnumerable<MapLocation> waypoints) 
+        public TravelRoute(IEnumerable<MapLocation> waypoints)
         {
             _path = new List<MapLocation>();
             _waypoints = new List<MapLocation>(waypoints);
@@ -53,18 +53,18 @@ namespace Supremacy.Universe
             _path = new List<MapLocation>();
             _waypoints = new List<MapLocation>();
             foreach (Sector sector in waypoints)
+            {
                 _waypoints.Add(sector.Location);
-			_waypoints.TrimExcess();
+            }
+
+            _waypoints.TrimExcess();
         }
 
         /// <summary>
         /// Gets the waypoints of a <see cref="TravelRoute"/>.
         /// </summary>
         /// <value>The waypoints.</value>
-        public IList<MapLocation> Waypoints
-        {
-            get { return _waypoints.AsReadOnly(); }
-        }
+        public IList<MapLocation> Waypoints => _waypoints.AsReadOnly();
 
         /// <summary>
         /// Gets all of the individual steps comprising a <see cref="TravelRoute"/>.
@@ -76,28 +76,19 @@ namespace Supremacy.Universe
         /// original waypoints will be respected, but the path between them may
         /// change.
         /// </remarks>
-        public IList<MapLocation> Steps
-        {
-            get { return _path.AsReadOnly(); }
-        }
+        public IList<MapLocation> Steps => _path.AsReadOnly();
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="TravelRoute"/> is empty.
         /// </summary>
         /// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-        public bool IsEmpty
-        {
-            get { return (_path.Count == 0); }
-        }
+        public bool IsEmpty => _path.Count == 0;
 
         /// <summary>
         /// Gets the length of this <see cref="TravelRoute"/>.
         /// </summary>
         /// <value>The length.</value>
-        public int Length
-        {
-            get { return _path.Count; }
-        }
+        public int Length => _path.Count;
 
         /// <summary>
         /// Clears this <see cref="TravelRoute"/>.
@@ -116,7 +107,10 @@ namespace Supremacy.Universe
             MapLocation result = _path[0];
             _path.RemoveAt(0);
             if ((_waypoints.Count > 0) && (_waypoints[0] == result))
+            {
                 _waypoints.RemoveAt(0);
+            }
+
             return result;
         }
 
@@ -155,16 +149,16 @@ namespace Supremacy.Universe
         }
         #endregion
 
-    	public void SerializeOwnedData(SerializationWriter writer, object context)
-    	{
-    		writer.Write(_path);
-			writer.Write(_waypoints);
-    	}
+        public void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            writer.Write(_path);
+            writer.Write(_waypoints);
+        }
 
-    	public void DeserializeOwnedData(SerializationReader reader, object context)
-    	{
-    		_path = reader.ReadList<MapLocation>();
-			_waypoints = reader.ReadList<MapLocation>();
-    	}
+        public void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            _path = reader.ReadList<MapLocation>();
+            _waypoints = reader.ReadList<MapLocation>();
+        }
     }
 }

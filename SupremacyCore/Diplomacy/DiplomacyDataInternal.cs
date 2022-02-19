@@ -1,3 +1,4 @@
+// File:DiplomacyDataInternal.cs
 using System;
 using Supremacy.Collections;
 using Supremacy.Game;
@@ -18,6 +19,8 @@ namespace Supremacy.Diplomacy
         public int LastColdWarAttack { get; protected set; }
         public int LastIncursion { get; protected set; }
 
+        private string _text;
+
         public DiplomacyDataInternal(int ownerId, int counterpartyid)
         {
             _baseData = new DiplomacyData(ownerId, counterpartyid);
@@ -27,42 +30,31 @@ namespace Supremacy.Diplomacy
 
         public DiplomacyDataInternal(DiplomacyData baseData)
         {
-            if (baseData == null)
-                throw new ArgumentNullException("baseData");
-            _baseData = baseData;
+            _baseData = baseData ?? throw new ArgumentNullException("baseData");
         }
 
         #region IDiplomacyDataExtended Members
 
-        public int OwnerID
-        {
-            get { return _baseData.OwnerID; }
-        }
+        public int OwnerID => _baseData.OwnerID;
 
-        public int CounterpartyID
-        {
-            get { return _baseData.CounterpartyID; }
-        }
+        public int CounterpartyID => _baseData.CounterpartyID;
 
-        public IDiplomacyData BaseData
-        {
-            get { return _baseData; }
-        }
+        public IDiplomacyData BaseData => _baseData;
 
-        public IIndexedCollection<Motivation> Motivations
-        {
-            get { return _motivations; }
-        }
+        public IIndexedCollection<Motivation> Motivations => _motivations;
 
         public Motivation CurrentMotivation
         {
             get
             {
-                var count = _motivations.Count;
+                int count = _motivations.Count;
                 GameLog.Core.Diplomacy.DebugFormat("_motivations.Count={0}", count);
 
                 if (count != 0)
+                {
                     return _motivations[count - 1];
+                }
+
                 return Motivation.NoMotivation;
             }
         }
@@ -81,7 +73,9 @@ namespace Supremacy.Diplomacy
         public void ConsiderMotivation(Motivation motivation)
         {
             if (motivation == null)
+            {
                 throw new ArgumentNullException("motivation");
+            }
 
             _motivations.AddSorted(motivation, m => m.Priority);
         }
@@ -115,7 +109,7 @@ namespace Supremacy.Diplomacy
 
         public void SetContactTurn(int contactTurn)
         {
-                ContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
+            ContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
         }
 
         public void SetFirstDiplomaticAction(bool firstDiplomaticAction)
@@ -126,53 +120,38 @@ namespace Supremacy.Diplomacy
 
         #region IDiplomacyData Members
 
-        public Meter Regard
-        {
-            get { return _baseData.Regard; }
-        }
+        public Meter Regard => _baseData.Regard;
 
-        public Meter Trust
-        {
-            get { return _baseData.Trust; }
-        }
+        public Meter Trust => _baseData.Trust;
 
-        public RegardLevel EffectiveRegard
-        {
-            get { return _baseData.EffectiveRegard; }
-        }
+        public RegardLevel EffectiveRegard => _baseData.EffectiveRegard;
 
         public int ContactTurn
         {
-            get { return _baseData.ContactTurn; }
-            protected set { _baseData.ContactTurn = value; }
+            get => _baseData.ContactTurn;
+            protected set => _baseData.ContactTurn = value;
         }
         public bool FirstDiplomaticAction
         {
-            get { return _baseData.FirstDiplomaticAction; }
-            set { _baseData.FirstDiplomaticAction = value; }
+            get => _baseData.FirstDiplomaticAction;
+            set => _baseData.FirstDiplomaticAction = value;
         }
 
-        public int ContactDuration
-        {
-            get { return _baseData.ContactDuration; }
-        }
+        public int ContactDuration => _baseData.ContactDuration;
 
         public ForeignPowerStatus Status
         {
-            get { return _baseData.Status; }
-            internal set { _baseData.Status = value; }
+            get => _baseData.Status;
+            internal set => _baseData.Status = value;
         }
 
         public int LastStatusChange
         {
-            get { return _baseData.LastStatusChange; }
-            internal set { _baseData.LastStatusChange = value; }
+            get => _baseData.LastStatusChange;
+            internal set => _baseData.LastStatusChange = value;
         }
 
-        public int TurnsSinceLastStatusChange
-        {
-            get { return _baseData.TurnsSinceLastStatusChange; }
-        }
+        public int TurnsSinceLastStatusChange => _baseData.TurnsSinceLastStatusChange;
 
         #endregion
 
@@ -181,10 +160,21 @@ namespace Supremacy.Diplomacy
             _baseData = reader.Read<DiplomacyData>();
             _motivations = reader.Read<CollectionBase<Motivation>>();
             //_threatMap = reader.Read<InfluenceMap>();
-            
+
             LastTotalWarAttack = reader.ReadOptimizedInt32();
             LastColdWarAttack = reader.ReadOptimizedInt32();
             LastIncursion = reader.ReadOptimizedInt32();
+
+            _text = "DiplomacyDataInternal.cs: Deserialize" 
+                //+ reader.BytesRemaining
+                + ", mot_Count= " + _motivations.Count
+                + ", mot_Count= " + _motivations.Count
+                + ", L_TW_Attack= " + LastTotalWarAttack
+                + ", L_CW_Attack= " + LastColdWarAttack
+                + ", L_Inc= " + LastIncursion
+                ;
+            //Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

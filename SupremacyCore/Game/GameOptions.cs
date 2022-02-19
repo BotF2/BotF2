@@ -1,3 +1,4 @@
+// File:GameOptions.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -140,6 +141,20 @@ namespace Supremacy.Game
         Bonus_Biggest = 5
     }
 
+    /// <summary>
+    /// for Tooltip-Image-Size
+    /// </summary>
+    /// 
+    //public enum SpecialSize : int  // for Tooltip-Image-Size
+    //{
+    //    Width1 = 576,
+    //    Height1 = 480,
+    //    Width2 = 1152,
+    //    Height2 = 960,
+    //    Width3 = 576,
+    //    Height3 = 480
+    //}
+
     public enum EmpireModifierRecurringBalancing : byte
     {
         No = 0,
@@ -180,7 +195,7 @@ namespace Supremacy.Game
             ModID = Guid.Empty;
             AIMode = AIMode.Normal;
             AITakeover = true;
-            CombatTimer = default(TimeSpan);
+            CombatTimer = default;
             GalaxyShape = GalaxyShape.Irregular;
             GalaxySize = GalaxySize.Small;
             PlanetDensity = PlanetDensity.Medium;
@@ -371,6 +386,42 @@ namespace Supremacy.Game
         /// <value> TerranEmpire Modifier yes or no.</value>
         public EmpireModifierRecurringBalancing EmpireModifierRecurringBalancing { get; set; }
 
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Width1 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Height1 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Width2 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Height2 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Width3 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Height3 { get; set; }
+
         /// <summary>
         /// Gets or sets GamePace
         /// </summary>
@@ -407,12 +458,14 @@ namespace Supremacy.Game
         public void Write([NotNull] BinaryWriter writer)
         {
             if (writer == null)
+            {
                 throw new ArgumentNullException("writer");
+            }
 
             // needs the same sorting as Reading
 
             writer.Write(IsFrozen);
-            var modIdBytes = ModID.ToByteArray();
+            byte[] modIdBytes = ModID.ToByteArray();
             writer.Write(modIdBytes.Length);
             writer.Write(modIdBytes, 0, modIdBytes.Length);
             writer.Write((byte)AIMode);
@@ -449,12 +502,14 @@ namespace Supremacy.Game
         public void Read([NotNull] BinaryReader reader)
         {
             if (reader == null)
+            {
                 throw new ArgumentNullException("reader");
+            }
 
             // needs the same sorting as Writing
 
             IsFrozen = reader.ReadBoolean();
-            var modIdBytesLength = reader.ReadInt32();
+            int modIdBytesLength = reader.ReadInt32();
             ModID = new Guid(reader.ReadBytes(modIdBytesLength));
             AIMode = (AIMode)reader.ReadByte();
             GalaxyShape = (GalaxyShape)reader.ReadByte();
@@ -493,26 +548,46 @@ namespace Supremacy.Game
         internal static bool Validate(GameOptions options)
         {
             if (options == null)
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(AIMode), options.AIMode))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(GalaxyShape), options.GalaxyShape))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(GalaxySize), options.GalaxySize))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(PlanetDensity), options.PlanetDensity))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(StarDensity), options.StarDensity))
+            {
                 return false;
+            }
+
             if (!Enum.IsDefined(typeof(GalaxyCanon), options.GalaxyCanon))
+            {
                 return false;
+            }
 
             return true;
         }
 
         public GameOptions Clone()
         {
-            var clone = (GameOptions)MemberwiseClone();
+            GameOptions clone = (GameOptions)MemberwiseClone();
             clone.IsFrozen = false;
             return clone;
         }
@@ -552,7 +627,7 @@ namespace Supremacy.Game
                 defaults = new GameOptions();
                 try
                 {
-                    SaveDefaults(defaults);
+                    _ = SaveDefaults(defaults);
                 }
                 catch
                 {
@@ -569,7 +644,7 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool SaveDefaults(GameOptions defaults)
         {
-            var success = false;
+            bool success = false;
             try
             {
                 StorageManager.WriteSetting("DefaultGameOptions", defaults.Clone());

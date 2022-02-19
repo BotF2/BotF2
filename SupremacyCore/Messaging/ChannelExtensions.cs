@@ -49,7 +49,9 @@ namespace Supremacy.Messaging
         public void OnCompleted()
         {
             if (IsStopped || _onCompleted == null)
+            {
                 return;
+            }
 
             IsStopped = true;
 
@@ -61,20 +63,28 @@ namespace Supremacy.Messaging
             Guard.ArgumentNotNull(exception, "exception");
 
             if (IsStopped)
+            {
                 return;
+            }
 
             IsStopped = true;
 
             if (_onError != null)
+            {
                 _onError(exception);
+            }
             else
+            {
                 throw exception;
+            }
         }
 
         public void OnNext(T value)
         {
             if (IsStopped || _onNext == null)
+            {
                 return;
+            }
 
             _onNext(value);
         }

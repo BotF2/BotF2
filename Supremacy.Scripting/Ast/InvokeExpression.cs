@@ -51,7 +51,7 @@ namespace Supremacy.Scripting.Ast
             clone._argumentsResolved = _argumentsResolved;
             clone._target = Clone(cloneContext, _target);
         }
-        
+
         public Expression Target
         {
             get => _target;
@@ -200,7 +200,7 @@ namespace Supremacy.Scripting.Ast
                         ((ExtensionMethodGroupExpression)MethodGroup).ExtensionExpression = memberExpression.InstanceExpression;
                     }
                 }
-                
+
                 if (MethodGroup == null)
                 {
                     ec.ReportError(

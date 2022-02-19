@@ -1,0 +1,637 @@
+﻿<!-- File:f06_Dialog.xaml --> <!--Not used > F6 is now SUMMARY Dialog
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.F06_Dialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:cal="http://www.codeplex.com/CompositeWPF"
+            Width="980"
+            Height="750"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            Background="Black"
+            SnapsToDevicePixels="True">
+    
+    <!--Not used > F6 is now SUMMARY Dialog-->
+
+    
+  <DockPanel LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Right"
+                Margin="0,12,0,0"
+                Orientation="Vertical"
+                HorizontalAlignment="Center">
+            
+            <!--Header-->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text=" " 
+                           Margin="000,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>
+                <Button x:Name="Accept0Button" 
+                  Command="{x:Static local:GenericCommands.AcceptCommand}"
+                  Style="{DynamicResource LCARS_StandardButtonStyle}"
+                  IsCancel="True"
+                        MinWidth="150"
+                        Height="28"
+                  Margin="0,0,10,10">
+                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+                </Button>
+
+                <TextBlock Text="{s:StringResource DIALOG_F6_HEADER}" 
+                           Margin="100,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>
+
+                <!--<TextBlock Text="{Binding Path=}" 
+                           Margin="100,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>-->
+            </StackPanel>
+            <!--End of Header-->
+            
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/> 
+                    <ColumnDefinition Width="110"/><!--FED-->
+                    <ColumnDefinition Width="110"/> <!--Ter-->
+                    <ColumnDefinition Width="110"/> <!--ROM-->
+                    <ColumnDefinition Width="110"/> <!--Kling-->
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <!--ROW 0-->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--next ROW 10-->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--next ROW 20-->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--next ROW 30-->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--next ROW 40-->
+                    <!--<RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>-->
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"
+                     MinHeight="00" />
+                    <!--MinHeight before 27-->
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8">
+                    <TextBlock Text="UI elements coming from Global.xaml, overwritten by Shared.xaml e.g. SupremacyClient\Themes\Dominion\Shared.xaml" 
+                           Foreground="{DynamicResource DefaultTextBrush}"
+                           >
+                </TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="1" >
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 1 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 2 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 3 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 4 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 5 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 6 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 7 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 8 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" 9 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="10 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="11 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="12 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="13 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="14 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="15 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="16 "  />
+                    <!--<TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="17 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="18 "  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="19 "  />-->
+                    <!--<TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="20 "  />-->
+                    <!--<Border Background="{DynamicResource Vertical_Top_Bottom_Brush}"></Border>-->
+                </StackPanel>
+
+
+                
+
+
+                <!--Rows-->
+                <!--Column 0-->
+                <StackPanel Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="3" Margin="3,0,0,0">
+                  
+                    <TextBlock Text=" " 
+                           Foreground="{DynamicResource HeaderTextBrush}" />          
+                    
+                    <TextBlock Text="*> {StaticResource {x:Static scc:ClientResources *" 
+                           Foreground="{DynamicResource HeaderTextBrush}" />                    
+
+                    <TextBox Text="AlertTextForegroundBrushKey" 
+                               Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                    
+                    <TextBox Text="HeaderTextForegroundBrushKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+                    <!--<TextBox Text="(FONT) HeaderFontFamilyKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                <TextBox Text="(FONT) HeaderFontSizeKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                <TextBox Text="(FONT) HeaderFontWeightKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />-->
+                    <!--End of HeaderTextForegroundBrushKey-->
+
+                    <TextBox Text="DefaultTextForegroundBrushKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
+                    <!--<TextBox Text="(FONT) DefaultFontFamilyKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                    <TextBox Text="(FONT) DefaultFontSizeKey " 
+                               Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                    <TextBox Text="(FONT) DefaultFontWeightKey " 
+                               Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />-->
+                    <!--End of DefaultTextForegroundBrushKey-->
+
+
+                    <TextBox Text="ControlDisableBorderBrushKey" 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.ControlDisabledBorderBrushKey}}" />
+                <TextBox Text="ImageBorderBrushKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
+                    <TextBox Text="ControlTextForegroundBrushKey - - doesn't work" 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" Background="gray"/>                    
+                   
+
+                <!--<TextBlock Text="(FONT) DialogContainerStyleKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />-->
+
+
+
+                <TextBox Text="InactiveHighlightBrushKey > see Background" 
+                           Background="{DynamicResource {x:Static scc:ClientResources.InactiveHighlightBrushKey}}" 
+                           Foreground="White" />
+                <!--<TextBox Text="(FONT) InfoPaneFontFamilyKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                <TextBox Text="(FONT) InfoPaneFontSizeKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                <TextBox Text="(FONT) InfoPaneFontWeightKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />-->
+                <!--<TextBox Text="(BUTTON) MessageDialogButtonStyleKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                <TextBox Text="(BUTTON) ScrollableItemsControlStyleKey " 
+                           Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />-->
+                    <TextBox Text="Vertical_Top_Bottom_Brush  > see Background - doesn't work" 
+                           Background="{DynamicResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}" 
+                           Foreground="White" />
+                    
+                    <!--<TextBox Text=" "  Foreground="{DynamicResource HeaderTextBrush}" />-->
+                          
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="* next: ALL *"  />
+                    <TextBox Foreground="{DynamicResource BlueTextBrush}" Text="BlueTextBrush" />
+                    <TextBox Foreground="{DynamicResource GreenTextBrush}" Text="GreenTextBrush" />
+                    <TextBox Foreground="{DynamicResource RedTextBrush}" Text="RedTextBrush" />
+                    <TextBox Foreground="{DynamicResource PinkTextBrush}" Text="PinkTextBrush" />
+                    <TextBox Foreground="{DynamicResource GoldenrodTextBrush}" Text="GoldenrodTextBrush" />
+                    <TextBox Foreground="{DynamicResource GreenDarkTextBrush}" Text="GreenDarkTextBrush" />
+                    <TextBox BorderThickness="0" Foreground="{DynamicResource HeaderTextBrush}" Text="HighlightBrushKey" />
+                    <!--<TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+                    <TextBox BorderThickness="0" Foreground="{DynamicResource SelectionBrush}" Text=" "  />-->
+                </StackPanel>
+                
+                <!--End of Grid.Column="1"-->
+
+                <!--Grid.Column="4"-->
+                <StackPanel Orientation="Vertical" Grid.Column="4" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="3,0,0,0">
+                    <TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text=" " />
+                    <TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text=" * Empire's Shared.xaml *" />
+                    <TextBox Foreground="{DynamicResource WhiteHeaderBrush}" Text="WhiteHeaderBrush" />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="HeaderTextBrush" />                    
+                    <TextBox Foreground="{DynamicResource DefaultTextBrush}" Text="DefaultTextBrush" />
+
+
+                    <TextBox Foreground="{DynamicResource DisabledTextBrush}" Text="DisabledTextBrush" />
+                    <TextBox Foreground="{DynamicResource BorderBrush}" Text="BorderBrush" />
+
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="HighlightBrushKey" />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="HeaderTextBrush"  />
+                    <TextBox Foreground="{DynamicResource SelectionBrush}" Text="SelectionBrush"  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=""  />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="next: common Gradients "  />
+
+                    <TextBlock Text="RomGreenGradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource RomGreenGradient_Left_Right}" />
+
+                    <TextBlock Text="BlueHoverGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource BlueHoverGradient_Left_Right}" />
+
+                    <TextBlock Text="AzureGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource AzureGradient_Left_Right}" />
+
+                    <TextBlock Text="OrangeGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource OrangeGradient_Left_Right}" />
+
+
+                    <TextBlock Text="PinkGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource PinkGradient_Left_Right}" />
+
+                    <TextBlock Text="PurpleGradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource PurpleGradient_Left_Right}" />
+
+                    <TextBlock Text="PurpleDarkGradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource PurpleDarkGradient_Left_Right}" />
+                    <!--<TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="10 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="11 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="12 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="13 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="14 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="15 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="16 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="17 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="18 "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="19 "  />-->
+
+
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Column="6" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="3,0,0,0">
+
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+
+                    
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="TextBoxBase"  />                    
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+                    <!--Button GameButtonStyle-->
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="scc:GameButton-TINY:"  />
+                    <StackPanel Orientation="Horizontal">
+                        <!--IsEnabled-->
+                        <scc:GameButton Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"
+                            DisplayMode="Tiny" IsEnabled="True"
+                            Label="Buy" Width="60" Foreground="Black"
+                            Background="Transparent"
+                             />
+
+                        <!--IsChecked-->
+                        <scc:GameButton Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"
+                            DisplayMode="Tiny" IsChecked="True"
+                            Label="Buy" Width="60" Foreground="Black"
+                            Background="Transparent"
+                             />
+                    </StackPanel>
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+
+
+                    <!--Button SimpleButtonStyle-->
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="LCARS_SimpleButtonStyle"  />
+                    <Button x:Name="Accept1Button" 
+                        Style="{DynamicResource LCARS_SimpleButtonStyle}"
+                        IsCancel="True"
+                        Margin="0,0,6,0">
+                        <AccessText Text="Close (original REDEPLOY)" />
+                    </Button>
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+
+
+                    <!--Button LCARS_BorderButtonStyle-->
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="LCARS_BorderButtonStyle"  />
+                    <Button x:Name="ChatButton"
+                            Focusable="False"
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
+                            Margin="0,0,3,0">
+                    </Button>
+                    <!--<TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />-->
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+
+
+                    <!--Button SimpleButtonToggleStyle-->
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="LCARS_SimpleButtonToogleStyle"  />
+                    <Button x:Name="Accept2Button" 
+                        Style="{DynamicResource LCARS_SimpleButtonToogleStyle}"
+                        IsCancel="True"
+                        Margin="0,0,6,0">
+                        <AccessText Text="CLose (original CHAT)" />
+                    </Button>
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+
+
+                    <!--Button LCARS_BorderToggleButtonStyle-->
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="LCARS_BorderToggleButtonStyle"  />
+                    <ToggleButton x:Name="ChatButton2"
+                            Focusable="False"
+                            Style="{StaticResource LCARS_BorderToggleButtonStyle}"
+                            Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
+                            Margin="0,0,3,0">
+                    </ToggleButton>
+                    <!--<TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />-->
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+
+
+                    <!--<TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />-->
+
+
+                </StackPanel>
+
+            <!--Gradients of the Emires-->
+                <!--  0 = Federation -->
+        <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
+
+            <TextBlock Text="BlueGradient_Bottom_Top"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource BlueGradient_Bottom_Top}" />
+
+            <TextBlock Text="PinkGradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource PinkGradient_Left_Right}" />
+
+            <TextBlock Text="OrangeGradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource OrangeGradient_Left_Right}" />
+
+            <!--<TextBlock Text="xxxxx"  Grid.Row="24"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom4Gradient_Left_Right}" />
+
+                    <TextBlock Text="xxxxx"  Grid.Row="25"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom5Gradient_Left_Right}" />-->
+
+            <TextBlock Text="BlueHoverGradient_Bottom_Top"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource BlueHoverGradient_Bottom_Top}" />
+        </StackPanel>
+
+        <!--  1 = Terrans -->
+        <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="2" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
+      
+            <TextBlock Text="Ter1Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Ter1Gradient_Left_Right}" />
+
+            <TextBlock Text="Ter2Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Ter2Gradient_Left_Right}" />            
+            
+            <TextBlock Text="Ter3Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Ter3Gradient_Left_Right}" />
+
+            <TextBlock Text="Ter4Gradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Ter4Gradient_Right_Left}" />
+
+            <TextBlock Text="Ter5Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Ter5Gradient_Left_Right}" />
+
+            <TextBlock Text="TerHoverGradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource TerHoverGradient_Top_Bottom}" />
+
+            <TextBlock Text="Ter6Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Ter6Gradient_Bottom_Top}" />
+
+        </StackPanel>
+
+        <!--  2 = Romulans -->
+        <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
+            <TextBlock Text="Rom1Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Rom1Gradient_Left_Right}" />
+
+            <TextBlock Text="Rom2Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Rom2Gradient_Left_Right}" />
+
+            <TextBlock Text="RomGreenGradient"  Grid.Row="23" Grid.Column="2"
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource RomGreenGradient_Left_Right}" />
+
+            <TextBlock Text="Rom4Gradient"  Grid.Row="24" Grid.Column="2"
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Rom4Gradient_Top_Bottom}" />
+
+            <TextBlock Text="RomPurpleBlueGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource RomPurpleBlueGradient_Left_Right}" />
+
+                    <TextBlock Text="RomHoverGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource RomHoverGradient_Top_Bottom}" />
+
+            <TextBlock Text="ROM_PurpleGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource ROM_PurpleGradient_Left_Right}" />
+        </StackPanel>
+
+        <!--  3 = Klingons-->
+        <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="4" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
+
+            <TextBlock Text="Kling1Gradient"  Foreground="Black" VerticalAlignment="Center" 
+                    Background="{DynamicResource Kling1Gradient_Left_Right}" />
+            
+            <TextBlock Text="Kling2Gradient"  Foreground="Black" VerticalAlignment="Center" 
+                    Background="{DynamicResource Kling2Gradient_Left_Right}" />
+            
+            <TextBlock Text="Kling3Gradient"  Foreground="Black" VerticalAlignment="Center" 
+                    Background="{DynamicResource Kling3Gradient_Top_Bottom}" />
+
+            <TextBlock Text="Kling4Gradient" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource Kling4Gradient_Left_Right}" />
+            
+            <TextBlock Text="KlingHoverGradient_Top_Bottom" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource KlingHoverGradient_Top_Bottom}" />
+
+            <TextBlock Text="KlingYellow1Gradient" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource KlingYellow1Gradient_Left_Right}" />
+
+            <TextBlock Text="KlingYellow2Gradient" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource KlingYellow2Gradient_Left_Right}" />
+
+
+                    <!--<Border Background="{DynamicResource KlingYellow1Gradient_Left_Right}" >-->
+                        <!--<TextBlock Text="Kling4Gradient" Foreground="Black" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Transparent">
+                        </TextBlock>-->
+                    <!--</Border>-->
+
+        </StackPanel>
+
+
+        <!--  4 = Cardassians-->
+        <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="5" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
+            <TextBlock Text="Card1Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Card1Gradient_Left_Right}" />
+
+                    <TextBlock Text="Card2Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Card2Gradient_Left_Right}" />
+
+                    <TextBlock Text="Card3Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Card3Gradient_Left_Right}" />
+            
+                    <TextBlock Text="Card4Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Card4Gradient_Left_Right}" />
+
+                    <TextBlock Text="Card5Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Card5Gradient_Right_Left}" />
+            
+                    <TextBlock Text="CardHoverGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource CardHoverGradient_Left_Right}" />     
+            
+                </StackPanel>
+
+        <!--  5 = Dominion-->
+        <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="6" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
+            <TextBlock Text="Dom1Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom1Gradient_Left_Right}" />
+
+            <TextBlock Text="Dom2Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom2Gradient_Left_Right}" />
+
+            <TextBlock Text="Dom3Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom3Gradient_Left_Right}" />
+
+            <TextBlock Text="Dom4Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom4Gradient_Left_Right}" />
+
+            <TextBlock Text="Dom5Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom5Gradient_Left_Right}" />
+
+            <TextBlock Text="DomHoverGradient"  
+                    Foreground="Black" VerticalAlignment="Center"
+            Background="{DynamicResource DomHoverGradient_Right_Left}" />
+
+                    <TextBlock Text="Dom6Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom6Gradient_Left_Right}" />
+
+
+                </StackPanel>
+
+        <!--  6 = Borg-->
+        <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="7" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
+            <TextBlock Text="Borg1Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Borg1Gradient_Left_Right}" />
+
+            <TextBlock Text="Borg2Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Borg2Gradient_Left_Right}" />
+
+            <TextBlock Text="Borg3Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Borg3Gradient_Left_Right}" />
+
+            <TextBlock Text="Borg4Gradient" 
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Borg4Gradient_Left_Right}" />
+
+            <!--<TextBlock Text="Borg5Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Borg5Gradient_Left_Right}" />-->
+
+                    <TextBlock Text="BorgHoverGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource BorgHoverGradient_Left_Right}" />
+
+
+                </StackPanel>
+
+        <!--  7 = all -->
+
+
+
+
+            <!--Columns descriptions, gray, in row 30 -->
+        <!--<StackPanel Orientation="Horizontal" Grid.Row="30" Grid.Column="0" Grid.ColumnSpan="7" Margin="23,0,0,0">-->
+        <TextBlock Text="- 0 -"  Grid.Row="30" Grid.Column="0"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock Text="- Column 0 -"  Grid.Row="30" Grid.Column="1"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock Text="- Column 1 -" Grid.Row="30" Grid.Column="2"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock  Text="- Column 2 -" Grid.Row="30" Grid.Column="3"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock  Text="- Column 3 -" Grid.Row="30" Grid.Column="4"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock  Text="- Column 4 -" Grid.Row="30" Grid.Column="5"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock  Text="- Column 5 -" Grid.Row="30" Grid.Column="6"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock  Text="- Column 6 -" Grid.Row="30" Grid.Column="7"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <TextBlock  Text="- Column 7 -" Grid.Row="30" Grid.Column="8"
+                           HorizontalAlignment="Center" Foreground="Black" Background="DarkGray"/>
+        <!--</StackPanel>-->                
+
+            </Grid>
+        </StackPanel>
+
+
+      
+  </DockPanel>
+</scc:Dialog>

@@ -17,10 +17,7 @@ namespace Supremacy.Client
     {
         private static readonly Lazy<bool> _isInDesignMode;
 
-        public static bool IsInDesignMode
-        {
-            get { return _isInDesignMode.Value; }
-        }
+        public static bool IsInDesignMode => _isInDesignMode.Value;
 
         static Designer()
         {

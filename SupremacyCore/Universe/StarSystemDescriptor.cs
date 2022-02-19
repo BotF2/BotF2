@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2007 Mike Strobel
+﻿// File:StarSystemDescriptor.cs
+// Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
@@ -22,6 +23,42 @@ namespace Supremacy.Universe
     public class HomeSystemsDatabase : Dictionary<string, StarSystemDescriptor>
     {
         private const string XmlFilePath = "Resources/Data/HomeSystems.xml";
+        private static readonly string blank = " ";
+        private static string _startingBuildingsSummary;
+        private static string _text;
+        private static string _startingShipsSummary = " ;";
+        private static string _type;
+        private static int _scoutCount;
+        private static string _scoutText;
+        private static int _frigateCount;
+        private static string _frigateText;
+        private static int _scienceCount;
+        private static string _scienceText;
+        private static int _cruiserCount;
+        private static string _cruiserText;
+        private static int _destroyerCount;
+        private static string _destroyerText;
+        private static int _commandCount;
+        private static string _commandText;
+        private static int _colonyCount;
+        private static string _colonyText;
+        private static int _constructionCount;
+        private static string _constructionText;
+        private static int _strikeCruiserCount; private static string _strikeCruiserText;
+        private static int _transportCount; private static string _transportText;
+        private static int _diploCount; private static string _diploText;
+        private static int _spyCount; private static string _spyText;
+        private static int _medicalCount; private static string _medicalText;
+        private static string _startingStation;
+        private static string _startingShipyard;
+        private static string _startingOrbitalBatteries;
+        private static string _startingFoodPF;
+        private static string _startingIndustryPF;
+        private static string _startingEnergyPF;
+        private static string _startingResearchPF;
+        private static string _startingIntelligencePF;
+
+        //private static int _colonyCount; private static string _colonyText;
 
         private static void ValidateXml(object sender, ValidationEventArgs e)
         {
@@ -36,9 +73,9 @@ namespace Supremacy.Universe
 
             XmlElement xmlRoot;
 
-            schemas.Add("Supremacy:Supremacy.xsd",
+            _ = schemas.Add("Supremacy:Supremacy.xsd",
                         ResourceManager.GetResourcePath("Resources/Data/Supremacy.xsd"));
-            schemas.Add("Supremacy:TechObjectDatabase.xsd",
+            _ = schemas.Add("Supremacy:TechObjectDatabase.xsd",
                         ResourceManager.GetResourcePath("Resources/Data/TechObjectDatabase.xsd"));
 
             xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath));
@@ -47,222 +84,364 @@ namespace Supremacy.Universe
 
             xmlRoot = xmlDoc.DocumentElement;
 
-            var separator = ";";
+            string separator = " ;";
+            string hyphen = "-";
             //var line = "";
             StreamWriter streamWriter;
-            StreamWriter streamWriter2;
-            var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
-            var file = "./lib/test-FromHomeSystems.txt";
-            var file2 = "./lib/test2-FromHomeSystems.txt";
+            //StreamWriter streamWriter2;
+            string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+            string file = pathOutputFile + "test-Output.txt";
+            //string file2 = "./lib/test2-FromHomeSystems.txt";
             streamWriter = new StreamWriter(file);
-            streamWriter2 = new StreamWriter(file2);
+            //streamWriter2 = new StreamWriter(file2);
             streamWriter.Close();
-            streamWriter2.Close();
-            String strHeader = "";  // first line of output files
-            String strLine = "";   // each civ gets one line
-            String strLine2 = "";   // each civ gets one line
-
+            //streamWriter2.Close();
+            string strHeader = "";  // first line of output files
+            string strLine = "";   // each civ gets one line
+            //string strLine2 = "";   // each civ gets one line
 
             try // avoid hang up if this file is opened by another program 
             {
                 // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
-                file = pathOutputFile + "_FromHomeSystemsXML_(autoCreated).csv";
+                file = pathOutputFile + "_HomeSystems-xml_"
+                    + GameContext.Current.Options.StartingTechLevel.ToString() + "_List(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
+                {
                     goto WriterCloseHomeSystemsXML;
-
+                }
 
                 streamWriter = new StreamWriter(file);
 
+                strHeader = blank; // Dummy, needed
+
                 strHeader =    // Head line
                     "Civilization" + separator +
-                    "StarName" + separator +
+                    "TechLvl" + separator +
 
-                    "StarType" + separator +
-                    "Inhabitants" + separator +
-                    "CE_Computers" + separator +
-                    "CE_Construction" + separator +
-                    "CE_Energy" + separator +
-                    "CE_Propulsion" + separator +
-                    "CE_Weapons" + separator +
-                    "CE_BuildCost" + separator +
-                    "CE_IsUniversallyAvailable" + separator +
-                    "CE_Prerequisites" + separator +
-                    "CE_ObsoletedItems" + separator +
-                    "CE_UpgradeOptions" + separator +
-                    "CE_Restrictions" + separator +
-                    //"CE_EnergyCosts_not_used_anymore?" + separator +
-                    "CE_BuildSlots" + separator +
-                    "CE_BuildSlotMaxOutput" + separator +
-                    "CE_BuildSlotOutputType" + separator +
-                    "CE_BuildSlotOutput" + separator +
-                    "CE_BuildSlotEnergyCost" + separator +
-                    "CE_MaxBuildTechLevel";
+                    "FoodPF_active" + separator +
+                    "FoodPF" + separator +
+
+                    "FoodPF_blank" + separator +
+
+                    "IndustryPF_active" + separator +
+                    "IndustryPF" + separator +
+
+                    "IndustryPF_blank" + separator +
+
+                    "EnergyPF_active" + separator +
+                    "EnergyPF" + separator +
+
+                    "EnergyPF_blank" + separator +
+
+                    "ResearchPF_active" + separator +
+                    "ResearchPF" + separator +
+
+                    "ResearchPF_blank" + separator +
+
+                    "IntelPF_active" + separator +
+                    "IntelPF" + separator +
+
+                    "IntelPF_blank" + separator +
+
+                    "StartShips" + separator +
+                    "COL" + separator + // Colony Ships
+                    "CON" + separator +
+                    "SCO" + separator +
+                    "FRI" + separator +
+                    "DES" + separator +
+                    "CRU" + separator +
+                    "SCR" + separator +
+                    "COM" + separator +
+                    "SCI" + separator +
+                    "MED" + separator +
+                    "TRANS" + separator +
+                    "DIP" + separator +
+                    "SPY" + separator +
+
+                    "StarSystem" + separator +
+                    "RAT" + separator +
+                    "CREDITS" + separator +
+                    "DEU" + separator +
+                    "DIL" + separator +
+                    "DUR" + separator +
+                    "FOOD" + separator +
+                    "MOR" + separator +
+                    "OB" + separator +
+                    "OB_2" + separator +
+                    "SYard" + separator +
+                    "SYard_2" + separator +
+                    "STAT" + separator +
+                    "STAT_2" + separator +
+                    "Buildings" + separator +
+                    "B_1" + separator +
+                    "B_2" + separator +
+                    "B_3" + separator +
+                    "B_4" + separator +
+                    "B_5" + separator +
+                    "B_6" + separator +
+                    "B_7" + separator +
+                    "B_8" + separator +
+                    "B_9" + separator +
+                    "B_10" + separator +
+                    "B_11" + separator +
+                    "B_12" + separator +
+                    "B_13" + separator +
+                    "B_14" + separator +
+                    "B_15" + separator +
+                    "B_16" + separator +
+                    "B_17" + separator +
+                    "B_18" + separator +
+                    "B_19" + separator +
+                    "B_20" + separator +
+                    "B_21" + separator +
+
+                    separator;
 
                 streamWriter.WriteLine(strHeader);
                 // End of head line
 
+                //file2 = pathOutputFile + "./lib/HomeSystemsXML_StartingLevel_(autoCreated).csv";
+                //Console.WriteLine("writing {0}", file2);
 
+                //if (file2 == null)
+                //{
+                //    goto WriterCloseHomeSystemsXML;
+                //}
 
-                file2 = pathOutputFile + "_FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
+                //streamWriter2 = new StreamWriter(file2);
 
-                Console.WriteLine("writing {0}", file2);
-
-                if (file2 == null)
-                    goto WriterCloseHomeSystemsXML;
-
-
-                streamWriter2 = new StreamWriter(file2);
-
-                string strHeader2 =    // Head line
-                    "Civilization" + separator +
-                    "StarName" + separator +
-
-                    "StarType" + separator +
-                    "Inhabitants" + separator +
-                    "CE_Computers" + separator +
-                    "CE_Construction" + separator +
-                    //"CE_Energy" + separator +
-                    //"CE_Propulsion" + separator +
-                    //"CE_Weapons" + separator +
-                    //"CE_BuildCost" + separator +
-                    //"CE_IsUniversallyAvailable" + separator +
-                    //"CE_Prerequisites" + separator +
-                    //"CE_ObsoletedItems" + separator +
-                    //"CE_UpgradeOptions" + separator +
-                    //"CE_Restrictions" + separator +
-                    ////"CE_EnergyCosts_not_used_anymore?" + separator +
-                    //"CE_BuildSlots" + separator +
-                    //"CE_BuildSlotMaxOutput" + separator +
-                    //"CE_BuildSlotOutputType" + separator +
-                    //"CE_BuildSlotOutput" + separator +
-                    //"CE_BuildSlotEnergyCost" + separator +
-                    "CE_MaxBuildTechLevel";
+                //string strHeader2 =    // Head line
 
                 foreach (XmlElement homeSystemElement in xmlRoot.GetElementsByTagName("HomeSystem"))
                 {
-                    //GameLog.Core.XMLCheck.DebugFormat("HomeSystems CIV = {0}", homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant());
-
                     string civId = homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant();
                     db[civId] = new StarSystemDescriptor(homeSystemElement["StarSystem"]);
-                    //GameLog.Client.GameData.DebugFormat("HomeSystems.xml-civId={0}", civId);
+
+                    _scoutCount = 0; _scoutText = "SCOUT";
+                    _frigateCount = 0; _frigateText = "FRIGATE";
+                    _scienceCount = 0; _scienceText = "SCIENCE";
+                    _medicalCount = 0; _medicalText = "MEDICAL";
+                    _colonyCount = 0; _colonyText = "COLONY";
+                    _transportCount = 0; _transportText = "TRANSPORT";
+                    _diploCount = 0; _diploText = "DIPLO";
+                    _spyCount = 0; _spyText = "SPY";
+                    _destroyerCount = 0; _destroyerText = "DESTROYER";
+                    _cruiserCount = 0; _cruiserText = "CRUISER";
+                    _strikeCruiserCount = 0; _strikeCruiserText = "STRIKE_CRUISER";
+                    _commandCount = 0; _commandText = "COMMAND";
+                    _constructionCount = 0; _constructionText = "CONSTRUCTION";
+
+                    foreach (string item in db[civId].StartingShips)
+                    {
+                        if (item.Contains("SCOUT")) { _type = "SCOUT"; }
+                        if (item.Contains("FRIGATE")) { _type = "FRIGATE"; }
+                        if (item.Contains("SCIENCE")) { _type = "SCIENCE"; }
+                        if (item.Contains("MEDICAL")) { _type = "MEDICAL"; }
+                        if (item.Contains("COLONY")) { _type = "COLONY"; }
+                        if (item.Contains("TRANSPORT")) { _type = "TRANSPORT"; }
+                        if (item.Contains("DIPLO")) { _type = "DIPLO"; }
+                        if (item.Contains("SPY")) { _type = "SPY"; }
+                        if (item.Contains("DESTROYER")) { _type = "DESTROYER"; }
+                        if (item.Contains("CRUISER")) { _type = "CRUISER"; }
+                        if (item.Contains("STRIKE_CRUISER")) { _type = "STRIKE_CRUISER"; }
+                        if (item.Contains("COMMAND")) { _type = "COMMAND"; }
+                        if (item.Contains("CONSTRUCTION")) { _type = "CONSTRUCTION"; }
+
+                        switch (_type)
+                        {
+                            case "SCOUT": _scoutCount += 1; _scoutText = item; break;
+                            case "FRIGATE": _frigateCount += 1; _frigateText = item; break;
+                            case "SCIENCE": _scienceCount += 1; _scienceText = item; break;
+                            case "MEDICAL": _medicalCount += 1; _medicalText = item; break;
+                            case "COLONY": _colonyCount += 1; _colonyText = item; break;
+                            case "TRANSPORT": _transportCount += 1; _transportText = item; break;
+                            case "DIPLO": _diploCount += 1; _diploText = item; break;
+                            case "SPY": _spyCount += 1; _spyText = item; break;
+                            case "DESTROYER": _destroyerCount += 1; _destroyerText = item; break;
+                            case "CRUISER": _cruiserCount += 1; _cruiserText = item; break;
+                            case "STRIKE_CRUISER": _strikeCruiserCount += 1; _strikeCruiserText = item; break;
+                            case "COMMAND": _commandCount += 1; _commandText = item; break;
+                            case "CONSTRUCTION": _constructionCount += 1; _constructionText = item; break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    _cruiserCount -= _strikeCruiserCount; if (_cruiserCount < 0)
+                    {
+                        _cruiserCount = 0;
+                    }
+
+                    _colonyText = _colonyCount > 0 ? separator + _colonyCount + hyphen + _colonyText : " ;";
+                    _constructionText = _constructionCount > 0 ? separator + _constructionCount + hyphen + _constructionText : " ;";
+                    _scoutText = _scoutCount > 0 ? separator + _scoutCount + hyphen + _scoutText : " ;";
+                    _frigateText = _frigateCount > 0 ? separator + _frigateCount + hyphen + _frigateText : " ;";
+                    _destroyerText = _destroyerCount > 0 ? separator + _destroyerCount + hyphen + _destroyerText : " ;";
+                    _cruiserText = _cruiserCount > 0 ? separator + _cruiserCount + hyphen + _cruiserText : " ;";
+                    _strikeCruiserText = _strikeCruiserCount > 0 ? separator + _strikeCruiserCount + hyphen + _strikeCruiserText : " ;";
+                    _commandText = _commandCount > 0 ? separator + _commandCount + hyphen + _commandText : " ;";
+                    _scienceText = _scienceCount > 0 ? separator + _scienceCount + hyphen + _scienceText : " ;";
+                    _medicalText = _medicalCount > 0 ? separator + _medicalCount + hyphen + _medicalText : " ;";
+                    _transportText = _transportCount > 0 ? separator + _transportCount + hyphen + _transportText : " ;";
+                    _diploText = _diploCount > 0 ? separator + _diploCount + hyphen + _diploText : " ;";
+                    _spyText = _spyCount > 0 ? separator + _spyCount + hyphen + _spyText : " ;";
+
+
+                    _text
+                        += /*separator + _colonyCount + hyphen + */_colonyText
+                        + /*separator + _constructionCount + hyphen + */_constructionText
+                        + /*separator + _scoutCount + hyphen + */_scoutText
+                        + /*separator + _frigateCount + hyphen + */_frigateText
+                        + /*separator + _destroyerCount + hyphen + */_destroyerText
+                        + /*separator + _cruiserCount + hyphen + */_cruiserText
+                        + /*separator + _strikeCruiserCount + hyphen + */ _strikeCruiserText
+                        + /*separator + _commandCount + hyphen + */_commandText
+
+                        + /*separator + _scienceCount + hyphen + */_scienceText
+                        /*+ separator + _medicalCount + hyphen*/ + _medicalText
+                        /*+ separator + _transportCount + hyphen*/ + _transportText
+                        /*+ separator + _diploCount + hyphen*/ + _diploText
+                        /*+ separator + _spyCount + hyphen*/ + _spyText
+                        ;
+
+                    _startingShipsSummary = "StartShips" + _text;
+
+                    _text = " ";
+
+                    //string _text;
+                    foreach (string item in db[civId].StartingBuildings)
+                    {
+                        _text += item + " ;";
+                    }
+                    _startingBuildingsSummary = "StartBuildungs;" + _text;
+
+
+                    _startingStation = " ;";
+                    foreach (string item in db[civId].StartingOutposts)
+                    {
+                        _startingStation = item + " ;";
+                    }
+
+
+                    _startingShipyard = " ;";
+                    foreach (string item in db[civId].StartingShipyards)
+                    {
+                        _startingShipyard = item + " ;";
+                    }
+
+
+                    _startingOrbitalBatteries = " ;";
+                    if (db[civId].StartingOrbitalBatteries != null && db[civId].StartingOrbitalBatteries.Count > 0)  // Not all Minor races PF
+                    {
+                        _startingOrbitalBatteries = db[civId].StartingOrbitalBatteries.Count + hyphen + db[civId].StartingOrbitalBatteries[0] + " ;";
+                    }
+
+                    //_startingOrbitalBatteries = _startingOrbitalBatteries.Replace("-1", "0");
+
+
+                    _startingFoodPF = ";;";
+                    if (db[civId].FoodPF != null /*&& db[civId].FoodPF.Count > 0*/)  // Not all Minor races PF
+                    {
+                        _startingFoodPF = db[civId].FoodPF.Active + " ;" + db[civId].FoodPF.Count + hyphen + db[civId].FoodPF.DesignType + " ;";
+                    }
+
+                    _startingFoodPF = _startingFoodPF.Replace("-1", "0");
+
+
+                    _startingIndustryPF = ";;";
+                    if (db[civId].IndustryPF != null /*&& db[civId].IndustryPF.Count > 0*/)  // Not all Minor races PF
+                    {
+                        _startingIndustryPF = db[civId].IndustryPF.Active + " ;" + db[civId].IndustryPF.Count + hyphen + db[civId].IndustryPF.DesignType + " ;";
+                    }
+
+                    _startingIndustryPF = _startingIndustryPF.Replace("-1", "0");
+
+                    _startingEnergyPF = ";;";
+                    if (db[civId].EnergyPF != null /*&& db[civId].EnergyPF.Count > 0*/)  // Not all Minor races PF
+                    {
+                        _startingEnergyPF = db[civId].EnergyPF.Active + " ;" + db[civId].EnergyPF.Count + hyphen + db[civId].EnergyPF.DesignType + " ;";
+                    }
+
+                    _startingEnergyPF = _startingEnergyPF.Replace("-1", "0");
+
+                    _startingResearchPF = ";;";
+                    if (db[civId].ResearchPF != null /*&& db[civId].ResearchPF.Count > 0*/)  // Not all Minor races PF
+                    {
+                        _startingResearchPF = db[civId].ResearchPF.Active + " ;" + db[civId].ResearchPF.Count + hyphen + db[civId].ResearchPF.DesignType + " ;";
+                    }
+
+                    _startingResearchPF = _startingResearchPF.Replace("-1", "0");
+
+                    _startingIntelligencePF = ";;";
+                    if (db[civId].IntelligencePF != null /*&& db[civId].IntelligencePF.Count > 0*/)  // Not all Minor races PF
+                    {
+                        _startingIntelligencePF = db[civId].IntelligencePF.Active + " ;" + db[civId].IntelligencePF.Count + hyphen + db[civId].IntelligencePF.DesignType + " ;";
+                    }
+
+                    _startingIntelligencePF = _startingIntelligencePF.Replace("-1", "0");
 
                     strLine =
                         civId + separator +
-                        db[civId].Name + separator +
-                        db[civId].StarType + separator +
-                        db[civId].Inhabitants + separator +
-                        //db[civId].inh + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        db[civId].Name + separator
-                        ;
+                        GameContext.Current.Options.StartingTechLevel.ToString() + separator +
 
+                        _startingFoodPF + separator +
+                        _startingIndustryPF + separator +
+                        _startingEnergyPF + separator +
+                        _startingResearchPF + separator +
+                        _startingIntelligencePF + separator +
+
+                        _startingShipsSummary + separator +
+
+                        db[civId].Name + separator +
+                        db[civId].PopulationRatio + separator +
+                        db[civId].Credits + separator +
+                        db[civId].Deuterium + separator +
+                        db[civId].Dilithium + separator +
+                        db[civId].Duranium + separator +
+                        db[civId].Food + separator +
+                        db[civId].Morale + separator +
+
+                        _startingOrbitalBatteries + separator +
+                        _startingShipyard + separator +
+                        _startingStation + separator +
+                        _startingBuildingsSummary + separator +
+                        separator;
+
+                    strLine = strLine.Replace("-1", " ");
+                    strLine = strLine.Replace("-", " ");
+
+                    //Console.WriteLine(strLine);
                     streamWriter.WriteLine(strLine);
 
+                    strLine = "";
+                    _text = " ";
+                    _startingOrbitalBatteries = " ";
+                    _startingShipyard = " ";
+                    _startingStation = " ";
+                    _startingBuildingsSummary = " ";
 
+                    //strLine2 =
+                    //    civId + separator +       //  following entries not working yet
+                    //    db[civId].Name + separator
+                    //    ;
 
+                    //streamWriter2.WriteLine(strLine2);
 
-
-                    strLine2 =
-                        civId + separator +       //  following entries not working yet
-                                                  //db[civId].StartingOutposts + separator +
-                                                  //db[civId].StartingShipyards + separator +
-                                                  //db[civId].StartingBuildings + separator +
-                                                  //db[civId].StartingOrbitalBatteries.Count + separator +
-                                                  //db[civId].StartingShips.Count + separator +
-
-                        //db[civId].FoodPF.DesignType + separator +
-                        //db[civId].FoodPF.Active + separator +
-                        //db[civId].FoodPF.Count + separator +
-
-                        //db[civId].IndustryPF.DesignType + separator +
-                        //db[civId].IndustryPF.Active + separator +
-                        //db[civId].IndustryPF.Count + separator +
-
-
-                        //db[civId].EnergyPF.DesignType + separator +
-                        //db[civId].EnergyPF.Active + separator +
-                        //db[civId].EnergyPF.Count + separator +
-
-                        //db[civId].ResearchPF.DesignType + separator +
-                        //db[civId].ResearchPF.Active + separator +
-                        //db[civId].ResearchPF.Count + separator +
-
-                        //db[civId].IntelligencePF.DesignType + separator +
-                        //db[civId].IntelligencePF.Active + separator +
-                        //db[civId].IntelligencePF.Count + separator +
-
-
-                        //db[civId].IndustryPF.Count + separator +
-                        //db[civId].FoodPF.Count + separator +
-                        //db[civId].EnergyPF.Count + separator +
-                        //db[civId].ResearchPF.Count + separator +
-                        //db[civId].IntelligencePF.count + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        //db[civId].Name + separator +
-                        db[civId].Name + separator
-                        ;
-
-                    streamWriter2.WriteLine(strLine2);
+                    //strLine2 = "";
 
 
                 }  // end of foreach
             WriterCloseHomeSystemsXML:;
                 streamWriter.Close();
-                streamWriter2.Close();
+                //streamWriter2.Close();
             }
             catch (Exception e)
             {
-                GameLog.Core.GameData.Error("Problem with HomeSystems.xml or writing file _FromHomeSystemsXML_(autoCreated).csv", e);
+                _text = "Cannot write ... " + file + e;
+                GameLog.Core.GameData.ErrorFormat(_text);
             }
 
 
@@ -280,7 +459,10 @@ namespace Supremacy.Universe
         public void Save(string fileName)
         {
             if (fileName == null)
+            {
                 throw new ArgumentNullException("fileName");
+            }
+
             using (StreamWriter writer = new StreamWriter(fileName))
             {
                 Save(writer);
@@ -298,14 +480,14 @@ namespace Supremacy.Universe
                 xmlWriter.Indentation = 2;
                 xmlWriter.IndentChar = ' ';
 
-                xmlDoc.AppendChild(rootElement);
+                _ = xmlDoc.AppendChild(rootElement);
 
                 foreach (string civId in Keys)
                 {
                     XmlElement homeSystemElement = xmlDoc.CreateElement("HomeSystem");
                     homeSystemElement.SetAttribute("Civilization", civId);
                     this[civId].AppendXml(homeSystemElement);
-                    rootElement.AppendChild(homeSystemElement);
+                    _ = rootElement.AppendChild(homeSystemElement);
                 }
 
                 xmlDoc.WriteTo(xmlWriter);
@@ -328,7 +510,7 @@ namespace Supremacy.Universe
         #region Properties
         public string DesignType
         {
-            get { return _designType; }
+            get => _designType;
             set
             {
                 _designType = value;
@@ -338,7 +520,7 @@ namespace Supremacy.Universe
 
         public float Count
         {
-            get { return _count; }
+            get => _count;
             set
             {
                 _count = value;
@@ -348,7 +530,7 @@ namespace Supremacy.Universe
 
         public float Active
         {
-            get { return _active; }
+            get => _active;
             set
             {
                 _active = value;
@@ -364,8 +546,7 @@ namespace Supremacy.Universe
         #region Methods
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }
@@ -379,6 +560,7 @@ namespace Supremacy.Universe
         private string _inhabitants;
         private StarType? _starType;
         private SystemBonus _bonuses = SystemBonus.Random;
+#pragma warning disable IDE0044 // Add readonly modifier
         private List<string> _startingShips;
         private List<string> _startingShipyards;
         private List<string> _startingBuildings;
@@ -388,7 +570,7 @@ namespace Supremacy.Universe
         private float _credits = -1.0f;
         private float _deuterium = -1.0f;
         private float _dilithium = -1.0f;
-        private float _rawMaterials = -1.0f;
+        private float _duranium = -1.0f;
         private float _food = -1.0f;
         private float _morale = -1.0f;
         private ProductionFacilityDescriptor _foodPF = null;
@@ -396,6 +578,7 @@ namespace Supremacy.Universe
         private ProductionFacilityDescriptor _energyPF = null;
         private ProductionFacilityDescriptor _researchPF = null;
         private ProductionFacilityDescriptor _intelligencePF = null;
+#pragma warning restore IDE0044 // Add readonly modifier
         #endregion
 
         #region Constructors
@@ -412,7 +595,7 @@ namespace Supremacy.Universe
 
         public bool HasBonus(SystemBonus bonus)
         {
-            return ((bonus & _bonuses) == bonus);
+            return (bonus & _bonuses) == bonus;
         }
 
         public void AddBonus(SystemBonus bonus)
@@ -428,7 +611,7 @@ namespace Supremacy.Universe
         #region Properties
         public SystemBonus Bonuses
         {
-            get { return _bonuses; }
+            get => _bonuses;
             set
             {
                 _bonuses = value;
@@ -438,14 +621,11 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("Bonuses")]
-        public bool HasBonuses
-        {
-            get { return (_bonuses != 0); }
-        }
+        public bool HasBonuses => _bonuses != 0;
 
         public string Inhabitants
         {
-            get { return _inhabitants; }
+            get => _inhabitants;
             set
             {
                 _inhabitants = value;
@@ -456,26 +636,24 @@ namespace Supremacy.Universe
 
         public BindingList<PlanetDescriptor> Planets
         {
-            get { return _planets; }
+            get => _planets;
             internal set
             {
                 if (value != _planets)
                 {
-                    if (value == null)
-                        throw new ArgumentNullException();
-                    _planets = value;
+                    _planets = value ?? throw new ArgumentNullException();
                 }
             }
         }
 
         public string Name
         {
-            get { return _systemName ?? String.Empty; }
+            get => _systemName ?? string.Empty;
             set
             {
                 if (value != _systemName)
                 {
-                    _systemName = (value != null) ? value.Trim() : null;
+                    _systemName = value?.Trim();
                     OnPropertyChanged("Name");
                     OnPropertyChanged("IsNameDefined");
                 }
@@ -484,7 +662,7 @@ namespace Supremacy.Universe
 
         public StarType? StarType
         {
-            get { return _starType; }
+            get => _starType;
             set
             {
                 if (value != _starType)
@@ -497,107 +675,47 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("Inhabitants")]
-        public bool IsInhabitantsDefined
-        {
-            get { return (_inhabitants != null); }
-        }
+        public bool IsInhabitantsDefined => _inhabitants != null;
 
         [DependsOn("StarType")]
-        public bool IsStarTypeDefined
-        {
-            get { return (_starType != null); }
-        }
+        public bool IsStarTypeDefined => _starType != null;
 
         [DependsOn("Name")]
-        public bool IsNameDefined
-        {
-            get { return (_systemName != null); }
-        }
+        public bool IsNameDefined => _systemName != null;
 
-        public List<string> StartingShips
-        {
-            get { return _startingShips; }
-        }
+        public List<string> StartingShips => _startingShips;
 
-        public List<string> StartingShipyards
-        {
-            get { return _startingShipyards; }
-        }
+        public List<string> StartingShipyards => _startingShipyards;
 
-        public List<string> StartingBuildings
-        {
-            get { return _startingBuildings; }
-        }
+        public List<string> StartingBuildings => _startingBuildings;
 
-        public List<string> StartingOutposts
-        {
-            get { return _startingOutposts; }
-        }
+        public List<string> StartingOutposts => _startingOutposts;
 
-        public List<string> StartingOrbitalBatteries
-        {
-            get { return _startingOrbitalBatteries; }
-        }
+        public List<string> StartingOrbitalBatteries => _startingOrbitalBatteries;
 
-        public float PopulationRatio
-        {
-            get { return _populationRatio; }
-        }
+        public float PopulationRatio => _populationRatio;
 
-        public float Credits
-        {
-            get { return _credits; }
-        }
+        public float Credits => _credits;
 
-        public float Deuterium
-        {
-            get { return _deuterium; }
-        }
+        public float Deuterium => _deuterium;
 
-        public float Dilithium
-        {
-            get { return _dilithium; }
-        }
+        public float Dilithium => _dilithium;
 
-        public float RawMaterials
-        {
-            get { return _rawMaterials; }
-        }
+        public float Duranium => _duranium;
 
-        public float Food
-        {
-            get { return _food; }
-        }
+        public float Food => _food;
 
-        public float Morale
-        {
-            get { return _morale; }
-        }
+        public float Morale => _morale;
 
-        public ProductionFacilityDescriptor FoodPF
-        {
-            get { return _foodPF; }
-        }
+        public ProductionFacilityDescriptor FoodPF => _foodPF;
 
-        public ProductionFacilityDescriptor IndustryPF
-        {
-            get { return _industryPF; }
-        }
+        public ProductionFacilityDescriptor IndustryPF => _industryPF;
 
-        public ProductionFacilityDescriptor EnergyPF
-        {
-            get { return _energyPF; }
-        }
+        public ProductionFacilityDescriptor EnergyPF => _energyPF;
 
-        public ProductionFacilityDescriptor ResearchPF
-        {
-            get { return _researchPF; }
-        }
+        public ProductionFacilityDescriptor ResearchPF => _researchPF;
 
-        public ProductionFacilityDescriptor IntelligencePF
-        {
-            get { return _intelligencePF; }
-        }
+        public ProductionFacilityDescriptor IntelligencePF => _intelligencePF;
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -607,21 +725,28 @@ namespace Supremacy.Universe
         #region Methods
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
         public StarSystemDescriptor(XmlElement xmlNode) : this()
         {
             if (xmlNode.HasAttribute("Name"))
+            {
                 Name = xmlNode.GetAttribute("Name").Trim();
-            if (xmlNode.HasAttribute("StarType") && Enum.IsDefined(typeof(StarType), xmlNode.GetAttribute("StarType").Trim()))
-                StarType = (StarType)Enum.Parse(typeof(StarType), xmlNode.GetAttribute("StarType").Trim());
-            if (xmlNode["Inhabitants"] != null)
-                Inhabitants = xmlNode["Inhabitants"].InnerText.Trim().ToUpperInvariant();
+            }
 
-            var bonusElements = xmlNode.GetElementsByTagName("Bonus");
+            if (xmlNode.HasAttribute("StarType") && Enum.IsDefined(typeof(StarType), xmlNode.GetAttribute("StarType").Trim()))
+            {
+                StarType = (StarType)Enum.Parse(typeof(StarType), xmlNode.GetAttribute("StarType").Trim());
+            }
+
+            if (xmlNode["Inhabitants"] != null)
+            {
+                Inhabitants = xmlNode["Inhabitants"].InnerText.Trim().ToUpperInvariant();
+            }
+
+            XmlNodeList bonusElements = xmlNode.GetElementsByTagName("Bonus");
             if (bonusElements.Count > 0)
             {
                 _bonuses = SystemBonus.NoBonus;
@@ -629,31 +754,35 @@ namespace Supremacy.Universe
                 foreach (XmlElement bonusElement in bonusElements)
                 {
                     if (Enum.IsDefined(typeof(SystemBonus), bonusElement.GetAttribute("Type").Trim()))
+                    {
                         AddBonus((SystemBonus)Enum.Parse(typeof(SystemBonus), bonusElement.GetAttribute("Type").Trim()));
+                    }
                 }
             }
 
             if (xmlNode["Planets"] != null)
             {
                 foreach (XmlElement planetElement in xmlNode["Planets"].GetElementsByTagName("Planet"))
+                {
                     Planets.Add(new PlanetDescriptor(planetElement));
+                }
             }
 
-            var startingLevelTech = xmlNode.GetElementsByTagName("TechLevel");
+            XmlNodeList startingLevelTech = xmlNode.GetElementsByTagName("TechLevel");
             if (startingLevelTech.Count > 0)
             {
-                var curStartingLevel = GameContext.Current.Options.StartingTechLevel.ToString().ToUpperInvariant();
+                string curStartingLevel = GameContext.Current.Options.StartingTechLevel.ToString().ToUpperInvariant();
                 foreach (XmlElement techLevel in startingLevelTech)
                 {
                     if (techLevel.HasAttribute("Name"))
                     {
-                        var techLevelName = techLevel.GetAttribute("Name").Trim().ToUpperInvariant();
+                        string techLevelName = techLevel.GetAttribute("Name").Trim().ToUpperInvariant();
                         if (techLevelName.Equals(curStartingLevel))
                         {
                             // population ratio
                             if (techLevel.HasAttribute("PopulationRatio"))
                             {
-                                var popRatio = techLevel.GetAttribute("PopulationRatio").Trim().ToUpperInvariant();
+                                string popRatio = techLevel.GetAttribute("PopulationRatio").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _populationRatio = float.Parse(popRatio, System.Globalization.CultureInfo.InvariantCulture) / 100.0f;
@@ -667,7 +796,7 @@ namespace Supremacy.Universe
                             // credits
                             if (techLevel.HasAttribute("Credits"))
                             {
-                                var credits = techLevel.GetAttribute("Credits").Trim().ToUpperInvariant();
+                                string credits = techLevel.GetAttribute("Credits").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _credits = float.Parse(credits, System.Globalization.CultureInfo.InvariantCulture);
@@ -681,7 +810,7 @@ namespace Supremacy.Universe
                             // Resources
                             if (techLevel.HasAttribute("Deuterium"))
                             {
-                                var res = techLevel.GetAttribute("Deuterium").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Deuterium").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _deuterium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -694,7 +823,7 @@ namespace Supremacy.Universe
 
                             if (techLevel.HasAttribute("Dilithium"))
                             {
-                                var res = techLevel.GetAttribute("Dilithium").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Dilithium").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _dilithium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -705,12 +834,12 @@ namespace Supremacy.Universe
                                 }
                             }
 
-                            if (techLevel.HasAttribute("RawMaterials"))
+                            if (techLevel.HasAttribute("Duranium"))
                             {
-                                var res = techLevel.GetAttribute("RawMaterials").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Duranium").Trim().ToUpperInvariant();
                                 try
                                 {
-                                    _rawMaterials = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
+                                    _duranium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
                                 catch (Exception e)
                                 {
@@ -720,7 +849,7 @@ namespace Supremacy.Universe
 
                             if (techLevel.HasAttribute("Food"))
                             {
-                                var res = techLevel.GetAttribute("Food").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Food").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _food = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -734,7 +863,7 @@ namespace Supremacy.Universe
                             // morale
                             if (techLevel.HasAttribute("Morale"))
                             {
-                                var res = techLevel.GetAttribute("Morale").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Morale").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _morale = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -749,13 +878,11 @@ namespace Supremacy.Universe
                             if (techLevel["Food"] != null)
                             {
                                 XmlElement pf = techLevel["Food"];
-
-                                _foodPF = new ProductionFacilityDescriptor();
-                                _foodPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _foodPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _foodPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -767,7 +894,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _foodPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -783,12 +910,11 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Industry"];
 
-                                _industryPF = new ProductionFacilityDescriptor();
-                                _industryPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _industryPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _industryPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -800,7 +926,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _industryPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -816,12 +942,12 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Energy"];
 
-                                _energyPF = new ProductionFacilityDescriptor();
-                                _energyPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _energyPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
+
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _energyPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -833,7 +959,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _energyPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -849,12 +975,11 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Research"];
 
-                                _researchPF = new ProductionFacilityDescriptor();
-                                _researchPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _researchPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _researchPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -866,7 +991,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _researchPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -882,12 +1007,11 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Intelligence"];
 
-                                _intelligencePF = new ProductionFacilityDescriptor();
-                                _intelligencePF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _intelligencePF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _intelligencePF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -899,7 +1023,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _intelligencePF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -912,7 +1036,7 @@ namespace Supremacy.Universe
                             }
 
                             // ships to be spawned
-                            var startingShips = techLevel.GetElementsByTagName("Ship");
+                            XmlNodeList startingShips = techLevel.GetElementsByTagName("Ship");
                             if (startingShips.Count > 0)
                             {
                                 foreach (XmlElement ship in startingShips)
@@ -920,7 +1044,7 @@ namespace Supremacy.Universe
                                     int shipCount = 1;
                                     if (ship.HasAttribute("Count"))
                                     {
-                                        var val = ship.GetAttribute("Count").Trim().ToUpperInvariant();
+                                        string val = ship.GetAttribute("Count").Trim().ToUpperInvariant();
                                         try
                                         {
                                             shipCount = int.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -934,12 +1058,14 @@ namespace Supremacy.Universe
 
                                     string shipDesign = ship.InnerText.Trim().ToUpperInvariant();
                                     for (int i = 0; i < shipCount; i++)
+                                    {
                                         _startingShips.Add(shipDesign);
+                                    }
                                 }
                             }
 
                             // shipyards to be spawned
-                            var startingShipyards = techLevel.GetElementsByTagName("Shipyard");
+                            XmlNodeList startingShipyards = techLevel.GetElementsByTagName("Shipyard");
                             if (startingShipyards.Count > 0)
                             {
                                 foreach (XmlElement shipyard in startingShipyards)
@@ -949,7 +1075,7 @@ namespace Supremacy.Universe
                             }
 
                             // buildings to be spawned
-                            var startingBuildings = techLevel.GetElementsByTagName("Building");
+                            XmlNodeList startingBuildings = techLevel.GetElementsByTagName("Building");
                             if (startingBuildings.Count > 0)
                             {
                                 foreach (XmlElement building in startingBuildings)
@@ -959,7 +1085,7 @@ namespace Supremacy.Universe
                             }
 
                             // outposts to be spawned
-                            var startingOutposts = techLevel.GetElementsByTagName("SpaceStation");
+                            XmlNodeList startingOutposts = techLevel.GetElementsByTagName("SpaceStation");
                             if (startingOutposts.Count > 0)
                             {
                                 foreach (XmlElement outpost in startingOutposts)
@@ -969,7 +1095,7 @@ namespace Supremacy.Universe
                             }
 
                             // OBs to be spawned
-                            var startingOBs = techLevel.GetElementsByTagName("OrbitalBattery");
+                            XmlNodeList startingOBs = techLevel.GetElementsByTagName("OrbitalBattery");
                             if (startingOBs.Count > 0)
                             {
                                 foreach (XmlElement OB in startingOBs)
@@ -977,7 +1103,7 @@ namespace Supremacy.Universe
                                     int OBCount = 1;
                                     if (OB.HasAttribute("Count"))
                                     {
-                                        var val = OB.GetAttribute("Count").Trim().ToUpperInvariant();
+                                        string val = OB.GetAttribute("Count").Trim().ToUpperInvariant();
                                         try
                                         {
                                             OBCount = int.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -990,7 +1116,9 @@ namespace Supremacy.Universe
 
                                     string OBDesign = OB.InnerText.Trim().ToUpperInvariant();
                                     for (int i = 0; i < OBCount; i++)
+                                    {
                                         _startingOrbitalBatteries.Add(OBDesign);
+                                    }
                                 }
                             }
 
@@ -1003,26 +1131,31 @@ namespace Supremacy.Universe
 
         public void AppendXml(XmlElement baseElement)
         {
-            var systemElement = baseElement.OwnerDocument.CreateElement("StarSystem");
+            XmlElement systemElement = baseElement.OwnerDocument.CreateElement("StarSystem");
 
             if (IsNameDefined)
+            {
                 systemElement.SetAttribute("Name", Name);
+            }
+
             if (IsStarTypeDefined)
+            {
                 systemElement.SetAttribute("StarType", StarType.Value.ToString());
+            }
 
             if (IsInhabitantsDefined)
             {
-                var inhabitantsElement = systemElement.OwnerDocument.CreateElement("Inhabitants");
+                XmlElement inhabitantsElement = systemElement.OwnerDocument.CreateElement("Inhabitants");
                 inhabitantsElement.InnerText = Inhabitants;
-                systemElement.AppendChild(inhabitantsElement);
+                _ = systemElement.AppendChild(inhabitantsElement);
             }
 
-            var bonusesElement = systemElement.OwnerDocument.CreateElement("Bonuses");
+            XmlElement bonusesElement = systemElement.OwnerDocument.CreateElement("Bonuses");
             if (Bonuses == SystemBonus.NoBonus)
             {
-                var bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
+                XmlElement bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
                 bonusElement.SetAttribute("Type", SystemBonus.NoBonus.ToString());
-                bonusesElement.AppendChild(bonusElement);
+                _ = bonusesElement.AppendChild(bonusElement);
             }
             else
             {
@@ -1030,27 +1163,27 @@ namespace Supremacy.Universe
                 {
                     if ((bonus != SystemBonus.NoBonus) && HasBonus(bonus))
                     {
-                        var bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
+                        XmlElement bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
                         bonusElement.SetAttribute("Type", bonus.ToString());
-                        bonusesElement.AppendChild(bonusElement);
+                        _ = bonusesElement.AppendChild(bonusElement);
                     }
                 }
             }
-            systemElement.AppendChild(bonusesElement);
+            _ = systemElement.AppendChild(bonusesElement);
 
             if (Planets.Count > 0)
             {
-                var planetsElement = systemElement.OwnerDocument.CreateElement("Planets");
-                foreach (var planet in Planets)
+                XmlElement planetsElement = systemElement.OwnerDocument.CreateElement("Planets");
+                foreach (PlanetDescriptor planet in Planets)
                 {
-                    var planetElement = systemElement.OwnerDocument.CreateElement("Planet");
+                    XmlElement planetElement = systemElement.OwnerDocument.CreateElement("Planet");
                     planet.AppendXml(planetElement);
-                    planetsElement.AppendChild(planetElement);
+                    _ = planetsElement.AppendChild(planetElement);
                 }
-                systemElement.AppendChild(planetsElement);
+                _ = systemElement.AppendChild(planetsElement);
             }
 
-            baseElement.AppendChild(systemElement);
+            _ = baseElement.AppendChild(systemElement);
         }
     }
 
@@ -1068,7 +1201,7 @@ namespace Supremacy.Universe
 
         public bool HasBonus(PlanetBonus bonus)
         {
-            return ((bonus & _bonuses) == bonus);
+            return (bonus & _bonuses) == bonus;
         }
 
         public void AddBonus(PlanetBonus bonus)
@@ -1084,7 +1217,7 @@ namespace Supremacy.Universe
         #region Properties
         public PlanetBonus Bonuses
         {
-            get { return _bonuses; }
+            get => _bonuses;
             set
             {
                 _bonuses = value;
@@ -1094,41 +1227,29 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("Bonuses")]
-        public bool HasBonuses
-        {
-            get { return (_bonuses != 0); }
-        }
+        public bool HasBonuses => _bonuses != 0;
 
         [DependsOn("IsSinglePlanet")]
         [DependsOn("Name")]
-        public bool IsNameDefined
-        {
-            get { return (_planetName != null); }
-        }
+        public bool IsNameDefined => _planetName != null;
 
         [DependsOn("IsSinglePlanet")]
         [DependsOn("Size")]
-        public bool IsSizeDefined
-        {
-            get { return (IsSinglePlanet && (_planetSize != null)); }
-        }
+        public bool IsSizeDefined => IsSinglePlanet && (_planetSize != null);
 
         [DependsOn("IsSinglePlanet")]
         [DependsOn("Type")]
-        public bool IsTypeDefined
-        {
-            get { return (IsSinglePlanet && (_planetType != null)); }
-        }
+        public bool IsTypeDefined => IsSinglePlanet && (_planetType != null);
 
         [DependsOn("IsSinglePlanet")]
         public string Name
         {
-            get { return (IsSinglePlanet ? (_planetName ?? String.Empty) : String.Empty); }
+            get => IsSinglePlanet ? (_planetName ?? string.Empty) : string.Empty;
             set
             {
                 if (value != _planetName)
                 {
-                    _planetName = (value != null) ? value.Trim() : null;
+                    _planetName = value?.Trim();
                     OnPropertyChanged("Name");
                     OnPropertyChanged("IsNameDefined");
                 }
@@ -1136,20 +1257,20 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("MaxNumberOfPlanets")]
-        public bool IsSinglePlanet
-        {
-            get { return (_maxNumberOfPlanets == 1); }
-        }
+        public bool IsSinglePlanet => _maxNumberOfPlanets == 1;
 
         public int MinNumberOfPlanets
         {
-            get { return _minNumberOfPlanets; }
+            get => _minNumberOfPlanets;
             set
             {
                 if (value != _minNumberOfPlanets)
                 {
                     if (value < 0)
+                    {
                         throw new ArgumentOutOfRangeException("value", "value must be non-negative");
+                    }
+
                     _minNumberOfPlanets = value;
                     OnPropertyChanged("MinNumberOfPlanets");
                 }
@@ -1158,15 +1279,21 @@ namespace Supremacy.Universe
 
         public int MaxNumberOfPlanets
         {
-            get { return _maxNumberOfPlanets; }
+            get => _maxNumberOfPlanets;
             set
             {
                 if (value != _maxNumberOfPlanets)
                 {
                     if (value < 1)
+                    {
                         throw new ArgumentOutOfRangeException("value", "value must be greater than zero");
+                    }
+
                     if (value > StarSystem.MaxPlanetsPerSystem)
+                    {
                         throw new ArgumentOutOfRangeException("value", "value must be less than MaxPlanetsPerSystem");
+                    }
+
                     _maxNumberOfPlanets = value;
                     OnPropertyChanged("MaxNumberOfPlanets");
                     OnIsSinglePlanetChanged();
@@ -1177,7 +1304,7 @@ namespace Supremacy.Universe
         [DependsOn("IsSinglePlanet")]
         public PlanetType? Type
         {
-            get { return _planetType; }
+            get => _planetType;
             set
             {
                 if (value != _planetType)
@@ -1186,9 +1313,13 @@ namespace Supremacy.Universe
                     OnPropertyChanged("Type");
                     OnPropertyChanged("IsTypeDefined");
                     if (_planetType == PlanetType.Asteroids)
+                    {
                         Size = PlanetSize.Asteroids;
+                    }
                     else if (_planetType == PlanetType.GasGiant)
+                    {
                         Size = PlanetSize.GasGiant;
+                    }
                 }
             }
         }
@@ -1196,7 +1327,7 @@ namespace Supremacy.Universe
         [DependsOn("IsSinglePlanet")]
         public PlanetSize? Size
         {
-            get { return _planetSize; }
+            get => _planetSize;
             set
             {
                 if (value != _planetSize)
@@ -1205,9 +1336,13 @@ namespace Supremacy.Universe
                     OnPropertyChanged("Size");
                     OnPropertyChanged("IsSizeDefined");
                     if (_planetSize == PlanetSize.Asteroids)
+                    {
                         Type = PlanetType.Asteroids;
+                    }
                     else if (_planetSize == PlanetSize.GasGiant)
+                    {
                         Type = PlanetType.GasGiant;
+                    }
                 }
             }
         }
@@ -1228,8 +1363,7 @@ namespace Supremacy.Universe
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public PlanetDescriptor()
@@ -1240,20 +1374,33 @@ namespace Supremacy.Universe
 
         public PlanetDescriptor(XmlElement xmlNode) : this()
         {
-            int tempInteger;
 
             if (xmlNode.HasAttribute("Name"))
+            {
                 Name = xmlNode.GetAttribute("Name").Trim();
-            if (xmlNode.HasAttribute("Size") && Enum.IsDefined(typeof(PlanetSize), xmlNode.GetAttribute("Size").Trim()))
-                Size = (PlanetSize)Enum.Parse(typeof(PlanetSize), xmlNode.GetAttribute("Size").Trim());
-            if (xmlNode.HasAttribute("Type") && Enum.IsDefined(typeof(PlanetType), xmlNode.GetAttribute("Type").Trim()))
-                Type = (PlanetType)Enum.Parse(typeof(PlanetType), xmlNode.GetAttribute("Type").Trim());
-            if ((xmlNode.HasAttribute("MaxNumberOfPlanets")) && int.TryParse(xmlNode.GetAttribute("MaxNumberOfPlanets").Trim(), out tempInteger))
-                MaxNumberOfPlanets = tempInteger;
-            if ((xmlNode.HasAttribute("MinNumberOfPlanets")) && int.TryParse(xmlNode.GetAttribute("MinNumberOfPlanets").Trim(), out tempInteger))
-                MinNumberOfPlanets = tempInteger;
+            }
 
-            var bonusElements = xmlNode.GetElementsByTagName("Bonus");
+            if (xmlNode.HasAttribute("Size") && Enum.IsDefined(typeof(PlanetSize), xmlNode.GetAttribute("Size").Trim()))
+            {
+                Size = (PlanetSize)Enum.Parse(typeof(PlanetSize), xmlNode.GetAttribute("Size").Trim());
+            }
+
+            if (xmlNode.HasAttribute("Type") && Enum.IsDefined(typeof(PlanetType), xmlNode.GetAttribute("Type").Trim()))
+            {
+                Type = (PlanetType)Enum.Parse(typeof(PlanetType), xmlNode.GetAttribute("Type").Trim());
+            }
+
+            if (xmlNode.HasAttribute("MaxNumberOfPlanets") && int.TryParse(xmlNode.GetAttribute("MaxNumberOfPlanets").Trim(), out int tempInteger))
+            {
+                MaxNumberOfPlanets = tempInteger;
+            }
+
+            if (xmlNode.HasAttribute("MinNumberOfPlanets") && int.TryParse(xmlNode.GetAttribute("MinNumberOfPlanets").Trim(), out tempInteger))
+            {
+                MinNumberOfPlanets = tempInteger;
+            }
+
+            XmlNodeList bonusElements = xmlNode.GetElementsByTagName("Bonus");
             if (bonusElements.Count > 0)
             {
                 _bonuses = PlanetBonus.NoBonus;
@@ -1261,16 +1408,22 @@ namespace Supremacy.Universe
                 foreach (XmlElement bonusElement in bonusElements)
                 {
                     if (Enum.IsDefined(typeof(PlanetBonus), bonusElement.GetAttribute("Type").Trim()))
+                    {
                         AddBonus((PlanetBonus)Enum.Parse(typeof(PlanetBonus), bonusElement.GetAttribute("Type").Trim()));
+                    }
                 }
             }
 
             if (!IsSizeDefined && IsTypeDefined)
             {
                 if (Type.Value == PlanetType.Asteroids)
+                {
                     Size = PlanetSize.Asteroids;
+                }
                 else if (Type.Value == PlanetType.GasGiant)
+                {
                     Size = PlanetSize.GasGiant;
+                }
             }
         }
 
@@ -1279,11 +1432,20 @@ namespace Supremacy.Universe
             if (IsSinglePlanet)
             {
                 if (IsNameDefined)
+                {
                     baseElement.SetAttribute("Name", Name);
+                }
+
                 if (IsTypeDefined)
+                {
                     baseElement.SetAttribute("Type", Type.ToString());
+                }
+
                 if (IsSizeDefined)
+                {
                     baseElement.SetAttribute("Size", Size.ToString());
+                }
+
                 if (HasBonuses)
                 {
                     foreach (PlanetBonus bonus in EnumUtilities.GetValues<PlanetBonus>())
@@ -1292,7 +1454,7 @@ namespace Supremacy.Universe
                         {
                             XmlElement bonusElement = baseElement.OwnerDocument.CreateElement("Bonus");
                             bonusElement.SetAttribute("Type", bonus.ToString());
-                            baseElement.AppendChild(bonusElement);
+                            _ = baseElement.AppendChild(bonusElement);
                         }
                     }
                 }

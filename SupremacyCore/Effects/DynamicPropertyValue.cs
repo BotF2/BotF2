@@ -26,94 +26,82 @@ namespace Supremacy.Effects
 
         private bool _isValid;
         private Flags _flags;
-        private object _value;
         private object _currentValue = DynamicProperty.UnsetValue;
-
-        private readonly DynamicProperty<TValue> _property;
         private readonly DynamicObject _sourceObject;
         private readonly DynamicPropertyMetadata<TValue> _metadata;
         private List<DynamicPropertyModifier<TValue>> _modifiers;
 
-        public DynamicProperty<TValue> Property
-        {
-            get { return _property; }
-        }
+        public DynamicProperty<TValue> Property { get; }
 
         private void SetFlag(Flags flag, bool value)
         {
             if (value)
+            {
                 _flags |= flag;
+            }
             else
+            {
                 _flags &= ~flag;
+            }
         }
 
         private bool GetFlag(Flags flag)
         {
-            return ((_flags & flag) == flag);
+            return (_flags & flag) == flag;
         }
 
         internal DynamicPropertyValue([NotNull] DynamicProperty<TValue> property, [NotNull] DynamicObject sourceObject)
         {
-            if (property == null)
-                throw new ArgumentNullException("property");
-            if (sourceObject == null)
-                throw new ArgumentNullException("sourceObject");
-
-            _property = property;
-            _sourceObject = sourceObject;
+            Property = property ?? throw new ArgumentNullException("property");
+            _sourceObject = sourceObject ?? throw new ArgumentNullException("sourceObject");
             _metadata = property.GetMetadata(sourceObject.DynamicObjectType);
-            _value = _metadata.DefaultValue;
+            Value = _metadata.DefaultValue;
             _modifiers = EmptyModifiers;
 
-            UsesCoercion = (_metadata.CoerceValueCallback != null);
+            UsesCoercion = _metadata.CoerceValueCallback != null;
         }
 
         internal bool IsCoerced
         {
-            get { return GetFlag(Flags.IsCoerced); }
+            get => GetFlag(Flags.IsCoerced);
             private set
             {
                 SetFlag(Flags.IsCoerced, value);
 
                 if (!value)
+                {
                     IsCoercedWithComputedValue = false;
+                }
             }
         }
 
         internal bool IsUpdating
         {
-            get { return GetFlag(Flags.IsUpdating); }
-            private set { SetFlag(Flags.IsUpdating, value); }
+            get => GetFlag(Flags.IsUpdating);
+            private set => SetFlag(Flags.IsUpdating, value);
         }
 
         internal bool IsComputed
         {
-            get { return GetFlag(Flags.IsComputed); }
-            private set { SetFlag(Flags.IsComputed, value); }
+            get => GetFlag(Flags.IsComputed);
+            private set => SetFlag(Flags.IsComputed, value);
         }
 
         internal bool HasModifiers
         {
-            get { return GetFlag(Flags.HasModifiers); }
-            private set { SetFlag(Flags.HasModifiers, value); }
+            get => GetFlag(Flags.HasModifiers);
+            private set => SetFlag(Flags.HasModifiers, value);
         }
 
         internal bool UsesCoercion
         {
-            get { return GetFlag(Flags.UsesCoercion); }
-            private set { SetFlag(Flags.UsesCoercion, value); }
+            get => GetFlag(Flags.UsesCoercion);
+            private set => SetFlag(Flags.UsesCoercion, value);
         }
 
-        internal object Value
-        {
-            get { return _value; }
-            private set { _value = value; }
-        }
+        internal object Value { get; private set; }
 
-        internal ModifiedValue<TValue> ModifiedValue
-        {
-            get { return _value as ModifiedValue<TValue>; }
-        }
+        internal ModifiedValue<TValue> ModifiedValue => Value as ModifiedValue<TValue>;
 
         internal void ResetCoercedValue(bool updateValue)
         {
@@ -133,12 +121,14 @@ namespace Supremacy.Effects
                     }
                     else if (ModifiedValue != null)
                     {
-                        ModifiedValue.CoercedValue = default(TValue);
+                        ModifiedValue.CoercedValue = default;
                     }
                 }
 
                 if (updateValue)
+                {
                     UpdateValue();
+                }
             }
         }
 
@@ -154,12 +144,18 @@ namespace Supremacy.Effects
                     IsCoercedWithComputedValue = false;
 
                     if (UsesCoercion)
+                    {
                         ResetCoercedValue(false);
+                    }
                     else if (!HasModifiers)
+                    {
                         Value = BaseValue;
+                    }
 
                     if (ModifiedValue != null)
-                        ModifiedValue.ComputedValue = default(TValue);
+                    {
+                        ModifiedValue.ComputedValue = default;
+                    }
                 }
 
                 UpdateValue();
@@ -169,12 +165,16 @@ namespace Supremacy.Effects
         internal void AddModifier([NotNull] DynamicPropertyModifier<TValue> modifier)
         {
             if (modifier == null)
+            {
                 throw new ArgumentNullException("modifier");
+            }
 
             lock (DynamicProperty.Synchronized)
             {
                 if (_modifiers == EmptyModifiers)
+                {
                     _modifiers = new List<DynamicPropertyModifier<TValue>>();
+                }
 
                 _modifiers.Add(modifier);
                 modifier.Invalidated += OnModifierInvalidated;
@@ -182,7 +182,9 @@ namespace Supremacy.Effects
                 HasModifiers = true;
 
                 if (IsUpdating)
+                {
                     return;
+                }
 
                 _isValid = false;
 
@@ -195,27 +197,38 @@ namespace Supremacy.Effects
             lock (DynamicProperty.Synchronized)
             {
                 if (IsUpdating)
+                {
                     return;
+                }
+
                 if (IsComputed)
+                {
                     ResetComputedValue();
+                }
             }
         }
 
         internal void RemoveModifier([NotNull] DynamicPropertyModifier<TValue> modifier)
         {
             if (modifier == null)
+            {
                 throw new ArgumentNullException("modifier");
+            }
 
             lock (DynamicProperty.Synchronized)
             {
                 if ((_modifiers == EmptyModifiers) || !_modifiers.Remove(modifier))
+                {
                     return;
+                }
 
                 modifier.Invalidated -= OnModifierInvalidated;
-                HasModifiers = (_modifiers.Count > 0);
+                HasModifiers = _modifiers.Count > 0;
 
                 if (IsUpdating)
+                {
                     return;
+                }
 
                 _isValid = false;
 
@@ -225,20 +238,19 @@ namespace Supremacy.Effects
 
         private ModifiedValue<TValue> EnsureModifiedValue()
         {
-            var modifiedValue = _value as ModifiedValue<TValue>;
-            if (modifiedValue == null)
+            if (!(Value is ModifiedValue<TValue> modifiedValue))
             {
-                if (_value == null)
+                if (Value == null)
                 {
-                    _value = modifiedValue = new ModifiedValue<TValue>();
+                    Value = modifiedValue = new ModifiedValue<TValue>();
                 }
                 else
                 {
-                    modifiedValue = _value as ModifiedValue<TValue>;
+                    modifiedValue = Value as ModifiedValue<TValue>;
                     if (modifiedValue == null)
                     {
-                        modifiedValue = new ModifiedValue<TValue> { BaseValue = (TValue)_value };
-                        _value = modifiedValue;
+                        modifiedValue = new ModifiedValue<TValue> { BaseValue = (TValue)Value };
+                        Value = modifiedValue;
                     }
                 }
             }
@@ -255,7 +267,9 @@ namespace Supremacy.Effects
             lock (DynamicProperty.Synchronized)
             {
                 if (DynamicProperty<TValue>.ValuesEqual(baseValue, BaseValue))
+                {
                     return;
+                }
 
                 ResetCore(baseValue);
             }
@@ -267,7 +281,7 @@ namespace Supremacy.Effects
             {
                 VerifyNotUpdating();
 
-                _value = baseValue;
+                Value = baseValue;
 
                 IsCoerced = false;
                 IsCoercedWithComputedValue = false;
@@ -289,20 +303,24 @@ namespace Supremacy.Effects
             lock (DynamicProperty.Synchronized)
             {
                 if (_isValid)
+                {
                     return;
+                }
 
-                var lastCurrentValue = (_currentValue == DynamicProperty.UnsetValue) ? _metadata.DefaultValue : _currentValue;
+                object lastCurrentValue = (_currentValue == DynamicProperty.UnsetValue) ? _metadata.DefaultValue : _currentValue;
 
                 _currentValue = EnsureValue();
                 _isValid = true;
 
                 if (Equals(lastCurrentValue, _currentValue))
+                {
                     return;
+                }
 
                 OnComputedValueChanged();
 
-                var changeNotificationArgs = new DynamicPropertyChangedEventArgs<TValue>(
-                    _property,
+                DynamicPropertyChangedEventArgs<TValue> changeNotificationArgs = new DynamicPropertyChangedEventArgs<TValue>(
+                    Property,
                     (TValue)lastCurrentValue,
                     (TValue)_currentValue);
 
@@ -314,9 +332,11 @@ namespace Supremacy.Effects
 
         private void PublishChangeNotifications(DynamicPropertyChangedEventArgs<TValue> args)
         {
-            var propertyChangedCallback = _metadata.PropertyChangedCallback;
+            DynamicPropertyChangedCallback<TValue> propertyChangedCallback = _metadata.PropertyChangedCallback;
             if (propertyChangedCallback == null)
+            {
                 return;
+            }
 
             propertyChangedCallback(
                 _sourceObject,
@@ -325,24 +345,29 @@ namespace Supremacy.Effects
 
         internal bool IsCoercedWithComputedValue
         {
-            get { return GetFlag(Flags.IsCoercedWithCurrentValue); }
-            set { SetFlag(Flags.IsCoercedWithCurrentValue, value); }
+            get => GetFlag(Flags.IsCoercedWithCurrentValue);
+            set => SetFlag(Flags.IsCoercedWithCurrentValue, value);
         }
 
         internal void SetCoercedValue(TValue value, bool skipBaseValueChecks, bool coerceWithComputedValue)
         {
             EnsureModifiedValue().CoercedValue = value;
-            
+
             IsCoerced = true;
-            
+
             if (coerceWithComputedValue)
+            {
                 IsCoercedWithComputedValue = true;
+            }
         }
 
         private void VerifyNotUpdating()
         {
             if (!IsUpdating)
+            {
                 return;
+            }
+
             throw new InvalidOperationException(
                 "DynamicProperty modifiers may not modify the property's base value.");
         }
@@ -350,13 +375,16 @@ namespace Supremacy.Effects
         private TValue PerformCoercion(TValue baseValue)
         {
             if (!UsesCoercion)
+            {
                 return baseValue;
+            }
 
-            bool revertToBaseValue;
-            var newValue = _metadata.CoerceValueCallback(_sourceObject, baseValue, out revertToBaseValue);
+            TValue newValue = _metadata.CoerceValueCallback(_sourceObject, baseValue, out bool revertToBaseValue);
 
             if (revertToBaseValue)
+            {
                 return baseValue;
+            }
 
             return newValue;
         }
@@ -370,7 +398,7 @@ namespace Supremacy.Effects
                     Debug.Assert(ModifiedValue != null);
                     return ModifiedValue.CoercedValue;
                 }
-                
+
                 if (IsComputed)
                 {
                     Debug.Assert(ModifiedValue != null);
@@ -380,7 +408,7 @@ namespace Supremacy.Effects
                 return BaseValue;
             }
 
-            var effectiveValue = BaseValue;
+            TValue effectiveValue = BaseValue;
 
             IsUpdating = true;
 
@@ -393,10 +421,10 @@ namespace Supremacy.Effects
                         IsCoerced = false;
                         IsCoercedWithComputedValue = false;
 
-                        var baseValue = BaseValue;
-                        var computedValue = baseValue;
+                        TValue baseValue = BaseValue;
+                        TValue computedValue = baseValue;
 
-                        for (var originalModifiers = new HashSet<DynamicPropertyModifier<TValue>>(_modifiers);
+                        for (HashSet<DynamicPropertyModifier<TValue>> originalModifiers = new HashSet<DynamicPropertyModifier<TValue>>(_modifiers);
                              /*!_modifiers.SetEquals(originalModifiers)*/;
                              originalModifiers = new HashSet<DynamicPropertyModifier<TValue>>(_modifiers),
                              computedValue = baseValue)
@@ -405,7 +433,9 @@ namespace Supremacy.Effects
                                 computedValue, (current, t) => t.ProvideValue(baseValue, current));
 
                             if (_modifiers.SetEquals(originalModifiers))
+                            {
                                 break;
+                            }
                         }
 
                         effectiveValue = EnsureModifiedValue().ComputedValue = computedValue;
@@ -426,7 +456,9 @@ namespace Supremacy.Effects
                     IsCoerced = true;
 
                     if (IsComputed)
+                    {
                         IsCoercedWithComputedValue = true;
+                    }
                 }
 
                 return effectiveValue;
@@ -446,20 +478,25 @@ namespace Supremacy.Effects
             {
                 lock (DynamicProperty.Synchronized)
                 {
-                    if (_value == DynamicProperty.UnsetValue)
+                    if (Value == DynamicProperty.UnsetValue)
+                    {
                         return _metadata.DefaultValue;
+                    }
 
-                    var modifiedValue = _value as ModifiedValue<TValue>;
-                    if (modifiedValue != null)
+                    if (Value is ModifiedValue<TValue> modifiedValue)
+                    {
                         return modifiedValue.BaseValue;
+                    }
 
-                    return (TValue)_value;
+                    return (TValue)Value;
                 }
             }
             set
             {
                 if (Equals(value, BaseValue))
+                {
                     return;
+                }
 
                 ResetCore(value);
             }
@@ -467,9 +504,7 @@ namespace Supremacy.Effects
 
         protected void OnBaseValueChanged()
         {
-            var handler = BaseValueChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            BaseValueChanged?.Invoke(this, EventArgs.Empty);
 
             OnPropertyChanged("BaseValue");
         }
@@ -484,10 +519,16 @@ namespace Supremacy.Effects
             {
                 lock (DynamicProperty.Synchronized)
                 {
-                    if (_value == DynamicProperty.UnsetValue)
+                    if (Value == DynamicProperty.UnsetValue)
+                    {
                         return _metadata.DefaultValue;
+                    }
+
                     if (!_isValid)
+                    {
                         UpdateValue();
+                    }
+
                     return (TValue)_currentValue;
                 }
             }
@@ -495,9 +536,7 @@ namespace Supremacy.Effects
 
         protected void OnComputedValueChanged()
         {
-            var handler = CurrentValueChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            CurrentValueChanged?.Invoke(this, EventArgs.Empty);
 
             OnPropertyChanged("ComputedValue");
         }
@@ -505,52 +544,54 @@ namespace Supremacy.Effects
 
         #region INotifyPropertyChanged Members
 
-        [field: NonSerializedAttribute]
+        [field: NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeCombine)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
 
                     if (previousValue == valueBeforeRemove)
+                    {
                         return;
+                    }
                 }
             }
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

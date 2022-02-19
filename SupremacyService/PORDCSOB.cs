@@ -22,13 +22,13 @@ namespace Supremacy.WCF
         public override XmlObjectSerializer CreateSerializer(Type type, string name, string ns, IList<Type> knownTypes)
         {
             return new DataContractSerializer(type, name, ns, knownTypes, MaxItemsInObjectGraph, IgnoreExtensionDataObject,
-                true , DataContractSurrogate);
+                true, DataContractSurrogate);
         }
 
         public override XmlObjectSerializer CreateSerializer(Type type, XmlDictionaryString name, XmlDictionaryString ns, IList<Type> knownTypes)
         {
             return new DataContractSerializer(type, name, ns, knownTypes, MaxItemsInObjectGraph, IgnoreExtensionDataObject,
-                true , DataContractSurrogate);
+                true, DataContractSurrogate);
         }
     }
 

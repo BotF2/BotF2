@@ -448,17 +448,15 @@ namespace Supremacy.Client.Controls
         /// <summary>
         /// Initializes the <c>InlineWindow</c> class.
         /// </summary>
-        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling"),
-         SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static InlineWindow()
         {
             // Override default properties
             BorderThicknessProperty.OverrideMetadata(
-                typeof(InlineWindow), 
+                typeof(InlineWindow),
                 new FrameworkPropertyMetadata(new Thickness(4)));
 
             IsTabStopProperty.OverrideMetadata(
-                typeof(InlineWindow), 
+                typeof(InlineWindow),
                 new FrameworkPropertyMetadata(false));
 
             KeyboardNavigation.TabNavigationProperty.OverrideMetadata(
@@ -520,7 +518,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="CanExecuteRoutedEventArgs"/> that contains the event data.</param>
         private static void OnCloseCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             e.CanExecute = container.CanClose;
             e.Handled = true;
         }
@@ -532,7 +530,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">An <see cref="ExecutedRoutedEventArgs"/> that contains the event data.</param>
         private static void OnCloseCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             container.Close();
         }
 
@@ -543,7 +541,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="CanExecuteRoutedEventArgs"/> that contains the event data.</param>
         private static void OnMaximizeCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             e.CanExecute = container.CanMaximizeResolved;
             e.Handled = true;
         }
@@ -555,7 +553,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">An <see cref="ExecutedRoutedEventArgs"/> that contains the event data.</param>
         private static void OnMaximizeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             container.WindowState = WindowState.Maximized;
         }
 
@@ -566,7 +564,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="CanExecuteRoutedEventArgs"/> that contains the event data.</param>
         private static void OnMinimizeCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             e.CanExecute = container.CanMinimizeResolved;
             e.Handled = true;
         }
@@ -578,7 +576,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">An <see cref="ExecutedRoutedEventArgs"/> that contains the event data.</param>
         private static void OnMinimizeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             container.WindowState = WindowState.Minimized;
         }
 
@@ -589,7 +587,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="CanExecuteRoutedEventArgs"/> that contains the event data.</param>
         private static void OnRestoreCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             e.CanExecute = container.CanRestoreResolved;
             e.Handled = true;
         }
@@ -601,7 +599,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">An <see cref="ExecutedRoutedEventArgs"/> that contains the event data.</param>
         private static void OnRestoreCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            var container = (InlineWindow)sender;
+            InlineWindow container = (InlineWindow)sender;
             container.WindowState = WindowState.Normal;
         }
 
@@ -616,7 +614,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> that contains the event data.</param>
         private static void OnActivatedEvent(object sender, RoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnActivated(e);
         }
 
@@ -627,7 +625,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> that contains the event data.</param>
         private static void OnClosedEvent(object sender, RoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnClosed(e);
         }
 
@@ -638,7 +636,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="CancelRoutedEventArgs"/> that contains the event data.</param>
         private static void OnClosingEvent(object sender, CancelRoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnClosing(e);
         }
 
@@ -649,7 +647,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> that contains the event data.</param>
         private static void OnDeactivatedEvent(object sender, RoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnDeactivated(e);
         }
 
@@ -660,7 +658,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> that contains the event data.</param>
         private static void OnDragMovedEvent(object sender, RoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnDragMoved(e);
         }
 
@@ -671,7 +669,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="CancelRoutedEventArgs"/> that contains the event data.</param>
         private static void OnDragMovingEvent(object sender, CancelRoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnDragMoving(e);
         }
 
@@ -682,7 +680,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> that contains the event data.</param>
         private static void OnLocationChangedEvent(object sender, RoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnLocationChanged(e);
         }
 
@@ -693,7 +691,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> that contains the event data.</param>
         private static void OnOpenedEvent(object sender, RoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnOpened(e);
         }
 
@@ -704,7 +702,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> that contains the event data.</param>
         private static void OnStateChangedEvent(object sender, RoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnStateChanged(e);
         }
 
@@ -715,7 +713,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="ContextMenuItemRoutedEventArgs"/> that contains the event data.</param>
         private static void OnTitleBarContextMenuOpeningEvent(object sender, ContextMenuItemRoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnTitleBarContextMenuOpening(e);
         }
 
@@ -726,7 +724,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">The <see cref="CancelRoutedEventArgs"/> that contains the event data.</param>
         private static void OnTitleBarDoubleClickEvent(object sender, CancelRoutedEventArgs e)
         {
-            var window = (InlineWindow)sender;
+            InlineWindow window = (InlineWindow)sender;
             window.OnTitleBarDoubleClick(e);
         }
 
@@ -740,10 +738,7 @@ namespace Supremacy.Client.Controls
         /// <value>
         /// <c>true</c> if the window can maximize; otherwise, <c>false</c>.
         /// </value>
-        internal bool CanMaximizeResolved
-        {
-            get { return ResolveMaximize(ResizeMode, WindowState, WindowStyle); }
-        }
+        internal bool CanMaximizeResolved => ResolveMaximize(ResizeMode, WindowState, WindowStyle);
 
         /// <summary>
         /// Gets whether the window can minimize.
@@ -751,10 +746,7 @@ namespace Supremacy.Client.Controls
         /// <value>
         /// <c>true</c> if the window can minimize; otherwise, <c>false</c>.
         /// </value>
-        internal bool CanMinimizeResolved
-        {
-            get { return ResolveMinimize(ResizeMode, WindowState, WindowStyle); }
-        }
+        internal bool CanMinimizeResolved => ResolveMinimize(ResizeMode, WindowState, WindowStyle);
 
         /// <summary>
         /// Gets whether the window can minimize.
@@ -789,24 +781,35 @@ namespace Supremacy.Client.Controls
         /// <returns>The mouse location during a drag.</returns>
         private Point GetMouseLocation()
         {
-            var parentElement = GetParentElement();
+            UIElement parentElement = GetParentElement();
             if (parentElement != null)
             {
                 // Get the mouse location relative to the parent
-                var location = Mouse.GetPosition(parentElement);
+                Point location = Mouse.GetPosition(parentElement);
 
                 // Get the bounds
-                var bounds = new Rect(new Point(), parentElement.RenderSize);
+                Rect bounds = new Rect(new Point(), parentElement.RenderSize);
 
                 // Ensure location stays in bounds
                 if (location.X >= bounds.Right)
+                {
                     location.X = bounds.Right - 1;
+                }
+
                 if (location.X < bounds.Left)
+                {
                     location.X = bounds.Left;
+                }
+
                 if (location.Y >= bounds.Bottom)
+                {
                     location.Y = bounds.Bottom - 1;
+                }
+
                 if (location.Y < bounds.Top)
+                {
                     location.Y = bounds.Top;
+                }
 
                 return location;
             }
@@ -819,7 +822,7 @@ namespace Supremacy.Client.Controls
         /// <returns>The parent element.</returns>
         private UIElement GetParentElement()
         {
-            var startControl = TemplatedParent ?? (DependencyObject)(Parent as UserControl) ?? this;
+            DependencyObject startControl = TemplatedParent ?? (DependencyObject)(Parent as UserControl) ?? this;
             IInputElement parent = VisualTreeHelper.GetParent(startControl) as Panel;
             return parent as UIElement;
         }
@@ -837,7 +840,7 @@ namespace Supremacy.Client.Controls
             if (WindowState == WindowState.Normal)
             {
                 // Get whether to allow resizing
-                var canResize = false;
+                bool canResize = false;
                 switch (ResizeMode)
                 {
                     case ResizeMode.CanResize:
@@ -847,10 +850,10 @@ namespace Supremacy.Client.Controls
                 }
 
                 // If the point is within the bounds of the window...
-                if ((canResize) && (point.X >= 0) && (point.X < ActualWidth) && (point.Y >= 0) &&
+                if (canResize && (point.X >= 0) && (point.X < ActualWidth) && (point.Y >= 0) &&
                     (point.Y < ActualHeight))
                 {
-                    var borderThickness = BorderThickness;
+                    Thickness borderThickness = BorderThickness;
 
                     // If the point is within a border of the window...
                     if ((point.X < borderThickness.Left) || (point.X >= ActualWidth - borderThickness.Right) ||
@@ -865,10 +868,16 @@ namespace Supremacy.Client.Controls
                                                                   : (WindowStyle == WindowStyle.ToolWindow
                                                                          ? SystemParameters.SmallCaptionHeight
                                                                          : SystemParameters.CaptionHeight))))
+                            {
                                 return ResizeOperation.NorthWest;
+                            }
+
                             if ((point.Y >= ActualHeight - borderThickness.Bottom) &&
                                 (point.Y < ActualHeight))
+                            {
                                 return ResizeOperation.SouthWest;
+                            }
+
                             return ResizeOperation.West;
                         }
                         if ((point.X >= ActualWidth - borderThickness.Right) && (point.X < ActualWidth))
@@ -883,10 +892,12 @@ namespace Supremacy.Client.Controls
                             {
                                 return ResizeOperation.NorthEast;
                             }
-                            
+
                             if ((point.Y >= ActualHeight - borderThickness.Bottom) && (point.Y < ActualHeight))
+                            {
                                 return ResizeOperation.SouthEast;
-                            
+                            }
+
                             return ResizeOperation.East;
                         }
                         if ((point.Y >= 0) && (point.Y < borderThickness.Top))
@@ -919,20 +930,20 @@ namespace Supremacy.Client.Controls
                 {
                     case 1:
                         // Activate
-                        Activate();
+                        _ = Activate();
 
                         // Raise an event
                         if (null != _titleBar)
                         {
                             // Get current context menu
-                            var contextMenu = _titleBar.ContextMenu;
+                            ContextMenu contextMenu = _titleBar.ContextMenu;
                             if (null != contextMenu)
                             {
                                 contextMenu.Placement = PlacementMode.Bottom;
                                 contextMenu.PlacementTarget = _icon;
                             }
 
-                            var eventArgs = new ContextMenuItemRoutedEventArgs(
+                            ContextMenuItemRoutedEventArgs eventArgs = new ContextMenuItemRoutedEventArgs(
                                 contextMenu, TitleBarContextMenuOpeningEvent, this);
                             RaiseEvent(eventArgs);
                             e.Handled = eventArgs.Handled;
@@ -949,14 +960,19 @@ namespace Supremacy.Client.Controls
                             }
 
                             if (null != contextMenu)
+                            {
                                 contextMenu.IsOpen = true;
+                            }
 
                             e.Handled = true;
                         }
                         break;
                     case 2:
                         if (CanClose)
+                        {
                             Close();
+                        }
+
                         e.Handled = true;
                         break;
                 }
@@ -970,13 +986,17 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="DependencyPropertyChangedEventArgs"/> that contains the event data.</param>
         private static void OnIsActivePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var window = (InlineWindow)obj;
+            InlineWindow window = (InlineWindow)obj;
 
             // Raise an event
             if (window.IsKeyboardFocusWithin)
+            {
                 window.RaiseEvent(new RoutedEventArgs(ActivatedEvent, window));
+            }
             else
+            {
                 window.RaiseEvent(new RoutedEventArgs(DeactivatedEvent, window));
+            }
         }
 
         /// <summary>
@@ -986,7 +1006,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="DependencyPropertyChangedEventArgs"/> that contains the event data.</param>
         private static void OnLeftPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var window = (InlineWindow)obj;
+            InlineWindow window = (InlineWindow)obj;
             window.RaiseEvent(new RoutedEventArgs(LocationChangedEvent, window));
         }
 
@@ -998,11 +1018,11 @@ namespace Supremacy.Client.Controls
         private void OnTitleBarContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             // Activate
-            Activate();
+            _ = Activate();
 
             // Get current context menu
-            var titleBarElement = (FrameworkElement)sender;
-            var contextMenu = titleBarElement.ContextMenu;
+            FrameworkElement titleBarElement = (FrameworkElement)sender;
+            ContextMenu contextMenu = titleBarElement.ContextMenu;
             if (null != contextMenu)
             {
                 contextMenu.Placement = PlacementMode.MousePoint;
@@ -1010,13 +1030,15 @@ namespace Supremacy.Client.Controls
             }
 
             // Raise an event
-            var eventArgs = new ContextMenuItemRoutedEventArgs(contextMenu, TitleBarContextMenuOpeningEvent, this);
+            ContextMenuItemRoutedEventArgs eventArgs = new ContextMenuItemRoutedEventArgs(contextMenu, TitleBarContextMenuOpeningEvent, this);
             RaiseEvent(eventArgs);
             e.Handled = eventArgs.Handled;
 
             // Update the context menu
             if (contextMenu != eventArgs.Item)
+            {
                 titleBarElement.ContextMenu = eventArgs.Item;
+            }
         }
 
         /// <summary>
@@ -1032,7 +1054,7 @@ namespace Supremacy.Client.Controls
                 {
                     case 1:
                         // Activate
-                        Activate();
+                        _ = Activate();
 
                         if (WindowState != WindowState.Maximized)
                         {
@@ -1041,32 +1063,37 @@ namespace Supremacy.Client.Controls
                         }
                         break;
                     case 2:
-                    {
-                        // Raise an event
-                        var eventArgs = new CancelRoutedEventArgs(TitleBarDoubleClickEvent, this);
-                        RaiseEvent(eventArgs);
-                        if (eventArgs.Cancel)
-                            break;
-
-                        // Toggle the state of the window
-                        if (WindowStyle != WindowStyle.ToolWindow)
                         {
-                            switch (ResizeMode)
+                            // Raise an event
+                            CancelRoutedEventArgs eventArgs = new CancelRoutedEventArgs(TitleBarDoubleClickEvent, this);
+                            RaiseEvent(eventArgs);
+                            if (eventArgs.Cancel)
                             {
-                                case ResizeMode.CanMinimize:
-                                    if (WindowState != WindowState.Normal)
-                                        ToggleWindowState();
-                                    break;
-                                case ResizeMode.NoResize:
-                                    // Do nothing
-                                    break;
-                                default:
-                                    ToggleWindowState();
-                                    break;
+                                break;
                             }
+
+                            // Toggle the state of the window
+                            if (WindowStyle != WindowStyle.ToolWindow)
+                            {
+                                switch (ResizeMode)
+                                {
+                                    case ResizeMode.CanMinimize:
+                                        if (WindowState != WindowState.Normal)
+                                        {
+                                            ToggleWindowState();
+                                        }
+
+                                        break;
+                                    case ResizeMode.NoResize:
+                                        // Do nothing
+                                        break;
+                                    default:
+                                        ToggleWindowState();
+                                        break;
+                                }
+                            }
+                            break;
                         }
-                        break;
-                    }
                 }
             }
         }
@@ -1078,7 +1105,7 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="DependencyPropertyChangedEventArgs"/> that contains the event data.</param>
         private static void OnTopPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var window = (InlineWindow)obj;
+            InlineWindow window = (InlineWindow)obj;
             window.RaiseEvent(new RoutedEventArgs(LocationChangedEvent, window));
         }
 
@@ -1089,19 +1116,21 @@ namespace Supremacy.Client.Controls
         /// <param name="e">A <see cref="DependencyPropertyChangedEventArgs"/> that contains the event data.</param>
         private static void OnWindowStatePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var window = (InlineWindow)obj;
+            InlineWindow window = (InlineWindow)obj;
 
-            var oldState = (WindowState)e.OldValue;
-            var newState = (WindowState)e.NewValue;
+            WindowState oldState = (WindowState)e.OldValue;
+            WindowState newState = (WindowState)e.NewValue;
 
-            var isKeyboardFocusWithin = window.IsKeyboardFocusWithin;
+            bool isKeyboardFocusWithin = window.IsKeyboardFocusWithin;
 
             // If leaving a normal state...
             if (oldState == WindowState.Normal)
             {
                 // Update restore bounds
                 if ((!double.IsNaN(window.Width)) && (!double.IsNaN(window.Height)))
+                {
                     window.RestoreBounds = new Rect(window.Left, window.Top, window.Width, window.Height);
+                }
             }
 
             // Raise an event
@@ -1119,11 +1148,11 @@ namespace Supremacy.Client.Controls
             // If keyboard focus was within... activate again
             if (isKeyboardFocusWithin)
             {
-                window.Dispatcher.BeginInvoke(
+                _ = window.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                     (DispatcherOperationCallback)delegate
                                                  {
-                                                     window.Activate();
+                                                     _ = window.Activate();
                                                      return null;
                                                  },
                     null);
@@ -1136,11 +1165,11 @@ namespace Supremacy.Client.Controls
         private void ProcessDragMove()
         {
             // Get the new location
-            var newLocation = GetMouseLocation();
+            Point newLocation = GetMouseLocation();
             newLocation.X -= _dragMouseOffset.X;
             newLocation.Y -= _dragMouseOffset.Y;
 
-            var bounds = new Rect(newLocation.X, newLocation.Y, _dragSize.Width, _dragSize.Height);
+            Rect bounds = new Rect(newLocation.X, newLocation.Y, _dragSize.Width, _dragSize.Height);
 
             bounds = UpdateBounds(bounds, ResizeOperation.None);
 
@@ -1155,57 +1184,93 @@ namespace Supremacy.Client.Controls
         private void ProcessDragResize()
         {
             // Get the current mouse location
-            var newLocation = GetMouseLocation();
+            Point newLocation = GetMouseLocation();
 
             // Initialize
-            var width = _dragSize.Width;
-            var height = _dragSize.Height;
-            var isMinWidth = (width <= MinWidth);
-            var isMinHeight = (height <= MinHeight);
-            var bounds = new Rect(new Point(Left, Top), RenderSize);
+            double width = _dragSize.Width;
+            double height = _dragSize.Height;
+            bool isMinWidth = width <= MinWidth;
+            bool isMinHeight = height <= MinHeight;
+            Rect bounds = new Rect(new Point(Left, Top), RenderSize);
 
             // Get width/height change
             switch (_currentResizeOperation)
             {
                 case ResizeOperation.East:
                     if ((!isMinWidth) || (newLocation.X >= bounds.Right))
-                        width += (newLocation.X - _dragMouseOffset.X);
+                    {
+                        width += newLocation.X - _dragMouseOffset.X;
+                    }
+
                     break;
                 case ResizeOperation.North:
                     if ((!isMinHeight) || (newLocation.Y < bounds.Top))
-                        height -= (newLocation.Y - _dragMouseOffset.Y);
+                    {
+                        height -= newLocation.Y - _dragMouseOffset.Y;
+                    }
+
                     break;
                 case ResizeOperation.NorthEast:
                     if ((!isMinWidth) || (newLocation.X >= bounds.Right))
-                        width += (newLocation.X - _dragMouseOffset.X);
+                    {
+                        width += newLocation.X - _dragMouseOffset.X;
+                    }
+
                     if ((!isMinHeight) || (newLocation.Y < bounds.Top))
-                        height -= (newLocation.Y - _dragMouseOffset.Y);
+                    {
+                        height -= newLocation.Y - _dragMouseOffset.Y;
+                    }
+
                     break;
                 case ResizeOperation.NorthWest:
                     if ((!isMinWidth) || (newLocation.X < bounds.Left))
-                        width -= (newLocation.X - _dragMouseOffset.X);
+                    {
+                        width -= newLocation.X - _dragMouseOffset.X;
+                    }
+
                     if ((!isMinHeight) || (newLocation.Y < bounds.Top))
-                        height -= (newLocation.Y - _dragMouseOffset.Y);
+                    {
+                        height -= newLocation.Y - _dragMouseOffset.Y;
+                    }
+
                     break;
                 case ResizeOperation.South:
                     if ((!isMinHeight) || (newLocation.Y >= bounds.Bottom))
-                        height += (newLocation.Y - _dragMouseOffset.Y);
+                    {
+                        height += newLocation.Y - _dragMouseOffset.Y;
+                    }
+
                     break;
                 case ResizeOperation.SouthEast:
                     if ((!isMinWidth) || (newLocation.X >= bounds.Right))
-                        width += (newLocation.X - _dragMouseOffset.X);
+                    {
+                        width += newLocation.X - _dragMouseOffset.X;
+                    }
+
                     if ((!isMinHeight) || (newLocation.Y >= bounds.Bottom))
-                        height += (newLocation.Y - _dragMouseOffset.Y);
+                    {
+                        height += newLocation.Y - _dragMouseOffset.Y;
+                    }
+
                     break;
                 case ResizeOperation.SouthWest:
                     if ((!isMinWidth) || (newLocation.X < bounds.Left))
-                        width -= (newLocation.X - _dragMouseOffset.X);
+                    {
+                        width -= newLocation.X - _dragMouseOffset.X;
+                    }
+
                     if ((!isMinHeight) || (newLocation.Y >= bounds.Bottom))
-                        height += (newLocation.Y - _dragMouseOffset.Y);
+                    {
+                        height += newLocation.Y - _dragMouseOffset.Y;
+                    }
+
                     break;
                 case ResizeOperation.West:
                     if ((!isMinWidth) || (newLocation.X < bounds.Left))
-                        width -= (newLocation.X - _dragMouseOffset.X);
+                    {
+                        width -= newLocation.X - _dragMouseOffset.X;
+                    }
+
                     break;
             }
 
@@ -1214,8 +1279,8 @@ namespace Supremacy.Client.Controls
             bounds.Height = Math.Max(MinHeight, Math.Min(MaxHeight, height));
 
             // Get deltas
-            var deltaX = (bounds.Width - ActualWidth);
-            var deltaY = (bounds.Height - ActualHeight);
+            double deltaX = bounds.Width - ActualWidth;
+            double deltaY = bounds.Height - ActualHeight;
 
             // Change location
             switch (_currentResizeOperation)
@@ -1242,13 +1307,24 @@ namespace Supremacy.Client.Controls
 
             // Update the bounds
             if (!DoubleUtil.AreClose(Left, bounds.X))
+            {
                 Left = bounds.X;
+            }
+
             if (!DoubleUtil.AreClose(Top, bounds.Y))
+            {
                 Top = bounds.Y;
+            }
+
             if (!DoubleUtil.AreClose(ActualWidth, bounds.Width))
+            {
                 Width = bounds.Width;
+            }
+
             if (!DoubleUtil.AreClose(ActualHeight, bounds.Height))
+            {
                 Height = bounds.Height;
+            }
         }
 
         /// <summary>
@@ -1268,7 +1344,7 @@ namespace Supremacy.Client.Controls
                     {
                         case WindowState.Minimized:
                         case WindowState.Normal:
-                            return (windowStyle != WindowStyle.ToolWindow);
+                            return windowStyle != WindowStyle.ToolWindow;
                     }
                     break;
             }
@@ -1293,7 +1369,7 @@ namespace Supremacy.Client.Controls
                     {
                         case WindowState.Maximized:
                         case WindowState.Normal:
-                            return (windowStyle != WindowStyle.ToolWindow);
+                            return windowStyle != WindowStyle.ToolWindow;
                     }
                     break;
             }
@@ -1307,26 +1383,32 @@ namespace Supremacy.Client.Controls
         {
             // Ensure the left mouse button is pressed
             if (Mouse.LeftButton != MouseButtonState.Pressed)
-                MessageBox.Show("Drag'n'Drop: The left mouse button must be down.", "Warning", MessageBoxButton.OK);
+            {
+                _ = MessageBox.Show("Drag'n'Drop: The left mouse button must be down.", "Warning", MessageBoxButton.OK);
+            }
 
             // Raise an event
-            var e = new CancelRoutedEventArgs(DragMovingEvent, this);
+            CancelRoutedEventArgs e = new CancelRoutedEventArgs(DragMovingEvent, this);
             RaiseEvent(e);
             if (e.Cancel)
+            {
                 return;
+            }
 
             // Quit if the mouse cannot be captured
             if (!Mouse.Capture(this, CaptureMode.SubTree))
+            {
                 return;
+            }
 
             // Get the mouse location
             _dragMouseOffset = Mouse.GetPosition(this);
             _dragSize = new Size(
-                (double.IsNaN(Width) ? ActualWidth : Width),
-                (double.IsNaN(Height) ? ActualHeight : Height));
+                double.IsNaN(Width) ? ActualWidth : Width,
+                double.IsNaN(Height) ? ActualHeight : Height);
 
             // Adjust for possible scale transform if there is a parent
-            var parentElement = GetParentElement();
+            UIElement parentElement = GetParentElement();
             if (parentElement != null)
             {
                 _dragMouseOffset = Mouse.GetPosition(parentElement);
@@ -1346,11 +1428,15 @@ namespace Supremacy.Client.Controls
         {
             // Ensure the left mouse button is pressed
             if (Mouse.LeftButton != MouseButtonState.Pressed)
+            {
                 throw new InvalidOperationException("The left mouse button must be down.");
+            }
 
             // Quit if the mouse cannot be captured
             if (!CaptureMouse())
+            {
                 return;
+            }
 
             // Get the mouse location and current size
             _dragMouseOffset = GetMouseLocation();
@@ -1369,7 +1455,9 @@ namespace Supremacy.Client.Controls
         {
             // Quit if not dragging or resizing
             if (!_isMoving && _currentResizeOperation == ResizeOperation.None)
+            {
                 return;
+            }
 
             if (_isMoving)
             {
@@ -1383,7 +1471,9 @@ namespace Supremacy.Client.Controls
 
             // Ensure mouse capture is released
             if (IsMouseCaptured)
+            {
                 ReleaseMouseCapture();
+            }
         }
 
         /// <summary>
@@ -1411,9 +1501,11 @@ namespace Supremacy.Client.Controls
         {
             if (!IsKeyboardFocusWithin)
             {
-                var inputElement = Keyboard.Focus(this) as DependencyObject;
-                if (inputElement != null && inputElement.IsVisualDescendantOf(this))
+                if (Keyboard.Focus(this) is DependencyObject inputElement && inputElement.IsVisualDescendantOf(this))
+                {
                     return true;
+                }
+
                 return MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
             return true;
@@ -1428,8 +1520,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool CanClose
         {
-            get { return (bool)GetValue(CanCloseProperty); }
-            set { SetValue(CanCloseProperty, value); }
+            get => (bool)GetValue(CanCloseProperty);
+            set => SetValue(CanCloseProperty, value);
         }
 
         /// <summary>
@@ -1439,13 +1531,17 @@ namespace Supremacy.Client.Controls
         {
             // Quit if already invisible
             if (!IsVisible)
+            {
                 return;
+            }
 
             // Raise an event
-            var e = new CancelRoutedEventArgs(ClosingEvent, this);
+            CancelRoutedEventArgs e = new CancelRoutedEventArgs(ClosingEvent, this);
             RaiseEvent(e);
             if (e.Cancel)
+            {
                 return;
+            }
 
             // Raise an event
             RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
@@ -1460,8 +1556,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public CornerRadius CornerRadius
         {
-            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
-            set { SetValue(CornerRadiusProperty, value); }
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
 
         /// <summary>
@@ -1481,8 +1577,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public Color DropShadowColor
         {
-            get { return (Color)GetValue(DropShadowColorProperty); }
-            set { SetValue(DropShadowColorProperty, value); }
+            get => (Color)GetValue(DropShadowColorProperty);
+            set => SetValue(DropShadowColorProperty, value);
         }
 
         /// <summary>
@@ -1494,8 +1590,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public double DropShadowZOffset
         {
-            get { return (double)GetValue(DropShadowZOffsetProperty); }
-            set { SetValue(DropShadowZOffsetProperty, value); }
+            get => (double)GetValue(DropShadowZOffsetProperty);
+            set => SetValue(DropShadowZOffsetProperty, value);
         }
 
         /// <summary>
@@ -1507,8 +1603,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool HasCloseButton
         {
-            get { return (bool)GetValue(HasCloseButtonProperty); }
-            set { SetValue(HasCloseButtonProperty, value); }
+            get => (bool)GetValue(HasCloseButtonProperty);
+            set => SetValue(HasCloseButtonProperty, value);
         }
 
         /// <summary>
@@ -1520,8 +1616,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool HasDropShadow
         {
-            get { return (bool)GetValue(HasDropShadowProperty); }
-            set { SetValue(HasDropShadowProperty, value); }
+            get => (bool)GetValue(HasDropShadowProperty);
+            set => SetValue(HasDropShadowProperty, value);
         }
 
         /// <summary>
@@ -1538,8 +1634,8 @@ namespace Supremacy.Client.Controls
         /// </remarks>
         public bool HasIcon
         {
-            get { return (bool)GetValue(HasIconProperty); }
-            set { SetValue(HasIconProperty, value); }
+            get => (bool)GetValue(HasIconProperty);
+            set => SetValue(HasIconProperty, value);
         }
 
         /// <summary>
@@ -1551,8 +1647,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool HasMaximizeButton
         {
-            get { return (bool)GetValue(HasMaximizeButtonProperty); }
-            set { SetValue(HasMaximizeButtonProperty, value); }
+            get => (bool)GetValue(HasMaximizeButtonProperty);
+            set => SetValue(HasMaximizeButtonProperty, value);
         }
 
         /// <summary>
@@ -1564,8 +1660,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool HasMinimizeButton
         {
-            get { return (bool)GetValue(HasMinimizeButtonProperty); }
-            set { SetValue(HasMinimizeButtonProperty, value); }
+            get => (bool)GetValue(HasMinimizeButtonProperty);
+            set => SetValue(HasMinimizeButtonProperty, value);
         }
 
         /// <summary>
@@ -1577,8 +1673,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool HasRestoreButton
         {
-            get { return (bool)GetValue(HasRestoreButtonProperty); }
-            set { SetValue(HasRestoreButtonProperty, value); }
+            get => (bool)GetValue(HasRestoreButtonProperty);
+            set => SetValue(HasRestoreButtonProperty, value);
         }
 
         /// <summary>
@@ -1590,8 +1686,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public ImageSource Icon
         {
-            get { return (ImageSource)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
+            get => (ImageSource)GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
         }
 
         /// <summary>
@@ -1602,8 +1698,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool IsActive
         {
-            get { return (bool)GetValue(IsActiveProperty); }
-            private set { SetValue(IsActivePropertyKey, value); }
+            get => (bool)GetValue(IsActiveProperty);
+            private set => SetValue(IsActivePropertyKey, value);
         }
 
         /// <summary>
@@ -1615,8 +1711,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public bool IsTitleBarTextShadowEnabled
         {
-            get { return (bool)GetValue(IsTitleBarTextShadowEnabledProperty); }
-            set { SetValue(IsTitleBarTextShadowEnabledProperty, value); }
+            get => (bool)GetValue(IsTitleBarTextShadowEnabledProperty);
+            set => SetValue(IsTitleBarTextShadowEnabledProperty, value);
         }
 
         /// <summary>
@@ -1625,8 +1721,8 @@ namespace Supremacy.Client.Controls
         /// <value>The position of the window's left edge, in relation to its container.</value>
         public double Left
         {
-            get { return (double)GetValue(LeftProperty); }
-            set { SetValue(LeftProperty, value); }
+            get => (double)GetValue(LeftProperty);
+            set => SetValue(LeftProperty, value);
         }
 
         /// <summary>
@@ -1650,10 +1746,15 @@ namespace Supremacy.Client.Controls
             base.OnApplyTemplate();
 
             if (_icon != null)
+            {
                 _titleBar.MouseLeftButtonDown -= OnIconMouseLeftButtonDown;
+            }
+
             _icon = GetTemplateChild(IconPartName) as FrameworkElement;
             if (_icon != null)
+            {
                 _icon.MouseLeftButtonDown += OnIconMouseLeftButtonDown;
+            }
 
             if (_titleBar != null)
             {
@@ -1781,7 +1882,7 @@ namespace Supremacy.Client.Controls
             // Ensure the window contains focus...
             if (!e.Handled)
             {
-                Activate();
+                _ = Activate();
                 e.Handled = true;
             }
         }
@@ -1812,9 +1913,13 @@ namespace Supremacy.Client.Controls
 
             // Process a drag move or resize
             if (_isMoving)
+            {
                 ProcessDragMove();
+            }
             else if (_currentResizeOperation != ResizeOperation.None)
+            {
                 ProcessDragResize();
+            }
         }
 
         /// <summary>
@@ -1837,7 +1942,7 @@ namespace Supremacy.Client.Controls
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             // Hit test for a resize operation
-            var operation = HitTestResizeOperation(e.GetPosition(this));
+            ResizeOperation operation = HitTestResizeOperation(e.GetPosition(this));
             if (operation != ResizeOperation.None)
             {
                 // Start a resize operation
@@ -1860,7 +1965,7 @@ namespace Supremacy.Client.Controls
             if ((e.LeftButton == MouseButtonState.Released) && (e.RightButton == MouseButtonState.Released))
             {
                 // Hit test for a resize operation
-                var operation = HitTestResizeOperation(e.GetPosition(this));
+                ResizeOperation operation = HitTestResizeOperation(e.GetPosition(this));
                 switch (operation)
                 {
                     case ResizeOperation.West:
@@ -1870,9 +1975,9 @@ namespace Supremacy.Client.Controls
                         break;
                     case ResizeOperation.NorthWest:
                     case ResizeOperation.SouthEast:
-                        Cursor = (FlowDirection == FlowDirection.LeftToRight
+                        Cursor = FlowDirection == FlowDirection.LeftToRight
                                            ? Cursors.SizeNWSE
-                                           : Cursors.SizeNESW);
+                                           : Cursors.SizeNESW;
                         e.Handled = true;
                         break;
                     case ResizeOperation.North:
@@ -1882,14 +1987,17 @@ namespace Supremacy.Client.Controls
                         break;
                     case ResizeOperation.NorthEast:
                     case ResizeOperation.SouthWest:
-                        Cursor = (FlowDirection == FlowDirection.LeftToRight
+                        Cursor = FlowDirection == FlowDirection.LeftToRight
                                            ? Cursors.SizeNESW
-                                           : Cursors.SizeNWSE);
+                                           : Cursors.SizeNWSE;
                         e.Handled = true;
                         break;
                     default:
                         if (Cursor != null)
+                        {
                             Cursor = null;
+                        }
+
                         break;
                 }
             }
@@ -1940,8 +2048,8 @@ namespace Supremacy.Client.Controls
         /// <value>A <see cref="Rect"/> indicating the size and location of a window before being either minimized or maximized.</value>
         public Rect RestoreBounds
         {
-            get { return (Rect)GetValue(RestoreBoundsProperty); }
-            private set { SetValue(RestoreBoundsProperty, value); }
+            get => (Rect)GetValue(RestoreBoundsProperty);
+            private set => SetValue(RestoreBoundsProperty, value);
         }
 
         /// <summary>
@@ -1953,8 +2061,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public ResizeMode ResizeMode
         {
-            get { return (ResizeMode)GetValue(ResizeModeProperty); }
-            set { SetValue(ResizeModeProperty, value); }
+            get => (ResizeMode)GetValue(ResizeModeProperty);
+            set => SetValue(ResizeModeProperty, value);
         }
 
         /// <summary>
@@ -1964,7 +2072,9 @@ namespace Supremacy.Client.Controls
         {
             // Quit if already visible
             if (IsVisible)
+            {
                 return;
+            }
 
             // Raise an event
             RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
@@ -1977,8 +2087,8 @@ namespace Supremacy.Client.Controls
         [Localizability(LocalizationCategory.Title)]
         public string Title
         {
-            get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
+            get => (string)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
         }
 
         /// <summary>
@@ -1990,8 +2100,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public FontWeight TitleBarFontWeight
         {
-            get { return (FontWeight)GetValue(TitleBarFontWeightProperty); }
-            set { SetValue(TitleBarFontWeightProperty, value); }
+            get => (FontWeight)GetValue(TitleBarFontWeightProperty);
+            set => SetValue(TitleBarFontWeightProperty, value);
         }
 
         /// <summary>
@@ -2002,10 +2112,7 @@ namespace Supremacy.Client.Controls
         /// </remarks>
         public void ToggleWindowState()
         {
-            if (WindowState == WindowState.Normal)
-                WindowState = WindowState.Maximized;
-            else
-                WindowState = WindowState.Normal;
+            WindowState = WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
         }
 
         /// <summary>
@@ -2014,8 +2121,8 @@ namespace Supremacy.Client.Controls
         /// <value>The position of the window's top edge, in relation to its container.</value>
         public double Top
         {
-            get { return (double)GetValue(TopProperty); }
-            set { SetValue(TopProperty, value); }
+            get => (double)GetValue(TopProperty);
+            set => SetValue(TopProperty, value);
         }
 
         /// <summary>
@@ -2027,8 +2134,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public WindowState WindowState
         {
-            get { return (WindowState)GetValue(WindowStateProperty); }
-            set { SetValue(WindowStateProperty, value); }
+            get => (WindowState)GetValue(WindowStateProperty);
+            set => SetValue(WindowStateProperty, value);
         }
 
         /// <summary>
@@ -2040,8 +2147,8 @@ namespace Supremacy.Client.Controls
         /// </value>
         public WindowStyle WindowStyle
         {
-            get { return (WindowStyle)GetValue(WindowStyleProperty); }
-            set { SetValue(WindowStyleProperty, value); }
+            get => (WindowStyle)GetValue(WindowStyleProperty);
+            set => SetValue(WindowStyleProperty, value);
         }
     }
 }

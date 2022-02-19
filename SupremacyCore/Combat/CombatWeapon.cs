@@ -51,17 +51,12 @@ namespace Supremacy.Combat
         public static CombatWeapon CreateBeamWeapon(Orbital orbital)
         {
             CombatWeapon weapon = new CombatWeapon();
-            if (orbital.IsCombatant)
-            {
-                weapon._maxDamage = new Meter(
+            weapon._maxDamage = orbital.IsCombatant
+                ? new Meter(
                     orbital.OrbitalDesign.PrimaryWeapon.Damage,
                     0,
-                    orbital.OrbitalDesign.PrimaryWeapon.Damage);
-            }
-            else
-            {
-                weapon._maxDamage = new Meter(0, 0);
-            }
+                    orbital.OrbitalDesign.PrimaryWeapon.Damage)
+                : new Meter(0, 0);
             return weapon;
         }
 

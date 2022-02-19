@@ -1,5 +1,6 @@
 using Microsoft.Scripting;
 using Microsoft.Scripting.Runtime;
+using System;
 
 namespace Supremacy.Scripting.Ast
 {
@@ -26,6 +27,7 @@ namespace Supremacy.Scripting.Ast
             {
                 ProcessParameters();
             }
+            //Console.WriteLine("...doing TopLevelScope");
         }
 
         public TopLevelScope(CompilerContext ctx, SourceLocation loc)
@@ -37,6 +39,7 @@ namespace Supremacy.Scripting.Ast
 
         protected void ProcessParameters()
         {
+            //Console.WriteLine("...ProcessParameters of TopLevelScope");
             int count = Parameters.Count;
             TopLevelScope topParent = Parent?.TopLevel;
             TopLevelParameterInfo[] parameterInfo = new TopLevelParameterInfo[count];
@@ -57,6 +60,7 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 string name = p.Name;
+                //Console.WriteLine("...ProcessParameters of TopLevelScope: " + name);
 
                 if (CheckParentConflictName(topParent, name, p.Span))
                 {

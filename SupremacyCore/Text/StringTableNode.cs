@@ -21,7 +21,7 @@ namespace Supremacy.Text
 
         public StringTableNodeType NodeType
         {
-            get { return _nodeType; }
+            get => _nodeType;
             internal set
             {
                 _nodeType = value;
@@ -31,7 +31,7 @@ namespace Supremacy.Text
 
         public string Content
         {
-            get { return _content; }
+            get => _content;
             internal set
             {
                 _content = value;
@@ -42,28 +42,32 @@ namespace Supremacy.Text
         private StringTableNode(StringTableNodeType nodeType, string content)
         {
             _nodeType = nodeType;
-            _content = content ?? String.Empty;
+            _content = content ?? string.Empty;
         }
 
         private static void CheckForNewlines(string content)
         {
             if (content.Contains(Environment.NewLine))
+            {
                 throw new ArgumentException("content must not contain newline");
+            }
         }
 
         public static StringTableNode CreateWhitespace()
         {
-            return CreateWhitespace(String.Empty);
+            return CreateWhitespace(string.Empty);
         }
 
         public static StringTableNode CreateWhitespace(string content)
         {
             if (content == null)
-                content = String.Empty;
+            {
+                content = string.Empty;
+            }
 
             for (int i = 0; i < content.Length; i++)
             {
-                if (!Char.IsWhiteSpace(content[i]))
+                if (!char.IsWhiteSpace(content[i]))
                 {
                     throw new ArgumentException(
                         "'content' argument contains non-whitespace characters");
@@ -75,7 +79,7 @@ namespace Supremacy.Text
 
         public static StringTableNode CreateComment()
         {
-            return CreateComment(String.Empty);
+            return CreateComment(string.Empty);
         }
 
         public static StringTableNode CreateComment(string content)
@@ -86,7 +90,7 @@ namespace Supremacy.Text
 
         public static StringTableNode CreateKey()
         {
-            return CreateKey(String.Empty);
+            return CreateKey(string.Empty);
         }
 
         public static StringTableNode CreateKey(string content)
@@ -97,7 +101,7 @@ namespace Supremacy.Text
 
         public static StringTableNode CreateValue()
         {
-            return CreateValue(String.Empty);
+            return CreateValue(string.Empty);
         }
 
         public static StringTableNode CreateValue(string content)
@@ -109,14 +113,24 @@ namespace Supremacy.Text
         internal void Write(TextWriter writer)
         {
             if (writer == null)
+            {
                 throw new ArgumentNullException("writer");
+            }
+
             if (NodeType == StringTableNodeType.Comment)
+            {
                 writer.Write("#");
+            }
             else if (NodeType == StringTableNodeType.Key)
+            {
                 writer.Write("[");
+            }
+
             writer.Write(_content);
             if (NodeType == StringTableNodeType.Key)
+            {
                 writer.Write("]" + Environment.NewLine);
+            }
         }
 
         #region INotifyPropertyChanged Members
@@ -124,8 +138,7 @@ namespace Supremacy.Text
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

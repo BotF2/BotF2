@@ -13,35 +13,42 @@ namespace Supremacy.Client.Data
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var stringValue = ConvertToString(value);
+            string stringValue = ConvertToString(value);
             if (stringValue == null || CharacterCasing == CharacterCasing.Normal)
+            {
                 return stringValue;
+            }
 
             if (CharacterCasing == CharacterCasing.Upper)
+            {
                 return stringValue.ToUpper();
+            }
 
             return stringValue.ToLower();
         }
 
         private static string ConvertToString(object value)
         {
-            var enumValue = value as Enum;
-            if (enumValue == null)
+            if (!(value is Enum enumValue))
+            {
                 return (value != null) ? value.ToString() : string.Empty;
+            }
 
-            var textDatabase = LocalizedTextDatabase.Instance;
+            LocalizedTextDatabase textDatabase = LocalizedTextDatabase.Instance;
 
-            LocalizedTextGroup group;
 
-            if (!textDatabase.Groups.TryGetValue(enumValue.GetType(), out @group))
+            if (!textDatabase.Groups.TryGetValue(enumValue.GetType(), out LocalizedTextGroup @group))
+            {
                 return string.Format("{{! Unknown Text Group: {0} !}}", @group);
+            }
 
-            LocalizedString localizedString;
 
-            var entryName = enumValue.ToString();
+            string entryName = enumValue.ToString();
 
-            if (!@group.Entries.TryGetValue(entryName, out localizedString))
+            if (!@group.Entries.TryGetValue(entryName, out LocalizedString localizedString))
+            {
                 return entryName;
+            }
 
             return localizedString.LocalText;
         }

@@ -12,51 +12,40 @@ namespace Supremacy.Diplomacy.Visitors
     {
         public static readonly object TransferredColoniesDataKey = new NamedGuid(new Guid("2BDDF322-714E-46AF-B7A1-6D337DE9956B"), "TransferredColonies");
 
-        private readonly IProposal _proposal;
-        private readonly Dictionary<object, object> _agreementData;
-
         private RejectProposalVisitor([NotNull] IProposal proposal)
         {
-            if (proposal == null)
-                throw new ArgumentNullException("proposal");
-
-            _proposal = proposal;
-            _agreementData = new Dictionary<object, object>();
+            Proposal = proposal ?? throw new ArgumentNullException("proposal");
+            AgreementData = new Dictionary<object, object>();
         }
 
-        protected IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        protected IProposal Proposal { get; }
 
-        protected Dictionary<object, object> AgreementData
-        {
-            get { return _agreementData; }
-        }
+        protected Dictionary<object, object> AgreementData { get; }
 
         public static void Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {
             if (proposal == null)
+            {
                 throw new ArgumentNullException("proposal");
+            }
 
-
-            var visitor = new RejectProposalVisitor(proposal);
+            RejectProposalVisitor visitor = new RejectProposalVisitor(proposal);
 
             turnAccepted = GameContext.Current.TurnNumber;
 
             //proposal.Accept(visitor);
 
-            var agreement = new NewAgreement(
+            NewAgreement agreement = new NewAgreement(
                 proposal,
                 turnAccepted,
-                visitor._agreementData);
+                visitor.AgreementData);
 
-            var diplomat = Diplomat.Get(proposal.Recipient);
-            var foreignPower = diplomat.GetForeignPower(proposal.Sender);
+            Diplomat diplomat = Diplomat.Get(proposal.Recipient);
+            ForeignPower foreignPower = diplomat.GetForeignPower(proposal.Sender);
 
             //GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
-            var response = new Response(ResponseType.Reject, proposal);
+            Response response = new Response(ResponseType.Reject, proposal);
             GameLog.Core.Diplomacy.DebugFormat("RejectProposal from {1} to {0}", diplomat, foreignPower, agreement.Data.ToString());
 
             foreignPower.ResponseSent = response;
@@ -83,7 +72,7 @@ namespace Supremacy.Diplomacy.Visitors
         protected override void VisitRequestHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestEndEmbargoClause(IClause clause) { /* TODO */ }
-        
+
         protected override void VisitWarPactClause(IClause clause)
         {
             //var senderDiplomat = Diplomat.Get(Proposal.Sender);
@@ -96,7 +85,7 @@ namespace Supremacy.Diplomacy.Visitors
             //        "Civilization {0} sent a war pact proposal to {1} without a valid target.",
             //        senderDiplomat.Owner.ShortName,
             //        recipientDiplomat.Owner.ShortName);
-                
+
             //    return;
             //}
 
@@ -110,7 +99,7 @@ namespace Supremacy.Diplomacy.Visitors
         }
 
         protected override void VisitTreatyCeaseFireClause(IClause clause) { /* TODO */ }
-        
+
         protected override void VisitTreatyNonAggressionClause(IClause clause)
         {
             // what goes here?

@@ -23,35 +23,26 @@ namespace Supremacy.Effects
             _systemScriptParameters = new Lazy<ScriptParameters>(() => SystemParameters.ToScriptParameters());
         }
 
-        public bool HasDescription
-        {
-            get { return !string.IsNullOrWhiteSpace(DescriptionExpression); }
-        }
+        public bool HasDescription => !string.IsNullOrWhiteSpace(DescriptionExpression);
 
         public EffectGroup EffectGroup
         {
-            get { return _effectGroup; }
-            internal set { _effectGroup = value; }
+            get => _effectGroup;
+            internal set => _effectGroup = value;
         }
 
         public string DescriptionExpression { get; set; }
 
-        public EffectParameterCollection SystemParameters
-        {
-            get { return _systemParameters.Value; }
-        }
+        public EffectParameterCollection SystemParameters => _systemParameters.Value;
 
-        internal ScriptParameters SystemScriptParameters
-        {
-            get { return _systemScriptParameters.Value; }
-        }
+        internal ScriptParameters SystemScriptParameters => _systemScriptParameters.Value;
 
         public EffectBinding Bind([NotNull] EffectGroupBinding effectGroupBinding, [NotNull] IEffectTarget effectTarget)
         {
-            Guard.ArgumentNotNull(effectGroupBinding, "effectGroupBinding");
-            Guard.ArgumentNotNull(effectTarget, "effectTarget"); 
+            _ = Guard.ArgumentNotNull(effectGroupBinding, "effectGroupBinding");
+            _ = Guard.ArgumentNotNull(effectTarget, "effectTarget");
 
-            var binding = BindCore(effectGroupBinding, effectTarget);
+            EffectBinding binding = BindCore(effectGroupBinding, effectTarget);
 
             return binding;
         }

@@ -26,24 +26,26 @@ namespace Supremacy.Client.Controls
 
         public static readonly DependencyProperty IsFirstItemProperty = IsFirstItemPropertyKey.DependencyProperty;
 
-        public bool IsFirstItem
-        {
-            get { return (bool)GetValue(IsFirstItemProperty); }
-        }
+        public bool IsFirstItem => (bool)GetValue(IsFirstItemProperty);
 
         private static object CoerceIsFirstItem(DependencyObject d, object baseValue)
         {
-            var itemsControl = ItemsControlFromItemContainer(d) as GameItemsControl;
-            if (itemsControl == null)
+            if (!(ItemsControlFromItemContainer(d) is GameItemsControl itemsControl))
+            {
                 return false;
+            }
 
-            var itemsCount = itemsControl.Items.Count;
+            int itemsCount = itemsControl.Items.Count;
             if (itemsCount == 0)
+            {
                 return false;
+            }
 
-            var item = itemsControl.ItemContainerGenerator.ItemFromContainer(d);
+            object item = itemsControl.ItemContainerGenerator.ItemFromContainer(d);
             if (item == null)
+            {
                 return false;
+            }
 
             return Equals(item, itemsControl.Items[0]);
         }
@@ -67,24 +69,26 @@ namespace Supremacy.Client.Controls
 
         public static readonly DependencyProperty IsLastItemProperty = IsLastItemPropertyKey.DependencyProperty;
 
-        public bool IsLastItem
-        {
-            get { return (bool)GetValue(IsLastItemProperty); }
-        }
+        public bool IsLastItem => (bool)GetValue(IsLastItemProperty);
 
         private static object CoerceIsLastItem(DependencyObject d, object baseValue)
         {
-            var itemsControl = ItemsControlFromItemContainer(d) as GameItemsControl;
-            if (itemsControl == null)
+            if (!(ItemsControlFromItemContainer(d) is GameItemsControl itemsControl))
+            {
                 return false;
+            }
 
-            var itemsCount = itemsControl.Items.Count;
+            int itemsCount = itemsControl.Items.Count;
             if (itemsCount == 0)
+            {
                 return false;
+            }
 
-            var item = itemsControl.ItemContainerGenerator.ItemFromContainer(d);
+            object item = itemsControl.ItemContainerGenerator.ItemFromContainer(d);
             if (item == null)
+            {
                 return false;
+            }
 
             return Equals(item, itemsControl.Items[itemsCount - 1]);
         }
@@ -121,14 +125,14 @@ namespace Supremacy.Client.Controls
         #region IVariantControl Implementation
         public VariantSize VariantSize
         {
-            get { return (VariantSize)GetValue(VariantSizeProperty); }
-            set { SetValue(VariantSizeProperty, value); }
+            get => (VariantSize)GetValue(VariantSizeProperty);
+            set => SetValue(VariantSizeProperty, value);
         }
 
         public GameControlContext Context
         {
-            get { return (GameControlContext)GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
+            get => (GameControlContext)GetValue(ContextProperty);
+            set => SetValue(ContextProperty, value);
         }
         #endregion
 
@@ -149,9 +153,9 @@ namespace Supremacy.Client.Controls
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameItemsControl)d;
-            var oldContext = (GameControlContext)e.OldValue;
-            var newContext = (GameControlContext)e.NewValue;
+            GameItemsControl control = (GameItemsControl)d;
+            GameControlContext oldContext = (GameControlContext)e.OldValue;
+            GameControlContext newContext = (GameControlContext)e.NewValue;
 
             control.OnContextChanged(oldContext, newContext);
         }
@@ -160,9 +164,9 @@ namespace Supremacy.Client.Controls
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameItemsControl)d;
-            var oldVariantSize = (VariantSize)e.OldValue;
-            var newVariantSize = (VariantSize)e.NewValue;
+            GameItemsControl control = (GameItemsControl)d;
+            VariantSize oldVariantSize = (VariantSize)e.OldValue;
+            VariantSize newVariantSize = (VariantSize)e.NewValue;
 
             control.OnVariantSizeChanged(oldVariantSize, newVariantSize);
         }
@@ -174,9 +178,10 @@ namespace Supremacy.Client.Controls
             element.CoerceValue(IsFirstItemProperty);
             element.CoerceValue(IsLastItemProperty);
 
-            var variantControl = element as IVariantControl;
-            if (variantControl != null)
+            if (element is IVariantControl variantControl)
+            {
                 variantControl.Context = Context;
+            }
         }
 
         protected override void ClearContainerForItemOverride(DependencyObject element, object item)
@@ -190,9 +195,13 @@ namespace Supremacy.Client.Controls
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
                 OnValidateItems(Items);
+            }
             else if ((e.NewItems != null) && (e.NewItems.Count > 0))
+            {
                 OnValidateItems(e.NewItems);
+            }
 
             base.OnItemsChanged(e);
         }
@@ -201,38 +210,42 @@ namespace Supremacy.Client.Controls
 
         protected virtual void OnVariantSizeChanged(VariantSize oldVariantSize, VariantSize newVariantSize)
         {
-            foreach (var item in Items)
+            foreach (object item in Items)
             {
                 if (IsItemItsOwnContainerOverride(item))
                 {
-                    var variantControl = item as IVariantControl;
-                    if (variantControl != null)
+                    if (item is IVariantControl variantControl)
+                    {
                         variantControl.VariantSize = newVariantSize;
+                    }
                 }
                 else
                 {
-                    var itemContainer = ItemContainerGenerator.ContainerFromItem(item) as  IVariantControl;
-                    if (itemContainer != null)
+                    if (ItemContainerGenerator.ContainerFromItem(item) is IVariantControl itemContainer)
+                    {
                         itemContainer.VariantSize = newVariantSize;
+                    }
                 }
             }
         }
 
         protected virtual void OnContextChanged(GameControlContext oldContext, GameControlContext newContext)
         {
-            foreach (var item in Items)
+            foreach (object item in Items)
             {
                 if (IsItemItsOwnContainerOverride(item))
                 {
-                    var variantControl = item as IVariantControl;
-                    if (variantControl != null)
+                    if (item is IVariantControl variantControl)
+                    {
                         variantControl.Context = newContext;
+                    }
                 }
                 else
                 {
-                    var itemContainer = ItemContainerGenerator.ContainerFromItem(item) as  IVariantControl;
-                    if (itemContainer != null)
+                    if (ItemContainerGenerator.ContainerFromItem(item) is IVariantControl itemContainer)
+                    {
                         itemContainer.Context = newContext;
+                    }
                 }
             }
         }

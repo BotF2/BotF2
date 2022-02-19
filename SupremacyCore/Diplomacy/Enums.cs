@@ -14,13 +14,13 @@ namespace Supremacy.Diplomacy
 {
 
     public enum RegardValue
-    { 
+    {
         TotalWar,
         ColdWar,
         Neutral,
         Friend,
         Allied,
-        Unified 
+        Unified
     }
 
     public enum RegardLevel : byte
@@ -184,7 +184,7 @@ namespace Supremacy.Diplomacy
         TreatyFullAlliance,
         TreatyMembership,
         //TreatyAcceptRejectDictionary
-            
+
     }
 
     public enum RegardEventType : byte
@@ -206,7 +206,7 @@ namespace Supremacy.Diplomacy
         TreatyReject,
         HealedPopulation,
         TreatyProposal,
-        TreatyAccept, 
+        TreatyAccept,
         DiplomaticShip,
         TraitsInCommon
     }
@@ -295,7 +295,7 @@ namespace Supremacy.Diplomacy
         ResearchTech,
         Target,
         MakeDemandProtectorate,
-            ForeignPowerChanged
+        ForeignPowerChanged
     }
 
     /// <summary>

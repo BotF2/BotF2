@@ -7,7 +7,9 @@ namespace Supremacy.Collections
         public static WeakReference<T> Create(T target)
         {
             if (target == null)
+            {
                 return WeakNullReference<T>.Singleton;
+            }
 
             return new WeakReference<T>(target);
         }
@@ -15,9 +17,6 @@ namespace Supremacy.Collections
         protected WeakReference(T target)
             : base(target, false) { }
 
-        public new T Target
-        {
-            get { return (T)base.Target; }
-        }
+        public new T Target => (T)base.Target;
     }
 }

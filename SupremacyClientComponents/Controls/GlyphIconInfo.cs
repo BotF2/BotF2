@@ -29,11 +29,13 @@ namespace Supremacy.Client.Controls
 
         public Brush NormalBrush
         {
-            get { return _normalBrush; }
+            get => _normalBrush;
             set
             {
                 if (Equals(value, _normalBrush))
+                {
                     return;
+                }
 
                 _normalBrush = value;
 
@@ -58,11 +60,13 @@ namespace Supremacy.Client.Controls
 
         public Brush HoverBrush
         {
-            get { return _hoverBrush; }
+            get => _hoverBrush;
             set
             {
                 if (Equals(value, _hoverBrush))
+                {
                     return;
+                }
 
                 _hoverBrush = value;
 
@@ -87,11 +91,13 @@ namespace Supremacy.Client.Controls
 
         public Brush PressedBrush
         {
-            get { return _pressedBrush; }
+            get => _pressedBrush;
             set
             {
                 if (Equals(value, _pressedBrush))
+                {
                     return;
+                }
 
                 _pressedBrush = value;
 
@@ -116,11 +122,13 @@ namespace Supremacy.Client.Controls
 
         public Brush DisabledBrush
         {
-            get { return _disabledBrush; }
+            get => _disabledBrush;
             set
             {
                 if (Equals(value, _disabledBrush))
+                {
                     return;
+                }
 
                 _disabledBrush = value;
 
@@ -146,22 +154,26 @@ namespace Supremacy.Client.Controls
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

@@ -78,7 +78,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             StartLocation = startLocation;
-            CompilerContext = compilerContext ?? ((parent == null) ? null : parent.CompilerContext);
+            CompilerContext = compilerContext ?? (parent?.CompilerContext);
 
             EndLocation = endLocation;
             Parent = parent;

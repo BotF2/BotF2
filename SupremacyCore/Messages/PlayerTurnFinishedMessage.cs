@@ -7,18 +7,11 @@ namespace Supremacy.Messages
 {
     public class PlayerTurnFinishedMessage
     {
-        private readonly IPlayer _player;
-
         public PlayerTurnFinishedMessage([NotNull] IPlayer player)
         {
-            if (player == null)
-                throw new ArgumentNullException("player");
-            _player = player;
+            Player = player ?? throw new ArgumentNullException("player");
         }
 
-        public IPlayer Player
-        {
-            get { return _player; }
-        }
+        public IPlayer Player { get; }
     }
 }

@@ -29,7 +29,7 @@
           </Grid.ToolTip>
           <Border x:Name="ImageBorder"
                   Grid.Column="0"
-                  BorderBrush="White"
+                  BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                   BorderThickness="1"
                   CornerRadius="4"
                   Width="40"
@@ -53,10 +53,15 @@
                        Text="{Binding Path=Description, Converter={StaticResource UpperCaseConverter}}" />
             <LineBreak />
             <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
+
+
               <TextBlock Text="{Binding Path=TurnsRemaining}" />
               <TextBlock x:Name="TurnsText"
                          Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Upper}" />
             </TextBlock>
+              <TextBlock Text="-" />            
+              <TextBlock Text="{Binding Path=Project.IndustryRemaining}" />              
+              <TextBlock Text="P." />  
           </TextBlock>
         </Grid>
       </Border>
@@ -67,7 +72,7 @@
                   Property="Text"
                   Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Upper}" />
         </DataTrigger>
-        <DataTrigger Binding="{Binding}"
+                <DataTrigger Binding="{Binding}"
                      Value="{x:Null}">
           <Setter TargetName="TextArea"
                   Property="Visibility"
@@ -113,7 +118,7 @@
               </Grid.ColumnDefinitions>
               <Border x:Name="ImageBorder"
                       Grid.Column="0"
-                      BorderBrush="White"
+                      BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                       BorderThickness="1"
                       CornerRadius="4"
                       Width="40"

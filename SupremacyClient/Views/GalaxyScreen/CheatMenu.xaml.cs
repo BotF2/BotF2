@@ -1,4 +1,5 @@
-﻿using Supremacy.Client.Context;
+﻿// File:CheatMenu.xaml.cs
+using Supremacy.Client.Context;
 using Supremacy.Client.Services;
 using Supremacy.Economy;
 using Supremacy.Game;
@@ -20,11 +21,13 @@ namespace Supremacy.Client.Views.GalaxyScreen
             _appContext = appContext;
         }
 
+        //private string CheatText => "hello";
+
         private void OnGrantCreditsButtonClicked(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(creditsAmount.Text, out int amount))
             {
-                _appContext.LocalPlayerEmpire.Credits.AdjustCurrent(amount);
+                _ = _appContext.LocalPlayerEmpire.Credits.AdjustCurrent(amount);
                 PlayerOrderService.Instance.AddOrder(new GiveCreditsOrder(_appContext.LocalPlayerEmpire, amount));
             }
         }
@@ -33,7 +36,7 @@ namespace Supremacy.Client.Views.GalaxyScreen
         {
             if (int.TryParse(dilithiumAmount.Text, out int amount))
             {
-                _appContext.LocalPlayerEmpire.Resources[ResourceType.Dilithium].AdjustCurrent(amount);
+                _ = _appContext.LocalPlayerEmpire.Resources[ResourceType.Dilithium].AdjustCurrent(amount);
                 PlayerOrderService.Instance.AddOrder(new GiveResourceOrder(_appContext.LocalPlayerEmpire, ResourceType.Dilithium, amount));
             }
         }
@@ -42,7 +45,7 @@ namespace Supremacy.Client.Views.GalaxyScreen
         {
             if (int.TryParse(deuteriumAmount.Text, out int amount))
             {
-                _appContext.LocalPlayerEmpire.Resources[ResourceType.Deuterium].AdjustCurrent(amount);
+                _ = _appContext.LocalPlayerEmpire.Resources[ResourceType.Deuterium].AdjustCurrent(amount);
                 PlayerOrderService.Instance.AddOrder(new GiveResourceOrder(_appContext.LocalPlayerEmpire, ResourceType.Deuterium, amount));
             }
         }
@@ -51,8 +54,8 @@ namespace Supremacy.Client.Views.GalaxyScreen
         {
             if (int.TryParse(duraniumAmount.Text, out int amount))
             {
-                _appContext.LocalPlayerEmpire.Resources[ResourceType.RawMaterials].AdjustCurrent(amount);
-                PlayerOrderService.Instance.AddOrder(new GiveResourceOrder(_appContext.LocalPlayerEmpire, ResourceType.RawMaterials, amount));
+                _ = _appContext.LocalPlayerEmpire.Resources[ResourceType.Duranium].AdjustCurrent(amount);
+                PlayerOrderService.Instance.AddOrder(new GiveResourceOrder(_appContext.LocalPlayerEmpire, ResourceType.Duranium, amount));
             }
         }
     }

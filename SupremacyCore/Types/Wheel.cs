@@ -60,11 +60,17 @@ namespace Supremacy.Types
         {
             WheelNode<T> current = Head;
             if (current == null)
+            {
                 return false;
+            }
+
             do
             {
                 if (current.Value.Equals(value))
+                {
                     return true;
+                }
+
                 current = current.Next;
             }
             while (current != Head);
@@ -75,11 +81,17 @@ namespace Supremacy.Types
         {
             int dist1 = 0, dist2 = 0;
             if (!Contains(a) || !Contains(b))
+            {
                 return -1;
+            }
+
             WheelNode<T> start = Head;
             WheelNode<T> current;
             while (!start.Value.Equals(a))
+            {
                 start = start.Next;
+            }
+
             current = start;
             while (!current.Value.Equals(b))
             {

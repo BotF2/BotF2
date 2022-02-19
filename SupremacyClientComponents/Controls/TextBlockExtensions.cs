@@ -11,29 +11,22 @@ namespace Supremacy.Client.Controls
 {
     public class HyperlinkClickedEventArgs : RoutedEventArgs
     {
-        private readonly Uri _navigateUri;
         private readonly object _dataContext;
 
         public HyperlinkClickedEventArgs(Uri navigateUri) : base(TextBlockExtensions.HyperlinkClickedEvent)
         {
-            _navigateUri = navigateUri;
+            NavigateUri = navigateUri;
         }
 
         public HyperlinkClickedEventArgs(Uri navigateUri, object source, object dataContext = null) : base(TextBlockExtensions.HyperlinkClickedEvent, source)
         {
-            _navigateUri = navigateUri;
+            NavigateUri = navigateUri;
             _dataContext = dataContext;
         }
 
-        public Uri NavigateUri
-        {
-            get { return _navigateUri; }
-        }
+        public Uri NavigateUri { get; }
 
-        public object DataContext
-        {
-            get { return _dataContext; }
-        }
+        public object DataContext => _dataContext;
     }
 
     public static class TextBlockExtensions
@@ -62,18 +55,30 @@ namespace Supremacy.Client.Controls
         public static void AddHyperlinkClickedHandler(UIElement element, EventHandler<HyperlinkClickedEventArgs> handler)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             if (handler == null)
+            {
                 throw new ArgumentNullException("handler");
+            }
+
             element.AddHandler(HyperlinkClickedEvent, handler);
         }
 
         public static void RemoveHyperlinkClickedHandler(UIElement element, EventHandler<HyperlinkClickedEventArgs> handler)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             if (handler == null)
+            {
                 throw new ArgumentNullException("handler");
+            }
+
             element.RemoveHandler(HyperlinkClickedEvent, handler);
         }
         #endregion
@@ -112,43 +117,46 @@ namespace Supremacy.Client.Controls
         {
             InlineCollection inlines = null;
 
-            var textBlock = o as TextBlock;
-            if (textBlock != null)
+            if (o is TextBlock textBlock)
             {
                 inlines = textBlock.Inlines;
             }
             else
             {
-                var paragraph = o as Paragraph;
-                if (paragraph != null)
+                if (o is Paragraph paragraph)
                 {
                     inlines = paragraph.Inlines;
                 }
                 else
                 {
-                    var span = o as Span;
-                    if (span != null)
+                    if (o is Span span)
+                    {
                         inlines = span.Inlines;
+                    }
                 }
             }
 
             if (inlines == null)
+            {
                 return;
+            }
 
             inlines.Clear();
 
             if (e.NewValue == null)
+            {
                 return;
+            }
 
-            var formattedInlines = FormattedTextConverter.Instance.Convert(
+            if (FormattedTextConverter.Instance.Convert(
                 e.NewValue,
                 typeof(IEnumerable<Inline>),
                 null,
-                CultureInfo.InvariantCulture) as IEnumerable<Inline>;
-
-            if (formattedInlines != null)
+                CultureInfo.InvariantCulture) is IEnumerable<Inline> formattedInlines)
+            {
                 inlines.AddRange(formattedInlines);
+            }
         }
         #endregion
-        }
+    }
 }

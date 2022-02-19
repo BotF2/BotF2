@@ -18,7 +18,7 @@ namespace Supremacy.Scripting.Ast
 
         public MSAst::ExpressionType Operator { get; set; }
         public Expression Operand { get; set; }
-        
+
         public override MSAst.Expression TransformCore(ScriptGenerator generator)
         {
             MSAst.Expression operand = Operand.Transform(generator);
@@ -233,7 +233,7 @@ namespace Supremacy.Scripting.Ast
 
                     if (exprType == TypeManager.CoreTypes.SByte)
                     {
-                        return new ConstantExpression<int>(~((sbyte)e.Value), e.Span);
+                        return new ConstantExpression<int>(~(sbyte)e.Value, e.Span);
                     }
 
                     if (exprType == TypeManager.CoreTypes.Int16)

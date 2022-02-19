@@ -27,15 +27,9 @@ namespace Supremacy.Economy
         private readonly int _colonyId;
         private readonly int _designId;
 
-        public Colony Source
-        {
-            get { return GameContext.Current.Universe.Objects[_colonyId] as Colony; }
-        }
+        public Colony Source => GameContext.Current.Universe.Objects[_colonyId] as Colony;
 
-        public ProductionFacilityDesign FacilityDesign
-        {
-            get { return GameContext.Current.TechDatabase.ProductionFacilityDesigns[_designId]; }
-        }
+        public ProductionFacilityDesign FacilityDesign => GameContext.Current.TechDatabase.ProductionFacilityDesigns[_designId];
 
         protected override int GetIndustryAvailable()
         {
@@ -44,15 +38,21 @@ namespace Supremacy.Economy
 
         public ProductionFacilityBuildProject(
             Colony colony,
-            // ReSharper disable SuggestBaseTypeForParameter
+
             ProductionFacilityDesign target)
-            // ReSharper restore SuggestBaseTypeForParameter
+
             : base(colony.Owner, colony, target)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
+
             _designId = target.DesignID;
             _colonyId = colony.ObjectID;
         }
@@ -68,15 +68,9 @@ namespace Supremacy.Economy
     {
         [NonSerialized] private Lazy<Colony> _colony;
 
-        public Colony Source
-        {
-            get { return _colony.Value; }
-        }
+        public Colony Source => _colony.Value;
 
-        public OrbitalBatteryDesign OrbitalBatteryDesign
-        {
-            get { return BuildDesign as OrbitalBatteryDesign; }
-        }
+        public OrbitalBatteryDesign OrbitalBatteryDesign => BuildDesign as OrbitalBatteryDesign;
 
         protected override int GetIndustryAvailable()
         {
@@ -87,9 +81,14 @@ namespace Supremacy.Economy
             : base(colony.Owner, colony, target)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             if (target == null)
+            {
                 throw new ArgumentNullException("target");
+            }
 
             _colony = new Lazy<Colony>(FindColony, LazyThreadSafetyMode.PublicationOnly);
         }
@@ -123,50 +122,37 @@ namespace Supremacy.Economy
     {
         private readonly int _baseTypeId;
 
-        public override string Description
-        {
-            get
-            {
-                return string.Format(
+        public override string Description => string.Format(
                     ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(FacilityDesign.Name));
-            }
-        }
 
-        protected ProductionFacilityDesign BaseFacilityType
-        {
-            get { return GameContext.Current.TechDatabase.ProductionFacilityDesigns[_baseTypeId]; }
-        }
+        protected ProductionFacilityDesign BaseFacilityType => GameContext.Current.TechDatabase.ProductionFacilityDesigns[_baseTypeId];
 
         protected override int IndustryRequired
         {
             get
             {
-                var count = Source.GetTotalFacilities(BaseFacilityType.Category);
-                var unitCost = (int)(0.50 * base.IndustryRequired);
-                return (count * unitCost);
+                int count = Source.GetTotalFacilities(BaseFacilityType.Category);
+                int unitCost = (int)(0.50 * base.IndustryRequired);
+                return count * unitCost;
             }
         }
 
-        protected override ResourceValueCollection ResourcesRequired
-        {
-            get { return new ResourceValueCollection(); }
-        }
+        protected override ResourceValueCollection ResourcesRequired => new ResourceValueCollection();
 
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         public override void Finish()
         {
             Source.SetFacilityType(FacilityDesign.Category, FacilityDesign);
 
-            var civManager = GameContext.Current.CivilizationManagers[Builder];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
             if (civManager == null)
+            {
                 return;
+            }
 
-            civManager.SitRepEntries.Add(new ItemBuiltSitRepEntry(Builder, BuildDesign, Location));
+            civManager.SitRepEntries.Add(new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
         }
 
         public ProductionFacilityUpgradeProject(Colony colony, ProductionFacilityDesign target)
@@ -187,51 +173,36 @@ namespace Supremacy.Economy
         private readonly int _baseTypeId;
         private readonly ResourceValueCollection _resourcesRequired;
 
-        public override string Description
-        {
-            get
-            {
-                return string.Format(
+        public override string Description => string.Format(
                     ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(OrbitalBatteryDesign.Name));
-            }
-        }
 
-        protected OrbitalBatteryDesign BaseOrbitalBatteryDesign
-        {
-            get { return GameContext.Current.TechDatabase.OrbitalBatteryDesigns[_baseTypeId]; }
-        }
+        protected OrbitalBatteryDesign BaseOrbitalBatteryDesign => GameContext.Current.TechDatabase.OrbitalBatteryDesigns[_baseTypeId];
 
         protected override int IndustryRequired
         {
             get
             {
-                var count = Source.TotalOrbitalBatteries;
-                var unitCost = (int)(0.50 * base.IndustryRequired);
-                return (count * unitCost);
+                int count = Source.TotalOrbitalBatteries;
+                int unitCost = (int)(0.50 * base.IndustryRequired);
+                return count * unitCost;
             }
         }
 
-        protected override ResourceValueCollection ResourcesRequired
-        {
-            get { return _resourcesRequired; }
-        }
+        protected override ResourceValueCollection ResourcesRequired => _resourcesRequired;
 
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         public override void Finish()
         {
-            var civManager = GameContext.Current.CivilizationManagers[Builder];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
 
             Source.OrbitalBatteryDesign = OrbitalBatteryDesign;
 
             if (civManager != null)
             {
                 civManager.SitRepEntries.Add(
-                    new ItemBuiltSitRepEntry(Builder, BuildDesign, Location));
+                    new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
             }
         }
 
@@ -240,10 +211,13 @@ namespace Supremacy.Economy
         {
             _baseTypeId = colony.OrbitalBatteryDesign.DesignID;
 
-            var resourcesRequired = new ResourceValueCollection();
+            ResourceValueCollection resourcesRequired = new ResourceValueCollection();
 
-            foreach (var resourceType in EnumHelper.GetValues<ResourceType>())
+            foreach (ResourceType resourceType in EnumHelper.GetValues<ResourceType>())
+            {
                 resourcesRequired[resourceType] = (int)Math.Ceiling(base.ResourcesRequired[resourceType] / 2d);
+            }
+
             _resourcesRequired = resourcesRequired;
         }
 

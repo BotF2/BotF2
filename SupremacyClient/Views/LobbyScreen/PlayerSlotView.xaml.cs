@@ -53,14 +53,21 @@ namespace Supremacy.Client.Views.LobbyScreen
 
         private static void OnSlotPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var view = d as PlayerSlotView;
-            if (view == null)
+            if (!(d is PlayerSlotView view))
+            {
                 return;
+            }
+
             if (e.OldValue != null)
+            {
                 ((PlayerSlot)e.OldValue).PropertyChanged -= view.OnSlotSubPropertyChanged;
-            var newValue = e.NewValue as PlayerSlot;
-            if (newValue == null)
+            }
+
+            if (!(e.NewValue is PlayerSlot newValue))
+            {
                 return;
+            }
+
             newValue.PropertyChanged += view.OnSlotSubPropertyChanged;
             view.IsOpenCheckBox.IsChecked = !newValue.IsClosed;
             view.AssignedPlayer = newValue.Player ?? Player.Unassigned;
@@ -71,35 +78,53 @@ namespace Supremacy.Client.Views.LobbyScreen
         private void OnSlotSubPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (_updateScope.IsWithin)
+            {
                 return;
+            }
+
             switch (e.PropertyName)
             {
                 case "IsClosed":
                     if (Slot.IsClosed)
+                    {
                         OnSlotClosed();
+                    }
                     else
+                    {
                         OnSlotOpened();
+                    }
+
                     break;
             }
         }
 
         private static void OnAssignedPlayerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var view = d as PlayerSlotView;
-            if (view == null)
+            if (!(d is PlayerSlotView view))
+            {
                 return;
+            }
+
             if (view._updateScope.IsWithin)
+            {
                 return;
+            }
+
             view.OnAssignedPlayerChanged();
         }
 
         private static void OnAssignablePlayersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var view = d as PlayerSlotView;
-            if (view == null)
+            if (!(d is PlayerSlotView view))
+            {
                 return;
+            }
+
             if (view._updateScope.IsWithin)
+            {
                 return;
+            }
+
             view.OnAssignablePlayersChanged();
         }
 
@@ -115,30 +140,22 @@ namespace Supremacy.Client.Views.LobbyScreen
 
         protected void OnSlotClosed()
         {
-            var handler = SlotClosed;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SlotClosed?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnSlotOpened()
         {
-            var handler = SlotOpened;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SlotOpened?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnAssignablePlayersChanged()
         {
-            var handler = AssignablePlayersChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            AssignablePlayersChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnAssignedPlayerChanged()
         {
-            var handler = AssignedPlayerChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            AssignedPlayerChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public PlayerSlotView()
@@ -150,30 +167,37 @@ namespace Supremacy.Client.Views.LobbyScreen
 
         public PlayerSlot Slot
         {
-            get { return GetValue(SlotProperty) as PlayerSlot; }
-            set { SetValue(SlotProperty, value); }
+            get => GetValue(SlotProperty) as PlayerSlot;
+            set => SetValue(SlotProperty, value);
         }
 
         public IEnumerable<Player> AssignablePlayers
         {
-            get { return GetValue(AssignablePlayersProperty) as IEnumerable<Player>; }
-            set { SetValue(AssignablePlayersProperty, value); }
+            get => GetValue(AssignablePlayersProperty) as IEnumerable<Player>;
+            set => SetValue(AssignablePlayersProperty, value);
         }
 
         public Player AssignedPlayer
         {
-            get { return GetValue(AssignedPlayerProperty) as Player; }
-            set { SetValue(AssignedPlayerProperty, value); }
+            get => GetValue(AssignedPlayerProperty) as Player;
+            set => SetValue(AssignedPlayerProperty, value);
         }
 
         private void OnIsOpenCheckBoxChecked(object sender, RoutedEventArgs e)
         {
             if (_updateScope.IsWithin)
+            {
                 return;
+            }
+
             if (IsOpenCheckBox.IsChecked.HasValue && IsOpenCheckBox.IsChecked.Value)
+            {
                 OnSlotOpened();
+            }
             else if (IsOpenCheckBox.IsChecked.HasValue && !IsOpenCheckBox.IsChecked.Value)
+            {
                 OnSlotClosed();
+            }
         }
     }
 }

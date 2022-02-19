@@ -1,4 +1,5 @@
 ﻿using Supremacy.Economy;
+using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {
@@ -12,47 +13,28 @@ namespace Supremacy.Client.Views
             InitializeComponent();
         }
 
-        private void OnBuildSlotListItemClicked(object sender, object clickedItem)
+        private void OnShipyardBuildQueueItemClicked(object sender, object clickedItem)
         {
-            var buildSlot = clickedItem as BuildSlot;
-            if (buildSlot == null)
+            if (!(clickedItem is BuildQueueItem buildQueueItem))
+            {
                 return;
+            }
 
-            var project = buildSlot.Project;
-            if (project == null)
-                return;
-
-            var presentationModel = PresentationModel;
+            ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
+            {
                 return;
+            }
 
-            var command = presentationModel.CancelBuildProjectCommand;
-            if ((command == null) || !command.CanExecute(project))
-                return;
+            ICommand command = presentationModel.RemoveFromShipyardBuildQueueCommand;
 
-            command.Execute(project);
+            if ((command != null) && command.CanExecute(buildQueueItem))
+            {
+                command.Execute(buildQueueItem);
+            }
         }
 
-        private void OnBuildQueueItemClicked(object sender, object clickedItem)
-        {
-            var buildQueueItem = clickedItem as BuildQueueItem;
-            if (buildQueueItem == null)
-                return;
 
-            var presentationModel = PresentationModel;
-            if (presentationModel == null)
-                return;
-
-            var command = presentationModel.RemoveFromShipyardBuildQueueCommand;
-            if ((command == null) || !command.CanExecute(buildQueueItem))
-                return;
-
-            command.Execute(buildQueueItem);
-        }
-
-        private ColonyScreenPresentationModel PresentationModel
-        {
-            get { return DataContext as ColonyScreenPresentationModel; }
-        }
+        private ColonyScreenPresentationModel PresentationModel => DataContext as ColonyScreenPresentationModel;
     }
 }

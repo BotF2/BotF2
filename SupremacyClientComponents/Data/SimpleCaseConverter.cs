@@ -41,43 +41,45 @@ namespace Supremacy.Client.Data
 
         public object Case
         {
-            get { return GetValue(CaseProperty); }
-            set { SetValue(CaseProperty, value); }
+            get => GetValue(CaseProperty);
+            set => SetValue(CaseProperty, value);
         }
 
         public object IfMatch
         {
-            get { return GetValue(IfMatchProperty); }
-            set { SetValue(IfMatchProperty, value); }
+            get => GetValue(IfMatchProperty);
+            set => SetValue(IfMatchProperty, value);
         }
 
         public object Else
         {
-            get { return GetValue(ElseProperty); }
-            set { SetValue(ElseProperty, value); }
+            get => GetValue(ElseProperty);
+            set => SetValue(ElseProperty, value);
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var comparand = Case;
-            var isMatch = Equals(value, comparand);
+            object comparand = Case;
+            bool isMatch = Equals(value, comparand);
 
             if (!isMatch && comparand != null && value != null)
             {
-                var convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType(), null, culture);
+                object convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType(), null, culture);
                 if (convertedComparand != DependencyProperty.UnsetValue)
                 {
                     isMatch = Equals(value, convertedComparand);
                 }
                 else
                 {
-                    var convertedValue = ValueConversionHelper.Convert(value, comparand.GetType(), null, culture);
+                    object convertedValue = ValueConversionHelper.Convert(value, comparand.GetType(), null, culture);
                     if (convertedValue != DependencyProperty.UnsetValue)
+                    {
                         isMatch = Equals(convertedValue, comparand);
+                    }
                 }
             }
 
-            var convertedResult = ValueConversionHelper.Convert(
+            object convertedResult = ValueConversionHelper.Convert(
                 isMatch ? IfMatch : Else,
                 targetType,
                 parameter,
@@ -109,11 +111,11 @@ namespace Supremacy.Client.Data
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             return new SimpleCaseConverter
-                   {
-                       Case = Case,
-                       IfMatch = IfMatch,
-                       Else = Else
-                   };
+            {
+                Case = Case,
+                IfMatch = IfMatch,
+                Else = Else
+            };
         }
     }
 }

@@ -212,7 +212,7 @@ namespace Supremacy.Scripting.Ast
                     }))
                 : new ParametersCompiled(Parameters.Select(o => new ImplicitLambdaParameter(o.Name, null, o.Span)));
             TopLevelScope scope = Scope = new TopLevelScope(ec.Compiler, ec.CurrentScope, parameters, Span.Start);
-                
+
             for (int i = 0; i < parameters.Count; i++)
             {
                 parameters[i].Scope = scope;
@@ -271,7 +271,7 @@ namespace Supremacy.Scripting.Ast
         {
             int parameterCount = Scope.Parameters.Count;
             System.Reflection.MethodInfo invokeMethod = TypeManager.GetDelegateInvokeMethod(ec, null, type);
-            
+
             if ((invokeMethod.GetParameters().Length != Scope.Parameters.Count) || typeInferenceContext.InferredTypeArguments.Length < parameterCount)
             {
                 return TypeManager.CoreTypes.Object;
@@ -295,11 +295,11 @@ namespace Supremacy.Scripting.Ast
             //_scope.Parameters.Resolve(ec);
 
             Scope oldScope = ec.CurrentScope;
-            
+
             ec.CurrentScope = Scope;
 
             Expression resolvedBody = _body.Resolve(ec);
-            
+
             ec.CurrentScope = oldScope;
 
             Scope.Parameters = oldParameters;
@@ -310,7 +310,7 @@ namespace Supremacy.Scripting.Ast
                 if ((typeInferenceContext.InferredTypeArguments[i] != null) && typeInferenceContext.InferredTypeArguments[i].IsGenericParameter)
                 {
                     typeInferenceContext.InferredTypeArguments[i] = Scope.Parameters[i].ParameterType;
-                        //_scope.Parameters[i].ParameterType = typeInferenceContext.InferredTypeArguments[i];
+                    //_scope.Parameters[i].ParameterType = typeInferenceContext.InferredTypeArguments[i];
                 }
             }
 
@@ -406,7 +406,7 @@ namespace Supremacy.Scripting.Ast
 
             // TODO : FIX THIS
             //ptypes.CopyTo(_scope.Parameters.Types, 0);
-            
+
             // TODO: STOP DOING THIS
             Scope.Parameters.Types = ptypes;
 
@@ -536,7 +536,7 @@ namespace Supremacy.Scripting.Ast
         // converted to the delegate of type `delegate_type'
         //
         public bool ImplicitStandardConversionExists(ParseContext ec, Type delegateType)
-		{
+        {
             bool expressionTreeConversion = false;
             if (!TypeManager.IsDelegateType(delegateType))
             {
@@ -591,6 +591,6 @@ namespace Supremacy.Scripting.Ast
             }
 
             return result;
-		}
+        }
     }
 }

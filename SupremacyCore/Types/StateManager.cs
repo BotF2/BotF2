@@ -34,20 +34,19 @@ namespace Supremacy.Types
             _transitionMap = transitionMap;
         }
 
-        public TStateEnum CurrentState
-        {
-            get { return (TStateEnum)State.Get(typeof(TStateEnum), _currentState); }
-        }
+        public TStateEnum CurrentState => (TStateEnum)State.Get(typeof(TStateEnum), _currentState);
 
         public bool TryChange(TStateEnum desiredState)
         {
-            var currentState = _currentState;
-            var desiredStateValue = desiredState.Value;
+            int currentState = _currentState;
+            int desiredStateValue = desiredState.Value;
 
             if (currentState == desiredStateValue)
+            {
                 return true;
+            }
 
-            foreach (var transition in _transitionMap.Where(t => t.From == currentState && t.To == desiredStateValue))
+            foreach (StateTransition<TStateEnum> transition in _transitionMap.Where(t => t.From == currentState && t.To == desiredStateValue))
             {
                 if (Interlocked.CompareExchange(ref _currentState, transition.To, currentState) == currentState)
                 {
@@ -56,7 +55,9 @@ namespace Supremacy.Types
                 }
 
                 if (transition.Disposition == StateChangeDisposition.Optional)
+                {
                     return false;
+                }
 
                 throw new InvalidOperationException("Mandatory state transition couldn't occur.");
             }
@@ -78,53 +79,50 @@ namespace Supremacy.Types
 
     public struct StateTransition<TStateEnum> : IEquatable<StateTransition<TStateEnum>> where TStateEnum : State
     {
-        private readonly StateChangeDisposition _disposition;
-        private readonly int _from;
         private readonly int _to;
 
         public StateTransition([NotNull] TStateEnum from, [NotNull] TStateEnum to, StateChangeDisposition disposition)
         {
             if (@from == null)
+            {
                 throw new ArgumentNullException("from");
+            }
+
             if (to == null)
+            {
                 throw new ArgumentNullException("to");
+            }
 
-            _from = from.Value;
+            From = from.Value;
             _to = to.Value;
-            _disposition = disposition;
+            Disposition = disposition;
         }
 
-        public int From
-        {
-            get { return _from; }
-        }
+        public int From { get; }
 
-        public int To
-        {
-            get { return _to; }
-        }
+        public int To => _to;
 
-        public StateChangeDisposition Disposition
-        {
-            get { return _disposition; }
-        }
+        public StateChangeDisposition Disposition { get; }
 
         #region IEquatable<StateTransition<TStateEnum>> Members
 
         public bool Equals(StateTransition<TStateEnum> other)
         {
-            return _from == other._from &&
+            return From == other.From &&
                    _to == other._to &&
-                   _disposition == other._disposition;
+                   Disposition == other.Disposition;
         }
 
         #endregion
 
         public override bool Equals(object obj)
         {
-            var other = obj as StateTransition<TStateEnum>?;
+            StateTransition<TStateEnum>? other = obj as StateTransition<TStateEnum>?;
             if (other.HasValue)
+            {
                 return Equals(other);
+            }
+
             return false;
         }
 
@@ -140,7 +138,7 @@ namespace Supremacy.Types
 
         public override int GetHashCode()
         {
-            return (_from | (_to << 16));
+            return From | (_to << 16);
         }
     }
 
@@ -149,22 +147,14 @@ namespace Supremacy.Types
     {
         private const BindingFlags ValueFieldFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static;
 
-        private readonly int _value;
-
         protected State(int value)
         {
-            _value = value;
+            Value = value;
         }
 
-        public string Name
-        {
-            get { return ToString(); }
-        }
+        public string Name => ToString();
 
-        public int Value
-        {
-            get { return _value; }
-        }
+        public int Value { get; }
 
         public int Toint()
         {
@@ -173,16 +163,18 @@ namespace Supremacy.Types
 
         public static implicit operator int(State state)
         {
-            return state._value;
+            return state.Value;
         }
 
         public override string ToString()
         {
-            var field = GetFieldInfo();
+            FieldInfo field = GetFieldInfo();
             if (field != null)
+            {
                 return field.Name;
+            }
 
-            return _value.ToString();
+            return Value.ToString();
         }
 
         internal FieldInfo GetFieldInfo()
@@ -191,7 +183,7 @@ namespace Supremacy.Types
                        from f in GetType().GetFields(ValueFieldFlags)
                        where typeof(State).IsAssignableFrom(f.FieldType)
                        let value = (State)f.GetValue(null)
-                       where value == _value
+                       where value == Value
                        select f
                    ).FirstOrDefault();
         }
@@ -211,10 +203,11 @@ namespace Supremacy.Types
 
         internal static State Get(Type type, int value)
         {
-            State state;
 
-            if (TryGet(type, value, out state))
+            if (TryGet(type, value, out State state))
+            {
                 return state;
+            }
 
             throw new InvalidOperationException(
                 string.Format(
@@ -226,17 +219,18 @@ namespace Supremacy.Types
 
         internal static bool TryGet(Type type, int value, out State state)
         {
-            state = GetValues(type).FirstOrDefault(o => o._value == value);
-            return (state != null);
+            state = GetValues(type).FirstOrDefault(o => o.Value == value);
+            return state != null;
         }
 
         internal static State Parse(Type type, string value)
         {
-            State result;
 
-            if (TryParse(type, value, out result))
+            if (TryParse(type, value, out State result))
+            {
                 return result;
-            
+            }
+
             throw new InvalidOperationException(
                 string.Format(
                     CultureInfo.InvariantCulture,
@@ -253,18 +247,27 @@ namespace Supremacy.Types
                          select (State)f.GetValue(null)
                      ).FirstOrDefault();
 
-            return (state != null);
+            return state != null;
         }
 
         public bool Equals(State other)
         {
             if (ReferenceEquals(this, other))
+            {
                 return true;
-            if (ReferenceEquals(null, other))
+            }
+
+            if (other is null)
+            {
                 return false;
+            }
+
             if (other.GetType() != GetType())
+            {
                 return false;
-            return other._value == _value;
+            }
+
+            return other.Value == Value;
         }
 
         public sealed override bool Equals(object obj)
@@ -274,7 +277,7 @@ namespace Supremacy.Types
 
         public override int GetHashCode()
         {
-            return _value;
+            return Value;
         }
 
         public static bool operator ==(State left, State right)
@@ -289,87 +292,87 @@ namespace Supremacy.Types
 
         TypeCode IConvertible.GetTypeCode()
         {
-            return _value.GetTypeCode();
+            return Value.GetTypeCode();
         }
 
         bool IConvertible.ToBoolean(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToBoolean(provider);
+            return ((IConvertible)Value).ToBoolean(provider);
         }
 
         char IConvertible.ToChar(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToChar(provider);
+            return ((IConvertible)Value).ToChar(provider);
         }
 
         sbyte IConvertible.ToSByte(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToSByte(provider);
+            return ((IConvertible)Value).ToSByte(provider);
         }
 
         byte IConvertible.ToByte(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToByte(provider);
+            return ((IConvertible)Value).ToByte(provider);
         }
 
         short IConvertible.ToInt16(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt16(provider);
+            return ((IConvertible)Value).ToInt16(provider);
         }
 
         ushort IConvertible.ToUInt16(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt16(provider);
+            return ((IConvertible)Value).ToUInt16(provider);
         }
 
         int IConvertible.ToInt32(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt32(provider);
+            return ((IConvertible)Value).ToInt32(provider);
         }
 
         uint IConvertible.ToUInt32(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt32(provider);
+            return ((IConvertible)Value).ToUInt32(provider);
         }
 
         long IConvertible.ToInt64(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt64(provider);
+            return ((IConvertible)Value).ToInt64(provider);
         }
 
         ulong IConvertible.ToUInt64(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt64(provider);
+            return ((IConvertible)Value).ToUInt64(provider);
         }
 
         float IConvertible.ToSingle(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToSingle(provider);
+            return ((IConvertible)Value).ToSingle(provider);
         }
 
         double IConvertible.ToDouble(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDouble(provider);
+            return ((IConvertible)Value).ToDouble(provider);
         }
 
         decimal IConvertible.ToDecimal(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDecimal(provider);
+            return ((IConvertible)Value).ToDecimal(provider);
         }
 
         DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDateTime(provider);
+            return ((IConvertible)Value).ToDateTime(provider);
         }
 
         string IConvertible.ToString(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToString(provider);
+            return Value.ToString(provider);
         }
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToType(conversionType, provider);
+            return ((IConvertible)Value).ToType(conversionType, provider);
         }
     }
 
@@ -378,7 +381,9 @@ namespace Supremacy.Types
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (sourceType == typeof(int) || sourceType == typeof(string))
+            {
                 return true;
+            }
 
             return base.CanConvertFrom(context, sourceType);
         }
@@ -393,32 +398,37 @@ namespace Supremacy.Types
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var type = typeof(TStateEnum);
+            Type type = typeof(TStateEnum);
 
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+
             if (context != null &&
                 context.PropertyDescriptor != null &&
                 context.PropertyDescriptor.PropertyType.IsSubclassOf(type))
             {
                 type = context.PropertyDescriptor.PropertyType;
             }
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+
 
             State state;
 
-            var intValue = TryConvert.ToInt32(value);
+            int? intValue = TryConvert.ToInt32(value);
             if (intValue.HasValue)
             {
                 if (State.TryGet(type, intValue.Value, out state))
+                {
                     return state;
+                }
+
                 return null;
             }
 
-            var stringValue = value as string;
-            if (stringValue != null)
+            if (value is string stringValue)
             {
                 if (State.TryParse(type, stringValue, out state))
+                {
                     return state;
+                }
+
                 return null;
             }
 
@@ -427,15 +437,14 @@ namespace Supremacy.Types
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var state = value as State;
+            State state = value as State;
             if (state != null)
             {
                 if (destinationType == typeof(MarkupExtension))
                 {
-                    var serializerContext = context as IValueSerializerContext;
-                    if (serializerContext != null)
+                    if (context is IValueSerializerContext serializerContext)
                     {
-                        var typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
+                        ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                         if (typeSerializer != null)
                         {
                             return new StaticExtension(
@@ -446,17 +455,21 @@ namespace Supremacy.Types
                     }
 
                     return new StaticExtension
-                           {
-                               MemberType = state.GetType(),
-                               Member = state.Name
-                           };
+                    {
+                        MemberType = state.GetType(),
+                        Member = state.Name
+                    };
                 }
 
                 if (destinationType == typeof(int))
+                {
                     return state.Value;
+                }
 
                 if (destinationType == typeof(string))
+                {
                     return state.ToString();
+                }
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

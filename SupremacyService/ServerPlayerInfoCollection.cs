@@ -23,11 +23,12 @@ namespace Supremacy.WCF
         {
             lock (SyncRoot)
             {
-                ServerPlayerInfo playerInfo;
 
-                if (_playerIdLookup.TryGetValue(playerId, out playerInfo))
+                if (_playerIdLookup.TryGetValue(playerId, out ServerPlayerInfo playerInfo))
+                {
                     return playerInfo;
-                
+                }
+
                 return null;
             }
         }
@@ -45,10 +46,11 @@ namespace Supremacy.WCF
         {
             lock (SyncRoot)
             {
-                ServerPlayerInfo playerInfo;
 
-                if (_sessionIdLookup.TryGetValue(sessionId, out playerInfo))
+                if (_sessionIdLookup.TryGetValue(sessionId, out ServerPlayerInfo playerInfo))
+                {
                     return playerInfo;
+                }
 
                 return null;
             }
@@ -69,11 +71,11 @@ namespace Supremacy.WCF
         {
             lock (SyncRoot)
             {
-                var item = this[index];
-                
-                _sessionIdLookup.Remove(item.Session.SessionId);
-                _playerIdLookup.Remove(item.Player.PlayerID);
-                
+                ServerPlayerInfo item = this[index];
+
+                _ = _sessionIdLookup.Remove(item.Session.SessionId);
+                _ = _playerIdLookup.Remove(item.Player.PlayerID);
+
                 base.RemoveItem(index);
             }
         }
@@ -84,7 +86,7 @@ namespace Supremacy.WCF
             {
                 _sessionIdLookup.Clear();
                 _playerIdLookup.Clear();
-                
+
                 base.ClearItems();
             }
         }
@@ -110,8 +112,10 @@ namespace Supremacy.WCF
             {
                 array = new Player[Count];
 
-                for (var i = 0; i < Count; i++)
+                for (int i = 0; i < Count; i++)
+                {
                     array[i] = Items[i].Player;
+                }
             }
 
             return array;

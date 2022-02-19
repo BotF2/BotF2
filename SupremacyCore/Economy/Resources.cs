@@ -13,6 +13,6 @@ namespace Supremacy.Economy
     {
         Deuterium = 0,
         Dilithium,
-        RawMaterials,
+        Duranium,
     }
 }

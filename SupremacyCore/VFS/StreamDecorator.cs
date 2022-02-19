@@ -28,12 +28,10 @@ namespace Supremacy.VFS
     {
         #region Fields
         private T _baseStream;
-        private bool _closed;
         private readonly string _resolvedPath;
         #endregion
 
         #region Events
-        private FileAccess _access;
         private FileShare _share;
         public event EventHandler<EventArgs> Closed;
         #endregion
@@ -44,46 +42,42 @@ namespace Supremacy.VFS
             _resolvedPath = resolvedPath;
             BaseStream = baseStream;
             _share = share;
-            _access = access;
+            Access = access;
         }
         #endregion
 
         #region Properties and Indexers
         protected T BaseStream
         {
-            get { return _baseStream; }
+            get => _baseStream;
             set
             {
                 VerifyNotDisposed();
                 if (ReferenceEquals(_baseStream, value))
+                {
                     return;
+                }
+
                 if (_baseStream != null)
+                {
                     GC.ReRegisterForFinalize(_baseStream);
+                }
+
                 _baseStream = value;
                 if (_baseStream != null)
+                {
                     GC.SuppressFinalize(_baseStream);
+                }
             }
         }
 
-        public override bool CanRead
-        {
-            get { return !IsDisposed && _baseStream.CanRead; }
-        }
+        public override bool CanRead => !IsDisposed && _baseStream.CanRead;
 
-        protected bool IsDisposed
-        {
-            get { return _closed; }
-        }
+        protected bool IsDisposed { get; private set; }
 
-        public override bool CanSeek
-        {
-            get { return !IsDisposed && _baseStream.CanSeek; }
-        }
+        public override bool CanSeek => !IsDisposed && _baseStream.CanSeek;
 
-        public override bool CanWrite
-        {
-            get { return !IsDisposed && _baseStream.CanWrite; }
-        }
+        public override bool CanWrite => !IsDisposed && _baseStream.CanWrite;
 
         public override long Length
         {
@@ -120,7 +114,10 @@ namespace Supremacy.VFS
         {
             VerifyNotDisposed();
             if (!CanRead)
+            {
                 throw new NotSupportedException("Stream does not support read.");
+            }
+
             return _baseStream.Read(buffer, offset, count);
         }
 
@@ -144,8 +141,10 @@ namespace Supremacy.VFS
 
         protected override void Dispose(bool disposing)
         {
-            if (_closed)
+            if (IsDisposed)
+            {
                 return;
+            }
 
             try
             {
@@ -156,7 +155,7 @@ namespace Supremacy.VFS
                 GameLog.Core.General.Error(e);
             }
 
-            var baseStream = _baseStream;
+            T baseStream = _baseStream;
             if (baseStream != null)
             {
                 if (disposing)
@@ -178,23 +177,26 @@ namespace Supremacy.VFS
 
             OnClosed();
 
-            _closed = true;
+            IsDisposed = true;
 
             if (disposing)
+            {
                 GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void OnClosed()
         {
             Console.WriteLine("Close called for file {0}", ResolvedPath);
-            if (Closed != null)
-                Closed(this, EventArgs.Empty);
+            Closed?.Invoke(this, EventArgs.Empty);
         }
 
         protected void VerifyNotDisposed()
         {
-            if (_closed)
+            if (IsDisposed)
+            {
                 throw new ObjectDisposedException("StreamDecorator");
+            }
         }
 
         ~StreamDecorator()
@@ -207,25 +209,13 @@ namespace Supremacy.VFS
         public string SourceName { get; protected internal set; }
         public string VirtualPath { get; protected internal set; }
 
-        string IVirtualFileStreamInternal.ResolvedPath
-        {
-            get { return ResolvedPath; }
-        }
+        string IVirtualFileStreamInternal.ResolvedPath => ResolvedPath;
 
-        protected internal string ResolvedPath
-        {
-            get { return _resolvedPath; }
-        }
+        protected internal string ResolvedPath => _resolvedPath;
 
-        public FileAccess Access
-        {
-            get { return _access; }
-        }
+        public FileAccess Access { get; }
 
-        public FileShare Share
-        {
-            get { return _share; }
-        }
+        public FileShare Share => _share;
         #endregion
     }
 }

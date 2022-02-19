@@ -117,7 +117,6 @@ namespace Supremacy.Client.Controls
 
         #endregion
 
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static GameControlSeparator()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -141,14 +140,8 @@ namespace Supremacy.Client.Controls
             Label = label;
         }
 
-        public bool IsFirstItem
-        {
-            get { return GameItemsControl.GetIsFirstItem(this); }
-        }
+        public bool IsFirstItem => GameItemsControl.GetIsFirstItem(this);
 
-        public bool IsLastItem
-        {
-            get { return GameItemsControl.GetIsLastItem(this); }
-        }
+        public bool IsLastItem => GameItemsControl.GetIsLastItem(this);
     }
 }

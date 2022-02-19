@@ -31,8 +31,22 @@ namespace Supremacy.Client
 
         public ShipyardBuildSlot BuildSlot
         {
-            get { return (ShipyardBuildSlot)GetValue(BuildSlotProperty); }
-            set { SetValue(BuildSlotProperty, value); }
+            get => (ShipyardBuildSlot)GetValue(BuildSlotProperty);
+            set => SetValue(BuildSlotProperty, value);
+        }
+        #endregion
+
+        #region ShipyardBuildSlot Property
+        public static readonly DependencyProperty ShipyardBuildSlotProperty = DependencyProperty.Register(
+            "ShipyardBuildSlot",
+            typeof(ShipyardBuildSlot),
+            typeof(ShipyardDockView),
+            new PropertyMetadata());
+
+        public ShipyardBuildSlot ShipyardBuildSlot
+        {
+            get => (ShipyardBuildSlot)GetValue(ShipyardBuildSlotProperty);
+            set => SetValue(ShipyardBuildSlotProperty, value);
         }
         #endregion
     }

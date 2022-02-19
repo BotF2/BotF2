@@ -24,8 +24,6 @@ using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Utility;
 using System.IO;
-using Supremacy.Game;
-using System.Windows.Automation;
 
 namespace Supremacy.Text
 {
@@ -71,42 +69,46 @@ namespace Supremacy.Text
 
         public static ClientTextDatabase Load(string path)
         {
-            var doc = XDocument.Load(path);
-            
-            var database = new ClientTextDatabase();
+            XDocument doc = XDocument.Load(path);
 
-            var techObjectTable = database.TechObjectTextTable;
-            var techObjectEntryType = typeof(ITechObjectTextDatabaseEntry).FullName;
-            var techObjectTableElement = doc.Root.Elements("Tables")
+            ClientTextDatabase database = new ClientTextDatabase();
+
+            ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = database.TechObjectTextTable;
+            string techObjectEntryType = typeof(ITechObjectTextDatabaseEntry).FullName;
+            XElement techObjectTableElement = doc.Root.Elements("Tables")
                 .Elements("Table")
-                .Where(e => string.Equals((string)e.Attribute("EntryType"), techObjectEntryType))
-                .FirstOrDefault();
+                .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), techObjectEntryType));
 
             if (techObjectTableElement == null)
+            {
                 return database;
+            }
 
-            var techObjectEntries = techObjectTableElement
+            IEnumerable<XElement> techObjectEntries = techObjectTableElement
                 .Elements("Entries")
                 .Elements("Entry");
 
             // for Output file
-            var pathOutputfile = "./lib/";  // instead of ./Resources/Data/
-            var separator = ";";
-            var line = "";
+            string pathOutputfile = "./lib/";  // instead of ./Resources/Data/
+            string separator = ";";
+            string line = "";
             StreamWriter streamWriter;
-            var file = "./lib/test-FromTextDatabase.txt";
-            //streamWriter = new StreamWriter(file);
-            String strHeader = "";  // first line of output files
+            string file = "./lib/test-FromTextDatabase.txt";
+            string strHeader = "";  // first line of output files
 
 
             try // avoid hang up if this file is opened by another program 
             {
+                //if (_XML2CSVOutput == false)
+                //    continue;
 
-                file = pathOutputfile + "_FromTextDatabase_(autoCreated).csv";
+                file = pathOutputfile + "_TextDatabase_List(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
+                {
                     goto WriterCloseFromTextDatabase;
+                }
 
                 streamWriter = new StreamWriter(file);
 
@@ -120,21 +122,23 @@ namespace Supremacy.Text
                 streamWriter.WriteLine(strHeader);
                 // End of head line
 
-                foreach (var entryElement in techObjectEntries)
+                foreach (XElement entryElement in techObjectEntries)
                 {
-                    var key = (string)entryElement.Attribute("Key");
+                    string key = (string)entryElement.Attribute("Key");
 
                     if (key == null)
+                    {
                         continue;
+                    }
 
-                    var entry = new ClientTextDatabaseEntry<ITechObjectTextDatabaseEntry>(key);
-                    var localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
+                    ClientTextDatabaseEntry<ITechObjectTextDatabaseEntry> entry = new ClientTextDatabaseEntry<ITechObjectTextDatabaseEntry>(key);
+                    IEnumerable<XElement> localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
 
 
-                    foreach (var localizedEntryElement in localizedEntries)
+                    foreach (XElement localizedEntryElement in localizedEntries)
                     {
                         //App.DoEvents();  // for avoid error after 60 seconds
-                        var localizedEntry = new TechObjectTextDatabaseEntry(
+                        TechObjectTextDatabaseEntry localizedEntry = new TechObjectTextDatabaseEntry(
                             (string)localizedEntryElement.Attribute("Language"),
                             (string)localizedEntryElement.Element("Name"),
                             (string)localizedEntryElement.Element("Description"),
@@ -165,33 +169,36 @@ namespace Supremacy.Text
                 // End of Autocreated files   
 
 
-                var raceTable = database.RaceTextTable;
-                var raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
-                var raceTableElement = doc.Root.Elements("Tables")
+                ClientTextDatabaseTable<IRaceTextDatabaseEntry> raceTable = database.RaceTextTable;
+                string raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
+                XElement raceTableElement = doc.Root.Elements("Tables")
                     .Elements("Table")
-                    .Where(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType))
-                    .FirstOrDefault();
+                    .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType));
 
                 if (raceTableElement == null)    // Races might be done in RaceDatabase.cs
+                {
                     return database;
+                }
 
-                var raceEntries = raceTableElement
+                IEnumerable<XElement> raceEntries = raceTableElement
                     .Elements("Entries")
                     .Elements("Entry");
 
-                foreach (var entryElement in raceEntries)
+                foreach (XElement entryElement in raceEntries)
                 {
-                    var key = (string)entryElement.Attribute("Key");
+                    string key = (string)entryElement.Attribute("Key");
 
                     if (key == null)
-                        continue;
-
-                    var entry = new ClientTextDatabaseEntry<IRaceTextDatabaseEntry>(key);
-                    var localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
-
-                    foreach (var localizedEntryElement in localizedEntries)
                     {
-                        var localizedEntry = new RaceTextDatabaseEntry(
+                        continue;
+                    }
+
+                    ClientTextDatabaseEntry<IRaceTextDatabaseEntry> entry = new ClientTextDatabaseEntry<IRaceTextDatabaseEntry>(key);
+                    IEnumerable<XElement> localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
+
+                    foreach (XElement localizedEntryElement in localizedEntries)
+                    {
+                        RaceTextDatabaseEntry localizedEntry = new RaceTextDatabaseEntry(
                             (string)localizedEntryElement.Attribute("Language"),
                             (string)localizedEntryElement.Element("SingularName"),
                             (string)localizedEntryElement.Element("PluralName"),
@@ -205,7 +212,7 @@ namespace Supremacy.Text
             }
             catch (Exception e)
             {
-                GameLog.Core.GameData.Error("Cannot write ... _FromTextDatabase_(autoCreated).csv", e);
+                GameLog.Core.GameData.Error("Cannot write ... ./lib/TextDatabase__List(autoCreated).csv", e);
             }
 
             return database;
@@ -216,39 +223,33 @@ namespace Supremacy.Text
             throw new NotSupportedException();
         }
 
-        public bool IsChanged
-        {
-            get { return false; }
-        }
+        public bool IsChanged => false;
 
         public void RejectChanges()
         {
             throw new NotSupportedException();
         }
 
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
         ITextDatabaseTable<TEntry> ITextDatabase.GetTable<TEntry>()
         {
             if (typeof(TEntry) == typeof(ITechObjectTextDatabaseEntry))
+            {
                 return (ITextDatabaseTable<TEntry>)_techObjectTextTable;
+            }
+
             if (typeof(TEntry) == typeof(IRaceTextDatabaseEntry))
+            {
                 return (ITextDatabaseTable<TEntry>)_raceTextTable;
+            }
+
             return null;
         }
 
-        private ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> TechObjectTextTable
-        {
-            get { return _techObjectTextTable; }
-        }
+        private ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> TechObjectTextTable => _techObjectTextTable;
 
-        private ClientTextDatabaseTable<IRaceTextDatabaseEntry> RaceTextTable
-        {
-            get { return _raceTextTable; }
-        }
+        private ClientTextDatabaseTable<IRaceTextDatabaseEntry> RaceTextTable => _raceTextTable;
 
         public void Save()
         {
@@ -306,25 +307,16 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public int Count
-            {
-                get { return _entries.Count; }
-            }
+            public int Count => _entries.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public void AcceptChanges()
             {
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges()
             {
@@ -378,9 +370,7 @@ namespace Supremacy.Text
 
             public ClientTextDatabaseEntry([NotNull] string key)
             {
-                if (key == null)
-                    throw new ArgumentNullException("key");
-                _key = key;
+                _key = key ?? throw new ArgumentNullException("key");
                 _localizedEntries = new KeyedCollectionBase<string, TLocalizedEntry>(entry => entry.Language);
             }
 
@@ -419,40 +409,25 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public int Count
-            {
-                get { return _localizedEntries.Count; }
-            }
+            public int Count => _localizedEntries.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public void AcceptChanges()
             {
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges()
             {
                 throw new NotSupportedException();
             }
 
-            public string Key
-            {
-                get { return _key; }
-            }
+            public string Key => _key;
 
-            public IEnumerable<TLocalizedEntry> LocalizedEntries
-            {
-                get { return _localizedEntries; }
-            }
+            public IEnumerable<TLocalizedEntry> LocalizedEntries => _localizedEntries;
 
             public TLocalizedEntry CreateLocalizedEntry(string language)
             {
@@ -466,12 +441,13 @@ namespace Supremacy.Text
 
             public TLocalizedEntry GetLocalizedEntry(string language)
             {
-                var culture = ResourceManager.CurrentCulture;
+                CultureInfo culture = ResourceManager.CurrentCulture;
 
-                TLocalizedEntry localizedEntry;
 
-                if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                if (_localizedEntries.TryGetValue(culture.Name, out TLocalizedEntry localizedEntry))
+                {
                     return localizedEntry;
+                }
 
                 while (!culture.IsNeutralCulture &&
                        culture.Parent != CultureInfo.InvariantCulture)
@@ -479,13 +455,17 @@ namespace Supremacy.Text
                     culture = culture.Parent;
 
                     if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                    {
                         return localizedEntry;
+                    }
                 }
 
                 culture = ResourceManager.NeutralCulture;
 
                 if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                {
                     return localizedEntry;
+                }
 
                 while (!culture.IsNeutralCulture &&
                        culture.Parent != CultureInfo.InvariantCulture)
@@ -493,7 +473,9 @@ namespace Supremacy.Text
                     culture = culture.Parent;
 
                     if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                    {
                         return localizedEntry;
+                    }
                 }
 
                 return null;
@@ -504,7 +486,7 @@ namespace Supremacy.Text
                 add { }
                 remove { }
             }
-            
+
             public void BeginEdit() { throw new NotSupportedException(); }
             public void EndEdit() { throw new NotSupportedException(); }
             public void CancelEdit() { throw new NotSupportedException(); }
@@ -513,7 +495,7 @@ namespace Supremacy.Text
             {
                 add { }
                 remove { }
-            } 
+            }
         }
         #endregion
 
@@ -530,18 +512,27 @@ namespace Supremacy.Text
                 string custom1,
                 string custom2)
             {
-                if (language == null)
-                    throw new ArgumentNullException("language");
-                _language = language;
+                _language = language ?? throw new ArgumentNullException("language");
 
                 if (name != null)
+                {
                     name = name.Trim();
+                }
+
                 if (description != null)
+                {
                     description = description.Trim();
+                }
+
                 if (custom1 != null)
+                {
                     custom1 = custom1.Trim();
+                }
+
                 if (custom2 != null)
+                {
                     custom2 = custom2.Trim();
+                }
 
                 Name = name;
                 Description = description;
@@ -554,22 +545,13 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges() { }
 
-            public string Language
-            {
-                get { return _language; }
-            }
+            public string Language => _language;
 
-            public string LanguageName
-            {
-                get { return CultureInfo.GetCultureInfo(Language).EnglishName; }
-            }
+            public string LanguageName => CultureInfo.GetCultureInfo(Language).EnglishName;
 
             public Dictionary<string, object> GetSavedValues()
             {
@@ -614,19 +596,23 @@ namespace Supremacy.Text
                 //string classLevel,
                 string description)
             {
-                if (language == null)
-                    throw new ArgumentNullException("language");
-
-                _language = language;
+                _language = language ?? throw new ArgumentNullException("language");
 
                 if (singularName != null)
+                {
                     singularName = singularName.Trim();
+                }
+
                 if (pluralName != null)
+                {
                     pluralName = pluralName.Trim();
+                }
                 //if (classLevel != null)
                 //    classLevel = classLevel.Trim();
                 if (description != null)
+                {
                     description = description.Trim();
+                }
 
                 SingularName = singularName;
                 PluralName = pluralName;
@@ -639,22 +625,13 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges() { }
 
-            public string Language
-            {
-                get { return _language; }
-            }
+            public string Language => _language;
 
-            public string LanguageName
-            {
-                get { return CultureInfo.GetCultureInfo(Language).EnglishName; }
-            }
+            public string LanguageName => CultureInfo.GetCultureInfo(Language).EnglishName;
 
             public Dictionary<string, object> GetSavedValues()
             {
@@ -726,10 +703,16 @@ namespace Supremacy.Text
             where TLocalizedEntry : class, ILocalizedTextDatabaseEntry
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
-            var entry = self.GetLocalizedEntry(language);
+            }
+
+            TLocalizedEntry entry = self.GetLocalizedEntry(language);
             if ((entry == null) || !string.Equals(entry.Language, language, StringComparison.OrdinalIgnoreCase))
+            {
                 entry = self.CreateLocalizedEntry(language);
+            }
+
             return entry;
         }
 
@@ -738,7 +721,10 @@ namespace Supremacy.Text
             where TLocalizedEntry : class, ILocalizedTextDatabaseEntry
         {
             if (self == null)
+            {
                 throw new ArgumentNullException("self");
+            }
+
             return self.GetLocalizedEntry(ResourceManager.CurrentLocale);
         }
         #endregion

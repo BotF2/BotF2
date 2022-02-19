@@ -1,4 +1,4 @@
-// Enums.cs
+// File:GameEnums.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -115,10 +115,12 @@ namespace Supremacy.Game
         Colonizer,
         Medical,
         Constructor,
+        Building, //construction fleet set to build
         Attack,
-        Defense,
+        //Defense, // an "escort" that needs to catch up with a construction ship that is already left home system
         Spy,
-        Escort,
+        Science,
+        //PostEscort, // combat ships that were in an fleet to escort but can now go home
         Raider,
         Diplomatic,
         Reserve,
@@ -126,7 +128,8 @@ namespace Supremacy.Game
         SystemAttack,
         SystemDefense,
         SystemCounter,
-        Special         // special-purpose, never overridden
+        Special,         // special-purpose, never overridden
+        Transport
     }
 
     /// <summary>
@@ -141,7 +144,8 @@ namespace Supremacy.Game
         Repair,
         Patrol,
         Intercept,
-        Mission
+        Mission,
+        BuildStation
     }
 
     /// <summary>
@@ -182,16 +186,16 @@ namespace Supremacy.Game
     [Flags]
     public enum AIStrategies : ushort
     {
-        Default = (1 << 0),
-        Dagger = (1 << 1),
-        Sledgehammer = (1 << 2),
-        Castle = (1 << 3),
-        FastMovers = (1 << 4),
-        SlowMovers = (1 << 5),
-        Crush = (1 << 11),
-        Production = (1 << 12),
-        Peace = (1 << 13),
-        GetBetterUnits = (1 << 14),
+        Default = 1 << 0,
+        Dagger = 1 << 1,
+        Sledgehammer = 1 << 2,
+        Castle = 1 << 3,
+        FastMovers = 1 << 4,
+        SlowMovers = 1 << 5,
+        Crush = 1 << 11,
+        Production = 1 << 12,
+        Peace = 1 << 13,
+        GetBetterUnits = 1 << 14,
     }
 
     /// <summary>
@@ -200,14 +204,14 @@ namespace Supremacy.Game
     [Flags]
     public enum ColonyRoles : ushort
     {
-        None = (1 << 0),
-        FocusOnProduction = (1 << 1),
-        FocusOnMilitary = (1 << 2),
-        FocusOnResearch = (1 << 3),
-        FocusOnIntelligence = (1 << 4),
-        FocusOnCredits = (1 << 5),
-        Staging = (1 << 6),
-        Linchpin = (1 << 7)
+        None = 1 << 0,
+        FocusOnProduction = 1 << 1,
+        FocusOnMilitary = 1 << 2,
+        FocusOnResearch = 1 << 3,
+        FocusOnIntelligence = 1 << 4,
+        FocusOnCredits = 1 << 5,
+        Staging = 1 << 6,
+        Linchpin = 1 << 7
     }
 
     /// <summary>
@@ -217,10 +221,10 @@ namespace Supremacy.Game
     public enum PathOptions : byte
     {
         IgnoreDanger = 0,
-        SafeTerritory = (1 << 0),
-        NoEnemyTerritory = (1 << 1),
-        DeclareWar = (1 << 2),
-        DirectAttack = (1 << 3)
+        SafeTerritory = 1 << 0,
+        NoEnemyTerritory = 1 << 1,
+        DeclareWar = 1 << 2,
+        DirectAttack = 1 << 3
     }
 
     /// <summary>
@@ -230,16 +234,16 @@ namespace Supremacy.Game
     public enum BuildingFocus : ushort
     {
         None = 0,
-        Food = (1 << 1),
-        Production = (1 << 2),
-        Credits = (1 << 3),
-        Resources = (1 << 4),
-        Defense = (1 << 5),
-        Morale = (1 << 6),
-        Health = (1 << 7),
-        Experience = (1 << 8),
-        Maintenance = (1 << 9),
-        Research = (1 << 10),
-        Military = (1 << 11)
+        Food = 1 << 1,
+        Production = 1 << 2,
+        Credits = 1 << 3,
+        Resources = 1 << 4,
+        Defense = 1 << 5,
+        Morale = 1 << 6,
+        Health = 1 << 7,
+        Experience = 1 << 8,
+        Maintenance = 1 << 9,
+        Research = 1 << 10,
+        Military = 1 << 11
     }
 }

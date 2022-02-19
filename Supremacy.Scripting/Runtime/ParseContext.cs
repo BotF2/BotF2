@@ -108,7 +108,7 @@ namespace Supremacy.Scripting.Runtime
         #endregion
 
         private readonly List<NamespaceTracker> _importedNamespaces;
-        private readonly Dictionary<string, FullNamedExpression> _registeredAliases; 
+        private readonly Dictionary<string, FullNamedExpression> _registeredAliases;
         private Options _flags;
 
         public LambdaExpression CurrentAnonymousMethod { get; set; }
@@ -287,11 +287,15 @@ namespace Supremacy.Scripting.Runtime
             if (LanguageContext.ScriptVisibleNamespaces.TryGetValue((SymbolId)type.Name, out MemberTracker memberTracker))
             {
                 if ((memberTracker is TypeGroup typeGroup) && typeGroup.Types.Contains(type))
+                {
                     return true;
+                }
 
-                var typeTracker = memberTracker as TypeTracker;
+                TypeTracker typeTracker = memberTracker as TypeTracker;
                 if (typeTracker.Type == type)
+                {
                     return true;
+                }
             }
 
             return _importedNamespaces.Any(o => string.Equals(o.Name, type.Namespace, StringComparison.Ordinal));
@@ -343,30 +347,16 @@ namespace Supremacy.Scripting.Runtime
             MemberTracker tracker;
             FullNamedExpression fne = null;
 
-            bool found;
-
-            if (ns is NamespaceGroupTracker trackerGroup)
-            {
-                found = trackerGroup.TryGetValue((SymbolId)name, out tracker);
-            }
-            else
-                found = ns.TryGetValue((SymbolId)name, out tracker);
-
+            bool found = ns is NamespaceGroupTracker trackerGroup
+                ? trackerGroup.TryGetValue((SymbolId)name, out tracker)
+                : ns.TryGetValue((SymbolId)name, out tracker);
             if (found)
             {
-                if (tracker is NamespaceTracker namespaceTracker)
-                {
-                    fne = new NamespaceExpression(namespaceTracker);
-                }
-                else
-                {
-                    if (tracker is TypeGroup typeGroup)
-                    {
-                        fne = new TypeExpression(typeGroup.GetTypeForArity(genericArity).Type, location);
-                    }
-                    else
-                        fne = new TypeExpression(((TypeTracker)tracker).Type);
-                }
+                fne = tracker is NamespaceTracker namespaceTracker
+                    ? new NamespaceExpression(namespaceTracker)
+                    : (FullNamedExpression)(tracker is TypeGroup typeGroup
+                        ? new TypeExpression(typeGroup.GetTypeForArity(genericArity).Type, location)
+                        : new TypeExpression(((TypeTracker)tracker).Type));
             }
 
             if (fne != null)
@@ -419,14 +409,12 @@ namespace Supremacy.Scripting.Runtime
                 .Concat(LanguageContext.ScriptVisibleNamespaces.IncludedNamespaces)
                 .Distinct()
                 .Select(ns => LookupNamespaceOrType(ns, name, location, ignoreAmbiguousReferences, genericArity))
-                .Where(result => result != null)
-                .FirstOrDefault();
+.FirstOrDefault(result => result != null);
         }
 
         public FullNamedExpression LookupNamespaceAlias(string alias)
         {
-            FullNamedExpression aliasTarget;
-            if (_registeredAliases.TryGetValue(alias, out aliasTarget))
+            if (_registeredAliases.TryGetValue(alias, out FullNamedExpression aliasTarget))
             {
                 return aliasTarget;
             }

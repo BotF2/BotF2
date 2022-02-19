@@ -21,97 +21,73 @@ namespace Supremacy.Economy
     [Serializable]
     public class ShipBuildProject : BuildProject
     {
-        private int _shipyardId;
+        private readonly int _shipyardId;
 
         /// <summary>
         /// Gets the description of the ship under construction.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get { return ResourceManager.GetString(BuildDesign.Name); }
-        }
+        public override string Description => ResourceManager.GetString(BuildDesign.Name);
 
         /// <summary>
         /// Gets the dilithium needed.
         /// </summary>
         /// <value>The dilithium needed.</value>
-        public int DilithiumNeeded
-        {
-            get { return ResourcesRequired[ResourceType.Dilithium]; }
-        }
+        public int DilithiumNeeded => ResourcesRequired[ResourceType.Dilithium];
 
         /// <summary>
         /// Gets the dilithium used.
         /// </summary>
         /// <value>The dilithium used.</value>
-        public int DilithiumUsed
-        {
-            get { return ResourcesInvested[ResourceType.Dilithium]; }
-        }
+        public int DilithiumUsed => ResourcesInvested[ResourceType.Dilithium];
 
         /// <summary>
         /// Gets the deuterium needed.
         /// </summary>
         /// <value>The deuterium needed.</value>
-        public int DeuteriumNeeded
-        {
-            get { return ResourcesRequired[ResourceType.Deuterium]; }
-        }
+        public int DeuteriumNeeded => ResourcesRequired[ResourceType.Deuterium];
 
         /// <summary>
         /// Gets the deuterium used.
         /// </summary>
         /// <value>The deuterium used.</value>
-        public int DeuteriumUsed
-        {
-            get { return ResourcesInvested[ResourceType.Deuterium]; }
-        }
+        public int DeuteriumUsed => ResourcesInvested[ResourceType.Deuterium];
 
         /// <summary>
-        /// Gets the raw materials needed.
+        /// Gets the DURANIUM needed.
         /// </summary>
-        /// <value>The raw materials needed.</value>
-        public int RawMaterialsNeeded
-        {
-            get { return ResourcesRequired[ResourceType.RawMaterials]; }
-        }
+        /// <value>The DURANIUM needed.</value>
+        public int DuraniumNeeded => ResourcesRequired[ResourceType.Duranium];
 
         /// <summary>
-        /// Gets the raw materials used.
+        /// Gets the DURANIUM used.
         /// </summary>
-        /// <value>The raw materials used.</value>
-        public int RawMaterialsUsed
-        {
-            get { return ResourcesInvested[ResourceType.RawMaterials]; }
-        }
+        /// <value>The DURANIUM used.</value>
+        public int DuraniumUsed => ResourcesInvested[ResourceType.Duranium];
 
-        public bool HasRawMaterialsShortage
+        public bool HasDuraniumShortage
         {
-            get { return GetFlag(BuildProjectFlags.RawMaterialsShortage); }
-            protected set { SetFlag(BuildProjectFlags.RawMaterialsShortage, value); }
+            get => GetFlag(BuildProjectFlags.DuraniumShortage);
+            protected set => SetFlag(BuildProjectFlags.DuraniumShortage, value);
         }
 
         public bool HasDeuteriumShortage
         {
-            get { return GetFlag(BuildProjectFlags.DeuteriumShortage); }
-            protected set { SetFlag(BuildProjectFlags.DeuteriumShortage, value); }
+            get => GetFlag(BuildProjectFlags.DeuteriumShortage);
+            protected set => SetFlag(BuildProjectFlags.DeuteriumShortage, value);
         }
 
         public bool HasDilithiumShortage
         {
-            get { return GetFlag(BuildProjectFlags.DilithiumShortage); }
-            protected set { SetFlag(BuildProjectFlags.DilithiumShortage, value); }
+            get => GetFlag(BuildProjectFlags.DilithiumShortage);
+            protected set => SetFlag(BuildProjectFlags.DilithiumShortage, value);
         }
 
         /// <summary>
         /// Gets the shipyard at which this <see cref="ShipBuildProject"/> is under construction.
         /// </summary>
         /// <value>The shipyard.</value>
-        public Shipyard Shipyard
-        {
-            get { return GameContext.Current.Universe.Objects[_shipyardId] as Shipyard; }
-        }
+        public Shipyard Shipyard => GameContext.Current.Universe.Objects[_shipyardId] as Shipyard;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShipBuildProject"/> class.
@@ -149,7 +125,7 @@ namespace Supremacy.Economy
     [Serializable]
     public class ShipUpgradeProject : ShipBuildProject
     {
-        private int _upgradeTargetId;
+        private readonly int _upgradeTargetId;
 
         //private bool _shipUpgradeProjectTracing = true;
 
@@ -159,33 +135,21 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c>.
         /// </value>
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         /// <summary>
         /// Gets the description of the ship under construction.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(
+        public override string Description => string.Format(
                     ResourceManager.GetString("SHIP_UPGRADING_FORMAT"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the ship being upgraded.
         /// </summary>
         /// <value>The ship being upgraded.</value>
-        public Ship UpgradeTarget
-        {
-            get { return GameContext.Current.Universe.Objects[_upgradeTargetId] as Ship; }
-        }
+        public Ship UpgradeTarget => GameContext.Current.Universe.Objects[_upgradeTargetId] as Ship;
 
         /// <summary>
         /// Finishes this <see cref="ShipUpgradeProject"/> and creates the newly constructed item.
@@ -225,49 +189,36 @@ namespace Supremacy.Economy
     [Serializable]
     public class ShipRepairProject : ShipBuildProject
     {
+#pragma warning disable IDE0044 // Add readonly modifier
         private int _repairTargetId;
         private int _laborRequired;
         private ResourceValueCollection _resourcesRequired;
+#pragma warning restore IDE0044 // Add readonly modifier
 
         /// <summary>
         /// Gets the description of the ship being repaired.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("SHIP_REPAIRING_FORMAT"),
+        public override string Description => string.Format(ResourceManager.GetString("SHIP_REPAIRING_FORMAT"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the ship being repaired.
         /// </summary>
         /// <value>The ship being repaired.</value>
-        public Ship RepairTarget
-        {
-            get { return GameContext.Current.Universe.Objects[_repairTargetId] as Ship; }
-        }
+        public Ship RepairTarget => GameContext.Current.Universe.Objects[_repairTargetId] as Ship;
 
         /// <summary>
         /// Gets the total industry required to complete this <see cref="ShipRepairProject"/>.
         /// </summary>
         /// <value>The industry required.</value>
-        protected override int IndustryRequired
-        {
-            get { return _laborRequired; }
-        }
+        protected override int IndustryRequired => _laborRequired;
 
         /// <summary>
         /// Gets the total resources required to complete this <see cref="ShipRepairProject"/>.
         /// </summary>
         /// <value>The resources required.</value>
-        protected override ResourceValueCollection ResourcesRequired
-        {
-            get { return _resourcesRequired; }
-        }
+        protected override ResourceValueCollection ResourcesRequired => _resourcesRequired;
 
         /// <summary>
         /// Finishes this <see cref="ShipRepairProject"/>.
@@ -293,17 +244,17 @@ namespace Supremacy.Economy
             _resourcesRequired = new ResourceValueCollection();
             if (repairTarget.FuelReserve.CurrentValue < repairTarget.FuelReserve.Maximum)
             {
-                _resourcesRequired[ResourceType.Deuterium] = 
-                    (repairTarget.FuelReserve.Maximum - repairTarget.FuelReserve.CurrentValue);
+                _resourcesRequired[ResourceType.Deuterium] =
+                    repairTarget.FuelReserve.Maximum - repairTarget.FuelReserve.CurrentValue;
             }
 
             if (repairTarget.HullStrength.CurrentValue < repairTarget.ShipDesign.HullStrength)
             {
                 float hullCurrent = repairTarget.HullStrength.CurrentValue;
                 float hullTotal = repairTarget.ShipDesign.HullStrength;
-                float pHullDamage = (1.0f - (hullCurrent / hullTotal));
-                float rawMaterials = repairTarget.Design.BuildResourceCosts[ResourceType.RawMaterials];
-                _resourcesRequired[ResourceType.RawMaterials] = (int)(pHullDamage * rawMaterials);
+                float pHullDamage = 1.0f - (hullCurrent / hullTotal);
+                float duranium = repairTarget.Design.BuildResourceCosts[ResourceType.Duranium];
+                _resourcesRequired[ResourceType.Duranium] = (int)(pHullDamage * duranium);
             }
         }
 

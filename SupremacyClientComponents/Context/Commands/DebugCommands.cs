@@ -13,10 +13,16 @@ namespace Supremacy.Client.Commands
 {
     public static class DebugCommands
     {
-        public static readonly CompositeCommand RevealMap = new CompositeCommand();
-        public static readonly CompositeCommand CheatMenu = new CompositeCommand();
-        public static readonly CompositeCommand GameInfoScreen = new CompositeCommand();
-        public static readonly CompositeCommand ColonyInfoScreen = new CompositeCommand();
-        public static readonly CompositeCommand ColorInfoScreen = new CompositeCommand();
+        public static readonly CompositeCommand RevealMap = new CompositeCommand();  // ALT + F
+        public static readonly CompositeCommand OutputMap = new CompositeCommand();  // ALT + M
+
+        public static readonly CompositeCommand CheatMenu = new CompositeCommand();  // ALT + C
+        public static readonly CompositeCommand F12_Screen = new CompositeCommand(); // F12
+        public static readonly CompositeCommand F11_Screen = new CompositeCommand(); // F11
+        public static readonly CompositeCommand F10_Screen = new CompositeCommand(); // F10
+        public static readonly CompositeCommand F09_Screen = new CompositeCommand(); // F9
+        public static readonly CompositeCommand F08_Screen = new CompositeCommand(); // F8
+        public static readonly CompositeCommand F07_Screen = new CompositeCommand();  // F7
+        public static readonly CompositeCommand F06_Screen = new CompositeCommand(); // F6
     }
 }

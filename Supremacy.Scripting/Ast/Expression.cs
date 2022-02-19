@@ -391,7 +391,7 @@ namespace Supremacy.Scripting.Ast
                             TypeManager.GetFullNameSignature(nonMethods[0])),
                         Severity.Error,
                         span);
-                    
+
                     return null;
                 }
 
@@ -440,7 +440,6 @@ namespace Supremacy.Scripting.Ast
             return mi[0] is MethodBase ? new MethodGroupExpression(mi, queriedType, span) : ExprClassFromMemberInfo(containerType, mi[0], span);
         }
 
-#pragma warning disable 168
         public static Expression ExprClassFromMemberInfo(Type containerType, MemberInfo mi, SourceSpan span)
         {
             EventInfo eventInfo = mi as EventInfo;
@@ -467,7 +466,6 @@ namespace Supremacy.Scripting.Ast
             Type typeInfo = mi as Type;
             return typeInfo != null ? new TypeExpression(typeInfo) { Span = span } : null;
         }
-#pragma warning restore 168
 
         public const MemberTypes AllMemberTypes =
             MemberTypes.Constructor |
@@ -770,7 +768,7 @@ namespace Supremacy.Scripting.Ast
                     TypeManager.GetCSharpSignature(target.DeclaringMethod);
                 ec.ReportError(
                     -1,
-                    String.Format(
+                    string.Format(
                         "The generic parameter '{0}' of '{1}' cannot be converted to the generic parameter '{0}' of '{2}'.",
                         sourceType.Name,
                         sig1,
@@ -781,7 +779,7 @@ namespace Supremacy.Scripting.Ast
             {
                 ec.ReportError(
                     -1,
-                    String.Format(
+                    string.Format(
                         "The type '{0}' has two conflicting definitions, one comes from '{1}' and the other from '{2}'.",
                         sourceType.FullName,
                         sourceType.FullName,
@@ -802,7 +800,7 @@ namespace Supremacy.Scripting.Ast
                 return;
             }
 
-            var explicitConversionExists = (CompilerHelpers.GetExplicitConverter(sourceType, target) != null);
+            bool explicitConversionExists = CompilerHelpers.GetExplicitConverter(sourceType, target) != null;
             if (explicitConversionExists)
             {
                 ec.ReportError(

@@ -30,23 +30,18 @@ namespace Supremacy.Effects
             bool isRequired = true,
             object defaultValue = null)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
-            if (parameterType == null)
-                throw new ArgumentNullException("parameterType");
-
-            _name = name;
-            _parameterType = parameterType;
+            _name = name ?? throw new ArgumentNullException("name");
+            _parameterType = parameterType ?? throw new ArgumentNullException("parameterType");
             _isRequired = isRequired;
             _defaultValue = defaultValue;
         }
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
-                Guard.ArgumentNotNullOrWhiteSpace(value, "value");
+                _ = Guard.ArgumentNotNullOrWhiteSpace(value, "value");
                 _name = value;
                 OnPropertyChanged("Name");
             }
@@ -54,10 +49,10 @@ namespace Supremacy.Effects
 
         public Type ParameterType
         {
-            get { return _parameterType; }
+            get => _parameterType;
             set
             {
-                Guard.ArgumentNotNull(value, "value");
+                _ = Guard.ArgumentNotNull(value, "value");
                 _parameterType = value;
                 OnPropertyChanged("ParameterType");
             }
@@ -65,7 +60,7 @@ namespace Supremacy.Effects
 
         public bool IsRequired
         {
-            get { return _isRequired; }
+            get => _isRequired;
             set
             {
                 _isRequired = value;
@@ -75,7 +70,7 @@ namespace Supremacy.Effects
 
         public object DefaultValue
         {
-            get { return _defaultValue; }
+            get => _defaultValue;
             set
             {
                 _defaultValue = value;

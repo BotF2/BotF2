@@ -175,15 +175,19 @@ namespace Supremacy.Client.Controls
 
             internal bool GetFlag(GameControlFlags flag)
             {
-                return ((_flags & flag) == flag);
+                return (_flags & flag) == flag;
             }
 
             internal void SetFlag(GameControlFlags flag, bool set)
             {
                 if (set)
+                {
                     _flags |= flag;
+                }
                 else
-                    _flags &= (~flag);
+                {
+                    _flags &= ~flag;
+                }
             }
         }
 
@@ -197,14 +201,16 @@ namespace Supremacy.Client.Controls
 
             public void Add(IGameControl control)
             {
-                var wasFound = false;
-                for (var index = _controls.Count - 1; index >= 0; index--)
+                bool wasFound = false;
+                for (int index = _controls.Count - 1; index >= 0; index--)
                 {
-                    var controlRef = _controls[index];
+                    WeakReference controlRef = _controls[index];
                     if (controlRef.IsAlive)
                     {
                         if (controlRef.Target == control)
+                        {
                             wasFound = true;
+                        }
                     }
                     else
                     {
@@ -213,24 +219,24 @@ namespace Supremacy.Client.Controls
                 }
 
                 if (!wasFound)
+                {
                     _controls.Add(new WeakReference(control));
+                }
             }
 
-            public bool HasLiveReferences
-            {
-                get { return (_controls.Count > 0); }
-            }
+            public bool HasLiveReferences => _controls.Count > 0;
 
             public void OnCommandUIProviderPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
                 for (int index = _controls.Count - 1; index >= 0; index--)
                 {
-                    var controlReference = _controls[index];
+                    WeakReference controlReference = _controls[index];
                     if (controlReference.IsAlive)
                     {
-                        var control = controlReference.Target as IGameControl;
-                        if (control != null)
+                        if (controlReference.Target is IGameControl control)
+                        {
                             control.OnCommandUIProviderPropertyChanged(sender, e);
+                        }
                     }
                     else
                     {
@@ -241,13 +247,15 @@ namespace Supremacy.Client.Controls
 
             public void Remove(IGameControl control)
             {
-                for (var index = _controls.Count - 1; index >= 0; index--)
+                for (int index = _controls.Count - 1; index >= 0; index--)
                 {
-                    var controlReference = _controls[index];
+                    WeakReference controlReference = _controls[index];
                     if (controlReference.IsAlive)
                     {
                         if (controlReference.Target == control)
+                        {
                             _controls.RemoveAt(index);
+                        }
                     }
                     else
                     {
@@ -261,9 +269,11 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceCommandParameterPropertyValue(DependencyObject obj, object value)
         {
-            var control = obj as IGameControl;
-            if (control != null)
+            if (obj is IGameControl control)
+            {
                 return control.CoerceCommandParameter(obj, value);
+            }
+
             return value;
         }
 
@@ -271,12 +281,13 @@ namespace Supremacy.Client.Controls
         {
             if (value == null)
             {
-                var control = obj as IGameControl;
-                if ((control != null) && (control.Command != null))
+                if ((obj is IGameControl control) && (control.Command != null))
                 {
-                    var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
+                    IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
                     if (commandUIProvider != null)
+                    {
                         return commandUIProvider.ImageSourceLarge;
+                    }
                 }
             }
             return value;
@@ -286,12 +297,13 @@ namespace Supremacy.Client.Controls
         {
             if (value == null)
             {
-                var control = obj as IGameControl;
-                if ((control != null) && (control.Command != null))
+                if ((obj is IGameControl control) && (control.Command != null))
                 {
-                    var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
+                    IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
                     if (commandUIProvider != null)
+                    {
                         return commandUIProvider.ImageSourceSmall;
+                    }
                 }
             }
             return value;
@@ -301,12 +313,13 @@ namespace Supremacy.Client.Controls
         {
             if (value == null)
             {
-                var control = obj as IGameControl;
-                if ((control != null) && (control.Command != null))
+                if ((obj is IGameControl control) && (control.Command != null))
                 {
-                    var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
+                    IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
                     if (commandUIProvider != null)
+                    {
                         return commandUIProvider.Label;
+                    }
                 }
             }
             return value;
@@ -314,24 +327,26 @@ namespace Supremacy.Client.Controls
 
         internal static void OnCommandParameterPropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var control = obj as IGameControl;
-            var oldCommand = e.OldValue;
-            var newCommand = e.NewValue;
+            object oldCommand = e.OldValue;
+            object newCommand = e.NewValue;
 
-            if (control == null)
+            if (!(obj is IGameControl control))
+            {
                 return;
+            }
 
             control.OnCommandParameterChanged(oldCommand, newCommand);
         }
 
         internal static void OnCommandPropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var control = obj as IGameControl;
-            var oldCommand = (ICommand)e.OldValue;
-            var newCommand = (ICommand)e.NewValue;
+            ICommand oldCommand = (ICommand)e.OldValue;
+            ICommand newCommand = (ICommand)e.NewValue;
 
-            if (control == null)
+            if (!(obj is IGameControl control))
+            {
                 return;
+            }
 
             control.OnCommandChanged(oldCommand, newCommand);
             HookCommands(control, oldCommand, newCommand);
@@ -341,37 +356,46 @@ namespace Supremacy.Client.Controls
         internal static void OnImageSourceLargePropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue == e.NewValue)
+            {
                 return;
+            }
 
-            var control = obj as IGameControl;
-            if (control != null)
+            if (obj is IGameControl control)
+            {
                 control.HasImage = (e.NewValue != null) || (control.ImageSourceSmall != null);
+            }
         }
 
         internal static void OnImageSourceSmallPropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue == e.NewValue)
+            {
                 return;
+            }
 
-            var control = obj as IGameControl;
-            if (control != null)
+            if (obj is IGameControl control)
+            {
                 control.HasImage = (e.NewValue != null) || (control.ImageSourceLarge != null);
+            }
         }
 
         internal static void OnLabelPropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue == e.NewValue)
+            {
                 return;
+            }
 
-            var control = obj as IGameControl;
-            if (control != null)
+            if (obj is IGameControl control)
+            {
                 control.HasLabel = !string.IsNullOrEmpty((string)e.NewValue);
+            }
         }
 
         internal static void HookCommands(IGameControl control, ICommand oldCommand, ICommand newCommand)
         {
-            var wasAttached = control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged);
-            if ((wasAttached) && (oldCommand != null))
+            bool wasAttached = control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged);
+            if (wasAttached && (oldCommand != null))
             {
                 control.Flags.SetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged, false);
                 if (control.CommandCanExecuteHandler != null)
@@ -381,7 +405,7 @@ namespace Supremacy.Client.Controls
                 }
             }
 
-            if (!control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged) && 
+            if (!control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged) &&
                 (newCommand != null) &&
                 (control.CanUpdateCanExecuteWhenHidden || control.IsVisible))
             {
@@ -391,29 +415,28 @@ namespace Supremacy.Client.Controls
             }
 
             // If no change was made, don't bother updating the CanExecute since this was called by an IsVisible change
-            if (((oldCommand != newCommand) ||
+            if ((oldCommand != newCommand) ||
                 !wasAttached ||
-                !control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged)))
+                !control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged))
             {
                 control.UpdateCanExecute();
             }
 
             wasAttached = control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandUIProvider);
-            if ((wasAttached) && (oldCommand != null))
+            if (wasAttached && (oldCommand != null))
             {
-                var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(oldCommand);
+                IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(oldCommand);
                 if (commandUIProvider != null)
                 {
                     control.Flags.SetFlag(GameControlFlags.IsAttachedToCommandUIProvider, false);
 
-                    CommandUIProviderPropertyChangedRouter router;
-                    if (_uiProviderPropertyChangedRouter.TryGetValue(commandUIProvider, out router))
+                    if (_uiProviderPropertyChangedRouter.TryGetValue(commandUIProvider, out CommandUIProviderPropertyChangedRouter router))
                     {
                         router.Remove(control);
                         if (!router.HasLiveReferences)
                         {
                             commandUIProvider.PropertyChanged -= router.OnCommandUIProviderPropertyChanged;
-                            _uiProviderPropertyChangedRouter.Remove(commandUIProvider);
+                            _ = _uiProviderPropertyChangedRouter.Remove(commandUIProvider);
                         }
                     }
                 }
@@ -421,16 +444,15 @@ namespace Supremacy.Client.Controls
 
             if ((!control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandUIProvider)) &&
                 (newCommand != null) &&
-                ((control.CanUpdateCanExecuteWhenHidden) || (control.IsVisible)))
+                (control.CanUpdateCanExecuteWhenHidden || control.IsVisible))
             {
 
-                var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(newCommand);
+                IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(newCommand);
                 if (commandUIProvider != null)
                 {
                     control.Flags.SetFlag(GameControlFlags.IsAttachedToCommandUIProvider, true);
 
-                    CommandUIProviderPropertyChangedRouter router;
-                    if (!_uiProviderPropertyChangedRouter.TryGetValue(commandUIProvider, out router))
+                    if (!_uiProviderPropertyChangedRouter.TryGetValue(commandUIProvider, out CommandUIProviderPropertyChangedRouter router))
                     {
                         router = new CommandUIProviderPropertyChangedRouter();
                         commandUIProvider.PropertyChanged += router.OnCommandUIProviderPropertyChanged;
@@ -470,176 +492,206 @@ namespace Supremacy.Client.Controls
         {
             // Quit if this is not a control that has an external label or image
             if ((!GetIsExternalContentSupported(element)) || (!HasLabelOrImage(element)))
+            {
                 return;
+            }
 
             // Get the variant size
-            var variantSize = VariantSize.Medium;
+            VariantSize variantSize = VariantSize.Medium;
 
-            var gameControl = element as IGameControl;
-            if (gameControl != null)
+            if (element is IGameControl gameControl)
+            {
                 variantSize = gameControl.VariantSize;
+            }
 
-            var x = bounds.Left;
+            double x = bounds.Left;
 
             switch (variantSize)
             {
                 case VariantSize.Large:
                 case VariantSize.Medium:
-                {
-                    var imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
-                    if (imageSource != null)
                     {
-                        UpdateBaseUri(element, imageSource);
-
-                        if (!element.IsEnabled)
-                            drawingContext.PushOpacity(0.4);
-
-                        try
+                        ImageSource imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
+                        if (imageSource != null)
                         {
-                            DrawImage(
-                                drawingContext,
-                                FrameworkElement.GetFlowDirection(element),
-                                imageSource,
-                                new Rect(x + 3, bounds.Top + ((bounds.Height - 16) / 2), 16, 16));
-                        }
-                        finally
-                        {
+                            UpdateBaseUri(element, imageSource);
+
                             if (!element.IsEnabled)
-                                drawingContext.Pop();
-                        }
-
-                        x += 22; // 3 pixels padding on each side of image
-                    }
-
-                    // Draw the label
-                    var label = GetLabel(element);
-                    if (!string.IsNullOrEmpty(label))
-                    {
-                        var oldForeground = (object)TextElement.GetForeground(element);
-                        var frameworkElement = element as FrameworkElement;
-                        if ((!element.IsEnabled) && (frameworkElement != null))
-                        {
-                            if (element.GetBaseValueSource(TextElement.ForegroundProperty) != BaseValueSource.Local)
-                                oldForeground = DependencyProperty.UnsetValue;
-
-                            // Set the disabled brush
-                            var foreground = (Brush)frameworkElement.GetValue(ForegroundDisabledProperty);
-                            if (foreground != null)
-                                TextElement.SetForeground(element, foreground);
-                        }
-
-                        try
-                        {
-                            var text = CreateFormattedTextForLabel(element);
-                            DrawText(
-                                drawingContext,
-                                FrameworkElement.GetFlowDirection(element),
-                                text,
-                                new Point(x, bounds.Top + ((bounds.Height - text.Height) / 2)));
-                        }
-                        finally
-                        {
-                            // If disabled, restore the old foreground
-                            if ((!element.IsEnabled) && (frameworkElement != null))
                             {
-                                if (oldForeground == DependencyProperty.UnsetValue)
-                                    element.ClearValue(TextElement.ForegroundProperty);
-                                else
-                                    TextElement.SetForeground(element, (Brush)oldForeground);
+                                drawingContext.PushOpacity(0.4);
                             }
 
+                            try
+                            {
+                                DrawImage(
+                                    drawingContext,
+                                    FrameworkElement.GetFlowDirection(element),
+                                    imageSource,
+                                    new Rect(x + 3, bounds.Top + ((bounds.Height - 16) / 2), 16, 16));
+                            }
+                            finally
+                            {
+                                if (!element.IsEnabled)
+                                {
+                                    drawingContext.Pop();
+                                }
+                            }
+
+                            x += 22; // 3 pixels padding on each side of image
                         }
+
+                        // Draw the label
+                        string label = GetLabel(element);
+                        if (!string.IsNullOrEmpty(label))
+                        {
+                            object oldForeground = TextElement.GetForeground(element);
+                            FrameworkElement frameworkElement = element as FrameworkElement;
+                            if ((!element.IsEnabled) && (frameworkElement != null))
+                            {
+                                if (element.GetBaseValueSource(TextElement.ForegroundProperty) != BaseValueSource.Local)
+                                {
+                                    oldForeground = DependencyProperty.UnsetValue;
+                                }
+
+                                // Set the disabled brush
+                                Brush foreground = (Brush)frameworkElement.GetValue(ForegroundDisabledProperty);
+                                if (foreground != null)
+                                {
+                                    TextElement.SetForeground(element, foreground);
+                                }
+                            }
+
+                            try
+                            {
+                                FormattedText text = CreateFormattedTextForLabel(element);
+                                DrawText(
+                                    drawingContext,
+                                    FrameworkElement.GetFlowDirection(element),
+                                    text,
+                                    new Point(x, bounds.Top + ((bounds.Height - text.Height) / 2)));
+                            }
+                            finally
+                            {
+                                // If disabled, restore the old foreground
+                                if ((!element.IsEnabled) && (frameworkElement != null))
+                                {
+                                    if (oldForeground == DependencyProperty.UnsetValue)
+                                    {
+                                        element.ClearValue(TextElement.ForegroundProperty);
+                                    }
+                                    else
+                                    {
+                                        TextElement.SetForeground(element, (Brush)oldForeground);
+                                    }
+                                }
+
+                            }
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
         internal static void DrawImage(DrawingContext drawingContext, FlowDirection flowDirection, ImageSource imageSource, Rect bounds)
         {
             // If in RTL, un-mirror the glyph shapes (since the drawing canvas is mirrored)
-            var antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
-            
+            ScaleTransform antiMirror = flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null;
+
             if (flowDirection == FlowDirection.RightToLeft)
+            {
                 bounds.X = -bounds.X - bounds.Width;
+            }
 
             // Unmirror glyph shapes
             if (antiMirror != null)
+            {
                 drawingContext.PushTransform(antiMirror);
+            }
 
             // Draw the text
             drawingContext.DrawImage(imageSource, bounds);
 
             // Pop the unmirroring transform
             if (antiMirror != null)
+            {
                 drawingContext.Pop();
+            }
         }
 
         internal static void DrawText(DrawingContext drawingContext, FlowDirection flowDirection, FormattedText text, Point point)
         {
             // If in RTL, un-mirror the glyph shapes (since the drawing canvas is mirrored)
-            var antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
-            
+            ScaleTransform antiMirror = flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null;
+
             if (text.FlowDirection == FlowDirection.RightToLeft)
+            {
                 point.X = -point.X;
+            }
 
             // Unmirror glyph shapes
             if (antiMirror != null)
+            {
                 drawingContext.PushTransform(antiMirror);
+            }
 
             // Draw the text
             drawingContext.DrawText(text, point);
 
             // Pop the unmirroring transform
             if (antiMirror != null)
+            {
                 drawingContext.Pop();
+            }
         }
 
         internal static Size GetExternalLabelImageDesiredSize(UIElement element)
         {
             // Quit if this is not a control that has an external label or image
             if (!GetIsExternalContentSupported(element) || !HasLabelOrImage(element))
+            {
                 return new Size(0, 0);
+            }
 
             // Get the variant size
-            var variantSize = VariantSize.Medium;
-            
-            var gameControl = element as IGameControl;
-            if (gameControl != null)
+            VariantSize variantSize = VariantSize.Medium;
+
+            if (element is IGameControl gameControl)
+            {
                 variantSize = gameControl.VariantSize;
+            }
 
             switch (variantSize)
             {
                 case VariantSize.Large:
                 case VariantSize.Medium:
-                {
-                    var size = new Size();
-
-                    // Add space for the 16z16 image
-                    var imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
-                    if (imageSource != null)
                     {
-                        UpdateBaseUri(element, imageSource);
-                        size.Width += 22; // 3 pixels padding on each side of image
-                        size.Height = Math.Max(size.Height, 16);
-                    }
+                        Size size = new Size();
 
-                    // Add space for the label
-                    var label = GetLabel(element);
-                    if (!string.IsNullOrEmpty(label))
-                    {
-                        var text = CreateFormattedTextForLabel(element);
-                        size.Width += text.Width + 5; // 5 pixels padding on right side of label
-                        size.Height = Math.Max(size.Height, text.Height);
-                    }
+                        // Add space for the 16z16 image
+                        ImageSource imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
+                        if (imageSource != null)
+                        {
+                            UpdateBaseUri(element, imageSource);
+                            size.Width += 22; // 3 pixels padding on each side of image
+                            size.Height = Math.Max(size.Height, 16);
+                        }
 
-                    return size;
-                }
+                        // Add space for the label
+                        string label = GetLabel(element);
+                        if (!string.IsNullOrEmpty(label))
+                        {
+                            FormattedText text = CreateFormattedTextForLabel(element);
+                            size.Width += text.Width + 5; // 5 pixels padding on right side of label
+                            size.Height = Math.Max(size.Height, text.Height);
+                        }
+
+                        return size;
+                    }
 
                 default:
-                {
-                    return new Size(0, 0);
-                }
+                    {
+                        return new Size(0, 0);
+                    }
             }
         }
 
@@ -652,10 +704,9 @@ namespace Supremacy.Client.Controls
 
         private static void UpdateBaseUri(DependencyObject obj, ImageSource source)
         {
-            var uriContext = source as IUriContext;
-            if ((uriContext != null) && 
-                !source.IsFrozen && 
-                (uriContext.BaseUri == null) && 
+            if ((source is IUriContext uriContext) &&
+                !source.IsFrozen &&
+                (uriContext.BaseUri == null) &&
                 (BaseUriHelper.GetBaseUri(obj) != null))
             {
                 uriContext.BaseUri = BaseUriHelper.GetBaseUri(obj);
@@ -665,202 +716,288 @@ namespace Supremacy.Client.Controls
         internal static void OnAccessKeyPressed(object sender, AccessKeyPressedEventArgs e)
         {
             if (!e.Handled && (e.Scope == null) && (e.Target == null))
+            {
                 e.Target = (UIElement)sender;
+            }
         }
 
         public static ICommand GetCommand(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (ICommand)obj.GetValue(CommandProperty);
         }
 
         public static void SetCommand(DependencyObject obj, ICommand value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(CommandProperty, value);
         }
 
         public static object GetCommandParameter(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return obj.GetValue(CommandParameterProperty);
         }
-        
+
         public static void SetCommandParameter(DependencyObject obj, object value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(CommandParameterProperty, value);
         }
 
         public static IInputElement GetCommandTarget(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (IInputElement)obj.GetValue(CommandTargetProperty);
         }
-        
+
         public static void SetCommandTarget(DependencyObject obj, IInputElement value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(CommandTargetProperty, value);
         }
 
         public static bool GetHasImage(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (bool)obj.GetValue(HasImageProperty);
         }
 
         public static void SetHasImage(DependencyObject obj, bool value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(HasImageProperty, value);
         }
 
         public static bool GetHasLabel(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (bool)obj.GetValue(HasLabelProperty);
         }
-        
+
         public static void SetHasLabel(DependencyObject obj, bool value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(HasLabelProperty, value);
         }
 
         public static string GetId(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (string)obj.GetValue(IdProperty);
         }
 
         public static void SetId(DependencyObject obj, string value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(IdProperty, value);
         }
 
         public static ImageSource GetImageSourceLarge(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (ImageSource)obj.GetValue(ImageSourceLargeProperty);
         }
-        
+
         public static void SetImageSourceLarge(DependencyObject obj, ImageSource value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(ImageSourceLargeProperty, value);
         }
 
         public static ImageSource GetImageSourceSmall(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (ImageSource)obj.GetValue(ImageSourceSmallProperty);
         }
-        
+
         public static void SetImageSourceSmall(DependencyObject obj, ImageSource value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(ImageSourceSmallProperty, value);
         }
 
         public static bool GetIsExternalContentSupported(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (bool)obj.GetValue(IsExternalContentSupportedProperty);
         }
-        
+
         public static void SetIsExternalContentSupported(DependencyObject obj, bool value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(IsExternalContentSupportedProperty, value);
         }
 
         public static bool GetIsHighlighted(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (bool)obj.GetValue(IsHighlightedProperty);
         }
-        
+
         public static void SetIsHighlighted(DependencyObject obj, bool value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(IsHighlightedProperty, value);
         }
 
         public static string GetLabel(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (string)obj.GetValue(LabelProperty);
         }
-        
+
         public static void SetLabel(DependencyObject obj, string value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(LabelProperty, value);
         }
 
         public static string GetMenuItemDescription(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (string)obj.GetValue(MenuItemDescriptionProperty);
         }
-        
+
         public static void SetMenuItemDescription(DependencyObject obj, string value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(MenuItemDescriptionProperty, value);
         }
 
         public static VariantSize GetVariantSize(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (VariantSize)obj.GetValue(VariantSizeProperty);
         }
-        
+
         public static void SetVariantSize(DependencyObject obj, VariantSize value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(VariantSizeProperty, value);
         }
 
         public static GameControlContext GetContext(DependencyObject obj)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             return (GameControlContext)obj.GetValue(ContextProperty);
         }
 
         public static void SetContext(DependencyObject obj, GameControlContext value)
         {
             if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(ContextProperty, value);
         }
     }

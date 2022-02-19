@@ -37,8 +37,8 @@ namespace Supremacy.Orbitals
         /// <value>The build slots.</value>
         public int BuildSlots
         {
-            get { return _buildSlots; }
-            set { _buildSlots = (byte)value; }
+            get => _buildSlots;
+            set => _buildSlots = (byte)value;
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace Supremacy.Orbitals
         /// <value>The build output.</value>
         public int BuildOutput
         {
-            get { return _buildOutput; }
-            set { _buildOutput = (ushort)value; }
+            get => _buildOutput;
+            set => _buildOutput = (ushort)value;
         }
 
         /// <summary>
@@ -89,10 +89,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "Stations/"; }
-        }
+        protected override string DefaultImageSubFolder => "Stations/";
 
         /// <summary>
         /// Appends the XML data for this instance.
@@ -107,22 +104,22 @@ namespace Supremacy.Orbitals
 
             newElement = doc.CreateElement("RepairSlots");
             newElement.InnerText = BuildSlots.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("RepairCapacity");
             newElement.InnerText = BuildOutput.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             if (_possibleStationNames.Count > 0)
             {
                 newElement = doc.CreateElement("SationNames");
-                foreach (var stationName in _possibleStationNames)
+                foreach (KeyValuePair<string, int> stationName in _possibleStationNames)
                 {
                     XmlElement nameElement = doc.CreateElement("StationName");
                     nameElement.InnerText = stationName.Key;
-                    newElement.AppendChild(nameElement);
+                    _ = newElement.AppendChild(nameElement);
                 }
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
         }
 
@@ -140,16 +137,16 @@ namespace Supremacy.Orbitals
                 spawnedInstance = null;
                 return false;
             }
-            var station = new Station(this);
-            var sector = GameContext.Current.Universe.Map[location];
-            var sectorOwner = sector.Owner;
+            Station station = new Station(this);
+            Sector sector = GameContext.Current.Universe.Map[location];
+            Civilization sectorOwner = sector.Owner;
 
             if (_possibleStationNames.Count > 0)
             {
                 //Set this to -1 so we can check if we've checked any yet
                 int timesUsed = -1;
                 string leastUsedName = "";
-                foreach (var stationName in _possibleStationNames)
+                foreach (KeyValuePair<string, int> stationName in _possibleStationNames)
                 {
                     //If we haven't checked, assign this straight to the variables
                     if (timesUsed == -1)
@@ -169,18 +166,21 @@ namespace Supremacy.Orbitals
                 }
                 string newStationName = "";
                 if (owner.ShipPrefix != null)
+                {
                     newStationName = owner.ShipPrefix + " ";
-                newStationName = newStationName + leastUsedName;
+                }
+
+                newStationName += leastUsedName;
                 //if (ship.Owner.Key == "BORG")
                 //{
                 //    newShipName = newShipName + " " + ShipSuffixes.Binary(timesUsed + 1).PadLeft(4, '0');
                 //}
                 //else
                 //{
-                    if (timesUsed > 0)
-                    {
-                        newStationName = newStationName + " " + ShipSuffixes.Alphabetical(timesUsed);
-                    }
+                if (timesUsed > 0)
+                {
+                    newStationName = newStationName + " " + ShipSuffixes.Alphabetical(timesUsed);
+                }
                 //}
 
                 station.Name = newStationName;
@@ -206,7 +206,7 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            var existingStation = sector.Station;
+            Station existingStation = sector.Station;
             if (existingStation != null)
             {
                 //GameLog.Print(
@@ -215,11 +215,11 @@ namespace Supremacy.Orbitals
                 //    this.Key ?? UnknownDesignKey,
                 //    location);
 
-                GameContext.Current.Universe.Destroy(existingStation);
+                _ = GameContext.Current.Universe.Destroy(existingStation);
             }
 
             //var station = new Station(this);
-            var civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
 
             station.Reset();
             station.Owner = owner;
@@ -234,7 +234,7 @@ namespace Supremacy.Orbitals
             civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
 
             spawnedInstance = station;
-            GameLog.Core.Stations.DebugFormat("placed Station = {0} {1}, Owner = {2}, Location = {3}", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location); 
+            GameLog.Core.Stations.DebugFormat("placed Station = {0} {1}, Owner = {2}, Location = {3}", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location);
             return true;
         }
 
@@ -242,9 +242,6 @@ namespace Supremacy.Orbitals
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Stations; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Stations;
     }
 }

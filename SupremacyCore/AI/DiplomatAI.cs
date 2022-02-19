@@ -1,4 +1,6 @@
-﻿using System;
+﻿// File:DiplomatAI.cs
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Supremacy.Annotations;
 using Supremacy.Diplomacy;
@@ -10,36 +12,50 @@ namespace Supremacy.AI
 {
 
     public static class DiplomatAI
-    {      
+    {
+        private static List<ForeignPower> AlreadyMinorMember = new List<ForeignPower>(); 
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
-   
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
-            var aCiv = (Civilization) civ;
+            Civilization aCiv = (Civilization)civ;
 
-            var diplomat = Diplomat.Get(civ);
+            Diplomat diplomat = Diplomat.Get(civ);
 
             /*
              * Process messages which have already been delivered
              */
-            foreach (var otherCiv in GameContext.Current.Civilizations)
-             // we can control regard and trust for both human otherCivs and AI otherCivs
+            foreach (Civilization otherCiv in GameContext.Current.Civilizations)
+            // we can control regard and trust for both human otherCivs and AI otherCivs
             {
                 if (otherCiv.CivID == civ.CivID)
+                {
                     continue;
+                }
+
                 if (!DiplomacyHelper.IsContactMade(civ.CivID, otherCiv.CivID))
+                {
                     continue;
+                }
+
                 if (!otherCiv.IsEmpire && !aCiv.IsEmpire)
+                {
                     continue;
-                var foreignPower = diplomat.GetForeignPower(otherCiv);
-                var otherdiplomat = Diplomat.Get(otherCiv);
+                }
+
+                ForeignPower foreignPower = diplomat.GetForeignPower(otherCiv);
+                Diplomat otherdiplomat = Diplomat.Get(otherCiv);
                 ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
                 if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || otherForeignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
+                {
                     continue;
+                }
 
-                #region Foriegn Traits List
+                #region Foreign Traits List
 
                 string traitsOfForeignCiv = otherCiv.Traits;
                 string[] foreignTraits = traitsOfForeignCiv.Split(',');
@@ -54,7 +70,7 @@ namespace Supremacy.AI
                 #endregion
 
                 // traits in common relative to the number of triats a civilization has
-                var commonTraitItems = foreignTraits.Intersect(theCivTraits);
+                IEnumerable<string> commonTraitItems = foreignTraits.Intersect(theCivTraits);
 
                 int countCommon = 0;
                 foreach (string aString in commonTraitItems)
@@ -62,12 +78,12 @@ namespace Supremacy.AI
                     countCommon++;
                 }
 
-                int[] countArray = new int[] {foreignTraits.Length, theCivTraits.Length};
-                int fewestTotalTraits = countArray.Min();    
+                int[] countArray = new int[] { foreignTraits.Length, theCivTraits.Length };
+                int fewestTotalTraits = countArray.Min();
 
-                int similarTraits = (countCommon *10 / fewestTotalTraits); // (a double from 1 to 0) * 10 
-               // GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
-                    //similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
+                int similarTraits = countCommon * 10 / fewestTotalTraits; // (a double from 1 to 0) * 10 
+                                                                          // GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
+                                                                          //similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
 
                 /*
                  * look for human to human proposals
@@ -91,6 +107,8 @@ namespace Supremacy.AI
 
                 if (true)//(!aCiv.IsHuman)
                 {
+                    //_text = "## Beging DiplomacyAI ......................." + foreignPower.Owner + " vs " + foreignPower.Counterparty;
+                    //Console.WriteLine(_text);
                     //GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
                     #region First Impression
                     /*
@@ -100,7 +118,7 @@ namespace Supremacy.AI
                     {
                         foreignPower.DiplomacyData.FirstDiplomaticAction = true;
                         int impact = 75;
-                        var coutnerParty = foreignPower.Counterparty.CivID;
+                        int coutnerParty = foreignPower.Counterparty.CivID;
                         switch (coutnerParty)
                         {
                             case 0: //fed
@@ -126,19 +144,31 @@ namespace Supremacy.AI
                             default:
                                 break;
                         }
-                 
-                        GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression fropm {1}",
-                            foreignPower.Counterparty.Key,
-                              foreignPower.Owner.Key,
-                              foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                              foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
+
+                        //GameLog.Client.DiplomacyDetails.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression from {1}",
+                        _text = "Turn: " + GameContext.Current.TurnNumber
+                            + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                            + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                            + " for " + foreignPower.Counterparty.Key
+                            + " BEFORE First Impression from " + foreignPower.Owner.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+
+
                         TrustAndRegardByTraits(foreignPower, impact, similarTraits);
 
-                        GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} After First Impression from {1}",
-                            foreignPower.Counterparty.Key,
-                              foreignPower.Owner.Key,
-                              foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                              foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
+
+                        _text = "Turn: " + GameContext.Current.TurnNumber
+                            + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                            + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                            + " for " + foreignPower.Counterparty.Key
+                            + " AFTER First Impression from " + foreignPower.Owner.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+
+
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower CounterParty ={0} regard ={1} trust ={2}", foreignPower.Counterparty.Key, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2}", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                         //foreignPower.UpdateStatus();
@@ -160,7 +190,7 @@ namespace Supremacy.AI
 
                     // if no other changes some variation over time
                     DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));
-                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));                    
+                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));
 
                     if ((5 - foreignPower.DiplomacyData.LastColdWarAttack) < 0 || 4 - foreignPower.DiplomacyData.LastIncursion < 0 || 6 - foreignPower.DiplomacyData.LastTotalWarAttack < 0)
                     {
@@ -180,13 +210,34 @@ namespace Supremacy.AI
                         DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(2, 10));
                     }
                     //foreignPower.UpdateRegardAndTrustMeters();
-                    GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} After Ongoing Impression from {1}",
-                        foreignPower.Counterparty.Key,
-                          foreignPower.Owner.Key,
-                          foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                          foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
+
+
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                        + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                        + " for " + foreignPower.Counterparty.Key
+                        + " AFTER Ongoing Impression " + foreignPower.Owner.Key
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+
                     // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                     //foreignPower.UpdateStatus();
+                    #endregion
+                    #region War is possible from hostility
+
+                    if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile && DiplomacyHelper.ShouldTheyGoToWar(foreignPower.Owner, foreignPower.Counterparty)) //foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile &&
+                    {
+                        Civilization firstCiv = foreignPower.Owner;
+                        Civilization secondCiv = foreignPower.Counterparty;
+                        CivilizationManager firstManager = GameContext.Current.CivilizationManagers[firstCiv];
+                        CivilizationManager secondManager = GameContext.Current.CivilizationManagers[secondCiv];
+                        foreignPower.DeclareWar();
+                        firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+                        secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+                        DiplomacyHelper.ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+                        DiplomacyHelper.ApplyRegardChange(secondCiv, firstCiv, foreignPower.CounterpartyForeignPower.DiplomacyData.Regard.CurrentValue * -1);
+                    }
                     #endregion
 
                     #region Proposal Treaty to AI aCiv
@@ -196,8 +247,9 @@ namespace Supremacy.AI
                     if (foreignPower.ProposalReceived != null)
                     {
                         if (aCiv == foreignPower.ProposalReceived.Recipient)
-                        {// give credit regard and trust
-                            foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                        {
+                            // give credit regard and trust
+                            foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
                             {
                                 if (clause.ClauseType == ClauseType.OfferGiveCredits)
                                 {
@@ -241,43 +293,103 @@ namespace Supremacy.AI
                             int trust = foreignPower.DiplomacyData.Regard.CurrentValue;
                             //bool traits = RandomHelper.Chance(similarTraits);
 
-                            foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                            // first check for credits (gift or demand)
+                            //foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
+                            //{
+                            //    switch (clause.ClauseType)
+                            //    {
+                            //        case ClauseType.OfferGiveCredits:
+                            //            int credits = clause.Data;
+                            //            break;
+                            //        //case ClauseType.TreatyWarPact
+                            //        case ClauseType.RequestGiveCredits:
+                            //            break;
+                            //    }
+                            //}
+
+                            foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
                             {
+       
                                 switch (clause.ClauseType)
                                 {
                                     case ClauseType.TreatyMembership:
-                                        if (regard > 899 && trust > 899) accepted = true; break;
+                 
+                                        if (regard > 899 && trust > 899 && !AlreadyMinorMember.Contains(foreignPower))
+                                        {
+                                            accepted = true;
+                                            AlreadyMinorMember.Add(foreignPower);
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyFullAlliance:
-                                        if (regard > 899 && trust > 899) accepted = true; break;
+                                        if (regard > 899 && trust > 899)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyDefensiveAlliance:
-                                        if (regard > 799 && trust > 799) accepted = true; break;
+                                        if (regard > 799 && trust > 799)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyWarPact:
-                                        if (regard > 799 && trust > 799) accepted = true; break;
+                                        if (regard > 799 && trust > 799)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyAffiliation:
-                                        if (regard > 699 && trust > 699) accepted = true; break;
+                                        if (regard > 699 && trust > 699)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyNonAggression:
-                                        if (regard > 499 && trust > 499) accepted = true; break;
+                                        if (regard > 499 && trust > 499)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyOpenBorders:
-                                        if (regard > 399 && trust > 399) accepted = true; break;
+                                        if (regard > 399 && trust > 399)
+                                        {
+                                            accepted = true;
+                                        }
+
+                                        break;
 
                                     case ClauseType.TreatyCeaseFire:
                                         {
                                             Random num = new Random();
-                                            int chance = num.Next(1, (similarTraits + 2));
-                                            if (chance != 1) accepted = true; break;
+                                            int chance = num.Next(1, similarTraits + 2);
+                                            if (chance != 1)
+                                            {
+                                                accepted = true;
+                                            }
+
+                                            break;
                                         }
-                                    case ClauseType.OfferGiveCredits:
-                                        accepted = true;
-                                        break;
-                                    //case ClauseType.TreatyWarPact
-                                    case ClauseType.RequestGiveCredits:
-                                        break;
+                                        
+                                    // case for Credits are done before...
+
+                                    //case ClauseType.OfferGiveCredits:
+                                    //    accepted = true;
+                                    //    break;
+                                    ////case ClauseType.TreatyWarPact
+                                    //case ClauseType.RequestGiveCredits:
+                                    //    break;
 
                                     default:
                                         break;
@@ -286,37 +398,23 @@ namespace Supremacy.AI
                             /*
                             /switch in GameEngine picks up PendingAction on next turn and calls AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived); and Reject...
                             */
-                            if (accepted == true)
-                            {
-                                foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
-
-                                //GameLog.Client.Diplomacy.DebugFormat(
-                                //    "## PendingAction: ACCEPT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                //    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                //    foreignPower.Owner.ShortName);
-                            }
-                            else
-                            {
-                                foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
-
-                                //GameLog.Client.Diplomacy.DebugFormat(
-                                //    "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                //    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                //    foreignPower.Owner.ShortName);
-                            }
+                            foreignPower.PendingAction = accepted == true ? PendingDiplomacyAction.AcceptProposal : PendingDiplomacyAction.RejectProposal;
                         }
-                       // foreignPower.UpdateRegardAndTrustMeters();
+                        // foreignPower.UpdateRegardAndTrustMeters();
 
-                        GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} After Treaties from {1}",
-                            foreignPower.Counterparty.Key,
-                              foreignPower.Owner.Key,
-                              foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                              foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
+                        _text = "Turn " + GameContext.Current.TurnNumber
+                            + "; regard =" + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+                            + "; trust =" + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                            + " AFTER Treaties from " + foreignPower.Owner.Key
+                            + " to " + foreignPower.Counterparty.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
                         #endregion Proposals
                     }
-                   // foreignPower.UpdateRegardAndTrustMeters();
-                   //foreignPower.UpdateStatus();// this is done in AcceptProposalVisitor.Visit
+
+
                 }
 
                 if (true) // for human and non human alike )
@@ -331,9 +429,9 @@ namespace Supremacy.AI
                     //GameLog.Client.Diplomacy.DebugFormat("## .....foreignPower.Counterparty ={0} .....foreignPower.Owner ={1}", 
                     //    foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
 
-                    // use foreignPower for Statement and Response of AI aCiv
+
                     #region Statments
-                    // statements ToDo: where do we make statements?
+
                     if (foreignPower.StatementReceived != null)
                     {
                         GameLog.Client.Diplomacy.DebugFormat(
@@ -346,19 +444,104 @@ namespace Supremacy.AI
                         // DOING: Process statements (apply regard/trust changes, etc.)
                         if (foreignPower.StatementReceived.StatementType == StatementType.WarDeclaration)
                         {
-                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000); //foreignPower.Counterparty is civ that gets a degraded regard and foreignPower.Owner is civilization where degraded regard is owned (happens for)
                             DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                            List<Civilization> otherReactors = DiplomacyHelper.FindOtherContactedCivsForDeltaRegardTrust(foreignPower.Counterparty, foreignPower.Owner);
+                            if (otherReactors != null)
+                            {
+                                foreach (Civilization anotherCiv in otherReactors)
+                                {
+                                    Civilization counterparty = foreignPower.Counterparty;
+                                    Civilization owner = foreignPower.Owner;
+                                    Statement denounceStatement = new Statement(anotherCiv, foreignPower.Counterparty, StatementType.DenounceWar, Tone.Enraged, GameContext.Current.TurnNumber);
+                                    Statement commendStatement = new Statement(anotherCiv, foreignPower.Counterparty, StatementType.CommendWar, Tone.Enthusiastic, GameContext.Current.TurnNumber);
+                                    Diplomat anotherDiplomat = Diplomat.Get(anotherCiv);
+                                    ForeignPower anotherForeignPower = anotherDiplomat.GetForeignPower(counterparty);
+                                    if (DiplomacyHelper.IsAlliedWithWorstEnemy(counterparty, anotherCiv))
+                                    {
+                                        if (!anotherCiv.IsHuman)
+                                        {
+                                            anotherForeignPower.StatementSent = denounceStatement;
+                                            anotherForeignPower.CounterpartyForeignPower.StatementReceived = denounceStatement;
+                                            anotherForeignPower.DenounceWar(owner);
+                                        }
+                                        DiplomacyHelper.ApplyRegardChange(counterparty, anotherCiv, -1000); //foreignPower.Counterparty is civ that gets a degraded regard and foreignPower.Owner is civilization where degraded regard is owned (happens for)
+                                        DiplomacyHelper.ApplyTrustChange(counterparty, anotherCiv, -1000);
+                                        if (DiplomacyHelper.AreFriendly(owner, anotherCiv))
+                                        {
+                                            DiplomacyHelper.ApplyRegardChange(owner, anotherCiv, +110);
+                                            DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, +90);
+                                        }
+                                    }
+                                    if (DiplomacyHelper.AreNotFriendly(counterparty, anotherCiv))
+                                    {
+                                        if (DiplomacyHelper.AreFriendly(owner, anotherCiv))
+                                        {
+                                            if (!anotherCiv.IsHuman)
+                                            {
+                                                anotherForeignPower.StatementSent = commendStatement;
+                                                anotherForeignPower.CounterpartyForeignPower.StatementReceived = commendStatement;
+                                                anotherForeignPower.CommendWar(owner);
+                                            }
+                                            DiplomacyHelper.ApplyRegardChange(counterparty, anotherCiv, -200);
+                                            DiplomacyHelper.ApplyTrustChange(counterparty, anotherCiv, -210);
+                                            DiplomacyHelper.ApplyRegardChange(owner, anotherCiv, +70);
+                                            DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, +50);
+                                        }
+                                        else if (DiplomacyHelper.AreNotFriendly(owner, anotherCiv))
+                                        {
+                                            DiplomacyHelper.ApplyRegardChange(counterparty, anotherCiv, -100);
+                                            DiplomacyHelper.ApplyTrustChange(counterparty, anotherCiv, -110);
+                                            DiplomacyHelper.ApplyRegardChange(owner, anotherCiv, +50);
+                                            DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, +60);
+                                        }
+                                    }
+                                    else if (DiplomacyHelper.AreFriendly(counterparty, anotherCiv))
+                                    {
+                                        if (DiplomacyHelper.AreNotFriendly(owner, anotherCiv))
+                                        {
+                                            if (!anotherCiv.IsHuman)
+                                            {
+                                                anotherForeignPower.StatementSent = denounceStatement;
+                                                anotherForeignPower.CounterpartyForeignPower.StatementReceived = denounceStatement;
+                                                anotherForeignPower.DenounceWar(foreignPower.Owner);
+                                            }
+                                            DiplomacyHelper.ApplyRegardChange(counterparty, anotherCiv, +110);
+                                            DiplomacyHelper.ApplyTrustChange(counterparty, anotherCiv, +110);
+                                            DiplomacyHelper.ApplyRegardChange(owner, anotherCiv, -210);
+                                            DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, -170);
+                                        }
+                                    }
+                                    else if (DiplomacyHelper.AreNeutral(counterparty, anotherCiv))
+                                    {
+                                        if (DiplomacyHelper.AreNotFriendly(owner, anotherCiv))
+                                        {
+                                            DiplomacyHelper.ApplyRegardChange(counterparty, anotherCiv, +150);
+                                            DiplomacyHelper.ApplyTrustChange(counterparty, anotherCiv, +130);
+                                            DiplomacyHelper.ApplyRegardChange(owner, anotherCiv, -190);
+                                            DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, -170);
+                                        }
+                                        else if (DiplomacyHelper.AreFriendly(owner, anotherCiv))
+                                        {
+                                            DiplomacyHelper.ApplyRegardChange(counterparty, anotherCiv, -100);
+                                            DiplomacyHelper.ApplyTrustChange(counterparty, anotherCiv, -150);
+                                            DiplomacyHelper.ApplyRegardChange(owner, anotherCiv, +50);
+                                            DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, +70);
+                                        }
+                                    }
+                                }
+                            }
                             int impact = -175;
                             TrustAndRegardByTraits(foreignPower, impact, similarTraits);
                             int degree = 0;
                             TrustAndRegardForATrait(foreignPower, degree, foreignTraits, theCivTraits);
 
-                            //if (foreignPower != null)
-                            //{
-                            //    foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                            //    foreignPower.DiplomacyData.Trust.UpdateAndReset();
-                            //    foreignPower.UpdateRegardAndTrustMeters();
-                            //}
+
+
+
+
+
+
                             GameLog.Client.Diplomacy.DebugFormat(
                                     "## WarDeclaration by counterparty = {0} to {1} Regard = {2} Trust = {3}",
                                     foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName,
@@ -421,12 +604,14 @@ namespace Supremacy.AI
 
                         if (foreignPower.ResponseReceived.ResponseType == ResponseType.Accept
                         )
+                        {
                             GameLog.Client.Diplomacy.DebugFormat(
                                 "## Responce type ={0} ResponseReceived by ?counterparty = {1} to {2} Regard = {3} Trust = {4}",
                                 foreignPower.ResponseReceived.ResponseType.ToString(),
                                 foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName,
                                 foreignPower.DiplomacyData.Regard.CurrentValue,
                                 foreignPower.DiplomacyData.Trust.CurrentValue);
+                        }
                         // Added some positive RegardEventTypes.
                         {
                             DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, +90);
@@ -467,7 +652,7 @@ namespace Supremacy.AI
         }
         #region methods
 
-        public static void TrustAndRegardByTraits( ForeignPower foreignP, int impact, int similarTraits)
+        public static void TrustAndRegardByTraits(ForeignPower foreignP, int impact, int similarTraits)
         {
             if (similarTraits == 10)
             {
@@ -499,8 +684,8 @@ namespace Supremacy.AI
             }
             else if (similarTraits == 0)
             {
-            //    foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
-            //        -90 + impact));
+                //    foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
+                //        -90 + impact));
                 DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -95 + impact);
                 DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -90 + impact);
             }
@@ -510,23 +695,34 @@ namespace Supremacy.AI
             if (traits.Contains("Warlike"))
             {
                 if (otherTraits.Contains("Warlike"))
+                {
                     degree = 20;
+                }
                 else if (otherTraits.Contains("Pleaceful"))
+                {
                     degree = -25;
+                }
+
                 DiplomacyHelper.ApplyRegardChange(foreignPow.Counterparty, foreignPow.Owner, degree);
                 DiplomacyHelper.ApplyTrustChange(foreignPow.Counterparty, foreignPow.Owner, degree);
             }
-            else if(traits.Contains("Peaceful"))
+            else if (traits.Contains("Peaceful"))
             {
                 if (otherTraits.Contains("Peaceful"))
+                {
                     degree = -25;
+                }
                 else if (otherTraits.Contains("Warlike"))
+                {
                     degree = 20;
+                }
+
                 DiplomacyHelper.ApplyRegardChange(foreignPow.Counterparty, foreignPow.Owner, degree);
                 DiplomacyHelper.ApplyTrustChange(foreignPow.Counterparty, foreignPow.Owner, degree);
             }
         }
         private static readonly Random getrandom = new Random();
+        private static string _text;
 
         public static int GetRandomNumber(int min, int max)
         {

@@ -18,13 +18,13 @@ namespace Supremacy.Scripting.Ast
 
         private static EmptyExpression _temp = new EmptyExpression();
 
-        public EmptyExpression(SourceSpan span = default(SourceSpan))
+        public EmptyExpression(SourceSpan span = default)
         {
             Type = TypeManager.CoreTypes.Object;
             Span = span;
         }
 
-        public EmptyExpression(Type type, SourceSpan span = default(SourceSpan))
+        public EmptyExpression(Type type, SourceSpan span = default)
         {
             Type = type;
             Span = span;

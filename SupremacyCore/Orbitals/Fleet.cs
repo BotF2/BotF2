@@ -1,4 +1,4 @@
-// Fleet.cs
+// File:Fleet.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -18,7 +18,6 @@ using Supremacy.Resources;
 using Supremacy.Universe;
 
 using System.Linq;
-using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -46,10 +45,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public sealed override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Fleet; }
-        }
+        public sealed override UniverseObjectType ObjectType => UniverseObjectType.Fleet;
 
         /// <summary>
         /// Gets or sets the name of this <see cref="Fleet"/>.
@@ -62,51 +58,63 @@ namespace Supremacy.Orbitals
                 string _NameString = "";
 
                 if (_ships.Count == 0)
+                {
                     _NameString = base.Name;
+                }
 
                 if (_ships.Count == 1)
                 {
-                    if (_ships[0].IsCloaked == true)
-                        _NameString = _ships[0].Name + " " + ResourceManager.GetString("CLOAKED");
-                    else
-                    if (_ships[0].IsCamouflaged == true)
-                        _NameString = _ships[0].Name +  " " + ResourceManager.GetString("CAMOUFLAGED");
-                    else
-                        _NameString = _ships[0].Name;
+                    _NameString = _ships[0].IsCloaked == true
+                        ? _ships[0].Name + " " + ResourceManager.GetString("CLOAKED")
+                        : _ships[0].IsCamouflaged == true ? _ships[0].Name + " " + ResourceManager.GetString("CAMOUFLAGED") : _ships[0].Name;
                 }
 
                 if (_ships.Count > 1)
                 {
                     ShipDesign design = null;
 
-                    foreach (var ship in _ships)
+                    foreach (Ship ship in _ships)
                     {
                         if (design == null)
                         {
                             design = ship.ShipDesign;
 
-                            _NameString = String.Format(
-                                "{0}x {1}",
-                                _ships.Count,
-                                ResourceManager.GetString(design.Name));
+                            if (design == null)
+                            {
+                                _NameString = string.Format(
+                                    "{0}x {1}",
+                                    _ships.Count, " Unknown ShipDesign");
+                            }
+                            else
+                            {
+                                _NameString = string.Format(
+                                    "{0}x {1}",
+                                    _ships.Count,
+                                    ResourceManager.GetString(design.Name));
+                            }
                         }
 
                         if (design != ship.ShipDesign)
                         {
-                            _NameString = String.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
+                            _NameString = string.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
                         }
 
                         if (ship.IsCloaked)
-                            _NameString = _NameString + String.Format(ResourceManager.GetString("CLOAKED"));
+                        {
+                            _NameString += string.Format(ResourceManager.GetString("CLOAKED"));
+                        }
+
                         if (ship.IsCamouflaged)
-                            _NameString = _NameString + String.Format(ResourceManager.GetString("CAMOUFLAGED"));
+                        {
+                            _NameString += string.Format(ResourceManager.GetString("CAMOUFLAGED"));
+                        }
                     }
 
                     if (design == null || design.Name == null)
                     {
-                        _NameString = String.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
+                        _NameString = string.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
                     }
-                        //ToDo: After a changed (Cloaked/Camouflaged) a 'RefreshTaskListView' has to be done, but didn't found a way to do it directly
+                    //ToDo: After a changed (Cloaked/Camouflaged) a 'RefreshTaskListView' has to be done, but didn't found a way to do it directly
                 }
 
                 return _NameString;
@@ -117,83 +125,89 @@ namespace Supremacy.Orbitals
         /// Gets or sets the ClassName of this <see cref="Fleet"/>.
         /// </summary>
         /// <value>The name.</value>
-        public string ClassName   
+        public string ClassName
         {
             get
             {
                 if (_ships.Count == 0)
-                    return String.Format(ResourceManager.GetString("UNKNOWN"));
+                {
+                    return string.Format(ResourceManager.GetString("UNKNOWN"));
+                }
 
                 if (_ships.Count == 1)
+                {
                     return _ships[0].ClassName;
+                }
 
                 ShipDesign design = null;
 
-                foreach (var ship in _ships)
+                foreach (Ship ship in _ships)
                 {
                     if (design == null)
+                    {
                         design = ship.ShipDesign;
+                    }
 
                     if (design != ship.ShipDesign)
                     {
-                        return String.Format(ResourceManager.GetString("MULTI_SHIP_CLASS_MESSAGE"));
+                        return string.Format(ResourceManager.GetString("MULTI_SHIP_CLASS_MESSAGE"));
                     }
                 }
 
                 if (design == null || design.Name == null)
                 {
-                    return String.Format(ResourceManager.GetString("MULTI_SHIP_CLASS_MESSAGE"));
+                    return string.Format(ResourceManager.GetString("MULTI_SHIP_CLASS_MESSAGE"));
                 }
 
-                return String.Format(
+                return string.Format(
                     "{0}x {1}",
                     _ships.Count,
                     ResourceManager.GetString(design.ClassName));
             }
         }
 
-        /// <summary>
-        /// Gets or sets the ClassLevel of this <see cref="Fleet"/>.
-        /// </summary>
-        /// <value>The name.</value>
-        //public string ClassLevel    
-        //{
-        //    get
-        //    {
-        //        if (_ships.Count == 0)
-        //            return String.Format(ResourceManager.GetString("UNKNOWN"));
 
-        //        if (_ships.Count == 1)
-        //            return _ships[0].ClassLevel;
 
-        //        ShipDesign design = null;
 
-        //        foreach (var ship in _ships)
-        //        {
-        //            if (design == null)
-        //                design = ship.ShipDesign;
 
-        //            if (design != ship.ShipDesign)
-        //            {
-        //                return string.Format(
-        //                    ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-        //                    _ships.Count);
-        //            }
-        //        }
 
-        //        if (design == null || design.Name == null)
-        //        {
-        //            return String.Format(
-        //                ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-        //                _ships.Count);
-        //        }
 
-        //        return String.Format(
-        //            "{0}x {1}",
-        //            _ships.Count,
-        //            ResourceManager.GetString(design.ClassLevel));
-        //    }
-        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Fleet"/> is in tow.
@@ -203,7 +217,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsInTow
         {
-            get { return _isInTow; }
+            get => _isInTow;
             set
             {
                 _isInTow = value;
@@ -218,10 +232,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> is visible; otherwise, <c>false</c>.
         /// </value>
-        public bool IsVisible
-        {
-            get { return !_isInTow; }
-        }
+        public bool IsVisible => !_isInTow;
 
         /// <summary>
         /// Gets or sets a value indicating whether the list of ships in this <see cref="Fleet"/> is locked.
@@ -229,8 +240,8 @@ namespace Supremacy.Orbitals
         /// <value><c>true</c> if the list of ships is locked; otherwise, <c>false</c>.</value>
         public bool AreShipsLocked
         {
-            get { return _areShipsLocked; }
-            protected set { _areShipsLocked = value; }
+            get => _areShipsLocked;
+            protected set => _areShipsLocked = value;
         }
 
         /// <summary>
@@ -241,8 +252,8 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsRouteLocked
         {
-            get { return _isRouteLocked; }
-            protected set { _isRouteLocked = value; }
+            get => _isRouteLocked;
+            protected set => _isRouteLocked = value;
         }
 
         /// <summary>
@@ -253,8 +264,8 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsOrderLocked
         {
-            get { return _isOrderLocked; }
-            protected set { _isOrderLocked = value; }
+            get => _isOrderLocked;
+            protected set => _isOrderLocked = value;
         }
 
         /// <summary>
@@ -263,8 +274,8 @@ namespace Supremacy.Orbitals
         /// <value>The route.</value>
         public TravelRoute Route
         {
-            get { return _route; }
-            set { SetRoute(value); }
+            get => _route;
+            set => SetRoute(value);
         }
 
         /// <summary>
@@ -273,8 +284,8 @@ namespace Supremacy.Orbitals
         /// <value>The order.</value>
         public FleetOrder Order
         {
-            get { return _order; }
-            set { SetOrder(value); }
+            get => _order;
+            set => SetOrder(value);
         }
 
         /// <summary>
@@ -289,7 +300,9 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if ((ship.Range < range) || (range == -1))
+                    {
                         range = ship.Range;
+                    }
                 }
                 range = Math.Max(0, range);
                 return range;
@@ -308,7 +321,9 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if ((ship.Speed < speed) || (speed == -1))
+                    {
                         speed = ship.Speed;
+                    }
                 }
                 speed = Math.Max(0, speed);
                 return speed;
@@ -321,10 +336,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> can move; otherwise, <c>false</c>.
         /// </value>
-        public override bool CanMove
-        {
-            get { return (Speed > 0); }
-        }
+        public override bool CanMove => Speed > 0;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> is stranded.
@@ -339,7 +351,9 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if (ship.IsStranded)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -353,7 +367,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                int result = Byte.MaxValue;
+                int result = byte.MaxValue;
                 foreach (Ship ship in Ships)
                 {
                     result = Math.Min(ship.FuelReserve.CurrentValue, result);
@@ -374,7 +388,9 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if (ship.ShipDesign.SensorRange > sensorRange)
+                    {
                         sensorRange = ship.ShipDesign.SensorRange;
+                    }
                 }
                 return sensorRange;
             }
@@ -389,11 +405,16 @@ namespace Supremacy.Orbitals
             get
             {
                 int scanStrength = 0;
-                foreach (Ship ship in Ships)
+                if (Ships.Count > 0)
                 {
-                    if (ship.ShipDesign.ScanStrength > scanStrength)
-                        scanStrength = ship.ShipDesign.ScanStrength;
-                }
+                    foreach (Ship ship in Ships)
+                    {
+                        if (ship.ShipDesign.ScanStrength > scanStrength)
+                        {
+                            scanStrength = ship.ShipDesign.ScanStrength;
+                        }
+                    }
+            }
                 return scanStrength;
             }
         }
@@ -404,16 +425,9 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> is combatant; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCombatant
-        {
-            get { return Ships.Any(o => o.IsCombatant); }
-        }
+        public bool IsCombatant => Ships.Any(o => o.IsCombatant);
 
-        public bool IsBattleFleet
-        {
-            get
-            {
-                return !IsScout && Ships.All(
+        public bool IsBattleFleet => !IsScout && !IsFastAttack && Ships.All(
                     o => o.IsCombatant &&
                          o.ShipType != ShipType.Colony &&
                          o.ShipType != ShipType.Construction &&
@@ -422,47 +436,26 @@ namespace Supremacy.Orbitals
                          o.ShipType != ShipType.Transport &&
                          o.ShipType != ShipType.Diplomatic &&
                          o.ShipType != ShipType.Spy);
-            }
-        }
 
-        public bool HasCommandShip
-        {
-            get { return Ships.Any(o => o.ShipType == ShipType.Command); }
-        }
+        public bool HasCommandShip => Ships.Any(o => o.ShipType == ShipType.Command);
 
-        public bool IsScout
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Scout; }
-        }
+        public bool IsScout => Ships.Count == 1 && Ships[0].ShipType == ShipType.Scout;
 
-        public bool IsColonizer
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony; }
-        }
-        public bool IsConstructor
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction; }
-        }
+        public bool IsFastAttack => Ships.Count == 1 && Ships[0].ShipType == ShipType.FastAttack;
 
-        public bool IsDiplomatic
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Diplomatic; }
-        }
+        public bool IsTransport => Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport;
+        public bool IsColonizer => Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony;
+        public bool MultiFleetHasAColonizer => Ships.Any(s => s.ShipType == ShipType.Colony) && Ships.Any(t => t.ShipType >= ShipType.FastAttack);
+        public bool IsConstructor => Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction;
+        public bool MultiFleetHasAConstructor => Ships.Any(s => s.ShipType == ShipType.Construction) && Ships.Any(t => t.ShipType >= ShipType.FastAttack);
 
-        public bool IsSpy
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Spy; }
-        }
+        public bool IsDiplomatic => Ships.Count == 1 && Ships[0].ShipType == ShipType.Diplomatic;
 
-        public bool IsMedical
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Medical; }
-        }
+        public bool IsSpy => Ships.Count == 1 && Ships[0].ShipType == ShipType.Spy;
 
-        public bool IsScience
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Science; }
-        }
+        public bool IsMedical => Ships.Count == 1 && Ships[0].ShipType == ShipType.Medical;
+
+        public bool IsScience => Ships.Count == 1 && Ships[0].ShipType == ShipType.Science;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> contains any troop transport ships.
@@ -470,10 +463,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> contains any troop transport ships; otherwise, <c>false</c>.
         /// </value>
-        public bool HasTroopTransports
-        {
-            get { return Ships.Any(o => o.ShipDesign.ShipType == ShipType.Transport); }
-        }
+        public bool HasTroopTransports => Ships.Any(o => o.ShipDesign.ShipType == ShipType.Transport);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> can cloak.
@@ -488,7 +478,9 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if (ship.CanCloak)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -507,14 +499,19 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if (ship.IsCloaked)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
             set
             {
                 foreach (Ship ship in Ships)
+                {
                     ship.IsCloaked = value;
+                }
+
                 OnPropertyChanged("IsCloaked");
             }
         }
@@ -531,7 +528,9 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if (ship.CanCamouflage)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -549,14 +548,19 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if (ship.IsCamouflaged)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
             set
             {
                 foreach (Ship ship in Ships)
+                {
                     ship.IsCamouflaged = value;
+                }
+
                 OnPropertyChanged("IsCamouflaged");
             }
         }
@@ -573,14 +577,19 @@ namespace Supremacy.Orbitals
                 foreach (Ship ship in Ships)
                 {
                     if (ship.IsAssimilated)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
             set
             {
                 foreach (Ship ship in Ships)
+                {
                     ship.IsAssimilated = value;
+                }
+
                 OnPropertyChanged("IsAssimilated");
             }
         }
@@ -590,22 +599,13 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> can enter wormhole; otherwise, <c>false</c>.
         /// </value>
-        public bool CanEnterWormhole
-        {
-            get
-            {
-                return this.Sector.System.StarType == StarType.Wormhole;
-            }
-        }
+        public bool CanEnterWormhole => Sector.System.StarType == StarType.Wormhole;
 
         /// <summary>
         /// Gets a read-only collection of the ships attached to this <see cref="Fleet"/>.
         /// </summary>
         /// <value>The ships.</value>
-        public IIndexedCollection<Ship> Ships
-        {
-            get { return _ships.AsReadOnly();  }
-        }
+        public IIndexedCollection<Ship> Ships => _ships.AsReadOnly();
         #endregion
 
         #region Constructors
@@ -644,14 +644,18 @@ namespace Supremacy.Orbitals
         protected override void OnLocationChanged()
         {
             if (GameContext.Current.TurnNumber < 1)
+            {
                 return;
+            }
 
-            foreach (var ship in Ships)
+            foreach (Ship ship in Ships)
+            {
                 ship.Location = Location;
+            }
 
             base.OnLocationChanged();
 
-            var civManager = GameContext.Current.CivilizationManagers[OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
             if (civManager != null)
             {
                 civManager.MapData.SetExplored(Location, true);
@@ -664,7 +668,9 @@ namespace Supremacy.Orbitals
             }
 
             if (Interlocked.CompareExchange(ref _movementSempaphore, 0, 0) == 0)
+            {
                 return;
+            }
 
             DiplomacyHelper.PerformFirstContacts(Owner, Location);
         }
@@ -692,12 +698,21 @@ namespace Supremacy.Orbitals
         internal void AddShip(Ship ship)
         {
             if (ship == null)
+            {
                 throw new ArgumentNullException("ship");
+            }
+
             if (AreShipsLocked)
+            {
                 return;
+            }
+
             Fleet oldFleet = ship.Fleet;
             if ((oldFleet != null) && (oldFleet != this))
+            {
                 oldFleet.RemoveShip(ship);
+            }
+
             AddShipInternal(ship);
             EnsureValidOrder();
         }
@@ -709,17 +724,23 @@ namespace Supremacy.Orbitals
         internal void RemoveShip(Ship ship)
         {
             if ((ship == null) || !_ships.Contains(ship))
+            {
                 return;
+            }
+
             if (AreShipsLocked)
+            {
                 return;
-            _ships.Remove(ship);
+            }
+
+            _ = _ships.Remove(ship);
             if (ship.Fleet == this)
             {
                 ship.Fleet = null;
             }
             if (_ships.Count == 0)
             {
-                GameContext.Current.Universe.Destroy(this);
+                _ = GameContext.Current.Universe.Destroy(this);
             }
             else
             {
@@ -738,9 +759,11 @@ namespace Supremacy.Orbitals
         /// is not valid, then the default order is assigned.
         /// </summary>
         private void EnsureValidOrder()
-        { 
+        {
             if ((Order == null) || (!Order.IsValidOrder(this)))
+            {
                 Order = GetDefaultOrder();
+            }
         }
 
         /// <summary>
@@ -808,23 +831,31 @@ namespace Supremacy.Orbitals
         {
             //GameLog.Core.Combat.DebugFormat("SetRoute begins...");
             if (IsRouteLocked)
+            {
                 return;
-            
+            }
+
             if (route == null)
+            {
                 route = TravelRoute.Empty;
-            
-            var lastRoute = _route;
+            }
+
+            TravelRoute lastRoute = _route;
 
             SetRouteInternal(route);
             OnPropertyChanged("Route");
             //GameLog.Core.Combat.DebugFormat("SetRoute changed...");
 
             if ((lastRoute == route) || (_order == null) || !_order.IsAssigned)
+            {
                 return;
+            }
 
             //GameLog.Core.Combat.DebugFormat("NEXT: if IsCancelledOnRouteChange...");
             if (_order.IsCancelledOnRouteChange)
+            {
                 CancelOrder();
+            }
             else
                 if (_order is AssaultSystemOrder)
             {
@@ -847,29 +878,33 @@ namespace Supremacy.Orbitals
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         internal bool MoveAlongRoute()
         {
-            var route = _route;
-            
+            TravelRoute route = _route;
+
             if (IsStranded)
             {
                 SetRoute(TravelRoute.Empty);
                 return false;
             }
-            
+
             if (route.IsEmpty)
+            {
                 return false;
+            }
 
-            var nextSector = GameContext.Current.Universe.Map[route.Pop()];
+            Sector nextSector = GameContext.Current.Universe.Map[route.Pop()];
             if (nextSector == null)
+            {
                 return false;
+            }
 
-            Interlocked.Increment(ref _movementSempaphore);
+            _ = Interlocked.Increment(ref _movementSempaphore);
             try
             {
                 Location = nextSector.Location;
             }
             finally
             {
-                Interlocked.Decrement(ref _movementSempaphore);
+                _ = Interlocked.Decrement(ref _movementSempaphore);
             }
             return true;
         }
@@ -878,8 +913,8 @@ namespace Supremacy.Orbitals
         {
             //if (amount < 0)
             //    throw new ArgumentOutOfRangeException("amount", "Value must be non-negative.");
-            
-            _ships.ForEach(o => o.ExperienceLevel += amount);
+
+            _ = _ships.ForEach(o => o.ExperienceLevel += amount);
         }
 
         /// <summary>
@@ -889,21 +924,29 @@ namespace Supremacy.Orbitals
         public void SetOrder(FleetOrder order)
         {
             if (IsOrderLocked)
+            {
                 return;
+            }
 
             if (order == null)
             {
                 order = GetDefaultOrder();
                 if (order == null)
+                {
                     throw new Exception("Could not set default order for fleet");
+                }
             }
-            
-            var lastOrder = _order;
+
+            FleetOrder lastOrder = _order;
             if (lastOrder == order)
+            {
                 return;
+            }
 
             if (lastOrder != null)
+            {
                 lastOrder.OnOrderCancelled();
+            }
 
             _order = order;
             _order.Fleet = this;
@@ -931,7 +974,7 @@ namespace Supremacy.Orbitals
         /// <returns>The default order.</returns>
         protected internal virtual FleetOrder GetDefaultOrder()
         {
-            return IsCombatant 
+            return IsCombatant
                 ? FleetOrders.EngageOrder.Create()
                 : FleetOrders.AvoidOrder.Create();
         }
@@ -949,10 +992,12 @@ namespace Supremacy.Orbitals
             {
                 if (!_order.IsValidOrder(this))
                 {
-                    var cancelledOrder = _order;
+                    FleetOrder cancelledOrder = _order;
                     _order.OnOrderCancelled();
                     if (_order == cancelledOrder)
+                    {
                         SetOrder(GetDefaultOrder());
+                    }
                 }
 
                 if (_order.IsComplete)
@@ -970,7 +1015,9 @@ namespace Supremacy.Orbitals
         {
             base.OnDeserialized();
             if (_order != null)
+            {
                 _order.UpdateReferences();
+            }
         }
         #endregion
 
@@ -1009,7 +1056,7 @@ namespace Supremacy.Orbitals
 
         public UnitActivity Activity
         {
-            get { return _activity; }
+            get => _activity;
             set
             {
                 _activity = value;
@@ -1019,9 +1066,6 @@ namespace Supremacy.Orbitals
 
         public int ActivityStart { get; private set; }
 
-        public int ActivityDuration
-        {
-            get { return Activity != UnitActivity.NoActivity ? (int)(GameContext.Current.TurnNumber - ActivityStart) : 0; }
-         }
+        public int ActivityDuration => Activity != UnitActivity.NoActivity ? GameContext.Current.TurnNumber - ActivityStart : 0;
     }
 }

@@ -47,14 +47,14 @@ namespace Supremacy.Xna
             _graphicsDevice = graphicsDevice;
 
             // Load the effects
-            _blurEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_Blur");
-            _thresholdEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_Threshold");
-            _scalingEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_Scale");
-            _hdrEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_HDR");
+            _blurEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_Blur");
+            _thresholdEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_Threshold");
+            _scalingEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_Scale");
+            _hdrEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_HDR");
 
             // Initialize our buffers
-            float width = (float)graphicsDevice.PresentationParameters.BackBufferWidth;
-            float height = (float)graphicsDevice.PresentationParameters.BackBufferHeight;
+            float width = graphicsDevice.PresentationParameters.BackBufferWidth;
+            float height = graphicsDevice.PresentationParameters.BackBufferHeight;
 
             // Two buffers we'll swap between, so we can adapt the luminance            
             _currentFrameLuminance = new RenderTarget2D(
@@ -76,9 +76,9 @@ namespace Supremacy.Xna
             // We need a luminance chain
             int chainLength = 1;
             int startSize = (int)MathHelper.Min(width / 16, height / 16);
-            
+
             int size;
-            
+
             for (size = 16; size < startSize; size *= 4)
             {
                 chainLength++;
@@ -420,8 +420,8 @@ namespace Supremacy.Xna
 
             // We didn't find one, let's make one
             IntermediateTexture newTexture = new IntermediateTexture
-                             {
-                                 RenderTarget = new RenderTarget2D(
+            {
+                RenderTarget = new RenderTarget2D(
                                      _graphicsDevice,
                                      width,
                                      height,
@@ -430,8 +430,8 @@ namespace Supremacy.Xna
                                      msType,
                                      msQuality,
                                      RenderTargetUsage.DiscardContents)
-                             
-                             };
+
+            };
 
             _intermediateTextures.Add(newTexture);
 

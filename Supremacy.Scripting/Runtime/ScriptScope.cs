@@ -42,7 +42,7 @@ namespace Supremacy.Scripting.Runtime
 
         public ScriptScope Parent { get; }
 
-        public ScriptScope TopScope => Parent == null ? (this) : Parent.TopScope;
+        public ScriptScope TopScope => Parent == null ? this : Parent.TopScope;
 
         public SymbolDocumentInfo Document { get; }
 

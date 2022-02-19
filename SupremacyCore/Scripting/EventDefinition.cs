@@ -13,7 +13,6 @@ namespace Supremacy.Scripting
     [DictionaryKeyProperty("EventID")]
     public sealed class EventDefinition : SupportInitializeBase
     {
-        private readonly Dictionary<string, object> _options= new Dictionary<string, object>();
         private string _description;
 
         public string EventID { get; set; }
@@ -23,48 +22,55 @@ namespace Supremacy.Scripting
         {
             get
             {
-                var description = _description;
+                string description = _description;
                 if (!string.IsNullOrWhiteSpace(description))
+                {
                     return description;
+                }
 
-                var eventId = EventID;
-                var eventType = EventType;
+                string eventId = EventID;
+                Type eventType = EventType;
 
                 if (eventType != null)
                 {
                     if (!string.IsNullOrWhiteSpace(eventId))
+                    {
                         return string.Format("{0} ({1})", eventId, eventType.Name);
+                    }
 
                     return eventType.Name;
                 }
 
                 if (!string.IsNullOrWhiteSpace(eventId))
+                {
                     return eventId;
+                }
 
                 return "(Unknown Event)";
             }
-            set { _description = value; }
+            set => _description = value;
         }
 
-        public Dictionary<string, object> Options
-        {
-            get { return _options; }
-        }
+        public Dictionary<string, object> Options { get; } = new Dictionary<string, object>();
 
         protected override void EndInitCore()
         {
             if (string.IsNullOrWhiteSpace(EventID))
             {
-                var description = _description;
+                string description = _description;
                 if (string.IsNullOrEmpty(description))
+                {
                     GameLog.Client.GameData.Error("Error in ScriptedEventDatabase: Event must specify a unique event ID.");
+                }
                 else
+                {
                     GameLog.Client.GameData.ErrorFormat("Error in ScriptedEventDatabase: Event \"{0}\" must specify a unique event ID.", description);
+                }
             }
 
             if (EventType == null)
             {
-                var description = _description;
+                string description = _description;
 
                 GameLog.Client.GameData.ErrorFormat(
                     "Error in ScriptedEventDatabase: Event \"{0}\" must declare an EventType.",

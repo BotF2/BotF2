@@ -11,7 +11,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-// ReSharper disable CompareOfFloatsByEqualityOperator
+
 
 namespace Supremacy.Types
 {
@@ -52,14 +52,21 @@ namespace Supremacy.Types
         public Percentage(float value)
         {
             if (float.IsNaN(value) || float.IsInfinity(value))
+            {
                 throw new ArgumentException("Value cannot be NaN or Infinity.", "value");
-            
+            }
+
             ApplyErrorCorrectionAndLimitPrecision(ref value);
 
             if (value > float.MaxValue)
+            {
                 throw new ArgumentOutOfRangeException("value", "Value must be <= MaxValue.");
+            }
+
             if (value < float.MinValue)
+            {
                 throw new ArgumentOutOfRangeException("value", "Value must be >= MinValue.");
+            }
 
             _value = value;
         }
@@ -68,7 +75,9 @@ namespace Supremacy.Types
             : this((float)value)
         {
             if (value > MaxValue)
+            {
                 throw new ArgumentOutOfRangeException("value", "Value must be <= MaxValue.");
+            }
         }
         #endregion
 
@@ -79,7 +88,7 @@ namespace Supremacy.Types
             {
                 return false;
             }
-            return (((Percentage)obj)._value == _value);
+            return ((Percentage)obj)._value == _value;
         }
 
         public override int GetHashCode()
@@ -220,7 +229,7 @@ namespace Supremacy.Types
         #region IEquatable<Percentage> Members
         public bool Equals(Percentage other)
         {
-            return (other._value == _value);
+            return other._value == _value;
         }
         #endregion
 
@@ -265,24 +274,27 @@ namespace Supremacy.Types
 
         public static bool TryParse(string value, out Percentage result)
         {
-            float floatResult;
 
-            var applyScaling = false;
+            bool applyScaling = false;
 
             if (value == null)
+            {
                 throw new ArgumentNullException("value");
+            }
 
-            var valueString = value.Trim();
+            string valueString = value.Trim();
             if (valueString.EndsWith("%"))
             {
                 valueString = valueString.Substring(0, valueString.Length - 1);
                 applyScaling = true;
             }
 
-            if (float.TryParse(valueString, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out floatResult))
+            if (float.TryParse(valueString, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out float floatResult))
             {
                 if (applyScaling)
+                {
                     floatResult /= 100f;
+                }
 
                 // NOTE: Error correction and precsion limiting is applied during the float->Percentage conversion.
 
@@ -290,7 +302,7 @@ namespace Supremacy.Types
                 return true;
             }
 
-            result = default(Percentage);
+            result = default;
             return false;
         }
 
@@ -309,27 +321,26 @@ namespace Supremacy.Types
         /// </remarks>
         private static void ApplyErrorCorrectionAndLimitPrecision(ref float value)
         {
-            var nearestWholePercentage = (float)Math.Round(value, 2);
+            float nearestWholePercentage = (float)Math.Round(value, 2);
             if (FloatUtil.AreClose(value, nearestWholePercentage))
             {
                 value = nearestWholePercentage;
                 return;
             }
 
-            var nearestTenthPercentage = (float)Math.Round(value, 3);
+            float nearestTenthPercentage = (float)Math.Round(value, 3);
             if (FloatUtil.AreClose(value, nearestTenthPercentage))
             {
                 value = nearestTenthPercentage;
                 return;
             }
-            
+
             value = (float)Math.Round(value, 4);
         }
 
         public static Percentage Parse(string value)
         {
-            Percentage result;
-            TryParse(value, out result);
+            _ = TryParse(value, out Percentage result);
             return result;
         }
     }
@@ -339,7 +350,10 @@ namespace Supremacy.Types
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (typeof(IConvertible).IsAssignableFrom(sourceType))
+            {
                 return true;
+            }
+
             return TypeDescriptor.GetConverter(typeof(float)).CanConvertFrom(context, sourceType);
         }
 
@@ -350,12 +364,11 @@ namespace Supremacy.Types
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            IConvertible convertible = value as IConvertible;
             if (value is string)
             {
                 return Percentage.Parse(value.ToString());
             }
-            if (convertible != null)
+            if (value is IConvertible convertible)
             {
                 return new Percentage(convertible.ToSingle(CultureInfo.InvariantCulture.NumberFormat));
             }
@@ -364,8 +377,11 @@ namespace Supremacy.Types
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(String))
+            if (destinationType == typeof(string))
+            {
                 return value.ToString();
+            }
+
             return TypeDescriptor.GetConverter(typeof(float)).ConvertTo(context, culture, value, destinationType);
         }
     }
@@ -374,15 +390,17 @@ namespace Supremacy.Types
     {
         internal const float Epsilon = 1.192093E-07f;
         internal const float MaxPrecision = 1.677722E+07f;
-        internal const float InverseMaxPrecision = (1f / MaxPrecision);
+        internal const float InverseMaxPrecision = 1f / MaxPrecision;
 
         public static bool AreClose(float a, float b)
         {
             if (a == b)
+            {
                 return true;
+            }
 
-            var epsilon = ((Math.Abs(a) + Math.Abs(b)) + 10f) * Epsilon;
-            var delta = a - b;
+            float epsilon = (Math.Abs(a) + Math.Abs(b) + 10f) * Epsilon;
+            float delta = a - b;
 
             return (-epsilon < delta) && (epsilon > delta);
         }
@@ -403,4 +421,4 @@ namespace Supremacy.Types
         }
     }
 }
-// ReSharper restore CompareOfFloatsByEqualityOperator
+

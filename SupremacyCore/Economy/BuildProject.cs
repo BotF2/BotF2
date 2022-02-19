@@ -8,7 +8,6 @@
 // All other rights reserved.
 
 using Supremacy.Buildings;
-using Supremacy.Client;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
@@ -30,7 +29,7 @@ namespace Supremacy.Economy
         Cancelled = 0x02,
         DeuteriumShortage = 0x04,
         DilithiumShortage = 0x08,
-        RawMaterialsShortage = 0x10,
+        DuraniumShortage = 0x10,
         Rushed = 0x20,
     }
 
@@ -52,6 +51,7 @@ namespace Supremacy.Economy
         private byte _priority;
         private BuildProjectFlags _flags;
         private ResourceValueCollection _resourcesInvested;
+        private string _text;
 
 
 
@@ -63,15 +63,21 @@ namespace Supremacy.Economy
         /// <param name="buildType">The design of the item being constructed.</param>
         protected BuildProject(
             Civilization owner,
-            // ReSharper disable SuggestBaseTypeForParameter
+
             IProductionCenter productionCenter,
-            // ReSharper restore SuggestBaseTypeForParameter
+
             TechObjectDesign buildType)
         {
             if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
+            }
+
             if (buildType == null)
+            {
                 throw new ArgumentNullException("buildType");
+            }
+
             _ownerId = owner.CivID;
             _buildTypeId = buildType.DesignID;
             _location = productionCenter.Location;
@@ -83,14 +89,14 @@ namespace Supremacy.Economy
         /// Gets the production center at which construction is taking place.
         /// </summary>
         /// <value>The production center at which construction is taking place.</value>
-        public virtual IProductionCenter ProductionCenter
-        {
-            get { return GameContext.Current.Universe.Objects[_productionCenterId] as IProductionCenter; }
-        }
+        public virtual IProductionCenter ProductionCenter => GameContext.Current.Universe.Objects[_productionCenterId] as IProductionCenter;
 
         public override string ToString()
         {
-            return BuildDesign.LocalizedName;
+            if (BuildDesign != null)
+                return BuildDesign.LocalizedName;
+            else
+                return null;
         }
 
         /// <summary>
@@ -99,19 +105,13 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c> if this <see cref="BuildProject"/> is an upgrade project; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsUpgrade
-        {
-            get { return false; }
-        }
+        public virtual bool IsUpgrade => false;
 
         /// <summary>
         /// Gets the description of the item under construction.
         /// </summary>
         /// <value>The description.</value>
-        public virtual string Description
-        {
-            get { return ResourceManager.GetString(BuildDesign.Name); }
-        }
+        public virtual string Description => ResourceManager.GetString(BuildDesign.Name);
 
         /// <summary>
         /// Gets or sets the location where construction is taking place.
@@ -119,18 +119,15 @@ namespace Supremacy.Economy
         /// <value>The location.</value>
         public MapLocation Location
         {
-            get { return _location; }
-            set { _location = value; }
+            get => _location;
+            set => _location = value;
         }
 
         /// <summary>
         /// Gets the civilization that initiated this <see cref="BuildProject"/>.
         /// </summary>
         /// <value>The builder.</value>
-        public Civilization Builder
-        {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
-        }
+        public Civilization Builder => GameContext.Current.Civilizations[_ownerId];
 
         /// <summary>
         /// Gets the design of the item being constructed.
@@ -138,7 +135,24 @@ namespace Supremacy.Economy
         /// <value>The construction design.</value>
         public TechObjectDesign BuildDesign
         {
-            get { return GameContext.Current.TechDatabase[_buildTypeId]; }
+            get
+            {
+                if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
+                {
+                    return GameContext.Current.TechDatabase[_buildTypeId];
+                }
+                else
+                {
+                    if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
+                    {
+                        string _text = "#### Error on BuildDesign - not available or found ... returning a null or maybe cancelling a build project";
+                        Console.WriteLine(_text);
+                        GameLog.Client.General.ErrorFormat(_text);
+                    }
+                    return null;
+                }
+
+            }
         }
 
         /// <summary>
@@ -147,8 +161,8 @@ namespace Supremacy.Economy
         /// <value>The player-assigned priority.</value>
         public int Priority
         {
-            get { return _priority; }
-            set { _priority = (byte)Math.Max(MinPriority, Math.Min(MaxPriority, value)); }
+            get => _priority;
+            set => _priority = (byte)Math.Max(MinPriority, Math.Min(MaxPriority, value));
         }
 
         /// <summary>
@@ -157,18 +171,24 @@ namespace Supremacy.Economy
         /// <value>The industry invested.</value>
         public virtual int IndustryInvested
         {
-            get { return _industryInvested; }
-            protected set { _industryInvested = value; }
+            get =>
+                //GameLog.Core.Production.DebugFormat("Turn {0};_industryInvested_Before=;{1}"
+                //      , GameContext.Current.TurnNumber
+                //      , _industryInvested
+                //      );
+
+                //if (_industryInvested == 0)
+                //    GameLog.Core.ProductionDetails.DebugFormat("indInvested=0"); // just or breakpoint
+
+                _industryInvested;
+            protected set => _industryInvested = value;
         }
 
         /// <summary>
         /// Gets the amount of resources that have been invested thus far.
         /// </summary>
         /// <value>The resources invested.</value>
-        public ResourceValueCollection ResourcesInvested
-        {
-            get { return _resourcesInvested; }
-        }
+        public ResourceValueCollection ResourcesInvested => _resourcesInvested;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="BuildProject"/> is completed.
@@ -182,8 +202,25 @@ namespace Supremacy.Economy
             {
                 if (_industryInvested < IndustryRequired)
                 {
-                    GameLog.Core.Production.DebugFormat("{0} at {1} not complete - IndustryRequired = {2}, _industryInvested ={3}",
-                        BuildDesign, _location, IndustryRequired, _industryInvested);
+
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder.CivID];
+
+                    if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
+                    {
+                        _text = _location + " > " + BuildDesign + " not complete... " + PercentComplete.ToString() + " done";
+                        civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Gray));
+                        //GameLog.Core.Stations.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
+                        //BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
+
+
+                        //civManager.SitRepEntries.Add(new ReportOutput_Gray_CoS_SitRepEntry(civManager.Civilization, _location, _text));
+                    }
+                    //else
+                    //{
+                    //GameLog.Core.Production.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
+                    //    BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
+                    //}
+
                     return false;
                 }
 
@@ -191,10 +228,10 @@ namespace Supremacy.Economy
                 {
                     if (_resourcesInvested[resource] < ResourcesRequired[resource])
                     {
-                        GameLog.Core.Production.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
+                        GameLog.Core.ProductionDetails.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
                             BuildDesign, _location, resource);
 
-                        GameLog.Core.Production.DebugFormat("not checking whether enough resources there");
+                        GameLog.Core.ProductionDetails.DebugFormat("not checking whether enough resources there");
                         return true;  // cheating
 
                         //return false;
@@ -213,8 +250,24 @@ namespace Supremacy.Economy
         /// </value>
         public bool IsCancelled
         {
-            get { return GetFlag(BuildProjectFlags.Cancelled); }
-            protected set { SetFlag(BuildProjectFlags.Cancelled, value); }
+            get
+            {
+                if (GetFlag(BuildProjectFlags.Cancelled))
+                {
+                    GameLog.Core.Production.DebugFormat("##### Project has flag: IsCancelled");
+                }
+
+                return GetFlag(BuildProjectFlags.Cancelled);
+            }
+            protected set
+            {
+                if (GetFlag(BuildProjectFlags.Cancelled))
+                {
+                    GameLog.Core.Production.DebugFormat("##### Project is set to flag: IsCancelled");
+                }
+
+                SetFlag(BuildProjectFlags.Cancelled, value);
+            }
         }
 
         /// <summary>
@@ -225,7 +278,7 @@ namespace Supremacy.Economy
         /// </value>
         public bool IsRushed
         {
-            get { return GetFlag(BuildProjectFlags.Rushed); }
+            get => GetFlag(BuildProjectFlags.Rushed);
             set
             {
                 SetFlag(BuildProjectFlags.Rushed, value); OnPropertyChanged("IsRushed");
@@ -240,8 +293,8 @@ namespace Supremacy.Economy
         /// </value>
         public bool IsPaused
         {
-            get { return GetFlag(BuildProjectFlags.OnHold); }
-            set { SetFlag(BuildProjectFlags.OnHold, value); }
+            get => GetFlag(BuildProjectFlags.OnHold);
+            set => SetFlag(BuildProjectFlags.OnHold, value);
         }
 
         /// <summary>
@@ -250,10 +303,7 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c> if this project is partially complete; otherwise, <c>false</c>.
         /// </value>
-        public bool IsPartiallyComplete
-        {
-            get { return (PercentComplete > 0.0f); }
-        }
+        public bool IsPartiallyComplete => PercentComplete > 0.0f;
 
         /// <summary>
         /// Gets the percent completion of this <see cref="BuildProject"/>.
@@ -261,12 +311,14 @@ namespace Supremacy.Economy
         /// <value>The percent completion.</value>
         public virtual Percentage PercentComplete
         {
-            get 
+            get
             {
-                if ((Percentage)((double)_industryInvested / IndustryRequired) == 100 && this.IsCompleted != true)
+                if ((Percentage)((double)_industryInvested / IndustryRequired) == 100 && IsCompleted != true)
+                {
                     GameLog.Core.Stations.DebugFormat("100% completed (Industry only, but maybe a gap of Duranium");
+                }
 
-                return (Percentage)((double)_industryInvested / IndustryRequired); 
+                return (Percentage)((double)_industryInvested / IndustryRequired);
             }
         }
 
@@ -274,28 +326,21 @@ namespace Supremacy.Economy
         /// Gets the total industry required to complete this <see cref="BuildProject"/>.
         /// </summary>
         /// <value>The industry required.</value>
-        protected virtual int IndustryRequired
-        {
-            get { return BuildDesign.BuildCost; }
-        }
+        protected virtual int IndustryRequired => BuildDesign.BuildCost;
 
         /// <summary>
         /// Gets the total resources required to complete this <see cref="BuildProject"/>.
         /// </summary>
         /// <value>The resources required.</value>
-        protected virtual ResourceValueCollection ResourcesRequired
-        {
-            get { return BuildDesign.BuildResourceCosts; }
-        }
+        protected virtual ResourceValueCollection ResourcesRequired => BuildDesign.BuildResourceCosts;
 
         /// <summary>
         /// Gets the number of turns remaining until this <see cref="BuildProject"/> is completed.
         /// </summary>
         /// <value>The turns remaining.</value>
-        public virtual int TurnsRemaining
-        {
-            get { return GetTimeEstimate(); }
-        }
+        public virtual int TurnsRemaining => GetTimeEstimate();
+
+        public virtual int IndustryRemaining => IndustryRequired - IndustryInvested;
 
         protected bool GetFlag(BuildProjectFlags flag)
         {
@@ -310,9 +355,13 @@ namespace Supremacy.Economy
         protected void SetFlag(BuildProjectFlags flag, bool value = true)
         {
             if (value)
+            {
                 _flags |= flag;
+            }
             else
+            {
                 ClearFlag(flag);
+            }
         }
 
         public void InvalidateTurnsRemaining()
@@ -339,6 +388,23 @@ namespace Supremacy.Economy
             writer.Write(_priority);
             writer.WriteObject(_resourcesInvested);
             writer.Write((byte)_flags);
+            string _flagsText = "";
+            //foreach (var item in _flags)
+            //{
+            //    _flagsText += item
+            //}
+            GameLog.Core.SaveLoad.DebugFormat("Turn {0};buildTypeID=;{1};indInv=;{2};at=({3},{4});owner={5};prio={6};resInv={7};flags={8}"
+                , GameContext.Current.TurnNumber
+                , _buildTypeId
+                , _industryInvested
+                , _location.X
+                , _location.Y
+                , _ownerId
+                , _priority
+                , _resourcesInvested
+                , _flagsText
+
+                );
         }
 
         public virtual void DeserializeOwnedData(SerializationReader reader, object context)
@@ -372,30 +438,54 @@ namespace Supremacy.Economy
         /// </summary>
         public virtual void Finish()
         {
-            var civManager = GameContext.Current.CivilizationManagers[Builder];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
 
-            TechObject spawnedInstance;
             //if(BuildDesign == StationDes)
-            GameLog.Core.Production.DebugFormat("Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location);
-            if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out spawnedInstance))  // what does the TrySpawn have to do with our OutOfRagneException in production? 
+
+            // works
+            //_text = " Turn " + GameContext.Current.TurnNumber
+            //    + ": Trying to finish BuildProject ########## " + BuildDesign
+            //    + " by " + Builder
+            //    + " at " + Location
+            //    ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.ProductionDetails.DebugFormat(_text);
+            
+            // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
+            if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out TechObject spawnedInstance))  // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
+            {
                 return; // If we do or do not spawn does that change a collection to give out of range?
+            }
 
             //Wtf is going on here?
-            ItemBuiltSitRepEntry newEntry = null;
+            ReportItemBuilt newEntry = null;
             if (spawnedInstance != null)
             {
                 if (spawnedInstance.ObjectType == UniverseObjectType.Building)
                 {
-                    newEntry = new BuildingBuiltSitRepEntry(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive);
+
+                    newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
+                  
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + ": " + Builder
+                        + " built at " + Location + " > " + BuildDesign + " (spawned)"
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Production.DebugFormat(_text);
                 }
             }
-
+            
             if (newEntry == null)
             {
-                GameLog.Core.Production.DebugFormat("TurnNumber {3}: BuildProject.Finished: ##########  {0} built by {1} at {2}", 
-                    BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
+                _text = "Turn " + GameContext.Current.TurnNumber
+                    + ": " + Builder
+                    + " built at " + Location + " > " + BuildDesign
+                    ;
 
-                newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location);
+                newEntry = new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green);
+                //old: newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green);
+                Console.WriteLine(_text);
+                //GameLog.Core.Production.DebugFormat(_text);
             }
 
             civManager.SitRepEntries.Add(newEntry);
@@ -407,18 +497,25 @@ namespace Supremacy.Economy
         /// <returns>The time estimate.</returns>
         public virtual int GetTimeEstimate()
         {
-            var industryAvailable = GetIndustryAvailable();
+            int industryAvailable = GetIndustryAvailable();
             if (industryAvailable == 0)
+            {
                 industryAvailable = 1;
-            var industryRemaining = IndustryRequired - IndustryInvested;
+            }
 
-            var turns = industryRemaining / industryAvailable;
-            
+            int industryRemaining = IndustryRequired - IndustryInvested;
+
+            int turns = industryRemaining / industryAvailable;
+
             if (industryRemaining % industryAvailable > 0)
+            {
                 ++turns;
+            }
 
             if (turns == 0 && !IsCompleted)
+            {
                 turns = 1;
+            }
 
             return turns;
         }
@@ -450,7 +547,7 @@ namespace Supremacy.Economy
             return GetCurrentIndustryCost() +
                 EconomyHelper.ComputeResourceValue(ResourceType.Deuterium, GetCurrentResourceCost(ResourceType.Deuterium)) +
                 EconomyHelper.ComputeResourceValue(ResourceType.Dilithium, GetCurrentResourceCost(ResourceType.Dilithium)) +
-                EconomyHelper.ComputeResourceValue(ResourceType.RawMaterials, GetCurrentResourceCost(ResourceType.RawMaterials));
+                EconomyHelper.ComputeResourceValue(ResourceType.Duranium, GetCurrentResourceCost(ResourceType.Duranium));
         }
 
         /// <summary>
@@ -466,7 +563,9 @@ namespace Supremacy.Economy
         public void Advance(ref int industry, ResourceValueCollection resources)
         {
             if (IsPaused || IsCancelled)
+            {
                 return;
+            }
 
             AdvanceOverride(ref industry, resources);
         }
@@ -474,13 +573,15 @@ namespace Supremacy.Economy
         protected virtual void AdvanceOverride(ref int industry, ResourceValueCollection resources)
         {
 
-            var civManager = GameContext.Current.CivilizationManagers[0];  // ToDo - not always Federation
-            var civ = civManager.Civilization;
-            var timeEstimate = GetTimeEstimate();
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[0];  // ToDo - not always Federation
+            Civilization civ = civManager.Civilization;
+            int timeEstimate = GetTimeEstimate();
             if (timeEstimate <= 0)
+            {
                 return;
+            }
 
-            var deltaIndustry = Math.Min(
+            int deltaIndustry = Math.Min(
                 industry,
                 Math.Max(0, IndustryRequired - _industryInvested));
 
@@ -495,41 +596,52 @@ namespace Supremacy.Economy
             ClearFlag(
                 BuildProjectFlags.DeuteriumShortage |
                 BuildProjectFlags.DilithiumShortage |
-                BuildProjectFlags.RawMaterialsShortage);
-            
-            var resourceTypes = EnumHelper.GetValues<ResourceType>();
+                BuildProjectFlags.DuraniumShortage);
 
-            for (var i = 0; i < resourceTypes.Length; i++)
+            ResourceType[] resourceTypes = EnumHelper.GetValues<ResourceType>();
+
+            for (int i = 0; i < resourceTypes.Length; i++)
             {
-                var resource = resourceTypes[i];
+                ResourceType resource = resourceTypes[i];
 
-                var delta = ResourcesRequired[resource] - _resourcesInvested[resource];
+                int delta = ResourcesRequired[resource] - _resourcesInvested[resource];
 
                 if (delta <= 0)
+                {
                     continue;
+                }
 
                 if (timeEstimate == 1 &&
                     delta > resources[resource])
                 {
                     SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    GameLog.Core.Test.DebugFormat("Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta.ToString(), this.BuildDesign.Description);
+                    GameLog.Core.Test.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta.ToString(), BuildDesign.Description, GameContext.Current.TurnNumber);
 
                     deltaIndustry -= delta;
-                    
-                    civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), this.BuildDesign.Description));
+
+                    civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
 
                 }
 
                 if (timeEstimate == 1)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    GameLog.Core.Production.DebugFormat("Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
-                        , resource.ToString(), delta.ToString(), this.BuildDesign);
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + ": " + Location
+                        + ": Estimated One Turn... for " + BuildDesign
+                        ;
+                        //+ " by " + Builder
+                        //+ " at " + Location
+                        //;
+                    //GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
+                    //    , resource.ToString(), delta.ToString(), BuildDesign, GameContext.Current.TurnNumber);
+                    Console.WriteLine(_text);
+                    //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
-                    if (delta > 0 && resource == ResourceType.RawMaterials && delta > civManager.Resources.RawMaterials.CurrentValue)
+                    if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
                     {
                         GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}, too less available !!!", resource.ToString(), delta);
-                        civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), this.BuildDesign.Description));
+                        civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
 
                     }
                     //deltaIndustry -= delta;
@@ -538,11 +650,13 @@ namespace Supremacy.Economy
                 }
 
                 if (resources[resource] <= 0)
+                {
                     continue;
+                }
 
                 delta /= timeEstimate;
-                delta += ((ResourcesRequired[resource] - _resourcesInvested[resource]) % timeEstimate);
-                
+                delta += (ResourcesRequired[resource] - _resourcesInvested[resource]) % timeEstimate;
+
                 delta = Math.Min(delta, resources[resource]);
 
                 resources[resource] -= delta;
@@ -566,7 +680,9 @@ namespace Supremacy.Economy
             OnPropertyChanged("IsPartiallyComplete");
 
             if (IsCompleted)
+            {
                 OnPropertyChanged("IsCompleted");
+            }
         }
 
         /// <summary>
@@ -580,11 +696,20 @@ namespace Supremacy.Economy
         public virtual bool IsEquivalent(BuildProject project)
         {
             if (project == null)
+            {
                 return false;
+            }
+
             if (project.GetType() != GetType())
+            {
                 return false;
+            }
+
             if (project._buildTypeId != _buildTypeId)
+            {
                 return false;
+            }
+
             return true;
         }
 
@@ -616,9 +741,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

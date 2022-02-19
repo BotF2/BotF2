@@ -12,25 +12,29 @@ namespace Supremacy.Client.Controls
 
         public bool Contains(Guid uniqueId)
         {
-            return (IndexOf(uniqueId) != InvalidIndex);
+            return IndexOf(uniqueId) != InvalidIndex;
         }
 
         public int IndexOf(string name)
         {
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (this[index].Name == name)
+                {
                     return index;
+                }
             }
             return InvalidIndex;
         }
-        
+
         public int IndexOf(Guid uniqueId)
         {
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (this[index].UniqueId == uniqueId)
+                {
                     return index;
+                }
             }
             return InvalidIndex;
         }
@@ -39,40 +43,47 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var index = IndexOf(name);
+                int index = IndexOf(name);
                 if (index != InvalidIndex)
+                {
                     return this[index];
+                }
+
                 return null;
             }
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers")]
         public InfoCard this[Guid uniqueId]
         {
             get
             {
-                var index = IndexOf(uniqueId);
+                int index = IndexOf(uniqueId);
                 if (index != InvalidIndex)
+                {
                     return this[index];
+                }
+
                 return null;
             }
         }
 
         public InfoCard[] ToArray()
         {
-            var result = new InfoCard[Count];
+            InfoCard[] result = new InfoCard[Count];
             CopyTo(result, 0);
             return result;
         }
 
         public InfoCard[] ToArray(bool sortByLastFocusedDateTime)
         {
-            var result = new InfoCard[Count];
+            InfoCard[] result = new InfoCard[Count];
 
             CopyTo(result, 0);
 
             if (sortByLastFocusedDateTime)
+            {
                 Array.Sort(result, new InfoCard.LastFocusedComparer(result));
+            }
 
             return result;
         }

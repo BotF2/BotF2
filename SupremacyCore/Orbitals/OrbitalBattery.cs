@@ -19,13 +19,12 @@ namespace Supremacy.Orbitals
         public OrbitalBatteryDesign(XmlElement element)
             : base(element)
         {
-            var currentElement = element["UnitEnergyCost"];
+            XmlElement currentElement = element["UnitEnergyCost"];
             if (currentElement != null)
             {
-                int unitEnergyCost;
-                var unitEnergyCostText = currentElement.InnerText.Trim();
+                string unitEnergyCostText = currentElement.InnerText.Trim();
 
-                if (int.TryParse(unitEnergyCostText, out unitEnergyCost))
+                if (int.TryParse(unitEnergyCostText, out int unitEnergyCost))
                 {
                     UnitEnergyCost = unitEnergyCost;
                 }
@@ -41,29 +40,23 @@ namespace Supremacy.Orbitals
 
         public int UnitEnergyCost { get; set; }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "OrbitalBatteries/"; }
-        }
+        protected override string DefaultImageSubFolder => "OrbitalBatteries/";
 
         /// <summary>
         /// Gets the encyclopedia category for a building of this design.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Batteries; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Batteries;
 
         protected internal override void AppendXml(XmlElement baseElement)
         {
             base.AppendXml(baseElement);
 
-            var doc = baseElement.OwnerDocument;
-            var newElement = doc.CreateElement("UnitEnergyCost");
+            XmlDocument doc = baseElement.OwnerDocument;
+            XmlElement newElement = doc.CreateElement("UnitEnergyCost");
 
             newElement.InnerText = UnitEnergyCost.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
         }
 
         public override bool TrySpawn(MapLocation location, Civilization owner, out TechObject spawnedInstance)
@@ -79,12 +72,12 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            var sector = GameContext.Current.Universe.Map[location];
-            var system = sector.System;
+            Sector sector = GameContext.Current.Universe.Map[location];
+            StarSystem system = sector.System;
 
             system.Colony.OrbitalBatteryDesign = this;
             system.Colony.AddOrbitalBatteries(1);
-            system.Colony.ActivateOrbitalBattery();
+            _ = system.Colony.ActivateOrbitalBattery();
 
             spawnedInstance = null;
             return true;
@@ -96,7 +89,7 @@ namespace Supremacy.Orbitals
     {
         public OrbitalBattery() { }
 
-        // ReSharper disable RedundantOverridenMember
+
         public override void SerializeOwnedData(SerializationWriter writer, object context)
         {
             base.SerializeOwnedData(writer, context);
@@ -108,15 +101,15 @@ namespace Supremacy.Orbitals
             base.DeserializeOwnedData(reader, context);
             _isActive = reader.ReadBoolean();
         }
-        // ReSharper restore RedundantOverridenMember
+
 
         public OrbitalBattery(OrbitalBatteryDesign design)
             : base(design) { }
 
         public new OrbitalBatteryDesign Design
         {
-            get { return (OrbitalBatteryDesign)base.Design; }
-            set { base.Design = value; }
+            get => (OrbitalBatteryDesign)base.Design;
+            set => base.Design = value;
         }
 
         #region IsActive Property
@@ -125,11 +118,13 @@ namespace Supremacy.Orbitals
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (Equals(value, _isActive))
+                {
                     return;
+                }
 
                 _isActive = value;
 

@@ -125,7 +125,7 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 Type returnType = destinationType;
-                
+
                 if (TypeManager.IsDelegateType(returnType))
                 {
                     returnType = returnType.GetMethod("Invoke").ReturnType;
@@ -137,8 +137,8 @@ namespace Supremacy.Scripting.Ast
             return TypeManager.IsEqual(source.Type, destinationType)
                 ? source
                 : new ConvertExpression(TypeExpression.Create(destinationType), source, location)
-                   {
-                       IsImplicitConversionRequired = true
+                {
+                    IsImplicitConversionRequired = true
                 }.Resolve(ec);
         }
 

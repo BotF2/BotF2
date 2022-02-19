@@ -6,7 +6,7 @@ using MSAst = System.Linq.Expressions;
 namespace Supremacy.Scripting.Ast
 {
     internal class QuoteExpression : ShimExpression
-		{
+    {
         public QuoteExpression(LambdaExpression expression)
                 : base(expression) { }
 

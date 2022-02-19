@@ -30,18 +30,12 @@ namespace Supremacy.Client.Audio
         #region Properties
         public string Name { get; set; }
         public string Path { get; set; }
-        public List<MusicEntry> Entries
-        {
-            get { return _musicList; }
-        }
-        public Dictionary<string, MusicEntry> Dictionary
-        {
-            get { return _musicDict; }
-        }
+        public List<MusicEntry> Entries => _musicList;
+        public Dictionary<string, MusicEntry> Dictionary => _musicDict;
         #endregion
 
         #region Methods
-        public void Load(String packPath, String packName)
+        public void Load(string packPath, string packName)
         {
             XmlDocument xmlDoc = new XmlDocument();
             XmlElement xmlRoot;
@@ -55,15 +49,19 @@ namespace Supremacy.Client.Audio
                 string musicPackName = xmlPack.GetAttribute("Name");
                 if ((string.IsNullOrEmpty(packName) && !string.IsNullOrEmpty(musicPackName))
                     || (!string.IsNullOrEmpty(packName) && string.IsNullOrEmpty(musicPackName)))
+                {
                     continue;
+                }
                 else if (!string.IsNullOrEmpty(packName) && !string.IsNullOrEmpty(musicPackName)
                     && !musicPackName.Trim().ToUpperInvariant().Equals(packName.Trim().ToUpperInvariant()))
+                {
                     continue;
+                }
 
                 Load(xmlPack);
             }
         }
-        
+
         public void Load(XmlElement xmlNode)
         {
             Name = xmlNode.GetAttribute("Name");
@@ -71,7 +69,7 @@ namespace Supremacy.Client.Audio
 
             foreach (XmlElement track in xmlNode.GetElementsByTagName(TrackDefName))
             {
-                var filename = track.InnerText.Trim();
+                string filename = track.InnerText.Trim();
                 if (!string.IsNullOrEmpty(filename))
                 {
                     // TODO: what sense does it have to have a different fading each track?
@@ -84,9 +82,12 @@ namespace Supremacy.Client.Audio
                     //}
 
                     string trackName = track.GetAttribute("Name");
-                    var entry = new MusicEntry(trackName, System.IO.Path.Combine(Path, filename));
+                    MusicEntry entry = new MusicEntry(trackName, System.IO.Path.Combine(Path, filename));
                     _musicList.Add(entry);
-                    if (!String.IsNullOrEmpty(trackName)) _musicDict.Add(trackName, entry);
+                    if (!string.IsNullOrEmpty(trackName))
+                    {
+                        _musicDict.Add(trackName, entry);
+                    }
                 }
             }
 
@@ -116,7 +117,10 @@ namespace Supremacy.Client.Audio
             foreach (MusicEntry track in _musicList)
             {
                 if (track.TrackName.Equals(trackName, StringComparison.OrdinalIgnoreCase))
+                {
                     return new KeyValuePair<int, MusicEntry>(pos, track);
+                }
+
                 ++pos;
             }
 
@@ -126,7 +130,9 @@ namespace Supremacy.Client.Audio
         public KeyValuePair<int, MusicEntry> Next(int prev = -1)
         {
             if (_musicList.Count == 0)
+            {
                 return new KeyValuePair<int, MusicEntry>();
+            }
 
             int pos = prev != -1 && prev + 1 < _musicList.Count ? prev + 1 : 0;
             return new KeyValuePair<int, MusicEntry>(pos, _musicList[pos]);
@@ -135,7 +141,9 @@ namespace Supremacy.Client.Audio
         public KeyValuePair<int, MusicEntry> Prev(int prev = -1)
         {
             if (_musicList.Count == 0)
+            {
                 return new KeyValuePair<int, MusicEntry>();
+            }
 
             int pos = prev > 0 ? prev - 1 : _musicList.Count - 1;
             return new KeyValuePair<int, MusicEntry>(pos, _musicList[pos]);
@@ -144,7 +152,9 @@ namespace Supremacy.Client.Audio
         public KeyValuePair<int, MusicEntry> Random(int prev = -1)
         {
             if (_musicList.Count == 0)
+            {
                 return new KeyValuePair<int, MusicEntry>();
+            }
 
             int pos = 0;
             if (_musicList.Count > 1)
@@ -154,9 +164,14 @@ namespace Supremacy.Client.Audio
                     // do not repeat current entry
                     pos = RandomProvider.Shared.Next(_musicList.Count - 1);
                     if (pos >= prev)
+                    {
                         ++pos;
+                    }
                 }
-                else pos = RandomProvider.Shared.Next(_musicList.Count);
+                else
+                {
+                    pos = RandomProvider.Shared.Next(_musicList.Count);
+                }
             }
 
             return new KeyValuePair<int, MusicEntry>(pos, _musicList[pos]);

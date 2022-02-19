@@ -25,26 +25,26 @@ namespace Supremacy.Game
 
         public Guid UniqueIdentifier
         {
-            get { return _uniqueIdentifier; }
-            set { _uniqueIdentifier = value; }
+            get => _uniqueIdentifier;
+            set => _uniqueIdentifier = value;
         }
 
         public string Name
         {
-            get { return _name; }
-            internal set { _name = value; }
+            get => _name;
+            internal set => _name = value;
         }
 
         public Version Version
         {
-            get { return _version; }
-            internal set { _version = value; }
+            get => _version;
+            internal set => _version = value;
         }
 
         public string RootPath
         {
-            get { return _rootPath; }
-            internal set { _rootPath = value; }
+            get => _rootPath;
+            internal set => _rootPath = value;
         }
 
         public GameMod() { }
@@ -95,7 +95,9 @@ namespace Supremacy.Game
             {
                 string[] configFiles = Directory.GetFiles(modPath, "*.modconfig");
                 if (configFiles.Length > 0)
+                {
                     return configFiles[0];
+                }
             }
             return null;
         }
@@ -117,7 +119,10 @@ namespace Supremacy.Game
             string commandLine = Environment.CommandLine;
             int modNameIndex = commandLine.IndexOf("-Mod:");
             if (modNameIndex < 0)
+            {
                 modNameIndex = commandLine.IndexOf("/Mod:");
+            }
+
             if (modNameIndex != -1)
             {
                 string modDir = commandLine.Substring(modNameIndex + 5).Trim();

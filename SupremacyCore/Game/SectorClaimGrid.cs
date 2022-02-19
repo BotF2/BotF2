@@ -1,4 +1,4 @@
-// SectorClaimGrid.cs
+// File:SectorClaimGrid.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -17,7 +17,6 @@ using Supremacy.Universe;
 using System.Linq;
 
 using Supremacy.Collections;
-using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -34,30 +33,33 @@ namespace Supremacy.Game
 
         public IIndexedCollection<SectorClaim> GetClaims(MapLocation location)
         {
-            CollectionBase<SectorClaim> claims;
 
-            if (_claims.TryGetValue(location, out claims))
+            if (_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
+            {
                 return claims;
+            }
 
             return ArrayWrapper<SectorClaim>.Empty;
         }
 
         public IIndexedCollection<SectorClaim> GetClaims(ICivIdentity owner)
         {
-            CollectionBase<SectorClaim> claims;
 
-            if (_claimsByOwner.TryGetValue(owner.CivID, out claims))
+            if (_claimsByOwner.TryGetValue(owner.CivID, out CollectionBase<SectorClaim> claims))
+            {
                 return claims;
+            }
 
             return ArrayWrapper<SectorClaim>.Empty;
         }
 
         public IIndexedCollection<SectorClaim> GetClaims(int ownerId)
         {
-            CollectionBase<SectorClaim> claims;
 
-            if (_claimsByOwner.TryGetValue(ownerId, out claims))
+            if (_claimsByOwner.TryGetValue(ownerId, out CollectionBase<SectorClaim> claims))
+            {
                 return claims;
+            }
 
             return ArrayWrapper<SectorClaim>.Empty;
         }
@@ -69,19 +71,26 @@ namespace Supremacy.Game
         /// <returns></returns>
         public Civilization GetOwner(MapLocation location)
         {
-            CollectionBase<SectorClaim> claims;
 
-            if (!_claims.TryGetValue(location, out claims))
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
+            {
                 return null;
+            }
 
             if (claims.Count == 0)
+            {
                 return null;
+            }
 
             if (claims.Count == 1)
+            {
                 return claims[0].Owner;
+            }
 
             if (IsDisputed(location))
+            {
                 return null;
+            }
 
             return claims.MaxElement(o => o.Weight).Owner;
         }
@@ -95,10 +104,11 @@ namespace Supremacy.Game
         /// <returns></returns>
         public Civilization GetPerceivedOwner(MapLocation location, Civilization asSeenBy)
         {
-            CollectionBase<SectorClaim> claims;
 
-            if (!_claims.TryGetValue(location, out claims))
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
+            {
                 return null;
+            }
             //GameLog.Core.Test.DebugFormat("location = {0}, asSeenBy = {1}", location.ToString(), asSeenBy.Key);
             var visibleClaimsEnumerator = claims
                 .Select(o => new { o.Owner, o.Weight })
@@ -108,7 +118,9 @@ namespace Supremacy.Game
             //GameLog.Core.Test.DebugFormat("GetPerceivedOwner is partly done");
 
             if (!visibleClaimsEnumerator.MoveNext())
+            {
                 return null;
+            }
 
             var winningClaim = visibleClaimsEnumerator.Current;
 
@@ -133,10 +145,11 @@ namespace Supremacy.Game
         /// </returns>
         public bool IsOwned(MapLocation location)
         {
-            CollectionBase<SectorClaim> claims;
-            
-            if (!_claims.TryGetValue(location, out claims))
+
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
+            {
                 return false;
+            }
 
             return claims != null &&
                    claims.Count > 0;
@@ -159,18 +172,23 @@ namespace Supremacy.Game
         public bool IsClaimedByCiv(MapLocation location, Civilization civ, Civilization asSeenBy = null)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
-            CollectionBase<SectorClaim> claims;
 
-            if (!_claims.TryGetValue(location, out claims))
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
+            {
                 return false;
+            }
 
             return claims.Any(
                 claim =>
                 {
                     if (claim.OwnerID != civ.CivID)
+                    {
                         return false;
+                    }
 
                     return asSeenBy == null ||
                            DiplomacyHelper.IsContactMade(civ, asSeenBy);
@@ -186,10 +204,11 @@ namespace Supremacy.Game
         /// </returns>
         public bool IsDisputed(MapLocation location)
         {
-            CollectionBase<SectorClaim> claims;
-            
-            if (!_claims.TryGetValue(location, out claims))
+
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
+            {
                 return false;
+            }
 
             return claims != null &&
                    claims.Count > 1;
@@ -205,17 +224,18 @@ namespace Supremacy.Game
         /// </returns>
         public bool IsDisputed(MapLocation location, Civilization accordingTo)
         {
-            CollectionBase<SectorClaim> claims;
-            
-            if (!_claims.TryGetValue(location, out claims))
-                return false;
 
-            var knownClaims = (
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
+            {
+                return false;
+            }
+
+            IEnumerable<Civilization> knownClaims =
                                   from owner in claims.Select(o => o.Owner)
                                   where Equals(owner, accordingTo) ||
                                         DiplomacyHelper.IsContactMade(owner, accordingTo)
                                   select owner
-                              );
+                              ;
 
             return knownClaims.CountAtLeast(2);
         }
@@ -229,28 +249,32 @@ namespace Supremacy.Game
         public void AddClaim(MapLocation location, Civilization owner, int weight)
         {
             if (owner == null)
+            {
                 return;
+            }
 
             if (weight < 0)
+            {
                 return;
+            }
 
             if (weight > MaxClaimValue)
+            {
                 weight = MaxClaimValue;
+            }
 
-            CollectionBase<SectorClaim> claims;
-            CollectionBase<SectorClaim> ownerClaims;
 
-            var addedToClaimList = false;
-            var addedToOwnerClaimList = false;
+            bool addedToClaimList = false;
+            bool addedToOwnerClaimList = false;
 
-            if (!_claims.TryGetValue(location, out claims))
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> claims))
             {
                 claims = new CollectionBase<SectorClaim> { new SectorClaim(owner.CivID, location, weight) };
                 _claims.Add(location, claims);
                 addedToClaimList = true;
             }
 
-            if (!_claims.TryGetValue(location, out ownerClaims))
+            if (!_claims.TryGetValue(location, out CollectionBase<SectorClaim> ownerClaims))
             {
                 ownerClaims = new CollectionBase<SectorClaim> { new SectorClaim(owner.CivID, location, weight) };
                 _claimsByOwner.Add(owner.CivID, ownerClaims);
@@ -259,11 +283,13 @@ namespace Supremacy.Game
 
             if (!addedToClaimList)
             {
-                for (var i = 0; i < claims.Count; i++)
+                for (int i = 0; i < claims.Count; i++)
                 {
-                    var claim = claims[i];
+                    SectorClaim claim = claims[i];
                     if (claim.OwnerID != owner.CivID)
+                    {
                         continue;
+                    }
 
                     claims[i] = new SectorClaim(claim.OwnerID, location, claim.Weight + weight);
                     addedToClaimList = true;
@@ -271,17 +297,23 @@ namespace Supremacy.Game
                 }
 
                 if (!addedToClaimList)
+                {
                     claims.Add(new SectorClaim(owner.CivID, location, weight));
+                }
             }
 
             if (addedToOwnerClaimList)
-                return;
-
-            for (var i = 0; i < claims.Count; i++)
             {
-                var claim = ownerClaims[i];
+                return;
+            }
+
+            for (int i = 0; i < claims.Count; i++)
+            {
+                SectorClaim claim = ownerClaims[i];
                 if (claim.OwnerID != owner.CivID)
+                {
                     continue;
+                }
 
                 ownerClaims[i] = new SectorClaim(claim.OwnerID, location, claim.Weight + weight);
                 return;
@@ -295,7 +327,7 @@ namespace Supremacy.Game
         /// </summary>
         public SectorClaimGrid()
         {
-            _claims = new Dictionary<MapLocation,CollectionBase<SectorClaim>>();
+            _claims = new Dictionary<MapLocation, CollectionBase<SectorClaim>>();
             _claimsByOwner = new Dictionary<int, CollectionBase<SectorClaim>>();
         }
 

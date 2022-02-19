@@ -13,13 +13,18 @@ namespace Supremacy.Effects
             [NotNull] ScriptParameters scriptParameters)
         {
             if (effectParameter == null)
+            {
                 throw new ArgumentNullException("effectParameter");
+            }
+
             if (scriptParameters == null)
+            {
                 throw new ArgumentNullException("scriptParameters");
+            }
 
-            var parameterName = effectParameter.Parameter.Name;
+            string parameterName = effectParameter.Parameter.Name;
 
-            var scriptParameter = scriptParameters.FirstOrDefault(o => o.Name == parameterName);
+            ScriptParameter scriptParameter = scriptParameters.FirstOrDefault(o => o.Name == parameterName);
             if (scriptParameter == null)
             {
                 throw new ArgumentException(
@@ -36,12 +41,17 @@ namespace Supremacy.Effects
             [NotNull] ScriptParameters scriptParameters)
         {
             if (effectParameters == null)
+            {
                 throw new ArgumentNullException("effectParameters");
-            if (scriptParameters == null)
-                throw new ArgumentNullException("scriptParameters");
+            }
 
-            var runtimeParameters = new RuntimeScriptParameters();
-            
+            if (scriptParameters == null)
+            {
+                throw new ArgumentNullException("scriptParameters");
+            }
+
+            RuntimeScriptParameters runtimeParameters = new RuntimeScriptParameters();
+
             runtimeParameters.AddRange(effectParameters.Select(o => o.ToRuntimeScriptParameter(scriptParameters)));
 
             return runtimeParameters;

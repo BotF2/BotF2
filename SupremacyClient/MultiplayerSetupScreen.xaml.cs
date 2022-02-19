@@ -51,19 +51,19 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(DirectConnectCommand,
                                    ExecuteDirectConnectCommand,
                                    CanExecuteDirectConnectCommand));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(JoinGameCommand,
                                    ExecuteJoinGameCommand,
                                    CanExecuteJoinGameCommand));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(HostGameCommand,
                                    ExecuteHostGameCommand,
                                    CanExecuteHostGameCommand));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(CancelCommand,
                                    ExecuteCancelCommand));
 
@@ -138,7 +138,7 @@ namespace Supremacy.Client
 
         void CanExecuteDirectConnectCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var regex = new Regex(
+            Regex regex = new Regex(
                 @"(([a-zA-Z][-a-zA-Z0-9]*(.[a-zA-Z][-a-zA-Z0-9]*)*)"
                 + @"|([0-9]{1,3}(.[0-9]{1,3}){3}))");
             e.CanExecute = (PlayerName.Text.Trim().Length > 0)
@@ -147,24 +147,24 @@ namespace Supremacy.Client
 
         void CanExecuteJoinGameCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var regex = new Regex(@"\w+");
+            Regex regex = new Regex(@"\w+");
             if (!regex.IsMatch(PlayerName.Text))
             {
                 e.CanExecute = false;
                 return;
             }
-            e.CanExecute = (PART_ServerList.SelectedItem != null);
+            e.CanExecute = PART_ServerList.SelectedItem != null;
         }
 
         void CanExecuteHostGameCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var regex = new Regex(@"\w+");
+            Regex regex = new Regex(@"\w+");
             if (!regex.IsMatch(PlayerName.Text))
             {
                 e.CanExecute = false;
                 return;
             }
-            e.CanExecute = (PlayerName.Text.Trim().Length > 0);
+            e.CanExecute = PlayerName.Text.Trim().Length > 0;
         }
 
         void ExecuteDirectConnectCommand(object sender, ExecutedRoutedEventArgs e)
@@ -198,7 +198,7 @@ namespace Supremacy.Client
         void OnMultiplayerSetupScreenUnloaded(object sender, RoutedEventArgs e)
         {
             //HumanClient.Current.NetworkClient.StopFindingServers();
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Normal,
                 new Function(UpdateServerList));
         }
@@ -206,7 +206,7 @@ namespace Supremacy.Client
         void OnMultiplayerSetupScreenLoaded(object sender, RoutedEventArgs e)
         {
             //HumanClient.Current.NetworkClient.StartFindingServers();
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 DispatcherPriority.Normal,
                 new Function(UpdateServerList));
         }
@@ -216,9 +216,6 @@ namespace Supremacy.Client
             ServerList.Items.Refresh();
         }
 
-        public Selector ServerList
-        {
-            get { return PART_ServerList; }
-        }
+        public Selector ServerList => PART_ServerList;
     }
 }

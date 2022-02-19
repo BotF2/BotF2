@@ -13,16 +13,19 @@ namespace Supremacy.Client.Controls
         Large,
     }
 
-    public class VariantSizeConverter : EnumConverter {
+    public class VariantSizeConverter : EnumConverter
+    {
 
         public VariantSizeConverter()
             : base(typeof(VariantSize)) { }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var variantSize = value as VariantSize?;
+            VariantSize? variantSize = value as VariantSize?;
             if (!variantSize.HasValue)
+            {
                 return 0d;
+            }
 
             switch (variantSize.Value)
             {
@@ -42,7 +45,9 @@ namespace Supremacy.Client.Controls
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(double))
+            {
                 return true;
+            }
 
             return base.CanConvertTo(context, destinationType);
         }

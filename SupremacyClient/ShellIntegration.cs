@@ -116,7 +116,7 @@ namespace Supremacy.Client
 
         private static string FindEmpireShellIcon(string empireName)
         {
-            const string iconDirectory = @"Resources\Shell";
+            const string iconDirectory = @"Resources\UI\Shell";
             const string defaultIconName = "Default.ico";
 
             // works    GameLog.Print("empireName={0}, iconDirectory={1}", empireName, iconDirectory);
@@ -161,7 +161,7 @@ namespace Supremacy.Client
                     iconFile = Path.Combine(currentMod.RootPath, iconDirectory, defaultIconName);
 
                     GameLog.Client.General.DebugFormat("defaultIcon {0} is used ...maybe check \\Resources\\Shell", defaultIconName);
-                    
+
                     if (File.Exists(iconFile))
                     {
                         return iconFile;

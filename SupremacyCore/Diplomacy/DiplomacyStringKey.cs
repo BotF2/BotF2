@@ -105,33 +105,32 @@ namespace Supremacy.Diplomacy
     [TypeConverter(typeof(DiplomacyStringKeyConverter))]
     public sealed class DiplomacyStringKey : IEquatable<DiplomacyStringKey>
     {
-        private readonly string _civilization;
         private readonly DiplomacyStringID _stringId;
 
         public DiplomacyStringKey(string civilization, DiplomacyStringID stringId)
         {
-            _civilization = civilization;
+            Civilization = civilization;
             _stringId = stringId;
         }
 
-        public string Civilization
-        {
-            get { return _civilization; }
-        }
+        public string Civilization { get; }
 
-        public DiplomacyStringID StringID
-        {
-            get { return _stringId; }
-        }
+        public DiplomacyStringID StringID => _stringId;
 
         public bool Equals(DiplomacyStringKey other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
+
             return other._stringId == _stringId &&
-                   string.Equals(other._civilization, _civilization, StringComparison.OrdinalIgnoreCase);
+                   string.Equals(other.Civilization, Civilization, StringComparison.OrdinalIgnoreCase);
         }
 
         public override bool Equals(object obj)
@@ -143,7 +142,7 @@ namespace Supremacy.Diplomacy
         {
             unchecked
             {
-                return ((_civilization != null ? _civilization.GetHashCode() : 0) * 397) ^ _stringId.GetHashCode();
+                return ((Civilization != null ? Civilization.GetHashCode() : 0) * 397) ^ _stringId.GetHashCode();
             }
         }
     }
@@ -153,14 +152,16 @@ namespace Supremacy.Diplomacy
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(MarkupExtension))
+            {
                 return true;
+            }
+
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var key = value as DiplomacyStringKey;
-            if (key != null &&
+            if (value is DiplomacyStringKey key &&
                 destinationType == typeof(MarkupExtension))
             {
                 return new DiplomacyStringExtension

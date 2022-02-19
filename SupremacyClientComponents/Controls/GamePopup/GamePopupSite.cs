@@ -13,9 +13,7 @@ namespace Supremacy.Client.Controls
     {
         #region Fields
 
-        private readonly GamePopupCollection _popups;
         private readonly GamePopupCollection _openPopupsCore;
-        private readonly ReadOnlyGamePopupCollection _openPopups;
         private readonly VisualCollection _openPopupRoots;
 
         #endregion
@@ -24,11 +22,11 @@ namespace Supremacy.Client.Controls
 
         public GamePopupSite()
         {
-            _popups = new GamePopupCollection();
-            _popups.CollectionChanged += OnPopupsCollectionChanged;
+            Popups = new GamePopupCollection();
+            Popups.CollectionChanged += OnPopupsCollectionChanged;
 
             _openPopupsCore = new GamePopupCollection();
-            _openPopups = new ReadOnlyGamePopupCollection(_popups);
+            OpenPopups = new ReadOnlyGamePopupCollection(Popups);
             _openPopupRoots = new VisualCollection(this);
 
             AddHandler(LoadedEvent, (RoutedEventHandler)OnLoaded);
@@ -46,7 +44,10 @@ namespace Supremacy.Client.Controls
                 if (popup.RegisteredPopupSite != this)
                 {
                     if (popup.RegisteredPopupSite != null)
+                    {
                         throw new InvalidOperationException("GamePopup is already registered with another GamePopupSite.");
+                    }
+
                     popup.RegisteredPopupSite = this;
                 }
             }
@@ -61,34 +62,46 @@ namespace Supremacy.Client.Controls
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems)
+                    foreach (object item in e.NewItems)
                     {
-                        var gamePopup = item as GamePopup;
-                        if (gamePopup != null)
+                        if (item is GamePopup gamePopup)
+                        {
                             UpdateRegisteredPopupSite(gamePopup, true);
+                        }
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     if (!DesignerProperties.GetIsInDesignMode(this))
+                    {
                         throw new NotSupportedException();
+                    }
+
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var item in e.OldItems)
+                    foreach (object item in e.OldItems)
                     {
-                        var gamePopup = item as GamePopup;
-                        if (gamePopup == null)
+                        if (!(item is GamePopup gamePopup))
+                        {
                             continue;
+                        }
+
                         if (gamePopup.IsOpen)
+                        {
                             gamePopup.IsOpen = false;
+                        }
+
                         UpdateRegisteredPopupSite(gamePopup, false);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
                     if (!DesignerProperties.GetIsInDesignMode(this))
+                    {
                         throw new NotSupportedException();
+                    }
+
                     break;
             }
         }
@@ -99,28 +112,19 @@ namespace Supremacy.Client.Controls
 
         #region HasOpenPopups Property
 
-        public bool HasOpenPopups
-        {
-            get { return _openPopups.Any(); }
-        }
+        public bool HasOpenPopups => OpenPopups.Any();
 
         #endregion
 
         #region OpenPopups Property
 
-        public ReadOnlyGamePopupCollection OpenPopups
-        {
-            get { return _openPopups; }
-        }
+        public ReadOnlyGamePopupCollection OpenPopups { get; }
 
         #endregion
 
         #region Popups Property
 
-        public GamePopupCollection Popups
-        {
-            get { return _popups; }
-        }
+        public GamePopupCollection Popups { get; }
 
         #endregion
 
@@ -130,20 +134,22 @@ namespace Supremacy.Client.Controls
 
         internal void AddCanvasChild(UIElement element)
         {
-            var popupRoot = element as GamePopupRoot;
-            if (popupRoot == null)
+            if (!(element is GamePopupRoot popupRoot))
+            {
                 return;
+            }
 
-            _openPopupRoots.Add(popupRoot);
-            
+            _ = _openPopupRoots.Add(popupRoot);
+
             InvalidateMeasure();
         }
 
         internal void RemoveCanvasChild(UIElement element)
         {
-            var popupRoot = element as GamePopupRoot;
-            if (popupRoot == null)
+            if (!(element is GamePopupRoot popupRoot))
+            {
                 return;
+            }
 
             _openPopupRoots.Remove(popupRoot);
 
@@ -156,7 +162,7 @@ namespace Supremacy.Client.Controls
             try
             {
                 _openPopupsCore.Clear();
-                _openPopupsCore.AddRange(_popups.Where(o => o.IsOpen));
+                _openPopupsCore.AddRange(Popups.Where(o => o.IsOpen));
             }
             finally
             {
@@ -178,16 +184,16 @@ namespace Supremacy.Client.Controls
 
         #region Visual Child Enumeration
 
-        protected override int VisualChildrenCount
-        {
-            get { return base.VisualChildrenCount + _openPopupRoots.Count; }
-        }
+        protected override int VisualChildrenCount => base.VisualChildrenCount + _openPopupRoots.Count;
 
         protected override Visual GetVisualChild(int index)
         {
-            var baseCount = base.VisualChildrenCount;
+            int baseCount = base.VisualChildrenCount;
             if (index < baseCount)
+            {
                 return base.GetVisualChild(index);
+            }
+
             return _openPopupRoots[index - baseCount];
         }
 
@@ -199,17 +205,17 @@ namespace Supremacy.Client.Controls
         {
             foreach (GamePopupRoot child in _openPopupRoots)
             {
-                var x = 0d;
-                var y = 0d;
+                double x = 0d;
+                double y = 0d;
 
-                var left = Canvas.GetLeft(child);
+                double left = Canvas.GetLeft(child);
                 if (!DoubleUtil.IsNaN(left))
                 {
                     x = left;
                 }
                 else
                 {
-                    var right = Canvas.GetRight(child);
+                    double right = Canvas.GetRight(child);
 
                     if (!DoubleUtil.IsNaN(right))
                     {
@@ -217,17 +223,19 @@ namespace Supremacy.Client.Controls
                     }
                 }
 
-                var top = Canvas.GetTop(child);
+                double top = Canvas.GetTop(child);
                 if (!DoubleUtil.IsNaN(top))
                 {
                     y = top;
                 }
                 else
                 {
-                    var bottom = Canvas.GetBottom(child);
+                    double bottom = Canvas.GetBottom(child);
 
                     if (!DoubleUtil.IsNaN(bottom))
+                    {
                         y = arrangeSize.Height - child.DesiredSize.Height - bottom;
+                    }
                 }
 
                 child.Arrange(new Rect(new Point(x, y), child.DesiredSize));
@@ -238,10 +246,12 @@ namespace Supremacy.Client.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var childConstraint = new Size(double.PositiveInfinity, double.PositiveInfinity);
+            Size childConstraint = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
             foreach (GamePopupRoot popupRoot in _openPopupRoots)
+            {
                 popupRoot.Measure(childConstraint);
+            }
 
             return base.MeasureOverride(constraint);
         }

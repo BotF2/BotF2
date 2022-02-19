@@ -43,10 +43,11 @@ namespace Supremacy.Client.Views
 
         protected void InjectThemeResources()
         {
-            ResourceDictionary themeResources;
 
-            if (ThemeHelper.TryLoadThemeResources(out themeResources))
+            if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
+            {
                 Resources.MergedDictionaries.Add(themeResources);
+            }
         }
 
         #endregion
@@ -54,8 +55,8 @@ namespace Supremacy.Client.Views
         #region Properties and Indexers
         public IAppContext AppContext
         {
-            get { return GetValue(AppContextProperty) as IAppContext; }
-            set { SetValue(AppContextProperty, value); }
+            get => GetValue(AppContextProperty) as IAppContext;
+            set => SetValue(AppContextProperty, value);
         }
         #endregion
 
@@ -63,21 +64,27 @@ namespace Supremacy.Client.Views
         public static IAppContext GetAppContext(DependencyObject element)
         {
             if (element == null)
+            {
                 return null;
+            }
+
             return element.GetValue(AppContextProperty) as IAppContext;
         }
 
         public static void SetAppContext(DependencyObject element, IAppContext value)
         {
             if (element == null)
+            {
                 throw new ArgumentNullException("element");
+            }
+
             element.SetValue(AppContextProperty, value);
         }
         #endregion
 
         protected void PauseAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -111,7 +118,7 @@ namespace Supremacy.Client.Views
 
         protected void ResumeAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -126,7 +133,7 @@ namespace Supremacy.Client.Views
 
         protected void StopAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -144,9 +151,6 @@ namespace Supremacy.Client.Views
         where TPresentationModel : class
     {
         #region Fields
-        private readonly IUnityContainer _container;
-        private readonly IPlayerOrderService _playerOrderService;
-        private readonly INavigationCommandsProxy _navigationCommands;
         private readonly IResourceManager _resourceManager;
 
         private bool _isActive;
@@ -155,33 +159,21 @@ namespace Supremacy.Client.Views
         #region Constructors and Finalizers
         protected GameScreenView([NotNull] IUnityContainer container)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-
-            _container = container;
-            _playerOrderService = _container.Resolve<IPlayerOrderService>();
-            _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
-            _resourceManager = _container.Resolve<IResourceManager>();
+            Container = container ?? throw new ArgumentNullException("container");
+            PlayerOrderService = Container.Resolve<IPlayerOrderService>();
+            NavigationCommands = Container.Resolve<INavigationCommandsProxy>();
+            _resourceManager = Container.Resolve<IResourceManager>();
 
             IsVisibleChanged += OnIsVisibleChanged;
         }
         #endregion
 
         #region Properties and Indexers
-        protected IUnityContainer Container
-        {
-            get { return _container; }
-        }
+        protected IUnityContainer Container { get; }
 
-        protected INavigationCommandsProxy NavigationCommands
-        {
-            get { return _navigationCommands; }
-        }
+        protected INavigationCommandsProxy NavigationCommands { get; }
 
-        protected IResourceManager ResourceManager
-        {
-            get { return _resourceManager; }
-        }
+        protected IResourceManager ResourceManager => _resourceManager;
         #endregion
 
         #region Public and Protected Methods
@@ -189,9 +181,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnIsActiveChanged()
         {
-            var handler = IsActiveChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            IsActiveChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnShow() { }
@@ -202,11 +192,14 @@ namespace Supremacy.Client.Views
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (Equals(_isActive, value))
+                {
                     return;
+                }
+
                 _isActive = value;
                 UpdateCommands();
                 OnIsActiveChanged();
@@ -217,14 +210,11 @@ namespace Supremacy.Client.Views
         #region Implementation of IGameScreenView
         public TPresentationModel Model
         {
-            get { return DataContext as TPresentationModel; }
-            set { DataContext = value; }
+            get => DataContext as TPresentationModel;
+            set => DataContext = value;
         }
 
-        protected IPlayerOrderService PlayerOrderService
-        {
-            get { return _playerOrderService; }
-        }
+        protected IPlayerOrderService PlayerOrderService { get; }
 
         public virtual void OnCreated()
         {
@@ -274,15 +264,19 @@ namespace Supremacy.Client.Views
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (IsVisible)
+            {
                 OnShowCore();
+            }
             else
+            {
                 OnHideCore();
+            }
         }
 
         private void OnShowCore()
         {
-            ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
-            ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
+            _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
             ResumeAnimations();
             OnShow();
         }

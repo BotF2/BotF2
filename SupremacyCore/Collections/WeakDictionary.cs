@@ -478,7 +478,7 @@ namespace Supremacy.Collections
 
             foreach (object key in toRemove)
             {
-                _dictionary.Remove(key);
+                _ = _dictionary.Remove(key);
             }
         }
     }

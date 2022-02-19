@@ -80,7 +80,7 @@
 
             <ColumnDefinition MaxWidth="3" />
             <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn8" />
-            <!--Industry + Raw Materials-->            
+            <!--Industry + DURANIUM-->            
             <ColumnDefinition MaxWidth="3" />
             <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn9" />
             
@@ -137,8 +137,8 @@
                        Grid.Row="1"
                        Grid.ColumnSpan="2"                        
                        VerticalAlignment="Center"
-                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
-                       ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
+                       ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/population.png"
+                       ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOLTIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} / {1} ({2:0.#%})">
                     <Binding Path="Population.CurrentValue" />
@@ -155,9 +155,9 @@
         <scc:GameLabel Grid.Column="3"
                    Grid.Row="2"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/morale.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/morale.png"
                    Foreground="{Binding Path=Morale.CurrentValue, Converter={x:Static s:MoraleBrushConverter.Instance}}"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=MORALE_TOOL_TIP}" >
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=MORALE_TOOLTIP}" >
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} ({1}) ">
                     <Binding Path="Morale.CurrentValue" 
@@ -174,9 +174,9 @@
       <scc:GameLabel Grid.Column="8"
                  Grid.Row="1"
                  VerticalAlignment="Center"
-                 ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                 ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
                  Label="{Binding Path=NetResearch}"
-                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />-->
+                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOLTIP}" />-->
         <!--<TextBlock Text="1x"
                   Grid.Column="1"
                   Grid.Row="1"
@@ -240,9 +240,9 @@
       <scc:GameLabel Grid.Column="12"
                   Grid.Row="1"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
                   Label="{Binding Path=FoodReserves.CurrentValue}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOLTIP}" />
       <TextBlock Text="INDUSTRY ="
                   Grid.Row="1"
                   Grid.Column="14"
@@ -252,9 +252,9 @@
       <scc:GameLabel Grid.Column="16"
                  Grid.Row="1"
                  VerticalAlignment="Center"
-                 ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
+                 ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
                  Label="{Binding Path=NetIndustry}"
-                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOLTIP}" />
       <TextBlock Text="ENERGY ="
                 Grid.Row="1"
                 Grid.Column="18"
@@ -264,9 +264,9 @@
       <scc:GameLabel Grid.Column="20"
                   Grid.Row="1"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
                   Label="{Binding Path=NetEnergy}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOLTIP}" />
 
         <TextBlock Text="RESEARCH = "
                 Grid.Row="1"
@@ -285,7 +285,7 @@
                   Grid.Row="1"
                   VerticalAlignment="Center"
                   Margin="0,0,0,0"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
                   Label="{Binding Path=ResearchForSpyScreen}"
                    />        
         <TextBlock Text="CREDITS = "
@@ -306,7 +306,7 @@
                   Grid.Row="1"
                   VerticalAlignment="Center"
                   Margin=" 0,0,15,0"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png"
                   Label="{Binding Path=CreditsForSpyScreen}"
                    />
 
@@ -320,9 +320,9 @@
       <scc:GameLabel Grid.Column="8"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/deuterium.png"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/deuterium.png"
                   Label="{Binding Path=NetDeuterium}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />-->
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOLTIP}" />-->
       <TextBlock Text="DILITHIUM ="
                   Grid.Row="2"
                   Grid.Column="10"
@@ -331,18 +331,18 @@
       <scc:GameLabel Grid.Column="12"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/dilithium.png"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
                   Label="{Binding Path=NetDilithium}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOL_TIP}" />
-      <TextBlock Text="RAW MATERIALS ="
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOLTIP}" />
+      <TextBlock Text="DURANIUM ="
                   Grid.Row="2" Grid.Column="14"
                   HorizontalAlignment="Right"/>
       <scc:GameLabel Grid.Column="16"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
-                  Label="{Binding Path=NetRawMaterials}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/duranium.png"
+                  Label="{Binding Path=NetDuranium}"
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOLTIP}" />
         <!--<TextBlock Text="RESEARCH (empire) = "
                 Grid.Row="2"
                 Grid.Column="20"
@@ -352,7 +352,7 @@
         <scc:GameLabel Grid.Column="22"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
                   Label="{Binding Path=ResearchForSpyScreen}"
                    />-->
         
@@ -364,8 +364,8 @@
       <scc:GameLabel Grid.Column="20"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/ship.png"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPBUILDING_TOOL_TIP}"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/ship.png"
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPBUILDING_TOOLTIP}"
                   Visibility="{Binding Path=Shipyard, Converter={StaticResource NullValueVisibilityConverter}}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} x {1}" FallbackValue="n/a">
@@ -411,7 +411,7 @@
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
                 Text="Shipyard 2:  " />
-            <TextBlock Grid.Column="3"
+            <!--<TextBlock Grid.Column="3"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
@@ -420,12 +420,12 @@
                 Grid.Row="1"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
-                Text=" Shipyard 4:  " />
-            <TextBlock Grid.Column="4"
+                Text=" Shipyard 4:  " />-->
+            <!--<TextBlock Grid.Column="4"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
-                Text="Shipyard 5:  " />
+                Text="Shipyard 5:  " />-->
             <!--<TextBlock Grid.Column="10"
                 Grid.Row="5"
                 Grid.ColumnSpan="2"
@@ -461,7 +461,7 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[1].Project}" />
-            <TextBlock Grid.Column="3"
+            <!--<TextBlock Grid.Column="3"
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 VerticalAlignment="Center"
@@ -471,12 +471,12 @@
                 Grid.Row="1"              
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[3].Project}" />
-            <TextBlock Grid.Column="5"
+                Text="{Binding Path=Shipyard.BuildSlots[3].Project}" />-->
+            <!--<TextBlock Grid.Column="5"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />
+                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />-->
             <!--<TextBlock Grid.Column="11"
                 Grid.Row="5"
                 Grid.ColumnSpan="2" 

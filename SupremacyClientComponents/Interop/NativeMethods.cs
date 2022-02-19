@@ -1,9 +1,6 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
 using System.Threading;
 using System.Windows;
 
@@ -73,9 +70,9 @@ namespace Supremacy.Client.Interop
             internal BitmapHandle(IntPtr ptr, bool fOwnsHandle)
                 : base(ptr, fOwnsHandle)
             {
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
-                HandleCollector.Add(handle, HandleCollectorType);
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
+                _ = HandleCollector.Add(handle, HandleCollectorType);
+
             }
 
             public HandleRef MakeHandleRef(object wrapper)
@@ -86,41 +83,32 @@ namespace Supremacy.Client.Interop
             [SecurityCritical]
             public static bool DeleteObject(IntPtr hObject)
             {
-                var result = UnsafeNativeMethods.DeleteObject(hObject);
-                Marshal.GetLastWin32Error();
+                bool result = UnsafeNativeMethods.DeleteObject(hObject);
+                _ = Marshal.GetLastWin32Error();
                 return result;
             }
 
             [SecurityCritical]
             protected override bool ReleaseHandle()
             {
-                HandleCollector.Remove(handle, CommonHandles.GDI);
+                _ = HandleCollector.Remove(handle, CommonHandles.GDI);
                 return UnsafeNativeMethods.DeleteObject(handle);
             }
 
-            internal virtual int HandleCollectorType
-            {
-                get
-                {
-                    return CommonHandles.GDI;
-                }
-            }
+            internal virtual int HandleCollectorType => CommonHandles.GDI;
 
             public override bool IsInvalid
             {
                 [SecurityCritical, SecuritySafeCritical]
-                get
-                {
-                    return (handle == IntPtr.Zero);
-                }
+                get => handle == IntPtr.Zero;
             }
         }
 
         [DllImport("user32.dll")]
-        public extern static IntPtr GetForegroundWindow();
+        public static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
-        public extern static uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
         [DllImport("kernel32.dll")]
         public static extern uint GetCurrentProcessId();
@@ -180,25 +168,35 @@ namespace Supremacy.Client.Interop
         {
             const int MONITOR_DEFAULTTONEAREST = 0x00000002;
 
-            var monitorInfo = new MONITORINFO();
-            var rect = new RECT(bounds);
-            var monitor = MonitorFromRect(ref rect, MONITOR_DEFAULTTONEAREST);
+            MONITORINFO monitorInfo = new MONITORINFO();
+            RECT rect = new RECT(bounds);
+            IntPtr monitor = MonitorFromRect(ref rect, MONITOR_DEFAULTTONEAREST);
 
             if (monitor != IntPtr.Zero)
             {
                 if (GetMonitorInfo(monitor, monitorInfo))
                 {
-                    var workingArea = monitorInfo.rcWork.ToRect();
+                    Rect workingArea = monitorInfo.rcWork.ToRect();
 
                     if (bounds.Right > workingArea.Right)
+                    {
                         bounds.Offset(workingArea.Right - bounds.Right, 0);
+                    }
+
                     if (bounds.Left < workingArea.Left)
+                    {
                         bounds.Offset(workingArea.Left - bounds.Left, 0);
+                    }
 
                     if (bounds.Bottom > workingArea.Bottom)
+                    {
                         bounds.Offset(0, workingArea.Bottom - bounds.Bottom);
+                    }
+
                     if (bounds.Top < workingArea.Top)
+                    {
                         bounds.Offset(0, workingArea.Top - bounds.Top);
+                    }
                 }
             }
 
@@ -206,8 +204,8 @@ namespace Supremacy.Client.Interop
         }
 
         public delegate IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
- 
-        // ReSharper disable InconsistentNaming
+
+
         [SecurityCritical, SuppressUnmanagedCodeSecurity, DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int GetDeviceCaps(HandleRef hDC, int nIndex);
 
@@ -324,9 +322,9 @@ namespace Supremacy.Client.Interop
                             return;
                         }
                     }
-                    
+
                     GC.Collect();
-                    var millisecondsTimeout = (100 - _deltaPercent) / 4;
+                    int millisecondsTimeout = (100 - _deltaPercent) / 4;
                     Thread.Sleep(millisecondsTimeout);
                 }
 
@@ -334,10 +332,10 @@ namespace Supremacy.Client.Interop
                 {
                     if (_handleCount > _threshold)
                     {
-                        _threshold = _handleCount + ((_handleCount * _deltaPercent) / 100);
+                        _threshold = _handleCount + (_handleCount * _deltaPercent / 100);
                         return true;
                     }
-                    int num = (100 * _threshold) / (100 + _deltaPercent);
+                    int num = 100 * _threshold / (100 + _deltaPercent);
                     if ((num >= _initialThreshHold) && (_handleCount < ((int)(num * 0.9f))))
                     {
                         _threshold = num;

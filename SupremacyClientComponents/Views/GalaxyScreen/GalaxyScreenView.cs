@@ -7,13 +7,11 @@
 //
 // All other rights reserved.
 
-using System.Windows;
-using System.Windows.Input;
-
 using Microsoft.Practices.Unity;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {
@@ -29,86 +27,34 @@ namespace Supremacy.Client.Views
         public GalaxyScreenView([NotNull] IUnityContainer container)
             : base(container)
         {
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EndTurn,
-                    Key.Enter,
-                    ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EscapeCommand,
-                    Key.Escape,
-                    ModifierKeys.None));
+            // ModifierKeys:  None is not available, whyever - HotKeys for GalaxyScreen
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomIn,
-                    Key.OemPlus,
-                    ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.EscapeCommand, Key.Escape, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.Enter, ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomOut,
-                    Key.OemMinus,
-                    ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(DebugCommands.RevealMap, Key.F, ModifierKeys.Control)); // lift Fog of War
+            _ = InputBindings.Add(new KeyBinding(DebugCommands.CheatMenu, Key.C, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(DebugCommands.OutputMap, Key.M, ModifierKeys.Alt)); // Map output
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomIn,
-                    Key.Add,
-                    ModifierKeys.Control));
+            // _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.SetOverviewMode, Key.M, ModifierKeys.Control)); // Military view
+            // _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.SetOverviewMode, Key.T, ModifierKeys.Control)); // Trade view = Economy
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomOut,
-                    Key.Subtract,
-                    ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    DebugCommands.RevealMap,
-                    Key.F12,
-                    ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomIn, Key.Add, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomIn, Key.OemPlus, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.Subtract, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.OemMinus, ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    DebugCommands.CheatMenu,
-                    Key.F11,
-                    ModifierKeys.None));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    DebugCommands.GameInfoScreen,
-                    Key.F9,
-                    ModifierKeys.None));
-
-            //this.InputBindings.Add(
-            //    new KeyBinding(
-            //                            DebugCommands.GameInfoScreen,
-            //        //DebugCommands.ShowEconomyView,
-            //        Key.E,
-            //        ModifierKeys.None));
-
-            //this.InputBindings.Add(
-            //    new KeyBinding(
-            //                            DebugCommands.GameInfoScreen,
-            //        //DebugCommands.ShowMilitaryView,
-            //        Key.M,
-            //        ModifierKeys.None));
-
-            CommandBindings.Add(
-                new CommandBinding(
-                    ClientCommands.EscapeCommand,
-                    ExecuteEscapeCommand,
-                    CanExecuteEscapeCommand));
+            _ = CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand, ExecuteEscapeCommand, CanExecuteEscapeCommand));
         }
 
         private void CanExecuteEscapeCommand(object sender, CanExecuteRoutedEventArgs args)
         {
-            args.CanExecute = ((Model.SelectedTaskForce != null) ||
+            args.CanExecute = (Model.SelectedTaskForce != null) ||
                                (Model.SelectedTradeRoute != null) ||
-                               (Model.InputMode == GalaxyScreenInputMode.RedeployShips));
+                               (Model.InputMode == GalaxyScreenInputMode.RedeployShips);
         }
 
         private void ExecuteEscapeCommand(object sender, ExecutedRoutedEventArgs args)
@@ -143,7 +89,7 @@ namespace Supremacy.Client.Views
                 {
                     Model.SelectedTaskForce = null;
                     e.Handled = true;
-                    CaptureMouse();
+                    _ = CaptureMouse();
                     return;
                 }
 
@@ -151,7 +97,7 @@ namespace Supremacy.Client.Views
                 {
                     Model.SelectedTradeRoute = null;
                     e.Handled = true;
-                    CaptureMouse();
+                    _ = CaptureMouse();
                     return;
                 }
             }

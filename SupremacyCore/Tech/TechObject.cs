@@ -30,10 +30,7 @@ namespace Supremacy.Tech
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.TechObject; }
-        }
+        public override UniverseObjectType ObjectType => UniverseObjectType.TechObject;
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="TechObject"/> will be scrapped.
@@ -41,7 +38,7 @@ namespace Supremacy.Tech
         /// <value><c>true</c> this <see cref="TechObject"/> will be scrapped; otherwise, <c>false</c>.</value>
         public bool Scrap
         {
-            get { return _scrap; }
+            get => _scrap;
             set
             {
                 _scrap = value;
@@ -55,8 +52,8 @@ namespace Supremacy.Tech
         /// <value>The name.</value>
         public override string Name
         {
-            get { return base.Name ?? ((Design != null) ? Design.Name : null); }
-            set { base.Name = value; }
+            get => base.Name ?? (Design?.Name);
+            set => base.Name = value;
         }
 
         /// <summary>
@@ -65,21 +62,38 @@ namespace Supremacy.Tech
         /// <value>The design.</value>
         public TechObjectDesign Design
         {
-            get {
+            get
+            {
                 try
+                {
+
+                    //GameLog.Core.General.DebugFormat("working on design ID {0}"
+                    //    , _designId
+                    //    );
+                    if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
                     {
-       
                         return GameContext.Current.TechDatabase[_designId];
                     }
-                catch (Exception e)
+                    else
                     {
-                        GameLog.Core.General.Debug(string.Format("GameLog.Pring # Problem Desgin name {0} design ID {0}",
-                            Design.Name),
-                            e);
-                        return GameContext.Current.TechDatabase[_designId];
+                        //GameLog.Core.General.ErrorFormat("### Problem on Design name {0} design ID {1}"
+                        //    , Design.Name                     
+                        //    , _designId
+                        //    );
+                        return null;
                     }
+
                 }
-            set { _designId = (value != null) ? value.DesignID : TechObjectDesign.InvalidDesignID; }
+                catch (Exception e)
+                {
+                    GameLog.Core.General.Error(string.Format("### Problem on Design name {0} design ID {1}"
+                        , Design.Name
+                        , _designId
+                        , e));
+                    return GameContext.Current.TechDatabase[_designId];
+                }
+            }
+            set => _designId = (value != null) ? value.DesignID : TechObjectDesign.InvalidDesignID;
         }
 
         public TechObject() { }
@@ -92,28 +106,31 @@ namespace Supremacy.Tech
             : this()
         {
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
+
             _designId = design.DesignID;
             _scrap = false;
         }
 
-		public override void SerializeOwnedData(SerializationWriter writer, object context)
-		{
-			base.SerializeOwnedData(writer, context);
-			writer.WriteOptimized(_designId);
-			writer.Write(_scrap);
-		}
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            base.SerializeOwnedData(writer, context);
+            writer.WriteOptimized(_designId);
+            writer.Write(_scrap);
+        }
 
-		public override void DeserializeOwnedData(SerializationReader reader, object context)
-		{
-			base.DeserializeOwnedData(reader, context);
-			_designId = reader.ReadOptimizedInt32();
-			_scrap = reader.ReadBoolean();
-		}
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
+            _designId = reader.ReadOptimizedInt32();
+            _scrap = reader.ReadBoolean();
+        }
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {
-            var typedSource = (TechObject)source;
+            TechObject typedSource = (TechObject)source;
 
             base.CloneFrom(typedSource, context);
 

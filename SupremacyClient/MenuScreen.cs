@@ -1,4 +1,4 @@
-// MenuScreen.cs
+// File:MenuScreen.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -14,8 +14,9 @@ using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Events;
-using NavigationCommands=Supremacy.Client.Commands.NavigationCommands;
+using NavigationCommands = Supremacy.Client.Commands.NavigationCommands;
 using Supremacy.UI;
+using Supremacy.Utility;
 
 namespace Supremacy.Client
 {
@@ -33,8 +34,7 @@ namespace Supremacy.Client
         public static readonly RoutedCommand SaveGameCommand;
         public static readonly RoutedCommand RetireCommand;
         public static readonly RoutedCommand ExitCommand;
-        private AsteroidsView _MenuAnimation;
-        private Animation _Animation = new Animation();
+        private readonly Animation _Animation = new Animation();
 
         //_MenuAnimation method in the AsteroidView class
 
@@ -54,39 +54,39 @@ namespace Supremacy.Client
         }
         #endregion
 
-        public AsteroidsView MenuAnimation { get { return _MenuAnimation; } }
+        public AsteroidsView MenuAnimation { get; }
 
-        public Animation Animation { get { return _Animation; } }
+        public Animation Animation => _Animation;
 
         public MenuScreen([NotNull] IUnityContainer container) : base(container)
         {
             IsActiveChanged += OnIsActiveChanged;
 
             //this.IsActive = true;
-            
+
             //ClientCommands.ShowSaveGameDialog.RegisterCommand(SaveGameCommand);
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     LoadGameCommand,
                     delegate
                     {
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
-                        ServiceLocator.Current.GetInstance<LoadGameDialog>().ShowDialog();
+                        _ = ServiceLocator.Current.GetInstance<LoadGameDialog>().ShowDialog();
                     },
                     (s, e) => e.CanExecute = ClientCommands.LoadGame.CanExecute(null)));
- 
-            CommandBindings.Add(
+
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     SaveGameCommand,
                     delegate
                     {
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
-                        ServiceLocator.Current.GetInstance<SaveGameDialog>().ShowDialog();
+                        _ = ServiceLocator.Current.GetInstance<SaveGameDialog>().ShowDialog();
                     },
                     (s, e) => e.CanExecute = ClientCommands.SaveGame.CanExecute(null)));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     MultiplayerCommand,
                     delegate
@@ -95,14 +95,19 @@ namespace Supremacy.Client
                         ServiceLocator.Current.GetInstance<MultiplayerSetupScreen>().Show();
                     },
                     (s, e) => e.CanExecute = ClientCommands.JoinMultiplayerGame.CanExecute(null)));
-            _MenuAnimation = new AsteroidsView();
+            MenuAnimation = new AsteroidsView();
+
+            GameLog.Client.UI.DebugFormat("MenuScreen initialized");
 
         }
 
         private void OnIsActiveChanged(object sender, EventArgs e)
         {
             if (!IsActive)
+            {
                 return;
+            }
+
             ClientEvents.ScreenActivated.Publish(new ScreenActivatedEventArgs(StandardGameScreens.MenuScreen));
         }
 

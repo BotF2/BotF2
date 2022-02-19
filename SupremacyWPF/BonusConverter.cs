@@ -77,18 +77,11 @@ namespace Supremacy.Client
                 {
                     if (i > 0)
                     {
-                        if (commaSeparated)
-                        {
-                            sb.Append(", ");
-                        }
-                        else
-                        {
-                            sb.Append("\n");
-                        }
+                        _ = commaSeparated ? sb.Append(", ") : sb.Append("\n");
                     }
                     _ = sb.Append(BonusDescriptions.GetDescription(bonuses[i]));
                 }
-                
+
             }
             else if (value is ShipyardDesign)
             {
@@ -171,14 +164,7 @@ namespace Supremacy.Client
 
                 if (sb.Length != 0)
                 {
-                    if (commaSeparated)
-                    {
-                        sb.Append(", ");
-                    }
-                    else
-                    {
-                        sb.Append("\n");
-                    }
+                    _ = commaSeparated ? sb.Append(", ") : sb.Append("\n");
                 }
 
                 _ = sb.Append(BuildRestrictionDescriptions.GetDescription(restriction));

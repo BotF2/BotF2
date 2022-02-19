@@ -26,7 +26,7 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext parseContext)
         {
             _typeExpression = _typeExpression.ResolveAsTypeStep(parseContext, false);
-            
+
             if (_typeExpression == null)
             {
                 return null;

@@ -23,7 +23,7 @@ namespace Supremacy.Scripting.Utility
 
             return type.IsSealed && type.IsAbstract;
         }
-        
+
         internal static Type GetNonNullableType(this Type type)
         {
             return IsNullableType(type) ? type.GetGenericArguments()[0] : type;
@@ -287,7 +287,7 @@ namespace Supremacy.Scripting.Utility
             return IsNullableType(left) && right == typeof(DynamicNull);
         }
 
-        
+
         internal static bool AreEquivalent(Type t1, Type t2)
         {
 #if CLR2 || SILVERLIGHT // type equivalence not implemented on Silverlight
@@ -332,7 +332,7 @@ namespace Supremacy.Scripting.Utility
         internal static bool IsConvertible(this Type type)
         {
             type = GetNonNullableType(type);
-            
+
             if (type.IsEnum)
             {
                 return true;
@@ -480,7 +480,7 @@ namespace Supremacy.Scripting.Utility
             }
 
             MethodInfo[] cMethods = nnConvType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            
+
             method = FindConversionOperator(cMethods, convertFrom, convertToType, implicitOnly);
 
             if (method != null)
@@ -493,7 +493,7 @@ namespace Supremacy.Scripting.Utility
             {
                 method = FindConversionOperator(eMethods, nnExprType, nnConvType, implicitOnly) ??
                          FindConversionOperator(cMethods, nnExprType, nnConvType, implicitOnly);
-                
+
                 if (method != null)
                 {
                     return method;
@@ -518,7 +518,6 @@ namespace Supremacy.Scripting.Utility
             return source == destination;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         internal static bool IsImplicitNumericConversion(Type source, Type destination)
         {
             TypeCode tcSource = Type.GetTypeCode(source);

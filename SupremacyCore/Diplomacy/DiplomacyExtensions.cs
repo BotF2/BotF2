@@ -24,7 +24,9 @@ namespace Supremacy.Diplomacy
         public static bool IsWarPact(this IProposal proposal)
         {
             if (proposal == null)
+            {
                 return false;
+            }
 
             return proposal.Clauses.Any(o => o.ClauseType == ClauseType.TreatyWarPact);
         }
@@ -32,7 +34,9 @@ namespace Supremacy.Diplomacy
         public static bool IncludesTreaty(this IProposal proposal)
         {
             if (proposal == null)
+            {
                 return false;
+            }
 
             return proposal.Clauses.Any(o => o.ClauseType.IsTreatyClause());
         }
@@ -48,8 +52,8 @@ namespace Supremacy.Diplomacy
                 case ClauseType.TreatyAffiliation:
                 case ClauseType.TreatyNonAggression:
                 case ClauseType.TreatyOpenBorders:
-                //case ClauseType.TreatyResearchPact:
-                //case ClauseType.TreatyTradePact:
+                    //case ClauseType.TreatyResearchPact:
+                    //case ClauseType.TreatyTradePact:
                     return true;
             }
             return false;
@@ -58,24 +62,36 @@ namespace Supremacy.Diplomacy
         public static bool ExcludesOnSameSide(this ClauseType clause, ClauseType otherClause)
         {
             if (clause == ClauseType.NoClause)
+            {
                 return false;
+            }
+
             if (IsTreatyClause(clause))
+            {
                 return true;
+            }
+
             return false;
         }
 
         public static bool ExcludesOnOtherSide(this ClauseType clause, ClauseType otherClause)
         {
             if (clause == ClauseType.NoClause)
+            {
                 return false;
+            }
+
             if (IsTreatyClause(clause))
+            {
                 return true;
+            }
+
             return false;
         }
 
         public static RegardEventCategories GetCategories(this RegardEventType eventType)
         {
-            var categories = RegardEventCategories.None;
+            RegardEventCategories categories = RegardEventCategories.None;
             switch (eventType)
             {
                 case RegardEventType.LostBattle:
@@ -121,28 +137,44 @@ namespace Supremacy.Diplomacy
         public static void OnAttack(this Diplomat source, Civilization aggressor)
         {
             if (source == null)
+            {
                 return;
-            var data = source.GetExtendedData(aggressor);
+            }
+
+            IDiplomacyDataExtended data = source.GetExtendedData(aggressor);
             if (data != null)
+            {
                 data.OnAttack();
+            }
         }
 
         public static void OnIncursion(this Diplomat source, Civilization aggressor)
         {
             if (source == null)
+            {
                 return;
-            var data = source.GetExtendedData(aggressor);
+            }
+
+            IDiplomacyDataExtended data = source.GetExtendedData(aggressor);
             if (data != null)
+            {
                 data.OnIncursion();
+            }
         }
 
         public static IProposal GetLastProposalSent(this Diplomat source, ICivIdentity civ)
-        {            
+        {
             if (source == null)
+            {
                 return null;
-            var envoy = source.GetForeignPower(civ);
+            }
+
+            ForeignPower envoy = source.GetForeignPower(civ);
             if (envoy != null)
+            {
                 return envoy.LastProposalSent;
+            }
+
             GameLog.Client.Diplomacy.DebugFormat("*** Get Last Proposal Sent ={0}, Counterparty {1}, Owner {2}", envoy.LastResponseSent.ToString(), envoy.Counterparty, envoy.Owner);
             return null;
         }
@@ -150,10 +182,16 @@ namespace Supremacy.Diplomacy
         public static IProposal GetLastProposalReceived(this Diplomat source, ICivIdentity civ)
         {
             if (source == null)
+            {
                 return null;
-            var envoy = source.GetForeignPower(civ);
+            }
+
+            ForeignPower envoy = source.GetForeignPower(civ);
             if (envoy != null)
+            {
                 return envoy.LastProposalReceived;
+            }
+
             GameLog.Client.Diplomacy.DebugFormat("*** Get Last Proposal Received ={0} Counterparty {1}, Owner {2}", envoy.LastResponseReceived.ToString(), envoy.Counterparty, envoy.Owner);
             return null;
         }
@@ -161,58 +199,93 @@ namespace Supremacy.Diplomacy
         public static IResponse GetLastResponseSent(this Diplomat source, ICivIdentity civ)
         {
             if (source == null)
+            {
                 return null;
-            var envoy = source.GetForeignPower(civ);
+            }
+
+            ForeignPower envoy = source.GetForeignPower(civ);
             if (envoy != null)
+            {
                 return envoy.LastResponseSent;
+            }
+
             return null;
         }
 
         public static IResponse GetLastResponseReceived(this Diplomat source, ICivIdentity civ)
         {
             if (source == null)
+            {
                 return null;
-            var envoy = source.GetForeignPower(civ);
+            }
+
+            ForeignPower envoy = source.GetForeignPower(civ);
             if (envoy != null)
+            {
                 return envoy.LastResponseReceived;
+            }
+
             return null;
         }
 
         public static Statement GetStatementSent(this Diplomat source, ICivIdentity civ)
         {
             if (source == null)
+            {
                 return null;
-            var envoy = source.GetForeignPower(civ);
+            }
+
+            ForeignPower envoy = source.GetForeignPower(civ);
             if (envoy != null)
+            {
                 return envoy.StatementSent;
+            }
+
             return null;
         }
         public static Statement GetLastStatementSent(this Diplomat source, ICivIdentity civ)
         {
             if (source == null)
+            {
                 return null;
-            var envoy = source.GetForeignPower(civ);
+            }
+
+            ForeignPower envoy = source.GetForeignPower(civ);
             if (envoy != null)
+            {
                 return envoy.LastStatementSent;
+            }
+
             return null;
         }
 
         public static bool IsEmbargoInPlace(this Diplomat source, ICivIdentity civ)
         {
             if (source == null)
+            {
                 return false;
-            var envoy = source.GetForeignPower(civ);
+            }
+
+            ForeignPower envoy = source.GetForeignPower(civ);
             if (envoy != null)
+            {
                 return envoy.IsEmbargoInPlace;
+            }
+
             return false;
         }
 
         public static bool CanCommendOrDenounceWar([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] Statement includeStatement = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             return source.GetCommendOrDenounceWarParameters(civ, includeStatement).Any();
         }
@@ -220,31 +293,30 @@ namespace Supremacy.Diplomacy
         public static IEnumerable<Civilization> GetCommendOrDenounceWarParameters([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] Statement includeStatement = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
-            var diplomacyDataMap = GameContext.Current.DiplomacyData;
+            CivilizationPairedMap<IDiplomacyData> diplomacyDataMap = GameContext.Current.DiplomacyData;
 
-            Civilization ignoreCiv;
-
-            if (includeStatement != null &&
+            Civilization ignoreCiv = includeStatement != null &&
                 (includeStatement.StatementType == StatementType.CommendWar ||
-                 includeStatement.StatementType == StatementType.DenounceWar))
-            {
-                ignoreCiv = includeStatement.Parameter as Civilization;
-            }
-            else
-            {
-                ignoreCiv = null;
-            }
-
-            foreach (var otherCiv in GameContext.Current.Civilizations)
+                 includeStatement.StatementType == StatementType.DenounceWar)
+                ? includeStatement.Parameter as Civilization
+                : null;
+            foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (otherCiv.CivID == source.OwnerID || otherCiv.CivID == civ.CivID || otherCiv == ignoreCiv)
+                {
                     continue;
-                
-                var diplomacyData = diplomacyDataMap[civ.CivID, otherCiv.CivID];
+                }
+
+                IDiplomacyData diplomacyData = diplomacyDataMap[civ.CivID, otherCiv.CivID];
 
                 if (diplomacyData.Status == ForeignPowerStatus.AtWar &&
                     diplomacyData.TurnsSinceLastStatusChange <= 1)
@@ -257,42 +329,53 @@ namespace Supremacy.Diplomacy
         public static IEnumerable<Civilization> GetWarPactParameters([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
-            if (civ == null)
-                throw new ArgumentNullException("civ");
+            }
 
-            var sender = source.Owner;
-            var recipient = GameContext.Current.Civilizations[civ.CivID];
+            if (civ == null)
+            {
+                throw new ArgumentNullException("civ");
+            }
+
+            Civilization sender = source.Owner;
+            Civilization recipient = GameContext.Current.Civilizations[civ.CivID];
 
             HashSet<Civilization> existingWarPacts = null;
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
                         case ClauseType.TreatyWarPact:
-                            var warPactTarget = clause.Data as Civilization;
+                            Civilization warPactTarget = clause.Data as Civilization;
                             if (warPactTarget == null)
+                            {
                                 continue;
+                            }
 
                             if (existingWarPacts == null)
+                            {
                                 existingWarPacts = new HashSet<Civilization>();
+                            }
 
-                            existingWarPacts.Add(warPactTarget);
+                            _ = existingWarPacts.Add(warPactTarget);
                             break;
                     }
                 }
             }
 
-            foreach (var otherCiv in GameContext.Current.Civilizations)
+            foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (otherCiv.CivID == source.OwnerID || otherCiv.CivID == civ.CivID)
+                {
                     continue;
+                }
 
                 if (DiplomacyHelper.IsContactMade(sender, otherCiv) &&
-//                    DiplomacyHelper.IsContactMade(recipient, otherCiv) &&
+                    //                    DiplomacyHelper.IsContactMade(recipient, otherCiv) &&
                     !DiplomacyHelper.AreAtWar(recipient, otherCiv) &&
                     DiplomacyHelper.IsIndependent(otherCiv) &&
                     (existingWarPacts == null || !existingWarPacts.Contains(otherCiv)))
@@ -305,16 +388,21 @@ namespace Supremacy.Diplomacy
         public static IEnumerable<Civilization> GetSabotageParameters([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
-            if (civ == null)
-                throw new ArgumentNullException("civ");
+            }
 
-            var sender = source.Owner;
-            var recipient = GameContext.Current.Civilizations[civ.CivID];
+            if (civ == null)
+            {
+                throw new ArgumentNullException("civ");
+            }
+
+            Civilization sender = source.Owner;
+            Civilization recipient = GameContext.Current.Civilizations[civ.CivID];
 
             //HashSet<Civilization> existingWarPacts = null;
 
-            var _borg = GameContext.Current.Civilizations[6];
+            Civilization _borg = GameContext.Current.Civilizations[6];
             //string blamed = GameContext.Current.CivilizationManager.Where(o => o.CivilizationID == 6); //[6].Civilization;
 
             yield return _borg;
@@ -359,9 +447,14 @@ namespace Supremacy.Diplomacy
         public static bool CanCommendOrDenounceTreaty([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] Statement includeStatement = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             return source.GetCommendOrDenounceTreatyParameters(civ, includeStatement).Any();
         }
@@ -369,62 +462,70 @@ namespace Supremacy.Diplomacy
         public static IEnumerable<Civilization> GetCommendOrDenounceTreatyParameters([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] Statement includeStatement = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
-            var currentTurn = GameContext.Current.TurnNumber;
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
+            int currentTurn = GameContext.Current.TurnNumber;
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
 
-            Civilization ignoreCiv;
-
-            if (includeStatement != null &&
+            Civilization ignoreCiv = includeStatement != null &&
                 (includeStatement.StatementType == StatementType.CommendWar ||
-                 includeStatement.StatementType == StatementType.DenounceWar))
-            {
-                ignoreCiv = includeStatement.Parameter as Civilization;
-            }
-            else
-            {
-                ignoreCiv = null;
-            }
-
-            foreach (var otherCiv in GameContext.Current.Civilizations)
+                 includeStatement.StatementType == StatementType.DenounceWar)
+                ? includeStatement.Parameter as Civilization
+                : null;
+            foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (otherCiv.CivID == source.OwnerID || otherCiv.CivID == civ.CivID || otherCiv == ignoreCiv)
+                {
                     continue;
+                }
 
                 if (!source.GetForeignPower(otherCiv).IsContactMade)
+                {
                     continue;
+                }
 
-                var treatyAgreement = agreementMatrix.FindAgreement(
+                IAgreement treatyAgreement = agreementMatrix.FindAgreement(
                     civ,
                     otherCiv,
                     agreement => agreement.Proposal.IncludesTreaty() &&
                                  currentTurn - agreement.StartTurn <= 1);
 
                 if (treatyAgreement != null)
+                {
                     yield return otherCiv;
+                }
             }
         }
 
         public static IEnumerable<Civilization> GetRequestHonorMilitaryAgreementParameters([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
-            if (civ == null)
-                throw new ArgumentNullException("civ");
+            }
 
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
+            if (civ == null)
+            {
+                throw new ArgumentNullException("civ");
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
             if (!agreementMatrix.IsAgreementActive(source.OwnerID, civ.CivID, ClauseType.TreatyDefensiveAlliance) &&
                 !agreementMatrix.IsAgreementActive(source.OwnerID, civ.CivID, ClauseType.TreatyFullAlliance))
             {
                 yield break;
             }
 
-            var atWarWith = new HashSet<Civilization>();
-            var civilizations = GameContext.Current.Civilizations;
-            var counterparty = civilizations[civ.CivID];
+            HashSet<Civilization> atWarWith = new HashSet<Civilization>();
+            CivDatabase civilizations = GameContext.Current.Civilizations;
+            Civilization counterparty = civilizations[civ.CivID];
 
             atWarWith.UnionWith(
                 from d in GameContext.Current.DiplomacyData.GetValuesForOwner(source.Owner)
@@ -446,27 +547,34 @@ namespace Supremacy.Diplomacy
             //    }
             //}
 
-            foreach (var civilization in atWarWith)
+            foreach (Civilization civilization in atWarWith)
+            {
                 yield return civilization;
+            }
         }
 
         public static IEnumerable<Civilization> GetOfferHonorMilitaryAgreementParameters([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
-            if (civ == null)
-                throw new ArgumentNullException("civ");
+            }
 
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
+            if (civ == null)
+            {
+                throw new ArgumentNullException("civ");
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
             if (!agreementMatrix.IsAgreementActive(source.OwnerID, civ.CivID, ClauseType.TreatyDefensiveAlliance) &&
                 !agreementMatrix.IsAgreementActive(source.OwnerID, civ.CivID, ClauseType.TreatyFullAlliance))
             {
                 yield break;
             }
 
-            var atWarWith = new HashSet<Civilization>();
-            var civilizations = GameContext.Current.Civilizations;
-            var counterparty = civilizations[civ.CivID];
+            HashSet<Civilization> atWarWith = new HashSet<Civilization>();
+            CivDatabase civilizations = GameContext.Current.Civilizations;
+            Civilization counterparty = civilizations[civ.CivID];
 
             atWarWith.UnionWith(
                 from d in GameContext.Current.DiplomacyData.GetValuesForOwner(counterparty)
@@ -488,21 +596,28 @@ namespace Supremacy.Diplomacy
             //    }
             //}
 
-            foreach (var civilization in atWarWith)
+            foreach (Civilization civilization in atWarWith)
+            {
                 yield return civilization;
+            }
         }
 
 
         public static bool CanProposeWarPact([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -518,10 +633,14 @@ namespace Supremacy.Diplomacy
             }
 
             if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            {
                 return false;
+            }
 
             if (DiplomacyHelper.IsMember(GameContext.Current.Civilizations[civ.CivID], source.Owner))
+            {
                 return false;
+            }
 
             return GetWarPactParameters(source, civ, includeProposal).Any();
         }
@@ -529,13 +648,18 @@ namespace Supremacy.Diplomacy
         public static bool CanProposeCeaseFire([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -557,13 +681,18 @@ namespace Supremacy.Diplomacy
         public static bool CanProposeNonAggressionTreaty([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -579,14 +708,16 @@ namespace Supremacy.Diplomacy
             }
 
             if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
-                return false;
-
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
-            var activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
-
-            foreach (var agreement in activeAgreements)
             {
-                foreach (var clause in agreement.Proposal.Clauses)
+                return false;
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            Collections.IIndexedCollection<IAgreement> activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
+
+            foreach (IAgreement agreement in activeAgreements)
+            {
+                foreach (IClause clause in agreement.Proposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -607,13 +738,18 @@ namespace Supremacy.Diplomacy
         public static bool CanProposeOpenBordersTreaty([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -629,14 +765,16 @@ namespace Supremacy.Diplomacy
             }
 
             if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
-                return false;
-
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
-            var activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
-
-            foreach (var agreement in activeAgreements)
             {
-                foreach (var clause in agreement.Proposal.Clauses)
+                return false;
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            Collections.IIndexedCollection<IAgreement> activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
+
+            foreach (IAgreement agreement in activeAgreements)
+            {
+                foreach (IClause clause in agreement.Proposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -656,16 +794,23 @@ namespace Supremacy.Diplomacy
         public static bool CanProposeAffiliation([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (!source.Owner.IsEmpire || !GameContext.Current.Civilizations[civ.CivID].IsEmpire)
+            {
                 return false;
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -683,14 +828,16 @@ namespace Supremacy.Diplomacy
             }
 
             if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
-                return false;
-
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
-            var activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
-
-            foreach (var agreement in activeAgreements)
             {
-                foreach (var clause in agreement.Proposal.Clauses)
+                return false;
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            Collections.IIndexedCollection<IAgreement> activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
+
+            foreach (IAgreement agreement in activeAgreements)
+            {
+                foreach (IClause clause in agreement.Proposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -709,16 +856,23 @@ namespace Supremacy.Diplomacy
         public static bool CanProposeDefensiveAlliance([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (!source.Owner.IsEmpire || !GameContext.Current.Civilizations[civ.CivID].IsEmpire)
+            {
                 return false;
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -736,14 +890,16 @@ namespace Supremacy.Diplomacy
             }
 
             if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
-                return false;
-
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
-            var activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
-
-            foreach (var agreement in activeAgreements)
             {
-                foreach (var clause in agreement.Proposal.Clauses)
+                return false;
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            Collections.IIndexedCollection<IAgreement> activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
+
+            foreach (IAgreement agreement in activeAgreements)
+            {
+                foreach (IClause clause in agreement.Proposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -761,16 +917,23 @@ namespace Supremacy.Diplomacy
         public static bool CanProposeFullAlliance([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (!source.Owner.IsEmpire || !GameContext.Current.Civilizations[civ.CivID].IsEmpire)
+            {
                 return false;
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -788,14 +951,16 @@ namespace Supremacy.Diplomacy
             }
 
             if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
-                return false;
-
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
-            var activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
-
-            foreach (var agreement in activeAgreements)
             {
-                foreach (var clause in agreement.Proposal.Clauses)
+                return false;
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            Collections.IIndexedCollection<IAgreement> activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
+
+            foreach (IAgreement agreement in activeAgreements)
+            {
+                foreach (IClause clause in agreement.Proposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -812,17 +977,24 @@ namespace Supremacy.Diplomacy
         public static bool CanProposeMembership([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             // If both parties are empires, or both parties are minor races, then membership can't be proposed.
             if (source.Owner.IsEmpire == GameContext.Current.Civilizations[civ.CivID].IsEmpire)
+            {
                 return false;
+            }
 
             if (includeProposal != null)
             {
-                foreach (var clause in includeProposal.Clauses)
+                foreach (IClause clause in includeProposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {
@@ -840,14 +1012,16 @@ namespace Supremacy.Diplomacy
             }
 
             if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
-                return false;
-
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
-            var activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
-
-            foreach (var agreement in activeAgreements)
             {
-                foreach (var clause in agreement.Proposal.Clauses)
+                return false;
+            }
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            Collections.IIndexedCollection<IAgreement> activeAgreements = agreementMatrix[source.OwnerID, civ.CivID];
+
+            foreach (IAgreement agreement in activeAgreements)
+            {
+                foreach (IClause clause in agreement.Proposal.Clauses)
                 {
                     switch (clause.ClauseType)
                     {

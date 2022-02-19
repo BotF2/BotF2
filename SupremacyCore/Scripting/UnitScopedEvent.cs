@@ -39,7 +39,7 @@ namespace Supremacy.Scripting
         /// </summary>
         protected int UnitRecurrencePeriod
         {
-            get { return _unitRecurrencePeriod; }
+            get => _unitRecurrencePeriod;
             private set
             {
                 VerifyInitializing();
@@ -47,18 +47,14 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected IKeyedCollection<int, UnitTargetHistoryEntry> UnitTargetHistory
-        {
-            get { return _unitTargetHistory; }
-        }
+        protected IKeyedCollection<int, UnitTargetHistoryEntry> UnitTargetHistory => _unitTargetHistory;
 
         internal sealed override void InitializeCore(IDictionary<string, object> options)
         {
             base.InitializeCore(options);
 
-            object value;
 
-            if (options.TryGetValue("UnitRecurrencePeriod", out value))
+            if (options.TryGetValue("UnitRecurrencePeriod", out object value))
             {
                 try
                 {
@@ -79,19 +75,26 @@ namespace Supremacy.Scripting
         protected virtual bool CanTargetUnit([NotNull] TUnit unit)
         {
             if (unit == null)
+            {
                 throw new ArgumentNullException("unit");
+            }
 
-            var owner = unit.Owner;
+            Civilization owner = unit.Owner;
             if (owner != null && !CanTargetCivilization(owner))
+            {
                 return false;
+            }
 
-            UnitTargetHistoryEntry entry;
 
-            if (!_unitTargetHistory.TryGetValue(unit.ObjectID, out entry))
+            if (!_unitTargetHistory.TryGetValue(unit.ObjectID, out UnitTargetHistoryEntry entry))
+            {
                 return true;
+            }
 
             if (UnitRecurrencePeriod < 0)
+            {
                 return false;
+            }
 
             return (GameContext.Current.TurnNumber - entry.TurnNumber) > UnitRecurrencePeriod;
         }
@@ -99,13 +102,17 @@ namespace Supremacy.Scripting
         protected virtual void OnUnitTargeted([NotNull] TUnit unit)
         {
             if (unit == null)
+            {
                 throw new ArgumentNullException("unit");
+            }
 
-            var owner = unit.Owner;
+            Civilization owner = unit.Owner;
             if (owner != null)
+            {
                 OnCivilizationTargeted(owner);
+            }
 
-            _unitTargetHistory.Remove(unit.ObjectID);
+            _ = _unitTargetHistory.Remove(unit.ObjectID);
             _unitTargetHistory.Add(new UnitTargetHistoryEntry(unit, GameContext.Current.TurnNumber));
         }
 
@@ -114,25 +121,34 @@ namespace Supremacy.Scripting
             base.OnTurnFinishedOverride(game);
 
             if (UnitRecurrencePeriod < 0)
+            {
                 return;
+            }
 
             HashSet<int> removedItems = null;
 
-            foreach (var entry in _unitTargetHistory)
+            foreach (UnitTargetHistoryEntry entry in _unitTargetHistory)
             {
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > UnitRecurrencePeriod)
                 {
                     if (removedItems == null)
+                    {
                         removedItems = new HashSet<int>();
-                    removedItems.Add(entry.TargetID);
+                    }
+
+                    _ = removedItems.Add(entry.TargetID);
                 }
             }
 
             if (removedItems == null)
+            {
                 return;
+            }
 
-            foreach (var civId in removedItems)
-                _unitTargetHistory.Remove(civId);
+            foreach (int civId in removedItems)
+            {
+                _ = _unitTargetHistory.Remove(civId);
+            }
         }
 
         #region UnitTargetHistoryEntry Structure
@@ -147,39 +163,29 @@ namespace Supremacy.Scripting
             public UnitTargetHistoryEntry([NotNull] TUnit target, int turnNumber)
             {
                 if (target == null)
+                {
                     throw new ArgumentNullException("target");
+                }
+
                 if (turnNumber == 0)
+                {
                     throw new ArgumentOutOfRangeException("turnNumber", "Turn number was undefined.");
+                }
 
                 _targetId = target.ObjectID;
                 _ownerId = target.OwnerID;
                 _turnNumber = turnNumber;
             }
 
-            public TUnit Target
-            {
-                get { return GameContext.Current.Universe.Objects[_targetId] as TUnit; }
-            }
+            public TUnit Target => GameContext.Current.Universe.Objects[_targetId] as TUnit;
 
-            public Civilization Owner
-            {
-                get { return GameContext.Current.Civilizations[_ownerId]; }
-            }
+            public Civilization Owner => GameContext.Current.Civilizations[_ownerId];
 
-            public int TargetID
-            {
-                get { return _targetId; }
-            }
+            public int TargetID => _targetId;
 
-            public int OwnerID
-            {
-                get { return _ownerId; }
-            }
+            public int OwnerID => _ownerId;
 
-            public int TurnNumber
-            {
-                get { return _turnNumber; }
-            }
+            public int TurnNumber => _turnNumber;
         }
 
         #endregion

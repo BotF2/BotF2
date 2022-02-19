@@ -14,7 +14,7 @@ namespace Supremacy.Client
 
         public ImageSource Convert(StarType starType)
         {
-            string resourcePath = string.Format("Resources/Images/Stars/Map/{0}.png", starType);
+            string resourcePath = string.Format("Resources/Images/UI/Stars/Map/{0}.png", starType);
             VFS.IVirtualFileInfo resourceFile = ResourceManager.VfsService.GetFile(resourcePath);
             return resourceFile != null && resourceFile.Exists ? ImageCache.Current.Get(ResourceManager.GetResourceUri(resourcePath)) : null;
         }

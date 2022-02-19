@@ -73,7 +73,7 @@ namespace Supremacy.Scripting.Ast
                    (((flags & OperatorFlags.Arithmetic) != 0) && expressionType.IsArithmetic()) ||
                    (((flags & OperatorFlags.Bitwise) != 0) && expressionType.IsBitwise()) ||
                    (((flags & OperatorFlags.Comparison) != 0) && expressionType.IsComparison()) ||
-                   (((flags & OperatorFlags.Equality) != 0) && expressionType.IsEquality() ) ||
+                   (((flags & OperatorFlags.Equality) != 0) && expressionType.IsEquality()) ||
                    (((flags & OperatorFlags.Logical) != 0) && expressionType.IsLogical()) ||
                    (((flags & OperatorFlags.Relational) != 0) && expressionType.IsRelational()) ||
                    (((flags & OperatorFlags.Shift) != 0) && expressionType.IsShift()) ||

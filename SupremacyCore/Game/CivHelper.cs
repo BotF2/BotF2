@@ -37,7 +37,7 @@ namespace Supremacy.Game
                 {
                     if (GameContext.Current.Universe.Map[x, y].IsOwned)
                     {
-                        var owner = GameContext.Current.Universe.Map[x, y].Owner;
+                        Civilization owner = GameContext.Current.Universe.Map[x, y].Owner;
                         if (!sectorsOwned.ContainsKey(owner))
                         {
                             sectorsOwned.Add(owner, 0);
@@ -54,7 +54,7 @@ namespace Supremacy.Game
                 return 0;
             }
 
-            var sectorsOwnerSorted = sectorsOwned.OrderByDescending(x => x.Value);
+            IOrderedEnumerable<KeyValuePair<Civilization, int>> sectorsOwnerSorted = sectorsOwned.OrderByDescending(x => x.Value);
             for (int i = 0; i <= sectorsOwnerSorted.Count(); i++)
             {
                 if (sectorsOwnerSorted.ElementAt(i).Key == civ)
@@ -79,7 +79,7 @@ namespace Supremacy.Game
                 {
                     MapLocation location = new MapLocation(x, y);
                     Sector sector = GameContext.Current.Universe.Map[location];
-                    StarSystem system = (sector != null) ? sector.System : null;
+                    StarSystem system = sector?.System;
                     if ((system != null) && system.IsInhabited)
                     {
                         if ((sector.System.Name == civ1.HomeSystemName)
@@ -111,7 +111,7 @@ namespace Supremacy.Game
                     {
                         nearestDistance = MapLocation.GetDistance(location1, location2);
                     }
-                }    
+                }
             }
             return nearestDistance;
         }

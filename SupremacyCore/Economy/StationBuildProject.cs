@@ -28,9 +28,12 @@ namespace Supremacy.Economy
         {
             get
             {
-                var fleet = GameContext.Current.Universe.Objects[_productionCenterId] as Fleet;
+                Fleet fleet = GameContext.Current.Universe.Objects[_productionCenterId] as Fleet;
                 if (fleet != null)
+                {
                     return new BuildStationOrder.FleetProductionCenter(fleet);
+                }
+
                 return default;
             }
         }
@@ -39,31 +42,25 @@ namespace Supremacy.Economy
         /// Gets the station design.
         /// </summary>
         /// <value>The station design.</value>
-        public StationDesign StationDesign
-        {
-            get { return BuildDesign as StationDesign; }
-        }
+        public StationDesign StationDesign => BuildDesign as StationDesign;
 
 
         /// <summary>
         /// Gets the description of the station under construction.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get { return ResourceManager.GetString(BuildDesign.Name); }
-        }
+        public override string Description => ResourceManager.GetString(BuildDesign.Name);
 
-        public bool HasRawMaterialsShortage
+        public bool HasDuraniumShortage
         {
             get
             {
                 GameLog.Client.Test.DebugFormat("ID {0} stationdesign {1}", _productionCenterId, StationDesign.Description);
-                return GetFlag(BuildProjectFlags.RawMaterialsShortage);
+                return GetFlag(BuildProjectFlags.DuraniumShortage);
             }
             protected set
             {
-                SetFlag(BuildProjectFlags.RawMaterialsShortage, value);
+                SetFlag(BuildProjectFlags.DuraniumShortage, value);
                 GameContext.Current.CivilizationManagers[ProductionCenter.Owner.CivID].SitRepEntries
                     .Add(new BuildProjectResourceShortageSitRepEntry(ProductionCenter.Owner, "Duranium", " unknown amount of ", Description));
             }

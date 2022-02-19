@@ -75,7 +75,7 @@ namespace Supremacy.Scripting.Ast
             if (_resolvedType.IsAbstract && _resolvedType.IsSealed)
             {
                 parseContext.ReportError(
-                    -244, 
+                    -244,
                     "The 'default value' operator cannot be applied to an operand of a static type.",
                     Span);
             }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supremacy.Types
 {
@@ -16,10 +12,7 @@ namespace Supremacy.Types
             _isSet = isSet;
         }
 
-        public bool IsSet
-        {
-            get { return _isSet; }
-        }
+        public bool IsSet => _isSet;
 
         public void Set()
         {

@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using Supremacy.Utility;
 using System;
 
 namespace Supremacy.Universe
@@ -34,7 +33,7 @@ namespace Supremacy.Universe
                  (i < number) && (attempts < MaxStarPlacementAttempts);
                  i++, attempts++)
             {
-                double radius = (random.NextDouble() * gapConstant);
+                double radius = random.NextDouble() * gapConstant;
                 double angle = random.NextDouble() * 2.0 * Math.PI;
 
                 double x1 = radius * Math.Cos(angle);
@@ -46,20 +45,34 @@ namespace Supremacy.Universe
                 Random r = new Random();
                 int rInt = r.Next(-2, 2);
 
-                int xLoc = (int)(((x + 1.0) * width / 2.0)+rInt);
-                int yLoc = (int)(((y + 1.0) * height / 2.0)+rInt);
+                int xLoc = (int)(((x + 1.0) * width / 2.0) + rInt);
+                int yLoc = (int)(((y + 1.0) * height / 2.0) + rInt);
 
-                if (xLoc < 0) xLoc = 0;
-                if (xLoc > width) xLoc = width;
+                if (xLoc < 0)
+                {
+                    xLoc = 0;
+                }
 
-                if (yLoc < 0) yLoc = 0;
-                if (yLoc > height) yLoc = height;
+                if (xLoc > width)
+                {
+                    xLoc = width;
+                }
+
+                if (yLoc < 0)
+                {
+                    yLoc = 0;
+                }
+
+                if (yLoc > height)
+                {
+                    yLoc = height;
+                }
 
                 MapLocation location = new MapLocation(
                     xLoc,
                     yLoc);
 
-                var newNode = new MapLocationQuadtreeNode(location);
+                MapLocationQuadtreeNode newNode = new MapLocationQuadtreeNode(location);
 
                 double lowestDist = FindNearestNeighborDistance(newNode, positions);
                 if ((lowestDist < GalaxyGenerator.MinDistanceBetweenStars)
@@ -69,19 +82,21 @@ namespace Supremacy.Universe
                     continue;
                 }
 
-                var dominionLocation = new MapLocation(3, 3);
-                var dominionNode = new MapLocationQuadtreeNode(dominionLocation);
+                MapLocation dominionLocation = new MapLocation(3, 3);
+                MapLocationQuadtreeNode dominionNode = new MapLocationQuadtreeNode(dominionLocation);
                 positions.Add(dominionNode);
 
                 int borgX = width - (width / 8);
-                int borgY = (height / 8);
-                var borgLocation = new MapLocation(borgX, borgY);
-                var borgNode = new MapLocationQuadtreeNode(borgLocation);
+                int borgY = height / 8;
+                MapLocation borgLocation = new MapLocation(borgX, borgY);
+                MapLocationQuadtreeNode borgNode = new MapLocationQuadtreeNode(borgLocation);
 
                 positions.Add(borgNode);
 
-                if ( newNode.Location != dominionLocation && newNode.Location != borgLocation)
-                positions.Add(newNode);
+                if (newNode.Location != dominionLocation && newNode.Location != borgLocation)
+                {
+                    positions.Add(newNode);
+                }
 
                 attempts = 0;
             }

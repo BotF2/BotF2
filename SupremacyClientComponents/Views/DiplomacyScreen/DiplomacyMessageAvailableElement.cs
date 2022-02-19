@@ -1,3 +1,4 @@
+// File:DiplomacyMessageAvailableElement.cs
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -20,11 +21,13 @@ namespace Supremacy.Client.Views
 
         public string Description
         {
-            get { return _description; }
+            get => _description;
             private set
             {
                 if (Equals(value, _description))
+                {
                     return;
+                }
 
                 _description = value;
 
@@ -49,11 +52,13 @@ namespace Supremacy.Client.Views
 
         public string ActionDescription
         {
-            get { return _actionDescription; }
+            get => _actionDescription;
             private set
             {
                 if (Equals(value, _actionDescription))
+                {
                     return;
+                }
 
                 _actionDescription = value;
 
@@ -78,7 +83,7 @@ namespace Supremacy.Client.Views
 
         public DiplomacyMessageElementActionCategory ActionCategory
         {
-            get { return _actionCategory; }
+            get => _actionCategory;
             set
             {
                 if (value != _actionCategory)
@@ -110,7 +115,7 @@ namespace Supremacy.Client.Views
 
         public DiplomacyMessageElementType ElementType
         {
-            get { return _elementType; }
+            get => _elementType;
             set
             {
                 if (value != _elementType)
@@ -142,11 +147,13 @@ namespace Supremacy.Client.Views
 
         public ICommand AddCommand
         {
-            get { return _addCommand; }
+            get => _addCommand;
             set
             {
                 if (Equals(value, _addCommand))
+                {
                     return;
+                }
 
                 _addCommand = value;
 
@@ -171,11 +178,13 @@ namespace Supremacy.Client.Views
 
         public Func<IEnumerable> ParametersCallback
         {
-            get { return _parametersCallback; }
+            get => _parametersCallback;
             set
             {
                 if (Equals(value, _parametersCallback))
+                {
                     return;
+                }
 
                 _parametersCallback = value;
 
@@ -200,11 +209,13 @@ namespace Supremacy.Client.Views
 
         public object FixedParameter
         {
-            get { return _fixedParameter; }
+            get => _fixedParameter;
             set
             {
                 if (Equals(value, _fixedParameter))
+                {
                     return;
+                }
 
                 _fixedParameter = value;
 
@@ -230,22 +241,26 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

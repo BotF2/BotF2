@@ -20,7 +20,6 @@ using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Text;
 using Supremacy.Universe;
-using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -62,7 +61,9 @@ namespace Supremacy.Game
         public GameContext CreateLocalGame()
         {
             if (_localGame != null)
+            {
                 return _localGame;
+            }
 
             _localGame = new GameContext();
 
@@ -91,17 +92,20 @@ namespace Supremacy.Game
 
                 if (_diplomats != null)
                 {
-                    foreach (var diplomat in _diplomats)
+                    foreach (Diplomat diplomat in _diplomats)
                     {
-                        var ownerId = diplomat.OwnerID;
+                        int ownerId = diplomat.OwnerID;
 
                         _localGame.Diplomats.Add(diplomat);
 
-                        foreach (var civ in _localGame.Civilizations)
+                        foreach (Civilization civ in _localGame.Civilizations)
                         {
                             if (civ.CivID == ownerId)
+                            {
                                 continue;
-                            var foreignPower = diplomat.GetForeignPower(civ);
+                            }
+
+                            ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                             _diplomacyData[ownerId, civ.CivID] = foreignPower.DiplomacyData;
                         }
                     }
@@ -112,7 +116,7 @@ namespace Supremacy.Game
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
 
             return _localGame;
@@ -129,11 +133,16 @@ namespace Supremacy.Game
         public static GameStartData Create(GameContext game, Player player, ITextDatabase textDatabase)
         {
             if (game == null)
+            {
                 throw new ArgumentNullException("game");
-            if (player == null)
-                throw new ArgumentNullException("player");
+            }
 
-            var data = new GameStartData();
+            if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
+
+            GameStartData data = new GameStartData();
 
             GameContext.PushThreadContext(game);
 
@@ -157,11 +166,11 @@ namespace Supremacy.Game
                 data._diplomats = game.Diplomats.ToArray(); //new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
                 data._agreementMatrix = game.AgreementMatrix;
 
-                data._civManagers.ForEach(o => o.Compact());
+                _ = data._civManagers.ForEach(o => o.Compact());
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
 
             return data;
@@ -170,7 +179,9 @@ namespace Supremacy.Game
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
             if (_localGame == null)
+            {
                 _localGame = new GameContext();
+            }
 
             GameContext.PushThreadContext(_localGame);
 
@@ -182,7 +193,7 @@ namespace Supremacy.Game
                 _localGame.GameMod = _gameMod = reader.Read<GameMod>();
                 _localGame.Civilizations = _civilizations = reader.Read<CivDatabase>();
                 _localGame.CivilizationManagers = new CivilizationManagerMap();
-                _localGame.CivilizationManagers.AddRange((_civManagers = reader.ReadArray<CivilizationManager>()));
+                _localGame.CivilizationManagers.AddRange(_civManagers = reader.ReadArray<CivilizationManager>());
                 _localGame.Races = _races = reader.Read<RaceDatabase>();
                 _localGame.Universe = _universe = reader.Read<UniverseManager>();
                 _localGame.TechDatabase = _techDatabase = reader.Read<TechDatabase>();
@@ -200,17 +211,20 @@ namespace Supremacy.Game
 
                 if (_diplomats != null)
                 {
-                    foreach (var diplomat in _diplomats)
+                    foreach (Diplomat diplomat in _diplomats)
                     {
-                        var ownerId = diplomat.OwnerID;
+                        int ownerId = diplomat.OwnerID;
 
                         _localGame.Diplomats.Add(diplomat);
 
-                        foreach (var civ in _localGame.Civilizations)
+                        foreach (Civilization civ in _localGame.Civilizations)
                         {
                             if (civ.CivID == ownerId)
+                            {
                                 continue;
-                            var foreignPower = diplomat.GetForeignPower(civ);
+                            }
+
+                            ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                             _diplomacyData[ownerId, civ.CivID] = foreignPower.DiplomacyData;
                         }
                     }
@@ -221,7 +235,7 @@ namespace Supremacy.Game
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
         }
 

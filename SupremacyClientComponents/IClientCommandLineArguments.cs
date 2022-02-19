@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using Supremacy.Utility;
 using System.Diagnostics;
 
 namespace Supremacy.Client

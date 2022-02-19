@@ -1,6 +1,4 @@
-﻿using Supremacy.Game;
-
-namespace Supremacy.Entities
+﻿namespace Supremacy.Entities
 {
     public interface ICivIdentity
     {

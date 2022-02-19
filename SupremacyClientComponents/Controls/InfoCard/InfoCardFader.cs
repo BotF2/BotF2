@@ -10,13 +10,13 @@ namespace Supremacy.Client.Controls
 
         private static Storyboard CreateStoryboard(Duration delayDuration, Duration fadeDuration, double targetOpacity)
         {
-            var storyboard = new Storyboard();
-            var opacityAnimation = new DoubleAnimation(targetOpacity, fadeDuration)
-                                   {
-                                       BeginTime = delayDuration.TimeSpan
-                                   };
+            Storyboard storyboard = new Storyboard();
+            DoubleAnimation opacityAnimation = new DoubleAnimation(targetOpacity, fadeDuration)
+            {
+                BeginTime = delayDuration.TimeSpan
+            };
             Storyboard.SetTargetProperty(
-                opacityAnimation, 
+                opacityAnimation,
                 new PropertyPath(UIElement.OpacityProperty));
             storyboard.Children.Add(opacityAnimation);
             return storyboard;
@@ -25,12 +25,17 @@ namespace Supremacy.Client.Controls
         private void DestroyStoryboard()
         {
             if (_storyboard == null)
+            {
                 return;
-            var infoCardElement = _infoCard;
+            }
+
+            InfoCard infoCardElement = _infoCard;
             if (infoCardElement != null)
             {
                 if (_storyboard.GetCurrentState(infoCardElement) != ClockState.Stopped)
+                {
                     _storyboard.Stop(infoCardElement);
+                }
             }
 
             _storyboard = null;
@@ -40,13 +45,14 @@ namespace Supremacy.Client.Controls
         {
             DestroyStoryboard();
 
-            var infoCardElement = infoCardToFade as FrameworkElement;
-            if (infoCardElement == null)
+            if (!(infoCardToFade is FrameworkElement infoCardElement))
+            {
                 return;
+            }
 
-            var infoCardSite = infoCardToFade.InfoCardSite;
-            if ((infoCardSite == null) || 
-                !infoCardSite.IsInactiveInfoCardFadeEnabled || 
+            InfoCardSite infoCardSite = infoCardToFade.InfoCardSite;
+            if ((infoCardSite == null) ||
+                !infoCardSite.IsInactiveInfoCardFadeEnabled ||
                 (infoCardSite.InactiveInfoCardFadeOpacity == 1.0))
             {
                 return;

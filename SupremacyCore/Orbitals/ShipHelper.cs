@@ -9,8 +9,6 @@
 
 using System;
 
-using Supremacy.Game;
-
 namespace Supremacy.Orbitals
 {
     /// <summary>
@@ -21,14 +19,18 @@ namespace Supremacy.Orbitals
         public static bool IsInDistress(this Ship ship)
         {
             if (ship == null)
+            {
                 throw new ArgumentNullException("ship");
+            }
 
             /*
              * TODO: Determine other circumstances under which a ship should be
              *       considered 'in distress' and update this method accordingly.
              */
             if (ship.IsStranded && !ship.Fleet.IsInTow)
+            {
                 return true;
+            }
 
             return false;
         }

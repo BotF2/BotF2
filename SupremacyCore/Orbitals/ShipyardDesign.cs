@@ -35,6 +35,7 @@ namespace Supremacy.Orbitals
         public const int NoMaxBuildTechLevel = 255;
 
         private byte _buildSlots;
+        private byte _buildSlotQueues;
         private byte _maxBuildTechLevel;
         private ushort _buildSlotEnergyCost;
         private ushort _buildSlotOutput;
@@ -47,33 +48,39 @@ namespace Supremacy.Orbitals
         /// <value>The numer of build slots.</value>
         public int BuildSlots
         {
-            get { return _buildSlots; }
-            set { _buildSlots = (byte)value; }
+            get => _buildSlots;
+            set => _buildSlots = (byte)value;
+        }
+
+        public int BuildSlotQueues
+        {
+            get => _buildSlotQueues;
+            set => _buildSlotQueues = (byte)value;
         }
 
         public int BuildSlotEnergyCost
         {
-            get { return _buildSlotEnergyCost; }
-            set { _buildSlotEnergyCost = (ushort)value; }
+            get => _buildSlotEnergyCost;
+            set => _buildSlotEnergyCost = (ushort)value;
         }
 
         public int BuildSlotOutput
         {
-            get { return _buildSlotOutput; }
-            set { _buildSlotOutput = (ushort)value; }
+            get => _buildSlotOutput;
+            set => _buildSlotOutput = (ushort)value;
         }
 
         public int BuildSlotMaxOutput
         {
-            get { return _buildSlotMaxOutput; }
-            set { _buildSlotMaxOutput = (ushort)value; }
+            get => _buildSlotMaxOutput;
+            set => _buildSlotMaxOutput = (ushort)value;
         }
 
-        public String BuildSlotOutputString
+        public string BuildSlotOutputString
         {
-            get 
+            get
             {
-                String slotOutputString = "UNDETERMINED SHIPYARD OUTPUT TYPE";
+                string slotOutputString = "UNDETERMINED SHIPYARD OUTPUT TYPE";
                 switch (BuildSlotOutputType)
                 {
                     case ShipyardOutputType.Static:
@@ -86,24 +93,21 @@ namespace Supremacy.Orbitals
                         slotOutputString = BuildSlotOutput.ToString() + "% Industry";
                         break;
                 }
-                return slotOutputString; 
+                return slotOutputString;
             }
         }
 
         public ShipyardOutputType BuildSlotOutputType
         {
-            get { return _buildSlotOutputType; }
-            set { _buildSlotOutputType = value; }
+            get => _buildSlotOutputType;
+            set => _buildSlotOutputType = value;
         }
 
         /// <summary>
         /// Gets the encyclopedia category for a building of this design.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Shipyards; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Shipyards;
 
         /// <summary>
         /// Gets or sets the maximum tech level of ships that can be constructed at a station of this design.
@@ -111,8 +115,8 @@ namespace Supremacy.Orbitals
         /// <value>The maximum tech level of construction projects.</value>
         public int MaxBuildTechLevel
         {
-            get { return _maxBuildTechLevel; }
-            set { _maxBuildTechLevel = (byte)value; }
+            get => _maxBuildTechLevel;
+            set => _maxBuildTechLevel = (byte)value;
         }
 
         /// <summary>
@@ -131,7 +135,14 @@ namespace Supremacy.Orbitals
             : base(element)
         {
             if (element["BuildSlots"] != null)
+            {
                 _buildSlots = Number.ParseByte(element["BuildSlots"].InnerText.Trim());
+            }
+
+            if (element["BuildSlotQueue"] != null)
+            {
+                _buildSlotQueues = Number.ParseByte(element["BuildSlotQueue"].InnerText.Trim());
+            }
 
             if (element["BuildSlotOutput"] != null)
             {
@@ -140,32 +151,36 @@ namespace Supremacy.Orbitals
             }
 
             if (element["BuildSlotMaxOutput"] != null)
+            {
                 _buildSlotMaxOutput = Number.ParseUInt16(element["BuildSlotMaxOutput"].InnerText.Trim());
+            }
 
             if (element["BuildSlotOutputType"] != null)
             {
-                String outputType = element["BuildSlotOutputType"].InnerText.Trim().ToUpperInvariant();
-                if(outputType.Equals(ShipyardOutputType.Static.ToString().ToUpperInvariant()))
+                string outputType = element["BuildSlotOutputType"].InnerText.Trim().ToUpperInvariant();
+                if (outputType.Equals(ShipyardOutputType.Static.ToString().ToUpperInvariant()))
+                {
                     _buildSlotOutputType = ShipyardOutputType.Static;
+                }
                 else if (outputType.Equals(ShipyardOutputType.PopulationRatio.ToString().ToUpperInvariant()))
+                {
                     _buildSlotOutputType = ShipyardOutputType.PopulationRatio;
+                }
                 else if (outputType.Equals(ShipyardOutputType.IndustryRatio.ToString().ToUpperInvariant()))
+                {
                     _buildSlotOutputType = ShipyardOutputType.IndustryRatio;
+                }
             }
 
             if (element["BuildSlotEnergyCost"] != null)
+            {
                 _buildSlotEnergyCost = Number.ParseUInt16(element["BuildSlotEnergyCost"].InnerText.Trim());
+            }
 
-            if (element["MaxBuildTechLevel"] != null)
-                _maxBuildTechLevel = Number.ParseByte(element["MaxBuildTechLevel"].InnerText.Trim());
-            else
-                _maxBuildTechLevel = NoMaxBuildTechLevel;
+            _maxBuildTechLevel = element["MaxBuildTechLevel"] != null ? Number.ParseByte(element["MaxBuildTechLevel"].InnerText.Trim()) : (byte)NoMaxBuildTechLevel;
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "Shipyards/"; }
-        }
+        protected override string DefaultImageSubFolder => "Shipyards/";
 
         /// <summary>
         /// Appends the XML data for this instance.
@@ -180,29 +195,33 @@ namespace Supremacy.Orbitals
 
             newElement = doc.CreateElement("BuildSlots");
             newElement.InnerText = _buildSlots.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
+
+            newElement = doc.CreateElement("BuildSlotQueues");
+            newElement.InnerText = _buildSlotQueues.ToString();
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("BuildSlotOutput");
             newElement.InnerText = _buildSlotOutput.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("BuildSlotMaxOutput");
             newElement.InnerText = _buildSlotMaxOutput.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("BuildSlotOutputType");
             newElement.InnerText = _buildSlotOutputType.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("BuildSlotEnergyCost");
             newElement.InnerText = _buildSlotEnergyCost.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             if (MaxBuildTechLevel != NoMaxBuildTechLevel)
             {
                 newElement = doc.CreateElement("MaxBuildTechLevel");
                 newElement.InnerText = _maxBuildTechLevel.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
         }
 
@@ -225,13 +244,13 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            var system = GameContext.Current.Universe.Map[location].System;
-            var shipyard = new Shipyard(this);
+            StarSystem system = GameContext.Current.Universe.Map[location].System;
+            Shipyard shipyard = new Shipyard(this);
 
             shipyard.Reset();
             shipyard.Owner = system.Colony.Owner;
             shipyard.Location = system.Colony.Location;
-            
+
             GameContext.Current.Universe.Objects.Add(shipyard);
 
             system.Colony.Shipyard = shipyard;

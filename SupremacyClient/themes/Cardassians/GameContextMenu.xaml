@@ -1,15 +1,12 @@
-<!--
-  
-   GameContextMenu.xaml
+<!-- File:GameContextMenu.xaml for CARDASSIANS
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
+
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Supremacy.Client"
@@ -22,7 +19,7 @@
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="MenuItem.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="vfs:///Resources/UI/Cardassians/Sounds/GameContextMenuItem.wav" />
+          <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Cardassians/Sounds/GameContextMenuItem.wav" />
         </EventTrigger.Actions>
       </EventTrigger>-->
         </Style.Triggers>
@@ -38,40 +35,40 @@
         <Style.Resources>
             <BitmapImage x:Key="Image_Main1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/main1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/main1.png" />
             <BitmapImage x:Key="Image_Main2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/main2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/main2.png" />
             <BitmapImage x:Key="Image_Dip1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/embassy1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/embassy1.png" />
             <BitmapImage x:Key="Image_Dip2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/embassy2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/embassy2.png" />
             <BitmapImage x:Key="Image_Intel1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/intel1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/intel1.png" />
             <BitmapImage x:Key="Image_Intel2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/intel2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/intel2.png" />
             <BitmapImage x:Key="Image_Menu1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/menu1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/menu1.png" />
             <BitmapImage x:Key="Image_Menu2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/menu2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/menu2.png" />
             <BitmapImage x:Key="Image_Science1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/science1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/science1.png" />
             <BitmapImage x:Key="Image_Science2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/science2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/science2.png" />
             <BitmapImage x:Key="Image_Systems1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/system1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/system1.png" />
             <BitmapImage x:Key="Image_Systems2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/system2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/system2.png" />
         </Style.Resources>
         <Setter Property="LayoutTransform"
             Value="{Binding Path=MainWindow.LayoutTransform, Source={x:Static Application.Current}}" />
@@ -79,55 +76,52 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:GameContextMenu}">
                     <Border Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
-
-
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
                         <Canvas Width="580"
                                 Height="490">
+                            <Canvas.LayoutTransform>
+                                <ScaleTransform ScaleX="0.8" ScaleY="0.8"  />
+                            </Canvas.LayoutTransform>
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
-                           
-                                    UriSource="vfs:///Resources/UI/Cardassians/ContextMenu/popup.png" />
+                                            UriSource="vfs:///Resources/Specific_Empires_UI/Cardassians/ContextMenu/popup.png" />
                                 </Image.Source>
                             </Image>
-            <MenuItem x:Name="MenuItem_Main"
-                        Canvas.Left="25"
-                        Canvas.Top="56"
-                        
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
+                            <MenuItem x:Name="MenuItem_Main"
+                                        Canvas.Left="25"
+                                        Canvas.Top="56"                       
+                                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                        CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
+                                        Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">
                                         <Image x:Name="MenuItemContent_Main"
-                           Source="{StaticResource Image_Main1}" />
-                    <ControlTemplate.Triggers>
-
-                        <Trigger Property="IsMouseOver"
-                               Value="True">
+                                                Source="{StaticResource Image_Main1}" />
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver"
+                                                    Value="True">
                                                 <Setter TargetName="MenuItemContent_Main"
-                                Property="Source"
-                                Value="{StaticResource Image_Main2}" />
-                    </Trigger>
-                    <Trigger Property="IsPressed"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Main"
-                                Property="Source"
-                                Value="{StaticResource Image_Main1}" />
-                    </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </MenuItem.Template>
-            </MenuItem>
-            <MenuItem x:Name="MenuItem_Systems"
-                        Canvas.Left="350"
-                        Canvas.Top="56"
-           
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
+                                                        Property="Source"
+                                                        Value="{StaticResource Image_Main2}" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed"
+                                                     Value="True">
+                                                 <Setter TargetName="MenuItemContent_Main"
+                                                         Property="Source"
+                                                         Value="{StaticResource Image_Main1}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </MenuItem.Template>
+                            </MenuItem>
+                            <MenuItem x:Name="MenuItem_Systems"
+                                        Canvas.Left="350"
+                                        Canvas.Top="56"          
+                                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                        CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
+                                        Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">
                                         <Image x:Name="MenuItemContent_Systems"
@@ -150,12 +144,11 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Dip"
-                        Canvas.Left="350"
-                        Canvas.Top="183"
-             
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
+                                        Canvas.Left="350"
+                                        Canvas.Top="183"            
+                                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                        CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
+                                        Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">
                                         <Image x:Name="MenuItemContent_Dip"
@@ -178,12 +171,11 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Science"
-                        Canvas.Left="28"
-                        Canvas.Top="313"
-                           
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
+                                    Canvas.Left="28"
+                                    Canvas.Top="313"                          
+                                    Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                    CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
+                                    Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">
                                         <Image x:Name="MenuItemContent_Science"
@@ -206,12 +198,11 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Intel"
-                        Canvas.Left="25"
-                        Canvas.Top="183"
-                                  
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
+                                    Canvas.Left="25"
+                                    Canvas.Top="183"                                
+                                    Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                    CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
+                                    Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">
                                         <Image x:Name="MenuItemContent_Intel"
@@ -234,12 +225,11 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Menu"
-                        Canvas.Left="353"
-                        Canvas.Top="313"
-                               
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
+                                    Canvas.Left="353"
+                                    Canvas.Top="313"                              
+                                    Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                    CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
+                                    Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">
                                         <Image x:Name="MenuItemContent_Menu"
@@ -269,7 +259,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ContextMenu.Opened">
                 <EventTrigger.Actions>
-                    <SoundPlayerAction Source="vfs:///Resources/UI/Cardassians/Sounds/GameContextMenu.wav" />
+                    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Cardassians/Sounds/GameContextMenu.wav" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </Style.Triggers>

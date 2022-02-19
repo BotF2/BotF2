@@ -1,5 +1,4 @@
-// 
-// PlayerAI.cs
+// File:PlayerAI.cs
 // 
 // Copyright (c) 2011-2013 Mike Strobel
 // 
@@ -11,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
+using Obtics.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
 using Supremacy.Utility;
@@ -32,6 +31,210 @@ namespace Supremacy.AI
         #endregion
 
         #region Methods
+
+        #region DoTurn from GameEngine
+        public static void DoTurn(Civilization Civ)
+        {
+            if (Civ.IsEmpire && Civ.CivID != 6 && Civ.SpiedCivList != null)  // Spy
+            {
+                List<Civilization> spyingCivs = (List<Civilization>)GameContext.Current.Civilizations.Where(o => o.IsEmpire && o.CivID != 6).ToList();
+
+                foreach (Civilization spyingCiv in spyingCivs)
+                {
+                    if (Civ.SpiedCivList.Contains(spyingCiv))
+                    {
+                        if (DiplomacyHelper.AreAtWar(spyingCiv, Civ))
+                        {
+                            DoSpySabotageMission(spyingCiv, Civ);
+                        }
+                        //else if (DiplomacyHelper.AreAllied(spyingCiv, Civ) || DiplomacyHelper.AreFriendly(spyingCiv, Civ))
+                        //{
+                        //    // do things
+                        //}
+                        else if (DiplomacyHelper.AreNeutral(spyingCiv, Civ))
+                        {
+                            if (spyingCiv.Traits.Contains(CivTraits.Hostile.ToString())
+                                || spyingCiv.Traits.Contains(CivTraits.Subversive.ToString())
+                                || spyingCiv.Traits.Contains(CivTraits.Warlike.ToString()))
+                            {
+                                if (RandomHelper.Random(3) == 0)
+                                {
+                                    DoSpySabotageMission(spyingCiv, Civ);
+                                }
+                                else
+                                {
+                                    IntelHelper.SabotageStealResearch(spyingCiv, Civ, "No one");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //var possibleInvadeMinorCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire == false).ToList();
+
+            if (Civ.IsEmpire && GameContext.Current.TurnNumber > 5)
+            {
+                if (Civ.Traits.Contains("Warlike") || DiplomacyHelper.IsAtWar(Civ))
+                {
+                    if (Civ.TargetCivilization != null)
+                    {
+                        TurnOffTargetCiv(Civ);
+                    }
+                    else if (Civ.TargetCivilization == null) //AI empire so look for invasion conditions
+                    {
+                        FindTargetCiv(Civ);
+                    }
+                }
+            }
+        }
+        #endregion
+
+        //public static void AssimilateSystem(Colony colony)
+        //{
+        //    // Resistance is futile, assimilate da system
+        //    int chanceToAssimilate = RandomHelper.Random(100);
+        //    if (true) //(chanceToAssimilate <= 5)
+        //    {
+        //        Civilization borgy = GameContext.Current.CivilizationManagers[6].Civilization; 
+        //        //var borg = GameContext.Current.Civilizations.Where(c => c.Key == "BORG").FirstOrDefault();
+        //    Civilization assimilatedCiv = colony.Owner;
+        //    CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[assimilatedCiv];
+        //    Universe.Colony assimiltedCivHome = targetEmpire.HomeColony;
+        //    int gainedResearchPoints = assimiltedCivHome.NetResearch;
+        //    //Universe.Sector destination = CombatHelper.CalculateRetreatDestination(assets);
+        //    //Ship ship = (Ship)assimilatedShip.Source;
+        //    colony.Owner = borgy;
+        //            //ship.Owner = borg;
+        //            //Fleet newfleet = ship.CreateFleet();
+        //            //newfleet.Location = destination.Location;
+        //            //newfleet.Owner = borg;
+        //            //newfleet.SetOrder(FleetOrders.EngageOrder.Create());
+        //            //if (newfleet.Order == null)
+        //            //{
+        //            //    newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
+        //            //}
+        //            //ship.IsAssimilated = true;
+        //            //ship.Scrap = false;
+        //            //newfleet.Name = "Assimilated Assets";
+        //    GameContext.Current.CivilizationManagers[colony.Owner].Research.UpdateResearch(gainedResearchPoints);
+        //    }
+        //}
+        public static void TurnOffTargetCiv(Civilization aCiv)
+        {
+            int civFirePower = CalculateFirePower(aCiv);
+            int targetFirePower = CalculateFirePower(aCiv.TargetCivilization);
+            if (civFirePower < targetFirePower)
+            {
+                aCiv.TargetCivilization = null;
+            }
+            else if (IsCivDefeated(aCiv.TargetCivilization))
+            {
+                aCiv.TargetCivilization = null;
+                // break down the fleet in UnitAI
+            }
+        }
+        public static void FindTargetCiv(Civilization daCiv)
+        {
+            IList<Civilization> possibleCivs = GameContext.Current.Civilizations.ToList();
+
+            foreach (Civilization invasionCiv in possibleCivs)
+            {
+                if (!daCiv.Traits.Contains("Warlike") && invasionCiv.CivID > 6)  // not warlike and a minor so skip
+                {
+                    continue;
+                }
+
+                double lastRange = 999;
+
+                if (DiplomacyHelper.IsContactMade(daCiv, invasionCiv)
+                    && !GameContext.Current.CivilizationManagers[invasionCiv].IsHomeColonyDestroyed
+                    && !DiplomacyHelper.AreAllied(invasionCiv, daCiv)
+                    && !DiplomacyHelper.IsMember(invasionCiv, daCiv)
+                    && invasionCiv.TargetCivilization == null
+                    && daCiv != invasionCiv)
+                {
+                    MapLocation empire = GameContext.Current.CivilizationManagers[invasionCiv].HomeSystem.Location;
+                    MapLocation ai = GameContext.Current.CivilizationManagers[daCiv].HomeSystem.Location;
+                    double curretRange = Math.Sqrt(Math.Pow(empire.X - ai.X, 2) + Math.Pow(empire.Y - ai.Y, 2));
+
+                    int civFirePower = CalculateFirePower(daCiv);
+                    int targetFirePower = CalculateFirePower(invasionCiv);
+                    if (invasionCiv.TargetCivilization == null && targetFirePower * 1.1 < civFirePower)
+                    {
+                        if (curretRange < lastRange)
+                        {
+                            if (UnitAI.CanAllShipsGetThere(daCiv, invasionCiv))
+                            {
+
+                                daCiv.TargetCivilization = invasionCiv;
+                                lastRange = curretRange;
+                                if (!DiplomacyHelper.AreAtWar(daCiv, daCiv.TargetCivilization))
+                                {
+                                    GameLog.Core.AI.DebugFormat("Declare War {0} on {1}", daCiv.Name, daCiv.TargetCivilization.Name);
+                                    Diplomat diplomat = Diplomat.Get(daCiv);
+                                    ForeignPower foreignPower = diplomat.GetForeignPower(daCiv.TargetCivilization);
+                                    foreignPower.DeclareWar();
+                                }
+                                GameLog.Client.AI.DebugFormat("{0} set Invasion! on {1} ", daCiv.Name, daCiv.TargetCivilization.Name);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        daCiv.TargetCivilization = null;
+                    }
+                }
+            }
+        }
+        public static bool IsCivDefeated(Civilization undefeatedCiv)
+        {
+            bool stillViable = false;
+            if (GameContext.Current.CivilizationManagers[undefeatedCiv].MaintenanceCostLastTurn == 0
+                    || !GameContext.Current.CivilizationManagers[undefeatedCiv].ControlsHomeSystem
+                    || GameContext.Current.CivilizationManagers[undefeatedCiv].IsHomeColonyDestroyed
+                    || GameContext.Current.CivilizationManagers[undefeatedCiv].TotalPopulation.IsMinimized)
+            {
+                stillViable = true;
+            }
+
+            return stillViable;
+        }
+
+        public static void DoSpySabotageMission(Civilization spyingCiv, Civilization Civ)
+        {
+            int decide = RandomHelper.Random(5);
+            switch (decide)
+            {
+                case 0:
+                    {
+                        IntelHelper.SabotageEnergy(spyingCiv, Civ, "No one");
+                        break;
+                    }
+                case 1:
+                    {
+                        IntelHelper.SabotageFood(spyingCiv, Civ, "No one");
+                        break;
+                    }
+                case 2:
+                    {
+                        IntelHelper.SabotageIndustry(spyingCiv, Civ, "No one");
+                        break;
+                    }
+                case 3:
+                    {
+                        IntelHelper.SabotageStealCredits(spyingCiv, Civ, "No one");
+                        break;
+                    }
+                case 4:
+                    {
+                        IntelHelper.SabotageStealResearch(spyingCiv, Civ, "No one");
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
 
         public static ConvexHullSet CreateDesiredBorders(Civilization civ)
         {
@@ -127,12 +330,12 @@ namespace Supremacy.AI
             return 100 * value;
         }
 
-        public static int GetFleetDanger(Fleet fleet, int range, bool testMoves, bool anyDanger)
+        public static int GetFleetDanger(Fleet fleet, int range, bool anyDanger) // bool testMoves,
         {
-            return GetSectorDanger(fleet.Owner, fleet.Sector, range, testMoves);
+            return GetSectorDanger(fleet.Owner, fleet.Sector, range); //, testMoves);
         }
 
-        public static int GetSectorDanger(Civilization who, Sector sector, int range, bool testMoves)
+        public static int GetSectorDanger(Civilization who, Sector sector, int range) //, bool testMoves)
         {
             if (who == null)
             {
@@ -159,12 +362,12 @@ namespace Supremacy.AI
                 for (int dY = -range; dY < range; dY++)
                 {
                     Sector loopSector = map[sector.Location.X + dX, sector.Location.Y + dY];
-                    if (loopSector == null)
+                    if (loopSector == null || loopSector.Owner == null)
                     {
                         continue;
                     }
 
-                    var distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
+                    int distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
 
                     if (DiplomacyHelper.AreAtWar(who, loopSector.Owner) && distance <= 2)
                     {
@@ -173,6 +376,13 @@ namespace Supremacy.AI
 
                     foreach (Fleet fleet in GameContext.Current.Universe.FindAt<Fleet>(loopSector.Location))
                     {
+                        foreach (Ship ship in fleet.Ships)
+                        {
+                            if (ship.Owner != null)
+                            {
+                                fleet.Owner = ship.Owner;
+                            }
+                        }
                         if (!DiplomacyHelper.AreAtWar(who, fleet.Owner))
                         {
                             continue;
@@ -188,20 +398,24 @@ namespace Supremacy.AI
                         {
                             continue;
                         }
+                        //if ((sector.Location.X >= 0 || sector.Location.X <= map.Width) && (sector.Location.Y >= 0 || sector.Location.Y <= map.Height))
+                        //{
 
-                        if (DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && (!testMoves || (fleet.Speed >= distance)))
+                        if (fleet.Owner != null && DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && (fleet.Speed >= distance)) // || !testMoves ||
                         {
                             ++count;
                         }
+                        //}
                     }
                 }
             }
 
-            if (IsHuman(who))
+            if (!IsHuman(who))
             {
                 count += borderDanger;
             }
-
+            // GameLog.Client.AI.DebugFormat("* Sector Danger ={0}",count);
+            // count = 20;
             return count;
         }
 
@@ -237,6 +451,19 @@ namespace Supremacy.AI
             }
 
             return false;
+        }
+        private static int CalculateFirePower(Civilization civ)
+        {
+            int firePower = 0;
+            foreach (Fleet civFleet in GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList())
+            {
+                foreach (Ship ship in civFleet.Ships.Where(s => s.ShipType >= ShipType.Scout || s.ShipType == ShipType.Transport).ToList())
+                {
+                    firePower += ship.Firepower();
+                    // GameLog.Client.AI.DebugFormat("A ship all attack ships {0} location ={1}", ship.Name, ship.Location );
+                }
+            }
+            return firePower;
         }
         #endregion
     }

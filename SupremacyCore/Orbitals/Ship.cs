@@ -1,4 +1,4 @@
-// Ship.cs
+// File:Ship.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -31,9 +31,12 @@ namespace Supremacy.Orbitals
         private byte _camouflagedStrength;
         private bool _isCamouflaged;
         private bool _isAssimilated;
-        private byte _scanStrength;
         private Meter _fuelReserve;
         private ShipType _shipType;
+#pragma warning disable IDE0052 // Remove unread private members
+        private byte _scanStrength;
+#pragma warning restore IDE0052 // Remove unread private members
+
         #endregion
 
         #region Properties
@@ -41,10 +44,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public sealed override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Ship; }
-        }
+        public sealed override UniverseObjectType ObjectType => UniverseObjectType.Ship;
 
         /// <summary>
         /// Gets or sets the name of this <see cref="Ship"/>.
@@ -52,42 +52,39 @@ namespace Supremacy.Orbitals
         /// <value>The name.</value>
         public override string Name
         {
-            get { return base.Name; }
-            set { base.Name = value; }
-        }
+            get
+            {
+                string _nameString = base.Name;
+                //Int32.TryParse(base.ExperiencePercent.ToString(), out int exp);
+                for (int i = 0; i < base.ExperiencePercent / 5; i++)
+                {
+                    _nameString += "*";
+                }
 
-        /// <summary>
-        /// Returns the name of the design
-        /// eg "FED_SCOUT_III"
-        /// </summary>
-        public string DesignName
-        {
-            get { return ShipDesign.Name; }
-        }
-
-        /// <summary>
-        /// Returns the name of the design
-        /// eg "FED_SCOUT_III"
-        /// </summary>
-        public string ClassName
-        {           
-            get {return ShipDesign.ClassName + " " + ResourceManager.GetString("SHIP_CLASS");
+                return _nameString;
             }
+            set => base.Name = value;
         }
+
+        /// <summary>
+        /// Returns the name of the design
+        /// eg "FED_SCOUT_III"
+        /// </summary>
+        public string DesignName => ShipDesign.Name;
+
+        /// <summary>
+        /// Returns the name of the design
+        /// eg "FED_SCOUT_III"
+        /// </summary>
+        public string ClassName => ShipDesign.ClassName + " " + ResourceManager.GetString("SHIP_CLASS");
 
         /// <summary>
         /// Gets the fuel reserve.
         /// </summary>
         /// <value>The fuel reserve.</value>
-        public Meter FuelReserve
-        {
-            get { return _fuelReserve; }
-        }
+        public Meter FuelReserve => _fuelReserve;
 
-        public override bool IsMobile
-        {
-            get { return (_speed > 0); }
-        }
+        public override bool IsMobile => _speed > 0;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Ship"/> is stranded.
@@ -95,10 +92,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Ship"/> is stranded; otherwise, <c>false</c>.
         /// </value>
-        public bool IsStranded
-        {
-            get { return _fuelReserve.IsMinimized; }
-        }
+        public bool IsStranded => _fuelReserve.IsMinimized;
 
         /// <summary>
         /// Gets or sets the speed.
@@ -106,12 +100,10 @@ namespace Supremacy.Orbitals
         /// <value>The speed.</value>
         public int Speed
         {
-            get
-            {
+            get =>
                 //if ((Fleet != null) && (Fleet.IsInTow || (Fleet.Order is TowOrder)))
                 //    return 1;
-                return _speed;
-            }
+                _speed;
             set
             {
                 _speed = (byte)value;
@@ -125,7 +117,7 @@ namespace Supremacy.Orbitals
         /// <value>The range.</value>
         public int Range
         {
-            get { return _range; }
+            get => _range;
             set
             {
                 _range = (byte)value;
@@ -137,10 +129,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the ship.
         /// </summary>
         /// <value>The type of the ship.</value>
-        public ShipType ShipType
-        {
-            get { return _shipType; }
-        }
+        public ShipType ShipType => _shipType;
 
         /// <summary>
         /// Gets or sets the ship design.
@@ -148,7 +137,7 @@ namespace Supremacy.Orbitals
         /// <value>The ship design.</value>
         public ShipDesign ShipDesign
         {
-            get { return Design as ShipDesign; }
+            get => Design as ShipDesign;
             set
             {
                 Design = value;
@@ -164,7 +153,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsCloaked
         {
-            get { return _isCloaked; }
+            get => _isCloaked;
             set
             {
                 if (CanCloak)
@@ -181,18 +170,17 @@ namespace Supremacy.Orbitals
         /// <value>
         /// 	<c>true</c> if this <see cref="Ship"/> can cloak; otherwise, <c>false</c>.
         /// </value>
-        public bool CanCloak
-        {
-            get { return (ShipDesign.CloakStrength > 0); }
-        }
+        public bool CanCloak => ShipDesign.CloakStrength > 0;
 
         /// <summary>
         /// Gets or sets the cloak strength.
         /// </summary>
         /// <value>The cloak strength.</value>
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public int CloakStrength
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         {
-            get { return _cloakStrength; }
+            get => _cloakStrength;
             set
             {
                 _cloakStrength = (byte)value;
@@ -208,7 +196,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsCamouflaged
         {
-            get { return _isCamouflaged; }
+            get => _isCamouflaged;
             set
             {
                 if (CanCamouflage)
@@ -226,7 +214,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsAssimilated
         {
-            get { return _isAssimilated; }
+            get => _isAssimilated;
             set
             {
                 _isAssimilated = value;
@@ -239,10 +227,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// 	<c>true</c> if this <see cref="Ship"/> can camouflage; otherwise, <c>false</c>.
         /// </value>
-        public bool CanCamouflage
-        {
-            get { return (ShipDesign.CamouflagedStrength > 0); }
-        }
+        public bool CanCamouflage => ShipDesign.CamouflagedStrength > 0;
 
         /// <summary>
         /// Gets or sets the camouflage strength.
@@ -250,7 +235,7 @@ namespace Supremacy.Orbitals
         /// <value>The camouflage strength.</value>
         public int CamouflagedStrength
         {
-            get { return _camouflagedStrength; }
+            get => _camouflagedStrength;
             set
             {
                 _camouflagedStrength = (byte)value;
@@ -263,10 +248,10 @@ namespace Supremacy.Orbitals
         /// <value>The fleet to which this <see cref="Ship"/> is attached.</value>
         public Fleet Fleet
         {
-            get { return GameContext.Current.Universe.Objects[_fleetId] as Fleet; }
+            get => GameContext.Current.Universe.Objects[_fleetId] as Fleet;
             set
             {
-                var oldFleet = Fleet;
+                Fleet oldFleet = Fleet;
                 if ((oldFleet != null) && oldFleet.AreShipsLocked)
                 {
                     return;
@@ -292,9 +277,14 @@ namespace Supremacy.Orbitals
                 if ((oldFleet != null) && (value != oldFleet))
                 {
                     if (oldFleet.Ships.Contains(this))
+                    {
                         oldFleet.RemoveShip(this);
+                    }
+
                     if (oldFleet.Ships.Count == 0)
-                        GameContext.Current.Universe.Destroy(oldFleet);
+                    {
+                        _ = GameContext.Current.Universe.Destroy(oldFleet);
+                    }
                 }
             }
         }
@@ -352,11 +342,11 @@ namespace Supremacy.Orbitals
         {
             if ((Fleet == null) || !Fleet.AreShipsLocked)
             {
-                var newFleet = new Fleet(fleetId)
-                               {
-                                   OwnerID = OwnerID,
-                                   Location = Location
-                               };
+                Fleet newFleet = new Fleet(fleetId)
+                {
+                    OwnerID = OwnerID,
+                    Location = Location
+                };
                 GameContext.Current.Universe.Objects.Add(newFleet);
                 Fleet = newFleet;
                 //newFleet.Order = newFleet.GetDefaultOrder();
@@ -374,7 +364,7 @@ namespace Supremacy.Orbitals
         protected internal override void Reset()
         {
             base.Reset();
-            var design = ShipDesign;
+            ShipDesign design = ShipDesign;
             if (design != null)
             {
                 _speed = (byte)design.Speed;
@@ -386,34 +376,34 @@ namespace Supremacy.Orbitals
             _fuelReserve.UpdateAndReset();
         }
 
-		public override void SerializeOwnedData(SerializationWriter writer, object context)
-		{
-			base.SerializeOwnedData(writer, context);
-			//writer.Write(_cloakStrength);
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            base.SerializeOwnedData(writer, context);
+            //writer.Write(_cloakStrength);
             //writer.Write(_camouflagedStrength);
             writer.Write(_fleetId);
-			writer.WriteObject(_fuelReserve);
-			writer.Write(_isCloaked);
+            writer.WriteObject(_fuelReserve);
+            writer.Write(_isCloaked);
             writer.Write(_isCamouflaged);
             writer.Write(_isAssimilated);
             writer.Write(_range);
-			writer.Write(_speed);
+            writer.Write(_speed);
             writer.Write((byte)_shipType);
-		}
+        }
 
-		public override void DeserializeOwnedData(SerializationReader reader, object context)
-		{
-			base.DeserializeOwnedData(reader, context);
-			//_cloakStrength = reader.ReadByte();
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
+            //_cloakStrength = reader.ReadByte();
             //_camouflagedStrength = reader.ReadByte();
             _fleetId = reader.ReadInt32();
-			_fuelReserve = (Meter)reader.ReadObject();
-			_isCloaked = reader.ReadBoolean();
+            _fuelReserve = (Meter)reader.ReadObject();
+            _isCloaked = reader.ReadBoolean();
             _isCamouflaged = reader.ReadBoolean();
             _isAssimilated = reader.ReadBoolean();
             _range = reader.ReadByte();
-			_speed = reader.ReadByte();
+            _speed = reader.ReadByte();
             _shipType = (ShipType)reader.ReadByte();
-		}
+        }
     }
 }

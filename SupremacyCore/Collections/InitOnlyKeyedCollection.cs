@@ -76,7 +76,7 @@ namespace Supremacy.Collections
 
             if (value is TValue value2)
             {
-                Remove(value2);
+                _ = Remove(value2);
             }
         }
 

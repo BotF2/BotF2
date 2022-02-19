@@ -4,16 +4,11 @@ namespace Supremacy.Messages
 {
     public class TurnProgressChangedMessage
     {
-        private readonly TurnPhase _turnPhase;
-
         public TurnProgressChangedMessage(TurnPhase turnPhase)
         {
-            _turnPhase = turnPhase;
+            TurnPhase = turnPhase;
         }
 
-        public TurnPhase TurnPhase
-        {
-            get { return _turnPhase; }
-        }
+        public TurnPhase TurnPhase { get; }
     }
 }

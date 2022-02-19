@@ -779,9 +779,9 @@ namespace Supremacy.Xna
 
             Environment.Exit(-1);
 
-            // ReSharper disable HeuristicUnreachableCode
+
             return true;
-            // ReSharper restore HeuristicUnreachableCode
+
         }
 
         private static string GetShaderProfileName(ShaderProfile shaderProfile)
@@ -846,7 +846,7 @@ namespace Supremacy.Xna
 
         protected void CopySurface(RenderTarget2D source, RenderTarget2D destination)
         {
-            _copySurfaceMethod.Invoke(
+            _ = _copySurfaceMethod.Invoke(
                 Graphics.GraphicsDevice,
                 new object[] { GetRenderTargetPointer(BackBuffer), GetRenderTargetPointer(FrontBuffer) });
         }

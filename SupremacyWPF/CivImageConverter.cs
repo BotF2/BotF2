@@ -29,7 +29,7 @@ namespace Supremacy.Client
 
         static CivImageConverter()
         {
-            ImageMissingPath = @"Resources\Images\TechObjects\__image_missing.png";
+            ImageMissingPath = @"Resources\Images\__image_missing.png";
             Extensions = new string[] { "png", "jpg" };
             Folders = new string[] { "Civilizations", "Races" };
             BasePath = @"Resources\Images\{1}\{2}.{3}";

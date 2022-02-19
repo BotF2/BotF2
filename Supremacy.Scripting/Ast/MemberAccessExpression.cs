@@ -141,10 +141,9 @@ namespace Supremacy.Scripting.Ast
             {
                 FullNamedExpression resolved = null;
 
-                MemberTracker namespaceChild;
 
                 bool found = ns.Tracker is NamespaceGroupTracker trackerGroup
-                    ? trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out namespaceChild)
+                    ? trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out MemberTracker namespaceChild)
                     : ns.Tracker.TryGetValue((SymbolId)lookupIdentifier, out namespaceChild);
                 if (!found)
                 {
@@ -295,7 +294,7 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 Left = leftResolved;
-                
+
                 memberLookup = OnErrorMemberLookupFailed(
                     ec,
                     null,
@@ -430,10 +429,9 @@ namespace Supremacy.Scripting.Ast
 
             if (resolved is NamespaceExpression ns)
             {
-                MemberTracker tracker;
 
                 bool found = ns.Tracker is NamespaceGroupTracker trackerGroup
-                    ? trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out tracker)
+                    ? trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out MemberTracker tracker)
                     : ns.Tracker.TryGetValue((SymbolId)lookupIdentifier, out tracker);
                 if (found)
                 {
@@ -452,8 +450,7 @@ namespace Supremacy.Scripting.Ast
                             // ERROR!
                         }
 
-                        Type nonGenericType;
-                        if (typeGroup.TryGetNonGenericType(out nonGenericType))
+                        if (typeGroup.TryGetNonGenericType(out Type nonGenericType))
                         {
                             return new TypeExpression(nonGenericType);
                         }
@@ -507,7 +504,7 @@ namespace Supremacy.Scripting.Ast
                     resolvedAsType.Span,
                     704,
                     Severity.Error);
-                
+
                 return null;
             }
 
@@ -591,7 +588,9 @@ namespace Supremacy.Scripting.Ast
                 TypeArguments newArgs = new TypeArguments();
 
                 foreach (Type decl in expressionType.GetGenericArguments())
+                {
                     newArgs.Add(new TypeExpression(decl) { Span = Span });
+                }
 
                 if (typeArguments != null)
                 {

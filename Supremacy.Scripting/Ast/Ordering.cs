@@ -13,7 +13,7 @@ namespace Supremacy.Scripting.Ast
         private Expression _expression;
 
         public OrderingDirection Direction { get; set; }
-        
+
         public Expression Expression
         {
             get => _expression;

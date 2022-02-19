@@ -7,7 +7,7 @@ namespace Supremacy.Scripting.Ast
         private Expression _type;
         public string Name { get; set; }
 
-        public bool HasExplicitType => (_type != null);
+        public bool HasExplicitType => _type != null;
 
         public Expression Type
         {

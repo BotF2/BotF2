@@ -32,7 +32,10 @@ namespace Supremacy.Effects
             get
             {
                 if (_dType == null)
+                {
                     _dType = DynamicObjectType.FromSystemTypeInternal(GetType());
+                }
+
                 return _dType;
             }
         }
@@ -40,16 +43,24 @@ namespace Supremacy.Effects
         public void InvalidateProperty<TValue>([NotNull] DynamicProperty<TValue> property)
         {
             if (property == null)
+            {
                 throw new ArgumentNullException("property");
+            }
 
-            var value = GetValueInternal(property, false);
+            DynamicPropertyValue<TValue> value = GetValueInternal(property, false);
             if (value == null)
+            {
                 return;
+            }
 
             if (value.HasModifiers)
+            {
                 value.ResetComputedValue();
+            }
             else if (value.UsesCoercion)
+            {
                 value.ResetCoercedValue(true);
+            }
         }
 
         public DynamicPropertyValue<TValue> GetValue<TValue>([NotNull] DynamicProperty<TValue> property)
@@ -60,18 +71,23 @@ namespace Supremacy.Effects
         private DynamicPropertyValue<TValue> GetValueInternal<TValue>(DynamicProperty<TValue> property, bool createIfMissing)
         {
             if (property == null)
+            {
                 throw new ArgumentNullException("property");
+            }
 
             DynamicPropertyValue<TValue> value;
-            var globalIndex = property.GlobalIndex;
+            int globalIndex = property.GlobalIndex;
 
             lock (DynamicProperty.Synchronized)
             {
-                var mapItem = _dynamicPropertyValues[globalIndex];
+                object mapItem = _dynamicPropertyValues[globalIndex];
                 if (mapItem == DynamicProperty.UnsetValue)
                 {
                     if (!createIfMissing)
+                    {
                         return null;
+                    }
+
                     value = new DynamicPropertyValue<TValue>(property, this);
                     _dynamicPropertyValues[globalIndex] = value;
                 }
@@ -86,28 +102,25 @@ namespace Supremacy.Effects
 
         #region Implementation of IOwnedDataSerializable
         public override void SerializeOwnedData([NotNull] SerializationWriter writer, [CanBeNull] object context)
-    	{
-    	    base.SerializeOwnedData(writer, context);
+        {
+            base.SerializeOwnedData(writer, context);
 
-            var propertyCount = _dynamicPropertyValues.Count;
+            int propertyCount = _dynamicPropertyValues.Count;
 
             writer.Write(propertyCount);
 
-            for (var i = 0; i < propertyCount; i++)
+            for (int i = 0; i < propertyCount; i++)
             {
-                object value;
 
-                _dynamicPropertyValues.GetKeyValuePair(i, out int key, out value);
+                _dynamicPropertyValues.GetKeyValuePair(i, out int key, out object value);
 
-                DynamicProperty property;
-                object baseValue;
 
-                ExtractBaseValue(value, out property, out baseValue);
+                ExtractBaseValue(value, out DynamicProperty property, out object baseValue);
 
                 writer.WriteTokenizedObject(new DynamicPropertyKey(property));
                 writer.WriteObject(baseValue);
             }
-    	}
+        }
 
         [Serializable]
         private sealed class DynamicPropertyKey : IOwnedDataSerializableAndRecreatable
@@ -160,9 +173,11 @@ namespace Supremacy.Effects
 
         private void DeserializeBaseValue(DynamicPropertyKey propertyKey, object baseValue)
         {
-            var property = DynamicProperty.PropertyFromKey(propertyKey);
+            DynamicProperty property = DynamicProperty.PropertyFromKey(propertyKey);
             if (property == null)
+            {
                 return;
+            }
 
             lock (DynamicProperty.Synchronized)
             {
@@ -181,19 +196,19 @@ namespace Supremacy.Effects
         }
 
         public override void DeserializeOwnedData([NotNull] SerializationReader reader, [CanBeNull] object context)
-		{
+        {
             base.DeserializeOwnedData(reader, context);
 
-            var count = reader.ReadInt32();
+            int count = reader.ReadInt32();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var key = (DynamicPropertyKey)reader.ReadTokenizedObject();
-                var baseValue = reader.ReadObject();
+                DynamicPropertyKey key = (DynamicPropertyKey)reader.ReadTokenizedObject();
+                object baseValue = reader.ReadObject();
 
                 DeserializeBaseValue(key, baseValue);
             }
-		}
+        }
         #endregion
 
         #region Overrides of Cloneable
@@ -205,18 +220,20 @@ namespace Supremacy.Effects
 
         public override void CloneFrom(Cloneable original, ICloneContext context)
         {
-            var source = (DynamicObject)original;
+            DynamicObject source = (DynamicObject)original;
 
             lock (DynamicProperty.Synchronized)
             {
-                var propertyCount = source._dynamicPropertyValues.Count;
+                int propertyCount = source._dynamicPropertyValues.Count;
 
-                for (var i = 0; i < propertyCount; i++)
+                for (int i = 0; i < propertyCount; i++)
                 {
                     source._dynamicPropertyValues.GetKeyValuePair(i, out int key, out object value);
 
                     if (value == DynamicProperty.UnsetValue)
+                    {
                         continue;
+                    }
 
                     dynamic @this = this;
                     dynamic sourcePropertyValue = value;

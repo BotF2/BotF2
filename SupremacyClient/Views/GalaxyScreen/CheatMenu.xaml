@@ -33,32 +33,7 @@
             <RowDefinition Height="5" />
             <RowDefinition Height="30" />
             <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
+
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -82,72 +57,7 @@
         <TextBox x:Name="duraniumAmount" Grid.Row="7" Grid.Column="3" Text="99999"/>
         <Button Grid.Row="7" Grid.Column="5" Content="Grant" Click="OnGrantDuraniumButtonClicked"/>
 
-        <!--
-        <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Federation</TextBlock>
-        <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFdff3fc">dff3fc</TextBlock>
-        <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF7face3">7face3</TextBlock>
-
-        <TextBlock Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Federation2</TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFffffff">ffffff</TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF98C5FB">98C5FB</TextBlock>
-
-        <TextBlock Grid.Row="13" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Romulans</TextBlock>
-        <TextBlock Grid.Row="13" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF228B22">228B22</TextBlock>
-        <TextBlock Grid.Row="13" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF0ABA16">0ABA16</TextBlock>
-
-        <TextBlock Grid.Row="15" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Rom YellGreen</TextBlock>
-        <TextBlock Grid.Row="15" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF228B22">228B22</TextBlock>
-        <TextBlock Grid.Row="15" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFFFCC33">FFCC33</TextBlock>
-
-        <TextBlock Grid.Row="17" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF492725">Klingons</TextBlock>
-        <TextBlock Grid.Row="17" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFF00D0D">F00D0D</TextBlock>
-        <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFF2300D">F2300D</TextBlock>
-
-        <TextBlock Grid.Row="19" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFE50527">KlingRed 2</TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFF92933">F92933</TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF360E01">360E01</TextBlock>
-
-        <TextBlock Grid.Row="21" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Cardassians</TextBlock>
-        <TextBlock Grid.Row="21" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#ffffc125">Goldenrod1</TextBlock>
-        <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGoldenrodYellow">LightGoldenrodYellow</TextBlock>
-
-        <TextBlock Grid.Row="23" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Cardassians</TextBlock>
-        <TextBlock Grid.Row="23" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFB8860B">FFB8860B</TextBlock>
-        <TextBlock Grid.Row="23" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFEEE8AA">FFEEE8AA</TextBlock>
-
-        <TextBlock Grid.Row="25" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF4f0485">Dominion</TextBlock>
-        <TextBlock Grid.Row="25" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF9b00ae">#FF9b00ae</TextBlock>
-        <TextBlock Grid.Row="25" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#ff7c00a7">#ff7c00a7</TextBlock>
-
-        <TextBlock Grid.Row="27" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Dominion2</TextBlock>
-        <TextBlock Grid.Row="27" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Dominion</TextBlock>
-        <TextBlock Grid.Row="27" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Second Colour and</TextBlock>
-
-        <TextBlock Grid.Row="29" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Borg</TextBlock>
-        <TextBlock Grid.Row="29" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF008b45">FF008b45</TextBlock>
-        <TextBlock Grid.Row="29" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF00ff7f">FF00ff7f</TextBlock>
-
-        <TextBlock Grid.Row="31" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">OrangeGrad</TextBlock>
-        <TextBlock Grid.Row="31" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFdc961b">dc961b</TextBlock>
-        <TextBlock Grid.Row="31" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFe7d490">e7d490</TextBlock>
-
-        <TextBlock Grid.Row="33" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">PurpleGrad</TextBlock>
-        <TextBlock Grid.Row="33" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFF1F23E">TerranEmpire</TextBlock>
-        <TextBlock Grid.Row="33" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF767107">Second Colour and</TextBlock>
-
-        <TextBlock Grid.Row="35" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">RomPurpGreen</TextBlock>
-        <TextBlock Grid.Row="35" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF6666CC">FF6666CC</TextBlock>
-        <TextBlock Grid.Row="35" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFCC33FF">FFCC33FF</TextBlock>
-
-        <TextBlock Grid.Row="37" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">AzureGradient</TextBlock>
-        <TextBlock Grid.Row="37" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFc1cdcd">FFc1cdcd</TextBlock>
-        <TextBlock Grid.Row="37" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF6E7474">FF6E7474</TextBlock>
-
-
-        <TextBlock Grid.Row="39" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Red Gradient</TextBlock>
-        <TextBlock Grid.Row="39" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFCC33FF">CC33FF</TextBlock>
-        <TextBlock Grid.Row="39" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF6666CC ">6666CC</TextBlock>
-        -->
+        <TextBlock Text="{Binding Path=CheatText, Mode=OneWayToSource}"/>
 
     </Grid>
 </scc:Dialog>

@@ -15,56 +15,57 @@
              d:DesignWidth="1099"
              Height="690"
              Width="1130"
+             Margin="300,0,0,0"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
 
-  <Dialogs:Dialog.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/SupremacyClient;Component/Themes/Federation/TechObjectInfo.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </Dialogs:Dialog.Resources>
-  
-  <Dialogs:Dialog.CommandBindings>
-    <CommandBinding Command="{x:Static Commands:DialogCommands.AcceptCommand}" CanExecute="CanExecuteAcceptCommand" Executed="ExecuteAcceptCommand" />
-  </Dialogs:Dialog.CommandBindings>
-  
+    <Dialogs:Dialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SupremacyClient;Component/Themes/Federation/TechObjectInfo.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Dialogs:Dialog.Resources>
+
+    <Dialogs:Dialog.CommandBindings>
+        <CommandBinding Command="{x:Static Commands:DialogCommands.AcceptCommand}" CanExecute="CanExecuteAcceptCommand" Executed="ExecuteAcceptCommand" />
+    </Dialogs:Dialog.CommandBindings>
+
     <!--       MAIN CONTENT     -->
-  <Grid Background="Black">
+    <Grid Background="Black">
 
-    <Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
 
-      <ColumnDefinition Width="320" />
-      <ColumnDefinition Width="390" />
-      <ColumnDefinition Width="380" />
-    </Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="390" />
+            <ColumnDefinition Width="380" />
+        </Grid.ColumnDefinitions>
 
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-      <RowDefinition Height="Auto" />
-    </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-    <TextBlock Grid.ColumnSpan="2"
+        <TextBlock Grid.ColumnSpan="2"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="Black"
                Margin="1,1,0,0"
                FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
-    <TextBlock Grid.ColumnSpan="2"
+        <TextBlock Grid.ColumnSpan="2"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
                FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
 
-    <ListBox x:Name="BuildProjectList"
-             Grid.Row="1"
-             Margin="0,6,0,0"
-             PreviewMouseDoubleClick="OnBuildProjectListMouseDoubleClick"
-             SelectedItem="{Binding ElementName=_self, Path=SelectedBuildProject, Mode=OneWayToSource}"
-             Background="Black">
+        <ListBox x:Name="BuildProjectList"
+                 Grid.Row="1"
+                 Margin="0,6,0,0"
+                 PreviewMouseDoubleClick="OnBuildProjectListMouseDoubleClick"
+                 SelectedItem="{Binding ElementName=_self, Path=SelectedBuildProject, Mode=OneWayToSource}"
+                 Background="Black">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type s:BuildProject}">
                     <Grid>
@@ -74,33 +75,51 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Path=BuildDesign.Name}" />
                         <TextBlock Grid.Column="2"
-                       Text="{Binding Path=TurnsRemaining, StringFormat={local:StringResource Key=BUILD_QUEUE_TURNS_REMAINING_FORMAT}}"
-                       TextAlignment="Right" />
+                                   Text="{Binding Path=TurnsRemaining, StringFormat={local:StringResource Key=BUILD_QUEUE_TURNS_REMAINING_FORMAT}}"
+                                   TextAlignment="Right" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-    </ListBox>
+        </ListBox>
 
-    <DockPanel 
+        <DockPanel 
             Grid.Column="1"
             Grid.RowSpan="2"
             LastChildFill="True"
             Width="360"
             Margin="10,0,0,0"
             Background="Black">
-        <Image DockPanel.Dock="Top"
+            <Image DockPanel.Dock="Top"
                 MaxWidth="360"
                 MaxHeight="250"
                 Stretch="Uniform"
                 StretchDirection="DownOnly"
-                Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}"/>
+                Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}">
 
-        <ScrollViewer Margin="0,15,0,0"
+                <Image.ToolTip>
+                    <Border x:Name="ImageToolTipBorder"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            BorderBrush="{StaticResource HeaderTextBrush}"
+                            BorderThickness="2"
+                            CornerRadius="4"
+                            
+                            MaxWidth="{Binding ElementName=_self, Path=SpecialWidth1}"
+                            MaxHeight="{Binding ElementName=_self, Path=SpecialHeight1}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+                        </Border.Background>
+                    </Border>
+                </Image.ToolTip>
+            </Image>
+            <!--Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}"-->
+
+            <ScrollViewer Margin="0,15,0,0"
                 VerticalScrollBarVisibility="Auto">
-            <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
+                <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
                     Content="{Binding ElementName=_self, Path=AdditionalContent}" />
-        </ScrollViewer>
-    </DockPanel>
+            </ScrollViewer>
+        </DockPanel>
 
         <DockPanel 
         Grid.Column="2"
@@ -108,7 +127,7 @@
                LastChildFill="True"
                Width="380"
                Margin="0,0,0,0">
-               
+
             <Image DockPanel.Dock="Top"
              StretchDirection="DownOnly"
              
@@ -122,13 +141,51 @@
             -->
         </DockPanel>
 
+        <!--<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,15,0,0">
+         <TextBlock Text="(not working yet) - How many ?  >  "/>   
+            --><!--<RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"--><!--
+
+            
+            <RadioButton Name="OneTime"          
+        GroupName="Project_Amount" Content="1" Margin="15,0,0,0"
+        />
+      
+
+            --><!--IsChecked="{Binding Source=HowMany, Mode=TwoWay}"--><!--
+            <RadioButton Name="TwoTimes"           
+        GroupName="Project_Amount" Content="2" Margin="15,0,0,0"
+ />
+
+            <RadioButton Name="FiveTimes"              
+        GroupName="Project_Amount" Content="5" Margin="15,0,0,0"
+                 
+        />
+
+
+            <RadioButton Name="TenTimes"     
+        GroupName="Project_Amount" Content="10" Margin="15,0,0,0"
+                 
+        />
+        
+        </StackPanel>-->
+
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+               FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
+               Foreground="Aqua"
+               FontSize="20pt"
+               Text="{local:StringResource Key=NEW_AT_SELECT_A_SHIP_TO_CONSTRUCT}" />
+
+
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
+
+
             <Button Margin="6,0,3,0"
               IsCancel="True"
               Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
-                <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
+                <AccessText Text="{local:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}" />
+                <!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />-->
             </Button>
         </StackPanel>
-  </Grid>
-      
+    </Grid>
+
 </Dialogs:Dialog>

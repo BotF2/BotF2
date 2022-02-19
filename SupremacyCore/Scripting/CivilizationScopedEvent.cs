@@ -1,5 +1,4 @@
-// 
-// CivilizationScopedEvent.cs
+// File:CivilizationScopedEvent.cs
 // 
 // Copyright (c) 2013-2013 Mike Strobel
 // 
@@ -7,7 +6,6 @@
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 // 
 // All other rights reserved.
-// 
 
 using System;
 using System.Collections.Generic;
@@ -38,7 +36,7 @@ namespace Supremacy.Scripting
         /// </summary>
         protected int CivilizationRecurrencePeriod
         {
-            get { return _civilizationRecurrencePeriod; }
+            get => _civilizationRecurrencePeriod;
             private set
             {
                 VerifyInitializing();
@@ -46,23 +44,25 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected IKeyedCollection<int, CivTargetHistoryEntry> CivilizationTargetHistory
-        {
-            get { return _civilizationTargetHistory; }
-        } 
+        protected IKeyedCollection<int, CivTargetHistoryEntry> CivilizationTargetHistory => _civilizationTargetHistory;
 
         protected virtual bool CanTargetCivilization([NotNull] Civilization civ)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
-            CivTargetHistoryEntry entry;
 
-            if (!_civilizationTargetHistory.TryGetValue(civ.CivID, out entry))
+            if (!_civilizationTargetHistory.TryGetValue(civ.CivID, out CivTargetHistoryEntry entry))
+            {
                 return true;
+            }
 
             if (CivilizationRecurrencePeriod < 0)
+            {
                 return false;
+            }
 
             return (GameContext.Current.TurnNumber - entry.TurnNumber) > CivilizationRecurrencePeriod;
         }
@@ -70,12 +70,16 @@ namespace Supremacy.Scripting
         protected virtual void OnCivilizationTargeted([NotNull] Civilization civ)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
+            }
 
             if (CivilizationRecurrencePeriod == 0)
+            {
                 return;
+            }
 
-            _civilizationTargetHistory.Remove(civ.CivID);
+            _ = _civilizationTargetHistory.Remove(civ.CivID);
             _civilizationTargetHistory.Add(new CivTargetHistoryEntry(civ, GameContext.Current.TurnNumber));
 
             RecordExecution();
@@ -85,9 +89,8 @@ namespace Supremacy.Scripting
         {
             base.InitializeCore(options);
 
-            object value;
 
-            if (options.TryGetValue("CivilizationRecurrencePeriod", out value))
+            if (options.TryGetValue("CivilizationRecurrencePeriod", out object value))
             {
                 try
                 {
@@ -108,25 +111,34 @@ namespace Supremacy.Scripting
         protected override void OnTurnFinishedOverride(GameContext game)
         {
             if (CivilizationRecurrencePeriod < 0)
+            {
                 return;
+            }
 
             HashSet<int> removedItems = null;
 
-            foreach (var entry in _civilizationTargetHistory)
+            foreach (CivTargetHistoryEntry entry in _civilizationTargetHistory)
             {
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > CivilizationRecurrencePeriod)
                 {
                     if (removedItems == null)
+                    {
                         removedItems = new HashSet<int>();
-                    removedItems.Add(entry.CivID);
+                    }
+
+                    _ = removedItems.Add(entry.CivID);
                 }
             }
 
             if (removedItems == null)
+            {
                 return;
+            }
 
-            foreach (var civId in removedItems)
-                _civilizationTargetHistory.Remove(civId);
+            foreach (int civId in removedItems)
+            {
+                _ = _civilizationTargetHistory.Remove(civId);
+            }
         }
 
         #region CivTargetHistoryEntry Structure
@@ -140,28 +152,24 @@ namespace Supremacy.Scripting
             public CivTargetHistoryEntry([NotNull] Civilization civ, int turnNumber)
             {
                 if (civ == null)
+                {
                     throw new ArgumentNullException("civ");
+                }
+
                 if (turnNumber == 0)
+                {
                     throw new ArgumentOutOfRangeException("turnNumber", "Turn number was undefined.");
+                }
 
                 _civId = civ.CivID;
                 _turnNumber = turnNumber;
             }
 
-            public int CivID
-            {
-                get { return _civId; }
-            }
+            public int CivID => _civId;
 
-            public Civilization Civilization
-            {
-                get { return GameContext.Current.Civilizations[_civId]; }
-            }
+            public Civilization Civilization => GameContext.Current.Civilizations[_civId];
 
-            public int TurnNumber
-            {
-                get { return _turnNumber; }
-            }
+            public int TurnNumber => _turnNumber;
 
             void IOwnedDataSerializable.DeserializeOwnedData(SerializationReader reader, object context)
             {

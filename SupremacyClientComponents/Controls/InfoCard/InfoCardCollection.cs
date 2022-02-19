@@ -19,7 +19,7 @@ namespace Supremacy.Client.Controls
         /// </returns>
         public bool Contains(Guid uniqueId)
         {
-            return (IndexOf(uniqueId) != InvalidIndex);
+            return IndexOf(uniqueId) != InvalidIndex;
         }
 
         /// <summary>
@@ -33,10 +33,12 @@ namespace Supremacy.Client.Controls
         /// </returns>
         public int IndexOf(string name)
         {
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (this[index].Name == name)
+                {
                     return index;
+                }
             }
             return InvalidIndex;
         }
@@ -55,7 +57,9 @@ namespace Supremacy.Client.Controls
             for (int index = 0; index < Count; index++)
             {
                 if (this[index].UniqueId == uniqueId)
+                {
                     return index;
+                }
             }
             return InvalidIndex;
         }
@@ -70,14 +74,16 @@ namespace Supremacy.Client.Controls
         /// <value>
         /// The item with the specified <c>UniqueId</c> value. 
         /// </value>
-        [SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers")]
         public InfoCard this[Guid uniqueId]
         {
             get
             {
-                var index = IndexOf(uniqueId);
+                int index = IndexOf(uniqueId);
                 if (index != InvalidIndex)
+                {
                     return this[index];
+                }
+
                 return null;
             }
         }
@@ -89,11 +95,13 @@ namespace Supremacy.Client.Controls
         /// <returns>A strongly-typed array containing the items in this collection.</returns>
         public InfoCard[] ToArray(bool sortByLastFocusedDateTime)
         {
-            var result = new InfoCard[Count];
+            InfoCard[] result = new InfoCard[Count];
             CopyTo(result, 0);
 
             if (sortByLastFocusedDateTime)
+            {
                 Array.Sort(result, new InfoCard.LastFocusedComparer(result));
+            }
 
             return result;
         }

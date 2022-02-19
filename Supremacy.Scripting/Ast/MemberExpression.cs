@@ -86,16 +86,11 @@ namespace Supremacy.Scripting.Ast
                     .FirstOrDefault();
                 if (obsoleteAttribute != null)
                 {
-                    ErrorInfo error;
-                    
-                    if (obsoleteAttribute.IsError)
-                    {
-                        error = CompilerErrors.MemberIsObsolete;
-                    }
-                    else error = string.IsNullOrEmpty(obsoleteAttribute.Message)
+                    ErrorInfo error = obsoleteAttribute.IsError
+                        ? CompilerErrors.MemberIsObsolete
+                        : string.IsNullOrEmpty(obsoleteAttribute.Message)
                         ? CompilerErrors.MemberIsObsoleteWarning
                         : CompilerErrors.MemberIsObsoleteWithMessageWarning;
-
                     ec.ReportError(
                         error,
                         Span,
@@ -126,7 +121,7 @@ namespace Supremacy.Scripting.Ast
 
             if (!IsInstance)
             {
-                return original != null && original.IdenticalNameAndTypeName(ec, left, loc) ? (this) : ResolveExtensionMemberAccess(ec, left);
+                return original != null && original.IdenticalNameAndTypeName(ec, left, loc) ? this : ResolveExtensionMemberAccess(ec, left);
             }
 
             InstanceExpression = left;
@@ -139,7 +134,7 @@ namespace Supremacy.Scripting.Ast
                 CompilerErrors.StaticMemberCannotBeAccessedWithInstanceReference,
                 Span,
                 GetSignatureForError());
-            
+
             return this;
         }
 
@@ -159,7 +154,7 @@ namespace Supremacy.Scripting.Ast
     {
         private FieldInfo _field;
 
-        public ConstantMemberExpression([NotNull] FieldInfo field, SourceSpan span = default(SourceSpan))
+        public ConstantMemberExpression([NotNull] FieldInfo field, SourceSpan span = default)
         {
             _field = field ?? throw new ArgumentNullException("field");
 
@@ -205,7 +200,9 @@ namespace Supremacy.Scripting.Ast
         {
             IConstant ic = TypeManager.GetConstant(_field);
             if (ic.ResolveValue())
+            {
                 ic.CheckObsoleteness(ec, Span);
+            }
 
             return ic.CreateConstantReference(Span);
         }

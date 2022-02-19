@@ -78,7 +78,7 @@ namespace Supremacy.Economy
             {
                 Category = EnumHelper.Parse<ProductionCategory>(
                     tempElement.InnerText.Trim())
-                    ?? default(ProductionCategory);
+                    ?? default;
             }
 
             tempElement = element["UnitOutput"];
@@ -88,10 +88,7 @@ namespace Supremacy.Economy
             }
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "ProductionFacilities/"; }
-        }
+        protected override string DefaultImageSubFolder => "ProductionFacilities/";
 
         /// <summary>
         /// Appends the XML data for this instance.
@@ -105,15 +102,15 @@ namespace Supremacy.Economy
 
             XmlElement newElement = doc.CreateElement("LaborCost");
             newElement.InnerText = LaborCost.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("ProductionCategory");
             newElement.InnerText = Category.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("UnitOutput");
             newElement.InnerText = UnitOutput.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
         }
 
         /// <summary>
@@ -135,12 +132,12 @@ namespace Supremacy.Economy
                 return false;
             }
 
-            var sector = GameContext.Current.Universe.Map[location];
-            var system = sector.System;
-            
+            Sector sector = GameContext.Current.Universe.Map[location];
+            StarSystem system = sector.System;
+
             system.Colony.SetFacilityType(Category, this);
             system.Colony.AddFacility(Category);
-            system.Colony.ActivateFacility(Category);
+            _ = system.Colony.ActivateFacility(Category);
 
             spawnedInstance = null;
             return true;
@@ -150,9 +147,6 @@ namespace Supremacy.Economy
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Buildings; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Buildings;
     }
 }

@@ -20,19 +20,22 @@ namespace Supremacy.Client.Controls
                 typeof(RichTextBlock),
                 new PropertyMetadata(
                     null,
-                    ((d, e) => ((RichTextBlock)d).OnRichTextChange((RichText)e.NewValue))));
+                    (d, e) => ((RichTextBlock)d).OnRichTextChange((RichText)e.NewValue)));
         }
 
         public RichText RichText
         {
-            get { return (RichText)GetValue(RichTextProperty); }
-            set { SetValue(RichTextProperty, value); }
+            get => (RichText)GetValue(RichTextProperty);
+            set => SetValue(RichTextProperty, value);
         }
 
         private void OnRichTextChange(RichText richText)
         {
             if (richText == null)
+            {
                 return;
+            }
+
             Inlines.Clear();
             Inlines.Add(richText.ToSpan());
             RegisterAccessKey();
@@ -45,9 +48,12 @@ namespace Supremacy.Client.Controls
 
         private string GetAccessKey(string text)
         {
-            var num = text.IndexOf('_');
+            int num = text.IndexOf('_');
             if (num == -1 || num == text.Length - 1)
+            {
                 return null;
+            }
+
             return text.Substring(num + 1, 1);
         }
 
@@ -59,10 +65,12 @@ namespace Supremacy.Client.Controls
                 _registeredAccessKey = null;
             }
 
-            var accessKey = GetAccessKey();
-            
+            string accessKey = GetAccessKey();
+
             if (string.IsNullOrEmpty(accessKey))
+            {
                 return;
+            }
 
             AccessKeyManager.Register(accessKey, this);
             _registeredAccessKey = accessKey;

@@ -28,7 +28,7 @@ namespace Supremacy.Scripting.Ast
             Span = span;
         }
 
-        public static TypeExpression Create([NotNull] Type type, SourceSpan span = default(SourceSpan))
+        public static TypeExpression Create([NotNull] Type type, SourceSpan span = default)
         {
             if (type == null)
             {
@@ -57,7 +57,7 @@ namespace Supremacy.Scripting.Ast
 
         public override FullNamedExpression ResolveAsTypeStep(ParseContext ec, bool silent)
         {
-            var resolvedType = DoResolveAsTypeStep(ec);
+            TypeExpression resolvedType = DoResolveAsTypeStep(ec);
             if (resolvedType == null)
             {
                 return null;

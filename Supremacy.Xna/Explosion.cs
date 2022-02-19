@@ -74,7 +74,7 @@ namespace Supremacy.Xna
 
                 return false;
             }
-                
+
             return true;
         }
     }

@@ -44,8 +44,6 @@ namespace Supremacy.VFS
 
         public const string UriScheme = "vfs";
 
-        private string _name = "Default";
-
         /// <summary>
         /// The list of registered <see cref="IFilesSource"/> of the <see cref="VfsService"/>.
         /// </summary>
@@ -65,10 +63,7 @@ namespace Supremacy.VFS
             StringComparer = new CaseCultureStringComparer(false, true, null);
         }
 
-        public IIndexedCollection<IFilesSource> Sources
-        {
-            get { return _sources; }
-        }
+        public IIndexedCollection<IFilesSource> Sources => _sources;
 
         /// <summary>
         /// Dispose pattern.
@@ -84,13 +79,15 @@ namespace Supremacy.VFS
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
+            {
                 return;
+            }
 
-            var exceptions = new List<Exception>(_sources.Count);
+            List<Exception> exceptions = new List<Exception>(_sources.Count);
 
             if (disposing)
             {
-                foreach (var source in _sources)
+                foreach (IFilesSource source in _sources)
                 {
                     try
                     {
@@ -106,7 +103,9 @@ namespace Supremacy.VFS
             _disposed = true;
 
             if (exceptions.Count != 0)
+            {
                 throw new AggregateException(exceptions);
+            }
         }
 
         /// <summary>
@@ -123,16 +122,9 @@ namespace Supremacy.VFS
         /// <summary>
         /// Gets the name of the <see cref="VfsService"/>.
         /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public string Name { get; set; } = "Default";
 
-        public virtual bool IsReadOnly
-        {
-            get { return !_sources.Any(source => !source.IsReadOnly); }
-        }
+        public virtual bool IsReadOnly => !_sources.Any(source => !source.IsReadOnly);
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
@@ -167,12 +159,13 @@ namespace Supremacy.VFS
         /// </returns>
         public IFilesSource GetSource(string sourceName)
         {
-            IFilesSource source;
-            
-            if (_sources.TryGetValue(sourceName, out source))
-                return source;
 
-            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + _name + "\".");
+            if (_sources.TryGetValue(sourceName, out IFilesSource source))
+            {
+                return source;
+            }
+
+            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + Name + "\".");
         }
 
         /// <summary>
@@ -184,20 +177,23 @@ namespace Supremacy.VFS
         /// </returns>
         public IWritableFilesSource GetWritableSource(string sourceName)
         {
-            foreach (var source in _sources)
+            foreach (IFilesSource source in _sources)
             {
                 if (!string.Equals(source.Name, sourceName, StringComparison.Ordinal))
+                {
                     continue;
-                
-                var writableSource = source as IWritableFilesSource;
-                if (writableSource != null)
+                }
+
+                if (source is IWritableFilesSource writableSource)
+                {
                     return writableSource;
+                }
 
                 throw new IOException(
-                    "The source \"" + sourceName + "\" is not a IWritableFilesSource in the VFS \"" + _name + "\".");
+                    "The source \"" + sourceName + "\" is not a IWritableFilesSource in the VFS \"" + Name + "\".");
             }
 
-            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + _name + "\".");
+            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + Name + "\".");
         }
 
         public IVirtualFileInfo GetFile(string virtualPath)
@@ -246,10 +242,10 @@ namespace Supremacy.VFS
         /// </returns>
         public IVirtualFileInfo GetFileInfo(string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(path, recurse))
-                .Where(o => (o != null));
-            
+                .Where(o => o != null);
+
             switch (FileResolutionMode)
             {
                 case VfsFileResolutionMode.ReturnNewestMatch:
@@ -257,15 +253,14 @@ namespace Supremacy.VFS
                     break;
             }
 
-            return fileInfos.Where(o => o.Exists).FirstOrDefault()
-                   ?? fileInfos.FirstOrDefault();
+            return fileInfos.FirstOrDefault(o => o.Exists) ?? fileInfos.FirstOrDefault();
         }
 
         public IVirtualFileInfo GetFileInfo(string definedPathAlias, string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(definedPathAlias, path, recurse))
-                .Where(o => (o != null));
+                .Where(o => o != null);
 
             switch (FileResolutionMode)
             {
@@ -274,8 +269,7 @@ namespace Supremacy.VFS
                     break;
             }
 
-            return fileInfos.Where(o => o.Exists).FirstOrDefault()
-                   ?? fileInfos.FirstOrDefault();
+            return fileInfos.FirstOrDefault(o => o.Exists) ?? fileInfos.FirstOrDefault();
         }
 
         /// <summary>
@@ -286,10 +280,10 @@ namespace Supremacy.VFS
         /// <returns>A stream to the file.</returns>
         public Stream GetFile(string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(path, recurse))
                 .Where(o => (o != null) && o.Exists);
-            
+
             switch (FileResolutionMode)
             {
                 case VfsFileResolutionMode.ReturnNewestMatch:
@@ -309,7 +303,7 @@ namespace Supremacy.VFS
         /// <returns>A stream to the file.</returns>
         public Stream GetFile(string definedPathAlias, string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                             .Select(o => o.GetFileInfo(definedPathAlias, path, recurse))
                             .Where(o => (o != null) && o.Exists);
 

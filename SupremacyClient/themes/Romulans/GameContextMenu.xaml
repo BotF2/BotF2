@@ -1,15 +1,12 @@
-<!--
-  
-   GameContextMenu.xaml
+<!-- File:GameContextMenu.xaml for ROMULANS
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
+
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Supremacy.Client"
@@ -22,7 +19,7 @@
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="MenuItem.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/GameContextMenuItem.wav" />
+          <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/GameContextMenuItem.wav" />
         </EventTrigger.Actions>
       </EventTrigger>-->
         </Style.Triggers>
@@ -38,40 +35,40 @@
         <Style.Resources>
             <BitmapImage x:Key="Image_Main1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/main1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/main1.png" />
             <BitmapImage x:Key="Image_Main2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/main2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/main2.png" />
             <BitmapImage x:Key="Image_Dip1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/embassy1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/embassy1.png" />
             <BitmapImage x:Key="Image_Dip2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/embassy2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/embassy2.png" />
             <BitmapImage x:Key="Image_Intel1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/intel1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/intel1.png" />
             <BitmapImage x:Key="Image_Intel2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/intel2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/intel2.png" />
             <BitmapImage x:Key="Image_Menu1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/menu1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/menu1.png" />
             <BitmapImage x:Key="Image_Menu2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/menu2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/menu2.png" />
             <BitmapImage x:Key="Image_Science1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/science1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/science1.png" />
             <BitmapImage x:Key="Image_Science2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/science2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/science2.png" />
             <BitmapImage x:Key="Image_Systems1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/system1.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/system1.png" />
             <BitmapImage x:Key="Image_Systems2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Romulans/ContextMenu/system2.png" />
+                             UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/system2.png" />
         </Style.Resources>
         <Setter Property="LayoutTransform"
             Value="{Binding Path=MainWindow.LayoutTransform, Source={x:Static Application.Current}}" />
@@ -86,7 +83,7 @@
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
-                               UriSource="vfs:///Resources/UI/Romulans/ContextMenu/popup.png" />
+                               UriSource="vfs:///Resources/Specific_Empires_UI/Romulans/ContextMenu/popup.png" />
                                 </Image.Source>
                             </Image>
                             <MenuItem x:Name="MenuItem_Main"
@@ -259,7 +256,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ContextMenu.Opened">
                 <EventTrigger.Actions>
-                    <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/GameContextMenu.wav" />
+                    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/GameContextMenu.wav" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </Style.Triggers>

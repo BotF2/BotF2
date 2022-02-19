@@ -1,3 +1,4 @@
+// File:ClientUnhandledExceptionHandler.cs
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -11,7 +12,6 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Specialized;
 using System.Net;
-using System.Text;
 using System.Windows;
 
 namespace Supremacy.Client
@@ -19,20 +19,24 @@ namespace Supremacy.Client
     internal sealed class ClientUnhandledExceptionHandler : IUnhandledExceptionHandler
     {
         private readonly IGameErrorService _errorService;
-        private const string _reportErrorURL = "https://www.exultantmonkey.co.uk/BotF2/report-error.php";
+        //private const string _reportErrorURL = "https://www.exultantmonkey.co.uk/BotF2/report-error.php";
 
         #region Fields
         private readonly object _syncLock = new object();
+        private string _text;
+        private string newline = Environment.NewLine;
+
         #endregion
 
         #region Implementation of IUnhandledExceptionHandler
         public void HandleError(Exception exception)
         {
             if (exception is AppDomainUnloadedException)
+            {
                 return;
+            }
 
-            var supremacyException = exception as SupremacyException;
-            if (supremacyException != null)
+            if (exception is SupremacyException supremacyException)
             {
                 _errorService.HandleError(supremacyException);
                 Environment.Exit(Environment.ExitCode);
@@ -42,7 +46,7 @@ namespace Supremacy.Client
                 string errors = "";
                 lock (_syncLock)
                 {
-                    var innerException = exception;
+                    Exception innerException = exception;
 
                     while (innerException != null)
                     {
@@ -54,9 +58,9 @@ namespace Supremacy.Client
 
                     Console.Error.WriteLine(errors);
                     Console.Error.Flush();
-                    MessageBox.Show(
+                    _ = MessageBox.Show(
                         "An unhandled exception has occurred.  Detailed error information is "
-                        + "available in the 'Log.txt' file.",
+                        + "available in the 'Log.txt' file. Missing files could be the reason as well",
                         "Unhandled Exception",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
@@ -64,7 +68,7 @@ namespace Supremacy.Client
 
                     //if (ClientSettings.Current.ReportErrors)
                     //{
-                        ReportError(errors);
+                    ReportError(errors);
                     //}
 
                     Environment.Exit(Environment.ExitCode);
@@ -77,23 +81,43 @@ namespace Supremacy.Client
         /// </summary>
         public void ReportError(string stackTrace)
         {
-            using (var client = new WebClient())
+            using (WebClient client = new WebClient())
             {
-                var values = new NameValueCollection();
+                NameValueCollection values = new NameValueCollection
+                {
+                    ["Version"] = ClientApp.ClientVersion.ToString(),
+                    ["Title"] = stackTrace.Split('\n')[0],
+                    ["StackTrace"] = stackTrace
+                };
 
-                values["Version"] = ClientApp.ClientVersion.ToString();
-                values["Title"] = stackTrace.Split('\n')[0];
-                values["StackTrace"] = stackTrace;
-
-                string _text = Environment.NewLine + Environment.NewLine
+                _text = newline + newline
                     + DateTime.Now + " #### ERROR " /*+ Environment.NewLine*/
-                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + Environment.NewLine
-                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + Environment.NewLine
+                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + newline + newline
+                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + newline + newline
                     + "StackTrace complete:;" + stackTrace;
 
-                GameLog.Core.General.ErrorFormat(_text);
+                GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
                 Console.WriteLine(_text);
 
+                try
+                {
+                    _ = System.Diagnostics.Process.Start(".\\Resources\\reportError.bat");
+                    // batch opens a web site with email function, 
+                    // but just if batch file is activated = rem is removed before web adress
+                    // opens Win10 mail function which might be connected to Google Mail account or any other
+                }
+                catch (Exception ex) 
+                {
+                    _text = newline + newline
+                        + DateTime.Now + " #### ERROR - a missing file could be the reason as well" + newline; 
+                    Console.WriteLine(_text);
+                    GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
+
+
+                    throw ex; 
+                }
+
+                // old code
                 //try
                 //{
                 //    //var response = client.UploadValues(_reportErrorURL, "POST", values);
@@ -112,7 +136,6 @@ namespace Supremacy.Client
                 //    }
                 //    //Don't bother doing anything
                 //}
-
             }
         }
         #endregion

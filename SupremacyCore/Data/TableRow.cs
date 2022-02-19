@@ -123,8 +123,7 @@ namespace Supremacy.Data
         #region IComparable Members
         public int CompareTo(object obj)
         {
-            TableRow<TKey> row = obj as TableRow<TKey>;
-            if (row == null)
+            if (!(obj is TableRow<TKey> row))
             {
                 return 1;
             }

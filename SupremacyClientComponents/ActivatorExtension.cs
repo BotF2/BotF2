@@ -31,8 +31,8 @@ namespace Supremacy.Client
         /// <value>The property name.</value>
         public string Name
         {
-            get { return (string)GetValue(NameProperty); }
-            set { SetValue(NameProperty, value); }
+            get => (string)GetValue(NameProperty);
+            set => SetValue(NameProperty, value);
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace Supremacy.Client
         /// <value>The property value.</value>
         public object Value
         {
-            get { return GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Supremacy.Client
         [ConstructorArgument("typeName")]
         public string TypeName
         {
-            get { return _typeName; }
+            get => _typeName;
             set
             {
                 NotNull(value);
@@ -138,7 +138,7 @@ namespace Supremacy.Client
         private Type _type;
         public Type Type
         {
-            get { return _type; }
+            get => _type;
             set
             {
                 NotNull(value);
@@ -149,37 +149,34 @@ namespace Supremacy.Client
         }
 
         private readonly List<Type> _typeArguments;
-        public IList<Type> TypeArguments
-        {
-            get { return _typeArguments; }
-        }
+        public IList<Type> TypeArguments => _typeArguments;
 
         [ConstructorArgument("typeArgument1")]
         public Type TypeArgument1
         {
-            get { return GetTypeArgument(0); }
-            set { SetTypeArgument(0, value); }
+            get => GetTypeArgument(0);
+            set => SetTypeArgument(0, value);
         }
 
         [ConstructorArgument("typeArgument2")]
         public Type TypeArgument2
         {
-            get { return GetTypeArgument(1); }
-            set { SetTypeArgument(1, value); }
+            get => GetTypeArgument(1);
+            set => SetTypeArgument(1, value);
         }
 
         [ConstructorArgument("typeArgument3")]
         public Type TypeArgument3
         {
-            get { return GetTypeArgument(2); }
-            set { SetTypeArgument(2, value); }
+            get => GetTypeArgument(2);
+            set => SetTypeArgument(2, value);
         }
 
         [ConstructorArgument("typeArgument4")]
         public Type TypeArgument4
         {
-            get { return GetTypeArgument(3); }
-            set { SetTypeArgument(3, value); }
+            get => GetTypeArgument(3);
+            set => SetTypeArgument(3, value);
         }
 
         #endregion
@@ -236,14 +233,13 @@ namespace Supremacy.Client
                 if (type == null)
                 {
                     // resolve using type name
-                    var typeResolver = serviceProvider.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
-                    if (typeResolver == null)
+                    if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is IXamlTypeResolver typeResolver))
                     {
                         throw new InvalidOperationException("Cannot retrieve IXamlTypeResolver.");
                     }
 
                     // check that the number of generic arguments match
-                    var typeName = _typeName;
+                    string typeName = _typeName;
                     if (typeArguments.Length > 0)
                     {
                         int genericsMarkerIndex = typeName.LastIndexOf('`');
@@ -281,14 +277,7 @@ namespace Supremacy.Client
                 }
 
                 // build closed type
-                if (typeArguments.Length > 0 && type.IsGenericTypeDefinition)
-                {
-                    _closedType = type.MakeGenericType(typeArguments);
-                }
-                else
-                {
-                    _closedType = type;
-                }
+                _closedType = typeArguments.Length > 0 && type.IsGenericTypeDefinition ? type.MakeGenericType(typeArguments) : type;
             }
 
             return _closedType;
@@ -309,7 +298,7 @@ namespace Supremacy.Client
         /// </summary>
         public ActivatorExtension()
         {
-            _propertyValues = new List<ActivatorSetter>();
+            PropertyValues = new List<ActivatorSetter>();
         }
 
         /// <summary>
@@ -319,26 +308,20 @@ namespace Supremacy.Client
         public ActivatorExtension(Type type)
             : this()
         {
-            _type = type;
+            Type = type;
         }
 
         #endregion
 
         #region Properties
 
-        private Type _type;
         /// <summary>
         /// Gets or sets the type to create.
         /// </summary>
         /// <value>The type to create.</value>
         [ConstructorArgument("type")]
-        public Type Type
-        {
-            get { return _type; }
-            set { _type = value; }
-        }
+        public Type Type { get; set; }
 
-        private readonly List<ActivatorSetter> _propertyValues;
         /// <summary>
         /// Gets the property values.
         /// <remarks>
@@ -346,10 +329,7 @@ namespace Supremacy.Client
         /// </remarks>
         /// </summary>
         /// <value>The property values.</value>
-        public List<ActivatorSetter> PropertyValues
-        {
-            get { return _propertyValues; }
-        }
+        public List<ActivatorSetter> PropertyValues { get; }
 
         /// <summary>
         /// Gets the created object.
@@ -359,41 +339,41 @@ namespace Supremacy.Client
         {
             get
             {
-                if (_type == null)
+                if (Type == null)
                 {
                     throw new InvalidOperationException("Type was not specified.");
                 }
 
-                var value = Activator.CreateInstance(_type);
+                object value = Activator.CreateInstance(Type);
 
-                var properties = TypeDescriptor.GetProperties(_type);
-                foreach (var propertyValue in _propertyValues)
+                PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(Type);
+                foreach (ActivatorSetter propertyValue in PropertyValues)
                 {
-                    var property = properties[propertyValue.Name];
+                    PropertyDescriptor property = properties[propertyValue.Name];
                     if (property == null)
                     {
                         throw new XamlParseException(string.Format("Invalid property name '{0}'.", propertyValue.Name));
                     }
-                    var dpDescriptor = DependencyPropertyDescriptor.FromProperty(property);
-                    var binding = BindingOperations.GetBindingBase(
+                    DependencyPropertyDescriptor dpDescriptor = DependencyPropertyDescriptor.FromProperty(property);
+                    BindingBase binding = BindingOperations.GetBindingBase(
                         propertyValue, ActivatorSetter.ValueProperty);
 
                     // if the property is data-bound, transfer the binding
                     if (dpDescriptor != null && binding != null)
                     {
                         BindingOperations.ClearBinding(propertyValue, ActivatorSetter.ValueProperty);
-                        BindingOperations.SetBinding(
+                        _ = BindingOperations.SetBinding(
                             (DependencyObject)value, dpDescriptor.DependencyProperty, binding);
                     }
                     else if (propertyValue.Value != null)
                     {
-                        var propertyValueType = propertyValue.Value.GetType();
+                        Type propertyValueType = propertyValue.Value.GetType();
                         // if the value is assignable, assign it
                         if (property.PropertyType.IsAssignableFrom(propertyValueType))
                         {
                             property.SetValue(value, propertyValue.Value);
                         }
-                            // try to use a type converter to get the value
+                        // try to use a type converter to get the value
                         else if (property.Converter.CanConvertFrom(propertyValueType))
                         {
                             try
@@ -406,7 +386,7 @@ namespace Supremacy.Client
                             }
                         }
                     }
-                        // if the property is nullable and the assigned value is null, assign null
+                    // if the property is nullable and the assigned value is null, assign null
                     else if (property.PropertyType.IsClass ||
                              (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                     {

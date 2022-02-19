@@ -12,80 +12,54 @@ namespace Supremacy.Text
 {
     public struct TextStyle : IEquatable<TextStyle>
     {
-        private static readonly TextStyle _defaultStyle = new TextStyle(FontStyles.Normal, FontWeights.Normal, DefaultForeground, DefaultBackground);
         private static readonly TextStyle _hiddenStyle = new TextStyle(FontStyles.Normal, FontWeights.Normal, null, null, TextEffectStyle.None, null);
 
         private FontStyle _fontStyle;
         private FontWeight _fontWeight;
-        private Brush _foreground;
         private Brush _background;
-        private TextEffectStyle _effect;
         private Brush _effectBrush;
 
         public FontStyle FontStyle
         {
-            get { return _fontStyle; }
-            set { _fontStyle = value; }
+            get => _fontStyle;
+            set => _fontStyle = value;
         }
 
         public FontWeight FontWeight
         {
-            get { return _fontWeight; }
-            set { _fontWeight = value; }
+            get => _fontWeight;
+            set => _fontWeight = value;
         }
 
         [DefaultValue(null)]
-        public Brush Foreground
-        {
-            get { return _foreground; }
-            set { _foreground = value; }
-        }
+        public Brush Foreground { get; set; }
 
         [DefaultValue(null)]
         public Brush Background
         {
-            get { return _background; }
-            set { _background = value; }
+            get => _background;
+            set => _background = value;
         }
 
         [DefaultValue(TextEffectStyle.None)]
-        public TextEffectStyle Effect
-        {
-            get { return _effect; }
-            set { _effect = value; }
-        }
+        public TextEffectStyle Effect { get; set; }
 
         [DefaultValue(null)]
         public Brush EffectBrush
         {
-            get { return _effectBrush; }
-            set { _effectBrush = value; }
+            get => _effectBrush;
+            set => _effectBrush = value;
         }
 
-        public static TextStyle Default
-        {
-            get { return _defaultStyle; }
-        }
+        public static TextStyle Default { get; } = new TextStyle(FontStyles.Normal, FontWeights.Normal, DefaultForeground, DefaultBackground);
 
-        public static TextStyle Hidden
-        {
-            get { return _hiddenStyle; }
-        }
+        public static TextStyle Hidden => _hiddenStyle;
 
-        public static Brush DefaultForeground
-        {
-            get { return null; }
-        }
+        public static Brush DefaultForeground => null;
 
-        public static Brush DefaultBackground
-        {
-            get { return null; }
-        }
-       
-        public static Brush DefaultEffectBrush
-        {
-            get { return null; }
-        }
+        public static Brush DefaultBackground => null;
+
+        public static Brush DefaultEffectBrush => null;
 
         static TextStyle() { }
 
@@ -93,9 +67,9 @@ namespace Supremacy.Text
         {
             _fontStyle = fontStyle;
             _fontWeight = fontWeight;
-            _foreground = foreground;
+            Foreground = foreground;
             _background = background;
-            _effect = TextEffectStyle.None;
+            Effect = TextEffectStyle.None;
             _effectBrush = null;
         }
 
@@ -103,9 +77,9 @@ namespace Supremacy.Text
         {
             _fontStyle = fontStyle;
             _fontWeight = fontWeight;
-            _foreground = foreground;
+            Foreground = foreground;
             _background = null;
-            _effect = TextEffectStyle.None;
+            Effect = TextEffectStyle.None;
             _effectBrush = null;
         }
 
@@ -113,9 +87,9 @@ namespace Supremacy.Text
         {
             _fontStyle = fontStyle;
             _fontWeight = fontWeight;
-            _foreground = foreground;
+            Foreground = foreground;
             _background = background;
-            _effect = effect;
+            Effect = effect;
             _effectBrush = effectBrush;
         }
 
@@ -152,55 +126,58 @@ namespace Supremacy.Text
         public void Dump(XmlWriter writer)
         {
             XamlServices.Save(writer, this);
-//            writer.WriteStartElement("TextStyle");
-//            writer.WriteAttributeString("FontStyle", this.FontWeight.ToString());
-//            writer.WriteAttributeString("FontWeight", this.FontWeight.ToString());
-//            writer.WriteAttributeString("Foreground", this.Foreground.ToString());
-//            writer.WriteAttributeString("Background", this.Background.ToString());
-//            writer.WriteAttributeString("Effect", ((object)this.Effect).ToString());
-//            writer.WriteAttributeString("EffectBrush", this.EffectBrush.ToString());
-//            writer.WriteEndElement();
+            //            writer.WriteStartElement("TextStyle");
+            //            writer.WriteAttributeString("FontStyle", this.FontWeight.ToString());
+            //            writer.WriteAttributeString("FontWeight", this.FontWeight.ToString());
+            //            writer.WriteAttributeString("Foreground", this.Foreground.ToString());
+            //            writer.WriteAttributeString("Background", this.Background.ToString());
+            //            writer.WriteAttributeString("Effect", ((object)this.Effect).ToString());
+            //            writer.WriteAttributeString("EffectBrush", this.EffectBrush.ToString());
+            //            writer.WriteEndElement();
         }
 
         public bool Equals(TextStyle other)
         {
             return _fontStyle == other._fontStyle &&
                    _fontWeight == other._fontWeight &&
-                   _foreground == other._foreground &&
+                   Foreground == other.Foreground &&
                    _background == other._background &&
-                   _effect == other._effect &&
+                   Effect == other.Effect &&
                    _effectBrush == other._effectBrush;
 
         }
 
         public override string ToString()
         {
-            var output = new StringBuilder();
-            using (var writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            StringBuilder output = new StringBuilder();
+            using (XmlWriter writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            {
                 Dump(writer);
-            return (output).ToString();
+            }
+
+            return output.ToString();
         }
 
         public override bool Equals(object obj)
         {
-            var other = obj as TextStyle?;
+            TextStyle? other = obj as TextStyle?;
             return other.HasValue && Equals(other.Value);
         }
 
         public override int GetHashCode()
         {
-            // ReSharper disable NonReadonlyFieldInGetHashCode
+
             return 29 *
                    (29 *
                     (29 *
                      (29 *
                       (29 * _fontStyle.GetHashCode()
                        + _fontWeight.GetHashCode())
-                      + _foreground.GetHashCode())
+                      + Foreground.GetHashCode())
                      + _background.GetHashCode())
-                    + _effect.GetHashCode())
+                    + Effect.GetHashCode())
                    + _effectBrush.GetHashCode();
-            // ReSharper restore NonReadonlyFieldInGetHashCode
+
         }
     }
 }

@@ -90,21 +90,24 @@ namespace Supremacy.Scripting.Utility
             MemberInfo[] members;
 
             if (Type is GenericTypeParameterBuilder)
+            {
                 return new MemberInfo[0];
+            }
 
             //_type = TypeManager.DropGenericTypeArguments(_type);
 
-            if (mt == MemberTypes.Event)
-                members = Type.GetEvents(bf | BindingFlags.DeclaredOnly);
-            else
-                members = Type.FindMembers(
+            members = mt == MemberTypes.Event
+                ? Type.GetEvents(bf | BindingFlags.DeclaredOnly)
+                : Type.FindMembers(
                     mt,
                     bf | BindingFlags.DeclaredOnly,
                     null,
                     null);
 
             if (members.Length == 0)
+            {
                 return new MemberInfo[0];
+            }
 
             Array.Reverse(members);
             return members;
@@ -159,7 +162,10 @@ namespace Supremacy.Scripting.Utility
         public override string ToString()
         {
             if (_baseContainer != null)
+            {
                 return "TypeHandle (" + _id + "," + Name + " : " + _baseContainer + ")";
+            }
+
             return "TypeHandle (" + _id + "," + Name + ")";
         }
     }
@@ -198,7 +204,7 @@ namespace Supremacy.Scripting.Utility
             #region IEqualityComparer Members
             bool IEqualityComparer.Equals(object x, object y)
             {
-                return (x == y);
+                return x == y;
             }
 
             int IEqualityComparer.GetHashCode(object obj)

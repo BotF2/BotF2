@@ -30,14 +30,18 @@ namespace Supremacy.Effects
         private void SetFlag(Flags flag, bool value)
         {
             if (value)
+            {
                 _flags |= flag;
+            }
             else
+            {
                 _flags &= ~flag;
+            }
         }
 
         private bool GetFlag(Flags flag)
         {
-            return ((_flags & flag) == flag);
+            return (_flags & flag) == flag;
         }
 
         public DynamicPropertyMetadata([CanBeNull] TValue defaultValue)
@@ -64,19 +68,19 @@ namespace Supremacy.Effects
         }
 
         public DynamicPropertyMetadata([CanBeNull] DynamicPropertyChangedCallback<TValue> propertyChangedCallback)
-            : this(default(TValue), propertyChangedCallback, null) { }
+            : this(default, propertyChangedCallback, null) { }
 
         public DynamicPropertyMetadata([CanBeNull] CoerceDynamicPropertyCallback<TValue> coerceValueCallback)
-            : this(default(TValue), null, coerceValueCallback) { }
+            : this(default, null, coerceValueCallback) { }
 
         public DynamicPropertyMetadata(
             [CanBeNull] DynamicPropertyChangedCallback<TValue> propertyChangedCallback,
             [CanBeNull] CoerceDynamicPropertyCallback<TValue> coerceValueCallback)
-            : this(default(TValue), propertyChangedCallback, coerceValueCallback) { }
+            : this(default, propertyChangedCallback, coerceValueCallback) { }
 
         public TValue DefaultValue
         {
-            get { return _defaultValue; }
+            get => _defaultValue;
             set
             {
                 VerifyUnsealed();
@@ -86,7 +90,7 @@ namespace Supremacy.Effects
 
         public CoerceDynamicPropertyCallback<TValue> CoerceValueCallback
         {
-            get { return _coerceValueCallback; }
+            get => _coerceValueCallback;
             set
             {
                 VerifyUnsealed();
@@ -96,7 +100,7 @@ namespace Supremacy.Effects
 
         public DynamicPropertyChangedCallback<TValue> PropertyChangedCallback
         {
-            get { return _propertyChangedCallback; }
+            get => _propertyChangedCallback;
             set
             {
                 VerifyUnsealed();
@@ -107,21 +111,24 @@ namespace Supremacy.Effects
         private void VerifyUnsealed()
         {
             if (!IsSealed)
+            {
                 return;
+            }
+
             throw new InvalidOperationException(
                 "Property metadata cannot be modified once it has been used.");
         }
 
         internal bool IsDefaultValueModified
         {
-            get { return GetFlag(Flags.IsDefaultValueModified); }
-            set { SetFlag(Flags.IsDefaultValueModified, value); }
+            get => GetFlag(Flags.IsDefaultValueModified);
+            set => SetFlag(Flags.IsDefaultValueModified, value);
         }
 
         protected internal bool IsSealed
         {
-            get { return GetFlag(Flags.IsSealed); }
-            internal set { SetFlag(Flags.IsSealed, value); }
+            get => GetFlag(Flags.IsSealed);
+            internal set => SetFlag(Flags.IsSealed, value);
         }
 
         protected virtual void OnApply(DynamicProperty<TValue> property, Type targetType) { }
@@ -129,29 +136,40 @@ namespace Supremacy.Effects
         internal void Merge(DynamicPropertyMetadata<TValue> baseMetadata, DynamicProperty<TValue> property)
         {
             if (baseMetadata == null)
+            {
                 throw new ArgumentNullException("baseMetadata");
+            }
 
             if (IsSealed)
+            {
                 VerifyUnsealed();
+            }
 
             if (!IsDefaultValueModified)
+            {
                 _defaultValue = baseMetadata.DefaultValue;
-            
+            }
+
             if (baseMetadata.PropertyChangedCallback != null)
             {
-                var invocationList = baseMetadata.PropertyChangedCallback.GetInvocationList();
+                Delegate[] invocationList = baseMetadata.PropertyChangedCallback.GetInvocationList();
                 if (invocationList.Length > 0)
                 {
-                    var target = (DynamicPropertyChangedCallback<TValue>)invocationList[0];
-                    for (var i = 1; i < invocationList.Length; i++)
+                    DynamicPropertyChangedCallback<TValue> target = (DynamicPropertyChangedCallback<TValue>)invocationList[0];
+                    for (int i = 1; i < invocationList.Length; i++)
+                    {
                         target = (DynamicPropertyChangedCallback<TValue>)Delegate.Combine(target, invocationList[i]);
+                    }
+
                     target = (DynamicPropertyChangedCallback<TValue>)Delegate.Combine(target, _propertyChangedCallback);
                     _propertyChangedCallback = target;
                 }
             }
-            
+
             if (_coerceValueCallback == null)
+            {
                 _coerceValueCallback = baseMetadata.CoerceValueCallback;
+            }
         }
 
         internal void Seal(DynamicProperty<TValue> property, Type targetType)

@@ -1,4 +1,4 @@
-// GameContext.cs
+// File:GameContext.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -13,7 +13,6 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
-using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -27,7 +26,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows;
 
 namespace Supremacy.Game
@@ -204,56 +202,82 @@ namespace Supremacy.Game
             try
             {
                 GameLog.Core.SaveLoad.DebugFormat("--------------------------------------------------");
+                _text = "########### Deserialising GameContext...";
+                Console.WriteLine(_text);
                 GameLog.Core.SaveLoad.DebugFormat("########### Deserialising GameContext...");
-                IsMultiplayerGame = reader.ReadBoolean();
-                GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
-                _nextObjectId = reader.ReadOptimizedInt32();
-                _turnNumber = reader.ReadOptimizedUInt16();
-                        GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
-                _options = reader.Read<GameOptions>();
-                _gameMod = reader.Read<GameMod>();
-                _civilizations = reader.Read<CivDatabase>();
-                        // CivDatabase = basic Civs (like ShortName etc)
-                _civManagers = reader.Read<CivilizationManagerMap>();
-                        // _civManagers = basic Civs (like ShortName etc)
-                _races = reader.Read<RaceDatabase>();
-                _universe = reader.Read<UniverseManager>();
-                        GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
-                _techDatabase = reader.Read<TechDatabase>();
-                _researchMatrix = reader.Read<ResearchMatrix>();
-                _sectorClaims = reader.Read<SectorClaimGrid>();
-                _techTrees = reader.Read<TechTreeMap>();
-                _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
-                _agreementMatrix = reader.Read<AgreementMatrix>();
-                _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
-                _strategyDatabase = reader.Read<StrategyDatabase>();
-                _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
-                _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
 
-                
+                IsMultiplayerGame = reader.ReadBoolean();
+                Console.WriteLine("reading IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
+                GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
+
+                _nextObjectId = reader.ReadOptimizedInt32();
+                Console.WriteLine("reading _nextObjectId.....");
+                _turnNumber = reader.ReadOptimizedUInt16();
+                Console.WriteLine("reading _turnNumber..... > " + _turnNumber);
+                GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
+
+                _options = reader.Read<GameOptions>();
+                Console.WriteLine("reading _options.....");
+                _gameMod = reader.Read<GameMod>();
+                Console.WriteLine("reading _gameMod.....");
+                _civilizations = reader.Read<CivDatabase>();
+                Console.WriteLine("reading _civilizations.....");
+                // CivDatabase = basic Civs (like ShortName etc)
+                _civManagers = reader.Read<CivilizationManagerMap>();
+                Console.WriteLine("reading _civManagers.....");
+                // _civManagers = basic Civs (like ShortName etc)
+                _races = reader.Read<RaceDatabase>();
+                Console.WriteLine("reading _races.....");
+                _universe = reader.Read<UniverseManager>();
+                GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
+
+                _techDatabase = reader.Read<TechDatabase>();
+                Console.WriteLine("reading _techDatabase.....");
+                _researchMatrix = reader.Read<ResearchMatrix>();
+                Console.WriteLine("reading _researchMatrix.....");
+                _sectorClaims = reader.Read<SectorClaimGrid>();
+                Console.WriteLine("reading _sectorClaims.....");
+                _techTrees = reader.Read<TechTreeMap>();
+                Console.WriteLine("reading _techTrees.....");
+                _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
+                Console.WriteLine("reading _diplomacyData.....");
+                _agreementMatrix = reader.Read<AgreementMatrix>();
+                Console.WriteLine("reading _agreementMatrix.....");
+                _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
+                Console.WriteLine("reading _diplomats.....");
+                _strategyDatabase = reader.Read<StrategyDatabase>();
+                Console.WriteLine("reading _strategyDatabase.....");
+                _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
+                Console.WriteLine("reading _scriptedEvents.....");
+                _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
+                Console.WriteLine("reading _diplomacyDatabase.....");
+
+
                 FixupDiplomacyData();
             }
             finally
             {
-                PopThreadContext();
+                _ = PopThreadContext();
             }
         }
 
         private void FixupDiplomacyData()
         {
-            var diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
+            CivilizationPairedMap<IDiplomacyData> diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
 
             // going through civ managers better reflects which civ got spawned
-            foreach (var civMgr1 in _civManagers)
+            foreach (CivilizationManager civMgr1 in _civManagers)
             {
-                var civ1 = civMgr1.Civilization;
-                var diplomat = _diplomats[civ1];
+                Civilization civ1 = civMgr1.Civilization;
+                Diplomat diplomat = _diplomats[civ1];
 
-                foreach (var civMgr2 in _civManagers)
+                foreach (CivilizationManager civMgr2 in _civManagers)
                 {
-                    var civ2 = civMgr2.Civilization;
+                    Civilization civ2 = civMgr2.Civilization;
                     if (civ1 == civ2)
+                    {
                         continue;
+                    }
 
                     diplomacyData.Add(civ1, civ2, diplomat.GetData(civ2));
                 }
@@ -267,24 +291,28 @@ namespace Supremacy.Game
         public void LoadStrings([NotNull] ITextDatabase textDatabase)
         {
             if (textDatabase == null)
+            {
                 throw new ArgumentNullException("textDatabase");
+            }
 
-            var techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
+            ITextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
 
-            foreach (var design in _techDatabase)
+            foreach (TechObjectDesign design in _techDatabase)
             {
                 ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
-                LocalizedTextGroup localizedText; // This is Orbital Batteries Only!!! 
-                if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out localizedText))
+                        // This is Orbital Batteries Only!!! 
+                if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out LocalizedTextGroup localizedText))
                 {
                     //GameLog.Client.GameInitData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
                     //    localizedText.DefaultEntry, localizedText.DefaultLocalText, localizedText.Entries, localizedText.Key, design.Key );
                     design.LocalizedText = localizedText;
                     continue;
                 }
-                ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry; 
-                if (!techObjectTable.TryGetEntry(design.Key, out entry)) 
+                if (!techObjectTable.TryGetEntry(design.Key, out ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry))
+                {
                     continue;
+                }
+
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
                 //GameLog.Client.GameInitData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
             }
@@ -297,8 +325,8 @@ namespace Supremacy.Game
         /// <value>The tables.</value>
         public GameTables Tables
         {
-            get { return _tables; }
-            internal set { _tables = value; }
+            get => _tables;
+            internal set => _tables = value;
         }
 
         /// <summary>
@@ -307,8 +335,8 @@ namespace Supremacy.Game
         /// <value>The options.</value>
         public GameOptions Options
         {
-            get { return _options; }
-            internal set { _options = value; }
+            get => _options;
+            internal set => _options = value;
         }
 
         /// <summary>
@@ -317,8 +345,8 @@ namespace Supremacy.Game
         /// <value>The current game mod, or <c>null</c> if no mod is loaded.</value>
         public GameMod GameMod
         {
-            get { return _gameMod; }
-            set { _gameMod = value; }
+            get => _gameMod;
+            set => _gameMod = value;
         }
 
         /// <summary>
@@ -327,8 +355,8 @@ namespace Supremacy.Game
         /// <value>The civilizations.</value>
         public CivDatabase Civilizations
         {
-            get { return _civilizations; }
-            internal set { _civilizations = value; }
+            get => _civilizations;
+            internal set => _civilizations = value;
         }
 
         /// <summary>
@@ -342,8 +370,8 @@ namespace Supremacy.Game
         /// </remarks>
         public CivilizationManagerMap CivilizationManagers
         {
-            get { return _civManagers; }
-            internal set { _civManagers = value; }
+            get => _civManagers;
+            internal set => _civManagers = value;
         }
 
         /// <summary>
@@ -352,8 +380,8 @@ namespace Supremacy.Game
         /// <value>The races.</value>
         public RaceDatabase Races
         {
-            get { return _races; }
-            internal set { _races = value; }
+            get => _races;
+            internal set => _races = value;
         }
 
         /// <summary>
@@ -362,8 +390,8 @@ namespace Supremacy.Game
         /// <value>The universe manager.</value>
         public UniverseManager Universe
         {
-            get { return _universe; }
-            internal set { _universe = value; }
+            get => _universe;
+            internal set => _universe = value;
         }
 
         /// <summary>
@@ -372,30 +400,30 @@ namespace Supremacy.Game
         /// <value>The tech database.</value>
         public TechDatabase TechDatabase
         {
-            get { return _techDatabase; }
-            internal set { _techDatabase = value; }
+            get => _techDatabase;
+            internal set => _techDatabase = value;
         }
 
         public ICollection<ScriptedEvent> ScriptedEvents
         {
-            get { return _scriptedEvents; }
-            internal set { _scriptedEvents = value; }
+            get => _scriptedEvents;
+            internal set => _scriptedEvents = value;
         }
 
         public DiplomacyDatabase DiplomacyDatabase
         {
-            get { return _diplomacyDatabase; }
-            internal set { _diplomacyDatabase = value; }
+            get => _diplomacyDatabase;
+            internal set => _diplomacyDatabase = value;
         }
 
         public event EventHandler TurnNumberChanged;
 
         private void OnTurnNumberChanged()
         {
-            GameLog.Client.General.InfoFormat("------------------------------ TURN {0} ------------------------------", TurnNumber);
-            var handler = TurnNumberChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            _text = "------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
+            Console.WriteLine(_text);
+            GameLog.Client.General.InfoFormat(_text);
+            TurnNumberChanged?.Invoke(this, EventArgs.Empty);
 
             if (!IsMultiplayerGame)
             {
@@ -411,11 +439,14 @@ namespace Supremacy.Game
         /// <value>The turn number.</value>
         public int TurnNumber
         {
-            get { return _turnNumber; }
+            get => _turnNumber;
             set
             {
                 if (Equals(_turnNumber, value))
+                {
                     return;
+                }
+
                 _turnNumber = value;
                 OnTurnNumberChanged();
             }
@@ -427,8 +458,8 @@ namespace Supremacy.Game
         /// <value>The research matrix.</value>
         public ResearchMatrix ResearchMatrix
         {
-            get { return _researchMatrix; }
-            internal set { _researchMatrix = value; }
+            get => _researchMatrix;
+            internal set => _researchMatrix = value;
         }
 
         /// <summary> Do we still need this matrix part of intel??? not making intel like research anymore?
@@ -447,20 +478,20 @@ namespace Supremacy.Game
         /// <value>The map of sector claims.</value>
         public SectorClaimGrid SectorClaims
         {
-            get { return _sectorClaims; }
-            internal set { _sectorClaims = value; }
+            get => _sectorClaims;
+            internal set => _sectorClaims = value;
         }
 
         public TechTreeMap TechTrees
         {
-            get { return _techTrees; }
-            internal set { _techTrees = value; }
+            get => _techTrees;
+            internal set => _techTrees = value;
         }
 
         public StrategyDatabase StrategyDatabase
         {
-            get { return _strategyDatabase; }
-            internal set { _strategyDatabase = value; }
+            get => _strategyDatabase;
+            internal set => _strategyDatabase = value;
         }
 
         /// <summary>
@@ -469,14 +500,14 @@ namespace Supremacy.Game
         /// <value>The diplomacy data map.</value>
         public CivilizationPairedMap<IDiplomacyData> DiplomacyData
         {
-            get { return _diplomacyData; }
-            internal set { _diplomacyData = value; }
+            get => _diplomacyData;
+            internal set => _diplomacyData = value;
         }
 
         public AgreementMatrix AgreementMatrix
         {
-            get { return _agreementMatrix; }
-            internal set { _agreementMatrix = value; }
+            get => _agreementMatrix;
+            internal set => _agreementMatrix = value;
         }
 
         /// <summary>
@@ -485,8 +516,8 @@ namespace Supremacy.Game
         /// <value>The <see cref="Civilization"/>-to-<see cref="Diplomat"/> map.</value>
         public CivilizationKeyedMap<Diplomat> Diplomats
         {
-            get { return _diplomats; }
-            internal set { _diplomats = value; }
+            get => _diplomats;
+            internal set => _diplomats = value;
         }
         #endregion
 
@@ -514,13 +545,17 @@ namespace Supremacy.Game
 
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
+        private string _text;
 
         private static Stack<GameContext> ThreadStack
         {
             get
             {
                 if (_threadStack == null)
+                {
                     _threadStack = new Stack<GameContext>();
+                }
+
                 return _threadStack;
             }
         }
@@ -540,10 +575,11 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext PopThreadContext()
         {
-            GameContext result;
 
-            if (!ThreadStack.TryPop(out result))
+            if (!ThreadStack.TryPop(out GameContext result))
+            {
                 return result;
+            }
 
             return null;
         }
@@ -557,8 +593,7 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool CheckAndPop(GameContext context)
         {
-            GameContext top;
-            if (!_stack.TryPeek(out top))
+            if (!_stack.TryPeek(out GameContext top))
             {
                 return false;
             }
@@ -576,9 +611,11 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext Pop()
         {
-            GameContext result;
-            if (!_stack.TryPop(out result))
+            if (!_stack.TryPop(out GameContext result))
+            {
                 return null;
+            }
+
             return result;
         }
 
@@ -588,9 +625,11 @@ namespace Supremacy.Game
         /// <returns>The context.</returns>
         public static GameContext Peek()
         {
-            GameContext result;
-            if (!_stack.TryPeek(out result))
+            if (!_stack.TryPeek(out GameContext result))
+            {
                 return null;
+            }
+
             return result;
         }
 
@@ -604,50 +643,52 @@ namespace Supremacy.Game
         {
             get
             {
-                var gameContext = ThreadContext ?? Peek();
+                GameContext gameContext = ThreadContext ?? Peek();
                 if (gameContext != null)
                 {
                     // keep this for next time we have to check Game Context
-                        //foreach (var civManager in gameContext.CivilizationManagers)
-                        //{
-                        //    //    if (civManager.Civilization.IsEmpire)
-                        //    //        continue;
-                        //    if (civManager.CivilizationID != 4) // only Cardassians
-                        //        continue;
+                    //foreach (var civManager in gameContext.CivilizationManagers)
+                    //{
+                    //    //    if (civManager.Civilization.IsEmpire)
+                    //    //        continue;
+                    //    if (civManager.CivilizationID != 4) // only Cardassians
+                    //        continue;
 
-                        //bool output = false;
+                    //bool output = false;
 
-                        //    string _gameLogText = "Civ= " + civManager.CivilizationID +"  :";//  .Civilization.Key;
-                        //                                                                     //string _gameLogText = "Hello";
-                        //if (civManager.IntelOrdersGoingToHost != null)
-                        //{
-                        //    _gameLogText += civManager.IntelOrdersGoingToHost.Count + " for civManager.IntelOrdersGoingToHost,  ";
-                        //    if (civManager.IntelOrdersGoingToHost.Count > 0)
-                        //        output = true;
-                        //}
-                        //if (civManager.IntelOrdersIncomingToHost != null)
-                        //{
-                        //    _gameLogText += civManager.IntelOrdersIncomingToHost.Count + " for civManager.IntelOrdersIncomingToHost";
-                        //    if(civManager.IntelOrdersIncomingToHost.Count > 0)
-                        //        output = true;
-                        //}
-                        ////    // same for civ, not for CivManager
-                        ////    if (civManager.Civilization.IntelOrdersGoingToHost != null)
-                        ////        _gameLogText += "civ.IntelOrdersGoingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
-                        ////    if (civManager.Civilization.IntelOrdersIncomingToHost != null)
-                        ////        _gameLogText += "civ.IntelOrdersIncomingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+                    //    string _gameLogText = "Civ= " + civManager.CivilizationID +"  :";//  .Civilization.Key;
+                    //                                                                     //string _gameLogText = "Hello";
+                    //if (civManager.IntelOrdersGoingToHost != null)
+                    //{
+                    //    _gameLogText += civManager.IntelOrdersGoingToHost.Count + " for civManager.IntelOrdersGoingToHost,  ";
+                    //    if (civManager.IntelOrdersGoingToHost.Count > 0)
+                    //        output = true;
+                    //}
+                    //if (civManager.IntelOrdersIncomingToHost != null)
+                    //{
+                    //    _gameLogText += civManager.IntelOrdersIncomingToHost.Count + " for civManager.IntelOrdersIncomingToHost";
+                    //    if(civManager.IntelOrdersIncomingToHost.Count > 0)
+                    //        output = true;
+                    //}
+                    ////    // same for civ, not for CivManager
+                    ////    if (civManager.Civilization.IntelOrdersGoingToHost != null)
+                    ////        _gameLogText += "civ.IntelOrdersGoingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+                    ////    if (civManager.Civilization.IntelOrdersIncomingToHost != null)
+                    ////        _gameLogText += "civ.IntelOrdersIncomingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
 
-                        //if (output == true)
-                        //GameLog.Core.Test.DebugFormat(_gameLogText);
+                    //if (output == true)
+                    //GameLog.Core.Test.DebugFormat(_gameLogText);
 
-                        //}
+                    //}
 
 
                     return gameContext;
                 }
 
                 if (_isInDesignMode.Value)
+                {
                     gameContext = CreateDesignTimeGameContext();
+                }
 
                 return gameContext;
             }
@@ -655,7 +696,7 @@ namespace Supremacy.Game
 
         private static GameContext CreateDesignTimeGameContext()
         {
-            var gameContext = Create(
+            GameContext gameContext = Create(
                 new GameOptions
                 {
                     GalaxySize = GalaxySize.Tiny,
@@ -689,22 +730,22 @@ namespace Supremacy.Game
             _stack.Push(gameContext);
 
             gameContext.TurnNumber = 1;
-            var civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);
+            Civilization civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);
             GameLog.Client.GameData.DebugFormat("civ={0}, type={1}", civ.Name, civ.CivilizationType);
 
-            var civManager = gameContext.CivilizationManagers[civ];
-            var homeColony = civManager.HomeColony;
+            CivilizationManager civManager = gameContext.CivilizationManagers[civ];
+            Colony homeColony = civManager.HomeColony;
 
-            var shipyardDesign = TechTreeHelper.GetBuildProjects(homeColony).Select(o => o.BuildDesign).OfType<ShipyardDesign>().FirstOrDefault();
+            ShipyardDesign shipyardDesign = TechTreeHelper.GetBuildProjects(homeColony).Select(o => o.BuildDesign).OfType<ShipyardDesign>().FirstOrDefault();
 
             if (shipyardDesign != null)
             {
                 if (shipyardDesign.TrySpawn(homeColony.Location, civ, out TechObject spawnedInstance))
                 {
-                    var shipyard = homeColony.Shipyard;
-                    var shipBuildProjects = TechTreeHelper.GetShipyardBuildProjects(shipyard);
+                    Shipyard shipyard = homeColony.Shipyard;
+                    IList<BuildProject> shipBuildProjects = TechTreeHelper.GetShipyardBuildProjects(shipyard);
 
-                    for (var i = 0; i <= shipyard.BuildSlots.Count && shipBuildProjects.Count != 0; i++)
+                    for (int i = 0; i <= shipyard.BuildSlots.Count && shipBuildProjects.Count != 0; i++)
                     {
                         GameLog.Core.ShipProduction.DebugFormat("shipBuildProjects[0].Description = {0}", shipBuildProjects[0].Description);
                         shipyard.BuildQueue.Add(new BuildQueueItem(shipBuildProjects[0]));
@@ -715,15 +756,19 @@ namespace Supremacy.Game
                 }
             }
 
-            var windTurbines = gameContext.TechDatabase["WIND_TURBINES"] as BuildingDesign;
+            BuildingDesign windTurbines = gameContext.TechDatabase["WIND_TURBINES"] as BuildingDesign;
             if (windTurbines != null)
-                windTurbines.TrySpawn(homeColony.Location, homeColony.Owner, out TechObject spawnedInstance);
+            {
+                _ = windTurbines.TrySpawn(homeColony.Location, homeColony.Owner, out TechObject spawnedInstance);
+            }
 
-            var chargeCollectors = gameContext.TechDatabase["CHARGE_COLLECTORS"] as BuildingDesign;
+            BuildingDesign chargeCollectors = gameContext.TechDatabase["CHARGE_COLLECTORS"] as BuildingDesign;
             if (chargeCollectors != null)
-                chargeCollectors.TrySpawn(homeColony.Location, homeColony.Owner, out TechObject spawnedInstance);
+            {
+                _ = chargeCollectors.TrySpawn(homeColony.Location, homeColony.Owner, out TechObject spawnedInstance);
+            }
 
-            var batteryDesign = gameContext.TechDatabase["FED_ORBITAL_BATTERY_I"] as OrbitalBatteryDesign;
+            OrbitalBatteryDesign batteryDesign = gameContext.TechDatabase["FED_ORBITAL_BATTERY_I"] as OrbitalBatteryDesign;
             if (batteryDesign != null)
             {
                 homeColony.OrbitalBatteryDesign = batteryDesign;
@@ -732,24 +777,30 @@ namespace Supremacy.Game
                 while (homeColony.DeactivateFacility(ProductionCategory.Industry))
                 {
                     if (!homeColony.ActivateFacility(ProductionCategory.Energy))
+                    {
                         break;
+                    }
                 }
 
                 while (homeColony.ActivateOrbitalBattery())
+                {
                     continue;
+                }
             }
 
-            var buildProjects = TechTreeHelper.GetBuildProjects(homeColony).Take(3);
+            IEnumerable<BuildProject> buildProjects = TechTreeHelper.GetBuildProjects(homeColony).Take(3);
 
-            foreach (var buildProject in buildProjects)
+            foreach (BuildProject buildProject in buildProjects)
+            {
                 homeColony.BuildQueue.Add(new BuildQueueItem(buildProject));
+            }
 
             homeColony.ProcessQueue();
 
-            gameContext._diplomacyData.GetValuesForOwner(civ).ForEach(
+            _ = gameContext._diplomacyData.GetValuesForOwner(civ).ForEach(
                 o =>
                 {
-                    var counterparty = gameContext.Civilizations[o.CounterpartyID];
+                    Civilization counterparty = gameContext.Civilizations[o.CounterpartyID];
 
                     DiplomacyHelper.EnsureContact(
                         civ,
@@ -764,10 +815,10 @@ namespace Supremacy.Game
         {
             get
             {
-                GameContext context;
-
-                if (ThreadStack.TryPeek(out context))
+                if (ThreadStack.TryPeek(out GameContext context))
+                {
                     return context;
+                }
 
                 return null;
             }
@@ -834,29 +885,33 @@ namespace Supremacy.Game
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 
-                var scriptedEventDatabase = ScriptedEventDatabase.Load();
+                string _text; 
+
+                ScriptedEventDatabase scriptedEventDatabase = ScriptedEventDatabase.Load();
 
                 string _eventOptionsGameLogText = "";
                 string _scriptedEventGameLogText = "";
 
-                foreach (var eventDefinition in scriptedEventDatabase)
+                foreach (EventDefinition eventDefinition in scriptedEventDatabase)
                 {
 
-                    var eventId = eventDefinition.EventID;
-                    var eventType = eventDefinition.EventType;
+                    string eventId = eventDefinition.EventID;
+                    Type eventType = eventDefinition.EventType;
 
                     if (string.IsNullOrWhiteSpace(eventId) || eventType == null)
+                    {
                         continue;
+                    }
 
                     try
                     {
-                        var scriptedEvent = (ScriptedEvent)Activator.CreateInstance(eventType);
+                        ScriptedEvent scriptedEvent = (ScriptedEvent)Activator.CreateInstance(eventType);
 
                         scriptedEvent.Initialize(eventId, eventDefinition.Options);
 
                         _scriptedEvents.Add(scriptedEvent);
 
-                        foreach (var _eventOption in eventDefinition.Options)
+                        foreach (KeyValuePair<string, object> _eventOption in eventDefinition.Options)
                         {
                             _eventOptionsGameLogText += _eventOption.Key + "=" + _eventOption.Value + ",";
                         }
@@ -868,7 +923,7 @@ namespace Supremacy.Game
                         _scriptedEventGameLogText = scriptedEvent.GetType().ToString();
                         _scriptedEventGameLogText = _scriptedEventGameLogText.Replace("Supremacy.Scripting.Events.", "");
 
-                        GameLog.Client.Events.InfoFormat("Scripted Event loaded - Options from file: " + _eventOptionsGameLogText + " for {0}", _scriptedEventGameLogText);
+                        GameLog.Client.EventsDetails.InfoFormat("Scripted Event loaded - Options from file: " + _eventOptionsGameLogText + " for {0}", _scriptedEventGameLogText);
                         _eventOptionsGameLogText = "";
                         _scriptedEventGameLogText = "";
                     }
@@ -888,22 +943,27 @@ namespace Supremacy.Game
                 TechTree.LoadTechTrees(this);
 
                 // Prep up the settings for initial homeworlds
-                var homeSystemDatabase = HomeSystemsDatabase.Load();
+                HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
 
-                foreach (var civManager in _civManagers)
+                foreach (CivilizationManager civManager in _civManagers)
                 {
-                    foreach (var colony in civManager.Colonies)
+                    foreach (Colony colony in civManager.Colonies)
                     {
+                        _text = "Generating HomeSystems...";
+                        Console.WriteLine(_text + " > " + colony.Name);
+                        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
                         // get the home system settings
-                        var civ = colony.Owner;
+                        Civilization civ = colony.Owner;
 
-                        var homeSystemDescriptor = (homeSystemDatabase.ContainsKey(civ.Key))
+                        StarSystemDescriptor homeSystemDescriptor = homeSystemDatabase.ContainsKey(civ.Key)
                                                        ? homeSystemDatabase[civ.Key]
                                                        : GalaxyGenerator.GenerateHomeSystem(civ);
 
                         // adjust starting population
                         if (homeSystemDescriptor.PopulationRatio != -1.0f)
+                        {
                             colony.Population.CurrentValue = (int)(colony.Population.Maximum * homeSystemDescriptor.PopulationRatio);
+                        }
 
                         // adjust starting credits
                         if (homeSystemDescriptor.Credits != -1.0f)
@@ -928,11 +988,11 @@ namespace Supremacy.Game
                             civManager.Resources.Dilithium.SaveCurrentAndResetToBase();
                         }
 
-                        if (homeSystemDescriptor.RawMaterials != -1.0f)
+                        if (homeSystemDescriptor.Duranium != -1.0f)
                         {
-                            civManager.Resources.RawMaterials.CurrentValue = (int)homeSystemDescriptor.RawMaterials;
-                            civManager.Resources.RawMaterials.UpdateAndReset();
-                            civManager.Resources.RawMaterials.SaveCurrentAndResetToBase();
+                            civManager.Resources.Duranium.CurrentValue = (int)homeSystemDescriptor.Duranium;
+                            civManager.Resources.Duranium.UpdateAndReset();
+                            civManager.Resources.Duranium.SaveCurrentAndResetToBase();
                         }
 
                         if (homeSystemDescriptor.Food != -1.0f)
@@ -950,17 +1010,28 @@ namespace Supremacy.Game
                         }
 
                         ColonyBuilder.Build(colony);
-                        civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
+                        _ = civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
+                        int _laborAvailable = colony.Population.CurrentValue / 10;
+
+
+                        _text = "Adjusting facilities if necessary...";
+                        Console.WriteLine(_text);
+
+                        bool _checkXML;
+                        _checkXML = true;
+                        if (_checkXML)
+                            Console.WriteLine("From HomeSystems.xml > Facilities (Count/Active) is ignored...");
 
                         // readjust production facilities if needed
                         if (homeSystemDescriptor.FoodPF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
 
                             //foreach (var item in db)
                             //{
                             //    //GameLog.Client.GameData.DebugFormat("item = {0}", item.Key);
                             //}
+
 
 
                             ProductionFacilityDesign foodFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.FoodPF.DesignType]];
@@ -977,52 +1048,38 @@ namespace Supremacy.Game
                                 int pop = colony.Population.CurrentValue;
                                 float growth = colony.System.GetGrowthRate(colony.Inhabitants);
                                 if (pop == colony.MaxPopulation)
+                                {
                                     growth = 0.0f;
+                                }
 
                                 int foodNeeded = (int)(pop * (1 + (3 * growth)));
                                 /* should take into account planetary food bonuses */
-                                int facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1) + 1;
+                                int facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1) ;
 
-                                if (homeSystemDescriptor.FoodPF.Count != -1.0f)
+                                if (!_checkXML && homeSystemDescriptor.FoodPF.Count != -1.0f)
+                                {
                                     facilitiesRequired = (int)homeSystemDescriptor.FoodPF.Count;
-                                colony.AddFacilities(ProductionCategory.Food, facilitiesRequired);
+                                }
+                                
 
-                                if (homeSystemDescriptor.FoodPF.Active != -1.0f)
+                                colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);
+
+                                if (!_checkXML && homeSystemDescriptor.FoodPF.Active != -1.0f)
+                                {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.FoodPF.Active, colony.GetTotalFacilities(ProductionCategory.Food));
+                                }
+
                                 for (int i = 0; i < facilitiesRequired; i++)
-                                    colony.ActivateFacility(ProductionCategory.Food);
-                            }
-                        }
-
-                        if (homeSystemDescriptor.IndustryPF != null)
-                        {
-                            var db = Current.TechDatabase;
-                            ProductionFacilityDesign industryFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.IndustryPF.DesignType]];
-                            if (industryFacility != null)
-                            {
-                                // Start by clearing already existing facilities
-                                colony.RemoveFacilities(ProductionCategory.Industry, colony.GetTotalFacilities(ProductionCategory.Industry));
-                                colony.SetFacilityType(ProductionCategory.Industry, null);
-
-                                // Create new one
-                                colony.SetFacilityType(ProductionCategory.Industry, industryFacility);
-
-                                int facilitiesRequired = (colony.Population.CurrentValue / industryFacility.LaborCost) + 1;
-
-                                if (homeSystemDescriptor.IndustryPF.Count != -1.0f)
-                                    facilitiesRequired = (int)homeSystemDescriptor.IndustryPF.Count;
-                                colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired);
-
-                                if (homeSystemDescriptor.IndustryPF.Active != -1.0f)
-                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.IndustryPF.Active, colony.GetTotalFacilities(ProductionCategory.Industry));
-                                for (int i = 0; i < facilitiesRequired; i++)
-                                    colony.ActivateFacility(ProductionCategory.Industry);
+                                {
+                                    _ = colony.ActivateFacility(ProductionCategory.Food);
+                                    _laborAvailable -= 1;
+                                }
                             }
                         }
 
                         if (homeSystemDescriptor.EnergyPF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
                             ProductionFacilityDesign energyFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.EnergyPF.DesignType]];
                             if (energyFacility != null)
                             {
@@ -1033,48 +1090,77 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Energy, energyFacility);
 
-                                int facilitiesRequired = (colony.Population.CurrentValue / energyFacility.LaborCost) + 1;
+                                //int energyNeeded = colony.GetEnergyUsage();
 
-                                if (homeSystemDescriptor.EnergyPF.Count != -1.0f)
+                                int facilitiesRequired = 2;
+
+
+                                if (!_checkXML && homeSystemDescriptor.EnergyPF.Count != -1.0f)
+                                {
                                     facilitiesRequired = (int)homeSystemDescriptor.EnergyPF.Count;
-                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired);
+                                }
 
-                                if (homeSystemDescriptor.EnergyPF.Active != -1.0f)
+                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + 4);
+
+                                if (!_checkXML && homeSystemDescriptor.EnergyPF.Active != -1.0f)
+                                {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.EnergyPF.Active, colony.GetTotalFacilities(ProductionCategory.Energy));
+                                }
+
                                 for (int i = 0; i < facilitiesRequired; i++)
-                                    colony.ActivateFacility(ProductionCategory.Energy);
+                                {
+                                    _ = colony.ActivateFacility(ProductionCategory.Energy);
+                                    _laborAvailable -= 1;
+                                }
                             }
                         }
 
-                        if (homeSystemDescriptor.ResearchPF != null)
+                        if (homeSystemDescriptor.IndustryPF != null)
                         {
-                            var db = Current.TechDatabase;
-                            ProductionFacilityDesign researchFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.ResearchPF.DesignType]];
-                            if (researchFacility != null)
+                            TechDatabase db = Current.TechDatabase;
+                            ProductionFacilityDesign industryFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.IndustryPF.DesignType]];
+                            if (industryFacility != null)
                             {
                                 // Start by clearing already existing facilities
-                                colony.RemoveFacilities(ProductionCategory.Research, colony.GetTotalFacilities(ProductionCategory.Research));
-                                colony.SetFacilityType(ProductionCategory.Research, null);
+                                colony.RemoveFacilities(ProductionCategory.Industry, colony.GetTotalFacilities(ProductionCategory.Industry));
+                                colony.SetFacilityType(ProductionCategory.Industry, null);
 
                                 // Create new one
-                                colony.SetFacilityType(ProductionCategory.Research, researchFacility);
+                                colony.SetFacilityType(ProductionCategory.Industry, industryFacility);
 
-                                int facilitiesRequired = (colony.Population.CurrentValue / researchFacility.LaborCost) + 1;
+                                int facilitiesRequired = _laborAvailable;
 
-                                if (homeSystemDescriptor.ResearchPF.Count != -1.0f)
-                                    facilitiesRequired = (int)homeSystemDescriptor.ResearchPF.Count;
-                                colony.AddFacilities(ProductionCategory.Research, facilitiesRequired);
+                                // facilitiesRequired.Value is reduce each time as well !!
+                                if (facilitiesRequired > 4) facilitiesRequired -= 2; // 3 to industry, 1 to research, 1 to intelligence
+                                if (facilitiesRequired > 6) facilitiesRequired -= 2; //               +1 to research, +1 to intelligence
+                                if (facilitiesRequired > 8) facilitiesRequired -= 2;
+                                if (facilitiesRequired > 10) facilitiesRequired -= 2;
+                                if (facilitiesRequired > 12) facilitiesRequired -= 2;
 
-                                if (homeSystemDescriptor.ResearchPF.Active != -1.0f)
-                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.ResearchPF.Active, colony.GetTotalFacilities(ProductionCategory.Research));
+
+                                if (!_checkXML && homeSystemDescriptor.IndustryPF.Count != -1.0f)
+                                {
+                                    facilitiesRequired = (int)homeSystemDescriptor.IndustryPF.Count;
+                                }
+
+                                colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + 1);
+
+                                if (!_checkXML && homeSystemDescriptor.IndustryPF.Active != -1.0f)
+                                {
+                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.IndustryPF.Active, colony.GetTotalFacilities(ProductionCategory.Industry));
+                                }
+
                                 for (int i = 0; i < facilitiesRequired; i++)
-                                    colony.ActivateFacility(ProductionCategory.Research);
+                                {
+                                    _ = colony.ActivateFacility(ProductionCategory.Industry);
+                                    _laborAvailable -= 1;
+                                }
                             }
                         }
 
                         if (homeSystemDescriptor.IntelligencePF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
                             ProductionFacilityDesign intelligenceFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.IntelligencePF.DesignType]];
                             if (intelligenceFacility != null)
                             {
@@ -1085,18 +1171,64 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
 
-                                int facilitiesRequired = (colony.Population.CurrentValue / intelligenceFacility.LaborCost) + 1;
+                                int facilitiesRequired = _laborAvailable / 2;
 
-                                if (homeSystemDescriptor.IntelligencePF.Count != -1.0f)
+                                if (!_checkXML && homeSystemDescriptor.IntelligencePF.Count != -1.0f)
+                                {
                                     facilitiesRequired = (int)homeSystemDescriptor.IntelligencePF.Count;
+                                }
+
                                 colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired);
 
-                                if (homeSystemDescriptor.IntelligencePF.Active != -1.0f)
+                                if (!_checkXML && homeSystemDescriptor.IntelligencePF.Active != -1.0f)
+                                {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.IntelligencePF.Active, colony.GetTotalFacilities(ProductionCategory.Intelligence));
+                                }
+
                                 for (int i = 0; i < facilitiesRequired; i++)
-                                    colony.ActivateFacility(ProductionCategory.Intelligence);
+                                {
+                                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                                    _laborAvailable -= 1;
+                                }
                             }
                         }
+
+                        if (homeSystemDescriptor.ResearchPF != null)
+                        {
+                            TechDatabase db = Current.TechDatabase;
+                            ProductionFacilityDesign researchFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.ResearchPF.DesignType]];
+                            if (researchFacility != null)
+                            {
+                                // Start by clearing already existing facilities
+                                colony.RemoveFacilities(ProductionCategory.Research, colony.GetTotalFacilities(ProductionCategory.Research));
+                                colony.SetFacilityType(ProductionCategory.Research, null);
+
+                                // Create new one
+                                colony.SetFacilityType(ProductionCategory.Research, researchFacility);
+
+                                int facilitiesRequired = _laborAvailable;
+
+                                if (!_checkXML && homeSystemDescriptor.ResearchPF.Count != -1.0f)
+                                {
+                                    facilitiesRequired = (int)homeSystemDescriptor.ResearchPF.Count;
+                                }
+
+                                colony.AddFacilities(ProductionCategory.Research, facilitiesRequired);
+
+                                if (!_checkXML && homeSystemDescriptor.ResearchPF.Active != -1.0f)
+                                {
+                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.ResearchPF.Active, colony.GetTotalFacilities(ProductionCategory.Research));
+                                }
+
+                                for (int i = 0; i < facilitiesRequired; i++)
+                                {
+                                    _ = colony.ActivateFacility(ProductionCategory.Research);
+                                    //_laborAvailable -= 1;
+                                }
+                            }
+                        }
+
+
 
                         // Spawn starting objects
 
@@ -1105,13 +1237,14 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(building))
                             {
-                                var buildingDesign = Current.TechDatabase.DesignIdMap[building];
+                                int buildingDesign = Current.TechDatabase.DesignIdMap[building];
 
-                                TechObject instance = null;
-                                Current.TechDatabase.BuildingDesigns[buildingDesign].TrySpawn(colony.Location, colony.Owner, out instance);
+                                _ = Current.TechDatabase.BuildingDesigns[buildingDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
                                 if (instance != null)
-                                    colony.ActivateBuilding(instance as Building);
+                                {
+                                    _ = colony.ActivateBuilding(instance as Building);
+                                }
                             }
                         }
 
@@ -1120,16 +1253,17 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(shipyard))
                             {
-                                var shipyardDesign = Current.TechDatabase.DesignIdMap[shipyard];
+                                int shipyardDesign = Current.TechDatabase.DesignIdMap[shipyard];
 
-                                TechObject instance = null;
-                                Current.TechDatabase.ShipyardDesigns[shipyardDesign].TrySpawn(colony.Location, colony.Owner, out instance);
+                                _ = Current.TechDatabase.ShipyardDesigns[shipyardDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 //GameLog.Client.GameData.DebugFormat("Starting Shipyards: shipyardDesign={0}, {1}", shipyardDesign, shipyard);
                                 if (instance != null)
                                 {
                                     Shipyard newShipyard = instance as Shipyard;
                                     foreach (ShipyardBuildSlot buildSlot in newShipyard.BuildSlots)
-                                        colony.ActivateShipyardBuildSlot(buildSlot);
+                                    {
+                                        _ = colony.ActivateShipyardBuildSlot(buildSlot);
+                                    }
                                 }
                             }
                         }
@@ -1139,9 +1273,9 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(ship))
                             {
-                                var shipDesign = Current.TechDatabase.DesignIdMap[ship];
+                                int shipDesign = Current.TechDatabase.DesignIdMap[ship];
 
-                                Current.TechDatabase.ShipDesigns[shipDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
+                                _ = Current.TechDatabase.ShipDesigns[shipDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                             }
                         }
 
@@ -1150,9 +1284,9 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(outpost))
                             {
-                                var outpostDesign = Current.TechDatabase.DesignIdMap[outpost];
+                                int outpostDesign = Current.TechDatabase.DesignIdMap[outpost];
                                 //GameLog.Client.GameData.DebugFormat("Starting Outposts: outpostDesign={0}, {1}", outpostDesign, outpost);
-                                Current.TechDatabase.StationDesigns[outpostDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
+                                _ = Current.TechDatabase.StationDesigns[outpostDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                             }
                         }
 
@@ -1161,23 +1295,25 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(OB))
                             {
-                                var OBDesign = Current.TechDatabase.DesignIdMap[OB];
+                                int OBDesign = Current.TechDatabase.DesignIdMap[OB];
 
-                                TechObject instance = null;
-                                Current.TechDatabase.OrbitalBatteryDesigns[OBDesign].TrySpawn(colony.Location, colony.Owner, out instance);
+                                _ = Current.TechDatabase.OrbitalBatteryDesigns[OBDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 if (instance != null)
                                 {
-                                    colony.ActivateOrbitalBattery();
+                                    _ = colony.ActivateOrbitalBattery();
                                 }
                             }
                         }
                     }
                 }
-                GameLog.Core.General.InfoFormat("Starting items are done!");
+                _text = "Starting items are done!";
+                Console.WriteLine(_text);
+                GameLog.Core.General.InfoFormat(_text);
+
                 _sectorClaims = new SectorClaimGrid();
                 _diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
 
-                foreach (var civManager in _civManagers)
+                foreach (CivilizationManager civManager in _civManagers)
                 {
                     if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
                     {
@@ -1188,14 +1324,14 @@ namespace Supremacy.Game
                 }
                 GameLog.Core.General.InfoFormat("SeatOfGovernment ensured...");
 
-                _diplomats.ForEach(d => d.EnsureForeignPowers());
+                _ = _diplomats.ForEach(d => d.EnsureForeignPowers());
 
                 FixupDiplomacyData();
 
             }
             finally
             {
-                PopThreadContext();
+                _ = PopThreadContext();
             }
         }
 
@@ -1204,9 +1340,11 @@ namespace Supremacy.Game
         /// </summary>
         internal void OnDeserialized()
         {
-            var needsPush = !ReferenceEquals(Current, this);
+            bool needsPush = !ReferenceEquals(Current, this);
             if (needsPush)
+            {
                 PushThreadContext(this);
+            }
 
             try
             {
@@ -1215,7 +1353,9 @@ namespace Supremacy.Game
             finally
             {
                 if (needsPush)
-                    PopThreadContext();
+                {
+                    _ = PopThreadContext();
+                }
             }
         }
     }

@@ -1,0 +1,318 @@
+﻿<!-- File:F12_Dialog.xaml
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.F12_Dialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:cal="http://www.codeplex.com/CompositeWPF"
+            Width="980"
+            Height="750"
+            Foreground="{DynamicResource HeaderTextBrush}"
+            VerticalAlignment="Center"
+            Margin="0,10,0,10"
+            Padding="0,10,0,10"
+            FontSize="24"
+            Background="Black"
+            SnapsToDevicePixels="True">
+
+    <DockPanel LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Right"
+                Margin="0,12,0,0"
+                Orientation="Vertical"
+                HorizontalAlignment="Left">
+            <!--Header-->
+            <StackPanel Orientation="Horizontal">
+                
+                <Button x:Name="Accept0Button"  MinWidth="100" Height="28" Margin="30,0,10,10"
+                  Command="{x:Static local:GenericCommands.AcceptCommand}" IsCancel="True"
+                  Style="{DynamicResource LCARS_StandardButtonStyle}">
+                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+                </Button>
+
+                <TextBlock Text="{s:StringResource DIALOG_F12_HEADER}"
+                           Margin="80,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>
+                
+                <!--<TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="for lift Fog of War (SinplePlayer Only) > use the new CTRL + F"
+                           Margin="10,0,30,3" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>-->
+              
+                
+            </StackPanel>
+            <!--End of Header-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*" />                    
+                    <RowDefinition Height="70"/>
+                    
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+
+                    <RowDefinition Height="Auto"
+                     MinHeight="01" />
+                    <!--MinHeight before 27-->
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <!--<ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>-->
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+
+                <TextBlock Grid.Row="2" Grid.Column="3" FontSize="38" Text=" " HorizontalAlignment="Center"/>
+                <!--<StackPanel Orientation="Horizontal" Grid.ColumnSpan="6" >-->
+             
+<TextBlock Grid.Row="3" Grid.Column="3" FontSize="18" Text="Food" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="4" FontSize="18" Text="Construct." HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="5" FontSize="18" Text="Energy" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="5" FontSize="18" Text="prod." HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="6" FontSize="18" Text="Research" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="7" FontSize="18" Text="Intel." HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="8" FontSize="18" Text="Diplomacy" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="9" FontSize="18" Text="Trade" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="10" FontSize="18" Text="Mining" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="11" FontSize="18" Text="Cloak" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="11" FontSize="18" Text="abil." HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="3" Grid.Column="12" FontSize="18" Text="Troop" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="12" FontSize="18" Text="strength" HorizontalAlignment="Center"/>
+                    <!--<TextBlock Text="Food"/>-->
+
+                    <!--<TextBlock Text="Food(3), Construction(3), Energy-production(4), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(2), Trade(6), Mining(3), Diplomacy(6)" 
+                           Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                    </TextBlock>-->
+                <!--</StackPanel>-->
+
+                <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <Border Grid.Row="5" Grid.ColumnSpan="13" Background="Blue" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="5" Text="Federation" Margin="20,0,0,0"/>
+                <TextBlock Grid.Row="5" Grid.Column="3" Text="3" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="4" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="5" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="6" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="7" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="8" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="9" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="10" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="11" Text="1"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="12" Text="2"  HorizontalAlignment="Center"/>
+                <!--</StackPanel>-->
+
+                <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <!--Food(2), Construction(4), Energy-production(3), Intelligence(3), Cloak-ability(2),
+      Research(4), Troop-strength(3), Trade(5), Mining(5), Diplomacy(3)-->
+                <Border Grid.Row="6" Grid.ColumnSpan="13" Background="#FF739a0c" Margin="0,-5,0,0"></Border>                
+                <TextBlock Grid.Row="6" Text="Terran Empire" Margin="20,0,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="6" Grid.Column="3" Text="2" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="4" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="5" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="6" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="7" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="8" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="9" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="10" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="11" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="6" Grid.Column="12" Text="3"  HorizontalAlignment="Center"/>
+                <!--<TextBlock Grid.Row="6" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->                  
+                                    <!--Food(2), Construction(4), Energy-production(3), Intelligence(3), Cloak-ability(2),
+      Research(4), Troop-strength(3), Trade(5), Mining(5), Diplomacy(3)-->
+                    
+                    
+                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                          <!--Food(3), Construction(2), Energy-production(3), Intelligence(5), Cloak-ability(6),
+      Research(5), Troop-strength(4), Trade(3), Mining(3), Diplomacy(3)-->
+                <Border Grid.Row="7" Grid.ColumnSpan="13" Background="DarkGreen" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="7" Text="Romulans" Margin="20,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="7" Grid.Column="3" Text="3" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="4" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="5" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="6" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="7" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="8" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="9" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="10" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="11" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="12" Text="4"  HorizontalAlignment="Center"/>
+                <!--<TextBlock Grid.Row="7" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <!--Food(3), Construction(6), Energy-production(4), Intelligence(2), Cloak-ability(4),
+      Research(2), Troop-strength(6), Trade(2), Mining(5), Diplomacy(3)-->
+                <Border Grid.Row="8" Grid.ColumnSpan="13" Background="Darkred" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="8" Text="Klingons" Margin="20,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="8" Grid.Column="3" Text="3" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="4" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="5" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="6" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="7" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="8" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="9" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="10" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="11" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="12" Text="*6*"  HorizontalAlignment="Center"/>
+                <!--<TextBlock Grid.Row="8" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <!--Food(2), Construction(5), Energy-production(2), Intelligence(6), Cloak-ability(2),
+      Research(2), Troop-strength(4), Trade(2), Mining(5), Diplomacy(3)-->
+                <Border Grid.Row="9" Grid.ColumnSpan="13" Background="#826313" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="9" Text="Cardassians" Margin="20,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="9" Grid.Column="3" Text="2" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="4" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="5" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="6" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="7" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="8" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="9" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="10" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="11" Text="2"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="12" Text="4"  HorizontalAlignment="Center"/>
+                <!--<TextBlock Grid.Row="9" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                          <!--Food(4), Construction(4), Energy-production(3), Intelligence(4), Cloak-ability(1),-->
+      <!--Research(5), Troop-strength(6), Trade(3), Mining(3), Diplomacy(4)-->
+                <Border Grid.Row="10" Grid.ColumnSpan="13" Background="Purple" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="10" Text="Dominion" Margin="20,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="10" Grid.Column="3" Text="4" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="4" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="5" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="6" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="7" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="8" Text="4"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="9" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="10" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="11" Text="1"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="12" Text="*6*"  HorizontalAlignment="Center"/>
+                <!--<TextBlock Grid.Row="10" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                          <!--Food(5), Construction(9), Energy production(5), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(4), Trade(1), Mining(3), Diplomacy(1)-->
+                <Border Grid.Row="11" Grid.ColumnSpan="13" Background="#FF425907" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="11" Text="Borg" Margin="20,0,20,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="11" Grid.Column="3" Text="5" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="4" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="5" Text="5"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="6" Text="*6*"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="7" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="8" Text="1"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="9" Text="1"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="10" Text="3"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="11" Text="1"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="12" Text="4"  HorizontalAlignment="Center"/>
+                <!--<TextBlock Grid.Row="11" Grid.Column="12" Text="DUMMY" />-->
+                <!--</StackPanel>-->
+
+                <TextBlock Grid.Row="12" Text="" Grid.ColumnSpan="13" Background="#FFFFFFFF" Margin="20,0,20,0" HorizontalAlignment="Left"/>
+
+                <TextBlock Grid.Row="13" Text="{s:StringResource DIALOG_F12_TEXT_2}" Foreground="{DynamicResource HeaderTextBrush}"
+                           Grid.ColumnSpan="13" TextWrapping="Wrap"  Background="#FF000000" Margin="20,0,20,0" HorizontalAlignment="Left" />
+                
+                <TextBox Grid.Row="14" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_21}" ></TextBox>
+                <TextBox Grid.Row="15" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_23}" ></TextBox>
+                <TextBox Grid.Row="16" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_25}" ></TextBox>
+                <TextBox Grid.Row="17" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_27}" ></TextBox>
+                <TextBox Grid.Row="18" Grid.ColumnSpan="13" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Text="{s:StringResource DIALOG_F12_COLUMN_1_ROW_29}" ></TextBox>
+
+                <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <!--<TextBlock Grid.Row="6" Text="Dummy" Margin="20,0,0,0"/>
+                <TextBlock Grid.Row="6" Grid.Column="3" Text="Food"/>
+                <TextBlock Grid.Row="6" Grid.Column="4" Text="Con" />
+                <TextBlock Grid.Row="6" Grid.Column="5" Text="En" />
+                <TextBlock Grid.Row="6" Grid.Column="6" Text="Re" />
+                <TextBlock Grid.Row="6" Grid.Column="7" Text="In" />
+                <TextBlock Grid.Row="6" Grid.Column="8" Text="Dip" />
+                <TextBlock Grid.Row="6" Grid.Column="9" Text="Tr" />
+                <TextBlock Grid.Row="6" Grid.Column="10" Text="Mi />
+                <TextBlock Grid.Row="6" Grid.Column="11" Text="Cl" />
+                <TextBlock Grid.Row="6" Grid.Column="12" Text="Tr" />
+                --><!--<TextBlock Grid.Row="6" Grid.Column="12" Text="DUMMY" />-->
+                <!--</StackPanel>-->
+                
+                
+                    
+            </Grid>
+
+ 
+
+        </StackPanel>
+
+
+
+        <!-- CANCEL makes trouble while running out of Visual Studio ....
+        <Button x:Name="CancelButton"
+              Command="{x:Static local:GenericCommands.CancelCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,0,0">
+        <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
+      </Button>-->
+    <!--</StackPanel>-->
+      
+    <!--<TabControl x:Name="OptionsRegion"
+                cal:RegionManager.RegionName="{x:Static scc:ClientRegions.TracesPages}">
+      <TabControl.ItemContainerStyle>
+        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+          <Setter Property="Header"
+                  Value="Traces Settings" />
+                  --><!--Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />--><!--
+        </Style>
+      </TabControl.ItemContainerStyle>
+    </TabControl>-->
+      
+  </DockPanel>
+</scc:Dialog>

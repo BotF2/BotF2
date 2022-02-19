@@ -17,10 +17,7 @@ namespace Supremacy.Client.Views
             model.View = view;
         }
 
-        protected override string ViewName
-        {
-            get { return Model.ViewName; }
-        }
+        protected override string ViewName => Model.ViewName;
 
         protected override void RegisterViewWithRegion()
         {
@@ -34,9 +31,10 @@ namespace Supremacy.Client.Views
 
         protected override void SetInteractionNode()
         {
-            var viewElement = View as DependencyObject;
-            if (viewElement != null)
+            if (View is DependencyObject viewElement)
+            {
                 Views.View.SetInteractionNode(viewElement, Model);
+            }
         }
 
         protected override void RunOverride()

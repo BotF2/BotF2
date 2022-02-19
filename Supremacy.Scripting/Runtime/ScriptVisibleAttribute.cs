@@ -56,7 +56,7 @@ namespace Supremacy.Scripting.Runtime
             catch
             {
                 Assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(o => o.GetName().Name == assemblyName.Name);
-                 /* TODO: Log when imported into Supremacy solution. */
+                /* TODO: Log when imported into Supremacy solution. */
             }
         }
 

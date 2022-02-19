@@ -14,7 +14,7 @@ using Supremacy.Scripting.Runtime;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2020 Rise of the UFP Team")]
+[assembly: AssemblyCopyright("Copyright (c) 2022 Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,8 +37,8 @@ using Supremacy.Scripting.Runtime;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2020.17.0.1")]
-[assembly: AssemblyFileVersion("2020.17.0.1")]
+[assembly: AssemblyVersion("1.7.0.4")]
+[assembly: AssemblyFileVersion("1.7.0.4")]
 
 [assembly: InternalsVisibleTo("SupremacyClient")]
 [assembly: InternalsVisibleTo("SupremacyEditor")]

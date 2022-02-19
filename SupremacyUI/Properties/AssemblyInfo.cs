@@ -13,7 +13,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2020 Rise of the UFP Team")]
+[assembly: AssemblyCopyright("Copyright (c) 2022 Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -30,11 +30,11 @@ using System.Windows.Markup;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-    //(used if a resource is not found in the page, 
-    // or application resource dictionaries)
+                                     //(used if a resource is not found in the page, 
+                                     // or application resource dictionaries)
     ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
-    //(used if a resource is not found in the page, 
-    // app, or any theme specific resource dictionaries)
+                                              //(used if a resource is not found in the page, 
+                                              // app, or any theme specific resource dictionaries)
 )]
 
 
@@ -47,8 +47,8 @@ using System.Windows.Markup;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2020.17.0.1")]
-[assembly: AssemblyFileVersion("2020.17.0.1")]
+[assembly: AssemblyVersion("1.7.0.4")]
+[assembly: AssemblyFileVersion("1.7.0.4")]
 
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]
 [assembly: XmlnsDefinition("http://schemas.startreksupremacy.com/xaml/core", "Supremacy.UI")]

@@ -20,7 +20,6 @@ namespace Supremacy.Client.Controls
 
     public class PopupControlService
     {
-        private WeakReference _ignoreNextMouseDownOver;
         private readonly List<IGamePopupAnchor> _popupAnchors; // Represents a stack with items on top of stack at index 0
 
         private static PopupControlService _current;
@@ -156,7 +155,9 @@ namespace Supremacy.Client.Controls
             _popupAnchors = new List<IGamePopupAnchor>();
 
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
                 AttachToInputManager();
+            }
         }
         #endregion
 
@@ -177,14 +178,12 @@ namespace Supremacy.Client.Controls
         internal static void EnsureCreated()
         {
             if (_current == null)
+            {
                 _current = new PopupControlService();
+            }
         }
 
-        internal WeakReference IgnoreNextMouseDownOver
-        {
-            get { return _ignoreNextMouseDownOver; }
-            set { _ignoreNextMouseDownOver = value; }
-        }
+        internal WeakReference IgnoreNextMouseDownOver { get; set; }
 
         private static void OnPostProcessInput(object sender, ProcessInputEventArgs e)
         {
@@ -203,7 +202,9 @@ namespace Supremacy.Client.Controls
             while (_popupAnchors.Count > 0)
             {
                 if (!CloseTopmostPopup(closeReason))
+                {
                     return;
+                }
             }
         }
 
@@ -211,25 +212,31 @@ namespace Supremacy.Client.Controls
         {
             // If the popup is not currently being managed, simply call the core close code on it
             if (!_popupAnchors.Contains(popupAnchor))
+            {
                 return false;
+            }
 
             while (_popupAnchors.Count > 0)
             {
-                var isRootPopupAnchor = (RootPopupAnchor == popupAnchor);
-                var isTargetPopupAnchor = (TopmostPopupAnchor == popupAnchor);
-         
+                bool isRootPopupAnchor = RootPopupAnchor == popupAnchor;
+                bool isTargetPopupAnchor = TopmostPopupAnchor == popupAnchor;
+
                 if (!CloseTopmostPopup(closeReason))
+                {
                     return false;
+                }
 
                 if (!isTargetPopupAnchor)
+                {
                     continue;
+                }
 
                 // Focus the anchor if the escape key was pressed and the popup was not originally opened with the mouse
                 if ((closeReason == GamePopupCloseReason.EscapeKeyPressed) &&
                     (!isRootPopupAnchor || !popupAnchor.PopupOpenedWithMouse) &&
                     popupAnchor.Focusable)
                 {
-                    popupAnchor.Focus();
+                    _ = popupAnchor.Focus();
                 }
 
                 return true;
@@ -242,41 +249,45 @@ namespace Supremacy.Client.Controls
         {
             // Update the close reason (must happen before changing mouse capture)
             if (popupAnchor.LastCloseReason == GamePopupCloseReason.Unknown)
+            {
                 popupAnchor.LastCloseReason = closeReason;
+            }
 
             // Get the popup host
-            var popupHost = GetPopupHost(popupAnchor);
+            FrameworkElement popupHost = GetPopupHost(popupAnchor);
 
             // Update the captured popup
             if ((popupHost != null) && (Mouse.Captured == popupHost))
             {
-                if (_popupAnchors.Count > 0)
-                    Mouse.Capture(GetPopupHost(_popupAnchors[_popupAnchors.Count - 1]), CaptureMode.SubTree);
-                else
-                    Mouse.Capture(null);
+                _ = _popupAnchors.Count > 0
+                    ? Mouse.Capture(GetPopupHost(_popupAnchors[_popupAnchors.Count - 1]), CaptureMode.SubTree)
+                    : Mouse.Capture(null);
             }
 
             if (popupAnchor.IsPopupOpen)
+            {
                 popupAnchor.IsPopupOpen = false;
+            }
 
             if (popupHost != null)
             {
                 popupHost.KeyDown -= OnKeyDown;
                 popupHost.LostMouseCapture -= OnLostMouseCapture;
                 popupHost.PreviewKeyDown -= OnPreviewKeyDown;
-                
+
                 popupHost.RemoveHandler(
-                    Mouse.PreviewMouseDownOutsideCapturedElementEvent, 
+                    Mouse.PreviewMouseDownOutsideCapturedElementEvent,
                     (MouseButtonEventHandler)OnClickThrough);
-                
+
                 popupHost.RemoveHandler(
-                    Mouse.PreviewMouseUpOutsideCapturedElementEvent, 
+                    Mouse.PreviewMouseUpOutsideCapturedElementEvent,
                     (MouseButtonEventHandler)OnClickThrough);
             }
 
-            var popupAnchorElement = popupAnchor as UIElement;
-            if ((popupAnchorElement != null) && (_popupAnchors.Count == 0))
+            if ((popupAnchor is UIElement popupAnchorElement) && (_popupAnchors.Count == 0))
+            {
                 popupAnchorElement.IsKeyboardFocusWithinChanged -= OnIsKeyboardFocusWithinChanged;
+            }
 
             return;
         }
@@ -285,10 +296,12 @@ namespace Supremacy.Client.Controls
         {
             // Quit if there are no open popups
             if (_popupAnchors.Count == 0)
+            {
                 return false;
+            }
 
             // Get the topmost popup
-            var popupAnchor = _popupAnchors[0];
+            IGamePopupAnchor popupAnchor = _popupAnchors[0];
             _popupAnchors.RemoveAt(0);
             ClosePopupCore(popupAnchor, closeReason);
 
@@ -299,20 +312,24 @@ namespace Supremacy.Client.Controls
         {
             if (node.GetType().Name == "GamePopupRoot")
             {
-                var popup = ((FrameworkElement)node).Parent as GamePopup;
-                if (popup != null)
+                if (((FrameworkElement)node).Parent is GamePopup popup)
                 {
                     if (popup.Parent != null)
+                    {
                         return popup.Parent;
+                    }
+
                     return popup.TemplatedParent ?? popup.PlacementTarget;
                 }
             }
 
             if (node.IsVisual())
             {
-                var parent = VisualTreeHelper.GetParent(node);
+                DependencyObject parent = VisualTreeHelper.GetParent(node);
                 if (parent != null)
+                {
                     return parent;
+                }
             }
 
             return LogicalTreeHelper.GetParent(node);
@@ -324,9 +341,10 @@ namespace Supremacy.Client.Controls
             {
                 node = FindParent(node);
 
-                var popupAnchor = node as IGamePopupAnchor;
-                if (popupAnchor != null)
+                if (node is IGamePopupAnchor popupAnchor)
+                {
                     return popupAnchor;
+                }
             }
             return null;
         }
@@ -334,14 +352,17 @@ namespace Supremacy.Client.Controls
         private static FrameworkElement GetPopupHost(IGamePopupAnchor popupAnchor)
         {
             if (popupAnchor != null && popupAnchor.Popup != null)
+            {
                 return popupAnchor.Popup.PopupRoot;
+            }
+
             return null;
         }
 
         private static bool HasCapture(IGamePopupAnchor popupAnchor)
         {
-            var popupHost = GetPopupHost(popupAnchor);
-            return ((popupHost != null) && (Mouse.Captured == popupHost));
+            FrameworkElement popupHost = GetPopupHost(popupAnchor);
+            return (popupHost != null) && (Mouse.Captured == popupHost);
         }
 
         private static bool IsDescendant(DependencyObject ancestorNode, DependencyObject node)
@@ -351,49 +372,54 @@ namespace Supremacy.Client.Controls
 
         internal static bool IsPopupAnchorPopupEnabled(IGamePopupAnchor popupAnchor)
         {
-            var popupAnchorObj = popupAnchor as DependencyObject;
-            if (popupAnchorObj == null)
+            if (!(popupAnchor is DependencyObject popupAnchorObj))
+            {
                 return true;
+            }
 
-            var popupContent = GetPopupContent(popupAnchorObj) as UIElement;
-            if (popupContent == null)
+            if (!(GetPopupContent(popupAnchorObj) is UIElement popupContent))
+            {
                 return true;
+            }
 
             // Recurse through logical children... if there are none found, assume enabled
-            var isEnabled = false;
+            bool isEnabled = false;
             if (!IsPopupAnchorPopupEnabledRecursive(popupContent, ref isEnabled))
+            {
                 isEnabled = true;
+            }
 
             return isEnabled;
         }
 
         private static bool IsPopupAnchorPopupEnabledRecursive(UIElement element, ref bool isEnabled)
         {
-            var validControlFound = false;
-            
-            // Check for an items control
-            var itemsControl = element as ItemsControl;
-            if (itemsControl != null)
-            {
-                for (var index = 0; index < itemsControl.Items.Count; index++)
-                {
-                    var childElement = itemsControl.Items[index] as UIElement ??
-                                       itemsControl.ItemContainerGenerator.ContainerFromIndex(index) as UIElement;
-                    
-                    if (childElement == null)
-                        continue;
+            bool validControlFound = false;
 
-                    var gameControl = childElement as IGameControl;
-                    if (gameControl == null)
+            // Check for an items control
+            if (element is ItemsControl itemsControl)
+            {
+                for (int index = 0; index < itemsControl.Items.Count; index++)
+                {
+                    UIElement childElement = itemsControl.Items[index] as UIElement ??
+                                       itemsControl.ItemContainerGenerator.ContainerFromIndex(index) as UIElement;
+
+                    if (childElement == null)
+                    {
                         continue;
+                    }
+
+                    if (!(childElement is IGameControl gameControl))
+                    {
+                        continue;
+                    }
 
                     if (gameControl.Command != null)
                     {
                         // If using ItemsSource, the visual tree may not yet be built so force the parent element as the target
-                        if (VisualTreeHelper.GetParent(childElement) == null)
-                            isEnabled = GameCommand.CanExecuteCommandSource(gameControl, element);
-                        else
-                            isEnabled = GameCommand.CanExecuteCommandSource(gameControl);
+                        isEnabled = VisualTreeHelper.GetParent(childElement) == null
+                            ? GameCommand.CanExecuteCommandSource(gameControl, element)
+                            : GameCommand.CanExecuteCommandSource(gameControl);
                     }
                     else
                     {
@@ -403,39 +429,44 @@ namespace Supremacy.Client.Controls
                     validControlFound = true;
 
                     if (isEnabled)
+                    {
                         return true;
+                    }
                 }
             }
 
-            var children = LogicalTreeHelper.GetChildren(element);
-            foreach (var child in children)
+            System.Collections.IEnumerable children = LogicalTreeHelper.GetChildren(element);
+            foreach (object child in children)
             {
-                var childElement = child as UIElement;
-                if (childElement == null)
-                    continue;
-
-                var gameControl = childElement as IGameControl;
-                if (gameControl != null)
+                if (!(child is UIElement childElement))
                 {
-                    if (gameControl.Command != null)
-                        isEnabled = GameCommand.CanExecuteCommandSource(gameControl);
-                    else
-                        isEnabled = childElement.IsEnabled;
+                    continue;
+                }
+
+                if (childElement is IGameControl gameControl)
+                {
+                    isEnabled = gameControl.Command != null ? GameCommand.CanExecuteCommandSource(gameControl) : childElement.IsEnabled;
 
                     validControlFound = true;
 
                     if (isEnabled)
+                    {
                         return true;
+                    }
                 }
 
-                if ((childElement is IGamePopupAnchor))
+                if (childElement is IGamePopupAnchor)
+                {
                     continue;
+                }
 
                 // Recurse and quit afterwards if an enabled 
                 validControlFound |= IsPopupAnchorPopupEnabledRecursive(childElement, ref isEnabled);
 
                 if (isEnabled)
+                {
                     return validControlFound;
+                }
             }
 
             return validControlFound;
@@ -443,23 +474,22 @@ namespace Supremacy.Client.Controls
 
         internal static bool IsPopupBelowAnchor(IGamePopupAnchor popupAnchor)
         {
-            var popupAnchorControl = popupAnchor as UIElement;
-            if ((popupAnchorControl != null) && (popupAnchor.Popup != null))
+            if ((popupAnchor is UIElement popupAnchorControl) && (popupAnchor.Popup != null))
             {
-                var popupChild = popupAnchor.Popup.Child;
+                UIElement popupChild = popupAnchor.Popup.Child;
                 if (popupChild != null)
                 {
-                    var popupAnchorLocation = popupAnchorControl.PointToScreen(
+                    Point popupAnchorLocation = popupAnchorControl.PointToScreen(
                         new Point(
                             0,
                             popupAnchorControl.RenderSize.Height / 2));
 
-                    var popupControlLocation = popupChild.PointToScreen(
+                    Point popupControlLocation = popupChild.PointToScreen(
                         new Point(
                             0,
                             popupChild.RenderSize.Height / 2));
 
-                    return (popupAnchorLocation.Y < popupControlLocation.Y);
+                    return popupAnchorLocation.Y < popupControlLocation.Y;
                 }
             }
             return true;
@@ -467,38 +497,39 @@ namespace Supremacy.Client.Controls
 
         internal static bool IsTopLevel(IGamePopupAnchor popupAnchor)
         {
-            return (GetParentPopupAnchor(popupAnchor as DependencyObject) == null);
+            return GetParentPopupAnchor(popupAnchor as DependencyObject) == null;
         }
 
         private void OnClickThrough(object sender, MouseButtonEventArgs e)
         {
-            _ignoreNextMouseDownOver = null;
+            IgnoreNextMouseDownOver = null;
 
-            var popupHost = sender as GamePopupRoot;
-            if (popupHost == null)
+            if (!(sender is GamePopupRoot popupHost))
+            {
                 return;
+            }
 
-            var popupAnchor = popupHost.Popup.TemplatedParent as IGamePopupAnchor;
-            if ((popupAnchor == null) ||
-                ((e.ChangedButton != MouseButton.Left) && (e.ChangedButton != MouseButton.Right)) || 
+            if ((!(popupHost.Popup.TemplatedParent is IGamePopupAnchor popupAnchor)) ||
+                ((e.ChangedButton != MouseButton.Left) && (e.ChangedButton != MouseButton.Right)) ||
                 !HasCapture(popupAnchor))
             {
                 return;
             }
 
-            var hitTarget = popupHost.InputHitTest(e.GetPosition(popupHost)) as DependencyObject;
-            if (hitTarget != null && popupHost.IsLogicalAncestorOf(hitTarget))
+            if (popupHost.InputHitTest(e.GetPosition(popupHost)) is DependencyObject hitTarget && popupHost.IsLogicalAncestorOf(hitTarget))
+            {
                 return;
+            }
 
-            var closePopup = true;
+            bool closePopup = true;
             if (e.ButtonState == MouseButtonState.Released)
             {
-                if ((e.ChangedButton == MouseButton.Left) && (popupAnchor.IgnoreNextLeftRelease))
+                if ((e.ChangedButton == MouseButton.Left) && popupAnchor.IgnoreNextLeftRelease)
                 {
                     popupAnchor.IgnoreNextLeftRelease = false;
                     closePopup = false;
                 }
-                else if ((e.ChangedButton == MouseButton.Right) && (popupAnchor.IgnoreNextRightRelease))
+                else if ((e.ChangedButton == MouseButton.Right) && popupAnchor.IgnoreNextRightRelease)
                 {
                     popupAnchor.IgnoreNextRightRelease = false;
                     closePopup = false;
@@ -506,12 +537,14 @@ namespace Supremacy.Client.Controls
             }
 
             if (closePopup)
-                ClosePopup(popupAnchor, GamePopupCloseReason.ClickThrough);
+            {
+                _ = ClosePopup(popupAnchor, GamePopupCloseReason.ClickThrough);
+            }
         }
 
         private void OnContextMenuClosed(object sender, RoutedEventArgs e)
         {
-            var contextMenu = (ContextMenu)sender;
+            ContextMenu contextMenu = (ContextMenu)sender;
 
             contextMenu.RemoveHandler(
                 GameControlService.PreviewClickEvent,
@@ -530,15 +563,16 @@ namespace Supremacy.Client.Controls
         {
             // If keyboard focus is no longer in the popup hierarchy...
             if ((bool)e.NewValue)
+            {
                 return;
+            }
 
-            var contextMenu = Keyboard.FocusedElement as ContextMenu;
-            if ((contextMenu != null) && (contextMenu.IsOpen))
+            if ((Keyboard.FocusedElement is ContextMenu contextMenu) && contextMenu.IsOpen)
             {
                 contextMenu.AddHandler(
                     GameControlService.PreviewClickEvent,
                     (RoutedEventHandler)OnContextMenuItemPreviewClick);
-                
+
                 contextMenu.Closed += OnContextMenuClosed;
 
                 // Prevent the context menu from closing the popup
@@ -550,12 +584,13 @@ namespace Supremacy.Client.Controls
         }
 
         private static void OnIsPopupOpenPropertyValueChanged(
-            DependencyObject o, 
+            DependencyObject o,
             DependencyPropertyChangedEventArgs e)
         {
-            var popupAnchor = o as IGamePopupAnchor;
-            if (popupAnchor == null)
+            if (!(o is IGamePopupAnchor popupAnchor))
+            {
                 return;
+            }
 
             if (e.NewValue.Equals(true))
             {
@@ -567,20 +602,19 @@ namespace Supremacy.Client.Controls
                     return;
                 }
 
-                var element = (popupAnchor.Popup != null ? popupAnchor.Popup.Child : null);
+                UIElement element = popupAnchor.Popup?.Child;
                 if (element != null)
                 {
-                    var popupAnchorObj = popupAnchor as DependencyObject;
-                    if ((popupAnchorObj != null) && (element.DesiredSize.Width == 0))
+                    if ((popupAnchor is DependencyObject popupAnchorObj) && (element.DesiredSize.Width == 0))
                     {
                         // The first time a Popup is created, it doesn't have its visual tree generated yet...
                         // so in this case we place the content in a temporary ContentPresenter for measurement purposes
-                        var presenter = new ContentPresenter
-                                        {
-                                            Content = GetPopupContent(popupAnchorObj),
-                                            ContentTemplate = GetPopupContentTemplate(popupAnchorObj),
-                                            ContentTemplateSelector = GetPopupContentTemplateSelector(popupAnchorObj)
-                                        };
+                        ContentPresenter presenter = new ContentPresenter
+                        {
+                            Content = GetPopupContent(popupAnchorObj),
+                            ContentTemplate = GetPopupContentTemplate(popupAnchorObj),
+                            ContentTemplateSelector = GetPopupContentTemplateSelector(popupAnchorObj)
+                        };
                         element = presenter;
                         element.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                     }
@@ -593,7 +627,7 @@ namespace Supremacy.Client.Controls
                 }
 
                 // Start tracking the popup 
-                Current.OpenPopup(popupAnchor);
+                _ = Current.OpenPopup(popupAnchor);
 
                 // Raise an opened event
                 popupAnchor.OnPopupOpened();
@@ -601,7 +635,7 @@ namespace Supremacy.Client.Controls
             else
             {
                 // Ensure the popup is closed
-                Current.ClosePopup(popupAnchor, GamePopupCloseReason.IsPopupOpenChanged);
+                _ = Current.ClosePopup(popupAnchor, GamePopupCloseReason.IsPopupOpenChanged);
 
                 // Raise a closed event
                 popupAnchor.OnPopupClosed();
@@ -611,20 +645,20 @@ namespace Supremacy.Client.Controls
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Handled)
+            {
                 return;
+            }
 
             switch (e.Key)
             {
                 case Key.Escape:
                     // Close the popup
-                    var popupHost = sender as FrameworkElement;
-                    if (popupHost != null)
+                    if (sender is FrameworkElement popupHost)
                     {
-                        var popupAnchor = popupHost.TemplatedParent as IGamePopupAnchor;
-                        if (popupAnchor != null)
+                        if (popupHost.TemplatedParent is IGamePopupAnchor popupAnchor)
                         {
                             e.Handled = true;
-                            ClosePopup(popupAnchor, GamePopupCloseReason.EscapeKeyPressed);
+                            _ = ClosePopup(popupAnchor, GamePopupCloseReason.EscapeKeyPressed);
                         }
                     }
                     break;
@@ -633,13 +667,17 @@ namespace Supremacy.Client.Controls
 
         private void OnLostMouseCapture(object sender, MouseEventArgs e)
         {
-            var popupAnchor = sender as IGamePopupAnchor ?? GetParentPopupAnchor(sender as DependencyObject);
+            IGamePopupAnchor popupAnchor = sender as IGamePopupAnchor ?? GetParentPopupAnchor(sender as DependencyObject);
             if (popupAnchor == null)
+            {
                 return;
+            }
 
-            var popupHost = GetPopupHost(popupAnchor);
+            FrameworkElement popupHost = GetPopupHost(popupAnchor);
             if ((popupHost == null) || (Mouse.Captured == popupHost))
+            {
                 return;
+            }
 
             if (e.OriginalSource == popupHost)
             {
@@ -647,38 +685,41 @@ namespace Supremacy.Client.Controls
                     ((Mouse.Captured != popupAnchor) &&
                      !IsDescendant(popupHost, Mouse.Captured as DependencyObject)))
                 {
-                    ClosePopup(popupAnchor, GamePopupCloseReason.LostMouseCapture);
+                    _ = ClosePopup(popupAnchor, GamePopupCloseReason.LostMouseCapture);
                 }
             }
             else if (IsDescendant(popupHost, e.OriginalSource as DependencyObject))
             {
-                if ((popupAnchor.IsPopupOpen) && (Mouse.Captured == null))
+                if (popupAnchor.IsPopupOpen && (Mouse.Captured == null))
                 {
-                    Mouse.Capture(popupHost, CaptureMode.SubTree);
+                    _ = Mouse.Capture(popupHost, CaptureMode.SubTree);
                     e.Handled = true;
                 }
             }
             else
             {
-                ClosePopup(popupAnchor, GamePopupCloseReason.LostMouseCapture);
+                _ = ClosePopup(popupAnchor, GamePopupCloseReason.LostMouseCapture);
             }
         }
 
         private static void OnPopupContentPropertyValueChanged(
-            DependencyObject o, 
+            DependencyObject o,
             DependencyPropertyChangedEventArgs e)
         {
-            var control = o as ILogicalParent;
-            if (control == null)
+            if (!(o is ILogicalParent control))
+            {
                 return;
+            }
 
-            var oldContent = e.OldValue as DependencyObject;
-            var newContent = e.NewValue as DependencyObject;
-
-            if ((oldContent != null) && (oldContent.GetLogicalParent() == control))
+            if ((e.OldValue is DependencyObject oldContent) && (oldContent.GetLogicalParent() == control))
+            {
                 control.RemoveLogicalChild(oldContent);
-            if ((newContent != null) && (newContent.GetLogicalParent() == null))
+            }
+
+            if ((e.NewValue is DependencyObject newContent) && (newContent.GetLogicalParent() == null))
+            {
                 control.AddLogicalChild(newContent);
+            }
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -694,9 +735,11 @@ namespace Supremacy.Client.Controls
         internal bool OpenPopup(IGamePopupAnchor popupAnchor)
         {
             if (popupAnchor == null)
+            {
                 return false;
+            }
 
-            var parentPopupAnchor = GetParentPopupAnchor(popupAnchor as DependencyObject);
+            IGamePopupAnchor parentPopupAnchor = GetParentPopupAnchor(popupAnchor as DependencyObject);
             while ((parentPopupAnchor != null) && (!parentPopupAnchor.IsPopupOpen))
             {
                 // Only use parent popup anchors that have open popups since there are cases like where Game has a minimized popup open 
@@ -710,10 +753,12 @@ namespace Supremacy.Client.Controls
                 {
                     // Quit since a common ancestor was found
                     if (TopmostPopupAnchor == parentPopupAnchor)
+                    {
                         break;
+                    }
 
                     // Close the topmost popup
-                    CloseTopmostPopup(GamePopupCloseReason.OtherPopupOpened);
+                    _ = CloseTopmostPopup(GamePopupCloseReason.OtherPopupOpened);
                 }
             }
             else
@@ -723,12 +768,14 @@ namespace Supremacy.Client.Controls
             }
 
             // Get the popup host
-            var popupHost = GetPopupHost(popupAnchor);
+            FrameworkElement popupHost = GetPopupHost(popupAnchor);
             if (popupHost == null)
+            {
                 return false;
+            }
 
-            popupAnchor.IgnoreNextLeftRelease = (Mouse.LeftButton == MouseButtonState.Pressed);
-            popupAnchor.IgnoreNextRightRelease = (Mouse.RightButton == MouseButtonState.Pressed);
+            popupAnchor.IgnoreNextLeftRelease = Mouse.LeftButton == MouseButtonState.Pressed;
+            popupAnchor.IgnoreNextRightRelease = Mouse.RightButton == MouseButtonState.Pressed;
 
             // Reset the close reason
             popupAnchor.LastCloseReason = GamePopupCloseReason.Unknown;
@@ -748,25 +795,28 @@ namespace Supremacy.Client.Controls
             popupHost.LostMouseCapture += OnLostMouseCapture;
             popupHost.PreviewKeyDown += OnPreviewKeyDown;
 
-            var popupAnchorElement = popupAnchor as UIElement;
-            if (popupAnchorElement != null)
+            if (popupAnchor is UIElement popupAnchorElement)
             {
                 // If this is the first popup, attach to the root popup's keyboard focus change event
                 if (_popupAnchors.Count == 1)
+                {
                     popupAnchorElement.IsKeyboardFocusWithinChanged += OnIsKeyboardFocusWithinChanged;
+                }
 
                 // Focus the popup
-                popupAnchorElement.Dispatcher.BeginInvoke(
+                _ = popupAnchorElement.Dispatcher.BeginInvoke(
                     DispatcherPriority.Input,
                     (Action)
                     delegate
                     {
                         popupAnchorElement.UpdateLayout();
-                        
-                        if (popupAnchor.Popup == null || !popupAnchor.IsPopupOpen)
-                            return;
 
-                        var focusableElement = popupAnchor.Popup.Child.FindFirstFocusableDescendant<UIElement>();
+                        if (popupAnchor.Popup == null || !popupAnchor.IsPopupOpen)
+                        {
+                            return;
+                        }
+
+                        UIElement focusableElement = popupAnchor.Popup.Child.FindFirstFocusableDescendant<UIElement>();
                         if (focusableElement is GamePopupContentPresenter)
                         {
                             focusableElement = focusableElement.FindFirstFocusableDescendant<UIElement>() ??
@@ -774,9 +824,11 @@ namespace Supremacy.Client.Controls
                         }
 
                         if (focusableElement != null)
-                            focusableElement.Focus();
+                        {
+                            _ = focusableElement.Focus();
+                        }
 
-                        Mouse.Capture(popupHost, CaptureMode.SubTree);
+                        _ = Mouse.Capture(popupHost, CaptureMode.SubTree);
 
                         popupHost.AddHandler(
                             Mouse.PreviewMouseDownOutsideCapturedElementEvent,
@@ -791,15 +843,9 @@ namespace Supremacy.Client.Controls
             return true;
         }
 
-        private IGamePopupAnchor RootPopupAnchor
-        {
-            get { return ((_popupAnchors.Count > 0) ? _popupAnchors[_popupAnchors.Count - 1] : null); }
-        }
+        private IGamePopupAnchor RootPopupAnchor => (_popupAnchors.Count > 0) ? _popupAnchors[_popupAnchors.Count - 1] : null;
 
-        internal IGamePopupAnchor TopmostPopupAnchor
-        {
-            get { return ((_popupAnchors.Count > 0) ? _popupAnchors[0] : null); }
-        }
+        internal IGamePopupAnchor TopmostPopupAnchor => (_popupAnchors.Count > 0) ? _popupAnchors[0] : null;
 
         public static void CloseAllPopups(GamePopupCloseReason closeReason)
         {
@@ -809,182 +855,260 @@ namespace Supremacy.Client.Controls
         public static CustomPopupPlacementCallback GetCustomPopupPlacementCallback(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (CustomPopupPlacementCallback)o.GetValue(CustomPopupPlacementCallbackProperty);
         }
 
         public static void SetCustomPopupPlacementCallback(DependencyObject o, CustomPopupPlacementCallback value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(CustomPopupPlacementCallbackProperty, value);
         }
 
         public static bool GetHasPopup(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (bool)o.GetValue(HasPopupProperty);
         }
 
         public static void SetHasPopup(DependencyObject o, bool value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(HasPopupProperty, value);
         }
 
         public static bool GetIsPopupOpen(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (bool)o.GetValue(IsPopupOpenProperty);
         }
 
         public static void SetIsPopupOpen(DependencyObject o, bool value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(IsPopupOpenProperty, value);
         }
 
         public static object GetPopupContent(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return o.GetValue(PopupContentProperty);
         }
 
         public static void SetPopupContent(DependencyObject o, object value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupContentProperty, value);
         }
 
         public static DataTemplate GetPopupContentTemplate(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (DataTemplate)o.GetValue(PopupContentTemplateProperty);
         }
 
         public static void SetPopupContentTemplate(DependencyObject o, DataTemplate value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupContentTemplateProperty, value);
         }
 
         public static DataTemplateSelector GetPopupContentTemplateSelector(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (DataTemplateSelector)o.GetValue(PopupContentTemplateSelectorProperty);
         }
 
         public static void SetPopupContentTemplateSelector(DependencyObject o, DataTemplateSelector value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupContentTemplateSelectorProperty, value);
         }
 
         public static double GetPopupHorizontalOffset(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (double)o.GetValue(PopupHorizontalOffsetProperty);
         }
 
         public static void SetPopupHorizontalOffset(DependencyObject o, double value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupHorizontalOffsetProperty, value);
         }
 
         public static PlacementMode GetPopupPlacement(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (PlacementMode)o.GetValue(PopupPlacementProperty);
         }
 
         public static void SetPopupPlacement(DependencyObject o, PlacementMode value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupPlacementProperty, value);
         }
 
         public static Rect GetPopupPlacementRectangle(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (Rect)o.GetValue(PopupPlacementRectangleProperty);
         }
 
         public static void SetPopupPlacementRectangle(DependencyObject o, Rect value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupPlacementRectangleProperty, value);
         }
 
         public static UIElement GetPopupPlacementTarget(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (UIElement)o.GetValue(PopupPlacementTargetProperty);
         }
 
         public static void SetPopupPlacementTarget(DependencyObject o, UIElement value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupPlacementTargetProperty, value);
         }
 
         public static ControlResizeMode GetPopupResizeMode(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (ControlResizeMode)o.GetValue(PopupResizeModeProperty);
         }
 
         public static void SetPopupResizeMode(DependencyObject o, ControlResizeMode value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupResizeModeProperty, value);
         }
 
         public static double GetPopupVerticalOffset(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (double)o.GetValue(PopupVerticalOffsetProperty);
         }
 
         public static void SetPopupVerticalOffset(DependencyObject o, double value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(PopupVerticalOffsetProperty, value);
         }
 
         public static bool GetStaysOpenOnClick(DependencyObject o)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             return (bool)o.GetValue(StaysOpenOnClickProperty);
         }
 
         public static void SetStaysOpenOnClick(DependencyObject o, bool value)
         {
             if (o == null)
+            {
                 throw new ArgumentNullException("o");
+            }
+
             o.SetValue(StaysOpenOnClickProperty, value);
         }
     }

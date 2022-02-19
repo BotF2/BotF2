@@ -7,8 +7,6 @@
 //
 // All other rights reserved.
 
-using Supremacy.Game;
-
 namespace Supremacy.Client
 {
     public interface IGameObjectIDService

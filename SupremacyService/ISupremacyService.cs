@@ -11,7 +11,6 @@ using System.ServiceModel;
 
 using Supremacy.Combat;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 
 namespace Supremacy.WCF
 {

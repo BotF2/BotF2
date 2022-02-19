@@ -16,22 +16,24 @@ namespace Supremacy.Universe
     {
         public static IList<Sector> GetSectorsWithinRadius(Sector origin, int radius)
         {
-            var sectors = new List<Sector>();
-            var map = GameContext.Current.Universe.Map;
-            var location = origin.Location;
-            var startX = Math.Max(0, location.X - radius);
-            var startY = Math.Max(0, location.Y - radius);
-            var endX = Math.Min(map.Width - 1, location.X + radius);
-            var endY = Math.Min(map.Height - 1, location.Y + radius);
+            List<Sector> sectors = new List<Sector>();
+            SectorMap map = GameContext.Current.Universe.Map;
+            MapLocation location = origin.Location;
+            int startX = Math.Max(0, location.X - radius);
+            int startY = Math.Max(0, location.Y - radius);
+            int endX = Math.Min(map.Width - 1, location.X + radius);
+            int endY = Math.Min(map.Height - 1, location.Y + radius);
 
-            for (var x = startX; x < endX; x++)
+            for (int x = startX; x < endX; x++)
             {
-                for (var y = startY; y < endY; y++)
+                for (int y = startY; y < endY; y++)
                 {
-                    var sector = map[x, y];
+                    Sector sector = map[x, y];
 
                     if (MapLocation.GetDistance(location, sector.Location) <= radius)
+                    {
                         sectors.Add(sector);
+                    }
                 }
             }
 
@@ -40,13 +42,15 @@ namespace Supremacy.Universe
 
         public static MapLocation FindNearestFriendlySector(Fleet fleet)
         {
-            var closestSite = GameContext.Current.Universe.FindNearestOwned(
+            UniverseObject closestSite = GameContext.Current.Universe.FindNearestOwned(
                 fleet.Location,
                 fleet.Owner,
                 (UniverseObject item) => (item is Station || item is StarSystem) && item.Owner == fleet.Owner);
 
             if (closestSite != null)
+            {
                 return closestSite.Location;
+            }
 
             return fleet.Location;
         }

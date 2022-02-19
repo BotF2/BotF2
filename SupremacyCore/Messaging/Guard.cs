@@ -15,7 +15,7 @@ namespace Supremacy.Messaging.Internal
         [DebuggerStepThrough]
         public static void ArgumentNotNull<T>(T value, string parameterName)
             where T
-		        : class
+                : class
         {
             if (value == null)
             {
@@ -35,11 +35,11 @@ namespace Supremacy.Messaging.Internal
         }
 
         [DebuggerStepThrough]
-        public static void ArgumentNotNull<T>(T value, string parameterName, string messageFormat, params Object[] messageArgs)
+        public static void ArgumentNotNull<T>(T value, string parameterName, string messageFormat, params object[] messageArgs)
             where T
                 : class
         {
-            ArgumentNotNull<T>(value, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
+            ArgumentNotNull(value, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
         }
 
         // ArgumentNotDefault
@@ -63,9 +63,9 @@ namespace Supremacy.Messaging.Internal
         }
 
         [DebuggerStepThrough]
-        public static void ArgumentNotDefault<T>(T value, string parameterName, string messageFormat, params Object[] messageArgs)
+        public static void ArgumentNotDefault<T>(T value, string parameterName, string messageFormat, params object[] messageArgs)
         {
-            ArgumentNotDefault<T>(value, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
+            ArgumentNotDefault(value, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
         }
 
         // ArgumentNotNullOrEmpty
@@ -87,7 +87,7 @@ namespace Supremacy.Messaging.Internal
         }
 
         [DebuggerStepThrough]
-        public static void ArgumentNotNullOrEmpty(string value, string parameterName, string messageFormat, params Object[] messageArgs)
+        public static void ArgumentNotNullOrEmpty(string value, string parameterName, string messageFormat, params object[] messageArgs)
         {
             ArgumentNotNullOrEmpty(value, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
         }
@@ -111,7 +111,7 @@ namespace Supremacy.Messaging.Internal
         }
 
         [DebuggerStepThrough]
-        public static void ArgumentNotNullOrWhiteSpace(string value, string parameterName, string messageFormat, params Object[] messageArgs)
+        public static void ArgumentNotNullOrWhiteSpace(string value, string parameterName, string messageFormat, params object[] messageArgs)
         {
             ArgumentNotNullOrWhiteSpace(value, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
         }
@@ -137,7 +137,7 @@ namespace Supremacy.Messaging.Internal
         }
 
         [DebuggerStepThrough]
-        public static void ArgumentOutOfRange(bool outOfRange, string parameterName, string messageFormat, params Object[] messageArgs)
+        public static void ArgumentOutOfRange(bool outOfRange, string parameterName, string messageFormat, params object[] messageArgs)
         {
             ArgumentOutOfRange(outOfRange, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
         }
@@ -162,7 +162,7 @@ namespace Supremacy.Messaging.Internal
 
         [DebuggerStepThrough]
         public static void ArgumentIsType(object argument, Type type, string parameterName, string messageFormat,
-            params Object[] messageArgs)
+            params object[] messageArgs)
         {
             ArgumentIsType(argument, type, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
         }
@@ -186,7 +186,7 @@ namespace Supremacy.Messaging.Internal
         }
 
         [DebuggerStepThrough]
-        public static void ArgumentValue(bool throwException, string parameterName, string messageFormat, params Object[] messageArgs)
+        public static void ArgumentValue(bool throwException, string parameterName, string messageFormat, params object[] messageArgs)
         {
             ArgumentValue(throwException, parameterName, string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs));
         }

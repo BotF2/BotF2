@@ -15,12 +15,11 @@ namespace Supremacy.Client
 {
     public sealed class ImageCache
     {
-        private static readonly ImageCache s_current;
         private readonly Cache<string, BitmapImage> _cache;
 
         static ImageCache()
         {
-            s_current = new ImageCache();
+            Current = new ImageCache();
         }
 
         public ImageCache()
@@ -28,19 +27,19 @@ namespace Supremacy.Client
             _cache = new Cache<string, BitmapImage>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public static ImageCache Current
-        {
-            get { return s_current; }
-        }
+        public static ImageCache Current { get; private set; }
 
         public bool ForceCaching { get; set; }
 
         private BitmapImage Load(string uri)
         {
-            var image = new BitmapImage();
+            BitmapImage image = new BitmapImage();
             image.BeginInit();
             if (ForceCaching)
+            {
                 image.CacheOption = BitmapCacheOption.OnLoad;
+            }
+
             image.UriSource = new Uri(uri, UriKind.RelativeOrAbsolute);
             image.EndInit();
             image.Freeze();
@@ -50,26 +49,37 @@ namespace Supremacy.Client
         public BitmapImage Get(Uri uri)
         {
             if (uri == null)
+            {
                 throw new ArgumentNullException("uri");
+            }
+
             return Get(uri.OriginalString);
         }
 
         public BitmapImage Get(string uri)
         {
             if (uri == null)
+            {
                 throw new ArgumentNullException("uri");
+            }
+
             if (uri == null)
+            {
                 throw new ArgumentNullException("uri");
+            }
 
-            BitmapImage image;
 
-            if (_cache.TryGetItem(uri, out image))
+            if (_cache.TryGetItem(uri, out BitmapImage image))
+            {
                 return image;
+            }
 
             image = Load(uri);
 
             if (image == null)
+            {
                 return null;
+            }
 
             return _cache.GetOldest(uri, image);
         }

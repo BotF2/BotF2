@@ -27,5 +27,5 @@ namespace Supremacy.Client
         {
             return value;
         }
-    }    
+    }
 }

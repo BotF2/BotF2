@@ -1,4 +1,4 @@
-﻿<!--File:NewDiplomacySreen.xaml-->
+﻿<!--File:NewDiplomacyScreen.xaml-->
 <scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
                        x:Name="_self"
                        x:FieldModifier="private"
@@ -74,7 +74,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="ButtonBorder"
-                                  Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                                  Background="{StaticResource AzureGradient_Top_Bottom}"
                                   CornerRadius="8"
                                   Width="16"
                                   Height="16">
@@ -109,14 +109,14 @@
                                       Value="True">
                                 <Setter TargetName="ButtonBorder"
                                         Property="Background"
-                                        Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                                        Value="{StaticResource BlueHoverGradient_Top_Bottom}" />
                                 <Setter Property="IsEnabled" Value="True" />
                             </Trigger>
                             <Trigger Property="IsPressed"
                                       Value="True">
                                 <Setter TargetName="ButtonBorder"
                                         Property="Background"
-                                        Value="{StaticResource LCARS_AzureGradient_Bottom_Top}" />
+                                        Value="{StaticResource AzureGradient_Bottom_Top}" />
                                 <Setter Property="IsEnabled" Value="True" />
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -128,7 +128,7 @@
         <Style x:Key="SummaryButtonStyle"
              TargetType="{x:Type Button}">
             <Setter Property="Width"
-                Value="160" />
+                Value="140" />
             <Setter Property="Height"
                 Value="35" />
             <Setter Property="Focusable"
@@ -200,9 +200,10 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Immediate Payment"
+                <!--<TextBlock Text="Immediate Payment"-->
+                <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OneTurnTransferText'}"
                          TextWrapping="NoWrap"
-                         VerticalAlignment="Center"
+                         VerticalAlignment="Center" Margin="0,0,20,0"
                          TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                          TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                          TextBlock.FontSize="12pt" />
@@ -234,18 +235,21 @@
                              Grid.Column="4"
                              Text="{Binding Path=ImmediateAmount, Mode=OneWay, StringFormat='#,0'}"
                              TextWrapping="NoWrap"
-                             VerticalAlignment="Center"
+                             VerticalAlignment="Center" Margin="20,0,0,0"
                              TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                              TextBlock.FontSize="12pt" />
-                <TextBlock Grid.Row="1"
+                
+                
+                <!--No RecurringPayment anymore-->
+                <!--<TextBlock Grid.Row="1"
                              Text="Recurring Payment"
                              TextWrapping="NoWrap"
                              VerticalAlignment="Center"
                              TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                             TextBlock.FontSize="12pt" />
-                <RepeatButton Grid.Row="1"
+                             TextBlock.FontSize="12pt" />-->
+                <!--<RepeatButton Grid.Row="1"
                             Grid.Column="1"
                             Command="{x:Static scc:RangeBar.DecrementCommand}"
                             CommandTarget="{Binding ElementName=RecurringRangeBar}"
@@ -268,15 +272,15 @@
                             Command="{x:Static scc:RangeBar.IncrementCommand}"
                             CommandTarget="{Binding ElementName=RecurringRangeBar}"
                             IsEnabled="{Binding ElementName=RecurringRangeBar}"     
-                            Style="{DynamicResource BlockBarIncrementButtonStyle}" />
-                <TextBlock Grid.Row="1"
+                            Style="{DynamicResource BlockBarIncrementButtonStyle}" />-->
+                <!--<TextBlock Grid.Row="1"
                              Grid.Column="4"
                              Text="{Binding Path=RecurringAmount, Mode=OneWay, StringFormat='#,0'}"
                              TextWrapping="NoWrap"
                              VerticalAlignment="Center"
                              TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                             TextBlock.FontSize="12pt" />
+                             TextBlock.FontSize="12pt" />-->
             </Grid>
         </DataTemplate>
 
@@ -359,7 +363,7 @@
                         Grid.RowSpan="2"
                         Width="168"
                         VerticalAlignment="Stretch"
-                        Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                        Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                         Data="F1 M 0,56L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 168,0L 168,28L 148,28C 143.582,28 140,31.5817 140,36L 140,56L 0,56 Z" />
                 <!--<Rectangle x:Name="UpperLeftBlackBand"
                            Grid.Column="0"
@@ -397,16 +401,17 @@
                             <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
                         </scc:GameButton.CommandParameter>
                     </scc:GameButton>
-                    <Button x:Name="SummaryButton"                             
-                            Style="{StaticResource SummaryButtonStyle}"
-                            Content="Turn Summary   "
+                    
+                            <!--Background="{StaticResource Dom2Gradient_Bottom_Top}"-->               
+                    <scc:GameButton x:Name="SummaryButton"                             
+                            DisplayMode="GroupedVertically"
+                            Label="{scc:StringResource Key=SUMMARY_BUTTON_TEXT}"
                             FontSize="14pt"
+
                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                             Foreground="Black"
-                            Background="LightSteelBlue"
                             Margin="0,0,0,0"
-                            Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
-
+                            Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></scc:GameButton>
                 </StackPanel>
                 <!-- Upper Left Side -->
                 <Grid x:Name="UpperLeftSide"
@@ -414,12 +419,12 @@
                       Grid.Row="2"
                       Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=5, Else=1}}"
                       Margin="0,0,0,0">
-                    <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
+                    <Border Background="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                           BorderThickness="0"
                           Width="69"
                           Height="Auto"
                           HorizontalAlignment="Left" />
-                    <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
+                    <Border Background="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                           BorderThickness="0"
                           Width="69"
                           Height="Auto"
@@ -434,7 +439,7 @@
                       scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                       Width="168"
                       Height="40"
-                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                       Margin="0,0,0,0"
                       Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
 
@@ -443,7 +448,7 @@
                     Grid.Column="2"
                     Grid.Row="3"
                     scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                    Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                    Background="{StaticResource AzureGradient_Top_Bottom}"
                     Height="13"
                     Margin="2,0,2,0"
                     VerticalAlignment="Bottom" />
@@ -453,7 +458,7 @@
                     Grid.Column="4"
                     Grid.Row="3"
                     scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                    Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                    Background="{StaticResource AzureGradient_Top_Bottom}"
                     Height="13"
                     Margin="2,0,2,0"
                     VerticalAlignment="Bottom" />
@@ -463,7 +468,7 @@
                     Grid.Column="4"
                     Grid.Row="4"
                     scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                    Background="{StaticResource LCARS_Card_ObsidianGradient_Top_Bottom}"
+                    Background="{StaticResource Card5Gradient_Top_Bottom}"
                     Height="13"
                     Margin="2,2,2,0"
                     VerticalAlignment="Top" />
@@ -476,7 +481,7 @@
                       scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                       Width="28"
                       Height="42"
-                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                       Margin="0,0,0,13"
                       VerticalAlignment="Bottom"
                       Data="F1 M 0,0L 0,27.9954C 1.85621,27.9954 3.6364,28.7328 4.94894,30.0454C 6.26148,31.3579 6.99886,33.1381 6.99886,34.9943L 6.99886,41.9932L 20.9966,41.9932L 20.9966,34.9943C 20.9966,33.1381 21.734,31.3579 23.0465,30.0454C 24.359,28.7328 26.1392,27.9954 27.9954,27.9954L 27.9954,0L 0,0 Z" />
@@ -485,7 +490,7 @@
                         Grid.Row="4"
                         Grid.RowSpan="4"
                         scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                        Background="{StaticResource LCARS_Card_ObsidianGradient_Left_Right}"
+                        Background="{StaticResource Card5Gradient_Left_Right}"
                         Width="14"
                         Margin="0,31,0,44" />
                 <Path x:Name="LowerCenterDivider"
@@ -494,28 +499,50 @@
                       scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                       Width="28"
                       Height="42"
-                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                       Margin="0,0,0,0"
                       VerticalAlignment="Bottom"
                       Data="F1M0,41.9932L0,13.9977C1.85621,13.9977 3.6364,13.2603 4.94894,11.9478 6.26148,10.6353 6.99886,8.85507 6.99886,6.99886L6.99886,0 20.9966,0 20.9966,6.99886C20.9966,8.85508 21.734,10.6353 23.0465,11.9478 24.359,13.2603 26.1392,13.9977 27.9954,13.9977L27.9954,41.9932 0,41.9932z" />
 
-                <!-- Lower-Left Horizontal Divider -->
-                
-                <!--<Border x:Name="LowerLeftHorizontalDivider"
+
+                <!--<Border x:Name="LowerLeftCorner"
                         Grid.Column="0"
                         Grid.Row="7"
-                        Grid.ColumnSpan="3"
-                        Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                        Grid.ColumnSpan="1"
+                        Background="{StaticResource AzureGradient_BottomLeft_TopRight}"
                         Height="28"
                         Margin="2,0,2,0"
                         VerticalAlignment="Bottom" />-->
+
+                <Path x:Name="LowerLeftCorner"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="1"
+                      Grid.Row="7"                  
+                      scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                      VerticalAlignment="Bottom" 
+                      Height="28"
+                      Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
+                      Margin="0,0,0,0"
+                      Data="F1 M 0,0L 0,6C 0,16 2.52857,20.4697 7,25C 11,28 17,28 24,28L 140,28L 140,0L 0,0 Z" />
+
+                <!-- Lower-Left Horizontal Divider -->
+
+                
+                <Border x:Name="LowerLeftHorizontalDivider"
+                        Grid.Column="1"
+                        Grid.Row="7"
+                        Grid.ColumnSpan="2"
+                        Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                        Height="28"
+                        Margin="2,0,2,0"
+                        VerticalAlignment="Bottom" />
 
                 <!-- Lower-Right Horizontal Divider -->
                 <Border x:Name="LowerRightHorizontalDivider"
                         Grid.Column="4"
                         Grid.Row="7"
                         scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                        Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                        Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                         Height="28"
                         Margin="2,0,2,0"
                         VerticalAlignment="Bottom" />
@@ -539,7 +566,7 @@
                         VerticalAlignment="Top"
                         Width="56"
                         Height="56"
-                        Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                        Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                         Data="F1 M 0,0L 28,0C 35.4261,0 42.548,2.94999 47.799,8.20101C 53.05,13.452 56,20.5739 56,28L 56,56L 28,56L 28,35.7251C 28,33.6282 27.1481,31.6212 25.6396,30.1646C 24.1312,28.708 22.0957,27.9267 20,28L 0,28L 0,0 Z" />
 
                 <!-- Lower-Upper Right Corner -->
@@ -550,7 +577,7 @@
                       scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                       Width="56"
                       Height="40"
-                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                       Margin="0,2,0,0"
                       Data="F1 M 0,40L 40,40C 48.8366,40 56,32.8366 56,24L 56,0L 28,0L 28,19C 28,23.4183 24.4183,27 20,27L 0,27L 0,40 Z" />
 
@@ -562,7 +589,7 @@
                       scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                       Width="168"
                       Height="40"
-                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                       Margin="0,2,0,0"
                       Data="F1 M 0,0L 40,0C 48.8366,0 56,7.16344 56,16L 56,40L 28,40L 28,21C 28,16.5817 24.4183,13 20,13L 0,13L 0,0 Z" />
 
@@ -572,7 +599,7 @@
                         Grid.Row="1"
                         Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=7, Else=2}}"
                         Margin="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch='0,2,0,50', Else='0,2,0,0'}}"
-                        Background="{StaticResource LCARS_AzureGradient_Left_Right}"
+                        Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                         Height="Auto" />
 
                 <!-- Lower Right Side -->
@@ -581,7 +608,7 @@
                         Grid.Row="5"
                         Grid.RowSpan="3"
                         scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                        Background="{StaticResource LCARS_AzureGradient_Left_Right}"
+                        Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                         Height="Auto"
                         Margin="0,2,0,50" />
 
@@ -592,7 +619,7 @@
                       Grid.Row="7"
                       Width="56"
                       Height="48"
-                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                       Margin="0,2,0,0"
                       VerticalAlignment="Bottom"
                       Data="F1 M 0,48L 28,48C 35.4261,48 42.548,45.05 47.799,39.799C 53.05,34.548 56,27.4261 56,20L 56,0L 28,0L 28,12.2749C 28,14.3718 27.1481,16.3788 25.6396,17.8354C 24.1312,19.292 22.0957,20.0733 20,20L 0,20L 0,48 Z" />
@@ -606,7 +633,7 @@
                         <DataTemplate x:Key="BoolCellEditor">
                             <TextBlock x:Name="ValueText"
                                          Text="No"
-                                         Foreground="Crimson" Visibility="Hidden" />
+                                         Foreground="#FFB90E0A" Visibility="Hidden" />
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding}"
                                             Value="True">
@@ -755,9 +782,10 @@
                                     TextTrimming="CharacterEllipsis"
                                     FontSize="17pt"
                                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    Foreground="LightGoldenrodYellow"
+                                    Foreground="Aqua"
                                     FontWeight="Normal"
-                                    Margin="3,0,3,0">
+                                    Margin="5,-2,5,0">
+                            <!--Foreground="LightGoldenrodYellow"-->
                             <TextBlock.Text>
                                 <Binding Path="SelectedForeignPower.Counterparty.ShortName"
                                                  Converter="{StaticResource UpperCaseConverter}" />
@@ -775,23 +803,26 @@
                            LastChildFill="True"
                            Margin="0,0,0,0">
                     <StackPanel Orientation="Horizontal">
+                            <!--IsEnabled="{Binding Path=SendMessageCommand}"-->                        
                         <Button Content="SEND" 
                             Command="{Binding Path=SendMessageCommand}"
-                            IsEnabled="{Binding Path=SendMessageCommand}"
+
                             MinWidth="150"
                             MaxWidth="151"
                             MaxHeight="28"
                             Margin="2,0,5,0"/>
+                            <!--IsEnabled="{Binding Path=EditMessageCommand}"-->                        
                         <Button Content="EDIT" 
                             Command="{Binding Path=EditMessageCommand}"
-                            IsEnabled="{Binding Path=EditMessageCommand}"
+
                             MinWidth="150"
                             MaxWidth="151"
                             MaxHeight="28"
                             Margin="2,0,5,0"/>
+                            <!--IsEnabled="{Binding Path=CancelMessageCommand}"-->                        
                         <Button Content="CANCEL" 
                             Command="{Binding Path=CancelMessageCommand}"
-                            IsEnabled="{Binding Path=CancelMessageCommand}"
+
                             MinWidth="150"
                             MaxWidth="151"
                             MaxHeight="28"
@@ -1109,7 +1140,7 @@
                                                     <ItemsControl Margin="5,12,0,0"
                                                                     ItemsSource="{Binding Path=RequestElements}"
                                                                     HorizontalContentAlignment="Center"
-                                                                    Foreground="Crimson"
+                                                                    Foreground="#FFB90E0A"
                                                                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                     FontSize="16"
                                                                     Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
@@ -1235,7 +1266,7 @@
                                                                                     TextWrapping="Wrap"            
                                                                                     TextTrimming="CharacterEllipsis"
                                                                                     FontSize="14pt"
-                                                                                    Foreground="LightYellow"
+                                                                                    Foreground="Aqua"
                                                                                     Margin="0,0,0,0"
                                                                                     Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SendHeader}" 
                                                                                     Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -1262,7 +1293,7 @@
                                                                                 <Setter.Value>
                                                                                     <ControlTemplate TargetType="{x:Type Button}">
                                                                                         <Border x:Name="ButtonBorder"
-                                                                                                Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                                                                                                Background="{StaticResource BlueGradient_Top_Bottom}"
                                                                                                 CornerRadius="8"
                                                                                                 Width="16"
                                                                                                 Height="16">
@@ -1297,14 +1328,14 @@
                                                                                                         Value="True">
                                                                                                 <Setter TargetName="ButtonBorder"
                                                                                                         Property="Background"
-                                                                                                        Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                                                                                                        Value="{StaticResource BlueHoverGradient_Top_Bottom}" />
                                                                                                 <Setter Property="IsEnabled" Value="True" />
                                                                                             </Trigger>
                                                                                             <Trigger Property="IsPressed"
                                                                                                     Value="True">
                                                                                                 <Setter TargetName="ButtonBorder"
                                                                                                         Property="Background"
-                                                                                                        Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                                                                                                        Value="{StaticResource BlueGradient_Bottom_Top}" />
                                                                                                 <Setter Property="IsEnabled" Value="True" />
                                                                                             </Trigger>
                                                                                         </ControlTemplate.Triggers>
@@ -1391,7 +1422,7 @@
                                                                     <ItemsControl Margin="5,12,0,0"
                                                                         ItemsSource="{Binding Path=RequestElements}"
                                                                         HorizontalContentAlignment="Center"
-                                                                        Foreground="Crimson"
+                                                                        Foreground="#FFB90E0A"
                                                                         FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                         FontSize="16"
                                                                         Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
@@ -1510,7 +1541,7 @@
                                                     <ItemsControl Margin="24,12,0,0"
                                         ItemsSource="{Binding Path=RequestElements}"
                                         HorizontalContentAlignment="Center"
-                                        Foreground="Crimson"
+                                        Foreground="#FFB90E0A"
                                         FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                         FontSize="16"
                                         Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
@@ -1618,7 +1649,7 @@
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="{x:Type Button}">
                                                                         <Border x:Name="ButtonBorder"
-                                                                                Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                                                                                Background="{StaticResource BlueGradient_Top_Bottom}"
                                                                                 CornerRadius="8"
                                                                                 Width="16"
                                                                                 Height="16">
@@ -1653,14 +1684,14 @@
                                                                                       Value="True">
                                                                                 <Setter TargetName="ButtonBorder"
                                                                                         Property="Background"
-                                                                                        Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                                                                                        Value="{StaticResource BlueHoverGradient_Top_Bottom}" />
                                                                                 <Setter Property="IsEnabled" Value="True" />
                                                                             </Trigger>
                                                                             <Trigger Property="IsPressed"
                                                                                       Value="True">
                                                                                 <Setter TargetName="ButtonBorder"
                                                                                         Property="Background"
-                                                                                        Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                                                                                        Value="{StaticResource BlueGradient_Bottom_Top}" />
                                                                                 <Setter Property="IsEnabled" Value="True" />
                                                                             </Trigger>
                                                                         </ControlTemplate.Triggers>
@@ -1747,7 +1778,7 @@
                                                     <ItemsControl Margin="24,12,0,0"
                                                                 ItemsSource="{Binding Path=RequestElements}"
                                                                 HorizontalContentAlignment="Center"
-                                                                Foreground="Crimson"
+                                                                Foreground="#FFB90E0A"
                                                                 FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                 FontSize="16"
                                                                 Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
@@ -1786,20 +1817,25 @@
                     <!--Race Image-->
                     <Border Width="194"
                           Height="194"
-                          BorderBrush="White"
+                          BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                           BorderThickness="2"
                           CornerRadius="12">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivImageConverter}}"
                           Stretch="UniformToFill" />
                         </Border.Background>
+                        <Border.ToolTip>
+                            <Image x:Name="InsigniaTooltip" Width="540" Height="540" Source="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivImageConverter}}" Margin="5,0,5,0"/>
+                            <!--<Image ImageSource="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivImageConverter}}"
+                          Stretch="UniformToFill" ima/>-->
+                        </Border.ToolTip>
                     </Border>
 
 
                     <!-- Name -->
                     <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                      FontSize="24"
-                     Foreground="{StaticResource HeaderTextBrush}"
+                     Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                      Text="{Binding Path=SelectedForeignPower.Counterparty.LongName, Converter={StaticResource UpperCaseConverter}}"
                      TextAlignment="Center"
                      TextWrapping="Wrap"
@@ -1895,7 +1931,7 @@
                         <TextBlock Grid.Row="1" Grid.Column="2"
                             FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                  FontSize="18"
-                                 Foreground="{StaticResource HeaderTextBrush}"
+                                 Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                  Text="{Binding Path=SelectedForeignPower.CounterpartyTrust.CurrentValue}"
                                  TextAlignment="Center"
                                  TextWrapping="Wrap"
@@ -1912,11 +1948,11 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="Auto">
                                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                 FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="18"
-                                Foreground="{StaticResource HeaderTextBrush}"                        
+                                Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"                        
                                 Text="{Binding Path=SelectedForeignPower.CounterpartyDiplomacyReport}"
                                 TextAlignment="Left"
                                 TextWrapping="Wrap"

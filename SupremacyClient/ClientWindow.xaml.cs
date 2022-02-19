@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -39,12 +40,14 @@ namespace Supremacy.Client
 
         private static readonly Func<double, double> PixelToPoint;
 
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly IClientApplication _app;
+#pragma warning restore IDE0052 // Remove unread private members
         private readonly IAppContext _appContext;
         private readonly IEventAggregator _eventAggregator;
         private readonly INavigationCommandsProxy _navigationCommands;
         private readonly object _waitCursorLock;
-        private readonly Cursor _defaultCursor;
+        private readonly System.Windows.Input.Cursor _defaultCursor;
         private readonly StateScope _settingsChangeScope;
         private readonly IAudioEngine _audioEngine;
         private readonly IMusicPlayer _musicPlayer;
@@ -57,11 +60,11 @@ namespace Supremacy.Client
 
         static ClientWindow()
         {
-            var convertPixelMethod = typeof(SystemParameters).GetMethod(
+            MethodInfo convertPixelMethod = typeof(SystemParameters).GetMethod(
                 "ConvertPixel",
                 BindingFlags.Static | BindingFlags.NonPublic);
 
-            var pixelParameter = Expression.Parameter(typeof(double), "pixel");
+            System.Linq.Expressions.ParameterExpression pixelParameter = Expression.Parameter(typeof(double), "pixel");
 
             PixelToPoint = Expression.Lambda<Func<double, double>>(
                 Expression.Call(
@@ -79,35 +82,18 @@ namespace Supremacy.Client
             [NotNull] IEventAggregator eventAggregator,
             [NotNull] INavigationCommandsProxy navigationCommands)
         {
-            if (app == null)
-                throw new ArgumentNullException("app");
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            if (audioEngine == null)
-                throw new ArgumentNullException("audioEngine");
-            if (musicPlayer == null)
-                throw new ArgumentNullException("musicPlayer");
-            if (soundPlayer == null)
-                throw new ArgumentNullException("soundPlayer");
-            if (eventAggregator == null)
-                throw new ArgumentNullException("eventAggregator");
-            if (navigationCommands == null)
-                throw new ArgumentNullException("navigationCommands");
-
-            _app = app;
-            _appContext = appContext;
-            _audioEngine = audioEngine;
-            _musicPlayer = musicPlayer;
-            _soundPlayer = soundPlayer;
-            _eventAggregator = eventAggregator;
-            _navigationCommands = navigationCommands;
+            _app = app ?? throw new ArgumentNullException("app");
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
+            _audioEngine = audioEngine ?? throw new ArgumentNullException("audioEngine");
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException("eventAggregator");
+            _navigationCommands = navigationCommands ?? throw new ArgumentNullException("navigationCommands");
             _waitCursorLock = new object();
             _settingsChangeScope = new StateScope();
 
-            _defaultCursor = new Cursor(
-                Path.Combine(
-                    Environment.CurrentDirectory,
-                    @"Resources\Cursors\cursor.cur"));
+            _defaultCursor = new System.Windows.Input.Cursor(Path.Combine(Environment.CurrentDirectory, @"Resources\Images\UI\Shell\cursor.cur"));
+
 
             InitializeComponent();
 
@@ -116,28 +102,28 @@ namespace Supremacy.Client
              * 1280x720 is one of the standard High Definition resolutions, we will adjust our minimum
              * size constraints to accomodate it.
              */
-            // ReSharper disable CompareOfFloatsByEqualityOperator
+
             if (SystemParameters.PrimaryScreenWidth != 1280d ||
                 (SystemParameters.PrimaryScreenHeight != 720d))
             {
                 MinHeight = 720;
                 Height = 720;
             }
-            // ReSharper restore CompareOfFloatsByEqualityOperator
+
 
             Cursor = _defaultCursor;
 
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
 
-            _eventAggregator.GetEvent<TurnStartedEvent>().Subscribe(OnTurnStarted, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<GameStartedEvent>().Subscribe(OnGameStarted, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<GameEndedEvent>().Subscribe(OnGameEnded, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<GameEndingEvent>().Subscribe(OnGameEnding, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<ClientDisconnectedEvent>().Subscribe(OnClientDisconnected, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<GameEndedEvent>().Subscribe(OnGameEnded, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<AllTurnEndedEvent>().Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
-            _eventAggregator.GetEvent<ChatMessageReceivedEvent>().Subscribe(OnChatMessageReceived, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<TurnStartedEvent>().Subscribe(OnTurnStarted, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<GameStartedEvent>().Subscribe(OnGameStarted, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<GameEndedEvent>().Subscribe(OnGameEnded, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<GameEndingEvent>().Subscribe(OnGameEnding, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<ClientDisconnectedEvent>().Subscribe(OnClientDisconnected, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<GameEndedEvent>().Subscribe(OnGameEnded, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<AllTurnEndedEvent>().Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
+            _ = _eventAggregator.GetEvent<ChatMessageReceivedEvent>().Subscribe(OnChatMessageReceived, ThreadOption.UIThread);
 
             ModelessDialogsRegion.SelectionChanged += OnModelessDialogsRegionSelectionChanged;
             ModalDialogsRegion.SelectionChanged += OnModalDialogsRegionSelectionChanged;
@@ -146,96 +132,110 @@ namespace Supremacy.Client
 
             ApplyAntiAliasingSettings();
 
-            InputBindings.Add(
-                new KeyBinding(
-                    CollectGarbageCommand,
-                    new KeyGesture(Key.G, ModifierKeys.Control | ModifierKeys.Shift)));
+            _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control)));
+            _ = InputBindings.Add(new KeyBinding(ToggleFullScreenModeCommand, Key.Enter, ModifierKeys.Alt));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EscapeCommand,
-                    new KeyGesture(Key.Escape, ModifierKeys.None)));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F1, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.GalaxyScreen
-                });
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.EscapeCommand, new KeyGesture(Key.Escape, ModifierKeys.None))); // Escape
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F2, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.ColonyScreen
-                });
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F3, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.DiplomacyScreen
-                });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F1, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.GalaxyScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F2, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.ColonyScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F3, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.ScienceScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F4, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.DiplomacyScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F5, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.IntelScreen });
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F4, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.ScienceScreen
-                });
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.F6, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F10_Command, Key.F10, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F5, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.IntelScreen
-                });
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F7, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.EncyclopediaScreen
-                });
+            // CTRL + Fx
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F06_Command, Key.F6, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.Control));  // old F9-Dialog, not used anymore
 
-            InputBindings.Add(
-                new KeyBinding(
-                    ToggleFullScreenModeCommand,
-                    Key.Enter,
-                    ModifierKeys.Alt));
 
-            CommandBindings.Add(
+            //                                                      CheatMenu uses CTRL + C
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
+            //InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control))); - see above - from Mike
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowPlayersHistoryFileCommand, Key.H, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.I, ModifierKeys.Control));
+            //InputBindings.Add(new KeyBinding(ClientCommands.ShowShipOverview, Key.D1, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.LogTxtCommand, Key.L, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.OptionsCommand, Key.O, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.TracesCommand, Key.P, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGame, Key.S, ModifierKeys.Control)); // CRTL+S makes saved file "_manual_save"
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+            //InputBindings.Add(new KeyBinding(ClientCommands.ShowSaveGameDialog, Key.S, ModifierKeys.Alt));// ALT+S shows SaveGameDialog    // does not work yet
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.T, ModifierKeys.Control));
+
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.FakeCommand, Key.F11, ModifierKeys.Control));
+
+
+            // Modifier "Shift" - not supported by some unknown reason
+
+
+            // Modifier "ALT"
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowAllHistoryFileCommand, Key.H, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteAutoSaved, Key.Y, ModifierKeys.Alt)); // deletes autosav file 
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Alt));
+
+            //CommandBindings
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     ClientCommands.EscapeCommand,
                     ExecuteEscapeCommand));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     ToggleFullScreenModeCommand,
                     (s, e) => ToggleFullScreenMode()));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     CollectGarbageCommand,
                     (s, e) =>
                     {
-                        var process = Process.GetCurrentProcess();
-                        var workingSet = process.WorkingSet64;
-                        var heapSize = GC.GetTotalMemory(false);
+                        Process process = Process.GetCurrentProcess();
+                        long workingSet = process.WorkingSet64;
+                        long heapSize = GC.GetTotalMemory(false);
 
-                        GameLog.Client.General.Info("Forcing garbage collection...");
+                        string _text = "Forcing garbage collection...";
+                        //Console.WriteLine(_text); GameLog.Client.General.Info(_text);
 
                         GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
                         GC.WaitForPendingFinalizers();
 
                         process.Refresh();
 
+                        _text = "Garbage Collection: Process= " + process.ProcessName
+                            + ", ProcessID= " + process.Id
+                            + ", Threads= " + process.Threads.Count.ToString()
+                            + ", Memory= " + process.PagedMemorySize64
+                            //+ ", Memory= " + process.PagedSystemMemorySize64
+                            //+ ", Memory= " + process.PrivateMemorySize64
+                            //+ ", Memory= " + process.VirtualMemorySize64
+                            //+ ", TIMEtotal= " + process.TotalProcessorTime
+                            //+ ", Memory= " + process.VirtualMemorySize64
+
+                            ;
+                        //works  MessageBox.Show(_text, process.ProcessName + " ID: " + process.Id);
+                        Console.WriteLine(_text); GameLog.Client.General.Info(_text);  // Garbage Collection
+
+                        // old code
                         GameLog.Client.General.InfoFormat(
                             "[working set [{0:#,#,} K -> {1:#,#,} K], managed heap [{2:#,#,} K -> {3:#,#,} K]]",
                             workingSet,
@@ -243,7 +243,7 @@ namespace Supremacy.Client
                             heapSize,
                             GC.GetTotalMemory(false));
 
-                        GameLog.Client.GameData.DebugFormat(
+                        GameLog.Client.General.DebugFormat(
                             "[working set [{0:#,#,} K -> {1:#,#,} K], managed heap [{2:#,#,} K -> {3:#,#,} K]]",
                             workingSet,
                             process.WorkingSet64,
@@ -251,85 +251,12 @@ namespace Supremacy.Client
                             GC.GetTotalMemory(false));
                     }));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.AutoTurnCommand,
-                    Key.A,
-                    ModifierKeys.Alt));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ColonyInfoScreen,
-                    Key.F8,
-                    ModifierKeys.None));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ColorInfoScreen,
-                    Key.F6,
-                    ModifierKeys.Alt));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ErrorTxtCommand,
-                    Key.E,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ShowEndOfTurnSummary,
-                    new KeyGesture(Key.I, ModifierKeys.Control)));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.LogTxtCommand,
-                    Key.L,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.OptionsCommand,
-                    Key.O,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.TracesCommand,
-                    Key.Z,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.FakeCommand,
-                    Key.F11,
-                    ModifierKeys.Control));
-
-            // CRTL+S makes saved file "_manual_save"
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.SaveGame,
-                    Key.S,
-                    ModifierKeys.Control));
-
-            //// ALT+S shows SaveGameDialog    // does not work yet
-            //        InputBindings.Add(
-            //        new KeyBinding(
-            //        //ClientCommands.ShowSaveGameDialog,
-            //            Key.S,
-            //            ModifierKeys.Alt));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EndTurn,
-                    Key.T,
-                    ModifierKeys.Control));
-
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     ClientCommands.AutoTurnCommand,
                     (s, e) =>
                     {
-                        var service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+                        IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
                         service.AutoTurn = !service.AutoTurn;
                         if (service.AutoTurn)
                         {
@@ -337,7 +264,7 @@ namespace Supremacy.Client
                         }
                     }));
 
-            var settings = ClientSettings.Current;
+            ClientSettings settings = ClientSettings.Current;
 
             Width = settings.ClientWindowWidth;
             Height = settings.ClientWindowHeight;
@@ -348,17 +275,25 @@ namespace Supremacy.Client
         private void OnEnableAntiAliasingSettingsChanged(object sender, PropertyChangedRoutedEventArgs<bool> args)
         {
             if (Dispatcher.CheckAccess())
+            {
                 ApplyAntiAliasingSettings();
+            }
             else
-                Dispatcher.Invoke(DispatcherPriority.Send, (Action)ApplyAntiAliasingSettings);
+            {
+                _ = Dispatcher.Invoke(DispatcherPriority.Send, (Action)ApplyAntiAliasingSettings);
+            }
         }
 
         private void ApplyAntiAliasingSettings()
         {
             if (ClientSettings.Current.EnableAntiAliasing)
+            {
                 ContentPanel.ClearValue(RenderOptions.EdgeModeProperty);
+            }
             else
+            {
                 RenderOptions.SetEdgeMode(ContentPanel, EdgeMode.Aliased);
+            }
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -372,7 +307,10 @@ namespace Supremacy.Client
         private void SaveWindowDimensions()
         {
             if (RestoreBounds.IsEmpty)
+            {
                 return;
+            }
+
             ClientSettings.Current.ClientWindowWidth = RestoreBounds.Width;
             ClientSettings.Current.ClientWindowHeight = RestoreBounds.Height;
             ClientSettings.Current.Save();
@@ -381,7 +319,10 @@ namespace Supremacy.Client
         private void CheckFullScreenSettings()
         {
             if (_settingsChangeScope.IsWithin)
+            {
                 return;
+            }
+
             RenderOptions.SetBitmapScalingMode(
                 ContentPanel,
                 ClientSettings.Current.EnableHighQualityScaling
@@ -393,7 +334,10 @@ namespace Supremacy.Client
         private void OnViewActivating(ViewActivatingEventArgs e)
         {
             if (!_appContext.IsConnected)
+            {
                 return;
+            }
+
             e.Cancel = IsDialogOpen() && !(e.View is ISystemAssaultScreenView);
         }
 
@@ -404,7 +348,7 @@ namespace Supremacy.Client
             ClientSettings.Current.Saved += (s, e) => CheckFullScreenSettings();
             ClientSettings.Current.Loaded += (s, e) => CheckFullScreenSettings();
 
-            _eventAggregator.GetEvent<ViewActivatingEvent>().Subscribe(OnViewActivating, ThreadOption.PublisherThread);
+            _ = _eventAggregator.GetEvent<ViewActivatingEvent>().Subscribe(OnViewActivating, ThreadOption.PublisherThread);
 
             _audioEngine.Volume = (float)ClientSettings.Current.MasterVolume;
             _musicPlayer.Volume = (float)ClientSettings.Current.MusicVolume;
@@ -426,29 +370,35 @@ namespace Supremacy.Client
 
         private bool IsDialogOpen()
         {
-            return ((ModalDialogsRegion.ActiveDialog != null) || (ModelessDialogsRegion.ActiveDialog != null));
+            return (ModalDialogsRegion.ActiveDialog != null) || (ModelessDialogsRegion.ActiveDialog != null);
         }
 
         private void CheckScreenFocus()
         {
             if (IsDialogOpen())
+            {
                 return;
-            var currentScreen = GameScreensRegion.CurrentScreen;
-            if (currentScreen != null)
-                currentScreen.Focus();
-            else
-                GameScreensRegion.Focus();
+            }
+
+            System.Windows.Controls.Control currentScreen = GameScreensRegion.CurrentScreen;
+            _ = currentScreen != null ? currentScreen.Focus() : GameScreensRegion.Focus();
         }
 
         private void ExecuteEscapeCommand(object sender, ExecutedRoutedEventArgs args)
         {
             if (IsDialogOpen())
+            {
                 return;
+            }
 
             if (GameScreensRegion.CurrentScreen is IGalaxyScreenView)
+            {
                 _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
+            }
             else if (!(GameScreensRegion.CurrentScreen is MenuScreen))
+            {
                 _navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
+            }
         }
 
         protected void ToggleFullScreenMode()
@@ -459,14 +409,20 @@ namespace Supremacy.Client
         protected override Size MeasureOverride(Size availableSize)
         {
             if (_settingsChangeScope.IsWithin)
+            {
                 return availableSize;
+            }
+
             return base.MeasureOverride(availableSize);
         }
 
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
             if (_settingsChangeScope.IsWithin)
+            {
                 return arrangeBounds;
+            }
+
             return base.ArrangeOverride(arrangeBounds);
         }
 
@@ -479,7 +435,10 @@ namespace Supremacy.Client
                     if (enableFullScreenMode)
                     {
                         if (WindowState == WindowState.Maximized)
+                        {
                             return;
+                        }
+
                         ResizeMode = ResizeMode.CanMinimize;
                         WindowStyle = WindowStyle.None;
                         WindowState = WindowState.Maximized;
@@ -489,7 +448,10 @@ namespace Supremacy.Client
                     else
                     {
                         if (WindowState == WindowState.Normal)
+                        {
                             return;
+                        }
+
                         CenterToScreen();
                         ResizeMode = ResizeMode.CanResize;
                         WindowStyle = WindowStyle.SingleBorderWindow;
@@ -504,11 +466,13 @@ namespace Supremacy.Client
 
         protected void CenterToScreen()
         {
-            var workArea = SystemParameters.WorkArea;
-            var windowSize = RestoreBounds;
+            Rect workArea = SystemParameters.WorkArea;
+            Rect windowSize = RestoreBounds;
 
             if (double.IsInfinity(windowSize.Width) || double.IsInfinity(windowSize.Height))
+            {
                 windowSize = new Rect(0, 0, Width, Height);
+            }
 
             Left = (workArea.Width - windowSize.Width) / 2;
             Top = (workArea.Height - windowSize.Height) / 2;
@@ -520,10 +484,10 @@ namespace Supremacy.Client
 
             if (sizeInfo.NewSize.Width > MaxUnscaledScreenWidth)
             {
-                _scaleFactor = (sizeInfo.NewSize.Width / MaxUnscaledScreenWidth);
+                _scaleFactor = sizeInfo.NewSize.Width / MaxUnscaledScreenWidth;
 
                 ClientProperties.SetScaleFactor(this, _scaleFactor);
-                
+
                 LayoutTransform = ContentPanel.LayoutTransform = new ScaleTransform(_scaleFactor, _scaleFactor, 0.5, 0.5);
             }
             else
@@ -539,7 +503,7 @@ namespace Supremacy.Client
 
         private void OnModalDialogsRegionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            var enableShaders = RenderCapability.IsPixelShaderVersionSupported(2, 0);
+            bool enableShaders = RenderCapability.IsPixelShaderVersionSupported(2, 0);
 
             if (ModalDialogsRegion.ActiveDialog == null)
             {
@@ -550,12 +514,12 @@ namespace Supremacy.Client
             else if (enableShaders)
             {
                 GameScreensRegionBorder.Effect = new ColorToneEffect
-                                                      {
-                                                          DarkColor = Color.FromScRgb(1.0f, 0.1f, 0.075f, 0.125f),
-                                                          LightColor = Color.FromScRgb(1.0f, 0.4f, 0.3f, 0.5f),
-                                                          Desaturation = .8,
-                                                          ToneAmount = 0
-                                                      };
+                {
+                    DarkColor = Color.FromScRgb(1.0f, 0.1f, 0.075f, 0.125f),
+                    LightColor = Color.FromScRgb(1.0f, 0.4f, 0.3f, 0.5f),
+                    Desaturation = .8,
+                    ToneAmount = 0
+                };
             }
             else
             {
@@ -566,19 +530,26 @@ namespace Supremacy.Client
         private void OnClientDisconnected(ClientDataEventArgs<ClientDisconnectReason> obj)
         {
             if (_isClosing)
+            {
                 _exitInProgress = true;
+            }
         }
 
         private void OnGameEnding(ClientEventArgs obj)
         {
             if (_isClosing)
+            {
                 _exitInProgress = true;
+            }
         }
 
         private void OnGameEnded(ClientEventArgs obj)
         {
             if (_isClosing)
+            {
                 _exitInProgress = true;
+            }
+
             ClearValue(ContextMenuProperty);
         }
 
@@ -590,15 +561,21 @@ namespace Supremacy.Client
         private void OnTurnStarted(ClientEventArgs e)
         {
             _soundPlayer.PlayFile("Resources/SoundFX/NewTurn.ogg");
+            SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
+            _soundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
         }
 
         private void OnChatMessageReceived(ClientDataEventArgs<ChatMessage> e)
         {
             if (e.Value == null || !_appContext.IsGameInPlay)
+            {
                 return;
+            }
 
             if (ReferenceEquals(e.Value.Sender, _appContext.LocalPlayer))
+            {
                 return;
+            }
 
             _soundPlayer.PlayFile("Resources/SoundFX/ChatMessage.ogg");
         }
@@ -616,7 +593,9 @@ namespace Supremacy.Client
             base.OnClosing(e);
 
             if (e.Cancel)
+            {
                 return;
+            }
 
             _isClosing = true;
 
@@ -630,7 +609,9 @@ namespace Supremacy.Client
             }
 
             if (_exitInProgress)
+            {
                 return;
+            }
 
             _isClosing = false;
             e.Cancel = true;
@@ -647,20 +628,22 @@ namespace Supremacy.Client
 
         private CustomPopupPlacement[] ContextMenuPlacementCallback(
             Size popupSize,
-            // ReSharper disable RedundantAssignment
+
             Size targetSize,
-            // ReSharper restore RedundantAssignment
+
             Point offset)
         {
-            var dpiConversion = PixelToPoint(1.0);
-            var mouse = Mouse.GetPosition(this);
+            double dpiConversion = PixelToPoint(1.0);
+            Point mouse = Mouse.GetPosition(this);
 
             if (ContextMenu != null)
+            {
                 popupSize = (Size)((Vector)ContextMenu.RenderSize * _scaleFactor);
+            }
 
             targetSize = (Size)((Vector)ContentPanel.RenderSize * _scaleFactor);
 
-            var point = new Point(
+            Point point = new Point(
                 Math.Max(
                     0,
                     Math.Min(
@@ -680,7 +663,7 @@ namespace Supremacy.Client
             lock (_waitCursorLock)
             {
                 _waitCursorCount++;
-                Cursor = Cursors.Wait;
+                Cursor = System.Windows.Input.Cursors.Wait;
             }
             Mouse.UpdateCursor();
         }
@@ -690,9 +673,14 @@ namespace Supremacy.Client
             lock (_waitCursorLock)
             {
                 if (_waitCursorCount > 0)
+                {
                     _waitCursorCount--;
+                }
+
                 if (_waitCursorCount == 0)
+                {
                     Cursor = _defaultCursor;
+                }
             }
             Mouse.UpdateCursor();
         }

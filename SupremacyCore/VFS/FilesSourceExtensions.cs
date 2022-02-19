@@ -18,7 +18,10 @@ namespace Supremacy.VFS
         public static IVirtualFileInfo GetFileInfo([NotNull] this IFilesSource source, string path)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
+
             return source.GetFileInfo(path, false);
         }
     }

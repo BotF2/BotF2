@@ -76,22 +76,23 @@ namespace Supremacy.Tech
 
         public TechObjectTextGroupKey([NotNull] string designKey)
         {
-            if (designKey == null)
-                throw new ArgumentNullException("designKey");
-            _designKey = designKey;
+            _designKey = designKey ?? throw new ArgumentNullException("designKey");
         }
 
-        public string DesignKey
-        {
-            get { return _designKey; }
-        }
+        public string DesignKey => _designKey;
 
         public bool Equals(TechObjectTextGroupKey other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
+
             return Equals(other._designKey, _designKey);
         }
 
@@ -111,15 +112,20 @@ namespace Supremacy.Tech
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(MarkupExtension))
+            {
                 return true;
+            }
+
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var key = value as TechObjectTextGroupKey;
-            if (key != null && destinationType == typeof(MarkupExtension))
+            if (value is TechObjectTextGroupKey key && destinationType == typeof(MarkupExtension))
+            {
                 return new TechObjectTextGroupKey(key.DesignKey);
+            }
+
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }
@@ -138,24 +144,25 @@ namespace Supremacy.Tech
 
         public TechObjectStringKey([NotNull] string name)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
-            _name = name;
+            _name = name ?? throw new ArgumentNullException("name");
 
             GameLog.Client.GameData.DebugFormat("TechObjectStringKey-Name={0}", Name);
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
 
         public bool Equals(TechObjectStringKey other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
+
             return Equals(other._name, _name);
         }
 
@@ -175,20 +182,21 @@ namespace Supremacy.Tech
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(MarkupExtension))
+            {
                 return true;
+            }
+
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var techObjectKey = value as TechObjectStringKey;
-            if (techObjectKey != null &&
+            if (value is TechObjectStringKey techObjectKey &&
                 destinationType == typeof(MarkupExtension))
             {
-                var serializerContext = context as IValueSerializerContext;
-                if (serializerContext != null)
+                if (context is IValueSerializerContext serializerContext)
                 {
-                    var typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
+                    ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                     if (typeSerializer != null)
                     {
                         return new StaticExtension(
@@ -220,7 +228,7 @@ namespace Supremacy.Tech
         public const int InvalidDesignID = -1;
 
         public const string MissingImageUri = "vfs:///Resources/Images/__image_missing.png";
-        
+
         protected const string UnknownDesignKey = "<unknown>";
 
         private ushort _designId;
@@ -233,7 +241,7 @@ namespace Supremacy.Tech
         private byte _populationHealth;
         private bool _isUniversallyAvailable;
         private readonly ScriptExpression _buildCondition;
- 
+
         [NonSerialized]
         private ITechObjectTextDatabaseEntry _textDatabaseEntry;
         [NonSerialized]
@@ -251,8 +259,8 @@ namespace Supremacy.Tech
         /// <value>The design ID.</value>
         public int DesignID
         {
-            get { return _designId; }
-            set { _designId = (ushort)value; }
+            get => _designId;
+            set => _designId = (ushort)value;
         }
 
         /// <summary>
@@ -262,7 +270,7 @@ namespace Supremacy.Tech
         [ConstructorArgument("key")]
         public string Key
         {
-            get { return _key; }
+            get => _key;
             set
             {
                 _key = value;
@@ -280,12 +288,17 @@ namespace Supremacy.Tech
             {
                 if (_localizedText != null)
                 {
-                    var name = _localizedText.GetString(TechObjectStringKeys.Name);
+                    string name = _localizedText.GetString(TechObjectStringKeys.Name);
                     if (name != null)
+                    {
                         return name;
+                    }
                 }
                 if (TryEnsureObjectString())
+                {
                     return TextDatabaseEntry.Name;
+                }
+
                 return Key;
             }
         }
@@ -294,10 +307,7 @@ namespace Supremacy.Tech
         /// Gets the localized name.
         /// </summary>
         /// <value>The localized name.</value>
-        public string LocalizedName
-        {
-            get { return Name; }
-        }
+        public string LocalizedName => Name;
 
         /// <summary>
         /// Gets or sets the description.
@@ -309,12 +319,17 @@ namespace Supremacy.Tech
             {
                 if (_localizedText != null)
                 {
-                    var description = _localizedText.GetString(TechObjectStringKeys.Description);
+                    string description = _localizedText.GetString(TechObjectStringKeys.Description);
                     if (description != null)
+                    {
                         return description;
+                    }
                 }
                 if (TryEnsureObjectString())
+                {
                     return TextDatabaseEntry.Description;
+                }
+
                 return string.Empty;
             }
         }
@@ -328,17 +343,14 @@ namespace Supremacy.Tech
             //        catch { }
             //    }
             //}
-            return (TextDatabaseEntry != null);
+            return TextDatabaseEntry != null;
         }
 
         /// <summary>
         /// Gets the localized description.
         /// </summary>
         /// <value>The localized description.</value>
-        public string LocalizedDescription
-        {
-            get { return Description; }
-        }
+        public string LocalizedDescription => Description;
 
         //public string LocalizedClassLevel
         //{
@@ -351,7 +363,7 @@ namespace Supremacy.Tech
         /// <value>The maintenance cost.</value>
         public int MaintenanceCost
         {
-            get { return _maintenanceCost; }
+            get => _maintenanceCost;
             set
             {
                 _maintenanceCost = Math.Max(value, 0);
@@ -360,16 +372,16 @@ namespace Supremacy.Tech
         }
 
         /// <summary>
-        /// Gets or sets the raw materials cost of an object of this design.
+        /// Gets or sets the DURANIUM cost of an object of this design.
         /// </summary>
-        /// <value>The raw materials.</value>
-        public int RawMaterials
+        /// <value>The DURANIUM.</value>
+        public int Duranium
         {
-            get { return BuildResourceCosts[ResourceType.RawMaterials]; }
+            get => BuildResourceCosts[ResourceType.Duranium];
             set
             {
-                BuildResourceCosts[ResourceType.RawMaterials] = value;
-                OnPropertyChanged("RawMaterials");
+                BuildResourceCosts[ResourceType.Duranium] = value;
+                OnPropertyChanged("Duranium");
             }
         }
 
@@ -379,11 +391,11 @@ namespace Supremacy.Tech
         /// <value>The population health bonus.</value>
         public Percentage PopulationHealth
         {
-            get { return (Percentage)Math.Round(0.01 * _populationHealth, 3); }
+            get => (Percentage)Math.Round(0.01 * _populationHealth, 3);
             set
             {
-                 _populationHealth = (byte)(value * 100);
-                 OnPropertyChanged("PopulationHealth");
+                _populationHealth = (byte)(value * 100);
+                OnPropertyChanged("PopulationHealth");
             }
         }
 
@@ -399,9 +411,11 @@ namespace Supremacy.Tech
                 {
                     if (IsImageLinked)
                     {
-                        var linkSource = ImageLinkSource;
+                        TechObjectDesign linkSource = ImageLinkSource;
                         if (linkSource != null)
+                        {
                             return linkSource.Image;
+                        }
                     }
                     else
                     {
@@ -409,23 +423,27 @@ namespace Supremacy.Tech
                     }
                 }
 
-                var localPath = ResourceManager.GetResourcePath(
+                string localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.png",
+                        "vfs:///Resources/Images/{0}{1}.png",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 
                 if (File.Exists(localPath))
+                {
                     return ResourceManager.GetResourceUri(localPath).ToString();
+                }
 
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.jpg",
+                        "vfs:///Resources/Images/{0}{1}.jpg",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 
                 if (File.Exists(localPath))
+                {
                     return ResourceManager.GetResourceUri(localPath).ToString();
+                }
 
                 return MissingImageUri;
             }
@@ -452,9 +470,11 @@ namespace Supremacy.Tech
                 {
                     if (IsImageLinked)
                     {
-                        var linkSource = ImageLinkSource;
+                        TechObjectDesign linkSource = ImageLinkSource;
                         if (linkSource != null)
+                        {
                             return linkSource.Image;
+                        }
                     }
                     else
                     {
@@ -462,42 +482,50 @@ namespace Supremacy.Tech
                     }
                 }
 
-                var localPath = ResourceManager.GetResourcePath(
+                string localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}_uc.png",
+                        "vfs:///Resources/Images/{0}{1}_uc.png",
                         DefaultShipsUnderConstructionSubFolder,
                         _key.ToLowerInvariant()));
 
                 if (File.Exists(localPath))
+                {
                     return ResourceManager.GetResourceUri(localPath).ToString();
+                }
 
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}_uc.jpg",
+                        "vfs:///Resources/Images/{0}{1}_uc.jpg",
                         DefaultShipsUnderConstructionSubFolder,
                         _key.ToLowerInvariant()));
 
                 if (File.Exists(localPath))
+                {
                     return ResourceManager.GetResourceUri(localPath).ToString();
+                }
 
                 // if not ShipsUnderConstruction-Image avaiable then try to get regular ship image - each .png or .jpg
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.png",
+                        "vfs:///Resources/Images/{0}{1}.png",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 
                 if (File.Exists(localPath))
+                {
                     return ResourceManager.GetResourceUri(localPath).ToString();
+                }
 
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.jpg",
+                        "vfs:///Resources/Images/{0}{1}.jpg",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 
                 if (File.Exists(localPath))
+                {
                     return ResourceManager.GetResourceUri(localPath).ToString();
+                }
 
                 // else return MissingImageUri
                 return MissingImageUri;
@@ -513,20 +541,11 @@ namespace Supremacy.Tech
             }
         }
 
-        protected virtual string DefaultImageSubFolder
-        {
-            get { return string.Empty; }
-        }
+        protected virtual string DefaultImageSubFolder => string.Empty;
 
-        protected virtual string DefaultShipsUnderConstructionSubFolder
-        {
-            get { return string.Empty; }
-        }
+        protected virtual string DefaultShipsUnderConstructionSubFolder => string.Empty;
 
-        public ScriptExpression BuildCondition
-        {
-            get { return _buildCondition; }
-        }
+        public ScriptExpression BuildCondition => _buildCondition;
 
         /// <summary>
         /// Gets a value indicating whether an image is explicitly defined.
@@ -534,10 +553,7 @@ namespace Supremacy.Tech
         /// <value>
         /// <c>true</c> if an image is explicitly defined; otherwise, <c>false</c>.
         /// </value>
-        public bool IsImageDefined
-        {
-            get { return (_image != null); }
-        }
+        public bool IsImageDefined => _image != null;
 
         /// <summary>
         /// Gets a value indicating whether the image is the default (automatic).
@@ -545,10 +561,7 @@ namespace Supremacy.Tech
         /// <value>
         /// <c>true</c> if the image is the default (automatic); otherwise, <c>false</c>.
         /// </value>
-        public bool IsImageAutomatic
-        {
-            get { return (_image == null); }
-        }
+        public bool IsImageAutomatic => _image == null;
 
         /// <summary>
         /// Gets a value indicating whether the image is linked to another object.
@@ -556,21 +569,20 @@ namespace Supremacy.Tech
         /// <value>
         /// <c>true</c> if the image is linked to another object; otherwise, <c>false</c>.
         /// </value>
-        public bool IsImageLinked
-        {
-            get { return ((_image != null) && _image.StartsWith("@")); }
-        }
+        public bool IsImageLinked => (_image != null) && _image.StartsWith("@");
 
         public TechObjectDesign ImageLinkSource
         {
             get
             {
-                if (!String.IsNullOrEmpty(_image) && _image.StartsWith("@") && (_image.Length > 1))
+                if (!string.IsNullOrEmpty(_image) && _image.StartsWith("@") && (_image.Length > 1))
                 {
                     string linkKey = _image.Substring(1);
                     TechObjectDesign linkDesign = GameContext.Current.TechDatabase[linkKey];
                     if (linkDesign != null)
+                    {
                         return linkDesign;
+                    }
                 }
                 return null;
             }
@@ -585,33 +597,21 @@ namespace Supremacy.Tech
         /// That is, for each list in the return value, at least one of the items
         /// in the list must be present in order to construct an object of this design.
         /// </remarks>
-        public IPrerequisiteCollection Prerequisites
-        {
-            get { return _prerequisites; }
-        }
+        public IPrerequisiteCollection Prerequisites => _prerequisites;
 
-        public IList<EffectGroup> Effects
-        {
-            get { return _effects; }
-        }
+        public IList<EffectGroup> Effects => _effects;
 
         /// <summary>
         /// Gets the list of designs to which an object of this design is upgradable.
         /// </summary>
         /// <value>The list of designs.</value>
-        public IList<TechObjectDesign> UpgradableDesigns
-        {
-            get { return _upgradableDesigns; }
-        }
+        public IList<TechObjectDesign> UpgradableDesigns => _upgradableDesigns;
 
         /// <summary>
         /// Gets the list of designs rendered obsolete by this design.
         /// </summary>
         /// <value>The list of designs.</value>
-        public IList<TechObjectDesign> ObsoletedDesigns
-        {
-            get { return _obsoletedDesigns; }
-        }
+        public IList<TechObjectDesign> ObsoletedDesigns => _obsoletedDesigns;
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="TechObjectDesign"/> is universally available.
@@ -621,7 +621,7 @@ namespace Supremacy.Tech
         /// </value>
         public bool IsUniversallyAvailable
         {
-            get { return _isUniversallyAvailable; }
+            get => _isUniversallyAvailable;
             set
             {
                 _isUniversallyAvailable = value;
@@ -632,7 +632,10 @@ namespace Supremacy.Tech
         protected TechObjectDesign(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
+            {
                 throw new ArgumentException(SR.ArgumentException_ValueMustBeNonEmptyString);
+            }
+
             _key = key;
         }
 
@@ -657,7 +660,7 @@ namespace Supremacy.Tech
         protected internal TechObjectDesign(XmlElement element)
             : this()
         {
-            // ReSharper disable PossibleNullReferenceException
+
 
             _key = element.GetAttribute("Key");
             //_name = element["Name"].InnerText.Trim();
@@ -670,10 +673,9 @@ namespace Supremacy.Tech
             {
                 foreach (XmlNode xmlTechReqNode in element["TechRequirements"].ChildNodes)
                 {
-                    var xmlTechReq = xmlTechReqNode as XmlElement;
-                    if (xmlTechReq != null)
+                    if (xmlTechReqNode is XmlElement xmlTechReq)
                     {
-                        var category = (TechCategory)Enum.Parse(
+                        TechCategory category = (TechCategory)Enum.Parse(
                             typeof(TechCategory),
                             xmlTechReq.Name);
                         _techRequirements[category] = Number.ParseInt32(xmlTechReq.InnerText.Trim());
@@ -685,10 +687,10 @@ namespace Supremacy.Tech
             {
                 _buildCost = Number.ParseInt32(element["BuildCost"].InnerText.Trim());
             }
-            if (element["RawMaterials"] != null)
+            if (element["Duranium"] != null)
             {
-                _resourceCosts[ResourceType.RawMaterials] = Number.ParseInt32(
-                    element["RawMaterials"].InnerText.Trim());
+                _resourceCosts[ResourceType.Duranium] = Number.ParseInt32(
+                    element["Duranium"].InnerText.Trim());
             }
             if (element["MaintenanceCost"] != null)
             {
@@ -705,22 +707,28 @@ namespace Supremacy.Tech
             if (element["BuildCondition"] != null)
             {
                 _buildCondition = new ScriptExpression
-                                  {
-                                      Parameters = new ScriptParameters(
+                {
+                    Parameters = new ScriptParameters(
                                           new ScriptParameter("$source", typeof(Colony)),
                                           new ScriptParameter("$design", GetType())),
-                                      ScriptCode = element["BuildCondition"].InnerText.Trim()
-                                  };
+                    ScriptCode = element["BuildCondition"].InnerText.Trim()
+                };
             }
-            // ReSharper restore PossibleNullReferenceException
+
         }
 
         public void LinkImageToDesign(TechObjectDesign design)
         {
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
+
             if (design == this)
+            {
                 throw new ArgumentException("Cannot link to self.");
+            }
+
             Image = "@" + design.Key;
         }
 
@@ -731,8 +739,11 @@ namespace Supremacy.Tech
         {
             _obsoletedDesigns.TrimExcess();
             _upgradableDesigns.TrimExcess();
-            foreach (var prerequisite in _prerequisites)
+            foreach (PrerequisiteGroup prerequisite in _prerequisites)
+            {
                 prerequisite.TrimExcess();
+            }
+
             _prerequisites.TrimExcess();
             _effects.TrimExcess();
         }
@@ -761,7 +772,7 @@ namespace Supremacy.Tech
             {
                 newElement = doc.CreateElement("Image");
                 newElement.InnerText = _image;
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             newElement = doc.CreateElement("TechRequirements");
@@ -771,63 +782,65 @@ namespace Supremacy.Tech
                 {
                     XmlElement subElement = doc.CreateElement(category.ToString());
                     subElement.InnerText = _techRequirements[category].ToString();
-                    newElement.AppendChild(subElement);
+                    _ = newElement.AppendChild(subElement);
                     hasTechRequirements = true;
                 }
             }
             if (hasTechRequirements)
             {
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             newElement = doc.CreateElement("BuildCost");
             newElement.InnerText = _buildCost.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
-            if (RawMaterials > 0)
+            if (Duranium > 0)
             {
-                newElement = doc.CreateElement("RawMaterials");
-                newElement.InnerText = _resourceCosts[ResourceType.RawMaterials].ToString();
-                baseElement.AppendChild(newElement);
+                newElement = doc.CreateElement("Duranium");
+                newElement.InnerText = _resourceCosts[ResourceType.Duranium].ToString();
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (MaintenanceCost > 0)
             {
                 newElement = doc.CreateElement("MaintenanceCost");
                 newElement.InnerText = _maintenanceCost.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             if (PopulationHealth > 0)
             {
                 newElement = doc.CreateElement("PopulationHealth");
                 newElement.InnerText = _populationHealth.ToString();
-                baseElement.AppendChild(newElement);
+                _ = baseElement.AppendChild(newElement);
             }
 
             newElement = doc.CreateElement("IsUniversallyAvailable");
             newElement.InnerText = _isUniversallyAvailable.ToString().ToLowerInvariant();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
             if (_prerequisites.Count > 0)
             {
                 newElement = doc.CreateElement("Prerequisites");
-                foreach (var prereqList in _prerequisites)
+                foreach (PrerequisiteGroup prereqList in _prerequisites)
                 {
                     XmlElement subElement = doc.CreateElement("EquivalentPrerequisites");
                     foreach (TechObjectDesign prereq in prereqList)
                     {
                         XmlElement subSubElement = doc.CreateElement("Prerequisite");
                         subSubElement.InnerText = prereq.Key;
-                        subElement.AppendChild(subSubElement);
+                        _ = subElement.AppendChild(subSubElement);
                     }
                     if (subElement.ChildNodes.Count > 0)
                     {
-                        newElement.AppendChild(subElement);
+                        _ = newElement.AppendChild(subElement);
                     }
                 }
                 if (newElement.ChildNodes.Count > 0)
-                    baseElement.AppendChild(newElement);
+                {
+                    _ = baseElement.AppendChild(newElement);
+                }
             }
 
             if (_obsoletedDesigns.Count > 0)
@@ -837,10 +850,12 @@ namespace Supremacy.Tech
                 {
                     XmlElement subElement = doc.CreateElement("ObsoletedItem");
                     subElement.InnerText = design.Key;
-                    newElement.AppendChild(subElement);
+                    _ = newElement.AppendChild(subElement);
                 }
                 if (newElement.ChildNodes.Count > 0)
-                    baseElement.AppendChild(newElement);
+                {
+                    _ = baseElement.AppendChild(newElement);
+                }
             }
 
             if (_upgradableDesigns.Count > 0)
@@ -850,10 +865,12 @@ namespace Supremacy.Tech
                 {
                     XmlElement subElement = doc.CreateElement("UpgradeOption");
                     subElement.InnerText = design.Key;
-                    newElement.AppendChild(subElement);
+                    _ = newElement.AppendChild(subElement);
                 }
                 if (newElement.ChildNodes.Count > 0)
-                    baseElement.AppendChild(newElement);
+                {
+                    _ = baseElement.AppendChild(newElement);
+                }
             }
         }
 
@@ -865,7 +882,7 @@ namespace Supremacy.Tech
         /// <param name="resources">The resources.</param>
         protected internal virtual void GetScrapReturn(out int credits, out ResourceValueCollection resources)
         {
-            var returnsTable = GameContext.Current.Tables.ResourceTables["ScrapReturns"];
+            Data.Table returnsTable = GameContext.Current.Tables.GameOptionTables["ScrapReturns"];
             double multiplier = Number.ParseDouble(returnsTable[0][0]);
             credits = (int)Math.Floor(multiplier * BuildCost);
             resources = new ResourceValueCollection();
@@ -892,7 +909,7 @@ namespace Supremacy.Tech
             bool requireStarSystem = false,
             bool requireColony = false)
         {
-            var civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
             if (civManager == null)
             {
                 GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because owner {2} is not active in this game.",
@@ -901,7 +918,7 @@ namespace Supremacy.Tech
                 return false;
             }
 
-            var sector = GameContext.Current.Universe.Map[location];
+            Sector sector = GameContext.Current.Universe.Map[location];
 
             if (requireSectorOwned &&
                 !Equals(sector.Owner, owner))
@@ -914,7 +931,7 @@ namespace Supremacy.Tech
 
             if (requireStarSystem || requireColony)
             {
-                var system = sector.System;
+                StarSystem system = sector.System;
                 if (system == null)
                 {
                     GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because there is no star system at that location.",
@@ -940,10 +957,7 @@ namespace Supremacy.Tech
         /// Gets the resource costs for building an object of this design..
         /// </summary>
         /// <value>The resource costs.</value>
-        public ResourceValueCollection BuildResourceCosts
-        {
-            get { return _resourceCosts; }
-        }
+        public ResourceValueCollection BuildResourceCosts => _resourceCosts;
 
         /// <summary>
         /// Gets or sets the industry cost for building an object of this design.
@@ -951,23 +965,23 @@ namespace Supremacy.Tech
         /// <value>The build cost.</value>
         public int BuildCost
         {
-            get 
+            get
             {
                 if (_buildCost == 0)
+                {
                     _buildCost = 1;  // e.g. MARTIAL LAW  // a zero causes a crash if it is devided by _buildCosts for calculating percentage
-                return _buildCost; 
+                }
+
+                return _buildCost;
             }
-            set { _buildCost = Math.Max(value, 0); }
+            set => _buildCost = Math.Max(value, 0);
         }
 
         /// <summary>
         /// Gets the tech level requirements for building an object of this design.
         /// </summary>
         /// <value>The tech level requirements.</value>
-        public TechLevelCollection TechRequirements
-        {
-            get { return _techRequirements; }
-        }
+        public TechLevelCollection TechRequirements => _techRequirements;
         #endregion
 
         /// <summary>
@@ -979,9 +993,15 @@ namespace Supremacy.Tech
         public static bool operator ==(TechObjectDesign a, TechObjectDesign b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            }
+
+            if (a is null || b is null)
+            {
                 return false;
+            }
+
             return a._key == b._key;
         }
 
@@ -994,9 +1014,15 @@ namespace Supremacy.Tech
         public static bool operator !=(TechObjectDesign a, TechObjectDesign b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return false;
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            }
+
+            if (a is null || b is null)
+            {
                 return true;
+            }
+
             return a._key != b._key;
         }
 
@@ -1024,7 +1050,10 @@ namespace Supremacy.Tech
         public virtual bool Equals(TechObjectDesign design)
         {
             if (design == null)
+            {
                 return false;
+            }
+
             return Equals(_key, design._key);
         }
 
@@ -1050,7 +1079,10 @@ namespace Supremacy.Tech
         public override string ToString()
         {
             if (!string.IsNullOrEmpty(Name))
+            {
                 return Name;
+            }
+
             return _key;
         }
 
@@ -1059,41 +1091,29 @@ namespace Supremacy.Tech
         /// Gets the heading displayed in the Encyclopedia index.
         /// </summary>
         /// <value>The heading.</value>
-        public string EncyclopediaHeading
-        {
-            get { return Name; }
-        }
+        public string EncyclopediaHeading => Name;
 
         /// <summary>
         /// Gets the text displayed in the Encyclopedia entry.
         /// </summary>
         /// <value>The text.</value>
-        public string EncyclopediaText
-        {
-            get { return Description; }
-        }
+        public string EncyclopediaText => Description;
 
         /// <summary>
         /// Gets the image displayed in the Encyclopedia entry.
         /// </summary>
         /// <value>The image.</value>
-        public string EncyclopediaImage
-        {
-            get { return Image; }
-        }
+        public string EncyclopediaImage => Image;
 
         /// <summary>
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public virtual EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.None; }
-        }
+        public virtual EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.None;
 
         protected internal ITechObjectTextDatabaseEntry TextDatabaseEntry
         {
-            get { return _textDatabaseEntry; }
+            get => _textDatabaseEntry;
             set
             {
                 //_objectStringLoaded = true;
@@ -1108,7 +1128,7 @@ namespace Supremacy.Tech
 
         protected internal LocalizedTextGroup LocalizedText
         {
-            get { return _localizedText; }
+            get => _localizedText;
             set
             {
                 //_objectStringLoaded = true;
@@ -1126,7 +1146,7 @@ namespace Supremacy.Tech
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -1135,8 +1155,7 @@ namespace Supremacy.Tech
         /// <param name="propertyName">Name of the property that changed.</param>
         protected internal void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

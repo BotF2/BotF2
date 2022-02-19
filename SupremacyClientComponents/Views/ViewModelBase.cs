@@ -13,27 +13,23 @@ using Supremacy.Client.Context;
 namespace Supremacy.Client.Views
 {
     public abstract class ViewModelBase<TView, TViewModel> : PresentationModelBase,
-        IInteractionNode, 
+        IInteractionNode,
         INotifyPropertyChanged
         where TView : class, IGameScreenView<TViewModel>
         where TViewModel : ViewModelBase<TView, TViewModel>
     {
-        private readonly IRegionManager _regionManager;
         private readonly EventHandler _commandManagerInvalidateRequeryHandler;
 
         protected ViewModelBase([NotNull] IAppContext appContext, [NotNull] IRegionManager regionManager)
             : base(appContext)
         {
-            _regionManager = regionManager;
+            RegionManager = regionManager;
             _commandManagerInvalidateRequeryHandler = OnCommandManagerRequerySuggested;
         }
 
         public abstract string ViewName { get; }
 
-        protected IRegionManager RegionManager
-        {
-            get { return _regionManager; }
-        }
+        protected IRegionManager RegionManager { get; }
 
         internal GameScreenPresenterBase<TViewModel, TView> Presenter { get; set; }
 
@@ -98,22 +94,26 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }
@@ -125,10 +125,7 @@ namespace Supremacy.Client.Views
 
         #endregion
 
-        object IInteractionNode.UIElement
-        {
-            get { return View; }
-        }
+        object IInteractionNode.UIElement => View;
 
         IInteractionNode IInteractionNode.FindParent()
         {
@@ -137,13 +134,14 @@ namespace Supremacy.Client.Views
 
         protected virtual IInteractionNode FindParentInteractionNode()
         {
-            var view = View as DependencyObject;
-            if (view == null)
+            if (!(View is DependencyObject view))
+            {
                 return null;
+            }
 
             IInteractionNode ancestorNode = null;
 
-            view.FindVisualAncestor(
+            _ = view.FindVisualAncestor(
                 o =>
                 {
                     ancestorNode = Views.View.GetInteractionNode(o);
@@ -154,7 +152,7 @@ namespace Supremacy.Client.Views
 
             if (ancestorNode == null)
             {
-                view.FindLogicalAncestor(
+                _ = view.FindLogicalAncestor(
                     o =>
                     {
                         ancestorNode = Views.View.GetInteractionNode(o);

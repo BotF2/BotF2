@@ -1,4 +1,4 @@
-// KeyedCollectionBase.cs
+// File:ObservableKeyedCollection.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,13 +7,12 @@
 //
 // All other rights reserved.
 
+using Supremacy.IO.Serialization;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
-using Supremacy.IO.Serialization;
-using Supremacy.Utility;
 
 namespace Supremacy.Collections
 {
@@ -54,6 +53,7 @@ namespace Supremacy.Collections
         private int _keyCount;
 
         private Func<TValue, TKey> _keyRetriever;
+        private string _text;
 
         public KeyedCollectionBase(Func<TValue, TKey> keyRetriever)
             : this(keyRetriever, null, DefaultDictionaryCreationThreshold) { }
@@ -91,11 +91,43 @@ namespace Supremacy.Collections
             {
                 if (key == null)
                 {
+                    _text = "Searched Key was null";
+                    Console.WriteLine(_text);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text);
                     throw new ArgumentNullException(nameof(key));
                 }
 
+                //searching for crashes
+                if (key.ToString() == "-1")
+                {
+                    _text = "Searched Key was -1, sometimes this crashes";
+                    Console.WriteLine(_text);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                }
+
+                //searching for crashes
+                //if (key.ToString() == "999")
+                //{
+                //    _text = "Searched Key was '999', sometimes this crashes";
+                //    Console.WriteLine(_text);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                //}
+
+                //searching for crashes
+                //if (key.ToString() == "789")
+                //{
+                //    _text = "Searched Key was '789', sometimes this crashes";
+                //    Console.WriteLine(_text);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
+                //}
+
+
                 if ((_keyValueMap != null) && _keyValueMap.TryGetValue(key, out TValue value))
                 {
+                    // works - but a lot of output    GameLog.Client.General.ErrorFormat("Searching Key = {0}", key.ToString());
                     return value;
                 }
 
@@ -321,6 +353,8 @@ namespace Supremacy.Collections
 
             foreach (TValue item in Items)
             {
+                //_text = "GetKeyForItem= " + item;
+                //Console.WriteLine(_text);
                 AddKey(GetKeyForItem(item), item);
             }
         }
@@ -356,7 +390,10 @@ namespace Supremacy.Collections
 
         protected virtual void OnKeyCollision(TKey key, TValue item)
         {
-            GameLog.Core.General.ErrorFormat("KeyCollision: key={0}; item={1}", key.ToString(), item.ToString());
+            _text = "OnKeyCollision: key= " + key.ToString()
+                    + "item= " + item.ToString();
+            Console.WriteLine(_text);
+            GameLog.Core.General.ErrorFormat(_text);
             throw new ArgumentException("Collection already contains an item with the specified key.");
         }
 
@@ -374,7 +411,7 @@ namespace Supremacy.Collections
 
             if (_keyValueMap != null)
             {
-                _keyValueMap.Remove(key);
+                _ = _keyValueMap.Remove(key);
             }
             else
             {

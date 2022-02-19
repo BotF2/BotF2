@@ -9,17 +9,17 @@ namespace Supremacy.Client
 
         public DelegatingWeakEventListener(EventHandler<TArgs> handler)
         {
-            if (handler == null)
-                throw new ArgumentNullException("handler");
-            _handler = handler;
+            _handler = handler ?? throw new ArgumentNullException("handler");
         }
 
         #region Implementation of IWeakEventListener
         bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            var args = e as TArgs;
-            if (args == null)
+            if (!(e is TArgs args))
+            {
                 return false;
+            }
+
             _handler(sender, args);
             return true;
         }

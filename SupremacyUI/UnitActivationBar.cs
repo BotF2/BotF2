@@ -173,7 +173,7 @@ namespace Supremacy.UI
                 freePoolSize = NewMethod(freePoolSize);
             }
 
-            foreach (var child in _children)
+            foreach (UnitActivationBar child in _children)
             {
                 child.MaxActiveUnits = Math.Min(
                     child.ActiveUnits + (freePoolSize / child.UnitCost),
@@ -181,7 +181,9 @@ namespace Supremacy.UI
             }
 
             if (_poolBar == null)
+            {
                 return;
+            }
 
             _poolBar.UnitCost = _children.Min(o => o.UnitCost);
             _poolBar.Units = PoolSize / _poolBar.UnitCost;
@@ -324,7 +326,7 @@ namespace Supremacy.UI
                 typeof(UnitActivationBar),
                 new PropertyMetadata(
                     DefaultUnitBrush,
-                    delegate(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+                    delegate (DependencyObject sender, DependencyPropertyChangedEventArgs e)
                     {
                         if (sender is UnitActivationBar source)
                         {
@@ -413,7 +415,7 @@ namespace Supremacy.UI
 
         private static bool ValidateValue(object value)
         {
-            return ((int) value >= 0);
+            return (int)value >= 0;
         }
 
         private static bool ValidateUnitCost(object value)
@@ -648,7 +650,7 @@ namespace Supremacy.UI
 
             int closestIndex = -1;
             double minDistance = double.MaxValue;
-                    
+
             for (int i = 0; i < _unitBlockBounds.Length; i++)
             {
                 double centerX = _unitBlockBounds[i].Left + (_unitBlockBounds[i].Width / 2);
@@ -661,7 +663,7 @@ namespace Supremacy.UI
                 minDistance = distance;
                 closestIndex = i;
             }
-                    
+
             if (closestIndex != -1)
             {
                 SetActiveUnits(closestIndex + 1);
@@ -681,7 +683,7 @@ namespace Supremacy.UI
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            
+
             if (_unitBlockBounds.Length == 0)
             {
                 return;
@@ -689,7 +691,7 @@ namespace Supremacy.UI
 
             double[] guidelinesX = new double[2 * _unitBlockBounds.Length];
             double[] guidelinesY = new[] { _unitBlockBounds[0].Top, _unitBlockBounds[0].Height };
-            
+
             for (int i = 0; i < _unitBlockBounds.Length; i++)
             {
                 guidelinesX[2 * i] = _unitBlockBounds[i].Left;

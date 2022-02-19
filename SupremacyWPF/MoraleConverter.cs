@@ -38,7 +38,10 @@ namespace Supremacy.Client
                 }
             }
             if (parameter != null)
+            {
                 result = result.ToUpperInvariant();
+            }
+
             return result;
         }
 

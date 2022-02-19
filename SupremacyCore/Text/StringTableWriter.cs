@@ -17,7 +17,10 @@ namespace Supremacy.Text
         public static void Write(string fileName, StringTableDocument table)
         {
             if (fileName == null)
+            {
                 throw new ArgumentNullException("fileName");
+            }
+
             using (StreamWriter writer = new StreamWriter(fileName))
             {
                 Write(writer, table);
@@ -27,9 +30,14 @@ namespace Supremacy.Text
         public static void Write(TextWriter writer, StringTableDocument table)
         {
             if (writer == null)
+            {
                 throw new ArgumentNullException("writer");
+            }
+
             if (table == null)
+            {
                 throw new ArgumentNullException("table");
+            }
 
             for (int i = 0; i < table.Nodes.Count; i++)
             {
@@ -51,7 +59,9 @@ namespace Supremacy.Text
                         else if (i < (table.Nodes.Count - 1))
                         {
                             if (table.Nodes[i + 1].NodeType == StringTableNodeType.Value)
+                            {
                                 i++;
+                            }
                         }
                         break;
                     default:

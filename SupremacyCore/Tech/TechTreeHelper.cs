@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// ReSharper disable PossibleMultipleEnumeration
+
 
 namespace Supremacy.Tech
 {
@@ -69,7 +69,10 @@ namespace Supremacy.Tech
             get
             {
                 if (_clientContext == null)
+                {
                     _clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
+                }
+
                 return _clientContext;
             }
         }
@@ -88,11 +91,13 @@ namespace Supremacy.Tech
             bool researchedOnly)
         {
             if (civManager == null)
+            {
                 civManager = ClientContext.LocalPlayerEmpire;
+            }
 
-            var techTree = civManager.TechTree;
-            var results = new List<TechObjectDesign>();
-            
+            TechTree techTree = civManager.TechTree;
+            List<TechObjectDesign> results = new List<TechObjectDesign>();
+
             switch (type)
             {
                 case TechObjectType.Batteries:
@@ -144,13 +149,17 @@ namespace Supremacy.Tech
         public static ICollection<TechObjectDesign> GetDesignsForCurrentTechLevels(Civilization civilization)
         {
             if (civilization == null)
+            {
                 throw new ArgumentNullException("civilization");
+            }
 
-            var results = new HashSet<TechObjectDesign>();
-            var civManager = GameContext.Current.CivilizationManagers[civilization];
+            HashSet<TechObjectDesign> results = new HashSet<TechObjectDesign>();
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civilization];
 
             if (civManager != null)
+            {
                 results.UnionWith(civManager.TechTree.Where(o => MeetsTechLevels(civManager, o)));
+            }
 
             return results;
         }
@@ -162,10 +171,10 @@ namespace Supremacy.Tech
         /// <returns>The shipbuilding projects.</returns>
         public static IList<BuildProject> GetShipyardBuildProjects(Shipyard shipyard)
         {
-            var civManager = GameContext.Current.CivilizationManagers[shipyard.OwnerID];
-            var shipDesigns = new List<ShipDesign>();
-            var shipyardDesign = shipyard.ShipyardDesign;
-            var unavailableShipDesigns = new List<ShipDesign>();
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[shipyard.OwnerID];
+            List<ShipDesign> shipDesigns = new List<ShipDesign>();
+            ShipyardDesign shipyardDesign = shipyard.ShipyardDesign;
+            List<ShipDesign> unavailableShipDesigns = new List<ShipDesign>();
 
             /* 
              * Find all ship designs whose tech requirements have been met.
@@ -194,7 +203,7 @@ namespace Supremacy.Tech
             /*
              * Construct the list of ShipBuildProjects from the remaining designs.
              */
-            var colony = shipyard.Sector.System.Colony;
+            Colony colony = shipyard.Sector.System.Colony;
             return shipDesigns
                 .Except(unavailableShipDesigns)
                 .Where(o => MeetsPrerequisites(colony, o))
@@ -212,71 +221,78 @@ namespace Supremacy.Tech
         {
             bool _tracingTechTreeHelper = false;   // turn true if you need
 
-            var colonyOwner = colony.Owner;
-            var civManager = GameContext.Current.CivilizationManagers[colonyOwner];
-            var results = new List<BuildProject>();
+            Civilization colonyOwner = colony.Owner;
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colonyOwner];
+            List<BuildProject> results = new List<BuildProject>();
 
-            foreach (var productionCategory in EnumHelper.GetValues<ProductionCategory>())
+            foreach (ProductionCategory productionCategory in EnumHelper.GetValues<ProductionCategory>())
             {
-                var localFacilityType = colony.GetFacilityType(productionCategory);
+                ProductionFacilityDesign localFacilityType = colony.GetFacilityType(productionCategory);
 
                 if (colony.GetTotalFacilities(productionCategory) > 0)
                 {
-                    var keepLooking = true;
+                    bool keepLooking = true;
 
-                    var design = colony.GetFacilityType(productionCategory);
-                    var baseDesign = new ProductionFacilityBuildProject(colony, design);
+                    ProductionFacilityDesign design = colony.GetFacilityType(productionCategory);
+                    ProductionFacilityBuildProject baseDesign = new ProductionFacilityBuildProject(colony, design);
 
                     results.Add(baseDesign);
 
-                    var facilityBuildProject = colony.BuildSlots[0].Project as ProductionFacilityBuildProject;
 
-                    if (facilityBuildProject != null &&
+                    if (colony.BuildSlots[0].Project is ProductionFacilityBuildProject facilityBuildProject &&
                         facilityBuildProject.FacilityDesign.Category == productionCategory)
                     {
                         if (facilityBuildProject.FacilityDesign != baseDesign.FacilityDesign)
-                            results.Remove(baseDesign);
+                        {
+                            _ = results.Remove(baseDesign);
+                        }
 
                         keepLooking = false;
                     }
 
                     if (!keepLooking)
+                    {
                         goto NextCategory;
+                    }
 
-                    var facilityCategory = productionCategory;
+                    ProductionCategory facilityCategory = productionCategory;
 
-                    var designsInBuildQueue = colony.BuildQueue
+                    IEnumerable<ProductionFacilityBuildProject> designsInBuildQueue = colony.BuildQueue
                         .Select(o => o.Project)
                         .OfType<ProductionFacilityBuildProject>()
                         .Where(o => o.FacilityDesign.Category == facilityCategory);
 
                     if (designsInBuildQueue.Any(o => o.FacilityDesign == baseDesign.FacilityDesign))
+                    {
                         goto NextCategory;
+                    }
 
-                    var conflictingDesignsInBuildQueue = designsInBuildQueue
+                    HashSet<BuildProject> conflictingDesignsInBuildQueue = designsInBuildQueue
                         .Where(o => o.FacilityDesign != baseDesign.FacilityDesign)
                         .Cast<BuildProject>()
                         .ToHashSet();
 
                     if (conflictingDesignsInBuildQueue.Any())
                     {
-                        results.Remove(baseDesign);
+                        _ = results.Remove(baseDesign);
                         goto NextCategory;
                     }
 
-                    var upgrades = design.UpgradableDesigns
+                    List<ProductionFacilityDesign> upgrades = design.UpgradableDesigns
                         .OfType<ProductionFacilityDesign>()
                         .Intersect(GameContext.Current.TechTrees[colonyOwner].ProductionFacilityDesigns)
                         .Where(o => !colony.IsBuilding(o))
                         .ToList();
 
-                    var bestUpgrade = GetBestFacilityDesign(
-                        colony, 
+                    ProductionFacilityDesign bestUpgrade = GetBestFacilityDesign(
+                        colony,
                         design.Category,
                         upgrades);
 
                     if (bestUpgrade != null)
+                    {
                         results.Add(new ProductionFacilityUpgradeProject(colony, bestUpgrade));
+                    }
 
                 NextCategory:
                     continue;
@@ -292,52 +308,59 @@ namespace Supremacy.Tech
                 }
                 else
                 {
-                    var design = GetBestFacilityDesign(colony, productionCategory);
+                    ProductionFacilityDesign design = GetBestFacilityDesign(colony, productionCategory);
                     if (design != null)
+                    {
                         results.Add(new ProductionFacilityBuildProject(colony, design));
+                    }
                 }
             }
 
             // w00t
             if (colony.TotalOrbitalBatteries > 0)
             {
-                var design = colony.OrbitalBatteryDesign;
-                var baseDesign = new OrbitalBatteryBuildProject(colony, design);
-                var keepGoing = true;
+                OrbitalBatteryDesign design = colony.OrbitalBatteryDesign;
+                OrbitalBatteryBuildProject baseDesign = new OrbitalBatteryBuildProject(colony, design);
+                bool keepGoing = true;
 
                 results.Add(baseDesign);
 
-                var batteryBuildProject = colony.BuildSlots[0].Project as OrbitalBatteryBuildProject;
-                if (batteryBuildProject != null)
+                if (colony.BuildSlots[0].Project is OrbitalBatteryBuildProject batteryBuildProject)
                 {
                     if (batteryBuildProject.OrbitalBatteryDesign != baseDesign.OrbitalBatteryDesign)
-                        results.Remove(baseDesign);
+                    {
+                        _ = results.Remove(baseDesign);
+                    }
 
                     keepGoing = false;
                 }
 
                 if (!keepGoing)
+                {
                     goto DoneWithBatteries;
+                }
 
-                var designsInBuildQueue = colony.BuildQueue
+                IEnumerable<OrbitalBatteryBuildProject> designsInBuildQueue = colony.BuildQueue
                     .Select(o => o.Project)
                     .OfType<OrbitalBatteryBuildProject>();
 
                 if (designsInBuildQueue.Any())
+                {
                     goto DoneWithBatteries;
+                }
 
-                var conflictingDesignsInBuildQueue = designsInBuildQueue
+                HashSet<BuildProject> conflictingDesignsInBuildQueue = designsInBuildQueue
                     .Where(o => o.OrbitalBatteryDesign != baseDesign.OrbitalBatteryDesign)
                     .Cast<BuildProject>()
                     .ToHashSet();
 
                 if (conflictingDesignsInBuildQueue.Any())
                 {
-                    results.Remove(baseDesign);
+                    _ = results.Remove(baseDesign);
                     goto DoneWithBatteries;
                 }
 
-                var upgrades = design.UpgradableDesigns
+                List<OrbitalBatteryDesign> upgrades = design.UpgradableDesigns
                     .OfType<OrbitalBatteryDesign>()
                     .Intersect(GameContext.Current.TechTrees[colonyOwner].OrbitalBatteryDesigns)
                     .Where(o => !colony.IsBuilding(o) && MeetsTechLevels(civManager, o))
@@ -352,9 +375,8 @@ namespace Supremacy.Tech
             }
             else
             {
-                var currentBuild = civManager.TechTree.OrbitalBatteryDesigns
-                    .Where(colony.IsBuilding)
-                    .FirstOrDefault();
+                OrbitalBatteryDesign currentBuild = civManager.TechTree.OrbitalBatteryDesigns
+                    .FirstOrDefault(colony.IsBuilding);
 
                 if (currentBuild != null)
                 {
@@ -367,7 +389,7 @@ namespace Supremacy.Tech
                 }
                 else
                 {
-                    var buildableBatteries =
+                    HashSet<OrbitalBatteryDesign> buildableBatteries =
                         (from design in civManager.TechTree.OrbitalBatteryDesigns
                          where !IsOrbitalBatteryObsolete(colony, design) &&
                                MeetsTechLevels(civManager, design) &&
@@ -389,10 +411,10 @@ namespace Supremacy.Tech
                                  .OfType<BuildingDesign>()
                                  .Select(
                                      ud => new
-                                           {
-                                               BaseDesign = b,
-                                               UpgradeDesign = ud
-                                           }))
+                                     {
+                                         BaseDesign = b,
+                                         UpgradeDesign = ud
+                                     }))
                     .Where(
                         o => !colony.HasBuilding(o.UpgradeDesign) &&
                              !colony.IsBuilding(o.UpgradeDesign) &&
@@ -404,18 +426,20 @@ namespace Supremacy.Tech
                                  o.BaseDesign,
                                  o.UpgradeDesign)));
 
-            var originalOwner = colony.OriginalOwner;
-            var buildingDesigns = civManager.TechTree.BuildingDesigns.AsEnumerable();
+            Civilization originalOwner = colony.OriginalOwner;
+            IEnumerable<BuildingDesign> buildingDesigns = civManager.TechTree.BuildingDesigns.AsEnumerable();
 
             if (originalOwner != colonyOwner &&
                 DiplomacyHelper.IsMember(originalOwner, colonyOwner))
             {
-                var minorRaceTechTree = GameContext.Current.TechTrees[originalOwner];
+                TechTree minorRaceTechTree = GameContext.Current.TechTrees[originalOwner];
                 if (minorRaceTechTree != null)
+                {
                     buildingDesigns = buildingDesigns.Union(minorRaceTechTree.BuildingDesigns);
+                }
             }
 
-            var buildableStructures =
+            HashSet<BuildingDesign> buildableStructures =
                 (from design in buildingDesigns
                  where MeetsTechLevels(civManager, design) &&
                        MeetsRestrictions(colony, design) &&
@@ -429,7 +453,7 @@ namespace Supremacy.Tech
 
             if (CanBuildShipyard(colony))
             {
-                var buildableShipyards =
+                HashSet<ShipyardDesign> buildableShipyards =
                     (from design in civManager.TechTree.ShipyardDesigns
                      where CanBuildShipyard(colony) &&
                            MeetsTechLevels(civManager, design) &&
@@ -446,7 +470,9 @@ namespace Supremacy.Tech
             if (colony.Shipyard != null)
             {
                 if (_tracingTechTreeHelper)
+                {
                     GameLog.Core.General.DebugFormat("shipyard = {0}, first UpgradableDesigns = {1}, Buildqueue has {2} orders", colony.Shipyard.Name, colony.Shipyard.ShipyardDesign.UpgradableDesigns.First().Name, colony.Shipyard.BuildQueue.Count);
+                }
 
                 results.AddRange(
                     colony.Shipyard.ShipyardDesign.UpgradableDesigns
@@ -454,10 +480,10 @@ namespace Supremacy.Tech
                                      .OfType<ShipyardDesign>()
                                      .Select(
                                          ud => new
-                                               {
-                                                   UpgradeTarget = colony.Shipyard,
-                                                   UpgradeDesign = ud
-                                               })
+                                         {
+                                             UpgradeTarget = colony.Shipyard,
+                                             UpgradeDesign = ud
+                                         })
                         .Where(
                             o => !colony.HasShipyard(o.UpgradeDesign) &&
                                  !colony.IsBuilding(o.UpgradeDesign) &&
@@ -470,7 +496,7 @@ namespace Supremacy.Tech
                                      o.UpgradeDesign)));
             }
 
-            results.SortInPlace(CompareBuildProjects);
+            _ = results.SortInPlace(CompareBuildProjects);
 
             return results;
         }
@@ -485,10 +511,14 @@ namespace Supremacy.Tech
         private static bool CanBuildShipyard([NotNull] Colony colony)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
             if (colony.Shipyard != null)
+            {
                 return false;
+            }
 
             return !colony.BuildSlots.Any(o => o.HasProject && o.Project.BuildDesign is ShipyardDesign) &&
                    !colony.BuildQueue.Any(o => o.Project.BuildDesign is ShipyardDesign);
@@ -508,7 +538,7 @@ namespace Supremacy.Tech
             BuildingDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            var civManager =  GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
             return civManager.TechTree.BuildingDesigns.Any(
                 otherDesign => colony.HasBuilding(otherDesign) &&
@@ -530,7 +560,7 @@ namespace Supremacy.Tech
             ShipyardDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            var civManager =  GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
             return civManager.TechTree.ShipyardDesigns.Any(
                 otherDesign => colony.HasShipyard(otherDesign) &&
@@ -552,13 +582,17 @@ namespace Supremacy.Tech
             OrbitalBatteryDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            var civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
             if (colony.OrbitalBatteryDesign == null)
+            {
                 return false;
+            }
 
             if (GetObsoletedTree(civManager, colony.OrbitalBatteryDesign).Contains(design))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -573,14 +607,18 @@ namespace Supremacy.Tech
         /// </returns>
         private static bool IsFacilityObsolete(Colony colony, ProductionFacilityDesign design)
         {
-            var civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
-            var localDesign = colony.GetFacilityType(design.Category);
+            ProductionFacilityDesign localDesign = colony.GetFacilityType(design.Category);
             if (localDesign == null)
+            {
                 return false;
+            }
 
             if (GetObsoletedTree(civManager, localDesign).Contains(design))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -596,12 +634,12 @@ namespace Supremacy.Tech
             CivilizationManager civManager,
             TechObjectDesign design)
         {
-            var results = new HashSet<TechObjectDesign>();
-            var techTree = civManager.TechTree;
+            HashSet<TechObjectDesign> results = new HashSet<TechObjectDesign>();
+            TechTree techTree = civManager.TechTree;
 
-            foreach (var obsoleteDesign in design.ObsoletedDesigns.Where(techTree.Contains))
+            foreach (TechObjectDesign obsoleteDesign in design.ObsoletedDesigns.Where(techTree.Contains))
             {
-                results.Add(obsoleteDesign);
+                _ = results.Add(obsoleteDesign);
                 results.UnionWith(GetObsoletedTree(civManager, obsoleteDesign));
             }
 
@@ -620,7 +658,10 @@ namespace Supremacy.Tech
             if (a == null)
             {
                 if (b == null)
+                {
                     return 0;
+                }
+
                 return -1;
             }
             if (b == null)
@@ -628,8 +669,8 @@ namespace Supremacy.Tech
                 return 1;
             }
 
-            bool isFacilityA = (a is ProductionFacilityBuildProject);
-            bool isFacilityB = (b is ProductionFacilityBuildProject);
+            bool isFacilityA = a is ProductionFacilityBuildProject;
+            bool isFacilityB = b is ProductionFacilityBuildProject;
 
             bool isUpgradeA = a.IsUpgrade;
             bool isUpgradeB = b.IsUpgrade;
@@ -649,7 +690,9 @@ namespace Supremacy.Tech
                     }
 
                     if (isFacilityB)
+                    {
                         return 1;
+                    }
 
                     return StringComparer.CurrentCulture.Compare(
                         ResourceManager.GetString(a.BuildDesign.Name),
@@ -659,7 +702,9 @@ namespace Supremacy.Tech
             }
 
             if (isUpgradeB)
+            {
                 return 1;
+            }
 
             if (isFacilityA)
             {
@@ -672,7 +717,9 @@ namespace Supremacy.Tech
             }
 
             if (isFacilityB)
+            {
                 return 1;
+            }
 
             return string.Compare(a.BuildDesign.Name, b.BuildDesign.Name, StringComparison.Ordinal);
         }
@@ -689,9 +736,14 @@ namespace Supremacy.Tech
             [NotNull] TechObjectDesign design)
         {
             if (civManager == null)
+            {
                 throw new ArgumentNullException("civManager");
+            }
+
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
 
             return EnumHelper.GetValues<TechCategory>().All(
                 techCategory => design.TechRequirements[techCategory] <=
@@ -707,15 +759,20 @@ namespace Supremacy.Tech
         /// <c>true</c> if the ship can be built at the shipyard; otherwise, <c>false</c>.
         /// </returns>
         private static bool IsShipDesignWithinShipyardCapabilities(
-            // ReSharper disable SuggestBaseTypeForParameter
+
             [NotNull] ShipDesign shipDesign,
-            // ReSharper restore SuggestBaseTypeForParameter
+
             [NotNull] ShipyardDesign shipyardDesign)
         {
             if (shipDesign == null)
+            {
                 throw new ArgumentNullException("shipDesign");
+            }
+
             if (shipyardDesign == null)
+            {
                 throw new ArgumentNullException("shipyardDesign");
+            }
 
             return EnumHelper.GetValues<TechCategory>().All(
                 techCategory => shipDesign.TechRequirements[techCategory] <=
@@ -729,14 +786,16 @@ namespace Supremacy.Tech
         /// <param name="category">The production category.</param>
         /// <returns>The facility design.</returns>
         public static ProductionFacilityDesign GetBestFacilityDesign(
-            [NotNull] Colony colony, 
+            [NotNull] Colony colony,
             ProductionCategory category)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
             return GetBestFacilityDesign(
-                colony, 
+                colony,
                 category,
                 GameContext.Current.TechTrees[colony.OwnerID].ProductionFacilityDesigns);
         }
@@ -754,18 +813,24 @@ namespace Supremacy.Tech
             [NotNull] IEnumerable<ProductionFacilityDesign> availableDesigns)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
             if (availableDesigns == null)
+            {
                 throw new ArgumentNullException("availableDesigns");
+            }
 
             if (!availableDesigns.Any())
+            {
                 return null;
+            }
 
-            var civManager = GetCivManager(colony);
-            var removedDesigns = new HashSet<TechObjectDesign>();
+            CivilizationManager civManager = GetCivManager(colony);
+            HashSet<TechObjectDesign> removedDesigns = new HashSet<TechObjectDesign>();
 
-            var designs = availableDesigns
+            List<ProductionFacilityDesign> designs = availableDesigns
                 .Where(
                     design => design != null &&
                               design.Category == category)
@@ -774,13 +839,17 @@ namespace Supremacy.Tech
                               MeetsPrerequisites(colony, design) &&
                               !IsFacilityObsolete(colony, design)).ToList();
 
-            foreach (var design in designs)
+            foreach (ProductionFacilityDesign design in designs)
+            {
                 removedDesigns.UnionWith(GetObsoletedTree(civManager, design));
+            }
 
-            designs.RemoveAll(removedDesigns.Contains);
+            _ = designs.RemoveAll(removedDesigns.Contains);
 
             if (designs.Count == 0)
+            {
                 return null;
+            }
 
             return designs.MaxBy(d => d.UnitOutput);
         }
@@ -794,10 +863,14 @@ namespace Supremacy.Tech
         internal static bool MeetsPrerequisites([NotNull] Colony colony, [NotNull] TechObjectDesign design)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
 
             return (
                        from prerequisiteGroup in design.Prerequisites
@@ -825,19 +898,51 @@ namespace Supremacy.Tech
         private static bool MeetsRestrictions([NotNull] Colony colony, [NotNull] PlanetaryTechObjectDesign design)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
 
             if (IsBuildLimitReached(colony, design, includeConstruction: true))
+            {
                 return false;
+            }
 
-            var buildCondition = design.BuildCondition;
+            switch (design.Key)
+            {
+                case "FED_MARTIAL_LAW":
+                case "TERRAN_LAW":
+                case "ROM_NIGHT_PATROL":
+                case "KLING_EXECUTION_DAY":
+                case "CARD_STATE_TRIBUNAL":
+                case "DOM_DEATH_SQUAD":
+                    //case "FED_MARTIAL_LAW": Borg always have a 100
+                    if (colony.Morale.CurrentValue < 45)
+                    {
+                        return true;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            ScriptExpression buildCondition = design.BuildCondition;
             if (buildCondition != null)
             {
+                //if (colony.Morale.CurrentValue < 45)
+                //{
+
+                //    }
+                //}
+
                 // used e.g. for MARTIAL LAW which is just appearing at low morale level
 
-               var result = buildCondition.Evaluate<bool>(
+                bool result = buildCondition.Evaluate<bool>(
                    new RuntimeScriptParameters
                    {
                         new RuntimeScriptParameter(buildCondition.Parameters[0], colony),
@@ -845,30 +950,42 @@ namespace Supremacy.Tech
                    });
 
                 if (!result)
+                {
                     return false;
+                }
             }
+            //end of buildCondition
 
-            var system = colony.System;
+            StarSystem system = colony.System;
 
             //
             // SYSTEM RESOURCE BONUS RESTRICTIONS
             //
 
+            if (design.IsUniversallyAvailable && colony.OwnerID == 6)  // 2021: Borg not allowed to build universal stuff
+                return false;
+
             if ((design.Restriction & BuildRestriction.DilithiumBonus) == BuildRestriction.DilithiumBonus)
             {
                 if (!colony.System.HasDilithiumBonus)
+                {
                     return false;
+                }
             }
-            if ((design.Restriction & BuildRestriction.RawMaterialsBonus) == BuildRestriction.RawMaterialsBonus)
+            if ((design.Restriction & BuildRestriction.DuraniumBonus) == BuildRestriction.DuraniumBonus)
             {
-                if (!colony.System.HasRawMaterialsBonus)
+                if (!colony.System.HasDuraniumBonus)
+                {
                     return false;
+                }
             }
 
             if ((design.Restriction & BuildRestriction.Asteroids) == BuildRestriction.Asteroids)
             {
                 if (!system.ContainsPlanetType(PlanetType.Asteroids))
+                {
                     return false;
+                }
             }
 
             //
@@ -876,7 +993,9 @@ namespace Supremacy.Tech
             //
 
             if (!MeetsPlanetRestrictions(colony, design))
+            {
                 return false;
+            }
 
             //
             // STAR TYPE RESTRICTIONS
@@ -885,44 +1004,56 @@ namespace Supremacy.Tech
             if ((design.Restriction & BuildRestriction.BlueStar) == BuildRestriction.BlueStar)
             {
                 if (system.StarType != StarType.Blue)
+                {
                     return false;
+                }
             }
             if ((design.Restriction & BuildRestriction.RedStar) == BuildRestriction.RedStar)
             {
                 if (system.StarType != StarType.Red)
+                {
                     return false;
+                }
             }
             if ((design.Restriction & BuildRestriction.WhiteStar) == BuildRestriction.WhiteStar)
             {
                 if (system.StarType != StarType.White)
+                {
                     return false;
+                }
             }
             if ((design.Restriction & BuildRestriction.YellowStar) == BuildRestriction.YellowStar)
             {
                 if (system.StarType != StarType.Yellow)
+                {
                     return false;
+                }
             }
             if ((design.Restriction & BuildRestriction.Nebula) == BuildRestriction.Nebula)
             {
                 if (system.StarType != StarType.Nebula)
+                {
                     return false;
+                }
             }
-			
+
             //
             // POPULATION RESTRICTIONS
             //
-            
+
             if ((design.Restriction & BuildRestriction.ConqueredSystem) == BuildRestriction.ConqueredSystem)
             {
                 if (colony.OriginalOwner == colony.Owner || DiplomacyHelper.IsMember(colony.OriginalOwner, colony.Owner))
+                {
                     return false;
+                }
             }
 
             if ((design.Restriction & BuildRestriction.HomeSystem) == BuildRestriction.HomeSystem &&
                 !Equals(colony.System, GameContext.Current.CivilizationManagers[colony.OwnerID].HomeSystem))
             {
-                var colonyOwner = colony.Owner;
-                var originalOwner = colony.OriginalOwner;
+                Civilization colonyOwner = colony.Owner;
+                Civilization originalOwner = colony.OriginalOwner;
 
                 if (colonyOwner == originalOwner ||
                     !DiplomacyHelper.IsMember(originalOwner, colonyOwner) ||
@@ -930,18 +1061,22 @@ namespace Supremacy.Tech
                 {
                     return false;
                 }
-                
-                var memberTechTree = GameContext.Current.TechTrees[originalOwner];
+
+                TechTree memberTechTree = GameContext.Current.TechTrees[originalOwner];
                 if (!memberTechTree.BuildingDesigns.Contains(design))
+                {
                     return false;
+                }
             }
-            
+
             if ((design.Restriction & BuildRestriction.NativeSystem) == BuildRestriction.NativeSystem)
             {
                 if (colony.OriginalOwner != colony.Owner || colony.Inhabitants != colony.Owner.Race)
+                {
                     return false;
+                }
             }
-            
+
             if ((design.Restriction & BuildRestriction.NonNativeSystem) == BuildRestriction.NonNativeSystem)
             {
                 //
@@ -950,22 +1085,28 @@ namespace Supremacy.Tech
                 //
 
                 if (colony.Inhabitants == colony.Owner.Race)
+                {
                     return false;
+                }
 
-                var colonyOwner = colony.Owner;
-                var originalOwner = colony.OriginalOwner;
+                Civilization colonyOwner = colony.Owner;
+                Civilization originalOwner = colony.OriginalOwner;
 
                 if (colonyOwner == originalOwner)
+                {
                     return false;
+                }
             }
 
             if ((design.Restriction & BuildRestriction.MemberSystem) == BuildRestriction.MemberSystem)
             {
-                var colonyOwner = colony.Owner;
-                var originalOwner = colony.OriginalOwner;
+                Civilization colonyOwner = colony.Owner;
+                Civilization originalOwner = colony.OriginalOwner;
 
                 if (!DiplomacyHelper.IsMember(originalOwner, colonyOwner))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -982,11 +1123,15 @@ namespace Supremacy.Tech
         public static bool IsBuildLimitReached(Colony colony, TechObjectDesign design, bool includeConstruction = false)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
 
-            var p = design as PlanetaryTechObjectDesign;
+            PlanetaryTechObjectDesign p = design as PlanetaryTechObjectDesign;
             if (p == null)
+            {
                 return false;
+            }
 
             return IsBuildLimitReachedCore(colony, design, p.BuildLimit, p.BuildLimitScope, includeConstruction) ||
                    (p.HasRestriction(BuildRestriction.OnePerSystem) &&
@@ -999,7 +1144,7 @@ namespace Supremacy.Tech
 
         private static bool IsBuildLimitReachedCore(Colony colony, TechObjectDesign design, int buildLimit, BuildLimitScope buildLimitScope, bool includeConstruction = false)
         {
-            var gameContext = GameContext.Current;
+            GameContext gameContext = GameContext.Current;
 
             switch (buildLimitScope)
             {
@@ -1022,13 +1167,13 @@ namespace Supremacy.Tech
 
         public static int GetTechObjectCount(Colony colony, TechObjectDesign design, bool includeConstruction = false, bool includeInactive = true)
         {
-            var count = 0;
+            int count = 0;
 
             if (includeConstruction)
             {
                 if (design is ShipDesign)
                 {
-                    var shipyard = colony.Shipyard;
+                    Shipyard shipyard = colony.Shipyard;
                     if (shipyard != null)
                     {
                         count += shipyard.BuildSlots.Count(o => o.HasProject && o.Project.BuildDesign == design);
@@ -1042,47 +1187,61 @@ namespace Supremacy.Tech
                 }
             }
 
-            var buildingDesign = design as BuildingDesign;
+            BuildingDesign buildingDesign = design as BuildingDesign;
             if (buildingDesign != null)
             {
                 if (includeInactive)
+                {
                     count += colony.BuildingsInternal.Count(o => o.BuildingDesign == buildingDesign);
+                }
                 else
+                {
                     count += colony.BuildingsInternal.Count(o => o.IsActive && o.BuildingDesign == buildingDesign);
+                }
 
                 return count;
             }
 
-            var shipyardDesign = design as ShipyardDesign;
+            ShipyardDesign shipyardDesign = design as ShipyardDesign;
             if (shipyardDesign != null && colony.HasShipyard(shipyardDesign))
+            {
                 return ++count;
+            }
 
-            var batteryDesign = design as OrbitalBatteryDesign;
+            OrbitalBatteryDesign batteryDesign = design as OrbitalBatteryDesign;
             if (batteryDesign != null && colony.OrbitalBatteryDesign == batteryDesign)
             {
                 if (includeInactive)
+                {
                     count += colony.TotalOrbitalBatteries;
+                }
                 else
+                {
                     count += colony.ActiveOrbitalBatteries;
+                }
 
                 return count;
             }
 
-            var facilityDesign = design as ProductionFacilityDesign;
+            ProductionFacilityDesign facilityDesign = design as ProductionFacilityDesign;
             if (facilityDesign != null && colony.GetFacilityType(facilityDesign.Category) == facilityDesign)
             {
                 if (includeInactive)
+                {
                     count += colony.GetTotalFacilities(facilityDesign.Category);
+                }
                 else
+                {
                     count += colony.GetActiveFacilities(facilityDesign.Category);
+                }
 
                 return count;
             }
 
-            var shipDesign = design as ShipDesign;
+            ShipDesign shipDesign = design as ShipDesign;
             if (shipDesign != null)
             {
-                var ships = GameContext.Current.Universe.FindAt<Ship>(colony.Location)
+                IEnumerable<Ship> ships = GameContext.Current.Universe.FindAt<Ship>(colony.Location)
                     .Where(s => s.OwnerID == colony.OwnerID && s.Design == design);
 
                 return count + ships.Count();
@@ -1094,16 +1253,25 @@ namespace Supremacy.Tech
         private static bool MeetsPlanetRestrictions([NotNull] Colony colony, [NotNull] PlanetaryTechObjectDesign design)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
 
             if ((design.Restriction & BuildRestriction.Moons) == BuildRestriction.Moons && !colony.System.Planets.Any(o => o.Moons.Length > 0))
+            {
                 return false;
+            }
 
-            var required = _planetTypeRestrictions.Where(r => ((design.Restriction & r) == r)).ToList();
+            List<BuildRestriction> required = _planetTypeRestrictions.Where(r => (design.Restriction & r) == r).ToList();
             if (required.Count == 0)
+            {
                 return true;
+            }
 
             return required.Select(r => _planetRestrictionTypeMap[r]).Any(p => colony.System.ContainsPlanetType(p));
         }
@@ -1120,34 +1288,45 @@ namespace Supremacy.Tech
         private static bool TechObjectExists([NotNull] Colony colony, [NotNull] TechObjectDesign design, bool isActive)
         {
             if (colony == null)
+            {
                 throw new ArgumentNullException("colony");
+            }
+
             if (design == null)
+            {
                 throw new ArgumentNullException("design");
+            }
 
-            var facilityDesign = design as ProductionFacilityDesign;
+            ProductionFacilityDesign facilityDesign = design as ProductionFacilityDesign;
             if (facilityDesign != null)
+            {
                 return colony.GetFacilityType(facilityDesign.Category) == facilityDesign;
+            }
 
-            var buildingDesign = design as BuildingDesign;
+            BuildingDesign buildingDesign = design as BuildingDesign;
             if (buildingDesign != null)
             {
                 if ((buildingDesign.Restriction & BuildRestriction.OnePerEmpire) == BuildRestriction.OnePerEmpire)
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
                     if (civManager.Colonies.Any(c => c.HasBuilding(buildingDesign, isActive)))
+                    {
                         return true;
+                    }
                 }
                 return colony.HasBuilding(buildingDesign, isActive);
             }
 
-            var shipyardDesign = design as ShipyardDesign;
+            ShipyardDesign shipyardDesign = design as ShipyardDesign;
             if (shipyardDesign != null)
             {
                 if ((shipyardDesign.Restriction & BuildRestriction.OnePerEmpire) == BuildRestriction.OnePerEmpire)
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
                     if (civManager.Colonies.Any(c => c.HasShipyard(shipyardDesign)))
+                    {
                         return true;
+                    }
                 }
                 return colony.HasShipyard(shipyardDesign);
             }
@@ -1163,11 +1342,14 @@ namespace Supremacy.Tech
         private static CivilizationManager GetCivManager([NotNull] UniverseObject ownedObject)
         {
             if (ownedObject == null)
+            {
                 throw new ArgumentNullException("ownedObject");
+            }
+
             return GameContext.Current.CivilizationManagers[ownedObject.OwnerID];
         }
     }
 }
 
-// ReSharper restore PossibleMultipleEnumeration
+
 

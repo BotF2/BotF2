@@ -13,11 +13,13 @@ namespace Supremacy.Markup
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var baseKey = BaseKey;
-            var context = Context;
+            object baseKey = BaseKey;
+            object context = Context;
 
             if (baseKey == null || context == null)
+            {
                 throw new InvalidOperationException("BaseKey and Context must both be set on a ContextualEnumTextGroupExtension.");
+            }
 
             return new ContextualTextEntryKey(context, baseKey);
         }

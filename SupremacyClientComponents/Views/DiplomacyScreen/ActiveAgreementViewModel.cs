@@ -7,7 +7,6 @@ using System.Threading;
 using Supremacy.Annotations;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
-using Supremacy.Game;
 using Supremacy.Scripting;
 using Supremacy.Utility;
 
@@ -17,19 +16,15 @@ namespace Supremacy.Client.Views
     {
         private readonly IAgreement _agreement;
         private readonly ObservableCollection<DiplomacyMessageElement> _elements;
-        private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _elementsView;
         private readonly ScriptExpression _descriptionScript;
         private readonly ScriptParameters _descriptionParameters;
         private readonly RuntimeScriptParameters _descriptionRuntimeParameters;
 
         public ActiveAgreementViewModel([NotNull] IAgreement agreement)
         {
-            if (agreement == null)
-                throw new ArgumentNullException("agreement");
-
-            _agreement = agreement;
+            _agreement = agreement ?? throw new ArgumentNullException("agreement");
             _elements = new ObservableCollection<DiplomacyMessageElement>();
-            _elementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_elements);
+            Elements = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_elements);
 
             StartTurn = _agreement.StartTurn;
             EndTurn = _agreement.EndTurn;
@@ -44,25 +39,22 @@ namespace Supremacy.Client.Views
                 new ScriptParameter("$endTurn", typeof(int)));
 
             _descriptionScript = new ScriptExpression(returnObservableResult: false)
-                                 {
-                                     Parameters = _descriptionParameters
-                                 };
+            {
+                Parameters = _descriptionParameters
+            };
 
             _descriptionRuntimeParameters = new RuntimeScriptParameters
                                        {
                                            new RuntimeScriptParameter(_descriptionParameters[0], _agreement.Proposal.Sender),
                                            new RuntimeScriptParameter(_descriptionParameters[1], _agreement.Proposal.Recipient),
-                                           new RuntimeScriptParameter(_descriptionParameters[2], (int)_agreement.StartTurn),
-                                           new RuntimeScriptParameter(_descriptionParameters[3], (int)_agreement.EndTurn),
+                                           new RuntimeScriptParameter(_descriptionParameters[2], _agreement.StartTurn),
+                                           new RuntimeScriptParameter(_descriptionParameters[3], _agreement.EndTurn),
                                        };
 
             UpdateDescription();
         }
 
-        public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements
-        {
-            get { return _elementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements { get; }
 
         #region StartTurn Property
 
@@ -73,11 +65,13 @@ namespace Supremacy.Client.Views
 
         public int StartTurn
         {
-            get { return _startTurn; }
+            get => _startTurn;
             private set
             {
                 if (Equals(value, _startTurn))
+                {
                     return;
+                }
 
                 _startTurn = value;
 
@@ -102,11 +96,13 @@ namespace Supremacy.Client.Views
 
         public int EndTurn
         {
-            get { return _endTurn; }
+            get => _endTurn;
             private set
             {
                 if (Equals(value, _endTurn))
+                {
                     return;
+                }
 
                 _endTurn = value;
 
@@ -131,11 +127,13 @@ namespace Supremacy.Client.Views
 
         public DiplomaticMessageCategory Category
         {
-            get { return _category; }
+            get => _category;
             private set
             {
                 if (Equals(value, _category))
+                {
                     return;
+                }
 
                 _category = value;
 
@@ -160,11 +158,13 @@ namespace Supremacy.Client.Views
 
         public string Description
         {
-            get { return _description; }
+            get => _description;
             private set
             {
                 if (Equals(value, _description))
+                {
                     return;
+                }
 
                 _description = value;
 
@@ -182,17 +182,17 @@ namespace Supremacy.Client.Views
 
         private DiplomaticMessageCategory ResolveCategory()
         {
-            GameLog.Client.Diplomacy.DebugFormat("Proposal ={0}", _agreement.Proposal);
+            //GameLog.Client.Diplomacy.DebugFormat("Proposal ={0}", _agreement.Proposal.Clauses[0].Le);
             return ForeignPowerViewModel.ResolveMessageCategory(_agreement.Proposal);
         }
 
         private void PopulateElements()
         {
-            var proposal = _agreement.Proposal;
+            IProposal proposal = _agreement.Proposal;
 
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
-                var element = new DiplomacyMessageElement(
+                DiplomacyMessageElement element = new DiplomacyMessageElement(
                     proposal.Sender,
                     proposal.Recipient,
                     DiplomacyMessageElementActionCategory.Propose,
@@ -205,15 +205,15 @@ namespace Supremacy.Client.Views
                 if (clause.ClauseType == ClauseType.OfferGiveCredits ||
                     clause.ClauseType == ClauseType.RequestGiveCredits)
                 {
-                    var data = clause.GetData<CreditsClauseData>();
+                    CreditsClauseData data = clause.GetData<CreditsClauseData>();
                     if (data != null)
                     {
                         element.HasFixedParameter = true;
                         element.SelectedParameter = new CreditsDataViewModel
-                                                    {
-                                                        ImmediateAmount = data.ImmediateAmount,
-                                                        RecurringAmount = data.RecurringAmount
-                                                    };
+                        {
+                            ImmediateAmount = data.ImmediateAmount,
+                            RecurringAmount = data.RecurringAmount
+                        };
                     }
                 }
                 else if (clause.Data != null)
@@ -231,17 +231,21 @@ namespace Supremacy.Client.Views
         {
             DiplomacyStringID leadInId;
 
-            var hasDuration = _agreement.EndTurn != 0;
-            var proposal = _agreement.Proposal;
+            bool hasDuration = _agreement.EndTurn != 0;
+            IProposal proposal = _agreement.Proposal;
 
             if (proposal.IsGift())
+            {
                 leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionGift : DiplomacyStringID.ActiveAgreementDescriptionGiftNoDuration;
-            else if (proposal.IsDemand())
-                leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionDemand : DiplomacyStringID.ActiveAgreementDescriptionDemandNoDuration;
-            else if (!proposal.HasTreaty())
-                leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionExchange : DiplomacyStringID.ActiveAgreementDescriptionExchangeNoDuration;
+            }
             else
-                leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionTreaty : DiplomacyStringID.ActiveAgreementDescriptionTreatyNoDuration;
+            {
+                leadInId = proposal.IsDemand()
+                    ? hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionDemand : DiplomacyStringID.ActiveAgreementDescriptionDemandNoDuration
+                    : !proposal.HasTreaty()
+                                    ? hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionExchange : DiplomacyStringID.ActiveAgreementDescriptionExchangeNoDuration
+                                    : hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionTreaty : DiplomacyStringID.ActiveAgreementDescriptionTreatyNoDuration;
+            }
 
             _descriptionScript.ScriptCode = DiplomacyMessageViewModel.QuoteString(
                 DiplomacyMessageViewModel.LookupDiplomacyText(
@@ -262,22 +266,26 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

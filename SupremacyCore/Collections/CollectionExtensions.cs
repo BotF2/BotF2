@@ -11,10 +11,10 @@ using Supremacy.Utility;
 
 namespace Supremacy.Collections
 {
-    // ReSharper disable ConditionIsAlwaysTrueOrFalse
-    // ReSharper disable ParameterTypeCanBeEnumerable.Global
-    // ReSharper disable HeuristicUnreachableCode
-    // ReSharper disable CompareNonConstrainedGenericWithNull
+
+
+
+
     public static class CollectionExtensions
     {
         #region Sorted List Extensions
@@ -317,9 +317,9 @@ namespace Supremacy.Collections
             public T this[int index]
             {
                 get => _wrappedList[index];
-                // ReSharper disable ValueParameterNotUsed
+
                 set => MethodModifiesCollection();
-                // ReSharper restore ValueParameterNotUsed
+
             }
 
             public void Add(T item)
@@ -451,9 +451,9 @@ namespace Supremacy.Collections
             public TValue this[TKey key]
             {
                 get => _wrappedDictionary[key];
-                // ReSharper disable ValueParameterNotUsed
+
                 set => MethodModifiesCollection();
-                // ReSharper restore ValueParameterNotUsed
+
             }
 
             public void Add(KeyValuePair<TKey, TValue> item)
@@ -814,7 +814,7 @@ namespace Supremacy.Collections
 
                 foreach (T item in removed)
                 {
-                    collection.Remove(item);
+                    _ = collection.Remove(item);
                 }
 
                 return removed;
@@ -1154,7 +1154,7 @@ namespace Supremacy.Collections
 
             StringBuilder builder = new StringBuilder();
 
-            builder.Append(start);
+            _ = builder.Append(start);
 
             // Call ToString on each item and put it in.
             foreach (T item in collection)
@@ -1165,18 +1165,13 @@ namespace Supremacy.Collections
                 }
 
                 // "TypedAs<object>((IEnumerable)item)" is never null because item is never 'null'.
-                // ReSharper disable AssignNullToNotNullAttribute
-                if (item == null)
-                {
-                    _ = builder.Append("null");
-                }
-                else
-                {
-                    _ = recursive && item is IEnumerable enumerable && !(item is string)
+
+                _ = item == null
+                    ? builder.Append("null")
+                    : recursive && item is IEnumerable enumerable && !(item is string)
                         ? builder.Append(ToString(TypedAs<object>(enumerable), true, start, separator, end))
                         : builder.Append(item.ToString());
-                }
-                // ReSharper restore AssignNullToNotNullAttribute
+
 
                 firstItem = false;
             }
@@ -1221,33 +1216,14 @@ namespace Supremacy.Collections
             {
                 count = trueList.Count;
             }
-            else if (indexable != null)
-            {
-                count = indexable.Count;
-            }
-            else if (collection is ICollection list)
-            {
-                count = list.Count;
-            }
             else
             {
-                count = collection.Count();
+                count = indexable != null ? indexable.Count : collection is ICollection list ? list.Count : collection.Count();
             }
 
             int skipCount = RandomProvider.Shared.Next(count);
 
-            if (trueList != null)
-            {
-                result = (T)trueList[skipCount];
-            }
-            else if (indexable != null)
-            {
-                result = indexable[skipCount];
-            }
-            else
-            {
-                result = collection.Skip(skipCount).First();
-            }
+            result = trueList != null ? (T)trueList[skipCount] : indexable != null ? indexable[skipCount] : collection.Skip(skipCount).First();
 
             return true;
         }
@@ -2174,14 +2150,7 @@ namespace Supremacy.Collections
                     _ = builder.Append(',');
                 }
 
-                if (item == null)
-                {
-                    _ = builder.Append("null");
-                }
-                else
-                {
-                    _ = builder.Append(item.ToString());
-                }
+                _ = item == null ? builder.Append("null") : builder.Append(item.ToString());
 
                 firstItem = false;
             }
@@ -2414,8 +2383,8 @@ namespace Supremacy.Collections
             set => this[index] = ConvertToItemType("value", value);
         }
     }
-    // ReSharper restore CompareNonConstrainedGenericWithNull
-    // ReSharper restore HeuristicUnreachableCode
-    // ReSharper restore ParameterTypeCanBeEnumerable.Global
-    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+
+
+
+
 }

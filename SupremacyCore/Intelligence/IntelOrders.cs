@@ -7,15 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using Supremacy.Entities;
-using Supremacy.Game;
-using Supremacy.Orbitals;
-using Supremacy.Utility;
-
 namespace Supremacy.Intelligence
 {
     public enum IntelOrder : byte

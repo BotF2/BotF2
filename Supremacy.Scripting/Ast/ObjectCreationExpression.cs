@@ -89,7 +89,7 @@ namespace Supremacy.Scripting.Ast
             sw.Write("new ");
 
             DumpChild(_objectType, sw, indentChange);
-            
+
             if (HasArguments)
             {
                 sw.Write("(");

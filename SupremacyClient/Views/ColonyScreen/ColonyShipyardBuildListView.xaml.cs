@@ -18,24 +18,35 @@ namespace Supremacy.Client.Views
         private void OnBuildListPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount < 2)
+            {
                 return;
-            GameLog.Client.ShipProduction.DebugFormat("this is a gamelog ={0}", e.ClickCount);
-            var selectedProject = BuildList.SelectedItem as BuildProject;
-            if (selectedProject == null)
-                return;
+            }
 
-            var presentationModel = PresentationModel;
+            GameLog.Client.ShipProductionDetails.DebugFormat("BuildList doubleclicked", e.ClickCount);
+            if (!(BuildList.SelectedItem is BuildProject selectedProject))
+            {
+                return;
+            }
+
+
+            ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
+            {
                 return;
+            }
 
-            var command = presentationModel.AddToShipyardBuildQueueCommand;
+            ICommand command = presentationModel.AddToShipyardBuildQueueCommand;
+
             if ((command != null) && command.CanExecute(selectedProject))
-                command.Execute(selectedProject);
+            {
+                //for (int i = 0; i < _howMany; i++)
+                //{
+                    command.Execute(selectedProject);
+
+                //}
+            }
         }
 
-        private ColonyScreenPresentationModel PresentationModel
-        {
-            get { return DataContext as ColonyScreenPresentationModel; }
-        }
+        private ColonyScreenPresentationModel PresentationModel => DataContext as ColonyScreenPresentationModel;
     }
 }

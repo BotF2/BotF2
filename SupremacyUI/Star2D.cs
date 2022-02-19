@@ -85,7 +85,7 @@ namespace Supremacy.UI
             for (int i = 0; i < Frames.Length; i++)
             {
                 CachedBitmap frame = new CachedBitmap(
-                    new BitmapImage(ResourceManager.GetResourceUri("Resources/Images/Stars/Star" + (i + 1) + ".png")),
+                    new BitmapImage(ResourceManager.GetResourceUri("Resources/Images/UI/Stars/Star" + (i + 1) + ".png")),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
                 frame.Freeze();
@@ -97,15 +97,15 @@ namespace Supremacy.UI
         public Star2D(StarType starType)
         {
             _grid = new Grid
-                    {
-                        Width = 128,
-                        Height = 128,
-                        Background = Brushes.Transparent,
-                        Clip = new EllipseGeometry(
+            {
+                Width = 128,
+                Height = 128,
+                Background = Brushes.Transparent,
+                Clip = new EllipseGeometry(
                             new Point(63, 63),
                             56,
                             56)
-                    };
+            };
 
             Initialize(starType);
 
@@ -199,28 +199,23 @@ namespace Supremacy.UI
 
                 if (i > 0)
                 {
-                    animations[i].KeyFrames.Add(
+                    _ = animations[i].KeyFrames.Add(
                         new DiscreteDoubleKeyFrame(
-                            0.0, 
+                            0.0,
                             KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * (i - 1)))));
-                    animations[i].KeyFrames.Add(
+                    _ = animations[i].KeyFrames.Add(
                         new LinearDoubleKeyFrame(
                             1.0,
                             KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * i))));
-                    if (i == (Frames.Length - 1))
-                    {
-                        animations[i].KeyFrames.Add(
+                    _ = i == (Frames.Length - 1)
+                        ? animations[i].KeyFrames.Add(
                             new LinearDoubleKeyFrame(
                                 0.0,
-                                KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * Frames.Length))));
-                    }
-                    else
-                    {
-                        animations[i].KeyFrames.Add(
+                                KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * Frames.Length))))
+                        : animations[i].KeyFrames.Add(
                             new DiscreteDoubleKeyFrame(
                                 0.0,
                                 KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * (i + 1)))));
-                    }
                 }
 
                 _parallelTimeline.Children.Add(animations[i]);
@@ -288,9 +283,11 @@ namespace Supremacy.UI
             parent.Child = innerGrid;
 
             while (parent.Parent != null)
+            {
                 parent = (Border)parent.Parent;
+            }
 
-            _grid.Children.Add(parent);
+            _ = _grid.Children.Add(parent);
             AddVisualChild(_grid);
         }
 

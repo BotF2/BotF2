@@ -25,34 +25,39 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    // ReSharper disable RedundantExtendsListEntry
+
     public abstract class GameObject : Cloneable,
                                        IGameObject,
                                        IOwnedDataSerializableAndRecreatable,
                                        INotifyPropertyChanged
-    // ReSharper restore RedundantExtendsListEntry
+
     {
         private int _objectId;
-        
-        [field:NonSerialized]
+
+        [field: NonSerialized]
         public event EventHandler ObjectIDChanged;
 
         protected GameObject()
         {
             if (GameContext.Current != null)
+            {
                 _objectId = GameContext.Current.GenerateID();
+            }
         }
 
         protected GameObject(int objectId)
         {
             if (objectId <= -1)
+            {
                 throw new ArgumentException("Invalid object ID.");
+            }
+
             _objectId = objectId;
         }
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {
-            var typedSource = (GameObject)source;
+            GameObject typedSource = (GameObject)source;
 
             base.CloneFrom(typedSource, context);
 
@@ -67,7 +72,7 @@ namespace Supremacy.Game
         [Indexable]
         public int ObjectID
         {
-            get { return _objectId; }
+            get => _objectId;
             protected internal set
             {
                 _objectId = value;
@@ -79,9 +84,7 @@ namespace Supremacy.Game
 
         private void OnObjectIDChanged()
         {
-            var handler = ObjectIDChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ObjectIDChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -90,20 +93,18 @@ namespace Supremacy.Game
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected internal virtual void OnDeserialized() { }
 
-#pragma warning disable 168
+
         [OnSerializing]
         private void OnSerializing(StreamingContext context)
         {
             Compact();
         }
-#pragma warning restore 168
+
 
         /// <summary>
         /// Compacts this <see cref="GameObject"/> to reduce the serialization footprint.
@@ -114,22 +115,26 @@ namespace Supremacy.Game
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
-    	public virtual void SerializeOwnedData([NotNull] SerializationWriter writer, [CanBeNull] object context)
-    	{
-    	    if (writer == null)
-    	        throw new ArgumentNullException("writer");
+        public virtual void SerializeOwnedData([NotNull] SerializationWriter writer, [CanBeNull] object context)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
 
-    	    writer.WriteOptimized(_objectId);
-    	}
+            writer.WriteOptimized(_objectId);
+        }
 
         public virtual void DeserializeOwnedData([NotNull] SerializationReader reader, [CanBeNull] object context)
         {
             if (reader == null)
+            {
                 throw new ArgumentNullException("reader");
+            }
 
             _objectId = reader.ReadOptimizedInt32();
         }

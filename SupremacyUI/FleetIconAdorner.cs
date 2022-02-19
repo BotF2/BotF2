@@ -10,6 +10,7 @@ using Supremacy.Resources;
 using Supremacy.Universe;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,6 +45,7 @@ namespace Supremacy.UI
                                ? GalaxyGridPanel.GetFleetIcon(owners[0])
                                : GalaxyGridPanel.GetMultiFleetIcon();
             _fleetIcon = GalaxyGridPanel.GetMultiFleetIcon();
+
             if (owners.Length == 1)
             {
                 _fleetIcon = playerCiv == owners[0]
@@ -52,7 +54,10 @@ namespace Supremacy.UI
             }
 
             UpdateDistressIndicator();
-            UpdateToolTip();
+            if (owners.Contains(playerCiv))
+            {
+                UpdateToolTip();
+            }
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
@@ -73,7 +78,6 @@ namespace Supremacy.UI
                 .Where(o => _owners.Contains(o.Owner));
 
             _fleets = new List<FleetView>(fleetViews.Count());
-
             fleetViews.Select(o => FleetView.Create(_playerCiv, o)).CopyTo(_fleets);
         }
 
@@ -145,7 +149,7 @@ namespace Supremacy.UI
                                        from fleet in _fleets
                                        where fleet.IsPresenceKnown && fleet.Source.IsInDistress() && fleet.Ships[0].Source.Owner == _playerCiv
                                        select fleet;
-                                   
+
 
             if (!fleetsInDistress.Any())
             {
@@ -170,14 +174,14 @@ namespace Supremacy.UI
                 null,
                 new Duration(TimeSpan.FromSeconds(3)),
                 RepeatBehavior.Forever)
-                           {
-                               Children =
+            {
+                Children =
                                    {
                                        widthAnimation,
                                        heightAnimation,
                                        opacityAnimation
                                    }
-                           };
+            };
 
             _clockGroup = timeline.CreateClock();
 
@@ -193,6 +197,60 @@ namespace Supremacy.UI
             drawingContext.DrawImage(
                 _fleetIcon,
                 new Rect(new Size(GalaxyGridPanel.FleetIconSize, GalaxyGridPanel.FleetIconSize)));
+            if (_owners.Length == 1)
+            {
+                Typeface s_textTypeface = new Typeface(
+                        new FontFamily("#Resources/Fonts/Calibri"),
+                        FontStyles.Normal,
+                        FontWeights.Normal,
+                        FontStretches.Normal);
+
+                int _countHolder = _fleets.Sum(o => o.Ships.Count);
+                string _countString = _countHolder.ToString();
+                IEnumerable<FleetView> fleetsCloaked = from fleet in _fleets
+                                                       where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
+                                                       select fleet;
+
+                if (fleetsCloaked.Count() > 0)
+                {
+                    _countHolder -= _fleets.Sum(o => o.Ships.Count(s => s.Source.IsCloaked == true));
+                    _countString = _countHolder != 0 ? _countHolder.ToString() : "";
+                }
+                CivilizationMapData _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
+                FleetView _fleetView = _fleets.First();
+                Civilization _fleetCiv = _fleetView.Source.Owner;
+                if (_mapData.GetScanStrength(_location) > 0 || _playerCiv == _fleetCiv)
+                {
+                    if (_playerCiv == _fleetCiv || DiplomacyHelper.IsContactMade(_playerCiv, _fleetCiv) && !DiplomacyHelper.IsScanBlocked(_playerCiv, _fleetView.Source.Sector))
+                    {
+                        FormattedText formattedText = new FormattedText(
+                             _countString,
+                             CultureInfo.CurrentCulture,
+                             FlowDirection.LeftToRight,
+                             s_textTypeface,
+                             10.0,
+                             Brushes.PapayaWhip,
+                             VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                        Point gridPanelPoint = new Point(0, 18);
+                        drawingContext.DrawText(formattedText, gridPanelPoint);
+
+                    }
+                }
+                //if (_owners.First() == _playerCiv) // if it is your fleet
+                //{
+                //    FormattedText formattedText = new FormattedText(
+                //            _countHolder.ToString(),
+                //            CultureInfo.CurrentCulture,
+                //            FlowDirection.LeftToRight,
+                //            s_textTypeface,
+                //            10.0,
+                //            Brushes.PapayaWhip,
+                //            VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                //    Point gridPanelPoint = new Point(0, 18);
+                //    drawingContext.DrawText(formattedText, gridPanelPoint);
+                //}
+            }
+
 
             if (!_drawDistressIndicator.Value)
             {

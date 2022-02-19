@@ -47,14 +47,16 @@ namespace Supremacy.UI
         private readonly TextBlock _energyFacilityText;
         private readonly ImageBrush _energyImage;
         private readonly Border _energyImageBorder;
+        private readonly Border _energyImageBorder_TOOLTIP;
         private readonly TextBlock _energyOutputText;
         private readonly TextBlock _energyScrapText;
         private readonly UnitActivationBar _energySlider;
-        
+
         private readonly TextBlock _foodActiveText;
         private readonly TextBlock _foodFacilityText;
         private readonly ImageBrush _foodImage;
         private readonly Border _foodImageBorder;
+        private readonly Border _foodImageBorder_TOOLTIP;
         private readonly TextBlock _foodOutputText;
         private readonly TextBlock _foodScrapText;
         private readonly UnitActivationBar _foodSlider;
@@ -63,6 +65,7 @@ namespace Supremacy.UI
         private readonly TextBlock _industryFacilityText;
         private readonly ImageBrush _industryImage;
         private readonly Border _industryImageBorder;
+        private readonly Border _industryImageBorder_TOOLTIP;
         private readonly TextBlock _industryOutputText;
         private readonly TextBlock _industryScrapText;
         private readonly UnitActivationBar _industrySlider;
@@ -71,6 +74,7 @@ namespace Supremacy.UI
         private readonly TextBlock _researchFacilityText;
         private readonly ImageBrush _researchImage;
         private readonly Border _researchImageBorder;
+        private readonly Border _researchImageBorder_TOOLTIP;
         private readonly TextBlock _researchOutputText;
         private readonly TextBlock _researchScrapText;
         private readonly UnitActivationBar _researchSlider;
@@ -79,6 +83,7 @@ namespace Supremacy.UI
         private readonly TextBlock _intelligenceFacilityText;
         private readonly ImageBrush _intelligenceImage;
         private readonly Border _intelligenceImageBorder;
+        private readonly Border _intelligenceImageBorder_TOOLTIP;
         private readonly TextBlock _intelligenceOutputText;
         private readonly TextBlock _intelligenceScrapText;
         private readonly UnitActivationBar _intelligenceSlider;
@@ -121,7 +126,7 @@ namespace Supremacy.UI
 
             DataContextChanged += OnDataContextChanged;
 
-            Brush headerBrush = FindResource("LCARS_HeaderBrush") as Brush ?? Foreground;
+            Brush headerBrush = FindResource("HeaderTextBrush") as Brush ?? Foreground;
             Brush paragraphBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground;
 
             SetResourceReference(
@@ -130,10 +135,10 @@ namespace Supremacy.UI
 
             _children = new VisualCollection(this);
 
-            _grid = new Grid();
-
-
-            _grid.Width = 580;
+            _grid = new Grid
+            {
+                Width = 580
+            };
 
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -315,15 +320,26 @@ namespace Supremacy.UI
 
             /* FOOD IMAGE */
             _foodImageBorder = new Border
-                               {
-                                   BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                   BorderThickness = new Thickness(2.0),
-                                   CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                        Margin = new Thickness(0, rowSpacing, 0, 0),
-                                   Background = _foodImage
-                               };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _foodImage
+            };
+            _foodImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _foodImage
+            };
+            _foodImageBorder.ToolTip = _foodImageBorder_TOOLTIP;
             _foodImageBorder.SetValue(Grid.ColumnProperty, 0);
             _foodImageBorder.SetValue(Grid.RowProperty, 0);
             _foodImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -332,15 +348,26 @@ namespace Supremacy.UI
 
             /* INDUSTRY IMAGE */
             _industryImageBorder = new Border
-                                   {
-                                       BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                       BorderThickness = new Thickness(2.0),
-                                       CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                       Margin = new Thickness(0, rowSpacing, 0, 0),
-                                       Background = _industryImage
-                                   };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _industryImage
+            };
+            _industryImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _industryImage
+            };
+            _industryImageBorder.ToolTip = _industryImageBorder_TOOLTIP;
             _industryImageBorder.SetValue(Grid.ColumnProperty, 0);
             _industryImageBorder.SetValue(Grid.RowProperty, 1);
             _industryImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -349,15 +376,26 @@ namespace Supremacy.UI
 
             /* ENERGY IMAGE */
             _energyImageBorder = new Border
-                                 {
-                                     BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                     BorderThickness = new Thickness(2.0),
-                                     CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                     Margin = new Thickness(0, rowSpacing, 0, 0),
-                                     Background = _energyImage
-                                 };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _energyImage
+            };
+            _energyImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _energyImage
+            };
+            _energyImageBorder.ToolTip = _energyImageBorder_TOOLTIP;
             _energyImageBorder.SetValue(Grid.ColumnProperty, 0);
             _energyImageBorder.SetValue(Grid.RowProperty, 2);
             _energyImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -366,15 +404,26 @@ namespace Supremacy.UI
 
             /* RESEARCH IMAGE */
             _researchImageBorder = new Border
-                                   {
-                                       BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                       BorderThickness = new Thickness(2.0),
-                                       CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                       Margin = new Thickness(0, rowSpacing, 0, 0),
-                                       Background = _researchImage
-                                   };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _researchImage
+            };
+            _researchImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _researchImage
+            };
+            _researchImageBorder.ToolTip = _researchImageBorder_TOOLTIP;
             _researchImageBorder.SetValue(Grid.ColumnProperty, 0);
             _researchImageBorder.SetValue(Grid.RowProperty, 3);
             _researchImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -383,15 +432,26 @@ namespace Supremacy.UI
 
             /* INTELLIGENCE IMAGE */
             _intelligenceImageBorder = new Border
-                                    {
-                                        BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                        BorderThickness = new Thickness(2.0),
-                                        CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                        Margin = new Thickness(0, rowSpacing, 0, 0),
-                                        Background = _intelligenceImage
-                                    };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _intelligenceImage
+            };
+            _intelligenceImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _intelligenceImage
+            };
+            _intelligenceImageBorder.ToolTip = _intelligenceImageBorder_TOOLTIP;
             _intelligenceImageBorder.SetValue(Grid.ColumnProperty, 0);
             _intelligenceImageBorder.SetValue(Grid.RowProperty, 4);
             _intelligenceImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -438,16 +498,18 @@ namespace Supremacy.UI
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            _laborBar.SetValue(Grid.ColumnProperty, 2);
+            _laborBar.SetValue(Grid.ColumnProperty, 1);
+            _laborBar.SetValue(Grid.ColumnSpanProperty, 4);
             _laborBar.SetValue(Grid.RowProperty, 5);
             _laborBar.VerticalAlignment = VerticalAlignment.Top;
             _laborBar.Margin = new Thickness(0, rowSpacing * 2, 0, rowSpacing);
             _laborBar.Height = 28;
             _laborBar.IsReadOnly = true;
             _laborBar.IsEnabled = true;
+            _laborBar.Foreground = Brushes.Red;
 
             _laborPoolText = new TextBlock();
-            _laborPoolText.SetValue(Grid.ColumnProperty, 1);
+            _laborPoolText.SetValue(Grid.ColumnProperty, 0);
             _laborPoolText.SetValue(Grid.RowProperty, 5);
             _laborPoolText.VerticalAlignment = VerticalAlignment.Top;
             _laborPoolText.HorizontalAlignment = HorizontalAlignment.Right;
@@ -464,6 +526,7 @@ namespace Supremacy.UI
             _ = _children.Add(_grid);
 
             _sliderGroup.PoolBar = _laborBar;
+            //_laborBar.Foreground = "";
             _sliderGroup.FreePoolSizeChanged += SliderGroup_FreePoolSizeChanged;
             _sliderGroup.PoolSizeChanged += SliderGroup_PoolSizeChanged;
 
@@ -600,7 +663,7 @@ namespace Supremacy.UI
 
         private void Slider_ActiveUnitsChanged(object sender, DependencyPropertyChangedEventArgs<int> e)
         {
-            GameLog.Client.General.DebugFormat("slider_ActiveUnitsChanged...");
+            //GameLog.Client.UI.DebugFormat("slider_ActiveUnitsChanged...");
             Colony colony = Colony;
             if (colony == null)
             {
@@ -615,7 +678,7 @@ namespace Supremacy.UI
 
             int delta = Math.Abs(e.NewValue - e.OldValue);
 
-            
+
             if (delta != 0)
             {
                 int i;
@@ -671,7 +734,7 @@ namespace Supremacy.UI
                             activateCommand.Execute(category);
                         }
 
-                        GameLog.Client.Production.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
+                        GameLog.Client.ProductionDetails.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
                     }
                     else
                     {
@@ -681,10 +744,10 @@ namespace Supremacy.UI
                             deactivateCommand.Execute(category);
                         }
 
-                        GameLog.Client.Production.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
+                        GameLog.Client.ProductionDetails.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
                     }
                 }
-                
+
 
                 if ((activeText != null) && (facilityText != null))
                 {
@@ -800,16 +863,20 @@ namespace Supremacy.UI
 
                 int LaborPool = colony.GetAvailableLabor() / 10;
 
-                GameLog.Client.Production.DebugFormat("Turn {7}: Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6} for {8}",
-                    colony.Population.CurrentValue,
-                    colony.GetActiveFacilities(ProductionCategory.Food),
-                    colony.GetActiveFacilities(ProductionCategory.Industry),
-                    colony.GetActiveFacilities(ProductionCategory.Energy),
-                    colony.GetActiveFacilities(ProductionCategory.Research),
-                    colony.GetActiveFacilities(ProductionCategory.Intelligence),
-                    LaborPool,
-                    GameContext.Current.TurnNumber,
-                    this.Name);
+                // now a SitRep
+                //GameLog.Client.Production.DebugFormat("for {8}" + Environment.NewLine + "   Turn {7}: Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6} for {8} ({9})",
+                //    colony.Population.CurrentValue,
+                //    colony.GetActiveFacilities(ProductionCategory.Food),
+                //    colony.GetActiveFacilities(ProductionCategory.Industry),
+                //    colony.GetActiveFacilities(ProductionCategory.Energy),
+                //    colony.GetActiveFacilities(ProductionCategory.Research),
+                //    colony.GetActiveFacilities(ProductionCategory.Intelligence),
+                //    LaborPool,
+                //    GameContext.Current.TurnNumber,
+                //    Name,
+                //    colony.Name,
+                //    colony.Location
+                //    );
                 /*_laborBar.ActiveUnits doesn't work */
 
                 _foodSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Food);

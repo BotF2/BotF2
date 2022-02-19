@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 
 namespace Supremacy.Game
 {
@@ -27,16 +28,21 @@ namespace Supremacy.Game
     public static class SavedGameManager
     {
         public const string AutoSaveFileName = ".autosav";
+        private static readonly string newline=Environment.NewLine;
+        private static string _text;
 
         public static string SavedGameDirectory
         {
-            get 
-            { 
-                //string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            get
+            {
+
+                string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames_V", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                _text = _text.Replace("V\\", "V");
+                _text = _text.Replace(".\\", "");
                 //GameLog.Client.SaveLoad.DebugFormat("SavedGameDirectory = {0}", _text);
                 //Console.WriteLine(_text);
 
-                return Path.Combine("SavedGames", Assembly.GetExecutingAssembly().GetName().Version.ToString()); 
+                return _text;
             }
         }
 
@@ -47,23 +53,23 @@ namespace Supremacy.Game
         /// <returns></returns>
         public static SavedGameHeader[] FindSavedGames(bool includeAutoSave = true)
         {
-            var savedGames = new List<SavedGameHeader>();
-            var path = SavedGameDirectory;
+            List<SavedGameHeader> savedGames = new List<SavedGameHeader>();
+            string path = SavedGameDirectory;
 
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                _ = Directory.CreateDirectory(path);
             }
 
-            var fileNames = Directory.GetFiles(path, "*.sav", SearchOption.TopDirectoryOnly);
+            string[] fileNames = Directory.GetFiles(path, "*.sav", SearchOption.TopDirectoryOnly);
 
             if (includeAutoSave)
             {
-                var autoSaveFileName = Path.Combine(path, AutoSaveFileName);
+                string autoSaveFileName = Path.Combine(path, AutoSaveFileName);
 
                 if (File.Exists(autoSaveFileName))
                 {
-                    var header = LoadSavedGameHeader(AutoSaveFileName);
+                    SavedGameHeader header = LoadSavedGameHeader(AutoSaveFileName);
                     if (header != null)
                     {
                         if (header.GameVersion == Assembly.GetExecutingAssembly().GetName().Version.ToString())
@@ -74,9 +80,9 @@ namespace Supremacy.Game
                 }
             }
 
-            foreach (var fileName in fileNames)
+            foreach (string fileName in fileNames)
             {
-                var header = LoadSavedGameHeader(fileName);
+                SavedGameHeader header = LoadSavedGameHeader(fileName);
                 string _currentGameVersionString = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 if (header != null)
                 {
@@ -106,7 +112,9 @@ namespace Supremacy.Game
         public static SavedGameHeader LoadSavedGameHeader([NotNull] string fileName)
         {
             if (fileName == null)
+            {
                 throw new ArgumentNullException("fileName");
+            }
 
             try
             {
@@ -118,7 +126,8 @@ namespace Supremacy.Game
                 }
                 else
                 {
-                    string _shortSavedGameDirectory = SavedGameDirectory; //.Replace(".\\", "");
+                    string _shortSavedGameDirectory = SavedGameDirectory;
+                    _shortSavedGameDirectory = _shortSavedGameDirectory.Replace(".\\", "");
                     fullPath = Path.Combine(Environment.CurrentDirectory, _shortSavedGameDirectory, FixFileName(fileName));
                     //Console.WriteLine(fullPath);
                     fullPath = fullPath.Replace(_shortSavedGameDirectory + "\\" + _shortSavedGameDirectory, _shortSavedGameDirectory);  // removing double _shortSavedGameDirectory
@@ -126,15 +135,15 @@ namespace Supremacy.Game
                 }
 
                 string _text = /*Environment.NewLine + */"   fullPath =        " + fullPath;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 SavedGameHeader header;
-                using (var fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    GameLog.Client.SaveLoad.DebugFormat(Environment.NewLine + "   reading HEADER of {0}"
-                        , fileStream.Name
-                        );
+                    _text = "reading HEADER of " + fileName;
+                    Console.WriteLine(_text);
+                    GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 
                     header = SavedGameHeader.Read(fileStream);
                 }
@@ -176,17 +185,17 @@ namespace Supremacy.Game
                 }
                 GameLog.Core.General.InfoFormat("Loading saved game {0}", fileName);
 
-                using (var fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (FileStream fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     GameLog.Core.SaveLoad.DebugFormat("beginning loading {0} ...", fileName);
                     header = SavedGameHeader.Read(fileStream);
-                    var thisGameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                    string thisGameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     if (header.GameVersion != thisGameVersion)
                     {
                         throw new Exception(string.Format("Incompatible game save - {0} vs {1}", header.GameVersion, thisGameVersion));
                     }
                     GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fileName);
-                    using (var memoryStream = new MemoryStream())
+                    using (MemoryStream memoryStream = new MemoryStream())
                     {
                         int value;
                         while (fileStream.CanRead && ((value = fileStream.ReadByte()) != -1))
@@ -194,7 +203,8 @@ namespace Supremacy.Game
                             memoryStream.WriteByte((byte)value);
                         }
                         GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileName);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        _ = memoryStream.Seek(0, SeekOrigin.Begin);
+                        Console.WriteLine("reading memoryStream into game");
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }
                 }
@@ -212,7 +222,7 @@ namespace Supremacy.Game
 
                 header = null;
                 game = null;
-                timestamp = default(DateTime);
+                timestamp = default;
 
                 return false;
             }
@@ -237,7 +247,9 @@ namespace Supremacy.Game
         public static FileInfo GetSavedGameFile([NotNull] SavedGameHeader header)
         {
             if (header == null)
+            {
                 throw new ArgumentNullException("header");
+            }
 
             return new FileInfo(Path.Combine(
                 ResourceManager.GetResourcePath(""),
@@ -256,7 +268,9 @@ namespace Supremacy.Game
         public static bool SaveGame([NotNull] string fileName, [NotNull] GameContext game, [NotNull] Player localPlayer, [NotNull] LobbyData lobbyData)
         {
             if (fileName == null)
+            {
                 fileName = "_manual_save_(CTRL+S)";
+            }
 
             GameLog.Core.SaveLoad.DebugFormat("SaveGame: localPlayer={1}, fileName= '{0}'",
                                     fileName, localPlayer);
@@ -291,7 +305,7 @@ namespace Supremacy.Game
 
                 if (!Directory.Exists(SavedGameDirectory))
                 {
-                    Directory.CreateDirectory(SavedGameDirectory);
+                    _ = Directory.CreateDirectory(SavedGameDirectory);
                 }
 
                 header = new SavedGameHeader(game, localPlayer);
@@ -301,9 +315,9 @@ namespace Supremacy.Game
                     header.IsAutoSave = true;
                 }
 
-                var buffer = StreamUtility.Write(game);
+                byte[] buffer = StreamUtility.Write(game);
 
-                using (var fileStream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                using (FileStream fileStream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                 {
                     header.Write(fileStream);
                     fileStream.Write(buffer, 0, buffer.Length);
@@ -317,12 +331,69 @@ namespace Supremacy.Game
             }
             finally
             {
-                GameContext.PopThreadContext();
+                _ = GameContext.PopThreadContext();
             }
 
             Channel.Publish(new GameSavedMessage(header));
 
             return true;
+        }
+
+        public static bool SaveGameDeleteManualSaved()
+        {
+            string file = Path.Combine(Environment.CurrentDirectory + "\\" + SavedGameDirectory, FixFileName("_manual_save_(CTRL+S).sav"));
+
+            //ResourceManager.GetString("Do you really want to delete > ")
+            var result = MessageBox.Show(
+                "ALT+S: Do you really want to delete > "
+                + " " + file,"REALLY ?",
+                MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No)
+            {
+                return false;
+            }
+
+            try
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                    _ = MessageBox.Show("Deleted: " + file + newline + "Create again with CTRL+S");
+                    return true;
+                }
+            }
+            catch { _ = MessageBox.Show("Problem at deleting: " + file); ; return false; }
+            return false;
+        }
+
+        public static bool SaveGameDeleteAutoSaved()
+        {
+            string file = Path.Combine(Environment.CurrentDirectory + "\\" + SavedGameDirectory, FixFileName(".autosav"));
+
+            //ResourceManager.GetString("Do you really want to delete > ")
+            var result = MessageBox.Show(
+                "ALT+Y: Do you really want to delete > "
+                + " " + file, "REALLY ?",
+                MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No)
+            {
+                return false;
+            }
+
+            try
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                    _text = "Deleted: " + file;
+                    Console.WriteLine(_text);
+                
+                //_ = MessageBox.Show("Deleted: " + file /*+ newline + "Create again with CTRL+S"*/);
+                return true;
+                }
+            }
+            catch { _ = MessageBox.Show("Problem at deleting: " + file); ; return false; }
+            return false;
         }
 
         /// <summary>
@@ -333,9 +404,11 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool AutoSave(Player localPlayer, LobbyData lobbyData)
         {
-            var game = GameContext.Current;
+            GameContext game = GameContext.Current;
             if (game == null)
+            {
                 return false;
+            }
 
             try
             {
@@ -345,8 +418,8 @@ namespace Supremacy.Game
 
 
                 string file_autosav_current = SavedGameFolder + ".autosav";
-                string file_autosav_one_turn_ago = SavedGameFolder + ".autosav_one_turn_ago.sav";
-                string file_autosav_two_turns_ago = SavedGameFolder + ".autosav_two_turns_ago";
+                string file_autosav_one_turn_ago = SavedGameFolder + "autosav_one_turn_ago.sav";
+                string file_autosav_two_turns_ago = SavedGameFolder + "autosav_two_turns_ago";
 
                 GameLog.Core.General.InfoFormat("saving {0}", file_autosav_current);
 
@@ -365,7 +438,7 @@ namespace Supremacy.Game
             {
                 GameLog.Core.SaveLoad.WarnFormat("Problem at saving autosav and previous autosav Exception {0} {1}", e.Message, e.StackTrace);
             }
-           
+
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);
         }
     }

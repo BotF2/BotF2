@@ -9,6 +9,7 @@ using Supremacy.Collections;
 using Supremacy.Entities;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,9 @@ namespace Supremacy.Universe
         private Colony _colony;
         private ArrayWrapper<Planet> _planets;
         private StarType _starType;
+        public string _text;
+        public bool _checkLoading = true;
+        public readonly string newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -49,10 +53,7 @@ namespace Supremacy.Universe
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.StarSystem; }
-        }
+        public override UniverseObjectType ObjectType => UniverseObjectType.StarSystem;
 
         /// <summary>
         /// Gets or sets a system's bonuses.
@@ -60,8 +61,8 @@ namespace Supremacy.Universe
         /// <value>The bonuses.</value>
         public SystemBonus Bonuses
         {
-            get { return _bonuses; }
-            set { _bonuses = value; }
+            get => _bonuses;
+            set => _bonuses = value;
         }
 
         /// <summary>
@@ -70,21 +71,15 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this instance has Dilithium bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasDilithiumBonus
-        {
-            get { return ((_bonuses & SystemBonus.Dilithium) == SystemBonus.Dilithium); }
-        }
+        public bool HasDilithiumBonus => (_bonuses & SystemBonus.Dilithium) == SystemBonus.Dilithium;
 
         /// <summary>
-        /// Gets a value indicating whether this instance has a Raw Materials bonus.
+        /// Gets a value indicating whether this instance has a DURANIUM bonus.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance has a Raw Materials bonus; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance has a DURANIUM bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasRawMaterialsBonus
-        {
-            get { return ((_bonuses & SystemBonus.RawMaterials) == SystemBonus.RawMaterials); }
-        }
+        public bool HasDuraniumBonus => (_bonuses & SystemBonus.Duranium) == SystemBonus.Duranium;
 
         /// <summary>
         /// Gets or sets the design of the star.
@@ -92,7 +87,7 @@ namespace Supremacy.Universe
         /// <value>The design of the star.</value>
         public StarType StarType
         {
-            get { return _starType; }
+            get => _starType;
             set
             {
                 _starType = value;
@@ -104,19 +99,13 @@ namespace Supremacy.Universe
         /// Gets the planets.
         /// </summary>
         /// <value>The planets.</value>
-        public IIndexedCollection<Planet> Planets
-        {
-            get { return _planets; }
-        }
+        public IIndexedCollection<Planet> Planets => _planets;
 
         /// <summary>
         /// Gets the planets in reversed order.
         /// </summary>
         /// <value>The planets in reversed order.</value>
-        public IEnumerable<Planet> ReversedPlanets
-        {
-            get { return _planets.Reverse(); }
-        }
+        public IEnumerable<Planet> ReversedPlanets => _planets.Reverse();
 
         /// <summary>
         /// Gets or sets the colony present in this <see cref="StarSystem"/>.
@@ -124,8 +113,8 @@ namespace Supremacy.Universe
         /// <value>The colony.</value>
         public Colony Colony
         {
-            get { return _colony; }
-            set { _colony = value; }
+            get => _colony;
+            set => _colony = value;
         }
 
         /// <summary>
@@ -134,10 +123,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="StarSystem"/> is inhabited; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInhabited
-        {
-            get { return (HasColony && (Colony.Population.CurrentValue > 0)); }
-        }
+        public bool IsInhabited => HasColony && (Colony.Population.CurrentValue > 0);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="StarSystem"/> has colony.
@@ -145,10 +131,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="StarSystem"/> has colony; otherwise, <c>false</c>.
         /// </value>
-        public bool HasColony
-        {
-            get { return (_colony != null); }
-        }
+        public bool HasColony => _colony != null;
         #endregion
 
         #region Methods
@@ -179,6 +162,7 @@ namespace Supremacy.Universe
                         * ((float)planet.GetMaxPopulation(homePlanetType) / maxPop);
                 }
             }
+
             return growthRate;
         }
 
@@ -191,7 +175,10 @@ namespace Supremacy.Universe
         public Percentage GetGrowthRate(Race race)
         {
             if (race == null)
+            {
                 throw new ArgumentNullException("race");
+            }
+
             return GetGrowthRate(race.HomePlanetType);
         }
 
@@ -204,8 +191,28 @@ namespace Supremacy.Universe
         public int GetMaxPopulation(PlanetType homePlanetType)
         {
             int result = 0;
+            int _planetPop = 0;
+
             foreach (Planet planet in Planets)
-                result += planet.GetMaxPopulation(homePlanetType);
+            {
+                if (planet.PlanetSize != PlanetSize.NoWorld)
+                {
+                    _planetPop = planet.GetMaxPopulation(homePlanetType);
+                    //_text = planet.Name + " ( " + planet.PlanetType + " ) gets " + _planetPop + " population (Code 0123)";
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                }
+                else
+                {
+                    // seems to affect Asteroids and nothing more
+
+                    //_text = planet.Name + " ( " + planet.PlanetType + " ) has PlanetSize 'NoWorld' ";
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
+                }
+
+                result += _planetPop;
+            }
             return result;
         }
 
@@ -217,9 +224,7 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(Race race)
         {
-            if (race == null)
-                throw new ArgumentNullException("race");
-            return GetMaxPopulation(race.HomePlanetType);
+            return race == null ? throw new ArgumentNullException("race") : GetMaxPopulation(race.HomePlanetType);
         }
 
         /// <summary>
@@ -231,7 +236,7 @@ namespace Supremacy.Universe
         /// </returns>
         public bool HasBonus(SystemBonus bonus)
         {
-            return ((_bonuses & bonus) == bonus);
+            return (_bonuses & bonus) == bonus;
         }
 
         /// <summary>
@@ -243,12 +248,14 @@ namespace Supremacy.Universe
         /// </returns>
         public bool IsHabitable(Race race)
         {
-            var habitablePlanetTypes = race.HabitablePlanetTypes;
+            PlanetTypeFlags habitablePlanetTypes = race.HabitablePlanetTypes;
 
-            foreach (var planet in _planets)
+            foreach (Planet planet in _planets)
             {
                 if (habitablePlanetTypes[planet.PlanetType] && planet.IsHabitable(race.HomePlanetType))
+                {
                     return true;
+                }
             }
 
             return false;
@@ -263,10 +270,12 @@ namespace Supremacy.Universe
         /// </returns>
         public bool IsHabitable(PlanetType homePlanetType)
         {
-            foreach (var planet in _planets)
+            foreach (Planet planet in _planets)
             {
                 if (planet.IsHabitable(homePlanetType))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -287,9 +296,11 @@ namespace Supremacy.Universe
         internal void AddPlanet(Planet planet)
         {
             if (_planets.Contains(planet))
+            {
                 return;
+            }
 
-            var planets = new Planet[_planets.Count + 1];
+            Planet[] planets = new Planet[_planets.Count + 1];
 
             _planets.CopyTo(planets);
             planets[planets.Length - 1] = planet;
@@ -303,9 +314,11 @@ namespace Supremacy.Universe
         internal void AddPlanets(IEnumerable<Planet> planets)
         {
             if (planets == null)
+            {
                 throw new ArgumentNullException("planets");
+            }
 
-            var allPlanets = new List<Planet>(_planets);
+            List<Planet> allPlanets = new List<Planet>(_planets);
 
             allPlanets.AddRange(planets);
             _planets = new ArrayWrapper<Planet>(allPlanets.ToArray());
@@ -332,10 +345,12 @@ namespace Supremacy.Universe
         internal void RemovePlanet(Planet planet)
         {
             if (!_planets.Contains(planet))
+            {
                 return;
+            }
 
-            var planetList = new List<Planet>(_planets);
-            planetList.Remove(planet);
+            List<Planet> planetList = new List<Planet>(_planets);
+            _ = planetList.Remove(planet);
             _planets = new ArrayWrapper<Planet>(planetList.ToArray());
         }
         #endregion
@@ -351,9 +366,56 @@ namespace Supremacy.Universe
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
             base.DeserializeOwnedData(reader, context);
+            // to often
+            //_text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";
+            //Console.WriteLine(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
+
+            string _col = "";
+            if (Colony != null)
+            {
+                _col = Environment.NewLine + Colony.Location + ";" + Colony.Name + ";" + Colony.OwnerID;
+            }
+
             _bonuses = (SystemBonus)reader.ReadByte();
+            _text = _col;// + _bonuses;
+            //Console.WriteLine(_bonuses);
             _planets = new ArrayWrapper<Planet>((Planet[])reader.ReadOptimizedObjectArray(typeof(Planet)));
+            foreach (var item in _planets)
+            {
+                _text += Environment.NewLine
+                    + ";FoodBonus=" + item.HasFoodBonus
+                    + "; EnergyBonus=" + item.HasEnergyBonus               
+                    + "; Planet; " + item.Name.ToString()
+                    + " ;" + item.PlanetType.ToString() + ";" + item.PlanetSize.ToString() /*+ ";" + item.Variation.ToString()*/
+                    //+ ");Habitable=" + item.IsHabitable
+
+                    
+                    ;
+                for (int i = 1; i < item.Moons.Length; i++)
+                {
+                    _text += "; Moon-" + i + "-Size=;" + item.Moons[i].GetSize();
+                }
+
+                //foreach (var item in item.Moons)
+                //{
+                //    _text += "MoonSize" item.GetSize()
+                //}
+                //Console.WriteLine(_text);
+            }
+            
             _starType = (StarType)reader.ReadByte();
+            _text += Environment.NewLine + ";" + _starType + ";Bonus;"  + ";" + _bonuses + ";-------";
+
+            //_checkLoading = true; 
+            //if (_checkLoading == true)
+            //{
+            //    Console.WriteLine(_text);
+            //}
+            //else
+            //{
+                //Console.WriteLine("Print of List of systems from saved game is turned off");
+            //}
         }
 
         public MapLocation? WormholeDestination { get; set; }

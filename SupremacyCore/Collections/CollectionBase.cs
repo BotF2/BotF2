@@ -12,11 +12,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using Supremacy.IO.Serialization;
+using Supremacy.Resources;
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Collections
 {
@@ -53,6 +55,10 @@ namespace Supremacy.Collections
         private object _syncRoot;
         [NonSerialized]
         private StateScope _suppressChangeNotificationsScope;
+        private string _text;
+        private int _count;
+        private string newline = Environment.NewLine;
+        private bool _firstRun;
 
         public CollectionBase()
             : this(DefaultCapacity)
@@ -487,7 +493,7 @@ namespace Supremacy.Collections
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (_suppressChangeNotificationsScope.IsWithin)
+            if (_suppressChangeNotificationsScope == null || _suppressChangeNotificationsScope.IsWithin)
             {
                 return;
             }
@@ -578,6 +584,41 @@ namespace Supremacy.Collections
             Initialize();
 
             _items = reader.ReadList<T>();
+
+            _text = "Reader: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+            //Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+
+            //string _file = Path.Combine(ResourceManager.GetResourcePath(""),"saved"+ reader.BaseStream.Position + ".txt");
+            if (_items.Count > 0 
+                && _items[0].ToString() != "Supremacy.Diplomacy.ForeignPower"
+                && _items[0].ToString() != "Supremacy.Entities.Race"
+                && _items[0].ToString() != "Supremacy.Game.CivilizationManager"
+
+                )
+            {
+                //BinaryWriter writer = new BinaryWriter(File.Open(_file, FileMode.Create));
+                _text = "Reader: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+                for (int i = 0; i < _items.Count-1; i++)
+                {
+                    if (_firstRun == false)
+                    {
+                        _text = "Reader: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+                        //Console.WriteLine(_text);
+                        GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //writer.Write(_text);
+                    }
+
+                    _text = "reader-item_"+ i + ": " + _items[i].ToString() + newline;
+                    //Console.WriteLine(_text);
+                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //writer.Write(_text);
+
+                    _firstRun = true;
+                }
+            //writer.Close();
+            }
+
         }
 
         public virtual void SerializeOwnedData(SerializationWriter writer, object context)

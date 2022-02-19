@@ -1,4 +1,4 @@
-// IGameController.cs
+// File:IGameController.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -32,6 +32,12 @@ using Supremacy.Game;
 using System.Linq;
 using Supremacy.Client.Context;
 using Supremacy.Utility;
+using System.IO;
+using System.Reflection;
+using Supremacy.Resources;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Forms;
 
 namespace Supremacy.Client
 {
@@ -52,12 +58,14 @@ namespace Supremacy.Client
         private readonly INavigationService _navigationService;
         private readonly IGameWindow _gameWindow;
         private readonly SitRepDialog _sitRepDialog;
+        //private readonly ShipOverview _shipOverview;
         private readonly IAppContext _appContext;
         private readonly IPlayerOrderService _playerOrderService;
         private readonly Dictionary<EventBase, SubscriptionToken> _eventSubscriptionTokens;
         private readonly List<IPresenter> _screenPresenters;
         private readonly DelegateCommand<object> _endTurnCommand;
         private readonly DelegateCommand<object> _showEndOfTurnSummaryCommand;
+        //private readonly DelegateCommand<object> _showShipOverviewCommand;
         private readonly Dispatcher _dispatcher;
         private IDisposable _connectWaitCursorHandle;
         private IDisposable _gameStartWaitCursorHandle;
@@ -70,6 +78,10 @@ namespace Supremacy.Client
         private bool _lobbyScreenShown;
         private bool _isDisposed;
         private bool _firstTurnStarted;
+        private string _text;
+        private int _lastOneDone;
+        private string _contentHistoryFile = "";
+        private readonly string newline = Environment.NewLine;
 
         public GameController(
             [NotNull] IUnityContainer container,
@@ -81,32 +93,27 @@ namespace Supremacy.Client
             [NotNull] IGameClient client,
             [NotNull] IPlayerOrderService playerOrderService)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-            if (navigationService == null)
-                throw new ArgumentNullException("navigationService");
-            if (gameWindow == null)
-                throw new ArgumentNullException("gameWindow");
             if (regionManager == null)
+            {
                 throw new ArgumentNullException("regionManager");
-            if (regionViewRegistry == null)
-                throw new ArgumentNullException("regionViewRegistry");
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            if (client == null)
-                throw new ArgumentNullException("client");
-            if (playerOrderService == null)
-                throw new ArgumentNullException("playerOrderService");
+            }
 
-            _container = container;
-            _navigationService = navigationService;
-            _gameWindow = gameWindow;
+            if (regionViewRegistry == null)
+            {
+                throw new ArgumentNullException("regionViewRegistry");
+            }
+
+            _container = container ?? throw new ArgumentNullException("container");
+            _navigationService = navigationService ?? throw new ArgumentNullException("navigationService");
+            _gameWindow = gameWindow ?? throw new ArgumentNullException("gameWindow");
             _sitRepDialog = container.Resolve<SitRepDialog>();
-            _appContext = appContext;
-            _client = client;
-            _playerOrderService = playerOrderService;
+            //_shipOverview = container.Resolve<ShipOverview>();
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
+            _client = client ?? throw new ArgumentNullException("client");
+            _playerOrderService = playerOrderService ?? throw new ArgumentNullException("playerOrderService");
             _endTurnCommand = new DelegateCommand<object>(ExecuteTurnCommand) { IsActive = false };
             _showEndOfTurnSummaryCommand = new DelegateCommand<object>(ExecuteShowEndOfTurnSummaryCommand) { IsActive = true };
+            //_showShipOverviewCommand = new DelegateCommand<object>(ExecuteShowShipOverviewCommand) { IsActive = true };
             _eventSubscriptionTokens = new Dictionary<EventBase, SubscriptionToken>();
             _screenPresenters = new List<IPresenter>();
             _playerOrderService.ClearOrders();
@@ -117,6 +124,11 @@ namespace Supremacy.Client
         {
             ShowSummary(true);
         }
+
+        //private void ExecuteShowShipOverviewCommand(object obj)
+        //{
+        //    ShowShipOverview(true);
+        //}
 
         private static void ExecuteTurnCommand(object obj)
         {
@@ -129,14 +141,16 @@ namespace Supremacy.Client
         public void RunLocal([NotNull] GameInitData initData)
         {
             if (initData == null)
+            {
                 throw new ArgumentNullException("initData");
+            }
 
             CheckDisposed();
 
             _isServerLocal = true;
 
             _dispatcher.Invoke(
-                (Action)SetConnectWaitCursor,
+                SetConnectWaitCursor,
                 DispatcherPriority.Normal);
 
             HookCommandAndEventHandlers();
@@ -144,7 +158,9 @@ namespace Supremacy.Client
             try
             {
                 if (initData.Options == null)
+                {
                     initData.Options = _container.Resolve<GameOptions>();
+                }
 
                 _gameOptions = initData.Options;
 
@@ -157,7 +173,7 @@ namespace Supremacy.Client
                 UnhookCommandAndEventHandlers();
 
                 _dispatcher.Invoke(
-                    (Action)ClearWaitCursors,
+                    ClearWaitCursors,
                     DispatcherPriority.Normal);
 
                 throw;
@@ -167,22 +183,27 @@ namespace Supremacy.Client
 
         private void SetConnectWaitCursor()
         {
-            var handle = _gameWindow.EnterWaitCursorScope();
+            IDisposable handle = _gameWindow.EnterWaitCursorScope();
 
             if (Interlocked.CompareExchange(ref _connectWaitCursorHandle, handle, null) != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void UnhookCommandAndEventHandlers()
         {
             ClientCommands.EndTurn.UnregisterCommand(_endTurnCommand);
             ClientCommands.ShowEndOfTurnSummary.UnregisterCommand(_showEndOfTurnSummaryCommand);
+            //ClientCommands.ShowShipOverview.UnregisterCommand(_showShipOverviewCommand);
             ClientEvents.InvasionUpdateReceived.Unsubscribe(OnInvasionUpdateReceived);
 
             lock (_eventSubscriptionTokens)
             {
-                foreach (var subscribedEvent in _eventSubscriptionTokens.Keys)
+                foreach (EventBase subscribedEvent in _eventSubscriptionTokens.Keys)
+                {
                     subscribedEvent.Unsubscribe(_eventSubscriptionTokens[subscribedEvent]);
+                }
 
                 _eventSubscriptionTokens.Clear();
             }
@@ -191,15 +212,19 @@ namespace Supremacy.Client
         private void OnLocalPlayerJoined(LocalPlayerJoinedEventArgs args)
         {
             if (_lobbyScreenShown)
+            {
                 return;
+            }
 
-            SubscriptionToken subscriptionToken;
-
-            if (_eventSubscriptionTokens.TryGetValue(ClientEvents.LocalPlayerJoined, out subscriptionToken))
+            if (_eventSubscriptionTokens.TryGetValue(ClientEvents.LocalPlayerJoined, out SubscriptionToken subscriptionToken))
+            {
                 ClientEvents.LocalPlayerJoined.Unsubscribe(subscriptionToken);
+            }
 
             if (!_appContext.IsSinglePlayerGame)
-                _navigationService.ActivateScreen(StandardGameScreens.MultiplayerLobby);
+            {
+                _ = _navigationService.ActivateScreen(StandardGameScreens.MultiplayerLobby);
+            }
 
             _lobbyScreenShown = true;
 
@@ -208,20 +233,19 @@ namespace Supremacy.Client
 
         private void OnTerminated()
         {
-            var handler = Terminated;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Terminated?.Invoke(this, EventArgs.Empty);
         }
 
         private void HookCommandAndEventHandlers()
         {
             ClientCommands.EndTurn.RegisterCommand(_endTurnCommand);
             ClientCommands.ShowEndOfTurnSummary.RegisterCommand(_showEndOfTurnSummaryCommand);
-            ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
+            //ClientCommands.ShowShipOverview.RegisterCommand(_showShipOverviewCommand);
+            _ = ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
 
             lock (_eventSubscriptionTokens)
             {
-                var subscriptionToken = ClientEvents.LocalPlayerJoined.Subscribe(
+                SubscriptionToken subscriptionToken = ClientEvents.LocalPlayerJoined.Subscribe(
                     OnLocalPlayerJoined,
                     ThreadOption.UIThread);
 
@@ -267,9 +291,11 @@ namespace Supremacy.Client
 
         private void OnInvasionUpdateReceived(ClientDataEventArgs<InvasionArena> e)
         {
-            var presenter = _container.Resolve<ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView>>();
+            ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView> presenter = _container.Resolve<ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView>>();
             if (presenter.Model.IsRunning)
+            {
                 return;
+            }
 
             presenter.Model.ProcessUpdate(e.Value);
             presenter.Run();
@@ -297,61 +323,87 @@ namespace Supremacy.Client
 
         private void SetGameStartWaitCursor()
         {
-            var handle = _gameWindow.EnterWaitCursorScope();
+            IDisposable handle = _gameWindow.EnterWaitCursorScope();
             if (Interlocked.CompareExchange(ref _gameStartWaitCursorHandle, handle, null) != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void SetTurnWaitCursor()
         {
-            var handle = _gameWindow.EnterWaitCursorScope();
+            IDisposable handle = _gameWindow.EnterWaitCursorScope();
             if (Interlocked.CompareExchange(ref _turnWaitCursorHandle, handle, null) != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void OnTurnStarted(EventArgs args)
         {
-            var currentGame = _appContext.CurrentGame;
+            IGameContext currentGame = _appContext.CurrentGame;
             if (currentGame == null)
+            {
                 return;
-            
+            }
+            ProcessSitRepEntries();
+
             ClientEvents.ScreenRefreshRequired.Publish(ClientEventArgs.Default);
-            
+
             if (!_firstTurnStarted)
             {
                 _firstTurnStarted = true;
-                _navigationService.ActivateScreen(StandardGameScreens.GalaxyScreen);
+                _ = _navigationService.ActivateScreen(StandardGameScreens.GalaxyScreen);
                 ClearGameStartWaitCursor();
             }
 
-            foreach (var infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
+            foreach (IInfoCardSubject infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
+            {
                 infoCardSubject.RefreshData();
+            }
 
             ClearTurnWaitCursor();
 
             _endTurnCommand.IsActive = true;
 
-            ProcessSitRepEntries();
+            //ProcessSitRepEntries();
         }
 
         private void ProcessSitRepEntries()
         {
-            if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
-                return;
+            _text = "ProcessSitRepEntries...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
 
-            foreach (var sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
+            if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
             {
-                if (sitRepEntry != null)
+                return;
+            }
+
+            bool _showDetailDialog = false;
+            if (ClientSettings.Current != null && ClientSettings.Current.EnableSitRepDetailsScreen == true)
+                _showDetailDialog = true;
+
+            List<SitRepEntry> _sitRepsWithDetails = _appContext.LocalPlayerEmpire.SitRepEntries.Where(o => o.HasDetails).ToList();
+
+            //foreach (SitRepEntry sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
+            foreach (SitRepEntry sitRepEntry in _sitRepsWithDetails)
+            {
+                if (_showDetailDialog == true && sitRepEntry != null)
                 {
                     // got a null ref from this gamelog. Are we missing a sitRepEntry.SummaryText?
                     // GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
 
-                    if ((ClientSettings.Current != null) && sitRepEntry.HasDetails && ClientSettings.Current.EnableCombatScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
+                    if (/*(ClientSettings.Current != null) && */sitRepEntry.HasDetails/* && ClientSettings.Current.EnableSitRepDetailsScreen*/)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
                     {
                         SitRepDetailDialog.Show(sitRepEntry);
                     }
                 }
             }
+
+            _text = "ProcessSitRepEntries... done ";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             ShowSummary(false);
         }
@@ -359,30 +411,246 @@ namespace Supremacy.Client
         private void ShowSummary(bool showIfEmpty)
         {
             if (!_appContext.IsGameInPlay)
+            {
                 return;
+            }
+
+            SendKeys.SendWait("{F1}");  // shows Map
+
+            _text = "ShowSummary...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
-            var service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+
+            IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
             if (showIfEmpty)
+            {
                 _sitRepDialog.Show();
+            }
             else if (!service.AutoTurn)
             {
                 // works but doubled
-                if (ClientSettings.Current.EnableCombatScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
+                if (ClientSettings.Current.EnableSummaryScreen == true)   // only show SUMMARY if active (if not, a quicker game is possible)
                 {
-                    GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
+                    //GameLog.Client.GeneralDetails.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
                 }
+            }
+
+            //SendKeys.SendWait("{F1}");
+
+            _text = "ShowSummary... before storing";
+            //Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
+            //string _lastOneDone;
+            if (GameContext.Current.TurnNumber > _lastOneDone)
+            {
+              
+                _text = "";
+                foreach (SitRepEntry item in _sitRepDialog.SitRepEntries)
+                {
+                    //string _prio = item.Priority.ToString();
+                    //while (_prio.Length < 10)  // length 10 for better reading
+                    //{
+                    //    _prio += " ";
+                    //}
+
+                    _text += newline + "Turn;" + GameContext.Current.TurnNumber
+                        //+ ";" + _prio
+                        + ";" + item.SummaryText
+                        //+ newline
+                        ;
+                }
+                GameLog.Core.SitReps.InfoFormat(_text);
+
+                _text = "SaveSUMMARY_TXT... offline - takes to long time";
+                Console.WriteLine(_text);
+                GameLog.Core.GeneralDetails.DebugFormat(_text);
+                //SaveSUMMARY_TXT(_text);
+                _lastOneDone = GameContext.Current.TurnNumber;
+                //// \lib\_SUMMARY.txt
+                //string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                //string file = appDir + "\\lib\\" + "_SUMMARY.txt";
+
+                ////if (!File.Exists(file))
+                ////{
+                ////    //streamWriter;
+                //    StreamWriter streamWriter = new StreamWriter(file);
+                //    streamWriter.WriteLine(_text);
+                //    streamWriter.Close();
+                ////}
+            }
+            _text = "ShowSummary... DONE";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
+
+        }
+
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
+#pragma warning disable IDE0060 // Nicht verwendete Parameter entfernen
+        private void SaveSUMMARY_TXT(string _text)
+#pragma warning restore IDE0060 // Nicht verwendete Parameter entfernen
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
+        {
+            //_text += " "; // dummy - please keep
+            _text = "SaveSUMMARY_TXT...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            if (GameContext.Current == null)
+            {
+                return;
+            }
+
+            string file = Path.Combine(
+                ResourceManager.GetResourcePath(".\\lib"),
+                "_SUMMARY");
+        //file = file.Replace(".\\", "");
+        //string _text1;
+        //_text = "";
+
+        nextTry:
+            try
+            {
+                StreamWriter streamWriter = new StreamWriter(file + ".csv");
+                streamWriter.Write(_text);
+                streamWriter.Close();
+                //Thread.Sleep(500);
+            }
+            catch
+            {
+                //string _ask = 
+                MessageDialogResult result = MessageDialog.Show(
+                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE"),
+                    ResourceManager.GetString("FILE_ALREADY_IN_USAGE")
+                    + " " + file
+                    + " " + ResourceManager.GetString("RETRY_QUESTION"),
+                    MessageDialogButtons.YesNo);
+                if (result == MessageDialogResult.Yes)
+                {
+                    goto nextTry;
+                }
+            }
+
+
+            //finally
+            file += ".txt";
+            StreamWriter streamWriter2 = new StreamWriter(file);
+            streamWriter2.Write(_text);
+            streamWriter2.Close();
+
+            bool autoOpenSummaryTxt = false;
+            if (autoOpenSummaryTxt)
+            {
+                if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                {
+                    _ = new FileStream(
+                        file,
+                        FileMode.Open,
+                        FileAccess.Read);
+
+                    //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
+                    if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                    {
+                        ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
+
+                        try { _ = Process.Start(processStartInfo); }
+                        catch { _ = System.Windows.MessageBox.Show("Could not load Text-File about SUMMARY"); }
+                    }
+                }
+
+                //Thread.Sleep(1500);
+                string fileCSV_BAT = Path.Combine(
+                    ResourceManager.GetResourcePath(".\\lib"),
+                    "_SUMMARY.bat");
+                if (!string.IsNullOrEmpty(fileCSV_BAT) && File.Exists(fileCSV_BAT))
+                {
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = fileCSV_BAT };
+
+                    try { _ = Process.Start(processStartInfo); }
+                    catch { _ = System.Windows.MessageBox.Show("Could not load Text-File about SUMMARY"); }
+                }
+            }
+            // end of autoOpenSummaryTxt
+
+            file = Path.Combine(
+                ResourceManager.GetResourcePath(".\\lib"),
+                "_SUMMARY.hist");
+
+            if (GameContext.Current.TurnNumber == 1)
+            {
+                if (File.Exists(file))
+                {
+                    _contentHistoryFile = "NEW started..." 
+                        + "-" + GameContext.Current.Options.StartingTechLevel
+                        + "-" + GameContext.Current.Options.GalaxySize
+                        //+ "-" + GameContext.Current.Options.
+                        ;
+                }
+            }
+            else
+            {
+                ReadPlayersHistoryFile(file);
+                _contentHistoryFile += _text;
+
+                ////////if(GameContext.Current.
+                try
+                {
+                    StreamWriter streamWriter3 = new StreamWriter(file);
+                    streamWriter3.Write(_contentHistoryFile);
+                    streamWriter3.Close();
+                }
+                catch (Exception)
+                {
+
+                    _ = System.Windows.MessageBox.Show(file + " is already in usage");
+                }
+
+            }
+
+
+
+
+        }
+
+        public void ReadPlayersHistoryFile(string file)
+        {
+            _text = "ReadPlayersHistoryFile...";
+            Console.WriteLine(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
+            _contentHistoryFile = "";
+
+            if (!File.Exists(file))
+            {
+                return;
+            }
+
+            using (StreamReader reader = new StreamReader(file))
+            {
+                Console.WriteLine("---------------");
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (line == null)
+                        break;
+                    _contentHistoryFile += line + newline;
+                }
+                reader.Close();
             }
         }
 
         private void ClearTurnWaitCursor()
         {
-            var handle = Interlocked.Exchange(ref _turnWaitCursorHandle, null);
+            IDisposable handle = Interlocked.Exchange(ref _turnWaitCursorHandle, null);
             if (handle != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void ClearWaitCursors()
@@ -394,16 +662,20 @@ namespace Supremacy.Client
 
         private void ClearConnectWaitCursor()
         {
-            var handle = Interlocked.Exchange(ref _connectWaitCursorHandle, null);
+            IDisposable handle = Interlocked.Exchange(ref _connectWaitCursorHandle, null);
             if (handle != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void ClearGameStartWaitCursor()
         {
-            var handle = Interlocked.Exchange(ref _gameStartWaitCursorHandle, null);
+            IDisposable handle = Interlocked.Exchange(ref _gameStartWaitCursorHandle, null);
             if (handle != null)
+            {
                 handle.Dispose();
+            }
         }
 
         private void OnGameStarted(DataEventArgs<GameStartData> args)
@@ -413,38 +685,38 @@ namespace Supremacy.Client
 
         private void CreatePresenters()
         {
-            var initializedPresenters = new List<IPresenter>();
+            List<IPresenter> initializedPresenters = new List<IPresenter>();
 
-            GameLog.Client.UI.DebugFormat("BEGINNING: CreatePresenters");
+            GameLog.Client.UIDetails.DebugFormat("BEGINNING: CreatePresenters");
 
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IGalaxyScreenPresenter");  // F1-Screen
+                GameLog.Client.UIDetails.DebugFormat("DONE: IGalaxyScreenPresenter");  // F1-Screen
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
+                GameLog.Client.UIDetails.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
 
                 _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, INewDiplomacyScreenView>>());
-                GameLog.Client.UI.DebugFormat("DONE: INewDiplomacyScreenView");  // F3-Screen
+                GameLog.Client.UIDetails.DebugFormat("DONE: INewDiplomacyScreenView");  // F3-Screen
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen
+                GameLog.Client.UIDetails.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IAssetsScreenPresenter");  // F5-Screen
+                GameLog.Client.UIDetails.DebugFormat("DONE: IAssetsScreenPresenter");  // F5-Screen
 
                 // XXXXX  not realized yet
                 //_screenPresenters.Add(_container.Resolve<IEncyclopediaScreenPresenter>());
                 //GameLog.Client.UI.DebugFormat("DONE: IEncyclopediaScreenPresenter");    // F7-Screen
 
-                foreach (var presenter in _screenPresenters)
+                foreach (IPresenter presenter in _screenPresenters)
                 {
                     try
-                    { 
+                    {
                         presenter.Run();
                         initializedPresenters.Add(presenter);
-                        GameLog.Client.UI.DebugFormat("DONE: {0}", presenter.ToString());
+                        GameLog.Client.UIDetails.DebugFormat("DONE: {0}", presenter.ToString());
                     }
                     catch (Exception e)
                     {
@@ -458,7 +730,7 @@ namespace Supremacy.Client
             catch
             {
                 _screenPresenters.Clear();
-                foreach (var presenter in initializedPresenters)
+                foreach (IPresenter presenter in initializedPresenters)
                 {
                     try
                     {
@@ -478,7 +750,9 @@ namespace Supremacy.Client
         protected void CheckDisposed()
         {
             if (_isDisposed)
+            {
                 throw new ObjectDisposedException("GameClient");
+            }
         }
 
         protected void StartServer(bool allowRemoteConnections)
@@ -521,9 +795,12 @@ namespace Supremacy.Client
 
         protected void StopServer()
         {
-            var server = Interlocked.Exchange(ref _server, null);
+            IGameServer server = Interlocked.Exchange(ref _server, null);
             if (server == null)
+            {
                 return;
+            }
+
             server.Faulted -= OnServerFaulted;
             if (server.IsRunning)
             {
@@ -550,11 +827,15 @@ namespace Supremacy.Client
         private void Connect(Action connectAction)
         {
             if (connectAction == null)
+            {
                 throw new ArgumentNullException("connectAction");
+            }
 
-            var client = Interlocked.CompareExchange(ref _client, null, null);
+            IGameClient client = Interlocked.CompareExchange(ref _client, null, null);
             if (client == null)
+            {
                 return;
+            }
 
             HookClientEventHandlers(client);
 
@@ -567,9 +848,9 @@ namespace Supremacy.Client
                 UnhookClientEventHandlers(client);
                 UnhookCommandAndEventHandlers();
                 _dispatcher.Invoke(
-                    (Action)ClearWaitCursors,
+                    ClearWaitCursors,
                     DispatcherPriority.Normal);
-                Interlocked.Exchange(ref _client, null);
+                _ = Interlocked.Exchange(ref _client, null);
                 ClientEvents.ClientConnectionFailed.Publish(ClientEventArgs.Default);
                 Terminate();
             }
@@ -578,7 +859,10 @@ namespace Supremacy.Client
         protected void HookClientEventHandlers(IGameClient client)
         {
             if (client == null)
+            {
                 return;
+            }
+
             client.Connected += OnClientConnected;
             client.Disconnected += OnClientDisconnected;
         }
@@ -586,16 +870,22 @@ namespace Supremacy.Client
         protected void UnhookClientEventHandlers(IGameClient client)
         {
             if (client == null)
+            {
                 return;
+            }
+
             client.Connected -= OnClientConnected;
             client.Disconnected -= OnClientDisconnected;
         }
 
-        // ReSharper disable MemberCanBeMadeStatic
+
         private void OnClientDisconnected(ClientDataEventArgs<ClientDisconnectReason> args)
         {
             if (_suppressClientEvents)
+            {
                 return;
+            }
+
             _suppressClientEvents = true;
             ClientEvents.ClientDisconnected.Publish(args);
         }
@@ -603,16 +893,21 @@ namespace Supremacy.Client
         private void OnClientConnected(EventArgs args)
         {
             if (_suppressClientEvents)
+            {
                 return;
+            }
+
             ClientEvents.ClientConnected.Publish(new ClientConnectedEventArgs(_isServerLocal));
         }
-        // ReSharper restore MemberCanBeMadeStatic
+
 
         private void Disconnect()
         {
-            var client = Interlocked.Exchange(ref _client, null);
+            IGameClient client = Interlocked.Exchange(ref _client, null);
             if (client == null)
+            {
                 return;
+            }
 
             UnhookClientEventHandlers(client);
 
@@ -626,20 +921,27 @@ namespace Supremacy.Client
             }
 
             if (!_suppressClientEvents)
+            {
                 ClientEvents.ClientDisconnected.Publish(new ClientDataEventArgs<ClientDisconnectReason>(ClientDisconnectReason.Disconnected));
+            }
         }
 
         public void RunRemote([NotNull] string playerName, [NotNull] string remoteHost)
         {
             if (playerName == null)
+            {
                 throw new ArgumentNullException("playerName");
+            }
+
             if (remoteHost == null)
+            {
                 throw new ArgumentNullException("remoteHost");
+            }
 
             CheckDisposed();
 
             _dispatcher.Invoke(
-                    (Action)SetConnectWaitCursor,
+                    SetConnectWaitCursor,
                     DispatcherPriority.Normal);
 
             HookCommandAndEventHandlers();
@@ -668,7 +970,7 @@ namespace Supremacy.Client
             {
                 UnhookCommandAndEventHandlers();
                 _dispatcher.Invoke(
-                    (Action)ClearWaitCursors,
+                    ClearWaitCursors,
                     DispatcherPriority.Normal);
                 throw;
             }
@@ -684,7 +986,9 @@ namespace Supremacy.Client
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisposed = true;
 
@@ -700,7 +1004,7 @@ namespace Supremacy.Client
                 }
             }
 
-            _navigationService.ActivateScreen(StandardGameScreens.MenuScreen);
+            _ = _navigationService.ActivateScreen(StandardGameScreens.MenuScreen);
 
             ClearScreenViews();
 
@@ -711,17 +1015,17 @@ namespace Supremacy.Client
             }
             finally
             {
-                _dispatcher.Invoke((Action)ClearWaitCursors);
+                _dispatcher.Invoke(ClearWaitCursors);
             }
 
             UnhookCommandAndEventHandlers();
 
-            _dispatcher.BeginInvoke((Action)OnTerminated);
+            _ = _dispatcher.BeginInvoke((Action)OnTerminated);
         }
 
         private void ClearScreenViews()
         {
-            foreach (var presenter in _screenPresenters)
+            foreach (IPresenter presenter in _screenPresenters)
             {
                 try
                 {

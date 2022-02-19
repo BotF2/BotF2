@@ -9,7 +9,6 @@
 
 using System;
 using System.ComponentModel;
-using Supremacy.Game;
 
 namespace Supremacy.Economy
 {
@@ -36,35 +35,17 @@ namespace Supremacy.Economy
             _totalExpenses = totalExpenses;
         }
 
-        public int TurnNumber
-        {
-            get { return _turnNumber; }
-        }
+        public int TurnNumber => _turnNumber;
 
-        public int InitialCreditReserves
-        {
-            get { return _initialCreditReserves; }
-        }
+        public int InitialCreditReserves => _initialCreditReserves;
 
-        public int TotalIncome
-        {
-            get { return _totalIncome; }
-        }
+        public int TotalIncome => _totalIncome;
 
-        public int TotalExpenses
-        {
-            get { return _totalExpenses; }
-        }
+        public int TotalExpenses => _totalExpenses;
 
-        public int FinalCreditReserves
-        {
-            get { return _initialCreditReserves + _totalIncome - _totalExpenses; }
-        }
+        public int FinalCreditReserves => _initialCreditReserves + _totalIncome - _totalExpenses;
 
-        public int NetChange
-        {
-            get { return FinalCreditReserves - _initialCreditReserves; }
-        }
+        public int NetChange => FinalCreditReserves - _initialCreditReserves;
     }
 
     [Serializable]
@@ -83,21 +64,30 @@ namespace Supremacy.Economy
         public Treasury(Treasury initialTreasury)
         {
             if (initialTreasury == null)
+            {
                 throw new ArgumentNullException("initialTreasury");
+            }
+
             CopyFrom(initialTreasury);
         }
-        
+
         public Treasury(int initialLevel)
         {
             if (initialLevel < 0)
+            {
                 throw new ArgumentOutOfRangeException("initialLevel", "amount must be non-negative");
+            }
+
             CurrentLevel = initialLevel;
         }
 
         protected void CopyFrom(Treasury treasury)
         {
             if (treasury == null)
+            {
                 throw new ArgumentNullException("treasury");
+            }
+
             _currentLevel = treasury._currentLevel;
             _grossIncome = treasury._grossIncome;
             _maintenance = treasury._maintenance;
@@ -107,36 +97,33 @@ namespace Supremacy.Economy
 
         public int CurrentLevel
         {
-            get { return _currentLevel; }
-            protected set { _currentLevel = value; }
+            get => _currentLevel;
+            protected set => _currentLevel = value;
         }
 
         public int PreviousLevel
         {
-            get { return _previousLevel; }
-            protected set { _previousLevel = value; }
+            get => _previousLevel;
+            protected set => _previousLevel = value;
         }
 
         public int Maintenance
         {
-            get { return _maintenance; }
-            protected set { _maintenance = value; }
+            get => _maintenance;
+            protected set => _maintenance = value;
         }
 
         public int PreviousChange
         {
-            get { return _previousChange; }
-            protected set { _previousChange = value; }
+            get => _previousChange;
+            protected set => _previousChange = value;
         }
 
-        public int CurrentChange
-        {
-            get { return (CurrentLevel - PreviousLevel); }
-        }
+        public int CurrentChange => CurrentLevel - PreviousLevel;
 
         public int GrossIncome
         {
-            get { return _grossIncome; }
+            get => _grossIncome;
             protected set
             {
                 _grossIncome = value;
@@ -149,22 +136,28 @@ namespace Supremacy.Economy
             get
             {
                 if (CurrentChange >= 0)
+                {
                     return false;
-                return (CurrentChange >= (PreviousChange * 3));
+                }
+
+                return CurrentChange >= (PreviousChange * 3);
             }
         }
 
-        public int NetIncome
-        {
-            get { return (GrossIncome - Maintenance); }
-        }
+        public int NetIncome => GrossIncome - Maintenance;
 
         public bool TryGiveAmount(int amount)
         {
             if (amount < 0)
+            {
                 throw new ArgumentOutOfRangeException("amount", "amount must be non-negative");
+            }
+
             if (amount > CurrentLevel)
+            {
                 return false;
+            }
+
             CurrentLevel -= amount;
             return true;
         }
@@ -172,35 +165,50 @@ namespace Supremacy.Economy
         public void Add(Treasury treasury)
         {
             if (treasury == null)
+            {
                 throw new ArgumentNullException("treasury");
+            }
+
             Add(treasury.CurrentLevel);
         }
 
         public void Subtract(Treasury treasury)
         {
             if (treasury == null)
+            {
                 throw new ArgumentNullException("treasury");
+            }
+
             Subtract(treasury.CurrentLevel);
         }
 
         public void Add(int amount)
         {
             if (amount < 0)
+            {
                 throw new ArgumentOutOfRangeException("amount", "amount must be non-negative");
+            }
+
             CurrentLevel += amount;
         }
 
         public void Subtract(int amount)
         {
             if (amount < 0)
+            {
                 amount *= -1;
+            }
+
             CurrentLevel -= amount;
         }
 
         public void AddIncome(int amount)
         {
             if (amount < 0)
+            {
                 throw new ArgumentOutOfRangeException("amount", "amount must be non-negative");
+            }
+
             GrossIncome += amount;
             CurrentLevel += amount;
         }
@@ -208,9 +216,15 @@ namespace Supremacy.Economy
         public void SubtractIncome(int amount)
         {
             if (amount < 0)
+            {
                 amount *= -1;
+            }
+
             if (amount > CurrentLevel)
+            {
                 amount = CurrentLevel;
+            }
+
             GrossIncome -= amount;
             CurrentLevel -= amount;
         }
@@ -223,7 +237,10 @@ namespace Supremacy.Economy
         public void AddMaintenance(int amount)
         {
             if (amount < 0)
+            {
                 throw new ArgumentOutOfRangeException("amount", "amount must be non-negative");
+            }
+
             Maintenance += amount;
         }
 

@@ -58,7 +58,7 @@
                    Margin="1,0,0,10"
                    Width="290"
                    Focusable="True"                                     
-                   Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                   Foreground="{StaticResource BeigeTextBrush}"
                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                    FontSize="12pt"
                    VerticalAlignment="Center"
@@ -70,7 +70,7 @@
                    Width="160"
                    TextTrimming="CharacterEllipsis"
                    Focusable="False"
-                   Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                   Foreground="{StaticResource BeigeTextBrush}"
                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                    FontSize="12pt"
                    Visibility="Hidden">
@@ -103,7 +103,7 @@
                    SelectedIndex="-1"
                    DisplayMemberPath="Title"
                    Background="Transparent"
-                   Foreground="{StaticResource LCARS_BlueTextBrush}"
+                   Foreground="{StaticResource BlueTextBrush}"
                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                    FontSize="12pt" /> 
 

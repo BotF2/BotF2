@@ -38,20 +38,20 @@ namespace Supremacy.Client
 
         public bool Handled
         {
-            get { return (bool)GetValue(HandledProperty); }
-            set { SetValue(HandledProperty, value); }
+            get => (bool)GetValue(HandledProperty);
+            set => SetValue(HandledProperty, value);
         }
 
         public bool? IsChecked
         {
-            get { return (bool?)GetValue(IsCheckedProperty); }
-            set { SetValue(IsCheckedProperty, value); }
+            get => (bool?)GetValue(IsCheckedProperty);
+            set => SetValue(IsCheckedProperty, value);
         }
 
         public object InnerParameter
         {
-            get { return GetValue(InnerParameterProperty); }
-            set { SetValue(InnerParameterProperty, value); }
+            get => GetValue(InnerParameterProperty);
+            set => SetValue(InnerParameterProperty, value);
         }
 
         private static void OnInnerParameterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

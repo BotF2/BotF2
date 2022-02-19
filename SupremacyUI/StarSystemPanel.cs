@@ -31,7 +31,6 @@ using Supremacy.Xna;
 
 using System.Linq;
 using Supremacy.Client.Context;
-using Supremacy.Utility;
 
 namespace Supremacy.UI
 {
@@ -50,11 +49,26 @@ namespace Supremacy.UI
         #endregion
 
         #region Constants
-        private static readonly CachedBitmap DilithiumBonusImage;
-        private static readonly CachedBitmap EnergyBonusImage;
-        private static readonly CachedBitmap FoodBonusImage;
+
+        private static readonly CachedBitmap BlueStarImage;
+        private static readonly CachedBitmap OrangeStarImage;
+        private static readonly CachedBitmap RedStarImage;
+        private static readonly CachedBitmap WhiteStarImage;
+        private static readonly CachedBitmap YellowStarImage;
+
+        private static readonly CachedBitmap BlackHoleImage;
         private static readonly CachedBitmap NebulaImage;
-        private static readonly CachedBitmap RawMaterialsBonusImage;
+        private static readonly CachedBitmap NeutronStarImage;
+        private static readonly CachedBitmap QuasarImage;
+        private static readonly CachedBitmap RadioPulsarImage;
+        private static readonly CachedBitmap WormholeImage;
+        private static readonly CachedBitmap XRayPulsarImage;
+
+        private static readonly CachedBitmap FoodBonusImage;
+        private static readonly CachedBitmap EnergyBonusImage;
+        private static readonly CachedBitmap DuraniumBonusImage;
+        private static readonly CachedBitmap DilithiumBonusImage;
+
         public static readonly DependencyProperty ShowStatsProperty;
         #endregion
 
@@ -79,19 +93,125 @@ namespace Supremacy.UI
                     true,
                     ShowStatsChangedCallback));
 
+            BlueStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Blue.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            BlueStarImage.Freeze();
+
+            OrangeStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Orange.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            OrangeStarImage.Freeze();
+
+
+            RedStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Red.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            RedStarImage.Freeze();
+
+
+            WhiteStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_White.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            WhiteStarImage.Freeze();
+
+
+            YellowStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Sun_Yellow.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            YellowStarImage.Freeze();
+
+
+            BlackHoleImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/BlackHole.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            BlackHoleImage.Freeze();
+
+
             NebulaImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Stars/Nebula.png",
+                        "Resources/Images/UI/Stars/Nebula.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
             NebulaImage.Freeze();
 
+            NeutronStarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/NeutronStar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            NeutronStarImage.Freeze();
+
+            QuasarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Quasar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            QuasarImage.Freeze();
+
+            RadioPulsarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/RadioPulsar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            RadioPulsarImage.Freeze();
+
+
+
+            WormholeImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/Wormhole.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            WormholeImage.Freeze();
+
+            XRayPulsarImage = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/UI/Stars/Map/XRayPulsar.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
+            XRayPulsarImage.Freeze();
+
             FoodBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/food.png",
+                        "Resources/Images/UI/ScreenIcons/food.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -100,7 +220,7 @@ namespace Supremacy.UI
             EnergyBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/energy_bonus.png",
+                        "Resources/Images/UI/ScreenIcons/energy_bonus.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -109,20 +229,20 @@ namespace Supremacy.UI
             DilithiumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/dilithium.png",
+                        "Resources/Images/UI/ScreenIcons/dilithium.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
             DilithiumBonusImage.Freeze();
 
-            RawMaterialsBonusImage = new CachedBitmap(
+            DuraniumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/rawmaterials.png",
+                        "Resources/Images/UI/ScreenIcons/duranium.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
-            RawMaterialsBonusImage.Freeze();
+            DuraniumBonusImage.Freeze();
         }
         #endregion
 
@@ -197,7 +317,7 @@ namespace Supremacy.UI
         #endregion
 
         #region Properties and Indexers
-        // ReSharper disable MemberCanBeMadeStatic.Local
+
         private IAppContext AppContext
         {
             get
@@ -223,8 +343,6 @@ namespace Supremacy.UI
                 return s_resourceManager;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Local
-
         public Sector Sector => _regionContext.Value as Sector;
 
         public bool ShowStats
@@ -258,7 +376,7 @@ namespace Supremacy.UI
             }
             //GameLog.Client.UI.DebugFormat("refreshing StarSystemPanel");
             if ((system != null) && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system)) // && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system))
-                {
+            {
                 //GameLog.Client.UI.DebugFormat("refreshing PlanetView");
                 DisplayVisuals(system);
             }
@@ -382,6 +500,13 @@ namespace Supremacy.UI
                                             = orbitals.Foreground
                                             = Brushes.Beige;
 
+                        race.Foreground = Brushes.Aquamarine;
+                        population.Foreground = Brushes.Goldenrod;
+                        growth.Foreground = Brushes.LightGreen;
+                        health.Foreground = Brushes.LightBlue;
+                        orbitals.Foreground = Brushes.LightGray;
+                        morale.Foreground = Brushes.YellowGreen;
+
                         name.Text = system.StarType == StarType.Nebula
                             ? string.Format(
                                 ResourceManager.GetString("NEBULA_NAME_FORMAT"),
@@ -403,7 +528,12 @@ namespace Supremacy.UI
                             health.Text = string.Format("{0}: {1:0.#}%",
                                 ResourceManager.GetString("SYSTEM_HEALTH"), populationHealth * 100);
 
-                            orbitals.SetBinding(
+                            morale.ToolTip = ResourceManager.GetString("MORALE_TOOLTIP");
+                            growth.ToolTip = ResourceManager.GetString("SYSTEM_GROWTH_RATE_TOOLTIP");
+                            health.ToolTip = ResourceManager.GetString("SYSTEM_HEALTH_TOOLTIP");
+                            orbitals.ToolTip = ResourceManager.GetString("SYSTEM_SHIELDS_TOOLTIP");
+
+                            _ = orbitals.SetBinding(
                                 TextBlock.TextProperty,
                                 new MultiBinding
                                 {
@@ -483,7 +613,7 @@ namespace Supremacy.UI
                     if (planet.PlanetType == PlanetType.Asteroids)
                     {
                         AsteroidsView asteroids = new AsteroidsView { Margin = new Thickness(0, 0, 14, 0) };
-                        visuals.Children.Add(asteroids);
+                        _ = visuals.Children.Add(asteroids);
                     }
                     else
                     {
@@ -545,15 +675,63 @@ namespace Supremacy.UI
 
             FrameworkElement star;
             string starToolTip = "";
+            Image starImage = new Image { Source = NebulaImage };
+            star = starImage;
 
             if (system.StarType == StarType.Nebula)
             {
-                Image starImage = new Image { Source = NebulaImage };
+                starImage = new Image { Source = NebulaImage };
                 star = starImage;
             }
             else
             {
-                star = new SunView3DRenderer { StarType = system.StarType };
+                if (ClientSettings.Current.EnableAnimation == true)
+                {
+                    star = new SunView3DRenderer { StarType = system.StarType };
+                }
+                else
+                {
+                    switch (system.StarType)
+                    {
+                        case StarType.White:
+                            starImage = new Image { Source = WhiteStarImage }; star = starImage;
+                            break;
+                        case StarType.Blue:
+                            starImage = new Image { Source = BlueStarImage }; star = starImage;
+                            break;
+                        case StarType.Yellow:
+                            starImage = new Image { Source = YellowStarImage }; star = starImage;
+                            break;
+                        case StarType.Orange:
+                            starImage = new Image { Source = OrangeStarImage }; star = starImage;
+                            break;
+                        case StarType.Red:
+                            starImage = new Image { Source = RedStarImage }; star = starImage;
+                            break;
+                        case StarType.Wormhole:
+                            starImage = new Image { Source = WormholeImage }; star = starImage;
+                            break;
+                        case StarType.NeutronStar:
+                            starImage = new Image { Source = NeutronStarImage }; star = starImage;
+                            break;
+                        case StarType.RadioPulsar:
+                            starImage = new Image { Source = RadioPulsarImage }; star = starImage;
+                            break;
+                        case StarType.XRayPulsar:
+                            starImage = new Image { Source = XRayPulsarImage }; star = starImage;
+                            break;
+                        case StarType.Quasar:
+                            starImage = new Image { Source = QuasarImage }; star = starImage;
+                            break;
+                        case StarType.BlackHole:
+                            starImage = new Image { Source = BlackHoleImage }; star = starImage;
+                            break;
+                    }
+                    //Image starImage = new Image { Source = system.StarType };
+                    //star = starImage;
+                }
+            
+                
             }
 
             if (system.StarType == StarType.Nebula)
@@ -587,18 +765,18 @@ namespace Supremacy.UI
 
             if (IsExplored(system.Sector))
             {
-                if (system.HasRawMaterialsBonus)
+                if (system.HasDuraniumBonus)
                 {
                     Image bonusIcon = new Image
                     {
-                        Source = RawMaterialsBonusImage,
+                        Source = DuraniumBonusImage,
                         Width = SystemBonusIconSize,
                         Height = SystemBonusIconSize,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
                         ToolTip = GameContext.Current.Tables.EnumTables
                             [typeof(SystemBonus).Name]
-                            [SystemBonus.RawMaterials.ToString()][0]
+                            [SystemBonus.Duranium.ToString()][0]
                     };
                     _ = starContainer.Children.Add(bonusIcon);
                 }
@@ -610,7 +788,7 @@ namespace Supremacy.UI
                         Width = SystemBonusIconSize,
                         Height = SystemBonusIconSize,
                         Margin = new Thickness(
-                            (system.HasRawMaterialsBonus ? SystemBonusIconSize : 0),
+                            system.HasDuraniumBonus ? SystemBonusIconSize : 0,
                             0,
                             0,
                             0),
@@ -626,7 +804,7 @@ namespace Supremacy.UI
 
             star.ToolTip = starToolTip;
 
-            visuals.Children.Add(starContainer);
+            _ = visuals.Children.Add(starContainer);
 
             view.SetValue(Grid.ColumnProperty, 1);
             view.Stretch = Stretch.Uniform;
@@ -638,12 +816,12 @@ namespace Supremacy.UI
 
         private bool IsExplored(Sector sector)
         {
-            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
+            return sector != null && AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
         }
 
         private bool IsScanned(Sector sector)
         {
-            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
+            return sector != null && AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
         }
         #endregion
     }

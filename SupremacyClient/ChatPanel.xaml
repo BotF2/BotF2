@@ -1,15 +1,12 @@
-<!--
-  
-   ChatPanel.xaml
+<!-- File: ChatPanel.xaml
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
+
 <UserControl x:Class="Supremacy.Client.ChatPanel"
              xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -44,7 +41,7 @@
                      Value="{x:Null}">
           <Setter TargetName="SenderText"
                   Property="Foreground"
-                  Value="{StaticResource LCARS_BlueTextBrush}" />
+                  Value="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
         </DataTrigger>
       </DataTemplate.Triggers>
     </DataTemplate>

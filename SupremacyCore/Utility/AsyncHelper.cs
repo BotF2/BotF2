@@ -28,22 +28,22 @@ namespace Supremacy.Utility
         #region Methods
         public static void Invoke(Delegate target, params object[] args)
         {
-            ThreadPool.UnsafeQueueUserWorkItem(
+            _ = ThreadPool.UnsafeQueueUserWorkItem(
                 AsyncInvokeCallback,
                 new AsyncCallbackData(target, args));
         }
 
         public static void Invoke(TaskScheduler taskManager, Delegate target, params object[] args)
         {
-            TaskFactory.StartNew(() => target.DynamicInvoke(args));
+            _ = TaskFactory.StartNew(() => target.DynamicInvoke(args));
         }
 
         private static void AsyncInvokeCallback(object state)
         {
             try
             {
-                var callbackData = (AsyncCallbackData)state;
-                callbackData.Target.DynamicInvoke(callbackData.Args);
+                AsyncCallbackData callbackData = (AsyncCallbackData)state;
+                _ = callbackData.Target.DynamicInvoke(callbackData.Args);
             }
             catch (ThreadAbortException) { }
             catch (AppDomainUnloadedException) { }
@@ -70,7 +70,7 @@ namespace Supremacy.Utility
 
         internal static void Yield()
         {
-            SwitchToThread();
+            _ = SwitchToThread();
         }
 
         [DllImport("kernel32.dll")]

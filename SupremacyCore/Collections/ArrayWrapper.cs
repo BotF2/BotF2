@@ -10,9 +10,9 @@ namespace Supremacy.Collections
     [Serializable]
     public class ArrayWrapper<T> : IIndexedCollection<T>, IList<T>, IList, IOwnedDataSerializableAndRecreatable
     {
-        // ReSharper disable StaticFieldInGenericType
+
         public static readonly ArrayWrapper<T> Empty = new ArrayWrapper<T>(new T[0]);
-        // ReSharper restore StaticFieldInGenericType
+
 
         private T[] _values;
         private readonly int _start;

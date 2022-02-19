@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Client.Context;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Services
 {
@@ -20,38 +19,42 @@ namespace Supremacy.Client.Services
 
         public PlayerOrderService([NotNull] IAppContext appContext)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            _appContext = appContext;
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
             _orders = new List<Order>();
             Instance = this;
         }
 
         #region Implementation of IPlayerOrderService
-        public ReadOnlyCollection<Order> Orders
-        {
-            get { return _orders.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<Order> Orders => _orders.AsReadOnly();
 
         public void AddOrder(Order order)
         {
             if (order == null)
+            {
                 return;
+            }
 
-            var localPlayer = _appContext.LocalPlayer;
+            IPlayer localPlayer = _appContext.LocalPlayer;
             if (localPlayer == null)
+            {
                 return;
+            }
 
-            var owner = localPlayer.Empire;
+            Entities.Civilization owner = localPlayer.Empire;
             if (owner == null)
+            {
                 return;
+            }
 
             order.Owner = owner;
 
             lock (_orders)
             {
                 while ((_orders.Count > 0) && order.Overrides(_orders[_orders.Count - 1]))
+                {
                     _orders.RemoveAt(_orders.Count - 1);
+                }
+
                 _orders.Add(order);
                 //GameLog.Client.Diplomacy.DebugFormat("adding order {0}: {1}", owner, order.ToString() );
             }
@@ -61,7 +64,10 @@ namespace Supremacy.Client.Services
         public bool RemoveOrder(Order order)
         {
             if (order == null)
+            {
                 return false;
+            }
+
             bool result;
             lock (_orders)
             {

@@ -12,7 +12,7 @@ namespace Supremacy.Client.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -80,6 +80,78 @@ namespace Supremacy.Client.Properties {
             }
             set {
                 this["WindowWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("576")]
+        public double HeightSpecial1 {
+            get {
+                return ((double)(this["HeightSpecial1"]));
+            }
+            set {
+                this["HeightSpecial1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("480")]
+        public double WidthSpecial1 {
+            get {
+                return ((double)(this["WidthSpecial1"]));
+            }
+            set {
+                this["WidthSpecial1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1152")]
+        public double HeightSpecial2 {
+            get {
+                return ((double)(this["HeightSpecial2"]));
+            }
+            set {
+                this["HeightSpecial2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("960")]
+        public double WidthSpecial2 {
+            get {
+                return ((double)(this["WidthSpecial2"]));
+            }
+            set {
+                this["WidthSpecial2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("270")]
+        public double HeightSpecial3 {
+            get {
+                return ((double)(this["HeightSpecial3"]));
+            }
+            set {
+                this["HeightSpecial3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("225")]
+        public double WidthSpecial3 {
+            get {
+                return ((double)(this["WidthSpecial3"]));
+            }
+            set {
+                this["WidthSpecial3"] = value;
             }
         }
         
@@ -302,6 +374,18 @@ namespace Supremacy.Client.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesDuranium {
+            get {
+                return ((bool)(this["TracesDuranium"]));
+            }
+            set {
+                this["TracesDuranium"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool TracesDiplomacy {
             get {
                 return ((bool)(this["TracesDiplomacy"]));
@@ -373,13 +457,25 @@ namespace Supremacy.Client.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool TracesGeneral {
             get {
                 return ((bool)(this["TracesGeneral"]));
             }
             set {
                 this["TracesGeneral"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesInfoText {
+            get {
+                return ((bool)(this["TracesInfoText"]));
+            }
+            set {
+                this["TracesInfoText"] = value;
             }
         }
         
@@ -542,18 +638,6 @@ namespace Supremacy.Client.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public string TracesSystemAssaultDetails {
-            get {
-                return ((string)(this["TracesSystemAssaultDetails"]));
-            }
-            set {
-                this["TracesSystemAssaultDetails"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool TracesTest {
             get {
                 return ((bool)(this["TracesTest"]));
@@ -614,12 +698,432 @@ namespace Supremacy.Client.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public string TracesXML2CSVOutput {
+        public bool TracesAIDetails {
             get {
-                return ((string)(this["TracesXML2CSVOutput"]));
+                return ((bool)(this["TracesAIDetails"]));
             }
             set {
-                this["TracesXML2CSVOutput"] = value;
+                this["TracesAIDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesAudioDetails {
+            get {
+                return ((bool)(this["TracesAudioDetails"]));
+            }
+            set {
+                this["TracesAudioDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesCivsAndRacesDetails {
+            get {
+                return ((bool)(this["TracesCivsAndRacesDetails"]));
+            }
+            set {
+                this["TracesCivsAndRacesDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesColoniesDetails {
+            get {
+                return ((bool)(this["TracesColoniesDetails"]));
+            }
+            set {
+                this["TracesColoniesDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesCombatDetails1 {
+            get {
+                return ((bool)(this["TracesCombatDetails1"]));
+            }
+            set {
+                this["TracesCombatDetails1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesCreditsDetails {
+            get {
+                return ((bool)(this["TracesCreditsDetails"]));
+            }
+            set {
+                this["TracesCreditsDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesDeuteriumDetails {
+            get {
+                return ((bool)(this["TracesDeuteriumDetails"]));
+            }
+            set {
+                this["TracesDeuteriumDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesDilithiumDetails {
+            get {
+                return ((bool)(this["TracesDilithiumDetails"]));
+            }
+            set {
+                this["TracesDilithiumDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesDuraniumDetails {
+            get {
+                return ((bool)(this["TracesDuraniumDetails"]));
+            }
+            set {
+                this["TracesDuraniumDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesDiplomacyDetails {
+            get {
+                return ((bool)(this["TracesDiplomacyDetails"]));
+            }
+            set {
+                this["TracesDiplomacyDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesEnergyDetails {
+            get {
+                return ((bool)(this["TracesEnergyDetails"]));
+            }
+            set {
+                this["TracesEnergyDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesEventsDetails {
+            get {
+                return ((bool)(this["TracesEventsDetails"]));
+            }
+            set {
+                this["TracesEventsDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesGalaxyGeneratorDetails {
+            get {
+                return ((bool)(this["TracesGalaxyGeneratorDetails"]));
+            }
+            set {
+                this["TracesGalaxyGeneratorDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesGameDataDetails {
+            get {
+                return ((bool)(this["TracesGameDataDetails"]));
+            }
+            set {
+                this["TracesGameDataDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesGameInitDataDetails {
+            get {
+                return ((bool)(this["TracesGameInitDataDetails"]));
+            }
+            set {
+                this["TracesGameInitDataDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesGeneralDetails {
+            get {
+                return ((bool)(this["TracesGeneralDetails"]));
+            }
+            set {
+                this["TracesGeneralDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesInfoTextDetails {
+            get {
+                return ((bool)(this["TracesInfoTextDetails"]));
+            }
+            set {
+                this["TracesInfoTextDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesIntelDetails {
+            get {
+                return ((bool)(this["TracesIntelDetails"]));
+            }
+            set {
+                this["TracesIntelDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesMapDataDetails {
+            get {
+                return ((bool)(this["TracesMapDataDetails"]));
+            }
+            set {
+                this["TracesMapDataDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesMultiplayDetails {
+            get {
+                return ((string)(this["TracesMultiplayDetails"]));
+            }
+            set {
+                this["TracesMultiplayDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesProductionDetails {
+            get {
+                return ((bool)(this["TracesProductionDetails"]));
+            }
+            set {
+                this["TracesProductionDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesReportErrorsToEmailDetails {
+            get {
+                return ((string)(this["TracesReportErrorsToEmailDetails"]));
+            }
+            set {
+                this["TracesReportErrorsToEmailDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesResearchDetails {
+            get {
+                return ((string)(this["TracesResearchDetails"]));
+            }
+            set {
+                this["TracesResearchDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSitRepsDetails {
+            get {
+                return ((string)(this["TracesSitRepsDetails"]));
+            }
+            set {
+                this["TracesSitRepsDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSaveLoadDetails {
+            get {
+                return ((string)(this["TracesSaveLoadDetails"]));
+            }
+            set {
+                this["TracesSaveLoadDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesShipsDetails {
+            get {
+                return ((bool)(this["TracesShipsDetails"]));
+            }
+            set {
+                this["TracesShipsDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesShipProductionDetails {
+            get {
+                return ((bool)(this["TracesShipProductionDetails"]));
+            }
+            set {
+                this["TracesShipProductionDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesStationsDetails {
+            get {
+                return ((bool)(this["TracesStationsDetails"]));
+            }
+            set {
+                this["TracesStationsDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesStructuresDetails {
+            get {
+                return ((string)(this["TracesStructuresDetails"]));
+            }
+            set {
+                this["TracesStructuresDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSystemAssaultDetails {
+            get {
+                return ((string)(this["TracesSystemAssaultDetails"]));
+            }
+            set {
+                this["TracesSystemAssaultDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesTestDetails {
+            get {
+                return ((bool)(this["TracesTestDetails"]));
+            }
+            set {
+                this["TracesTestDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesTradeRoutesDetails {
+            get {
+                return ((string)(this["TracesTradeRoutesDetails"]));
+            }
+            set {
+                this["TracesTradeRoutesDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesUIDetails {
+            get {
+                return ((string)(this["TracesUIDetails"]));
+            }
+            set {
+                this["TracesUIDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesXMLCheckDetails {
+            get {
+                return ((bool)(this["TracesXMLCheckDetails"]));
+            }
+            set {
+                this["TracesXMLCheckDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TracesXML2VSCOutputDetails {
+            get {
+                return ((bool)(this["TracesXML2VSCOutputDetails"]));
+            }
+            set {
+                this["TracesXML2VSCOutputDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSystemAssaultDetailsDetails {
+            get {
+                return ((string)(this["TracesSystemAssaultDetailsDetails"]));
+            }
+            set {
+                this["TracesSystemAssaultDetailsDetails"] = value;
             }
         }
     }

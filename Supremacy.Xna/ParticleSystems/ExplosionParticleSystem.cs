@@ -16,7 +16,7 @@ namespace Supremacy.Xna
 
         protected override void InitializeSettings(ParticleSettings settings)
         {
-            settings.TextureName = @"Resources\Textures\explosion";
+            settings.TextureName = @"Resources\Images\UI\Shell\Textures\explosion";
 
             settings.MaxParticles = 2400;
 

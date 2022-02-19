@@ -10,7 +10,6 @@
 using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Network;
 using Supremacy.Types;
 using Supremacy.Utility;
@@ -338,7 +337,7 @@ namespace Supremacy.Client
         public abstract void SendCombatTarget1(CombatTargetPrimaries target1);
         public abstract void SendCombatTarget2(CombatTargetSecondaries target2);
 
-      //  public abstract void SendIntelOrders(IntelOrders orders);
+        //  public abstract void SendIntelOrders(IntelOrders orders);
         public abstract void UpdateGameOptions(GameOptions options);
         public abstract void UpdateEmpireSelection(int playerId, int empireId);
 

@@ -9,8 +9,6 @@
 
 using System;
 
-using Supremacy.Annotations;
-
 namespace Supremacy.Utility
 {
     public static class RandomProvider
@@ -26,8 +24,10 @@ namespace Supremacy.Utility
             get
             {
                 if (_random == null)
+                {
                     _random = new MersenneTwister();
-                
+                }
+
                 return _random;
             }
         }

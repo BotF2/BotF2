@@ -47,11 +47,19 @@ namespace Supremacy.Diplomacy
         public NewProposal(int turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] IEnumerable<IClause> clauses)
         {
             if (sender == null)
+            {
                 throw new ArgumentNullException("sender");
+            }
+
             if (recipient == null)
+            {
                 throw new ArgumentNullException("recipient");
+            }
+
             if (clauses == null)
+            {
                 throw new ArgumentNullException("clauses");
+            }
 
             _turnSent = turnSent;
             _sender = sender.CivID;
@@ -63,30 +71,15 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of IProposal
 
-        public int TurnSent
-        {
-            get { return _turnSent; }
-        }
+        public int TurnSent => _turnSent;
 
-        public Civilization Sender
-        {
-            get { return GameContext.Current.Civilizations[_sender]; }
-        }
+        public Civilization Sender => GameContext.Current.Civilizations[_sender];
 
-        public Civilization Recipient
-        {
-            get { return GameContext.Current.Civilizations[_recipient]; }
-        }
+        public Civilization Recipient => GameContext.Current.Civilizations[_recipient];
 
-        public IIndexedCollection<IClause> Clauses
-        {
-            get { return _clauses; }
-        }
+        public IIndexedCollection<IClause> Clauses => _clauses;
 
-        public Tone Tone
-        {
-            get { return Tone.Calm; }
-        }
+        public Tone Tone => Tone.Calm;
 
         #endregion
     }
@@ -96,7 +89,9 @@ namespace Supremacy.Diplomacy
         public static IProposal Clone([NotNull] this IProposal proposal)
         {
             if (proposal == null)
+            {
                 throw new ArgumentNullException("proposal");
+            }
 
             return new NewProposal(
                 proposal.TurnSent,
@@ -108,9 +103,12 @@ namespace Supremacy.Diplomacy
         public static bool IsGift(this IProposal proposal)
         {
             if (proposal == null)
+            {
                 return false;
+            }
+
             bool isGift = false;
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
                 switch (clause.ClauseType)
                 {
@@ -144,9 +142,12 @@ namespace Supremacy.Diplomacy
         public static bool IsDemand(this IProposal proposal)
         {
             if (proposal == null)
+            {
                 return false;
+            }
+
             bool isDemand = false;
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
                 switch (clause.ClauseType)
                 {
@@ -180,11 +181,13 @@ namespace Supremacy.Diplomacy
         public static bool HasTreaty(this IProposal proposal)
         {
             if (proposal == null)
+            {
                 return false;
+            }
 
             // GameLog.Core.Diplomacy.DebugFormat("hasTreaty: null or clause = {0}", proposal.Clauses.ToString()/*, proposal.ToString()*/);
 
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
                 switch (clause.ClauseType)
                 {
@@ -211,7 +214,9 @@ namespace Supremacy.Diplomacy
             // GameLog.Core.Diplomacy.DebugFormat("hasClause: null or clause = {0}", clause.ToString()/*, proposal.ToString()*/);
 
             if (proposal == null)
+            {
                 return false;
+            }
 
             //GameLog.Core.Diplomacy.DebugFormat("Visitor = {0}: Accepting proposal = {1}", visitor.ToString(), proposal.ToString());
 
@@ -221,14 +226,20 @@ namespace Supremacy.Diplomacy
         public static void Accept([NotNull] this IProposal proposal, [NotNull] IProposalVisitor visitor)
         {
             if (proposal == null)
+            {
                 throw new ArgumentNullException("proposal");
-            if (visitor == null)
-                throw new ArgumentNullException("visitor");
+            }
 
-            GameLog.Core.Diplomacy.DebugFormat("proposal clause type = {0} Recipient ={1} Sender ={2}"
+            if (visitor == null)
+            {
+                throw new ArgumentNullException("visitor");
+            }
+
+            GameLog.Core.DiplomacyDetails.DebugFormat("Turn {3}: Sender ={2}, proposal clause type = {0}, Recipient ={1} "
                 , proposal.Clauses[0].ClauseType.ToString()
                 , proposal.Recipient.ShortName
-                , proposal.Sender.ShortName);
+                , proposal.Sender.ShortName
+                , GameContext.Current.TurnNumber);
 
             if (proposal.IsGift())
             {
