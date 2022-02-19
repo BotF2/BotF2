@@ -88,7 +88,7 @@ namespace Supremacy.Economy
             }
         }
 
-        protected override string DefaultImageSubFolder => "ProductionFacilities/";
+        protected override string DefaultImageSubFolder => "Facilities/";
 
         /// <summary>
         /// Appends the XML data for this instance.

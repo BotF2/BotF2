@@ -173,7 +173,7 @@ namespace Supremacy.Buildings
             return Bonuses.Where(o => bonusTypes.Contains(o.BonusType));
         }
 
-        protected override string DefaultImageSubFolder => "Buildings/";
+        protected override string DefaultImageSubFolder => "Facilities/";
 
         /// <summary>
         /// Compacts this instance to reduce serialization footprint.
