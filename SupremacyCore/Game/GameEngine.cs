@@ -1702,6 +1702,9 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
+                    _text = "Exception on DoMorale";
+                    Console.WriteLine(_text);
+                    GameLog.Core.General.ErrorFormat(_text);
                     GameLog.Core.General.Error(e);
                 }
                 finally
@@ -1855,6 +1858,9 @@ namespace Supremacy.Game
                   }
                   catch (Exception e)
                   {
+                      _text = "Exception on DoResearch";
+                      Console.WriteLine(_text);
+                      GameLog.Core.General.ErrorFormat(_text);
                       GameLog.Core.General.Error(string.Format("DoResearch failed for {0}", civ.Name), e);
                   }
                   finally
@@ -3034,7 +3040,7 @@ namespace Supremacy.Game
                           }
 
                           // lowest level for AI-controlled colonies
-                          if (!colony.Owner.IsHuman && colony.Morale.CurrentValue > 80)
+                          if (!colony.Owner.IsHuman && colony.Morale.CurrentValue < 80)
                               colony.Morale.AdjustCurrent(80 - colony.Morale.CurrentValue);
 
                           colony.Morale.UpdateAndReset();
@@ -3042,6 +3048,9 @@ namespace Supremacy.Game
                   }
                   catch (Exception e)
                   {
+                      _text = "Exception on DoMorale";
+                      Console.WriteLine(_text);
+                      GameLog.Core.General.ErrorFormat(_text);
                       errors.Push(e);
                   }
                   finally

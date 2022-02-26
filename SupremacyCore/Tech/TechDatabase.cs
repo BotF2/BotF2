@@ -48,6 +48,8 @@ namespace Supremacy.Tech
         private static string _maintText;
         private static string _buildCostText;
         private static bool maint_output_done;
+        private static bool _buildCostIgnored;
+        private static bool _buildCostShipsIgnored;
         private static readonly string newline = Environment.NewLine;
 
         /// <summary>
@@ -2113,6 +2115,13 @@ namespace Supremacy.Tech
             Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);
             pf.BuildCost = _buildcosts;
+
+            if (_buildCostIgnored == false)
+            {
+                _text = "Build Costs ignored and calculated inside game code > for ProductionFacilities";
+                GameLog.Core.General.InfoFormat(_text);
+                _buildCostIgnored = true;  // just report once
+            }
         }
 
         private static void CalculateBuildCostsShips(ShipDesign ship)
@@ -2159,6 +2168,14 @@ namespace Supremacy.Tech
             //Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);
             ship.BuildCost = _buildcosts;
+
+
+            if (_buildCostShipsIgnored == false)
+            {
+                _text = "Build Costs ignored and calculated inside game code > for Ships";
+                GameLog.Core.General.InfoFormat(_text);
+                _buildCostShipsIgnored = true; // just report once
+            }
         }
 
         private static void CalculateMaintenanceCosts(ShipDesign ship)

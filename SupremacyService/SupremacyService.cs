@@ -1426,6 +1426,7 @@ namespace Supremacy.WCF
             }
         }
 
+
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
             _combatEngine = new AutomatedCombatEngine(

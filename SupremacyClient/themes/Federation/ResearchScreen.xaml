@@ -158,9 +158,9 @@
                     <Setter TargetName="Border"
                             Property="Background"
                             Value="{DynamicResource PurpleGradient_Left_Right}"/>
-                    <Trigger.EnterActions>
+                    <!--<Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Federation/Sounds/ButtonClick.wav"/>
-                    </Trigger.EnterActions>
+                    </Trigger.EnterActions>-->
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>

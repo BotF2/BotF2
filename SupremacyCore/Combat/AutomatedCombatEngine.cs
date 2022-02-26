@@ -39,6 +39,10 @@ namespace Supremacy.Combat
         }
         protected override void ResolveCombatRoundCore()
         {
+            _text = "ResolveCombatRoundCore....";
+            Console.WriteLine(_text);
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
+
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count);
             MapLocation _sector = _assets.FirstOrDefault().Location;
             bool activeBattle = true; // false when less than two civs remaining

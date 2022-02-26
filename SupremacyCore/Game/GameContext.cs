@@ -546,6 +546,7 @@ namespace Supremacy.Game
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
         private string _text;
+        private bool _bool_Fac_Count_Active;
 
         private static Stack<GameContext> ThreadStack
         {
@@ -1014,25 +1015,24 @@ namespace Supremacy.Game
                         int _laborAvailable = colony.Population.CurrentValue / 10;
 
 
-                        _text = "Adjusting facilities if necessary...";
-                        Console.WriteLine(_text);
+                        //_text = "Adjusting facilities if necessary...";
+                        //Console.WriteLine(_text);
 
                         bool _checkXML;
                         _checkXML = true;
-                        if (_checkXML)
-                            Console.WriteLine("From HomeSystems.xml > Facilities (Count/Active) is ignored...");
+
+                        if (_bool_Fac_Count_Active == false)
+                        {
+                            _text = "####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            Console.WriteLine(_text);
+                            GameLog.Client.GalaxyGenerator.InfoFormat(_text);
+                            _bool_Fac_Count_Active = true; // just do once
+                        }
 
                         // readjust production facilities if needed
                         if (homeSystemDescriptor.FoodPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
-
-                            //foreach (var item in db)
-                            //{
-                            //    //GameLog.Client.GameData.DebugFormat("item = {0}", item.Key);
-                            //}
-
-
 
                             ProductionFacilityDesign foodFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.FoodPF.DesignType]];
 
@@ -1107,7 +1107,7 @@ namespace Supremacy.Game
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.EnergyPF.Active, colony.GetTotalFacilities(ProductionCategory.Energy));
                                 }
 
-                                for (int i = 0; i < facilitiesRequired; i++)
+                                for (int i = 0; i < facilitiesRequired + 2; i++)
                                 {
                                     _ = colony.ActivateFacility(ProductionCategory.Energy);
                                     _laborAvailable -= 1;
