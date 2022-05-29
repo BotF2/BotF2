@@ -34,7 +34,6 @@ namespace Supremacy.Game
         #region Fields
         private readonly int _civId;
         private readonly Meter _credits;
-        private int _buyCostLastTurn;
 
         private readonly List<Bonus> _globalBonuses;
         private readonly CivilizationMapData _mapData;
@@ -46,14 +45,14 @@ namespace Supremacy.Game
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
-        //private int _buyCostLastTurn;
+        private int _buyCostLastTurn;
         private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
 
-#pragma warning disable IDE0044 // Add readonly modifier
+//#pragma warning disable IDE0044 // Add readonly modifier
         private List<Civilization> _spiedCivList;
-#pragma warning restore IDE0044 // Add readonly modifier
+//#pragma warning restore IDE0044 // Add readonly modifier
 
 
         private int _homeColonyId;
@@ -66,7 +65,7 @@ namespace Supremacy.Game
         private int _rankResearch;
         private int _rankIntelAttack;
         private string _text;
-        private int bc;
+        private int bc;  // buildingCosts
         private readonly string newline = Environment.NewLine;
 
         //private readonly IPlayer _localPlayer;

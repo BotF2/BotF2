@@ -904,7 +904,7 @@ namespace Supremacy.Client.Views
             // Temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
             _ = civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost());
             //_ = civMan.BuyCostLastTurn.AdjustCurrent(project.GetTotalCreditsCost());
-            _ = civMan.BuyCostLastTurn += project.GetTotalCreditsCost();
+            civMan.BuyCostLastTurn += project.GetTotalCreditsCost();
 
             project.IsRushed = true;
             PlayerOrderService.AddOrder(new RushProductionOrder(productionCenter));
