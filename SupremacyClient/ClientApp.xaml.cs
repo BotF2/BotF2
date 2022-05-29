@@ -605,7 +605,9 @@ namespace Supremacy.Client
                 {
                     _text = "Did not found file " + xna_copy + newline + "to check for XNA 3.1"
                         + newline + newline + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
-                        + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'";
+                        + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'"
+                        + newline + newline + "For Coders: Make sure you have fill the \\Resources folder"
+                        ;
                     _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
 
