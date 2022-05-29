@@ -34,6 +34,8 @@ namespace Supremacy.Game
         #region Fields
         private readonly int _civId;
         private readonly Meter _credits;
+        private int _buyCostLastTurn;
+
         private readonly List<Bonus> _globalBonuses;
         private readonly CivilizationMapData _mapData;
         private readonly ResearchPool _research;
@@ -44,6 +46,7 @@ namespace Supremacy.Game
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
+        //private int _buyCostLastTurn;
         private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
@@ -59,10 +62,11 @@ namespace Supremacy.Game
         private int _seatOfGovernmentId = -1;
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
-        private string _text;
         private int _rankMaint;
         private int _rankResearch;
         private int _rankIntelAttack;
+        private string _text;
+        private int bc;
         private readonly string newline = Environment.NewLine;
 
         //private readonly IPlayer _localPlayer;
@@ -225,6 +229,8 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
+            //_buyCostLastTurn = new Meter(0, Meter.MinValue, Meter.MaxValue);
+            _buyCostLastTurn = 0;
             //_rankCredits = 0;
 
 
@@ -337,10 +343,56 @@ namespace Supremacy.Game
             set => _maintenanceCostLastTurn = value;
         }
 
+        ///// <summary>
+        ///// Gets the civilization's MaintenanceCostLastTurn.
+        ///// </summary>
+        public int CurrentChange
+        {
+            get
+            {
+                return Credits.CurrentChange;
+            }
+            //set => _buyCostLastTurn += value;
+        }
+
+        /// <summary>
+        /// Gets the civilization's BuyCostLastTurn. .... when it's working
+        /// </summary>
+        public int BuyCostLastTurn
+        {
+            get
+            {
+
+                //int bc = 0;
+                if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
+                    bc = 0;
+                //TotalPopulation
+                if (bc > 0)
+                    return bc;
+                else
+                    return _buyCostLastTurn;
+            }
+            set => _buyCostLastTurn += value;
+        }
+
+        /// <summary>
+        /// Gets the civilization's Income. .... when it's working
+        /// </summary>
+        public int Income
+        {
+            get
+            {
+                ////int totalPopulation = _totalPopulation.CurrentValue;
+                //double totalMorale = Colonies.Sum(colony => colony.TaxCredits/* * (1d / _totalPopulation.CurrentValue * colony.Population.CurrentValue)*/);
+                return _credits.LastChange + _maintenanceCostLastTurn - _buyCostLastTurn;
+            }
+            //set => _buyCostLastTurn += value;
+        }
+
         /// <summary>
         /// Gets the civilization's ranking for Credits.
         /// </summary>
-        public int RankingCredits
+        public int RankingCredits  // AI has credit advantage: Minors 4x, AI 2x ... so ranking doesn't is realistic anymore
         {
             get 
             {

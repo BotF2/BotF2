@@ -1,4 +1,4 @@
-// StateManager.cs
+// File:StateManager.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

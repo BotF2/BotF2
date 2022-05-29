@@ -45,11 +45,15 @@ namespace Supremacy.Tech
         [NonSerialized]
         private Dictionary<string, int> _designIdMap;
         private static string _text;
+#pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private static string _maintText;
         private static string _buildCostText;
+#pragma warning restore IDE0052 // Ungelesene private Member entfernen
+
         private static bool maint_output_done;
         private static bool _buildCostIgnored;
         private static bool _buildCostShipsIgnored;
+        private static bool _buildCostTextOnlyOnce;
         private static readonly string newline = Environment.NewLine;
 
         /// <summary>
@@ -2111,10 +2115,19 @@ namespace Supremacy.Tech
 
                 ;
             _buildCostText += newline + _text;
-            //GameLog.Core.Production.DebugFormat(_buildCostText);
-            Console.WriteLine(_text);
+
+            if (_buildCostTextOnlyOnce == false)
+            {
+                //GameLog.Core.Production.DebugFormat(_buildCostText);
+                Console.WriteLine(_text + " - no more output");
+                    _buildCostTextOnlyOnce = true;
+            }
+
             //GameLog.Core.Production.DebugFormat(_text);
             pf.BuildCost = _buildcosts;
+
+
+            //Console.WriteLine(_text);
 
             if (_buildCostIgnored == false)
             {
@@ -2164,6 +2177,13 @@ namespace Supremacy.Tech
 
                 ;
             _buildCostText += newline + _text;
+
+            if (_buildCostTextOnlyOnce == false)
+            {
+                //GameLog.Core.Production.DebugFormat(_buildCostText);
+                Console.WriteLine(_text + " - no more output");
+                _buildCostTextOnlyOnce = true;
+            }
             //GameLog.Core.Production.DebugFormat(_buildCostText);
             //Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);

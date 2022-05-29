@@ -207,9 +207,10 @@
 
         <!-- Targeting Center SUMMARY of 'other' civs Data Template for one item view  -->
         <DataTemplate x:Key="OthersTreeSummaryTemplate">
-            <StackPanel Margin="0,2,0,0"
+            <StackPanel Margin="0,0,0,0"
                         Orientation="Horizontal"
                         Focusable="False"
+                        Background="Black"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left">
                 <Grid Margin="0,0,0,0">
@@ -545,7 +546,7 @@
                             <ListBox x:Name="OtherCivilizationsSummaryItem1"  
                                     IsSynchronizedWithCurrentItem="True"
                                     ItemsSource="{Binding}"
-                                    
+                                    Background="Black"
                                     HorizontalAlignment="Center"
                                     ItemTemplate="{StaticResource OthersTreeSummaryTemplate}"
                                     Grid.Column="1"

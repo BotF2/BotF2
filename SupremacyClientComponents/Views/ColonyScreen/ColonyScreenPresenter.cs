@@ -298,58 +298,58 @@ namespace Supremacy.Client.Views
             goto OnceAgain;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-        private void ExecuteAddOneMoreShipBuildProjectCommand(ShipyardBuildSlot buildSlot, ShipBuildProject project)
-        {
-            if (buildSlot == null)
-            {
-                return;
-            }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        //private void ExecuteAddOneMoreShipBuildProjectCommand(ShipyardBuildSlot buildSlot, ShipBuildProject project)
+        //{
+        //    if (buildSlot == null)
+        //    {
+        //        return;
+        //    }
 
-            Colony colony = Model.SelectedColony;
-            if (colony == null || colony.Shipyard != buildSlot.Shipyard)
-            {
-                return;
-            }
+        //    Colony colony = Model.SelectedColony;
+        //    if (colony == null || colony.Shipyard != buildSlot.Shipyard)
+        //    {
+        //        return;
+        //    }
 
-            //if (!buildSlot.IsActive || buildSlot.HasProject)
-            //    return;
+        //    //if (!buildSlot.IsActive || buildSlot.HasProject)
+        //    //    return;
 
-            //NewShipSelectionView view = new NewShipSelectionView(buildSlot);
-            //TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
+        //    //NewShipSelectionView view = new NewShipSelectionView(buildSlot);
+        //    //TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
 
-            //_ = BindingOperations.SetBinding(
-            //    statsViewModel,
-            //    TechObjectDesignViewModel.DesignProperty,
-            //    new Binding
-            //    {
-            //        Source = view,
-            //        Path = new PropertyPath("SelectedBuildProject.BuildDesign")
-            //    });
+        //    //_ = BindingOperations.SetBinding(
+        //    //    statsViewModel,
+        //    //    TechObjectDesignViewModel.DesignProperty,
+        //    //    new Binding
+        //    //    {
+        //    //        Source = view,
+        //    //        Path = new PropertyPath("SelectedBuildProject.BuildDesign")
+        //    //    });
 
-            //view.AdditionalContent = statsViewModel;
+        //    //view.AdditionalContent = statsViewModel;
 
-            //bool? result = view.ShowDialog();
+        //    //bool? result = view.ShowDialog();
 
-            //if (!result.HasValue || !result.Value)
-            //{
-            //    return;
-            //}
+        //    //if (!result.HasValue || !result.Value)
+        //    //{
+        //    //    return;
+        //    //}
 
-            //ShipBuildProject project = view.SelectedBuildProject;
-            if (project == null)
-            {
-                return;
-            }
-            //var _buildQueueItem = new BuildQueueItem(project);
-            AddProjectToBuildSlotQueue(project, colony.Shipyard);
-            //AddProjectToBuildQueue(project, colony);
-            //buildSlot.Shipyard.BuildQueue.Add(_buildQueueItem);
-            //buildSlot.Shipyard.ProcessQueue();
-            //buildSlot.Project = project;
+        //    //ShipBuildProject project = view.SelectedBuildProject;
+        //    if (project == null)
+        //    {
+        //        return;
+        //    }
+        //    //var _buildQueueItem = new BuildQueueItem(project);
+        //    AddProjectToBuildSlotQueue(project, colony.Shipyard);
+        //    //AddProjectToBuildQueue(project, colony);
+        //    //buildSlot.Shipyard.BuildQueue.Add(_buildQueueItem);
+        //    //buildSlot.Shipyard.ProcessQueue();
+        //    //buildSlot.Project = project;
 
-            PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
-        }
+        //    PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
+        //}
 
         private bool CanExecuteToggleBuildingScrapCommand(object parameter)
         {
@@ -544,8 +544,8 @@ namespace Supremacy.Client.Views
 
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 2");
 
-            //if (this.Model.Colonies == null)
-            //    this.Model.Colonies = this.AppContext.LocalPlayerEmpire.Colonies;
+            if (this.Model.SelectedColony == null)
+                this.Model.SelectedColony = this.AppContext.LocalPlayerEmpire.SeatOfGovernment;
 
             if (e.OldValue != null)
             {
@@ -903,6 +903,8 @@ namespace Supremacy.Client.Views
 
             // Temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
             _ = civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost());
+            //_ = civMan.BuyCostLastTurn.AdjustCurrent(project.GetTotalCreditsCost());
+            _ = civMan.BuyCostLastTurn += project.GetTotalCreditsCost();
 
             project.IsRushed = true;
             PlayerOrderService.AddOrder(new RushProductionOrder(productionCenter));
@@ -957,11 +959,7 @@ namespace Supremacy.Client.Views
         //{
         //    return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         //}
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-        private bool CanExecuteAddOneMoreToShipyardBuildQueueCommand(BuildProject project)
-        {
-            return (Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null);
-        }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
 
         private void ExecuteAddToShipyardBuildQueueCommand(BuildProject project)
         {

@@ -55,14 +55,22 @@ namespace Supremacy.Economy
         {
             get
             {
-                GameLog.Client.Test.DebugFormat("ID {0} stationdesign {1}", _productionCenterId, StationDesign.Description);
+                string _text = "HasDuraniumShortage on StationBuildProject... "
+                    + StationDesign.Description
+                    + " at " + _productionCenterId
+
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Core.General.ErrorFormat(_text);
+                //GameLog.Client.Test.DebugFormat("ID {0} stationdesign {1}", _productionCenterId, StationDesign.Description);
                 return GetFlag(BuildProjectFlags.DuraniumShortage);
             }
             protected set
             {
                 SetFlag(BuildProjectFlags.DuraniumShortage, value);
                 GameContext.Current.CivilizationManagers[ProductionCenter.Owner.CivID].SitRepEntries
-                    .Add(new BuildProjectResourceShortageSitRepEntry(ProductionCenter.Owner, "Duranium", " unknown amount of ", Description));
+                    .Add(new ReportEntry_CoS(ProductionCenter.Owner, ProductionCenter.Location, "Duranium", " unknown amount of ", Description, SitRepPriority.Orange));
+                    //.Add(new BuildProjectResourceShortageSitRepEntry(ProductionCenter.Owner, "Duranium", " unknown amount of ", Description));
             }
         }
 
@@ -108,6 +116,9 @@ namespace Supremacy.Economy
             base.DeserializeOwnedData(reader, context);
 
             _productionCenterId = reader.ReadInt32();
+            string _text = "Deserialize StationBuildProject...";
+            Console.WriteLine(_text);
+            //GameLog.Core.General.DebugFormat(_text);
         }
     }
 }

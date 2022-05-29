@@ -76,6 +76,10 @@ namespace Supremacy.Encyclopedia
         /// Entry appears under the 'Buildings' category.
         /// </summary>
         Buildings,
+        /// <summary>
+        /// Entry appears under the 'Facilites' category.
+        /// </summary>
+        Facilites,
 
 
     }

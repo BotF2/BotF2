@@ -458,7 +458,7 @@ namespace Supremacy.Client
                 // File delivered by Dropbox is more up to date
                 if (File.Exists(fileResourceFolder))
                 {
-                    File.Copy(fileResourceFolder, file, true);
+                    //File.Copy(fileResourceFolder, file, true);
                 }
                 else
                 {

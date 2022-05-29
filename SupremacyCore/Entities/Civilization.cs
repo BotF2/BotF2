@@ -210,6 +210,18 @@ namespace Supremacy.Entities
             _spiedCivList = SpiedCivList;
             _targetCivilization = TargetCivilization;
 
+            if (_traits.Contains("Warlike")) _baseMoraleLevel -= 2;
+            if (_traits.Contains("Peaceful")) _baseMoraleLevel += 2;
+            if (_traits.Contains("Superiority")) _baseMoraleLevel += 3;
+            if (_traits.Contains("Submissive")) _baseMoraleLevel -= 3;
+            //if (_traits.Contains("Materialistic")) _baseMoraleLevel -= 3;
+            if (_traits.Contains("Spiritual")) _baseMoraleLevel += 5;
+            if (_traits.Contains("Kindness")) _baseMoraleLevel += 2;
+            if (_traits.Contains("Hostile")) _baseMoraleLevel -= 4;
+            if (_traits.Contains("Honourable")) _baseMoraleLevel += 4;
+            if (_traits.Contains("Subversive")) _baseMoraleLevel -= 1;
+
+
             //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
 
             // When starting a game, options is null

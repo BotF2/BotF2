@@ -1280,11 +1280,13 @@ namespace Supremacy.Client.Views
 
             _foreignPowers.Clear();
 
+
             int playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
             Diplomat playerDiplomat = Diplomat.Get(playerEmpireId);
 
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
+                //Console.WriteLine("RefreshForeignPowers... " + civ.Name);
                 if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
                 {
                     continue;

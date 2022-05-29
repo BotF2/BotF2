@@ -807,7 +807,7 @@ namespace Supremacy.Client.Views
                     ;
                 Console.WriteLine(_text);
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[item.Unit.OwnerID];
-                civManager.SitRepEntries.Add(new Report_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
             }
 
             _currentUpdate = null;

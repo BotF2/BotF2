@@ -342,7 +342,7 @@
             <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
                            TargetType="{x:Type RepeatButton}">
                 <Border x:Name="LeftButton"
-                     Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
+                     Background="{StaticResource BlueGradient_TopLeft_BottomRight}"
                      CornerRadius="14,0,0,14" />
                 <ControlTemplate.Triggers>
                     <MultiTrigger>
@@ -379,7 +379,7 @@
             <ControlTemplate x:Key="RightRepeatButtonTemplate"
                            TargetType="{x:Type RepeatButton}">
             <Border x:Name="RightButton"
-                    Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
+                    Background="{StaticResource BlueGradient_TopLeft_BottomRight}"
                     CornerRadius="0,14,14,0" />
             <ControlTemplate.Triggers>
               <MultiTrigger>

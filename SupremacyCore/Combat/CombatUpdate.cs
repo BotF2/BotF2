@@ -29,17 +29,17 @@ namespace Supremacy.Combat
         private List<Civilization> _civStatusList;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
-        private readonly string _text;
+        private object _sectorString;
+        private string _text;
 
         public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
 
             //GameLog.Core.CombatDetails.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
             //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
-            _text =
-                "### combatId " + combatId
+            _text = location.ToString()
+                + " > ### combatId " + combatId
                 + " Round " + roundNumber
-                + " at " + location.ToString()
                 + ", standoff= " + standoff
                 + ", civ= " + owner.CivID
 
@@ -79,11 +79,28 @@ namespace Supremacy.Combat
         {
             get
             {
+
                 foreach (CombatAssets fa in FriendlyAssets)
                 {
+                    Civilization civ = GameContext.Current.Civilizations.First();
+                    _sectorString = FriendlyAssets.First().Location;
+
+                    // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
+                    foreach (CombatUnit ncs in fa.NonCombatShips)   // only NonCombat ships 
+                    {
+                        civ = fa.NonCombatShips.First().Owner;
+                        // Update X 25 june 2019 Total Strength instead of just Firepower
+                        _friendlyEmpireStrength = Convert.ToInt32(
+                                Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
+                                + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
+                                * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100)))
+                                );
+                    }
+
                     foreach (CombatUnit cs in fa.CombatShips)   // only combat ships
                     {
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        civ = fa.CombatShips.First().Owner;
+                        // Update X 25 june 2019 Total Strength instead of just Firepower
                         _friendlyEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_friendlyEmpireStrength + cs.Firepower)
                                 + (Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
@@ -94,19 +111,11 @@ namespace Supremacy.Combat
                              cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Firepower, _friendlyEmpireStrength);
                     }
 
-                    // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
-                    foreach (CombatUnit ncs in fa.NonCombatShips)   // only NonCombat ships 
-                    {
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        _friendlyEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
-                                + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
-                                * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100)))
-                                );
-                    }
+
 
                     if (fa.Station != null)
                     {
+                        civ = fa.Station.Owner;
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _friendlyEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_friendlyEmpireStrength + fa.Station.Firepower)
@@ -116,7 +125,12 @@ namespace Supremacy.Combat
                         GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
                             fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
                     }
+                    //Civilization civ = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
+                    _text = _sectorString + " > Combat Durability Friendly Assets = " + _friendlyEmpireStrength;
+                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, FriendlyAssets.First().Location, _text, "", "", SitRepPriority.Red));
                 }
+                //GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add
+
                 return _friendlyEmpireStrength;
             }
         }
@@ -127,8 +141,23 @@ namespace Supremacy.Combat
             {
                 foreach (CombatAssets ha in HostileAssets)
                 {
+                    Civilization civ = GameContext.Current.Civilizations.First();
+                    _sectorString = HostileAssets.First().Location;
+
+                    foreach (CombatUnit ncs in ha.NonCombatShips)   // only NonCombat ships 
+                    {
+                        civ = ha.NonCombatShips.First().Owner;
+                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        _allHostileEmpireStrength = Convert.ToInt32(
+                                Convert.ToDouble(_allHostileEmpireStrength + ncs.Firepower)
+                                + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
+                                * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100)))
+                                );
+                    }
+
                     foreach (CombatUnit cs in ha.CombatShips)   // only combat ships
                     {
+                        civ = ha.CombatShips.First().Owner;
                         // _allHostileEmpireStrength += cs.FirePower;
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _allHostileEmpireStrength = Convert.ToInt32(
@@ -141,17 +170,10 @@ namespace Supremacy.Combat
                         //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
                     }
 
-                    foreach (CombatUnit ncs in ha.NonCombatShips)   // only NonCombat ships 
-                    {
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        _allHostileEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_allHostileEmpireStrength + ncs.Firepower)
-                                + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
-                                * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100)))
-                                );
-                    }
+
                     if (ha.Station != null)
                     {
+                        civ = ha.Station.Owner;
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         //_allHostileEmpireStrength += ha.Station.FirePower;
                         _allHostileEmpireStrength = Convert.ToInt32(
@@ -162,6 +184,8 @@ namespace Supremacy.Combat
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0}  - in total now {1}",
                         //    ha.Station.Name, _hostileEmpireStrength); 
                     }
+                    _text = _sectorString + " > Combat Durability Hostile Assets = " + _allHostileEmpireStrength;
+                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, HostileAssets.First().Location, _text, "", "", SitRepPriority.Red));
                 }
                 return _allHostileEmpireStrength;
             }

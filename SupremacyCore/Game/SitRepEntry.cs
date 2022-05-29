@@ -146,6 +146,7 @@ namespace Supremacy.Game
     {
         protected readonly int _ownerId;
         protected SitRepPriority _priority;
+        public string newline = Environment.NewLine;
         //protected string _sitRepComment;
 
         /// <summary>
@@ -283,13 +284,13 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class Report_NoAction : SitRepEntry
+    public class ReportEntry_NoAction : SitRepEntry
     {
         private readonly string _report;
         private readonly string _detailName;
         private readonly string _image;
 
-        public Report_NoAction(Civilization owner, string report, string details, string image, SitRepPriority priority) : base(owner)//, SitRepPriority.Purple)
+        public ReportEntry_NoAction(Civilization owner, string report, string details, string image, SitRepPriority priority) : base(owner)//, SitRepPriority.Purple)
         { 
             _priority = priority; 
             _report = report;
@@ -588,7 +589,7 @@ namespace Supremacy.Game
 
         }
         public override SitRepCategory Categories => SitRepCategory.Construction;
-        public override SitRepAction Action => SitRepAction.ShowColony;
+        public override SitRepAction Action => SitRepAction.None;
         public override string SitRepComment { get; set; }
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_BUILDPROJECT_RESOURCE_MISSING"), "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource);
 
@@ -2627,6 +2628,7 @@ namespace Supremacy.Game
     {
         private readonly int _applicationId;
         private readonly int[] _newDesignIds;
+        //private string newline;
 
         public ResearchCompleteSitRepEntry(
             Civilization owner,
@@ -2667,7 +2669,7 @@ namespace Supremacy.Game
                 _ = sb.AppendLine(ResourceManager.GetString(Application.Description));
                 if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
                 {
-                    _ = sb.Append("[nl/]" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + "[nl/]");
+                    _ = sb.Append(newline + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + newline);
                     for (int i = 0; i < _newDesignIds.Length; i++)
                     {
                         TechObjectDesign design = GameContext.Current.TechDatabase[_newDesignIds[i]];
@@ -2676,7 +2678,7 @@ namespace Supremacy.Game
                             continue;
                         }
 
-                        _ = sb.Append("[nl/]");
+                        _ = sb.Append(newline);
                         _ = sb.Append(ResourceManager.GetString(design.Name));
 
                     }

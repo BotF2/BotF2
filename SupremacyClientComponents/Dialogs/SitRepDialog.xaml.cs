@@ -12,7 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-
 namespace Supremacy.Client.Dialogs
 {
     /// <summary>
@@ -282,6 +281,8 @@ namespace Supremacy.Client.Dialogs
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
         {
+
+            NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
             Close();
         }
 

@@ -78,7 +78,7 @@
 
     <!--<SolidColorBrush Color="Blue" x:Key="ResearchColor"/>--> 
     <SolidColorBrush Color="LightGreen" x:Key="FoodColor"/> <!--not impelmented yet - Race specific color used-->
-    <SolidColorBrush Color="SlateGray" x:Key="IndustryColor"/><!--not impelmented yet - Race specific color used-->
+    <SolidColorBrush Color="Silver" x:Key="IndustryColor"/><!--not impelmented yet - Race specific color used-->
     <SolidColorBrush Color="Goldenrod" x:Key="EnergyColor"/><!--not impelmented yet - Race specific color used-->
     <SolidColorBrush Color="CornflowerBlue" x:Key="ResearchColor"/>
     <SolidColorBrush Color="Gray" x:Key="IntelColor"/>
@@ -2174,7 +2174,7 @@
                      Value="True">
               <Setter TargetName="Check"
                       Property="BorderBrush"
-                      Value="{StaticResource BlueHoverGradient_Top_Bottom}" />
+                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
             </Trigger>
             <Trigger Property="IsEnabled"
                      Value="False">
@@ -3733,14 +3733,18 @@
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
     <Setter Property="FontSize"  Value="12pt" />
-    <Setter Property="Padding" Value="6,2,6,2" />
+    <!--<Setter Property="Padding" Value="6,2,6,2" />-->
+    <Setter Property="Padding" Value="0,0,0,0" />
     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ListBoxItem}">
-          <Border x:Name="Border"
+          <!--<Border x:Name="Border"
                   Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">-->
+                        <Border x:Name="Border"
+                  Background="Transparent"
                   Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                               ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
@@ -5157,7 +5161,7 @@
                    Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
-                   av:BindingHelpers.Inlines="{Binding Path=DetailText, Converter={StaticResource FormattedTextConverter}}"/>
+                   av:BindingHelpers.Inlines="{Binding Path=DetailText}"/><!--, Converter={StaticResource FormattedTextConverter}}"/>-->
       </ScrollViewer>
     </DockPanel>
     <DataTemplate.Triggers>

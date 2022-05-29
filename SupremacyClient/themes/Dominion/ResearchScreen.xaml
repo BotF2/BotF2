@@ -156,7 +156,7 @@
               </ControlTemplate>
             </RepeatButton.Template>
           </RepeatButton>
-          <ui:BlockBar x:Name="ValueBlockBar"
+                    <ui:BlockBar x:Name="ValueBlockBar"
                        DockPanel.Dock="Top"
                        BlockCount="20"
                        BlockMargin="2"

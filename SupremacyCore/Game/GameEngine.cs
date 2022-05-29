@@ -1413,8 +1413,8 @@ namespace Supremacy.Game
                     }
                 }
 
-                if (!invasionLocations.Contains(fleet.Location))
-                {
+                //if (!invasionLocations.Contains(fleet.Location))
+                //{
                     if (fleet.Sector.System != null)
                     {
                         if (fleet.Order is AssaultSystemOrder)
@@ -1425,11 +1425,11 @@ namespace Supremacy.Game
                     }
                     else
                     {
-                        _text = "No Invasion available due to no system at " + fleet.Location + fleet.Name;
+                        _text = "No Invasion available due to no system at " + fleet.Location + blank + fleet.Name;
                         Console.WriteLine(_text);
-                        GameLog.Core.SystemAssault.ErrorFormat(_text);
+                        //GameLog.Core.SystemAssault.InfoFormat(_text);
                     }
-                }
+                //}
             }
 
             foreach (List<CombatAssets> combat in combats)
@@ -2217,7 +2217,7 @@ namespace Supremacy.Game
                 }
 
                 _ = civManager.Credits.AdjustCurrent(_civMaintance * -1);
-                _text = "Credits > _civMaintance=" + _civMaintance + " for " + civ.Name;
+                _text = "Credits > _civMaintance= " + _civMaintance + " for " + civ.Name;
                 Console.WriteLine(_text);
                 //GameLog.Core.Production.DebugFormat(_text);
 
@@ -2298,7 +2298,7 @@ namespace Supremacy.Game
                     // Minors get an advantage of 4
                     if (!civ.IsEmpire)
                         newCredits *= 2;
-
+                    
                     _ = civManager.Credits.AdjustCurrent(newCredits);
                     _ = civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense);
                     _ = civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking);
@@ -2715,7 +2715,8 @@ namespace Supremacy.Game
                                 //    + " just for reducing credits..."
                                 //    ;
                                 //Console.WriteLine(_text);
-                                //civManager.Credits.UpdateAndReset();
+                                //civManager.Credits.UpdateAndReset();  // ..does this crash the credit calculation ??
+
                                 if (colony.Shipyard.BuildSlots[i].IsActive && !colony.Shipyard.BuildSlots[i].HasProject)
                                 {
 
@@ -2948,7 +2949,7 @@ namespace Supremacy.Game
 
                           ;
                           Console.WriteLine(civManager.Civilization.Key + ": " + _text);
-                          civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.RedYellow));
+                          civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.RedYellow));
                       }
 
                       /* Iterate through each colony. */
@@ -2966,13 +2967,13 @@ namespace Supremacy.Game
 
                           _ = colony.Morale.AdjustCurrent(colonyBonus);
 
-                          // slow down Morale above 130
-                          if (colony.Morale.CurrentValue > 130)
+                          // slow down Morale above 120
+                          if (colony.Morale.CurrentValue > 120)
                           {
                               _ = colony.Morale.AdjustCurrent(-1);
 
                               // slow * more * down Morale above 130
-                              if (colony.Morale.CurrentValue > 160)
+                              if (colony.Morale.CurrentValue > 150)
                               {
                                   _ = colony.Morale.AdjustCurrent(-1);
                               }
@@ -3835,7 +3836,7 @@ namespace Supremacy.Game
 
                     ;
                 //Console.WriteLine(_text);
-                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
 
                 _text = "Ranking: Research > " + civManager.Civilization.Name
                     + " = * " + _rankingResearchPositon
@@ -3845,7 +3846,7 @@ namespace Supremacy.Game
 
                     ;
                 //Console.WriteLine(_text);
-                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
 
                 _text = "Ranking: Intelligence > " + civManager.Civilization.Name
                     + " = * " + _rankingIntelAttackPositon
@@ -3855,7 +3856,7 @@ namespace Supremacy.Game
 
                     ;
                 //Console.WriteLine(_text);
-                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
             }
 
             //        foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)

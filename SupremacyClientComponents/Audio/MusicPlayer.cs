@@ -153,6 +153,11 @@ namespace Supremacy.Client.Audio
 
                     _musicPack = musicPack;
 
+                    for (int i = 0; i < musicPack.Entries.Count; i++)
+                    {
+                        Console.WriteLine(i+1 + " > " + musicPack.Entries[i].FileName);
+                    } 
+
                     if (trackName != null)
                     {
                         _musicEntry = _musicPack.FindByName(trackName);

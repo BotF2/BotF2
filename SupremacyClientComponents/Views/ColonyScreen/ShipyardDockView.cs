@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿//File:ShipyardDockView.cs
+using System.Windows;
 using System.Windows.Controls;
 
 using Supremacy.Economy;

@@ -1,4 +1,4 @@
-// GalaxyGridPanel.cs
+// File:GalaxyGridPanel.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -158,6 +158,7 @@ namespace Supremacy.UI
         #region Constructors
         static GalaxyGridPanel()
         {
+            Console.WriteLine("GalaxyGridPanel generated...");
 
             s_fleetIcons = new Dictionary<int, BitmapImage>();
             s_empireFills = new Dictionary<int, SolidColorBrush>();

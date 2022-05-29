@@ -465,21 +465,27 @@ namespace Supremacy.Client
             if (sender == HailButton)
             {
                 order = CombatOrder.Hail;
+                //DialogResult = true;
+                //Close();
             }
 
             if (sender == EscapeButton)
             {
                 order = CombatOrder.Retreat;
-                DialogResult = true;
-                Close();
+                //DialogResult = true;
+                //Close();
             }
 
-            _text = _playerAssets.Location + " > Combat at " + _playerAssets.Sector + " > " + order + " button was clicked by player";
+            _text = /*"###########################" +*/ 
+                _playerAssets.Location + " > Combat at " + _playerAssets.Sector 
+                + " > Target 1: " + _theTargeted1Civ.Name + ", 2: " + _theTargeted2Civ.Name
+                + " > Player's choice: " + order /*+ " button was clicked by player "*/
+                ;
             Console.WriteLine(_text);
             GameLog.Client.Combat.DebugFormat(_text);
 
             CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-            playerCivManager.SitRepEntries.Add(new Report_NoAction(playerCivManager.Civilization, _text, "", "", SitRepPriority.Red));
+            playerCivManager.SitRepEntries.Add(new ReportEntry_NoAction(playerCivManager.Civilization, _text, "", "", SitRepPriority.Red));
 
 
             UpperButtonsPanel.IsEnabled = false;
@@ -488,11 +494,15 @@ namespace Supremacy.Client
             ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, _theTargeted1Civ));
             ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, _theTargeted2Civ));
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
+
+            DialogResult = true;
+            Close();
         }
 
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+            Close();
             //_combatWindowVisible = false;
         }
 

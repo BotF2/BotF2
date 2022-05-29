@@ -147,6 +147,6 @@ namespace Supremacy.Economy
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Buildings;
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Facilites;
     }
 }

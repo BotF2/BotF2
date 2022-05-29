@@ -679,42 +679,49 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid>
-            <wpf:AutoGrid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </wpf:AutoGrid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+
+                    <wpf:AutoGrid x:Name="CrewSize">
+                        <wpf:AutoGrid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </wpf:AutoGrid.ColumnDefinitions>
+                        <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                        FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                        Margin="0,0,7,0"
                        VerticalAlignment="Top"
-                       Text="{s:StringResource 'DILITHIUM'}"
+                       Text="{s:StringResource 'SHIP_CREW_SIZE'}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
-            <TextBlock VerticalAlignment="Top"
+                        <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.(orbitals:ShipDesign.Dilithium)}"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.CrewSize)}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
-          </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="Duranium">
-            <wpf:AutoGrid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </wpf:AutoGrid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                    </wpf:AutoGrid>
+
+                    <wpf:AutoGrid>
+                        <wpf:AutoGrid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </wpf:AutoGrid.ColumnDefinitions>
+                        <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                        FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                        Margin="0,0,7,0"
                        VerticalAlignment="Top"
-                       Text="{s:StringResource 'RAW_MATERIALS'}"
+                       Text="{s:StringResource 'SHIP_SPEED_RANGE'}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
-            <TextBlock VerticalAlignment="Top"
-                       TextAlignment="Right"
-                       Text="{Binding Path=Design.Duranium}"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
-          </wpf:AutoGrid>
+                        <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        TextBlock.Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
+                            <TextBlock Text="{Binding Path=Design.(orbitals:ShipDesign.Speed)}" />
+                            <TextBlock Text=" / " />
+                            <TextBlock Text="{Binding Path=Design.(orbitals:ShipDesign.Range)}" />
+                        </StackPanel>
+                    </wpf:AutoGrid>
+
+            
           <wpf:AutoGrid x:Name="MaintenanceCost">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -733,7 +740,55 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="PrimaryWeapon">
+
+                    <wpf:AutoGrid>
+                        <wpf:AutoGrid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </wpf:AutoGrid.ColumnDefinitions>
+                        <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock Text="{s:StringResource 'SHIP_SHIELDS'}" />
+              <TextBlock Text="/" />
+              <TextBlock Text="{s:StringResource 'SHIP_HULL'}" />
+            </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} / {1}">
+                                    <Binding Path="Design.(orbitals:OrbitalDesign.ShieldStrength)" />
+                                    <Binding Path="Design.(orbitals:OrbitalDesign.HullStrength)" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </wpf:AutoGrid>
+
+                    <wpf:AutoGrid x:Name="ShieldRechargeRate">
+                        <wpf:AutoGrid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </wpf:AutoGrid.ColumnDefinitions>
+                        <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SHIELD_RECHARGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                        <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                    </wpf:AutoGrid>
+
+                    <wpf:AutoGrid x:Name="PrimaryWeapon">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -761,6 +816,7 @@
              </TextBlock.Text>
             </TextBlock>
           </wpf:AutoGrid>
+            
           <wpf:AutoGrid x:Name="SecondaryWeapon">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -783,72 +839,9 @@
                        TextAlignment="Right"
                        Text="{Binding Path=Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Damage)}" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid>
-            <wpf:AutoGrid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </wpf:AutoGrid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
-                       Margin="0,0,7,0"
-                       VerticalAlignment="Top"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap">
-              <TextBlock Text="{s:StringResource 'SHIP_SHIELDS'}" />
-              <TextBlock Text="/" />
-              <TextBlock Text="{s:StringResource 'SHIP_HULL'}" />
-            </TextBlock>
-            <TextBlock VerticalAlignment="Top"
-                       TextAlignment="Right"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap">
-              <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0} / {1}">
-                <Binding Path="Design.(orbitals:OrbitalDesign.ShieldStrength)" />
-                <Binding Path="Design.(orbitals:OrbitalDesign.HullStrength)" />
-              </MultiBinding>
-              </TextBlock.Text>
-            </TextBlock>
-          </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="ShieldRechargeRate">
-            <wpf:AutoGrid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </wpf:AutoGrid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
-                       Margin="0,0,7,0"
-                       VerticalAlignment="Top"
-                       Text="{s:StringResource 'SHIP_SHIELD_RECHARGE'}"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
-            <TextBlock VerticalAlignment="Top"
-                       TextAlignment="Right"
-                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
-          </wpf:AutoGrid>
-          <wpf:AutoGrid>
-            <wpf:AutoGrid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </wpf:AutoGrid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
-                       Margin="0,0,7,0"
-                       VerticalAlignment="Top"
-                       Text="{s:StringResource 'SHIP_SPEED_RANGE'}"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        TextBlock.Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
-              <TextBlock Text="{Binding Path=Design.(orbitals:ShipDesign.Speed)}" />
-              <TextBlock Text=" / " />
-              <TextBlock Text="{Binding Path=Design.(orbitals:ShipDesign.Range)}" />
-            </StackPanel>
-          </wpf:AutoGrid>
+            
+
+           
           <wpf:AutoGrid x:Name="CloakStrength">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -867,6 +860,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
+            
           <wpf:AutoGrid x:Name="CamouflagedStrength">
             <wpf:AutoGrid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -885,6 +879,7 @@
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="NoWrap" />
             </wpf:AutoGrid>
+            
             <wpf:AutoGrid>
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -909,6 +904,7 @@
               </TextBlock.Text>
             </TextBlock>
           </wpf:AutoGrid>
+            
           <wpf:AutoGrid x:Name="ScienceAbility">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -927,6 +923,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
+            
           <wpf:AutoGrid x:Name="PopulationHealth">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -945,24 +942,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="CrewSize">
-            <wpf:AutoGrid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </wpf:AutoGrid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
-                       Margin="0,0,7,0"
-                       VerticalAlignment="Top"
-                       Text="{s:StringResource 'SHIP_CREW_SIZE'}"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
-            <TextBlock VerticalAlignment="Top"
-                       TextAlignment="Right"
-                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.CrewSize)}"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
-          </wpf:AutoGrid>
+           
           <wpf:AutoGrid>
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -981,7 +961,46 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </wpf:AutoGrid>
-          <wpf:AutoGrid x:Name="UpgradableDesigns">
+
+                    <wpf:AutoGrid>
+                        <wpf:AutoGrid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </wpf:AutoGrid.ColumnDefinitions>
+                        <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'DILITHIUM'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                        <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipDesign.Dilithium)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                    </wpf:AutoGrid>
+
+                    <wpf:AutoGrid x:Name="Duranium">
+                        <wpf:AutoGrid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </wpf:AutoGrid.ColumnDefinitions>
+                        <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'RAW_MATERIALS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                        <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.Duranium}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                    </wpf:AutoGrid>
+
+                    <wpf:AutoGrid x:Name="UpgradableDesigns">
             <wpf:AutoGrid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />

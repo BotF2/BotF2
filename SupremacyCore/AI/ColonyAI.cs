@@ -28,20 +28,31 @@ namespace Supremacy.AI
         //private const int ColonyShipEveryTurns = 2;
         private const int ColonyShipEveryTurnsMinor = 5;
         private const int MaxMinorColonyCount = 3;
-        private const int MaxEmpireColonyCount = 999;
+
         private static string _text;
         private static int neededColonizer;
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
+        private const int MaxEmpireColonyCount = 999;
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
+#pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private static bool need1Colonizer;
+        private static string blank = " ";
+#pragma warning restore IDE0052 // Ungelesene private Member entfernen
 
         public static void DoTurn([NotNull] Civilization civ)
         {
             if (civ == null)
             {
+                need1Colonizer = false;// dummy > just keep
+                _text = need1Colonizer.ToString();
                 throw new ArgumentNullException(nameof(civ));
             }
 
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(civ.CivID))
             {
+                _text = "Handling colony " + colony.Location + blank + colony.Name;
+                Console.WriteLine(_text);
+
                 HandleEnergyProduction(colony);
                 HandleFoodProduction(colony);
                 HandleBuildings(colony, civ);
@@ -253,9 +264,12 @@ namespace Supremacy.AI
                 //if ((manager.Credits.CurrentValue - (cost * 0.2)) > s.Project.GetTotalCreditsCost())
                 if ((manager.Credits.CurrentValue > cost))
                 {
-                    double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput * colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue) * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
-                    int maxProdFacility = Math.Min(colony.TotalFacilities[ProductionCategory.Industry].Value, (colony.GetAvailableLabor() / colony.GetFacilityType(ProductionCategory.Industry).LaborCost) + colony.ActiveFacilities[ProductionCategory.Intelligence].Value + colony.ActiveFacilities[ProductionCategory.Research].Value + colony.ActiveFacilities[ProductionCategory.Industry].Value);
-                    int industryNeeded = colony.BuildSlots.Where(bs => bs.Project != null).Select(bs => bs.Project.IsRushed ? 0 : bs.Project.GetCurrentIndustryCost()).Sum();
+                    double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput * colony.Morale.CurrentValue  
+                        / (0.5f * MoraleHelper.MaxValue) * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
+                    int maxProdFacility = Math.Min(colony.TotalFacilities[ProductionCategory.Industry].Value, (colony.GetAvailableLabor() / colony.GetFacilityType(ProductionCategory.Industry).LaborCost) 
+                        + colony.ActiveFacilities[ProductionCategory.Intelligence].Value + colony.ActiveFacilities[ProductionCategory.Research].Value + colony.ActiveFacilities[ProductionCategory.Industry].Value);
+                    int industryNeeded = colony.BuildSlots.Where(bs => bs.Project != null)
+                        .Select(bs => bs.Project.IsRushed ? 0 : bs.Project.GetCurrentIndustryCost()).Sum();
                     int turnsNeeded = industryNeeded == 0 ? 0 : (int)Math.Ceiling(industryNeeded / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (maxProdFacility * prodOutput)));
                     
                     

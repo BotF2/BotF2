@@ -23,8 +23,8 @@ namespace Supremacy.Client.Audio
         private const string PackDefName = "MusicPack";
         private const string TrackDefName = "Track";
 
-        private List<MusicEntry> _musicList = new List<MusicEntry>();
-        private Dictionary<string, MusicEntry> _musicDict = new Dictionary<string, MusicEntry>();
+        private readonly List<MusicEntry> _musicList = new List<MusicEntry>();
+        private readonly Dictionary<string, MusicEntry> _musicDict = new Dictionary<string, MusicEntry>();
         #endregion
 
         #region Properties
@@ -43,7 +43,7 @@ namespace Supremacy.Client.Audio
             xmlDoc.Load(ResourceManager.GetResourcePath(packPath));
             xmlRoot = xmlDoc.DocumentElement;
 
-            List<MusicEntry> tracks = new List<MusicEntry>();
+            //List<MusicEntry> tracks = new List<MusicEntry>();
             foreach (XmlElement xmlPack in xmlRoot.GetElementsByTagName(PackDefName))
             {
                 string musicPackName = xmlPack.GetAttribute("Name");
@@ -87,6 +87,7 @@ namespace Supremacy.Client.Audio
                     if (!string.IsNullOrEmpty(trackName))
                     {
                         _musicDict.Add(trackName, entry);
+                        Console.WriteLine("Track available > " + trackName);
                     }
                 }
             }

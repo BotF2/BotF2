@@ -1,4 +1,4 @@
-// UnitActivationBar.cs
+// File:UnitActivationBar.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -508,12 +508,12 @@ namespace Supremacy.UI
         #region Command Handlers
         private void CanIncrementValue(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = IsReadOnly ? false : ActiveUnits < MaxActiveUnits;
+            e.CanExecute = !IsReadOnly && ActiveUnits < MaxActiveUnits;
         }
 
         private void CanDecrementValue(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = IsReadOnly ? false : ActiveUnits > 0;
+            e.CanExecute = !IsReadOnly && ActiveUnits > 0;
         }
 
         private void IncrementValueExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -653,7 +653,8 @@ namespace Supremacy.UI
 
             for (int i = 0; i < _unitBlockBounds.Length; i++)
             {
-                double centerX = _unitBlockBounds[i].Left + (_unitBlockBounds[i].Width / 2);
+                //double centerX = _unitBlockBounds[i].Left + (_unitBlockBounds[i].Width / 2);
+                double centerX = _unitBlockBounds[i].Left + (_unitBlockBounds[i].Width);
                 double distance = Math.Abs(point.X - centerX);
                 if (distance >= minDistance)
                 {
@@ -737,6 +738,9 @@ namespace Supremacy.UI
                 (_contentArea != null)
                     ? _contentArea.RenderSize.Height
                     : ActualHeight);
+
+    //        return new Rect(
+    //offset.X + ((unitBlockWidth + (unitBlockWidth / 2.0)) * index) + (unitBlockWidth / 2.0),
         }
 
         protected override Size ArrangeOverride(Size arrangeBounds)
@@ -765,7 +769,9 @@ namespace Supremacy.UI
             //    && !double.IsInfinity(actualWidth))
             {
                 //double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 24.0), 1.0));
-                double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 18.0), 1.0));
+                
+                // 2022-04-22: new 0.8 and back to 24 from 18
+                double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.8 / GetMaxUnitsInGroup(), 24.0), 1.0));
 
                 _unitBlockBounds = new Rect[Units];
 

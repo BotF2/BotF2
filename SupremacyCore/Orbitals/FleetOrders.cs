@@ -37,6 +37,7 @@ namespace Supremacy.Orbitals
         public static readonly AvoidOrder AvoidOrder;
         public static readonly IdleOrder IdleOrder;
         public static readonly DefendOrder DefendOrder;
+        public static readonly StrandedOrder StrandedOrder;
         public static readonly RedeployNoneOrder RedeployNoneOrder;
         public static readonly RedeploySameOrder RedeploySameOrder;
         public static readonly RedeployAllOrder RedeployAllOrder;
@@ -65,6 +66,7 @@ namespace Supremacy.Orbitals
             AvoidOrder = new AvoidOrder();
             IdleOrder = new IdleOrder();
             DefendOrder = new DefendOrder();
+            StrandedOrder = new StrandedOrder();
             RedeployNoneOrder = new RedeployNoneOrder();
             RedeploySameOrder = new RedeploySameOrder();
             RedeployAllOrder = new RedeployAllOrder();
@@ -100,6 +102,7 @@ namespace Supremacy.Orbitals
                           // no action, just showing 'a status'
                           IdleOrder,
                           DefendOrder,
+                          StrandedOrder,
 
                           // Redeploy
                           RedeployNoneOrder,
@@ -221,6 +224,7 @@ namespace Supremacy.Orbitals
     #endregion AvoidOrder
 
 
+
     #region IdleOrder
     [Serializable]
     public sealed class IdleOrder : FleetOrder
@@ -234,6 +238,20 @@ namespace Supremacy.Orbitals
         }
     }
     #endregion IdleOrder
+
+    #region StrandedOrder
+    [Serializable]
+    public sealed class StrandedOrder : FleetOrder
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_STRANDED");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_STRANDED");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new StrandedOrder();
+        }
+    }
+    #endregion StrandedOrder
 
     #region RedeployNoneOrder
     [Serializable]
@@ -250,6 +268,8 @@ namespace Supremacy.Orbitals
         }
         public override bool IsValidOrder(Fleet fleet)
         {
+            _text += _text;  // dummy > just keep
+
             //_text = "ShipOrder 'RedeployNoneOrder' is turned off due to not working yet";
             //Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);

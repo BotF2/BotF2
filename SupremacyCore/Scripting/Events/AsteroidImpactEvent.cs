@@ -20,26 +20,27 @@ namespace Supremacy.Scripting.Events
     [Serializable]
     public class AsteroidImpactEvent : UnitScopedEvent<Colony>
     {
-#pragma warning disable IDE0052 // Remove unread private members
         private bool _productionFinished;         // this is necassary !!!
         private bool _shipProductionFinished;     // this is necassary !!!
-#pragma warning restore IDE0052 // Remove unread private members
-
 
         private int _occurrenceChance = 200;
 
 
         [NonSerialized]
+#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
         private List<BuildProject> _affectedProjects;
+#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
+
+        private string _text;
+
 
         public AsteroidImpactEvent()
         {
             _affectedProjects = new List<BuildProject>();
 
-            // keep the following to avoid error messages while "Build"
-            //bool fake;
-            //fake = _productionFinished;
-            //fake = _shipProductionFinished;
+            //keep the following to avoid error messages while "Build"
+            _text += _productionFinished.ToString() + _text;
+            _text += _shipProductionFinished.ToString();
         }
 
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;

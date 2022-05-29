@@ -1,5 +1,10 @@
-﻿using Supremacy.Economy;
+﻿using Supremacy.Client.Audio;
+using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.Tech;
+using Supremacy.Utility;
+using System;
+using System.IO;
 using System.Linq;
 
 using System.Windows;
@@ -8,15 +13,19 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
+
 namespace Supremacy.Client.Views
 {
 
-
     public partial class NewShipSelectionView
     {
+
         public NewShipSelectionView(ShipyardBuildSlot buildSlot)
         {
             InitializeComponent();
+            //[NotNull] ISoundPlayer soundPlayer,
+
+        //var _soundPlayer = new soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard)
                                         .OrderBy(s => s.BuildDesign.Key)
@@ -61,6 +70,7 @@ namespace Supremacy.Client.Views
             new FrameworkPropertyMetadata(
                 null,
                 FrameworkPropertyMetadataOptions.None));
+        private string _text;
 
         public object AdditionalContent
         {
@@ -100,6 +110,20 @@ namespace Supremacy.Client.Views
             if (contanier == null)
             {
                 return;
+            }
+            string _soundfile = "Resources\\SoundFX\\sound001.wav";
+            if (File.Exists(_soundfile))
+            {
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfile);
+                //GameLog.Client.General.Debug("Playing LoadingSplash.wav");
+                //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
+                player.Play();
+            }
+            else
+            {
+                _text = "Resources/SoundFX/Menu/sound001.wav not found...";
+                Console.WriteLine(_text);
+                GameLog.Client.Audio.InfoFormat(_text);
             }
 
             DialogResult = true;   // just trying to solve the HowMany Ships to build by keeping screen open

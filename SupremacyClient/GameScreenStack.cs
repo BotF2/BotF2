@@ -41,6 +41,7 @@ namespace Supremacy.Client
             region.Behaviors.Add(
                 GameScreenStackSelectionSyncBehavior.BehaviorKey,
                 new GameScreenStackSelectionSyncBehavior { HostControl = regionTarget });
+            Console.WriteLine("why this is jumepd over by Visual Studio?");
             base.AttachBehaviors(region, regionTarget);
         }
 

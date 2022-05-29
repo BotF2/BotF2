@@ -413,8 +413,8 @@ namespace Supremacy.Economy
 
             if(!_alreadyDone.Contains(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
             { 
-                civManager.SitRepEntries.Add(new Report_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
-                civManager.SitRepEntries.Add(new Report_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
             }
 
             _alreadyDone.Add(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber);

@@ -13,7 +13,9 @@ namespace Supremacy.AI
 
     public static class DiplomatAI
     {
-        private static List<ForeignPower> AlreadyMinorMember = new List<ForeignPower>(); 
+#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
+        private static List<ForeignPower> AlreadyMinorMember = new List<ForeignPower>();
+#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
 
