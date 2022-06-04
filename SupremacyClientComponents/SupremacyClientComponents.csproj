@@ -44,8 +44,8 @@
       <HintPath>..\Common\ActiproSoftware.Shared.Wpf351.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AvalonLibrary, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f">
-      <HintPath>..\packages\AvalonLibrary.2.3.0.0\lib\net40\AvalonLibrary.dll</HintPath>
+    <Reference Include="AvalonLibrary, Version=2.4.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonLibrary.2.4.0\lib\net45\AvalonLibrary.dll</HintPath>
     </Reference>
     <Reference Include="BindingOriented.SyncLinq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1645360add590f18">
       <SpecificVersion>False</SpecificVersion>
@@ -130,10 +130,8 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Common\System.Windows.Interactivity.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
