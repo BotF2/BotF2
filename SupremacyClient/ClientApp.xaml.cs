@@ -437,18 +437,19 @@ namespace Supremacy.Client
                     return;
                 }
 
+                // maybe we don't need this anymore because it is shown at Start Screen as a requirement
 
-                if (!CheckXNAFramework31())
-                {
-                    _ = MessageBox.Show(
-                            "Rise of the UFP requires Microsoft XNA Framework V3.1 "
-                            + Environment.NewLine
-                            + "It must be installed before running the game.",
-                            "Rise of the UFP",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Hand);
-                    return;
-                }
+                //if (!CheckXNAFramework31())
+                //{
+                //    _ = MessageBox.Show(
+                //            "Rise of the UFP requires Microsoft XNA Framework V3.1 "
+                //            + Environment.NewLine
+                //            + "It must be installed before running the game.",
+                //            "Rise of the UFP",
+                //            MessageBoxButton.OK,
+                //            MessageBoxImage.Hand);
+                //    return;
+                //}
 
 
                 //Error - txt - First Run.txt
