@@ -464,8 +464,9 @@ namespace Supremacy.Client
                 {
                     if (!File.Exists(file))
                     {
-                        //streamWriter;
                         StreamWriter streamWriter = new StreamWriter(file);
+                        streamWriter.WriteLine("IF this file doesn't exist before it is re-created out of the code ! ");
+                        streamWriter.WriteLine(" ");
                         streamWriter.WriteLine("if the game crash after first start...");
                         streamWriter.WriteLine("...make sure you have the requirements installed:");
                         streamWriter.WriteLine(" ");
@@ -476,10 +477,11 @@ namespace Supremacy.Client
                         streamWriter.WriteLine("- not program folders");
                         streamWriter.WriteLine("- maybe c:/User/YourUserName/RiseoftheUFP");
                         streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("c) if still problems > see /Resources/_Trouble-Fix_for_Rise_Of_The_UFP.txt");
+                        streamWriter.WriteLine("c) if still problems > see /Resources/FIXES FOR COMMON PROBLEMS.txt");
                         streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("d) for more info see http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview");
+                        streamWriter.WriteLine("d) https://appuals.com/how-to-fix-folder-keeps-reverting-to-read-only-on-windows-10/ > file access in windows 11 might be controled by your security app. Try putting SupremacyClient.exe in an exclusion from read-only protection in the security app.)";
                         streamWriter.WriteLine(" ");
+                        streamWriter.WriteLine("e) for more info see http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview");
                         streamWriter.WriteLine(" ");
 
                         streamWriter.Close();
