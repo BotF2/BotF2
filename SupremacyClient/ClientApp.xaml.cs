@@ -480,7 +480,7 @@ namespace Supremacy.Client
                         streamWriter.WriteLine(" ");
                         streamWriter.WriteLine("c) if still problems > see /Resources/FIXES FOR COMMON PROBLEMS.txt");
                         streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("d) https://appuals.com/how-to-fix-folder-keeps-reverting-to-read-only-on-windows-10/ > file access in windows 11 might be controled by your security app. Try putting SupremacyClient.exe in an exclusion from read-only protection in the security app.)";
+                        streamWriter.WriteLine("d) https://appuals.com/how-to-fix-folder-keeps-reverting-to-read-only-on-windows-10/ > file access in windows 11 might be controled by your security app. Try putting SupremacyClient.exe in an exclusion from read-only protection in the security app.)");
                         streamWriter.WriteLine(" ");
                         streamWriter.WriteLine("e) for more info see http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview");
                         streamWriter.WriteLine(" ");
