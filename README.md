@@ -19,8 +19,14 @@ Honoring Birth of the Federation, more commonly abbreviated 'BOTF', was a turn-b
 
 ![System Structures Screen](https://www.botf2.org/images/screenshots/SystemStructuresScreen.png)
 
-## Installing
-Full installation instructions are coming soon
+## Setup
+This project is in C#.  The code is on Github, but many of the graphics are stored separately, due to their size, on a shared dropbox folder.  You can email me, sisko52744 at gmail dot com, for access to that folder.  You will need to copy the contents of a resources folder there into a resources folder on your local computer. 
+
+For the project, we recommend using a good IDE, such as Visual Studio or VSCode for this project.  You will need to download an older .NET framework for this project, found here:
+https://www.microsoft.com/en-us/download/details.aspx?id=6041
+
+You will also need to download an XNA Framework, found here:
+https://www.microsoft.com/en-gb/download/details.aspx?id=15163
 
 ## Contributing
 There are many ways you can contribute. Since you're on GitHub, we'll assume you're a programmer. BotF2 follows a fairly standard development process -  fork, branch, commit, pull request, merge. If you don't know how to do this, here is a guide to the process - https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
