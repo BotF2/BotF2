@@ -1,4 +1,4 @@
-// SupremacyService.cs
+// File:SupremacyService.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

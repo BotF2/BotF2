@@ -438,6 +438,7 @@ namespace Supremacy.Orbitals
                          o.ShipType != ShipType.Spy);
 
         public bool HasCommandShip => Ships.Any(o => o.ShipType == ShipType.Command);
+        public bool HasConstructionShip => Ships.Any(o => o.ShipType == ShipType.Construction);
 
         public bool IsScout => Ships.Count == 1 && Ships[0].ShipType == ShipType.Scout;
 

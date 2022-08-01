@@ -115,18 +115,23 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="0.00001*" />
         </Grid.RowDefinitions>
+        <TextBlock Text="> "
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"/>
         <scc:GameButton Grid.Row="1"
                         Grid.Column="0"
-                        Margin="0,5,0,5"
+                        Margin="15,5,0,5"
                         DisplayMode="Hyperlink"
                         VerticalAlignment="Center"
+                        FontSize="18"  
                         Label="{Binding Path=Name}"
                         Command="{x:Static scc:NavigationCommands.NavigateToColony}"
                         CommandParameter="{Binding FallbackValue={x:Null}}" />
         <TextBlock Grid.Column="0"
                    Grid.Row="2"
                    VerticalAlignment="Center"
-                   FontWeight="DemiBold"  
                    Text="{Binding Path=Inhabitants.PluralName}" />
         <TextBlock Text="POPULATION ="
                    Grid.Row="1"
@@ -374,18 +379,18 @@
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
-        <!-- Grid for Shipyards-->
+        <!-- Grid for Shipyards--><!--
         <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="20" Margin="0,5,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="80"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="280"/>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="280" />
-                <ColumnDefinition Width="Auto" />
-                <!--<ColumnDefinition Width="Auto" MinWidth="40" />
+                --><!--<ColumnDefinition Width="Auto" MinWidth="200"/>
                 <ColumnDefinition Width="Auto" />-->
+                <!--<ColumnDefinition Width="Auto" MinWidth="200" />
+                <ColumnDefinition Width="Auto" />-->
+                <!--<ColumnDefinition Width="Auto" MinWidth="40" />
+                <ColumnDefinition Width="Auto" />--><!--
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto"  />
             </Grid.ColumnDefinitions>
@@ -399,18 +404,18 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="0.00001*" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0"
+            --><!--<TextBlock Grid.Column="0"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 FontWeight="DemiBold"              
-                Text="Shipyard 1:  " />
-            <TextBlock Grid.Column="0"
+                Text="Shipyard 1:  " />-->
+            <!--<TextBlock Grid.Column="0"
                 Grid.Row="1"
                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
-                Text="Shipyard 2:  " />
+                Text="Shipyard 2:  " />-->
             <!--<TextBlock Grid.Column="3"
                 Grid.Row="0"
                 VerticalAlignment="Center"
@@ -449,7 +454,7 @@
                 Grid.ColumnSpan="1"
                 VerticalAlignment="Center"
                    FontWeight="DemiBold"  
-                Text=" Shipyard 6:" />-->
+                Text=" Shipyard 6:" />--><!--
             <TextBlock Grid.Column="1"
                 Grid.Row="0"
                 Grid.ColumnSpan="1"
@@ -461,7 +466,7 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[1].Project}" />
-            <!--<TextBlock Grid.Column="3"
+            --><!--<TextBlock Grid.Column="3"
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 VerticalAlignment="Center"
@@ -495,13 +500,13 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
                         Text="{Binding Path=ResearchForSpyScreen}" />-->
-            <TextBlock Grid.Column="6"
+            <!--<TextBlock Grid.Column="6"
                 Grid.Row="6"
                 Grid.ColumnSpan="3"                   
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[5].Project}" />
-        </Grid>
+                Text="{Binding Path=Shipyard.BuildSlots[5].Project}" />--><!--
+        </Grid>-->
       <!-- Blame Others -->
       <!--<Border Grid.Row="6"
              Grid.Column="0"

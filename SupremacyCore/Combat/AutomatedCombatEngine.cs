@@ -1,4 +1,4 @@
-// AutomatedCombatEngine.cs
+// File:AutomatedCombatEngine.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -2197,8 +2197,8 @@ namespace Supremacy.Combat
                     }
                     else if (constructOrColonyShips.Count() > 0) //
                     {
-                        CombatUnit firstConstrutorOrColonyCombatUnit = constructOrColonyShips.FirstOrDefault()?.Item1;
-                        if (ship.Item1.Owner == firstConstrutorOrColonyCombatUnit.Owner || !CombatHelper.WillEngage(ship.Item1.Owner, firstConstrutorOrColonyCombatUnit.Owner))
+                        CombatUnit firstConstructorOrColonyCombatUnit = constructOrColonyShips.FirstOrDefault()?.Item1;
+                        if (ship.Item1.Owner == firstConstructorOrColonyCombatUnit.Owner || !CombatHelper.WillEngage(ship.Item1.Owner, firstConstructorOrColonyCombatUnit.Owner))
                         {
                             _stayingThereShips.Add(ship); // first owner of a colony or construction ship stays
                         }
@@ -2224,6 +2224,17 @@ namespace Supremacy.Combat
                         //_allRetreatShips.Add(ship);
                     }
                     //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
+                    _text = "Combat at " + ship.Item1.Source.Location
+                        + " > #" + ship.Item1.Source.ObjectID
+                        + "  " + ship.Item1.Source.Design
+                        + " * " + ship.Item1.Name + " * "
+
+                        + " still alive and staying."
+                        ;
+                    Console.WriteLine("SR: " + _text);
+                    civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
 
                 }
             }

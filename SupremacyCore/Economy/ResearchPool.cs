@@ -353,7 +353,7 @@ namespace Supremacy.Economy
             string distributionSummary = "";
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[_ownerId];
 
-            researchSummary += "Progress: ";// + "Gained P. = " + researchPoints + " Progress: "; 
+            researchSummary += "LT-Progress: ";// + "Gained P. = " + researchPoints + " Progress: "; 
             distributionSummary += "Research Distrib. ";
 
             foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)

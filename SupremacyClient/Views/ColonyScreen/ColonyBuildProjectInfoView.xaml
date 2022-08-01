@@ -48,14 +48,14 @@
           <TextBlock DockPanel.Dock="Top"
                      Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                     FontSize="14pt"
+                     FontSize="16pt"
                      TextWrapping="Wrap"
                      Width="Auto"
                      Text="{Binding Path=BuildDesign.Name, Mode=OneWay, Converter={StaticResource StringResourceConverter}}" />
           <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      Background="Black"
-                     FontSize="11pt"
+                     FontSize="14pt"
                      Margin="0,7,0,0"
                      TextWrapping="Wrap"
                      Text="{Binding Path=BuildDesign.Description, Mode=OneWay, Converter={StaticResource StringResourceConverter}}" />

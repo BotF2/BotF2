@@ -520,6 +520,9 @@ namespace Supremacy.UI
                             population.Text = string.Format("{0}: {1:#,##0} of {2:#,##0}",
                                 ResourceManager.GetString("SYSTEM_POPULATION"),
                                 system.Colony.Population.CurrentValue, system.Colony.MaxPopulation);
+                            if (system.Colony.MaxPopulation == 0) 
+                                name.Text = "# " + name.Text;
+
                             growth.Text = string.Format("{0}: {1:0.#}%",
                                 ResourceManager.GetString("SYSTEM_GROWTH_RATE"), system.Colony.GrowthRate * 100);
                             race.Text = string.Format("{0}: {1}",

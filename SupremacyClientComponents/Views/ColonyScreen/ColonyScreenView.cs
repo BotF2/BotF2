@@ -19,54 +19,16 @@ namespace Supremacy.Client.Views
     {
         public ColonyScreenView([NotNull] IUnityContainer container) : base(container)
         {
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.PreviousColonyCommand,
-                    Key.Left,
-                    ModifierKeys.None));
-
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.NextColonyCommand,
-                    Key.Right,
-                    ModifierKeys.None));
-
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.PreviousColonyCommand,
-                    Key.BrowserBack,
-                    ModifierKeys.None));
-
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.NextColonyCommand,
-                    Key.BrowserForward,
-                    ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.PreviousColonyCommand,Key.Left,ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.NextColonyCommand,Key.Right,ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.PreviousColonyCommand,Key.BrowserBack,ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.NextColonyCommand,Key.BrowserForward,ModifierKeys.None));
 
             // ToDo: Numeric 1 to 4  should toggles between Tab 1 to 4  (not done yet)
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.NextColonyCommand,
-                    Key.D1,
-                    ModifierKeys.Control));
-
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.NextColonyCommand,
-                    Key.D2,
-                    ModifierKeys.Control));
-
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.NextColonyCommand,
-                    Key.D3,
-                    ModifierKeys.Control));
-
-            _ = InputBindings.Add(
-                new KeyBinding(
-                    ColonyScreenCommands.NextColonyCommand,
-                    Key.D3,
-                    ModifierKeys.Control));
+            //_ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.ShowColonyManagementCommand,Key.F7,ModifierKeys.None)); // Key.F7 planned
+            //_ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.ShowColonyBuildListCommand, Key.F8,ModifierKeys.None));
+            //_ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.ShowShipyardCommand,Key.F9,ModifierKeys.None));
+                                   
         }
 
         public override void OnDestroyed()

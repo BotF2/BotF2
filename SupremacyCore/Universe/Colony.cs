@@ -543,7 +543,7 @@ namespace Supremacy.Universe
         /// Gets the buildings at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The buildings.</value>
-        public IObservableIndexedCollection<Building> Buildings => _buildings;
+        public IObservableIndexedCollection<Building> Buildings => _buildings;// .OrderBy(o => o.IsActive);//  this.NetEnergy);
 
         /// <summary>
         /// Gets the active buildings at this <see cref="Colony"/>.
@@ -1890,17 +1890,6 @@ namespace Supremacy.Universe
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     DoSitRepGray(_text);
                 }
-                //else
-                //if (_foodReserves > (Population.CurrentValue * 2))
-                //{
-                //    if (GetUnusedFacilities(ProductionCategory.Food) > 0)
-                //    {
-                //        ReduceOneOtherPF();
-                //        _ = ActivateFacility(ProductionCategory.Food);
-                //        _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
-                //        DoSitRepGray(_text);
-                //    }
-                //}
 
                 //if (_foodReserves > 2000)
                 //{

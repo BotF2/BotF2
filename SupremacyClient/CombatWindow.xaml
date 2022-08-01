@@ -95,6 +95,10 @@
                             Height="16"
                             Stretch="Uniform">
                     </Image>
+                    <Border.ToolTip>
+                        <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
+                                    Stretch="UniformToFill"/>
+                    </Border.ToolTip>
                 </Border>
                 <StackPanel Orientation="Vertical"
                             Margin="6,0,0,0"
@@ -108,7 +112,7 @@
                         <TextBlock Text=", "/>
                         <TextBlock Text="{s:StringResource COMBAT_FIRE_POWER}"/>
                         <TextBlock Text=" "/>
-                        <TextBlock Text="{Binding Path=Firepower}"/>
+                        <TextBlock Text="{Binding Path=Firepower}" Foreground="OrangeRed"   />
                         <TextBlock x:Name="DestroyedText"
                                    Foreground="Aqua"
                                    FontSize="14"
@@ -130,23 +134,23 @@
                         <StackPanel Grid.Column="0"
                                     Orientation="Horizontal">
                             <TextBlock Text="{s:StringResource SHIP_SHIELDS}"/>
-                            <TextBlock Text=" "/>
-                            <TextBlock Text="{Binding Path=ShieldStrength}"/>
+                            <TextBlock Text=":  "/>
+                            <TextBlock Text="{Binding Path=ShieldStrength}" Foreground="Aqua"/>
                             <TextBlock Text=" "/>
                             <TextBlock Text="/"/>
                             <TextBlock Text=" "/>
-                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.ShieldStrength}"/>
+                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.ShieldStrength}" />
                         </StackPanel>
                         <StackPanel Grid.Column="1"
                                     Orientation="Horizontal"
                                     Margin="12,0,0,0">
                             <TextBlock Text="{s:StringResource SHIP_HULL}"/>
-                            <TextBlock Text=" "/>
-                            <TextBlock Text="{Binding Path=HullStrength}"/>
+                            <TextBlock Text=":  "/>
+                            <TextBlock Text="{Binding Path=HullStrength}" Foreground="White"/>
                             <TextBlock Text=" "/>
                             <TextBlock Text="/"/>
                             <TextBlock Text=" "/>
-                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.HullStrength}"/>
+                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.HullStrength}" />
                         </StackPanel>
                     </Grid>
                 </StackPanel>

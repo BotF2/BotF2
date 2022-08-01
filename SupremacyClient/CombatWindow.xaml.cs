@@ -113,6 +113,7 @@ namespace Supremacy.Client
                 ;
 
             List<CivilizationManager> _civs = new List<CivilizationManager>();
+            CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
 
 
             foreach (CombatAssets assets in update.FriendlyAssets)
@@ -153,7 +154,7 @@ namespace Supremacy.Client
                         _update.Sector.Name);
                     _text += _text + " - no winner";
 
-                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+                    //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
                     playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
 
                     //playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
@@ -170,7 +171,7 @@ namespace Supremacy.Client
                         _update.Sector.Name);
                     _text += _text + " - we were victorious !";
 
-                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+                    //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
                     playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
                 }
                 else
@@ -183,7 +184,7 @@ namespace Supremacy.Client
                         _update.Sector.Name);
                     _text += _text + " - we were not victorious !";
 
-                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+                    //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
                     playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
                 }
             }
@@ -205,6 +206,10 @@ namespace Supremacy.Client
             SubHeader2Text.Text = string.Format(
                 ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
                 _update.Sector.Name);
+
+            _text = "Hello209" + _text;
+            //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+            playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
 
             PopulateUnitTrees();
 

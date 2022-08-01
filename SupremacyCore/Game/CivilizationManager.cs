@@ -64,8 +64,9 @@ namespace Supremacy.Game
         private int _rankMaint;
         private int _rankResearch;
         private int _rankIntelAttack;
+        private bool _destroyOfShipOrdered;
         private string _text;
-        private int bc;  // buildingCosts
+        //private int bc;  // buildingCosts
         private readonly string newline = Environment.NewLine;
 
         //private readonly IPlayer _localPlayer;
@@ -228,10 +229,7 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
-            //_buyCostLastTurn = new Meter(0, Meter.MinValue, Meter.MaxValue);
             _buyCostLastTurn = 0;
-            //_rankCredits = 0;
-
 
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
@@ -342,6 +340,15 @@ namespace Supremacy.Game
             set => _maintenanceCostLastTurn = value;
         }
 
+        /// <summary>
+        /// Gets whether a destroy of a ship (one per turn) was ordered to reduce MaintenanceCostLastTurn.
+        /// </summary>
+        public bool DestroyOfShipOrdered
+        {
+            get => _destroyOfShipOrdered;
+            set => _destroyOfShipOrdered = value;
+        }
+
         ///// <summary>
         ///// Gets the civilization's MaintenanceCostLastTurn.
         ///// </summary>
@@ -351,7 +358,6 @@ namespace Supremacy.Game
             {
                 return Credits.CurrentChange;
             }
-            //set => _buyCostLastTurn += value;
         }
 
         /// <summary>
@@ -363,29 +369,34 @@ namespace Supremacy.Game
             {
 
                 //int bc = 0;
-                if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
-                    bc = 0;
-                //TotalPopulation
-                if (bc > 0)
-                    return bc;
-                else
-                    return _buyCostLastTurn;
+                //if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
+                //    bc = 0;
+                ////TotalPopulation
+                //if (bc > 0)
+                //    return bc;
+                //else
+                return 0 - ((_credits.LastChange + _maintenanceCostLastTurn) * -1);
             }
-            set => _buyCostLastTurn += value;
+            //set => _buyCostLastTurn += value;
         }
 
         /// <summary>
-        /// Gets the civilization's Income. .... when it's working
+        /// Gets the civilization's TaxIncome. .... when it's working
         /// </summary>
-        public int Income
+        public int TaxIncome
         {
             get
             {
-                ////int totalPopulation = _totalPopulation.CurrentValue;
-                //double totalMorale = Colonies.Sum(colony => colony.TaxCredits/* * (1d / _totalPopulation.CurrentValue * colony.Population.CurrentValue)*/);
-                return _credits.LastChange + _maintenanceCostLastTurn - _buyCostLastTurn;
+                return Colonies.Sum(colony => colony.TaxCredits);
             }
-            //set => _buyCostLastTurn += value;
+        }
+
+        public int IncomeFromTrade
+        {
+            get
+            {
+                return Colonies.Sum(colony => colony.CreditsFromTrade.CurrentValue);
+            }
         }
 
         /// <summary>

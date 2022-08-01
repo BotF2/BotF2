@@ -13,12 +13,12 @@
         <Grid x:Name="ItemGrid">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <Grid.ToolTip>
             <ToolTip>
               <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                              FontSize="12">
+                              FontSize="16">
                 <ContentControl.Content>
                   <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
                                                  Location="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Location)}"
@@ -70,7 +70,7 @@
                      Value="1">
           <Setter TargetName="TurnsText"
                   Property="Text"
-                  Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Upper}" />
+                  Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Original}" />
         </DataTrigger>
                 <DataTrigger Binding="{Binding}"
                      Value="{x:Null}">
@@ -96,9 +96,9 @@
                       Orientation="Vertical"
                       Margin="0,0,0,2">
             <StackPanel.ToolTip>
-              <ToolTip>
+                            <ToolTip  Width="Auto">
                 <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                                FontSize="12">
+                                FontSize="16"  Width="Auto">
                   <ContentControl.Content>
                     <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildSlot.Project).(s:BuildProject.BuildDesign)}"
                                                    Location="{Binding Path=(s:BuildSlot.Project).(s:BuildProject.Location)}"
@@ -145,9 +145,7 @@
                            Text="{Binding Path=Project.Description, Converter={StaticResource UpperCaseConverter}}" />
                 <LineBreak />
                 <TextBlock x:Name="TimeText" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
-                          
                   <TextBlock x:Name="PercentCompleteText" Text="{Binding Path=Project.PercentComplete}" />
-                    
                   <TextBlock x:Name="SeparatorText" Text="/" />
                   <TextBlock x:Name="TurnsLabelText" Text="{Binding Path=Project.TurnsRemaining}" />
                   <TextBlock x:Name="TurnsText" Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Original}" />
@@ -160,7 +158,7 @@
           <Button Height="25"
                   Style="{StaticResource LCARS_StandardButtonStyle}"
                   Margin="0,14,0,0"
-                  Content="BUY" 
+                  Content="{s:StringResource Key=BUY, Case=Upper}" 
                   Click="OnClickBuyButton"/>
           <Rectangle Height="7"
                        Margin="0,14,0,0"
@@ -174,6 +172,9 @@
                       Property="Visibility"
                       Value="Hidden" />
                             <Setter TargetName="PercentCompleteText"
+                      Property="Visibility"
+                      Value="Visible" />
+                            <Setter TargetName="PercentCompleteText"
                       Property="Text"
                       Value="{s:StringResource Key=RUSHED, Case=Original}" />
               <Setter TargetName="SeparatorText"
@@ -185,7 +186,7 @@
               <Setter TargetName="TurnsText"
                       Property="Visibility"
                       Value="Hidden" />
-                            <Setter TargetName="TurnsText"
+              <Setter TargetName="TurnsText"
                       Property="DataContext"
                       Value=" " />
                         </DataTrigger>
@@ -193,7 +194,7 @@
                          Value="1">
               <Setter TargetName="TurnsText"
                       Property="Text"
-                      Value="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Original}" />
+                      Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Original}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Project}"
                          Value="{x:Null}">

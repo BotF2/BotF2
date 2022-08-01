@@ -739,6 +739,8 @@ namespace Supremacy.Client
                     }
                     catch (Exception e)
                     {
+                        _text = "###### problem with " + e;
+                        Console.WriteLine(_text);
                         GameLog.Client.General.Error(string.Format("###### problem with {0}",
                             presenter.ToString()),
                             e);

@@ -113,11 +113,13 @@ namespace Supremacy.Text
                 streamWriter = new StreamWriter(file);
 
                 strHeader =    // Head line
-                    "ATT_Key" + separator +
-                    "CE_Name" + separator +
-                    "CE_Description" + separator +
-                    "CE_Custom1" + separator +
-                    "CE_Custom2";
+                    "ATT_Key" 
+                    + separator + "CE_Name" 
+                    + separator + "CE_Description" 
+                    + separator + "CE_Custom1" 
+                    + separator + "CE_Custom2"
+                    + separator + "Text"
+                    ;
 
                 streamWriter.WriteLine(strHeader);
                 // End of head line

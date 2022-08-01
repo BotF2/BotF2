@@ -417,6 +417,7 @@ namespace Supremacy.Game
             _report = report;
             _detailName = details;  // e.g. ENERGY_SHUTDOWN_SHIPYARD
             _image = image;
+            
             _priority = priority;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -1483,6 +1484,8 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ShowColony;
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
+        //public override string DetailImage => Denouncer.InsigniaPath;
+        //public override string DetailText => string.Format(_detailText.Value, Owner.LongName, Victim.LongName);
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), Colony.Sector.Name, Colony.Location);
         public override bool IsPriority => true;
         public override SitRepPriority Priority { get => SitRepPriority.Green; set => _priority = SitRepPriority.Green; }
@@ -1817,7 +1820,7 @@ namespace Supremacy.Game
             get
             {
                 string _detailText = SummaryText;
-                _detailText = _detailText.Replace("  ", "[nl][nl]");
+                _detailText = _detailText.Replace("  ", newline + newline);
 
                 return _detailText;
             }
@@ -1945,7 +1948,7 @@ namespace Supremacy.Game
             get
             {
                 string _detailText = SummaryText;
-                _detailText = _detailText.Replace("  ", "[nl][nl]");
+                _detailText = _detailText.Replace("  ", newline + newline);
 
                 return _detailText;
             }

@@ -151,9 +151,9 @@ namespace Supremacy.Client
             { CommandParameter = StandardGameScreens.IntelScreen });
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.F6, ModifierKeys.None));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None)); // Control - None used for System-Tab 1.2.3 but didn't got that
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None)); // Control - None used for System-Tab 1.2.3 but didn't got that
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None)); // Control - None used for System-Tab 1.2.3 but didn't got that
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F10_Command, Key.F10, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F

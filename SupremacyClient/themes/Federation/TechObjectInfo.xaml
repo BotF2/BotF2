@@ -23,7 +23,7 @@
          TargetType="{x:Type ContentControl}">
     <Style.Resources>
 
-      <DataTemplate x:Key="TechObjectNameDataTemplate"
+      <DataTemplate x:Key="TechObjectNameDataTemplate" 
                     DataType="{x:Type tech:TechObjectDesign}">
         <TextBlock TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
@@ -32,18 +32,25 @@
       </DataTemplate>
 
 
-      <DataTemplate x:Key="BuildingTemplate"
+      <DataTemplate x:Key="BuildingTemplate" 
                     DataType="{x:Type scc:TechObjectDesignViewModel}">
-        <Border Grid.IsSharedSizeScope="True">
+        <Border Grid.IsSharedSizeScope="True" Width="Auto">
           <StackPanel Orientation="Vertical"
                       CanHorizontallyScroll="False"
                       TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                       TextBlock.TextAlignment="Left"
                       ScrollViewer.CanContentScroll="False">
-            <Grid>
+                        <Grid MinWidth="270">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <!--<TextBlock/>-->
+                        </Grid>
+                        <Grid>
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
               </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
@@ -59,10 +66,10 @@
                          TextWrapping="NoWrap" />
             </Grid>
             <Grid x:Name="Duranium">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                          Margin="0,0,7,0"
@@ -78,8 +85,8 @@
             </Grid>
             <Grid x:Name="MaintenanceCost">
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
               </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
@@ -94,10 +101,10 @@
                          TextTrimming="CharacterEllipsis"
                          TextWrapping="NoWrap" />
             </Grid>
-            <Grid x:Name="EnergyCost">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                        <Grid x:Name="EnergyCost" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
               </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
@@ -112,29 +119,31 @@
                          TextTrimming="CharacterEllipsis"
                          TextWrapping="NoWrap" />
             </Grid>
-            <Grid x:Name="UpgradableDesigns">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
+            <Grid x:Name="UpgradableDesigns" MinWidth="270">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                          Margin="0,0,7,0"
                          VerticalAlignment="Top"
                          Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
-                         TextTrimming="CharacterEllipsis"
-                         TextWrapping="NoWrap" />
+                         TextTrimming="CharacterEllipsis"     
+                         TextWrapping="NoWrap" 
+                         />
+                         <!--TextTrimming="CharacterEllipsis"-->                  
               <ItemsControl VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             HorizontalContentAlignment="Right"
                             ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                             ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
             </Grid>
-            <Grid x:Name="ObsoletedDesigns">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
+            <Grid x:Name="ObsoletedDesigns" MinWidth="270">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                          Margin="0,0,7,0"
@@ -149,17 +158,17 @@
                             ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
             </Grid>
             <Grid x:Name="Bonuses">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                          Margin="0,0,7,0"
                          VerticalAlignment="Top"
                          Text="{s:StringResource 'BUILDING_BONUSES'}"
                          TextTrimming="CharacterEllipsis"
-                         TextWrapping="NoWrap" />
+                         TextWrapping="Wrap" />
               <TextBlock VerticalAlignment="Top"
                          TextAlignment="Right"
                          TextWrapping="Wrap"
@@ -167,10 +176,10 @@
                          Text="{Binding Path=Design, Converter={StaticResource BonusConverter}}" />
             </Grid>
             <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
               <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                          FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                          Margin="0,0,7,0"
@@ -231,6 +240,7 @@
                     DataType="{x:Type scc:TechObjectDesignViewModel}">
         <StackPanel Orientation="Vertical"
                     CanHorizontallyScroll="False"
+                    Width="Auto"
                     TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     TextBlock.TextAlignment="Left"
                     ScrollViewer.CanContentScroll="False">
@@ -347,7 +357,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
-          <Grid x:Name="UpgradableDesigns">
+          <Grid x:Name="UpgradableDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -365,7 +375,7 @@
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns">
+          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -376,14 +386,14 @@
                        VerticalAlignment="Top"
                        Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
                        TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
+                       TextWrapping="Wrap" />
             <ItemsControl VerticalAlignment="Top"
                           HorizontalAlignment="Right"
                           HorizontalContentAlignment="Right"
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
           </Grid>
-          <Grid x:Name="Bonuses">
+          <Grid x:Name="Bonuses" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -459,6 +469,7 @@
                     DataType="{x:Type scc:TechObjectDesignViewModel}">
         <StackPanel Orientation="Vertical"
                     CanHorizontallyScroll="False"
+                    Width="Auto"
                     TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     TextBlock.TextAlignment="Left"
                     ScrollViewer.CanContentScroll="False">
@@ -575,7 +586,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
-          <Grid x:Name="UpgradableDesigns">
+                    <Grid x:Name="UpgradableDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -586,14 +597,14 @@
                        VerticalAlignment="Top"
                        Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
                        TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
+                       TextWrapping="Wrap" />
             <ItemsControl VerticalAlignment="Top"
                           HorizontalAlignment="Right"
                           HorizontalContentAlignment="Right"
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns">
+          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1000,7 +1011,7 @@
                        TextWrapping="NoWrap" />
                     </Grid>
 
-                    <Grid x:Name="UpgradableDesigns">
+                    <Grid x:Name="UpgradableDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1018,7 +1029,7 @@
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns">
+          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1339,7 +1350,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
-          <Grid x:Name="UpgradableDesigns">
+          <Grid x:Name="UpgradableDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1357,7 +1368,7 @@
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns">
+          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1684,7 +1695,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
-          <Grid x:Name="UpgradableDesigns">
+          <Grid x:Name="UpgradableDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1702,7 +1713,7 @@
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns">
+          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />

@@ -42,20 +42,21 @@ namespace Supremacy.Client
     /// </summary>
     public partial class F07_Dialog
     {
+        //LoadEncyclopediaEntries();
         //public ResearchScreen([NotNull] IUnityContainer container) : base(container)
         //{
-        //    _researchFieldGrid = new Grid();
-        //    _researchMatrixGrid = new Grid();
-        //    _selectedApplication = null;
+        //    //    _researchFieldGrid = new Grid();
+        //    //    _researchMatrixGrid = new Grid();
+        //    //    _selectedApplication = null;
 
         //    LoadEncyclopediaEntries();
 
-        //    SetValue(Grid.IsSharedSizeScopeProperty, true);
+        //    //    SetValue(Grid.IsSharedSizeScopeProperty, true);
 
-        //    ResourceDictionary themeResources;
+        //    //    ResourceDictionary themeResources;
 
-        //    if (ThemeHelper.TryLoadThemeResources(out themeResources))
-        //        Resources.MergedDictionaries.Add(themeResources);
+        //    //    if (ThemeHelper.TryLoadThemeResources(out themeResources))
+        //    //        Resources.MergedDictionaries.Add(themeResources);
         //}
 
         //[TemplatePart(Name = "PART_EncyclopediaViewer", Type = typeof(FlowDocumentScrollViewer))]
@@ -72,7 +73,7 @@ namespace Supremacy.Client
         public F07_Dialog()
         {
             InitializeComponent();
-            //LoadEncyclopediaEntries();
+            LoadEncyclopediaEntries();
             OnApplyTemplate();
             IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
 
@@ -106,11 +107,12 @@ namespace Supremacy.Client
         {
             base.OnApplyTemplate();
 
-            if (_encyclopediaEntryListView != null)
-            {
-                _encyclopediaEntryListView.SelectedItemChanged -=
-                    EncyclopediaEntryListView_SelectedItemChanged;
-            }
+            _encyclopediaEntryListView = new TreeView();
+            //if (_encyclopediaEntryListView != null)
+            //{
+            //    _encyclopediaEntryListView.SelectedItemChanged -=
+            //        EncyclopediaEntryListView_SelectedItemChanged;
+            //}
             if (_searchText != null)
             {
                 _searchText.TextChanged -= OnSearchTextChanged;
@@ -119,9 +121,10 @@ namespace Supremacy.Client
             //_researchFieldItemsControl = GetTemplateChild("PART_ResearchFieldItemsHost") as Border;
             //_researchMatrixHost = GetTemplateChild("PART_ResearchMatrixHost") as Border;
             //_applicationDetailsHost = GetTemplateChild("PART_ApplicationDetailsHost") as Border;
-            _encyclopediaEntryListView = GetTemplateChild("PART_EncyclopediaEntries") as TreeView;
+            //_encyclopediaEntryListView = GetTemplateChild("PART_EncyclopediaEntries") as TreeView;
             _searchText = GetTemplateChild("PART_SearchText") as TextBox;
-            _encyclopediaViewer = GetTemplateChild("PART_EncyclopediaViewer") as FlowDocumentScrollViewer;
+            //_encyclopediaViewer = GetTemplateChild("PART_EncyclopediaViewer") as FlowDocumentScrollViewer;
+            _encyclopediaViewer = new FlowDocumentScrollViewer();
 
             if (_encyclopediaEntryListView != null)
             {
@@ -143,10 +146,16 @@ namespace Supremacy.Client
         {
             //int playerCivId = 0;
             //var playerCiv = GameContext.Current.CivilizationManagers[playerCivId].Civilization;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[0];
+            CivilizationManager civManager;// = new Civilization("DUMMY");
             TechTree techTree = new TechTree();
 
-            techTree.Merge(civManager.TechTree);
+            //techTree.Merge(civManager.TechTree);
+
+            if (GameContext.Current == null)
+                return;
+            else
+                civManager = GameContext.Current.CivilizationManagers[0];
+
 
             foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {

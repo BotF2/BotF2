@@ -106,6 +106,7 @@ namespace Supremacy.Client.Views
             ForeignPowers = new ReadOnlyObservableCollection<ForeignPowerViewModel>(_foreignPowers);
             // DISPLAY MODE
             _setDisplayModeCommand = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetDisplayModeComand, CanExecuteSetDisplayModeComand);
+            
 
             _commendCommand = new DelegateCommand(ExecuteCommendCommand, CanExecuteCommendCommand);
             _denounceCommand = new DelegateCommand(ExecuteDenounceCommand, CanExecuteDenounceCommand);

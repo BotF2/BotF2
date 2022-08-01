@@ -49,6 +49,10 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv;
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
         private string _text;
+        private string _destroyedString;
+        private string _escapedString;
+        private string _combatString;
+        private string _nonCombatString;
         private readonly string newline = Environment.NewLine;
         private readonly string blank = " ";
 
@@ -380,7 +384,7 @@ namespace Supremacy.Combat
             //Detailed_Log("IsCombatOver ={0} for AsychHelper", IsCombatOver);
             if (IsCombatOver)
             {
-                Detailed_Log("now IsCombatOver = TRUE so invoked AsyncHelper");
+                Detailed_Log("now IsCombatOver = TRUE so invoked AsyncHelper" + blank);
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
             _targetTwoByCiv.Clear();
@@ -428,6 +432,8 @@ namespace Supremacy.Combat
                 Civilization owner = playerAsset.Owner;
                 List<CombatAssets> friendlyAssets = new List<CombatAssets>();
                 List<CombatAssets> hostileAssets = new List<CombatAssets>();
+
+                Universe.MapLocation _location = _assets.First().Location;
 
                 friendlyAssets.Add(playerAsset); // on each looping arbitrary one side or the other is 'friendly' for combatwindow right and left side
                 //foreach (CombatAssets asset in _assets)
@@ -520,7 +526,29 @@ namespace Supremacy.Combat
                     );
                 // sends data back to combat window
 
-                // ToDo try to build in here the Sitreps
+                // ToDo>try to build in here the Sitreps
+                //if (playerAsset.DestroyedShips.Count > 0)
+                //    _destroyedString = ", some ships got destroyed"
+                //        ;
+                //if (playerAsset.EscapedShips.Count > 0)
+                //    _escapedString = ", some ships escaped"
+                //        ;
+                //if (playerAsset.CombatShips.Count > 0)
+                //    _combatString = ", combat ships survived"
+                //        ;
+                //if (playerAsset.NonCombatShips.Count > 0)
+                //    _nonCombatString = ", non-combat ships survived"
+                //        ;
+
+                //_text = 
+                //    //playerAsset.Location.ToString()
+                //    //+ " > Combat result: " 
+                //    /*+ */"Strength " + update.FriendlyEmpireStrength + " vs " + update.AllHostileEmpireStrength
+                //    + _escapedString
+                //    + _destroyedString
+                //    ;
+
+                //GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ReportEntry_CoS(owner, _location, _text, "", "", SitRepPriority.Red));
                 AsyncHelper.Invoke(_updateCallback, this, update);
             }
         }
@@ -706,33 +734,41 @@ namespace Supremacy.Combat
         protected CombatOrder GetCombatOrder(Orbital source)
         {
             CombatOrder _localOrder = CombatOrder.Engage;
-            try
-            {
 
-                Detailed_Log(_sectorString + "Try Get Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name);
-                //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
+            if(!source.IsMobile) _localOrder = CombatOrder.Engage;
+            if(source.HullStrength.CurrentValue < source.HullStrength.Maximum / 5)  // Hull below 20%
+                _localOrder = CombatOrder.Retreat;
+            if (source.IsCombatant) return CombatOrder.Engage; // 
+            if (source.Sector.Owner == source.Owner) return CombatOrder.Hail; // Non-Combatant ships
 
-                _localOrder = _orders[source.OwnerID].GetOrder(source);
-                //_localOrder = _orders[_orders.Count-1].GetOrder(source);
-                Detailed_Log(_sectorString + "Got Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name
-                    + " -> order = " + _orders[source.OwnerID].GetOrder(source));
-                return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
-            }
-            catch //(Exception e)
-            {
-                //if (source.Owner.IsHuman == false)
+                //try
+
                 //{
-                //    // Gamelog works but makes no sense ... or "nothing to win" with this error message (Example: Scout, before Engage, here fails 
-                Detailed_Log(_sectorString + "Returning Engage due to > Unable to get order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name + blank + source.Owner.Name
-                    /*+ newline + e*/);
-                _localOrder = CombatOrder.Engage;
-                //}
-                //GameLog.LogException(e);
-            }
 
-            Detailed_Log(_sectorString + "Setting order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name 
-                + " (Owner= " + source.Owner.Name + ") > " + _localOrder.ToString());
-            return _localOrder; //CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
+                //    Detailed_Log(_sectorString + "Try Get Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name);
+                //    //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
+
+                //    _localOrder = _orders[source.OwnerID].GetOrder(source);
+                //    //_localOrder = _orders[_orders.Count-1].GetOrder(source);
+                //    Detailed_Log(_sectorString + "Got Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name
+                //        + " -> order = " + _orders[source.OwnerID].GetOrder(source));
+                //    return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
+                //}
+                //catch //(Exception e)
+                //{
+                //    //if (source.Owner.IsHuman == false)
+                //    //{
+                //    //    // Gamelog works but makes no sense ... or "nothing to win" with this error message (Example: Scout, before Engage, here fails 
+                //    Detailed_Log(_sectorString + "Returning Engage due to > Unable to get order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name + blank + source.Owner.Name
+                //        /*+ newline + e*/);
+                //    _localOrder = CombatOrder.Engage;
+                //    //}
+                //    //GameLog.LogException(e);
+                //}
+
+                //Detailed_Log(_sectorString + "Setting order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name 
+                //    + " (Owner= " + source.Owner.Name + ") > " + _localOrder.ToString());
+                return _localOrder; //CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
         }
 
         private void Detailed_Log(string _rep)

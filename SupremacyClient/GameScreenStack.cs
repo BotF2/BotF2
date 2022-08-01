@@ -272,7 +272,8 @@ namespace Supremacy.Client
         public void AddScreen(Control screen)
         {
             // works
-            //Console.WriteLine("GameScreenStack.cs: screen={0}", screen);
+            Text = "GameScreenStack.cs: screen=" + screen;
+            //Console.WriteLine(_text);
             GameLog.Client.UIDetails.DebugFormat("GameScreenStack.cs: screen={0}", screen);
 
             if (screen == null)
@@ -406,6 +407,8 @@ namespace Supremacy.Client
         }
 
         protected override int VisualChildrenCount => 1;
+
+        public string Text { get; private set; }  // for common use
 
         protected override Visual GetVisualChild(int index)
         {

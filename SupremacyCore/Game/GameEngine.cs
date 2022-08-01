@@ -62,6 +62,7 @@ namespace Supremacy.Game
         private int _r_IntelAttack_BestValue;
         private int _r_IntelAttack_Average_5;
         private int _globalMorale;
+        private int _ratioIndustryForShipProduction;
 
         //private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
@@ -276,14 +277,6 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Maintenance);
 
-            GameLog.Core.GeneralDetails.DebugFormat("...beginning Production...");
-
-            OnTurnPhaseChanged(game, TurnPhase.Production);
-            GameContext.PushThreadContext(game);
-            try { DoProduction(game); }
-            finally { _ = GameContext.PopThreadContext(); }
-            OnTurnPhaseFinished(game, TurnPhase.Production);
-
             GameLog.Core.GeneralDetails.DebugFormat("...beginning ShipProduction...");
 
             OnTurnPhaseChanged(game, TurnPhase.ShipProduction);
@@ -291,6 +284,14 @@ namespace Supremacy.Game
             try { DoShipProduction(game); }
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.ShipProduction);
+
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Production...");  // test 2022-07-17 Porduction after Shipproduction
+
+            OnTurnPhaseChanged(game, TurnPhase.Production);
+            GameContext.PushThreadContext(game);
+            try { DoProduction(game); }
+            finally { _ = GameContext.PopThreadContext(); }
+            OnTurnPhaseFinished(game, TurnPhase.Production);
 
             GameLog.Core.GeneralDetails.DebugFormat("...beginning Trade...");
 
@@ -606,12 +607,11 @@ namespace Supremacy.Game
             int turn = game.TurnNumber;  // Dummy, do not remove
             List<Fleet> allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
             int fuelNeeded;
+            
 
             foreach (Fleet fleet in allFleets)
             {
-                string _text;
                 int shipNum = fleet.Ships.Count();
-                //string name = fleet.Name;
                 if (fleet.UnitAIType == UnitAIType.Reserve)
                 {
                     GameLog.Client.AIDetails.DebugFormat("*** Turn {0}: Reserve,  Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
@@ -645,9 +645,17 @@ namespace Supremacy.Game
                     }
 
                     fleet.SetRoute(TravelRoute.Empty);
+
+                    if (fleet.HasConstructionShip)
+                    { 
+                        //fleet.Order = FleetOrders.
+                        fleet.Order = FleetOrders.BuildStationOrder;
+                    }
                 }
 
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+
+
                 //int fuelNeeded;
                 int fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
 
@@ -706,6 +714,26 @@ namespace Supremacy.Game
 
                         //    ;
                         //Console.WriteLine(_text);
+
+                        if (civManager.DestroyOfShipOrdered == false)
+                            if (civManager.MaintenanceCostLastTurn > civManager.TaxIncome * 3 
+                            || civManager.Credits.CurrentValue < (100 * civManager.AverageTechLevel))
+                        {
+                            Ship ship = fleet.Ships[0];
+                            ship.Destroy();
+                            civManager.DestroyOfShipOrdered = true;
+
+                            _text2 = ship.ObjectID + blank + ship.Name + " ( " + ship.ShipType + " ) ";
+                            // {0} > Ship {1} was destroyed for keeping credit costs low.
+                            _text = string.Format(ResourceManager.GetString("SITREP_SHIP_DESTROYED_DUE_TO_LOW_CREDITS"), fleet.Location, _text2);
+                            Console.WriteLine(_text);
+                            //GameLog.Client.ShipsDetails.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, fleet.Owner.Key, fleet.Location);
+
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(fleet.Owner, fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                        }
+                        //checked for maintenance cost especially for destroyed ships
+                        //        destroy just one ship per turn
+
                         break;
                     }
 
@@ -732,6 +760,7 @@ namespace Supremacy.Game
                     }
                     civManager.Resources[ResourceType.Deuterium].UpdateAndReset();
                 }
+
 
                 if (fleet.Sector.System != null && (fleet.Sector.System.StarType == StarType.BlackHole))
                 {
@@ -2199,9 +2228,22 @@ namespace Supremacy.Game
                     }
                 }
 
+                
                 foreach (TechObject item in GameContext.Current.Universe.FindOwned<TechObject>(civ))
                 {
-                    _civMaintance += item.Design.MaintenanceCost;
+      
+                     _civMaintance += item.Design.MaintenanceCost;
+
+                    _text = "Turn " + GameContext.Current.TurnNumber + ": "
+                        + item.Design.MaintenanceCost + " MaintenanceCost for "
+                        + item.ObjectID + blank
+                        + item.Name + blank
+                        + item.Design + " at "
+                        + item.Location + blank
+                        + item.Owner
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Production.DebugFormat(_text);
 
                     // works
                     //if (item.Design.MaintenanceCost > 0)
@@ -2460,6 +2502,25 @@ namespace Supremacy.Game
 
                         /* We want to capture the industry output available at the colony. */
                         int industry = colony.NetIndustry;
+                        
+                        //int _shipProduction;  // reducing industry by 1 / 6 per active shipyard slot (max 90%)
+                        //if (colony.Shipyard != null)
+                        //{
+
+                        //    //foreach
+                        //    List<ShipyardBuildSlot> activatedBuildSlot = colony.Shipyard.BuildSlots
+                        //        .Where(o => o.IsActive).ToList();
+                        //        // && !o.HasProject).FirstOrDefault(DeactivateShipyardBuildSlot);
+
+                        //    foreach(var _slot in activatedBuildSlot)
+                        //    {
+                        //        if (_slot.Project != null) _shipProduction += (industry / 6);
+                        //    }
+
+                        //}
+
+                        //industry -= _shipProduction; // fresh conquered don't have full industry for 
+
 
                         // AI gets an advantage
                         if (!colony.Owner.IsHuman)   
@@ -2807,7 +2868,15 @@ namespace Supremacy.Game
                                   totalResourcesAvailable[ResourceType.Duranium]);
                                */
 
-                              int output = shipyard.GetBuildOutput(slot.SlotID);
+                              //int _ratioIndustry;
+
+                              // active 25 of total 50 = 50 %;
+                              if(colony.TotalIndustryFacilities > 0)
+                              {
+                                  _ratioIndustryForShipProduction = (100 * colony.ActiveIndustryFacilities / colony.TotalIndustryFacilities) + 1;
+                              }
+
+                              int output = shipyard.GetBuildOutput(slot.SlotID) / 100 * _ratioIndustryForShipProduction;
                               while ((slot.HasProject || !shipyard.BuildQueue.IsEmpty()) && (output > 0))
                               {
                                   // checking ShipProduction

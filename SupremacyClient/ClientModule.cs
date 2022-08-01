@@ -46,6 +46,7 @@ namespace Supremacy.Client
     public class ClientModule : IModule
     {
         public const string ModuleName = "Supremacy.Client.ClientModule";
+        //public string _text = "";
 
         #region Fields
         private const string MusicThemeBasePath = "Resources/Specific_Empires_UI";
