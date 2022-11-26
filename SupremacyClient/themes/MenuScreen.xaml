@@ -60,8 +60,10 @@
                                                 IsEnabled="True"/>
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.OptionsCommand}" Margin="0,2,0,0"
                                         Label="{s:StringResource MAIN_MENU_OPTIONS}" />
-                                <scc:GameButton Command="{x:Static scc:ClientCommands.TracesCommand}" Margin="0,2,0,0"
-                                        Label="{s:StringResource MAIN_MENU_TRACES}" />
+                                <!--<scc:GameButton Command="{x:Static scc:ClientCommands.TracesCommand}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_TRACES}" />-->
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.F07_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_F07}" />
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.ShowCreditsDialog}" Margin="0,2,0,0"
                                         Label="{s:StringResource MAIN_MENU_CREDITS}" />
                                 <!--<scc:GameButton Command="{x:Static scc:ClientCommands.EndGame}" Margin="0,2,0,0"

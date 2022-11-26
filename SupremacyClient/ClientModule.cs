@@ -78,7 +78,7 @@ namespace Supremacy.Client
 
         private readonly CTRL_F06_Dialog _ctrl_f06_Dialog;
         //private readonly F07_Dialog _encyclopedia_Dialog;
-        //private readonly CTRL_F07_Dialog _ctrl_f07_Dialog;
+        private readonly CTRL_F07_Dialog _ctrl_f07_Dialog;  // German version of F07-Dialog
         //private readonly CTRL_F08_Dialog _ctrl_f08_Dialog;
         //private readonly CTRL_F09_Dialog _ctrl_f09_Dialog;
         //private readonly CTRL_F10_Dialog _ctrl_f10_Dialog;
@@ -101,7 +101,7 @@ namespace Supremacy.Client
         //private readonly DelegateCommand<object> _ctrl_f04_Command;
         //private readonly DelegateCommand<object> _ctrl_f05_Command;
         private readonly DelegateCommand<object> _ctrl_f06_Command;
-        //private readonly DelegateCommand<object> _ctrl_f07_Command;
+        private readonly DelegateCommand<object> _ctrl_f07_Command;
         //private readonly DelegateCommand<object> _ctrl_f08_Command;
         //private readonly DelegateCommand<object> _ctrl_f09_Command;
         //private readonly DelegateCommand<object> _ctrl_f10_Command;
@@ -132,6 +132,8 @@ namespace Supremacy.Client
         private readonly DelegateCommand<MultiplayerConnectParameters> _joinMultiplayerGameCommand;
         private readonly DelegateCommand<string> _hostMultiplayerGameCommand;
         private readonly DelegateCommand<bool> _exitCommand;
+
+        private readonly DelegateCommand<object> _OnMA_Ferengi;
 
         private readonly DelegateCommand<object> _Hotkey_Alt_D0;
         private readonly DelegateCommand<object> _Hotkey_Alt_D1;
@@ -183,6 +185,8 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _Hotkey_Alt_X;
         private readonly DelegateCommand<object> _Hotkey_Alt_Y;
         private readonly DelegateCommand<object> _Hotkey_Alt_Z;
+
+
 
         public string localEmpire = "";
         private int startTechLvl = -1;
@@ -265,6 +269,10 @@ namespace Supremacy.Client
             _ctrl_f06_Command = new DelegateCommand<object>(
                 Execute_ctrl_f06_Command);
 
+            _ctrl_f07_Dialog = new CTRL_F07_Dialog();
+            _ctrl_f07_Command = new DelegateCommand<object>(
+                Execute_ctrl_f07_Command);
+
             _s0_Command = new DelegateCommand<object>(Execute_s0_Command); // start Single Player Empire 0
             _s1_Command = new DelegateCommand<object>(Execute_s1_Command);
             _s2_Command = new DelegateCommand<object>(Execute_s2_Command);
@@ -292,6 +300,8 @@ namespace Supremacy.Client
             _showAllHistoryFileCommand = new DelegateCommand<object>(ExecuteShowAllHistoryFileCommand);
             _joinMultiplayerGameCommand = new DelegateCommand<MultiplayerConnectParameters>(ExecuteJoinMultiplayerGameCommand);
             _hostMultiplayerGameCommand = new DelegateCommand<string>(ExecuteHostMultiplayerGameCommand);
+
+            _OnMA_Ferengi = new DelegateCommand<object>(ExecuteOnMA_Ferengi);
 
             _Hotkey_Alt_D0 = new DelegateCommand<object>(Execute_Hotkey_Alt_D0);
             _Hotkey_Alt_D1 = new DelegateCommand<object>(Execute_Hotkey_Alt_D1);
@@ -344,6 +354,8 @@ namespace Supremacy.Client
             _Hotkey_Alt_Y = new DelegateCommand<object>(Execute_Hotkey_Alt_Y);
             _Hotkey_Alt_Z = new DelegateCommand<object>(Execute_Hotkey_Alt_Z);
 
+
+
         }
         #endregion
 
@@ -382,10 +394,7 @@ namespace Supremacy.Client
             RunGameController(gameController => gameController.RunLocal(initData), true);
         }
 
-        private void ExecuteJoinMultiplayerGameCommand(MultiplayerConnectParameters parameters)
-        {
-            RunGameController(gameController => gameController.RunRemote(parameters.PlayerName, parameters.RemoteHost), true);
-        }
+        private void ExecuteJoinMultiplayerGameCommand(MultiplayerConnectParameters parameters) => RunGameController(gameController => gameController.RunRemote(parameters.PlayerName, parameters.RemoteHost), true);
 
         private void ExecuteLoadGameCommand(SavedGameHeader header)
         {
@@ -400,26 +409,20 @@ namespace Supremacy.Client
 
         }
 
-        private void ExecuteDeleteManualSavedGameCommand(object obj)
-        {
-            _ = SavedGameManager.SaveGameDeleteManualSaved();
-        }
+        private void ExecuteDeleteManualSavedGameCommand(object obj) => _ = SavedGameManager.SaveGameDeleteManualSaved();
 
-        private void ExecuteDeleteAutoSavedGameCommand(object obj)
-        {
-            _ = SavedGameManager.SaveGameDeleteAutoSaved();
-        }
+        private void ExecuteDeleteAutoSavedGameCommand(object obj) => _ = SavedGameManager.SaveGameDeleteAutoSaved();
 
-        private void ExecuteOptionsCommand(object obj) { _ = _optionsDialog.ShowDialog(); }
-        private void ExecuteTracesCommand(object obj) { _ = _tracesDialog.ShowDialog(); }
+        private void ExecuteOptionsCommand(object obj) => _ = _optionsDialog.ShowDialog();
+        private void ExecuteTracesCommand(object obj) => _ = _tracesDialog.ShowDialog();
 
-        private void Execute_f06_Command(object obj) { _ = _f06_Dialog.ShowDialog(); }
-        private void Execute_f07_Command(object obj) { _ = _f07_Dialog.ShowDialog(); }
-        private void Execute_f08_Command(object obj) { _ = _f08_Dialog.ShowDialog(); }
-        private void Execute_f09_Command(object obj) { _ = _f09_Dialog.ShowDialog(); }
-        private void Execute_f10_Command(object obj) { _ = _f10_Dialog.ShowDialog(); }
-        private void Execute_f11_Command(object obj) { _ = _f11_Dialog.ShowDialog(); }
-        private void Execute_f12_Command(object obj) { _ = _f12_Dialog.ShowDialog(); }
+        private void Execute_f06_Command(object obj) => _ = _f06_Dialog.ShowDialog();
+        private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
+        private void Execute_f08_Command(object obj) => _ = _f08_Dialog.ShowDialog();
+        private void Execute_f09_Command(object obj) => _ = _f09_Dialog.ShowDialog();
+        private void Execute_f10_Command(object obj) => _ = _f10_Dialog.ShowDialog();
+        private void Execute_f11_Command(object obj) => _ = _f11_Dialog.ShowDialog();
+        private void Execute_f12_Command(object obj) => _ = _f12_Dialog.ShowDialog();
 
 
         //private void Execute_ctrl_f01_Command(object obj) { _ = _ctrl_f01_Dialog.ShowDialog(); }
@@ -427,8 +430,8 @@ namespace Supremacy.Client
         //private void Execute_ctrl_f03_Command(object obj) { _ = _ctrl_f03_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f04_Command(object obj) { _ = _ctrl_f04_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f05_Command(object obj) { _ = _ctrl_f05_Dialog.ShowDialog(); }
-        private void Execute_ctrl_f06_Command(object obj) { _ = _ctrl_f06_Dialog.ShowDialog(); }
-        //private void Execute_ctrl_f07_Command(object obj) { _ = _ctrl_f07_Dialog.ShowDialog(); }
+        private void Execute_ctrl_f06_Command(object obj) => _ = _ctrl_f06_Dialog.ShowDialog();
+        private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();
         //private void Execute_ctrl_f08_Command(object obj) { _ = _ctrl_f08_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f09_Command(object obj) { _ = _ctrl_f09_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f10_Command(object obj) { _ = _ctrl_f10_Dialog.ShowDialog(); }
@@ -436,15 +439,14 @@ namespace Supremacy.Client
         //private void Execute_ctrl_f12_Command(object obj) { _ = _ctrl_f12_Dialog.ShowDialog(); }
 
 
-        private void Execute_s0_Command(object obj) { ExecuteSP_DirectlyGameCommand(0); }
-        private void Execute_s1_Command(object obj) { ExecuteSP_DirectlyGameCommand(1); }
-        private void Execute_s2_Command(object obj) { ExecuteSP_DirectlyGameCommand(2); }
-        private void Execute_s3_Command(object obj) { ExecuteSP_DirectlyGameCommand(3); }
-        private void Execute_s4_Command(object obj) { ExecuteSP_DirectlyGameCommand(4); }
-        private void Execute_s5_Command(object obj) { ExecuteSP_DirectlyGameCommand(5); }
-        private void Execute_s6_Command(object obj) { ExecuteSP_DirectlyGameCommand(6); }
-
-        private void ExecuteFakeCommand(object obj) { _ = _fakeDialog.ShowDialog(); }
+        private void Execute_s0_Command(object obj) => ExecuteSP_DirectlyGameCommand(0);
+        private void Execute_s1_Command(object obj) => ExecuteSP_DirectlyGameCommand(1);
+        private void Execute_s2_Command(object obj) => ExecuteSP_DirectlyGameCommand(2);
+        private void Execute_s3_Command(object obj) => ExecuteSP_DirectlyGameCommand(3);
+        private void Execute_s4_Command(object obj) => ExecuteSP_DirectlyGameCommand(4);
+        private void Execute_s5_Command(object obj) => ExecuteSP_DirectlyGameCommand(5);
+        private void Execute_s6_Command(object obj) => ExecuteSP_DirectlyGameCommand(6);
+        private void ExecuteFakeCommand(object obj) => _ = _fakeDialog.ShowDialog();
         private void ExecuteLogTxtCommand(object obj)
         {
             string logFile = Path.Combine(
@@ -494,20 +496,11 @@ namespace Supremacy.Client
             }
         }
 
-        private void ExecuteContinueGameCommand(object obj)
-        {
-            _navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
-        }
+        private void ExecuteContinueGameCommand(object obj) => _navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
 
-        private void ExecuteExitCommand(bool showConfirmation)
-        {
-            Exit(showConfirmation);
-        }
+        private void ExecuteExitCommand(bool showConfirmation) => Exit(showConfirmation);
 
-        private void ExecuteEndGameCommand(bool showConfirmation)
-        {
-            _ = EndGame(showConfirmation);
-        }
+        private void ExecuteEndGameCommand(bool showConfirmation) => _ = EndGame(showConfirmation);
 
         private void ExecuteShowSettingsFileCommand(object obj)
         {
@@ -622,56 +615,57 @@ namespace Supremacy.Client
             catch { _ = MessageDialog.Show(file + " - Error occured !", MessageDialogButtons.Close); }
         }
 
-        private void Execute_Hotkey_Alt_D0(object obj) { StartFile(".\\lib\\Hotkey_Alt_0.bat"); }
-        private void Execute_Hotkey_Alt_D1(object obj) { StartFile(".\\lib\\Hotkey_Alt_1.bat"); }
-        private void Execute_Hotkey_Alt_D2(object obj) { StartFile(".\\lib\\Hotkey_Alt_2.bat"); }
-        private void Execute_Hotkey_Alt_D3(object obj) { StartFile(".\\lib\\Hotkey_Alt_3.bat"); }
-        private void Execute_Hotkey_Alt_D4(object obj) { StartFile(".\\lib\\Hotkey_Alt_4.bat"); }
-        private void Execute_Hotkey_Alt_D5(object obj) { StartFile(".\\lib\\Hotkey_Alt_5.bat"); }
-        private void Execute_Hotkey_Alt_D6(object obj) { StartFile(".\\lib\\Hotkey_Alt_6.bat"); }
-        private void Execute_Hotkey_Alt_D7(object obj) { StartFile(".\\lib\\Hotkey_Alt_7.bat"); }
-        private void Execute_Hotkey_Alt_D8(object obj) { StartFile(".\\lib\\Hotkey_Alt_8.bat"); }
-        private void Execute_Hotkey_Alt_D9(object obj) { StartFile(".\\lib\\Hotkey_Alt_9.bat"); }
+        private void Execute_Hotkey_Alt_D0(object obj) => StartFile(".\\lib\\Hotkey_Alt_0.bat");
+        private void Execute_Hotkey_Alt_D1(object obj) => StartFile(".\\lib\\Hotkey_Alt_1.bat");
+        private void Execute_Hotkey_Alt_D2(object obj) => StartFile(".\\lib\\Hotkey_Alt_2.bat");
+        private void Execute_Hotkey_Alt_D3(object obj) => StartFile(".\\lib\\Hotkey_Alt_3.bat");
+        private void Execute_Hotkey_Alt_D4(object obj) => StartFile(".\\lib\\Hotkey_Alt_4.bat");
+        private void Execute_Hotkey_Alt_D5(object obj) => StartFile(".\\lib\\Hotkey_Alt_5.bat");
+        private void Execute_Hotkey_Alt_D6(object obj) => StartFile(".\\lib\\Hotkey_Alt_6.bat");
+        private void Execute_Hotkey_Alt_D7(object obj) => StartFile(".\\lib\\Hotkey_Alt_7.bat");
+        private void Execute_Hotkey_Alt_D8(object obj) => StartFile(".\\lib\\Hotkey_Alt_8.bat");
+        private void Execute_Hotkey_Alt_D9(object obj) => StartFile(".\\lib\\Hotkey_Alt_9.bat");
 
 
-        private void Execute_Hotkey_Alt_F01(object obj) { StartFile(".\\lib\\Hotkey_Alt_F01.bat"); }
-        private void Execute_Hotkey_Alt_F02(object obj) { StartFile(".\\lib\\Hotkey_Alt_F02.bat"); }
-        private void Execute_Hotkey_Alt_F03(object obj) { StartFile(".\\lib\\Hotkey_Alt_F03.bat"); }
-        private void Execute_Hotkey_Alt_F04(object obj) { StartFile(".\\lib\\Hotkey_Alt_F04.bat"); }
-        private void Execute_Hotkey_Alt_F05(object obj) { StartFile(".\\lib\\Hotkey_Alt_F05.bat"); }
-        private void Execute_Hotkey_Alt_F06(object obj) { StartFile(".\\lib\\Hotkey_Alt_F06.bat"); }
-        private void Execute_Hotkey_Alt_F07(object obj) { StartFile(".\\lib\\Hotkey_Alt_F07.bat"); }
-        private void Execute_Hotkey_Alt_F08(object obj) { StartFile(".\\lib\\Hotkey_Alt_F08.bat"); }
-        private void Execute_Hotkey_Alt_F09(object obj) { StartFile(".\\lib\\Hotkey_Alt_F09.bat"); }
-        private void Execute_Hotkey_Alt_F10(object obj) { StartFile(".\\lib\\Hotkey_Alt_F10.bat"); }
-        private void Execute_Hotkey_Alt_F11(object obj) { StartFile(".\\lib\\Hotkey_Alt_F11.bat"); }
+        private void Execute_Hotkey_Alt_F01(object obj) => StartFile(".\\lib\\Hotkey_Alt_F01.bat");
+        private void Execute_Hotkey_Alt_F02(object obj) => StartFile(".\\lib\\Hotkey_Alt_F02.bat");
+        private void Execute_Hotkey_Alt_F03(object obj) => StartFile(".\\lib\\Hotkey_Alt_F03.bat");
+        private void Execute_Hotkey_Alt_F04(object obj) => StartFile(".\\lib\\Hotkey_Alt_F04.bat");
+        private void Execute_Hotkey_Alt_F05(object obj) => StartFile(".\\lib\\Hotkey_Alt_F05.bat");
+        private void Execute_Hotkey_Alt_F06(object obj) => StartFile(".\\lib\\Hotkey_Alt_F06.bat");
+        private void Execute_Hotkey_Alt_F07(object obj) => StartFile(".\\lib\\Hotkey_Alt_F07.bat");
+        private void Execute_Hotkey_Alt_F08(object obj) => StartFile(".\\lib\\Hotkey_Alt_F08.bat");
+        private void Execute_Hotkey_Alt_F09(object obj) => StartFile(".\\lib\\Hotkey_Alt_F09.bat");
+        private void Execute_Hotkey_Alt_F10(object obj) => StartFile(".\\lib\\Hotkey_Alt_F10.bat");
+        private void Execute_Hotkey_Alt_F11(object obj) => StartFile(".\\lib\\Hotkey_Alt_F11.bat");
 
-        private void Execute_Hotkey_Alt_A(object obj) { StartFile(".\\lib\\Hotkey_Alt_A.bat"); }
-        private void Execute_Hotkey_Alt_B(object obj) { StartFile(".\\lib\\Hotkey_Alt_B.bat"); }
-        private void Execute_Hotkey_Alt_C(object obj) { StartFile(".\\lib\\Hotkey_Alt_C.bat"); }
-        private void Execute_Hotkey_Alt_D(object obj) { StartFile(".\\lib\\Hotkey_Alt_D.bat"); }
-        private void Execute_Hotkey_Alt_E(object obj) { StartFile(".\\lib\\Hotkey_Alt_E.bat"); }
-        private void Execute_Hotkey_Alt_F(object obj) { StartFile(".\\lib\\Hotkey_Alt_F.bat"); }
-        private void Execute_Hotkey_Alt_G(object obj) { StartFile(".\\lib\\Hotkey_Alt_G.bat"); }
-        private void Execute_Hotkey_Alt_H(object obj) { StartFile(".\\lib\\Hotkey_Alt_H.bat"); }
-        private void Execute_Hotkey_Alt_I(object obj) { StartFile(".\\lib\\Hotkey_Alt_I.bat"); }
-        private void Execute_Hotkey_Alt_J(object obj) { StartFile(".\\lib\\Hotkey_Alt_J.bat"); }
-        private void Execute_Hotkey_Alt_K(object obj) { StartFile(".\\lib\\Hotkey_Alt_K.bat"); }
-        private void Execute_Hotkey_Alt_L(object obj) { StartFile(".\\lib\\Hotkey_Alt_L.bat"); }
-        private void Execute_Hotkey_Alt_M(object obj) { StartFile(".\\lib\\Hotkey_Alt_M.bat"); }
-        private void Execute_Hotkey_Alt_N(object obj) { StartFile(".\\lib\\Hotkey_Alt_N.bat"); }
-        private void Execute_Hotkey_Alt_O(object obj) { StartFile(".\\lib\\Hotkey_Alt_O.bat"); }
-        private void Execute_Hotkey_Alt_P(object obj) { StartFile(".\\lib\\Hotkey_Alt_P.bat"); }
-        private void Execute_Hotkey_Alt_Q(object obj) { StartFile(".\\lib\\Hotkey_Alt_Q.bat"); }
-        private void Execute_Hotkey_Alt_R(object obj) { StartFile(".\\lib\\Hotkey_Alt_R.bat"); }
-        private void Execute_Hotkey_Alt_S(object obj) { StartFile(".\\lib\\Hotkey_Alt_S.bat"); }
-        private void Execute_Hotkey_Alt_T(object obj) { StartFile(".\\lib\\Hotkey_Alt_T.bat"); }
-        private void Execute_Hotkey_Alt_U(object obj) { StartFile(".\\lib\\Hotkey_Alt_U.bat"); }
-        private void Execute_Hotkey_Alt_V(object obj) { StartFile(".\\lib\\Hotkey_Alt_V.bat"); }
-        private void Execute_Hotkey_Alt_W(object obj) { StartFile(".\\lib\\Hotkey_Alt_W.bat"); }
-        private void Execute_Hotkey_Alt_X(object obj) { StartFile(".\\lib\\Hotkey_Alt_X.bat"); }
-        private void Execute_Hotkey_Alt_Y(object obj) { StartFile(".\\lib\\Hotkey_Alt_Y.bat"); }
-        private void Execute_Hotkey_Alt_Z(object obj) { StartFile(".\\lib\\Hotkey_Alt_Z.bat"); }
+        private void Execute_Hotkey_Alt_A(object obj) => StartFile(".\\lib\\Hotkey_Alt_A.bat");
+        private void Execute_Hotkey_Alt_B(object obj) => StartFile(".\\lib\\Hotkey_Alt_B.bat");
+        private void Execute_Hotkey_Alt_C(object obj) => StartFile(".\\lib\\Hotkey_Alt_C.bat");
+        private void Execute_Hotkey_Alt_D(object obj) => StartFile(".\\lib\\Hotkey_Alt_D.bat");
+        private void Execute_Hotkey_Alt_E(object obj) => StartFile(".\\lib\\Hotkey_Alt_E.bat");
+        private void Execute_Hotkey_Alt_F(object obj) => StartFile(".\\lib\\Hotkey_Alt_F.bat");
+        private void Execute_Hotkey_Alt_G(object obj) => StartFile(".\\lib\\Hotkey_Alt_G.bat");
+        private void Execute_Hotkey_Alt_H(object obj) => StartFile(".\\lib\\Hotkey_Alt_H.bat");
+        private void Execute_Hotkey_Alt_I(object obj) => StartFile(".\\lib\\Hotkey_Alt_I.bat");
+        private void Execute_Hotkey_Alt_J(object obj) => StartFile(".\\lib\\Hotkey_Alt_J.bat");
+        private void Execute_Hotkey_Alt_K(object obj) => StartFile(".\\lib\\Hotkey_Alt_K.bat");
+        private void Execute_Hotkey_Alt_L(object obj) => StartFile(".\\lib\\Hotkey_Alt_L.bat");
+        private void Execute_Hotkey_Alt_M(object obj) => StartFile(".\\lib\\Hotkey_Alt_M.bat");
+        private void Execute_Hotkey_Alt_N(object obj) => StartFile(".\\lib\\Hotkey_Alt_N.bat");
+        private void Execute_Hotkey_Alt_O(object obj) => StartFile(".\\lib\\Hotkey_Alt_O.bat");
+        private void Execute_Hotkey_Alt_P(object obj) => StartFile(".\\lib\\Hotkey_Alt_P.bat");
+        private void Execute_Hotkey_Alt_Q(object obj) => StartFile(".\\lib\\Hotkey_Alt_Q.bat");
+        private void Execute_Hotkey_Alt_R(object obj) => StartFile(".\\Resources\\Data\\Civilizations_View_List.bat");
+        //private void Execute_Hotkey_Alt_R(object obj) { StartFile(".\\lib\\Hotkey_Alt_R.bat"); }
+        private void Execute_Hotkey_Alt_S(object obj) => StartFile(".\\lib\\Hotkey_Alt_S.bat");
+        private void Execute_Hotkey_Alt_T(object obj) => StartFile(".\\lib\\Hotkey_Alt_T.bat");
+        private void Execute_Hotkey_Alt_U(object obj) => StartFile(".\\lib\\Hotkey_Alt_U.bat");
+        private void Execute_Hotkey_Alt_V(object obj) => StartFile(".\\lib\\Hotkey_Alt_V.bat");
+        private void Execute_Hotkey_Alt_W(object obj) => StartFile(".\\lib\\Hotkey_Alt_W.bat");
+        private void Execute_Hotkey_Alt_X(object obj) => StartFile(".\\lib\\Hotkey_Alt_X.bat");
+        private void Execute_Hotkey_Alt_Y(object obj) => StartFile(".\\lib\\Hotkey_Alt_Y.bat");
+        private void Execute_Hotkey_Alt_Z(object obj) => StartFile(".\\lib\\Hotkey_Alt_Z.bat");
 
 
 
@@ -836,11 +830,18 @@ namespace Supremacy.Client
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Initialize()
         {
+            _text = "Initializing... !";
+            Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat("Initializing... !");
+
             RegisterViewsAndServices();
+            Console.WriteLine("RegisterViewsAndServices done...");
             RegisterEventHandlers();
+            Console.WriteLine("RegisterEventHandlers done...");
             RegisterCommandHandlers();
+            Console.WriteLine("RegisterCommandHandlers done...");
             UpdateCommands();
+            Console.WriteLine("UpdateCommands done...");
 
             UIHelpers.IsAutomaticBrowserLaunchEnabled = true;
 
@@ -1209,15 +1210,9 @@ namespace Supremacy.Client
             //System.Windows.Forms.SendKeys.SendWait("{F1}");  // shows Map
         }
 
-        private void OnGameEnding(ClientEventArgs obj)
-        {
-            UpdateCommands();
-        }
+        private void OnGameEnding(ClientEventArgs obj) => UpdateCommands();
 
-        private void OnClientConnected(ClientConnectedEventArgs obj)
-        {
-            UpdateCommands();
-        }
+        private void OnClientConnected(ClientConnectedEventArgs obj) => UpdateCommands();
 
         private void UpdateCommands()
         {
@@ -1241,7 +1236,7 @@ namespace Supremacy.Client
             //_ctrl_f04_Command.IsActive = true;
             //_ctrl_f05_Command.IsActive = true;
             _ctrl_f06_Command.IsActive = true;
-            //_ctrl_f07_Command.IsActive = true;
+            _ctrl_f07_Command.IsActive = true;
             //_ctrl_f08_Command.IsActive = true;
             //_ctrl_f09_Command.IsActive = true;
             //_ctrl_f10_Command.IsActive = true;
@@ -1280,6 +1275,8 @@ namespace Supremacy.Client
             _Hotkey_Alt_D7.IsActive = true;
             _Hotkey_Alt_D8.IsActive = true;
             _Hotkey_Alt_D9.IsActive = true;
+
+            _OnMA_Ferengi.IsActive = true;
 
 
             _Hotkey_Alt_F01.IsActive = true;
@@ -1376,15 +1373,9 @@ namespace Supremacy.Client
         }
 
         // hopefully info about played empire public available
-        private int LocalCivID()
-        {
-            return localCivID;
-        }
+        private int LocalCivID() => localCivID;
 
-        public void LoadDefaultTheme()
-        {
-            _ = _app.LoadDefaultResources();
-        }
+        public void LoadDefaultTheme() => _ = _app.LoadDefaultResources();
 
         public void LoadTheme(string theme)
         {
@@ -1528,7 +1519,7 @@ namespace Supremacy.Client
             //ClientCommands.CTRL_F04_Command.RegisterCommand(_ctrl_f04_Command);
             //ClientCommands.CTRL_F05_Command.RegisterCommand(_ctrl_f05_Command);
             ClientCommands.CTRL_F06_Command.RegisterCommand(_ctrl_f06_Command);
-            //ClientCommands.CTRL_F07_Command.RegisterCommand(_ctrl_f07_Command);
+            ClientCommands.CTRL_F07_Command.RegisterCommand(_ctrl_f07_Command);
             //ClientCommands.CTRL_F08_Command.RegisterCommand(_ctrl_f08_Command);
             //ClientCommands.CTRL_F09_Command.RegisterCommand(_ctrl_f09_Command);
             //ClientCommands.CTRL_F10_Command.RegisterCommand(_ctrl_f10_Command);
@@ -1559,6 +1550,8 @@ namespace Supremacy.Client
             ClientCommands.ShowPlayersHistoryFileCommand.RegisterCommand(_showPlayersHistoryFileCommand);
             ClientCommands.ShowAllHistoryFileCommand.RegisterCommand(_showAllHistoryFileCommand);
             ClientCommands.Exit.RegisterCommand(_exitCommand);
+
+            ClientCommands.OnMA_Ferengi.RegisterCommand(_OnMA_Ferengi);
 
             ClientCommands.Hotkey_Alt_D0.RegisterCommand(_Hotkey_Alt_D0);
             ClientCommands.Hotkey_Alt_D1.RegisterCommand(_Hotkey_Alt_D1);
@@ -1612,6 +1605,8 @@ namespace Supremacy.Client
             ClientCommands.Hotkey_Alt_Z.RegisterCommand(_Hotkey_Alt_Z);
 
 
+
+
         }
         private void ExecuteSP_DirectlyGameCommand(int _id)
         {
@@ -1636,10 +1631,17 @@ namespace Supremacy.Client
                     break;
             }
 
-
+            _text = "Step_1000: GameInitData.CreateSinglePlayerGame .... ";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
             GameInitData initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
+            
             localEmpire = GetLocalEmpireShortage(_id, out string localempire);
             startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
+
+            _text = "Step_1300: RunLocal.... ";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
 
             RunGameController(gameController => gameController.RunLocal(initData), false);
         }
@@ -1803,8 +1805,18 @@ namespace Supremacy.Client
 
             region.Activate(menuScreen);
         }
+        private void ExecuteOnMA_UFP(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/United_Federation_of_Planets"); }
+        private void ExecuteOnMA_TERRAN(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        private void ExecuteOnMA_ROM(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        private void ExecuteOnMA_KLING(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        private void ExecuteOnMA_CARD(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        private void ExecuteOnMA_DOM(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        private void ExecuteOnMA_BORG(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
 
-        private IGameController ResolveGameController()
+        private void ExecuteOnMA_Ferengi(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+
+
+            private IGameController ResolveGameController()
         {
             GCHelper.Collect();
 

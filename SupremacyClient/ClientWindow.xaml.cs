@@ -163,6 +163,7 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control)));
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F06_Command, Key.F6, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F07_Command, Key.F7, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.Control));  // old F9-Dialog, not used anymore
 
 

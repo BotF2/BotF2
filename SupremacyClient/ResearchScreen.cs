@@ -31,6 +31,7 @@ using Supremacy.Client.Views;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Encyclopedia;
+using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -58,6 +59,9 @@ namespace Supremacy.Client
         private TreeView _encyclopediaEntryListView;
         private TextBox _searchText;
         private FlowDocumentScrollViewer _encyclopediaViewer;
+        //private string _moreInfo;
+
+        //private List<Paragraph> newline;
 
         public ResearchScreen([NotNull] IUnityContainer container) : base(container)
         {
@@ -101,10 +105,24 @@ namespace Supremacy.Client
             //                 where raceEntry != null
             //                 select raceEntry
             //             )
-            IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
-                 from civ in GameContext.Current.Civilizations
-                 let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
-                 where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+            //IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
+            //     from civ in GameContext.Current.Civilizations
+            //     let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+            //     where civ != null  // show all Civs in Encyclopedia
+            //     //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+            //     let raceEntry = civ.Race as IEncyclopediaEntry
+            //     where raceEntry != null
+            //     select raceEntry
+            // )
+
+
+            // all entries from file
+
+                         IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
+                 from civ in MasterResources.CivDB
+                 //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+                 where civ != null  // show all Civs in Encyclopedia
+                 //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
                  let raceEntry = civ.Race as IEncyclopediaEntry
                  where raceEntry != null
                  select raceEntry
@@ -112,7 +130,8 @@ namespace Supremacy.Client
     .Concat(
 
                     from design in techTree
-                    where TechTreeHelper.MeetsTechLevels(civManager, design)
+                    where design != null  // show all EncyclopediaEntries
+                    //where TechTreeHelper.MeetsTechLevels(civManager, design)
                     let designEntry = design as IEncyclopediaEntry
                     where designEntry != null
                     select designEntry
@@ -422,13 +441,20 @@ namespace Supremacy.Client
             // Begin of Encyclopedia-IMAGE
             Border image = new Border();
 
-            List<Paragraph> paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
+            //ToDo: more Info for Races
+            //var newRace = entry;
+            //if (design != null)
+            //    _moreInfo = doc.Blocks.ke
+
+            List<Paragraph> paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText/* + "Hello"*/).Split(
                 new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries).Select(o => new Paragraph(new Run(o))).ToList();
 
             if (entry.EncyclopediaCategory == EncyclopediaCategory.Races)
             {
-                doc.Blocks.AddRange(paragraphs);
+                doc.Blocks.AddRange(paragraphs
+                    //+ newline + "Hello"
+                    ); ;
             }
 
             Paragraph firstParagraph = paragraphs.FirstOrDefault();

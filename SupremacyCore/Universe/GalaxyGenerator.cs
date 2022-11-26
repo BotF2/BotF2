@@ -17,8 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-
+using System.Windows;
 
 namespace Supremacy.Universe
 {
@@ -30,6 +29,13 @@ namespace Supremacy.Universe
         private static TableMap UniverseTables;
         private static string _text;
         private static bool bool_output_done;
+
+        private static string _fileNameCanonMAP;
+        public static List<string> _loadedMapEntries = new List<string>();
+        private static MapLocation _newLoc;
+        private static string _iText;
+        private static string _jText;
+
         private static readonly Dictionary<StarType, int> StarTypeDist;
         private static readonly Dictionary<Tuple<StarType, PlanetSize>, int> StarTypeModToPlanetSizeDist;
         private static readonly Dictionary<Tuple<int, PlanetSize>, int> SlotModToPlanetSizeDist;
@@ -38,6 +44,8 @@ namespace Supremacy.Universe
         private static readonly Dictionary<Tuple<int, PlanetType>, int> SlotModToPlanetTypeDist;
         private static readonly Dictionary<Tuple<PlanetSize, MoonSize>, int> PlanetSizeModToMoonSizeDist;
         private static readonly Dictionary<Tuple<PlanetType, MoonSize>, int> PlanetTypeModToMoonSizeDist;
+
+
 
         static GalaxyGenerator()
         {
@@ -51,6 +59,8 @@ namespace Supremacy.Universe
             PlanetSizeModToPlanetTypeDist = new Dictionary<Tuple<PlanetSize, PlanetType>, int>();
             PlanetSizeModToMoonSizeDist = new Dictionary<Tuple<PlanetSize, MoonSize>, int>();
             PlanetTypeModToMoonSizeDist = new Dictionary<Tuple<PlanetType, MoonSize>, int>();
+
+            //PreparedMapLocation = new Dictionary<string, string>();
 
             _text = "GalaxyGenerator starts...";
             Console.WriteLine(_text);
@@ -392,15 +402,15 @@ namespace Supremacy.Universe
                     {
                         if (!bool_output_done)
                         {
-                        _text = "Systems:;inhabited=" + item.Sector.System.IsInhabited + ";" + item.Location + ";" + item.Name + ";"
-                                + " - no more output or deactivate the boolean"
-                                ;
+                            _text = "Systems:;inhabited=" + item.Sector.System.IsInhabited + ";" + item.Location + ";" + item.Name + ";"
+                                    + " - no more output or deactivate the boolean"
+                                    ;
                             bool_output_done = true;
-                        if (item.Sector.System.Colony != null)
-                            _text += ";" + item.Sector.System.Colony.MaxPopulation;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.GalaxyGenerator.DebugFormat(_text);  // hiding info in Log.txt
-                        count += 1;
+                            if (item.Sector.System.Colony != null)
+                                _text += ";" + item.Sector.System.Colony.MaxPopulation;
+                            Console.WriteLine(_text);
+                            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);  // hiding info in Log.txt
+                            count += 1;
                         }
 
                     }
@@ -530,6 +540,13 @@ namespace Supremacy.Universe
             Civilization civ,
             MapLocation location)
         {
+            _text = "Step_1201: FinalizaHomeworldPlacement: "
+                + location
+                + " " + civ.Key
+                ;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+
             CivilizationManager civManager = new CivilizationManager(GameContext.Current, civ);
 
             GameContext.Current.CivilizationManagers.Add(civManager);
@@ -562,7 +579,32 @@ namespace Supremacy.Universe
             }
 
             homeSystem.Name = homeSystemDescriptor.Name;
+
+            for (int i = 0; i < _loadedMapEntries.Count; i++)
+            {
+                //_text = "### Apply Canon-MapContent...";
+                //Console.WriteLine(_text);
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+
+                var _coll = _loadedMapEntries[i].Split(';');
+                if (civ.Key == _coll[1])
+                {
+                    var _col2 = _coll[0].Split(',');
+
+
+                    _ = int.TryParse(_col2[0], out int _x);
+                    _ = int.TryParse(_col2[1], out int _y);
+                    _newLoc = new MapLocation(_x, _y);
+                    _text = "### Apply Canon-MapContent for " + civ.Key + " at " + _newLoc.ToString();
+                    Console.WriteLine(_text);
+                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+                    location = _newLoc;
+                }
+
+            }
+
             homeSystem.Location = location;
+
 
             if (homeSystemDescriptor.IsInhabitantsDefined)
             {
@@ -653,6 +695,110 @@ namespace Supremacy.Universe
             GameContext.Current.Universe.Objects.Add(homeSystem);
             GameContext.Current.Universe.Objects.Add(homeSystem.Colony);
         }
+
+        private static void MAP_Load(string fileNameCanonMAP)
+        {
+            _loadedMapEntries.Clear();
+
+            if (File.Exists("Resources/Data/" + fileNameCanonMAP))
+            {
+                FileStream file = new FileStream(
+                    ResourceManager.GetResourcePath("Resources/Data/" + fileNameCanonMAP),
+                    FileMode.Open,
+                    FileAccess.Read);
+
+
+                using (StreamReader reader = new StreamReader(file))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        if (line == null)
+                        {
+                            break;
+                        }
+                        //GameLog.Core.GalaxyGenerator.DebugFormat("Nebula Name = {0}", line);
+                        _loadedMapEntries.Add(line.Trim());
+                    }
+                }
+
+            }
+            else
+            {
+                MAP_Create_File(fileNameCanonMAP);
+            }
+
+            //foreach (var item in _loadedMapEntries)
+            //{
+            //    var _coll = item.Split(';');
+            //    PreparedMapLocation.Add(_coll[0], _coll[1]);  // first position, than Name, enables more Nebulas, but only 1 position per sector
+
+            //}
+
+            //PreparedMapLocation.Count();
+
+            var qry = from s in _loadedMapEntries
+                      group s by s into grp
+                      select new
+                      {
+                          num = grp.Key,
+                          count = grp.Count()
+                      };
+            //then...
+            foreach (var o in qry)
+            {
+                if (o.count > 1)
+                {
+                    _text = "##### MapLocation {0} is used in * " + fileNameCanonMAP
+                        + o.num + " * times"
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
+                }
+            }
+        }
+
+        private static void MAP_Create_File(string fileNameCanonMAP)
+        {
+            string _fileName = ResourceManager.GetResourcePath("Resources/Data/NEW_" + fileNameCanonMAP);
+
+            if(File.Exists(_fileName))
+            {
+                _text = _fileName + " exists and will be overwritten !";
+                _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+
+                File.Delete(_fileName);
+            }
+
+
+            FileStream file = new FileStream(
+                _fileName,
+                FileMode.CreateNew,
+                FileAccess.Write);
+
+            //List<string> _loadedMapEntries = new List<string>();
+
+            StreamWriter writer = new StreamWriter(file);
+
+            for (int i = 0; i < GameContext.Current.Universe.Map.Width; i++)
+            {
+                for (int j = 0; j < GameContext.Current.Universe.Map.Height; j++)
+                {
+                    _iText = i.ToString();
+                    _jText = j.ToString();
+                    if (i < 10) _iText = "0" + i;
+                    if (j < 10) _jText = "0" + j;
+                    writer.WriteLine(_iText + "," + _jText + ";_empty_;0," + _iText + "," + _jText);
+                }
+            }
+            writer.Close();
+
+            _text = "No " + file.Name + " available, but we created an empty one named > NEW_" + fileNameCanonMAP;
+
+            _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+
+        }
+
 
         private static bool PlaceEmpireHomeworlds(List<MapLocation> positions,
             IList<string> starNames,
@@ -855,10 +1001,42 @@ namespace Supremacy.Universe
             IList<string> starNames,
             out CollectionBase<MapLocation> homeLocations)
         {
+            if (GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon)
+            {
+                //string _fileNameCanonMAP;
+                try
+                {
+                    _fileNameCanonMAP =
+                        "Canon-Map_"
+                        + GameContext.Current.Universe.Map.Width
+                        + "x" + GameContext.Current.Universe.Map.Height
+                        + ".txt"
+                        ;
+
+                    MAP_Load(_fileNameCanonMAP);
+
+                    // debug - here a new map can be created
+                    //_text = "here a new map can be created";
+                    //Console.WriteLine(_text);
+                    //_fileNameCanonMAP += "new";
+                    //CreateMAP_File(_fileNameCanonMAP);
+                }
+                catch { /* nothing */ }
+
+                //_loadedMapEntries.Count();  // just a DEBUG / Breakpoint 
+
+            }
+
+
+
+
             HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
             MinorRaceFrequency minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency;
             List<Civilization> empires = new List<Civilization>();
             List<Civilization> minorRaces = new List<Civilization>();
+
+            _text = "PlaceHomeworlds (Empires+Minors)...";
+            Console.WriteLine(_text);
 
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
@@ -874,6 +1052,11 @@ namespace Supremacy.Universe
 
             //Randomize the places and minor races
             positions.RandomizeInPlace();
+
+            _text = "Next: Placing Minors..."
+                ;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
             minorRaces.RandomizeInPlace();
             //INFO: If you want to ensure that a race is in the game,
             //move it forward in the randomized minorRaces list

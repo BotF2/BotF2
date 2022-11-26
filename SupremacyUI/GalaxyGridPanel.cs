@@ -145,6 +145,7 @@ namespace Supremacy.UI
         private GalaxyScreenPresentationModel _screenModel;
         private IObservable<Sector> _hoveredSector;
         private IDisposable _hoveredSectorSubscription;
+        private static string _text;
         #endregion
 
         #region Events
@@ -232,12 +233,20 @@ namespace Supremacy.UI
             s_fogOfWarBrush = new SolidColorBrush(fogOfWarColor);
             s_fogOfWarBrush.Freeze();
 
+            _text = "Step_1290: PopulateEmpires from MasterResources.CivDB... ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+
             //Load empire specific ones
             //Instead of loading the civilizations from the gamecontext,
             //load them straight from the db, as this panel is only constructed once.
             //Failure to do so will cause crashes when starting a second game
             foreach (Civilization civ in MasterResources.CivDB)
             {
+                //_text = "Step_1290: PopulateEmpires... " + civ.Name;
+                //Console.WriteLine(_text);
+                //GameLog.Client.GameData.DebugFormat(_text);
+
                 Color color = (Color)ColorConverter.ConvertFromString(civ.Color);
                 Color textColor = Color.Add(color, Colors.Gray);
 
@@ -272,8 +281,10 @@ namespace Supremacy.UI
                 s_borderPens[civ.CivID] = new Pen(borderBrush, 2.0);
                 s_borderPens[civ.CivID].Freeze();
 
+                // debug
+
                 //Fleet icons
-                string iconPath = "Resources/Images/Insignias/" + civ.Key.ToLower() + ".png";
+                string iconPath = "Resources/Images/Insignias/" + civ.Key.ToUpper() + ".png";
                 s_fleetIcons[civ.CivID] = File.Exists(ResourceManager.GetResourcePath(iconPath))
                     ? LoadFleetIcon(ResourceManager.GetResourceUri(iconPath))
                     : s_defaultFleetIcon;
@@ -805,6 +816,7 @@ namespace Supremacy.UI
             image.BeginInit();
             image.DecodePixelHeight = (int)(FleetIconSize * MaxScaleFactor);
             image.UriSource = uri;
+            //image.Metadata = null;  // not working  // throwin: Exception thrown: 'System.NotSupportedException' in PresentationCore.dll
             image.EndInit();
             image.Freeze();
             return image;

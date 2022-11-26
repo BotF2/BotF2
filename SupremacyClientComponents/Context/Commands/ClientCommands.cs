@@ -137,5 +137,7 @@ namespace Supremacy.Client.Commands
 
         public static readonly RoutedCommand EscapeCommand = new RoutedCommand("Escape", typeof(ClientCommands));
         public static readonly RoutedCommand AutoTurnCommand = new RoutedCommand("AutoTurn", typeof(ClientCommands));
+
+        public static readonly CompositeCommand OnMA_Ferengi = new CompositeCommand(true);
     }
 }

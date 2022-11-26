@@ -1171,7 +1171,7 @@
                                  Foreground="{DynamicResource DefaultTextBrush}"
                                  Margin="3,0,6,0"
                                  VerticalAlignment="Center"
-                                 Text="SEARCH"/>
+                                 Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
                       <TextBox x:Name="PART_SearchText"
                                Grid.Column="1"
                                BorderBrush="GreenYellow"

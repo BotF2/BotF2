@@ -314,7 +314,7 @@ namespace Supremacy.Entities
                         // for problems with Civilizations.xml active ...
                         //_text = "CivDatabase: adding civilization " + civElement.ToString();
                         //Console.WriteLine(_text);
-                        // GameLog.Core.GameData.DebugFormat(_text);
+                        //GameLog.Core.GameData.DebugFormat(_text);
 
                         civDatabase.Add(new Civilization(civElement));
                     }

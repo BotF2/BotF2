@@ -718,7 +718,7 @@
                                  Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                  Margin="6,0,3,0"
                                  VerticalAlignment="Center"
-                                 Text="ENCYCLOPEDIA GALACTICA"/>
+                                 Text="{s:StringResource Key=ENCYCLOPEDIA_TITLE_ROM, Case=Upper}"/>
                                             <Border Background="{StaticResource Rom1Gradient_Top_Bottom}"/>
                     </DockPanel>
                     <!-- Lower-Right Edge -->
@@ -746,7 +746,7 @@
                                  Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                  Margin="3,0,6,0"
                                  VerticalAlignment="Center"
-                                 Text="SEARCH"/>
+                                 Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
                       <TextBox x:Name="PART_SearchText"
                                Grid.Column="1"/>
                     </Grid>

@@ -27,6 +27,8 @@ using Supremacy.Tech;
 using Supremacy.Utility;
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client.Context;
+using System.Diagnostics;
+using System.Windows.Navigation;
 
 namespace Supremacy.Client
 {
@@ -69,6 +71,7 @@ namespace Supremacy.Client
         private TreeView _encyclopediaEntryListView;
         private TextBox _searchText;
         private FlowDocumentScrollViewer _encyclopediaViewer;
+        //private readonly DelegateCommand<object> OnMA_Ferengi;
         //private readonly IClientContext AppContext;//_app;
         public F07_Dialog()
         {
@@ -183,6 +186,9 @@ namespace Supremacy.Client
                 .GroupBy(o => o.EncyclopediaCategory)
                 .OrderBy(o => o.Key);
 
+            //_raceGroup = new GroupItem("Text") ;
+            //groups.AddRange(_raceGroup as IEncyclopediaEntry);
+
             Style groupStyle = new Style(
                 typeof(TreeViewItem),
                 Application.Current.FindResource(typeof(TreeViewItem)) as Style);
@@ -238,6 +244,12 @@ namespace Supremacy.Client
                 _ = _encyclopediaEntryListView.Items.Add(groupItem);
                 //GameLog.Client.Research.DebugFormat("");
             }
+        }
+
+        private void DoLink(object sender, RequestNavigateEventArgs e)
+        {
+            //Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
 
         private bool FilterEncyclopediaEntry(object value)
