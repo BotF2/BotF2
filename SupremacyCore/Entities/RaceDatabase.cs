@@ -127,7 +127,7 @@ namespace Supremacy.Entities
 
                 #region traceRacesXML_To_CSV
 
-                bool _traceRacesXML = true;  // file is writen while starting a game -> Federation -> Start
+                bool _traceRacesXML = false;  // file is writen while starting a game -> Federation -> Start
 
                 if (_traceRacesXML == true)
                 {

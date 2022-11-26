@@ -408,6 +408,7 @@ namespace Supremacy.Tech
                 file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
+                file = null; // quick offline
 
                 if (file == null)
                 {

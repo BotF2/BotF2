@@ -108,6 +108,7 @@ namespace Supremacy.Universe
 
                 Console.WriteLine("writing {0}", file);
 
+                file = null; // quick set to off
                 if (file == null)
                 {
                     goto WriterCloseHomeSystemsXML;

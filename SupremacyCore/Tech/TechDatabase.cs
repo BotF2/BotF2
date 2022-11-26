@@ -631,7 +631,7 @@ namespace Supremacy.Tech
             }
 
 
-            bool _traceTechObjectDatabase = true;  // file is writen while starting a game -> Federation -> Start
+            bool _traceTechObjectDatabase = false;  // file is writen while starting a game -> Federation -> Start
 
             //if (ClientSettings.TracesXML2CSV == true)
 
