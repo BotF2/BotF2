@@ -76,26 +76,32 @@
 
             <TextBlock TextWrapping="Wrap">
             MAJORS >>  
-            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/United_Federation_of_Planets" 
+            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vereinigte_Föderation_der_Planeten" 
                        > UFP </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Terran_Empire" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Terranisches_Imperium" 
 > Terran </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Romulaner" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Romulanisches_Sternenimperium" 
 > Romulan </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Klingon" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Klingonisches_Reich" 
 > Klingon </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Cardassianer" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Cardassianische_Union" 
 > Cardassian </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Dominion" 
 > Dominion </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Borg" 
-> Borg </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Borg-Kollektiv"
+> Borg </Hyperlink>                
+                -
+                            <Hyperlink NavigateUri="http://botf2.square7.ch/wiki/index.php?title=Category:Races"
+> Game-WIKI </Hyperlink>
+                               -
+                            <Hyperlink NavigateUri="https://intl.startrek.com/shows"
+> Shows </Hyperlink>
 
             </TextBlock>
 
@@ -106,7 +112,7 @@
             <TextBlock TextWrapping="Wrap">
              SERIES > 
                                 
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Category:Star_Trek_series" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Serie" 
 > ALL </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Enterprise" 
@@ -118,19 +124,19 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Discovery" 
 > DIS </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_The_Original_Series" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Raumschiff_Enterprise" 
 > TOS </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_The_Animated_Series" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Die_Abenteuer_des_Raumschiff_Enterprise" 
 > TAS </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_The_Next_Generation" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Raumschiff_Enterprise:_Das_nächste_Jahrhundert" 
 > TNG </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Deep_Space_Nine" 
 > DS9 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Voyager" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Raumschiff_Voyager" 
 > VOY </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Short_Treks" 
@@ -145,10 +151,10 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Prodigy" 
 > PRO </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Untitled_Section_31_series" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Unbetitelte_Sektion-31-Serie" 
 > S31 </Hyperlink>
                                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/DIS_Season_3" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Discovery#Staffel_3" 
 > DIS </Hyperlink>
             </TextBlock>
 
@@ -161,40 +167,40 @@
             <TextBlock TextWrapping="Wrap">
              MOVIES >
                 
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Category:Star_Trek_films" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star-Trek-Filme" 
 > ALL </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_The_Motion_Picture" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Der_Film" 
 > ST01 </Hyperlink>
                                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_II:_The_Wrath_of_Khan" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_II:_Der_Zorn_des_Khan" 
 > ST02 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_III:_The_Search_for_Spock" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_III:_Auf_der_Suche_nach_Mr._Spock" 
 > ST03 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_IV:_The_Voyage_Home" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_IV:_Zur%C3%BCck_in_die_Gegenwart" 
 > ST04 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_V:_The_Final_Frontier" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_V:_Am_Rande_des_Universums" 
 > ST05 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_VI:_The_Undiscovered_Country" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_VI:_Das_unentdeckte_Land" 
 > ST06 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_Generations" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Treffen_der_Generationen" 
 > ST07 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_First_Contact" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Der_erste_Kontakt" 
 > ST08 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Insurrection" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Der_Aufstand" 
 > ST09 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_Nemesis" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Nemesis" 
 > ST10 </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_(film)" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_(Film)" 
 > ST11 </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_Into_Darkness" 
@@ -203,7 +209,7 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_Beyond" 
 > ST13 </Hyperlink>
                                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_XIV" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Unbetiteltes_Filmprojekt_2023" 
 > ST14 </Hyperlink>
             </TextBlock>
 
@@ -231,14 +237,27 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Alsaurianer" 
 > Alsaurians </Hyperlink>
                 -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Andorianer" 
+> Andorians </Hyperlink>
+                -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Angosianer" 
 > Angosians </Hyperlink>
+               -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ankari" 
+> Ankari </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Antedeaner" 
 > Antedeans </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Anticaner" 
 > Anticans </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+             A >  
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Arbazaner" 
+> Arbazan </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ardaner" 
 > Ardanans </Hyperlink>
@@ -714,19 +733,19 @@
 
             <TextBlock TextWrapping="Wrap">
              SHIPS >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Category:Spacecraft_classifications" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Raumschiff" 
 > ALL </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Scout_ships" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Scoutschiff" 
 > Scouts </Hyperlink>
                 -
-                <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Destroyer" 
+                <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zerst%C3%B6rer" 
 > Destroyer </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Cruiser" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kreuzer" 
 > Cruiser </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Flagship" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Flaggschiff" 
 > Command or Flag Ship </Hyperlink>
                 <!---
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zahl" 
@@ -749,12 +768,51 @@
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
+             TIMELINE >  
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Zeitlinie" 
+                       RequestNavigate="DoLink"> ALL </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/22._Jahrhundert" 
+                       RequestNavigate="DoLink"> 21xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/23._Jahrhundert" 
+                       RequestNavigate="DoLink"> 22xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/24._Jahrhundert" 
+                       RequestNavigate="DoLink"> 23xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/25._Jahrhundert" 
+                       RequestNavigate="DoLink"> 24xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/32._Jahrhundert" 
+                       RequestNavigate="DoLink"> 31xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://thestartrekchronologyproject.blogspot.com/2009/09/and-now-conclusion.html" 
+                       RequestNavigate="DoLink"> Footage </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Production_timeline" 
+                       RequestNavigate="DoLink"> Productions </Hyperlink>
+               -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_timeline#Alternate_realities" 
+                       RequestNavigate="DoLink"> ALTERED </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_reality" 
+                       RequestNavigate="DoLink"> ALTERNATE </Hyperlink>
+
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="NoWrap">
+             °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
              MORE (not included) >  
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Arkonianer" 
 > Arkonians </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Xindi" 
-> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kzin" 
+> Kzin </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Xyrillianer" 
 > xx </Hyperlink>
@@ -768,14 +826,14 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zahl" 
 > xx </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zakdorn" 
-> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Sektor" 
+> Sectors </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zalkonianer" 
-> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Liste_von_astronomischen_Objekten" 
+> Galaxy Objects </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zibalianer" 
-> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Sternenflottenr%C3%A4nge" 
+> ST ranks </Hyperlink>
 
 
             </TextBlock>

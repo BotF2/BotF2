@@ -94,6 +94,12 @@
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Borg" 
                        RequestNavigate="DoLink"> Borg </Hyperlink>
+               -
+                            <Hyperlink NavigateUri="http://botf2.square7.ch/wiki/index.php?title=Category:Races"
+                       RequestNavigate="DoLink"> Game-WIKI </Hyperlink>
+               -
+                            <Hyperlink NavigateUri="https://intl.startrek.com/shows"
+                       RequestNavigate="DoLink"> Shows </Hyperlink>
 
             </TextBlock>
 
@@ -229,14 +235,27 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alsaurian" 
                        RequestNavigate="DoLink"> Alsaurians </Hyperlink>
                 -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Andorian" 
+                       RequestNavigate="DoLink"> Andorians </Hyperlink>
+                -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Angosian" 
                        RequestNavigate="DoLink"> Angosians </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ankari" 
+                       RequestNavigate="DoLink"> Ankari </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Antedean" 
                        RequestNavigate="DoLink"> Antedeans </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Antican" 
                        RequestNavigate="DoLink"> Anticans </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+             A >  
+                
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Arbazan" 
+                       RequestNavigate="DoLink"> Arbazan </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ardanan" 
                        RequestNavigate="DoLink"> Ardanans </Hyperlink>
@@ -715,6 +734,9 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Spacecraft_classifications" 
                        RequestNavigate="DoLink"> ALL </Hyperlink>
                 -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Registry" 
+                       RequestNavigate="DoLink"> REGISTRY </Hyperlink>
+                -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Scout_ships" 
                        RequestNavigate="DoLink"> Scouts </Hyperlink>
                 -
@@ -730,8 +752,8 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zahl" 
                        RequestNavigate="DoLink"> Zahl </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zakdorn" 
-                       RequestNavigate="DoLink"> Zakdorn </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Registry" 
+                       RequestNavigate="DoLink"> Registry </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zalkonian" 
                        RequestNavigate="DoLink"> Zalkonians </Hyperlink>
@@ -747,12 +769,51 @@
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
+             TIMELINE >  
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline#Background_information" 
+                       RequestNavigate="DoLink"> ALL </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/22nd_century" 
+                       RequestNavigate="DoLink"> 21xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/23rd_century" 
+                       RequestNavigate="DoLink"> 22xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/24th_century" 
+                       RequestNavigate="DoLink"> 23xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/25th_century" 
+                       RequestNavigate="DoLink"> 24xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/32nd_century" 
+                       RequestNavigate="DoLink"> 31xx </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://thestartrekchronologyproject.blogspot.com/2009/09/and-now-conclusion.html" 
+                       RequestNavigate="DoLink"> Footage </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Production_timeline" 
+                       RequestNavigate="DoLink"> Productions </Hyperlink>
+               -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_timeline#Alternate_realities" 
+                       RequestNavigate="DoLink"> ALTERED </Hyperlink>
+                -
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_reality" 
+                       RequestNavigate="DoLink"> ALTERNATE </Hyperlink>
+
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="NoWrap">
+             °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
              MORE (not included) >  
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Arkonian" 
                        RequestNavigate="DoLink"> Arkonians </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xindi" 
-                       RequestNavigate="DoLink"> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kzin" 
+                       RequestNavigate="DoLink"> Kzin </Hyperlink>
                 -
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xyrillian" 
                        RequestNavigate="DoLink"> xx </Hyperlink>
@@ -763,20 +824,21 @@
                             <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/R%27ongovian" 
                        RequestNavigate="DoLink"> R'ongovians </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zahl" 
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline" 
                        RequestNavigate="DoLink"> xx </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zakdorn" 
-                       RequestNavigate="DoLink"> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors" 
+                       RequestNavigate="DoLink"> Sectors </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zalkonian" 
-                       RequestNavigate="DoLink"> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects" 
+                       RequestNavigate="DoLink"> Galaxy Objects </Hyperlink>
                 -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zibalian" 
-                       RequestNavigate="DoLink"> xx </Hyperlink>
+                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks" 
+                       RequestNavigate="DoLink"> ST ranks </Hyperlink>
 
 
             </TextBlock>
+
 
         </StackPanel>
 
