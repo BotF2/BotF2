@@ -542,11 +542,12 @@ namespace Supremacy.Game
 
         #region Static Members
         private static readonly ConcurrentStack<GameContext> _stack = new ConcurrentStack<GameContext>();
+        private string _text;
+        private bool _bool_Fac_Count_Active;
 
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
-        private string _text;
-        private bool _bool_Fac_Count_Active;
+
 
         private static Stack<GameContext> ThreadStack
         {
@@ -862,6 +863,10 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
+            _text = "Step_3000: GameContext Initialize...";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+
             PushThreadContext(this);
             try
             {
@@ -886,7 +891,7 @@ namespace Supremacy.Game
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 
-                string _text; 
+                //string _text; 
 
                 ScriptedEventDatabase scriptedEventDatabase = ScriptedEventDatabase.Load();
 
@@ -939,7 +944,10 @@ namespace Supremacy.Game
                 }
 
                 GalaxyGenerator.GenerateGalaxy(this);
-                GameLog.Client.GameData.DebugFormat("Galaxy generated...");
+
+                _text = "Galaxy generated...";
+                Console.WriteLine(_text);
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                 TechTree.LoadTechTrees(this);
 
@@ -950,9 +958,10 @@ namespace Supremacy.Game
                 {
                     foreach (Colony colony in civManager.Colonies)
                     {
-                        _text = "Generating HomeSystems...";
-                        Console.WriteLine(_text + " > " + colony.Name);
-                        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                        //_text = "Generating HomeSystems... > " + colony.Name;
+                        //Console.WriteLine(_text);
+                        //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
                         // get the home system settings
                         Civilization civ = colony.Owner;
 

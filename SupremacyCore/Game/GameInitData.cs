@@ -329,7 +329,7 @@ namespace Supremacy.Game
                 _text = _options.ToString();
                 _text += "GameOptions are set...";
                 //}
-                Console.WriteLine("Step_1200:; " + _text);
+                Console.WriteLine("Step_1200: " + _text);
             }
         }
 

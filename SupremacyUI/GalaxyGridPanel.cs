@@ -141,11 +141,10 @@ namespace Supremacy.UI
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _zoomInCommand;
         private readonly DelegateCommand<object> _zoomOutCommand;
-
+        private static readonly string _text;
         private GalaxyScreenPresentationModel _screenModel;
         private IObservable<Sector> _hoveredSector;
         private IDisposable _hoveredSectorSubscription;
-        private static string _text;
         #endregion
 
         #region Events
@@ -159,7 +158,9 @@ namespace Supremacy.UI
         #region Constructors
         static GalaxyGridPanel()
         {
-            Console.WriteLine("GalaxyGridPanel generated...");
+            _text = "Step_2000: GalaxyGridPanel generated...";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
 
             s_fleetIcons = new Dictionary<int, BitmapImage>();
             s_empireFills = new Dictionary<int, SolidColorBrush>();
@@ -233,7 +234,7 @@ namespace Supremacy.UI
             s_fogOfWarBrush = new SolidColorBrush(fogOfWarColor);
             s_fogOfWarBrush.Freeze();
 
-            _text = "Step_1290: PopulateEmpires from MasterResources.CivDB... ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'";
+            _text = "Step_1290: PopulateEmpires from MasterResources.CivDB... >>> ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -413,6 +414,7 @@ namespace Supremacy.UI
         public GalaxyGridPanel(SectorMap galaxy, [NotNull] ISoundPlayer soundPlayer)
         {
             SoundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+
             _ = InputBindings.Add(
                 new KeyBinding(
                     GalaxyScreenCommands.MapZoomIn,
@@ -1374,10 +1376,7 @@ namespace Supremacy.UI
             _scrollData.Offset.X = offset;
             _translation.X = -offset;
 
-            if (ScrollOwner != null)
-            {
-                ScrollOwner.InvalidateScrollInfo();
-            }
+            ScrollOwner?.InvalidateScrollInfo();
         }
 
         public void SetVerticalOffset(double offset, bool snapToGrid)
@@ -1429,10 +1428,7 @@ namespace Supremacy.UI
             _scrollData.Offset.Y = offset;
             _translation.Y = -offset;
 
-            if (ScrollOwner != null)
-            {
-                ScrollOwner.InvalidateScrollInfo();
-            }
+            ScrollOwner?.InvalidateScrollInfo();
         }
 
         public void Update()
@@ -1631,10 +1627,7 @@ namespace Supremacy.UI
                 drawingContext.DrawDrawing(_backdrop.Drawing);
                 drawingContext.DrawDrawing(_borderLines.Drawing);
             }
-            if (_composite.Drawing != null)
-            {
-                _composite.Drawing.Freeze();
-            }
+            _composite.Drawing?.Freeze();
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
@@ -1700,10 +1693,7 @@ namespace Supremacy.UI
                               map.Height / 2 * SectorSize));
 
             }
-            if (_backdrop.Drawing != null)
-            {
-                _backdrop.Drawing.Freeze();
-            }
+            _backdrop.Drawing?.Freeze();
         }
 
         private void CreateGuides()
@@ -2245,9 +2235,7 @@ namespace Supremacy.UI
                                                     AccelerationRatio = 1.0
                                                 };
                                                 clock = growAnimation.CreateClock();
-                                                if (clock.Controller != null)
-                                                {
-                                                    clock.Controller.Seek(
+                                                clock.Controller?.Seek(
                                                         new TimeSpan(
                                                             0,
                                                             0,
@@ -2255,7 +2243,6 @@ namespace Supremacy.UI
                                                             0,
                                                             500 * (int)sector.System.StarType),
                                                         TimeSeekOrigin.BeginTime);
-                                                }
                                                 _animationClocks.Add(clock);
                                                 grow.ApplyAnimationClock(ScaleTransform.ScaleXProperty, clock);
                                                 grow.ApplyAnimationClock(ScaleTransform.ScaleYProperty, clock);
@@ -2518,18 +2505,12 @@ namespace Supremacy.UI
                 if (extent != _scrollData.Extent)
                 {
                     _scrollData.Extent = extent;
-                    if (_scrollData.ScrollOwner != null)
-                    {
-                        _scrollData.ScrollOwner.InvalidateScrollInfo();
-                    }
+                    _scrollData.ScrollOwner?.InvalidateScrollInfo();
                 }
                 if (finalSize != _scrollData.Viewport)
                 {
                     _scrollData.Viewport = finalSize;
-                    if (_scrollData.ScrollOwner != null)
-                    {
-                        _scrollData.ScrollOwner.InvalidateScrollInfo();
-                    }
+                    _scrollData.ScrollOwner?.InvalidateScrollInfo();
                 }
                 finalSize = new Size(
                     Math.Min(extent.Width, finalSize.Width),
@@ -2553,18 +2534,12 @@ namespace Supremacy.UI
                     GetSectorSize() * _galaxy.Height);
                 if (extent != _scrollData.Extent)
                 {
-                    if (_scrollData.ScrollOwner != null)
-                    {
-                        _scrollData.ScrollOwner.InvalidateScrollInfo();
-                    }
+                    _scrollData.ScrollOwner?.InvalidateScrollInfo();
                 }
                 if (availableSize != _scrollData.Viewport)
                 {
                     _scrollData.Viewport = availableSize;
-                    if (_scrollData.ScrollOwner != null)
-                    {
-                        _scrollData.ScrollOwner.InvalidateScrollInfo();
-                    }
+                    _scrollData.ScrollOwner?.InvalidateScrollInfo();
                 }
                 return new Size(Math.Min(extent.Width, availableSize.Width),
                                 Math.Min(extent.Height, availableSize.Height));

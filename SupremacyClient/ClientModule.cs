@@ -133,7 +133,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<string> _hostMultiplayerGameCommand;
         private readonly DelegateCommand<bool> _exitCommand;
 
-        private readonly DelegateCommand<object> _OnMA_Ferengi;
+        //private readonly DelegateCommand<object> _OnMA_Ferengi;
 
         private readonly DelegateCommand<object> _Hotkey_Alt_D0;
         private readonly DelegateCommand<object> _Hotkey_Alt_D1;
@@ -301,7 +301,7 @@ namespace Supremacy.Client
             _joinMultiplayerGameCommand = new DelegateCommand<MultiplayerConnectParameters>(ExecuteJoinMultiplayerGameCommand);
             _hostMultiplayerGameCommand = new DelegateCommand<string>(ExecuteHostMultiplayerGameCommand);
 
-            _OnMA_Ferengi = new DelegateCommand<object>(ExecuteOnMA_Ferengi);
+            //_OnMA_Ferengi = new DelegateCommand<object>(ExecuteOnMA_Ferengi);
 
             _Hotkey_Alt_D0 = new DelegateCommand<object>(Execute_Hotkey_Alt_D0);
             _Hotkey_Alt_D1 = new DelegateCommand<object>(Execute_Hotkey_Alt_D1);
@@ -1276,7 +1276,7 @@ namespace Supremacy.Client
             _Hotkey_Alt_D8.IsActive = true;
             _Hotkey_Alt_D9.IsActive = true;
 
-            _OnMA_Ferengi.IsActive = true;
+            //_OnMA_Ferengi.IsActive = true;
 
 
             _Hotkey_Alt_F01.IsActive = true;
@@ -1551,7 +1551,7 @@ namespace Supremacy.Client
             ClientCommands.ShowAllHistoryFileCommand.RegisterCommand(_showAllHistoryFileCommand);
             ClientCommands.Exit.RegisterCommand(_exitCommand);
 
-            ClientCommands.OnMA_Ferengi.RegisterCommand(_OnMA_Ferengi);
+            //ClientCommands.OnMA_Ferengi.RegisterCommand(_OnMA_Ferengi);
 
             ClientCommands.Hotkey_Alt_D0.RegisterCommand(_Hotkey_Alt_D0);
             ClientCommands.Hotkey_Alt_D1.RegisterCommand(_Hotkey_Alt_D1);
@@ -1719,6 +1719,10 @@ namespace Supremacy.Client
 
             try
             {
+                _text = "Step_1310: RunDelegate.... ";
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
+
                 _gameController = ResolveGameController();
 
                 if (remoteConnection)
@@ -1727,8 +1731,16 @@ namespace Supremacy.Client
                 }
                 else
                 {
+                    _text = "Step_1320: ShowLoadingScreen.... ";
+                    Console.WriteLine(_text);
+                    GameLog.Client.GameData.DebugFormat(_text);
+
                     ShowLoadingScreen();
                 }
+
+                _text = "Step_1330: BeginInvoke.... ";
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
 
                 _ = runDelegate.BeginInvoke(
                     _gameController,
@@ -1805,15 +1817,15 @@ namespace Supremacy.Client
 
             region.Activate(menuScreen);
         }
-        private void ExecuteOnMA_UFP(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/United_Federation_of_Planets"); }
-        private void ExecuteOnMA_TERRAN(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
-        private void ExecuteOnMA_ROM(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
-        private void ExecuteOnMA_KLING(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
-        private void ExecuteOnMA_CARD(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
-        private void ExecuteOnMA_DOM(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
-        private void ExecuteOnMA_BORG(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        //private void ExecuteOnMA_UFP(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/United_Federation_of_Planets"); }
+        //private void ExecuteOnMA_TERRAN(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        //private void ExecuteOnMA_ROM(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        //private void ExecuteOnMA_KLING(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        //private void ExecuteOnMA_CARD(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        //private void ExecuteOnMA_DOM(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        //private void ExecuteOnMA_BORG(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
 
-        private void ExecuteOnMA_Ferengi(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
+        //private void ExecuteOnMA_Ferengi(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
 
 
             private IGameController ResolveGameController()

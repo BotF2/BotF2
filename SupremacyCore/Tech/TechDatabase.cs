@@ -64,6 +64,10 @@ namespace Supremacy.Tech
         {
             get
             {
+                //_text = "Step_1400: Load TechObjectDatabase.xml...";
+                //Console.WriteLine(_text);
+                //GameLog.Client.GameData.DebugFormat(_text); 
+
                 if (_productionFacilityDesigns.Contains(designId))
                 {
                     return _productionFacilityDesigns[designId];

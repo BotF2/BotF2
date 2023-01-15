@@ -517,6 +517,7 @@ namespace Supremacy.Client
 
                 try
                 {
+                    Console.WriteLine("NEXT: ShowSplashScreen...");
                     ShowSplashScreen();
 
                     string _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
