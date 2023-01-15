@@ -428,6 +428,54 @@ namespace Supremacy.Client
         }
         #endregion EnableCombatScreen Property
 
+        #region EnableOutputToTXT Property
+        public static readonly DependencyProperty EnableOutputToTXTProperty = DependencyProperty.Register(
+            "EnableOutputToTXT",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool EnableOutputToTXT
+        {
+            get => (bool)GetValue(EnableOutputToTXTProperty);
+            set => SetValue(EnableOutputToTXTProperty, value);
+        }
+        #endregion
+
+        #region EnableSoundRedAlert Property
+        public static readonly DependencyProperty EnableSoundRedAlertProperty = DependencyProperty.Register(
+            "EnableSoundRedAlert",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool EnableSoundRedAlert
+        {
+            get => (bool)GetValue(EnableSoundRedAlertProperty);
+            set => SetValue(EnableSoundRedAlertProperty, value);
+        }
+        #endregion
+
+        #region EnableSoundStartSplashScreen Property
+        public static readonly DependencyProperty EnableSoundStartSplashScreenProperty = DependencyProperty.Register(
+            "EnableSoundStartSplashScreen",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool EnableSoundStartSplashScreen
+        {
+            get => (bool)GetValue(EnableSoundStartSplashScreenProperty);
+            set => SetValue(EnableSoundStartSplashScreenProperty, value);
+        }
+        #endregion
+
         #region EnableSummaryScreen Property
         public static readonly DependencyProperty EnableSummaryScreenProperty = DependencyProperty.Register(
             "EnableSummaryScreen",

@@ -197,7 +197,7 @@ namespace Supremacy.Client
                     _update.Sector.Name);
                 SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
                 {
-                    if (File.Exists("Resources/SoundFX/REDALERT.wav"))
+                    if (File.Exists("Resources/SoundFX/REDALERT.wav")&&ClientSettings.Current.EnableSoundRedAlert)
                     {
                         soundPlayer.Play();
                     }
@@ -207,7 +207,7 @@ namespace Supremacy.Client
                 ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
                 _update.Sector.Name);
 
-            _text = "Hello209" + _text;
+            //_text = "Hello209" + _text;
             //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
             playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
 
