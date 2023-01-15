@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Windows.Automation;
 using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Schema;
@@ -57,6 +58,7 @@ namespace Supremacy.Universe
         private static string _startingEnergyPF;
         private static string _startingResearchPF;
         private static string _startingIntelligencePF;
+        private static string file;
 
         //private static int _colonyCount; private static string _colonyText;
 
@@ -90,362 +92,369 @@ namespace Supremacy.Universe
             StreamWriter streamWriter;
             //StreamWriter streamWriter2;
             string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
-            string file = pathOutputFile + "test-Output.txt";
-            //string file2 = "./lib/test2-FromHomeSystems.txt";
-            streamWriter = new StreamWriter(file);
-            //streamWriter2 = new StreamWriter(file2);
-            streamWriter.Close();
-            //streamWriter2.Close();
+
+            if (1 == 2) // no output if no write acess
+            {
+                string file = pathOutputFile + "test-Output.txt";
+                //string file2 = "./lib/test2-FromHomeSystems.txt";
+                streamWriter = new StreamWriter(file);
+                //streamWriter2 = new StreamWriter(file2);
+                streamWriter.Close();
+                //streamWriter2.Close();
+            }
+            
             string strHeader = "";  // first line of output files
             string strLine = "";   // each civ gets one line
             //string strLine2 = "";   // each civ gets one line
 
-            try // avoid hang up if this file is opened by another program 
+            if (1 == 2) // no output if no write acess
             {
-                // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
-                file = pathOutputFile + "_HomeSystems-xml_"
-                    + GameContext.Current.Options.StartingTechLevel.ToString() + "_List(autoCreated).csv";
-
-                Console.WriteLine("writing {0}", file);
-
-                //...but with the next lines it doesn't loaded the entries from HomeSystem.xml anymore
-                //file = null; // quick set to off
-                //if (file == null)
-                //{
-                //    goto WriterCloseHomeSystemsXML;
-                //}
-
-                streamWriter = new StreamWriter(file);
-
-                strHeader = blank; // Dummy, needed
-
-                strHeader =    // Head line
-                    "Civilization" + separator +
-                    "TechLvl" + separator +
-
-                    "FoodPF_active" + separator +
-                    "FoodPF" + separator +
-
-                    "FoodPF_blank" + separator +
-
-                    "IndustryPF_active" + separator +
-                    "IndustryPF" + separator +
-
-                    "IndustryPF_blank" + separator +
-
-                    "EnergyPF_active" + separator +
-                    "EnergyPF" + separator +
-
-                    "EnergyPF_blank" + separator +
-
-                    "ResearchPF_active" + separator +
-                    "ResearchPF" + separator +
-
-                    "ResearchPF_blank" + separator +
-
-                    "IntelPF_active" + separator +
-                    "IntelPF" + separator +
-
-                    "IntelPF_blank" + separator +
-
-                    "StartShips" + separator +
-                    "COL" + separator + // Colony Ships
-                    "CON" + separator +
-                    "SCO" + separator +
-                    "FRI" + separator +
-                    "DES" + separator +
-                    "CRU" + separator +
-                    "SCR" + separator +
-                    "COM" + separator +
-                    "SCI" + separator +
-                    "MED" + separator +
-                    "TRANS" + separator +
-                    "DIP" + separator +
-                    "SPY" + separator +
-
-                    "StarSystem" + separator +
-                    "RAT" + separator +
-                    "CREDITS" + separator +
-                    "DEU" + separator +
-                    "DIL" + separator +
-                    "DUR" + separator +
-                    "FOOD" + separator +
-                    "MOR" + separator +
-                    "OB" + separator +
-                    "OB_2" + separator +
-                    "SYard" + separator +
-                    "SYard_2" + separator +
-                    "STAT" + separator +
-                    "STAT_2" + separator +
-                    "Buildings" + separator +
-                    "B_1" + separator +
-                    "B_2" + separator +
-                    "B_3" + separator +
-                    "B_4" + separator +
-                    "B_5" + separator +
-                    "B_6" + separator +
-                    "B_7" + separator +
-                    "B_8" + separator +
-                    "B_9" + separator +
-                    "B_10" + separator +
-                    "B_11" + separator +
-                    "B_12" + separator +
-                    "B_13" + separator +
-                    "B_14" + separator +
-                    "B_15" + separator +
-                    "B_16" + separator +
-                    "B_17" + separator +
-                    "B_18" + separator +
-                    "B_19" + separator +
-                    "B_20" + separator +
-                    "B_21" + separator +
-
-                    separator;
-
-                streamWriter.WriteLine(strHeader);
-                // End of head line
-
-                //file2 = pathOutputFile + "./lib/HomeSystemsXML_StartingLevel_(autoCreated).csv";
-                //Console.WriteLine("writing {0}", file2);
-
-                //if (file2 == null)
-                //{
-                //    goto WriterCloseHomeSystemsXML;
-                //}
-
-                //streamWriter2 = new StreamWriter(file2);
-
-                //string strHeader2 =    // Head line
-
-                foreach (XmlElement homeSystemElement in xmlRoot.GetElementsByTagName("HomeSystem"))
+                try // avoid hang up if this file is opened by another program 
                 {
-                    string civId = homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant();
-                    db[civId] = new StarSystemDescriptor(homeSystemElement["StarSystem"]);
+                    // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
+                    file = pathOutputFile + "_HomeSystems-xml_"
+                        + GameContext.Current.Options.StartingTechLevel.ToString() + "_List(autoCreated).csv";
 
-                    _scoutCount = 0; _scoutText = "SCOUT";
-                    _frigateCount = 0; _frigateText = "FRIGATE";
-                    _scienceCount = 0; _scienceText = "SCIENCE";
-                    _medicalCount = 0; _medicalText = "MEDICAL";
-                    _colonyCount = 0; _colonyText = "COLONY";
-                    _transportCount = 0; _transportText = "TRANSPORT";
-                    _diploCount = 0; _diploText = "DIPLO";
-                    _spyCount = 0; _spyText = "SPY";
-                    _destroyerCount = 0; _destroyerText = "DESTROYER";
-                    _cruiserCount = 0; _cruiserText = "CRUISER";
-                    _strikeCruiserCount = 0; _strikeCruiserText = "STRIKE_CRUISER";
-                    _commandCount = 0; _commandText = "COMMAND";
-                    _constructionCount = 0; _constructionText = "CONSTRUCTION";
+                    Console.WriteLine("writing {0}", file);
 
-                    foreach (string item in db[civId].StartingShips)
-                    {
-                        if (item.Contains("SCOUT")) { _type = "SCOUT"; }
-                        if (item.Contains("FRIGATE")) { _type = "FRIGATE"; }
-                        if (item.Contains("SCIENCE")) { _type = "SCIENCE"; }
-                        if (item.Contains("MEDICAL")) { _type = "MEDICAL"; }
-                        if (item.Contains("COLONY")) { _type = "COLONY"; }
-                        if (item.Contains("TRANSPORT")) { _type = "TRANSPORT"; }
-                        if (item.Contains("DIPLO")) { _type = "DIPLO"; }
-                        if (item.Contains("SPY")) { _type = "SPY"; }
-                        if (item.Contains("DESTROYER")) { _type = "DESTROYER"; }
-                        if (item.Contains("CRUISER")) { _type = "CRUISER"; }
-                        if (item.Contains("STRIKE_CRUISER")) { _type = "STRIKE_CRUISER"; }
-                        if (item.Contains("COMMAND")) { _type = "COMMAND"; }
-                        if (item.Contains("CONSTRUCTION")) { _type = "CONSTRUCTION"; }
+                    //...but with the next lines it doesn't loaded the entries from HomeSystem.xml anymore
+                    //file = null; // quick set to off
+                    //if (file == null)
+                    //{
+                    //    goto WriterCloseHomeSystemsXML;
+                    //}
 
-                        switch (_type)
-                        {
-                            case "SCOUT": _scoutCount += 1; _scoutText = item; break;
-                            case "FRIGATE": _frigateCount += 1; _frigateText = item; break;
-                            case "SCIENCE": _scienceCount += 1; _scienceText = item; break;
-                            case "MEDICAL": _medicalCount += 1; _medicalText = item; break;
-                            case "COLONY": _colonyCount += 1; _colonyText = item; break;
-                            case "TRANSPORT": _transportCount += 1; _transportText = item; break;
-                            case "DIPLO": _diploCount += 1; _diploText = item; break;
-                            case "SPY": _spyCount += 1; _spyText = item; break;
-                            case "DESTROYER": _destroyerCount += 1; _destroyerText = item; break;
-                            case "CRUISER": _cruiserCount += 1; _cruiserText = item; break;
-                            case "STRIKE_CRUISER": _strikeCruiserCount += 1; _strikeCruiserText = item; break;
-                            case "COMMAND": _commandCount += 1; _commandText = item; break;
-                            case "CONSTRUCTION": _constructionCount += 1; _constructionText = item; break;
-                            default:
-                                break;
-                        }
-                    }
+                    streamWriter = new StreamWriter(file);
 
-                    _cruiserCount -= _strikeCruiserCount; if (_cruiserCount < 0)
-                    {
-                        _cruiserCount = 0;
-                    }
+                    strHeader = blank; // Dummy, needed
 
-                    _colonyText = _colonyCount > 0 ? separator + _colonyCount + hyphen + _colonyText : " ;";
-                    _constructionText = _constructionCount > 0 ? separator + _constructionCount + hyphen + _constructionText : " ;";
-                    _scoutText = _scoutCount > 0 ? separator + _scoutCount + hyphen + _scoutText : " ;";
-                    _frigateText = _frigateCount > 0 ? separator + _frigateCount + hyphen + _frigateText : " ;";
-                    _destroyerText = _destroyerCount > 0 ? separator + _destroyerCount + hyphen + _destroyerText : " ;";
-                    _cruiserText = _cruiserCount > 0 ? separator + _cruiserCount + hyphen + _cruiserText : " ;";
-                    _strikeCruiserText = _strikeCruiserCount > 0 ? separator + _strikeCruiserCount + hyphen + _strikeCruiserText : " ;";
-                    _commandText = _commandCount > 0 ? separator + _commandCount + hyphen + _commandText : " ;";
-                    _scienceText = _scienceCount > 0 ? separator + _scienceCount + hyphen + _scienceText : " ;";
-                    _medicalText = _medicalCount > 0 ? separator + _medicalCount + hyphen + _medicalText : " ;";
-                    _transportText = _transportCount > 0 ? separator + _transportCount + hyphen + _transportText : " ;";
-                    _diploText = _diploCount > 0 ? separator + _diploCount + hyphen + _diploText : " ;";
-                    _spyText = _spyCount > 0 ? separator + _spyCount + hyphen + _spyText : " ;";
+                    strHeader =    // Head line
+                        "Civilization" + separator +
+                        "TechLvl" + separator +
 
+                        "FoodPF_active" + separator +
+                        "FoodPF" + separator +
 
-                    _text
-                        += /*separator + _colonyCount + hyphen + */_colonyText
-                        + /*separator + _constructionCount + hyphen + */_constructionText
-                        + /*separator + _scoutCount + hyphen + */_scoutText
-                        + /*separator + _frigateCount + hyphen + */_frigateText
-                        + /*separator + _destroyerCount + hyphen + */_destroyerText
-                        + /*separator + _cruiserCount + hyphen + */_cruiserText
-                        + /*separator + _strikeCruiserCount + hyphen + */ _strikeCruiserText
-                        + /*separator + _commandCount + hyphen + */_commandText
+                        "FoodPF_blank" + separator +
 
-                        + /*separator + _scienceCount + hyphen + */_scienceText
-                        /*+ separator + _medicalCount + hyphen*/ + _medicalText
-                        /*+ separator + _transportCount + hyphen*/ + _transportText
-                        /*+ separator + _diploCount + hyphen*/ + _diploText
-                        /*+ separator + _spyCount + hyphen*/ + _spyText
-                        ;
+                        "IndustryPF_active" + separator +
+                        "IndustryPF" + separator +
 
-                    _startingShipsSummary = "StartShips" + _text;
+                        "IndustryPF_blank" + separator +
 
-                    _text = " ";
+                        "EnergyPF_active" + separator +
+                        "EnergyPF" + separator +
 
-                    //string _text;
-                    foreach (string item in db[civId].StartingBuildings)
-                    {
-                        _text += item + " ;";
-                    }
-                    _startingBuildingsSummary = "StartBuildungs;" + _text;
+                        "EnergyPF_blank" + separator +
 
+                        "ResearchPF_active" + separator +
+                        "ResearchPF" + separator +
 
-                    _startingStation = " ;";
-                    foreach (string item in db[civId].StartingOutposts)
-                    {
-                        _startingStation = item + " ;";
-                    }
+                        "ResearchPF_blank" + separator +
 
+                        "IntelPF_active" + separator +
+                        "IntelPF" + separator +
 
-                    _startingShipyard = " ;";
-                    foreach (string item in db[civId].StartingShipyards)
-                    {
-                        _startingShipyard = item + " ;";
-                    }
+                        "IntelPF_blank" + separator +
 
+                        "StartShips" + separator +
+                        "COL" + separator + // Colony Ships
+                        "CON" + separator +
+                        "SCO" + separator +
+                        "FRI" + separator +
+                        "DES" + separator +
+                        "CRU" + separator +
+                        "SCR" + separator +
+                        "COM" + separator +
+                        "SCI" + separator +
+                        "MED" + separator +
+                        "TRANS" + separator +
+                        "DIP" + separator +
+                        "SPY" + separator +
 
-                    _startingOrbitalBatteries = " ;";
-                    if (db[civId].StartingOrbitalBatteries != null && db[civId].StartingOrbitalBatteries.Count > 0)  // Not all Minor races PF
-                    {
-                        _startingOrbitalBatteries = db[civId].StartingOrbitalBatteries.Count + hyphen + db[civId].StartingOrbitalBatteries[0] + " ;";
-                    }
+                        "StarSystem" + separator +
+                        "RAT" + separator +
+                        "CREDITS" + separator +
+                        "DEU" + separator +
+                        "DIL" + separator +
+                        "DUR" + separator +
+                        "FOOD" + separator +
+                        "MOR" + separator +
+                        "OB" + separator +
+                        "OB_2" + separator +
+                        "SYard" + separator +
+                        "SYard_2" + separator +
+                        "STAT" + separator +
+                        "STAT_2" + separator +
+                        "Buildings" + separator +
+                        "B_1" + separator +
+                        "B_2" + separator +
+                        "B_3" + separator +
+                        "B_4" + separator +
+                        "B_5" + separator +
+                        "B_6" + separator +
+                        "B_7" + separator +
+                        "B_8" + separator +
+                        "B_9" + separator +
+                        "B_10" + separator +
+                        "B_11" + separator +
+                        "B_12" + separator +
+                        "B_13" + separator +
+                        "B_14" + separator +
+                        "B_15" + separator +
+                        "B_16" + separator +
+                        "B_17" + separator +
+                        "B_18" + separator +
+                        "B_19" + separator +
+                        "B_20" + separator +
+                        "B_21" + separator +
 
-                    //_startingOrbitalBatteries = _startingOrbitalBatteries.Replace("-1", "0");
-
-
-                    _startingFoodPF = ";;";
-                    if (db[civId].FoodPF != null /*&& db[civId].FoodPF.Count > 0*/)  // Not all Minor races PF
-                    {
-                        _startingFoodPF = db[civId].FoodPF.Active + " ;" + db[civId].FoodPF.Count + hyphen + db[civId].FoodPF.DesignType + " ;";
-                    }
-
-                    _startingFoodPF = _startingFoodPF.Replace("-1", "0");
-
-
-                    _startingIndustryPF = ";;";
-                    if (db[civId].IndustryPF != null /*&& db[civId].IndustryPF.Count > 0*/)  // Not all Minor races PF
-                    {
-                        _startingIndustryPF = db[civId].IndustryPF.Active + " ;" + db[civId].IndustryPF.Count + hyphen + db[civId].IndustryPF.DesignType + " ;";
-                    }
-
-                    _startingIndustryPF = _startingIndustryPF.Replace("-1", "0");
-
-                    _startingEnergyPF = ";;";
-                    if (db[civId].EnergyPF != null /*&& db[civId].EnergyPF.Count > 0*/)  // Not all Minor races PF
-                    {
-                        _startingEnergyPF = db[civId].EnergyPF.Active + " ;" + db[civId].EnergyPF.Count + hyphen + db[civId].EnergyPF.DesignType + " ;";
-                    }
-
-                    _startingEnergyPF = _startingEnergyPF.Replace("-1", "0");
-
-                    _startingResearchPF = ";;";
-                    if (db[civId].ResearchPF != null /*&& db[civId].ResearchPF.Count > 0*/)  // Not all Minor races PF
-                    {
-                        _startingResearchPF = db[civId].ResearchPF.Active + " ;" + db[civId].ResearchPF.Count + hyphen + db[civId].ResearchPF.DesignType + " ;";
-                    }
-
-                    _startingResearchPF = _startingResearchPF.Replace("-1", "0");
-
-                    _startingIntelligencePF = ";;";
-                    if (db[civId].IntelligencePF != null /*&& db[civId].IntelligencePF.Count > 0*/)  // Not all Minor races PF
-                    {
-                        _startingIntelligencePF = db[civId].IntelligencePF.Active + " ;" + db[civId].IntelligencePF.Count + hyphen + db[civId].IntelligencePF.DesignType + " ;";
-                    }
-
-                    _startingIntelligencePF = _startingIntelligencePF.Replace("-1", "0");
-
-                    strLine =
-                        civId + separator +
-                        GameContext.Current.Options.StartingTechLevel.ToString() + separator +
-
-                        _startingFoodPF + separator +
-                        _startingIndustryPF + separator +
-                        _startingEnergyPF + separator +
-                        _startingResearchPF + separator +
-                        _startingIntelligencePF + separator +
-
-                        _startingShipsSummary + separator +
-
-                        db[civId].Name + separator +
-                        db[civId].PopulationRatio + separator +
-                        db[civId].Credits + separator +
-                        db[civId].Deuterium + separator +
-                        db[civId].Dilithium + separator +
-                        db[civId].Duranium + separator +
-                        db[civId].Food + separator +
-                        db[civId].Morale + separator +
-
-                        _startingOrbitalBatteries + separator +
-                        _startingShipyard + separator +
-                        _startingStation + separator +
-                        _startingBuildingsSummary + separator +
                         separator;
 
-                    strLine = strLine.Replace("-1", " ");
-                    strLine = strLine.Replace("-", " ");
+                    streamWriter.WriteLine(strHeader);
+                    // End of head line
 
-                    //Console.WriteLine(strLine);
-                    streamWriter.WriteLine(strLine);
+                    //file2 = pathOutputFile + "./lib/HomeSystemsXML_StartingLevel_(autoCreated).csv";
+                    //Console.WriteLine("writing {0}", file2);
 
-                    strLine = "";
-                    _text = " ";
-                    _startingOrbitalBatteries = " ";
-                    _startingShipyard = " ";
-                    _startingStation = " ";
-                    _startingBuildingsSummary = " ";
+                    //if (file2 == null)
+                    //{
+                    //    goto WriterCloseHomeSystemsXML;
+                    //}
 
-                    //strLine2 =
-                    //    civId + separator +       //  following entries not working yet
-                    //    db[civId].Name + separator
-                    //    ;
+                    //streamWriter2 = new StreamWriter(file2);
 
-                    //streamWriter2.WriteLine(strLine2);
+                    //string strHeader2 =    // Head line
 
-                    //strLine2 = "";
+                    foreach (XmlElement homeSystemElement in xmlRoot.GetElementsByTagName("HomeSystem"))
+                    {
+                        string civId = homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant();
+                        db[civId] = new StarSystemDescriptor(homeSystemElement["StarSystem"]);
+
+                        _scoutCount = 0; _scoutText = "SCOUT";
+                        _frigateCount = 0; _frigateText = "FRIGATE";
+                        _scienceCount = 0; _scienceText = "SCIENCE";
+                        _medicalCount = 0; _medicalText = "MEDICAL";
+                        _colonyCount = 0; _colonyText = "COLONY";
+                        _transportCount = 0; _transportText = "TRANSPORT";
+                        _diploCount = 0; _diploText = "DIPLO";
+                        _spyCount = 0; _spyText = "SPY";
+                        _destroyerCount = 0; _destroyerText = "DESTROYER";
+                        _cruiserCount = 0; _cruiserText = "CRUISER";
+                        _strikeCruiserCount = 0; _strikeCruiserText = "STRIKE_CRUISER";
+                        _commandCount = 0; _commandText = "COMMAND";
+                        _constructionCount = 0; _constructionText = "CONSTRUCTION";
+
+                        foreach (string item in db[civId].StartingShips)
+                        {
+                            if (item.Contains("SCOUT")) { _type = "SCOUT"; }
+                            if (item.Contains("FRIGATE")) { _type = "FRIGATE"; }
+                            if (item.Contains("SCIENCE")) { _type = "SCIENCE"; }
+                            if (item.Contains("MEDICAL")) { _type = "MEDICAL"; }
+                            if (item.Contains("COLONY")) { _type = "COLONY"; }
+                            if (item.Contains("TRANSPORT")) { _type = "TRANSPORT"; }
+                            if (item.Contains("DIPLO")) { _type = "DIPLO"; }
+                            if (item.Contains("SPY")) { _type = "SPY"; }
+                            if (item.Contains("DESTROYER")) { _type = "DESTROYER"; }
+                            if (item.Contains("CRUISER")) { _type = "CRUISER"; }
+                            if (item.Contains("STRIKE_CRUISER")) { _type = "STRIKE_CRUISER"; }
+                            if (item.Contains("COMMAND")) { _type = "COMMAND"; }
+                            if (item.Contains("CONSTRUCTION")) { _type = "CONSTRUCTION"; }
+
+                            switch (_type)
+                            {
+                                case "SCOUT": _scoutCount += 1; _scoutText = item; break;
+                                case "FRIGATE": _frigateCount += 1; _frigateText = item; break;
+                                case "SCIENCE": _scienceCount += 1; _scienceText = item; break;
+                                case "MEDICAL": _medicalCount += 1; _medicalText = item; break;
+                                case "COLONY": _colonyCount += 1; _colonyText = item; break;
+                                case "TRANSPORT": _transportCount += 1; _transportText = item; break;
+                                case "DIPLO": _diploCount += 1; _diploText = item; break;
+                                case "SPY": _spyCount += 1; _spyText = item; break;
+                                case "DESTROYER": _destroyerCount += 1; _destroyerText = item; break;
+                                case "CRUISER": _cruiserCount += 1; _cruiserText = item; break;
+                                case "STRIKE_CRUISER": _strikeCruiserCount += 1; _strikeCruiserText = item; break;
+                                case "COMMAND": _commandCount += 1; _commandText = item; break;
+                                case "CONSTRUCTION": _constructionCount += 1; _constructionText = item; break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        _cruiserCount -= _strikeCruiserCount; if (_cruiserCount < 0)
+                        {
+                            _cruiserCount = 0;
+                        }
+
+                        _colonyText = _colonyCount > 0 ? separator + _colonyCount + hyphen + _colonyText : " ;";
+                        _constructionText = _constructionCount > 0 ? separator + _constructionCount + hyphen + _constructionText : " ;";
+                        _scoutText = _scoutCount > 0 ? separator + _scoutCount + hyphen + _scoutText : " ;";
+                        _frigateText = _frigateCount > 0 ? separator + _frigateCount + hyphen + _frigateText : " ;";
+                        _destroyerText = _destroyerCount > 0 ? separator + _destroyerCount + hyphen + _destroyerText : " ;";
+                        _cruiserText = _cruiserCount > 0 ? separator + _cruiserCount + hyphen + _cruiserText : " ;";
+                        _strikeCruiserText = _strikeCruiserCount > 0 ? separator + _strikeCruiserCount + hyphen + _strikeCruiserText : " ;";
+                        _commandText = _commandCount > 0 ? separator + _commandCount + hyphen + _commandText : " ;";
+                        _scienceText = _scienceCount > 0 ? separator + _scienceCount + hyphen + _scienceText : " ;";
+                        _medicalText = _medicalCount > 0 ? separator + _medicalCount + hyphen + _medicalText : " ;";
+                        _transportText = _transportCount > 0 ? separator + _transportCount + hyphen + _transportText : " ;";
+                        _diploText = _diploCount > 0 ? separator + _diploCount + hyphen + _diploText : " ;";
+                        _spyText = _spyCount > 0 ? separator + _spyCount + hyphen + _spyText : " ;";
 
 
-                }  // end of foreach
-            WriterCloseHomeSystemsXML:;
-                streamWriter.Close();
-                //streamWriter2.Close();
+                        _text
+                            += /*separator + _colonyCount + hyphen + */_colonyText
+                            + /*separator + _constructionCount + hyphen + */_constructionText
+                            + /*separator + _scoutCount + hyphen + */_scoutText
+                            + /*separator + _frigateCount + hyphen + */_frigateText
+                            + /*separator + _destroyerCount + hyphen + */_destroyerText
+                            + /*separator + _cruiserCount + hyphen + */_cruiserText
+                            + /*separator + _strikeCruiserCount + hyphen + */ _strikeCruiserText
+                            + /*separator + _commandCount + hyphen + */_commandText
+
+                            + /*separator + _scienceCount + hyphen + */_scienceText
+                            /*+ separator + _medicalCount + hyphen*/ + _medicalText
+                            /*+ separator + _transportCount + hyphen*/ + _transportText
+                            /*+ separator + _diploCount + hyphen*/ + _diploText
+                            /*+ separator + _spyCount + hyphen*/ + _spyText
+                            ;
+
+                        _startingShipsSummary = "StartShips" + _text;
+
+                        _text = " ";
+
+                        //string _text;
+                        foreach (string item in db[civId].StartingBuildings)
+                        {
+                            _text += item + " ;";
+                        }
+                        _startingBuildingsSummary = "StartBuildungs;" + _text;
+
+
+                        _startingStation = " ;";
+                        foreach (string item in db[civId].StartingOutposts)
+                        {
+                            _startingStation = item + " ;";
+                        }
+
+
+                        _startingShipyard = " ;";
+                        foreach (string item in db[civId].StartingShipyards)
+                        {
+                            _startingShipyard = item + " ;";
+                        }
+
+
+                        _startingOrbitalBatteries = " ;";
+                        if (db[civId].StartingOrbitalBatteries != null && db[civId].StartingOrbitalBatteries.Count > 0)  // Not all Minor races PF
+                        {
+                            _startingOrbitalBatteries = db[civId].StartingOrbitalBatteries.Count + hyphen + db[civId].StartingOrbitalBatteries[0] + " ;";
+                        }
+
+                        //_startingOrbitalBatteries = _startingOrbitalBatteries.Replace("-1", "0");
+
+
+                        _startingFoodPF = ";;";
+                        if (db[civId].FoodPF != null /*&& db[civId].FoodPF.Count > 0*/)  // Not all Minor races PF
+                        {
+                            _startingFoodPF = db[civId].FoodPF.Active + " ;" + db[civId].FoodPF.Count + hyphen + db[civId].FoodPF.DesignType + " ;";
+                        }
+
+                        _startingFoodPF = _startingFoodPF.Replace("-1", "0");
+
+
+                        _startingIndustryPF = ";;";
+                        if (db[civId].IndustryPF != null /*&& db[civId].IndustryPF.Count > 0*/)  // Not all Minor races PF
+                        {
+                            _startingIndustryPF = db[civId].IndustryPF.Active + " ;" + db[civId].IndustryPF.Count + hyphen + db[civId].IndustryPF.DesignType + " ;";
+                        }
+
+                        _startingIndustryPF = _startingIndustryPF.Replace("-1", "0");
+
+                        _startingEnergyPF = ";;";
+                        if (db[civId].EnergyPF != null /*&& db[civId].EnergyPF.Count > 0*/)  // Not all Minor races PF
+                        {
+                            _startingEnergyPF = db[civId].EnergyPF.Active + " ;" + db[civId].EnergyPF.Count + hyphen + db[civId].EnergyPF.DesignType + " ;";
+                        }
+
+                        _startingEnergyPF = _startingEnergyPF.Replace("-1", "0");
+
+                        _startingResearchPF = ";;";
+                        if (db[civId].ResearchPF != null /*&& db[civId].ResearchPF.Count > 0*/)  // Not all Minor races PF
+                        {
+                            _startingResearchPF = db[civId].ResearchPF.Active + " ;" + db[civId].ResearchPF.Count + hyphen + db[civId].ResearchPF.DesignType + " ;";
+                        }
+
+                        _startingResearchPF = _startingResearchPF.Replace("-1", "0");
+
+                        _startingIntelligencePF = ";;";
+                        if (db[civId].IntelligencePF != null /*&& db[civId].IntelligencePF.Count > 0*/)  // Not all Minor races PF
+                        {
+                            _startingIntelligencePF = db[civId].IntelligencePF.Active + " ;" + db[civId].IntelligencePF.Count + hyphen + db[civId].IntelligencePF.DesignType + " ;";
+                        }
+
+                        _startingIntelligencePF = _startingIntelligencePF.Replace("-1", "0");
+
+                        strLine =
+                            civId + separator +
+                            GameContext.Current.Options.StartingTechLevel.ToString() + separator +
+
+                            _startingFoodPF + separator +
+                            _startingIndustryPF + separator +
+                            _startingEnergyPF + separator +
+                            _startingResearchPF + separator +
+                            _startingIntelligencePF + separator +
+
+                            _startingShipsSummary + separator +
+
+                            db[civId].Name + separator +
+                            db[civId].PopulationRatio + separator +
+                            db[civId].Credits + separator +
+                            db[civId].Deuterium + separator +
+                            db[civId].Dilithium + separator +
+                            db[civId].Duranium + separator +
+                            db[civId].Food + separator +
+                            db[civId].Morale + separator +
+
+                            _startingOrbitalBatteries + separator +
+                            _startingShipyard + separator +
+                            _startingStation + separator +
+                            _startingBuildingsSummary + separator +
+                            separator;
+
+                        strLine = strLine.Replace("-1", " ");
+                        strLine = strLine.Replace("-", " ");
+
+                        //Console.WriteLine(strLine);
+                        streamWriter.WriteLine(strLine);
+
+                        strLine = "";
+                        _text = " ";
+                        _startingOrbitalBatteries = " ";
+                        _startingShipyard = " ";
+                        _startingStation = " ";
+                        _startingBuildingsSummary = " ";
+
+                        //strLine2 =
+                        //    civId + separator +       //  following entries not working yet
+                        //    db[civId].Name + separator
+                        //    ;
+
+                        //streamWriter2.WriteLine(strLine2);
+
+                        //strLine2 = "";
+
+
+                    }  // end of foreach
+                WriterCloseHomeSystemsXML:;
+                    streamWriter.Close();
+                    //streamWriter2.Close();
+                }
+                catch (Exception e)
+                {
+                    _text = "Cannot write ... " + file + e;
+                    GameLog.Core.GameData.ErrorFormat(_text);
+                }
             }
-            catch (Exception e)
-            {
-                _text = "Cannot write ... " + file + e;
-                GameLog.Core.GameData.ErrorFormat(_text);
-            }
-
 
             return db;
         }

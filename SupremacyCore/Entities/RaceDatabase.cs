@@ -10,6 +10,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Automation;
 using System.Xml.Linq;
 using System.Xml.Schema;
 
@@ -126,115 +127,114 @@ namespace Supremacy.Entities
 
 
                 #region traceRacesXML_To_CSV
+                
+                    bool _traceRacesXML = false;  // file is writen while starting a game -> Federation -> Start
 
-                bool _traceRacesXML = false;  // file is writen while starting a game -> Federation -> Start
-
-                if (_traceRacesXML == true)
-                {
-                    string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
-                    string separator = ";";
-                    string line = "";
-                    StreamWriter streamWriter;
-                    string file = pathOutputFile + "test-Output.txt";
-                    streamWriter = new StreamWriter(file);
-                    streamWriter.Close();
-                    string strHeader = "";  // first line of output files
-
-                    try // avoid hang up if this file is opened by another program 
+                    if (_traceRacesXML == true)
                     {
-                        file = pathOutputFile + "_Races-xml_List(autoCreated).csv";
-
-                        Console.WriteLine("writing {0}", file);
-
-                        if (file == null)
-                        {
-                            goto WriterClose;
-                        }
-
+                        string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                        string separator = ";";
+                        string line = "";
+                        StreamWriter streamWriter;
+                        string file = pathOutputFile + "test-Output.txt";
                         streamWriter = new StreamWriter(file);
+                        streamWriter.Close();
+                        string strHeader = "";  // first line of output files
 
-                        strHeader =    // Head line
-                                            "CE_Race" + separator +
-                                            "ATT_Key" + separator +
-
-                                            "CE_Name" + separator +
-                                            "CE_SingularName" + separator +
-                                            "CE_PluralName" + separator +
-                                            //"CE_RACE_CombatEffectiveness" + separator +
-                                            //"CE_Color" + separator +
-                                            //"CE_HomeQuadrant" + separator +
-                                            //"CE_RaceType" + separator +
-                                            //"CE_IndustryToCredits" + separator +
-                                            //"CE_TechCurve" + separator +
-                                            //"CE_ShipPrefix" + separator +
-                                            //"CE_Description"                 // delivers a lot of new line breaks...
-                                            "CE_HomePlanetType"
-                                            ;
-
-                        streamWriter.WriteLine(strHeader);
-                        // End of head line
-
-                        _text = "begin writing " + file + " ... beware of NO dismatch of Keys between Civ..xml and Races.xml";
-                        Console.WriteLine(_text);
-                        GameLog.Core.GameData.DebugFormat(_text);
-                        string RaceName = "";
-                        foreach (Race race in raceDatabase)   // each race
+                        try // avoid hang up if this file is opened by another program 
                         {
-                            //App.DoEvents();  // for avoid error after 60 seconds
+                            file = pathOutputFile + "_Races-xml_List(autoCreated).csv";
 
-                            try
-                            {
-                                RaceName = race.Name;   // missing: check for civs   (code was just CopyPaste from civ at the moment)
+                            Console.WriteLine("writing {0}", file);
 
-                            }
-                            catch
+                            if (file == null)
                             {
-                                string message = "check whether all race entries in Races.xml exists, last line was: " + line;
-                                // Supremacy Style:   var result = MessageDialog.Show(message, MessageDialogButtons.OK);
-                                _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                                goto WriterClose;
                             }
 
-                            line =
-                            "Race" + separator +
-                            //race.Key + separator +
+                            streamWriter = new StreamWriter(file);
 
-                            //race.Race.Name + separator +  // Race and others are NOT a string !!   it's a Race type
+                            strHeader =    // Head line
+                                                "CE_Race" + separator +
+                                                "ATT_Key" + separator +
 
-                            race.Key + separator +
-                            race.Name + separator +
-                            race.SingularName + separator +
-                            race.PluralName + separator +
-                            //race.Description + separator +
-                            //race.HomeQuadrant.ToString() + separator +
-                            //race.RaceType.ToString() + separator +
-                            //race.IndustryToCreditsConversionRatio.ToString() + separator +
-                            //race.TechCurve.ToString() + separator +
-                            //race.ShipPrefix + separator +
-                            //race.Description;           // delivers a lot of new line breaks...
-                            race.HomePlanetType;
+                                                "CE_Name" + separator +
+                                                "CE_SingularName" + separator +
+                                                "CE_PluralName" + separator +
+                                                //"CE_RACE_CombatEffectiveness" + separator +
+                                                //"CE_Color" + separator +
+                                                //"CE_HomeQuadrant" + separator +
+                                                //"CE_RaceType" + separator +
+                                                //"CE_IndustryToCredits" + separator +
+                                                //"CE_TechCurve" + separator +
+                                                //"CE_ShipPrefix" + separator +
+                                                //"CE_Description"                 // delivers a lot of new line breaks...
+                                                "CE_HomePlanetType"
+                                                ;
 
-                            // Debug only
-                            //GameLog.Core.GameData.DebugFormat("raceLine = {0}", line);
-                            //Console.WriteLine(line);
+                            streamWriter.WriteLine(strHeader);
+                            // End of head line
+
+                            _text = "begin writing " + file + " ... beware of NO dismatch of Keys between Civ..xml and Races.xml";
+                            Console.WriteLine(_text);
+                            GameLog.Core.GameData.DebugFormat(_text);
+                            string RaceName = "";
+                            foreach (Race race in raceDatabase)   // each race
+                            {
+                                //App.DoEvents();  // for avoid error after 60 seconds
+
+                                try
+                                {
+                                    RaceName = race.Name;   // missing: check for civs   (code was just CopyPaste from civ at the moment)
+
+                                }
+                                catch
+                                {
+                                    string message = "check whether all race entries in Races.xml exists, last line was: " + line;
+                                    // Supremacy Style:   var result = MessageDialog.Show(message, MessageDialogButtons.OK);
+                                    _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                                }
+
+                                line =
+                                "Race" + separator +
+                                //race.Key + separator +
+
+                                //race.Race.Name + separator +  // Race and others are NOT a string !!   it's a Race type
+
+                                race.Key + separator +
+                                race.Name + separator +
+                                race.SingularName + separator +
+                                race.PluralName + separator +
+                                //race.Description + separator +
+                                //race.HomeQuadrant.ToString() + separator +
+                                //race.RaceType.ToString() + separator +
+                                //race.IndustryToCreditsConversionRatio.ToString() + separator +
+                                //race.TechCurve.ToString() + separator +
+                                //race.ShipPrefix + separator +
+                                //race.Description;           // delivers a lot of new line breaks...
+                                race.HomePlanetType;
+
+                                // Debug only
+                                //GameLog.Core.GameData.DebugFormat("raceLine = {0}", line);
+                                //Console.WriteLine(line);
 
 
 
-                            //Console.WriteLine("{0}", line);
+                                //Console.WriteLine("{0}", line);
 
-                            streamWriter.WriteLine(line);
+                                streamWriter.WriteLine(line);
+                            }
+                        WriterClose:
+                            streamWriter.Close();
                         }
-                    WriterClose:
+                        catch (Exception e)
+                        {
+                            GameLog.Core.GameData.ErrorFormat("Cannot write ... {0} {1}", file, e);
+                        }
+
                         streamWriter.Close();
                     }
-                    catch (Exception e)
-                    {
-                        GameLog.Core.GameData.ErrorFormat("Cannot write ... {0} {1}", file, e);
-                    }
-
-                    streamWriter.Close();
-                }
-
-
+                
                 #endregion traceRacesXML_To_CSV
 
                 return raceDatabase;

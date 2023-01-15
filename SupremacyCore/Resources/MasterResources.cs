@@ -24,8 +24,11 @@ namespace Supremacy.Resources
                     #region traceCivilizationsXML_To_CSV
 
                     bool _traceCivilizationsXML = false;  // file is writen while starting a game -> Federation -> Start
+
                     _text = _traceCivilizationsXML + " for writing CivilizationsXML_To_CSV - may hang up a start of the game";
+                    Console.WriteLine(_text);
                     GameLog.Core.XML2CSVOutput.DebugFormat(_text);
+
                     if (_traceCivilizationsXML == true)
                     {
                         string pathOutputFile = "./lib/";  // instead of ./Resources/Data/

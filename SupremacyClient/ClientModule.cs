@@ -486,13 +486,13 @@ namespace Supremacy.Client
                     + newline
                     + newline + "> NOW please shot down the program... sorry"
                     ;
-                if (fileSize == 0) { _ = MessageBox.Show(_text); return; }
-                if (fileSize < 0) { _ = MessageBox.Show("Could not load Error.txt"); return; }
+                // OFF   if (fileSize == 0) { _ = MessageBox.Show(_text); return; }
+                // OFF   if (fileSize < 0) { _ = MessageBox.Show("Could not load Error.txt"); return; }
 
                 ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = errorFile };
 
                 try { _ = Process.Start(processStartInfo); }
-                catch { _ = MessageBox.Show("Could not load Error.txt"); }
+                catch { _ = MessageBox.Show("Could not load Error.txt"+fileSize); }
             }
         }
 

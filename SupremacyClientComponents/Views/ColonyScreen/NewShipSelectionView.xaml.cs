@@ -115,8 +115,8 @@ namespace Supremacy.Client.Views
             if (File.Exists(_soundfile))
             {
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfile);
-                //GameLog.Client.General.Debug("Playing LoadingSplash.wav");
-                //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
+                //GameLog.Client.General.Debug("Playing sound001.wav");
+                //var soundPlayer = new SoundPlayer("Resources/SoundFX/sound001.wav");
                 player.Play();
             }
             else

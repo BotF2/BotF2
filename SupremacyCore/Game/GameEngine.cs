@@ -460,10 +460,7 @@ namespace Supremacy.Game
             GameContext.PushThreadContext(game);
             foreach (Fleet fleet in fleets)
             {
-                if (fleet.Order != null)
-                {
-                    fleet.Order.OnTurnBeginning();
-                }
+                fleet.Order?.OnTurnBeginning();
             }
         }
         #endregion DoPreTurnSetup
@@ -723,7 +720,10 @@ namespace Supremacy.Game
                             ship.Destroy();
                             civManager.DestroyOfShipOrdered = true;
 
-                            _text2 = ship.ObjectID + blank + ship.Name + " ( " + ship.ShipType + " ) ";
+                            string _objectIDText = ship.ObjectID.ToString() + blank; if (_objectIDText == "-1") _objectIDText = "";
+
+
+                            _text2 = _objectIDText /*+ blank*/ + ship.Name + " ( " + ship.ShipType + " ) ";
                             // {0} > Ship {1} was destroyed for keeping credit costs low.
                             _text = string.Format(ResourceManager.GetString("SITREP_SHIP_DESTROYED_DUE_TO_LOW_CREDITS"), fleet.Location, _text2);
                             Console.WriteLine(_text);
@@ -3364,16 +3364,10 @@ namespace Supremacy.Game
             {
                 if (fleet.Ships.Count == 0)
                 {
-                    if (fleet.Order != null)
-                    {
-                        fleet.Order.OnOrderCancelled();
-                    }
+                    fleet.Order?.OnOrderCancelled();
                     _ = GameContext.Current.Universe.Destroy(fleet);
                 }
-                else if (fleet.Order != null)
-                {
-                    fleet.Order.OnTurnEnding();
-                }
+                else fleet.Order?.OnTurnEnding();
             }
 
 

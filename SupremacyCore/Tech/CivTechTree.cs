@@ -40,6 +40,11 @@ namespace Supremacy.Tech
         private readonly HashSet<int> _productionFacilityDesigns;
         private readonly HashSet<int> _orbitalBatteryDesigns;
         private static string _text;
+        private static string line;
+        private static readonly string separator;
+        private static string file;
+
+
         //private IClientContext _clientContext;
 
 
@@ -396,86 +401,93 @@ namespace Supremacy.Tech
 
                 // CSV_Output
 
-                string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
-                string separator = ";";
-                string line = "";
-                StreamWriter streamWriter;
-                string file = pathOutputFile + "test-Output.txt";
-                streamWriter = new StreamWriter(file);
-                streamWriter.Close();
-                string strHeader = "";  // first line of output files
+                bool _bool_TechTrees_List = false;
 
-                file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
-
-                Console.WriteLine("writing {0}", file);
-                file = null; // quick offline
-
-                if (file == null)
+                if (_bool_TechTrees_List)
                 {
-                    goto WriterClose;
-                }
 
-                streamWriter = new StreamWriter(file);
+                    string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                    string separator = ";";
+                    string line = "";
+                    StreamWriter streamWriter;
+                    string file = pathOutputFile + "test-Output.txt";
+                    streamWriter = new StreamWriter(file);
+                    streamWriter.Close();
+                    string strHeader = "";  // first line of output files
 
-                strHeader = "CIV;KIND;KEY;IsUniversal";  // Head line
+                    file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
 
-                streamWriter.WriteLine(strHeader);
+                    Console.WriteLine("writing {0}", file);
+                    file = null; // quick offline
 
-                // End of head line
-
-                foreach (TechObjectDesign design in db.ProductionFacilityDesigns)
-                {
-                    if (design.IsUniversallyAvailable)
+                    if (file == null)
                     {
-                        line = "All" + separator + "ProdFac" + separator + design.Key + separator + "Universal";
-                        streamWriter.WriteLine(line);
+                        goto WriterClose;
                     }
-                }
-                foreach (TechObjectDesign design in db.BuildingDesigns)
-                {
-                    if (design.IsUniversallyAvailable)
-                    {
-                        line = "All" + separator + "Building" + separator + design.Key + separator + "Universal";
-                        streamWriter.WriteLine(line);
-                    }
-                }
-                foreach (TechObjectDesign design in db.ShipDesigns)
-                {
-                    if (design.IsUniversallyAvailable)
-                    {
-                        line = "All" + separator + "Ship" + separator + design.Key + separator + "Universal";
-                        streamWriter.WriteLine(line);
-                    }
-                }
-                foreach (TechObjectDesign design in db.ShipyardDesigns)
-                {
-                    if (design.IsUniversallyAvailable)
-                    {
-                        line = "All" + separator + "Shipyard" + separator + design.Key + separator + "Universal";
-                        streamWriter.WriteLine(line);
-                    }
-                }
-                foreach (TechObjectDesign design in db.StationDesigns)
-                {
-                    if (design.IsUniversallyAvailable)
-                    {
-                        line = "All" + separator + "Station" + separator + design.Key + separator + "Universal";
-                        streamWriter.WriteLine(line);
-                    }
-                }
-                foreach (TechObjectDesign design in db.OrbitalBatteryDesigns)
-                {
-                    if (design.IsUniversallyAvailable)
-                    {
-                        line = "All" + separator + "OrbitalBattery" + separator + design.Key + separator + "Universal";
-                        streamWriter.WriteLine(line);
-                    }
-                }
 
-                _text = "written: _TechTrees_List(autoCreated).csv";
-                Console.WriteLine(_text);
+                    streamWriter = new StreamWriter(file);
 
-            WriterClose:;
+                    strHeader = "CIV;KIND;KEY;IsUniversal";  // Head line
+
+                    streamWriter.WriteLine(strHeader);
+
+                    // End of head line
+
+                    foreach (TechObjectDesign design in db.ProductionFacilityDesigns)
+                    {
+                        if (design.IsUniversallyAvailable)
+                        {
+                            line = "All" + separator + "ProdFac" + separator + design.Key + separator + "Universal";
+                            streamWriter.WriteLine(line);
+                        }
+                    }
+                    foreach (TechObjectDesign design in db.BuildingDesigns)
+                    {
+                        if (design.IsUniversallyAvailable)
+                        {
+                            line = "All" + separator + "Building" + separator + design.Key + separator + "Universal";
+                            streamWriter.WriteLine(line);
+                        }
+                    }
+                    foreach (TechObjectDesign design in db.ShipDesigns)
+                    {
+                        if (design.IsUniversallyAvailable)
+                        {
+                            line = "All" + separator + "Ship" + separator + design.Key + separator + "Universal";
+                            streamWriter.WriteLine(line);
+                        }
+                    }
+                    foreach (TechObjectDesign design in db.ShipyardDesigns)
+                    {
+                        if (design.IsUniversallyAvailable)
+                        {
+                            line = "All" + separator + "Shipyard" + separator + design.Key + separator + "Universal";
+                            streamWriter.WriteLine(line);
+                        }
+                    }
+                    foreach (TechObjectDesign design in db.StationDesigns)
+                    {
+                        if (design.IsUniversallyAvailable)
+                        {
+                            line = "All" + separator + "Station" + separator + design.Key + separator + "Universal";
+                            streamWriter.WriteLine(line);
+                        }
+                    }
+                    foreach (TechObjectDesign design in db.OrbitalBatteryDesigns)
+                    {
+                        if (design.IsUniversallyAvailable)
+                        {
+                            line = "All" + separator + "OrbitalBattery" + separator + design.Key + separator + "Universal";
+                            streamWriter.WriteLine(line);
+                        }
+                    }
+
+                    _text = "written: _TechTrees_List(autoCreated).csv";
+                    Console.WriteLine(_text);
+
+                    WriterClose:;
+                    streamWriter.Close();
+                }
 
 
                 // GameStuff
@@ -501,7 +513,7 @@ namespace Supremacy.Tech
                             //if (civManager == null)
                             //    continue;
                             TechTree techTree = new TechTree(xmlTree);
-
+                            StreamWriter streamWriter = new StreamWriter(file);
                             bool _traceTechTrees = true;
                             bool _streamWriterWorks = false;
                             if (_traceTechTrees == true)
@@ -573,12 +585,14 @@ namespace Supremacy.Tech
                                         streamWriter.WriteLine(line);
                                 }
                             }
+                            streamWriter.Close();
                         }
                         catch (Exception e)
                         {
                             _text = "Cannot write ... " + file + e;
                             GameLog.Core.GameData.ErrorFormat(_text);
                         }
+
 
                         // End of TechTrees_To_CSV
                         #endregion TechTrees_To_CSV
@@ -604,11 +618,13 @@ namespace Supremacy.Tech
                         {
                             GameLog.Core.GameData.DebugFormat("TechTree exception {0} {1}", e.Message, e.StackTrace);
                         }
-                    }
+                    
+
+                    //WriterClose:;
+                    //streamWriter.Close();
                 }
-            //WriterClose:;
-                streamWriter.Close();
                 //WriterClose2:;
+            }
             }
             finally
             {

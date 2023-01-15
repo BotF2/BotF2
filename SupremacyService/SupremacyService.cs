@@ -809,7 +809,7 @@ namespace Supremacy.WCF
 
         private void OnAITaskCompleted()
         {
-            lock (_aiAsyncLock)
+            lock (_aiAsyncLock)  // is this used anyway ??? ...reported by VS: it is not used
             {
                 _aiAsyncResult = null;
                 _ = Observable.ToAsync(
@@ -1546,10 +1546,7 @@ namespace Supremacy.WCF
             if (player != null)
             {
                 ISupremacyCallback callback = player.Callback;
-                if (callback != null)
-                {
-                    callback.NotifyCombatUpdate(update);
-                }
+                callback?.NotifyCombatUpdate(update);
             }
             //No proper CombatAI, so just for now fake some orders
             else if (!engine.IsCombatOver && !update.Owner.IsHuman)
@@ -1745,10 +1742,7 @@ namespace Supremacy.WCF
             if (player != null)
             {
                 ISupremacyCallback callback = player.Callback;
-                if (callback != null)
-                {
-                    callback.NotifyInvasionUpdate(update);
-                }
+                callback?.NotifyInvasionUpdate(update);
             }
             else if (update.Status == InvasionStatus.InProgress)
             {
@@ -1813,10 +1807,7 @@ namespace Supremacy.WCF
         internal void StopHeartbeat()
         {
             IDisposable heartbeat = Interlocked.Exchange(ref _heartbeat, null);
-            if (heartbeat != null)
-            {
-                heartbeat.Dispose();
-            }
+            heartbeat?.Dispose();
         }
         #endregion
         #endregion
