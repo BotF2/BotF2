@@ -765,7 +765,9 @@ namespace Supremacy.Universe
             if(File.Exists(_fileName))
             {
                 _text = _fileName + " exists and will be overwritten !";
-                _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.InfoFormat(_text);
+                //_ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
                 File.Delete(_fileName);
             }
@@ -794,8 +796,10 @@ namespace Supremacy.Universe
             writer.Close();
 
             _text = "No " + file.Name + " available, but we created an empty one named > NEW_" + fileNameCanonMAP;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.InfoFormat(_text);
 
-            _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+            //_ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
         }
 
