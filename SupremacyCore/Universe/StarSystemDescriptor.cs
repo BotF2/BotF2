@@ -108,11 +108,12 @@ namespace Supremacy.Universe
 
                 Console.WriteLine("writing {0}", file);
 
-                file = null; // quick set to off
-                if (file == null)
-                {
-                    goto WriterCloseHomeSystemsXML;
-                }
+                //...but with the next lines it doesn't loaded the entries from HomeSystem.xml anymore
+                //file = null; // quick set to off
+                //if (file == null)
+                //{
+                //    goto WriterCloseHomeSystemsXML;
+                //}
 
                 streamWriter = new StreamWriter(file);
 

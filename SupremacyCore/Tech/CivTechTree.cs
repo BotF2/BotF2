@@ -503,6 +503,7 @@ namespace Supremacy.Tech
                             TechTree techTree = new TechTree(xmlTree);
 
                             bool _traceTechTrees = true;
+                            bool _streamWriterWorks = false;
                             if (_traceTechTrees == true)
                             {
                                 string owner = xmlTree.GetAttribute("Civilization");
@@ -515,8 +516,8 @@ namespace Supremacy.Tech
                                     //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
 
                                     line = owner + separator + "ProdFac" + separator + item.ToString() + separator + isUniversal;
-                                    //Console.WriteLine("{0}", line);
-                                    streamWriter.WriteLine(line);
+                                    Console.WriteLine("{0}", line);
+                                    if (_streamWriterWorks) streamWriter.WriteLine(line);
                                 }
 
                                 foreach (BuildingDesign item in techTree.BuildingDesigns)
@@ -526,8 +527,8 @@ namespace Supremacy.Tech
                                     //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
 
                                     line = owner + separator + "Building" + separator + item.ToString() + separator + isUniversal;
-                                    //Console.WriteLine("{0}", line);
-                                    streamWriter.WriteLine(line);
+                                    Console.WriteLine("{0}", line);
+                                    if (_streamWriterWorks) streamWriter.WriteLine(line);
                                 }
                                 foreach (ShipDesign item in techTree.ShipDesigns)
                                 {
@@ -537,7 +538,7 @@ namespace Supremacy.Tech
 
                                     line = owner + separator + "Ship" + separator + item.ToString() + separator + isUniversal;
                                     //Console.WriteLine("{0}", line);
-                                    streamWriter.WriteLine(line);
+                                    if (_streamWriterWorks) streamWriter.WriteLine(line);
                                 }
                                 foreach (ShipyardDesign item in techTree.ShipyardDesigns)
                                 {
@@ -547,7 +548,7 @@ namespace Supremacy.Tech
 
                                     line = owner + separator + "Shipyards" + separator + item.ToString() + separator + isUniversal;
                                     //Console.WriteLine("{0}", line);
-                                    streamWriter.WriteLine(line);
+                                    if (_streamWriterWorks) streamWriter.WriteLine(line);
                                 }
                                 foreach (StationDesign item in techTree.StationDesigns)
                                 {
@@ -557,7 +558,8 @@ namespace Supremacy.Tech
 
                                     line = owner + separator + "Station" + separator + item.ToString() + separator + isUniversal;
                                     //Console.WriteLine("{0}", line);
-                                    streamWriter.WriteLine(line);
+                                    if (_streamWriterWorks)
+                                        streamWriter.WriteLine(line);
                                 }
                                 foreach (OrbitalBatteryDesign item in techTree.OrbitalBatteryDesigns)
                                 {
@@ -567,7 +569,8 @@ namespace Supremacy.Tech
 
                                     line = owner + separator + category + separator + item.ToString() + separator + isUniversal;
                                     //Console.WriteLine("{0}", line);
-                                    streamWriter.WriteLine(line);
+                                    if (_streamWriterWorks)
+                                        streamWriter.WriteLine(line);
                                 }
                             }
                         }
@@ -603,6 +606,7 @@ namespace Supremacy.Tech
                         }
                     }
                 }
+            //WriterClose:;
                 streamWriter.Close();
                 //WriterClose2:;
             }
