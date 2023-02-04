@@ -350,9 +350,9 @@ namespace Supremacy.Orbitals
 
                     _possibleNames.Add(name.InnerText.Trim(), 0);
 
-                    //_text = "ShipNames - Possible Name for " + Name + " " + name.InnerText.Trim();
+                    _text = "ShipNames - Possible Name for " + Name + " " + name.InnerText.Trim();
                     //Console.WriteLine(_text);
-                    //GameLog.Core.GameData.DebugFormat(_text);
+                    GameLog.Core.GameData.DebugFormat(_text);
                 }
             }
         }

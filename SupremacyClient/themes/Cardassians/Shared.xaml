@@ -629,7 +629,7 @@
         <Setter Property="Focusable"
             Value="False" />
         <Setter Property="Background"
-            Value="{StaticResource AzureGradient_Top_Bottom}" />
+            Value="{StaticResource HoverAquaGradient_Top_Bottom}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">

@@ -542,10 +542,12 @@ namespace Supremacy.Game
 
         #region Static Members
         private static readonly ConcurrentStack<GameContext> _stack = new ConcurrentStack<GameContext>();
+        private string _text;
+        private bool _bool_Fac_Count_Active;
 
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
-        private string _text;
+
 
         private static Stack<GameContext> ThreadStack
         {
@@ -861,6 +863,10 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
+            _text = "Step_3000: GameContext Initialize...";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+
             PushThreadContext(this);
             try
             {
@@ -885,7 +891,7 @@ namespace Supremacy.Game
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 
-                string _text; 
+                //string _text; 
 
                 ScriptedEventDatabase scriptedEventDatabase = ScriptedEventDatabase.Load();
 
@@ -938,7 +944,10 @@ namespace Supremacy.Game
                 }
 
                 GalaxyGenerator.GenerateGalaxy(this);
-                GameLog.Client.GameData.DebugFormat("Galaxy generated...");
+
+                _text = "Galaxy generated...";
+                Console.WriteLine(_text);
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                 TechTree.LoadTechTrees(this);
 
@@ -949,9 +958,10 @@ namespace Supremacy.Game
                 {
                     foreach (Colony colony in civManager.Colonies)
                     {
-                        _text = "Generating HomeSystems...";
-                        Console.WriteLine(_text + " > " + colony.Name);
-                        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                        //_text = "Generating HomeSystems... > " + colony.Name;
+                        //Console.WriteLine(_text);
+                        //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
                         // get the home system settings
                         Civilization civ = colony.Owner;
 
@@ -1014,25 +1024,24 @@ namespace Supremacy.Game
                         int _laborAvailable = colony.Population.CurrentValue / 10;
 
 
-                        _text = "Adjusting facilities if necessary...";
-                        Console.WriteLine(_text);
+                        //_text = "Adjusting facilities if necessary...";
+                        //Console.WriteLine(_text);
 
                         bool _checkXML;
                         _checkXML = true;
-                        if (_checkXML)
-                            Console.WriteLine("From HomeSystems.xml > Facilities (Count/Active) is ignored...");
+
+                        if (_bool_Fac_Count_Active == false)
+                        {
+                            _text = "####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            Console.WriteLine(_text);
+                            GameLog.Client.GalaxyGenerator.InfoFormat(_text);
+                            _bool_Fac_Count_Active = true; // just do once
+                        }
 
                         // readjust production facilities if needed
                         if (homeSystemDescriptor.FoodPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
-
-                            //foreach (var item in db)
-                            //{
-                            //    //GameLog.Client.GameData.DebugFormat("item = {0}", item.Key);
-                            //}
-
-
 
                             ProductionFacilityDesign foodFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.FoodPF.DesignType]];
 
@@ -1107,7 +1116,7 @@ namespace Supremacy.Game
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.EnergyPF.Active, colony.GetTotalFacilities(ProductionCategory.Energy));
                                 }
 
-                                for (int i = 0; i < facilitiesRequired; i++)
+                                for (int i = 0; i < facilitiesRequired + 2; i++)
                                 {
                                     _ = colony.ActivateFacility(ProductionCategory.Energy);
                                     _laborAvailable -= 1;

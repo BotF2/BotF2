@@ -41,6 +41,39 @@ namespace Supremacy.Client.Views
             }
         }
 
+        #region DisplayMode Property
+
+        [field: NonSerialized]
+        public event EventHandler DisplayModeChanged;
+
+        private ColonyScreenDisplayMode _displayMode;
+
+        public ColonyScreenDisplayMode ColonyScreenDisplayMode
+        {
+            get =>  _displayMode;
+            set
+            {
+                if (Equals(value, _displayMode))
+                {
+                    return;
+                }
+
+                _displayMode = value;
+
+                OnDisplayModeChanged();
+            }
+        }
+
+        protected virtual void OnDisplayModeChanged()
+        {
+            DisplayModeChanged.Raise(this);
+            OnPropertyChanged("DisplayMode");
+            //InvalidateCommands();
+            //OnCommandVisibilityChanged();
+        }
+
+        #endregion
+
         [InjectionConstructor]
         public ColonyScreenPresentationModel(IAppContext appContext)
             : base(appContext) { }

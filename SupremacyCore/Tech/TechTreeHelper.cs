@@ -33,6 +33,7 @@ namespace Supremacy.Tech
     public static class TechTreeHelper
     {
         private static IClientContext _clientContext;
+        private static string _text;
         private static readonly BuildRestriction[] _planetTypeRestrictions;
         private static readonly Dictionary<BuildRestriction, PlanetType> _planetRestrictionTypeMap;
 
@@ -907,6 +908,13 @@ namespace Supremacy.Tech
                 throw new ArgumentNullException("design");
             }
 
+            //_text = colony.Location
+            //    + " > design: " + design.Name
+            //    + " meetsRestrictions..."
+            //    + design.Restriction.ToString();
+            //    ;
+            //Console.WriteLine(_text);
+
             if (IsBuildLimitReached(colony, design, includeConstruction: true))
             {
                 return false;
@@ -1108,6 +1116,13 @@ namespace Supremacy.Tech
                     return false;
                 }
             }
+            //_text = colony.Location
+            //    + " > design: " + design.Name
+            //    + " meetsRestrictions..."
+            //    + design.Restriction.ToString()
+            //    +" - Result = " + true
+            //    ;
+            //Console.WriteLine(_text);
 
             return true;
         }

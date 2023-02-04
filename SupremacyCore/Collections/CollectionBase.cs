@@ -56,8 +56,12 @@ namespace Supremacy.Collections
         [NonSerialized]
         private StateScope _suppressChangeNotificationsScope;
         private string _text;
+#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
+#pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private int _count;
-        private string newline = Environment.NewLine;
+#pragma warning restore IDE0052 // Ungelesene private Member entfernen
+#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
+        private readonly string newline = Environment.NewLine;
         private bool _firstRun;
 
         public CollectionBase()
@@ -69,6 +73,8 @@ namespace Supremacy.Collections
         {
             _items = new List<T>(initialCapacity);
             _suppressChangeNotificationsScope = new StateScope();
+
+            _count += 0; // dummy > just keep
         }
 
         public CollectionBase(IList<T> list)

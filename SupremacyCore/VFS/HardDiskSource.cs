@@ -335,6 +335,7 @@ namespace Supremacy.VFS
             }
             catch (Exception e)
             {
+                Console.WriteLine("problem with " + path);
                 GameLog.Core.General.Error(e);
             }
 
@@ -430,6 +431,7 @@ namespace Supremacy.VFS
                 _source = source ?? throw new ArgumentNullException("source");
                 VirtualPath = virtualPath ?? throw new ArgumentNullException("virtualPath");
                 _physicalFileInfo = physicalFileInfo ?? throw new ArgumentNullException("physicalFileInfo");
+                //Console.WriteLine(_physicalFileInfo.Name);
             }
 
             #region IVirtualFileInfo Members

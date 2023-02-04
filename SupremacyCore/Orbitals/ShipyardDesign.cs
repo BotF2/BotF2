@@ -16,6 +16,7 @@ using Supremacy.Game;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
+using Supremacy.Resources;
 
 namespace Supremacy.Orbitals
 {
@@ -81,16 +82,18 @@ namespace Supremacy.Orbitals
             get
             {
                 string slotOutputString = "UNDETERMINED SHIPYARD OUTPUT TYPE";
+                string _popBasedString = string.Format(ResourceManager.GetString("POPULATION_BASED"));
+                string _industryBasedString = string.Format(ResourceManager.GetString("INDUSTRY_BASED"));
                 switch (BuildSlotOutputType)
                 {
                     case ShipyardOutputType.Static:
                         slotOutputString = BuildSlotOutput.ToString();
                         break;
                     case ShipyardOutputType.PopulationRatio:
-                        slotOutputString = BuildSlotOutput.ToString() + "% Pop";
+                        slotOutputString = _popBasedString + ": " + BuildSlotOutput.ToString()/* + " % Pop"*/;
                         break;
                     case ShipyardOutputType.IndustryRatio:
-                        slotOutputString = BuildSlotOutput.ToString() + "% Industry";
+                        slotOutputString = _industryBasedString + ": " + BuildSlotOutput.ToString()/* + "% Pop"*/;
                         break;
                 }
                 return slotOutputString;

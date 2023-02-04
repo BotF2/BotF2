@@ -13,12 +13,12 @@
         <Grid x:Name="ItemGrid">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <Grid.ToolTip>
             <ToolTip>
               <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                              FontSize="12">
+                              FontSize="16">
                 <ContentControl.Content>
                   <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
                                                  Location="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Location)}"
@@ -57,11 +57,11 @@
 
               <TextBlock Text="{Binding Path=TurnsRemaining}" />
               <TextBlock x:Name="TurnsText"
-                         Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Upper}" />
+                         Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Original}" />
             </TextBlock>
-              <TextBlock Text="-" />            
-              <TextBlock Text="{Binding Path=Project.IndustryRemaining}" />              
-              <TextBlock Text="P." />  
+              <TextBlock Text="-" Foreground="Silver"/>            
+              <TextBlock Text="{Binding Path=Project.IndustryRemaining}" Foreground="Silver"/>              
+              <TextBlock Text="P." Foreground="Silver"/>  
           </TextBlock>
         </Grid>
       </Border>
@@ -70,7 +70,7 @@
                      Value="1">
           <Setter TargetName="TurnsText"
                   Property="Text"
-                  Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Upper}" />
+                  Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Original}" />
         </DataTrigger>
                 <DataTrigger Binding="{Binding}"
                      Value="{x:Null}">
@@ -84,20 +84,21 @@
       </DataTemplate.Triggers>
     </DataTemplate>
   </UserControl.Resources>
+    
   <DockPanel>
     <ContentControl MouseLeftButtonDown="OnCurrentBuildProjectClicked"
                     DataContext="{Binding Path=SelectedColony.BuildSlots[0], Mode=OneWay}"
-                    Margin="1,3,0,3"
+                    Margin="-5,3,0,3"
                     DockPanel.Dock="Top">
       <ContentControl.Template>
         <ControlTemplate>
           <StackPanel x:Name="CurrentBuildProjectPanel"
                       Orientation="Vertical"
-                      Margin="0,0,0,7">
+                      Margin="0,0,0,2">
             <StackPanel.ToolTip>
-              <ToolTip>
+                            <ToolTip  Width="Auto">
                 <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                                FontSize="12">
+                                FontSize="16"  Width="Auto">
                   <ContentControl.Content>
                     <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildSlot.Project).(s:BuildProject.BuildDesign)}"
                                                    Location="{Binding Path=(s:BuildSlot.Project).(s:BuildProject.Location)}"
@@ -143,30 +144,39 @@
                            TextWrapping="Wrap"
                            Text="{Binding Path=Project.Description, Converter={StaticResource UpperCaseConverter}}" />
                 <LineBreak />
-                <TextBlock x:Name="TimeText"
-                           Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
+                <TextBlock x:Name="TimeText" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
                   <TextBlock x:Name="PercentCompleteText" Text="{Binding Path=Project.PercentComplete}" />
                   <TextBlock x:Name="SeparatorText" Text="/" />
                   <TextBlock x:Name="TurnsLabelText" Text="{Binding Path=Project.TurnsRemaining}" />
-                  <TextBlock x:Name="TurnsText" Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Upper}" />
+                  <TextBlock x:Name="TurnsText" Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Original}" />
+                  <!--<TextBlock x:Name="TurnsText" FontSize="12" Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Upper}" />-->
+                  <TextBlock x:Name="Sep" Text="-" Foreground="Silver"/>
+                  <TextBlock x:Name="BuildingRemain" Text="{Binding Path=Project.IndustryRemaining}" Foreground="Silver"/>
                 </TextBlock>
               </TextBlock>
             </Grid>
           <Button Height="25"
                   Style="{StaticResource LCARS_StandardButtonStyle}"
                   Margin="0,14,0,0"
-                  Content="BUY" 
+                  Content="{s:StringResource Key=BUY, Case=Upper}" 
                   Click="OnClickBuyButton"/>
           <Rectangle Height="7"
                        Margin="0,14,0,0"
                        Fill="{DynamicResource SeparatorBackgroundBrush}" />
           </StackPanel>
-          <ControlTemplate.Triggers>
+                    <!--Project.IsRushed-->
+                    <ControlTemplate.Triggers>
             <DataTrigger Binding="{Binding Path=Project.IsRushed}"
                          Value="true">
-              <Setter TargetName="PercentCompleteText"
+                            <Setter TargetName="TimeText"
+                      Property="Visibility"
+                      Value="Hidden" />
+                            <Setter TargetName="PercentCompleteText"
+                      Property="Visibility"
+                      Value="Visible" />
+                            <Setter TargetName="PercentCompleteText"
                       Property="Text"
-                      Value="RUSHED" />
+                      Value="{s:StringResource Key=RUSHED, Case=Original}" />
               <Setter TargetName="SeparatorText"
                       Property="Visibility"
                       Value="Hidden" />
@@ -176,12 +186,15 @@
               <Setter TargetName="TurnsText"
                       Property="Visibility"
                       Value="Hidden" />
-            </DataTrigger>
+              <Setter TargetName="TurnsText"
+                      Property="DataContext"
+                      Value=" " />
+                        </DataTrigger>
             <DataTrigger Binding="{Binding Path=Project.TurnsRemaining}"
                          Value="1">
               <Setter TargetName="TurnsText"
                       Property="Text"
-                      Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Upper}" />
+                      Value="{s:StringResource Key=BUILD_QUEUE_TURN_REMAINING, Case=Original}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Project}"
                          Value="{x:Null}">
@@ -190,7 +203,7 @@
                       Value="{x:Null}" />
               <Setter TargetName="DescriptionText"
                       Property="Text"
-                      Value="{s:StringResource Key=BUILDING_NOTHING, Case=Upper}" />
+                      Value="{s:StringResource Key=BUILDING_NOTHING, Case=Original}" />
               <Setter TargetName="TimeText"
                       Property="Visibility"
                       Value="Hidden" />

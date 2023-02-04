@@ -17,7 +17,6 @@ using System.Windows.Media;
 using Supremacy.Client;
 using Supremacy.Client.Views;
 using Supremacy.Economy;
-using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
@@ -172,7 +171,7 @@ namespace Supremacy.UI
             _researchSlider = new UnitActivationBar();
             _intelligenceSlider = new UnitActivationBar();
 
-            _foodSlider.HorizontalAlignment = HorizontalAlignment.Left;
+            _foodSlider.HorizontalAlignment = HorizontalAlignment.Stretch;
             _industrySlider.HorizontalAlignment = HorizontalAlignment.Stretch;
             _energySlider.HorizontalAlignment = HorizontalAlignment.Stretch;
             _researchSlider.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -838,6 +837,7 @@ namespace Supremacy.UI
                 _industrySlider.Units = 0;
                 _energySlider.Units = 0;
                 _researchSlider.Units = 0;
+                _intelligenceSlider.Units = 0;
             }
             else
             {

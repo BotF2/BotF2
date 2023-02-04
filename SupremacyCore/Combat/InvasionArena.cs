@@ -481,7 +481,10 @@ namespace Supremacy.Combat
 
         private int ComputeDefenderCombatStrength()
         {
-            return CombatHelper.ComputeGroundCombatStrength(Colony.Owner, Colony.Location, Population.CurrentValue);
+            if (Colony != null)
+                return CombatHelper.ComputeGroundCombatStrength(Colony.Owner, Colony.Location, Population.CurrentValue);
+            else
+                return 0;
         }
 
         private int ComputeInvaderCombatStrength()

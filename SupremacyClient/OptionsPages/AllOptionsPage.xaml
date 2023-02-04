@@ -4,7 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
-
              >
   <Grid >
     
@@ -26,6 +25,9 @@
             <RowDefinition Height="20" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
             <RowDefinition Height="18" />
             <RowDefinition Height="18" />
             <RowDefinition Height="18" />
@@ -181,7 +183,41 @@
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableSummaryScreen), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_USE_SUMMARY_SCREEN}"
         ToolTip="{s:StringResource SETTINGS_USE_SUMMARY_SCREEN_TOOLTIP}" 
-        />      
+        />
+
+        <!--  SOUND_RED_ALERT  -->
+        <CheckBox Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableSoundRedAlert), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_USE_SOUND_RED_ALERT}"
+        ToolTip="{s:StringResource SETTINGS_USE_SOUND_RED_ALERT_TOOLTIP}" 
+        />
+
+        <!--SOUND_START_SPLASH_SCREEN-->
+        <CheckBox Grid.Row="16" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableSoundStartSplashScreen), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_USE_SOUND_START_SPLASH_SCREEN}"
+        ToolTip="{s:StringResource SETTINGS_USE_SOUND_START_SPLASH_SCREEN_TOOLTIP}" 
+        />
+
+
+        <!--OUTPUT_TO_TXT-->
+        <CheckBox Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableOutputToTXT), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_USE_OUTPUT_TO_TXT}"
+        ToolTip="{s:StringResource SETTINGS_USE_OUTPUT_TO_TXT_TOOLTIP}" 
+        />
+
+
+        <!--### SettingsOnOff is turned on/off by GalaxyScreen ###  FREE-->
+        <!--<CheckBox Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableSummaryScreen), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_USE_SUMMARY_SCREEN}"
+        ToolTip="{s:StringResource SETTINGS_USE_SUMMARY_SCREEN_TOOLTIP}" 
+        />-->
       
         <!--</StackPanel>-->
         <!--<CheckBox Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3"

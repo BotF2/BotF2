@@ -573,7 +573,7 @@ namespace Supremacy.Economy
         protected virtual void AdvanceOverride(ref int industry, ResourceValueCollection resources)
         {
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[0];  // ToDo - not always Federation
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[6];  // ToDo - not always Borg
             Civilization civ = civManager.Civilization;
             int timeEstimate = GetTimeEstimate();
             if (timeEstimate <= 0)
@@ -615,12 +615,19 @@ namespace Supremacy.Economy
                     delta > resources[resource])
                 {
                     SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    GameLog.Core.Test.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta.ToString(), BuildDesign.Description, GameContext.Current.TurnNumber);
+
+                    _text = "Turn " + GameContext.Current.TurnNumber
+                        + ": Estimated One Turn: resource= " + resource.ToString()
+                        + ", delta/missing= " + delta.ToString()
+                        + " for " + BuildDesign.Description
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Test.DebugFormat(_text);
+
+                    civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+                    //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
 
                     deltaIndustry -= delta;
-
-                    civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
-
                 }
 
                 if (timeEstimate == 1)
@@ -640,8 +647,15 @@ namespace Supremacy.Economy
 
                     if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
                     {
+                        _text = "Turn " + GameContext.Current.TurnNumber
+                            + ": Estimated One Turn: resource= " + resource.ToString()
+                            + ", delta/missing= " + delta.ToString()
+                            + " for " + BuildDesign.Description
+                            ;
+                        Console.WriteLine(_text);
                         GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}, too less available !!!", resource.ToString(), delta);
-                        civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
+                        civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+                        //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
 
                     }
                     //deltaIndustry -= delta;

@@ -341,7 +341,11 @@ namespace Supremacy.Universe
 
             Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
 
-            int _pop = Number.ParseInt32(table[PlanetSize.ToString()]
+            int _pop = 0;
+
+            if (PlanetSize == PlanetSize.NoWorld) return 0;
+
+            _pop = Number.ParseInt32(table[PlanetSize.ToString()]
                 [GetEnvironment(race).ToString()]);
 
             return _pop;

@@ -27,6 +27,7 @@ using Supremacy.Tech;
 using Supremacy.Utility;
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client.Context;
+using System.Windows.Navigation;
 
 namespace Supremacy.Client
 {
@@ -229,6 +230,12 @@ namespace Supremacy.Client
                 _ = _encyclopediaEntryListView.Items.Add(groupItem);
                 //GameLog.Client.Research.DebugFormat("");
             }
+        }
+
+        private void DoLink(object sender, RequestNavigateEventArgs e)
+        {
+            //Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
 
         private bool FilterEncyclopediaEntry(object value)

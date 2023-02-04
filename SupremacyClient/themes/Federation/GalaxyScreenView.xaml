@@ -522,7 +522,7 @@
                                                           Width="48"
                                                           Height="40"
                                                           Margin="0,0,7,0"
-                                                          BorderBrush="White"
+                                                          BorderBrush="{StaticResource BorderBrush}"
                                                           BorderThickness="2"
                                                           CornerRadius="4">
                                                         <Border.Background>

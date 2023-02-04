@@ -48,7 +48,12 @@
         <!-- INDUSTRY -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource IndustryColor}" 
-                       Text="{Binding Source={s:StringResource INDUSTRY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource INDUSTRY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource PLANETARY_INDUSTRY_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{StaticResource IndustryColor}" 
                        Text="{Binding Path=SelectedColony.NetIndustry, Mode=OneWay}" />
         </DockPanel>
@@ -56,7 +61,12 @@
         <!-- NET ENERGY -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource EnergyColor}" 
-                       Text="{Binding Source={s:StringResource ENERGY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource ENERGY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource PLANETARY_ENERGY_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" 
                        Text="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay}" />
         </DockPanel>
@@ -64,7 +74,12 @@
         <!-- RESEARCH -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource ResearchColor}" 
-                       Text="{Binding Source={s:StringResource RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource PLANETARY_RESEARCH_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource ResearchColor}" 
                        Text="{Binding Path=SelectedColony.NetResearch, Mode=OneWay}" />
         </DockPanel>
@@ -72,7 +87,12 @@
         <!-- INTELLIGENCE -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource PLANETARY_INTELLIGENCE_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource IntelColor}" 
                        Text="{Binding Path=SelectedColony.NetIntelligence, Mode=OneWay}" />
         </DockPanel>
@@ -83,7 +103,12 @@
         <!-- DILITHIUM -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource DilithiumColor}"
-                       Text="{Binding Source={s:StringResource DILITHIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource DILITHIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource PLANETARY_DILITHIUM_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource DilithiumColor}" 
                        Text="{Binding Path=SelectedColony.NetDilithium, Mode=OneWay}" />
         </DockPanel>
@@ -91,7 +116,12 @@
         <!-- DEUTERIUM -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource DeuteriumColor}" 
-                       Text="{Binding Source={s:StringResource DEUTERIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource DEUTERIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource PLANETARY_DEUTERIUM_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource DeuteriumColor}" 
                        Text="{Binding Path=SelectedColony.NetDeuterium, Mode=OneWay}" />
         </DockPanel>
@@ -99,7 +129,12 @@
         <!-- DURANIUM -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource DuraniumColor}" 
-                       Text="{Binding Source={s:StringResource RAW_MATERIALS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource DURANIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource PLANETARY_DURANIUM_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource DuraniumColor}" 
                        Text="{Binding Path=SelectedColony.NetDuranium, Mode=OneWay}" />
         </DockPanel>
@@ -107,7 +142,12 @@
         <!-- CreditsEmpire -->
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource CreditsColor}" 
-                       Text="{Binding Source={s:StringResource CREDITS_EMPIRE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+                       Text="{Binding Source={s:StringResource CREDITS_EMPIRE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource CREDITS_EMPIRE_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource CreditsColor}" 
                        Text="{Binding Path=SelectedColony.CreditsEmpire, Mode=OneWay}"/>
             <!--, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" />-->

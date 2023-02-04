@@ -51,6 +51,57 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand S5_Command = new CompositeCommand(true);
         public static readonly CompositeCommand S6_Command = new CompositeCommand(true);
 
+        public static readonly CompositeCommand Hotkey_Alt_D0 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D1 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D2 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D3 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D4 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D5 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D6 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D7 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D8 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D9 = new CompositeCommand(true);
+
+
+        public static readonly CompositeCommand Hotkey_Alt_F01 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F02 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F03 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F04 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F05 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F06 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F07 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F08 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F09 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F10 = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F11 = new CompositeCommand(true);
+
+        public static readonly CompositeCommand Hotkey_Alt_A = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_B = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_C = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_D = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_E = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_F = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_G = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_H = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_I = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_J = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_K = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_L = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_M = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_N = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_O = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_P = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_Q = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_R = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_S = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_T = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_U = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_V = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_W = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_X = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_Y = new CompositeCommand(true);
+        public static readonly CompositeCommand Hotkey_Alt_Z = new CompositeCommand(true);
+
         public static readonly CompositeCommand FakeCommand = new CompositeCommand(true);
         public static readonly CompositeCommand LogTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ErrorTxtCommand = new CompositeCommand(true);
@@ -86,5 +137,7 @@ namespace Supremacy.Client.Commands
 
         public static readonly RoutedCommand EscapeCommand = new RoutedCommand("Escape", typeof(ClientCommands));
         public static readonly RoutedCommand AutoTurnCommand = new RoutedCommand("AutoTurn", typeof(ClientCommands));
+
+        public static readonly CompositeCommand OnMA_Ferengi = new CompositeCommand(true);
     }
 }

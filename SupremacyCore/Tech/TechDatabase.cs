@@ -45,9 +45,15 @@ namespace Supremacy.Tech
         [NonSerialized]
         private Dictionary<string, int> _designIdMap;
         private static string _text;
+#pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private static string _maintText;
         private static string _buildCostText;
+#pragma warning restore IDE0052 // Ungelesene private Member entfernen
+
         private static bool maint_output_done;
+        private static bool _buildCostIgnored;
+        private static bool _buildCostShipsIgnored;
+        private static bool _buildCostTextOnlyOnce;
         private static readonly string newline = Environment.NewLine;
 
         /// <summary>
@@ -58,6 +64,10 @@ namespace Supremacy.Tech
         {
             get
             {
+                //_text = "Step_1400: Load TechObjectDatabase.xml...";
+                //Console.WriteLine(_text);
+                //GameLog.Client.GameData.DebugFormat(_text); 
+
                 if (_productionFacilityDesigns.Contains(designId))
                 {
                     return _productionFacilityDesigns[designId];
@@ -625,7 +635,7 @@ namespace Supremacy.Tech
             }
 
 
-            bool _traceTechObjectDatabase = true;  // file is writen while starting a game -> Federation -> Start
+            bool _traceTechObjectDatabase = false;  // file is writen while starting a game -> Federation -> Start
 
             //if (ClientSettings.TracesXML2CSV == true)
 
@@ -2109,10 +2119,26 @@ namespace Supremacy.Tech
 
                 ;
             _buildCostText += newline + _text;
-            //GameLog.Core.Production.DebugFormat(_buildCostText);
-            Console.WriteLine(_text);
+
+            if (_buildCostTextOnlyOnce == false)
+            {
+                //GameLog.Core.Production.DebugFormat(_buildCostText);
+                Console.WriteLine(_text + " - no more output");
+                    _buildCostTextOnlyOnce = true;
+            }
+
             //GameLog.Core.Production.DebugFormat(_text);
             pf.BuildCost = _buildcosts;
+
+
+            //Console.WriteLine(_text);
+
+            if (_buildCostIgnored == false)
+            {
+                _text = "Build Costs ignored and calculated inside game code > for ProductionFacilities";
+                GameLog.Core.General.InfoFormat(_text);
+                _buildCostIgnored = true;  // just report once
+            }
         }
 
         private static void CalculateBuildCostsShips(ShipDesign ship)
@@ -2155,10 +2181,25 @@ namespace Supremacy.Tech
 
                 ;
             _buildCostText += newline + _text;
+
+            if (_buildCostTextOnlyOnce == false)
+            {
+                //GameLog.Core.Production.DebugFormat(_buildCostText);
+                Console.WriteLine(_text + " - no more output");
+                _buildCostTextOnlyOnce = true;
+            }
             //GameLog.Core.Production.DebugFormat(_buildCostText);
             //Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);
             ship.BuildCost = _buildcosts;
+
+
+            if (_buildCostShipsIgnored == false)
+            {
+                _text = "Build Costs ignored and calculated inside game code > for Ships";
+                GameLog.Core.General.InfoFormat(_text);
+                _buildCostShipsIgnored = true; // just report once
+            }
         }
 
         private static void CalculateMaintenanceCosts(ShipDesign ship)

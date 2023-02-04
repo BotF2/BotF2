@@ -328,14 +328,14 @@
                         </e:DataTrigger>
                     </i:Interaction.Triggers>
 
-                    <TabItem x:Name="HandlingTab" Header="COLONY MANAGEMENT">
-                        <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.HandlingList}" />
+                                <TabItem x:Name="HandlingTab" Header="{Binding Source={s:StringResource COLONY_MANAGEMENT_TAB}, Mode=OneTime}">
+                                    <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.HandlingList}" />
                     </TabItem>
 
                                 <!--<TabItem x:Name="ProductionTab" Header="PRODUCTION"
                          cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ProductionManagement}" >
                 </TabItem>-->
-                    <TabItem x:Name="BuildListTab" Header="BUILD LIST">
+                                <TabItem x:Name="BuildListTab" Header="{Binding Source={s:StringResource BUILD_LIST_TAB}, Mode=OneTime}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -376,8 +376,8 @@
 
 
                                 <!--ShipbuildingTab-->
-                    <TabItem x:Name="ShipbuildingTab" Header="SHIPBUILDING">
-                        <Grid x:Name="ShipbuildingTabContent">
+                                <TabItem x:Name="ShipbuildingTab" Header="{Binding Source={s:StringResource SHIPYARD_QUEUE_TAB}, Mode=OneTime}">
+                                    <Grid x:Name="ShipbuildingTabContent">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />

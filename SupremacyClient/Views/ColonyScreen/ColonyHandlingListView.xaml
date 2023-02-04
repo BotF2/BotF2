@@ -163,7 +163,7 @@
                           Height="20"
                           Background="Black">
                     <Border x:Name="ImageBorder"
-                            BorderBrush="White"
+                            BorderBrush="{DynamicResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                             BorderThickness="2"
                             CornerRadius="4">
                       <!--<Border.Background>

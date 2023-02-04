@@ -132,9 +132,9 @@ namespace Supremacy.Client
 
             ApplyAntiAliasingSettings();
 
-            _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control)));
-            _ = InputBindings.Add(new KeyBinding(ToggleFullScreenModeCommand, Key.Enter, ModifierKeys.Alt));
+            // Modifier "Shift" - not supported by some unknown reason
 
+            // No Modifier
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.EscapeCommand, new KeyGesture(Key.Escape, ModifierKeys.None))); // Escape
 
@@ -151,21 +151,24 @@ namespace Supremacy.Client
             { CommandParameter = StandardGameScreens.IntelScreen });
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.F6, ModifierKeys.None));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None)); // Control - None used for System-Tab 1.2.3 but didn't got that
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None)); // Control - None used for System-Tab 1.2.3 but didn't got that
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None)); // Control - None used for System-Tab 1.2.3 but didn't got that
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F10_Command, Key.F10, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
 
 
-            // CTRL + Fx
+            // CTRL
+            _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control)));
+
             _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F06_Command, Key.F6, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F07_Command, Key.F7, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.Control));  // old F9-Dialog, not used anymore
 
 
             //                                                      CheatMenu uses CTRL + C
-
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
             //InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control))); - see above - from Mike
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowPlayersHistoryFileCommand, Key.H, ModifierKeys.Control));
@@ -178,20 +181,81 @@ namespace Supremacy.Client
             //_ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
             //InputBindings.Add(new KeyBinding(ClientCommands.ShowSaveGameDialog, Key.S, ModifierKeys.Alt));// ALT+S shows SaveGameDialog    // does not work yet
             _ = InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.T, ModifierKeys.Control));
-
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Control));
             //_ = InputBindings.Add(new KeyBinding(ClientCommands.FakeCommand, Key.F11, ModifierKeys.Control));
 
 
-            // Modifier "Shift" - not supported by some unknown reason
+
 
 
             // Modifier "ALT"
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowAllHistoryFileCommand, Key.H, ModifierKeys.Alt));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteAutoSaved, Key.Y, ModifierKeys.Alt)); // deletes autosav file 
 
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Alt));
+
+            _ = InputBindings.Add(new KeyBinding(ToggleFullScreenModeCommand, Key.Enter, ModifierKeys.Alt));
+
+            // now control //_ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.ShowAllHistoryFileCommand, Key.H, ModifierKeys.Alt));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.K, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteAutoSaved, Key.J, ModifierKeys.Alt)); // deletes autosav file 
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D0, Key.D0, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D1, Key.D1, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D2, Key.D2, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D3, Key.D3, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D4, Key.D4, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D5, Key.D5, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D6, Key.D6, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D7, Key.D7, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D8, Key.D8, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D9, Key.D9, ModifierKeys.Alt));
+
+            // Folders
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F01, Key.F1, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F02, Key.F2, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F03, Key.F3, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F04, Key.F4, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F05, Key.F5, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F06, Key.F6, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F07, Key.F7, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F08, Key.F8, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F09, Key.F9, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F10, Key.F10, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F11, Key.F11, ModifierKeys.Alt));
+
+
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_A, Key.A, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_B, Key.B, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_C, Key.C, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_D, Key.D, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_E, Key.E, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_F, Key.F, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_G, Key.G, ModifierKeys.Alt));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_H, Key.H, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowAllHistoryFileCommand, Key.H, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_I, Key.I, ModifierKeys.Alt));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_J, Key.J, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteAutoSaved, Key.J, ModifierKeys.Alt)); // deletes autosav file 
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_K, Key.K, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.K, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_L, Key.L, ModifierKeys.Alt));
+
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_M, Key.M, ModifierKeys.Alt));  > ALT + M on GalaxyMap outputs map
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_N, Key.N, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_O, Key.O, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_P, Key.P, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_Q, Key.Q, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_R, Key.R, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_S, Key.S, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_T, Key.T, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_U, Key.U, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_V, Key.V, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_W, Key.W, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_X, Key.X, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_Y, Key.Y, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_Z, Key.Z, ModifierKeys.Alt));
 
             //CommandBindings
             _ = CommandBindings.Add(
@@ -561,8 +625,9 @@ namespace Supremacy.Client
         private void OnTurnStarted(ClientEventArgs e)
         {
             _soundPlayer.PlayFile("Resources/SoundFX/NewTurn.ogg");
-            SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
+            //SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
             _soundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
+           
         }
 
         private void OnChatMessageReceived(ClientDataEventArgs<ChatMessage> e)

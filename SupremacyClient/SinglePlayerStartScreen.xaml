@@ -27,7 +27,7 @@
                 <Border DockPanel.Dock="Top"
                 VerticalAlignment="Top"
                 Margin="140,-30,0,0"
-                BorderBrush="White"
+                BorderBrush="{StaticResource DefaultTextBrush}"
                 BorderThickness="2"
                 Width="160">
                     <Image Source="{Binding Converter={StaticResource CivImageConverter}}" />

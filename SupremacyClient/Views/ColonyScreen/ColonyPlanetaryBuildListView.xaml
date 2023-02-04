@@ -25,17 +25,26 @@
                    Margin="4,3,4,3"
                    Background="Transparent"
                    IsHitTestVisible="True">
-          <TextBlock x:Name="TurnEstimateText"
-                     DockPanel.Dock="Right" Margin="30,0,0,0"
-                     HorizontalAlignment="Right"
+                    <!--<TextBlock x:Name="IndustryRemaining" DockPanel.Dock="Right" Margin="5,0,0,0" HorizontalAlignment="Left"
+                Text="{Binding Path=IndustryRemaining}" />-->
+                    <TextBlock x:Name="TurnEstimateText" DockPanel.Dock="Right" Margin="20,0,0,0" HorizontalAlignment="Right"
                      Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                      Text="{Binding Path=TurnsRemaining, StringFormat='{}{0} Turn(s)'}">
-            <!--<TextBlock Text="{Binding Path=TurnsRemaining}" />
-            <TextBlock x:Name="TurnsText"
+
+            <!--<TextBlock x:Name="TurnsRemaining" DockPanel.Dock="Right" Margin="25,0,0,0" 
+                Text="{Binding Path=TurnsRemaining}" />-->
+            <!--<TextBlock x:Name="TurnsText"
                        Text="Turns" />-->
           </TextBlock>
           <TextBlock x:Name="BuildDesignName" Text="{Binding Path=Description}"
                      Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"/>
+            
+                    <!--<TextBlock x:Name="Sep" Text=" > " Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"/>
+                    <TextBlock x:Name="IndustryRemaining" 
+                Text="{Binding Path=IndustryRemaining}" Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"/>-->
+            
+            
+                    <!--<TextBlock x:Name="BracketClose" Text=" )" Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"/>-->
                 </DockPanel>
         <DataTemplate.Triggers>
 <!--

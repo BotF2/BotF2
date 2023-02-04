@@ -84,7 +84,7 @@ namespace Supremacy.AI
                 // **** The UnitAI fleet by fleet looping 
                 foreach (Fleet fleet in allCivFleets) // each fleet of the current civ
                 {
-                    string _fleetText = fleet.Location + blank + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name 
+                    string _fleetText = "Fleet: " + fleet.Location + blank + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name 
                         + blank + fleet.UnitAIType + ", TargetCiv=NULL" /*+ fleet.Owner.TargetCivilization*/ + blank + fleet.Order.ToString();
                     Console.WriteLine(_fleetText);
                     // as well go to CTRL+F and 'checking fleets'
@@ -1399,8 +1399,18 @@ namespace Supremacy.AI
                 fleet.SetOrder(order);
                 fleet.UnitAIType = UnitAIType.Building;
                 fleet.Activity = UnitActivity.BuildStation;
-                GameLog.Core.AIDetails.DebugFormat("Constructor fleet {0} order {1} at {2} UnitActivity = {3}", fleet.Owner.Key, fleet.Order.OrderName, fleet.Sector.Name, fleet.Activity.ToString());
+
+                _text = fleet.Location
+                    + " > Constructor fleet " + blank + fleet.ObjectID
+                    + blank + fleet.Name
+                    + blank + fleet.ClassName
+                    + " has order= " + fleet.Order.OrderName
+                    + ", activity= " + fleet.Activity.ToString()
+                    ;
+                Console.WriteLine(_text);
+                //GameLog.Core.AIDetails.DebugFormat("Constructor fleet {0} order {1} at {2} UnitActivity = {3}", fleet.Owner.Key, fleet.Order.OrderName, fleet.Sector.Name, fleet.Activity.ToString());
             }
+  
         }
         private static void BuildStation(Fleet fleet, List<Fleet> allFleets)
         {

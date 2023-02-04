@@ -415,7 +415,7 @@ namespace Supremacy.Client
                 return;
             }
 
-            SendKeys.SendWait("{F1}");  // shows Map
+            //SendKeys.SendWait("{F1}");  // shows Map
 
             _text = "ShowSummary...";
             Console.WriteLine(_text);
@@ -488,14 +488,14 @@ namespace Supremacy.Client
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
-
+            //SendKeys.SendWait("{F1}");  // shows Map
         }
 
-#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
-#pragma warning disable IDE0060 // Nicht verwendete Parameter entfernen
+//#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
+//#pragma warning disable IDE0060 // Nicht verwendete Parameter entfernen
         private void SaveSUMMARY_TXT(string _text)
-#pragma warning restore IDE0060 // Nicht verwendete Parameter entfernen
-#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
+//#pragma warning restore IDE0060 // Nicht verwendete Parameter entfernen
+//#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
         {
             //_text += " "; // dummy - please keep
             _text = "SaveSUMMARY_TXT...";
@@ -681,6 +681,7 @@ namespace Supremacy.Client
         private void OnGameStarted(DataEventArgs<GameStartData> args)
         {
             CreatePresenters();
+            //SendKeys.SendWait("{F1}");  // shows Map
         }
 
         private void CreatePresenters()
@@ -738,6 +739,8 @@ namespace Supremacy.Client
                     }
                     catch (Exception e)
                     {
+                        _text = "###### problem with " + e;
+                        Console.WriteLine(_text);
                         GameLog.Client.General.Error(string.Format("###### problem with {0}",
                             presenter.ToString()),
                             e);

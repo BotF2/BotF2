@@ -123,20 +123,20 @@ namespace Supremacy.Scripting.Runtime
             //{
 
             //}
-            Console.WriteLine("TopLevel {0}, StartLocation {1}, End {2}, Parent {3}, CompilerContext {4}, Explicit {5}, CompilerErrorCount {6}, CurrentAnonymousMethod {7}, InitilizserVarible {8}, languageContext {9}, IsVariableCapturingRequired {10}", parseContext.Compiler.ToString(),
-                parseContext.CurrentScope.TopLevel,
-                parseContext.CurrentScope.StartLocation,
-                parseContext.CurrentScope.EndLocation,
-                parseContext.CurrentScope.Parent,
-                parseContext.CurrentScope.CompilerContext,
-                parseContext.CurrentScope.Explicit,
-                parseContext.CompilerErrorCount,
-                parseContext.ConstantCheckState,
-                parseContext.CurrentAnonymousMethod,
-                parseContext.CurrentInitializerVariable,
-                parseContext.LanguageContext,
-                parseContext.IsVariableCapturingRequired
-                );
+            //Console.WriteLine("TopLevel {0}, StartLocation {1}, End {2}, Parent {3}, CompilerContext {4}, Explicit {5}, CompilerErrorCount {6}, CurrentAnonymousMethod {7}, InitilizserVarible {8}, languageContext {9}, IsVariableCapturingRequired {10}", parseContext.Compiler.ToString(),
+            //    parseContext.CurrentScope.TopLevel,
+            //    parseContext.CurrentScope.StartLocation,
+            //    parseContext.CurrentScope.EndLocation,
+            //    parseContext.CurrentScope.Parent,
+            //    parseContext.CurrentScope.CompilerContext,
+            //    parseContext.CurrentScope.Explicit,
+            //    parseContext.CompilerErrorCount,
+            //    parseContext.ConstantCheckState,
+            //    parseContext.CurrentAnonymousMethod,
+            //    parseContext.CurrentInitializerVariable,
+            //    parseContext.LanguageContext,
+            //    parseContext.IsVariableCapturingRequired
+            //    );
             //Console.ReadLine();
             AstInitializer.Initialize(parseContext, ref expression);
 

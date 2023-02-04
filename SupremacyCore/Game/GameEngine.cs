@@ -62,6 +62,7 @@ namespace Supremacy.Game
         private int _r_IntelAttack_BestValue;
         private int _r_IntelAttack_Average_5;
         private int _globalMorale;
+        private int _ratioIndustryForShipProduction;
 
         //private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
@@ -276,14 +277,6 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Maintenance);
 
-            GameLog.Core.GeneralDetails.DebugFormat("...beginning Production...");
-
-            OnTurnPhaseChanged(game, TurnPhase.Production);
-            GameContext.PushThreadContext(game);
-            try { DoProduction(game); }
-            finally { _ = GameContext.PopThreadContext(); }
-            OnTurnPhaseFinished(game, TurnPhase.Production);
-
             GameLog.Core.GeneralDetails.DebugFormat("...beginning ShipProduction...");
 
             OnTurnPhaseChanged(game, TurnPhase.ShipProduction);
@@ -291,6 +284,14 @@ namespace Supremacy.Game
             try { DoShipProduction(game); }
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.ShipProduction);
+
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Production...");  // test 2022-07-17 Porduction after Shipproduction
+
+            OnTurnPhaseChanged(game, TurnPhase.Production);
+            GameContext.PushThreadContext(game);
+            try { DoProduction(game); }
+            finally { _ = GameContext.PopThreadContext(); }
+            OnTurnPhaseFinished(game, TurnPhase.Production);
 
             GameLog.Core.GeneralDetails.DebugFormat("...beginning Trade...");
 
@@ -459,10 +460,7 @@ namespace Supremacy.Game
             GameContext.PushThreadContext(game);
             foreach (Fleet fleet in fleets)
             {
-                if (fleet.Order != null)
-                {
-                    fleet.Order.OnTurnBeginning();
-                }
+                fleet.Order?.OnTurnBeginning();
             }
         }
         #endregion DoPreTurnSetup
@@ -606,12 +604,11 @@ namespace Supremacy.Game
             int turn = game.TurnNumber;  // Dummy, do not remove
             List<Fleet> allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
             int fuelNeeded;
+            
 
             foreach (Fleet fleet in allFleets)
             {
-                string _text;
                 int shipNum = fleet.Ships.Count();
-                //string name = fleet.Name;
                 if (fleet.UnitAIType == UnitAIType.Reserve)
                 {
                     GameLog.Client.AIDetails.DebugFormat("*** Turn {0}: Reserve,  Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
@@ -645,9 +642,17 @@ namespace Supremacy.Game
                     }
 
                     fleet.SetRoute(TravelRoute.Empty);
+
+                    if (fleet.HasConstructionShip)
+                    { 
+                        //fleet.Order = FleetOrders.
+                        fleet.Order = FleetOrders.BuildStationOrder;
+                    }
                 }
 
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+
+
                 //int fuelNeeded;
                 int fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
 
@@ -706,6 +711,29 @@ namespace Supremacy.Game
 
                         //    ;
                         //Console.WriteLine(_text);
+
+                        if (civManager.DestroyOfShipOrdered == false)
+                            if (civManager.MaintenanceCostLastTurn > civManager.TaxIncome * 3 
+                            || civManager.Credits.CurrentValue < (100 * civManager.AverageTechLevel))
+                        {
+                            Ship ship = fleet.Ships[0];
+                            ship.Destroy();
+                            civManager.DestroyOfShipOrdered = true;
+
+                            string _objectIDText = ship.ObjectID.ToString() + blank; if (_objectIDText == "-1") _objectIDText = "";
+
+
+                            _text2 = _objectIDText /*+ blank*/ + ship.Name + " ( " + ship.ShipType + " ) ";
+                            // {0} > Ship {1} was destroyed for keeping credit costs low.
+                            _text = string.Format(ResourceManager.GetString("SITREP_SHIP_DESTROYED_DUE_TO_LOW_CREDITS"), fleet.Location, _text2);
+                            Console.WriteLine(_text);
+                            //GameLog.Client.ShipsDetails.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, fleet.Owner.Key, fleet.Location);
+
+                            civManager.SitRepEntries.Add(new ReportEntry_CoS(fleet.Owner, fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                        }
+                        //checked for maintenance cost especially for destroyed ships
+                        //        destroy just one ship per turn
+
                         break;
                     }
 
@@ -732,6 +760,7 @@ namespace Supremacy.Game
                     }
                     civManager.Resources[ResourceType.Deuterium].UpdateAndReset();
                 }
+
 
                 if (fleet.Sector.System != null && (fleet.Sector.System.StarType == StarType.BlackHole))
                 {
@@ -1413,8 +1442,8 @@ namespace Supremacy.Game
                     }
                 }
 
-                if (!invasionLocations.Contains(fleet.Location))
-                {
+                //if (!invasionLocations.Contains(fleet.Location))
+                //{
                     if (fleet.Sector.System != null)
                     {
                         if (fleet.Order is AssaultSystemOrder)
@@ -1425,11 +1454,11 @@ namespace Supremacy.Game
                     }
                     else
                     {
-                        _text = "No Invasion available due to no system at " + fleet.Location + fleet.Name;
+                        _text = "No Invasion available due to no system at " + fleet.Location + blank + fleet.Name;
                         Console.WriteLine(_text);
-                        GameLog.Core.SystemAssault.ErrorFormat(_text);
+                        //GameLog.Core.SystemAssault.InfoFormat(_text);
                     }
-                }
+                //}
             }
 
             foreach (List<CombatAssets> combat in combats)
@@ -1702,6 +1731,9 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
+                    _text = "Exception on DoMorale";
+                    Console.WriteLine(_text);
+                    GameLog.Core.General.ErrorFormat(_text);
                     GameLog.Core.General.Error(e);
                 }
                 finally
@@ -1855,6 +1887,9 @@ namespace Supremacy.Game
                   }
                   catch (Exception e)
                   {
+                      _text = "Exception on DoResearch";
+                      Console.WriteLine(_text);
+                      GameLog.Core.General.ErrorFormat(_text);
                       GameLog.Core.General.Error(string.Format("DoResearch failed for {0}", civ.Name), e);
                   }
                   finally
@@ -2193,9 +2228,22 @@ namespace Supremacy.Game
                     }
                 }
 
+                
                 foreach (TechObject item in GameContext.Current.Universe.FindOwned<TechObject>(civ))
                 {
-                    _civMaintance += item.Design.MaintenanceCost;
+      
+                     _civMaintance += item.Design.MaintenanceCost;
+
+                    _text = "Turn " + GameContext.Current.TurnNumber + ": "
+                        + item.Design.MaintenanceCost + " MaintenanceCost for "
+                        + item.ObjectID + blank
+                        + item.Name + blank
+                        + item.Design + " at "
+                        + item.Location + blank
+                        + item.Owner
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.Production.DebugFormat(_text);
 
                     // works
                     //if (item.Design.MaintenanceCost > 0)
@@ -2211,7 +2259,7 @@ namespace Supremacy.Game
                 }
 
                 _ = civManager.Credits.AdjustCurrent(_civMaintance * -1);
-                _text = "Credits > _civMaintance=" + _civMaintance + " for " + civ.Name;
+                _text = "Credits > _civMaintance= " + _civMaintance + " for " + civ.Name;
                 Console.WriteLine(_text);
                 //GameLog.Core.Production.DebugFormat(_text);
 
@@ -2292,7 +2340,7 @@ namespace Supremacy.Game
                     // Minors get an advantage of 4
                     if (!civ.IsEmpire)
                         newCredits *= 2;
-
+                    
                     _ = civManager.Credits.AdjustCurrent(newCredits);
                     _ = civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense);
                     _ = civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking);
@@ -2454,6 +2502,25 @@ namespace Supremacy.Game
 
                         /* We want to capture the industry output available at the colony. */
                         int industry = colony.NetIndustry;
+                        
+                        //int _shipProduction;  // reducing industry by 1 / 6 per active shipyard slot (max 90%)
+                        //if (colony.Shipyard != null)
+                        //{
+
+                        //    //foreach
+                        //    List<ShipyardBuildSlot> activatedBuildSlot = colony.Shipyard.BuildSlots
+                        //        .Where(o => o.IsActive).ToList();
+                        //        // && !o.HasProject).FirstOrDefault(DeactivateShipyardBuildSlot);
+
+                        //    foreach(var _slot in activatedBuildSlot)
+                        //    {
+                        //        if (_slot.Project != null) _shipProduction += (industry / 6);
+                        //    }
+
+                        //}
+
+                        //industry -= _shipProduction; // fresh conquered don't have full industry for 
+
 
                         // AI gets an advantage
                         if (!colony.Owner.IsHuman)   
@@ -2709,7 +2776,8 @@ namespace Supremacy.Game
                                 //    + " just for reducing credits..."
                                 //    ;
                                 //Console.WriteLine(_text);
-                                //civManager.Credits.UpdateAndReset();
+                                //civManager.Credits.UpdateAndReset();  // ..does this crash the credit calculation ??
+
                                 if (colony.Shipyard.BuildSlots[i].IsActive && !colony.Shipyard.BuildSlots[i].HasProject)
                                 {
 
@@ -2800,7 +2868,15 @@ namespace Supremacy.Game
                                   totalResourcesAvailable[ResourceType.Duranium]);
                                */
 
-                              int output = shipyard.GetBuildOutput(slot.SlotID);
+                              //int _ratioIndustry;
+
+                              // active 25 of total 50 = 50 %;
+                              if(colony.TotalIndustryFacilities > 0)
+                              {
+                                  _ratioIndustryForShipProduction = (100 * colony.ActiveIndustryFacilities / colony.TotalIndustryFacilities) + 1;
+                              }
+
+                              int output = shipyard.GetBuildOutput(slot.SlotID) / 100 * _ratioIndustryForShipProduction;
                               while ((slot.HasProject || !shipyard.BuildQueue.IsEmpty()) && (output > 0))
                               {
                                   // checking ShipProduction
@@ -2942,7 +3018,7 @@ namespace Supremacy.Game
 
                           ;
                           Console.WriteLine(civManager.Civilization.Key + ": " + _text);
-                          civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.RedYellow));
+                          civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.RedYellow));
                       }
 
                       /* Iterate through each colony. */
@@ -2960,13 +3036,13 @@ namespace Supremacy.Game
 
                           _ = colony.Morale.AdjustCurrent(colonyBonus);
 
-                          // slow down Morale above 130
-                          if (colony.Morale.CurrentValue > 130)
+                          // slow down Morale above 120
+                          if (colony.Morale.CurrentValue > 120)
                           {
                               _ = colony.Morale.AdjustCurrent(-1);
 
                               // slow * more * down Morale above 130
-                              if (colony.Morale.CurrentValue > 160)
+                              if (colony.Morale.CurrentValue > 150)
                               {
                                   _ = colony.Morale.AdjustCurrent(-1);
                               }
@@ -3034,7 +3110,7 @@ namespace Supremacy.Game
                           }
 
                           // lowest level for AI-controlled colonies
-                          if (!colony.Owner.IsHuman && colony.Morale.CurrentValue > 80)
+                          if (!colony.Owner.IsHuman && colony.Morale.CurrentValue < 80)
                               colony.Morale.AdjustCurrent(80 - colony.Morale.CurrentValue);
 
                           colony.Morale.UpdateAndReset();
@@ -3042,6 +3118,9 @@ namespace Supremacy.Game
                   }
                   catch (Exception e)
                   {
+                      _text = "Exception on DoMorale";
+                      Console.WriteLine(_text);
+                      GameLog.Core.General.ErrorFormat(_text);
                       errors.Push(e);
                   }
                   finally
@@ -3285,16 +3364,10 @@ namespace Supremacy.Game
             {
                 if (fleet.Ships.Count == 0)
                 {
-                    if (fleet.Order != null)
-                    {
-                        fleet.Order.OnOrderCancelled();
-                    }
+                    fleet.Order?.OnOrderCancelled();
                     _ = GameContext.Current.Universe.Destroy(fleet);
                 }
-                else if (fleet.Order != null)
-                {
-                    fleet.Order.OnTurnEnding();
-                }
+                else fleet.Order?.OnTurnEnding();
             }
 
 
@@ -3826,7 +3899,7 @@ namespace Supremacy.Game
 
                     ;
                 //Console.WriteLine(_text);
-                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
 
                 _text = "Ranking: Research > " + civManager.Civilization.Name
                     + " = * " + _rankingResearchPositon
@@ -3836,7 +3909,7 @@ namespace Supremacy.Game
 
                     ;
                 //Console.WriteLine(_text);
-                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
 
                 _text = "Ranking: Intelligence > " + civManager.Civilization.Name
                     + " = * " + _rankingIntelAttackPositon
@@ -3846,7 +3919,7 @@ namespace Supremacy.Game
 
                     ;
                 //Console.WriteLine(_text);
-                civManager.SitRepEntries.Add(new Report_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
+                civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
             }
 
             //        foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)

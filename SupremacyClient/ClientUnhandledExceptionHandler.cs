@@ -18,13 +18,14 @@ namespace Supremacy.Client
 {
     internal sealed class ClientUnhandledExceptionHandler : IUnhandledExceptionHandler
     {
-        private readonly IGameErrorService _errorService;
+        private IGameErrorService _errorService;
         //private const string _reportErrorURL = "https://www.exultantmonkey.co.uk/BotF2/report-error.php";
+        
 
         #region Fields
         private readonly object _syncLock = new object();
         private string _text;
-        private string newline = Environment.NewLine;
+        private readonly string newline = Environment.NewLine;
 
         #endregion
 
@@ -35,6 +36,8 @@ namespace Supremacy.Client
             {
                 return;
             }
+
+            _errorService = null;
 
             if (exception is SupremacyException supremacyException)
             {

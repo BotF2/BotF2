@@ -34,6 +34,7 @@ namespace Supremacy.Game
         #region Fields
         private readonly int _civId;
         private readonly Meter _credits;
+
         private readonly List<Bonus> _globalBonuses;
         private readonly CivilizationMapData _mapData;
         private readonly ResearchPool _research;
@@ -44,13 +45,14 @@ namespace Supremacy.Game
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
+        private int _buyCostLastTurn;
         private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
 
-#pragma warning disable IDE0044 // Add readonly modifier
+//#pragma warning disable IDE0044 // Add readonly modifier
         private List<Civilization> _spiedCivList;
-#pragma warning restore IDE0044 // Add readonly modifier
+//#pragma warning restore IDE0044 // Add readonly modifier
 
 
         private int _homeColonyId;
@@ -59,10 +61,12 @@ namespace Supremacy.Game
         private int _seatOfGovernmentId = -1;
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
-        private string _text;
         private int _rankMaint;
         private int _rankResearch;
         private int _rankIntelAttack;
+        private bool _destroyOfShipOrdered;
+        private string _text;
+        //private int bc;  // buildingCosts
         private readonly string newline = Environment.NewLine;
 
         //private readonly IPlayer _localPlayer;
@@ -225,8 +229,7 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
-            //_rankCredits = 0;
-
+            _buyCostLastTurn = 0;
 
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
@@ -338,9 +341,68 @@ namespace Supremacy.Game
         }
 
         /// <summary>
+        /// Gets whether a destroy of a ship (one per turn) was ordered to reduce MaintenanceCostLastTurn.
+        /// </summary>
+        public bool DestroyOfShipOrdered
+        {
+            get => _destroyOfShipOrdered;
+            set => _destroyOfShipOrdered = value;
+        }
+
+        ///// <summary>
+        ///// Gets the civilization's MaintenanceCostLastTurn.
+        ///// </summary>
+        public int CurrentChange
+        {
+            get
+            {
+                return Credits.CurrentChange;
+            }
+        }
+
+        /// <summary>
+        /// Gets the civilization's BuyCostLastTurn. .... when it's working
+        /// </summary>
+        public int BuyCostLastTurn
+        {
+            get
+            {
+
+                //int bc = 0;
+                //if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
+                //    bc = 0;
+                ////TotalPopulation
+                //if (bc > 0)
+                //    return bc;
+                //else
+                return 0 - ((_credits.LastChange + _maintenanceCostLastTurn) * -1);
+            }
+            //set => _buyCostLastTurn += value;
+        }
+
+        /// <summary>
+        /// Gets the civilization's TaxIncome. .... when it's working
+        /// </summary>
+        public int TaxIncome
+        {
+            get
+            {
+                return Colonies.Sum(colony => colony.TaxCredits);
+            }
+        }
+
+        public int IncomeFromTrade
+        {
+            get
+            {
+                return Colonies.Sum(colony => colony.CreditsFromTrade.CurrentValue);
+            }
+        }
+
+        /// <summary>
         /// Gets the civilization's ranking for Credits.
         /// </summary>
-        public int RankingCredits
+        public int RankingCredits  // AI has credit advantage: Minors 4x, AI 2x ... so ranking doesn't is realistic anymore
         {
             get 
             {

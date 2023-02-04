@@ -28,6 +28,7 @@ namespace Supremacy.Client
         public static readonly RoutedCommand ContinueCommand;
         public static readonly RoutedCommand OptionsCommand;
         public static readonly RoutedCommand TracesCommand;
+        public static readonly RoutedCommand F07Command;
         public static readonly RoutedCommand FakeCommand;
         public static readonly RoutedCommand CreditsCommand;
         public static readonly RoutedCommand LoadGameCommand;
@@ -45,7 +46,7 @@ namespace Supremacy.Client
             MultiplayerCommand = new RoutedCommand("Multiplayer", typeof(MenuScreen));
             ContinueCommand = new RoutedCommand("Continue", typeof(MenuScreen));
             OptionsCommand = new RoutedCommand("Options", typeof(MenuScreen));
-            //TracesCommand = new RoutedCommand("Traces", typeof(MenuScreen));
+            TracesCommand = new RoutedCommand("Traces", typeof(MenuScreen));
             CreditsCommand = new RoutedCommand("Credits", typeof(MenuScreen));
             LoadGameCommand = new RoutedCommand("LoadGame", typeof(MenuScreen));
 

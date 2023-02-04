@@ -512,7 +512,7 @@
                     <DockPanel LastChildFill="True">
                       <Border x:Name="StationPanel"
                               DockPanel.Dock="Top"
-                              Margin="0,0,0,14"
+                              Margin="0,0,0,4"
                               TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                               TextBlock.Foreground="{StaticResource DefaultTextBrush}"
                               TextBlock.FontSize="14pt">
@@ -548,11 +548,11 @@
                                    Visibility="Hidden"
                                    IsHitTestVisible="False" />                            
                           <TextBlock>
-                            <TextBlock Foreground="{StaticResource HeaderTextBrush}"
-                                       FontSize="14"
+                            <TextBlock FontSize="14" Margin="-20,0,7,0" Foreground="{StaticResource HeaderTextBrush}"
+                                      
                                        Text="{Binding Path=SelectedSectorStation.StationName, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
                             <LineBreak />
-                            <TextBlock x:Name="StationStatusText"
+                            <TextBlock x:Name="StationStatusText" Margin="-20,0,7,0"
                                        Text="{Binding Path=SelectedSectorStation.StationStatus, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
                           </TextBlock>
                         </DockPanel>

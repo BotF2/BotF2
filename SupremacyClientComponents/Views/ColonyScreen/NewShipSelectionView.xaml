@@ -101,14 +101,23 @@
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             BorderBrush="{StaticResource HeaderTextBrush}"
+                            Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}, Mode=OneWay}"
                             BorderThickness="2"
                             CornerRadius="4"
-                            
-                            MaxWidth="{Binding ElementName=_self, Path=SpecialWidth1}"
-                            MaxHeight="{Binding ElementName=_self, Path=SpecialHeight1}">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
-                        </Border.Background>
+                            Width="576"
+                            Height="480"
+                            >
+                            <!--Width="{Binding ElementName=_self, Path=SpecialWidth1}"
+                            Height="{Binding ElementName=_self, Path=SpecialHeight1}"-->                        
+                        <!--<Border.Background>-->
+                            <!--<ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}" Stretch="Uniform" />-->
+                            <!--<ImageBrush>
+                                <ImageBrush.ImageSource>-->
+                            <!--<ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}, Mode=OneWay}"/>-->
+                            <!--<ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Mode=OneWay}"/>-->
+                                <!--</ImageBrush.ImageSource>
+                            </ImageBrush>-->
+                        <!--</Border.Background>-->
                     </Border>
                 </Image.ToolTip>
             </Image>

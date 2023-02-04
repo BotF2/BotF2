@@ -79,11 +79,14 @@ namespace Supremacy.Client.Views
             foreach (IAgreement agreement in agreements.OrderByDescending(o => o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
-                GameLog.Client.Diplomacy.DebugFormat(Environment.NewLine + "                                                      Turn {3};added;sender=; {1};recipient=; {2};agreement=;{0}"
-                    , agreement.Proposal.Clauses[0].ClauseType.ToString()
-                    , agreement.Sender
-                    , agreement.Recipient
-                    , GameContext.Current.TurnNumber);
+                _text = "Turn " + GameContext.Current.TurnNumber
+                    + ";added;sender=;" + agreement.Sender
+                    + ";recipient=;" + agreement.Recipient
+                    + ";agreement=;" + agreement.Proposal.Clauses[0].ClauseType.ToString()
+
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Client.Diplomacy.DebugFormat(Environment.NewLine + _text);
             }
         }
 
@@ -373,6 +376,7 @@ namespace Supremacy.Client.Views
         #region Implementation of INotifyPropertyChanged
 
         [NonSerialized] private PropertyChangedEventHandler _propertyChanged;
+        private string _text;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {

@@ -543,7 +543,7 @@ namespace Supremacy.Universe
         /// Gets the buildings at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The buildings.</value>
-        public IObservableIndexedCollection<Building> Buildings => _buildings;
+        public IObservableIndexedCollection<Building> Buildings => _buildings;// .OrderBy(o => o.IsActive);//  this.NetEnergy);
 
         /// <summary>
         /// Gets the active buildings at this <see cref="Colony"/>.
@@ -1340,24 +1340,26 @@ namespace Supremacy.Universe
                     GameLog.Core.ProductionDetails.DebugFormat("Borg and Food"); // just for Breakpoint
                 }
 
-                while (laborAvailable > 0 && _foodPF_unused > 0)
-                {
-                    if (_foodDeficit > 0)
-                    {
-                        if (Name == "Borg" && category == ProductionCategory.Food)
-                        {
-                            GameLog.Core.ProductionDetails.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
-                        }
+                //while (laborAvailable > 0 && _foodPF_unused > 0)
+                //{
+                //    if (_foodDeficit > 0)
+                //    {
+                //        if (Name == "Borg" && category == ProductionCategory.Food)
+                //        {
+                //            GameLog.Core.ProductionDetails.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
+                //        }
 
-                        continue;
-                    }
-                    //FoodReserves - _population + 
-                    //if (_)
-                    laborAvailable -= 1;
-                    _foodPF_unused -= 1;
-                    baseOutput += unitOutput;
+                //        continue;
+                //    }
+                //    //FoodReserves - _population + 
+                //    //if (_)
+                //    laborAvailable -= 1;
+                //    _foodPF_unused -= 1;
+                //    baseOutput += unitOutput;
 
-                }
+                //}
+                baseOutput = unitOutput * activeUnits;
+
                 if (baseOutput < 10) { baseOutput = 10; }
             }
 
@@ -1867,7 +1869,8 @@ namespace Supremacy.Universe
                     }
 
                     _ = ActivateFacility(ProductionCategory.Food);
-                    _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
+                    _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
+                    //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     DoSitRepGray(_text);
                 }
                 else if (_foodPF_unused == 0)
@@ -1883,20 +1886,10 @@ namespace Supremacy.Universe
                     ReduceOneOtherPF();
 
                     _ = ActivateFacility(ProductionCategory.Food);
-                    _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
+                    _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
+                    //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     DoSitRepGray(_text);
                 }
-                //else
-                //if (_foodReserves > (Population.CurrentValue * 2))
-                //{
-                //    if (GetUnusedFacilities(ProductionCategory.Food) > 0)
-                //    {
-                //        ReduceOneOtherPF();
-                //        _ = ActivateFacility(ProductionCategory.Food);
-                //        _text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
-                //        DoSitRepGray(_text);
-                //    }
-                //}
 
                 //if (_foodReserves > 2000)
                 //{

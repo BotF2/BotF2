@@ -9,7 +9,7 @@
                 Width="840"
                 MaxHeight="480">
   <dialogs:Dialog.Resources>
-    <av:FormattedTextConverter x:Key="FormattedTextConverter" />
+    <!--<av:FormattedTextConverter x:Key="" />-->
     <scc:EnumStringConverter x:Key="EnumStringAccessTextConverter"
                              AccessText="True" />
   </dialogs:Dialog.Resources>
@@ -46,7 +46,7 @@
                  Foreground="{DynamicResource DefaultTextBrush}"
                  TextWrapping="Wrap"
                  TextTrimming="CharacterEllipsis"
-                 av:BindingHelpers.Inlines="{Binding Path=DetailText, Converter={StaticResource FormattedTextConverter}}"/>
+                 Text="{Binding Path=DetailText}"/>
     </ScrollViewer>
   </DockPanel>
 </dialogs:Dialog>

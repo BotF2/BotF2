@@ -437,18 +437,19 @@ namespace Supremacy.Client
                     return;
                 }
 
+                // maybe we don't need this anymore because it is shown at Start Screen as a requirement
 
-                if (!CheckXNAFramework31())
-                {
-                    _ = MessageBox.Show(
-                            "Rise of the UFP requires Microsoft XNA Framework V3.1 "
-                            + Environment.NewLine
-                            + "It must be installed before running the game.",
-                            "Rise of the UFP",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Hand);
-                    return;
-                }
+                //if (!CheckXNAFramework31())
+                //{
+                //    _ = MessageBox.Show(
+                //            "Rise of the UFP requires Microsoft XNA Framework V3.1 "
+                //            + Environment.NewLine
+                //            + "It must be installed before running the game.",
+                //            "Rise of the UFP",
+                //            MessageBoxButton.OK,
+                //            MessageBoxImage.Hand);
+                //    return;
+                //}
 
 
                 //Error - txt - First Run.txt
@@ -458,14 +459,15 @@ namespace Supremacy.Client
                 // File delivered by Dropbox is more up to date
                 if (File.Exists(fileResourceFolder))
                 {
-                    File.Copy(fileResourceFolder, file, true);
+                    //File.Copy(fileResourceFolder, file, true);
                 }
                 else
                 {
                     if (!File.Exists(file))
                     {
-                        //streamWriter;
                         StreamWriter streamWriter = new StreamWriter(file);
+                        streamWriter.WriteLine("IF this file doesn't exist before it is re-created out of the code ! ");
+                        streamWriter.WriteLine(" ");
                         streamWriter.WriteLine("if the game crash after first start...");
                         streamWriter.WriteLine("...make sure you have the requirements installed:");
                         streamWriter.WriteLine(" ");
@@ -476,10 +478,11 @@ namespace Supremacy.Client
                         streamWriter.WriteLine("- not program folders");
                         streamWriter.WriteLine("- maybe c:/User/YourUserName/RiseoftheUFP");
                         streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("c) if still problems > see /Resources/_Trouble-Fix_for_Rise_Of_The_UFP.txt");
+                        streamWriter.WriteLine("c) if still problems > see /Resources/FIXES FOR COMMON PROBLEMS.txt");
                         streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("d) for more info see http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview");
+                        streamWriter.WriteLine("d) https://appuals.com/how-to-fix-folder-keeps-reverting-to-read-only-on-windows-10/ > file access in windows 11 might be controled by your security app. Try putting SupremacyClient.exe in an exclusion from read-only protection in the security app.)");
                         streamWriter.WriteLine(" ");
+                        streamWriter.WriteLine("e) for more info see http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview");
                         streamWriter.WriteLine(" ");
 
                         streamWriter.Close();
@@ -514,12 +517,13 @@ namespace Supremacy.Client
 
                 try
                 {
+                    Console.WriteLine("NEXT: ShowSplashScreen...");
                     ShowSplashScreen();
 
                     string _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
 
 
-                    if (File.Exists(_soundfileSplashScreen))
+                    if (File.Exists(_soundfileSplashScreen)&&ClientSettings.Current.EnableSoundStartSplashScreen)
                     {
                         GameLog.Client.General.Debug("Playing LoadingSplash.wav");
                         //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
@@ -605,7 +609,9 @@ namespace Supremacy.Client
                 {
                     _text = "Did not found file " + xna_copy + newline + "to check for XNA 3.1"
                         + newline + newline + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
-                        + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'";
+                        + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'"
+                        + newline + newline + "For Coders: Make sure you have fill the \\Resources folder"
+                        ;
                     _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
 

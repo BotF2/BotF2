@@ -315,6 +315,10 @@ namespace Supremacy.Game
                     header.IsAutoSave = true;
                 }
 
+                _text = "Step_9000: Writing game... Turn " + game.TurnNumber;
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
+
                 byte[] buffer = StreamUtility.Write(game);
 
                 using (FileStream fileStream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))

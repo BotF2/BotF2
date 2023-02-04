@@ -15,6 +15,7 @@ using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
 using System.IO;
 using Supremacy.Resources;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -34,6 +35,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _f07_ScreenCommand;
         private readonly DelegateCommand<object> _f06_ScreenCommand;
         private readonly string newline = Environment.NewLine;
+        private readonly string _text;
 
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
@@ -43,6 +45,10 @@ namespace Supremacy.Client.Views
             _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
 
             InitializeComponent();
+
+            _text = "Step_2100: GalaxyGridView Initialize...";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
 
             Loaded += delegate
                            {

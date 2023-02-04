@@ -253,6 +253,11 @@ namespace Supremacy.Client.Views
                     proposal.Tone,
                     proposal.Sender) ?? string.Empty);
 
+            // seems has to do with 'TreatyOpenBorder'
+
+            //One reason for 'System.IO.FileNotFoundException" in mscorlib.dll' could be...
+            // ... it's reading all *.xaml (now in \Data) and maybe complaining to six files which normally were in a separated folder.... 
+
             Description = _descriptionScript.Evaluate<string>(_descriptionRuntimeParameters);
         }
 

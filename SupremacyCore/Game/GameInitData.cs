@@ -34,7 +34,7 @@ namespace Supremacy.Game
         private SlotClaim[] _slotClaims;
         private SlotStatus[] _slotStatus;
 
-        private string _loadGameText;
+        private static string _text;
         private readonly string newline = Environment.NewLine;
         //private int _count;
         #endregion
@@ -51,8 +51,15 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("options");
             }
 
-            GameLog.Client.GameData.DebugFormat("CreateSinglePlayerGame: SP-GameName={0}, SP-Name={2}, localPlayerEmpireID={1}",
-                                                        SinglePlayerGameName, localPlayerEmpireID, SinglePlayerName);
+            _text = "Step_1201: CreateSinglePlayerGame: "
+                + "SP-GameName=" + SinglePlayerGameName
+                + ", SP-Name=" + SinglePlayerName
+                + ", localPlayerEmpireID=" + localPlayerEmpireID
+                ;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+            //GameLog.Client.GameData.DebugFormat("CreateSinglePlayerGame: SP-GameName={0}, SP-Name={2}, localPlayerEmpireID={1}",
+            //                                            SinglePlayerGameName, localPlayerEmpireID, SinglePlayerName);
 
             GameInitData initData = new GameInitData
             {
@@ -62,6 +69,11 @@ namespace Supremacy.Game
                 LocalPlayerEmpireID = localPlayerEmpireID,
                 LocalPlayerName = SinglePlayerName,
             };
+
+            _text = "Step_1202: PopulateEmpires... "
+            ;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
 
             initData.PopulateEmpires();
 
@@ -85,7 +97,9 @@ namespace Supremacy.Game
                 initData.SlotClaims[i] = SlotClaim.Unassigned;
                 initData.SlotStatus[i] = Game.SlotStatus.Open;
             }
-
+            _text = "Step_1203: Returning initData... ";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
             return initData;
         }
 
@@ -226,7 +240,7 @@ namespace Supremacy.Game
                 _localPlayerEmpireID = value;
                 OnPropertyChanged("LocalPlayerEmpireID");
                 GameLog.Core.General.InfoFormat("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
-                _loadGameText += value + ";;LocalPlayerEmpireID;" + newline;
+                _text += value + ";;LocalPlayerEmpireID;" + newline;
             }
         }
 
@@ -237,7 +251,7 @@ namespace Supremacy.Game
             {
                 _localPlayerName = value;
                 OnPropertyChanged("LocalPlayerName");
-                _loadGameText += value + ";;LocalPlayerName;" + newline;
+                _text += value + ";;LocalPlayerName;" + newline;
             }
         }
 
@@ -285,7 +299,7 @@ namespace Supremacy.Game
             {
                 _gameName = value;
                 OnPropertyChanged("GameName");
-                _loadGameText += value + ";;GameName;" + newline;
+                _text += value + ";;GameName;" + newline;
             }
         }
 
@@ -297,8 +311,8 @@ namespace Supremacy.Game
                 _gameType = value;
                 OnPropertyChanged("GameType");
                 OnPropertyChanged("IsMultiplayerGame");
-                _loadGameText += value + ";;GameType" + newline;
-                _loadGameText += value + ";;IsMultiplayerGame" + newline;
+                _text += value + ";;GameType" + newline;
+                _text += value + ";;IsMultiplayerGame" + newline;
             }
         }
 
@@ -312,10 +326,10 @@ namespace Supremacy.Game
                 //foreach (var item in value)
                 //{
                 //    //_loadGameText += item.value + ";;Options:" + item + newline;
-                _loadGameText += _options.ToString();
-                _loadGameText += "GameOptions are set...";
+                _text = _options.ToString();
+                _text += "GameOptions are set...";
                 //}
-                Console.WriteLine("Step_1200:; " + _loadGameText);
+                Console.WriteLine("Step_1200: " + _text);
             }
         }
 

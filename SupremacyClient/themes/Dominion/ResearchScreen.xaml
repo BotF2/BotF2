@@ -156,7 +156,7 @@
               </ControlTemplate>
             </RepeatButton.Template>
           </RepeatButton>
-          <ui:BlockBar x:Name="ValueBlockBar"
+                    <ui:BlockBar x:Name="ValueBlockBar"
                        DockPanel.Dock="Top"
                        BlockCount="20"
                        BlockMargin="2"
@@ -736,7 +736,7 @@
                                  Foreground="{DynamicResource DefaultTextBrush}"
                                  Margin="6,0,3,0"
                                  VerticalAlignment="Center"
-                                 Text="ENCYCLOPEDIA GALACTICA"/>
+                                 Text="{s:StringResource Key=ENCYCLOPEDIA_TITLE_DOM, Case=Upper}"/>
                                             <Border Background="{StaticResource Dom3Gradient_Top_Bottom}"/>
                     </DockPanel>
                     <!-- Lower-Right Edge -->
@@ -763,7 +763,7 @@
                                  Foreground="{DynamicResource DefaultTextBrush}"
                                  Margin="3,0,6,0"
                                  VerticalAlignment="Center"
-                                 Text="SEARCH"/>
+                                 Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
                       <TextBox x:Name="PART_SearchText"
                                Background="{StaticResource Dom2Gradient_Left_Right}"
                                Grid.Column="1"/>

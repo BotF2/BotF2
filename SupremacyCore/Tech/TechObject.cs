@@ -25,6 +25,7 @@ namespace Supremacy.Tech
     {
         private int _designId;
         private bool _scrap;
+        private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -80,6 +81,12 @@ namespace Supremacy.Tech
                         //    , Design.Name                     
                         //    , _designId
                         //    );
+                        _text = "Step_2000: " 
+                            + "### Problem on Design name" + Design.Name
+                            + " designId" + _designId
+                            ;
+                        Console.WriteLine(_text);
+                        GameLog.Client.GameData.DebugFormat(_text);
                         return null;
                     }
 

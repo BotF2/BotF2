@@ -37,7 +37,7 @@
     <OutputPath>..\bin\Debug\lib\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -47,36 +47,39 @@
     <DebugType>none</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AvalonLibrary, Version=2.4.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f, processorArchitecture=MSIL">
+    <Reference Include="AvalonLibrary, Version=2.4.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f">
       <HintPath>..\packages\AvalonLibrary.2.4.0\lib\net45\AvalonLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+    <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Composite, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Composite, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\Microsoft.Practices.Composite.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.Composite.Presentation, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Composite.Presentation, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\Microsoft.Practices.Composite.Presentation.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
+    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <HintPath>..\Common\Microsoft.Xna.Framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="ShaderEffectLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ShaderEffectLibrary, Version=1.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\ShaderEffectLibrary.dll</HintPath>
       <Private>False</Private>
@@ -86,12 +89,12 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.CoreEx, Version=1.0.2563.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.CoreEx, Version=1.0.2563.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\System.CoreEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Reactive, Version=1.0.2563.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Reactive, Version=1.0.2563.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\System.Reactive.dll</HintPath>
       <Private>False</Private>

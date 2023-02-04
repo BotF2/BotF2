@@ -37,6 +37,7 @@ namespace Supremacy.Orbitals
         public static readonly AvoidOrder AvoidOrder;
         public static readonly IdleOrder IdleOrder;
         public static readonly DefendOrder DefendOrder;
+        public static readonly StrandedOrder StrandedOrder;
         public static readonly RedeployNoneOrder RedeployNoneOrder;
         public static readonly RedeploySameOrder RedeploySameOrder;
         public static readonly RedeployAllOrder RedeployAllOrder;
@@ -65,6 +66,7 @@ namespace Supremacy.Orbitals
             AvoidOrder = new AvoidOrder();
             IdleOrder = new IdleOrder();
             DefendOrder = new DefendOrder();
+            StrandedOrder = new StrandedOrder();
             RedeployNoneOrder = new RedeployNoneOrder();
             RedeploySameOrder = new RedeploySameOrder();
             RedeployAllOrder = new RedeployAllOrder();
@@ -100,6 +102,7 @@ namespace Supremacy.Orbitals
                           // no action, just showing 'a status'
                           IdleOrder,
                           DefendOrder,
+                          StrandedOrder,
 
                           // Redeploy
                           RedeployNoneOrder,
@@ -221,6 +224,7 @@ namespace Supremacy.Orbitals
     #endregion AvoidOrder
 
 
+
     #region IdleOrder
     [Serializable]
     public sealed class IdleOrder : FleetOrder
@@ -234,6 +238,20 @@ namespace Supremacy.Orbitals
         }
     }
     #endregion IdleOrder
+
+    #region StrandedOrder
+    [Serializable]
+    public sealed class StrandedOrder : FleetOrder
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_STRANDED");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_STRANDED");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new StrandedOrder();
+        }
+    }
+    #endregion StrandedOrder
 
     #region RedeployNoneOrder
     [Serializable]
@@ -250,6 +268,8 @@ namespace Supremacy.Orbitals
         }
         public override bool IsValidOrder(Fleet fleet)
         {
+            _text += _text;  // dummy > just keep
+
             //_text = "ShipOrder 'RedeployNoneOrder' is turned off due to not working yet";
             //Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat(_text);
@@ -526,6 +546,7 @@ namespace Supremacy.Orbitals
     {
         private readonly bool _isComplete;
         private string _text;
+        private string _detailText;
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_COLONIZE");
 
@@ -639,7 +660,8 @@ namespace Supremacy.Orbitals
             civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
 
             _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
-            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, "", "", SitRepPriority.Blue));
+            _detailText = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
+            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, _detailText, "GeneralEvents/NewColonyEstablished.png", SitRepPriority.Blue));
             //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
             _ = GameContext.Current.Universe.Destroy(colonyShip);
@@ -739,10 +761,10 @@ namespace Supremacy.Orbitals
                 //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
                 //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
 
-                _text = Fleet.Location + " > " + Fleet.Name + " (our Medical Ship) provided help: new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
+                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > " + Fleet.Name + " (our Medical Ship) provided help: new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
                 GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
 
-                _text = Fleet.Location + " > We got medical supply from " + Fleet.Name + " ( " + Fleet.Owner.ShortName + " Medical Ship ): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
+                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from " + Fleet.Name + " ( " + Fleet.Owner.ShortName + " Medical Ship ): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
                 GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
             }
 
@@ -1860,14 +1882,27 @@ namespace Supremacy.Orbitals
         private bool _finished;
         private StationBuildProject _buildProject;
         private object _text;
+        private string _stationDesignName;
 
         public StationDesign StationDesign => BuildProject.BuildDesign as StationDesign;
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_BUILD_STATION");
 
-        public override string Status => string.Format(
-                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION"),
-                    ResourceManager.GetString(_buildProject.StationDesign.Name));
+        public override string Status
+        {
+            get
+            {
+                if (_buildProject != null)
+                    _stationDesignName = _buildProject.StationDesign.Name;
+                else
+                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION");
+
+                return string.Format(
+                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION"),
+                    _stationDesignName);
+            }
+        }
+
 
         public override string TargetDisplayMember => "BuildDesign.LocalizedName";
 
@@ -2045,9 +2080,14 @@ namespace Supremacy.Orbitals
             }
 
             StationBuildProject project = _buildProject;
-            _text = project.Location + " > project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
-            Console.WriteLine(_text);
-            //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
+
+            if (project != null)
+            { 
+                _text = project.Location + " > project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
+                Console.WriteLine(_text);
+                //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
+            }
+
             if ((project == null) || (project.ProductionCenter == null) || project.IsCompleted)
             {
                 return;

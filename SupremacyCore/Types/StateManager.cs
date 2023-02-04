@@ -1,4 +1,4 @@
-// StateManager.cs
+// File:StateManager.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Windows;
 using System.Windows.Markup;
 
 using Supremacy.Annotations;
@@ -24,6 +25,7 @@ namespace Supremacy.Types
     public sealed class StateManager<TStateEnum> where TStateEnum : State
     {
         private int _currentState;
+        private string _text;
         private readonly StateTransition<TStateEnum>[] _transitionMap;
 
         public event EventHandler StateChanged;
@@ -62,12 +64,18 @@ namespace Supremacy.Types
                 throw new InvalidOperationException("Mandatory state transition couldn't occur.");
             }
 
-            throw new InvalidOperationException(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    "Illegal state transition from {0} to {1}.",
-                    State.Get(typeof(TStateEnum), currentState),
-                    desiredState));
+            _text = "Illegal state transition from "+ State.Get(typeof(TStateEnum), currentState) + " to " 
+                + desiredState;
+            Console.WriteLine(_text);
+            //_ = MessageBox.Show(_text);
+            return true;
+
+            //throw new InvalidOperationException(
+            //    string.Format(
+            //        CultureInfo.InvariantCulture,
+            //        "Illegal state transition from {0} to {1}.",
+            //        State.Get(typeof(TStateEnum), currentState),
+            //        desiredState));
         }
     }
 

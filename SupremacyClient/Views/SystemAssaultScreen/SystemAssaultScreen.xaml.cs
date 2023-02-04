@@ -139,7 +139,7 @@ namespace Supremacy.Client.Views
 
         private bool _isActive;
 
-        public bool IsActive
+        public new bool IsActive
         {
             get => _isActive;
             set

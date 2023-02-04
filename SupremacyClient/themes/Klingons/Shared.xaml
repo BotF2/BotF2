@@ -62,6 +62,7 @@
     <SolidColorBrush Color="#fff62424" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}" />
     <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}" />
     <SolidColorBrush Color="#ff000000" x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}" />
+    <SolidColorBrush Color="#ffd22424" x:Key="BorderBrush" />
     <SolidColorBrush Color="#ffd22424" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}" />
     <SolidColorBrush Color="#FFFB6B1F" x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}" />
     

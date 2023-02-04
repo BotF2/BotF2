@@ -1,4 +1,5 @@
-﻿using System;
+﻿// File:MusicLibrary.cs
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using Supremacy.Resources;
@@ -24,7 +25,8 @@ namespace Supremacy.Client.Audio
     {
         #region Fields
         private const string PackDefName = "MusicPack";
-        private Dictionary<string, MusicPack> _musicPacks = new Dictionary<string, MusicPack>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, MusicPack> _musicPacks = new Dictionary<string, MusicPack>(StringComparer.OrdinalIgnoreCase);
+        private string _text;
         #endregion
 
         #region Properties
@@ -62,7 +64,9 @@ namespace Supremacy.Client.Audio
                 musicPack.Load(xmlPack);
                 _musicPacks.Add(musicPack.Name, musicPack);
 
-                GameLog.Client.Audio.DebugFormat("adding: musicPack.Name={0}", musicPack.Name);
+                _text = "adding: musicPack.Name " + musicPack.Name;
+                Console.WriteLine(_text);
+                GameLog.Client.Audio.DebugFormat(_text);
             }
         }
 
@@ -79,7 +83,11 @@ namespace Supremacy.Client.Audio
             {
                 _ = pack.Dictionary.TryGetValue(trackName, out MusicEntry track);
 
-                GameLog.Client.Audio.DebugFormat("trackName={0}, track.FileName={1}", trackName, track.FileName);
+                _text = "trackName " + trackName
+                    + "track.FileName " + track.FileName
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Client.Audio.DebugFormat(_text);
 
                 return track;
             }

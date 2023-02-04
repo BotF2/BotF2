@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
@@ -43,6 +44,11 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _previousColonyCommand;
         private readonly DelegateCommand<object> _nextColonyCommand;
+        //private readonly DelegateCommand<object> _nextTABinsideColonyCommand;
+        private readonly DelegateCommand<object> _showColonyManagementCommand;
+        private readonly DelegateCommand<object> _showColonyBuildListCommand;
+        private readonly DelegateCommand<object> _showShipyardCommand;
+
 
         private int _newColonySelection;
 
@@ -132,6 +138,12 @@ namespace Supremacy.Client.Views
 
             _previousColonyCommand = new DelegateCommand<object>(ExecutePreviousColonyCommand);
             _nextColonyCommand = new DelegateCommand<object>(ExecuteNextColonyCommand);
+
+            //_nextTABinsideColonyCommand = new DelegateCommand<object>(ExecuteNextTABinsideColonyCommand);
+            _showColonyManagementCommand = new DelegateCommand<object>(ExecuteShowColonyManagementCommand);
+            _showColonyBuildListCommand = new DelegateCommand<object>(ExecuteShowColonyBuildListCommand);
+            _showShipyardCommand = new DelegateCommand<object>(ExecuteShowShipyardCommand);
+
         }
 
         private void ExecutePreviousColonyCommand(object _)
@@ -162,6 +174,48 @@ namespace Supremacy.Client.Views
 
             int currentColonyIndex = colonies.IndexOf(currentColony);
             Model.SelectedColony = (currentColonyIndex == (colonies.Count - 1)) || (currentColonyIndex < 0) ? colonies[0] : colonies[currentColonyIndex + 1];
+        }
+
+        //private void ExecuteNextTABinsideColonyCommand(object _)
+        //{
+        //    //List<Colony> colonies = Model.Colonies.ToList();
+        //    //Colony currentColony = Model.SelectedColony;
+
+        //    //MessageBox.Show("_nextTABinsideColonyCommand " + TabControl.SelectedContentStringFormatProperty);
+            
+        //    ColonyScreenDisplayMode = ColonyScreenDisplayMode.Management;
+        //    OnViewActivating();
+        //    //var _view = ColonyScreenView.SetAppContext;
+        //    //_view.PropertyType.
+        //    //var x = ColonyScreenView.TemplateProperty.;
+        //    //TabControl.TabIndexProperty
+        //    //TabItem.TabIndexProperty = 1;
+
+        //    //int currentColonyIndex = colonies.IndexOf(currentColony);
+        //    //Model.SelectedColony.
+        //    //Model.SelectedColony = (currentColonyIndex == (colonies.Count - 1)) || (currentColonyIndex < 0) ? colonies[0] : colonies[currentColonyIndex + 1];
+        //}
+        private void ExecuteShowColonyManagementCommand(object _)
+        {
+            ColonyScreenDisplayMode = ColonyScreenDisplayMode.Management;
+            
+            OnViewActivating();
+        }
+        private void ExecuteShowColonyBuildListCommand(object _)
+        {
+            ColonyScreenDisplayMode = ColonyScreenDisplayMode.BuildList;
+            //var _view = ColonyScreenView.TabIndexProperty;
+            //this.ColonyScreenDisplayMode = ColonyScreenDisplayMode.BuildList;
+            //_ = RegionManager.Regions["HandlingList"];
+            //ColonyScreenView.TabIndexProperty = ColonyScreenDisplayMode;
+            //OnSelectedColonyPropertyChanged(); // = OnSelectedColonyPropertyChanged;
+
+            OnViewActivating();
+        }
+        private void ExecuteShowShipyardCommand(object _)
+        {
+            ColonyScreenDisplayMode = ColonyScreenDisplayMode.Shipyard;
+            OnViewActivating();
         }
 
         protected override void OnViewActivating()
@@ -296,59 +350,6 @@ namespace Supremacy.Client.Views
 
             PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
             goto OnceAgain;
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-        private void ExecuteAddOneMoreShipBuildProjectCommand(ShipyardBuildSlot buildSlot, ShipBuildProject project)
-        {
-            if (buildSlot == null)
-            {
-                return;
-            }
-
-            Colony colony = Model.SelectedColony;
-            if (colony == null || colony.Shipyard != buildSlot.Shipyard)
-            {
-                return;
-            }
-
-            //if (!buildSlot.IsActive || buildSlot.HasProject)
-            //    return;
-
-            //NewShipSelectionView view = new NewShipSelectionView(buildSlot);
-            //TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
-
-            //_ = BindingOperations.SetBinding(
-            //    statsViewModel,
-            //    TechObjectDesignViewModel.DesignProperty,
-            //    new Binding
-            //    {
-            //        Source = view,
-            //        Path = new PropertyPath("SelectedBuildProject.BuildDesign")
-            //    });
-
-            //view.AdditionalContent = statsViewModel;
-
-            //bool? result = view.ShowDialog();
-
-            //if (!result.HasValue || !result.Value)
-            //{
-            //    return;
-            //}
-
-            //ShipBuildProject project = view.SelectedBuildProject;
-            if (project == null)
-            {
-                return;
-            }
-            //var _buildQueueItem = new BuildQueueItem(project);
-            AddProjectToBuildSlotQueue(project, colony.Shipyard);
-            //AddProjectToBuildQueue(project, colony);
-            //buildSlot.Shipyard.BuildQueue.Add(_buildQueueItem);
-            //buildSlot.Shipyard.ProcessQueue();
-            //buildSlot.Project = project;
-
-            PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
         }
 
         private bool CanExecuteToggleBuildingScrapCommand(object parameter)
@@ -544,8 +545,8 @@ namespace Supremacy.Client.Views
 
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 2");
 
-            //if (this.Model.Colonies == null)
-            //    this.Model.Colonies = this.AppContext.LocalPlayerEmpire.Colonies;
+            if (this.Model.SelectedColony == null)
+                this.Model.SelectedColony = this.AppContext.LocalPlayerEmpire.SeatOfGovernment;
 
             if (e.OldValue != null)
             {
@@ -744,6 +745,11 @@ namespace Supremacy.Client.Views
             ColonyScreenCommands.PreviousColonyCommand.RegisterCommand(_previousColonyCommand);
             ColonyScreenCommands.NextColonyCommand.RegisterCommand(_nextColonyCommand);
 
+            //ColonyScreenCommands.NextTABinsideColonyCommand.RegisterCommand(_nextTABinsideColonyCommand);
+            ColonyScreenCommands.ShowColonyManagementCommand.RegisterCommand(_showColonyManagementCommand);
+            ColonyScreenCommands.ShowColonyBuildListCommand.RegisterCommand(_showColonyBuildListCommand);
+            ColonyScreenCommands.ShowShipyardCommand.RegisterCommand(_showShipyardCommand);
+
             GalaxyScreenCommands.SelectSector.RegisterCommand(_selectSectorCommand);
 
             _ = ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
@@ -903,6 +909,8 @@ namespace Supremacy.Client.Views
 
             // Temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
             _ = civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost());
+            //_ = civMan.BuyCostLastTurn.AdjustCurrent(project.GetTotalCreditsCost());
+            //civMan.BuyCostLastTurn += project.GetTotalCreditsCost();
 
             project.IsRushed = true;
             PlayerOrderService.AddOrder(new RushProductionOrder(productionCenter));
@@ -957,11 +965,7 @@ namespace Supremacy.Client.Views
         //{
         //    return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         //}
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-        private bool CanExecuteAddOneMoreToShipyardBuildQueueCommand(BuildProject project)
-        {
-            return (Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null);
-        }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
 
         private void ExecuteAddToShipyardBuildQueueCommand(BuildProject project)
         {
@@ -1177,6 +1181,8 @@ namespace Supremacy.Client.Views
         #region Overrides of GameScreenPresenterBase<ColonyScreenPresentationModel,IColonyScreenView>
 
         protected override string ViewName => StandardGameScreens.ColonyScreen;
+
+        public ColonyScreenDisplayMode ColonyScreenDisplayMode { get; private set; }
 
         #endregion
     }

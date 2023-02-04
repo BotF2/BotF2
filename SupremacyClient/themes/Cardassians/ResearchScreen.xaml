@@ -739,7 +739,7 @@
                                  Foreground="{DynamicResource DefaultTextBrush}"
                                  Margin="6,0,3,0"
                                  VerticalAlignment="Center"
-                                 Text="ENCYCLOPEDIA GALACTICA"/>
+                                 Text="{s:StringResource Key=ENCYCLOPEDIA_TITLE_CARD, Case=Upper}"/>
                       <Border Background="{StaticResource Card5Gradient_Top_Bottom}"/>
                     </DockPanel>
                     <!-- Lower-Right Edge -->
@@ -766,7 +766,7 @@
                                  Foreground="{DynamicResource DefaultTextBrush}"
                                  Margin="3,0,6,0"
                                  VerticalAlignment="Center"
-                                 Text="SEARCH"/>
+                                 Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
                       <TextBox x:Name="PART_SearchText"
                                Grid.Column="1"/>
                     </Grid>
