@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Windows.Automation;
 using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Schema;
@@ -93,23 +92,26 @@ namespace Supremacy.Universe
             //StreamWriter streamWriter2;
             string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
 
-            if (1 == 2) // no output if no write acess
-            {
-                string file = pathOutputFile + "test-Output.txt";
-                //string file2 = "./lib/test2-FromHomeSystems.txt";
-                streamWriter = new StreamWriter(file);
-                //streamWriter2 = new StreamWriter(file2);
-                streamWriter.Close();
-                //streamWriter2.Close();
-            }
-            
+            //if (1 == 2) // no output if no write acess
+            //{
+            //    string file = pathOutputFile + "test-Output.txt";
+            //    //string file2 = "./lib/test2-FromHomeSystems.txt";
+            //    streamWriter = new StreamWriter(file);
+            //    //streamWriter2 = new StreamWriter(file2);
+            //    streamWriter.Close();
+            //    //streamWriter2.Close();
+            //}
+            //ToDo: Search for more output avoid it on Ken's PC'
+
             string strHeader = "";  // first line of output files
             string strLine = "";   // each civ gets one line
-            //string strLine2 = "";   // each civ gets one line
+                                   //string strLine2 = "";   // each civ gets one line
 
-            if (1 == 2) // no output if no write acess
+            //if (1 == 2) // no output if no write acess
+            //{
+            try // avoid hang up if this file is opened by another program 
             {
-                try // avoid hang up if this file is opened by another program 
+                if (1 == 2) // no output if no write acess
                 {
                     // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
                     file = pathOutputFile + "_HomeSystems-xml_"
@@ -212,6 +214,7 @@ namespace Supremacy.Universe
                         separator;
 
                     streamWriter.WriteLine(strHeader);
+                }
                     // End of head line
 
                     //file2 = pathOutputFile + "./lib/HomeSystemsXML_StartingLevel_(autoCreated).csv";
@@ -425,7 +428,7 @@ namespace Supremacy.Universe
                         strLine = strLine.Replace("-", " ");
 
                         //Console.WriteLine(strLine);
-                        streamWriter.WriteLine(strLine);
+                        //streamWriter.WriteLine(strLine);
 
                         strLine = "";
                         _text = " ";
@@ -446,15 +449,15 @@ namespace Supremacy.Universe
 
                     }  // end of foreach
                 WriterCloseHomeSystemsXML:;
-                    streamWriter.Close();
+                    //streamWriter.Close();
                     //streamWriter2.Close();
                 }
                 catch (Exception e)
-                {
-                    _text = "Cannot write ... " + file + e;
-                    GameLog.Core.GameData.ErrorFormat(_text);
-                }
+            {
+                _text = "Cannot write ... " + file + e;
+                GameLog.Core.GameData.ErrorFormat(_text);
             }
+            //}
 
             return db;
         }

@@ -402,6 +402,7 @@ namespace Supremacy.Tech
                 // CSV_Output
 
                 bool _bool_TechTrees_List = false;
+                //file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
 
                 if (_bool_TechTrees_List)
                 {
@@ -513,9 +514,13 @@ namespace Supremacy.Tech
                             //if (civManager == null)
                             //    continue;
                             TechTree techTree = new TechTree(xmlTree);
+                            string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                            file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
                             StreamWriter streamWriter = new StreamWriter(file);
-                            bool _traceTechTrees = true;
+
                             bool _streamWriterWorks = false;
+
+                            bool _traceTechTrees = false;
                             if (_traceTechTrees == true)
                             {
                                 string owner = xmlTree.GetAttribute("Civilization");

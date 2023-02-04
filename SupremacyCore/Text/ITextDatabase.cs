@@ -92,7 +92,7 @@ namespace Supremacy.Text
             string pathOutputfile = "./lib/";  // instead of ./Resources/Data/
             string separator = ";";
             string line = "";
-            StreamWriter streamWriter;
+            //StreamWriter streamWriter;
             string file = "./lib/test-FromTextDatabase.txt";
             string strHeader = "";  // first line of output files
 
@@ -110,7 +110,7 @@ namespace Supremacy.Text
                     goto WriterCloseFromTextDatabase;
                 }
 
-                streamWriter = new StreamWriter(file);
+                //streamWriter = new StreamWriter(file);
 
                 strHeader =    // Head line
                     "ATT_Key" 
@@ -121,7 +121,7 @@ namespace Supremacy.Text
                     + separator + "Text"
                     ;
 
-                streamWriter.WriteLine(strHeader);
+                //streamWriter.WriteLine(strHeader);
                 // End of head line
 
                 foreach (XElement entryElement in techObjectEntries)
@@ -160,13 +160,13 @@ namespace Supremacy.Text
                             (string)localizedEntryElement.Element("Description");   // Description at end because of some semicolon inside
 
                         //Console.WriteLine("{0}", line);
-                        streamWriter.WriteLine(line);
+                        //streamWriter.WriteLine(line);
 
                     }
                     techObjectTable.AddInternal(entry);
                 }
 
-                streamWriter.Close();
+                //streamWriter.Close();
             WriterCloseFromTextDatabase:;
                 // End of Autocreated files   
 
