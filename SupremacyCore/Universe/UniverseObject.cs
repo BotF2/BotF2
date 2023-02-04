@@ -1,3 +1,5 @@
+// File:UniverseObject.cs
+//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -447,7 +449,7 @@ namespace Supremacy.Universe
                 catch (Exception e)
                 {
                     // doesn't work - only crashes when using Live Visual Tree directly in Visual Studio - then just click on Continue - use F5 to continue
-                    GameLog.Core.General.Error(e);
+                    GameLog.Core.General.Error("No EffectBindings available " + e);
                     return _effectBindings.Value;
                 }
             }

@@ -171,9 +171,9 @@ namespace Supremacy.Economy
         {
             if (UpgradeTarget != null)
             {
-                string _text = "ERROR - no upgradeTarget available";
+                string _text = "upgradeTarget available";  // 
                 Console.WriteLine(_text);
-                GameLog.Core.General.ErrorFormat(_text);
+                //GameLog.Core.General.ErrorFormat(_text);
 
 
                 for (int i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
