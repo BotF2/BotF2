@@ -482,6 +482,11 @@ namespace Supremacy.Universe
 
         public static StarSystemDescriptor GenerateHomeSystem(Civilization civ)
         {
+
+            _text = "GenerateHomeSystem for " + civ.Name;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+
             StarSystemDescriptor system = new StarSystemDescriptor
             {
                 StarType = GetStarType(true),
@@ -493,7 +498,11 @@ namespace Supremacy.Universe
             };
 
             GeneratePlanetsWithHomeworld(system, civ);
-            GameLog.Client.GameData.DebugFormat("No HomeSystem defined - HomeSystemsGeneration will be done for {0}", civ.Name);
+
+            _text = "No HomeSystem defined - HomeSystemsGeneration will be done for " + civ.Name;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+
             return system;
         }
 
@@ -1165,6 +1174,10 @@ namespace Supremacy.Universe
 
         private static void GeneratePlanetsWithHomeworld(StarSystemDescriptor system, Civilization civ)
         {
+            _text = "GeneratePlanetsWithHomeworld for " + civ.Name;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
+
             PlanetDescriptor homePlanet = new PlanetDescriptor();
             PlanetSize planetSize;
             homePlanet.Type = civ.Race.HomePlanetType;
@@ -1622,6 +1635,10 @@ namespace Supremacy.Universe
         /// <returns></returns>
         private static StarType GetStarType(bool supportsPlanets)
         {
+            //_text = "GetStarType .... ";
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
+
             StarType result = StarType.White;
             int maxRoll = 0;
 
@@ -1634,6 +1651,10 @@ namespace Supremacy.Universe
                     maxRoll = currentRoll;
                 }
             }
+
+            _text = "Got GetStarType " + result;
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
 
             return result;
         }

@@ -958,8 +958,8 @@ namespace Supremacy.Game
                 {
                     foreach (Colony colony in civManager.Colonies)
                     {
-                        //_text = "Generating HomeSystems... > " + colony.Name;
-                        //Console.WriteLine(_text);
+                        _text = "Generating HomeSystems... > " + colony.Name;
+                        Console.WriteLine(_text);
                         //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                         // get the home system settings
