@@ -3490,16 +3490,14 @@ namespace Supremacy.IO.Serialization
         #endregion Singleton Type Wrapper
 
         #region Type Usage (Debug mode only)
-#if DEBUG
+
 
         #region Fields
         public int[] typeUsage = new int[256];
-        private string _text;
-        private readonly string newline = Environment.NewLine;
-        private bool _trace;
+
         #endregion
 
-#endif
+
 
         #region Methods
         [Conditional("DEBUG")]
