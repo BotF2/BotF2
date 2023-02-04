@@ -746,12 +746,13 @@ namespace Supremacy.Client
             }
             catch
             {
-                _ = MessageBox.Show(
-                    "The error log could not be created.  You may still run the game,\n"
-                    + "but error details cannot be logged.",
-                    "Warning",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                Console.WriteLine("error.txt could not be created. ");
+                //_ = MessageBox.Show(
+                //    "The error log could not be created.  You may still run the game,\n"
+                //    + "but error details cannot be logged.",
+                //    "Warning",
+                //    MessageBoxButton.OK,
+                //    MessageBoxImage.Warning);
             }
 
             //try
