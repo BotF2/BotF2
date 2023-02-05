@@ -194,6 +194,12 @@ namespace Supremacy.Combat
             _runningTargetOne = false;
             _runningTargetTwo = false;
             _allSidesStandDown = false;
+            _text += " "; // just placeholder to avoid a "is never used"
+            _combatString += " "; // just placeholder to avoid a "is never used"
+            _destroyedString += " "; // just placeholder to avoid a "is never used"
+            _escapedString += " "; // just placeholder to avoid a "is never used"
+            _nonCombatString += " "; // just placeholder to avoid a "is never used"
+            _text += " "; // just placeholder to avoid a "is never used"
             CombatID = GameContext.Current.GenerateID();
             _roundNumber = 1;
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
