@@ -127,7 +127,7 @@ namespace Supremacy.IO.Serialization
         /// </summary>
         public static bool DefaultPreserveDecimalScale;
         private string _text;
-        private string newline;
+        private string newline = Environment.NewLine;
         private bool _trace;
 
         // Marker to denote that all elements in a typed array are optimizable

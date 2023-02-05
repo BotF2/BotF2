@@ -45,7 +45,7 @@ namespace Supremacy.Game
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
-        private int _buyCostLastTurn;
+        //private int _buyCostLastTurn;
         private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
@@ -229,7 +229,7 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
-            _buyCostLastTurn = 0;
+            //_buyCostLastTurn = 0;
 
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
