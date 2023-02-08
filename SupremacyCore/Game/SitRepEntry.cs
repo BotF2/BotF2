@@ -426,8 +426,8 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override bool HasDetails => _detailName != ""; // true for extra Dialog window
         public override string DetailImage => "vfs:///Resources/Images/" + _image;
-        public override string HeaderText => string.Format(ResourceManager.GetString(_detailName + "_HEADER_TEXT"), Colony.Name, Colony.Location);
-        public override string DetailText => string.Format(ResourceManager.GetString(_detailName + "_DETAIL_TEXT"), Colony.Name, Colony.Location);
+        public override string HeaderText => string.Format(ResourceManager.GetString(_detailName/* + "_HEADER_TEXT"*/), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString(_detailName/* + "_DETAIL_TEXT"*/), Colony.Name, Colony.Location);
         public override string SitRepComment { get; set; }
         public override string SummaryText => _report;
         public override bool IsPriority => true;

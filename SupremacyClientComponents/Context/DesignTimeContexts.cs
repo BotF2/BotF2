@@ -1,3 +1,5 @@
+// File:DesignTimeContexts.cs
+
 using Supremacy.Client.Audio;
 using Supremacy.Collections;
 using Supremacy.Entities;
@@ -82,7 +84,7 @@ namespace Supremacy.Client.Context
         #region Implementation of INotifyPropertyChanged
 
         [field: NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged; // ever used ??
 
         #endregion
 

@@ -769,7 +769,7 @@ namespace Supremacy.Universe
 
         private static void MAP_Create_File(string fileNameCanonMAP)
         {
-            string _fileName = ResourceManager.GetResourcePath("Resources/Data/NEW_" + fileNameCanonMAP);
+            string _fileName = ResourceManager.GetResourcePath("Resources/Data/C_NEW_" + fileNameCanonMAP);
 
             if(File.Exists(_fileName))
             {
@@ -804,7 +804,7 @@ namespace Supremacy.Universe
             }
             writer.Close();
 
-            _text = "No " + file.Name + " available, but we created an empty one named > NEW_" + fileNameCanonMAP;
+            _text = "No " + file.Name + " available, but we created an empty one named > C_NEW_" + fileNameCanonMAP;
             Console.WriteLine(_text);
             GameLog.Client.GameData.InfoFormat(_text);
 
@@ -1652,9 +1652,9 @@ namespace Supremacy.Universe
                 }
             }
 
-            _text = "Got GetStarType " + result;
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            //_text = "Got GetStarType " + result;
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             return result;
         }
