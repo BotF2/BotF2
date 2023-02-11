@@ -1,4 +1,4 @@
-// EffectSystem.cs
+// File:EffectSystem.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
