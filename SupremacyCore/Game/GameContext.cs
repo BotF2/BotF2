@@ -170,6 +170,11 @@ namespace Supremacy.Game
         private StrategyDatabase _strategyDatabase;
         private ICollection<ScriptedEvent> _scriptedEvents;
         private DiplomacyDatabase _diplomacyDatabase;
+        public string _text;
+        public readonly string  blank = " ";
+        public readonly string newline = Environment.NewLine;
+
+        private bool _bool_Fac_Count_Active;
         #endregion
 
         public void SerializeOwnedData(SerializationWriter writer, object context)
@@ -542,8 +547,8 @@ namespace Supremacy.Game
 
         #region Static Members
         private static readonly ConcurrentStack<GameContext> _stack = new ConcurrentStack<GameContext>();
-        private string _text;
-        private bool _bool_Fac_Count_Active;
+        //private string _text;
+        
 
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
@@ -958,9 +963,9 @@ namespace Supremacy.Game
                 {
                     foreach (Colony colony in civManager.Colonies)
                     {
-                        _text = "Generating HomeSystems... > " + colony.Name;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                        //_text = "Generating HomeSystems... > " + colony.Name;
+                        //Console.WriteLine(_text);
+                        ////GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                         // get the home system settings
                         Civilization civ = colony.Owner;

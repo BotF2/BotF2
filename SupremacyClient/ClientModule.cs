@@ -186,18 +186,21 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _Hotkey_Alt_Y;
         private readonly DelegateCommand<object> _Hotkey_Alt_Z;
 
+        private IGameController _gameController;
+        public int localCivID;
+        private bool _isExiting;
 
-
+        [NonSerialized]
         public string localEmpire = "";
         private int startTechLvl = -1;
 
         public bool _checkLoading = true;
 
-        private bool _isExiting;
-        private IGameController _gameController;
+
+
         public string _text;
         public readonly string newline = Environment.NewLine;
-        public int localCivID;
+
 
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;

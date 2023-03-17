@@ -87,7 +87,7 @@ namespace Supremacy.Universe
         /// being present in the system.  This must be enough to sustain a population that is
         /// smaller than the minimum labor allocation of a food production facility.
         /// </summary>
-        public const int BaseFoodProduction = 10;
+        //public const int BaseFoodProduction = 10;  // seems to be not used
 
         private IValueProvider<int>[] _activeFacilities;
         private IValueProvider<int>[] _unusedFacilities;
@@ -1368,9 +1368,9 @@ namespace Supremacy.Universe
             switch (category)
             {
                 case ProductionCategory.Intelligence:
-                    if (baseOutput < 10)
+                    if (baseOutput < 0)
                     {
-                        baseOutput = 10;
+                        baseOutput = 0;
                     }
 
                     break;

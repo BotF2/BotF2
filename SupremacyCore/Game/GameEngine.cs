@@ -1916,7 +1916,7 @@ namespace Supremacy.Game
                 GameContext.PushThreadContext(game);
                 try
                 {
-                    foreach (StarSystem starSystem in game.Universe.Find(UniverseObjectType.StarSystem))
+                    foreach (StarSystem starSystem in game.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>())
                     {
                         StarHelper.ApplySensorInterference(array, starSystem);
                     }
@@ -2191,7 +2191,9 @@ namespace Supremacy.Game
         #region DoMaintenance() Method
         private void DoMaintenance(GameContext game)
         {
-            //int turn = game.TurnNumber;
+            int turn = game.TurnNumber;
+            _ = turn + 0; // dummy to avoid an unused for turn or game
+
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
 

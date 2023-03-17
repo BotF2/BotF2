@@ -126,6 +126,8 @@ namespace Supremacy.IO.Serialization
         /// The Default setting for the PreserveDecimalScale property.
         /// </summary>
         public static bool DefaultPreserveDecimalScale;
+
+
         private string _text;
         private string newline = Environment.NewLine;
         private bool _trace;

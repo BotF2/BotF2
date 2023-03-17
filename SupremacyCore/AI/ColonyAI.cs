@@ -36,7 +36,7 @@ namespace Supremacy.AI
 #pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
 #pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private static bool need1Colonizer;
-        private static string blank = " ";
+        private static readonly string blank = " ";
 #pragma warning restore IDE0052 // Ungelesene private Member entfernen
 
         public static void DoTurn([NotNull] Civilization civ)

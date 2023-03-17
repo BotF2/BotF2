@@ -258,6 +258,7 @@
                         <!--IsEnabled-->
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="Opacity" Value="0.25" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Kling3Gradient_Left_Right}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

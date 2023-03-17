@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
+//using static Supremacy.Collections.IndexedCollection<T>;
 
 namespace Supremacy.Universe
 {
@@ -309,7 +309,8 @@ namespace Supremacy.Universe
                             if (sector.System == null)
                             {
                                 gammaWormholeLocation = sector.Location;
-                                GameLog.Core.GalaxyGenerator.DebugFormat("Place for Gamma wormhole found at {0}", sector.Location);
+                                ReportDetails("__Step_1266: Place for Gamma wormhole found at " + sector.Location);
+                                //GameLog.Core.GalaxyGenerator.DebugFormat("Place for Gamma wormhole found at {0}", sector.Location);
                                 break;
                             }
                         }
@@ -317,7 +318,8 @@ namespace Supremacy.Universe
                     else
                     {
                         gammaWormholeLocation = desiredLocation;
-                        GameLog.Core.GalaxyGenerator.DebugFormat("Place for Gamma wormhole found at {0}", desiredLocation);
+                        ReportDetails("__Step_1276: Place for Gamma wormhole found at " + desiredLocation);
+                        //GameLog.Core.GalaxyGenerator.DebugFormat("Place for Gamma wormhole found at {0}", desiredLocation);
                     }
 
                     //We've found somewhere to place the wormholes. Now to actually do it
@@ -359,19 +361,19 @@ namespace Supremacy.Universe
                             Sector loc = GameContext.Current.Universe.Map[y, x];
                             if (!loc.Name.Contains("(") && !bool_output_done == true)  // emtpy sector are named e.g. (0,0)
                             {
-                                _text = ";MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType
+                                ReportDetails("\"__Step_1227: ;MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType
                                     + " - no more output or deactivate this line and the boolean"
-                                    ;
+                                    );
                                 bool_output_done = true;
-                                Console.WriteLine(_text);
+                                //Console.WriteLine(_text);
                                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text); // hiding info in Log.txt
                                 count += 1;
                             }
                         }
                     }
-                    _text = "### MapContent-Count:;" + count;
-                    Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+                    ReportDetails("\"__Step_1228: ### MapContent-Count:;" + count);
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
 
                     _text = "Searching for Crash: next: systemNamesList";
                     Console.WriteLine(_text);
@@ -390,9 +392,10 @@ namespace Supremacy.Universe
                     {
                         if (o.count > 1)
                         {
-                            _text = "######  Star Name " + o.num + " is used in systemNamesList " + o.count + " times - ";
-                            Console.WriteLine(_text);
-                            GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
+                            _text = "__Step_1229: ######  Star Name " + o.num + " is used in systemNamesList " + o.count + " times - ";
+                            ReportDetails(_text);
+                            //Console.WriteLine(_text);
+                            GameLog.Core.GalaxyGenerator.ErrorFormat(_text); // ErrorFormat
                         }
                     }
 
@@ -402,9 +405,9 @@ namespace Supremacy.Universe
                     {
                         if (!bool_output_done)
                         {
-                            _text = "Systems:;inhabited=" + item.Sector.System.IsInhabited + ";" + item.Location + ";" + item.Name + ";"
-                                    + " - no more output or deactivate the boolean"
-                                    ;
+                            _text = "\"__Step_1230: Systems:;inhabited=" + item.Sector.System.IsInhabited + ";" + item.Location + ";" + item.Name + ";" + " - no more output or deactivate the boolean";
+                            //Report("Systems:;inhabited=" + item.Sector.System.IsInhabited + ";" + item.Location + ";" + item.Name + ";" + " - no more output or deactivate the boolean")
+                            //        ;
                             bool_output_done = true;
                             if (item.Sector.System.Colony != null)
                                 _text += ";" + item.Sector.System.Colony.MaxPopulation;
@@ -414,9 +417,9 @@ namespace Supremacy.Universe
                         }
 
                     }
-                    _text = "### Systems-Count:;" + count;
-                    Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    ReportDetails("\"__Step_1231: ### Systems-Count:;" + count);
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                     break;
                 }
@@ -483,9 +486,9 @@ namespace Supremacy.Universe
         public static StarSystemDescriptor GenerateHomeSystem(Civilization civ)
         {
 
-            _text = "GenerateHomeSystem for " + civ.Name;
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            ReportDetails("GenerateHomeSystem for " + civ.Name);
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             StarSystemDescriptor system = new StarSystemDescriptor
             {
@@ -499,9 +502,9 @@ namespace Supremacy.Universe
 
             GeneratePlanetsWithHomeworld(system, civ);
 
-            _text = "No HomeSystem defined - HomeSystemsGeneration will be done for " + civ.Name;
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            ReportGameData_Info("No HomeSystem defined - HomeSystemsGeneration will be done for " + civ.Name);
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             return system;
         }
@@ -549,12 +552,12 @@ namespace Supremacy.Universe
             Civilization civ,
             MapLocation location)
         {
-            _text = "Step_1201: FinalizaHomeworldPlacement: "
-                + location
-                + " " + civ.Key
-                ;
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            //_text = "Step_1201: FinalizaHomeworldPlacement: "
+            //    + location
+            //    + " " + civ.Key
+            //    ;
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             CivilizationManager civManager = new CivilizationManager(GameContext.Current, civ);
 
@@ -591,7 +594,7 @@ namespace Supremacy.Universe
 
             for (int i = 0; i < _loadedMapEntries.Count; i++)
             {
-                //_text = "### Apply Canon-MapContent...";
+                //_text = "### Apply MAP-Canon-Content...";
                 //Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
 
@@ -604,9 +607,11 @@ namespace Supremacy.Universe
                     _ = int.TryParse(_col2[0], out int _x);
                     _ = int.TryParse(_col2[1], out int _y);
                     _newLoc = new MapLocation(_x, _y);
-                    _text = "### Apply Canon-MapContent for " + civ.Key + " at " + _newLoc.ToString();
+
+                    _text = "__Step_1246: ### Apply Map-Canon-Content for " + civ.Key + " at " + _newLoc.ToString();
                     Console.WriteLine(_text);
                     GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+                    
                     location = _newLoc;
                 }
 
@@ -703,6 +708,14 @@ namespace Supremacy.Universe
 
             GameContext.Current.Universe.Objects.Add(homeSystem);
             GameContext.Current.Universe.Objects.Add(homeSystem.Colony);
+
+            _text =
+                "__Step_1250:  Civilization Homeworld placed  " + civ.Name
+                + " at " + homeSystem.Location
+                + " as " + civ.CivilizationType
+                ;
+            Console.WriteLine(_text);
+            GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
         private static void MAP_Load(string fileNameCanonMAP)
@@ -758,8 +771,7 @@ namespace Supremacy.Universe
             {
                 if (o.count > 1)
                 {
-                    _text = "##### MapLocation {0} is used in * " + fileNameCanonMAP
-                        + o.num + " * times"
+                    ReportDetails("__Step_1236: ##### MapLocation {0} is used in * " + fileNameCanonMAP + o.num + " * times")
                         ;
                     Console.WriteLine(_text);
                     GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
@@ -769,13 +781,13 @@ namespace Supremacy.Universe
 
         private static void MAP_Create_File(string fileNameCanonMAP)
         {
-            string _fileName = ResourceManager.GetResourcePath("Resources/Data/C_NEW_" + fileNameCanonMAP);
+            string _fileName = ResourceManager.GetResourcePath("Resources/Data/M_NEW_" + fileNameCanonMAP);
 
-            if(File.Exists(_fileName))
+            if (File.Exists(_fileName))
             {
-                _text = _fileName + " exists and will be overwritten !";
-                Console.WriteLine(_text);
-                GameLog.Client.GameData.InfoFormat(_text);
+                ReportGameData_Info("__Step_1256: " + _fileName + " exists and will be overwritten !");
+                //Console.WriteLine(_text);
+                //GameLog.Client.GameData.InfoFormat(_text);
                 //_ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
                 File.Delete(_fileName);
@@ -804,14 +816,25 @@ namespace Supremacy.Universe
             }
             writer.Close();
 
-            _text = "No " + file.Name + " available, but we created an empty one named > C_NEW_" + fileNameCanonMAP;
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.InfoFormat(_text);
+            ReportGameData_Info("No " + file.Name + " available, but we created an empty one named > C_NEW_" + fileNameCanonMAP);
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.InfoFormat(_text);
 
             //_ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
         }
 
+        private static void ReportGameData_Info(string _text)
+        {
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.InfoFormat(_text);
+        }
+
+        private static void ReportDetails(string _text)
+        {
+            Console.WriteLine(_text);
+            GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+        }
 
         private static bool PlaceEmpireHomeworlds(List<MapLocation> positions,
             IList<string> starNames,
@@ -897,7 +920,15 @@ namespace Supremacy.Universe
                 empireHomeLocations.Add(positions[iPosition]);
                 chosenCivs.Add(empireCivs[index]);
                 FinalizaHomeworldPlacement(starNames, homeSystemDatabase, empireCivs[index], positions[iPosition]);
-                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Civilization {0} placed at {1} as {2}", empireCivs[index].Name, positions[iPosition], empireCivs[index].CivilizationType);
+
+                //_text =
+                //    "Civilization " + empireCivs[index].Name
+                //    //+ " placed at " + positions[iPosition]
+                //    + " as " + empireCivs[index].CivilizationType
+                //    ;
+                //Console.WriteLine(_text);
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
                 positions.RemoveAt(iPosition);
             }
 
@@ -1000,8 +1031,13 @@ namespace Supremacy.Universe
                 chosenCivs.Add(minorRaceCivs[index]);
                 FinalizaHomeworldPlacement(starNames, homeSystemDatabase, minorRaceCivs[index], positions[iPosition]);
 
-                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Civilization {0} placed at {1} as {2}"
-                    , minorRaceCivs[index].Name, positions[iPosition], minorRaceCivs[index].CivilizationType);
+                //_text =
+                //    "Civilization " + minorRaceCivs[index].Name
+                //    //+ " placed at " + positions[iPosition]
+                //    + " as " + minorRaceCivs[index].CivilizationType
+                //    ;
+                //Console.WriteLine(_text);
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                 minorRaceCivs.RemoveAt(index);
                 positions.RemoveAt(iPosition);
@@ -1020,7 +1056,7 @@ namespace Supremacy.Universe
                 try
                 {
                     _fileNameCanonMAP =
-                        "Canon-Map_"
+                        "Map-Canon_"
                         + GameContext.Current.Universe.Map.Width
                         + "x" + GameContext.Current.Universe.Map.Height
                         + ".txt"
@@ -1174,9 +1210,9 @@ namespace Supremacy.Universe
 
         private static void GeneratePlanetsWithHomeworld(StarSystemDescriptor system, Civilization civ)
         {
-            _text = "GeneratePlanetsWithHomeworld for " + civ.Name;
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            ReportDetails("GeneratePlanetsWithHomeworld for " + civ.Name);
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             PlanetDescriptor homePlanet = new PlanetDescriptor();
             PlanetSize planetSize;
@@ -1372,7 +1408,8 @@ namespace Supremacy.Universe
                 StarType starType;
 
                 do { starType = GetStarType(false); }
-                while (!StarHelper.CanPlaceStar(starType, position, homeLocations));
+                while (
+                !StarHelper.CanPlaceStar(starType, position, homeLocations));
 
                 system.StarType = starType;
                 system.Location = position;
@@ -1409,10 +1446,10 @@ namespace Supremacy.Universe
                         {
                             system.StarType = StarType.BlackHole;
                             system.Name = "Black Hole";
-                            GameLog.Core.GalaxyGeneratorDetails.DebugFormat("BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
+                            GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Step_1264: BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
                             break;
                         }
-                        GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Wormhole placed at {0}", system.Location);
+                        GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Step_1263: Wormhole placed at {0}", system.Location);
                         break;
                     case StarType.White:
                     //break;
@@ -1431,15 +1468,18 @@ namespace Supremacy.Universe
                             break;
                         }
 
-                        //_text = system.Location + " has type > " + system.StarType;
-                        //Console.WriteLine(_text);
-                        //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
 
                         //system.Name = "Dummy";  // not inside Parallel foreach
                         system.Name = starNames[0];
                         starNames.RemoveAt(0);
                         break;
                 }
+
+                _text = "Step_1262: " + system.Location + " " + system.Name + " .. has type > " + system.StarType;
+                Console.WriteLine(_text);
+                GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
 
                 _text = "Searching for Crash: systemNamesList";
                 //Console.WriteLine(_text);
@@ -1451,9 +1491,9 @@ namespace Supremacy.Universe
                 {
                     system.Name = starNames.FirstOrDefault();
                     _ = starNames.Remove(system.Name);
-                    _text = system.Name + " got used and wiped out from list of Star names";
-                    Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    ReportDetails(system.Name + " got used and wiped out from list of Star names");
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                 }
 
@@ -1558,9 +1598,9 @@ namespace Supremacy.Universe
                 {
                     system.Name = starNames.FirstOrDefault();
                     _ = starNames.Remove(system.Name);
-                    _text = system.Name + " got used and wiped out from list of Star names";
-                    Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    ReportDetails(system.Name + " got used and wiped out from list of Star names");
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                 }
 
@@ -1614,19 +1654,28 @@ namespace Supremacy.Universe
                 }
                 wormhole.Name = notFinalName;
 
-                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
+                ReportDetails("__Step_1225: " + wormhole.Location
+                    + " Wormholes at " + wormhole.Name
+                    );
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat("__Step_1225: {0} Wormhole named {1}", wormhole.Location, wormhole.Name);
             }
 
             while (wormholes.Count > 1)
             {
                 GameContext.Current.Universe.Map[wormholes[0].Sector.Location].System.WormholeDestination = wormholes[1].Sector.Location;
                 GameContext.Current.Universe.Map[wormholes[1].Sector.Location].System.WormholeDestination = wormholes[0].Sector.Location;
-                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Wormholes at {0} and {1} linked", wormholes[0].Sector.Location, wormholes[1].Sector.Location);
+                ReportDetails("__Step_1226: " + wormholes[0].Sector.Location
+                    + " Wormholes at " + wormholes[0].Sector.Location
+                    + " and " + wormholes[1].Sector.Location
+                    );
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat("__Step_1226: {0} Wormholes at {0} and {1} linked", wormholes[0].Sector.Location, wormholes[1].Sector.Location);
+
                 //Call this twice to remove the first 2 wormholes which are now linked
                 wormholes.RemoveAt(0);
                 wormholes.RemoveAt(0);
             }
         }
+
 
         /// <summary>
         /// Returns a random star type

@@ -1,4 +1,4 @@
-// TravelRoute.cs
+// File:TravelRoute.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -15,6 +15,7 @@ using Supremacy.Orbitals;
 
 namespace Supremacy.Universe
 {
+
     /// <summary>
     /// Represents a travel plan for a <see cref="Fleet"/>.
     /// </summary>
@@ -27,6 +28,7 @@ namespace Supremacy.Universe
         public static readonly TravelRoute Empty = new TravelRoute(new MapLocation[0]);
 
         private List<MapLocation> _waypoints;
+        
         private List<MapLocation> _path;
 
         /// <summary>
@@ -160,5 +162,6 @@ namespace Supremacy.Universe
             _path = reader.ReadList<MapLocation>();
             _waypoints = reader.ReadList<MapLocation>();
         }
+
     }
 }

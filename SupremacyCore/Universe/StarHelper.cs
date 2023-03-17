@@ -299,6 +299,9 @@ namespace Supremacy.Universe
                 return true;
             }
 
+            if (starType.SupportsPlanets()) 
+                return true;
+
             int minDistance = GalaxyGenerator.MinHomeworldDistanceFromInterference;
             if (minDistance > 0)
             {

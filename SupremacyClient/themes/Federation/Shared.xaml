@@ -139,7 +139,9 @@
                         </Trigger>-->
                         <!--IsEnabled-->
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+                            <Setter TargetName="Border" Property="Opacity" Value="0.25" />
+                            <!--<Setter TargetName="Border" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />-->
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PinkGradient_Left_Right}" />
                         </Trigger>
                         <!--<Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Left_Right}" />

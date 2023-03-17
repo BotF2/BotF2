@@ -65,13 +65,13 @@ namespace Supremacy.Client
 
         private static SplashScreen _splashScreen;
         private static Mutex _singleInstanceMutex;
+
+        [NonSerialized]
         public static string newline = Environment.NewLine;
         public static DateTime starttime = DateTime.Now;
-        public string _text = "";
+        public string _text;
         public string blank = " ";
         public string separator = " ;";
-
-        //public string newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -416,6 +416,7 @@ namespace Supremacy.Client
         private static class EntryPoint
         {
 
+
             [STAThread, UsedImplicitly]
             private static void Main(string[] args)
             {
@@ -428,7 +429,7 @@ namespace Supremacy.Client
                 if (!CheckNetFxVersion())
                 {
                     _ = MessageBox.Show(
-                            "Rise of the UFP requires Microsoft .NET Framework 4.6.2 or greater"
+                            "Rise of the UFP requires Microsoft .NET Framework 4.8 or greater"
                             + newline
                             + "It must be installed before running the game.",
                             "Rise of the UFP",
@@ -642,6 +643,7 @@ namespace Supremacy.Client
             //Adapted from https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#net_d
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
             int version;
+            string _text;
 
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
             {
@@ -659,27 +661,27 @@ namespace Supremacy.Client
             //} else if
             if (version >= 528040)
             {
-                GameLog.Client.General.Info(".NET Framework 4.8 or later found");
+                _text = ".NET Framework 4.8 or later found";
             }
             else if (version >= 461808)
             {
-                GameLog.Client.General.Info(".NET Framework 4.7.2 or later found");
+                _text = ".NET Framework 4.7.2 or later found";
             }
             else if (version >= 461308)
             {
-                GameLog.Client.General.Info(".NET Framework 4.7.1 found");
+                _text = ".NET Framework 4.7.1 found";
             }
             else if (version >= 460798)
             {
-                GameLog.Client.General.Info(".NET Framework 4.7 found");
+                _text = ".NET Framework 4.7 found";
             }
             else if (version >= 394802)
             {
-                GameLog.Client.General.Info(".NET Framework 4.6.2 found");
+                _text = ".NET Framework 4.6.2 found";
             }
             else if (version >= 394254)
             {
-                GameLog.Client.General.Info(".NET Framework 4.6.1 found"); // no need to check older ones
+                _text = ".NET Framework 4.6.1 found"; // no need to check older ones
                                                                            //} else if (version >= 393295) {
                                                                            //    GameLog.Client.General.Info(".NET Framework 4.6 found"); 
                                                                            //} else if (version >= 379893) {
@@ -691,8 +693,10 @@ namespace Supremacy.Client
             }
             else
             {
-                GameLog.Client.General.Info(".NET Framework is less than 4.6.1");
+                _text = ".NET Framework is less than 4.6.1";
             }
+            Console.WriteLine(_text);
+            GameLog.Client.General.Info(_text);
 
             return version >= 394802;
         }
@@ -820,6 +824,7 @@ namespace Supremacy.Client
             // What is Unity Bootstrapper? --> https://msdn.microsoft.com/en-us/library/ff921139.aspx
 
             private ClientWindow _shell;
+            public string _text = "";
 
             protected override IModuleCatalog GetModuleCatalog()
             {

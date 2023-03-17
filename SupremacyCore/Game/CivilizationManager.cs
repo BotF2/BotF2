@@ -370,12 +370,13 @@ namespace Supremacy.Game
 
                 //int bc = 0;
                 //if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
-                //    bc = 0;
+                int bc = TaxIncome - ((_credits.LastChange + _maintenanceCostLastTurn) /** -1*/);
                 ////TotalPopulation
-                //if (bc > 0)
-                //    return bc;
+                if (bc < 0)
+                    bc = 0;
+                return bc;
                 //else
-                return 0 - ((_credits.LastChange + _maintenanceCostLastTurn) * -1);
+                //return 0 - ((_credits.LastChange + _maintenanceCostLastTurn) * -1);
             }
             //set => _buyCostLastTurn += value;
         }

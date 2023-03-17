@@ -15,15 +15,23 @@
 
         <!-- MORALE -->
         <DockPanel HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
                        />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBlock TextAlignment="Right" Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" 
+                <TextBlock Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" 
+                       Text=" > " 
+                       />
+                <TextBlock TextAlignment="Right" Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" 
+                       Text="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" 
+                       />
+            </StackPanel>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <!--<TextBlock TextAlignment="Right" Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" 
                        Text="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" 
                        />
                 <TextBlock Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" 
                        Text=" / " 
-                       />
+                       />-->
                 <TextBlock Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" 
                        Text="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay}" 
                        />
@@ -32,8 +40,20 @@
 
         <!-- FOOD -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource FoodColor}" 
+            <StackPanel Orientation="Horizontal">
+                <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" ( " />-->
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.ActiveFoodFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" / " />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.TotalFoodFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" - " />
+                <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource FoodColor}" 
                        Text="{Binding Source={s:StringResource FOOD_SURPLUS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            </StackPanel>
             <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" HorizontalAlignment="Right">
                 <scc:TextBlockExtensions.FormattedText>
                     <MultiBinding StringFormat="{}{0} / [f {1}]{2}[/]">
@@ -47,45 +67,96 @@
 
         <!-- INDUSTRY -->
         <DockPanel HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal">
+            <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" ( " />-->
+            <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.ActiveIndustryFacilities, Mode=OneWay}" />
+            <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" / " />
+            <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.TotalIndustryFacilities, Mode=OneWay}" />
+            <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" - " />
             <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource IndustryColor}" 
                        Text="{Binding Source={s:StringResource INDUSTRY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
                 <TextBlock.ToolTip>
                     <TextBlock Text="{Binding Source={s:StringResource PLANETARY_INDUSTRY_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                             FontSize="20"/>
                 </TextBlock.ToolTip>
-            </TextBlock>
-            <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{StaticResource IndustryColor}" 
+            </TextBlock>                
+            </StackPanel>
+        <!--</DockPanel>
+        <DockPanel HorizontalAlignment="Stretch">-->
+
+
+        <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{StaticResource IndustryColor}" 
                        Text="{Binding Path=SelectedColony.NetIndustry, Mode=OneWay}" />
         </DockPanel>
 
         <!-- NET ENERGY -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource EnergyColor}" 
+            <StackPanel Orientation="Horizontal">
+                <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" ( " />-->
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.ActiveEnergyFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" / " />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.TotalEnergyFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" - " />
+                <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource EnergyColor}" 
                        Text="{Binding Source={s:StringResource ENERGY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
                 <TextBlock.ToolTip>
                     <TextBlock Text="{Binding Source={s:StringResource PLANETARY_ENERGY_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                             FontSize="20"/>
                 </TextBlock.ToolTip>
             </TextBlock>
-            <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" 
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" 
                        Text="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay}" />
         </DockPanel>
 
         <!-- RESEARCH -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource ResearchColor}" 
+            <StackPanel Orientation="Horizontal">
+                <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" ( " />-->
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.ActiveResearchFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" / " />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.TotalResearchFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" - " />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource ResearchColor}" 
                        Text="{Binding Source={s:StringResource RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
                 <TextBlock.ToolTip>
                     <TextBlock Text="{Binding Source={s:StringResource PLANETARY_RESEARCH_TEXT_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                             FontSize="20"/>
                 </TextBlock.ToolTip>
             </TextBlock>
-            <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource ResearchColor}" 
+                </StackPanel>
+                <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource ResearchColor}" 
                        Text="{Binding Path=SelectedColony.NetResearch, Mode=OneWay}" />
         </DockPanel>
 
         <!-- INTELLIGENCE -->
         <DockPanel HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal">
+                <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" ( " />-->
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.ActiveIntelligenceFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" / " />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text="{Binding Path=SelectedColony.TotalIntelligenceFacilities, Mode=OneWay}" />
+                <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
+                       Text=" - " />                
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
                 <TextBlock.ToolTip>
@@ -93,7 +164,9 @@
                             FontSize="20"/>
                 </TextBlock.ToolTip>
             </TextBlock>
-            <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource IntelColor}" 
+
+            </StackPanel>
+    <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource IntelColor}" 
                        Text="{Binding Path=SelectedColony.NetIntelligence, Mode=OneWay}" />
         </DockPanel>
 

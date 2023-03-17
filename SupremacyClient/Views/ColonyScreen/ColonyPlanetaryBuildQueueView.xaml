@@ -165,31 +165,42 @@
                        Fill="{DynamicResource SeparatorBackgroundBrush}" />
           </StackPanel>
                     <!--Project.IsRushed-->
-                    <ControlTemplate.Triggers>
+          <ControlTemplate.Triggers>
             <DataTrigger Binding="{Binding Path=Project.IsRushed}"
                          Value="true">
-                            <Setter TargetName="TimeText"
-                      Property="Visibility"
-                      Value="Hidden" />
-                            <Setter TargetName="PercentCompleteText"
+
+              <Setter TargetName="PercentCompleteText"
                       Property="Visibility"
                       Value="Visible" />
-                            <Setter TargetName="PercentCompleteText"
+              <Setter TargetName="PercentCompleteText"
                       Property="Text"
-                      Value="{s:StringResource Key=RUSHED, Case=Original}" />
+                      Value="{s:StringResource Key=RUSHED_TEXT, Case=Original}" />
+              <Setter TargetName="TurnsText"
+                      Property="Visibility"
+                      Value="Hidden" />                
               <Setter TargetName="SeparatorText"
                       Property="Visibility"
-                      Value="Hidden" />
+                      Value="Hidden" />          
               <Setter TargetName="TurnsLabelText"
                       Property="Visibility"
                       Value="Hidden" />
-              <Setter TargetName="TurnsText"
-                      Property="Visibility"
-                      Value="Hidden" />
+
               <Setter TargetName="TurnsText"
                       Property="DataContext"
                       Value=" " />
-                        </DataTrigger>
+              <Setter TargetName="Sep"
+                      Property="Visibility"
+                      Value="Hidden" />
+
+                            <Setter TargetName="TimeText"
+                      Property="Visibility"
+                      Value="Visible" />
+              <Setter TargetName="BuildingRemain"
+                      Property="Visibility"
+                      Value="Hidden" />
+
+            </DataTrigger>
+              
             <DataTrigger Binding="{Binding Path=Project.TurnsRemaining}"
                          Value="1">
               <Setter TargetName="TurnsText"

@@ -22,8 +22,8 @@ namespace Supremacy.Utility
         private readonly string _name;
 #pragma warning restore IDE0052 // Remove unread private members
         private static bool _initialized;
-        private static string _text;
-        private static readonly string newline = Environment.NewLine;
+        public static string _text;
+        public static readonly string newline = Environment.NewLine;
         private static readonly object _syncLock;
 
         static GameLog()

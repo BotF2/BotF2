@@ -28,11 +28,13 @@ using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Concurrency;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -211,10 +213,15 @@ namespace Supremacy.UI
             s_tradeRouteSetPen.Freeze();
 
             //Fleet Icons
+            //Report("loading ... Insignias/__default.png");
             s_defaultFleetIcon = LoadFleetIcon(
                 ResourceManager.GetResourceUri("Resources/Images/Insignias/__default.png"));
+
+            //Report("loading ... Insignias/__unknown.png");
             s_unknownFleetIcon = LoadFleetIcon(
                 ResourceManager.GetResourceUri("Resources/Images/Insignias/__unknown.png"));
+
+            //Report("loading ... Insignias/__multi_fleet_indicator.png");
             s_multiFleetIcon = LoadFleetIcon(
                 ResourceManager.GetResourceUri("Resources/Images/Insignias/__multi_fleet_indicator.png"));
 
@@ -234,15 +241,20 @@ namespace Supremacy.UI
             s_fogOfWarBrush = new SolidColorBrush(fogOfWarColor);
             s_fogOfWarBrush.Freeze();
 
-            _text = "Step_1290: PopulateEmpires from MasterResources.CivDB... >>> ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'";
+            _text = "Step_1290: PopulateEmpires from MasterResources.CivDB... >>> ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll' or better DEBUG 'just my Code'";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
+
+            // https://youtu.be/aQk53OeV9fE?t=38 ...avoid 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'
+            var _civDB = (from civ in MasterResources.CivDB
+                          select civ).ToList();
+
 
             //Load empire specific ones
             //Instead of loading the civilizations from the gamecontext,
             //load them straight from the db, as this panel is only constructed once.
             //Failure to do so will cause crashes when starting a second game
-            foreach (Civilization civ in MasterResources.CivDB)
+            foreach (Civilization civ in _civDB)
             {
                 //_text = "Step_1290: PopulateEmpires... " + civ.Name;
                 //Console.WriteLine(_text);
@@ -406,6 +418,14 @@ namespace Supremacy.UI
     new FrameworkPropertyMetadata(
         true,
         UseSitRepDetailsScreenChangedCallback));
+        }
+
+#pragma warning disable IDE0051 // Remove unused private members
+        private static void Report(string v)
+#pragma warning restore IDE0051 // Remove unused private members
+        {
+            Console.WriteLine(v);
+            GameLog.Client.GameData.DebugFormat(v); 
         }
 
         public GalaxyGridPanel()

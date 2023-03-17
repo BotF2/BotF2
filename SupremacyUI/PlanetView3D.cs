@@ -1,4 +1,4 @@
-// PlanetView3D.cs
+// File:PlanetView3D.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
