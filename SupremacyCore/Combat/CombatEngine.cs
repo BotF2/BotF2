@@ -48,11 +48,13 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv;
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
+
+        [NonSerialized]
         private string _text;
-        private string _destroyedString;
-        private string _escapedString;
-        private string _combatString;
-        private string _nonCombatString;
+        private readonly string _destroyedString = "";
+        private readonly string _escapedString = "";
+        private readonly string _combatString = "";
+        private readonly string _nonCombatString = "";
         private readonly string newline = Environment.NewLine;
         private readonly string blank = " ";
 
@@ -190,6 +192,7 @@ namespace Supremacy.Combat
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
         {
+            Console.WriteLine("Step_3012: protected CombatEngine...");
             _running = false;
             _runningTargetOne = false;
             _runningTargetTwo = false;
@@ -207,6 +210,7 @@ namespace Supremacy.Combat
             SyncLockTargetOnes = _targetOneByCiv;
             SyncLockTargetTwos = _targetTwoByCiv;
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            _text += newline + _destroyedString + _escapedString + _combatString +_nonCombatString;  // dummy
 
             _sectorString = _assets[0].Location.ToString() + " > ";
             Detailed_Log(_sectorString + "_combatId = " + CombatID + ", _roundNumber = " + _roundNumber); //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
@@ -348,13 +352,13 @@ namespace Supremacy.Combat
                     PerformAssimilation();
                 }
                 _text = "ResolveCombatRound - at PerformRetreat";
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 Detailed_Log(_text);
 
                 PerformRetreat();
 
                 _text = "ResolveCombatRound - at UpdateOrbitals";
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 Detailed_Log(_text);
 
                 UpdateOrbitals();
@@ -362,7 +366,7 @@ namespace Supremacy.Combat
                 _text = "If IsCombatOver  = " + IsCombatOver
                     + "then increment round number " + _roundNumber 
                     ;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 Detailed_Log(_text);
                 //Detailed_Log("If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
                 if (!IsCombatOver)
@@ -384,7 +388,7 @@ namespace Supremacy.Combat
             //Detailed_Log("IsCombatOver ={0} for AsychHelper", IsCombatOver);
             if (IsCombatOver)
             {
-                Detailed_Log("now IsCombatOver = TRUE so invoked AsyncHelper" + blank);
+                Detailed_Log("Step_3090: now IsCombatOver = TRUE so invoked AsyncHelper" + blank);
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
             _targetTwoByCiv.Clear();
@@ -421,12 +425,15 @@ namespace Supremacy.Combat
 
         public void SendInitialUpdate()
         {
-            Detailed_Log("Called SendInitalUpdate to now call SendUpdates()");
+            Console.WriteLine("Step_3005: SendInitialUpdate");
+            Detailed_Log("Step_3006: Called SendInitalUpdate to now call SendUpdates()");
             SendUpdates();
         }
 
         protected void SendUpdates()
         {
+            Console.WriteLine("Step_3010: SendUpdates");
+
             foreach (CombatAssets playerAsset in _assets) // _assets is list of current player (friend) assets so one list for our friends, friend's and other's asset are in asset (not _assets)
             {
                 Civilization owner = playerAsset.Owner;
@@ -440,7 +447,7 @@ namespace Supremacy.Combat
                 //{
                 //    GameLog.Core.Combat.DebugFormat("asset of {0} in sector", asset.Owner.Key);
                 //}
-                Detailed_Log(_sectorString + "Current or first asset from " + playerAsset.Owner.Key + " for current friendlyAssets");
+                Detailed_Log("Step_3020:" + _sectorString + " > SendUpdates for current friendlyAssets for " + playerAsset.Owner.Key);
                 foreach (CombatAssets civAsset in _assets.Distinct().ToList())
                 {
                     //Detailed_Log("beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
@@ -472,8 +479,9 @@ namespace Supremacy.Combat
                             }
                         }
                     }
-                    Detailed_Log(_sectorString + "for = {0} currentEmpireStrength = " + currentEmpireStrength + " for " + civAsset.Owner.Key);
+                    Detailed_Log("Step_3030: SendUpdates " + _sectorString + "currentEmpireStrength = " + currentEmpireStrength + " for " + civAsset.Owner.Key);
                 }
+
                 foreach (CombatAssets otherAsset in _assets) // _assets is all combat assest in sector while "otherAsset" is not of type "friendly" first asset
                 {
                     if (otherAsset == playerAsset)
@@ -494,6 +502,7 @@ namespace Supremacy.Combat
                         //GameLog.Core.Combat.DebugFormat("asset for {0} added to hostilies", otherAsset.Owner.Key);
                     }
                 }
+
                 List<CombatAssets> leftOutAssets = new List<CombatAssets>();
                 foreach (CombatAssets missedAsset1 in _assets)
                 {
@@ -515,6 +524,7 @@ namespace Supremacy.Combat
                         }
                     }
                 }
+
                 CombatUpdate update = new CombatUpdate(
                     CombatID,
                     _roundNumber,
@@ -524,6 +534,7 @@ namespace Supremacy.Combat
                     friendlyAssets,
                     hostileAssets
                     );
+                Console.WriteLine("Step_3040: new CombatUpdate for " + owner);
                 // sends data back to combat window
 
                 // ToDo>try to build in here the Sitreps
@@ -549,7 +560,10 @@ namespace Supremacy.Combat
                 //    ;
 
                 //GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ReportEntry_CoS(owner, _location, _text, "", "", SitRepPriority.Red));
+                
+                
                 AsyncHelper.Invoke(_updateCallback, this, update);
+                Console.WriteLine("Step_3049:  _updateCallback for " + owner);
             }
         }
 
@@ -561,10 +575,10 @@ namespace Supremacy.Combat
             // CHANGE X
             for (int i = 0; i < _assets.Count; i++)
             {
-                Detailed_Log(_sectorString + "Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets);
+                Detailed_Log("Step_3048: " + _sectorString + " Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets);
                 if (!_assets[i].HasSurvivingAssets)
                 {
-                    Detailed_Log(_sectorString + "remove defeated assets for Player " + _assets[i].Owner.Key);
+                    Detailed_Log("Step_3049: " + _sectorString + "remove defeated assets for Player " + _assets[i].Owner.Key);
                     _assets.RemoveAt(i--);
                 }
             }
@@ -788,7 +802,7 @@ namespace Supremacy.Combat
         {
             if (_targetOneByCiv.Keys.Contains(source.OwnerID))
             {
-                Detailed_Log(_sectorString + "GetTargetOne ={0}" + _targetOneByCiv[source.OwnerID].GetTargetOne(source));//if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
+                Detailed_Log(_sectorString + "GetTargetOne = " + _targetOneByCiv[source.OwnerID].GetTargetOne(source));//if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
                 return _targetOneByCiv[source.OwnerID].GetTargetOne(source);
             }
             else

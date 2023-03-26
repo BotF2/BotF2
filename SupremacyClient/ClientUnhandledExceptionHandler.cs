@@ -62,7 +62,7 @@ namespace Supremacy.Client
                     Console.Error.WriteLine(errors);
                     Console.Error.Flush();
                     _ = MessageBox.Show(
-                        "An unhandled exception has occurred.  Detailed error information is "
+                        "9999: An unhandled exception has occurred.  Detailed error information is "
                         + "available in the 'Log.txt' file. Missing files could be the reason as well",
                         "Unhandled Exception",
                         MessageBoxButton.OK,
@@ -112,7 +112,7 @@ namespace Supremacy.Client
                 catch (Exception ex) 
                 {
                     _text = newline + newline
-                        + DateTime.Now + " #### ERROR - a missing file could be the reason as well" + newline; 
+                        + DateTime.Now + " #### ERROR 9998 - a missing file could be the reason as well" + newline; 
                     Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
 

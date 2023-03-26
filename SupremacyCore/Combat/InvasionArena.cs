@@ -1,4 +1,6 @@
-﻿using Supremacy.Annotations;
+﻿// File:InvasionArena.cs
+
+using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Collections;
 using Supremacy.Economy;
@@ -451,6 +453,11 @@ namespace Supremacy.Combat
             if (Population.CurrentValue == 0 || Colony.OwnerID == InvaderID)
             {
                 _status = InvasionStatus.Victory;
+                if (InvaderID == 6) // 
+                {
+                    //_status = InvasionStatus.Victory;
+                    AssimilatePopulation(Colony); //crashes the game
+            }
             }
             else
             {
@@ -462,26 +469,33 @@ namespace Supremacy.Combat
             }
         }
 
-        //public void AssimilatePopulation(Colony colony) // CRASH, around colony.Inhabitants = 
-        //{
-        //    CivilizationManager borgManager = GameContext.Current.CivilizationManagers[6];
-        //    Civilization borg = borgManager.Civilization; 
-        //    CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
-        //    Colony assimiltedCivHome = targetEmpireCivManager.HomeColony;
-        //    int gainedResearchPoints = assimiltedCivHome.NetResearch;
-        //    borgManager.Research.UpdateResearch(gainedResearchPoints);
-        //    colony.Owner = borg;
-        //    colony.OwnerID = borg.CivID;
-        //    colony.Inhabitants = borg.Race;
-        //    colony.InhabitantsID = borg.Race.Key;
-        //    //colony.Morale = borgManager.HomeColony.Morale;
-        //    GameLog.Client.AI.DebugFormat("Assimilated colony ={0}, owner = {1}, inhabitants = {2} moral = {3}",
-        //        colony.Name, colony.Owner.Key, colony.Inhabitants.Key, colony.Morale.CurrentValue);
-        //}
+        public void AssimilatePopulation(Colony colony) // CRASH, around colony.Inhabitants = 
+        {
+            CivilizationManager borgManager = GameContext.Current.CivilizationManagers[6];
+            Civilization borg = borgManager.Civilization;
+            CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
+            Colony assimiltedCivHome = targetEmpireCivManager.HomeColony;
+            int gainedResearchPoints = assimiltedCivHome.NetResearch;
+            borgManager.Research.UpdateResearch(gainedResearchPoints);
+
+            colony.InhabitantsID = borg.Key;// "8";  // 8 = Borg in Races
+
+            //colony.Inhabitants = GameContext.Current.CivilizationManagers[6].Civilization.Race;
+            colony.Owner = borg;
+            colony.OwnerID = borg.CivID;
+            colony.Population.AdjustCurrent(+50);
+            colony.Population.UpdateAndReset();
+
+
+            colony.Morale.AdjustCurrent(20);
+            colony.Morale.UpdateAndReset(); 
+            GameLog.Client.AI.DebugFormat("Assimilated colony ={0}, owner = {1}, morale = {2}",// inhabitants = {2} ",
+                colony.Name, colony.Owner.Key, /*colony.Inhabitants.Key, */colony.Morale.CurrentValue);
+        }
 
         private int ComputeDefenderCombatStrength()
         {
-            if (Colony != null)
+            if (Colony != null && Population != null)
                 return CombatHelper.ComputeGroundCombatStrength(Colony.Owner, Colony.Location, Population.CurrentValue);
             else
                 return 0;
@@ -674,8 +688,9 @@ namespace Supremacy.Combat
                     }
                     if (invasionArena.Status == InvasionStatus.Victory)
                     {
-                        // _invasionEndedCallback(this);
                         GameLog.Client.AI.DebugFormat("InvasionArean status = {0}", invasionArena.Status);
+                        _invasionEndedCallback(this);
+
                     }
                 }
                 else
@@ -1093,6 +1108,7 @@ namespace Supremacy.Combat
             {
                 _ = _invasionArena.Population.AdjustCurrent(-1 * _invasionArena.Population.CurrentValue);
             }
+            _invasionArena.Population.UpdateAndReset();
         }
 
         private static bool CanBombard(InvasionUnit unit)
@@ -1363,11 +1379,17 @@ namespace Supremacy.Combat
             _invasionArena.Population.UpdateAndReset();
             _invasionArena.ColonyShieldStrength.UpdateAndReset();
 
-            if (_invasionArena.Colony.Population.IsMinimized)
+            if (_invasionArena.Colony.Population.IsMinimized || _invasionArena.Colony.Population.CurrentValue < 5)
             {
                 CivilizationManager civManager = CivilizationManager.For(_invasionArena.Colony.OwnerID);
                 _invasionArena.Colony.Destroy();
+                _ = GameContext.Current.Universe.Destroy(_invasionArena.Colony);
+                //if (_invasionArena.Colony.is)
                 civManager.EnsureSeatOfGovernment();
+                if(_invasionArena.InvasionID == 6)
+                {
+                    Colony colony = new Colony(_invasionArena.Colony.System, GameContext.Current.CivilizationManagers[6].Civilization.Race);
+                }
             }
 
             AddDiplomacyMemories();

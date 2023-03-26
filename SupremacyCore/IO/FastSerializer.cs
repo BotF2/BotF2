@@ -127,7 +127,7 @@ namespace Supremacy.IO.Serialization
         /// </summary>
         public static bool DefaultPreserveDecimalScale;
         private string _text;
-        private string newline;
+        private readonly string newline = Environment.NewLine;
         private bool _trace;
 
         // Marker to denote that all elements in a typed array are optimizable
@@ -5467,6 +5467,7 @@ namespace Supremacy.IO.Serialization
                             }
                         default:
                             {
+                                //_text = newline; // dummy
                                 _text = "switch (typeCode) FAILED";
                                 Console.WriteLine(_text);
                                 object result = ProcessArrayTypes(typeCode, null);

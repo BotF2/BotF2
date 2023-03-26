@@ -45,14 +45,14 @@ namespace Supremacy.Game
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
-        private int _buyCostLastTurn;
+        //private int _buyCostLastTurn;
         private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
 
-//#pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable IDE0044 // Add readonly modifier
         private List<Civilization> _spiedCivList;
-//#pragma warning restore IDE0044 // Add readonly modifier
+#pragma warning restore IDE0044 // Add readonly modifier
 
 
         private int _homeColonyId;
@@ -66,6 +66,10 @@ namespace Supremacy.Game
         private int _rankIntelAttack;
         private bool _destroyOfShipOrdered;
         private string _text;
+#pragma warning disable IDE0052 // Remove unread private members
+        private int _buyCostLastTurn;
+#pragma warning restore IDE0052 // Remove unread private members
+
         //private int bc;  // buildingCosts
         private readonly string newline = Environment.NewLine;
 
@@ -212,11 +216,7 @@ namespace Supremacy.Game
 
             _text = newline; // dummy - do not remove
 
-            if (_civHist_List != null)
-            {
-                _civHist_List.Add(civHist_New);
-                // Output > try ALT + H ingame
-            }
+            _civHist_List?.Add(civHist_New);
 
         }
         //private AppContext _appContext => _appContext;
@@ -229,6 +229,7 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
+            _buyCostLastTurn += 1; // dummy
             _buyCostLastTurn = 0;
 
             _resources = new ResourcePool();
@@ -367,7 +368,7 @@ namespace Supremacy.Game
         {
             get
             {
-
+                _buyCostLastTurn += 1;  // dummy
                 //int bc = 0;
                 //if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
                 //    bc = 0;

@@ -37,7 +37,8 @@ namespace Supremacy.Combat
 
             //GameLog.Core.CombatDetails.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
             //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
-            _text = location.ToString()
+            _text = "Step_3199: "
+                + location.ToString()
                 + " > ### combatId " + combatId
                 + " Round " + roundNumber
                 + ", standoff= " + standoff

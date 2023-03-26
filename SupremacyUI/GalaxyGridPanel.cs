@@ -957,9 +957,14 @@ namespace Supremacy.UI
         private static FormattedText GetStarText(StarSystem system, Civilization playerCiv)
         {
             Civilization owner = system.Owner;
-            Brush brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
-                            ? s_colonyNameBrushes[system.OwnerID]
-                            : Brushes.White;
+            Brush brush = Brushes.White;
+            if (owner != null)
+            {
+                brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
+                                ? s_colonyNameBrushes[system.OwnerID]
+                                : Brushes.White;
+            }
+
             string nameText;
             switch (system.StarType)
             {

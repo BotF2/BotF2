@@ -41,7 +41,7 @@ namespace Supremacy.Tech
         private readonly HashSet<int> _orbitalBatteryDesigns;
         private static string _text;
         private static string line;
-        private static readonly string separator;
+        private static readonly string separator = ";";
         private static string file;
 
 

@@ -238,7 +238,7 @@ namespace Supremacy.WCF
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
 
-                _ = MessageBox.Show("An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
+                _ = MessageBox.Show("Step_0098: An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
                 //_errorService.HandleError(e);
 
@@ -250,7 +250,7 @@ namespace Supremacy.WCF
                 Thread.Sleep(1000);
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
-                _ = MessageBox.Show("An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
+                _ = MessageBox.Show("Step_0099: An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
             }
@@ -1429,6 +1429,7 @@ namespace Supremacy.WCF
 
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
+            Console.WriteLine("Step_3004: OnCombatOccurring ... populating _combatEngine");
             _combatEngine = new AutomatedCombatEngine(
                 assets,
                 SendCombatUpdateCallback,

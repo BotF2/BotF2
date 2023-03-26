@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" />
+    <section name="modules" type="Microsoft.Practices.Composite.Modularity.ModulesConfigurationSection, Microsoft.Practices.Composite" />
+    <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <section name="Supremacy.Client.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+    </sectionGroup>
+  </configSections>
+
+  <runtime>
+    <gcConcurrent enabled="false" />
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <probing privatePath="lib" />
+      <dependentAssembly>
+        <assemblyIdentity name="System.Windows.Interactivity" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+
+  <system.net>
+    <webRequestModules>
+      <add prefix="vfs" type="Supremacy.VFS.VfsWebRequestFactory, SupremacyCore" />
+    </webRequestModules>
+  </system.net>
+
+  <system.serviceModel>
+    <client>
+      <endpoint contract="Supremacy.WCF.ISupremacyService" binding="netTcpBinding" bindingConfiguration="DuplexBinding" behaviorConfiguration="ClientDuplexBehavior" />
+      <endpoint name="LocalEndpoint" address="net.pipe://localhost/SupremacyService/Local" contract="Supremacy.WCF.ISupremacyService" binding="netNamedPipeBinding" bindingConfiguration="NamedPipeBinding" behaviorConfiguration="ClientDuplexBehavior" />
+    </client>
+
+    <services>
+      <service name="Supremacy.WCF.SupremacyService">
+        <endpoint contract="Supremacy.WCF.ISupremacyService" address="net.tcp://localhost:4455/SupremacyService" binding="netTcpBinding" bindingConfiguration="DuplexBinding" behaviorConfiguration="ServerDuplexBehavior" />
+        <endpoint name="LocalEndpoint" address="net.pipe://localhost/SupremacyService/Local" contract="Supremacy.WCF.ISupremacyService" binding="netNamedPipeBinding" bindingConfiguration="NamedPipeBinding" behaviorConfiguration="ServerDuplexBehavior" />
+      </service>
+    </services>
+
+    <bindings>
+      <netNamedPipeBinding>
+        <binding name="NamedPipeBinding" closeTimeout="00:00:03" openTimeout="00:00:15" receiveTimeout="00:05:00" sendTimeout="00:05:00" transferMode="Buffered" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxBufferSize="134217728" maxReceivedMessageSize="134217728">
+          <readerQuotas maxDepth="134217728" maxStringContentLength="134217728" maxArrayLength="134217728" maxBytesPerRead="134217728" maxNameTableCharCount="134217728" />
+          <security mode="None">
+            <transport protectionLevel="None" />
+          </security>
+        </binding>
+      </netNamedPipeBinding>
+      <netTcpBinding>
+        <binding name="DuplexBinding" closeTimeout="00:00:03" openTimeout="00:00:10" receiveTimeout="00:05:00" sendTimeout="00:05:00" transactionFlow="false" transferMode="Buffered" transactionProtocol="OleTransactions" hostNameComparisonMode="StrongWildcard" listenBacklog="1024" maxBufferPoolSize="524288" maxBufferSize="134217728" maxConnections="10" maxReceivedMessageSize="134217728">
+          <readerQuotas maxDepth="134217728" maxStringContentLength="134217728" maxArrayLength="134217728" maxBytesPerRead="134217728" maxNameTableCharCount="134217728" />
+          <reliableSession ordered="true" inactivityTimeout="01:00:00" enabled="true" />
+          <security mode="None">
+            <transport clientCredentialType="None" protectionLevel="None" />
+          </security>
+        </binding>
+      </netTcpBinding>
+    </bindings>
+
+    <behaviors>
+      <endpointBehaviors>
+        <behavior name="ServerDuplexBehavior">
+          <synchronousReceive />
+        </behavior>
+        <behavior name="ClientDuplexBehavior">
+          <callbackTimeouts transactionTimeout="00:05:00" />
+          <synchronousReceive />
+        </behavior>
+      </endpointBehaviors>
+    </behaviors>
+
+  </system.serviceModel>
+  
+  <modules>
+  </modules>
+
+  <startup useLegacyV2RuntimeActivationPolicy="true">
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.2" />
+  </startup>
+
+  <userSettings>
+    <Supremacy.Client.Properties.Settings>
+      <setting name="EnableDialogAnimations" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="EnableScreenTransitions" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="CheckForUpdatesOnStartup" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="WindowHeight" serializeAs="String">
+        <value>768</value>
+      </setting>
+      <setting name="WindowWidth" serializeAs="String">
+        <value>1280</value>
+      </setting>
+      <setting name="HeightSpecial1" serializeAs="String">
+        <value>576</value>
+      </setting>
+      <setting name="WidthSpecial1" serializeAs="String">
+        <value>480</value>
+      </setting>
+      <setting name="HeightSpecial2" serializeAs="String">
+        <value>1152</value>
+      </setting>
+      <setting name="WidthSpecial2" serializeAs="String">
+        <value>960</value>
+      </setting>
+      <setting name="HeightSpecial3" serializeAs="String">
+        <value>270</value>
+      </setting>
+      <setting name="WidthSpecial3" serializeAs="String">
+        <value>225</value>
+      </setting>
+      <setting name="UseCombatScreen" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="UseAnimation" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="UseAnimatedStars" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="UseHighQualityScaling" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="FXVolume" serializeAs="String">
+        <value>0.2</value>
+      </setting>
+      <setting name="MusicVolume" serializeAs="String">
+        <value>0.2</value>
+      </setting>
+      <setting name="MasterVolume" serializeAs="String">
+        <value>0.2</value>
+      </setting>
+      <setting name="FullScreenMode" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="ReportErrors" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesAI" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesAudio" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesCivsAndRaces" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesColonies" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesCombat" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesCombatDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesCredits" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDeuterium" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDilithium" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDuranium" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDiplomacy" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesEnergy" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesEvents" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGalaxyGenerator" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGameData" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGameInitData" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGeneral" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="TracesInfoText" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesIntel" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesMapData" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesMultiplay" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesProduction" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesReportErrorsToEmail" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesResearch" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesSitReps" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesSaveLoad" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesShips" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesShipProduction" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesStations" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesStructures" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesSystemAssault" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesTest" serializeAs="String">   <!--for TestPorpuse-->
+        <value>False</value>
+      </setting>
+      <setting name="TracesTradeRoutes" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesUI" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesXMLCheck" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesXML2VSCOutput" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesAIDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesAudioDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesCivsAndRacesDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesColoniesDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesCombatDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesCreditsDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDeuteriumDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDilithiumDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDuraniumDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesDiplomacyDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesEnergyDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesEventsDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGalaxyGeneratorDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGameDataDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGameInitDataDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesGeneralDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesInfoTextDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesIntelDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesMapDataDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesMultiplayDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesProductionDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesReportErrorsToEmailDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesResearchDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesSitRepsDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesSaveLoadDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesShipsDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesShipProductionDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesStationsDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesStructuresDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesSystemAssaultDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesTestDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesTradeRoutesDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesUIDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesXMLCheckDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="TracesXML2VSCOutputDetails" serializeAs="String">
+        <value>False</value>
+      </setting>
+    </Supremacy.Client.Properties.Settings>
+  </userSettings>
+</configuration>

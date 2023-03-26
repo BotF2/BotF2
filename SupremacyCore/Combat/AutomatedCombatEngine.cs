@@ -11,6 +11,7 @@ using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -44,7 +45,7 @@ namespace Supremacy.Combat
         {
             MapLocation _sector = _assets.FirstOrDefault().Location;
             _sectorString = _sector.ToString();
-            Detailed_Log(_sectorString + " > ResolveCombatRoundCore.... _combatShips.Count: " + _combatShips.Count);
+            Detailed_Log("Step_3008: " + _sectorString + " > ResolveCombatRoundCore.... _combatShips.Count: " + _combatShips.Count);
             //Console.WriteLine(_text);
             //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -345,6 +346,7 @@ namespace Supremacy.Combat
                     {
                         empiresInBattle[q, 2] = 888; // Return Fire for all AIs, if no other war etc.
                     }
+
                     bool alreadyAtWar = false;
                     foreach (int ownerIDWar in ownerIDs)
                     {
@@ -369,8 +371,8 @@ namespace Supremacy.Combat
                 //}
                 Detailed_Log(_sectorString + 
                     " > Empire Civ in Battle: " + empiresInBattle[q, 0]
-                    + ", FirstTarget = " + empiresInBattle[q, 1]
-                    + ", 2nd  Target = " + empiresInBattle[q, 2]
+                    + ", Target1 = " + empiresInBattle[q, 1]
+                    + ", Target2 = " + empiresInBattle[q, 2]
                     + ", Civ q = " + q
                     );
                 q++;
@@ -2049,7 +2051,8 @@ namespace Supremacy.Combat
                     {
                         if (Assets != null)
                         {
-                            Detailed_Log(
+                            Detailed_Log("Step_3888: " 
+                                + combatent.Item1.Source.Location + 
                                 "REMOVE DESTROYED Name of Owner = " + Assets.Owner.Name
                                 + ", Assets.CombatShips = " + Assets.CombatShips.Count
                                 + ", Assets.NonCobatShips = " +  Assets.NonCombatShips.Count);
@@ -2119,7 +2122,8 @@ namespace Supremacy.Combat
                             + " > " + combatent.Item1.Source.ObjectID
                             + " " + combatent.Item1.Name
                             + " " + combatent.Item1.Source.Design
-                            + " destroyed."
+                            + string.Format(ResourceManager.GetString("DESTROYED"))
+                            //+ " destroyed."
                             ;
                             Console.WriteLine("SR: " + _text);
 
@@ -2227,11 +2231,12 @@ namespace Supremacy.Combat
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
                     _text = "Combat at " + ship.Item1.Source.Location
-                        + " > #" + ship.Item1.Source.ObjectID
-                        + "  " + ship.Item1.Source.Design
-                        + " * " + ship.Item1.Name + " * "
+                        + " > Ship * " + ship.Item1.Source.ObjectID
 
-                        + " still alive and staying."
+                        + " * " + ship.Item1.Name + " * "
+                        + "  " + ship.Item1.Source.Design
+                        + " " + string.Format(ResourceManager.GetString("ALIVE_AND_STAYING"))
+                    //+ " still alive and staying." + Resources
                         ;
                     Console.WriteLine("SR: " + _text);
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
@@ -2260,8 +2265,8 @@ namespace Supremacy.Combat
                                 + " > #" + ship.Item1.Source.ObjectID
                                 + "  " + ship.Item1.Source.Design
                                 + " * " + ship.Item1.Name + " * "
-
-                                + "retreated."
+                                + string.Format(ResourceManager.GetString("RETREATED"))
+                                //+ "retreated."
                                 ;
                             Console.WriteLine("SR: " + _text);
                             civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));

@@ -80,9 +80,9 @@ namespace Supremacy.Client.Views
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
                 _text = "Turn " + GameContext.Current.TurnNumber
-                    + ";added;sender=;" + agreement.Sender
-                    + ";recipient=;" + agreement.Recipient
-                    + ";agreement=;" + agreement.Proposal.Clauses[0].ClauseType.ToString()
+                    + ";added;sender=; " + agreement.Sender
+                    + " ;recipient=; " + agreement.Recipient
+                    + " ;agreement=; " + agreement.Proposal.Clauses[0].ClauseType.ToString()
 
                     ;
                 Console.WriteLine(_text);

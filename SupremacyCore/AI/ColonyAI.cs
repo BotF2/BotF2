@@ -34,10 +34,10 @@ namespace Supremacy.AI
 #pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
         private const int MaxEmpireColonyCount = 999;
 #pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
-#pragma warning disable IDE0052 // Ungelesene private Member entfernen
+//#pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private static bool need1Colonizer;
-        private static string blank = " ";
-#pragma warning restore IDE0052 // Ungelesene private Member entfernen
+        private static readonly string blank = " ";
+//#pragma warning restore IDE0052 // Ungelesene private Member entfernen
 
         public static void DoTurn([NotNull] Civilization civ)
         {
@@ -350,7 +350,7 @@ namespace Supremacy.AI
                 //    //GameContext.Current.TurnNumber % ColonyShipEveryTurns == 0 &&
                 //    //need1Colonizer &&
                 //    !shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(colony.Shipyard.IsBuilding))
-                if (colony.Sector.GetOwnedFleets(civ).All(o => !o.IsColonizer) &&
+                if (need1Colonizer && colony.Sector.GetOwnedFleets(civ).All(o => !o.IsColonizer) &&
                     !shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(colony.Shipyard.IsBuilding))
                 {
                     BuildProject project = potentialProjects.LastOrDefault(p => shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));

@@ -431,7 +431,18 @@ namespace Supremacy.Universe
         public Race Inhabitants
         {
             get => GameContext.Current.Races[_inhabitantId];
-            set => Inhabitants = value;
+            set
+            {
+                if (value != null)
+                {
+                    Inhabitants = value;
+                }
+                else
+                {
+                    return;
+                }
+                //Inhabitants = value;
+            }
         }
 
         /// <summary>

@@ -592,7 +592,7 @@
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Margin="2">            
                 <TreeView x:Name="OtherCivsView" 
-                          ItemsSource="{Binding OtherCivs}"
+                          ItemsSource="{Binding otherCivs}"
                           BorderThickness="0"
                           VerticalAlignment="Top"
                             Height="541"

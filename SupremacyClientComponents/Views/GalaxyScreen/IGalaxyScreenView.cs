@@ -44,6 +44,6 @@ namespace Supremacy.Client.Views
 
     public interface ISystemAssaultScreenView : IGameScreenView<SystemAssaultScreenViewModel>
     {
-        bool IsActive { get; set; }
+        new bool IsActive { get; set; }
     }
 }

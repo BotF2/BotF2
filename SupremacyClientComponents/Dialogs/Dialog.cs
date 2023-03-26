@@ -539,6 +539,7 @@ namespace Supremacy.Client.Dialogs
             if (IsOpen)
             {
                 GameLog.Client.General.Error("Cannot call ShowDialog() on a dialog that is already open.");
+
             }
 
             _showingAsDialog = true;
