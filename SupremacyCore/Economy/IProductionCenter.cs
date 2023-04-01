@@ -55,10 +55,7 @@ namespace Supremacy.Economy
             foreach (BuildSlot buildSlot in source.BuildSlots)
             {
                 BuildProject project = buildSlot.Project;
-                if (project != null)
-                {
-                    project.InvalidateTurnsRemaining();
-                }
+                project?.InvalidateTurnsRemaining();
             }
             foreach (BuildProject project in source.BuildQueue.Where(o => o.Project != null).Select(o => o.Project))
             {

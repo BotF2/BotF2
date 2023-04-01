@@ -27,10 +27,7 @@ namespace Supremacy.Scripting.Ast
                 _knownVariables[name] = variable;
             }
 
-            if (Parent != null)
-            {
-                Parent.Explicit.AddKnownVariable(name, variable);
-            }
+            Parent?.Explicit.AddKnownVariable(name, variable);
         }
 
         internal IKnownVariable GetKnownVariable(string name)

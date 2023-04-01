@@ -102,10 +102,7 @@ namespace Supremacy.Client.Views
             }
 
             ContextMenu orderMenu = ContextMenu;
-            if (orderMenu != null)
-            {
-                orderMenu.Items.Clear();
-            }
+            orderMenu?.Items.Clear();
 
             if (fleetView.Source.OwnerID != _appContext.LocalPlayer.EmpireID)
             {

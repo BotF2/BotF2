@@ -172,10 +172,7 @@ namespace Supremacy.Scripting.Events
                     target.RemoveOrbitalBatteries(removeOrbitalBatteries);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target));
-                    }
+                    civManager?.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target));
 
                     GameContext.Current.Universe.UpdateSectors();
                     return;

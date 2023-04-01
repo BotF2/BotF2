@@ -112,10 +112,7 @@ namespace Supremacy.Scripting.Events
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
 
                         CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                        if (civManager != null)
-                        {
-                            civManager.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
-                        }
+                        civManager?.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
 
                     }
 

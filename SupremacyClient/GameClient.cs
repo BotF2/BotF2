@@ -89,6 +89,7 @@ namespace Supremacy.Client
                 () =>
                 {
                     ClientEvents.GameStarted.Publish(new ClientDataEventArgs<GameStartData>(startMessage.Data));
+                    //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                     ClientEvents.TurnStarted.Publish(new GameContextEventArgs(_appContext, _appContext.CurrentGame));
                     Channel.Publish(new TurnStartedMessage());
                 },
@@ -175,10 +176,7 @@ namespace Supremacy.Client
                 () =>
                 {
                     IGameClient client = Client;
-                    if (client != null)
-                    {
-                        client.Disconnect();
-                    }
+                    client?.Disconnect();
                 },
                 _scheduler)();
         }

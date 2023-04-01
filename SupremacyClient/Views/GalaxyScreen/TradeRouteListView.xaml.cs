@@ -66,10 +66,7 @@ namespace Supremacy.Client.Views
             }
 
             ContextMenu contextMenu = ContextMenu;
-            if (contextMenu != null)
-            {
-                contextMenu.Items.Clear();
-            }
+            contextMenu?.Items.Clear();
 
             if (tradeRoute.SourceColony.OwnerID != _appContext.LocalPlayer.EmpireID)
             {

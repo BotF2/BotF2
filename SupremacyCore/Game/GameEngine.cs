@@ -421,8 +421,8 @@ namespace Supremacy.Game
               {
                   GameContext.PushThreadContext(game);
 
-                  _text = "Step_0996: item: ID = " + item.ObjectID + ", Name = " + item.Name + " will be the next";
-                  Console.WriteLine(_text);
+                  _text = "Step_0996: item: ID = " + item.ObjectID + ", Name = " + item.Name + " will be the next for resetting";
+                  //Console.WriteLine(_text);
                   // GameLog.Core.General.DebugFormat("next item will be: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                   try
                   {
@@ -430,7 +430,7 @@ namespace Supremacy.Game
                       item.Reset();
                       // works well but gives hidden info
                       _text = "Step_0998: item: ID = "+ item.ObjectID + ", Name = " + item.Name + " is resetted successfully";
-                      Console.WriteLine(_text);
+                      //Console.WriteLine(_text);
                       // GameLog.Core.General.DebugFormat(_text);
                   }
                   catch (Exception e)
@@ -1517,8 +1517,14 @@ namespace Supremacy.Game
                 
                 _ = CombatReset.WaitOne();
 
+                if (combats.Count > 1)
+                {
+                    Console.WriteLine("Step_3060: Next COMBAT out of " + combats.Count);
+                }
+
             }
 
+            //Thread.Sleep(1000);  // make a pause to fin
             foreach (InvasionArena invasion in invasions)
             {
                 _ = CombatReset.Reset();
@@ -1531,6 +1537,11 @@ namespace Supremacy.Game
                 if (invasion.Invader.IsHuman)
                 {
                     _ = CombatReset.WaitOne();
+                }
+
+                if (combats.Count > 1)
+                {
+                    Console.WriteLine("Step_3760: Next INVASION out of " + invasions.Count);
                 }
             }
 
@@ -3057,7 +3068,7 @@ namespace Supremacy.Game
                       int _incomeLowerLimit = -100 * civManager.AverageTechLevel;
                       bool _creditsSitRep = false;
 
-                      Console.WriteLine("CreditsLastChange = " + civManager.Credits.LastChange + "      for " + civManager.Civilization.Key);
+                      //Console.WriteLine("CreditsLastChange = " + civManager.Credits.LastChange + "      for " + civManager.Civilization.Key);
 
 
                       if (civManager.Credits.CurrentValue < _creditsLowerLimit)
@@ -3824,7 +3835,7 @@ namespace Supremacy.Game
                     + " "
                     + " for " + civManager.Civilization.Key
                     ;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
                 civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
 
@@ -3942,7 +3953,9 @@ namespace Supremacy.Game
                 // set back to zero
                 _globalMorale = 0;
 
-                Console.WriteLine(_text);
+                if(civManager.Civilization.IsEmpire) // empires might have more than 1 colony
+                    Console.WriteLine(_text);
+
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
                 PrintCivRank(CivRankList);
@@ -4038,7 +4051,7 @@ namespace Supremacy.Game
                     CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
                     // only own civilization
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);  // this is all civs
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
                     // all ships shown

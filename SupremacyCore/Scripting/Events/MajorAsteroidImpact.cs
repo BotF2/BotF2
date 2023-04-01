@@ -149,10 +149,7 @@ namespace Supremacy.Scripting.Events
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
-                    }
+                    civManager?.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
 
                     target.Population.UpdateAndReset();
 

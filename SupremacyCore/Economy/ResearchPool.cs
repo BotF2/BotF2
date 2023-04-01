@@ -457,10 +457,7 @@ namespace Supremacy.Economy
             ICollection<TechObjectDesign> designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
             List<TechObjectDesign> newDesigns = designsAfter.Except(designsBefore).ToList();
 
-            if (civManager != null)
-            {
-                civManager.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
-            }
+            civManager?.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
         }
 
         /// <summary>

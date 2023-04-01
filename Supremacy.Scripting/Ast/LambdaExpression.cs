@@ -104,10 +104,7 @@ namespace Supremacy.Scripting.Ast
 
                 sw.Write(" => ");
 
-                if (_body != null)
-                {
-                    _body.Dump(sw, indentChange);
-                }
+                _body?.Dump(sw, indentChange);
             }
             else
             {
@@ -136,10 +133,7 @@ namespace Supremacy.Scripting.Ast
 
                 sw.Write(" => ");
 
-                if (_body != null)
-                {
-                    _body.Dump(sw, indentChange);
-                }
+                _body?.Dump(sw, indentChange);
             }
         }
 

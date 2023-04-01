@@ -387,10 +387,7 @@ namespace Supremacy.Orbitals
                 if (Fleet != null)
                 {
                     Fleet.SetOrder(Fleet.GetDefaultOrder());
-                    if (Fleet.Order != null)
-                    {
-                        Fleet.Order.OnTurnBeginning();
-                    }
+                    Fleet.Order?.OnTurnBeginning();
                 }
             }
         }

@@ -103,10 +103,7 @@ namespace Supremacy.Scripting.Events
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
 
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
-                    }
+                    civManager?.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
                 }
 
                 return;

@@ -199,11 +199,8 @@ namespace Supremacy.Economy
 
             Source.OrbitalBatteryDesign = OrbitalBatteryDesign;
 
-            if (civManager != null)
-            {
-                civManager.SitRepEntries.Add(
+            civManager?.SitRepEntries.Add(
                     new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
-            }
         }
 
         public OrbitalBatteryUpgradeProject(Colony colony, OrbitalBatteryDesign target)

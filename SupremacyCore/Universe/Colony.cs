@@ -1722,10 +1722,7 @@ namespace Supremacy.Universe
                     break;
             }
             this.InvalidateBuildTimes();
-            if (Shipyard != null)
-            {
-                Shipyard.InvalidateBuildTimes();
-            }
+            Shipyard?.InvalidateBuildTimes();
 
             return true;
         }
@@ -1766,10 +1763,7 @@ namespace Supremacy.Universe
                     break;
             }
             this.InvalidateBuildTimes();
-            if (Shipyard != null)
-            {
-                Shipyard.InvalidateBuildTimes();
-            }
+            Shipyard?.InvalidateBuildTimes();
 
             return true;
         }
@@ -2634,10 +2628,7 @@ namespace Supremacy.Universe
                             case BonusType.PercentIndustry:
                                 _ = propertyChanges.Add("NetIndustry");
                                 this.InvalidateBuildTimes();
-                                if (Shipyard != null)
-                                {
-                                    Shipyard.InvalidateBuildTimes();
-                                }
+                                Shipyard?.InvalidateBuildTimes();
 
                                 break;
                             case BonusType.Energy:

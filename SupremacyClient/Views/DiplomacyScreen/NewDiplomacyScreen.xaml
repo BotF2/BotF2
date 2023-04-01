@@ -729,7 +729,7 @@
                                             VerticalGridLineThickness="0"
                                             VerticalGridLineBrush="Transparent">
                                     <xcdg:TableView.FixedHeaders>
-                                        <xcdg:ClearHeadersFooters />
+                                        <!--<xcdg:ClearHeadersFooters />-->
                                         <DataTemplate>
                                             <xcdg:ColumnManagerRow AllowSort="True"
                                            AllowColumnReorder="True" />

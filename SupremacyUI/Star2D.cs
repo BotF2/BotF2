@@ -138,10 +138,7 @@ namespace Supremacy.UI
             switch (_clockGroup.CurrentState)
             {
                 case ClockState.Stopped:
-                    if (_clockGroup.Controller != null)
-                    {
-                        _clockGroup.Controller.Begin();
-                    }
+                    _clockGroup.Controller?.Begin();
 
                     break;
                 default:

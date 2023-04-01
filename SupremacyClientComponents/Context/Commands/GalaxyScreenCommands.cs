@@ -46,6 +46,8 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand RemoveShipFromTaskForce = new CompositeCommand();
         public static readonly CompositeCommand SelectSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOnSector = new CompositeCommand();
+        public static readonly CompositeCommand View25Percent = new CompositeCommand();
+
         public static readonly CompositeCommand CenterOnHomeSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOn1 = new CompositeCommand();
         public static readonly CompositeCommand CenterOn2 = new CompositeCommand();
@@ -117,7 +119,9 @@ namespace Supremacy.Client.Commands
         public IIndexedCollection<TechObject> Objects => _objects;
 
         #region Implementation of ICheckableCommandParameter
+#pragma warning disable CS0067 // The event 'ScrapCommandArgs.InnerParameterChanged' is never used
         public event EventHandler InnerParameterChanged;
+#pragma warning restore CS0067 // The event 'ScrapCommandArgs.InnerParameterChanged' is never used
         public event EventHandler IsCheckedChanged;
 
         public bool Handled { get; set; }

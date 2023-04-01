@@ -9,6 +9,8 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
+using Supremacy.Client;
+using Supremacy.Client.Commands;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
@@ -29,6 +31,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.WCF
@@ -175,9 +178,12 @@ namespace Supremacy.WCF
                     if ((_gameInitData != null) &&
                         ((_gameInitData.GameType == GameType.SinglePlayerLoad) || (_gameInitData.GameType == GameType.MultiplayerLoad)))
                     {
+                        //NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         if (!SavedGameManager.LoadGame(_gameInitData.SaveGameFileName, out SavedGameHeader header, out _game, out DateTime timestamp))
                         {
+                            //SendKeys.SendWait("{F1}");  // shows Map
                             EndGame();
+                            //SendKeys.SendWait("{F1}");  // shows Map
                             return;
                         }
                     }
@@ -218,6 +224,8 @@ namespace Supremacy.WCF
                                 .Subscribe(
                                     _ => { },
                                     e => DropPlayerAsync(player));
+                            //SendKeys.SendWait("{F1}");  // shows Map
+                            //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         }
                         catch
                         {
@@ -228,6 +236,7 @@ namespace Supremacy.WCF
 
                             DropPlayerAsync(playerInfo.Player);
                         }
+                        //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                     }
                 }
             }
@@ -254,6 +263,8 @@ namespace Supremacy.WCF
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
             }
+            //SendKeys.SendWait("{F1}");  // shows Map
+            //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
         }
 
         internal void DropPlayer()
@@ -807,7 +818,9 @@ namespace Supremacy.WCF
             OnTurnPhaseChanged(phase);
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         private void OnAITaskCompleted()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             lock (_aiAsyncLock)  // is this used anyway ??? ...reported by VS: it is not used
             {

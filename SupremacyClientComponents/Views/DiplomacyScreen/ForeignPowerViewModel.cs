@@ -574,15 +574,9 @@ namespace Supremacy.Client.Views
 
         public void InvalidateCommands()
         {
-            if (_outgoingMessage != null)
-            {
-                _outgoingMessage.InvalidateCommands();
-            }
+            _outgoingMessage?.InvalidateCommands();
 
-            if (_incomingMessage != null)
-            {
-                _incomingMessage.InvalidateCommands();
-            }
+            _incomingMessage?.InvalidateCommands();
         }
     }
 }

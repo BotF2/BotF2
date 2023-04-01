@@ -116,10 +116,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            if (targetItemsControl != null)
-            {
-                targetItemsControl.SelectedItems.Clear();
-            }
+            targetItemsControl?.SelectedItems.Clear();
 
             foreach (Ship ship in ships)
             {

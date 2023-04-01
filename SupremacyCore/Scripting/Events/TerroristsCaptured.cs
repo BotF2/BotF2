@@ -77,10 +77,7 @@ namespace Supremacy.Scripting.Events
                     target.Morale.UpdateAndReset();
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
-                    }
+                    civManager?.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
                 }
             }
         }

@@ -409,10 +409,7 @@ namespace Supremacy.Client
             _ = messageHost.SetBinding(WidthProperty, widthBinding);
             _ = ChatPanel.Children.Add(messageHost);
 
-            if (ChatPanel.ScrollOwner != null)
-            {
-                ChatPanel.ScrollOwner.ScrollToEnd();
-            }
+            ChatPanel.ScrollOwner?.ScrollToEnd();
         }
 
         #region Implementation of IActiveAware

@@ -63,7 +63,8 @@ namespace Supremacy.Client
                     Console.Error.Flush();
                     _ = MessageBox.Show(
                         "9999: An unhandled exception has occurred.  Detailed error information is "
-                        + "available in the 'Log.txt' file. Missing files could be the reason as well",
+                        + "available in the 'Log.txt' file. Missing files could be the reason as well."
+                        + " Press OK and have a look to Log.txt",
                         "Unhandled Exception",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error

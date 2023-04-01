@@ -288,6 +288,7 @@ namespace Supremacy.Combat
         private bool _hasOrbitalDefenses;
         private bool _hasAttackingUnits;
         private bool _canLandTroops;
+        private string _text;
         public bool IsMultiplayerGame;
 
         public InvasionArena([NotNull] Colony colony, [NotNull] Civilization invader)
@@ -432,8 +433,13 @@ namespace Supremacy.Combat
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
             _canLandTroops = _invadingUnits.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Any(o => o.ShipType == ShipType.Transport);
 
-            GameLog.Core.SystemAssaultDetails.DebugFormat("_canLandTroops(Transport Ships) = {0}, and/but ColonyShieldStrength = {1}, Last Value = {2}",
-                _canLandTroops, ColonyShieldStrength.CurrentValue, ColonyShieldStrength.LastValue);
+            _text = "Step_3782: " 
+                + "_canLandTroops(Transport Ships) = " + _canLandTroops
+                + ", and/but ColonyShieldStrength = " + ColonyShieldStrength.CurrentValue
+                + "{1}, Last Value = " + ColonyShieldStrength.LastValue
+                ;
+            Console.WriteLine(_text);
+            GameLog.Core.Combat.DebugFormat(_text);
             if (ColonyShieldStrength.CurrentValue > 0)
             {
                 _canLandTroops = false;
@@ -474,8 +480,8 @@ namespace Supremacy.Combat
             CivilizationManager borgManager = GameContext.Current.CivilizationManagers[6];
             Civilization borg = borgManager.Civilization;
             CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
-            Colony assimiltedCivHome = targetEmpireCivManager.HomeColony;
-            int gainedResearchPoints = assimiltedCivHome.NetResearch;
+            Colony assimilatedCivHome = targetEmpireCivManager.HomeColony;
+            int gainedResearchPoints = assimilatedCivHome.NetResearch;
             borgManager.Research.UpdateResearch(gainedResearchPoints);
 
             colony.InhabitantsID = borg.Key;// "8";  // 8 = Borg in Races
@@ -496,9 +502,22 @@ namespace Supremacy.Combat
         private int ComputeDefenderCombatStrength()
         {
             if (Colony != null && Population != null)
+            {
+                Report_SystemAssaultDetails("Step_3760: ComputeDefenderCombatStrength for " 
+                    + Colony.Name
+                    + " ( " + Population
+                    + " Pop.) " 
+                    );
                 return CombatHelper.ComputeGroundCombatStrength(Colony.Owner, Colony.Location, Population.CurrentValue);
+            }
             else
                 return 0;
+        }
+
+        private void Report_SystemAssaultDetails(string v)
+        {
+            Console.WriteLine(v);   
+            GameLog.Core.SystemAssaultDetails.DebugFormat(v);
         }
 
         private int ComputeInvaderCombatStrength()
@@ -639,6 +658,8 @@ namespace Supremacy.Combat
         private InvasionArena _invasionArena;
         private InvasionOrders _orders;
         private Dictionary<ExperienceRank, double> _experienceAccuracy;
+
+        [NonSerialized]
         private string _text;
 
         public InvasionEngine([NotNull] SendInvasionUpdateCallback sendUpdateCallback, [NotNull] NotifyInvasionEndedCallback invasionEndedCallback)
@@ -664,6 +685,7 @@ namespace Supremacy.Combat
                     // _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
                     _experienceAccuracy[rank] = double.TryParse(accuracyTable[rank.ToString()][0], out double modifier) ? modifier : 0.75;
                 }
+
                 if (!invasionArena.Invader.IsHuman)
                 {
                     InvasionUnit[] transports = invasionArena.InvadingUnits.Where(n => n.Design.Key.Contains("TRANSPORT")).ToArray();
@@ -676,9 +698,9 @@ namespace Supremacy.Combat
                     }
                     if (invasionArena.ColonyShieldStrength.CurrentValue > 0)
                     {
-                        InvasionOrders attackSheilds = new InvasionOrders(invasionArena.InvasionID, InvasionAction.BombardPlanet, InvasionTargetingStrategy.MaximumDamage, transports);
+                        InvasionOrders attackShields = new InvasionOrders(invasionArena.InvasionID, InvasionAction.BombardPlanet, InvasionTargetingStrategy.MaximumDamage, transports);
                         _invasionArena.Status = InvasionStatus.InProgress;
-                        SubmitOrders(attackSheilds);
+                        SubmitOrders(attackShields);
                     }
                     if (invasionArena.CanLandTroops)
                     {
@@ -688,7 +710,7 @@ namespace Supremacy.Combat
                     }
                     if (invasionArena.Status == InvasionStatus.Victory)
                     {
-                        GameLog.Client.AI.DebugFormat("InvasionArean status = {0}", invasionArena.Status);
+                        GameLog.Client.AI.DebugFormat("Step_3785: AI reached: InvasionArean status = {0}", invasionArena.Status);
                         _invasionEndedCallback(this);
 
                     }
@@ -702,7 +724,14 @@ namespace Supremacy.Combat
 
         private void SendUpdate()
         {
+            Report("Step_3888: SendUpdate (for Human Player)...");
             _sendUpdateCallback(this, _invasionArena);
+        }
+
+        private void Report(string v)
+        {
+            Console.WriteLine(v);
+            GameLog.Core.SystemAssaultDetails.DebugFormat(v); ;
         }
 
         public void SubmitOrders([NotNull] InvasionOrders orders)
@@ -861,7 +890,8 @@ namespace Supremacy.Combat
             Civilization invader = GameContext.Current.Civilizations[_invasionArena.InvaderID];
 
             int defenderCombatStrength = _invasionArena.DefenderCombatStrength;
-            _text = colony.Location
+            _text = "Step_3762: " 
+                + colony.Location
                 + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
                 + " defenderCombatStrength= " + defenderCombatStrength
                 ;
@@ -1382,17 +1412,28 @@ namespace Supremacy.Combat
             if (_invasionArena.Colony.Population.IsMinimized || _invasionArena.Colony.Population.CurrentValue < 5)
             {
                 CivilizationManager civManager = CivilizationManager.For(_invasionArena.Colony.OwnerID);
+                _text = _invasionArena.Colony.Location + _invasionArena.Colony.Name;
                 _invasionArena.Colony.Destroy();
                 _ = GameContext.Current.Universe.Destroy(_invasionArena.Colony);
                 //if (_invasionArena.Colony.is)
+                _text = "STEP_3798: " + _text + "Colony destroyed due to Invasion.";
+                Console.WriteLine(_text);
+                GameLog.Core.Combat.DebugFormat(_text);
+
                 civManager.EnsureSeatOfGovernment();
                 if(_invasionArena.InvasionID == 6)
                 {
                     Colony colony = new Colony(_invasionArena.Colony.System, GameContext.Current.CivilizationManagers[6].Civilization.Race);
+                    _text = "STEP_3799: " + _text + "New Borg colony established after Invasion";
+                    Console.WriteLine(_text);
+                    GameLog.Core.Combat.DebugFormat(_text);
                 }
+                //_text = "STEP_3799: " + _text + "Colony destroyed due to Invasion.";
+                //Console.WriteLine(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
             }
 
-            AddDiplomacyMemories();
+            //AddDiplomacyMemories();
 
             _invasionEndedCallback(this);
 
@@ -1401,7 +1442,7 @@ namespace Supremacy.Combat
             string defenderUnitsDestroyed = "0";
             defenderUnitsDestroyed = _invasionArena.DefendingUnits.Where(o => o.Health.IsMinimized).ToList().Count().ToString();
 
-            _text = "";
+            //_text = "";
 
 
 
@@ -1423,9 +1464,9 @@ namespace Supremacy.Combat
 
         }
 
-        private void AddDiplomacyMemories()
-        {
-        }
+        //private void AddDiplomacyMemories()
+        //{
+        //}
 
         protected void VerifyInvasionInProgress()
         {

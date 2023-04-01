@@ -435,10 +435,7 @@ namespace Supremacy.Messaging
 
                     Dispatcher.PushFrame(_frame);
 
-                    if (timer != null)
-                    {
-                        timer.Stop();
-                    }
+                    timer?.Stop();
                 }
                 else
                 {

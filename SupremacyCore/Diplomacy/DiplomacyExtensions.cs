@@ -142,10 +142,7 @@ namespace Supremacy.Diplomacy
             }
 
             IDiplomacyDataExtended data = source.GetExtendedData(aggressor);
-            if (data != null)
-            {
-                data.OnAttack();
-            }
+            data?.OnAttack();
         }
 
         public static void OnIncursion(this Diplomat source, Civilization aggressor)
@@ -156,10 +153,7 @@ namespace Supremacy.Diplomacy
             }
 
             IDiplomacyDataExtended data = source.GetExtendedData(aggressor);
-            if (data != null)
-            {
-                data.OnIncursion();
-            }
+            data?.OnIncursion();
         }
 
         public static IProposal GetLastProposalSent(this Diplomat source, ICivIdentity civ)

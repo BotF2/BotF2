@@ -58,10 +58,7 @@ namespace Supremacy.Effects
                 else
                 {
                     CompositeDisposer disposer = Interlocked.Exchange(ref SuspendedEffectsHandle, null);
-                    if (disposer != null)
-                    {
-                        disposer.Dispose();
-                    }
+                    disposer?.Dispose();
                 }
 
             }

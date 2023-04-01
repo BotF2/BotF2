@@ -120,6 +120,7 @@ namespace Supremacy.Client.Behaviors
 
         private static VisibilityGroupScopeBehavior GetVisibilityGroupScope(UIElement target)
         {
+
             return (VisibilityGroupScopeBehavior)target.GetValue(VisibilityGroupScopePropertyKey.DependencyProperty);
         }
 

@@ -21,7 +21,11 @@ namespace Supremacy.Scripting.Utility
 
         public static class CoreTypes
         {
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable CS0169 // The field 'TypeManager.CoreTypes._dynamic' is never used
             private static readonly dynamic _dynamic; // It used by GetField("_dynamic", ...), if you removed this line be leave GetField() call, the game will crash mid-game
+#pragma warning restore CS0169 // The field 'TypeManager.CoreTypes._dynamic' is never used
+#pragma warning restore IDE0051 // Remove unused private members
 
             public static readonly Type Dynamic = typeof(CoreTypes).GetField("_dynamic", BindingFlags.NonPublic | BindingFlags.Static).FieldType;
             public static readonly Type Null = typeof(DynamicNull);

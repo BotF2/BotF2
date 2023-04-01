@@ -182,6 +182,7 @@ namespace Supremacy.Client
 
             _soundPlayer.Play("Menu", "LoadingGame");
             _ = GameOptionsManager.SaveDefaults(OptionsPanel.Options);
+
             DialogResult = true;
         }
 
