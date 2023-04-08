@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 // DoTurn at Line 163
 
@@ -104,6 +105,12 @@ namespace Supremacy.Game
         /// to submit combat orders.
         /// </summary>
         private readonly ManualResetEvent CombatReset = new ManualResetEvent(false);
+
+        /// <summary>
+        /// Blocks the execution of the turn processing engine while waiting on players
+        /// to submit combat orders.
+        /// </summary>
+        private readonly ManualResetEvent InvasionReset = new ManualResetEvent(false);
         #endregion
 
         #region OnTurnPhaseChanged() Method
@@ -244,6 +251,14 @@ namespace Supremacy.Game
             try { DoCombat(game); }
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Combat);
+
+            GameLog.Core.GeneralDetails.DebugFormat("...beginning Assaults...");
+
+            OnTurnPhaseChanged(game, TurnPhase.Assaults);
+            GameContext.PushThreadContext(game);
+            try { DoAssaults(game); }
+            finally { _ = GameContext.PopThreadContext(); }
+            OnTurnPhaseFinished(game, TurnPhase.Assaults);
 
             GameLog.Core.GeneralDetails.DebugFormat("...beginning PopulationGrowth...");
 
@@ -1448,9 +1463,9 @@ namespace Supremacy.Game
         void DoCombat(GameContext game)
         {
             HashSet<MapLocation> combatLocations = new HashSet<MapLocation>();
-            HashSet<MapLocation> invasionLocations = new HashSet<MapLocation>();
+            //HashSet<MapLocation> invasionLocations = new HashSet<MapLocation>();
             List<List<CombatAssets>> combats = new List<List<CombatAssets>>();
-            List<InvasionArena> invasions = new List<InvasionArena>();
+            //List<InvasionArena> invasions = new List<InvasionArena>();
             List<Fleet> fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
 
             foreach (Fleet fleet in fleetsAtLocation)
@@ -1480,27 +1495,27 @@ namespace Supremacy.Game
                     }
                 }
 
-                if (!invasionLocations.Contains(fleet.Location))
-                {
-                    if (fleet.Sector.System != null)
-                    {
-                        if (fleet.Order is AssaultSystemOrder)
-                        {
-                            invasions.Add(new InvasionArena(fleet.Sector.System.Colony, fleet.Owner));
-                            _ = invasionLocations.Add(fleet.Location);
-                        }
-                    }
-                    else
-                    {
-                        if (fleet.Sector.System != null)
-                        {
-                            _text = "No Invasion available due to no system at " + fleet.Location + blank + fleet.Name;
-                            Console.WriteLine(_text);
-                            //GameLog.Core.SystemAssault.InfoFormat(_text);
-                        }
+            //    if (!invasionLocations.Contains(fleet.Location))
+            //    {
+            //        if (fleet.Sector.System != null)
+            //        {
+            //            if (fleet.Order is AssaultSystemOrder)
+            //            {
+            //                invasions.Add(new InvasionArena(fleet.Sector.System.Colony, fleet.Owner));
+            //                _ = invasionLocations.Add(fleet.Location);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            if (fleet.Sector.System != null)
+            //            {
+            //                _text = "No Invasion available due to no system at " + fleet.Location + blank + fleet.Name;
+            //                Console.WriteLine(_text);
+            //                //GameLog.Core.SystemAssault.InfoFormat(_text);
+            //            }
 
-                    }
-            }
+            //        }
+            //}
         }
 
             foreach (List<CombatAssets> combat in combats)
@@ -1525,23 +1540,194 @@ namespace Supremacy.Game
             }
 
             //Thread.Sleep(1000);  // make a pause to fin
-            foreach (InvasionArena invasion in invasions)
+            //foreach (InvasionArena invasion in invasions)
+            //{
+            //    _ = CombatReset.Reset();
+            //    OnInvasionOccurring(invasion);
+            //    _text = "Step_3701 ---- INVASION OCCURED GameEngine --------------------" + invasion.Colony.Location + " " + invasion.Colony.Name;
+            //    Console.WriteLine(_text);
+            //    GameLog.Core.Combat.DebugFormat(_text);
+
+            //    Console.WriteLine("Step_3750: CombatReset.WaitOne ... opens the Dialog and waits for players input at System Assault");
+            //    if (invasion.Invader.IsHuman)
+            //    {
+            //        _ = CombatReset.WaitOne();
+            //    }
+
+            //    if (combats.Count > 1)
+            //    {
+            //        Console.WriteLine("Step_3760: Next INVASION out of " + invasions.Count);
+            //    }
+            //}
+
+            //List<Fleet> invadingFleets = invasions
+            //    .SelectMany(o => o.InvadingUnits)
+            //    .OfType<InvasionOrbital>()
+            //    .Where(o => !o.IsDestroyed)
+            //    .Select(o => o.Source)
+            //    .OfType<Ship>()
+            //    .Select(o => o.Fleet)
+            //    .Distinct()
+            //    .ToList();
+
+            //foreach (Fleet invadingFleet in invadingFleets)
+            //{
+            //    if (invadingFleet.Order is AssaultSystemOrder assaultOrder && !assaultOrder.IsValidOrder(invadingFleet))
+            //    {
+            //        invadingFleet.SetOrder(invadingFleet.GetDefaultOrder());
+            //    }
+            //}
+
+            _ = ParallelForEach(GameContext.Current.Universe.Find<Colony>(), c =>
+              {
+                  GameContext.PushThreadContext(game);
+                  try { c.RefreshShielding(true); }
+                  finally { _ = GameContext.PopThreadContext(); }
+              });
+        }
+        #endregion DoCombat
+
+        #region DoAssaults() Method
+        void DoAssaults(GameContext game)
+        {
+            //HashSet<MapLocation> combatLocations = new HashSet<MapLocation>();
+            HashSet<MapLocation> invasionLocations = new HashSet<MapLocation>();
+            //List<List<CombatAssets>> combats = new List<List<CombatAssets>>();
+            List<InvasionArena> invasions = new List<InvasionArena>();
+            List<Fleet> fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
+
+            foreach (Fleet fleet in fleetsAtLocation)
             {
-                _ = CombatReset.Reset();
-                OnInvasionOccurring(invasion);
-                _text = "Step_3701 ---- INVASION OCCURED GameEngine --------------------" + invasion.Colony.Location + " " + invasion.Colony.Name;
+                //if (!combatLocations.Contains(fleet.Location))
+                //{
+                //    List<CombatAssets> assets = CombatHelper.GetCombatAssets(fleet.Location); // part of altering collection while using from GameEngine 216 and CombatHelper.cs line 58
+                //    List<Civilization> fleetsOwners = fleetsAtLocation
+                //            .Select(o => o.Owner)
+                //            .Distinct()
+                //            .ToList();
+
+                //    if (assets.Count > 1 && fleetsOwners.Count > 1)
+                //    {
+                //        foreach (Fleet nextFleet in fleetsAtLocation)
+                //        {
+                //            if (fleet.Owner == nextFleet.Owner ||
+                //                CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner) ||
+                //                !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
+                //            {
+                //                continue;
+                //            }
+                //        }
+
+                //        combats.Add(assets); // we add all the ships at this location if there is any combat. Combat decides who is in and on what side
+                //        _ = combatLocations.Add(fleet.Location);
+                //    }
+                //}
+
+                if (!invasionLocations.Contains(fleet.Location))
+                {
+                    if (fleet.Sector.System != null)
+                    {
+                        if (fleet.Order is AssaultSystemOrder)
+                        {
+                            invasions.Add(new InvasionArena(fleet.Sector.System.Colony, fleet.Owner));
+                            _ = invasionLocations.Add(fleet.Location);
+                        }
+                        invasionLocations.Distinct();
+                    }
+                    else
+                    {
+                        if (fleet.Sector.System != null)
+                        {
+                            _text = "No Invasion available due to no system at " + fleet.Location + blank + fleet.Name;
+                            Console.WriteLine(_text);
+                            //GameLog.Core.SystemAssault.InfoFormat(_text);
+                        }
+
+                    }
+                }
+            }
+
+            //foreach (List<CombatAssets> combat in combats)
+            //{
+            //    _ = CombatReset.Reset();
+
+            //    _text = "Step_3000 ---- COMBAT OCCURED GameEngine --------------------" + combat.Count;
+            //    Console.WriteLine(_text);
+            //    GameLog.Core.Combat.DebugFormat(_text);
+
+            //    OnCombatOccurring(combat);
+
+            //    Console.WriteLine("Step_3050: CombatReset.WaitOne ... opens the Dialog and waits for players input");
+
+            //    _ = CombatReset.WaitOne();
+
+            //    if (combats.Count > 1)
+            //    {
+            //        Console.WriteLine("Step_3060: Next COMBAT out of " + combats.Count);
+            //    }
+
+            //}
+
+            //Thread.Sleep(1000);  // make a pause to fin
+            foreach (InvasionArena invasion in invasions)  // no human interaction
+            {
+                if (invasions.Count > 1)
+                {
+                    Console.WriteLine("Step_3760: Next INVASION out of " + invasions.Count + " > now " + invasion.InvasionID);
+                }
+
+                //_ = InvasionReset.Reset();
+                //OnInvasionOccurring(invasion);
+                _text = "Step_3701: ---- INVASION OCCURED GameEngine -------------------- > " + invasion.Colony.Location + " " + invasion.Colony.Name;
+                Console.WriteLine(_text);
+                GameLog.Core.Combat.DebugFormat(_text);
+
+                Console.WriteLine("Step_3750: CombatReset.WaitOne ... opens the Dialog and waits for players input at System Assault");
+                if (!invasion.Invader.IsHuman)
+                {
+                    _ = InvasionReset.Reset();
+                    OnInvasionOccurring(invasion);
+                }
+
+            }
+
+            Thread.Sleep(1000);  // make a pause to finish AI's invasions
+            foreach (InvasionArena invasion in invasions)  // with human interaction
+            {
+                //Thread.Sleep(1000);  // make a pause between human invasions
+                if (invasions.Count > 1)
+                {
+                    Console.WriteLine("Step_3760: Next INVASION out of " + invasions.Count + " > now " + invasion.InvasionID);
+                }
+
+                //_ = InvasionReset.Reset();
+                //OnInvasionOccurring(invasion);
+                _text = "Step_3701: ---- INVASION OCCURED GameEngine -------------------- > " + invasion.Colony.Location + " " + invasion.Colony.Name;
                 Console.WriteLine(_text);
                 GameLog.Core.Combat.DebugFormat(_text);
 
                 Console.WriteLine("Step_3750: CombatReset.WaitOne ... opens the Dialog and waits for players input at System Assault");
                 if (invasion.Invader.IsHuman)
                 {
-                    _ = CombatReset.WaitOne();
-                }
+                    _ = InvasionReset.Reset();
+                    OnInvasionOccurring(invasion);
+                    _ = CombatReset.WaitOne(); // 9999, true);
 
-                if (combats.Count > 1)
-                {
-                    Console.WriteLine("Step_3760: Next INVASION out of " + invasions.Count);
+                    //if (invasions.Count > 1) 
+                        MessageBox.Show("Press ok when System Assault is finished");
+
+                    //int _wait = 0;
+                    //while (!invasion.IsFinished)
+                    //{
+                    //    MessageBox.Show("Press ok when System Assault is finished");
+                    //    _wait += 1;
+                    //    if (!invasion.IsFinished)
+                    //    {
+                    //        Thread.Sleep(1000);
+                    //    }
+                    //        //_wait = 0;
+                    //}
+
                 }
             }
 
@@ -1564,13 +1750,13 @@ namespace Supremacy.Game
             }
 
             _ = ParallelForEach(GameContext.Current.Universe.Find<Colony>(), c =>
-              {
-                  GameContext.PushThreadContext(game);
-                  try { c.RefreshShielding(true); }
-                  finally { _ = GameContext.PopThreadContext(); }
-              });
+            {
+                GameContext.PushThreadContext(game);
+                try { c.RefreshShielding(true); }
+                finally { _ = GameContext.PopThreadContext(); }
+            });
         }
-        #endregion
+        #endregion Assaults
 
         #region DoPopulation() Method
         void DoPopulation(GameContext game)
@@ -2299,15 +2485,16 @@ namespace Supremacy.Game
       
                      _civMaintance += item.Design.MaintenanceCost;
 
-                    _text = "Turn " + GameContext.Current.TurnNumber + ": "
-                        + item.Design.MaintenanceCost + " MaintenanceCost for "
-                        + item.ObjectID + blank
-                        + item.Name + blank
-                        + item.Design + " at "
-                        + item.Location + blank
-                        + item.Owner
-                        ;
-                    Console.WriteLine(_text);
+                    // works
+                    //_text = "Turn " + GameContext.Current.TurnNumber + ": "
+                    //    + item.Design.MaintenanceCost + " MaintenanceCost for "
+                    //    + item.ObjectID + blank
+                    //    + item.Name + blank
+                    //    + item.Design + " at "
+                    //    + item.Location + blank
+                    //    + item.Owner
+                    //    ;
+                    //Console.WriteLine(_text);
                     //GameLog.Core.Production.DebugFormat(_text);
 
                     // works
@@ -4168,7 +4355,7 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("combat");
             }
 
-            _text = "Combat at " + combat[0].Location /*+ " - involved:"*/;
+            _text = combat[0].Location + " > Combat "; // + combat[0].Location /*+ " - involved:"*/;
             for (int i = 0; i < combat.Count(); i++)
             {
 
@@ -4397,6 +4584,7 @@ namespace Supremacy.Game
         ResetObjects,
         FleetMovement,
         Combat,
+        Assaults,
         PopulationGrowth,
         Research,
         Scrapping,

@@ -75,7 +75,7 @@ namespace Supremacy.Client
                     ReportError(errors);
                     //}
 
-                    Environment.Exit(Environment.ExitCode);
+                    //Environment.Exit(Environment.ExitCode);
                 }
             }
         }

@@ -213,7 +213,7 @@ namespace Supremacy.Combat
             _text += newline + _destroyedString + _escapedString + _combatString +_nonCombatString;  // dummy
 
             _sectorString = _assets[0].Location.ToString() + " > ";
-            Detailed_Log(_sectorString + "_combatId = " + CombatID + ", _roundNumber = " + _roundNumber); //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
+            Detailed_Log(_sectorString + "Step_3014: _combatId = " + CombatID + ", _roundNumber = " + _roundNumber); //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
 
             foreach (CombatAssets civAssets in _assets.ToList())
             {
@@ -248,7 +248,7 @@ namespace Supremacy.Combat
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
                     _orders[orders.OwnerID] = orders;
-                    Detailed_Log("adding orders in dictionary for ID " + orders.OwnerID);
+                    Detailed_Log("Step_3078: adding orders in dictionary for ID " + orders.OwnerID);
                 }
 
                 List<int> outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
@@ -575,7 +575,7 @@ namespace Supremacy.Combat
             // CHANGE X
             for (int i = 0; i < _assets.Count; i++)
             {
-                Detailed_Log("Step_3048: " + _sectorString + " Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets);
+                Detailed_Log("Step_3048: " + _sectorString + "Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets);
                 if (!_assets[i].HasSurvivingAssets)
                 {
                     Detailed_Log("Step_3049: " + _sectorString + "remove defeated assets for Player " + _assets[i].Owner.Key);

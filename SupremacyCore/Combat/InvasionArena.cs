@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Windows.Controls;
 
 namespace Supremacy.Combat
 {
@@ -278,6 +279,7 @@ namespace Supremacy.Combat
         private readonly int _colonyId;
         private readonly List<InvasionUnit> _invadingUnits;
         private readonly List<InvasionUnit> _defendingUnits;
+        //private readonly int _latelyDoneInTurn;
 
         [NonSerialized]
         private Lazy<Colony> _colony;
@@ -313,6 +315,7 @@ namespace Supremacy.Combat
             ColonyShieldStrength = colony.ShieldStrength;
             _defendingUnits = new List<InvasionUnit>();
             _invadingUnits = new List<InvasionUnit>();
+            LatelyDoneInTurn = GameContext.Current.TurnNumber;
 
             foreach (OrbitalBattery OB in colony.OrbitalBatteries)
             {
@@ -369,6 +372,8 @@ namespace Supremacy.Combat
         public Civilization Defender => GameContext.Current.Civilizations[DefenderID];
 
         public int RoundNumber { get; set; }
+
+        public int LatelyDoneInTurn { get; set; }
 
         internal bool AttackOccurred { get; set; }
         internal bool InvasionOccurred { get; set; }
@@ -427,7 +432,9 @@ namespace Supremacy.Combat
 
         public void Update()
         {
-            _defenderCombatStrength = ComputeDefenderCombatStrength();
+            if (Colony == null)
+                ;
+            _defenderCombatStrength = ComputeDefenderCombatStrength(Colony);
             _invaderCombatStrength = ComputeInvaderCombatStrength();
             _hasOrbitalDefenses = _defendingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed);
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
@@ -436,7 +443,7 @@ namespace Supremacy.Combat
             _text = "Step_3782: " 
                 + "_canLandTroops(Transport Ships) = " + _canLandTroops
                 + ", and/but ColonyShieldStrength = " + ColonyShieldStrength.CurrentValue
-                + "{1}, Last Value = " + ColonyShieldStrength.LastValue
+                + ", Last Value = " + ColonyShieldStrength.LastValue
                 ;
             Console.WriteLine(_text);
             GameLog.Core.Combat.DebugFormat(_text);
@@ -499,16 +506,16 @@ namespace Supremacy.Combat
                 colony.Name, colony.Owner.Key, /*colony.Inhabitants.Key, */colony.Morale.CurrentValue);
         }
 
-        private int ComputeDefenderCombatStrength()
+        private int ComputeDefenderCombatStrength(Colony colony)
         {
-            if (Colony != null && Population != null)
+            if (colony != null && colony.Population != null)
             {
                 Report_SystemAssaultDetails("Step_3760: ComputeDefenderCombatStrength for " 
-                    + Colony.Name
+                    + colony.Name
                     + " ( " + Population
                     + " Pop.) " 
                     );
-                return CombatHelper.ComputeGroundCombatStrength(Colony.Owner, Colony.Location, Population.CurrentValue);
+                return CombatHelper.ComputeGroundCombatStrength(colony.Owner, colony.Location, colony.Population.CurrentValue);
             }
             else
                 return 0;
@@ -661,6 +668,7 @@ namespace Supremacy.Combat
 
         [NonSerialized]
         private string _text;
+        private int _latelyDoneInTurn;
 
         public InvasionEngine([NotNull] SendInvasionUpdateCallback sendUpdateCallback, [NotNull] NotifyInvasionEndedCallback invasionEndedCallback)
         {
@@ -669,6 +677,8 @@ namespace Supremacy.Combat
         }
 
         public InvasionArena InvasionArena => _invasionArena;
+
+        public int LatelyDoneInTurn => _latelyDoneInTurn;
 
         public void BeginInvasion([NotNull] InvasionArena invasionArena)
         {
@@ -714,6 +724,18 @@ namespace Supremacy.Combat
                         _invasionEndedCallback(this);
 
                     }
+                    if (invasionArena.Status == InvasionStatus.Stalemate)
+                    {
+                        GameLog.Client.AI.DebugFormat("Step_3785: AI reached: InvasionArean status = {0}", invasionArena.Status);
+                        _invasionEndedCallback(this);
+
+                    }
+                    if (invasionArena.Status == InvasionStatus.Defeat)
+                    {
+                        GameLog.Client.AI.DebugFormat("Step_3785: AI reached: InvasionArean status = {0}", invasionArena.Status);
+                        _invasionEndedCallback(this);
+
+                    }
                 }
                 else
                 {
@@ -745,7 +767,8 @@ namespace Supremacy.Combat
 
             if (orders.InvasionID != _invasionArena.InvasionID)
             {
-                throw new ArgumentException("Orders submitted for a different invasion.", nameof(orders));
+                Console.WriteLine("ERROR xxxxx Orders for "+ orders.InvasionID + " submitted for a different invasion " + _invasionArena.InvasionID);
+                //throw new ArgumentException("Orders submitted for a different invasion.", nameof(orders));
             }
 
             if (_invasionArena.Status != InvasionStatus.InProgress)
