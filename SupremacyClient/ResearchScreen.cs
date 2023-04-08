@@ -799,7 +799,24 @@ namespace Supremacy.Client
 
         public int TechLevel => _pool.GetTechLevel(Field);
 
-        public Percentage Progress => _pool.GetCurrentProject(Field).Progress.PercentFilled;
+        public Percentage Progress 
+        {
+             get
+            {
+                Percentage prog = 0;
+                try
+                { 
+                    if (_pool.GetCurrentProject(Field) != null)
+                prog = _pool.GetCurrentProject(Field).Progress.PercentFilled;
+                }
+                catch
+                {
+                prog = 100; // at last level 
+                }
+                return prog;
+            }
+        }
+        //_pool.GetCurrentProject(Field).Progress.PercentFilled;
 
         public Percentage Bonus => _pool.Bonuses[Field.FieldID];
 

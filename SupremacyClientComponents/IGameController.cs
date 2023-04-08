@@ -38,6 +38,8 @@ using Supremacy.Resources;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
+using Microsoft.Practices.Composite.Presentation.Regions.Behaviors;
+using System.Windows.Input;
 
 namespace Supremacy.Client
 {
@@ -440,7 +442,7 @@ namespace Supremacy.Client
                 }
             }
 
-            //SendKeys.SendWait("{F1}");
+            //SendKeys.SendWait("{F1}");  // shows Map
 
             _text = "ShowSummary... before storing";
             //Console.WriteLine(_text);
@@ -488,17 +490,18 @@ namespace Supremacy.Client
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
+            
+
             //SendKeys.SendWait("{F1}");  // shows Map
         }
 
-//#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
-//#pragma warning disable IDE0060 // Nicht verwendete Parameter entfernen
+
+#pragma warning disable IDE0051 // Remove unused private members
         private void SaveSUMMARY_TXT(string _text)
-//#pragma warning restore IDE0060 // Nicht verwendete Parameter entfernen
-//#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
+#pragma warning restore IDE0051 // Remove unused private members
         {
             //_text += " "; // dummy - please keep
-            _text = "SaveSUMMARY_TXT...";
+            _text = "SaveSUMMARY_TXT..." + _text;
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
             if (GameContext.Current == null)
@@ -647,10 +650,7 @@ namespace Supremacy.Client
         private void ClearTurnWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _turnWaitCursorHandle, null);
-            if (handle != null)
-            {
-                handle.Dispose();
-            }
+            handle?.Dispose();
         }
 
         private void ClearWaitCursors()
@@ -663,19 +663,13 @@ namespace Supremacy.Client
         private void ClearConnectWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _connectWaitCursorHandle, null);
-            if (handle != null)
-            {
-                handle.Dispose();
-            }
+            handle?.Dispose();
         }
 
         private void ClearGameStartWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _gameStartWaitCursorHandle, null);
-            if (handle != null)
-            {
-                handle.Dispose();
-            }
+            handle?.Dispose();
         }
 
         private void OnGameStarted(DataEventArgs<GameStartData> args)

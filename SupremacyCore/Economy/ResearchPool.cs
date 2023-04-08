@@ -138,6 +138,8 @@ namespace Supremacy.Economy
                 {
                     foreach (ResearchProject project in _queue[field.FieldID])
                     {
+                        if (project == null)
+                            return true;
                         if (project.Application == application)
                         {
                             return false;
@@ -371,11 +373,21 @@ namespace Supremacy.Economy
 
                 for (int i = 0; i < _queue[field.FieldID].Count; i++)
                 {
-
-                    researchSummary += " - " + field.TechCategory + "-" + _queue[field.FieldID][i].Application.Level + ": " + _queue[field.FieldID][i].Progress.PercentFilled;
+                    int lvl = -1;
+                    Percentage progress = 0;
+                    if (_queue[field.FieldID][i] != null && _queue[field.FieldID][i].Application != null && _queue[field.FieldID][i].Progress != null)
+                    {
+                        lvl = _queue[field.FieldID][i].Application.Level;
+                        progress = _queue[field.FieldID][i].Progress.PercentFilled;
+                    }
+                    researchSummary += " - " + field.TechCategory + "-" + lvl + ": " + progress;
 
                     //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));
 
+                    if (_queue[field.FieldID][i] == null)
+                    {
+                        break;
+                    }
 
                     if (_queue[field.FieldID][i].IsFinished)
                     {
@@ -434,16 +446,18 @@ namespace Supremacy.Economy
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
             ICollection<TechObjectDesign> designsBefore = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
 
+
+            //if (_queue[fieldId].Count > 1)
+            //{
             _queue[fieldId].RemoveAt(queueIndex);
+            //}
+
             UpdateTechLevels();
 
             ICollection<TechObjectDesign> designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
             List<TechObjectDesign> newDesigns = designsAfter.Except(designsBefore).ToList();
 
-            if (civManager != null)
-            {
-                civManager.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
-            }
+            civManager?.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
         }
 
         /// <summary>

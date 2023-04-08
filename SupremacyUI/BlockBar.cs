@@ -201,10 +201,7 @@ namespace Supremacy.UI
             }
 
             BindingExpression bindingExpression = BindingOperations.GetBindingExpression(this, ValueProperty);
-            if (bindingExpression != null)
-            {
-                bindingExpression.UpdateTarget();
-            }
+            bindingExpression?.UpdateTarget();
         }
 
         private void IncrementCommand_Executed(object sender, ExecutedRoutedEventArgs e)

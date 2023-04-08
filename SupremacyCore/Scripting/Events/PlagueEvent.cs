@@ -82,10 +82,7 @@ namespace Supremacy.Scripting.Events
                     }
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new PlagueSitRepEntry(civManager.Civilization, target));
-                    }
+                    civManager?.SitRepEntries.Add(new PlagueSitRepEntry(civManager.Civilization, target));
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
                     _ = target.Population.AdjustCurrent(-(population / 3));

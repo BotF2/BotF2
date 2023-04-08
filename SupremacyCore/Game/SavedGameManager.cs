@@ -19,6 +19,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Input;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Supremacy.Game
 {
@@ -214,6 +217,8 @@ namespace Supremacy.Game
                 GameLog.Core.SaveLoad.DebugFormat("loading ResearchMatrix from HDD...");
                 game.ResearchMatrix = ResearchMatrix.Load();
                 game.OnDeserialized();
+                //SendKeys.SendWait("{F1}");  // shows Map
+                //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                 timestamp = File.GetLastWriteTime(fileName);
             }
             catch (Exception e)
@@ -226,6 +231,7 @@ namespace Supremacy.Game
 
                 return false;
             }
+            //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
             return true;
         }
 

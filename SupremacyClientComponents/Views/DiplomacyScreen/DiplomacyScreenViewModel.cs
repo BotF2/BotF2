@@ -866,10 +866,7 @@ namespace Supremacy.Client.Views
             _sendMessageCommand.RaiseCanExecuteChanged();
             _cancelMessageCommand.RaiseCanExecuteChanged();
 
-            if (_selectedForeignPower != null)
-            {
-                _selectedForeignPower.InvalidateCommands();
-            }
+            _selectedForeignPower?.InvalidateCommands();
         }
 
         private void OnTurnStarted(GameContextEventArgs args)

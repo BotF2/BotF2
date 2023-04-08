@@ -1,4 +1,4 @@
-// StationDesign.cs
+// File:StationDesign.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -79,14 +79,22 @@ namespace Supremacy.Orbitals
             }
             else
             {
+                Report2GameData("now reading Stations"); // dummy to avoid Report2GameData is not used.
                 //GameLog.Core.GameData.DebugFormat("StationNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
 
                 foreach (XmlElement name in element["StationNames"])
                 {
                     _possibleStationNames.Add(name.InnerText.Trim(), 0);
+                    Report2GameData("Step_0499: StationNames - Possible Name for " + Name + " = " + name.InnerText.Trim());
                     //GameLog.Core.GameData.DebugFormat("StationNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
                 }
             }
+        }
+
+        private void Report2GameData(string v)
+        {
+            Console.WriteLine(v);
+            //GameLog.Core.GameData.DebugFormat(v);
         }
 
         protected override string DefaultImageSubFolder => "Stations/";

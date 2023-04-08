@@ -431,7 +431,18 @@ namespace Supremacy.Universe
         public Race Inhabitants
         {
             get => GameContext.Current.Races[_inhabitantId];
-            set => Inhabitants = value;
+            set
+            {
+                if (value != null)
+                {
+                    Inhabitants = value;
+                }
+                else
+                {
+                    return;
+                }
+                //Inhabitants = value;
+            }
         }
 
         /// <summary>
@@ -1711,10 +1722,7 @@ namespace Supremacy.Universe
                     break;
             }
             this.InvalidateBuildTimes();
-            if (Shipyard != null)
-            {
-                Shipyard.InvalidateBuildTimes();
-            }
+            Shipyard?.InvalidateBuildTimes();
 
             return true;
         }
@@ -1755,10 +1763,7 @@ namespace Supremacy.Universe
                     break;
             }
             this.InvalidateBuildTimes();
-            if (Shipyard != null)
-            {
-                Shipyard.InvalidateBuildTimes();
-            }
+            Shipyard?.InvalidateBuildTimes();
 
             return true;
         }
@@ -2623,10 +2628,7 @@ namespace Supremacy.Universe
                             case BonusType.PercentIndustry:
                                 _ = propertyChanges.Add("NetIndustry");
                                 this.InvalidateBuildTimes();
-                                if (Shipyard != null)
-                                {
-                                    Shipyard.InvalidateBuildTimes();
-                                }
+                                Shipyard?.InvalidateBuildTimes();
 
                                 break;
                             case BonusType.Energy:

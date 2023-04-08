@@ -312,12 +312,12 @@
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
-                    <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/Duranium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Duranium}}" />
-                    <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
+                    <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Duranium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Duranium}}" />
+                    <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
                     <Image Grid.Row="2" Source="{StaticResource StopwatchImage}" Width="17" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />
                     <!-- Invisible text to avoid shifting layouts -->
-                    <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
                     <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
                     <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Visibility="Hidden">
                         <TextBlock.Text>
                             <Binding Source="999"
@@ -326,7 +326,7 @@
                                     Mode="OneTime" />
                         </TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
+                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} / {1}">
                                 <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[Duranium]" Mode="OneWay" />
@@ -334,7 +334,7 @@
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
+                    <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} / {1}">
                                 <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[Dilithium]" Mode="OneWay" />

@@ -620,6 +620,7 @@ namespace Supremacy.Client
         private void OnGameStarted(ClientDataEventArgs<GameStartData> obj)
         {
             ContextMenu = new GameContextMenu { CustomPopupPlacementCallback = ContextMenuPlacementCallback };
+            SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
         }
 
         private void OnTurnStarted(ClientEventArgs e)

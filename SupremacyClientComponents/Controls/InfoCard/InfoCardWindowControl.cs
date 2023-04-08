@@ -174,10 +174,7 @@ namespace Supremacy.Client.Controls
 
             // Bring this window to the front
             InfoCardSite popupSite = InfoCardSite;
-            if (popupSite != null)
-            {
-                popupSite.BringToFront(this);
-            }
+            popupSite?.BringToFront(this);
         }
 
         protected override void OnOpened(RoutedEventArgs e)
@@ -231,10 +228,7 @@ namespace Supremacy.Client.Controls
             Visibility = Visibility.Collapsed;
 
             InfoCardSite popupSite = InfoCardSite;
-            if (popupSite != null)
-            {
-                popupSite.RemoveCanvasChild(this);
-            }
+            popupSite?.RemoveCanvasChild(this);
 
             InfoCardHost = null;
 

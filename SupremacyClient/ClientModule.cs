@@ -409,6 +409,7 @@ namespace Supremacy.Client
             startTechLvl = GetStartTechLvl(initData.Options.StartingTechLevel.ToString());
             localEmpire = GetLocalEmpireShortage(initData.LocalPlayerEmpireID, out string localempire);
             GameLog.Client.General.Debug("playing " + localempire + " ( StartLevel " + startTechLvl + " )");
+            _navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
 
         }
 
@@ -1835,11 +1836,7 @@ namespace Supremacy.Client
         {
             GCHelper.Collect();
 
-            IGameController gameController = _container.Resolve<IGameController>();
-            if (gameController == null)
-            {
-                throw new SupremacyException("A game controller could not be created.");
-            }
+            IGameController gameController = _container.Resolve<IGameController>() ?? throw new SupremacyException("A game controller could not be created.");
 
             if (Interlocked.CompareExchange(ref _gameController, gameController, null) != null)
             {

@@ -84,7 +84,10 @@ namespace Supremacy.Client.Context
         #region Implementation of INotifyPropertyChanged
 
         [field: NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged; // ever used ??
+#pragma warning disable CS0067 // The event 'DesignTimeAppContext.PropertyChanged' is never used
+        public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067 // The event 'DesignTimeAppContext.PropertyChanged' is never used
+
 
         #endregion
 

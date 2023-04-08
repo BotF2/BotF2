@@ -83,6 +83,10 @@ namespace Supremacy.Client.Views
             DebugCommands.F08_Screen.RegisterCommand(_f08_ScreenCommand);
             DebugCommands.F07_Screen.RegisterCommand(_f07_ScreenCommand);
             DebugCommands.F06_Screen.RegisterCommand(_f06_ScreenCommand);
+
+            _text = "Step_2101: GalaxyGridView Initialize done...";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs args)
@@ -100,6 +104,8 @@ namespace Supremacy.Client.Views
             DebugCommands.F08_Screen.UnregisterCommand(_f08_ScreenCommand);
             DebugCommands.F07_Screen.UnregisterCommand(_f07_ScreenCommand);
             DebugCommands.F06_Screen.UnregisterCommand(_f06_ScreenCommand);
+
+            _navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
         }
 
         private void OnLocalPlayerEmpireChanged()
@@ -346,7 +352,7 @@ namespace Supremacy.Client.Views
 
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            if (!(sender is IAppContext appContext))
+            if (!(sender is IAppContext))
             {
                 return false;
             }

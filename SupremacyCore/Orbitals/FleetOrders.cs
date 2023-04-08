@@ -2154,10 +2154,7 @@ namespace Supremacy.Orbitals
         public override void OnFleetMoved()
         {
             base.OnFleetMoved();
-            if (BuildProject != null)
-            {
-                BuildProject.Cancel();
-            }
+            BuildProject?.Cancel();
         }
 
         #region FleetProductionCenter Class

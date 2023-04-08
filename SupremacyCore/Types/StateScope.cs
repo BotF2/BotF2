@@ -116,10 +116,7 @@ namespace Supremacy.Types
         {
             lock (_stateMaskLock)
             {
-                if (_parent != null)
-                {
-                    _parent.ChildDisposed(this);
-                }
+                _parent?.ChildDisposed(this);
             }
         }
         #endregion

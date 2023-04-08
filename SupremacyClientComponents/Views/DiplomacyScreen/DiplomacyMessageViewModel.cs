@@ -1320,7 +1320,9 @@ namespace Supremacy.Client.Views
         }
 
 
+#pragma warning disable CS0067 // The event 'DiplomacyMessageViewModel.PropertyChanged' is never used
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067 // The event 'DiplomacyMessageViewModel.PropertyChanged' is never used
 
         public void OnPropertyChanged(bool placeHolder, string propertyName)
         {

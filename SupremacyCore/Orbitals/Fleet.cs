@@ -663,10 +663,7 @@ namespace Supremacy.Orbitals
                 civManager.MapData.SetScanned(Location, true, SensorRange);
             }
 
-            if (_order != null)
-            {
-                _order.OnFleetMoved();
-            }
+            _order?.OnFleetMoved();
 
             if (Interlocked.CompareExchange(ref _movementSempaphore, 0, 0) == 0)
             {
@@ -944,10 +941,7 @@ namespace Supremacy.Orbitals
                 return;
             }
 
-            if (lastOrder != null)
-            {
-                lastOrder.OnOrderCancelled();
-            }
+            lastOrder?.OnOrderCancelled();
 
             _order = order;
             _order.Fleet = this;
@@ -962,10 +956,7 @@ namespace Supremacy.Orbitals
         public void CancelOrder()
         {
             FleetOrder lastOrder = Order;
-            if (lastOrder != null)
-            {
-                lastOrder.OnOrderCancelled();
-            }
+            lastOrder?.OnOrderCancelled();
             SetOrder(GetDefaultOrder());
         }
 
@@ -1015,10 +1006,7 @@ namespace Supremacy.Orbitals
         protected internal override void OnDeserialized()
         {
             base.OnDeserialized();
-            if (_order != null)
-            {
-                _order.UpdateReferences();
-            }
+            _order?.UpdateReferences();
         }
         #endregion
 

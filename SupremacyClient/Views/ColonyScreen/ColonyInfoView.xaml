@@ -2,7 +2,7 @@
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
-                       xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                       xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation" 
                        TextElement.FontSize="{StaticResource {x:Static scc:ClientResources.InfoPaneFontSizeKey}}"
                        TextElement.FontFamily="{StaticResource {x:Static scc:ClientResources.InfoPaneFontFamilyKey}}"
                        TextElement.FontWeight="{StaticResource {x:Static scc:ClientResources.InfoPaneFontWeightKey}}">
@@ -222,7 +222,7 @@
                 </TextBlock.ToolTip>
             </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource CreditsColor}" 
-                       Text="{Binding Path=SelectedColony.CreditsEmpire, Mode=OneWay}"/>
+                       Text="{Binding Path=SelectedColony.CreditsEmpire, Mode=OneWay}" />
             <!--, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" />-->
 
         </DockPanel>

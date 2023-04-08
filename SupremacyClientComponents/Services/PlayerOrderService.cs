@@ -91,10 +91,7 @@ namespace Supremacy.Client.Services
 
         private void OnOrdersChanged()
         {
-            if (OrdersChanged != null)
-            {
-                OrdersChanged.Invoke(this, new EventArgs());
-            }
+            OrdersChanged?.Invoke(this, new EventArgs());
         }
     }
 }

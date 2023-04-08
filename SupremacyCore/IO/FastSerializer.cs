@@ -129,7 +129,8 @@ namespace Supremacy.IO.Serialization
 
 
         private string _text;
-        private string newline = Environment.NewLine;
+        private readonly string newline = Environment.NewLine;
+
         private bool _trace;
 
         // Marker to denote that all elements in a typed array are optimizable
@@ -5469,6 +5470,7 @@ namespace Supremacy.IO.Serialization
                             }
                         default:
                             {
+                                //_text = newline; // dummy
                                 _text = "switch (typeCode) FAILED";
                                 Console.WriteLine(_text);
                                 object result = ProcessArrayTypes(typeCode, null);

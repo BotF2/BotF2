@@ -87,12 +87,7 @@ namespace Supremacy.VFS
 
         public override Stream GetResponseStream()
         {
-            IVfsService vfsService = VfsService;
-            if (vfsService == null)
-            {
-                throw new InvalidOperationException("Could not resolve VFS service.");
-            }
-
+            IVfsService vfsService = VfsService ?? throw new InvalidOperationException("Could not resolve VFS service.");
 
             if (!vfsService.TryGetFileInfo(_responseUri, out IVirtualFileInfo virtualFileInfo))
             {

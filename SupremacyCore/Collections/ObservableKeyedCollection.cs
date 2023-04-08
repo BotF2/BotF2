@@ -138,8 +138,13 @@ namespace Supremacy.Collections
                         return item;
                     }
                 }
+                // avoids crashes
 
+                _text = "Key not found >> " + key.ToString();
+                Console.WriteLine(_text);
+                GameLog.Core.General.ErrorFormat(_text);
                 throw new KeyNotFoundException();
+
             }
         }
 

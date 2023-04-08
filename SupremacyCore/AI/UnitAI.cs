@@ -1400,7 +1400,8 @@ namespace Supremacy.AI
                 fleet.UnitAIType = UnitAIType.Building;
                 fleet.Activity = UnitActivity.BuildStation;
 
-                _text = fleet.Location
+                _text = "Step_3700: "
+                    + fleet.Location
                     + " > Constructor fleet " + blank + fleet.ObjectID
                     + blank + fleet.Name
                     + blank + fleet.ClassName

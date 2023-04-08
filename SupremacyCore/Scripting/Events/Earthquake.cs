@@ -140,10 +140,7 @@ namespace Supremacy.Scripting.Events
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
-                    }
+                    civManager?.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

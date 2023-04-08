@@ -331,9 +331,9 @@
                     Margin="5,0,0,0"
                     Width="Auto"
                     MaxHeight="800"
-                    Height="600"
+                    MinHeight="600"
                     HorizontalAlignment="Left">
-                    <StackPanel Height="800" Margin="5,0,0,0">
+                    <StackPanel Height="600" Margin="5,0,0,0">
             <!-- Zero Expander -->
                         <Expander x:Name="EmpireExpanderZero" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedFedName}" FontSize="20" BorderThickness="3" BorderBrush="Blue"

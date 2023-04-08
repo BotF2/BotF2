@@ -4348,3 +4348,4 @@ namespace Supremacy.Game
     /// </summary>
     public delegate void InvasionEventHandler(InvasionArena invasionArena);
 }
+

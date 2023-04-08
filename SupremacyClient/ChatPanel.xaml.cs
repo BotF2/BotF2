@@ -176,10 +176,7 @@ namespace Supremacy.Client
             MostRecentMessage = message;
 
             _ = MessagePanel.Children.Add(messageContainer);
-            if (MessagePanel.ScrollOwner != null)
-            {
-                MessagePanel.ScrollOwner.ScrollToBottom();
-            }
+            MessagePanel.ScrollOwner?.ScrollToBottom();
 
             if (!IsVisible)
             {

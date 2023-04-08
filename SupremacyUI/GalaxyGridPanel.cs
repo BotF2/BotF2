@@ -134,6 +134,7 @@ namespace Supremacy.UI
         private Point _scrollStartPoint;
         private List<Clock> _animationClocks;
         private readonly DelegateCommand<Sector> _centerOnSectorCommand;
+        private readonly DelegateCommand<Sector> _view25PercentCommand;
         private readonly DelegateCommand<Sector> _centerOnHomeSectorCommand;
         private readonly DelegateCommand<Sector> _centerOn1Command;
         private readonly DelegateCommand<Sector> _centerOn2Command;
@@ -462,6 +463,7 @@ namespace Supremacy.UI
             _zoomInCommand = new DelegateCommand<object>(ExecuteZoomInCommand);
             _zoomOutCommand = new DelegateCommand<object>(ExecuteZoomOutCommand);
             _centerOnHomeSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnHomeSectorCommand);
+            _view25PercentCommand = new DelegateCommand<Sector>(ExecuteView25PercentCommand);
             _centerOn1Command = new DelegateCommand<Sector>(ExecuteCenterOn1Command);
             _centerOn2Command = new DelegateCommand<Sector>(ExecuteCenterOn2Command);
             _centerOn3Command = new DelegateCommand<Sector>(ExecuteCenterOn3Command);
@@ -472,6 +474,7 @@ namespace Supremacy.UI
             GalaxyScreenCommands.CenterOnSector.RegisterCommand(_centerOnSectorCommand);
             GalaxyScreenCommands.MapZoomIn.RegisterCommand(_zoomInCommand);
             GalaxyScreenCommands.MapZoomOut.RegisterCommand(_zoomOutCommand);
+            GalaxyScreenCommands.View25Percent.RegisterCommand(_view25PercentCommand);
             GalaxyScreenCommands.CenterOnHomeSector.RegisterCommand(_centerOnHomeSectorCommand);
             GalaxyScreenCommands.CenterOn1.RegisterCommand(_centerOn1Command);
             GalaxyScreenCommands.CenterOn2.RegisterCommand(_centerOn2Command);
@@ -977,9 +980,14 @@ namespace Supremacy.UI
         private static FormattedText GetStarText(StarSystem system, Civilization playerCiv)
         {
             Civilization owner = system.Owner;
-            Brush brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
-                            ? s_colonyNameBrushes[system.OwnerID]
-                            : Brushes.White;
+            Brush brush = Brushes.White;
+            if (owner != null)
+            {
+                brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
+                                ? s_colonyNameBrushes[system.OwnerID]
+                                : Brushes.White;
+            }
+
             string nameText;
             switch (system.StarType)
             {
@@ -1276,11 +1284,19 @@ namespace Supremacy.UI
             AutoScrollToSector(sector);
         }
 
+        private void ExecuteView25PercentCommand(Sector sector)
+        {
+            //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
+            AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
+        }
+
         private void ExecuteCenterOnHomeSectorCommand(Sector sector)
         {
             //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
             AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
         }
+
+
         private void ExecuteCenterOn1Command(Sector sector)  // Center to Quadrant 1
         {
             MapLocation loc = new MapLocation(
@@ -1340,6 +1356,11 @@ namespace Supremacy.UI
         public void CenterOnSelectedSector()
         {
             ExecuteCenterOnSectorCommand(SelectedSector);
+        }
+
+        public void View25Percent()
+        {
+            ExecuteView25PercentCommand(SelectedSector);
         }
 
         public void CenterOnHomeSector()
@@ -1574,6 +1595,38 @@ namespace Supremacy.UI
             }
 
             SetScaleFactor(scaleFactor, zoomAroundPoint);
+        }
+
+        public void Zoom25()
+        {
+            Zoom25(false);
+        }
+
+        public void Zoom25(bool zoomAroundMouse)
+        {
+            Zoom25(GetZoomOrigin(zoomAroundMouse));
+        }
+
+        public void Zoom25(Point? zoomAroundPoint)
+        {
+            //if (!CanZoomIn)
+            //{
+            //    return;
+            //}
+
+            //double scaleFactor = ScaleFactor;
+            //if (scaleFactor % ZoomIncrement != 0)
+            //{
+            //    scaleFactor = Math.Round(scaleFactor, 1);
+            //}
+
+            //scaleFactor += ZoomIncrement;
+            //if (scaleFactor > MaxScaleFactor)
+            //{
+            //    scaleFactor = MaxScaleFactor;
+            //}
+
+            SetScaleFactor(25, zoomAroundPoint);
         }
 
         private Visual BuildTradeLine(TradeRoute route, Point endPoint, bool isNew)

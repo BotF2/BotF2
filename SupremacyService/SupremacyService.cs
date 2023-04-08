@@ -9,6 +9,8 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
+using Supremacy.Client;
+using Supremacy.Client.Commands;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
@@ -29,6 +31,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+//using System.Windows.Input;
 using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.WCF
@@ -175,9 +178,12 @@ namespace Supremacy.WCF
                     if ((_gameInitData != null) &&
                         ((_gameInitData.GameType == GameType.SinglePlayerLoad) || (_gameInitData.GameType == GameType.MultiplayerLoad)))
                     {
+                        //NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         if (!SavedGameManager.LoadGame(_gameInitData.SaveGameFileName, out SavedGameHeader header, out _game, out DateTime timestamp))
                         {
+                            //SendKeys.SendWait("{F1}");  // shows Map
                             EndGame();
+                            //SendKeys.SendWait("{F1}");  // shows Map
                             return;
                         }
                     }
@@ -218,6 +224,8 @@ namespace Supremacy.WCF
                                 .Subscribe(
                                     _ => { },
                                     e => DropPlayerAsync(player));
+                            //SendKeys.SendWait("{F1}");  // shows Map
+                            //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         }
                         catch
                         {
@@ -228,6 +236,7 @@ namespace Supremacy.WCF
 
                             DropPlayerAsync(playerInfo.Player);
                         }
+                        //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                     }
                 }
             }
@@ -238,7 +247,7 @@ namespace Supremacy.WCF
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
 
-                _ = MessageBox.Show("An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
+                _ = MessageBox.Show("Step_0098: An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
                 //_errorService.HandleError(e);
 
@@ -250,10 +259,12 @@ namespace Supremacy.WCF
                 Thread.Sleep(1000);
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
-                _ = MessageBox.Show("An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
+                _ = MessageBox.Show("Step_0099: An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
             }
+            //SendKeys.SendWait("{F1}");  // shows Map
+            //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
         }
 
         internal void DropPlayer()
@@ -807,7 +818,9 @@ namespace Supremacy.WCF
             OnTurnPhaseChanged(phase);
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         private void OnAITaskCompleted()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             lock (_aiAsyncLock)  // is this used anyway ??? ...reported by VS: it is not used
             {
@@ -1419,6 +1432,7 @@ namespace Supremacy.WCF
         #region Combat
         private void NotifyCombatEndedCallback(CombatEngine engine)
         {
+            //Console.WriteLine("Step_3004: " + _combatEngine._assets[0].Sector.Location + "> OnCombatOccurring ... populating _combatEngine ");
             if (_combatEngine != null)
             {
                 _combatEngine = null;
@@ -1429,6 +1443,7 @@ namespace Supremacy.WCF
 
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
+            Console.WriteLine("Step_3004: " + assets[0].Sector.Location + " > OnCombatOccurring ... populating _combatEngine ");
             _combatEngine = new AutomatedCombatEngine(
                 assets,
                 SendCombatUpdateCallback,
@@ -1539,6 +1554,9 @@ namespace Supremacy.WCF
         //}
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
+            _text = "Step_3009: SendCombatUpdateCallbac...";
+            Console.WriteLine(_text);
+            GameLog.Client.GameData.DebugFormat(_text);
 
             GameContext.PushThreadContext(_game);
 
@@ -1679,52 +1697,78 @@ namespace Supremacy.WCF
 
         private void OnInvasionOccurring(InvasionArena invasionArena)
         {
-            bool doneOnceAlready = false;
-            if (!invasionArena.Invader.IsHuman && doneOnceAlready == false)
+            Console.WriteLine("Step_3004: OnInvasionOccurring ... populating _invasionEngine");
+
+            if (invasionArena.LatelyDoneInTurn > GameContext.Current.TurnNumber)
             {
-
-                if (_alreadyDidCivAsAI == null || _alreadyDidCivAsAI != invasionArena.Invader)
-                {
-                    _alreadyDidCivAsAI = invasionArena.Invader;
-                    GameLog.Client.SystemAssaultDetails.DebugFormat("_alreadyDidCivAsAI = {0}", invasionArena.Invader.Key);
-                    if (_invasionEngine == null)
-                    {
-                        _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
-                    }
-
-                    _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
-                    doneOnceAlready = true;
-                }
+                return;
             }
-            else if (doneOnceAlready == false)
+            else
             {
-                if (_invasionEngine == null)
-                {
-                    _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
-                }
-
-                if (_invasionEngine != null)
-                {
-                    try
-                    {
-                        _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
-                    }
-                    catch (Exception)
-                    {
-                        _text =
-                            "SystemAssault doesn't work - "
-                            + invasionArena.Colony.Name
-                            + invasionArena.Colony.Location
-                            ;
-                        Console.WriteLine(_text);
-                        //throw;
-                    }
-                
-                }
-
-                doneOnceAlready = true;
+                invasionArena.LatelyDoneInTurn = GameContext.Current.TurnNumber + 1;
+                _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+                _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
             }
+
+            //_invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+            //_scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+
+            //_combatEngine = new AutomatedCombatEngine(
+            //    assets,
+            //    SendCombatUpdateCallback,
+            //    NotifyCombatEndedCallback);
+            //_combatEngine.SendInitialUpdate();
         }
+
+        //private void OnInvasionOccurring(InvasionArena invasionArena)
+        //{
+        //    Console.WriteLine("Step_3004: " + invasionArena.Colony.Location + " " + invasionArena.Colony.Name + " > OnInvasionOccurring ... populating _invasionEngine");
+        //    bool doneOnceAlready = false;
+        //    if (!invasionArena.Invader.IsHuman && doneOnceAlready == false)
+        //    {
+
+        //        if (_alreadyDidCivAsAI == null || _alreadyDidCivAsAI != invasionArena.Invader)
+        //        {
+        //            _alreadyDidCivAsAI = invasionArena.Invader;
+        //            GameLog.Client.SystemAssaultDetails.DebugFormat("_alreadyDidCivAsAI = {0}", invasionArena.Invader.Key);
+        //            if (_invasionEngine == null)
+        //            {
+        //                _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+        //            }
+
+        //            _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+        //            doneOnceAlready = true;
+        //        }
+        //    }
+        //    else if (doneOnceAlready == false)
+        //    {
+        //        if (_invasionEngine == null)
+        //        {
+        //            _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+        //        }
+
+        //        if (_invasionEngine != null)
+        //        {
+        //            try
+        //            {
+        //                _ = _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+        //            }
+        //            catch (Exception)
+        //            {
+        //                _text =
+        //                    "SystemAssault doesn't work - "
+        //                    + invasionArena.Colony.Name
+        //                    + invasionArena.Colony.Location
+        //                    ;
+        //                Console.WriteLine(_text);
+        //                //throw;
+        //            }
+
+        //        }
+
+        //        doneOnceAlready = true;
+        //    }
+        //}
 
         public void SendInvasionOrders(InvasionOrders orders)
         {

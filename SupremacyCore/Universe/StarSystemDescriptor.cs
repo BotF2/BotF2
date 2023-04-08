@@ -111,8 +111,9 @@ namespace Supremacy.Universe
             //{
             try // avoid hang up if this file is opened by another program 
             {
-                bool xml = false;
-                if (xml) // no output if no write acess
+
+                bool HomeSystemsXMLOutput = false;
+                if (HomeSystemsXMLOutput) // no output if no write acess
                 {
                     // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
                     file = pathOutputFile + "_HomeSystems-xml_"
@@ -449,7 +450,6 @@ namespace Supremacy.Universe
 
 
                     }  // end of foreach
-                //WriterCloseHomeSystemsXML:;
                     //streamWriter.Close();
                     //streamWriter2.Close();
                 }

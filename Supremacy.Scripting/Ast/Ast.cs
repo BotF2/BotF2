@@ -243,10 +243,7 @@ namespace Supremacy.Scripting.Ast
 
         protected static void DumpChild(IAst child, SourceWriter sw, int indentChange = 0)
         {
-            if (child != null)
-            {
-                child.Dump(sw, indentChange);
-            }
+            child?.Dump(sw, indentChange);
         }
 
         public void BeginInit()

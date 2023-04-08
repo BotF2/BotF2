@@ -38,7 +38,17 @@ namespace Supremacy.Economy
         /// <returns>The industry available.</returns>
         protected override int GetIndustryAvailable()
         {
-            return Colony.GetProductionOutput(ProductionCategory.Industry);
+            int _output = 0;
+            try 
+            {
+                if (Colony != null)
+                _output = Colony.GetProductionOutput(ProductionCategory.Industry);
+            }
+            catch
+            {
+                _output = 0;
+            }
+            return _output;
         }
 
         /// <summary>
@@ -171,7 +181,7 @@ namespace Supremacy.Economy
         {
             if (UpgradeTarget != null)
             {
-                string _text = "upgradeTarget available";  // 
+                string _text = "upgradeTarget available > " + UpgradeTarget.Location + " " + UpgradeTarget.Name;  // 
                 Console.WriteLine(_text);
                 //GameLog.Core.General.ErrorFormat(_text);
 
@@ -188,7 +198,7 @@ namespace Supremacy.Economy
                 }
 
                 // next is to scrap Upgrade target which might not be available any more
-                string _scrapped = UpgradeTarget.Name;
+                //string _scrapped = UpgradeTarget.Name;
                 _ = GameContext.Current.Universe.Destroy(UpgradeTarget);
                 base.Finish();
             }

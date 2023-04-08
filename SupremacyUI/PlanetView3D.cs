@@ -138,10 +138,7 @@ namespace Supremacy.UI
                     planetView.StopAnimations();
 
                     BindingExpression bindingExpression = BindingOperations.GetBindingExpression(planetView._axisAnimation, Timeline.DurationProperty);
-                    if (bindingExpression != null)
-                    {
-                        bindingExpression.UpdateTarget();
-                    }
+                    bindingExpression?.UpdateTarget();
 
                     planetView._animationClock = planetView._axisAnimation.CreateClock();
 
