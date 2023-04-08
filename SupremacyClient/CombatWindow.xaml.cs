@@ -107,7 +107,7 @@ namespace Supremacy.Client
         private void HandleCombatUpdate(CombatUpdate update)
         {
             _update = update;
-            string _text = _update.CombatID + ": " + "Combat at " + _update.Location
+            _text = _update.CombatID + ": " + "Combat at " + _update.Location
                 + " > " + _update.FriendlyAssets.Count() + " on our side - "
                 + _update.HostileAssets.Count() + " hostile "
                 ;

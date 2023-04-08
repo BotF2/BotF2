@@ -229,8 +229,8 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
-            _buyCostLastTurn += 1; // dummy
-            _buyCostLastTurn = 0;
+
+            //_buyCostLastTurn = 0;
 
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
@@ -371,12 +371,13 @@ namespace Supremacy.Game
                 _buyCostLastTurn += 1;  // dummy
                 //int bc = 0;
                 //if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
-                //    bc = 0;
+                int bc = TaxIncome - ((_credits.LastChange + _maintenanceCostLastTurn) /** -1*/);
                 ////TotalPopulation
-                //if (bc > 0)
-                //    return bc;
+                if (bc < 0)
+                    bc = 0;
+                return bc;
                 //else
-                return 0 - ((_credits.LastChange + _maintenanceCostLastTurn) * -1);
+                //return 0 - ((_credits.LastChange + _maintenanceCostLastTurn) * -1);
             }
             //set => _buyCostLastTurn += value;
         }

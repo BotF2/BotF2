@@ -138,6 +138,7 @@ namespace Supremacy.Game
         SelectTaskForce
     }
 
+
     /// <summary>
     /// Base class for all SitRep entries.
     /// </summary>
@@ -321,6 +322,7 @@ namespace Supremacy.Game
         private readonly string _report;
         private readonly string _detailName;
         private readonly string _image;
+        private readonly string _text;
 
         public ReportEntry_CoS(Civilization owner, MapLocation loc, string report, string details, string image, SitRepPriority priority)
             : base(owner)///*, priority*/)
@@ -330,14 +332,14 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("loc");
             }
 
-            string _text = "";
+            _text = "";
             if (report == null) _text = "Error";
             if (report == "") _text = "Error";
             if (report == " ") _text = "Error";
 
             if (_text == "Error")
             {
-                Console.WriteLine(_text + " - no text inside SitRep");
+                Console.WriteLine("__Step_1426: " + _text + " - no text inside SitRep");
                 //continue;
             }
 
@@ -426,8 +428,8 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override bool HasDetails => _detailName != ""; // true for extra Dialog window
         public override string DetailImage => "vfs:///Resources/Images/" + _image;
-        public override string HeaderText => string.Format(ResourceManager.GetString(_detailName + "_HEADER_TEXT"), Colony.Name, Colony.Location);
-        public override string DetailText => string.Format(ResourceManager.GetString(_detailName + "_DETAIL_TEXT"), Colony.Name, Colony.Location);
+        public override string HeaderText => string.Format(ResourceManager.GetString(_detailName/* + "_HEADER_TEXT"*/), Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString(_detailName/* + "_DETAIL_TEXT"*/), Colony.Name, Colony.Location);
         public override string SitRepComment { get; set; }
         public override string SummaryText => _report;
         public override bool IsPriority => true;
@@ -2658,7 +2660,7 @@ namespace Supremacy.Game
         public ResearchApplication Application => GameContext.Current.ResearchMatrix.GetApplication(_applicationId);
         public override SitRepCategory Categories => SitRepCategory.Research;
         public override SitRepAction Action => SitRepAction.ShowScienceScreen;
-        public override SitRepPriority Priority { get => SitRepPriority.Blue; set { } }
+        public override SitRepPriority Priority { get => SitRepPriority.RedYellow; set { } }
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED"), ResourceManager.GetString(Application.Name), Application.Level);

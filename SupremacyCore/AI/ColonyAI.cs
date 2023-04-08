@@ -34,10 +34,10 @@ namespace Supremacy.AI
 #pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
         private const int MaxEmpireColonyCount = 999;
 #pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
-//#pragma warning disable IDE0052 // Ungelesene private Member entfernen
+
         private static bool need1Colonizer;
         private static readonly string blank = " ";
-//#pragma warning restore IDE0052 // Ungelesene private Member entfernen
+
 
         public static void DoTurn([NotNull] Civilization civ)
         {

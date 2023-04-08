@@ -520,8 +520,16 @@ namespace Supremacy.UI
                             population.Text = string.Format("{0}: {1:#,##0} of {2:#,##0}",
                                 ResourceManager.GetString("SYSTEM_POPULATION"),
                                 system.Colony.Population.CurrentValue, system.Colony.MaxPopulation);
-                            //if (system.Colony.MaxPopulation == 0) 
+
+                            //if (system.Colony.GetAvailableLabor != 0)
                             //    name.Text = "# " + name.Text;
+                            int _avai = system.Colony.GetAvailableLabor() / 10;
+                            if (_avai > 0)
+                            {
+                                _avai *= 10;
+                                population.Text += " " + ResourceManager.GetString("STOCKED") + " " + _avai;
+                            }
+
 
                             growth.Text = string.Format("{0}: {1:0.#}%",
                                 ResourceManager.GetString("SYSTEM_GROWTH_RATE"), system.Colony.GrowthRate * 100);

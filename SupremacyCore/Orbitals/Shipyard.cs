@@ -1,4 +1,4 @@
-// Shipyard.cs
+// File:Shipyard.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -95,17 +95,20 @@ namespace Supremacy.Orbitals
         public int GetBuildOutput(int slot)
         {
             float output = ShipyardDesign.BuildSlotOutput;
-            switch (ShipyardDesign.BuildSlotOutputType)
+            if (Sector.System.Colony != null && Sector.System.Colony.NetIndustry != 0) // to avoid crashes
             {
-                case ShipyardOutputType.PopulationRatio:
-                    output = output / 100 * Sector.System.Colony.Population.CurrentValue;
-                    break;
-                case ShipyardOutputType.IndustryRatio:
-                    output = output / 100 * Sector.System.Colony.NetIndustry;
-                    break;
-                case ShipyardOutputType.Static:
-                default:
-                    break;
+                switch (ShipyardDesign.BuildSlotOutputType)
+                {
+                    case ShipyardOutputType.PopulationRatio:
+                        output = output / 100 * Sector.System.Colony.Population.CurrentValue;
+                        break;
+                    case ShipyardOutputType.IndustryRatio:
+                        output = output / 100 * Sector.System.Colony.NetIndustry;
+                        break;
+                    case ShipyardOutputType.Static:
+                    default:
+                        break;
+                }
             }
 
             if (ShipyardDesign.BuildSlotMaxOutput > 0)
@@ -308,7 +311,7 @@ namespace Supremacy.Orbitals
                     _text = item.Project.Location
                         //+ "; " + item.Project.ProductionCenter   // crashes
                         //+ "; " + item.Project.ProductionCenter.Owner
-                        + ";" + newline/*+ item.Project.Design*/
+                        + ";No Project for _Shipyard._buildslots" + newline/*+ item.Project.Design*/
 
                     ;
                 }
@@ -326,7 +329,7 @@ namespace Supremacy.Orbitals
                     //    + " > BuildSlot: No Project" + newline;
                     //Console.WriteLine(_text);
                     //GameLog.Core.Stations.DebugFormat(_text);
-                    _text = "";
+                    _text += "";
                 }
                 else
                 {
@@ -341,7 +344,7 @@ namespace Supremacy.Orbitals
                         //} catch { }
                                 
                         _text += _builder
-                            + "; " + item
+                            + ";Project for _Shipyard._buildslots " + item
                             + "; " + item.Project
                             + "; "
                         ;
@@ -350,7 +353,7 @@ namespace Supremacy.Orbitals
                     }
                     else
                     {
-                        _text += ""; //   ??
+                        _text += "Shipyard._buildslots - unsure whether project..."; //   ??
                         Console.WriteLine(_text);
                     }
                 }

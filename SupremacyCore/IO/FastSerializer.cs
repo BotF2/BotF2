@@ -126,8 +126,11 @@ namespace Supremacy.IO.Serialization
         /// The Default setting for the PreserveDecimalScale property.
         /// </summary>
         public static bool DefaultPreserveDecimalScale;
+
+
         private string _text;
         private readonly string newline = Environment.NewLine;
+
         private bool _trace;
 
         // Marker to denote that all elements in a typed array are optimizable

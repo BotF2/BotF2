@@ -1,4 +1,4 @@
-// InfluenceMapHelper.cs
+// File:InfluenceMapHelper.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -35,55 +35,57 @@ namespace Supremacy.AI
 
             InfluenceMap map = new InfluenceMap(game);
 
-            _ = game.Civilizations
-                .AsParallel()
-                .Where(c => (owner != c) && DiplomacyHelper.AreAllied(owner, c))
-                .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
-                .Where(f => f.IsCombatant)
-                .SelectMany(f => GetFleetInfluence(game, f))
-                .ForEach(o => map.AddAllied(o.Item1, o.Item2));
+            // avoid problems with 'ValueTuple'
 
-            _ = game.Civilizations
-                .AsParallel()
-                .Where(c => (owner != c) && DiplomacyHelper.AreAtWar(owner, c))
-                .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
-                .Where(f => f.IsCombatant)
-                .SelectMany(f => GetFleetInfluence(game, f))
-                .ForEach(o => map.AddEnemy(o.Item1, o.Item2));
+            //_ = game.Civilizations
+            //    .AsParallel()
+            //    .Where(c => (owner != c) && DiplomacyHelper.AreAllied(owner, c))
+            //    .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
+            //    .Where(f => f.IsCombatant)
+            //    .SelectMany(f => GetFleetInfluence(game, f))
+            //    .ForEach(o => map.AddAllied(o.Item1, o.Item2));
+
+            //_ = game.Civilizations
+            //    .AsParallel()
+            //    .Where(c => (owner != c) && DiplomacyHelper.AreAtWar(owner, c))
+            //    .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
+            //    .Where(f => f.IsCombatant)
+            //    .SelectMany(f => GetFleetInfluence(game, f))
+            //    .ForEach(o => map.AddEnemy(o.Item1, o.Item2));
 
             return map;
         }
 
-        private static IEnumerable<ValueTuple<MapLocation, int>> GetFleetInfluence(GameContext game, Fleet fleet)
-        {
-            int startX = Math.Max(
-                Math.Min(fleet.Location.X - fleet.Speed,
-                         fleet.Location.X - fleet.Range),
-                0);
-            int startY = Math.Max(
-                Math.Min(fleet.Location.Y - fleet.Speed,
-                         fleet.Location.Y - fleet.Range),
-                0);
-            int endX = Math.Min(
-                Math.Min(fleet.Location.X + fleet.Speed,
-                         fleet.Location.X + fleet.Range),
-                game.Universe.Map.Width - 1);
-            int endY = Math.Min(
-                Math.Min(fleet.Location.X + fleet.Speed,
-                         fleet.Location.X + fleet.Range),
-                game.Universe.Map.Height - 1);
+        //private static IEnumerable<ValueTuple<MapLocation, int>> GetFleetInfluence(GameContext game, Fleet fleet)
+        //{
+        //    int startX = Math.Max(
+        //        Math.Min(fleet.Location.X - fleet.Speed,
+        //                 fleet.Location.X - fleet.Range),
+        //        0);
+        //    int startY = Math.Max(
+        //        Math.Min(fleet.Location.Y - fleet.Speed,
+        //                 fleet.Location.Y - fleet.Range),
+        //        0);
+        //    int endX = Math.Min(
+        //        Math.Min(fleet.Location.X + fleet.Speed,
+        //                 fleet.Location.X + fleet.Range),
+        //        game.Universe.Map.Width - 1);
+        //    int endY = Math.Min(
+        //        Math.Min(fleet.Location.X + fleet.Speed,
+        //                 fleet.Location.X + fleet.Range),
+        //        game.Universe.Map.Height - 1);
 
-            for (int x = startX; x <= endX; x++)
-            {
-                for (int y = startY; x <= endY; y++)
-                {
-                    yield return new ValueTuple<MapLocation, int>(
-                        new MapLocation(x, y),
-                        fleet.EffectiveCombatStrength());
-                }
-            }
+        //    for (int x = startX; x <= endX; x++)
+        //    {
+        //        for (int y = startY; x <= endY; y++)
+        //        {
+        //            yield return new ValueTuple<MapLocation, int>(
+        //                new MapLocation(x, y),
+        //                fleet.EffectiveCombatStrength());
+        //        }
+        //    }
 
-            yield break;
-        }
+        //    yield break;
+        //}
     }
 }

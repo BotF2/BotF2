@@ -25,6 +25,7 @@ namespace Supremacy.Scripting.Utility
 #pragma warning disable CS0169 // The field 'TypeManager.CoreTypes._dynamic' is never used
             private static readonly dynamic _dynamic; // It used by GetField("_dynamic", ...), if you removed this line be leave GetField() call, the game will crash mid-game
 #pragma warning restore CS0169 // The field 'TypeManager.CoreTypes._dynamic' is never used
+
 #pragma warning restore IDE0051 // Remove unused private members
 
             public static readonly Type Dynamic = typeof(CoreTypes).GetField("_dynamic", BindingFlags.NonPublic | BindingFlags.Static).FieldType;
@@ -75,6 +76,8 @@ namespace Supremacy.Scripting.Utility
 
             public static readonly Type Expression = typeof(System.Linq.Expressions.Expression);
             public static readonly Type GenericExpression = typeof(System.Linq.Expressions.Expression<>);
+
+            public static dynamic Dynamic1 => _dynamic;
         }
     }
 }

@@ -897,7 +897,7 @@ namespace Supremacy.Client.Views
             CivilizationManager civMan = CivilizationManager.For(Model.SelectedColony.Owner);
 
             string confirmationMessage = string.Format(ResourceManager.GetString("CONFIRM_RUSH_BUILDING_MESSAGE"),
-                project.GetTotalCreditsCost(), civMan.Credits.CurrentValue);
+                project.GetTotalCreditsCost()*2, civMan.Credits.CurrentValue);
             MessageDialogResult confirmResult = MessageDialog.Show(
                 ResourceManager.GetString("CONFIRM_RUSH_BUILDING_HEADER"),
                 confirmationMessage,
@@ -908,7 +908,7 @@ namespace Supremacy.Client.Views
             }
 
             // Temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
-            _ = civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost());
+            _ = civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost()*2);
             //_ = civMan.BuyCostLastTurn.AdjustCurrent(project.GetTotalCreditsCost());
             //civMan.BuyCostLastTurn += project.GetTotalCreditsCost();
 

@@ -1,3 +1,5 @@
+// File:DesignTimeContexts.cs
+
 using Supremacy.Client.Audio;
 using Supremacy.Collections;
 using Supremacy.Entities;
@@ -85,6 +87,7 @@ namespace Supremacy.Client.Context
 #pragma warning disable CS0067 // The event 'DesignTimeAppContext.PropertyChanged' is never used
         public event PropertyChangedEventHandler PropertyChanged;
 #pragma warning restore CS0067 // The event 'DesignTimeAppContext.PropertyChanged' is never used
+
 
         #endregion
 

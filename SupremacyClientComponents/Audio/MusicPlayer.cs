@@ -53,6 +53,7 @@ namespace Supremacy.Client.Audio
         private readonly List<IAudioTrack> _endingTracks = new List<IAudioTrack>();
         private readonly IObservable<long> _updateTimer = null;
         private IDisposable _updateTimerSubscription = null;
+        private string _text;
         #endregion
 
         #region Properties
@@ -419,7 +420,9 @@ namespace Supremacy.Client.Audio
             }
             catch (Exception e)
             {
-                GameLog.Client.Audio.Error(e);
+                _text = "ERROR on OnTrackEnd...";
+                Console.WriteLine(_text);
+                GameLog.Client.Audio.Error(_text + e);
             }
         }
 

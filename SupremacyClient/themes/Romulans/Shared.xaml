@@ -253,7 +253,8 @@
                         </Trigger>-->
                         <!--IsEnabled-->
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Rom2Gradient_Left_Right}" />
+                            <!--<Setter TargetName="Border" Property="Background" Value="{StaticResource Rom2Gradient_Left_Right}" />-->
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Kling3Gradient_Left_Right}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

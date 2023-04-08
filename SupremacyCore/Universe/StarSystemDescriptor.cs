@@ -111,6 +111,7 @@ namespace Supremacy.Universe
             //{
             try // avoid hang up if this file is opened by another program 
             {
+
                 bool HomeSystemsXMLOutput = false;
                 if (HomeSystemsXMLOutput) // no output if no write acess
                 {
@@ -449,9 +450,6 @@ namespace Supremacy.Universe
 
 
                     }  // end of foreach
-
-                //WriterCloseHomeSystemsXML:;
-
                     //streamWriter.Close();
                     //streamWriter2.Close();
                 }

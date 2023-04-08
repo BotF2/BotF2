@@ -1,3 +1,5 @@
+// File:TechTreeHelper.cs
+//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -98,6 +100,7 @@ namespace Supremacy.Tech
 
             TechTree techTree = civManager.TechTree;
             List<TechObjectDesign> results = new List<TechObjectDesign>();
+            _text += " "; // just placeholder to avoid a "is never used"
 
             switch (type)
             {

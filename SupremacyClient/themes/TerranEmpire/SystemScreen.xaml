@@ -263,7 +263,9 @@
 
                 <!--ShipbuildingTab-->
                                 <TabItem x:Name="ShipbuildingTab" Header="{Binding Source={s:StringResource SHIPYARD_QUEUE_TAB}, Mode=OneTime}">
-                                    <Grid x:Name="ShipbuildingTabContent">
+                                    <Grid x:Name="ShipbuildingTabContent"
+                                          TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                          TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -274,7 +276,9 @@
                         <!--<ColumnDefinition Width="1" />-->
                     </Grid.ColumnDefinitions>
 
-                     <!--BEGIN SHIPYARD BUILD QUEUE AREA --> 
+                                        <!--<TextBlock Grid.Column="1" Margin="90,10,0,0" Text="{Binding Source={s:StringResource SHIPYARD_DOCK_AVAILABLE}, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}" />-->
+
+                                        <!--BEGIN SHIPYARD BUILD QUEUE AREA --> 
                       
                         <Expander Grid.Row="0"
                                 Grid.RowSpan="2"
