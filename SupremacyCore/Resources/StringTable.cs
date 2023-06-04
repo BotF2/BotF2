@@ -15,6 +15,11 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 using Supremacy.Types;
+using Supremacy.Game;
+using System.Windows.Automation;
+using static System.Net.Mime.MediaTypeNames;
+using System.Web.UI.WebControls;
+using Supremacy.Utility;
 
 namespace Supremacy.Resources
 {
@@ -52,7 +57,7 @@ namespace Supremacy.Resources
         {
             if (!File.Exists(fileName))
             {
-                string _text = "#### ....could not find " + fileName + " but en.txt is fine";
+                string _text = "Step_0135:  ....could not find " + fileName + " but en.txt is fine";
                 //GameLog.Client.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
 
@@ -108,30 +113,40 @@ namespace Supremacy.Resources
 
             }
 
-            _text = "EN.txt_Content-Key;Value;empty1;empty2;empty3";
-            foreach (var item in result._strings)
-            {
-                _text += newline + item.Key + ";\"" + item.Value + "\"";
-            }
-            string file = Path.Combine(ResourceManager.GetResourcePath("Resources\\Data"),"EN-Txt-Content");
-    
-    
-            //file = file.Replace(".\\", "");
-            try
-            {
-                StreamWriter streamWriter = new StreamWriter(file + ".txt");
-                streamWriter.Write(_text);
-                streamWriter.Close();
 
-                streamWriter = new StreamWriter(file + ".csv");
-                streamWriter.Write(_text);
-                streamWriter.Close();
-            }
-            catch (Exception)
+            _text = "Step_0134: no output for EN-Txt-Content";
+            Console.WriteLine(_text);
+            GameLog.Core.General.DebugFormat(_text);
+            // doesn't work
+            //if (ClientSettings.)
+            bool _en_txt_Output = false;
+            if (_en_txt_Output)
             {
+                _text = "EN.txt_Content-Key;Value;empty1;empty2;empty3";
+                foreach (var item in result._strings)
+                {
+                    _text += newline + item.Key + ";\"" + item.Value + "\"";
+                }
+                string file = Path.Combine(ResourceManager.GetResourcePath("Resources\\Data"), "EN-Txt-Content");
 
-                //throw;
-            }
+
+                //file = file.Replace(".\\", "");
+                try
+                {
+                    StreamWriter streamWriter = new StreamWriter(file + ".txt");
+                    streamWriter.Write(_text);
+                    streamWriter.Close();
+
+                    streamWriter = new StreamWriter(file + ".csv");
+                    streamWriter.Write(_text);
+                    streamWriter.Close();
+                }
+                catch (Exception)
+                {
+
+                    //throw;
+                }
+        }
 
             return result;
         }

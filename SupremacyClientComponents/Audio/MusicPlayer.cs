@@ -156,7 +156,8 @@ namespace Supremacy.Client.Audio
 
                     for (int i = 0; i < musicPack.Entries.Count; i++)
                     {
-                        Console.WriteLine(i+1 + " > " + musicPack.Entries[i].FileName);
+                        
+                        Console.WriteLine("Step_0158: " + i + " > " + musicPack.Entries[i].FileName);
                     } 
 
                     if (trackName != null)

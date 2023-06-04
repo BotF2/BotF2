@@ -121,8 +121,8 @@ namespace Supremacy.Universe
         {
             // works 
             //GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
-            _text = "Searching for Crash: Find(UniverseObjectType objectType)";
-            Console.WriteLine(_text);
+            //_text = "Step_4770: Deserializing ships and fleets...Searching for Crash: Find(UniverseObjectType objectType)";
+            //Console.WriteLine(_text);
             return _objects.Where(o => o.ObjectType == objectType).ToHashSet();
         }
 
@@ -589,9 +589,14 @@ namespace Supremacy.Universe
         {
             UpdateSectors();
 
-            GameLog.Core.SaveLoad.DebugFormat("Deserializing ships and fleets...");
-            GameLog.Core.SaveLoad.DebugFormat(";Objects following from _checkLoading");
-            Console.WriteLine(";Objects following from _checkLoading");  
+            _text = "Step_4000: Deserializing ships and fleets...";
+            Console.WriteLine(_text);
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+            _text = "Step_4500: ;Objects following from _checkLoading";
+            Console.WriteLine(_text); 
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+ 
             foreach (UniverseObject item in _objects)
             {
                 item.OnDeserialized();

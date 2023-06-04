@@ -433,7 +433,7 @@ namespace Supremacy.Combat
         public void Update()
         {
             if (Colony == null)
-                ;
+                _text += _text;
             _defenderCombatStrength = ComputeDefenderCombatStrength(Colony);
             _invaderCombatStrength = ComputeInvaderCombatStrength();
             _hasOrbitalDefenses = _defendingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed);
@@ -668,7 +668,7 @@ namespace Supremacy.Combat
 
         [NonSerialized]
         private string _text;
-        private int _latelyDoneInTurn;
+        private readonly int _latelyDoneInTurn = -1;
 
         public InvasionEngine([NotNull] SendInvasionUpdateCallback sendUpdateCallback, [NotNull] NotifyInvasionEndedCallback invasionEndedCallback)
         {
@@ -746,14 +746,11 @@ namespace Supremacy.Combat
 
         private void SendUpdate()
         {
-            Report("Step_3888: SendUpdate (for Human Player)...");
-            _sendUpdateCallback(this, _invasionArena);
-        }
+            _text = "Step_3888: SendUpdate (for Human Player)...";
+            Console.WriteLine(_text);
+            GameLog.Core.SystemAssaultDetails.DebugFormat(_text);
 
-        private void Report(string v)
-        {
-            Console.WriteLine(v);
-            GameLog.Core.SystemAssaultDetails.DebugFormat(v); ;
+            _sendUpdateCallback(this, _invasionArena);
         }
 
         public void SubmitOrders([NotNull] InvasionOrders orders)

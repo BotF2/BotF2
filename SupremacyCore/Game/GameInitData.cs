@@ -209,8 +209,8 @@ namespace Supremacy.Game
 
             GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Single or MultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad);
 
-            GameLog.Client.SaveLoad.DebugFormat("Loading Time = {0}", DateTime.Now - _time);
-            Console.WriteLine("Loading Time = {0}", DateTime.Now - _time);
+            GameLog.Client.SaveLoad.DebugFormat("Step_9811: Loading Time = {0}", DateTime.Now - _time);
+            Console.WriteLine("Step_9811: Loading Time = {0}", DateTime.Now - _time);
 
 
 

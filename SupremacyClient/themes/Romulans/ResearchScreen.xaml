@@ -510,7 +510,7 @@
 
                                     <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                              Text="{s:StringResource Key=AIM_TECHLEVEL_TEXT, Case=Upper}"
-                             FontSize="18pt"/>
+                             FontSize="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}"/>
 
                                     <DockPanel Margin="7,0,0,0">
                                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_1, Case=Upper}"

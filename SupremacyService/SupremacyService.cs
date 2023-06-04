@@ -65,7 +65,7 @@ namespace Supremacy.WCF
         //private IntelEngine _intelEngine;
         private InvasionEngine _invasionEngine;
         private GameContext _game;
-        private Civilization _alreadyDidCivAsAI;
+        //private Civilization _alreadyDidCivAsAI;
         private bool _isGameStarted;
         private bool _isGameEnding;
         private int _isProcessingTurn;
@@ -181,9 +181,9 @@ namespace Supremacy.WCF
                         //NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         if (!SavedGameManager.LoadGame(_gameInitData.SaveGameFileName, out SavedGameHeader header, out _game, out DateTime timestamp))
                         {
-                            //SendKeys.SendWait("{F1}");  // shows Map
+                            
                             EndGame();
-                            //SendKeys.SendWait("{F1}");  // shows Map
+                            
                             return;
                         }
                     }
@@ -224,7 +224,7 @@ namespace Supremacy.WCF
                                 .Subscribe(
                                     _ => { },
                                     e => DropPlayerAsync(player));
-                            //SendKeys.SendWait("{F1}");  // shows Map
+                            
                             //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         }
                         catch
@@ -242,8 +242,8 @@ namespace Supremacy.WCF
             }
             catch (SupremacyException e)
             {
-                SendKeys.SendWait("^e"); // Error.txt  
-                Thread.Sleep(1000);
+                //SendKeys.SendWait("^e"); // Error.txt  
+                //Thread.Sleep(1000);
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
 
@@ -255,15 +255,15 @@ namespace Supremacy.WCF
             }
             catch (Exception e)
             {
-                SendKeys.SendWait("^e"); // Error.txt  
-                Thread.Sleep(1000);
+                //SendKeys.SendWait("^e"); // Error.txt  
+                //Thread.Sleep(1000);
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
                 _ = MessageBox.Show("Step_0099: An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
             }
-            //SendKeys.SendWait("{F1}");  // shows Map
+            
             //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
         }
 
@@ -1165,7 +1165,7 @@ namespace Supremacy.WCF
             if ((initData.GameType == GameType.SinglePlayerLoad) || (initData.GameType == GameType.MultiplayerLoad))
             {
                 SavedGameHeader header = SavedGameManager.LoadSavedGameHeader(initData.SaveGameFileName);
-                Console.WriteLine("loading SavedGameHeader from "+ initData.SaveGameFileName);
+                Console.WriteLine("Step_0286: loading SavedGameHeader from " + initData.SaveGameFileName);
                 if (header == null)
                 {
                     return HostGameResult.LoadGameFailure;

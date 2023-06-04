@@ -63,9 +63,9 @@ namespace Supremacy.Client.Context
         private IPlayer _localPlayer;
         private IEnumerable<IPlayer> _remotePlayers;
         private ILobbyData _lobbyData;
-#pragma warning disable IDE0044 // Add readonly modifier
+//#pragma warning disable IDE0044 // Add readonly modifier
         private MusicLibrary _themeMusicLibrary = new MusicLibrary();
-#pragma warning restore IDE0044 // Add readonly modifier
+//#pragma warning restore IDE0044 // Add readonly modifier
 
         #endregion
 

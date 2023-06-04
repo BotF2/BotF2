@@ -591,7 +591,7 @@ namespace Supremacy.Collections
 
             _items = reader.ReadList<T>();
 
-            _text = "Reader: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+            _text = "Reader_0801: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
             //Console.WriteLine(_text);
             GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
@@ -604,12 +604,12 @@ namespace Supremacy.Collections
                 )
             {
                 //BinaryWriter writer = new BinaryWriter(File.Open(_file, FileMode.Create));
-                _text = "Reader: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+                _text = "Reader_0802: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
                 for (int i = 0; i < _items.Count-1; i++)
                 {
                     if (_firstRun == false)
                     {
-                        _text = "Reader: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+                        _text = "Reader_0803: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
                         //Console.WriteLine(_text);
                         GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                         //writer.Write(_text);

@@ -88,7 +88,8 @@ namespace Supremacy.Game
         None = 0,
         Few,
         Some,
-        Many
+        Many,
+        Most
     }
 
     /// <summary>

@@ -21,9 +21,12 @@
                        d:DesignWidth="1280"
                        d:DataContext="{x:Static scc:DiplomacyScreenViewModel.DesignInstance}">
 
+    <!--2023-06-04 > does this makes trouble-->
     <i:Interaction.Behaviors>
         <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Visible, Else=Hidden}}" />
+        <!--<scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph" Visibility="Hidden"/>-->
         <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Hidden, Else=Visible}}" />
+        <!--<scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"  Visibility="Hidden"/>-->
     </i:Interaction.Behaviors>
 
     <Control.Resources>
@@ -378,7 +381,7 @@
                     Grid.Row="1"
                     Orientation="Vertical">
                     <!-- the overview button, upper left top of list-->
-                    <scc:GameButton x:Name="PART_ViewButton_Overview"
+                    <!--<scc:GameButton x:Name="PART_ViewButton_Overview"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OverviewButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
                           ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OverviewButtonTooltipText'}"
@@ -388,7 +391,7 @@
                         <scc:GameButton.CommandParameter>
                             <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Overview}" />
                         </scc:GameButton.CommandParameter>
-                    </scc:GameButton>
+                    </scc:GameButton>-->
    
                     <scc:GameButton x:Name="PART_ViewButton_Outbox"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OutboxButtonText', CharacterCasing=Upper}"

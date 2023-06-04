@@ -39,19 +39,13 @@ namespace Supremacy.Game
     /// </summary>
     public class GameEngine
     {
+        //public int _tn = 0;  // internal use // Turn Number
 
-        public int _tn = 0;  // internal use // Turn Number
-        public string blank = " ";
         public readonly List<CivValue> CivValueList = new List<CivValue>();
         public readonly List<CivRank> CivRankList = new List<CivRank>();
         public List<int> moraleBuildingsID = new List<int>();
-        public string newline = Environment.NewLine;
-        public int AAASpecialWidth1;
-        public int AAASpecialHeight1;
         public int _buyMod;
         public int _taxMod;
-        private string _text;
-        private string _text2;
         private string _owner;
         private int _r_Credits_BestValue;
         private int _r_Credits_Average_5;
@@ -63,8 +57,15 @@ namespace Supremacy.Game
         private int _r_IntelAttack_Average_5;
         private int _globalMorale;
         private int _ratioIndustryForShipProduction;
+        [NonSerialized]
+        private string _text;
+        private string _text2;
+        public string blank = " ";
+        public string newline = Environment.NewLine;
+        //public int AAASpecialWidth1;  // resize images in Game to a player's setting outside
+        //public int AAASpecialHeight1;
 
-        //private readonly string _x = string.Format(ResourceManager.GetString("X"));
+        //example: private readonly string _x = string.Format(ResourceManager.GetString("X"));
 
         #region Public Members
 
@@ -501,7 +502,7 @@ namespace Supremacy.Game
             DoMapUpdates(game);
 
             //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
-            GameLog.Core.General.InfoFormat("Options: ---------------------------");
+            GameLog.Core.General.InfoFormat("Step_0900: Options: ---------------------------");
             GameLog.Core.General.InfoFormat("Options: GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
             GameLog.Core.GeneralDetails.DebugFormat("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
             GameLog.Core.GeneralDetails.DebugFormat("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
@@ -531,11 +532,11 @@ namespace Supremacy.Game
             GameLog.Core.GeneralDetails.DebugFormat("Options: TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
 
             Table ToolTipImageSizeTable = GameContext.Current.Tables.UniverseTables["Sizes"];
-            AAASpecialWidth1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Width"][0]);
-            AAASpecialHeight1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Height"][0]);
-            string _text = "AAASpecialWidth1=" + AAASpecialWidth1 + " x " + "AAASpecialHeight1=" + AAASpecialHeight1;
-            Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //AAASpecialWidth1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Width"][0]);
+            //AAASpecialHeight1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Height"][0]);
+            //string _text = "AAASpecialWidth1=" + AAASpecialWidth1 + " x " + "AAASpecialHeight1=" + AAASpecialHeight1;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             Table BuyModTable = GameContext.Current.Tables.GameOptionTables["BuyModifier"];
             _buyMod = (int)Number.ParseSingle(BuyModTable["BuyMod"][0]);
@@ -570,30 +571,33 @@ namespace Supremacy.Game
 
             //string newline = Environment.NewLine;
 
-            _text = newline + "StrengthModifier: (might be not used)" + newline +
-                +EspionageMod + " for EspionageMod" + newline
-                + SabotageMod + " for SabotageMod" + newline
-                + InternalSecurityMod + " for InternalSecurityMod" + newline
-                + ShipProductionMod + " for ShipProductionMod" + newline
-                + ScienceSpeedMod + " for ScienceSpeedMod" + newline
-                + MinorPowerMod + " for MinorPowerMod" + newline
-                + MiningMod + " for MiningMod" + newline
-                + CreditsMod + " for CreditsMod" + newline
-                + DiplomacyTrustMod + " for DiplomacyTrustMod" + newline
-                + DiplomacyRegardMod + " for DiplomacyRegardMod" + newline
-                + FoodProductionMod + " for FoodProductionMod" + newline
-                + RaidingMod + " for RaidingMod" + newline
-                + ShipVisibilityMod + " for ShipVisibilityMod" + newline
-                + StationsStrenghtMod + " for StationsStrenghtMod" + newline
-                + OrbitalBatteryStrenghtMod + " for OrbitalBatteryStrenghtMod" + newline
-                + TroopTransportStrenghtMod + " for TroopTransportStrenghtMod" + newline
-                + ColonyTroopStrenghtMod + " for ColonyTroopStrenghtMod" + newline
+            _text = newline + "StrengthModifier: (might be not used)" 
+                //+ newline +
+                //+ EspionageMod + " for EspionageMod" + newline
+                //+ SabotageMod + " for SabotageMod" + newline
+                //+ InternalSecurityMod + " for InternalSecurityMod" + newline
+                //+ ShipProductionMod + " for ShipProductionMod" + newline
+                //+ ScienceSpeedMod + " for ScienceSpeedMod" + newline
+                //+ MinorPowerMod + " for MinorPowerMod" + newline
+                //+ MiningMod + " for MiningMod" + newline
+                //+ CreditsMod + " for CreditsMod" + newline
+                //+ DiplomacyTrustMod + " for DiplomacyTrustMod" + newline
+                //+ DiplomacyRegardMod + " for DiplomacyRegardMod" + newline
+                //+ FoodProductionMod + " for FoodProductionMod" + newline
+                //+ RaidingMod + " for RaidingMod" + newline
+                //+ ShipVisibilityMod + " for ShipVisibilityMod" + newline
+                //+ StationsStrenghtMod + " for StationsStrenghtMod" + newline
+                //+ OrbitalBatteryStrenghtMod + " for OrbitalBatteryStrenghtMod" + newline
+                //+ TroopTransportStrenghtMod + " for TroopTransportStrenghtMod" + newline
+                //+ ColonyTroopStrenghtMod + " for ColonyTroopStrenghtMod" + newline
                 ;
 
+            _text = "Step_0800: " + _text;
+            Console.WriteLine(_text);
             GameLog.Core.GameInitDataDetails.DebugFormat(_text);
 
             game.TurnNumber = 1;
-            _tn = 1;
+            //_tn = 1;
 
         }
         #endregion
@@ -601,19 +605,39 @@ namespace Supremacy.Game
         #region DoFleetMovement() Method
         private void DoFleetMovement(GameContext game)
         {
+//#pragma warning disable IDE0059 // Unnecessary assignment of a value
             int turn = game.TurnNumber;  // Dummy, do not remove
+//#pragma warning restore IDE0059 // Unnecessary assignment of a value
             List<Fleet> allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
             int fuelNeeded;
-            
+
+            _text = "Step_6000: allFleets.Count = " + allFleets.Count;
+            Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
             foreach (Fleet fleet in allFleets)
             {
                 int shipNum = fleet.Ships.Count();
-                if (fleet.UnitAIType == UnitAIType.Reserve)
-                {
-                    GameLog.Client.AIDetails.DebugFormat("*** Turn {0}: Reserve,  Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
-                        turn, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
-                }
+
+                _text = "Step_6001: "
+                    + "Turn " + GameContext.Current.TurnNumber
+                    + " > " + fleet.Owner.Name
+                    + " > " + fleet.ObjectID
+                    + " " + fleet.Name
+                    + " at " + fleet.Location
+                    + ", Type " + fleet.UnitAIType
+                    + ", " + fleet.Activity
+                    + ", " + fleet.ActivityStart
+                    + " of " + fleet.ActivityDuration
+                    ;
+                Console.WriteLine(_text);
+                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
+                //if (fleet.UnitAIType == UnitAIType.Reserve)
+                //{
+                //    GameLog.Client.AIDetails.DebugFormat("*** Turn {0}: Reserve,  Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
+                //        turn, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
+                //}
 
                 if (shipNum >= 5 && fleet.UnitAIType != UnitAIType.SystemDefense)
                 {
@@ -621,14 +645,15 @@ namespace Supremacy.Game
                         GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                 }
 
-                if (fleet.Route.Steps.Count() > 0 && shipNum >= 5)
+                if (fleet.Route.Steps.Count() > 0 && shipNum > 1)
                 {
-                    GameLog.Client.AIDetails.DebugFormat("# {0} ships inside fleet, {1} Waypoints to go, first step = {2}", shipNum, fleet.Route.Waypoints.Count, fleet.Route.Steps[0]);
+                    GameLog.Client.AIDetails.DebugFormat("Step_6002: # {0} ships inside fleet, {1} Waypoints to go, first step = {2}", shipNum, fleet.Route.Waypoints.Count, fleet.Route.Steps[0]);
                     for (int i = 0; i < shipNum; i++)
                     {
-                        _text = "Ship's Fleet# =" + i;
+                        _text = "Step_6002: Fleet# Ship " + i;
                         Ship ship = fleet.Ships[i];
-                        _text += "/ObjectID =" + ship.ObjectID + "/Name =" + ship.Name;
+                        _text += " = " + ship.ObjectID + " " + ship.Name + " - " + ship.Design.Key ;
+                        Console.WriteLine(_text);
                         GameLog.Core.AIDetails.DebugFormat(_text);
                     }
                 }
@@ -1442,8 +1467,8 @@ namespace Supremacy.Game
                     }
                 }
 
-                //if (!invasionLocations.Contains(fleet.Location))
-                //{
+                if (!invasionLocations.Contains(fleet.Location))
+                {
                     if (fleet.Sector.System != null)
                     {
                         if (fleet.Order is AssaultSystemOrder)
@@ -1458,7 +1483,7 @@ namespace Supremacy.Game
                         Console.WriteLine(_text);
                         //GameLog.Core.SystemAssault.InfoFormat(_text);
                     }
-                //}
+                }
             }
 
             foreach (List<CombatAssets> combat in combats)
@@ -3029,6 +3054,8 @@ namespace Supremacy.Game
                           /* Add the empire-wide morale adjustments. */
                           _ = colony.Morale.AdjustCurrent(globalMorale);
 
+                          //if (colony.OriginalOwner !=)  TODO: Malus for Subjageted
+
                           /* Add any morale bonuses from active buildings at the colony. */
                           int colonyBonus = (from building in colony.Buildings
                                              where building.IsActive
@@ -3970,6 +3997,14 @@ namespace Supremacy.Game
                         _text += " # on the way to " + _aim.ToString() + " named " + _aimSector.Name;
                     }
 
+                    if (fleet.Route.IsEmpty)
+                    {
+                        if (fleet.Order == FleetOrders.EngageOrder)
+                        {
+                            fleet.SetOrder(FleetOrders.IdleOrder);
+                        }
+                    }
+
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.OwnerID];
                     CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
@@ -3983,7 +4018,7 @@ namespace Supremacy.Game
             }
 
             GameContext.Current.TurnNumber++;
-            _tn = GameContext.Current.TurnNumber;
+            //_tn = GameContext.Current.TurnNumber;
         }
 
         //private void PrintCivRank(List<CivRank> civRankList)

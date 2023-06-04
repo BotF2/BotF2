@@ -46,6 +46,8 @@ namespace Supremacy.Client.Views
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.Subtract, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.OemMinus, ModifierKeys.Control));
 
+            //_ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoom25, Key.NumPad9, ModifierKeys.Control));
+
 
             _ = CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand, ExecuteEscapeCommand, CanExecuteEscapeCommand));
         }

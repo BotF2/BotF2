@@ -41,12 +41,14 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand SetOverviewMode = new CompositeCommand();
         public static readonly CompositeCommand MapZoomIn = new CompositeCommand();
         public static readonly CompositeCommand MapZoomOut = new CompositeCommand();
+        public static readonly CompositeCommand MapZoom25 = new CompositeCommand();
+        public static readonly CompositeCommand MapZoomMax = new CompositeCommand();
         public static readonly CompositeCommand SelectTaskForce = new CompositeCommand();
         public static readonly CompositeCommand AddShipToTaskForce = new CompositeCommand();
         public static readonly CompositeCommand RemoveShipFromTaskForce = new CompositeCommand();
         public static readonly CompositeCommand SelectSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOnSector = new CompositeCommand();
-        public static readonly CompositeCommand View25Percent = new CompositeCommand();
+        public static readonly CompositeCommand MapZooom25 = new CompositeCommand();
 
         public static readonly CompositeCommand CenterOnHomeSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOn1 = new CompositeCommand();

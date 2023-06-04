@@ -163,7 +163,7 @@ namespace Supremacy.Orbitals
             int baysWithProjects = 0;
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
-                _text = "checking " + slot.Shipyard.Design /*+ ", index " + count*/
+                _text = "Step_8300: checking " + slot.Shipyard.Design /*+ ", index " + count*/
 
                     + " Slot= " + slot.SlotID
                     + " at " + slot.Shipyard.Location
@@ -244,7 +244,7 @@ namespace Supremacy.Orbitals
 
                     if (_percent != "0 %")
                     {
-                        _text = slot.Shipyard.Location + 
+                        _text = "Step_7600: " + slot.Shipyard.Location + 
                             " > Slot= " + slot.SlotID
                             + " at " + slot.Shipyard.Name
                             //+ " " + 
@@ -271,7 +271,7 @@ namespace Supremacy.Orbitals
             {
                 if (_buildQueue[i].Project != null)
                 {
-                    _text = _buildQueue[i].Project.Location
+                    _text = "Step_5800: " + _buildQueue[i].Project.Location
                         //+ "; " + _buildQueue[i].Project.ProductionCenter   // crashes
                         //+ "; " + _buildQueue[i].Project.ProductionCenter.Owner
                         + ";Shipyard-Slot-BuildQueue;" + i
@@ -308,7 +308,7 @@ namespace Supremacy.Orbitals
             {
                 if (item.Project != null)
                 {
-                    _text = item.Project.Location
+                    _text = "Step_5860: " + item.Project.Location
                         //+ "; " + item.Project.ProductionCenter   // crashes
                         //+ "; " + item.Project.ProductionCenter.Owner
                         + ";No Project for _Shipyard._buildslots" + newline/*+ item.Project.Design*/
@@ -343,7 +343,7 @@ namespace Supremacy.Orbitals
                         //        _builder = item.Project.Builder.Key; 
                         //} catch { }
                                 
-                        _text += _builder
+                        _text += "Step_5880: " + _builder
                             + ";Project for _Shipyard._buildslots " + item
                             + "; " + item.Project
                             + "; "

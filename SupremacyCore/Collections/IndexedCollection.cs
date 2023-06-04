@@ -21,6 +21,7 @@ using System.Threading;
 using Supremacy.Annotations;
 
 using E = System.Linq.Expressions.Expression;
+using Supremacy.Utility;
 
 namespace Supremacy.Collections
 {
@@ -72,6 +73,7 @@ namespace Supremacy.Collections
         protected ReaderWriterLockSlim SyncLock;
 
         [NonSerialized] private Dictionary<string, Index> _indexes;
+        private string _text;
 
         public IEqualityComparer<T> Comparer { get; }
 
@@ -356,9 +358,18 @@ namespace Supremacy.Collections
 
         protected void InsertItem(int listIndex, T item, bool upgradeableLockAlreadyHeld)
         {
+            //_text = "Step_4100: listIndex= " + listIndex + ", item= " + item.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
+
+
             if ((listIndex < 0) || (listIndex > Count))
             {
-                throw new ArgumentOutOfRangeException(nameof(listIndex));
+                _text = "Step_4101: listIndex= " + listIndex + ", item= " + item.ToString();
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
+                //throw new ArgumentOutOfRangeException(nameof(listIndex));
+
             }
 
             bool downgraded = false;

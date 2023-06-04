@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Composite.Events;
+﻿using FMOD;
+using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
@@ -57,6 +58,7 @@ namespace Supremacy.Client
         private bool _isClosing;
         private bool _exitInProgress;
         private double _scaleFactor;
+        private string _text;
 
         static ClientWindow()
         {
@@ -162,6 +164,11 @@ namespace Supremacy.Client
             // CTRL
             _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control)));
 
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F01_Command, Key.F1, ModifierKeys.Control));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F02_Command, Key.F2, ModifierKeys.Control));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F03_Command, Key.F3, ModifierKeys.Control));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F04_Command, Key.F4, ModifierKeys.Control));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F05_Command, Key.F5, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F06_Command, Key.F6, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_F07_Command, Key.F7, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.Control));  // old F9-Dialog, not used anymore
@@ -472,6 +479,7 @@ namespace Supremacy.Client
 
         protected override Size MeasureOverride(Size availableSize)
         {
+
             if (_settingsChangeScope.IsWithin)
             {
                 return availableSize;
@@ -545,6 +553,10 @@ namespace Supremacy.Client
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
+
+            _text = "Step_4200: AppWindowSize OnRenderSizeChanged = " + sizeInfo.NewSize;
+            Console.WriteLine(_text);
+            GameLog.Core.UIDetails.DebugFormat(_text);
 
             if (sizeInfo.NewSize.Width > MaxUnscaledScreenWidth)
             {
@@ -620,7 +632,7 @@ namespace Supremacy.Client
         private void OnGameStarted(ClientDataEventArgs<GameStartData> obj)
         {
             ContextMenu = new GameContextMenu { CustomPopupPlacementCallback = ContextMenuPlacementCallback };
-            SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
+            //SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
         }
 
         private void OnTurnStarted(ClientEventArgs e)

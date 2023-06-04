@@ -66,16 +66,22 @@ namespace Supremacy.Client
 
         private readonly ClientOptionsDialog _optionsDialog;
         private readonly ClientTracesDialog _tracesDialog;
-        private readonly F06_Dialog _f06_Dialog;
+
         //private readonly F07_Dialog _encyclopedia_Dialog;
+        private readonly F06_Dialog _f06_Dialog; // F1 - F5 already used
         private readonly F07_Dialog _f07_Dialog;
         private readonly F08_Dialog _f08_Dialog;
         private readonly F09_Dialog _f09_Dialog;
         private readonly F10_Dialog _f10_Dialog;
         private readonly F11_Dialog _f11_Dialog;
         private readonly F12_Dialog _f12_Dialog;
-        private readonly FakeDialog _fakeDialog;
+        //private readonly FakeDialog _fakeDialog;
 
+        private readonly CTRL_F01_Dialog _ctrl_f01_Dialog;
+        //private readonly CTRL_F02_Dialog _ctrl_f02_Dialog;
+        //private readonly CTRL_F03_Dialog _ctrl_f03_Dialog;
+        //private readonly CTRL_F04_Dialog _ctrl_f04_Dialog;
+        //private readonly CTRL_F05_Dialog _ctrl_f05_Dialog;
         private readonly CTRL_F06_Dialog _ctrl_f06_Dialog;
         //private readonly F07_Dialog _encyclopedia_Dialog;
         private readonly CTRL_F07_Dialog _ctrl_f07_Dialog;  // German version of F07-Dialog
@@ -87,6 +93,7 @@ namespace Supremacy.Client
 
         private readonly DelegateCommand<object> _optionsCommand;
         private readonly DelegateCommand<object> _tracesCommand;
+        //private readonly DelegateCommand<object> _f01_Command;  // already used F1 - F5
         private readonly DelegateCommand<object> _f06_Command;
         private readonly DelegateCommand<object> _f07_Command;
         private readonly DelegateCommand<object> _f08_Command;
@@ -95,7 +102,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _f11_Command;
         private readonly DelegateCommand<object> _f12_Command;
 
-        //private readonly DelegateCommand<object> _ctrl_f01_Command;
+        private readonly DelegateCommand<object> _ctrl_f01_Command;
         //private readonly DelegateCommand<object> _ctrl_f02_Command;
         //private readonly DelegateCommand<object> _ctrl_f03_Command;
         //private readonly DelegateCommand<object> _ctrl_f04_Command;
@@ -116,7 +123,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _s5_Command;
         private readonly DelegateCommand<object> _s6_Command;
 
-        private readonly DelegateCommand<object> _fakeCommand;
+        //private readonly DelegateCommand<object> _fakeCommand;
         private readonly DelegateCommand<object> _logTxtCommand;
         private readonly DelegateCommand<object> _errorTxtCommand;
         private readonly DelegateCommand<object> _startSinglePlayerGameCommand;
@@ -268,6 +275,26 @@ namespace Supremacy.Client
             _f12_Command = new DelegateCommand<object>(
                 Execute_f12_Command);
 
+            _ctrl_f01_Dialog = new CTRL_F01_Dialog();
+            _ctrl_f01_Command = new DelegateCommand<object>(
+                Execute_ctrl_f01_Command);
+            
+            //_ctrl_f02_Dialog = new CTRL_F02_Dialog();
+            //_ctrl_f02_Command = new DelegateCommand<object>(
+            //    Execute_ctrl_f02_Command);
+            
+            //_ctrl_f03_Dialog = new CTRL_F03_Dialog();
+            //_ctrl_f03_Command = new DelegateCommand<object>(
+            //    Execute_ctrl_f03_Command);
+            
+            //_ctrl_f04_Dialog = new CTRL_F04_Dialog();
+            //_ctrl_f04_Command = new DelegateCommand<object>(
+            //    Execute_ctrl_f04_Command);
+            
+            //_ctrl_f05_Dialog = new CTRL_F05_Dialog();
+            //_ctrl_f05_Command = new DelegateCommand<object>(
+            //    Execute_ctrl_f05_Command);
+
             _ctrl_f06_Dialog = new CTRL_F06_Dialog();
             _ctrl_f06_Command = new DelegateCommand<object>(
                 Execute_ctrl_f06_Command);
@@ -284,8 +311,8 @@ namespace Supremacy.Client
             _s5_Command = new DelegateCommand<object>(Execute_s5_Command);
             _s6_Command = new DelegateCommand<object>(Execute_s6_Command);
 
-            _fakeDialog = new FakeDialog();
-            _fakeCommand = new DelegateCommand<object>(ExecuteFakeCommand);
+            //_fakeDialog = new FakeDialog();
+            //_fakeCommand = new DelegateCommand<object>(ExecuteFakeCommand);
 
             _logTxtCommand = new DelegateCommand<object>(ExecuteLogTxtCommand);
             _errorTxtCommand = new DelegateCommand<object>(ExecuteErrorTxtCommand);
@@ -420,8 +447,18 @@ namespace Supremacy.Client
         private void ExecuteOptionsCommand(object obj) => _ = _optionsDialog.ShowDialog();
         private void ExecuteTracesCommand(object obj) => _ = _tracesDialog.ShowDialog();
 
+        //private void Execute_f01_Command(object obj) => _ = _f01_Dialog.ShowDialog();  // f1 - F5 already used
+        //private void Execute_f02_Command(object obj) => _ = _f02_Dialog.ShowDialog();
+        //private void Execute_f03_Command(object obj) => _ = _f03_Dialog.ShowDialog();
+        //private void Execute_f04_Command(object obj) => _ = _f04_Dialog.ShowDialog();
+        //private void Execute_f05_Command(object obj) => _ = _f05_Dialog.ShowDialog();
         private void Execute_f06_Command(object obj) => _ = _f06_Dialog.ShowDialog();
-        private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
+
+
+        private void Execute_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();// temporary switched to German _f07
+        //private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
+
+
         private void Execute_f08_Command(object obj) => _ = _f08_Dialog.ShowDialog();
         private void Execute_f09_Command(object obj) => _ = _f09_Dialog.ShowDialog();
         private void Execute_f10_Command(object obj) => _ = _f10_Dialog.ShowDialog();
@@ -429,13 +466,18 @@ namespace Supremacy.Client
         private void Execute_f12_Command(object obj) => _ = _f12_Dialog.ShowDialog();
 
 
-        //private void Execute_ctrl_f01_Command(object obj) { _ = _ctrl_f01_Dialog.ShowDialog(); }
+        private void Execute_ctrl_f01_Command(object obj) { _ = _ctrl_f01_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f02_Command(object obj) { _ = _ctrl_f02_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f03_Command(object obj) { _ = _ctrl_f03_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f04_Command(object obj) { _ = _ctrl_f04_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f05_Command(object obj) { _ = _ctrl_f05_Dialog.ShowDialog(); }
         private void Execute_ctrl_f06_Command(object obj) => _ = _ctrl_f06_Dialog.ShowDialog();
-        private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();
+        
+        
+        private void Execute_ctrl_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();// temporary switched to German _f07
+        //private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog(); // temporary
+
+
         //private void Execute_ctrl_f08_Command(object obj) { _ = _ctrl_f08_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f09_Command(object obj) { _ = _ctrl_f09_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f10_Command(object obj) { _ = _ctrl_f10_Dialog.ShowDialog(); }
@@ -450,12 +492,10 @@ namespace Supremacy.Client
         private void Execute_s4_Command(object obj) => ExecuteSP_DirectlyGameCommand(4);
         private void Execute_s5_Command(object obj) => ExecuteSP_DirectlyGameCommand(5);
         private void Execute_s6_Command(object obj) => ExecuteSP_DirectlyGameCommand(6);
-        private void ExecuteFakeCommand(object obj) => _ = _fakeDialog.ShowDialog();
+        //private void ExecuteFakeCommand(object obj) => _ = _fakeDialog.ShowDialog();
         private void ExecuteLogTxtCommand(object obj)
         {
-            string logFile = Path.Combine(
-                ResourceManager.GetResourcePath(""),
-                "Log.txt");
+            string logFile = Path.Combine(ResourceManager.GetResourcePath(""), "Log.txt");
 
             if (!string.IsNullOrEmpty(logFile) && File.Exists(logFile))
             {
@@ -471,7 +511,7 @@ namespace Supremacy.Client
                 }
                 catch
                 {
-                    _ = MessageBox.Show("Could not load Log.txt");
+                    _ = MessageBox.Show("Step_0100: Could not load Log.txt");
                 }
             }
         }
@@ -834,18 +874,18 @@ namespace Supremacy.Client
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Initialize()
         {
-            _text = "Initializing... !";
+            _text = "Step_0210: Initializing... !";
             Console.WriteLine(_text);
-            GameLog.Client.General.InfoFormat("Initializing... !");
+            GameLog.Client.General.InfoFormat(_text);
 
             RegisterViewsAndServices();
-            Console.WriteLine("RegisterViewsAndServices done...");
+            Console.WriteLine("Step_0220: RegisterViewsAndServices done...");
             RegisterEventHandlers();
-            Console.WriteLine("RegisterEventHandlers done...");
+            Console.WriteLine("Step_0240: RegisterEventHandlers done...");
             RegisterCommandHandlers();
-            Console.WriteLine("RegisterCommandHandlers done...");
+            Console.WriteLine("Step_0260: RegisterCommandHandlers done...");
             UpdateCommands();
-            Console.WriteLine("UpdateCommands done...");
+            Console.WriteLine("Step_0280: UpdateCommands done...");
 
             UIHelpers.IsAutomaticBrowserLaunchEnabled = true;
 
@@ -856,9 +896,9 @@ namespace Supremacy.Client
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
 
-            GameLog.Client.General.InfoFormat("MenuScreen activated... ");
+            GameLog.Client.General.InfoFormat("Step_0295: MenuScreen activated... ");
             _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.ogg");
-            Console.WriteLine("Initialize done...");
+            Console.WriteLine("Step_0299: Initialize done...");
         }
 
         private bool AutoLoadSavedGame()
@@ -891,7 +931,7 @@ namespace Supremacy.Client
 
         private void RegisterViewsAndServices()
         {
-            Console.WriteLine("RegisterViewsAndServices....");
+            Console.WriteLine("Step_0214: RegisterViewsAndServices....");
 
             _ = _container.RegisterInstance(GameOptionsManager.LoadDefaults());
 
@@ -947,7 +987,7 @@ namespace Supremacy.Client
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(SecondOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(TracesOptionsPage));   // moved into own Dialog
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.TracesPages, typeof(TracesOptionsPage));
-            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.FakeDialog, typeof(FakeDialog));
+            //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.FakeDialog, typeof(FakeDialog));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AudioOptionsPage));   // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GraphicsOptionsPage));  // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GeneralOptionsPage));
@@ -1043,7 +1083,7 @@ namespace Supremacy.Client
             _ = Channel<GameSavedMessage>.Public
                 .ObserveOn(Scheduler.ThreadPool)
                 .Subscribe(_ => ShellIntegration.UpdateJumpList());
-            Console.WriteLine("RegisterEventHandlers done...");
+            Console.WriteLine("Step_0230: RegisterEventHandlers done...");
         }
 
         private void OnPlayerExited(ClientDataEventArgs<IPlayer> args)
@@ -1210,8 +1250,6 @@ namespace Supremacy.Client
             gameScreensRegion.Deactivate(gameScreensRegion.GetView(StandardGameScreens.MenuScreen));
             gameScreensRegion.Deactivate(gameScreensRegion.GetView(StandardGameScreens.MultiplayerLobby));
 
-
-            //System.Windows.Forms.SendKeys.SendWait("{F1}");  // shows Map
         }
 
         private void OnGameEnding(ClientEventArgs obj) => UpdateCommands();
@@ -1227,14 +1265,14 @@ namespace Supremacy.Client
 
             _optionsCommand.IsActive = true;
             _tracesCommand.IsActive = true;
-            _f06_Command.IsActive = true;
+            _f06_Command.IsActive = true;  // F1 - F5 already used
             _f07_Command.IsActive = true;
             _f08_Command.IsActive = true;
             _f09_Command.IsActive = true;
             _f10_Command.IsActive = true;
             _f11_Command.IsActive = true;
             _f12_Command.IsActive = true;
-            //_ctrl_f01_Command.IsActive = true;
+            _ctrl_f01_Command.IsActive = true;
             //_ctrl_f02_Command.IsActive = true;
             //_ctrl_f03_Command.IsActive = true;
             //_ctrl_f04_Command.IsActive = true;
@@ -1253,7 +1291,7 @@ namespace Supremacy.Client
             _s4_Command.IsActive = true;
             _s5_Command.IsActive = true;
             _s6_Command.IsActive = true;
-            _fakeCommand.IsActive = true;
+            //_fakeCommand.IsActive = true;
             _logTxtCommand.IsActive = true;
             _errorTxtCommand.IsActive = true;
             _showCreditsDialogCommand.IsActive = true;
@@ -1509,7 +1547,7 @@ namespace Supremacy.Client
         {
             ClientCommands.OptionsCommand.RegisterCommand(_optionsCommand);
             ClientCommands.TracesCommand.RegisterCommand(_tracesCommand);
-            ClientCommands.F06_Command.RegisterCommand(_f06_Command);
+            ClientCommands.F06_Command.RegisterCommand(_f06_Command); // F1 - F5 already used
             ClientCommands.F07_Command.RegisterCommand(_f07_Command);
             ClientCommands.F08_Command.RegisterCommand(_f08_Command);
             ClientCommands.F09_Command.RegisterCommand(_f09_Command);
@@ -1517,7 +1555,7 @@ namespace Supremacy.Client
             ClientCommands.F11_Command.RegisterCommand(_f11_Command);
             ClientCommands.F12_Command.RegisterCommand(_f12_Command);
 
-            //ClientCommands.CTRL_F01_Command.RegisterCommand(_ctrl_f01_Command);
+            ClientCommands.CTRL_F01_Command.RegisterCommand(_ctrl_f01_Command);
             //ClientCommands.CTRL_F02_Command.RegisterCommand(_ctrl_f02_Command);
             //ClientCommands.CTRL_F03_Command.RegisterCommand(_ctrl_f03_Command);
             //ClientCommands.CTRL_F04_Command.RegisterCommand(_ctrl_f04_Command);
@@ -1538,7 +1576,7 @@ namespace Supremacy.Client
             ClientCommands.S5_Command.RegisterCommand(_s5_Command);
             ClientCommands.S6_Command.RegisterCommand(_s6_Command);
 
-            ClientCommands.FakeCommand.RegisterCommand(_fakeCommand);
+            //ClientCommands.FakeCommand.RegisterCommand(_fakeCommand);
             ClientCommands.LogTxtCommand.RegisterCommand(_logTxtCommand);
             ClientCommands.ErrorTxtCommand.RegisterCommand(_errorTxtCommand);
             ClientCommands.StartSinglePlayerGame.RegisterCommand(_startSinglePlayerGameCommand);

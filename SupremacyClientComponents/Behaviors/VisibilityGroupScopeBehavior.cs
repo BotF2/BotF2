@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using FMOD;
+using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -34,6 +37,10 @@ namespace Supremacy.Client.Behaviors
 
         private static void OnVisibilityGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            _text = "Step_0701: OnVisibilityGroupChanged-Arg e = " + e.NewValue.ToString();
+            Console.WriteLine(_text);
+            GameLog.Core.UIDetails.DebugFormat(_text);
+
             if (d is VisibilityGroupScopeBehavior scopeBehavior)
             {
                 scopeBehavior.ClearVisibilityBindings();
@@ -134,6 +141,7 @@ namespace Supremacy.Client.Behaviors
         #region Visibility Property
 
         public static readonly DependencyProperty VisibilityProperty = UIElement.VisibilityProperty.AddOwner(typeof(VisibilityGroupScopeBehavior));
+        private static string _text;
 
         public Visibility Visibility
         {

@@ -29,7 +29,7 @@ namespace Supremacy.Client
         public static readonly RoutedCommand OptionsCommand;
         public static readonly RoutedCommand TracesCommand;
         public static readonly RoutedCommand F07Command;
-        public static readonly RoutedCommand FakeCommand;
+        //public static readonly RoutedCommand FakeCommand;
         public static readonly RoutedCommand CreditsCommand;
         public static readonly RoutedCommand LoadGameCommand;
         public static readonly RoutedCommand SaveGameCommand;

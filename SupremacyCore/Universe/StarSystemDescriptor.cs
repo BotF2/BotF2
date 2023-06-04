@@ -119,7 +119,7 @@ namespace Supremacy.Universe
                     file = pathOutputFile + "_HomeSystems-xml_"
                         + GameContext.Current.Options.StartingTechLevel.ToString() + "_List(autoCreated).csv";
 
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9150: writing {0}", file); // _HomeSystems-xml_ + StartingLevel
 
                     //...but with the next lines it doesn't loaded the entries from HomeSystem.xml anymore
                     //file = null; // quick set to off
@@ -575,7 +575,7 @@ namespace Supremacy.Universe
         private string _inhabitants;
         private StarType? _starType;
         private SystemBonus _bonuses = SystemBonus.Random;
-#pragma warning disable IDE0044 // Add readonly modifier
+//#pragma warning disable IDE0044 // Add readonly modifier
         private List<string> _startingShips;
         private List<string> _startingShipyards;
         private List<string> _startingBuildings;
@@ -593,7 +593,7 @@ namespace Supremacy.Universe
         private ProductionFacilityDescriptor _energyPF = null;
         private ProductionFacilityDescriptor _researchPF = null;
         private ProductionFacilityDescriptor _intelligencePF = null;
-#pragma warning restore IDE0044 // Add readonly modifier
+//#pragma warning restore IDE0044 // Add readonly modifier
         #endregion
 
         #region Constructors

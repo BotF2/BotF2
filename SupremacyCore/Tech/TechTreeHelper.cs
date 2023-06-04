@@ -223,6 +223,14 @@ namespace Supremacy.Tech
         /// <returns>The planetary build projects.</returns>
         public static IList<BuildProject> GetBuildProjects(Colony colony)
         {
+            if (colony == null)
+            {
+                _text = "Step_6123: GetBuildProjects...Colony == null";
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.ErrorFormat(_text);
+            }
+
+
             bool _tracingTechTreeHelper = false;   // turn true if you need
 
             Civilization colonyOwner = colony.Owner;

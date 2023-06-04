@@ -145,25 +145,28 @@ namespace Supremacy.Utility
         {
             TypedReference r = __makeref(value);
 
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+            var v = &r;
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
             switch (Type.GetTypeCode(typeof(T)))
             {
                 case TypeCode.Boolean:
                 case TypeCode.SByte:
                 case TypeCode.Byte:
-                    return **(byte**)&r;
+                    return **(byte**)v;
 
                 case TypeCode.Char:
                 case TypeCode.Int16:
                 case TypeCode.UInt16:
-                    return **(ushort**)&r;
+                    return **(ushort**)v;
 
                 case TypeCode.Int32:
                 case TypeCode.UInt32:
-                    return **(uint**)&r;
+                    return **(uint**)v;
 
                 case TypeCode.Int64:
                 case TypeCode.UInt64:
-                    return **(ulong**)&r;
+                    return **(ulong**)v;
 
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -41,7 +41,9 @@ namespace Supremacy.Client
             region.Behaviors.Add(
                 GameScreenStackSelectionSyncBehavior.BehaviorKey,
                 new GameScreenStackSelectionSyncBehavior { HostControl = regionTarget });
-            Console.WriteLine("why this is jumepd over by Visual Studio?");
+
+            // Console.WriteLine("Step_0180: why this is jumepd over by Visual Studio?"); // 2023-06-03 (reg): doesn't seems to be the case
+            
             base.AttachBehaviors(region, regionTarget);
         }
 
@@ -417,7 +419,12 @@ namespace Supremacy.Client
 
         protected override Size MeasureOverride(Size constraint)
         {
-            _itemsContainer.Measure(constraint);
+            try
+            {
+                _itemsContainer.Measure(constraint);
+            }
+            catch { Console.WriteLine("Step_0811: MeasureOverride is not allowed to be null."); }
+            
             return constraint;
         }
 

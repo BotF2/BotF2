@@ -358,6 +358,9 @@
     <Compile Include="ctrl_f_Pages\ctrl_f11_Dialog\ctrl_f11_Tab_9.xaml.cs">
       <DependentUpon>ctrl_f11_Tab_9.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ctrl_f_Pages\ctrl_f01_Dialog.xaml.cs">
+      <DependentUpon>ctrl_f01_Dialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ctrl_f_Pages\ctrl_f12_Dialog.xaml.cs">
       <DependentUpon>ctrl_f12_Dialog.xaml</DependentUpon>
     </Compile>
@@ -736,6 +739,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ctrl_f_Pages\ctrl_f11_Dialog\ctrl_f11_Tab_9.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_f_Pages\ctrl_f01_Dialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

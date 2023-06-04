@@ -23,6 +23,7 @@
 //      - DI pattern                https://en.wikipedia.org/wiki/Dependency_injection#Examples
 //      - Bootstrapper              https://msdn.microsoft.com/en-us/library/ff921139.aspx
 //      - Tutorial:                 https://www.codeproject.com/Articles/37164/Introduction-to-Composite-WPF-CAL-Prism-Part
+using FMOD;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Presentation.Regions;
 using Microsoft.Practices.Composite.UnityExtensions;
@@ -95,12 +96,12 @@ namespace Supremacy.Client
                     _text2 += new FileInfo("SupremacyClient.exe").Length.ToString() + " ";
                     _text2 += new FileInfo("SupremacyClient.exe").LastWriteTime.ToString();
                 }
-                _text = "Current Version = " + Current.Version + _text2;
+                _text = "Step_0200: Current Version = " + Current.Version + _text2;
                 Console.WriteLine(_text);  // "Current Version = "
                 GameLog.Client.General.InfoFormat(_text);
 
-                _text = "Time running = " + (DateTime.Now - starttime).ToString();
-
+                _text = "Step_0201: Time running = " + (DateTime.Now - starttime).ToString();
+                Console.WriteLine(_text);
                 GameLog.Client.GeneralDetails.DebugFormat(_text);
 
                 return Current.Version;
@@ -379,7 +380,8 @@ namespace Supremacy.Client
 
             Licenser.LicenseKey = "DGF20-AUTJ7-3K8MD-DNNA";
 
-            Console.WriteLine("Next: DesiredAnimationFrameRate and checking for local en.txt - mostly not existing e.g. 'de.txt'");   // File.IO.error next
+            Console.WriteLine("Step_0154: Next: DesiredAnimationFrameRate and checking for local en.txt - mostly not existing e.g. 'de.txt'");   // File.IO.error next
+
             Timeline.DesiredFrameRateProperty.OverrideMetadata(
                typeof(Timeline),
                new FrameworkPropertyMetadata(ClientSettings.Current.DesiredAnimationFrameRate));
@@ -415,7 +417,7 @@ namespace Supremacy.Client
         [UsedImplicitly]
         private static class EntryPoint
         {
-
+            private static string _text;
 
             [STAThread, UsedImplicitly]
             private static void Main(string[] args)
@@ -439,6 +441,12 @@ namespace Supremacy.Client
                 }
 
                 // maybe we don't need this anymore because it is shown at Start Screen as a requirement
+
+                _text = "Step_0130: No Check for Microsoft XNA Framework V3.1 but it must be installed > see folder";
+                Console.WriteLine(_text);
+                GameLog.Core.General.InfoFormat(_text);
+
+                
 
                 //if (!CheckXNAFramework31())
                 //{
@@ -518,7 +526,7 @@ namespace Supremacy.Client
 
                 try
                 {
-                    Console.WriteLine("NEXT: ShowSplashScreen...");
+                    Console.WriteLine("Step_0132: NEXT: ShowSplashScreen...");
                     ShowSplashScreen();
 
                     string _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
@@ -535,7 +543,7 @@ namespace Supremacy.Client
                         }
                         else
                         {
-                            GameLog.Client.Audio.InfoFormat("Resources/SoundFX/Menu/LoadingSplash.wav not found...");
+                            GameLog.Client.Audio.InfoFormat("Step_0133: Resources/SoundFX/Menu/LoadingSplash.wav not found...");
 
                             /*Important*/
                             GameLog.Client.Audio.WarnFormat("wav format is needed for several files which are played by System.Media (out of WPF = xaml files), not by the code's own sound player: ");
@@ -571,7 +579,9 @@ namespace Supremacy.Client
 
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         private static bool CheckXNAFramework31()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             string _text;
 
@@ -695,6 +705,7 @@ namespace Supremacy.Client
             {
                 _text = ".NET Framework is less than 4.6.1";
             }
+            _text = "Step_0120: " + _text;
             Console.WriteLine(_text);
             GameLog.Client.General.Info(_text);
 
@@ -733,7 +744,7 @@ namespace Supremacy.Client
 
             try
             {
-                Console.WriteLine("opening Error.txt");
+                Console.WriteLine("Step_0152: opening Error.txt");
                 //var file = "Error.txt";
                 //StreamWriter errorFile = new StreamWriter(file);
 
@@ -744,13 +755,14 @@ namespace Supremacy.Client
                 //Console.SetError
                 //errorFile.WriteLine("Hello");
                 //errorFile.WriteLine(DateTime.Now.ToString());
-                Console.WriteLine("Time 111: " + DateTime.Now);
+                //if (ClientSettings.Current.EnableOutputToTXT) Console.WriteLine("Time111: " + DateTime.Now);
+                if (true) Console.WriteLine("Time_0111: " + DateTime.Now);
                 //just starts an empty file 
                 // System.Diagnostics.Process.Start("Error.txt");
             }
             catch
             {
-                Console.WriteLine("error.txt could not be created. ");
+                Console.WriteLine("Step_0163: error.txt could not be created. ");
                 //_ = MessageBox.Show(
                 //    "The error log could not be created.  You may still run the game,\n"
                 //    + "but error details cannot be logged.",
@@ -796,13 +808,15 @@ namespace Supremacy.Client
 
             VfsWebRequestFactory.EnsureRegistered();
 
-            Console.WriteLine("Time 112: " + DateTime.Now.ToString());
+            //if (ClientSettings.Current.EnableOutputToTXT) Console.WriteLine("Time112: " + DateTime.Now.ToString());
+            //if (true) Console.WriteLine("Time112: " + DateTime.Now.ToString());
 
             ClientApp app = new ClientApp();
             app.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             app.InitializeComponent();
             _ = app.Run();
-            Console.Error.WriteLine("Time113: " + DateTime.Now.ToString());
+            //if (ClientSettings.Current.EnableOutputToTXT) Console.WriteLine("Time113: " + DateTime.Now.ToString());
+            //if (true) Console.WriteLine("Time113: " + DateTime.Now.ToString());
         }
 
         private static void ShowSplashScreen()
@@ -825,6 +839,10 @@ namespace Supremacy.Client
 
             private ClientWindow _shell;
             public string _text = "";
+
+            //_text = "Step_0200: UnityBootstrapper";
+            //        Console.WriteLine(_text);
+            //        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
             protected override IModuleCatalog GetModuleCatalog()
             {

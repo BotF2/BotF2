@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Xml;
 
 using Supremacy.Encyclopedia;
@@ -29,7 +30,10 @@ namespace Supremacy.Orbitals
     {
         private byte _buildSlots;
         private ushort _buildOutput;
-        private Dictionary<string, int> _possibleStationNames;
+        private readonly Dictionary<string, int> _possibleStationNames;
+
+        [NonSerialized]
+        private readonly string _text;
 
         /// <summary>
         /// Gets or sets the build slots.
@@ -79,23 +83,31 @@ namespace Supremacy.Orbitals
             }
             else
             {
-                Report2GameData("now reading Stations"); // dummy to avoid Report2GameData is not used.
+                _text = "Step_0498: Stations - now reading " + Name; // dummy to avoid Report2GameData is not used.
+                Console.WriteLine(_text);
+                GameLog.Core.GameData.DebugFormat(_text);
                 //GameLog.Core.GameData.DebugFormat("StationNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
 
-                foreach (XmlElement name in element["StationNames"])
-                {
-                    _possibleStationNames.Add(name.InnerText.Trim(), 0);
-                    Report2GameData("Step_0499: StationNames - Possible Name for " + Name + " = " + name.InnerText.Trim());
-                    //GameLog.Core.GameData.DebugFormat("StationNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
+                //bool _possibleStationNames_Done = false;
+                //if (!_possibleStationNames_Done)
+                //{
+                    foreach (XmlElement name in element["StationNames"])
+                    {
+                        _possibleStationNames.Add(name.InnerText.Trim(), 0);
+                        _text = "Step_0499: StationNames - Possible Name for " + Name + " = " + name.InnerText.Trim();
+                        //Console.WriteLine(_text);
+                        //GameLog.Core.GameData.DebugFormat(_text);
+                        //        _possibleStationNames_Done = true;
+                    }
+                    //}
                 }
-            }
         }
 
-        private void Report2GameData(string v)
-        {
-            Console.WriteLine(v);
-            //GameLog.Core.GameData.DebugFormat(v);
-        }
+        //private void _text = string v)
+        //{
+        //    Console.WriteLine(v);
+        //    //GameLog.Core.GameData.DebugFormat(v);
+        //}
 
         protected override string DefaultImageSubFolder => "Stations/";
 

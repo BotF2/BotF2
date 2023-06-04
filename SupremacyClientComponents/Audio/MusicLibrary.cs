@@ -64,7 +64,7 @@ namespace Supremacy.Client.Audio
                 musicPack.Load(xmlPack);
                 _musicPacks.Add(musicPack.Name, musicPack);
 
-                _text = "adding: musicPack.Name " + musicPack.Name;
+                _text = "Step_0156: adding: musicPack.Name " + musicPack.Name;
                 Console.WriteLine(_text);
                 GameLog.Client.Audio.DebugFormat(_text);
             }
@@ -83,8 +83,8 @@ namespace Supremacy.Client.Audio
             {
                 _ = pack.Dictionary.TryGetValue(trackName, out MusicEntry track);
 
-                _text = "trackName " + trackName
-                    + "track.FileName " + track.FileName
+                _text = "Step_0303: trackName " + trackName
+                    + ", track.FileName " + track.FileName
                     ;
                 Console.WriteLine(_text);
                 GameLog.Client.Audio.DebugFormat(_text);

@@ -1832,6 +1832,7 @@ namespace Supremacy.Universe
         /// <summary>
         /// sends more population to unused energy facilities <see cref="Colony"/>.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
         public void HandlePF()
         {
             //int _laborpool_unused = AvailableLabor;
@@ -2094,6 +2095,7 @@ namespace Supremacy.Universe
         /// situation is resolved.
         /// </summary>
         /// <returns>The number of buildings that were shut down.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
         public int EnsureEnergyForBuildings()
         {
             int shutDown = 0;

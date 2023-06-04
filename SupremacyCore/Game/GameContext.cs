@@ -208,55 +208,70 @@ namespace Supremacy.Game
             try
             {
                 GameLog.Core.SaveLoad.DebugFormat("--------------------------------------------------");
-                _text = "########### Deserialising GameContext...";
+                _text = "Step_3600: ########### Deserialising GameContext...";
                 Console.WriteLine(_text);
                 GameLog.Core.SaveLoad.DebugFormat("########### Deserialising GameContext...");
 
                 IsMultiplayerGame = reader.ReadBoolean();
-                Console.WriteLine("reading IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
-                GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
+                Console.WriteLine("Step_3610: already read  IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
+                GameLog.Core.SaveLoad.DebugFormat("Step_3611: IsMultiplayerGame = {0}", IsMultiplayerGame);
 
                 _nextObjectId = reader.ReadOptimizedInt32();
-                Console.WriteLine("reading _nextObjectId.....");
+                Console.WriteLine("Step_3630: already read  _nextObjectId..... > " + _nextObjectId);
+
                 _turnNumber = reader.ReadOptimizedUInt16();
-                Console.WriteLine("reading _turnNumber..... > " + _turnNumber);
-                GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
+                Console.WriteLine("Step_3640: already read _turnNumber..... > " + _turnNumber);
+                GameLog.Core.SaveLoad.DebugFormat("Step_3641: _turnNumber = {0}", _turnNumber);
 
                 _options = reader.Read<GameOptions>();
-                Console.WriteLine("reading _options.....");
+                Console.WriteLine("Step_3660: already read _options.....");
+
                 _gameMod = reader.Read<GameMod>();
-                Console.WriteLine("reading _gameMod.....");
+                Console.WriteLine("Step_3680: already read _gameMod.....");
+
                 _civilizations = reader.Read<CivDatabase>();
-                Console.WriteLine("reading _civilizations.....");
+                Console.WriteLine("Step_3710: already read _civilizations..... > " + _civilizations.Count);
                 // CivDatabase = basic Civs (like ShortName etc)
+
                 _civManagers = reader.Read<CivilizationManagerMap>();
-                Console.WriteLine("reading _civManagers.....");
+                Console.WriteLine("Step_3740: already read _civManagers..... > " + _civManagers.Count);
                 // _civManagers = basic Civs (like ShortName etc)
+
                 _races = reader.Read<RaceDatabase>();
-                Console.WriteLine("reading _races.....");
+                Console.WriteLine("Step_3780: already read _races..... > " + _races.Count);
+
                 _universe = reader.Read<UniverseManager>();
-                GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
+                GameLog.Core.SaveLoad.DebugFormat("Step_3810: already read _universe.....");
 
                 _techDatabase = reader.Read<TechDatabase>();
-                Console.WriteLine("reading _techDatabase.....");
+                Console.WriteLine("Step_3910: already read _techDatabase.....");
+
                 _researchMatrix = reader.Read<ResearchMatrix>();
-                Console.WriteLine("reading _researchMatrix.....");
+                Console.WriteLine("Step_3920: already read _researchMatrix.....");
+
                 _sectorClaims = reader.Read<SectorClaimGrid>();
-                Console.WriteLine("reading _sectorClaims.....");
+                Console.WriteLine("Step_3930: already read _sectorClaims.....");
+
                 _techTrees = reader.Read<TechTreeMap>();
-                Console.WriteLine("reading _techTrees.....");
+                Console.WriteLine("Step_3940: already read _techTrees.....");
+
                 _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
-                Console.WriteLine("reading _diplomacyData.....");
+                Console.WriteLine("Step_3950: already read _diplomacyData.....");
+
                 _agreementMatrix = reader.Read<AgreementMatrix>();
-                Console.WriteLine("reading _agreementMatrix.....");
+                Console.WriteLine("Step_3960: already read _agreementMatrix.....");
+
                 _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
-                Console.WriteLine("reading _diplomats.....");
+                Console.WriteLine("Step_3970: already read _diplomats.....");
+
                 _strategyDatabase = reader.Read<StrategyDatabase>();
-                Console.WriteLine("reading _strategyDatabase.....");
+                Console.WriteLine("Step_3980: already read _strategyDatabase.....");
+
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
-                Console.WriteLine("reading _scriptedEvents.....");
+                Console.WriteLine("Step_3985: already read _scriptedEvents.....");
+
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
-                Console.WriteLine("reading _diplomacyDatabase.....");
+                Console.WriteLine("Step_3990: already read _diplomacyDatabase.....");
 
 
                 FixupDiplomacyData();
@@ -426,7 +441,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            _text = "------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
+            _text = "Step_4000: ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -951,7 +966,7 @@ namespace Supremacy.Game
 
                 GalaxyGenerator.GenerateGalaxy(this);
 
-                _text = "Galaxy generated...";
+                _text = "Step_1290:Galaxy generated...";
                 Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
@@ -1038,7 +1053,7 @@ namespace Supremacy.Game
 
                         if (_bool_Fac_Count_Active == false)
                         {
-                            _text = "####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            _text = "Step_1310: ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
                             Console.WriteLine(_text);
                             GameLog.Client.GalaxyGenerator.InfoFormat(_text);
                             _bool_Fac_Count_Active = true; // just do once
@@ -1321,7 +1336,7 @@ namespace Supremacy.Game
                         }
                     }
                 }
-                _text = "Starting items are done!";
+                _text = "Step_4000: Starting items are done!";
                 Console.WriteLine(_text);
                 GameLog.Core.General.InfoFormat(_text);
 
@@ -1337,7 +1352,9 @@ namespace Supremacy.Game
                         civManager.EnsureSeatOfGovernment();
                     }
                 }
-                GameLog.Core.General.InfoFormat("SeatOfGovernment ensured...");
+                _text = "Step_4500: SeatOfGovernment ensured...";
+                Console.WriteLine(_text);
+                GameLog.Core.General.InfoFormat(_text);
 
                 _ = _diplomats.ForEach(d => d.EnsureForeignPowers());
 

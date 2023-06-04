@@ -64,7 +64,7 @@ namespace Supremacy.Types
                 throw new InvalidOperationException("Mandatory state transition couldn't occur.");
             }
 
-            _text = "Illegal state transition from "+ State.Get(typeof(TStateEnum), currentState) + " to " 
+            _text = "Step_3900: Illegal state transition from "+ State.Get(typeof(TStateEnum), currentState) + " to " 
                 + desiredState;
             Console.WriteLine(_text);
             //_ = MessageBox.Show(_text);

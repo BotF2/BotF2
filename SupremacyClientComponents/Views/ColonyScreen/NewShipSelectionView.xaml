@@ -137,9 +137,7 @@
                Width="380"
                Margin="0,0,0,0">
 
-            <Image DockPanel.Dock="Top"
-             StretchDirection="DownOnly"
-             
+            <Image DockPanel.Dock="Top" StretchDirection="DownOnly"
              Source="{Binding ElementName=_self, Path=ShipFunctionPath}"/>
 
             <!-- model files:  we just have a few model files - to less model files
@@ -149,34 +147,6 @@
                           ModelFile="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.ModelFile}" />
             -->
         </DockPanel>
-
-        <!--<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,15,0,0">
-         <TextBlock Text="(not working yet) - How many ?  >  "/>   
-            --><!--<RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"--><!--
-
-            
-            <RadioButton Name="OneTime"          
-        GroupName="Project_Amount" Content="1" Margin="15,0,0,0"
-        />
-      
-
-            --><!--IsChecked="{Binding Source=HowMany, Mode=TwoWay}"--><!--
-            <RadioButton Name="TwoTimes"           
-        GroupName="Project_Amount" Content="2" Margin="15,0,0,0"
- />
-
-            <RadioButton Name="FiveTimes"              
-        GroupName="Project_Amount" Content="5" Margin="15,0,0,0"
-                 
-        />
-
-
-            <RadioButton Name="TenTimes"     
-        GroupName="Project_Amount" Content="10" Margin="15,0,0,0"
-                 
-        />
-        
-        </StackPanel>-->
 
         <TextBlock Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"

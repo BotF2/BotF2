@@ -7,6 +7,12 @@
 //
 // All other rights reserved.
 
+using Supremacy.Buildings;
+using Supremacy.Collections;
+using Supremacy.Economy;
+using Supremacy.Orbitals;
+using Supremacy.Resources;
+using Supremacy.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,13 +21,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
-
-using Supremacy.Buildings;
-using Supremacy.Collections;
-using Supremacy.Economy;
-using Supremacy.Orbitals;
-using Supremacy.Resources;
-using Supremacy.Utility;
 
 
 namespace Supremacy.Tech
@@ -185,10 +184,10 @@ namespace Supremacy.Tech
         /// Loads the tech database from XML.
         /// </summary>
         /// <returns>The tech database.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
         public static TechDatabase Load()
         {
-            _text = "Loading Resources/Data/TechObjectDatabase.xml";
+            _text = "Step_3020: Loading Resources/Data/TechObjectDatabase.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -424,7 +423,7 @@ namespace Supremacy.Tech
 
                 //GameLog works
                 //GameLog.Client.GameDataDetails.DebugFormat("TechDatabase.cs: shipyard.DesignID={0}, {1}", shipyard.DesignID, shipyard.LocalizedName);
-                
+
                 db.ShipyardDesigns.Add(shipyard);
             }
             foreach (XmlElement xmlShipyard in xmlShipyards.GetElementsByTagName("Shipyard"))
@@ -561,11 +560,11 @@ namespace Supremacy.Tech
                         }
                     }
                 }
-                
+
             }
-            GameLog.Core.XMLCheck.InfoFormat("lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
+            GameLog.Core.XMLCheck.InfoFormat("Step_0200: lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
             //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
-            GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 391 were fine)", successfullyLoadedShipDesignCounter);
+            GameLog.Client.General.InfoFormat("Step_0200: {0} of successfullyLoadedShipDesign (once 391 were fine)", successfullyLoadedShipDesignCounter);
 
             /************
              * Stations *
@@ -665,7 +664,7 @@ namespace Supremacy.Tech
                     {
                         goto WriterClose;
                     }
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9130: writing {0}", file);  // _TechObj-1-ProdFac_List(autoCreated).csv
                     streamWriter = new StreamWriter(file);
 
                     strHeader =    // Head line
@@ -864,7 +863,7 @@ namespace Supremacy.Tech
                     {
                         goto WriterClose;
                     }
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9140: writing {0}", file);
                     streamWriter = new StreamWriter(file);
 
                     strHeader =    // Head line
@@ -1076,7 +1075,7 @@ namespace Supremacy.Tech
 
                     streamWriter = new StreamWriter(file);
 
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9160: writing {0}", file);  // _TechObj-6-Ships_NAMES_List(autoCreated).csv
 
 
 
@@ -1179,7 +1178,7 @@ namespace Supremacy.Tech
                         ;
                     //"CE_SecondaryWeapon.Damage" + separator +
 
-                    strHeader = strHeader.Replace("CE_","");
+                    strHeader = strHeader.Replace("CE_", "");
 
 
                     streamWriter.WriteLine(strHeader);
@@ -1415,106 +1414,106 @@ namespace Supremacy.Tech
                             _beamDamage + separator +
                             _torpedoDamage/* + separator */
                             ;
-                            ////item.DesignID + separator +   // not useful for current working
-                            ////item.ShipType + separator +  // moved down for current working
-                            ////item.ClassName + separator +  // moved down for current working
-                            ////item.Key;   // just for testing
+                        ////item.DesignID + separator +   // not useful for current working
+                        ////item.ShipType + separator +  // moved down for current working
+                        ////item.ClassName + separator +  // moved down for current working
+                        ////item.Key;   // just for testing
 
-                            ////<TechRequirements>
-                            //"xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
-                            //                   // after GoogleSheet-Export: replace...
-                            //                   // </Weapons> by </Weapons></TechRequirements>
-                            //                   // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+                        ////<TechRequirements>
+                        //"xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                        //                   // after GoogleSheet-Export: replace...
+                        //                   // </Weapons> by </Weapons></TechRequirements>
+                        //                   // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
 
-                            ////"<Biotech>" + separator +                // not helpful
-                            //item.TechRequirements[TechCategory.BioTech] + separator +
-                            ////"</Biotech>" + separator +                 // not helpful
-                            ////"<Computers>" + separator +                 // not helpful
-                            //item.TechRequirements[TechCategory.Computers] + separator +
-                            ////"</Computers>" + separator +                // not helpful
-                            ////"<Construction>" + separator +                 // not helpful
-                            //item.TechRequirements[TechCategory.Construction] + separator +
-                            ////"</Construction>" + separator +                // not helpful
-                            ////"<Energy>" + separator +                 // not helpful
-                            //item.TechRequirements[TechCategory.Energy] + separator +
-                            ////"</Energy>" + separator +                // not helpful
-                            ////"<Propulsion>" + separator +                 // not helpful
-                            //item.TechRequirements[TechCategory.Propulsion] + separator +
-                            ////"</Propulsion>" + separator +                // not helpful
-                            ////"<Weapons>" + separator +                 // not helpful
-                            //item.TechRequirements[TechCategory.Weapons] + separator +
-                            ////"</Weapons>" + separator +                // not helpful
+                        ////"<Biotech>" + separator +                // not helpful
+                        //item.TechRequirements[TechCategory.BioTech] + separator +
+                        ////"</Biotech>" + separator +                 // not helpful
+                        ////"<Computers>" + separator +                 // not helpful
+                        //item.TechRequirements[TechCategory.Computers] + separator +
+                        ////"</Computers>" + separator +                // not helpful
+                        ////"<Construction>" + separator +                 // not helpful
+                        //item.TechRequirements[TechCategory.Construction] + separator +
+                        ////"</Construction>" + separator +                // not helpful
+                        ////"<Energy>" + separator +                 // not helpful
+                        //item.TechRequirements[TechCategory.Energy] + separator +
+                        ////"</Energy>" + separator +                // not helpful
+                        ////"<Propulsion>" + separator +                 // not helpful
+                        //item.TechRequirements[TechCategory.Propulsion] + separator +
+                        ////"</Propulsion>" + separator +                // not helpful
+                        ////"<Weapons>" + separator +                 // not helpful
+                        //item.TechRequirements[TechCategory.Weapons] + separator +
+                        ////"</Weapons>" + separator +                // not helpful
 
-                            //item.BuildCost + separator +
-                            //item.Duranium + separator +
-                            //item.MaintenanceCost + separator +
-                            //item.HullStrength + separator +
-                            //item.PopulationHealth + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export
-                            //item.IsUniversallyAvailable + separator +
-
-
-
-                            //item.CrewSize + separator +
-                            //item.ScienceAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
-                            //item.ScanStrength + separator +
-                            //item.SensorRange + separator +
-                            //item.HullStrength + separator +
-                            //item.ShieldStrength + separator +
-                            //item.ShieldRechargeRate + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
-
-                            //item.ShipType + separator +
-
-
-                            //item.Dilithium + separator +
-                            //item.CloakStrength + separator +
-                            //item.CamouflagedStrength + separator +
-                            //item.Range + separator +
-                            //item.Speed + separator +
-                            //item.FuelCapacity + separator +
-                            //item.Maneuverability + separator +
-                            //item.EvacuationLimit + separator +
-                            //item.WorkCapacity + separator +
-
-                            //item.InterceptAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
-
-
-                            //item.ClassName + separator +
-                            ////"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
-                            //item.PrimaryWeapon.Count + separator +
-                            //item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
-                            //item.PrimaryWeapon.Damage + separator +
-
-                            ////"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
-                            //item.SecondaryWeapon.Count + separator +
-                            //item.SecondaryWeapon.Damage + separator +
-
-                            //_firepower + separator +
-
-
-                            // // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
-                            // "ObsoletedItems" + item.Key + separator +
-
-                            // //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
-                            // //"<ObsoletedItems> + newline + " +                 // not helpful
-                            // //"<ObsoletedItem></ObsoletedItem>" +// not helpful
-                            // //" + newline + </ObsoletedItems>" +                 // not helpful
-                            // //separator +
-
-                            // //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
-                            // "UpgradeOptions" + item.Key + separator +
-                            ////item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
-                            ////"<UpgradeOptions> + newline + " +                // not helpful
-                            ////"<UpgradeOption></UpgradeOption> + " +// not helpful
-                            ////separator +
+                        //item.BuildCost + separator +
+                        //item.Duranium + separator +
+                        //item.MaintenanceCost + separator +
+                        //item.HullStrength + separator +
+                        //item.PopulationHealth + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export
+                        //item.IsUniversallyAvailable + separator +
 
 
 
-                            //// Possibles ShipNames
-                            ////"<ShipNames> + newline + " +                // not helpful
-                            ////"<ShipName></ShipName>" +// not helpful
-                            ////" + newline + </ShipNames>" +                 // not helpful
-                            //"PossibleShipNames" + item.Key
-                            ;
+                        //item.CrewSize + separator +
+                        //item.ScienceAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+                        //item.ScanStrength + separator +
+                        //item.SensorRange + separator +
+                        //item.HullStrength + separator +
+                        //item.ShieldStrength + separator +
+                        //item.ShieldRechargeRate + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+
+                        //item.ShipType + separator +
+
+
+                        //item.Dilithium + separator +
+                        //item.CloakStrength + separator +
+                        //item.CamouflagedStrength + separator +
+                        //item.Range + separator +
+                        //item.Speed + separator +
+                        //item.FuelCapacity + separator +
+                        //item.Maneuverability + separator +
+                        //item.EvacuationLimit + separator +
+                        //item.WorkCapacity + separator +
+
+                        //item.InterceptAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+
+
+                        //item.ClassName + separator +
+                        ////"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
+                        //item.PrimaryWeapon.Count + separator +
+                        //item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
+                        //item.PrimaryWeapon.Damage + separator +
+
+                        ////"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
+                        //item.SecondaryWeapon.Count + separator +
+                        //item.SecondaryWeapon.Damage + separator +
+
+                        //_firepower + separator +
+
+
+                        // // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
+                        // "ObsoletedItems" + item.Key + separator +
+
+                        // //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
+                        // //"<ObsoletedItems> + newline + " +                 // not helpful
+                        // //"<ObsoletedItem></ObsoletedItem>" +// not helpful
+                        // //" + newline + </ObsoletedItems>" +                 // not helpful
+                        // //separator +
+
+                        // //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
+                        // "UpgradeOptions" + item.Key + separator +
+                        ////item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
+                        ////"<UpgradeOptions> + newline + " +                // not helpful
+                        ////"<UpgradeOption></UpgradeOption> + " +// not helpful
+                        ////separator +
+
+
+
+                        //// Possibles ShipNames
+                        ////"<ShipNames> + newline + " +                // not helpful
+                        ////"<ShipName></ShipName>" +// not helpful
+                        ////" + newline + </ShipNames>" +                 // not helpful
+                        //"PossibleShipNames" + item.Key
+                        ;
 
                         streamWriter.WriteLine(line);
                     }
@@ -1675,7 +1674,7 @@ namespace Supremacy.Tech
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
                     file = pathOutputFile + "_TechObj-5-Stations_List(autoCreated).csv";
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9180: writing {0}", file);  // _TechObj-5-Stations_List(autoCreated).csv
 
                     if (file == null)
                     {
@@ -1868,7 +1867,7 @@ namespace Supremacy.Tech
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
                     file = pathOutputFile + "_TechObj-3-OrbBat_List(autoCreated).csv";
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9190: writing {0}", file); // _TechObj-3-OrbBat_List(autoCreated).csv
 
                     if (file == null)
                     {
@@ -2090,15 +2089,15 @@ namespace Supremacy.Tech
             // Lvl 1 =  8  ( 8+0) 
             // Lvl 2 = 12  ( 8+4) 
             // Lvl 1 = 16  ( 8+8) 
-                
-                
-                //(pf.Duranium * 5)
-                //+ (pf.HullStrength * 5) + (pf.ShieldStrength)
-                //+ (pf.Speed * 40)
-                //+ (pf.Maneuverability * 20)
-                //+ pf.CrewSize
-                //+ _weapon1 + (_weapon2)
-                ;
+
+
+            //(pf.Duranium * 5)
+            //+ (pf.HullStrength * 5) + (pf.ShieldStrength)
+            //+ (pf.Speed * 40)
+            //+ (pf.Maneuverability * 20)
+            //+ pf.CrewSize
+            //+ _weapon1 + (_weapon2)
+            ;
             //_buildcosts = 1500 + _buildcosts;// * pf.TechRequirements.HighestTechLevel;// + (pf.CrewSize * 2) / 4000;
 
             _text = pf.Key
@@ -2122,9 +2121,13 @@ namespace Supremacy.Tech
 
             if (_buildCostTextOnlyOnce == false)
             {
+                //_text = "Step_4000: AppWindowSize availableSize = " + availableSize;
+                Console.WriteLine("Step_4080: " + _text);
+                GameLog.Core.UIDetails.DebugFormat(_text);
+
                 //GameLog.Core.Production.DebugFormat(_buildCostText);
                 Console.WriteLine(_text + " - no more output");
-                    _buildCostTextOnlyOnce = true;
+                _buildCostTextOnlyOnce = true;
             }
 
             //GameLog.Core.Production.DebugFormat(_text);
@@ -2156,10 +2159,10 @@ namespace Supremacy.Tech
             }
             int _buildcosts = (ship.Duranium * 5)
                 + (ship.HullStrength * 5) + (ship.ShieldStrength)
-                + (ship.Speed * 40 )
+                + (ship.Speed * 40)
                 + (ship.Maneuverability * 20)
                 + ship.CrewSize
-                + _weapon1 + (_weapon2 )
+                + _weapon1 + (_weapon2)
                 ;
             _buildcosts = 1500 + _buildcosts;// * ship.TechRequirements.HighestTechLevel;// + (ship.CrewSize * 2) / 4000;
 
@@ -2207,25 +2210,29 @@ namespace Supremacy.Tech
             int _weapon1 = 0;
             int _weapon2 = 0;
             int _maintFromFile = ship.MaintenanceCost;
-            
+
             if (ship.PrimaryWeapon != null)
             {
-                _weapon1 = ship.PrimaryWeapon.Count * ship.PrimaryWeapon.Damage /40;
+                _weapon1 = ship.PrimaryWeapon.Count * ship.PrimaryWeapon.Damage / 40;
             }
             if (ship.SecondaryWeapon != null)
             {
-                _weapon2 = ship.SecondaryWeapon.Count * ship.SecondaryWeapon.Damage /60;
+                _weapon2 = ship.SecondaryWeapon.Count * ship.SecondaryWeapon.Damage / 60;
             }
-            int _maint = (ship.Duranium/30) 
-                + (ship.HullStrength/20)  + (ship.ShieldStrength / 100)
-                + (ship.Speed + ship.Range + ship.FuelCapacity) 
+            int _maint = (ship.Duranium / 30)
+                + (ship.HullStrength / 20) + (ship.ShieldStrength / 100)
+                + (ship.Speed + ship.Range + ship.FuelCapacity)
                 + _weapon1 + _weapon2
                 ;
-            _maint = 10 + _maint + (ship.CrewSize/30);// / 60000;
+            _maint = 10 + _maint + (ship.CrewSize / 30);// / 60000;
 
-            
+
+
             if (!maint_output_done)
             {
+                _text = "Step_3200: Maint old:";
+                Console.WriteLine(_text);
+
                 _text = ship.Key
                     + "; Maint old:; " + _maintFromFile
                     + "; - new:; " + _maint
@@ -2451,7 +2458,7 @@ namespace Supremacy.Tech
         /// Adds the specified <see cref="TechObjectDesign"/> to this <see cref="TechDatabase"/>.
         /// </summary>
         /// <param name="design">The <see cref="TechObjectDesign"/> to add.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:Use pattern matching", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:Use pattern matching", Justification = "<Pending>")]
         public void Add(TechObjectDesign design)
         {
             if (design == null)
@@ -2516,7 +2523,7 @@ namespace Supremacy.Tech
             _orbitalBatteryDesigns.Clear();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:Use pattern matching", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:Use pattern matching", Justification = "<Pending>")]
         private bool DoRemove(TechObjectDesign design)
         {
             if (design is BuildingDesign)

@@ -591,11 +591,16 @@
                 <RowDefinition Height="21" />
               </Grid.RowDefinitions>
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="21" />
+                                <ColumnDefinition Width="21" />
+                                <ColumnDefinition Width="0.2*" />
+                                <ColumnDefinition Width="0.6*" />
+                                <ColumnDefinition Width="0.2*" />
+                                <ColumnDefinition Width="21" />
+                                <!--<ColumnDefinition Width="21" />
                 <ColumnDefinition Width="0.25*" />
                 <ColumnDefinition Width="0.5*" />
                 <ColumnDefinition Width="0.25*" />
-                <ColumnDefinition Width="21" />
+                <ColumnDefinition Width="21" />-->
               </Grid.ColumnDefinitions>
                 
               <Rectangle x:Name="TopLeftCorner"
@@ -726,6 +731,32 @@
                                                     <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                         Text="{s:StringResource ZOOM_OUT_BUTTON_TOOLTIP}"
                                                         FontSize="20"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Zoom25Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.MapZoom25}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=ZOOM_25_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource ZOOM_25_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="ZoomMaxButton"
+                            Command="{x:Static scc:GalaxyScreenCommands.MapZoomMax}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=ZOOM_MAX_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource ZOOM_MAX_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
                                                 </ToolTip>
                                             </Button.ToolTip>
                                         </Button>

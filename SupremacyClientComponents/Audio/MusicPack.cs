@@ -87,7 +87,7 @@ namespace Supremacy.Client.Audio
                     if (!string.IsNullOrEmpty(trackName))
                     {
                         _musicDict.Add(trackName, entry);
-                        Console.WriteLine("Track available > " + trackName);
+                        Console.WriteLine("Step_0157: Track available > " + trackName);
                     }
                 }
             }

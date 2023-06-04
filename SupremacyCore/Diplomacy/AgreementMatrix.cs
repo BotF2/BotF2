@@ -207,7 +207,7 @@ namespace Supremacy.Diplomacy
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
             Initialize();
-            _text = "AgreementMatrix: DeserializeOwnedData...";
+            _text = "Step_4400: AgreementMatrix: DeserializeOwnedData...";
             Console.WriteLine(_text);
 
             _map.DeserializeOwnedData(reader, context);

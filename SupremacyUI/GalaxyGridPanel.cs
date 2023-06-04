@@ -134,7 +134,7 @@ namespace Supremacy.UI
         private Point _scrollStartPoint;
         private List<Clock> _animationClocks;
         private readonly DelegateCommand<Sector> _centerOnSectorCommand;
-        private readonly DelegateCommand<Sector> _view25PercentCommand;
+        //private readonly DelegateCommand<Sector> _view25PercentCommand;
         private readonly DelegateCommand<Sector> _centerOnHomeSectorCommand;
         private readonly DelegateCommand<Sector> _centerOn1Command;
         private readonly DelegateCommand<Sector> _centerOn2Command;
@@ -144,10 +144,14 @@ namespace Supremacy.UI
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _zoomInCommand;
         private readonly DelegateCommand<object> _zoomOutCommand;
-        private static readonly string _text;
+        private readonly DelegateCommand<object> _zoom25Command;
+        private readonly DelegateCommand<object> _zoomMaxCommand;
         private GalaxyScreenPresentationModel _screenModel;
         private IObservable<Sector> _hoveredSector;
         private IDisposable _hoveredSectorSubscription;
+
+        [NonSerialized]
+        public static string  _text;
         #endregion
 
         #region Events
@@ -448,6 +452,14 @@ namespace Supremacy.UI
                     Key.Subtract,
                     ModifierKeys.None));
 
+            //_ = InputBindings.Add(
+            //    new KeyBinding(
+            //        GalaxyScreenCommands.MapZoom25,
+            //        Key.NumPad9,
+            //        ModifierKeys.None));
+
+
+            // CommandBindings
             _ = CommandBindings.Add(
                 new CommandBinding(
                     GalaxyScreenCommands.MapZoomIn,
@@ -458,12 +470,24 @@ namespace Supremacy.UI
                     GalaxyScreenCommands.MapZoomOut,
                     (sender, args) => ZoomOut()));
 
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GalaxyScreenCommands.MapZoom25,
+                    (sender, args) => Zoom25()));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GalaxyScreenCommands.MapZoomMax,
+                    (sender, args) => ZoomMax()));
+
             _fleetIconAdorners = new List<FleetIconAdorner>();
             _centerOnSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnSectorCommand);
             _zoomInCommand = new DelegateCommand<object>(ExecuteZoomInCommand);
             _zoomOutCommand = new DelegateCommand<object>(ExecuteZoomOutCommand);
+            _zoom25Command = new DelegateCommand<object>(ExecuteZoom25Command);
+            _zoomMaxCommand = new DelegateCommand<object>(ExecuteZoomMaxCommand);
             _centerOnHomeSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnHomeSectorCommand);
-            _view25PercentCommand = new DelegateCommand<Sector>(ExecuteView25PercentCommand);
+            //_view25PercentCommand = new DelegateCommand<Sector>(ExecuteView25PercentCommand);
             _centerOn1Command = new DelegateCommand<Sector>(ExecuteCenterOn1Command);
             _centerOn2Command = new DelegateCommand<Sector>(ExecuteCenterOn2Command);
             _centerOn3Command = new DelegateCommand<Sector>(ExecuteCenterOn3Command);
@@ -474,7 +498,8 @@ namespace Supremacy.UI
             GalaxyScreenCommands.CenterOnSector.RegisterCommand(_centerOnSectorCommand);
             GalaxyScreenCommands.MapZoomIn.RegisterCommand(_zoomInCommand);
             GalaxyScreenCommands.MapZoomOut.RegisterCommand(_zoomOutCommand);
-            GalaxyScreenCommands.View25Percent.RegisterCommand(_view25PercentCommand);
+            GalaxyScreenCommands.MapZoom25.RegisterCommand(_zoom25Command);
+            GalaxyScreenCommands.MapZoomMax.RegisterCommand(_zoomMaxCommand);
             GalaxyScreenCommands.CenterOnHomeSector.RegisterCommand(_centerOnHomeSectorCommand);
             GalaxyScreenCommands.CenterOn1.RegisterCommand(_centerOn1Command);
             GalaxyScreenCommands.CenterOn2.RegisterCommand(_centerOn2Command);
@@ -651,6 +676,16 @@ namespace Supremacy.UI
             ZoomOut();
         }
 
+        private void ExecuteZoom25Command(object obj)
+        {
+            Zoom25();
+        }
+
+        private void ExecuteZoomMaxCommand(object obj)
+        {
+            ZoomMax();
+        }
+
         private void OnUnloaded(object sender, RoutedEventArgs args)
         {
             if (_screenModel != null)
@@ -673,6 +708,8 @@ namespace Supremacy.UI
             GalaxyScreenCommands.CenterOnSector.UnregisterCommand(_centerOnSectorCommand);
             GalaxyScreenCommands.MapZoomIn.UnregisterCommand(_zoomInCommand);
             GalaxyScreenCommands.MapZoomOut.UnregisterCommand(_zoomOutCommand);
+            GalaxyScreenCommands.MapZoom25.UnregisterCommand(_zoom25Command);
+            GalaxyScreenCommands.MapZoomMax.UnregisterCommand(_zoomMaxCommand);
             GalaxyScreenCommands.SelectSector.UnregisterCommand(_selectSectorCommand);
             ClientEvents.ScreenRefreshRequired.Unsubscribe(OnScreenRefreshRequired);
         }
@@ -1284,11 +1321,11 @@ namespace Supremacy.UI
             AutoScrollToSector(sector);
         }
 
-        private void ExecuteView25PercentCommand(Sector sector)
-        {
-            //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
-            AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
-        }
+        //private void ExecuteView25PercentCommand(Sector sector)
+        //{
+        //    //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
+        //    AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
+        //}
 
         private void ExecuteCenterOnHomeSectorCommand(Sector sector)
         {
@@ -1358,10 +1395,10 @@ namespace Supremacy.UI
             ExecuteCenterOnSectorCommand(SelectedSector);
         }
 
-        public void View25Percent()
-        {
-            ExecuteView25PercentCommand(SelectedSector);
-        }
+        //public void View25Percent()
+        //{
+        //    ExecuteZoom25Command(SelectedSector);
+        //}
 
         public void CenterOnHomeSector()
         {
@@ -1518,6 +1555,27 @@ namespace Supremacy.UI
             ZoomIn(false);
         }
 
+        public void Zoom25()
+        {
+            //Point point = new Point();
+            //SetScaleFactor(0.8, point);
+            Zoom25(false);
+        }
+
+        public void ZoomMax()
+        {
+            //Point point = new Point();
+            //SetScaleFactor(0.8, point);
+            ZoomMax(false);
+        }
+
+        // doesnt work 2023-05-07
+        //private void SetScaleFactor(double v)
+        //{
+        //    AutoCenterOnPoint(lastCenterPoint, false);
+        //    UpdateLayout();
+        //}
+
         private Point? GetZoomOrigin(bool zoomAroundMouse)
         {
             Point? zoomAroundPoint = null;
@@ -1573,6 +1631,14 @@ namespace Supremacy.UI
             }
 
             SetScaleFactor(scaleFactor, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7771: ZoomIN > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor=" + scaleFactor * 50
+
+            //    ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
         public void ZoomOut(Point? zoomAroundPoint)
@@ -1595,38 +1661,88 @@ namespace Supremacy.UI
             }
 
             SetScaleFactor(scaleFactor, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7772: ZoomOUT > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor=" + scaleFactor * 50
+            //    ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
-        public void Zoom25()
-        {
-            Zoom25(false);
-        }
+        //public void Zoom25()
+        //{
+        //    Zoom25(false);
+        //}
 
         public void Zoom25(bool zoomAroundMouse)
         {
+            //SetScaleFactor(0.8, zoomAroundMouse);
             Zoom25(GetZoomOrigin(zoomAroundMouse));
+        }
+
+        public void ZoomMax(bool zoomAroundMouse)
+        {
+            //SetScaleFactor(0.8, zoomAroundMouse);
+            ZoomMax(GetZoomOrigin(zoomAroundMouse));
         }
 
         public void Zoom25(Point? zoomAroundPoint)
         {
-            //if (!CanZoomIn)
+            //if (!CanZoom25)
             //{
             //    return;
             //}
 
-            //double scaleFactor = ScaleFactor;
-            //if (scaleFactor % ZoomIncrement != 0)
+            double scaleFactor = ScaleFactor;
+            if (scaleFactor % ZoomIncrement != 0)
+            {
+                scaleFactor = Math.Round(scaleFactor, 1);
+            }
+
+            scaleFactor += ZoomIncrement;
+            if (scaleFactor > MaxScaleFactor)
+            {
+                scaleFactor = MaxScaleFactor;
+            }
+
+            SetScaleFactor(0.8, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7775: Zoom25 > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor= 25 (fix) "
+            //        ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+        }
+
+        public void ZoomMax(Point? zoomAroundPoint)
+        {
+            //if (!CanZoom25)
             //{
-            //    scaleFactor = Math.Round(scaleFactor, 1);
+            //    return;
             //}
 
-            //scaleFactor += ZoomIncrement;
-            //if (scaleFactor > MaxScaleFactor)
-            //{
-            //    scaleFactor = MaxScaleFactor;
-            //}
+            double scaleFactor = ScaleFactor;
+            if (scaleFactor % ZoomIncrement != 0)
+            {
+                scaleFactor = Math.Round(scaleFactor, 1);
+            }
 
-            SetScaleFactor(25, zoomAroundPoint);
+            scaleFactor += ZoomIncrement;
+            if (scaleFactor > MaxScaleFactor)
+            {
+                scaleFactor = MaxScaleFactor;
+            }
+
+            SetScaleFactor(0.2, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7775: Zoom25 > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor= 25 (fix) "
+            //        ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
         private Visual BuildTradeLine(TradeRoute route, Point endPoint, bool isNew)

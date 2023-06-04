@@ -102,7 +102,7 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand Hotkey_Alt_Y = new CompositeCommand(true);
         public static readonly CompositeCommand Hotkey_Alt_Z = new CompositeCommand(true);
 
-        public static readonly CompositeCommand FakeCommand = new CompositeCommand(true);
+        //public static readonly CompositeCommand FakeCommand = new CompositeCommand(true);
         public static readonly CompositeCommand LogTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ErrorTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ShowSettingsFileCommand = new CompositeCommand(true);

@@ -16,6 +16,8 @@ using Supremacy.Client.Dialogs;
 using System.IO;
 using Supremacy.Resources;
 using Supremacy.Utility;
+using Supremacy.Entities;
+using Obtics.Collections;
 
 namespace Supremacy.Client.Views
 {
@@ -190,7 +192,7 @@ namespace Supremacy.Client.Views
             _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   " 
                 + newline
                 + newline
-                + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55-------------60" + newline
+                + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline
                 + newline
                 ;
             int yhalf = map.Height / 2;
@@ -200,7 +202,7 @@ namespace Supremacy.Client.Views
             {
                 if (y < 10) _text += " ";  // 1 to 9 getting a blank before
 
-                if (y == yhalf) _text += "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------" + newline;
+                if (y == yhalf) _text += "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline;
                 _text += y + ":  ";
                 for (int x = 0; x < map.Width; x++)
                 {
@@ -231,7 +233,7 @@ namespace Supremacy.Client.Views
             }
 
             _text += 
-                newline + "---------------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55-------------60" + newline
+                newline + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline
                 + newline 
                 + "1st character:                                     2nd character: StarSystem" + newline
                 + "   0 = Federation                                     B = Blue star" + newline//" + newline
@@ -257,6 +259,55 @@ namespace Supremacy.Client.Views
                 //+ "   W = White star" + newline
                 //+ newline
                 ;
+
+
+            if (GameContext.Current != null)
+            {
+
+                foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
+                {
+                    //string civ = GameContext.Current.CivilizationManagers[race.Key].ToString();
+                    //switch (civ)
+                    //{
+                    //    case "HUMANS":
+                    //        if (GameContext.Current.CivilizationManagers[race.EncyclopediaImage].ToString().Contains("HUMANS.png"))
+                    //            civ = "FEDERATION";
+                    //        else
+                    //            civ = "TERRANEMPIRE";
+                    //        break;
+                        
+                    //}
+                        //case "HUMANS":
+
+
+
+                    //if (GameContext.Current.CivilizationManagers[race.Key] != null)
+                    //    if (_raceKey == "HUMANS" &&
+                    //        GameContext.Current.CivilizationManagers[race.EncyclopediaImage].ToString().Contains("HUMANS.png"))
+                    //        _raceKey = "FEDERATION";
+                    //    else
+                    //        continue;
+
+                    //if (GameContext.Current.CivilizationManagers[race.Key] != null)
+                    //    if (_raceKey == "HUMANS" &&
+                    //        GameContext.Current.CivilizationManagers[race.EncyclopediaImage].ToString().Contains("Humans.png"))
+                    //        _raceKey = "FEDERATION";
+                    //    else
+                    //        continue;
+                    //loc = GameContext.Current.CivilizationManagers[civ]
+                    _text += civManager.HomeColony.Location.X
+                        + " ; " + civManager.HomeColony.Location.Y
+                        + " ; " + civManager.Civilization.HomeSystemName
+                        + " ; " + civManager.Civilization.HomeQuadrant + "-Quadrant"
+                        + " ;" + civManager.Civilization
+                        + newline
+                        //+ " " + ci
+                        ;
+                    //_text += " " + GameContext.Current.CivilizationManagers[civ].HomeSystem.Location + newline;
+                }
+
+            }
+            
             Console.WriteLine(_text);   // Output here as well
 
             string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"),"MapData.txt");

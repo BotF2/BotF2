@@ -55,7 +55,7 @@ namespace Supremacy.IO
                 //    _text = i + buffer[i].ToString() + newline;
                 //}
                 //Console.WriteLine("HEX-Reading: " + _text + ", out of buffer");
-                Console.WriteLine("HEX-Reading: - output deactivated-");
+                Console.WriteLine("Step_0289: HEX-Reading: - output deactivated-");
                 c_hex = "";
                 X2_text = "";
                 _text = c_hex + X2_text + count;

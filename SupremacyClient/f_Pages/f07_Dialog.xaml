@@ -25,9 +25,10 @@
                 Margin="0,12,0,0"
                 Orientation="Vertical"
                 HorizontalAlignment="Left">-->
-            <!--Header-->
+        <!--Header-->
         <!--<StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                --><!--<Button x:Name="Accept0Button" 
+                -->
+        <!--<Button x:Name="Accept0Button" 
                   Command="{x:Static local:GenericCommands.AcceptCommand}"
                   Style="{DynamicResource LCARS_StandardButtonStyle}"
                   IsCancel="True"
@@ -37,12 +38,14 @@
                     <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
                 </Button>-->
 
-                <!--<TextBlock Text="F7 Dialog = Empire's History"--><!--
-                <TextBlock Text="{s:StringResource DIALOG_F7_HEADER}"
+        <!--<TextBlock Text="F7 Dialog = Empire's History"-->
+        <!--
+        -
+        <TextBlock Text="{s:StringResource DIALOG_F7_HEADER}"
                            Margin="10,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
                            >
-                </TextBlock>
-            </StackPanel>-->
+        </TextBlock>
+        </StackPanel> -->
 
         <StackPanel DockPanel.Dock="Left" Orientation="Vertical" HorizontalAlignment="Left" Margin="3,0,0,0">
             <!--<scc:GameButton Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"
@@ -51,790 +54,1058 @@
                             Background="Transparent"
                             Command="{x:Static scc:ClientCommands.OnMA_Ferengi}"
                              />-->
-         <StackPanel Orientation="Horizontal">
-            <Button x:Name="Accept0Button" 
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="Accept0Button" 
                   Command="{x:Static local:GenericCommands.AcceptCommand}"
                   Style="{DynamicResource LCARS_StandardButtonStyle}"
                   IsCancel="True" HorizontalAlignment="Left"
                         Width="150"
                         Height="20"
                   Margin="0,0,10,10">
-                <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-            </Button>
+                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+                </Button>
 
-            <TextBlock Text="{s:StringResource DIALOG_F7_HEADER}"
+                <TextBlock Text="{s:StringResource DIALOG_F7_HEADER}"
                            Margin="10,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
                            >
-            </TextBlock>
-        </StackPanel>
+                </TextBlock>
+            </StackPanel>
 
             <TextBlock TextWrapping="NoWrap">
-             °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-            MAJORS >>  
-            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/United_Federation_of_Planets" 
-                       RequestNavigate="DoLink"> UFP </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Terran_Empire" 
-                       RequestNavigate="DoLink"> Terran </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Romulan" 
-                       RequestNavigate="DoLink"> Romulan </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Klingon" 
-                       RequestNavigate="DoLink"> Klingon </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cardassian" 
-                       RequestNavigate="DoLink"> Cardassian </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dominion" 
-                       RequestNavigate="DoLink"> Dominion </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Borg" 
-                       RequestNavigate="DoLink"> Borg </Hyperlink>
-               -
-                            <Hyperlink NavigateUri="http://botf2.square7.ch/wiki/index.php?title=Category:Races"
-                       RequestNavigate="DoLink"> Game-WIKI </Hyperlink>
-               -
-                            <Hyperlink NavigateUri="https://intl.startrek.com/shows"
-                       RequestNavigate="DoLink"> Shows </Hyperlink>
+MAJORS >>  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/United_Federation_of_Planets" 
+RequestNavigate="DoLink"> UFP </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Terran_Empire" 
+RequestNavigate="DoLink"> Terran </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Romulan" 
+RequestNavigate="DoLink"> Romulan </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Klingon" 
+RequestNavigate="DoLink"> Klingon </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cardassian" 
+RequestNavigate="DoLink"> Cardassian </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dominion" 
+RequestNavigate="DoLink"> Dominion </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Borg" 
+RequestNavigate="DoLink"> Borg </Hyperlink>
+
+-
+<Hyperlink NavigateUri="http://botf2.square7.ch/wiki/index.php?title=Category:Races"
+RequestNavigate="DoLink"> Game-WIKI </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://intl.startrek.com/shows"
+RequestNavigate="DoLink"> Shows </Hyperlink>
 
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-             -
+
+-
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-             SERIES > 
+SERIES > 
                                 
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Star_Trek_series" 
-                       RequestNavigate="DoLink"> ALL </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise" 
-                       RequestNavigate="DoLink"> ENT </Hyperlink>
-                                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Strange_New_Worlds" 
-                       RequestNavigate="DoLink"> SNW </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Discovery" 
-                       RequestNavigate="DoLink"> DIS </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Original_Series" 
-                       RequestNavigate="DoLink"> TOS </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Animated_Series" 
-                       RequestNavigate="DoLink"> TAS </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Next_Generation" 
-                       RequestNavigate="DoLink"> TNG </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Deep_Space_Nine" 
-                       RequestNavigate="DoLink"> DS9 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Voyager" 
-                       RequestNavigate="DoLink"> VOY </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Short_Treks" 
-                       RequestNavigate="DoLink"> ST </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Picard" 
-                       RequestNavigate="DoLink"> PIC </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Lower_Decks" 
-                       RequestNavigate="DoLink"> LD </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Prodigy" 
-                       RequestNavigate="DoLink"> PRO </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Untitled_Section_31_series" 
-                       RequestNavigate="DoLink"> S31 </Hyperlink>
-                                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/DIS_Season_3" 
-                       RequestNavigate="DoLink"> DIS </Hyperlink>
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Star_Trek_series" 
+RequestNavigate="DoLink"> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise" 
+RequestNavigate="DoLink"> ENT </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Strange_New_Worlds" 
+RequestNavigate="DoLink"> SNW </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Discovery" 
+RequestNavigate="DoLink"> DIS </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Original_Series" 
+RequestNavigate="DoLink"> TOS </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Animated_Series" 
+RequestNavigate="DoLink"> TAS </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Next_Generation" 
+RequestNavigate="DoLink"> TNG </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Deep_Space_Nine" 
+RequestNavigate="DoLink"> DS9 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Voyager" 
+RequestNavigate="DoLink"> VOY </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Short_Treks" 
+RequestNavigate="DoLink"> ST </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Picard" 
+RequestNavigate="DoLink"> PIC </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Lower_Decks" 
+RequestNavigate="DoLink"> LD </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Prodigy" 
+RequestNavigate="DoLink"> PRO </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Untitled_Section_31_series" 
+RequestNavigate="DoLink"> S31 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/DIS_Season_3" 
+RequestNavigate="DoLink"> DIS </Hyperlink>
             </TextBlock>
 
-                        
+
+
+            <TextBlock TextWrapping="Wrap">
+
+-
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap"> MOVIES >
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Star_Trek_films" 
+RequestNavigate="DoLink"> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Motion_Picture" 
+RequestNavigate="DoLink"> ST01 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_II:_The_Wrath_of_Khan" 
+RequestNavigate="DoLink"> ST02 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_III:_The_Search_for_Spock" 
+RequestNavigate="DoLink"> ST03 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_IV:_The_Voyage_Home" 
+RequestNavigate="DoLink"> ST04 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_V:_The_Final_Frontier" 
+RequestNavigate="DoLink"> ST05 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_VI:_The_Undiscovered_Country" 
+RequestNavigate="DoLink"> ST06 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Generations" 
+RequestNavigate="DoLink"> ST07 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_First_Contact" 
+RequestNavigate="DoLink"> ST08 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Insurrection" 
+RequestNavigate="DoLink"> ST09 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Nemesis" 
+RequestNavigate="DoLink"> ST10 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_(film)" 
+RequestNavigate="DoLink"> ST11 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Into_Darkness" 
+RequestNavigate="DoLink"> ST12 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Beyond" 
+RequestNavigate="DoLink"> ST13 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_XIV" 
+RequestNavigate="DoLink"> ST14 </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+
+-
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap"> MINORS > A >  
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Acamarian" 
+RequestNavigate="DoLink"> Acamarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Akaali" 
+RequestNavigate="DoLink"> Akaali </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Akritirian" 
+RequestNavigate="DoLink"> Akritirians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Aldean" 
+RequestNavigate="DoLink"> Aldeans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Algolian" 
+RequestNavigate="DoLink"> Algolians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alsaurian" 
+RequestNavigate="DoLink"> Alsaurians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Andorian" 
+RequestNavigate="DoLink"> Andorians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Angosian" 
+RequestNavigate="DoLink"> Angosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ankari" 
+RequestNavigate="DoLink"> Ankari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Antaran" 
+RequestNavigate="DoLink"> ( Antarans ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Antedean" 
+RequestNavigate="DoLink"> Antedeans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Antican" 
+RequestNavigate="DoLink"> Anticans </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+A >  
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Arbazan" 
+RequestNavigate="DoLink"> Arbazan </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ardanan" 
+RequestNavigate="DoLink"> Ardanans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Argrathi" 
+RequestNavigate="DoLink"> Argrathi </Hyperlink>
+                
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Arkonian" 
+RequestNavigate="DoLink"> ( Arkonians ) </Hyperlink>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Atrean" 
+RequestNavigate="DoLink"> Atreans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Axanar" 
+RequestNavigate="DoLink"> Axanar </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+B >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bajoran" 
+RequestNavigate="DoLink"> Bajorans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Baku" 
+RequestNavigate="DoLink"> Baku </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bandi" 
+RequestNavigate="DoLink"> Bandi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Banea" 
+RequestNavigate="DoLink"> Baneans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Barzan" 
+RequestNavigate="DoLink"> Barzans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Benzite" 
+RequestNavigate="DoLink"> Benzites </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Betazoid" 
+RequestNavigate="DoLink"> Betazoids </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ja%27Dar" 
+RequestNavigate="DoLink"> Bilanaians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bolian" 
+RequestNavigate="DoLink"> Bolians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Boslic" 
+RequestNavigate="DoLink"> Boslics </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Botha" 
+RequestNavigate="DoLink"> Botha </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Breellian" 
+RequestNavigate="DoLink"> Breellians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Breen" 
+RequestNavigate="DoLink"> Breen </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Brekkian" 
+RequestNavigate="DoLink"> Brekkians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bynar" 
+RequestNavigate="DoLink"> Bynars </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+C >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cairn" 
+RequestNavigate="DoLink"> Cairn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Caldonian" 
+RequestNavigate="DoLink"> Caldonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Capellan" 
+RequestNavigate="DoLink"> Capellans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Chalnoth" 
+RequestNavigate="DoLink"> Chalnoth </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Coridan" 
+RequestNavigate="DoLink"> Coridans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Corvallen" 
+RequestNavigate="DoLink"> Corvallen </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cytherian" 
+RequestNavigate="DoLink"> Cytherians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Deltan" 
+RequestNavigate="DoLink"> Deltan </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Denobulan" 
+RequestNavigate="DoLink"> Denobulans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Devore" 
+RequestNavigate="DoLink"> Devore </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dopterian" 
+RequestNavigate="DoLink"> Dopterians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dosi" 
+RequestNavigate="DoLink"> Dosi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dreman" 
+RequestNavigate="DoLink"> Dremans </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+E >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Edo" 
+RequestNavigate="DoLink"> Edo </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/El-Aurian" 
+RequestNavigate="DoLink"> El-Aurians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Elaysian" 
+RequestNavigate="DoLink"> Elaysians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Entharan" 
+RequestNavigate="DoLink"> Entharans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Evora" 
+RequestNavigate="DoLink"> Evora </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Excalbian" 
+RequestNavigate="DoLink"> Excalbians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ferengi" 
+RequestNavigate="DoLink"> Ferengi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Flaxian" 
+RequestNavigate="DoLink"> Flaxians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Founder" 
+RequestNavigate="DoLink"> Founders </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Gorn" 
+RequestNavigate="DoLink"> Gorn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Grazerite" 
+RequestNavigate="DoLink"> Grazerites </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+H >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Haakonian" 
+RequestNavigate="DoLink"> Haakonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Halkan" 
+RequestNavigate="DoLink"> Halkans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hazari" 
+RequestNavigate="DoLink"> Hazari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hekaran" 
+RequestNavigate="DoLink"> Hekarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hirogen" 
+RequestNavigate="DoLink"> Hirogen </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Horta" 
+RequestNavigate="DoLink"> Horta </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Human" 
+RequestNavigate="DoLink"> Humans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Iyaaran" 
+RequestNavigate="DoLink"> Iyaarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Jem'Hadar" 
+RequestNavigate="DoLink"> Jem'Hadar </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/J'naii" 
+RequestNavigate="DoLink"> J'naii </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+K >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kaelon" 
+RequestNavigate="DoLink"> Kaelon </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Karemma" 
+RequestNavigate="DoLink"> Karemma </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kazon" 
+RequestNavigate="DoLink"> Kazon </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kellerun" 
+RequestNavigate="DoLink"> Kellerun </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kesprytt" 
+RequestNavigate="DoLink"> Kesprytt </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Klaestron" 
+RequestNavigate="DoLink"> Klaestrons </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kradin" 
+RequestNavigate="DoLink"> Kradin </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kreetassan" 
+RequestNavigate="DoLink"> Kreetassans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Krenim" 
+RequestNavigate="DoLink"> Krenim </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kressari" 
+RequestNavigate="DoLink"> Kressari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kriosian" 
+RequestNavigate="DoLink"> Kriosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ktarian" 
+RequestNavigate="DoLink"> Ktarians </Hyperlink>
+                
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kzin" 
+RequestNavigate="DoLink"> ( Kzin ) </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+L >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ledosian" 
+RequestNavigate="DoLink"> Ledosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Lissepian" 
+RequestNavigate="DoLink"> Lissepians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Lokirrim" 
+RequestNavigate="DoLink"> Lokirrim </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Lurian" 
+RequestNavigate="DoLink"> Lurians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Malcorian" 
+RequestNavigate="DoLink"> Malcorians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Malon" 
+RequestNavigate="DoLink"> Malon </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Markalian" 
+RequestNavigate="DoLink"> Markalians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Meridian_inhabitants" 
+RequestNavigate="DoLink"> Meridians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Mintakan" 
+RequestNavigate="DoLink"> Mintakans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Miradorn" 
+RequestNavigate="DoLink"> Miradorn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Mizarian" 
+RequestNavigate="DoLink"> Mizarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Mokra" 
+RequestNavigate="DoLink"> Mokra </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Monean" 
+RequestNavigate="DoLink"> Moneans </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+N >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nausicaan" 
+RequestNavigate="DoLink"> Nausicaan </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nechani" 
+RequestNavigate="DoLink"> Nechani </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nezu" 
+RequestNavigate="DoLink"> Nezu </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Norcadian" 
+RequestNavigate="DoLink"> Norcadians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Numiri" 
+RequestNavigate="DoLink"> Numiri </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nuu'Bari" 
+RequestNavigate="DoLink"> Nuu'Bari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nyrian" 
+RequestNavigate="DoLink"> Nyrians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ocampa" 
+RequestNavigate="DoLink"> Ocampa </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Orion" 
+RequestNavigate="DoLink"> Orions </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ornaran" 
+RequestNavigate="DoLink"> Ornarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Pakled" 
+RequestNavigate="DoLink"> Pakled </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Paradan" 
+RequestNavigate="DoLink"> Paradans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Quarren_(species)" 
+RequestNavigate="DoLink"> Quarren </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+R >                              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakhari" 
+RequestNavigate="DoLink"> Rakhari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakosan" 
+RequestNavigate="DoLink"> Rakosans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ramatisian" 
+RequestNavigate="DoLink"> Ramatisians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rigelian" 
+RequestNavigate="DoLink"> Rigelians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Risian" 
+RequestNavigate="DoLink"> Risians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/R%27ongovian" 
+RequestNavigate="DoLink"> ( R'ongovians ) </Hyperlink>
+                
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rutian" 
+RequestNavigate="DoLink"> Rutians </Hyperlink>
+                
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap"> S > 
+                
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Selay" 
+RequestNavigate="DoLink"> Selay </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Serosian" 
+RequestNavigate="DoLink"> Serosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Sheliak" 
+RequestNavigate="DoLink"> Sheliak </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Sikarian" 
+RequestNavigate="DoLink"> Sikarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Skrreea" 
+RequestNavigate="DoLink"> Skrreeans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Son'a" 
+RequestNavigate="DoLink"> Son'a </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Suliban" 
+RequestNavigate="DoLink"> Suliban </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+T >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tak_Tak" 
+RequestNavigate="DoLink"> Tak Tak </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Takaran" 
+RequestNavigate="DoLink"> Takarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Takarian" 
+RequestNavigate="DoLink"> Takarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Talarian" 
+RequestNavigate="DoLink"> Talarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Talaxian" 
+RequestNavigate="DoLink"> Talaxians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Talosian" 
+RequestNavigate="DoLink"> Talosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tamarian" 
+RequestNavigate="DoLink"> Tamarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tanugan" 
+RequestNavigate="DoLink"> Tanugans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tellarite" 
+RequestNavigate="DoLink"> Tellarites </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Teplan" 
+RequestNavigate="DoLink"> Teplans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tholian" 
+RequestNavigate="DoLink"> Tholians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tilonian" 
+RequestNavigate="DoLink"> Tilonians </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+T >                  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/T'Lani" 
+RequestNavigate="DoLink"> T'Lani </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tosk" 
+RequestNavigate="DoLink"> ( Tosk ) </Hyperlink>
             
-            <TextBlock TextWrapping="Wrap">
-             -
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hunter" 
+RequestNavigate="DoLink"> ( Tosk-Hunters ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Torothan" 
+RequestNavigate="DoLink"> Torothans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Trabe" 
+RequestNavigate="DoLink"> Trabe </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Trill" 
+RequestNavigate="DoLink"> Trill </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/T-Rogoran" 
+RequestNavigate="DoLink"> T-Rogorans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tzenkethi" 
+RequestNavigate="DoLink"> Tzenkethi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ullian" 
+RequestNavigate="DoLink"> Ullians </Hyperlink>
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-             MOVIES >
+V >  
                 
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Star_Trek_films" 
-                       RequestNavigate="DoLink"> ALL </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Motion_Picture" 
-                       RequestNavigate="DoLink"> ST01 </Hyperlink>
-                                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_II:_The_Wrath_of_Khan" 
-                       RequestNavigate="DoLink"> ST02 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_III:_The_Search_for_Spock" 
-                       RequestNavigate="DoLink"> ST03 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_IV:_The_Voyage_Home" 
-                       RequestNavigate="DoLink"> ST04 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_V:_The_Final_Frontier" 
-                       RequestNavigate="DoLink"> ST05 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_VI:_The_Undiscovered_Country" 
-                       RequestNavigate="DoLink"> ST06 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Generations" 
-                       RequestNavigate="DoLink"> ST07 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_First_Contact" 
-                       RequestNavigate="DoLink"> ST08 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Insurrection" 
-                       RequestNavigate="DoLink"> ST09 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Nemesis" 
-                       RequestNavigate="DoLink"> ST10 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_(film)" 
-                       RequestNavigate="DoLink"> ST11 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Into_Darkness" 
-                       RequestNavigate="DoLink"> ST12 </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Beyond" 
-                       RequestNavigate="DoLink"> ST13 </Hyperlink>
-                                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_XIV" 
-                       RequestNavigate="DoLink"> ST14 </Hyperlink>
-            </TextBlock>
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vaadwaur" 
+RequestNavigate="DoLink"> Vaadwaur </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             -
-            </TextBlock>
+-
+                                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Valakian" 
+RequestNavigate="DoLink"> ( Valakians ) </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-            MINORS > A >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Acamarian" 
-                       RequestNavigate="DoLink"> Acamarians </Hyperlink>
-                                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Akaali" 
-                       RequestNavigate="DoLink"> Akaali </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Akritirian" 
-                       RequestNavigate="DoLink"> Akritirians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Aldean" 
-                       RequestNavigate="DoLink"> Aldeans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Algolian" 
-                       RequestNavigate="DoLink"> Algolians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alsaurian" 
-                       RequestNavigate="DoLink"> Alsaurians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Andorian" 
-                       RequestNavigate="DoLink"> Andorians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Angosian" 
-                       RequestNavigate="DoLink"> Angosians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ankari" 
-                       RequestNavigate="DoLink"> Ankari </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Antedean" 
-                       RequestNavigate="DoLink"> Antedeans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Antican" 
-                       RequestNavigate="DoLink"> Anticans </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ventaxian" 
+RequestNavigate="DoLink"> Ventaxians </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             A >  
-                
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Arbazan" 
-                       RequestNavigate="DoLink"> Arbazan </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ardanan" 
-                       RequestNavigate="DoLink"> Ardanans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Argrathi" 
-                       RequestNavigate="DoLink"> Argrathi </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Atrean" 
-                       RequestNavigate="DoLink"> Atreans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Axanar" 
-                       RequestNavigate="DoLink"> Axanar </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vhnori" 
+RequestNavigate="DoLink"> Vhnori </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             B >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bajoran" 
-                       RequestNavigate="DoLink"> Bajorans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Baku" 
-                       RequestNavigate="DoLink"> Baku </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bandi" 
-                       RequestNavigate="DoLink"> Bandi </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Banea" 
-                       RequestNavigate="DoLink"> Baneans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Barzan" 
-                       RequestNavigate="DoLink"> Barzans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Benzite" 
-                       RequestNavigate="DoLink"> Benzites </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Betazoid" 
-                       RequestNavigate="DoLink"> Betazoids </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ja%27Dar" 
-                       RequestNavigate="DoLink"> Bilanaians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bolian" 
-                       RequestNavigate="DoLink"> Bolians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Boslic" 
-                       RequestNavigate="DoLink"> Boslics </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Botha" 
-                       RequestNavigate="DoLink"> Botha </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Breellian" 
-                       RequestNavigate="DoLink"> Breellians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Breen" 
-                       RequestNavigate="DoLink"> Breen </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Brekkian" 
-                       RequestNavigate="DoLink"> Brekkians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bynar" 
-                       RequestNavigate="DoLink"> Bynars </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vidiian" 
+RequestNavigate="DoLink"> Vidiians </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             C >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cairn" 
-                       RequestNavigate="DoLink"> Cairn </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Caldonian" 
-                       RequestNavigate="DoLink"> Caldonians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Capellan" 
-                       RequestNavigate="DoLink"> Capellans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Chalnoth" 
-                       RequestNavigate="DoLink"> Chalnoth </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Coridan" 
-                       RequestNavigate="DoLink"> Coridans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Corvallen" 
-                       RequestNavigate="DoLink"> Corvallen </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cytherian" 
-                       RequestNavigate="DoLink"> Cytherians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Deltan" 
-                       RequestNavigate="DoLink"> Deltan </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Denobulan" 
-                       RequestNavigate="DoLink"> Denobulans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Devore" 
-                       RequestNavigate="DoLink"> Devore </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dopterian" 
-                       RequestNavigate="DoLink"> Dopterians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dosi" 
-                       RequestNavigate="DoLink"> Dosi </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dreman" 
-                       RequestNavigate="DoLink"> Dremans </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vissian" 
+RequestNavigate="DoLink"> Vissians </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             E >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Edo" 
-                       RequestNavigate="DoLink"> Edo </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/El-Aurian" 
-                       RequestNavigate="DoLink"> El-Aurians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Elaysian" 
-                       RequestNavigate="DoLink"> Elaysians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Entharan" 
-                       RequestNavigate="DoLink"> Entharans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Evora" 
-                       RequestNavigate="DoLink"> Evora </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Excalbian" 
-                       RequestNavigate="DoLink"> Excalbians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ferengi" 
-                       RequestNavigate="DoLink"> Ferengi </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Flaxian" 
-                       RequestNavigate="DoLink"> Flaxians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Founder" 
-                       RequestNavigate="DoLink"> Founders </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Gorn" 
-                       RequestNavigate="DoLink"> Gorn </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Grazerite" 
-                       RequestNavigate="DoLink"> Grazerites </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vorgon" 
+RequestNavigate="DoLink"> Vorgons </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             H >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Haakonian" 
-                       RequestNavigate="DoLink"> Haakonians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Halkan" 
-                       RequestNavigate="DoLink"> Halkans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hazari" 
-                       RequestNavigate="DoLink"> Hazari </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hekaran" 
-                       RequestNavigate="DoLink"> Hekarans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hirogen" 
-                       RequestNavigate="DoLink"> Hirogen </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Horta" 
-                       RequestNavigate="DoLink"> Horta </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Human" 
-                       RequestNavigate="DoLink"> Humans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Iyaaran" 
-                       RequestNavigate="DoLink"> Iyaarans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Jem'Hadar" 
-                       RequestNavigate="DoLink"> Jem'Hadar </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/J'naii" 
-                       RequestNavigate="DoLink"> J'naii </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vori" 
+RequestNavigate="DoLink"> Vori </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             K >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kaelon" 
-                       RequestNavigate="DoLink"> Kaelon </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Karemma" 
-                       RequestNavigate="DoLink"> Karemma </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kazon" 
-                       RequestNavigate="DoLink"> Kazon </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kellerun" 
-                       RequestNavigate="DoLink"> Kellerun </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kesprytt" 
-                       RequestNavigate="DoLink"> Kesprytt </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Klaestron" 
-                       RequestNavigate="DoLink"> Klaestrons </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kradin" 
-                       RequestNavigate="DoLink"> Kradin </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kreetassan" 
-                       RequestNavigate="DoLink"> Kreetassans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Krenim" 
-                       RequestNavigate="DoLink"> Krenim </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kressari" 
-                       RequestNavigate="DoLink"> Kressari </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kriosian" 
-                       RequestNavigate="DoLink"> Kriosians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ktarian" 
-                       RequestNavigate="DoLink"> Ktarians </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vorta" 
+RequestNavigate="DoLink"> Vorta </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             L >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ledosian" 
-                       RequestNavigate="DoLink"> Ledosians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Lissepian" 
-                       RequestNavigate="DoLink"> Lissepians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Lokirrim" 
-                       RequestNavigate="DoLink"> Lokirrim </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Lurian" 
-                       RequestNavigate="DoLink"> Lurians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Malcorian" 
-                       RequestNavigate="DoLink"> Malcorians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Malon" 
-                       RequestNavigate="DoLink"> Malon </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Markalian" 
-                       RequestNavigate="DoLink"> Markalians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Meridian_inhabitants" 
-                       RequestNavigate="DoLink"> Meridians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Mintakan" 
-                       RequestNavigate="DoLink"> Mintakans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Miradorn" 
-                       RequestNavigate="DoLink"> Miradorn </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Mizarian" 
-                       RequestNavigate="DoLink"> Mizarians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Mokra" 
-                       RequestNavigate="DoLink"> Mokra </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Monean" 
-                       RequestNavigate="DoLink"> Moneans </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Voth" 
+RequestNavigate="DoLink"> Voth </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             N >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nausicaan" 
-                       RequestNavigate="DoLink"> Nausicaan </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nechani" 
-                       RequestNavigate="DoLink"> Nechani </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nezu" 
-                       RequestNavigate="DoLink"> Nezu </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Norcadian" 
-                       RequestNavigate="DoLink"> Norcadians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Numiri" 
-                       RequestNavigate="DoLink"> Numiri </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nuu'Bari" 
-                       RequestNavigate="DoLink"> Nuu'Bari </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nyrian" 
-                       RequestNavigate="DoLink"> Nyrians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ocampa" 
-                       RequestNavigate="DoLink"> Ocampa </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Orion" 
-                       RequestNavigate="DoLink"> Orions </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ornaran" 
-                       RequestNavigate="DoLink"> Ornarans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Pakled" 
-                       RequestNavigate="DoLink"> Pakled </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Paradan" 
-                       RequestNavigate="DoLink"> Paradans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Quarren_(species)" 
-                       RequestNavigate="DoLink"> Quarren </Hyperlink>
-            </TextBlock>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vulcan" 
+RequestNavigate="DoLink"> Vulcans </Hyperlink>
 
-            <TextBlock TextWrapping="Wrap">
-             R >                              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakhari" 
-                       RequestNavigate="DoLink"> Rakhari </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakosan" 
-                       RequestNavigate="DoLink"> Rakosans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ramatisian" 
-                       RequestNavigate="DoLink"> Ramatisians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rigelian" 
-                       RequestNavigate="DoLink"> Rigelians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Risian" 
-                       RequestNavigate="DoLink"> Risians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rutian" 
-                       RequestNavigate="DoLink"> Rutians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Selay" 
-                       RequestNavigate="DoLink"> Selay </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Serosian" 
-                       RequestNavigate="DoLink"> Serosians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Sheliak" 
-                       RequestNavigate="DoLink"> Sheliak </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Sikarian" 
-                       RequestNavigate="DoLink"> Sikarians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Skrreea" 
-                       RequestNavigate="DoLink"> Skrreeans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Son'a" 
-                       RequestNavigate="DoLink"> Son'a </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Suliban" 
-                       RequestNavigate="DoLink"> Suliban </Hyperlink>
-            </TextBlock>
-
-            <TextBlock TextWrapping="Wrap">
-             T >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tak_Tak" 
-                       RequestNavigate="DoLink"> Tak Tak </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Takaran" 
-                       RequestNavigate="DoLink"> Takarans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Takarian" 
-                       RequestNavigate="DoLink"> Takarians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Talarian" 
-                       RequestNavigate="DoLink"> Talarians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Talaxian" 
-                       RequestNavigate="DoLink"> Talaxians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Talosian" 
-                       RequestNavigate="DoLink"> Talosians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tamarian" 
-                       RequestNavigate="DoLink"> Tamarians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tanugan" 
-                       RequestNavigate="DoLink"> Tanugans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tellarite" 
-                       RequestNavigate="DoLink"> Tellarites </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Teplan" 
-                       RequestNavigate="DoLink"> Teplans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tholian" 
-                       RequestNavigate="DoLink"> Tholians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tilonian" 
-                       RequestNavigate="DoLink"> Tilonians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/T'Lani" 
-                       RequestNavigate="DoLink"> T'Lani </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Torothan" 
-                       RequestNavigate="DoLink"> Torothans </Hyperlink>
-            </TextBlock>
-
-            <TextBlock TextWrapping="Wrap">
-             T >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Trabe" 
-                       RequestNavigate="DoLink"> Trabe </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Trill" 
-                       RequestNavigate="DoLink"> Trill </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/T-Rogoran" 
-                       RequestNavigate="DoLink"> T-Rogorans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tzenkethi" 
-                       RequestNavigate="DoLink"> Tzenkethi </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ullian" 
-                       RequestNavigate="DoLink"> Ullians </Hyperlink>
-            </TextBlock>
-
-            <TextBlock TextWrapping="Wrap">
-             V >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vaadwaur" 
-                       RequestNavigate="DoLink"> Vaadwaur </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ventaxian" 
-                       RequestNavigate="DoLink"> Ventaxians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vhnori" 
-                       RequestNavigate="DoLink"> Vhnori </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vidiian" 
-                       RequestNavigate="DoLink"> Vidiians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vissian" 
-                       RequestNavigate="DoLink"> Vissians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vorgon" 
-                       RequestNavigate="DoLink"> Vorgons </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vori" 
-                       RequestNavigate="DoLink"> Vori </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vorta" 
-                       RequestNavigate="DoLink"> Vorta </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Voth" 
-                       RequestNavigate="DoLink"> Voth </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vulcan" 
-                       RequestNavigate="DoLink"> Vulcans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Wadi" 
-                       RequestNavigate="DoLink"> Wadi </Hyperlink>
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Wadi" 
+RequestNavigate="DoLink"> Wadi </Hyperlink>
 
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-             X >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xanthan_marmot" 
-                       RequestNavigate="DoLink"> Xanthans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xindi" 
-                       RequestNavigate="DoLink"> Xindi </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xyrillian" 
-                       RequestNavigate="DoLink"> Xyrillians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Yaderan" 
-                       RequestNavigate="DoLink"> Yaderans </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Yridian" 
-                       RequestNavigate="DoLink"> Yridians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zahl" 
-                       RequestNavigate="DoLink"> Zahl </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zakdorn" 
-                       RequestNavigate="DoLink"> Zakdorn </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zalkonian" 
-                       RequestNavigate="DoLink"> Zalkonians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zibalian" 
-                       RequestNavigate="DoLink"> Zibalians </Hyperlink>
+X >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xanthan_marmot" 
+RequestNavigate="DoLink"> Xanthans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xepolite" 
+RequestNavigate="DoLink"> Xepolites </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xindi" 
+RequestNavigate="DoLink"> Xindi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xyrillian" 
+RequestNavigate="DoLink"> Xyrillians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Yaderan" 
+RequestNavigate="DoLink"> Yaderans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Yridian" 
+RequestNavigate="DoLink"> Yridians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zahl" 
+RequestNavigate="DoLink"> Zahl </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zakdorn" 
+RequestNavigate="DoLink"> Zakdorn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zalkonian" 
+RequestNavigate="DoLink"> Zalkonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zibalian" 
+RequestNavigate="DoLink"> Zibalians </Hyperlink>
 
 
             </TextBlock>
 
             <TextBlock TextWrapping="NoWrap">
-             °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-             SHIPS >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Spacecraft_classifications" 
-                       RequestNavigate="DoLink"> ALL </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Registry" 
-                       RequestNavigate="DoLink"> REGISTRY </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Scout_ships" 
-                       RequestNavigate="DoLink"> Scouts </Hyperlink>
-                -
-                <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Destroyer" 
-                       RequestNavigate="DoLink"> Destroyer </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cruiser" 
-                       RequestNavigate="DoLink"> Cruiser </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Flagship" 
-                       RequestNavigate="DoLink"> Command or Flag Ship </Hyperlink>
-                <!---
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zahl" 
-                       RequestNavigate="DoLink"> Zahl </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Registry" 
-                       RequestNavigate="DoLink"> Registry </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zalkonian" 
-                       RequestNavigate="DoLink"> Zalkonians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zibalian" 
-                       RequestNavigate="DoLink"> Zibalians </Hyperlink>-->
+SHIPS >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Spacecraft_classifications" 
+RequestNavigate="DoLink"> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Registry" 
+RequestNavigate="DoLink"> REGISTRY </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Scout_ships" 
+RequestNavigate="DoLink"> Scouts </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Destroyer" 
+RequestNavigate="DoLink"> Destroyer </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cruiser" 
+RequestNavigate="DoLink"> Cruiser </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Flagship" 
+RequestNavigate="DoLink"> Command or Flag Ship </Hyperlink>
+<!--
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zahl" 
+RequestNavigate="DoLink"> Zahl </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Registry" 
+RequestNavigate="DoLink"> Registry </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zalkonian" 
+RequestNavigate="DoLink"> Zalkonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Zibalian" 
+RequestNavigate="DoLink"> Zibalians </Hyperlink>-->
 
 
             </TextBlock>
 
             <TextBlock TextWrapping="NoWrap">
-             °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-             TIMELINE >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline#Background_information" 
-                       RequestNavigate="DoLink"> ALL </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/22nd_century" 
-                       RequestNavigate="DoLink"> 21xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/23rd_century" 
-                       RequestNavigate="DoLink"> 22xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/24th_century" 
-                       RequestNavigate="DoLink"> 23xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/25th_century" 
-                       RequestNavigate="DoLink"> 24xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/32nd_century" 
-                       RequestNavigate="DoLink"> 31xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://thestartrekchronologyproject.blogspot.com/2009/09/and-now-conclusion.html" 
-                       RequestNavigate="DoLink"> Footage </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Production_timeline" 
-                       RequestNavigate="DoLink"> Productions </Hyperlink>
-               -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_timeline#Alternate_realities" 
-                       RequestNavigate="DoLink"> ALTERED </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_reality" 
-                       RequestNavigate="DoLink"> ALTERNATE </Hyperlink>
+TIMELINE >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline#Background_information" 
+RequestNavigate="DoLink"> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/22nd_century" 
+RequestNavigate="DoLink"> 21xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/23rd_century" 
+RequestNavigate="DoLink"> 22xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/24th_century" 
+RequestNavigate="DoLink"> 23xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/25th_century" 
+RequestNavigate="DoLink"> 24xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/32nd_century" 
+RequestNavigate="DoLink"> 31xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://thestartrekchronologyproject.blogspot.com/2009/09/and-now-conclusion.html" 
+RequestNavigate="DoLink"> Footage </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Production_timeline" 
+RequestNavigate="DoLink"> Productions </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_timeline#Alternate_realities" 
+RequestNavigate="DoLink"> ALTERED </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_reality" 
+RequestNavigate="DoLink"> ALTERNATE </Hyperlink>
 
 
             </TextBlock>
 
             <TextBlock TextWrapping="NoWrap">
-             °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-             MORE (not included) >  
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Arkonian" 
-                       RequestNavigate="DoLink"> Arkonians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kzin" 
-                       RequestNavigate="DoLink"> Kzin </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xyrillian" 
-                       RequestNavigate="DoLink"> xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Yaderan" 
-                       RequestNavigate="DoLink"> xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/R%27ongovian" 
-                       RequestNavigate="DoLink"> R'ongovians </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline" 
-                       RequestNavigate="DoLink"> xx </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors" 
-                       RequestNavigate="DoLink"> Sectors </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects" 
-                       RequestNavigate="DoLink"> Galaxy Objects </Hyperlink>
-                -
-                            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks" 
-                       RequestNavigate="DoLink"> ST ranks </Hyperlink>
+MORE (not included) >  
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xyrillian" 
+RequestNavigate="DoLink"> xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Yaderan" 
+RequestNavigate="DoLink"> xx </Hyperlink>
+
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline" 
+RequestNavigate="DoLink"> xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors" 
+RequestNavigate="DoLink"> Sectors </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects" 
+RequestNavigate="DoLink"> Galaxy Objects </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks" 
+RequestNavigate="DoLink"> ST ranks </Hyperlink>
+
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="NoWrap">
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+Other links >  
+
+-
+<Hyperlink NavigateUri="https://www.ex-astris-scientia.org/" 
+RequestNavigate="DoLink"> Ex Astris (english only) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://intl.startrek.com/database" 
+RequestNavigate="DoLink"> StarTrek.com </Hyperlink>
+
+
+-
+<Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Star_Trek" 
+RequestNavigate="DoLink"> Wikipedia </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors" 
+RequestNavigate="DoLink"> . </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects" 
+RequestNavigate="DoLink"> . </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks" 
+RequestNavigate="DoLink"> . </Hyperlink>
 
 
             </TextBlock>
@@ -842,655 +1113,6 @@
 
         </StackPanel>
 
-        <!--<StackPanel DockPanel.Dock="Right"
-                Margin="0,12,0,0"
-                Orientation="Vertical"
-                HorizontalAlignment="Left">
-            --><!--Header--><!--
-            <StackPanel Orientation="Horizontal">-->
-                <!--<Button x:Name="Accept0Button" 
-                  Command="{x:Static local:GenericCommands.AcceptCommand}"
-                  Style="{DynamicResource LCARS_StandardButtonStyle}"
-                  IsCancel="True"
-                        MinWidth="150"
-                        Height="28"
-                  Margin="0,0,10,10">
-                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-                </Button>-->
 
-                <!--<TextBlock Text="F7 Dialog = Empire's History"-->
-                <!--<TextBlock Text="{s:StringResource DIALOG_F7_HEADER}"
-                           Margin="100,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
-                           >
-                </TextBlock>-->
-            <!--</StackPanel>-->
-            <!--End of Header-->
-
-            <!--<DataTemplate DataType="{x:Type local:ResearchFieldData}">
-                <DockPanel LastChildFill="False"
-               Margin="7,0,7,0">
-                    <Image DockPanel.Dock="Top"
-             MaxWidth="270"
-             MaxHeight="225"
-             Stretch="Uniform"
-             StretchDirection="DownOnly"
-             Source="{Binding Path=Field, Converter={StaticResource ResearchFieldImageConverter}}"/>
-                    <TextBlock DockPanel.Dock="Top"
-                 FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                 FontSize="16pt"
-                 Foreground="{StaticResource HeaderTextBrush}"
-                 Margin="0,7,0,0"
-                 HorizontalAlignment="Center"
-                 TextWrapping="Wrap"
-                 TextTrimming="CharacterEllipsis"
-                 Text="{Binding Path=Field.Name, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}"/>
-                    <DockPanel DockPanel.Dock="Top"
-                 Margin="0,7,0,0">
-                        <DockPanel DockPanel.Dock="Top">
-                            <RepeatButton DockPanel.Dock="Left"
-                        Margin="0,0,2,0"
-                        Command="{x:Static ui:BlockBar.DecrementCommand}"
-                        CommandTarget="{Binding ElementName=ValueBlockBar}"
-                        Delay="150"
-                        Interval="50"
-                        IsTabStop="False"
-                        SnapsToDevicePixels="True">
-                                <RepeatButton.Template>
-                                    <ControlTemplate TargetType="{x:Type RepeatButton}">
-                                        <Border x:Name="Border"
-                        Width="14"
-                        Height="21"
-                        CornerRadius="10.5,0,0,10.5"
-                        Background="{DynamicResource PurpleGradient_Left_Right}"/>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                           Value="True">
-                                                <Setter TargetName="Border"
-                            Property="Background"
-                            Value="{DynamicResource Ter5Gradient_Left_Right}"/>
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
-                           Value="True">
-                                                <Setter TargetName="Border"
-                            Property="Background"
-                            Value="{DynamicResource PurpleGradient_Left_Right}"/>
-                                                <Trigger.EnterActions>
-                                                    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/ButtonClick.wav"/>
-                                                </Trigger.EnterActions>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </RepeatButton.Template>
-                            </RepeatButton>
-                            <RepeatButton DockPanel.Dock="Right"
-                        Margin="2,0,0,0"
-                        Command="{x:Static ui:BlockBar.IncrementCommand}"
-                        CommandTarget="{Binding ElementName=ValueBlockBar}"
-                        Delay="150"
-                        Interval="50"
-                        IsTabStop="False"
-                        SnapsToDevicePixels="True">
-                                <RepeatButton.Template>
-                                    <ControlTemplate TargetType="{x:Type RepeatButton}">
-                                        <Border x:Name="Border"
-                        Width="14"
-                        Height="21"
-                        CornerRadius="0,10.5,10.5,0"
-                        Background="{DynamicResource PurpleGradient_Left_Right}"/>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                           Value="True">
-                                                <Setter TargetName="Border"
-                            Property="Background"
-                            Value="{DynamicResource Ter5Gradient_Left_Right}"/>
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
-                           Value="True">
-                                                <Setter TargetName="Border"
-                            Property="Background"
-                            Value="{DynamicResource PurpleGradient_Left_Right}"/>
-                                                <Trigger.EnterActions>
-                                                    <SoundPlayerAction Source="vfs:///Resources/Specific_Empires_UI/Romulans/Sounds/ButtonClick.wav"/>
-                                                </Trigger.EnterActions>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </RepeatButton.Template>
-                            </RepeatButton>
-                            <ui:BlockBar x:Name="ValueBlockBar"
-                       DockPanel.Dock="Top"
-                       BlockCount="20"
-                       BlockMargin="2"
-                       Value="{Binding Path=Distribution.Value, Mode=TwoWay}"/>
-                        </DockPanel>
-                        <DockPanel DockPanel.Dock="Bottom"
-                   Margin="0,7,0,0">
-                            <TextBlock DockPanel.Dock="Left"
-                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                     FontSize="12pt"
-                     Foreground="{StaticResource BlueTextBrush}"
-                     VerticalAlignment="Center">
-            <TextBlock Text="Level"/>
-            <TextBlock Text="{Binding Path=TechLevel}"/>
-          </TextBlock>
-                            <ToggleButton DockPanel.Dock="Right"
-                        Focusable="False"
-                        IsTabStop="False"
-                        Margin="0,0,0,0"
-                        Style="{DynamicResource LockToggleButtonStyle}"
-                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"
-                                  >
-                                <ToggleButton.ToolTip>
-                                    <TextBlock Text="{s:StringResource Key=RESEARCH_DISTRIBUTION_LOCKED_TOOLTIP, Case=Upper}"
-                                       FontSize="20"/>
-                                </ToggleButton.ToolTip>
-                            </ToggleButton>
-                            <TextBlock DockPanel.Dock="Right"
-                     Margin="0,0,7,0"
-                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                     FontSize="12pt"
-                     Foreground="{StaticResource BeigeTextBrush}"
-                     VerticalAlignment="Center"
-                     HorizontalAlignment="Right"
-                     TextAlignment="Right"
-                     Text="{Binding Path=Distribution.Value}"/>
-                        </DockPanel>
-                    </DockPanel>
-                </DockPanel>
-            </DataTemplate>-->
-
-            <!--<DataTemplate DataType="{x:Type local:ResearchApplicationData}">
-                <Border x:Name="OuterBorder"
-            BorderThickness="1,1,0,0"
-            BorderBrush="White"
-            Padding="4"
-            SnapsToDevicePixels="True"
-            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-            TextBlock.FontSize="14pt">
-                    <Border x:Name="InnerBorder">
-                        <TextBlock x:Name="ApplicationName"
-                   Foreground="{DynamicResource DisabledTextBrush}"
-                   Text="{Binding Path=DisplayText, Converter={StaticResource UpperCaseConverter}}"
-                   TextWrapping="Wrap"
-                   TextTrimming="CharacterEllipsis"/>
-                    </Border>
-                </Border>
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding Path=IsResearched}"
-                   Value="True">
-                        <Setter TargetName="ApplicationName"
-                Property="Foreground"
-                Value="{DynamicResource DefaultTextBrush}"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Path=IsResearching}"
-                   Value="True">
-                        <Setter TargetName="InnerBorder"
-                Property="Opacity"
-                Value="1.0"/>
-                        <Setter TargetName="ApplicationName"
-                Property="Foreground"
-                Value="{DynamicResource HeaderTextBrush}"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Path=(Selector.IsSelected), RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                   Value="True">
-                        <Setter TargetName="OuterBorder"
-                Property="Background"
-                Value="{DynamicResource {x:Static scc:ClientResources.HighlightBrushKey}}"/>
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>-->
-
-            <!--<DataTemplate x:Key="TechObjectImageTemplate"
-                DataType="{x:Type tech:TechObjectDesign}">
-                <Border BorderBrush="White"
-            Margin="0,0,7,7"
-            BorderThickness="2"
-            CornerRadius="4"
-            ToolTip="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}">
-                    <Border.Background>
-                        <ImageBrush Stretch="UniformToFill"
-                    ImageSource="{Binding Path=Image, Converter={StaticResource TechObjectImageConverter}}"/>
-                    </Border.Background>
-                </Border>
-            </DataTemplate>-->
-
-            <!--<DataTemplate DataType="{x:Type local:ResearchApplicationDetails}">
-                <ScrollViewer CanContentScroll="False"
-                  MaxHeight="320">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition Width="0.5*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0"
-                    Orientation="Vertical"
-                    TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                    TextBlock.FontSize="12pt"
-                    TextBlock.Foreground="{DynamicResource DefaultTextBrush}">
-                            <TextBlock FontSize="16pt"
-                     Foreground="{DynamicResource HeaderTextBrush}"
-                     TextWrapping="Wrap"
-                     Text="{Binding Path=Application.Name, Converter={StaticResource StringResourceConverter}}"
-                     Margin="0,0,0,7"/>
-                            <TextBlock TextWrapping="Wrap"
-                     Text="{Binding Path=Application.Description, Converter={StaticResource StringResourceConverter}}"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                    Orientation="Vertical"
-                    HorizontalAlignment="Right">
-                            <ItemsControl x:Name="DependentBuildingsView"
-                        ItemsSource="{Binding Path=DependentBuildings}"
-                        ItemTemplate="{StaticResource TechObjectImageTemplate}"
-                        HorizontalAlignment="Left"
-                        Margin="14,0,0,7">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel Orientation="Horizontal"
-                           ItemHeight="48"
-                           ItemWidth="54"
-                           IsItemsHost="True"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                            <ItemsControl x:Name="DependentShipsView"
-                        ItemsSource="{Binding Path=DependentShips}"
-                        ItemTemplate="{StaticResource TechObjectImageTemplate}"
-                        HorizontalAlignment="Left"
-                        Margin="14,0,0,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel Orientation="Horizontal"
-                           ItemHeight="48"
-                           ItemWidth="54"
-                           IsItemsHost="True"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding Path=DependentBuildings.Count}"
-                   Value="0">
-                        <Setter TargetName="DependentBuildingsView"
-                Property="Visibility"
-                Value="Collapsed"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Path=DependentShips.Count}"
-                   Value="0">
-                        <Setter TargetName="DependentShipsView"
-                Property="Visibility"
-                Value="Collapsed"/>
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>-->
-
-            <!--<Style TargetType="{x:Type local:ResearchScreen}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type local:ResearchScreen}">
-                            <Border Background="#66000000"
-                  Padding="6">
-                                <DockPanel LastChildFill="True"
-                       DataContext="{Binding Path=AppContext.LocalPlayerEmpire.Research, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Expander DockPanel.Dock="Left"
-                        Header="{s:StringResource Key=EMPIRE_TECH_INFO, Case=Upper}"
-                        Width="240"
-                        IsExpanded="True"
-                        TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                        TextBlock.FontSize="14pt"
-                        TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
-                        VerticalAlignment="Top">
-                                        <StackPanel>
-                                            <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
-                             Text="RESEARCH"
-                             FontSize="18pt"/>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{s:StringResource Key=RESEARCH_LAST_TURN, Case=Upper}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=CumulativePoints.LastChange}"/>
-                                            </DockPanel>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{s:StringResource Key=TOTAL_RESEARCH, Case=Upper}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=CumulativePoints.CurrentValue}"/>
-                                            </DockPanel>
-                                            <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
-                             Text="{s:StringResource Key=RESEARCH_BONUSES, Case=Upper}"
-                             FontSize="18pt"/>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{Binding Source=TechCategory.BioTech, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=Bonuses[BioTech]}"/>
-                                            </DockPanel>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{Binding Source=TechCategory.Computers, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=Bonuses[Computers]}"/>
-                                            </DockPanel>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{Binding Source=TechCategory.Construction, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=Bonuses[Construction]}"/>
-                                            </DockPanel>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{Binding Source=TechCategory.Energy, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=Bonuses[Energy]}"/>
-                                            </DockPanel>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{Binding Source=TechCategory.Propulsion, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=Bonuses[Propulsion]}"/>
-                                            </DockPanel>
-                                            <DockPanel Margin="14,0,0,0">
-                                                <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
-                               Text="{Binding Source=TechCategory.Weapons, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
-                                                <TextBlock DockPanel.Dock="Right"
-                               HorizontalAlignment="Right"
-                               Text="{Binding Path=Bonuses[Weapons]}"/>
-                                            </DockPanel>
-                                        </StackPanel>
-                                    </Expander>
-                                    <TabControl Margin="4,0,0,0">
-                                        <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="2*"
-                                     MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>
-                                                    <RowDefinition Height="*"
-                                     MinHeight="128"/>
-                                                </Grid.RowDefinitions>
-                                                <Border x:Name="PART_ResearchFieldItemsHost"
-                            Grid.Row="0"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,7"
-                            Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
-                                                <ScrollViewer x:Name="ResearchMatrixScrollViewer"
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Visible"
-                                  CanContentScroll="False"
-                                  Grid.Row="1">
-                                                    <Border x:Name="PART_ResearchMatrixHost"
-                              BorderBrush="White"
-                              BorderThickness="0,0,1,1"
-                              SnapsToDevicePixels="True"
-                              Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
-                                                </ScrollViewer>
-                                                <ContentControl Grid.Row="2"
-                                    Margin="0,7,0,0"
-                                    Style="{StaticResource TerranEmpireThinBorderStyle}">
-                                                    <Border x:Name="PART_ApplicationDetailsHost"/>
-                                                </ContentControl>
-                                            </Grid>
-                                        </TabItem>
-                                        <TabItem Header="{s:StringResource Key=ENCYCLOPEDIA, Case=Upper}">-->
-            <!--
-                    ***************************
-                    * BEGIN ENCYCLOPEDIA GRID *
-                    ***************************
-                  -->
-            <!--<Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="21"/>
-                    <ColumnDefinition Width="180"/>
-                    <ColumnDefinition Width="28"/>
-                    <ColumnDefinition Width="14"/>
-                    <ColumnDefinition Width="28"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="21"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="28"/>
-                    <RowDefinition Height="28"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="28"/>
-                    <RowDefinition Height="28"/>
-                </Grid.RowDefinitions>
-                --><!-- Top Left Rounded Corner --><!--
-                <Border Grid.Column="0"
-                            Grid.Row="0"
-                            CornerRadius="14,0,0,14"
-                            Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"/>
-                --><!-- Bottom Left Rounded Corner --><!--
-                <Border Grid.Column="0"
-                            Grid.Row="4"
-                            CornerRadius="14,0,0,14"
-                            Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"/>
-                --><!-- Top Right Rounded Corner --><!--
-                <Border Grid.Column="6"
-                            Grid.Row="0"
-                            CornerRadius="0,14,14,0"
-                            Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"/>
-                --><!-- Bottom Right Rounded Corner --><!--
-                <Border Grid.Column="6"
-                            Grid.Row="4"
-                            CornerRadius="0,14,14,0"
-                            Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"/>
-                --><!-- Top-Center Intersection --><!--
-                <Path Grid.Column="2"
-                          Grid.ColumnSpan="3"
-                          Grid.Row="0"
-                          Grid.RowSpan="2"
-                          Width="70"
-                          Height="56"
-                          Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}"
-                          Data="F1 M 0,0L 0,28C 9.33333,28 18.6667,28 23.3333,32.6667C 28,37.3333 28,46.6667 28,56L 42,56C 42,46.6667 42,37.3333 46.6667,32.6667C 51.3333,28 60.6667,28 70,28L 70,0L 0,0 Z "/>
-                --><!-- Bottom-Center Intersection --><!--
-                <Path Grid.Column="2"
-                          Grid.ColumnSpan="3"
-                          Grid.Row="3"
-                          Grid.RowSpan="2"
-                          Width="70"
-                          Height="56"
-                          Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}"
-                          Data="F1 M 70,56L 70,28C 60.6667,28 51.3333,28 46.6667,23.3333C 42,18.6667 42,9.33334 42,0L 28,0C 28,9.33334 28,18.6667 23.3333,23.3333C 18.6667,28 9.33333,28 3.78956e-014,28L 3.78956e-014,56L 70,56 Z "/>
-                --><!-- Upper-Right Edge --><!--
-                <DockPanel Grid.Column="5"
-                               Grid.Row="0"
-                               Margin="3,0,3,0"
-                               LastChildFill="True">
-                    <TextBlock DockPanel.Dock="Right"
-                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                 FontSize="18pt"
-                                 Foreground="{DynamicResource DefaultTextBrush}"
-                                 Margin="6,0,3,0"
-                                 VerticalAlignment="Center"
-                                 Text="{s:StringResource Key=ENCYCLOPEDIA_TITLE_FED, Case=Upper}"/>
-                    <Border Background="{StaticResource Ter4Gradient_Top_Bottom}"/>
-                </DockPanel>
-                --><!-- Lower-Right Edge --><!--
-                <Border Grid.Column="5"
-                            Grid.Row="4"
-                            Margin="3,0,3,0"
-                            Background="{DynamicResource DefaultTextBrush}"/>
-                <Border Grid.Column="3"
-                            Grid.Row="2"
-                            Margin="0,3,0,3"
-                            Background="{StaticResource Ter3Gradient_Left_Right}"/>
-
-                --><!-- Search Bar --><!--
-                <Grid Grid.Column="1"
-                          Grid.Row="0"
-                          Margin="3,0,3,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                 FontSize="18pt"
-                                 Foreground="{DynamicResource DefaultTextBrush}"
-                                 Margin="3,0,6,0"
-                                 VerticalAlignment="Center"
-                                 Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
-                    <TextBox x:Name="PART_SearchText"
-                               Grid.Column="1"/>
-                </Grid>
-
-                --><!-- Slider -->
-                <!--<Slider x:Name="EncyclopediaSizeSlider"
-                            Grid.Column="1"
-                            Grid.Row="4" 
-                            Margin="3,0,3,0"
-                            Minimum="32"
-                            Maximum="128"
-                            Value="48"
-                            Interval="8"
-                            VerticalAlignment="Center"/>--><!--
-                <Border Grid.Column="1"
-                            Grid.Row="4"
-                            Margin="3,0,3,0"
-                            Background="{DynamicResource DefaultTextBrush}"/>
-
-                --><!-- Encyclopedia Entry List --><!--
-                <TreeView x:Name="PART_EncyclopediaEntries"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="3"
-                              Grid.Row="1"
-                              Grid.RowSpan="3"
-                              Margin="0,7,7,7"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              BorderThickness="0"
-                              Padding="0"
-                              FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                              Foreground="{DynamicResource DefaultTextBrush}"
-                              FontSize="12pt"
-                              ScrollViewer.CanContentScroll="False"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    --><!--<TreeView.Resources>
-                        <Style TargetType="{x:Type ScrollViewer}">
-                          <Setter Property="CanContentScroll"
-                                  Value="False"/>
-                        </Style>
-                      </TreeView.Resources>
-                      <TreeView.GroupStyle>
-                        <GroupStyle>
-                          <GroupStyle.ContainerStyle>
-                            <Style TargetType="{x:Type GroupItem}">
-                              <Setter Property="Margin"
-                                      Value="0,0,0,5"/>
-                              <Setter Property="Template">
-                                <Setter.Value>
-                                  <ControlTemplate TargetType="{x:Type GroupItem}">
-                                    <Grid>
-                                      <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                      </Grid.ColumnDefinitions>
-                                      <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                      </Grid.RowDefinitions>
-                                      <ToggleButton x:Name="GroupToggleButton"
-                                                    Grid.Column="0"
-                                                    Grid.Row="0"
-                                                    IsChecked="True">
-                                        <ToggleButton.Template>
-                                          <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                            <Border Width="14"
-                                                    Height="14"
-                                                    Margin="0,0,3,0"
-                                                    VerticalAlignment="Center">
-                                              <Path x:Name="TrianglePath"
-                                                    Fill="White"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Data="M 0,0 L 7,7 L 14,0 Z "/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                              <Trigger Property="IsChecked"
-                                                       Value="False">
-                                                <Setter TargetName="TrianglePath"
-                                                        Property="Data"
-                                                        Value="M 0,0 L 0,14 L 7,7 L 0,0 Z "/>
-                                              </Trigger>
-                                            </ControlTemplate.Triggers>
-                                          </ControlTemplate>
-                                        </ToggleButton.Template>
-                                      </ToggleButton>
-                                      <TextBlock Grid.Column="1"
-                                                 Grid.Row="0"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="{DynamicResource HeaderTextBrush}"
-                                                 Text="{Binding Path=Name}"/>
-                                      <ItemsPresenter x:Name="GroupItemsPresenter"
-                                                      Grid.Column="1"
-                                                      Grid.Row="1"
-                                                      Margin="7,0,0,0"/>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                      <Trigger SourceName="GroupToggleButton"
-                                               Property="IsChecked"
-                                               Value="False">
-                                        <Setter TargetName="GroupItemsPresenter"
-                                                Property="Visibility"
-                                                Value="Collapsed"/>
-                                      </Trigger>
-                                    </ControlTemplate.Triggers>
-                                  </ControlTemplate>
-                                </Setter.Value>
-                              </Setter>
-                            </Style>
-                          </GroupStyle.ContainerStyle>
-                        </GroupStyle>
-                      </TreeView.GroupStyle>--><!--
-                </TreeView>
-
-                --><!-- Encyclopedia Document Viewer --><!--
-                <FlowDocumentScrollViewer x:Name="PART_EncyclopediaViewer"
-                                              Grid.Column="4"
-                                              Grid.ColumnSpan="3"
-                                              Grid.Row="1"
-                                              Grid.RowSpan="3"
-                                              Margin="0,7,0,7"
-                                              ContextMenuService.IsEnabled="False"
-                                              IsSelectionEnabled="False"/>
-            </Grid>-->
-            <!--
-                    *************************
-                    * END ENCYCLOPEDIA GRID *
-                    *************************
-                  -->
-            <!--</TabItem>
-                                    </TabControl>
-                                </DockPanel>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <DataTrigger Binding="{Binding Path=AppContext.IsTurnFinished, RelativeSource={RelativeSource TemplatedParent}}"
-                         Value="True">
-                                    <Setter Property="IsEnabled"
-                      Value="False"/>
-                                </DataTrigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>-->
-        <!--</StackPanel>-->
     </DockPanel>
 </scc:Dialog>

@@ -11,7 +11,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2022 Rise of the UFP Team")]
+[assembly: AssemblyCopyright("Copyright (c) 2023 Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,8 +50,8 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7.0.4")]
-[assembly: AssemblyFileVersion("1.7.0.4")]
+[assembly: AssemblyVersion("1.7.0.5")]
+[assembly: AssemblyFileVersion("1.7.0.5")]
 
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/xna", "sxna")]
 [assembly: XmlnsDefinition("http://schemas.startreksupremacy.com/xaml/xna", "Supremacy.Xna")]

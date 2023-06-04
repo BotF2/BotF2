@@ -86,6 +86,8 @@ namespace Supremacy.UI
         private readonly TextBlock _intelligenceOutputText;
         private readonly TextBlock _intelligenceScrapText;
         private readonly UnitActivationBar _intelligenceSlider;
+        [NonSerialized]
+        private string _text;
         #endregion
 
         #region Events
@@ -676,8 +678,6 @@ namespace Supremacy.UI
             }
 
             int delta = Math.Abs(e.NewValue - e.OldValue);
-
-
             if (delta != 0)
             {
                 int i;
@@ -723,7 +723,11 @@ namespace Supremacy.UI
                     facilityText = _intelligenceFacilityText;
                 }
 
-                for (i = 1; i <= delta; i++)
+                _text = "Step_7102: " + colony.Location + ": old= " + e.OldValue + ", new= " + e.NewValue + " for slider " + category;
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
+
+                for (i = 1; i <= delta; i++) // one by one
                 {
                     if (activate)
                     {
@@ -732,8 +736,9 @@ namespace Supremacy.UI
                         {
                             activateCommand.Execute(category);
                         }
-
-                        GameLog.Client.ProductionDetails.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
+                        //_text = "Step_2101: slider_ActiveUnitsChanged... category " + category + " IN-CREASED " + delta;
+                        //Console.WriteLine(_text);
+                        //GameLog.Client.ProductionDetails.DebugFormat(_text);
                     }
                     else
                     {
@@ -742,8 +747,9 @@ namespace Supremacy.UI
                         {
                             deactivateCommand.Execute(category);
                         }
-
-                        GameLog.Client.ProductionDetails.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
+                        //_text = "Step_2102: slider_ActiveUnitsChanged... category " + category + " DE-CREASED " + delta;
+                        //Console.WriteLine(_text);
+                        //GameLog.Client.ProductionDetails.DebugFormat(_text);
                     }
                 }
 

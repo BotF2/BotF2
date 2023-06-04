@@ -50,10 +50,10 @@ namespace Supremacy.Utility
             //_text = newline + "sorry... Game is sending a F1-Key, and sometimes it's targetting Visual Studio > Browser... saying 'No special help available'";
             //Console.WriteLine(_text);
 
-            Core.General.Info("Log Initialized");
-            Core.General.Info(_text);
+            Core.General.Info("Step_0100: Log Initialized");
+            //Core.General.Info(_text);
 
-            string now = "Possible file name prepared... (see next line)" + Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog.txt" + Environment.NewLine;
+            string now = "Step_0101: Possible file name prepared... (see next line)" + Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog.txt" + Environment.NewLine;
             Core.General.Info(now);  // new line for saving under Date
         }
 
@@ -246,7 +246,7 @@ namespace Supremacy.Utility
         public static void SetRepositoryToDebug(string repository)
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Debug;
-            string _text = "    Log.txt: Trace is set to      DEBUG for > " + repository;
+            string _text = "Step_0136: Log.txt: Trace is set to      DEBUG for > " + repository;
             GameLog.Client.GeneralDetails.DebugFormat(_text);
             Console.WriteLine(_text);
         }
@@ -255,7 +255,7 @@ namespace Supremacy.Utility
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Error;
             //works 
-            string _text = "Log.txt: Trace is set to ERROR only for " + repository;
+            string _text = "Step_0137: Log.txt: Trace is set to ERROR only for " + repository;
             GameLog.Client.GeneralDetails.DebugFormat(_text);
             Console.WriteLine(_text);
         }

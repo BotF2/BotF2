@@ -373,7 +373,7 @@ namespace Supremacy.Client
 
         private void ProcessSitRepEntries()
         {
-            _text = "ProcessSitRepEntries...";
+            _text = "Step_4000: ProcessSitRepEntries...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -403,7 +403,7 @@ namespace Supremacy.Client
                 }
             }
 
-            _text = "ProcessSitRepEntries... done ";
+            _text = "Step_4090: ProcessSitRepEntries... done ";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -417,9 +417,7 @@ namespace Supremacy.Client
                 return;
             }
 
-            //SendKeys.SendWait("{F1}");  // shows Map
-
-            _text = "ShowSummary...";
+            _text = "Step_5000: ShowSummary...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -442,7 +440,7 @@ namespace Supremacy.Client
                 }
             }
 
-            //SendKeys.SendWait("{F1}");  // shows Map
+            
 
             _text = "ShowSummary... before storing";
             //Console.WriteLine(_text);
@@ -469,7 +467,7 @@ namespace Supremacy.Client
                 }
                 GameLog.Core.SitReps.InfoFormat(_text);
 
-                _text = "SaveSUMMARY_TXT... offline - takes to long time";
+                _text = "Step_4888: SaveSUMMARY_TXT... offline - takes to long time";
                 Console.WriteLine(_text);
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
                 //SaveSUMMARY_TXT(_text);
@@ -486,13 +484,10 @@ namespace Supremacy.Client
                 //    streamWriter.Close();
                 ////}
             }
-            _text = "ShowSummary... DONE";
+            _text = "Step_4892: ShowSummary... DONE";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
-            
-
-            //SendKeys.SendWait("{F1}");  // shows Map
         }
 
 
@@ -501,17 +496,16 @@ namespace Supremacy.Client
 #pragma warning restore IDE0051 // Remove unused private members
         {
             //_text += " "; // dummy - please keep
-            _text = "SaveSUMMARY_TXT..." + _text;
+            _text = "Step_4777: SaveSUMMARY_TXT..." + _text;
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
+
             if (GameContext.Current == null)
             {
                 return;
             }
 
-            string file = Path.Combine(
-                ResourceManager.GetResourcePath(".\\lib"),
-                "_SUMMARY");
+            string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"),"_SUMMARY");
         //file = file.Replace(".\\", "");
         //string _text1;
         //_text = "";
@@ -675,7 +669,7 @@ namespace Supremacy.Client
         private void OnGameStarted(DataEventArgs<GameStartData> args)
         {
             CreatePresenters();
-            //SendKeys.SendWait("{F1}");  // shows Map
+            
         }
 
         private void CreatePresenters()

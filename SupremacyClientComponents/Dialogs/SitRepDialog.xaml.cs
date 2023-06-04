@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+//using System.Windows.Forms;
 
 namespace Supremacy.Client.Dialogs
 {
@@ -286,6 +287,14 @@ namespace Supremacy.Client.Dialogs
             Close();
         }
 
+        private void OnMapButtonClick(object sender, ExecuteRoutedEventArgs e)
+        {
+
+            NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
+            Close();
+            System.Windows.Forms.SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
+        }
+
         private void OnSitRepEntrySelected(object sender, RoutedEventArgs e)
         {
             //var entry = this.ItemsView.SelectedItem;
@@ -295,7 +304,7 @@ namespace Supremacy.Client.Dialogs
             if (ItemsView.SelectedItem is SitRepEntry selection)
             {
                 selection.SitRepComment = selection.SitRepComment == "" ? "X" : "";
-                Console.WriteLine("Changed SitRepComment to x or blank");
+                //Console.WriteLine("Step_8888: Changed SitRepComment to x or blank");
             }
             ItemsView.Items.Refresh();
             //UpdateCategoryFilter();
@@ -309,7 +318,7 @@ namespace Supremacy.Client.Dialogs
             if (ItemsView.SelectedItem is SitRepEntry selection)
             {
                 selection.SitRepComment = selection.SitRepComment == "" ? "X" : "";
-                Console.WriteLine("Changed SitRepComment to x or blank");
+                //Console.WriteLine("Step_8887: Changed SitRepComment to x or blank");
 
                 switch (selection.Action)
                 {

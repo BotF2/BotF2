@@ -858,9 +858,7 @@
                    Margin="0,0,3,0" />
       </DockPanel>
 
-      <ItemsControl Grid.Column="1"
-                    Grid.Row="3"
-                    Grid.RowSpan="3"
+      <ItemsControl Grid.Column="1" Grid.Row="3" Grid.RowSpan="3"
                     ItemsSource="{Binding Path=InvadingUnits}"
                     Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
         <ItemsControl.ItemsPanel>
@@ -882,7 +880,12 @@
         </ItemsControl.GroupStyle>
       </ItemsControl>
 
-      <ItemsControl Grid.Column="3"
+            <scc:GameButton Label="{s:StringResource SYSTEM_ASSAULT_ORDER_DONE}" Grid.Column="1" Grid.Row="5" DisplayMode="Tiny" Margin="200,190,200,10"
+                                Command="{Binding Path=DoneCommand}" Background="Red"
+                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
+
+
+            <ItemsControl Grid.Column="3"
                     Grid.Row="3"
                     Grid.RowSpan="3"
                     ItemsSource="{Binding Path=DefendingUnits}"
@@ -906,7 +909,7 @@
         </ItemsControl.GroupStyle>
       </ItemsControl>
 
-      <DockPanel Grid.Column="5"
+            <DockPanel Grid.Column="5"
                  Grid.Row="3"
                  Grid.RowSpan="3"
                  LastChildFill="True"

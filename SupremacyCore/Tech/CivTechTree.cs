@@ -418,7 +418,7 @@ namespace Supremacy.Tech
 
                     file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
 
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9120: writing {0}", file); // _TechTrees_List(autoCreated).csv
                     file = null; // quick offline
 
                     if (file == null)
