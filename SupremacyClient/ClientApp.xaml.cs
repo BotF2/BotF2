@@ -572,7 +572,7 @@ namespace Supremacy.Client
                     {
                         e = e.InnerException;
                     }
-
+                    MessageBox.Show("Look into Log.txt for the crash");
                     throw e;
                 }
             }

@@ -113,19 +113,10 @@
       <HintPath>..\Common\ActiproSoftware.Shared.Wpf351.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AvalonLibrary, Version=2.4.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AvalonLibrary.2.4.0\lib\net45\AvalonLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="BindingOriented.SyncLinq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1645360add590f18, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\BindingOriented.SyncLinq.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="C5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
-      <HintPath>..\packages\C5.2.5.3\lib\net45\C5.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Controls, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,9 +127,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\Microsoft.Expression.Effects.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MicrosoftExpressionInteractions.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Composite, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -220,9 +208,6 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
@@ -244,9 +229,6 @@
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="Wintellect.Threading, Version=5.0.4493.13542, Culture=neutral, PublicKeyToken=167f00fdf109b063, processorArchitecture=MSIL">
-      <HintPath>..\packages\PowerThreading.20120420.0\lib\net20\Wintellect.Threading.dll</HintPath>
-    </Reference>
     <Reference Include="Xceed.Wpf.Controls, Version=1.2.7467.13300, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
       <HintPath>..\Common\Xceed.Wpf.Controls.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -1044,7 +1026,6 @@
     <Content Include="Resources\Fonts\Romulan Header Text.CompositeFont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config" />
     <None Include="Resources\Fonts\SW721B13.OTF" />
     <None Include="Resources\Fonts\SW911BTE.OTF" />
     <None Include="Resources\Fonts\SW911BTU.OTF" />
@@ -1876,7 +1857,26 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="AvalonLibrary">
+      <Version>2.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="C5">
+      <Version>2.5.3</Version>
+    </PackageReference>
+    <PackageReference Include="Expression.Blend.Sdk">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.12</Version>
+    </PackageReference>
+    <PackageReference Include="MicrosoftExpressionInteractions">
+      <Version>3.0.40218</Version>
+    </PackageReference>
+    <PackageReference Include="PowerThreading">
+      <Version>20120420.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

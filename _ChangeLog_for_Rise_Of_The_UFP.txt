@@ -1,5 +1,6 @@
 _ChangeLog_for_Rise_Of_The_UFP.txt
 
+2023-06-26;Code internal: packages.config migrated to PackageReference
 2023-06;Filename contains V17try to load other SavedGame version - activate Traces SaveLoad for log.txt 
 2023-05;Map-Canon works, but de-activated due to not well done maps
 2023-05;CTRL+F1 included
