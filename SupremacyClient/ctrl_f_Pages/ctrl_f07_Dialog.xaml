@@ -1109,8 +1109,8 @@ RequestNavigate="DoLink"> StarTrek.com </Hyperlink>
 RequestNavigate="DoLink"> Wikipedia </Hyperlink>
 
 -
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors" 
-RequestNavigate="DoLink"> . </Hyperlink>
+<Hyperlink NavigateUri="https://memory-alpha.wiki/wiki/Hauptseite" 
+RequestNavigate="DoLink"> MA Nova </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects" 

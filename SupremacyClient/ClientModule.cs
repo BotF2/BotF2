@@ -165,6 +165,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _Hotkey_Alt_F09;
         private readonly DelegateCommand<object> _Hotkey_Alt_F10;
         private readonly DelegateCommand<object> _Hotkey_Alt_F11;
+        //private readonly DelegateCommand<object> _Hotkey_Alt_F12;
 
         private readonly DelegateCommand<object> _Hotkey_Alt_A;
         private readonly DelegateCommand<object> _Hotkey_Alt_B;

@@ -2783,7 +2783,8 @@ namespace Supremacy.IO.Serialization
         /// Internal implementation to store a non-null Byte[].
         /// </summary>
         /// <param name="values">The Byte[] to store.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+        
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(byte[] values)
         {
             Write7bitEncodedSigned32BitValue(values.Length);
@@ -2894,7 +2895,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="optimizeFlags">A BitArray indicating which of the elements which are optimizable; 
         /// a reference to constant FullyOptimizableValueArray if all the elements are optimizable; or null
         /// if none of the elements are optimizable.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(short[] values, BitArray optimizeFlags)
         {
             WriteTypedArrayTypeCode(optimizeFlags, values.Length);
@@ -2943,7 +2944,8 @@ namespace Supremacy.IO.Serialization
         /// <param name="optimizeFlags">A BitArray indicating which of the elements which are optimizable; 
         /// a reference to constant FullyOptimizableValueArray if all the elements are optimizable; or null
         /// if none of the elements are optimizable.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+        
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(long[] values, BitArray optimizeFlags)
         {
             WriteTypedArrayTypeCode(optimizeFlags, values.Length);
@@ -3704,7 +3706,9 @@ namespace Supremacy.IO.Serialization
         private readonly int _endPosition;
         private readonly object[] _objectTokens;
         private readonly string[] _stringTokenList;
+        [NonSerialized]
         private string _text;
+        //private var _x;
         #endregion
 
         #region Properties
@@ -3726,9 +3730,10 @@ namespace Supremacy.IO.Serialization
             {
                 return default;
             }
-            _text = "De-Serialized: " + result.ToString();
+            // to often
+            //_text = "Step_0430: De-Serialized: " + result.ToString();
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
             return (T)result;
         }
@@ -4532,9 +4537,9 @@ namespace Supremacy.IO.Serialization
             int length = ReadOptimizedInt32();
             object[] result =
                 (object[])(elementType == null ? new object[length] : Array.CreateInstance(elementType, length));
-            _text = "De-Serializing: " + result.ToString();
+            //_text = "Step_0440: De-Serializing: " + result.ToString();
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
             for (int i = 0; i < result.Length; i++)
             {
                 SerializedType t = (SerializedType)ReadByte();
@@ -4566,9 +4571,9 @@ namespace Supremacy.IO.Serialization
                     result[i] = ProcessObject(t);
                 }
             }
-            _text = "De-Serialized: " + result.ToString();
+            //_text = "Step_0441: De-Serialized: " + result.ToString();
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
             return result;
         }
@@ -5180,28 +5185,28 @@ namespace Supremacy.IO.Serialization
                                 result.SetValue(value, i);
                             }
                         }
-                        _text = "SerializedType= ";
-                        if (defaultElementType.Name == "MapLocation")
-                        {
-                            _text += "MapLocation=";
-                            foreach (var item in result)
-                            {
-                                _text += item.ToString();
-                            }
-                        }
-                        else if (defaultElementType.Name == "ForeignPower") 
-                            _text += "ForeignPower.Count=" + result.Length;
-                        else if (defaultElementType.Name == "Diplomat") 
-                            _text += "Diplomat.Count=" + result.Length;
-                        else
-                        {
-                            _text += " unknown defaultElementType.Name or default >> " + defaultElementType.Name;
-                        }
+                        //_text = "Step_0480: SerializedType= ";
+                        //if (defaultElementType.Name == "MapLocation")
+                        //{
+                        //    _text += "MapLocation=";
+                        //    foreach (var item in result)
+                        //    {
+                        //        _text += item.ToString();
+                        //    }
+                        //}
+                        //else if (defaultElementType.Name == "ForeignPower") 
+                        //    _text += "ForeignPower.Count=" + result.Length;
+                        //else if (defaultElementType.Name == "Diplomat") 
+                        //    _text += "Diplomat.Count=" + result.Length;
+                        //else
+                        //{
+                        //    _text += " unknown defaultElementType.Name or default >> " + defaultElementType.Name;
+                        //}
                       
 
 
                         //Console.WriteLine(_text);
-                        GameLog.Client.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Client.SaveLoadDetails.DebugFormat(_text);
                         
                         return result;
                     }
@@ -5317,9 +5322,22 @@ namespace Supremacy.IO.Serialization
                         case SerializedType.ZeroByteType:
                             return (byte)0;
                         case SerializedType.OtherType:
-                            //_text = "SerializedType.OtherType= ";// + reader.BytesRemaining;
-                            //Console.WriteLine(_text);
-                            return _binaryFormatter.Deserialize(BaseStream);
+                            //var _x ;
+                            try
+                            {
+                                return _binaryFormatter.Deserialize(BaseStream);
+                            }
+                            catch
+                            {
+                                return null;
+                            }
+                            //var _x = _binaryFormatter.Deserialize(BaseStream);
+                            //if (_x == null)
+                            //    _x = 0;
+                            ////_text = "SerializedType.OtherType= ";// + reader.BytesRemaining;
+                            ////Console.WriteLine(_text);
+                            ////return _binaryFormatter.Deserialize(BaseStream);
+                            //return _x;
                         case SerializedType.UInt16Type:
                             return ReadUInt16();
                         case SerializedType.ZeroUInt16Type:
@@ -5388,23 +5406,23 @@ namespace Supremacy.IO.Serialization
                         case SerializedType.OwnedDataSerializableAndRecreatableType:
                             {
                                 Type structType = ReadOptimizedType();
-                                _text = "SerializedType.OwnedDataSerializableAndRecreatableType= " + structType.ToString();
-                                if (
-                                    structType.ToString() != "Supremacy.Types.Meter" &&
-                                    structType.ToString() != "Supremacy.Universe.Planet" &&
-                                    structType.ToString() != "Supremacy.Universe.StarSystem" &&
-                                    !structType.ToString().Contains("Supremacy.Collections.CollectionBase") &&
-                                    !structType.ToString().Contains("Supremacy.Diplomacy") &&
+                                //_text = "Step_0198: SerializedType.OwnedDataSerializableAndRecreatableType= " + structType.ToString();
+                                //if (
+                                //    structType.ToString() != "Supremacy.Types.Meter" &&
+                                //    structType.ToString() != "Supremacy.Universe.Planet" &&
+                                //    structType.ToString() != "Supremacy.Universe.StarSystem" &&
+                                //    !structType.ToString().Contains("Supremacy.Collections.CollectionBase") &&
+                                //    !structType.ToString().Contains("Supremacy.Diplomacy") &&
 
 
-                                    structType.ToString() != "Supremacy.Diplomacy.DiplomacyData"
+                                //    structType.ToString() != "Supremacy.Diplomacy.DiplomacyData"
 
-                                        )
-                                {
-                                    //Console.WriteLine(_text);
-                                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
-                                    _text += "";
-                                }
+                                //        )
+                                //{
+                                //    //Console.WriteLine(_text);
+                                //    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                //    _text += "";
+                                //}
 
                                     object result = PrepareNewObject(structType);
                                     ReadOwnedData((IOwnedDataSerializable)result, null);

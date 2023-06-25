@@ -21,6 +21,8 @@ namespace Supremacy.Game
     /// </summary>
     public sealed class SavedGameHeader
     {
+        private static string _text;
+
         public string Title => IsAutoSave ? ResourceManager.GetString("AUTO_SAVE_GAME_TITLE") : FileName;
 
         public bool IsAutoSave { get; set; }
@@ -103,24 +105,77 @@ namespace Supremacy.Game
             }
 
             IsMultiplayerGame = game.IsMultiplayerGame;
+            _text = "Step_0101: IsMultiplayerGame" + IsMultiplayerGame.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             LocalPlayerName = localPlayer.Name;
+            _text = "Step_0103: LocalPlayerName" + LocalPlayerName.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             LocalPlayerEmpireID = localPlayer.EmpireID;
+            _text = "Step_0105: LocalPlayerEmpireID" + LocalPlayerEmpireID.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             TurnNumber = game.TurnNumber;
+            _text = "Step_0107: TurnNumber" + TurnNumber.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             Options = game.Options;
+            _text = "Step_0111: Options" + Options.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             Timestamp = DateTimeOffset.Now;
+            _text = "Step_0121: Timestamp" + Timestamp.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             GameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            _text = "Step_0123: GameVersion" + GameVersion.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
 
             Entities.Civilization[] empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
-
+            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+            
             EmpireIDs = new int[empires.Length];
+            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             EmpireNames = new string[empires.Length];
+            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             SlotStatus = new SlotStatus[empires.Length];
+            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             SlotClaims = new SlotClaim[empires.Length];
+            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            Console.WriteLine(_text);
+            GameLog.Client.SaveLoad.DebugFormat(_text);
 
             for (int i = 0; i < empires.Length; i++)
             {
                 EmpireIDs[i] = empires[i].CivID;
+                _text = "Step_0161: EmpireIDs" + EmpireIDs[i].ToString();
+                Console.WriteLine(_text);
+                GameLog.Client.SaveLoad.DebugFormat(_text);
+
                 EmpireNames[i] = empires[i].ShortName;
+                _text = "Step_01165: EmpireNames" + EmpireNames[i].ToString();
+                Console.WriteLine(_text);
+                GameLog.Client.SaveLoad.DebugFormat(_text);
+
             }
         }
 
@@ -168,7 +223,7 @@ namespace Supremacy.Game
         public static SavedGameHeader Read(Stream input)
         {
 
-            string _text = "trying to read HEADER ...";
+            _text = "trying to read HEADER ...";
             //Console.WriteLine(_text);
             //GameLog.Client.SaveLoad.DebugFormat(_text);
 
@@ -180,7 +235,7 @@ namespace Supremacy.Game
             BinaryReader reader = new BinaryReader(input);
             GameOptions options = new GameOptions();
 
-            options.Read(reader);
+            options.Read(reader);  // if options not compatible to previous savedgame-Version > loading crashes here
 
             SavedGameHeader header = new SavedGameHeader
             {
@@ -209,14 +264,14 @@ namespace Supremacy.Game
                 header.SlotStatus[i] = (SlotStatus)reader.ReadByte();
             }
 
-            _text = "   SavedGame"
+            _text = "Step_4080: SavedGame"
                 /*+ Environment.NewLine*/ + ";GameVersion;" + header.GameVersion
                 /*+ Environment.NewLine*/ + ";Turn;" + header.TurnNumber
                 /*+ Environment.NewLine*/ + ";" + header.Title
 
                 /*+ Environment.NewLine + ";FileName   ;" + reader.   --- no filename available here*/
                 ;
-            //Console.WriteLine(_text);
+            Console.WriteLine(_text);
             GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 
             return header;

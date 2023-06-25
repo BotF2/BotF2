@@ -647,34 +647,34 @@ namespace Supremacy.Diplomacy
             LastResponseReceived = reader.Read<Response>();
             PendingAction = (PendingDiplomacyAction)reader.ReadOptimizedInt32();
             //IsTotalWarInPlace = reader.ReadBoolean();
-            _text = "reading ";
-            _text += "OwnerID=" + OwnerID + " vs " + CounterpartyID
+            //_text = "Step_0830: reading ";
+            //_text += "OwnerID=" + OwnerID + " vs " + CounterpartyID
 
-                + ", _regardEv.Count=" + _regardEvents.Count
-                + ", _dipDate=NOT DONE" 
-                + ", Psent=" + ProposalSent
-                + ", Preceiv=" + ProposalReceived
-                + ", LPsent=" + LastProposalSent
-                + ", LPr=" + LastProposalSent
+            //    + ", _regardEv.Count=" + _regardEvents.Count
+            //    + ", _dipDate=NOT DONE" 
+            //    + ", Psent=" + ProposalSent
+            //    + ", Preceiv=" + ProposalReceived
+            //    + ", LPsent=" + LastProposalSent
+            //    + ", LPr=" + LastProposalSent
 
-                + ", STsent=" + StatementSent
-                + ", STreceiv=" + StatementReceived
-                + ", LSTsent=" + LastStatementSent
-                + ", LSTreceiv=" + LastStatementReceived
+            //    + ", STsent=" + StatementSent
+            //    + ", STreceiv=" + StatementReceived
+            //    + ", LSTsent=" + LastStatementSent
+            //    + ", LSTreceiv=" + LastStatementReceived
 
-                + ", Rsent=" + ResponseSent
-                + ", Rreceiv=" + ResponseReceived
-                + ", LRsent=" + LastResponseSent
-                + ", LRPreceiv=" + LastResponseReceived
-                + ", Pending=" + PendingAction
-                ;
-            foreach (var item in _regardEvents)
-            {
-                _text += item.Turn;
-            }
+            //    + ", Rsent=" + ResponseSent
+            //    + ", Rreceiv=" + ResponseReceived
+            //    + ", LRsent=" + LastResponseSent
+            //    + ", LRPreceiv=" + LastResponseReceived
+            //    + ", Pending=" + PendingAction
+            //    ;
+            //foreach (var item in _regardEvents)
+            //{
+            //    _text += item.Turn;
+            //}
 
             //Console.WriteLine(_text);
-            GameLog.Client.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Client.SaveLoadDetails.DebugFormat(_text);
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

@@ -2127,6 +2127,7 @@
     </Setter>
   </Style>
 
+    <!--RadioButton-->
   <Style TargetType="{x:Type RadioButton}"
          BasedOn="{StaticResource BaseStyle}">
     <Setter Property="FontFamily"
@@ -3761,6 +3762,7 @@
     </Setter>
   </Style>
 
+    <!--ListBoxItem-->
   <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource BaseStyle}">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
@@ -3768,6 +3770,7 @@
     <!--<Setter Property="Padding" Value="6,2,6,2" />-->
     <Setter Property="Padding" Value="0,0,0,0" />
     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
     <Setter Property="Template">
       <Setter.Value>
@@ -3796,6 +3799,7 @@
     </Setter>
   </Style>
 
+    <!--ListViewItem-->
   <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource BaseStyle}">
         
     <Style.Resources>
@@ -3805,6 +3809,7 @@
             <SolidColorBrush Color="#ffe7d490"  x:Key="{x:Static SystemColors.HighlightTextBrushKey}"/>
     </Style.Resources>
     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
     <Setter Property="FontSize" Value="12pt" />
@@ -5763,7 +5768,9 @@
     <Setter Property="ScrollViewer.CanContentScroll"
             Value="False" />
   </Style>
-  <Style x:Key="{x:Type TreeViewItem}"
+
+    <!--TreeViewItem-->
+    <Style x:Key="{x:Type TreeViewItem}"
          TargetType="{x:Type TreeViewItem}">
     <Setter Property="BorderBrush"
             Value="{x:Null}" />

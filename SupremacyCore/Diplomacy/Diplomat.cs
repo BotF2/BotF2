@@ -253,16 +253,16 @@ namespace Supremacy.Diplomacy
             _ownerId = reader.ReadOptimizedInt32();
             _seatOfGovernmentId = reader.ReadOptimizedInt32();
             _foreignPowers = reader.Read<CivilizationKeyedMap<ForeignPower>>();
-            _text = "Deserialize Diplomat.cs= " 
-                + "OwnerId = " + _ownerId
-                + ", Id SeatofG = " + _seatOfGovernmentId
-                + "_foreignPowers.Count" + _foreignPowers.Count
+            _text = "Step_0262: Deserialize "
+                + "OwnerId= " + _ownerId
+                + ", Id SeatofG= " + _seatOfGovernmentId
+                + "_foreignPowers.Count= " + _foreignPowers.Count
                 ;
             //foreach (var item in _foreignPowers.)
             //{
 
             //}
-            //Console.WriteLine(_text);
+            Console.WriteLine(_text);
             GameLog.Core.SaveLoadDetails.DebugFormat(_text);
         }
 

@@ -50,7 +50,7 @@ namespace Supremacy.AI
 
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(civ.CivID))
             {
-                _text = "Handling colony " + colony.Location + blank + colony.Name;
+                _text = "Step_1100: Handling colony " + colony.Location + blank + colony.Name;
                 Console.WriteLine(_text);
 
                 HandleEnergyProduction(colony);
@@ -275,7 +275,7 @@ namespace Supremacy.AI
                     
                     if (turnsNeeded > 1 && turnsNeeded < 3)  // we buy when turnsNeede = 2
                     {
-                        _text = "HandleBuyBuild: "
+                        _text = "Step_1210: HandleBuyBuild: "
                             + "Credits.Current= " + manager.Credits.CurrentValue
                             + ", Costs= " + cost
                             + ", industryNeeded= " + industryNeeded
@@ -326,7 +326,7 @@ namespace Supremacy.AI
 
             if (colony.Sector == homeSector)
             {
-                _text = "ShipProduction at " + colony.Location + " " + colony.Name
+                _text = "Step_5380: ShipProduction at " + colony.Location + " " + colony.Name
                     //+ " - Not Habited: Habitation= "
                     //+ item.HasColony
                     //+ " at " + item.Location
@@ -357,7 +357,7 @@ namespace Supremacy.AI
                     if (project != null)
                     {
                         colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
-                        _text = "ShipProduction "
+                        _text = "Step_5884: ShipProduction "
                             + " at " + colony.Location 
                             + " " + colony.Name 
                             + " - " + colony.Owner

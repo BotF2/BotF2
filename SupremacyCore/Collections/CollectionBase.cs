@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Resources;
 using Supremacy.Types;
@@ -56,13 +57,13 @@ namespace Supremacy.Collections
         [NonSerialized]
         private StateScope _suppressChangeNotificationsScope;
         private string _text;
-#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
+//#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
 #pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private int _count;
 #pragma warning restore IDE0052 // Ungelesene private Member entfernen
-#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
+//#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
         private readonly string newline = Environment.NewLine;
-        private bool _firstRun;
+        //private bool _firstRun;
 
         public CollectionBase()
             : this(DefaultCapacity)
@@ -591,9 +592,9 @@ namespace Supremacy.Collections
 
             _items = reader.ReadList<T>();
 
-            _text = "Reader_0801: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+            //_text = "Reader_0801: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
             //string _file = Path.Combine(ResourceManager.GetResourcePath(""),"saved"+ reader.BaseStream.Position + ".txt");
             if (_items.Count > 0 
@@ -605,22 +606,33 @@ namespace Supremacy.Collections
             {
                 //BinaryWriter writer = new BinaryWriter(File.Open(_file, FileMode.Create));
                 _text = "Reader_0802: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
-                for (int i = 0; i < _items.Count-1; i++)
+                for (int i = 0; i < _items.Count/*-1*/; i++)
                 {
-                    if (_firstRun == false)
-                    {
-                        _text = "Reader_0803: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+                    //if (_firstRun == false)
+                    //{
+                        //_text = "Reader_0803: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
                         //Console.WriteLine(_text);
-                        GameLog.Core.SaveLoadDetails.DebugFormat(_text);
-                        //writer.Write(_text);
-                    }
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //writer.Write(_text);
+                    //}
 
-                    _text = "reader-item_"+ i + ": " + _items[i].ToString() + newline;
+                    //if (reader.BytesRemaining == 40527 && i == 20)
+                    //    _text += "";  // Breakpoint
+
+
+                    //works
+                    //_text = "Reader_0804: reader-item_" + i + ": " + _items[i].ToString() + newline;
                     //Console.WriteLine(_text);
-                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+
+
+
                     //writer.Write(_text);
 
-                    _firstRun = true;
+                    //if (i == 20)
+                    //    _text += "";
+
+                    //_firstRun = true;
                 }
             //writer.Close();
             }

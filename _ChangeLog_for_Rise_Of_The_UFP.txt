@@ -1,0 +1,50 @@
+_ChangeLog_for_Rise_Of_The_UFP.txt
+
+2023-06;Filename contains V17try to load other SavedGame version - activate Traces SaveLoad for log.txt 
+2023-05;Map-Canon works, but de-activated due to not well done maps
+2023-05;CTRL+F1 included
+2023-05;including game-outstanding races into F7-Dialogs in brackets
+2023-05;ZoomMax included
+2023-05;Zoom25 included
+2023-04:SUMMARY got a MAP-Button (if no map in the background > quick access)
+2023-04;Pool x included into Population at the bottom
+2023-04;Most Minor setting includes now mostly anyone (at a huge map)
+2023-03;System Info: added unit display
+2023-01;F 7 Dialog has Links to Memory Alpha and more
+2023-01;STRG + F 7 Dialog has Links to Memory Alpha and more IN GERMAN
+2022-11;Finding positions of the systems and included loaded MAP (just begun)
+2022-08;Start Facilities are now calculated - HomeSystem is ignored
+2022-06;SOLAR_ARRAY now not only at Desert planets
+2022-04;PercentResearch +1 from Techlevel 1
+2022-04;MoraleEmpireWide +1 from Techlevel 1
+2022-03;Ships at Techlevel 1 set to Speed 1
+2022-03;more Hotkeys
+2022-01;Many infos get part of en.txt
+2022-01;New file \SoundFX\Summary.ogg - played on Summary Dialog
+2021;Dialogs F10, F11 and more
+2021;BUY 2 times more expensive, but 5 times needed as a limitation
+2021;Health starts at 60 instead of 80
+2021;decreased tax credits income
+2021;SUMMARY: More stuff, more colors, now additional Hotkey F6
+2021;Pop growth > minimum is 1
+2021;Empire Summary done
+2021;Colony Summary done
+2021;Replaced RawMaterials by Duranium (inside the code)
+2021;Marker in Summary Dialog
+2021;Output file for Summary
+2021;Population: Supreme 90%, Advanced 80%, Sophisticated 70%, others: unchanged
+2021;ShipBuilding: Dots before Class Name showing speed
+2021;Balancing stuff going totally in the wrong direction...
+2021;Scripting for FED_MARTIAL_LAW not working anymore ... now Morale Fall below 50 or 25 is slowed down
+2021;Including Empire Credits now shown at Colonies Info Panel
+2021;Limited Population Growth to 14 and Growth Rate (max now 1 labor Unit per turn)
+2021;Fleet Order: DEFEND (shown at SUMMARY) - can be used to know > this ship is there for defense issues
+2021;Fleet Order: IDLE (shown at SUMMARY) - can be used to know > this ship is idle (manually set)
+2021;Fleet Order: REDEPLOY SAME - not working yet > redeploys e.g. all destroyers
+2021;Morale minus 1 for debts in credits (Empire) 
+2021;HomeSystem.xml: Minors starts with Food=1000 (instead 10) - avoid Starvation and shrinking population
+2021;Deuterium: one per ship for no movement, 2 for movement (instead 1)
+2021;Fleet Orders (next turn) for Redeploy SAME / ALL / NONE
+2021;ALT + M on GalaxyMap outputs map
+2021;ShipBuilding: Double click as many you want to build - close the dialog with button 'CLOSE'
+2021;Changed Borg Facilities

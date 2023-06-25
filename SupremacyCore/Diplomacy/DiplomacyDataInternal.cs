@@ -165,16 +165,16 @@ namespace Supremacy.Diplomacy
             LastColdWarAttack = reader.ReadOptimizedInt32();
             LastIncursion = reader.ReadOptimizedInt32();
 
-            _text = "DiplomacyDataInternal.cs: Deserialize" 
-                //+ reader.BytesRemaining
-                + ", mot_Count= " + _motivations.Count
-                + ", mot_Count= " + _motivations.Count
-                + ", L_TW_Attack= " + LastTotalWarAttack
-                + ", L_CW_Attack= " + LastColdWarAttack
-                + ", L_Inc= " + LastIncursion
-                ;
+            //_text = "Step_0832: Deserialize" 
+            //    //+ reader.BytesRemaining
+            //    + ", mot_Count= " + _motivations.Count
+            //    + ", mot_Count= " + _motivations.Count
+            //    + ", L_TW_Attack= " + LastTotalWarAttack
+            //    + ", L_CW_Attack= " + LastColdWarAttack
+            //    + ", L_Inc= " + LastIncursion
+            //    ;
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

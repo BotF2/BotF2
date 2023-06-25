@@ -229,7 +229,8 @@ namespace Supremacy.Orbitals
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
 
-            //Console.WriteLine("------------");
+            //_text = "Step_7601: SerializeOwnedData ------------";
+            //Console.WriteLine(_text);
             try
             {
                 foreach (ShipyardBuildSlot slot in _buildSlots)
@@ -244,15 +245,15 @@ namespace Supremacy.Orbitals
 
                     if (_percent != "0 %")
                     {
-                        _text = "Step_7600: " + slot.Shipyard.Location + 
-                            " > Slot= " + slot.SlotID
+                        _text = "Step_7602: Serialize " + slot.Shipyard.Location
+                            + " > Slot= " + slot.SlotID
                             + " at " + slot.Shipyard.Name
                             //+ " " + 
                             + " > " + _percent
                             + " done for " + _design
                             ;
                         Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
 
                 }
@@ -271,7 +272,7 @@ namespace Supremacy.Orbitals
             {
                 if (_buildQueue[i].Project != null)
                 {
-                    _text = "Step_5800: " + _buildQueue[i].Project.Location
+                    _text = "Step_7800: " + _buildQueue[i].Project.Location
                         //+ "; " + _buildQueue[i].Project.ProductionCenter   // crashes
                         //+ "; " + _buildQueue[i].Project.ProductionCenter.Owner
                         + ";Shipyard-Slot-BuildQueue;" + i
@@ -281,6 +282,7 @@ namespace Supremacy.Orbitals
 
 
                     ;
+                    Console.WriteLine(_text);
                 }
 
                 //if (!item.HasProject)
@@ -297,7 +299,7 @@ namespace Supremacy.Orbitals
                         //    //+ "; " + item.Project.BuildDesign
                         //    + newline
                         //;
-                        Console.WriteLine(_text);
+                        //Console.WriteLine(_text);
                         //GameLog.Core.Stations.DebugFormat(_text);
                     //}
                 //}
@@ -333,7 +335,8 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    if (item.Project != null)
+                    _text = "";
+                    if (item.Project != null && item.Project.BuildDesign != null)
                     {
                         string _builder = "";
                         // still crashing....
@@ -343,7 +346,7 @@ namespace Supremacy.Orbitals
                         //        _builder = item.Project.Builder.Key; 
                         //} catch { }
                                 
-                        _text += "Step_5880: " + _builder
+                        _text = "Step_5880: " + _builder
                             + ";Project for _Shipyard._buildslots " + item
                             + "; " + item.Project
                             + "; "
@@ -353,8 +356,13 @@ namespace Supremacy.Orbitals
                     }
                     else
                     {
-                        _text += "Shipyard._buildslots - unsure whether project..."; //   ??
+                        _text += "Step_5885: " 
+                            + item.Project.Location 
+                            + " > Slot " + item.SlotID
+                            + " Shipyard._buildslots - unsure whether project..."
+                            ; //   ??
                         Console.WriteLine(_text);
+                        _text = "";
                     }
                 }
                 //_text = "";

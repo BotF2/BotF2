@@ -1289,7 +1289,7 @@ namespace Supremacy.Universe
             OutputModifier modifier = GetProductionModifier(category);
             int baseOutput = unitOutput * activeUnits;
 
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
+//#pragma warning disable IDE0059 // Unnecessary assignment of a value
             int tempProd = (int)(baseOutput + (baseOutput * modifier.Efficiency)) + modifier.Bonus;
 
             /*int _population = */
@@ -1308,7 +1308,7 @@ namespace Supremacy.Universe
             int _researchPF_unused = TotalEnergyFacilities - _researchActive;
             int _intelActive = GetActiveFacilities(ProductionCategory.Intelligence);
             int _intelPF_unused = TotalIntelligenceFacilities - _intelActive;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+//#pragma warning restore IDE0059 // Unnecessary assignment of a value
             //int _optimizedPF;
             //int _diff;
             //while (GetAvailableLabor() > 0)
@@ -1832,7 +1832,7 @@ namespace Supremacy.Universe
         /// <summary>
         /// sends more population to unused energy facilities <see cref="Colony"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
         public void HandlePF()
         {
             //int _laborpool_unused = AvailableLabor;
@@ -1864,7 +1864,7 @@ namespace Supremacy.Universe
                 {
                     if (AvailableLabor < 1)
                     {
-                        _text = "No free Labour (from Pool)";
+                        _text = "Step_2397: No free Labour (from Pool) - food reserves are low";
                         Console.WriteLine(_text);
                         ReduceOneOtherPF();
                     }
@@ -1881,7 +1881,7 @@ namespace Supremacy.Universe
                 }
                 else if (_foodPF_unused == 0)
                     {
-                        _text = "No free food facility";
+                        _text = "Step_2399: No free food facility";
                         Console.WriteLine(_text);
                     if (!Owner.IsHuman)
                         AddFacilities(ProductionCategory.Food, 1);
@@ -1924,7 +1924,7 @@ namespace Supremacy.Universe
                     foreach (var orb in OrbitalBatteries)
                     {
                         orb.IsActive = false;
-                        _text = "OrbitalBattery shutted down";
+                        _text = "Step_2599: OrbitalBattery shutted down";
                         Console.WriteLine(_text);
                     }
                     OnPropertyChanged("ActiveOrbitalBatteries");
@@ -2039,19 +2039,29 @@ namespace Supremacy.Universe
 
         private void Report(Colony colony)
         {
+            int _shipyardSlots;
+            if (colony._shipyardId != -1)
+            {
+                _shipyardSlots = colony.Shipyard.BuildSlots.Count;
+            }
+            else { _shipyardSlots = 0; }
+
+            _text = "Turn " + GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
-            _text = colony.Name + " ( "+ colony.Population.CurrentValue + " ): AvailableLabor: " + AvailableLabor.ToString();
+            _text += colony.Name + " ( "+ colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
-            _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + TotalFoodFacilities; // _foodPF_unused;
+            _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + TotalFoodFacilities + " (" + colony.FoodReserves + ")"; // _foodPF_unused;
             //int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
             _text += ", Prod: " + GetActiveFacilities(ProductionCategory.Industry) + "/" + TotalIndustryFacilities; // _industryPF_unused;
             // already comes in ... 
             //int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
-            _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + TotalEnergyFacilities; // _energyPF_unused;
+            _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + TotalEnergyFacilities + " (" + colony.NetEnergy + ")"; // _energyPF_unused;
             //int _researchPF_unused = TotalResearchFacilities - GetActiveFacilities(ProductionCategory.Research);
             _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + TotalResearchFacilities; // _researchPF_unused;
             //int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
             _text += ", Int: " + GetActiveFacilities(ProductionCategory.Intelligence) + "/" + TotalIntelligenceFacilities; // _intelPF_unused;
+            //int _orbBatused = colony.ActiveOrbitalBatteries;
+            _text += ", Slots: " + _shipyardSlots;
             //int _orbBatused = colony.ActiveOrbitalBatteries;
             _text += ", OrbB: " + colony.ActiveOrbitalBatteries.ToString();
 
@@ -2095,7 +2105,7 @@ namespace Supremacy.Universe
         /// situation is resolved.
         /// </summary>
         /// <returns>The number of buildings that were shut down.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
         public int EnsureEnergyForBuildings()
         {
             int shutDown = 0;

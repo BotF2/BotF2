@@ -1,4 +1,4 @@
-// MusicPack.cs
+// File:MusicPack.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,11 +7,11 @@
 //
 // All other rights reserved.
 
+using Supremacy.Resources;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using Supremacy.Resources;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Audio
 {
@@ -25,6 +25,9 @@ namespace Supremacy.Client.Audio
 
         private readonly List<MusicEntry> _musicList = new List<MusicEntry>();
         private readonly Dictionary<string, MusicEntry> _musicDict = new Dictionary<string, MusicEntry>();
+
+        [NonSerialized]
+        private string _text;
         #endregion
 
         #region Properties
@@ -87,7 +90,9 @@ namespace Supremacy.Client.Audio
                     if (!string.IsNullOrEmpty(trackName))
                     {
                         _musicDict.Add(trackName, entry);
-                        Console.WriteLine("Step_0157: Track available > " + trackName);
+                        _text = "Step_0157: Track available > " + trackName;
+                        //Console.WriteLine(_text);
+                        GameLog.Client.AudioDetails.DebugFormat(_text);
                     }
                 }
             }

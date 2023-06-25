@@ -190,6 +190,7 @@ namespace Supremacy.Game
     [Serializable]
     public sealed class GameOptions : ICloneable
     {
+        private string newline = Environment.NewLine;
         #region Constructors
         public GameOptions()
         {
@@ -508,42 +509,149 @@ namespace Supremacy.Game
             }
 
             // needs the same sorting as Writing
+            string _readingText = "Step_4030: "/* + reader.BaseStream.*/;
+            bool everySingleLine = false;
 
             IsFrozen = reader.ReadBoolean();
+            _readingText += "; IsFrozen=" + IsFrozen; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             int modIdBytesLength = reader.ReadInt32();
+            _readingText += "; modIdBytesLength=" + modIdBytesLength; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
+            //modIdBytesLength = 16;  // must be
+
             ModID = new Guid(reader.ReadBytes(modIdBytesLength));
+            _readingText += "; ModID=" + ModID; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             AIMode = (AIMode)reader.ReadByte();
-            GalaxyShape = (GalaxyShape)reader.ReadByte();
+            _readingText += "; AIMode=" + AIMode; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
+
+            _readingText += newline;
+
+            GalaxyShape = (GalaxyShape)reader.ReadByte(); 
+            _readingText += "; GalaxyShape=" + GalaxyShape; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             GalaxySize = (GalaxySize)reader.ReadByte();
+            _readingText += "; GalaxySize=" + GalaxySize; 
+            if (everySingleLine) Console.WriteLine(_readingText);
 
             PlanetDensity = (PlanetDensity)reader.ReadByte();
+            _readingText += "; PlanetDensity=" + PlanetDensity; 
+            if (everySingleLine) Console.WriteLine(_readingText);
 
             StarDensity = (StarDensity)reader.ReadByte();
+            _readingText += "; StarDensity=" + StarDensity; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             MinorRaceFrequency = (MinorRaceFrequency)reader.ReadByte();
+            _readingText += "; MinorRaceFrequency=" + MinorRaceFrequency; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             GalaxyCanon = (GalaxyCanon)reader.ReadByte();
+            _readingText += "; GalaxyCanon=" + GalaxyCanon; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             StartingTechLevel = (StartingTechLevel)reader.ReadByte();
+            _readingText += "; StartingTechLevel=" + StartingTechLevel; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
+            _readingText += newline;
+
+
             FederationPlayable = (EmpirePlayable)reader.ReadByte();
+            _readingText += "; Playable: Federation=" + FederationPlayable; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             RomulanPlayable = (EmpirePlayable)reader.ReadByte();
+            _readingText += "; Romulan=" + RomulanPlayable;
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             KlingonPlayable = (EmpirePlayable)reader.ReadByte();
+            _readingText += "; Klingon=" + KlingonPlayable; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             CardassianPlayable = (EmpirePlayable)reader.ReadByte();
+            _readingText += "; Cardassian=" + CardassianPlayable; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             DominionPlayable = (EmpirePlayable)reader.ReadByte();
+            _readingText += "; Dominion=" + DominionPlayable; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             BorgPlayable = (EmpirePlayable)reader.ReadByte();
+            _readingText += "; Borg=" + BorgPlayable; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             TerranEmpirePlayable = (EmpirePlayable)reader.ReadByte();
+            _readingText += "; Terran=" + TerranEmpirePlayable; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
+
+            _readingText += newline;
 
             FederationModifier = (EmpireModifier)reader.ReadInt32();
+            _readingText += "; Modifier: Federation=" + FederationModifier; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             RomulanModifier = (EmpireModifier)reader.ReadInt32();
+            _readingText += "; Romulan=" + RomulanModifier; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             KlingonModifier = (EmpireModifier)reader.ReadInt32();
+            _readingText += "; Klingon=" + KlingonModifier; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             CardassianModifier = (EmpireModifier)reader.ReadInt32();
+            _readingText += "; Cardassian=" + CardassianModifier; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             DominionModifier = (EmpireModifier)reader.ReadInt32();
+            _readingText += "; Dominion=" + DominionModifier; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             BorgModifier = (EmpireModifier)reader.ReadInt32();
+            _readingText += "; Borg=" + BorgModifier; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             TerranEmpireModifier = (EmpireModifier)reader.ReadInt32();
+            _readingText += "; TerranEmpireModifier=" + TerranEmpireModifier; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
+
+            _readingText += newline;
+
+
             EmpireModifierRecurringBalancing = (EmpireModifierRecurringBalancing)reader.ReadByte();
+            _readingText += "; EmpireModifierRecurringBalancing=" + EmpireModifierRecurringBalancing; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+            
             GamePace = (GamePace)reader.ReadByte();
+            _readingText += "; GamePace=" + GamePace; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             TurnTimerEnum = (TurnTimerEnum)reader.ReadByte(); // project intel read save game
+            _readingText += "; TurnTimerEnum=" + TurnTimerEnum; 
+            if (everySingleLine) Console.WriteLine(_readingText);
 
             AITakeover = reader.ReadBoolean();
+            _readingText += "; AITakeover=" + AITakeover; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             TurnTimer = TimeSpan.FromTicks(reader.ReadInt64());
+            _readingText += "; TurnTimer=" + TurnTimer; 
+            if (everySingleLine) Console.WriteLine(_readingText);
+
             CombatTimer = TimeSpan.FromTicks(reader.ReadInt64());
+            _readingText += "; CombatTimer=" + CombatTimer; 
+            Console.WriteLine(_readingText);
+
+            ; // breakpoint
         }
 
         internal static bool Validate(GameOptions options)

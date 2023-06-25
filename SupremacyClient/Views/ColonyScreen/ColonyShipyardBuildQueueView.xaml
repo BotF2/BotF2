@@ -18,7 +18,7 @@
                     <Grid.ToolTip>
                         <ToolTip>
                             <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                              FontSize="12">
+                              FontSize="18">
                                 <ContentControl.Content>
                                     <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
                                                                  Location="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Location)}"

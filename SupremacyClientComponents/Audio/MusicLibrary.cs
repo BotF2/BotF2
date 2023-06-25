@@ -65,8 +65,8 @@ namespace Supremacy.Client.Audio
                 _musicPacks.Add(musicPack.Name, musicPack);
 
                 _text = "Step_0156: adding: musicPack.Name " + musicPack.Name;
-                Console.WriteLine(_text);
-                GameLog.Client.Audio.DebugFormat(_text);
+                //Console.WriteLine(_text);
+                GameLog.Client.AudioDetails.DebugFormat(_text);
             }
         }
 

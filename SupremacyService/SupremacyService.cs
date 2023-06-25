@@ -181,7 +181,8 @@ namespace Supremacy.WCF
                         //NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         if (!SavedGameManager.LoadGame(_gameInitData.SaveGameFileName, out SavedGameHeader header, out _game, out DateTime timestamp))
                         {
-                            
+                            _text = "Step_4987: Loading failed - end game";
+                            Console.WriteLine(_text);
                             EndGame();
                             
                             return;

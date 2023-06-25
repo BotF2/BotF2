@@ -90,17 +90,39 @@ namespace Supremacy.Game
                 string _currentGameVersionString = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 if (header != null)
                 {
+
                     if (header.GameVersion == _currentGameVersionString)
                     {
                         savedGames.Add(header);
                     }
                     else
                     {
-                        GameLog.Client.SaveLoad.DebugFormat("currentGameVersion = {2}, but {1} for {0}"
-                            , header.FileName
-                            , header.GameVersion
-                            , _currentGameVersionString
-                            );
+                        if (fileName.Contains("V17"))
+                        {
+
+                            GameLog.Client.SaveLoad.DebugFormat("currentGameVersion = {2}, but {1} for {0}"
+                                , header.FileName
+                                , header.GameVersion
+                                , _currentGameVersionString
+                                );                            
+                            
+                            _text = "Step_4500: "
+                                + "currentGameVersion =" + _currentGameVersionString
+                                + ", but " + header.GameVersion
+                                + " for " + header.FileName
+                                ;
+                            Console.WriteLine(_text);
+                            //var result = MessageBox.Show(_text, "Loading this different version file might cause troubles ! - please move out of the SavedGame-folder !", MessageBoxButton.YesNo) ;
+                            //if (result == MessageBoxResult.No) // no - this creates an endless loop
+                            //{
+                            //    result = MessageBox.Show("please move " + header.FileName + " out of the SavedGame-folder !");
+                            //}
+
+
+                            header.GameVersion = _currentGameVersionString;
+                            savedGames.Add(header);
+                        }
+
                     }
                 }
             }
@@ -196,6 +218,7 @@ namespace Supremacy.Game
                     string thisGameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     if (header.GameVersion != thisGameVersion)
                     {
+                        if (!fileName.Contains("V17"))
                         throw new Exception(string.Format("Incompatible game save - {0} vs {1}", header.GameVersion, thisGameVersion));
                     }
                     GameLog.Core.SaveLoad.DebugFormat("Step_0286: loading SavedGameHeader of {0}", fileName);
@@ -224,7 +247,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error("Error occurred loading saved game", e);
+                GameLog.Core.General.Error("Step_4098: Error occurred loading saved game", e);
 
                 header = null;
                 game = null;

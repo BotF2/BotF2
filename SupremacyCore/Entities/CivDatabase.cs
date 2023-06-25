@@ -204,16 +204,16 @@ namespace Supremacy.Entities
                     _reverseLookup[civ.Key] = civ;
 
                     // works 
-                    _text = "de-serialize civ " + civ.Key;
+                    //_text = "Step_0826: de-serialize civ " + civ.Key;
                     //Console.WriteLine(_text);
-                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     if (civ.SpiedCivList != null)
                     {
                         foreach (Civilization spiedCiv in civ.SpiedCivList)
                         {
-                            _text = "DeserializeOwnedData: civ.Key= " + civ.Key
+                            _text = "Step_0828: DeserializeOwnedData: civ.Key= " + civ.Key
                                 + ", spying on " + spiedCiv.Key;
-                            //Console.WriteLine(_text);
+                            Console.WriteLine(_text);
                             GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                         }
                     }

@@ -78,7 +78,10 @@ namespace Supremacy.Collections
                 dictionaryCreationThreshold = int.MaxValue;
             }
 
-            _keyRetriever = keyRetriever ?? throw new ArgumentNullException(nameof(keyRetriever));
+
+
+            //_keyRetriever = keyRetriever ?? throw new ArgumentNullException(nameof(keyRetriever));
+            _keyRetriever = keyRetriever ?? null;
             _keyComparer = comparer;
             _threshold = dictionaryCreationThreshold;
         }
@@ -347,7 +350,12 @@ namespace Supremacy.Collections
 
             _threshold = reader.ReadInt32();
             _keyComparer = reader.Read<IEqualityComparer<TKey>>();
+            try
+            {
             _keyRetriever = reader.Read<Func<TValue, TKey>>();
+            }
+            catch { }
+
 
             if (Count < _threshold)
             {
@@ -358,9 +366,10 @@ namespace Supremacy.Collections
 
             foreach (TValue item in Items)
             {
-                //_text = "GetKeyForItem= " + item;
+                //_text = "Step_4199: GetKeyForItem= " + item;
                 //Console.WriteLine(_text);
-                AddKey(GetKeyForItem(item), item);
+                //if (_keyRetriever != null)  // 2023-06-24
+                    AddKey(GetKeyForItem(item), item);
             }
         }
 
