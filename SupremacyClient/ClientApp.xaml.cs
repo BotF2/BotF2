@@ -50,6 +50,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Xceed.Wpf.DataGrid;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.Client
@@ -420,15 +421,15 @@ namespace Supremacy.Client
         [UsedImplicitly]
         private static class EntryPoint
         {
-            private static string _text;
+            //private static string _text;
 
             [STAThread, UsedImplicitly]
             private static void Main(string[] args)
             {
                 GameLog.Initialize();
 
-                var time = DateTime.Now;
-                _text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
+                var _text = GetTimeString(); // DateTime.Now;
+                //_text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
                 Console.WriteLine(_text);  // "Current Version = "
                 //GameLog.Client.General.InfoFormat(_text);
 
@@ -447,7 +448,7 @@ namespace Supremacy.Client
                 string ubr = skey.GetValue("UBR").ToString();
                 _text = "Step_0110: Windows Version = " + $"{name} [Version {mjVersion}.{mnVersion}.{cBuild}.{ubr}]";
                 Console.WriteLine(_text);  // "Current Version = "
-                GameLog.Client.General.InfoFormat(_text);
+                //GameLog.Client.General.InfoFormat(_text);
 
 
                 if (!CheckNetFxVersion())
@@ -466,7 +467,7 @@ namespace Supremacy.Client
 
                 _text = "Step_0130: No Check for Microsoft XNA Framework V3.1 but it must be installed > see folder";
                 Console.WriteLine(_text);
-                GameLog.Core.General.InfoFormat(_text);
+                //GameLog.Core.General.InfoFormat(_text);
 
                 
 
@@ -599,6 +600,25 @@ namespace Supremacy.Client
                 }
             }
 
+            private static object GetTimeString()
+            {
+                var time = DateTime.Now;
+                string Year = time.Year.ToString(); Year = CheckDateString(Year);
+                string Month = time.Month.ToString(); Month = CheckDateString(Month);
+                string Day = time.Day.ToString(); Day = CheckDateString(Day);
+                string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
+                string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
+                string Second = time.Second.ToString(); Second = CheckDateString(Second);
+                return "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
+            }
+
+            private static string CheckDateString(string _string)
+            {
+                if (_string.Length == 1)
+                    _string = "0" + _string; 
+
+                return _string;
+            }
         }
 
 #pragma warning disable IDE0051 // Remove unused private members
