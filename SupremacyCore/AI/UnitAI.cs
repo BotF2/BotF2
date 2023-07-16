@@ -940,6 +940,9 @@ namespace Supremacy.AI
                     ;
                 Console.WriteLine(_text);
 
+                // 2023-07-15: new
+                fleet.Order = FleetOrders.ExploreOrder;
+
                 result = null;
                 return false;
             }
@@ -1439,7 +1442,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestSectorForStation(Fleet fleet, List<Fleet> constructionFleets, out Sector bestSector)
         {
-            _text = "GetBestSectorForStation: " + fleet.Name + fleet.Location;
+            _text = "Step_6520: GetBestSectorForStation: " + fleet.Name + fleet.Location;
             Console.WriteLine(_text);
             //GameLog.Client.AIDetails.DebugFormat(_text);
             GetFleetOwner(fleet);
@@ -1490,143 +1493,143 @@ namespace Supremacy.AI
             switch (fleet.Owner.Key)
             {
                 case "BORG":
-                    {
-                        _text = "GetBestSectorForStation for Borg";
-                        Console.WriteLine(_text);
-                        //GameLog.Client;.AIDetails.DebugFormat(_text);
-                        int borgX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
-                        int borgXDelta = Math.Abs(GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X - halfMapWidthX) / 4;
-                        int borgY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
-                        int borgYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y) / 4;
+                    //{
+                    //    _text = "Step_6560: GetBestSectorForStation for Borg";
+                    //    Console.WriteLine(_text);
+                    //    //GameLog.Client;.AIDetails.DebugFormat(_text);
+                    //    int borgX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
+                    //    int borgXDelta = Math.Abs(GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X - halfMapWidthX) / 4;
+                    //    int borgY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
+                    //    int borgYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y) / 4;
 
-                        MapLocation borgHomeLocation = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location;
-                        List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
-                            .Where(s => s.Location != null
-                            && s.Sector.Station == null
-                            && s.Location.X >= halfMapWidthX + borgXDelta && s.Location.X <= borgX
-                            && s.Location.Y <= Math.Abs(halfMapHeightY - borgYDelta) && s.Location.Y >= borgY + borgYDelta)
-                            //&& s.Location == borgHomeLocation)                         
-                            .ToList();
+                    //    MapLocation borgHomeLocation = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location;
+                    //    List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+                    //        .Where(s => s.Location != null
+                    //        && s.Sector.Station == null
+                    //        && s.Location.X >= halfMapWidthX + borgXDelta && s.Location.X <= borgX
+                    //        && s.Location.Y <= Math.Abs(halfMapHeightY - borgYDelta) && s.Location.Y >= borgY + borgYDelta)
+                    //        //&& s.Location == borgHomeLocation)                         
+                    //        .ToList();
 
-                        if (objectsAlongCenterAxis.Count == 0)
-                        {
-                            bestSector = null;
-                            return false;
-                        }
-                        // GameLog.Core.AIDetails.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), fleet.Owner.Key);
-                        try
-                        {
-                            objectsAlongCenterAxis.Sort((a, b) =>
-                                GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
-                                .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));
-                        }
-                        catch
-                        {
-                            _text = "unable to sort objects for Borg station location";
-                            Console.WriteLine(_text);
-                            GameLog.Client.AIDetails.DebugFormat(_text);
-                            bestSector = null;
-                            return false;
-                        }
-                        List<Fleet> otherConstructors = GameContext.Current.Universe.Find<Fleet>()
-                                .Where(o => o.Owner != fleet.Owner && o.IsConstructor || o.MultiFleetHasAConstructor).ToList();
-                        List<Sector> _sectors = new List<Sector>();
-                        foreach (UniverseObject anObject in objectsAlongCenterAxis)
-                        {
-                            _sectors.Add(anObject.Sector);
-                        }
-                        foreach (Fleet aFleet in otherConstructors)
-                        {
-                            if (_sectors.Any(o => o == aFleet.Sector))
-                            {
-                                _ = _sectors.Remove(aFleet.Sector);
-                            }
-                        }
+                    //    if (objectsAlongCenterAxis.Count == 0)
+                    //    {
+                    //        bestSector = null;
+                    //        return false;
+                    //    }
+                    //    // GameLog.Core.AIDetails.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), fleet.Owner.Key);
+                    //    try
+                    //    {
+                    //        objectsAlongCenterAxis.Sort((a, b) =>
+                    //            GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
+                    //            .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));
+                    //    }
+                    //    catch
+                    //    {
+                    //        _text = "unable to sort objects for Borg station location";
+                    //        Console.WriteLine(_text);
+                    //        GameLog.Client.AIDetails.DebugFormat(_text);
+                    //        bestSector = null;
+                    //        return false;
+                    //    }
+                    //    List<Fleet> otherConstructors = GameContext.Current.Universe.Find<Fleet>()
+                    //            .Where(o => o.Owner != fleet.Owner && o.IsConstructor || o.MultiFleetHasAConstructor).ToList();
+                    //    List<Sector> _sectors = new List<Sector>();
+                    //    foreach (UniverseObject anObject in objectsAlongCenterAxis)
+                    //    {
+                    //        _sectors.Add(anObject.Sector);
+                    //    }
+                    //    foreach (Fleet aFleet in otherConstructors)
+                    //    {
+                    //        if (_sectors.Any(o => o == aFleet.Sector))
+                    //        {
+                    //            _ = _sectors.Remove(aFleet.Sector);
+                    //        }
+                    //    }
 
-                        bestSector = _sectors.Last(); //objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
+                    //    bestSector = _sectors.Last(); //objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
 
-                        if (bestSector == null)
-                        {
-                            return false;
-                        }
+                    //    if (bestSector == null)
+                    //    {
+                    //        return false;
+                    //    }
 
-                        _text = "Borg station selected sector  at " + bestSector.Location + " " + bestSector.Name;
-                        Console.WriteLine(_text);
-                        // GameLog.Core.AIDetails.DebugFormat(_text);
-                        return true;
-                    }
+                    //    _text = "Borg station selected sector  at " + bestSector.Location + " " + bestSector.Name;
+                    //    Console.WriteLine(_text);
+                    //    // GameLog.Core.AIDetails.DebugFormat(_text);
+                    //    return true;
+                    //}
 
                 case "DOMINION":
-                    {
-                        _text = "GetBestSectorForStation: DOMINION";
-                        Console.WriteLine(_text);
-                        //GameLog.Client.AIDetails.DebugFormat("Dominion");
-                        int domX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
-                        //Console.WriteLine(domX);
-                        int domXDelta = Math.Abs(halfMapWidthX - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X) / 4;
-                        //Console.WriteLine(domXDelta);
-                        int domY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
-                        //Console.WriteLine(domY);
-                        int domYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y) / 4;
-                        //Console.WriteLine(domYDelta);
+                    //{
+                    //    _text = "Step_6580: GetBestSectorForStation for DOMINION";
+                    //    Console.WriteLine(_text);
+                    //    //GameLog.Client.AIDetails.DebugFormat("Dominion");
+                    //    int domX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
+                    //    //Console.WriteLine(domX);
+                    //    int domXDelta = Math.Abs(halfMapWidthX - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X) / 4;
+                    //    //Console.WriteLine(domXDelta);
+                    //    int domY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
+                    //    //Console.WriteLine(domY);
+                    //    int domYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y) / 4;
+                    //    //Console.WriteLine(domYDelta);
 
-                        List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
-                            // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
-                            .Where(s => s.Location != null
-                            && s.Sector.Station == null
-                            && s.Location.X <= Math.Abs(halfMapWidthX - domXDelta) && s.Location.X > domX
-                            && s.Location.Y <= halfMapHeightY - domYDelta && s.Location.Y > domY)
-                            // find a list of objects in some sector around Dom side of galactic center
-                            .ToList();
-                        //foreach (var item in objectsAlongCenterAxis)
-                        //{
-                        //    _text = item.Location
-                        //        + " " + item.Name
-                        //        + " " + item.ObjectID
+                    //    List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+                    //        // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
+                    //        .Where(s => s.Location != null
+                    //        && s.Sector.Station == null
+                    //        && s.Location.X <= Math.Abs(halfMapWidthX - domXDelta) && s.Location.X > domX
+                    //        && s.Location.Y <= halfMapHeightY - domYDelta && s.Location.Y > domY)
+                    //        // find a list of objects in some sector around Dom side of galactic center
+                    //        .ToList();
+                    //    //foreach (var item in objectsAlongCenterAxis)
+                    //    //{
+                    //    //    _text = item.Location
+                    //    //        + " " + item.Name
+                    //    //        + " " + item.ObjectID
 
-                        //        ;
-                        //    Console.WriteLine(_text);
+                    //    //        ;
+                    //    //    Console.WriteLine(_text);
 
-                        //    //if (item.ObjectType != )
-                        //}
+                    //    //    //if (item.ObjectType != )
+                    //    //}
 
 
-                        if (objectsAlongCenterAxis.Count == 0)
-                        {
-                            bestSector = null;
-                            return false;
-                        }
-                        //GameLog.Core.AIDetails.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), fleet.Owner.Key);
+                    //    if (objectsAlongCenterAxis.Count == 0)
+                    //    {
+                    //        bestSector = null;
+                    //        return false;
+                    //    }
+                    //    //GameLog.Core.AIDetails.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), fleet.Owner.Key);
 
-                        try
-                        {
-                            _text = "try objectsAlongCenterAxis... for fleet" + fleet.ObjectID + " " + fleet.Name + " " + fleet.ClassName;
-                            Console.WriteLine(_text);
+                    //    try
+                    //    {
+                    //        _text = "try objectsAlongCenterAxis... for fleet" + fleet.ObjectID + " " + fleet.Name + " " + fleet.ClassName;
+                    //        Console.WriteLine(_text);
 
-                            objectsAlongCenterAxis.Sort((a, b) =>
-                           GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
-                           .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));
+                    //        objectsAlongCenterAxis.Sort((a, b) =>
+                    //       GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
+                    //       .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));
 
-                        }
-                        catch
-                        {
-                            _text = "unable to sort objects for Dominion station location";
-                            Console.WriteLine(_text);
-                            GameLog.Client.AIDetails.DebugFormat(_text);
-                            bestSector = null;
-                            return false;
-                        }
-                        bestSector = objectsAlongCenterAxis.Last().Sector; //[objectsAlongCenterAxis.Count - 1].Sector;
-                        if (bestSector == null)
-                        {
-                            return false;
-                        }
+                    //    }
+                    //    catch
+                    //    {
+                    //        _text = "unable to sort objects for Dominion station location";
+                    //        Console.WriteLine(_text);
+                    //        GameLog.Client.AIDetails.DebugFormat(_text);
+                    //        bestSector = null;
+                    //        return false;
+                    //    }
+                    //    bestSector = objectsAlongCenterAxis.Last().Sector; //[objectsAlongCenterAxis.Count - 1].Sector;
+                    //    if (bestSector == null)
+                    //    {
+                    //        return false;
+                    //    }
 
-                        _text = "Dominion station selected sector  at " + bestSector.Location + " " + bestSector.Name;
-                        Console.WriteLine(_text);
-                        // GameLog.Core.AIDetails.DebugFormat(_text);
-                        return true;
-                    }
+                    //    _text = "Dominion station selected sector  at " + bestSector.Location + " " + bestSector.Name;
+                    //    Console.WriteLine(_text);
+                    //    // GameLog.Core.AIDetails.DebugFormat(_text);
+                    //    return true;
+                    //}
                 case "KLINGONS":
                 case "TERRANEMPIRE":
                 case "FEDERATION":
@@ -1662,7 +1665,7 @@ namespace Supremacy.AI
                         try
                         {
                             bestSector = objectsAroundHome.Last().Sector; //[objectsAroundHome.Count - 1].Sector;
-                            _text = fleet.Owner.Key + " station selected sector at " + bestSector.Location + " " + bestSector.Name;
+                            _text = "Step_6550: " + bestSector.Location + " " + bestSector.Name + ": sector selected for station build for " + fleet.Owner.Key;
                             Console.WriteLine(_text);
                             // GameLog.Core.AIDetails.DebugFormat(_text);
                         }

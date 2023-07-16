@@ -48,6 +48,7 @@ namespace Supremacy.Diplomacy
             get
             {
                 int count = _motivations.Count;
+                _text += "s" + _text;  // dummy - do not remove
                 GameLog.Core.Diplomacy.DebugFormat("_motivations.Count={0}", count);
 
                 if (count != 0)

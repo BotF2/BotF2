@@ -13,9 +13,9 @@ namespace Supremacy.AI
 
     public static class DiplomatAI
     {
-#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
+//#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
         private static List<ForeignPower> AlreadyMinorMember = new List<ForeignPower>();
-#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
+//#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
 
@@ -148,7 +148,7 @@ namespace Supremacy.AI
                         }
 
                         //GameLog.Client.DiplomacyDetails.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression from {1}",
-                        _text = "Turn: " + GameContext.Current.TurnNumber
+                        _text = "Step_1171: Turn: " + GameContext.Current.TurnNumber
                             + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                             + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                             + " for " + foreignPower.Counterparty.Key
@@ -161,7 +161,7 @@ namespace Supremacy.AI
                         TrustAndRegardByTraits(foreignPower, impact, similarTraits);
 
 
-                        _text = "Turn: " + GameContext.Current.TurnNumber
+                        _text = "Step_1173: Turn: " + GameContext.Current.TurnNumber
                             + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                             + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                             + " for " + foreignPower.Counterparty.Key
@@ -214,7 +214,7 @@ namespace Supremacy.AI
                     //foreignPower.UpdateRegardAndTrustMeters();
 
 
-                    _text = "Turn " + GameContext.Current.TurnNumber
+                    _text = "Step_1175: Turn " + GameContext.Current.TurnNumber
                         + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                         + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                         + " for " + foreignPower.Counterparty.Key

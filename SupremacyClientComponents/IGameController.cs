@@ -417,7 +417,7 @@ namespace Supremacy.Client
                 return;
             }
 
-            _text = "Step_5000: ShowSummary...";
+            _text = "Step_4050: ShowSummary...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 

@@ -143,7 +143,7 @@ namespace Supremacy.Orbitals
             int count = 0;
             //if (_buildQueue.Count > 0)
             //{
-                
+
             //    _text = "BuildQueue.Count= " + BuildQueue.Count; 
             //    Console.WriteLine(_text);
             //    //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
@@ -151,9 +151,10 @@ namespace Supremacy.Orbitals
 
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "buildQueueItem= " + buildQueueItem.Description + ", index " + count 
-                    + ", TurnsRemaining " + buildQueueItem.TurnsRemaining 
-                    + " at " + buildQueueItem.Project.Location 
+                _text = "Step_8305: " + buildQueueItem.Project.Location
+                    + "buildQueueItem= " + buildQueueItem.Description + ", index " + count
+                    + ", TurnsRemaining " + buildQueueItem.TurnsRemaining
+                    //+ " at " +  
                     + " at " + buildQueueItem.Project.ProductionCenter;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
@@ -231,6 +232,49 @@ namespace Supremacy.Orbitals
 
             //_text = "Step_7601: SerializeOwnedData ------------";
             //Console.WriteLine(_text);
+            //GameLog.Core.CombatDetails.DebugFormat("Step_7601: " + _text);
+
+            try
+            {
+                foreach (var slot in _buildQueue)
+                {
+                    string _design = "nothing";
+                    string _percent = "0 %";
+                    if (slot.Project != null && slot.Project.BuildDesign != null)
+                    {
+                        _design = slot.Project.BuildDesign.ToString();
+                        _percent = slot.Project.PercentComplete.ToString();
+                    }
+
+                    //if (_percent != "0 %")
+                    //{
+                    _text = "Step_7602: Serialize " + slot.Project.Location
+                        //+ " > Slot= " + slot.SlotID
+                        //+ " at " + slot.Shipyard.Name
+                        //+ " " + 
+                        + " > " + _percent
+                        + " done for " + _design
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //}
+
+                }
+            }
+            catch
+            {
+                _text = "Step_7604: Serialize failed"
+                     //+ slot.Project.Location
+                     //+ " > Slot= " + slot.SlotID
+                     //+ " at " + slot.Shipyard.Name
+                     //+ " " + 
+                     //+ " > " + _percent
+                     //+ " done for " + _design
+                     ;
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            };
+
             try
             {
                 foreach (ShipyardBuildSlot slot in _buildSlots)
@@ -248,8 +292,20 @@ namespace Supremacy.Orbitals
                         _text = "Step_7602: Serialize " + slot.Shipyard.Location
                             + " > Slot= " + slot.SlotID
                             + " at " + slot.Shipyard.Name
-                            //+ " " + 
+                            + " " 
                             + " > " + _percent
+                            + " done for " + _design
+                            ;
+                        Console.WriteLine(_text);
+                        GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    }
+                    else
+                    {
+                        _text = "Step_7606: Serialize " + slot.Shipyard.Location
+                            + " > Slot= " + slot.SlotID  // crashes with a StackOverFlow
+                            //+ " at " + slot.Shipyard.Name
+                            + " " 
+                            +" > " + _percent
                             + " done for " + _design
                             ;
                         Console.WriteLine(_text);
@@ -258,7 +314,19 @@ namespace Supremacy.Orbitals
 
                 }
             }
-            catch { };
+            catch
+            {
+                _text = "Step_7605: Serialize failed"
+                     //+ slot.Project.Location
+                     //+ " > Slot= " + slot.SlotID
+                     //+ " at " + slot.Shipyard.Name
+                     //+ " " + 
+                     //+ " > " + _percent
+                     //+ " done for " + _design
+                     ;
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            };
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)
@@ -278,7 +346,7 @@ namespace Supremacy.Orbitals
                         + ";Shipyard-Slot-BuildQueue;" + i
                         //+ ";" + _buildQueue[i].Project.Builder
                         + ";"
-                        //+ ";" + _buildQueue[i].Project.TurnsRemaining
+                    //+ ";" + _buildQueue[i].Project.TurnsRemaining
 
 
                     ;
@@ -295,13 +363,13 @@ namespace Supremacy.Orbitals
                 //{
                 //    if (item.Project != null)
                 //    {
-                        //_text += item.Project.Builder
-                        //    //+ "; " + item.Project.BuildDesign
-                        //    + newline
-                        //;
-                        //Console.WriteLine(_text);
-                        //GameLog.Core.Stations.DebugFormat(_text);
-                    //}
+                //_text += item.Project.Builder
+                //    //+ "; " + item.Project.BuildDesign
+                //    + newline
+                //;
+                //Console.WriteLine(_text);
+                //GameLog.Core.Stations.DebugFormat(_text);
+                //}
                 //}
             }
 
@@ -316,6 +384,8 @@ namespace Supremacy.Orbitals
                         + ";No Project for _Shipyard._buildslots" + newline/*+ item.Project.Design*/
 
                     ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 }
                 //else
                 //{
@@ -345,23 +415,24 @@ namespace Supremacy.Orbitals
                         //    if (item.Project.Builder != null && item.Project.Builder.Key != null)
                         //        _builder = item.Project.Builder.Key; 
                         //} catch { }
-                                
+
                         _text = "Step_5880: " + _builder
                             + ";Project for _Shipyard._buildslots " + item
                             + "; " + item.Project
                             + "; "
                         ;
                         Console.WriteLine(_text);
-                    //GameLog.Core.Stations.DebugFormat(_text);
+                        //GameLog.Core.Stations.DebugFormat(_text);
                     }
                     else
                     {
-                        _text += "Step_5885: " 
-                            + item.Project.Location 
+                        _text += "Step_5885: "
+                            + item.Project.Location
                             + " > Slot " + item.SlotID
                             + " Shipyard._buildslots - unsure whether project..."
                             ; //   ??
                         Console.WriteLine(_text);
+                        //GameLog.Core.Stations.DebugFormat(_text);
                         _text = "";
                     }
                 }

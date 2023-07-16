@@ -1436,7 +1436,7 @@ namespace Supremacy.Combat
                 _invasionArena.Colony.Destroy();
                 _ = GameContext.Current.Universe.Destroy(_invasionArena.Colony);
                 //if (_invasionArena.Colony.is)
-                _text = "STEP_3798: " + _text + "Colony destroyed due to Invasion.";
+                _text = "Step_3798: " + _text + "Colony destroyed due to Invasion.";
                 Console.WriteLine(_text);
                 GameLog.Core.Combat.DebugFormat(_text);
 
@@ -1444,11 +1444,11 @@ namespace Supremacy.Combat
                 if(_invasionArena.InvasionID == 6)
                 {
                     Colony colony = new Colony(_invasionArena.Colony.System, GameContext.Current.CivilizationManagers[6].Civilization.Race);
-                    _text = "STEP_3799: " + _text + "New Borg colony established after Invasion";
+                    _text = "Step_3799: " + _text + "New Borg colony established after Invasion";
                     Console.WriteLine(_text);
                     GameLog.Core.Combat.DebugFormat(_text);
                 }
-                //_text = "STEP_3799: " + _text + "Colony destroyed due to Invasion.";
+                //_text = "Step_3799: " + _text + "Colony destroyed due to Invasion.";
                 //Console.WriteLine(_text);
                 //GameLog.Core.Combat.DebugFormat(_text);
             }

@@ -1393,7 +1393,7 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class ReportItemBuilt : SitRepEntry
+    public class ReportItemBuilt : SitRepEntry  // toDO: Get rid of this special version
     {
         private readonly int _itemTypeId;
         private readonly MapLocation _location;

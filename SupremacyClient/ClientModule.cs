@@ -897,9 +897,9 @@ namespace Supremacy.Client
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
 
-            GameLog.Client.General.InfoFormat("Step_0295: MenuScreen activated... ");
+            GameLog.Client.General.InfoFormat("Step_0290: MenuScreen activated... ");
             _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.ogg");
-            Console.WriteLine("Step_0299: Initialize done...");
+            Console.WriteLine("Step_0295: Initialize done...");
         }
 
         private bool AutoLoadSavedGame()

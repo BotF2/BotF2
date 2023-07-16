@@ -631,7 +631,11 @@ namespace Supremacy.WCF
             GameUpdateMessage message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
             TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
-            GameLog.Server.GameDataDetails.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
+            _text = "Step_0575: doing SendEndOfTurnUpdateAsync for " + player.Empire.Key;
+            Console.WriteLine(_text);
+            GameLog.Core.GameDataDetails.DebugFormat(_text);
+
+            //GameLog.Server.GameDataDetails.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
 
             IDisposable subscription = Observable
                 .ToAsync(() => callback.NotifyGameDataUpdated(message), _scheduler)()

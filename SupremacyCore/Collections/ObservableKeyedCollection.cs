@@ -94,16 +94,21 @@ namespace Supremacy.Collections
             {
                 if (key == null)
                 {
-                    _text = "Searched Key was null";
+                    _text = "Step_0873: Searched Key was null";
                     Console.WriteLine(_text);
                     GameLog.Client.GeneralDetails.DebugFormat(_text);
                     throw new ArgumentNullException(nameof(key));
                 }
 
+                // next works, but it is too often
+                //_text = "Step_0874: working on key > " + key.ToString();
+                //Console.WriteLine(_text);
+                //GameLog.Core.General.ErrorFormat(_text);
+
                 //searching for crashes
                 if (key.ToString() == "-1")
                 {
-                    _text = "Searched Key was -1, sometimes this crashes";
+                    _text = "Step_0875: Searched Key was -1, sometimes this crashes";
                     Console.WriteLine(_text);
                     GameLog.Client.GeneralDetails.DebugFormat(_text);
                     return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
@@ -143,9 +148,10 @@ namespace Supremacy.Collections
                 }
                 // avoids crashes
 
-                _text = "Key not found >> " + key.ToString();
+                _text = "Step_0878: Key not found >> " + key.ToString();
                 Console.WriteLine(_text);
                 GameLog.Core.General.ErrorFormat(_text);
+
                 throw new KeyNotFoundException();
 
             }

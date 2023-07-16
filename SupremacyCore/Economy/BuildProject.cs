@@ -466,7 +466,7 @@ namespace Supremacy.Economy
 
                     newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
                   
-                    _text = "Turn " + GameContext.Current.TurnNumber
+                    _text = "Step_4283: Turn " + GameContext.Current.TurnNumber
                         + ": " + Builder
                         + " built at " + Location + " > " + BuildDesign + " (spawned)"
                         ;
@@ -484,6 +484,7 @@ namespace Supremacy.Economy
 
                 newEntry = new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green);
                 //old: newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green);
+                _text = "Step_4286: " + _text;
                 Console.WriteLine(_text);
                 //GameLog.Core.Production.DebugFormat(_text);
             }
@@ -630,7 +631,7 @@ namespace Supremacy.Economy
                     deltaIndustry -= delta;
                 }
 
-                if (timeEstimate == 1)
+                if (timeEstimate == 2)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
                     _text = "Turn " + GameContext.Current.TurnNumber

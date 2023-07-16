@@ -160,7 +160,11 @@ namespace Supremacy.Game
                     //Console.WriteLine(fullPath);
                 }
 
-                string _text = /*Environment.NewLine + */"Step_0293: fullPath = " + fullPath;
+                _text = /*Environment.NewLine + */"Step_0292: --------------";
+                Console.WriteLine(_text);
+                // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
+
+                _text = /*Environment.NewLine + */"Step_0293: fullPath = " + fullPath;
                 Console.WriteLine(_text);
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 

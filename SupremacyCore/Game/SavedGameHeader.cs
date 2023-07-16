@@ -105,74 +105,74 @@ namespace Supremacy.Game
             }
 
             IsMultiplayerGame = game.IsMultiplayerGame;
-            _text = "Step_0101: IsMultiplayerGame" + IsMultiplayerGame.ToString();
+            _text = "Step_0101: IsMultiplayerGame > " + IsMultiplayerGame.ToString();
             Console.WriteLine(_text);
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             LocalPlayerName = localPlayer.Name;
-            _text = "Step_0103: LocalPlayerName" + LocalPlayerName.ToString();
+            _text = "Step_0103: LocalPlayerName > " + LocalPlayerName.ToString();
             Console.WriteLine(_text);
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             LocalPlayerEmpireID = localPlayer.EmpireID;
-            _text = "Step_0105: LocalPlayerEmpireID" + LocalPlayerEmpireID.ToString();
+            _text = "Step_0105: LocalPlayerEmpireID > " + LocalPlayerEmpireID.ToString();
             Console.WriteLine(_text);
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             TurnNumber = game.TurnNumber;
-            _text = "Step_0107: TurnNumber" + TurnNumber.ToString();
+            _text = "Step_0107: TurnNumber > " + TurnNumber.ToString();
             Console.WriteLine(_text);
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             Options = game.Options;
-            _text = "Step_0111: Options" + Options.ToString();
-            Console.WriteLine(_text);
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            _text = "Step_0111: Options > " + Options.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.SaveLoad.DebugFormat(_text);
 
             Timestamp = DateTimeOffset.Now;
-            _text = "Step_0121: Timestamp" + Timestamp.ToString();
+            _text = "Step_0121: Timestamp > " + Timestamp.ToString();
             Console.WriteLine(_text);
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             GameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            _text = "Step_0123: GameVersion" + GameVersion.ToString();
+            _text = "Step_0123: GameVersion > " + GameVersion.ToString();
             Console.WriteLine(_text);
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             Entities.Civilization[] empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
-            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
-            Console.WriteLine(_text);
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            //_text = "Step_0105: TurnNumber > " + TurnNumber.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.SaveLoad.DebugFormat(_text);
             
             EmpireIDs = new int[empires.Length];
-            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
-            Console.WriteLine(_text);
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            //_text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.SaveLoad.DebugFormat(_text);
 
             EmpireNames = new string[empires.Length];
-            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
-            Console.WriteLine(_text);
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            //_text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.SaveLoad.DebugFormat(_text);
 
             SlotStatus = new SlotStatus[empires.Length];
-            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
-            Console.WriteLine(_text);
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            //_text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.SaveLoad.DebugFormat(_text);
 
             SlotClaims = new SlotClaim[empires.Length];
-            _text = "Step_0105: TrunNumber" + TurnNumber.ToString();
-            Console.WriteLine(_text);
-            GameLog.Client.SaveLoad.DebugFormat(_text);
+            //_text = "Step_0105: TrunNumber" + TurnNumber.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.SaveLoad.DebugFormat(_text);
 
             for (int i = 0; i < empires.Length; i++)
             {
                 EmpireIDs[i] = empires[i].CivID;
-                _text = "Step_0161: EmpireIDs" + EmpireIDs[i].ToString();
-                Console.WriteLine(_text);
-                GameLog.Client.SaveLoad.DebugFormat(_text);
+                //_text = "Step_0161: EmpireID > " + EmpireIDs[i].ToString();
+                //Console.WriteLine(_text);
+                //GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 EmpireNames[i] = empires[i].ShortName;
-                _text = "Step_01165: EmpireNames" + EmpireNames[i].ToString();
+                _text = "Step_0165: Empire > " + EmpireIDs[i].ToString() + " " + EmpireNames[i].ToString();
                 Console.WriteLine(_text);
                 GameLog.Client.SaveLoad.DebugFormat(_text);
 

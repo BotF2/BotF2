@@ -88,19 +88,22 @@ namespace Supremacy.Client
         {
             get
             {
-                string _text;
-                string _text2 = "";
+                string _text = "Step_0213: Current Version = " + Current.Version;
+                //string _text2 = "";
                 if (File.Exists("SupremacyClient.exe"))
                 {
-                    _text2 = " SupremacyClient.exe ";
-                    _text2 += new FileInfo("SupremacyClient.exe").Length.ToString() + " ";
-                    _text2 += new FileInfo("SupremacyClient.exe").LastWriteTime.ToString();
+                    _text += " of > SupremacyClient.exe ";
+                    _text += new FileInfo("SupremacyClient.exe").Length.ToString() + " ";
+                    _text += new FileInfo("SupremacyClient.exe").LastWriteTime.ToString();
                 }
-                _text = "Step_0200: Current Version = " + Current.Version + _text2;
+                //_text = "Step_0200: Current Version = " + Current.Version + _text2;
                 Console.WriteLine(_text);  // "Current Version = "
                 GameLog.Client.General.InfoFormat(_text);
 
-                _text = "Step_0201: Time running = " + (DateTime.Now - starttime).ToString();
+
+
+                
+                _text = "Step_0220: Time running = " + (DateTime.Now - starttime).ToString();
                 Console.WriteLine(_text);
                 GameLog.Client.GeneralDetails.DebugFormat(_text);
 
@@ -424,9 +427,28 @@ namespace Supremacy.Client
             {
                 GameLog.Initialize();
 
+                var time = DateTime.Now;
+                _text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
+                Console.WriteLine(_text);  // "Current Version = "
+                //GameLog.Client.General.InfoFormat(_text);
+
                 //Add dll subdirectories to current process PATH variable
                 string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + appDir + "\\lib");
+
+                // Windows Version
+                string subKey = @"SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion";
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine;
+                Microsoft.Win32.RegistryKey skey = key.OpenSubKey(subKey);
+                string name = skey.GetValue("ProductName").ToString();
+                string mjVersion = skey.GetValue("CurrentMajorVersionNumber").ToString();
+                string mnVersion = skey.GetValue("CurrentMinorVersionNumber").ToString();
+                string cBuild = skey.GetValue("CurrentBuild").ToString();
+                string ubr = skey.GetValue("UBR").ToString();
+                _text = "Step_0110: Windows Version = " + $"{name} [Version {mjVersion}.{mnVersion}.{cBuild}.{ubr}]";
+                Console.WriteLine(_text);  // "Current Version = "
+                GameLog.Client.General.InfoFormat(_text);
+
 
                 if (!CheckNetFxVersion())
                 {
@@ -534,7 +556,7 @@ namespace Supremacy.Client
 
                     if (File.Exists(_soundfileSplashScreen)&&ClientSettings.Current.EnableSoundStartSplashScreen)
                     {
-                        GameLog.Client.General.Debug("Playing LoadingSplash.wav");
+                        GameLog.Client.General.Debug("Step_0205: Playing LoadingSplash.wav");
                         //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
                         if (File.Exists("Resources/SoundFX/Menu/LoadingSplash.wav"))
@@ -744,7 +766,7 @@ namespace Supremacy.Client
 
             try
             {
-                Console.WriteLine("Step_0152: opening Error.txt");
+                Console.WriteLine("Step_0152: opening Error.txt (just in case an Error appears");
                 //var file = "Error.txt";
                 //StreamWriter errorFile = new StreamWriter(file);
 
@@ -756,7 +778,7 @@ namespace Supremacy.Client
                 //errorFile.WriteLine("Hello");
                 //errorFile.WriteLine(DateTime.Now.ToString());
                 //if (ClientSettings.Current.EnableOutputToTXT) Console.WriteLine("Time111: " + DateTime.Now);
-                if (true) Console.WriteLine("Time_0111: " + DateTime.Now);
+                if (true) Console.WriteLine("Time_0103: " + DateTime.Now);
                 //just starts an empty file 
                 // System.Diagnostics.Process.Start("Error.txt");
             }

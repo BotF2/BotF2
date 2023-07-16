@@ -146,8 +146,11 @@ namespace Supremacy.Universe
         //private string shipyard_slot_1_order = "";
         private int _systemId = -1;
         private CollectionBase<TradeRoute> _tradeRoutes;
+
+        //[NonSerialized]
         public string _text;
         public string blank = " ";
+        public string newline = Environment.NewLine;
 
         private Colony()
         {
@@ -2046,7 +2049,8 @@ namespace Supremacy.Universe
             }
             else { _shipyardSlots = 0; }
 
-            _text = "Turn " + GameContext.Current.TurnNumber + ": ";
+            _text = "Step_4203: ------------------------------" + newline
+                + "Step_4203: Turn " + GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
             _text += colony.Name + " ( "+ colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
@@ -2065,7 +2069,7 @@ namespace Supremacy.Universe
             //int _orbBatused = colony.ActiveOrbitalBatteries;
             _text += ", OrbB: " + colony.ActiveOrbitalBatteries.ToString();
 
-            Console.WriteLine(_text);
+            Console.WriteLine("Step_4205: " + _text);
             ;
             //GameLog.Core.ProductionDetails.DebugFormat(_text);
 

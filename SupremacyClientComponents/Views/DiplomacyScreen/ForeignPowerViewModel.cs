@@ -79,14 +79,14 @@ namespace Supremacy.Client.Views
             foreach (IAgreement agreement in agreements.OrderByDescending(o => o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
-                _text = "Turn " + GameContext.Current.TurnNumber
+                _text = "Step_5777: Turn " + GameContext.Current.TurnNumber
                     + ";added;sender=; " + agreement.Sender
                     + " ;recipient=; " + agreement.Recipient
                     + " ;agreement=; " + agreement.Proposal.Clauses[0].ClauseType.ToString()
 
                     ;
                 Console.WriteLine(_text);
-                GameLog.Client.Diplomacy.DebugFormat(Environment.NewLine + _text);
+                GameLog.Client.Diplomacy.DebugFormat(/*Environment.NewLine + */_text);
             }
         }
 

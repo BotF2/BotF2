@@ -345,7 +345,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <CheckBox x:Name="CrimsonCheck" Foreground="Crimson" Grid.Row="0" Grid.Column="6" VerticalAlignment="Center" Margin="14,0,0,0"
+                <CheckBox x:Name="CrimsonCheck" Foreground="#6a1b21" Grid.Row="0" Grid.Column="7" VerticalAlignment="Center" Margin="14,0,0,0"
                 DockPanel.Dock="Left"
                 Content="{scc:StringResource Key=SITREP_DIALOG_CRIMSON_CHECKBOX}"
                 

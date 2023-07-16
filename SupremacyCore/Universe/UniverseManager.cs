@@ -612,6 +612,8 @@ namespace Supremacy.Universe
                 {
                     fleet.AddShipInternal(ship);
 
+                    Print(ship);
+
                     //_text = ";"
                     //    + ship.Location
                     //    + ";ship adding;" + ship.ObjectID + ";" + ship.Design + ";" + ship.Name
@@ -663,13 +665,13 @@ namespace Supremacy.Universe
             {
                 String _col =
                     /*";Colony;" */
-                    "; " 
-                    + colony.Location
+                    /*"; " + */colony.Location
                     + ";" + colony.Name
                     + ";" + colony.Owner
                     + ";Colony;"
                     ;
                 //Console.WriteLine(_col);
+                PrintColony(colony);
 
                 StarSystem system = systemLocationLookup[colony.Location].FirstOrDefault();
                 if (system == null)
@@ -683,8 +685,8 @@ namespace Supremacy.Universe
                 foreach (Building building in buildingLocationLookup[colony.Location])
                 {
                     colony.BuildingsInternal.Add(building);
-                    _text =
-                        _col
+                    _text = "Step_4365:; "
+                        + _col
                         + "; Building"
                         + "; " + building.ObjectID
                         + "; " + building.Design
@@ -695,16 +697,89 @@ namespace Supremacy.Universe
                     //_checkLoading = true; 
                     //if(_checkLoading == true)
                     //{
-                    //    Console.WriteLine(_text);
+                    Console.WriteLine(_text);
+                    //PrintBuilding(building);    
                     //}
                     //else
                     //{
-                        //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
+                    //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
                     //}
                 }
 
             }
         }
+
+        //private void PrintBuilding(Building item)  // inside Colony because every building is part of a Colony
+        //{
+        //    _text = "Step_4350: "
+        //        + "; Building"
+        //        + "; " + item.ObjectID
+        //        + "; " + item.Design
+        //        + ";" + item.IsActive + "_for_Active"
+        //        + "; since Turn;" + item.TurnCreated
+
+        //        ;
+        //    Console.WriteLine(_text);
+        //    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+        //}
+
+        private void PrintColony(Colony item)
+        {
+            _text = "Step_4360:"
+                + "; " + item.Location
+                + "; " + item.ObjectID
+                + ";Colony"
+                + ";" + item.Name
+                + ";" + item.Owner
+                + ";pop;" + item.Population
+                + ";max;" + item.MaxPopulation
+
+
+                + ";mor;" + item.Morale
+                + ";FoodR;" + item.FoodReserves
+                + ";facF;" + item.ActiveFoodFacilities + ";of;" + item.TotalFoodFacilities
+                + ";facI;" + item.ActiveIndustryFacilities + ";of;" + item.TotalIndustryFacilities
+                + ";facE;" + item.ActiveEnergyFacilities + ";of;" + item.TotalEnergyFacilities
+                + ";facR;" + item.ActiveResearchFacilities + ";of;" + item.TotalResearchFacilities
+                + ";facI;" + item.ActiveIntelligenceFacilities + ";of;" + item.TotalIntelligenceFacilities
+
+
+                + ";since Turn;" + item.TurnCreated
+
+                ;
+            Console.WriteLine(_text);
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+        }
+        private void Print(Ship item)
+        {
+            _text = "Step_4380:"
+                + "; " + item.Location
+                + "; Ship"
+
+                + "; " + item.Owner
+                + "; " + item.ObjectID
+                + "; " + item.Design
+                + "; " + item.Name 
+
+                + "; Crew=;" + item.Crew
+                + "; Exp=;" + item.ExperiencePercent
+                + "; Hull=;" + item.HullStrength
+                + "; Sh=;" + item.ShieldStrength
+                + "; Cloak=;" + item.CloakStrength
+                + "; Camo=;" + item.CamouflagedStrength
+                //+ "; Camo=;" + item.
+                + "; Fuel=;" + item.FuelReserve
+
+                + "; since Turn;" + item.TurnCreated
+
+                ;
+            //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+            Console.WriteLine(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+
+        }
+
 
         /// <summary>
         /// Updates the sectors in the <see cref="Map"/>.

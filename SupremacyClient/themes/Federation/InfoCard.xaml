@@ -234,14 +234,14 @@
                 <Border x:Name="InnerBorder"
                         BorderThickness="1">
                   <Border.BorderBrush>
-                    <LinearGradientBrush StartPoint="0,0"
-                                         EndPoint="0,1">
-                      <GradientStop Offset="0"
-                                    Color="#7c7c7c" />
-                      <GradientStop Offset="0.5"
-                                    Color="#2a2a2a" />
-                      <GradientStop Offset="1"
-                                    Color="#121212" />
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        
+                      <GradientStop Offset="0" Color="#7c7c7c" />
+                                   
+                      <GradientStop Offset="0.5" Color="#2a2a2a" />
+                                   
+                      <GradientStop Offset="1" Color="#121212" />
+                                   
                     </LinearGradientBrush>
                   </Border.BorderBrush>
                   <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

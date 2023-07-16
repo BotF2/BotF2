@@ -69,6 +69,8 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("counterparty");
             }
 
+            _text += "s" + _text;  // dummy - do not remove
+
             _regardEvents = new CollectionBase<RegardEvent>();
             _diplomacyData = new DiplomacyDataInternal(owner.CivID, counterparty.CivID);
 

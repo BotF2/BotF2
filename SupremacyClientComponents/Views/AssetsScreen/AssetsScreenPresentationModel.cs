@@ -975,7 +975,7 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.Intel.WarnFormat("Problem occured at CreditsEmpire: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.Intel.WarnFormat("Step_7777: Problem occured at CreditsEmpire: {0} {1}", e.Message, e.StackTrace);
                     Meter zero = new Meter(0, 0, 0);
                     return zero;
                 }

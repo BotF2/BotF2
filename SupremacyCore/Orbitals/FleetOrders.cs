@@ -2083,7 +2083,7 @@ namespace Supremacy.Orbitals
 
             if (project != null)
             { 
-                _text = project.Location + " > project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
+                _text = "Step_8380: " + project.Location + "> project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
                 Console.WriteLine(_text);
                 //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             }
@@ -2116,7 +2116,7 @@ namespace Supremacy.Orbitals
 
             //DuraniumBefore = usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium];
 
-            _text = project.Location
+            _text = "Step_8390: " + project.Location
                 + " > project: Builder = " + project.Builder
                 + ", BuildDesign = " + project.BuildDesign
                 + ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
@@ -2148,6 +2148,13 @@ namespace Supremacy.Orbitals
                 _ = GameContext.Current.Universe.Destroy(destroyedShip);
             }
 
+    //        _text = "Step_8395: " + project.Location
+    //+ " > project: Builder = " + project.Builder
+    //+ ", BuildDesign = " + project.BuildDesign
+    //+ ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
+    ////+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
+    //;
+            //Console.WriteLine(_text);
             GameLog.Core.Stations.DebugFormat("Destroyed = {0}", destroyedShip);
         }
 

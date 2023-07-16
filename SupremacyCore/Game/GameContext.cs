@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Supremacy.Game
 {
@@ -172,7 +171,7 @@ namespace Supremacy.Game
         private ICollection<ScriptedEvent> _scriptedEvents;
         private DiplomacyDatabase _diplomacyDatabase;
         public string _text;
-        public readonly string  blank = " ";
+        public readonly string blank = " ";
         public readonly string newline = Environment.NewLine;
 
         private bool _bool_Fac_Count_Active;
@@ -564,7 +563,7 @@ namespace Supremacy.Game
         #region Static Members
         private static readonly ConcurrentStack<GameContext> _stack = new ConcurrentStack<GameContext>();
         //private string _text;
-        
+
 
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
@@ -838,9 +837,19 @@ namespace Supremacy.Game
         {
             get
             {
-                if (ThreadStack.TryPeek(out GameContext context))
+
+                bool _bool_Step_0879_FAILED = false;
+                if (ThreadStack.Count > 0 && ThreadStack.TryPeek(out GameContext context))
                 {
                     return context;
+                }
+
+                if (_bool_Step_0879_FAILED == false)
+                {
+                    string _text = "Step_0879: No ThreadContext = no GameContext anymore ";
+                    Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    _bool_Step_0879_FAILED = true;
                 }
 
                 return null;
@@ -1084,13 +1093,13 @@ namespace Supremacy.Game
 
                                 int foodNeeded = (int)(pop * (1 + (3 * growth)));
                                 /* should take into account planetary food bonuses */
-                                int facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1) ;
+                                int facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1);
 
                                 if (!_checkXML && homeSystemDescriptor.FoodPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.FoodPF.Count;
                                 }
-                                
+
 
                                 colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);
 

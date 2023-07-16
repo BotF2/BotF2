@@ -297,12 +297,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="{s:StringResource Key=SPY_A_MAJOR_BELOW}"
-                                  VerticalAlignment="Center" Foreground="Red"
+                                  VerticalAlignment="Center" Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
                             <TextBlock Text="{s:StringResource Key=INSTALL_SPY_NETWORK_INSTRUCTIONS}"     
                                 Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,30,0"
-                                Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                Foreground="Red"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
                             

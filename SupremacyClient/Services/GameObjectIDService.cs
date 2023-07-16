@@ -1,4 +1,4 @@
-// GameObjectIDService.cs
+// File:GameObjectIDService.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -39,7 +39,7 @@ namespace Supremacy.Client.Services
             ClientEvents.GameObjectIDRequested.Publish(args);
 
             DateTime waitStart = DateTime.Now;
-            TimeSpan timeout = TimeSpan.FromSeconds(5);
+            TimeSpan timeout = TimeSpan.FromSeconds(5);  // TimeOut = 5 seconds
             while (!args.WaitHandle.WaitOne(timeout))
             {
                 if ((DateTime.Now - waitStart) > timeout)

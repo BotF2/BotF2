@@ -264,6 +264,7 @@ namespace Supremacy.Client
         private bool _isConnected;
         private bool _isDisconnecting;
         private bool _isDisposed;
+        private string _text;
 
         public GameClient(
             [NotNull] ISupremacyCallback clientCallback,
@@ -764,6 +765,16 @@ namespace Supremacy.Client
             }
             catch (Exception e)
             {
+                _text = "Step_7604: Exception occurred while submitting end-of-turn orders: " + e.Message;
+     //+ slot.Project.Location
+     //+ " > Slot= " + slot.SlotID
+     //+ " at " + slot.Shipyard.Name
+     //+ " " + 
+     //+ " > " + _percent
+     //+ " done for " + _design
+     //;
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 GameLog.Client.General.ErrorFormat("Exception occurred while submitting end-of-turn orders: {0}", e.Message);
                 throw;
             }

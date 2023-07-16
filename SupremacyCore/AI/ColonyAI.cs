@@ -357,7 +357,7 @@ namespace Supremacy.AI
                     if (project != null)
                     {
                         colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
-                        _text = "Step_5884: ShipProduction "
+                        _text = "Step_5384: ShipProduction "
                             + " at " + colony.Location 
                             + " " + colony.Name 
                             + " - " + colony.Owner
@@ -377,7 +377,7 @@ namespace Supremacy.AI
                     if (project != null)
                     {
                         colony.Shipyard.BuildQueue.Add(new BuildQueueItem(project));
-                        _text = "ShipProduction "
+                        _text = "Step_5386: ShipProduction "
                             + " at " + colony.Location
                             + " - " + colony.Owner
                             + ": Added Construction ship project..." + project.BuildDesign
@@ -442,7 +442,7 @@ namespace Supremacy.AI
 
             if (colony.Sector != homeSector && colony.Shipyard != null)
             {
-                _text = "next: check for ShipProduction - not at HomeSector: "
+                _text = "Step_5390: next: check for ShipProduction - not at HomeSector: "
                     + colony.Shipyard.Design
                     + " at " + colony.Location
                     + " - " + colony.Owner
@@ -469,7 +469,7 @@ namespace Supremacy.AI
                 if (newProject != null)
                 {
                     colony.Shipyard.BuildQueue.Add(new BuildQueueItem(newProject));
-                    _text = "ShipProduction "
+                    _text = "Step_5386: ShipProduction "
                         + " at " + colony.Location
                         + " - " + colony.Owner
                         + ": Added Colonizer project..." + newProject.BuildDesign
@@ -481,8 +481,8 @@ namespace Supremacy.AI
 
             foreach (var item in colony.Shipyard.BuildQueue)
             {
-                _text = colony.Location
-                    + " > " + item.Project.BuildDesign
+                _text = "Step_5386: " + colony.Location
+                    + ", ShipProduction > " + item.Project.BuildDesign
                     + ", TurnsRemaining= " + item.Project.TurnsRemaining
 
 
@@ -500,7 +500,7 @@ namespace Supremacy.AI
             if (fleet == null)
                 return;
 
-            _text = "CheckForColonizerBuildProject - using " + fleet.Location + " " + fleet.Ships[0].Design
+            _text = "Step_5393: CheckForColonizerBuildProject - using " + fleet.Location + " " + fleet.Ships[0].Design
                     //+ " - Not Habited: Habitation Aim= "
                     //+ item.HasColony
                     //+ " at " + item.Location
@@ -520,7 +520,7 @@ namespace Supremacy.AI
 
             foreach (var item in possibleSystems)
             {
-                _text = "ShipProduction at " + colony.Location + " " + colony.Name
+                _text = "Step_5396: ShipProduction at " + colony.Location + " " + colony.Name
                     + " - possible: " + possibleSystems.Count
                     + " - Not Habited: Habitation Aim= "
                     + item.HasColony

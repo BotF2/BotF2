@@ -30,6 +30,7 @@ namespace Supremacy.Orbitals
         private Meter _shieldStrength;
         private Meter _cloakStrength;
         private Meter _camouflagedMeter;
+        [NonSerialized]
         private Meter _firePower;
         private string _text;
 
@@ -338,19 +339,20 @@ namespace Supremacy.Orbitals
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
             _firePower = (Meter)reader.ReadObject();
 
+            _text = "." + _text;
 
-            _text = "Orbital: " 
-                + "crew=" + _crew
-                + ", exp=" + _experienceLevel
-                + ", hull=" + _hullStrength
-                + ", sh=" + _shieldStrength
-                + ", cloa=" + _cloakStrength
-                + ", camo=" + _shieldStrength
-                + ", crew+-= nv" /*+ Crew_CurrentValueChanged.tostring()*/
-                + ", firepower=" + _firePower
-                ;
-            //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //_text = "Orbital: " 
+            //    + "crew=" + _crew
+            //    + ", exp=" + _experienceLevel
+            //    + ", hull=" + _hullStrength
+            //    + ", sh=" + _shieldStrength
+            //    + ", cloa=" + _cloakStrength
+            //    + ", camo=" + _shieldStrength
+            //    + ", crew+-= nv" /*+ Crew_CurrentValueChanged.tostring()*/
+            //    + ", firepower=" + _firePower
+            //    ;
+            ////Console.WriteLine(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
         }
     }
 

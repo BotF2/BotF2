@@ -43,6 +43,10 @@ namespace Supremacy.Client
         private CombatAssets _otherAssets;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
+#pragma warning disable IDE0052 // Remove unread private members
+        private List<Civilization> OtherCivs; // just a dummy to avoid: Error: 40 : BindingExpression path error:
+        private List<Civilization> FriendlyCivs; // just a dummy to avoid: Error: 40 : BindingExpression path error:  
+#pragma warning restore IDE0052 // Remove unread private members
         private readonly Civilization _onlyFireIfFiredAppone;
         private Civilization _theTargeted1Civ;
         private Civilization _theTargeted2Civ;
@@ -78,11 +82,15 @@ namespace Supremacy.Client
 
             FriendCivilizationsItems.DataContext = _friendlyCivs;
 
+            FriendlyCivs = _friendlyCivs; // just a dummy to avoid: Error: 40 : BindingExpression path error:
+
             DataTemplate civTemplate = TryFindResource("OthersTreeSummaryTemplate") as DataTemplate;
             // other civilizations summary for targeting
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
+
+            OtherCivs = _otherCivs; // just a dummy to avoid: Error: 40 : BindingExpression path error:
 
             _onlyFireIfFiredAppone = new Civilization
             {
@@ -486,11 +494,13 @@ namespace Supremacy.Client
                 + " > Target 1: " + _theTargeted1Civ.Name + ", 2: " + _theTargeted2Civ.Name
                 + " > Player's choice: " + order /*+ " button was clicked by player "*/
                 ;
-            Console.WriteLine(_text);
-            GameLog.Client.Combat.DebugFormat(_text);
 
             CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
             playerCivManager.SitRepEntries.Add(new ReportEntry_NoAction(playerCivManager.Civilization, _text, "", "", SitRepPriority.Red));
+
+            _text = "Step_5389: " + _text;
+            Console.WriteLine(_text);
+            GameLog.Client.Combat.DebugFormat(_text);
 
 
             UpperButtonsPanel.IsEnabled = false;

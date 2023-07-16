@@ -124,13 +124,13 @@ namespace Supremacy.Resources
                             }
                         WriterClose:
                             streamWriter.Close();
-                            _text = "STEP_1280: successfully ended writing " + file;
+                            _text = "Step_1280: successfully ended writing " + file;
                             Console.WriteLine(_text);
                             GameLog.Core.GameDataDetails.DebugFormat(_text);
                         }
                         catch (Exception e)
                         {
-                            _text = "STEP_1280: Cannot write ... " + file + e;
+                            _text = "Step_1280: Cannot write ... " + file + e;
                             Console.WriteLine(_text);
                             GameLog.Core.GameData.ErrorFormat(_text);
                         }
