@@ -691,8 +691,8 @@ namespace Supremacy.Universe
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
 
-                if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
-                {
+                //if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+                //{
                     foreach (Building building in buildingLocationLookup[colony.Location])
                     {
                         colony.BuildingsInternal.Add(building);
@@ -716,7 +716,7 @@ namespace Supremacy.Universe
                         //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
                         //}
                     }
-                }
+                //}
 
             }
         }
