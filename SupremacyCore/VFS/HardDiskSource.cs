@@ -309,7 +309,9 @@ namespace Supremacy.VFS
                 _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
                 Console.WriteLine(message);
                 GameLog.Client.General.ErrorFormat(message);
-                return File.Open("vfs:///Resources/Images/__image_missing.png", FileMode.Open, access, share);
+                //var path = "vfs:///Resources/Images/";
+                //var file = path + "__image_missing.png";
+                return File.Open("__image_missing.png", FileMode.Open, access, share);
             }
         }
 

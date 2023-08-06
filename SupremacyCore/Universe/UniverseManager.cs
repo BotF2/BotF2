@@ -25,6 +25,8 @@ using System.Linq.Expressions;
 
 namespace Supremacy.Universe
 {
+
+    //private string _text;
     /// <summary>
     /// Manages all of the objects in a game universe and the map of the universe.
     /// </summary>
@@ -56,7 +58,7 @@ namespace Supremacy.Universe
         private SectorMap _map;
         private UniverseObjectSet _objects;
         private GameObjectLookupCollection<Civilization, Colony> _homeColonyLookup;
-        private string _text;
+        //private string _text;
         //private bool _checkLoading = true;
         //private readonly string newline = Environment.NewLine;
 
@@ -589,6 +591,7 @@ namespace Supremacy.Universe
         {
             UpdateSectors();
 
+            string _text;
             _text = "Step_4000: Deserializing ships and fleets...";
             Console.WriteLine(_text);
             GameLog.Core.SaveLoad.DebugFormat(_text);
@@ -612,7 +615,10 @@ namespace Supremacy.Universe
                 {
                     fleet.AddShipInternal(ship);
 
-                    Print(ship);
+                    if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+                    {
+                        Print(ship);
+                    }
 
                     //_text = ";"
                     //    + ship.Location
@@ -660,7 +666,7 @@ namespace Supremacy.Universe
             ILookup<MapLocation, StarSystem> systemLocationLookup = _objects.OfType<StarSystem>().ToLookup(o => o.Location);
             ILookup<MapLocation, Building> buildingLocationLookup = _objects.OfType<Building>().ToLookup(o => o.Location);
 
-            GameLog.Core.SaveLoad.DebugFormat("Deserialized: item=Colony;Location;Owner;Name;Population");
+            GameLog.Core.SaveLoad.DebugFormat("Step_4550: Deserialized: item=Colony;Location;Owner;Name;Population");
             foreach (Colony colony in colonies)
             {
                 String _col =
@@ -671,7 +677,10 @@ namespace Supremacy.Universe
                     + ";Colony;"
                     ;
                 //Console.WriteLine(_col);
-                PrintColony(colony);
+                if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+                {
+                    PrintColony(colony);
+                }
 
                 StarSystem system = systemLocationLookup[colony.Location].FirstOrDefault();
                 if (system == null)
@@ -682,28 +691,31 @@ namespace Supremacy.Universe
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
 
-                foreach (Building building in buildingLocationLookup[colony.Location])
+                if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
                 {
-                    colony.BuildingsInternal.Add(building);
-                    _text = "Step_4365:; "
-                        + _col
-                        + "; Building"
-                        + "; " + building.ObjectID
-                        + "; " + building.Design
-                        +";" + building.IsActive + "_for_Active"
-                        + "; since Turn;" + building.TurnCreated
+                    foreach (Building building in buildingLocationLookup[colony.Location])
+                    {
+                        colony.BuildingsInternal.Add(building);
+                        _text = "Step_4365:; "
+                            + _col
+                            + "; Building"
+                            + "; " + building.ObjectID
+                            + "; " + building.Design
+                            + ";" + building.IsActive + "_for_Active"
+                            + "; since Turn;" + building.TurnCreated
 
-                        ;
-                    //_checkLoading = true; 
-                    //if(_checkLoading == true)
-                    //{
-                    Console.WriteLine(_text);
-                    //PrintBuilding(building);    
-                    //}
-                    //else
-                    //{
-                    //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
-                    //}
+                            ;
+                        //_checkLoading = true; 
+                        //if(_checkLoading == true)
+                        //{
+                        Console.WriteLine(_text);
+                        //PrintBuilding(building);    
+                        //}
+                        //else
+                        //{
+                        //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
+                        //}
+                    }
                 }
 
             }
@@ -788,13 +800,13 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
-            GameLog.Core.SaveLoad.DebugFormat("Deserializing stations...");
+            GameLog.Core.SaveLoad.DebugFormat("Step_0355: Deserializing stations...");
             foreach (Station station in Find<Station>())
             {
                 _map[station.Location].Station = station;
             }
 
-            GameLog.Core.SaveLoad.DebugFormat("Deserializing systems...");
+            GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
             foreach (StarSystem system in Find<StarSystem>())
             {
 
@@ -809,8 +821,8 @@ namespace Supremacy.Universe
             _objects.SerializeOwnedData(writer, context);
             _homeColonyLookup.SerializeOwnedData(writer, context);
 
-            GameLog.Core.SaveLoad.DebugFormat("Serializing _objects...");
-            GameLog.Core.SaveLoad.DebugFormat("Serializing _homeColonyLookup...");
+            //GameLog.Core.SaveLoad.DebugFormat("Step_3634: Serializing _objects...");
+            //GameLog.Core.SaveLoad.DebugFormat("Step_3634: Serializing _homeColonyLookup...");
         }
 
         public void DeserializeOwnedData(SerializationReader reader, object context)
@@ -829,7 +841,11 @@ namespace Supremacy.Universe
                 colony => colony.ObjectID,
                 id => _objects[id] as Colony);
             _objects.DeserializeOwnedData(reader, context);
+
             _homeColonyLookup.DeserializeOwnedData(reader, context);
+
+            GameLog.Core.SaveLoad.DebugFormat("Step_3644: Deserializing _objects...");
+            GameLog.Core.SaveLoad.DebugFormat("Step_3647: Deserializing _homeColonyLookup...");
 
             // no big result
             //foreach (var item in _homeColonyLookup.Keys)
@@ -843,8 +859,10 @@ namespace Supremacy.Universe
             //    Console.WriteLine(_text);
             //}
 
-            GameLog.Core.SaveLoad.DebugFormat("Deserializing _objects...");
-            GameLog.Core.SaveLoad.DebugFormat("Deserializing _homeColonyLookup...");
+
         }
+
+        [NonSerialized]
+        private string _text;
     }
 }

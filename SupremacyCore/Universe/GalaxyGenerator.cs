@@ -486,7 +486,7 @@ namespace Supremacy.Universe
         public static StarSystemDescriptor GenerateHomeSystem(Civilization civ)
         {
 
-            _text = "GenerateHomeSystem for " + civ.Name;
+            _text = "Step_0532: GenerateHomeSystem for " + civ.Name;
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -502,7 +502,7 @@ namespace Supremacy.Universe
 
             GeneratePlanetsWithHomeworld(system, civ);
 
-            _text = "No HomeSystem defined - HomeSystemsGeneration will be done for " + civ.Name;
+            _text = "Step_0534: No HomeSystem defined - HomeSystemsGeneration will be done for " + civ.Name;
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -1256,7 +1256,7 @@ namespace Supremacy.Universe
 
         private static void GeneratePlanetsWithHomeworld(StarSystemDescriptor system, Civilization civ)
         {
-            _text = "GeneratePlanetsWithHomeworld for " + civ.Name;
+            _text = "Step_0536: GeneratePlanetsWithHomeworld for " + civ.Name;
             Console.WriteLine(_text);
             GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
 

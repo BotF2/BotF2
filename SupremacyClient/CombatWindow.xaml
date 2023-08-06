@@ -227,14 +227,16 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Foreground="LightYellow"
+                    <TextBlock x:Name="ShortName"
+                      Foreground="LightYellow"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                Margin="5,0,10,0"
                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                FontSize="16pt"
                                Text="{Binding Path=ShortName}" />
-                    <TextBlock Foreground="LightYellow"
+                    <TextBlock x:Name="TextTargetCiv1Status"
+                      Foreground="LightYellow"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Grid.Column="0"

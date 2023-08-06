@@ -786,7 +786,7 @@ namespace Supremacy.Client
 
             try
             {
-                Console.WriteLine("Step_0152: opening Error.txt (just in case an Error appears");
+                Console.WriteLine("Step_0152: opening Error.txt (just in case an Error appears)");
                 //var file = "Error.txt";
                 //StreamWriter errorFile = new StreamWriter(file);
 

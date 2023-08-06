@@ -152,7 +152,7 @@ namespace Supremacy.Orbitals
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
                 _text = "Step_8305: " + buildQueueItem.Project.Location
-                    + "buildQueueItem= " + buildQueueItem.Description + ", index " + count
+                    + " buildQueueItem= " + buildQueueItem.Description + ", index " + count
                     + ", TurnsRemaining " + buildQueueItem.TurnsRemaining
                     //+ " at " +  
                     + " at " + buildQueueItem.Project.ProductionCenter;
@@ -209,10 +209,10 @@ namespace Supremacy.Orbitals
             int afterCount = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
+                _text = "Step_8307: Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
-                GameLog.Client.ShipProductionDetails.DebugFormat("Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
+                GameLog.Client.ShipProductionDetails.DebugFormat("Step_8308: Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
                 afterCount++;
             }
         }
@@ -297,7 +297,7 @@ namespace Supremacy.Orbitals
                             + " done for " + _design
                             ;
                         Console.WriteLine(_text);
-                        GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
                     else
                     {
@@ -308,8 +308,8 @@ namespace Supremacy.Orbitals
                             +" > " + _percent
                             + " done for " + _design
                             ;
-                        Console.WriteLine(_text);
-                        GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //Console.WriteLine(_text);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
 
                 }
@@ -384,7 +384,7 @@ namespace Supremacy.Orbitals
                         + ";No Project for _Shipyard._buildslots" + newline/*+ item.Project.Design*/
 
                     ;
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 }
                 //else
@@ -431,7 +431,7 @@ namespace Supremacy.Orbitals
                             + " > Slot " + item.SlotID
                             + " Shipyard._buildslots - unsure whether project..."
                             ; //   ??
-                        Console.WriteLine(_text);
+                        //Console.WriteLine(_text);
                         //GameLog.Core.Stations.DebugFormat(_text);
                         _text = "";
                     }

@@ -9,6 +9,7 @@
 using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -25,13 +26,12 @@ namespace Supremacy.Scripting.Events
 
         private int _occurrenceChance = 200;
 
-
         [NonSerialized]
-#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
-        private List<BuildProject> _affectedProjects;
-#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
-
         private string _text;
+
+        //#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
+        private List<BuildProject> _affectedProjects;
+        //#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
 
 
         public AsteroidImpactEvent()
@@ -172,7 +172,15 @@ namespace Supremacy.Scripting.Events
                     target.RemoveOrbitalBatteries(removeOrbitalBatteries);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    civManager?.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target));
+                    //civManager?.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target));
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("ASTEROID_IMPACT_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("ASTEROID_IMPACT_DETAIL_TEXT")
+                        , "ScriptedEvents/AsteroidImpact.png", SitRepPriority.RedYellow));
+                    //    public override string SummaryText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_SUMMARY_TEXT"), Colony.Name, Colony.Location);
+                    //    public override string SitRepComment { get; set; }
+                    //    public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png";
 
                     GameContext.Current.Universe.UpdateSectors();
                     return;

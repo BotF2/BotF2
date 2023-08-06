@@ -1,23 +1,25 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
-
-using Microsoft.Practices.Unity;
-
+﻿using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
+using Supremacy.Buildings;
 using Supremacy.Client.Commands;
-using Supremacy.Client.Input;
-using Supremacy.Diplomacy;
-using Supremacy.Game;
-using Supremacy.Universe;
-using Supremacy.Client.Views.GalaxyScreen;
 using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
-using System.IO;
-using Supremacy.Resources;
-using Supremacy.Utility;
+using Supremacy.Client.Input;
+using Supremacy.Client.Views.GalaxyScreen;
+using Supremacy.Diplomacy;
 using Supremacy.Entities;
-using Obtics.Collections;
+using Supremacy.Game;
+using Supremacy.Orbitals;
+using Supremacy.Resources;
+using Supremacy.Universe;
+using Supremacy.Utility;
+using System;
+//using Obtics.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
 
 namespace Supremacy.Client.Views
 {
@@ -185,11 +187,19 @@ namespace Supremacy.Client.Views
             //{
             //    return;
             //}
+            var time = DateTime.Now;
+            string Year = time.Year.ToString(); Year = CheckDateString(Year);
+            string Month = time.Month.ToString(); Month = CheckDateString(Month);
+            string Day = time.Day.ToString(); Day = CheckDateString(Day);
+            string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
+            string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
+            string Second = time.Second.ToString(); Second = CheckDateString(Second);
+            string timeString = "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
 
             SectorMap map = _appContext.CurrentGame.Universe.Map;
 
-            string _text = "";
-            _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   " 
+            string _text = timeString + newline;
+            _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   "
                 + newline
                 + newline
                 + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline
@@ -217,7 +227,7 @@ namespace Supremacy.Client.Views
                     string type = ".";
                     if (map[x, y].System != null)
                     {
-                        type = map[x, y].System.StarType.ToString().Substring(0,1);
+                        type = map[x, y].System.StarType.ToString().Substring(0, 1);
                         if (map[x, y].System.StarType == StarType.BlackHole) type = "b";
                         if (map[x, y].System.StarType == StarType.NeutronStar) type = "n";
                         //if (map[x, y].System.StarType == StarType.Quasar) type = "Q";
@@ -232,9 +242,9 @@ namespace Supremacy.Client.Views
                 //Console.WriteLine(_text);
             }
 
-            _text += 
+            _text +=
                 newline + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline
-                + newline 
+                + newline
                 + "1st character:                                     2nd character: StarSystem" + newline
                 + "   0 = Federation                                     B = Blue star" + newline//" + newline
                 + "   1 = Terrans                                        O = Orange star" + newline//" + newline
@@ -266,51 +276,349 @@ namespace Supremacy.Client.Views
 
                 foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
                 {
-                    //string civ = GameContext.Current.CivilizationManagers[race.Key].ToString();
-                    //switch (civ)
-                    //{
-                    //    case "HUMANS":
-                    //        if (GameContext.Current.CivilizationManagers[race.EncyclopediaImage].ToString().Contains("HUMANS.png"))
-                    //            civ = "FEDERATION";
-                    //        else
-                    //            civ = "TERRANEMPIRE";
-                    //        break;
-                        
-                    //}
-                        //case "HUMANS":
-
-
-
-                    //if (GameContext.Current.CivilizationManagers[race.Key] != null)
-                    //    if (_raceKey == "HUMANS" &&
-                    //        GameContext.Current.CivilizationManagers[race.EncyclopediaImage].ToString().Contains("HUMANS.png"))
-                    //        _raceKey = "FEDERATION";
-                    //    else
-                    //        continue;
-
-                    //if (GameContext.Current.CivilizationManagers[race.Key] != null)
-                    //    if (_raceKey == "HUMANS" &&
-                    //        GameContext.Current.CivilizationManagers[race.EncyclopediaImage].ToString().Contains("Humans.png"))
-                    //        _raceKey = "FEDERATION";
-                    //    else
-                    //        continue;
-                    //loc = GameContext.Current.CivilizationManagers[civ]
                     _text += civManager.HomeColony.Location.X
                         + " ; " + civManager.HomeColony.Location.Y
                         + " ; " + civManager.Civilization.HomeSystemName
                         + " ; " + civManager.Civilization.HomeQuadrant + "-Quadrant"
                         + " ;" + civManager.Civilization
-                        + newline
-                        //+ " " + ci
+
+                        + newline + newline;
+                }
+
+                IEnumerable<Colony> colonies = GameContext.Current.Universe.Objects.OfType<Colony>();
+                foreach (Colony item in colonies)
+                {
+                    String _col =
+                        /*";Colony;" */
+                        /*"; " + */item.Location
+                        + ";" + item.Name
+                        + ";" + item.Owner
+                        + ";Colony;"
                         ;
-                    //_text += " " + GameContext.Current.CivilizationManagers[civ].HomeSystem.Location + newline;
+
+                    _text += newline
+                        + "Step_4361:"
+                        + "; " + item.Location
+                        + "; " + item.ObjectID
+                        + ";Colony"
+                        + ";" + item.Name
+                        + ";" + item.Owner
+                        + ";pop;" + item.Population
+                        + ";max;" + item.MaxPopulation
+
+
+                        + ";mor;" + item.Morale
+                        + ";FoodR;" + item.FoodReserves
+                        + ";facF;" + item.ActiveFoodFacilities + ";of;" + item.TotalFoodFacilities
+                        + ";facI;" + item.ActiveIndustryFacilities + ";of;" + item.TotalIndustryFacilities
+                        + ";facE;" + item.ActiveEnergyFacilities + ";of;" + item.TotalEnergyFacilities
+                        + ";facR;" + item.ActiveResearchFacilities + ";of;" + item.TotalResearchFacilities
+                        + ";facI;" + item.ActiveIntelligenceFacilities + ";of;" + item.TotalIntelligenceFacilities
+
+
+                        + ";since Turn;" + item.TurnCreated
+
+                                                    + newline;
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+
+                    ILookup<MapLocation, StarSystem> systemLocationLookup = GameContext.Current.Universe.Objects.OfType<StarSystem>().ToLookup(o => o.Location);
+
+
+                    //_text += newline;
+                    ILookup<MapLocation, Building> buildingLocationLookup = GameContext.Current.Universe.Objects.OfType<Building>().ToLookup(o => o.Location);
+                    foreach (Building building in buildingLocationLookup[item.Location])
+                    {
+                        _text += "Step_4366:; "
+                            + _col
+                            + "; Building"
+                            + "; " + building.ObjectID
+                            + "; " + building.Design
+                            + ";" + building.IsActive + "_for_Active"
+                            + "; since Turn;" + building.TurnCreated
+
+                            + newline;
+
+                        //Console.WriteLine(_text);
+
+                    }
+
+                    if (item.Shipyard != null)
+                    {
+                        foreach (var slot in item.Shipyard.BuildSlots)
+                        {
+                            try
+                            {
+                                //foreach (ShipyardBuildSlot slot in shipyard)
+                                //{
+                                string _design = "nothing";
+                                string _percent = "0 %";
+                                if (slot.Project != null && slot.Project.BuildDesign != null)
+                                {
+                                    _design = slot.Project.BuildDesign.ToString();
+                                    _percent = slot.Project.PercentComplete.ToString();
+                                }
+
+                                if (_percent != "0 %")
+                                {
+                                    _text += "Step_7603:; " + slot.Shipyard.Location
+                                        + " > Slot= " + slot.SlotID
+
+                                        + " "
+                                        + " > " + _percent
+                                        + " done for " + _design
+                                        + " at " + slot.Shipyard.Name
+                                        + newline;
+                                    //Console.WriteLine(_text);
+                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                }
+                                else
+                                {
+                                    _text += "Step_7607:; " + slot.Shipyard.Location
+                                        + " > Slot= " + slot.SlotID  // crashes with a StackOverFlow
+                                                                     //+ " at " + slot.Shipyard.Name
+                                        + " "
+                                        + " > " + _percent
+                                        + " done for " + _design
+                                        + newline;
+                                    //Console.WriteLine(_text);
+                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                }
+
+                                //}
+                            }
+                            catch
+                            {
+                                _text += "Step_7609: Serialize failed"
+                                     //+ slot.Project.Location
+                                     //+ " > Slot= " + slot.SlotID
+                                     //+ " at " + slot.Shipyard.Name
+                                     //+ " " + 
+                                     //+ " > " + _percent
+                                     //+ " done for " + _design
+                                     + newline;
+                                //Console.WriteLine(_text);
+                                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                            };
+                        }
+                    }
+
+
+                }
+
+                _text += newline;
+
+
+
+                IEnumerable<Ship> ships = GameContext.Current.Universe.Objects.OfType<Ship>();
+                foreach (Ship item in ships)
+                {
+                    _text += "Step_4381:"
+                            + "; " + item.Location
+                            + "; Ship"
+
+                            + "; " + item.Owner
+                            + "; " + item.ObjectID
+                            + "; " + item.Design
+                            + "; " + item.Name
+
+                            + "; Crew=;" + item.Crew
+                            + "; Exp=;" + item.ExperiencePercent
+                            + "; Hull=;" + item.HullStrength
+                            + "; Sh=;" + item.ShieldStrength
+                            + "; Cloak=;" + item.CloakStrength
+                            + "; Camo=;" + item.CamouflagedStrength
+                            //+ "; Camo=;" + item.
+                            + "; Fuel=;" + item.FuelReserve
+
+                            + "; since Turn;" + item.TurnCreated
+
+                                                        + newline;
+                    //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                }
+
+
+                _text += newline;
+
+                IEnumerable<Station> stations = GameContext.Current.Universe.Objects.OfType<Station>();
+                foreach (Station item in stations)
+                {
+                    _text += "Step_4391:"
+                            + "; " + item.Location
+                            + "; Station"
+
+                            + "; " + item.Owner
+                            + "; " + item.ObjectID
+                            + "; " + item.Design
+                            + "; " + item.Name
+
+                            + "; Crew=;" + item.Crew
+                            + "; Exp=;" + item.ExperiencePercent
+                            + "; Hull=;" + item.HullStrength
+                            + "; Sh=;" + item.ShieldStrength
+                            //+ "; Cloak=;" + item.CloakStrength
+                            //+ "; Camo=;" + item.CamouflagedStrength
+                            //+ "; Camo=;" + item.
+                            //+ "; Fuel=;" + item.FuelReserve
+
+                            + "; since Turn;" + item.TurnCreated
+
+                                                        + newline;
+                }
+
+                _text += newline;
+
+                IEnumerable<Shipyard> shipyards = GameContext.Current.Universe.Objects.OfType<Shipyard>();
+                foreach (Shipyard item in shipyards)
+                {
+                    _text += "Step_4391:"
+                            + "; " + item.Location
+                            + "; Shipyard"
+
+                            + "; " + item.Owner
+                            + "; " + item.ObjectID
+                            + "; " + item.Design
+                            + "; " + item.Name
+
+                            //+ "; Crew=;" + item.
+                            //+ "; Exp=;" + item.ExperiencePercent
+                            //+ "; Hull=;" + item.HullStrength
+                            //+ "; Sh=;" + item.ShieldStrength
+                            //+ "; Cloak=;" + item.CloakStrength
+                            //+ "; Camo=;" + item.CamouflagedStrength
+                            //+ "; Camo=;" + item.
+                            //+ "; Fuel=;" + item.FuelReserve
+
+                            + "; since Turn;" + item.TurnCreated
+
+                                                        + newline;
+                }
+
+                _text += newline;
+
+                var races = GameContext.Current.Races.ToList();
+                foreach (var item in races)
+                {
+                    _text += "Step_4396:"
+                            //+ "; " + item.
+                            + "; Race"
+
+                            //+ "; " + item.Owner
+                            //+ "; " + item.ObjectID
+                            //+ "; " + item.Design
+                            + "; " + item.Key
+
+                                                        + "; HomePlanet=;" + item.HomePlanetType
+                                                        + "; Eff=;" + item.CombatEffectiveness
+                                                        //+ "; Hull=;" + item.HullStrength
+                                                        //+ "; Sh=;" + item.ShieldStrength
+                                                        //+ "; Cloak=;" + item.CloakStrength
+                                                        //+ "; Camo=;" + item.CamouflagedStrength
+                                                        //+ "; Camo=;" + item.
+                                                        //+ "; Fuel=;" + item.FuelReserve
+
+                                                        //+ "; since Turn;" + item.TurnCreated
+
+                                                        + newline;
+                }
+
+                //var events = null;
+                if (GameContext.Current.ScriptedEvents != null)
+                {
+                    var events = GameContext.Current.ScriptedEvents.ToList();
+                    foreach (var item in events)
+                    {
+                        _text += "Step_4356:"
+                                //+ "; " + item.
+                                + "; Events"
+
+                                //+ "; " + item.Owner
+                                //+ "; " + item.ObjectID
+                                //+ "; " + item.Design
+                                + "; " + item.EventID
+
+                                                            + "; Last=;" + item.LastExecution
+                                                            //+ "; Eff=;" + item.CombatEffectiveness
+                                                            //+ "; Hull=;" + item.HullStrength
+                                                            //+ "; Sh=;" + item.ShieldStrength
+                                                            //+ "; Cloak=;" + item.CloakStrength
+                                                            //+ "; Camo=;" + item.CamouflagedStrength
+                                                            //+ "; Camo=;" + item.
+                                                            //+ "; Fuel=;" + item.FuelReserve
+
+                                                            //+ "; since Turn;" + item.TurnCreated
+
+                                                            + newline;
+                    }
+                }
+
+                _text += newline;
+
+                var civs = GameContext.Current.Civilizations.ToList();
+                foreach (Civilization item in civs)
+                {
+                    _text += "Step_4346:"
+                            //+ "; " + item.Location
+                            + "; Civ"
+                            + "; " + item.Name
+                            + "; " + item.CivilizationType
+                            + "; " + item.CivID
+                            //+ "; " + item.Design
+
+
+                            + "; Race=;" + item.Race.Name
+                            + "; " + item.HomeQuadrant
+                            + "; " + item.HomeSystemName
+                            + "; " + item.Color
+                            + "; " + item.Traits
+                                                        + "; Mor=;" + item.MoraleDriftRate
+                                                        //+ "; Camo=;" + item.
+                                                        //+ "; Fuel=;" + item.FuelReserve
+
+                                                        //+ "; since Turn;" + item.TurnCreated
+
+                                                        + newline;
+                }
+
+                _text += newline;
+
+                var civMans = GameContext.Current.CivilizationManagers.ToList();
+                foreach (CivilizationManager item in civMans)
+                {
+                    _text += "Step_4348:"
+                            //+ "; " + item.Location
+                            + "; CivMan"
+                            + "; " + item.Civilization
+                            + "; ID=" + item.CivilizationID
+
+
+                                                        + newline;
+                }
+
+                _text += newline;
+
+                //var civMans = GameContext.Current.ScriptedEvents;
+                if (GameContext.Current.ScriptedEvents != null) {
+                    foreach (var item in GameContext.Current.ScriptedEvents)
+                    {
+                        _text += "Step_4349:"
+                                //+ "; " + item.Location
+                                + "; CivMan"
+                                + "; " + item.EventID
+                                                            //+ "; " + item.Civilization
+
+                                                            + newline;
+                    }
                 }
 
             }
-            
+
             Console.WriteLine(_text);   // Output here as well
 
-            string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"),"MapData.txt");
+            string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "MapData.txt");
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
                 StreamWriter streamWriter = new StreamWriter(file);
@@ -319,6 +627,14 @@ namespace Supremacy.Client.Views
                 _text = "output of MapData done to " + file;
                 Console.WriteLine(_text);
             }
+        }
+
+        private static string CheckDateString(string _string)
+        {
+            if (_string.Length == 1)
+                _string = "0" + _string;
+
+            return _string;
         }
 
         private void ExecuteCheatMenuCommand(object t)

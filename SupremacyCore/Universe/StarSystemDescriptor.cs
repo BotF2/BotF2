@@ -58,6 +58,7 @@ namespace Supremacy.Universe
         private static string _startingResearchPF;
         private static string _startingIntelligencePF;
         private static string file;
+        //private static string _fileText;
 
         //private static int _colonyCount; private static string _colonyText;
 
@@ -113,6 +114,11 @@ namespace Supremacy.Universe
             {
 
                 bool HomeSystemsXMLOutput = false;
+                if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug)
+                {
+                    HomeSystemsXMLOutput = true;
+                }
+
                 if (HomeSystemsXMLOutput) // no output if no write acess
                 {
                     // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
@@ -216,6 +222,7 @@ namespace Supremacy.Universe
                         separator;
 
                     streamWriter.WriteLine(strHeader);
+                    //_fileText = strHeader;
                 }
                     // End of head line
 

@@ -158,8 +158,8 @@ namespace Supremacy.Game
 
     public enum EmpireModifierRecurringBalancing : byte
     {
-        No = 0,
-        Yes
+        Run = 0,  // used for DoChecks and more
+        Debug
     }
 
     public enum GamePace : byte
@@ -221,7 +221,8 @@ namespace Supremacy.Game
             BorgModifier = EmpireModifier.Standard;
             TerranEmpireModifier = EmpireModifier.Standard;
 
-            EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No;
+            //EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No;
+            EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.Run;
             GamePace = GamePace.Normal;
             TurnTimerEnum = TurnTimerEnum.Unlimited;
         }

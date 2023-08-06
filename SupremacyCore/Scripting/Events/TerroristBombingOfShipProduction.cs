@@ -7,6 +7,7 @@
 
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -24,6 +25,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public TerroristBombingOfShipProductionEvent()
         {
@@ -111,8 +113,18 @@ namespace Supremacy.Scripting.Events
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
 
+                        //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                        //civManager?.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
                         CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                        civManager?.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
+
+                        _text = target.Location + " " + target.Name + " > ";
+                        civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                            , _text + ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT")
+                            , _text + ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT")
+                            , "ScriptedEvents/TerroristBombingOfShipProduction.png", SitRepPriority.RedYellow));
+
+                        //                        public override string DetailText => string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                        //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/TerroristBombingOfShipProduction.png";
 
                     }
 

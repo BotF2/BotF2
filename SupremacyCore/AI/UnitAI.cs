@@ -47,7 +47,7 @@ namespace Supremacy.AI
             if (civ.CivID < 999) // unit AI only for empires >> 999 is 'for all', below '7' is just Empires
             {
                 _text = "Step_3100: ##########################################   UnitAI for Empires or as well for minors...";
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
 
                 List<Ship> allAttackWarShips = new List<Ship>();
                 List<Fleet> allCivFleets = GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList();

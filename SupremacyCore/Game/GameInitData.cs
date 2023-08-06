@@ -239,7 +239,7 @@ namespace Supremacy.Game
             {
                 _localPlayerEmpireID = value;
                 OnPropertyChanged("LocalPlayerEmpireID");
-                GameLog.Core.General.InfoFormat("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
+                GameLog.Core.General.InfoFormat("Step_0287: LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
                 _text += value + ";;LocalPlayerEmpireID;" + newline;
             }
         }

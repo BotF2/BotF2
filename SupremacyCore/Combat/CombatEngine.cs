@@ -724,7 +724,7 @@ namespace Supremacy.Combat
                     newfleet.Name = "Assimilated Assets";
                     GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
-                    _text = ship.Location 
+                    _text = "Step_3021: " + ship.Location 
                         + " > Ship assimilated: " + ship.ObjectID + " * " + ship.Name + " * ( " + ship.Design + " )";
 
                     // Detailed_Log(_text);
@@ -769,7 +769,7 @@ namespace Supremacy.Combat
                         foreach (CombatUnit shipStats in assets.EscapedShips)
                         {
                             ((Ship)shipStats.Source).Fleet.Location = destination.Location;
-                            _text = _sectorString + "PerformRetreat: retreating "
+                            _text = "Step_3026: " + _sectorString + "PerformRetreat: retreating "
                                 + ((Ship)shipStats.Source).Fleet.ObjectID + " " + ((Ship)shipStats.Source).Fleet.Name
                                 + " to " + destination.Location.ToString();
                             Console.WriteLine(_text);
@@ -780,7 +780,7 @@ namespace Supremacy.Combat
             }
             catch (Exception e)
             {
-                _text = _sectorString + "##### Problem at PerformRetreat" + Environment.NewLine + e;
+                _text = "Step_3027: " + _sectorString + "##### Problem at PerformRetreat" + Environment.NewLine + e;
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 //((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString(), e);
@@ -859,7 +859,7 @@ namespace Supremacy.Combat
         {
             if (_targetOneByCiv.Keys.Contains(source.OwnerID))
             {
-                _text = _sectorString + "GetTargetOne = " + _targetOneByCiv[source.OwnerID].GetTargetOne(source);//if (targetCiv == null)  
+                _text = "Step_3021: " + _sectorString + "GetTargetOne = " + _targetOneByCiv[source.OwnerID].GetTargetOne(source);//if (targetCiv == null)  
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 //if(source !=null)
@@ -874,7 +874,7 @@ namespace Supremacy.Combat
         {
             if (_targetTwoByCiv.Keys.Contains(source.OwnerID))
             {
-                _text = _sectorString + "GetTargetTwo = " + _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
+                _text = "Step_3022: " + _sectorString + "GetTargetTwo = " + _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 return _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);

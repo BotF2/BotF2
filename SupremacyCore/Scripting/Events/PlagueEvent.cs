@@ -6,6 +6,7 @@
 // All other rights reserved.
 
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -19,6 +20,10 @@ namespace Supremacy.Scripting.Events
     {
 
         private int _occurrenceChance = 200;
+
+        [NonSerialized]
+        private string _text;
+
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
@@ -81,8 +86,19 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
                     }
 
+                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    //civManager?.SitRepEntries.Add(new PlagueSitRepEntry(civManager.Civilization, target));
+
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    civManager?.SitRepEntries.Add(new PlagueSitRepEntry(civManager.Civilization, target));
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("PLAGUE_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("PLAGUE_DETAIL_TEXT")
+                        , "ScriptedEvents/Plague.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("PLAGUE_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Plague.png";
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
                     _ = target.Population.AdjustCurrent(-(population / 3));

@@ -50,7 +50,7 @@ namespace Supremacy.AI
 
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(civ.CivID))
             {
-                _text = "Step_1100: Handling colony " + colony.Location + blank + colony.Name;
+                _text = "Step_1100: " + colony.Location + blank + colony.Name + " > Handling colony";
                 Console.WriteLine(_text);
 
                 HandleEnergyProduction(colony);

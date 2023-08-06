@@ -410,8 +410,8 @@ namespace Supremacy.Collections
 
         protected virtual void OnKeyCollision(TKey key, TValue item)
         {
-            _text = "OnKeyCollision: key= " + key.ToString()
-                    + "item= " + item.ToString();
+            _text = "Step_0496: OnKeyCollision: key= " + key.ToString()
+                    + ", item= " + item.ToString();
             Console.WriteLine(_text);
             GameLog.Core.General.ErrorFormat(_text);
             throw new ArgumentException("Collection already contains an item with the specified key.");

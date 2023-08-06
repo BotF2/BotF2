@@ -10,9 +10,10 @@
 using log4net;
 using log4net.Config;
 using log4net.Core;
+using Supremacy.Game;
 using System;
 using System.IO;
-
+using System.Windows.Automation;
 
 namespace Supremacy.Utility
 {
@@ -255,9 +256,12 @@ namespace Supremacy.Utility
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Error;
             //works 
-            string _text = "Step_0137: Log.txt: Trace is set to ERROR only for " + repository;
-            GameLog.Client.GeneralDetails.DebugFormat(_text);
-            Console.WriteLine(_text);
+            //if (ClientSettings.) // doChecks
+            //{
+            //    string _text = "Step_0137: Log.txt: Trace is set to ERROR only for " + repository;
+            //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+            //    Console.WriteLine(_text);
+            //}
         }
     }
 }

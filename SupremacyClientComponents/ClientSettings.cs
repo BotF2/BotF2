@@ -3082,7 +3082,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_SetAll_without_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: 'Set All w/o Details' for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("#### Log.Txt: 'Set All w/o Details' for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3199,7 +3199,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_SetAll_and_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("    #### Log.Txt: 'SetAll_and_Details'  for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("    #### Log.Txt: 'SetAll_and_Details'  for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3315,7 +3315,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_ClearAllProperty, value);
 
-                GameLog.Client.General.InfoFormat("              #### Log.Txt: 'ClearAll'            for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("              #### Log.Txt: 'ClearAll'            for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3442,7 +3442,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_ClearAllDetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("       #### Log.Txt: 'ClearAllDetails'     for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("       #### Log.Txt: 'ClearAllDetails'     for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3680,7 +3680,7 @@ namespace Supremacy.Client
                 SetValue(Traces_SetSelection2Property, value);
 
 
-                GameLog.Client.General.InfoFormat("         #### Log.Txt: 'Selection 2'         for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("         #### Log.Txt: 'Selection 2'         for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {

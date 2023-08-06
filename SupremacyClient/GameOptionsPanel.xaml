@@ -437,6 +437,15 @@
             </ComboBox.ToolTip>
         </ComboBox>
 
+      <ComboBox x:Name="lstModifierRecurringBalancing"
+        Grid.Column="0"
+        Grid.Row="9"
+        SelectedItem="{Binding Path=EmpireModifierRecurringBalancing, Mode=TwoWay}"
+        Margin="20,2,0,0"
+        IsEditable="False"
+        IsReadOnly="True"
+        VerticalAlignment="Center" />
+
 
         <!--Row 8 is GalaxyImage (Preview Image)"-->
         <ComboBox x:Name="lstGalaxyShape"
@@ -498,6 +507,8 @@
                 </ToolTip>
             </ComboBox.ToolTip>
         </ComboBox>
+      
+      
         <ComboBox x:Name="lstTechLevel"
               Grid.Column="1"
               Grid.Row="16"
@@ -589,8 +600,9 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center" />
 
-        <ComboBox x:Name="lstModifierRecurringBalancing"
-              Grid.Column="2"
+
+      <ComboBox x:Name="lstModifierRecurringBalancing"
+              Grid.Column="1"
               Grid.Row="11"
               SelectedItem="{Binding Path=EmpireModifierRecurringBalancing, Mode=TwoWay}"
               Margin="7,2,0,0"

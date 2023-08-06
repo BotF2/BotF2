@@ -351,18 +351,22 @@ namespace Supremacy.Text
 
         protected override void OnKeyCollision(object key, LocalizedString item)
         {
+            string _text;
             if (key == null)
             {
-                GameLog.Client.GameData.WarnFormat(
-                    "Localized text group '{0}' has more than one default entry defined." +
-                    FormatGroupKey());
+                _text = "WARN_0123: Localized text group ' "+ FormatGroupKey() + " ' has more than one default entry defined.";
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.WarnFormat(_text);
             }
             else
             {
-                GameLog.Client.GameData.WarnFormat(
-                    "Localized text group '{0}' already contains entry '{1}'.",
-                    FormatGroupKey(),
-                    key);
+                //GameLog.Client.GameData.WarnFormat(
+                //    "WARN_0123:Localized text group '{0}' already contains entry '{1}'.",
+                //    FormatGroupKey(),
+                //    key);
+                _text = "WARN_0124: Localized text group ' "+ FormatGroupKey() + " ' already contains entry ' " + key + " '";
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.WarnFormat(_text);
             }
         }
 

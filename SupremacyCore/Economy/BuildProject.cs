@@ -634,7 +634,7 @@ namespace Supremacy.Economy
                 if (timeEstimate == 2)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    _text = "Turn " + GameContext.Current.TurnNumber
+                    _text = "Step_4282: Turn " + GameContext.Current.TurnNumber
                         + ": " + Location
                         + ": Estimated One Turn... for " + BuildDesign
                         ;
@@ -648,7 +648,7 @@ namespace Supremacy.Economy
 
                     if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
                     {
-                        _text = "Turn " + GameContext.Current.TurnNumber
+                        _text = "Step_4284: Turn " + GameContext.Current.TurnNumber
                             + ": Estimated One Turn: resource= " + resource.ToString()
                             + ", delta/missing= " + delta.ToString()
                             + " for " + BuildDesign.Description

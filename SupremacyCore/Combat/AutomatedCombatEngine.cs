@@ -608,7 +608,7 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 while (true) // Attacking Ship looks for target(s) - all c# collections can be looped
                 {
-                    _text = ("-----------------------");
+                    _text = ("Step_3075: -----------------------");
                     Console.WriteLine(_text);
                     GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2445,7 +2445,7 @@ namespace Supremacy.Combat
                 {
                     if (ship.Item1 != null)
                     {
-                        _text = ("Step_3008: " + _sectorString + " > END retreated ship = " + ship.Item1.Name + blank + ship.Item1.Description);
+                        _text = (_sectorString + " > END retreated ship = " + ship.Item1.Name + blank + ship.Item1.Description);
                         Console.WriteLine("Step_6284: " + _text);
                         GameLog.Core.CombatDetails.DebugFormat("Step_6284: " + _text);
 

@@ -233,9 +233,9 @@
                   <TabItem Header="Specifications">
                     <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}">
                         <!--2023-06-04 > next makes trouble-->
-                      <!--<scc:TechObjectDesignViewModel Design="{Binding Path=BuildingDesign}"
+                      <scc:TechObjectDesignViewModel Design="{Binding Path=BuildingDesign}"
                                                      Location="{Binding Path=Location}"
-                                                     Civilization="{Binding Path=Owner}" />-->
+                                                     Civilization="{Binding Path=Owner}" />
                     </ContentControl>
                   </TabItem>
                   <TabItem Header="Description">
@@ -259,9 +259,9 @@
             </scc:InfoCardService.InfoCardContentTemplate>
               
               <!--2023-06-04 > less errors ?  -->
-            <!--<scc:InfoCardService.InfoCardSubject>
+            <scc:InfoCardService.InfoCardSubject>
               <scc:UniverseObjectInfoCardSubject Target="{Binding Mode=OneTime}" />
-            </scc:InfoCardService.InfoCardSubject>-->
+            </scc:InfoCardService.InfoCardSubject>
               
             <Button x:Name="ActivateButton"
                     Command="{Binding Path=DataContext.ToggleBuildingIsActiveCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"

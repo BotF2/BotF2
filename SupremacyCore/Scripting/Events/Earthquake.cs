@@ -7,6 +7,7 @@
 
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -24,6 +25,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public EarthquakeEvent()
         {
@@ -139,8 +141,18 @@ namespace Supremacy.Scripting.Events
                     }
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
+                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    //civManager?.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    civManager?.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("EARTHQUAKE_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("EARTHQUAKE_DETAIL_TEXT")
+                        , "ScriptedEvents/Earthquake.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("EARTHQUAKE_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Earthquake.png";
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

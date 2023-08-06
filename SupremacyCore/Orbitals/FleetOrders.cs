@@ -35,6 +35,7 @@ namespace Supremacy.Orbitals
         public static readonly EngageOrder EngageOrder;
         public static readonly AssaultSystemOrder AssaultSystemOrder;
         public static readonly AvoidOrder AvoidOrder;
+        public static readonly ScrapShipOrder ScrapShipOrder;
         public static readonly IdleOrder IdleOrder;
         public static readonly DefendOrder DefendOrder;
         public static readonly StrandedOrder StrandedOrder;
@@ -64,6 +65,7 @@ namespace Supremacy.Orbitals
             EngageOrder = new EngageOrder();
             AssaultSystemOrder = new AssaultSystemOrder();
             AvoidOrder = new AvoidOrder();
+            ScrapShipOrder = new ScrapShipOrder();
             IdleOrder = new IdleOrder();
             DefendOrder = new DefendOrder();
             StrandedOrder = new StrandedOrder();
@@ -108,6 +110,8 @@ namespace Supremacy.Orbitals
                           RedeployNoneOrder,
                           RedeploySameOrder,
                           RedeployAllOrder,
+
+                          ScrapShipOrder,
 
 
                           //RaidOrder,
@@ -374,8 +378,8 @@ namespace Supremacy.Orbitals
             int howMany = 0;
             foreach (var item in fleetsSameType)
             {
-                if (item.Order/*.OrderName*/ == FleetOrders.RedeploySameOrder/*.OrderName*/ 
-                    || item.Order == FleetOrders.RedeployAllOrder 
+                if (item.Order/*.OrderName*/ == FleetOrders.RedeploySameOrder/*.OrderName*/
+                    || item.Order == FleetOrders.RedeployAllOrder
                     || item.Order == FleetOrders.RedeployNoneOrder)
                     howMany += 1;
             }
@@ -659,8 +663,8 @@ namespace Supremacy.Orbitals
             civManager.MapData.SetScanned(colony.Location, true, 1);
             civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
 
-            _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
-            _detailText = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
+            _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_HEADER"), colony.Name, colony.Location);
+            _detailText = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_DETAIL"), colony.Name, colony.Location);
             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, _detailText, "GeneralEvents/NewColonyEstablished.png", SitRepPriority.Blue));
             //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
@@ -1301,6 +1305,164 @@ namespace Supremacy.Orbitals
 
     #endregion
 
+    #region ScrapShip // 2023-07-29
+
+    [Serializable]
+    // Diplomatic mission ... by sending a diplomatic ship, treaties are easier to make in DiplomaticScreen
+    // positive: ...increasing Regard + Trust
+    // negative: ...exit membership from foreign empire
+    // positive to your systems, colonies: increasing morale earth first
+    public sealed class ScrapShipOrder : FleetOrder
+    {
+        private readonly bool _isComplete;
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_SCRAP_SHIP");
+
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_SCRAP_SHIP");
+
+        public override FleetOrder Create()
+        {
+            return new ScrapShipOrder();
+        }
+
+        public override bool IsComplete => _isComplete;
+
+        public override bool IsCancelledOnRouteChange => true;
+
+        public override bool IsRouteCancelledOnAssign => true;
+
+        public override bool WillEngageHostiles => false;
+
+        public ScrapShipOrder()
+        {
+            _isComplete = false;
+        }
+
+        //private Ship FindBestScrapShipShip()
+        //{
+        //    Ship bestShip = null;
+        //    foreach (Ship ship in Fleet.Ships)
+        //    {
+        //        if (ship.ShipType == ShipType.Diplomatic)
+        //        {
+        //            if ((bestShip == null)
+        //                || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
+        //            {
+        //                bestShip = ship;
+        //            }
+        //        }
+        //    }
+        //    return bestShip;
+        //}
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            if (!base.IsValidOrder(fleet))
+            {
+                return false;
+            }
+
+            if (fleet.Sector.System == null && fleet.Sector.System.Name != fleet.Owner.HomeSystemName)
+            {
+                return false;
+            }
+
+            //if (!fleet.Sector.System.HasColony)
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Diplomatic))
+            //{
+            //    return false;
+            //}
+
+            //if (fleet.Sector.System.Owner.Key == "BORG")
+            //{
+            //    return false;
+            //}
+
+            return true;
+        }
+
+        protected internal override void OnTurnBeginning()
+        {
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
+            base.OnTurnBeginning();
+            if (_isComplete)
+            {
+                return;
+            }
+            _text = Fleet.Location
+                + " > " + Fleet.ObjectID
+                + ": * " + Fleet.Name
+                + " * ( " + Fleet.ClassName
+                + " ) > " + ResourceManager.GetString("SCRAPPED")
+                ;
+
+            civManager.SitRepEntries.Add(new ReportEntry_CoS(
+                    Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+
+            Fleet.Destroy();
+            //foreach (Ship ship in this.Fleet.Ships)
+            //{
+            //    //Ship _ScrapShip = fleet;
+            //    if (ship == null)
+            //    {
+            //        return;
+            //    }
+            //    Destr;
+            //}
+
+            //CivilizationManager ScrapShipdCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
+            //CivilizationManager civ = GameContext.Current.CivilizationManagers[Fleet.Owner];
+
+            // plan is: 
+            // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
+            // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Data\DiplomacyTables.txt Line 1 RegardLevels
+
+            // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
+            //if (Fleet.Sector.System.Owner == Fleet.Owner)
+            //{
+            //    GameLog.Core.Diplomacy.DebugFormat("{0} is influencing their colony at {1}",
+            //        Fleet.Owner, Fleet.Sector.System.Name);
+            //    if (Fleet.Sector.System.Colony.Morale.CurrentValue < 95)
+            //    {
+            //        _ = Fleet.Sector.System.Colony.Morale.AdjustCurrent(+3);
+            //        Fleet.Sector.System.Colony.Morale.UpdateAndReset();
+            //        GameLog.Core.Diplomacy.DebugFormat("{0} successfully increased the morale at {1}",
+            //            ScrapShiprCiv, Fleet.Sector.System.Name);
+            //    }
+            //    return;
+            //}
+            //// part 2: to AI race
+            //if (!Fleet.Sector.System.Owner.IsHuman)
+            //{
+            //    Diplomat diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
+            //    ForeignPower foreignPower = diplomat.GetForeignPower(Fleet.Owner);
+            //    DiplomacyHelper.ApplyRegardChange(ScrapShiprCiv.Civilization, ScrapShipdCiv.Civilization, +55);
+            //    //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
+            //    DiplomacyHelper.ApplyTrustChange(ScrapShiprCiv.Civilization, ScrapShipdCiv.Civilization, +50);
+            //    GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to ScrapShip the {1} at {2} regard ={3} trust ={4}",
+            //           ScrapShiprCiv, ScrapShipdCiv, Fleet.Sector.System,
+            //           foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
+            //}
+        }
+
+        protected internal override void OnOrderAssigned()
+        {
+            base.OnOrderAssigned();
+            if (!Fleet.Route.IsEmpty)
+            {
+                Fleet.Route = TravelRoute.Empty;
+            }
+        }
+
+    }
+
+    #endregion ScrapShip
+
     #region InfluenceOrder
 
     [Serializable]
@@ -1724,31 +1886,15 @@ namespace Supremacy.Orbitals
     public sealed class WormholeOrder : FleetOrder
     {
         private MapLocation _startingLocation;
+        private string _text;
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE");
-
-        public override string Status => string.Format(
-                    ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"),
-                    Fleet);
-
-        public override string DisplayText => string.Format(
-                    ResourceManager.GetString("ORDER_ENTER_WORMHOLE"),
-                    Status);
-
+        public override string Status => string.Format(ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"), Fleet);
+        public override string DisplayText => string.Format(ResourceManager.GetString("ORDER_ENTER_WORMHOLE"), Status);
         public override bool WillEngageHostiles => false;
-
         public override bool IsComplete => Fleet.Location != _startingLocation;
-
-        public override FleetOrder Create()
-        {
-            return new WormholeOrder();
-        }
-
-        public override bool IsTargetRequired(Fleet fleet)
-        {
-            return false;
-        }
-
+        public override FleetOrder Create() { return new WormholeOrder(); }
+        public override bool IsTargetRequired(Fleet fleet) { return false; }
         protected internal override void OnOrderAssigned()
         {
             base.OnOrderAssigned();
@@ -1758,29 +1904,48 @@ namespace Supremacy.Orbitals
             }
         }
 
-
         protected internal override void OnTurnEnding()
         {
 
             if (Fleet != null)
-            {
+            {                    
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+
                 //Wormhole leads nowhere so destroy the fleet
                 if (Fleet.Sector.System.WormholeDestination == null)
                 {
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
-                    GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
-                    civManager.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
+                    _text = Fleet.Location
+                        + " > " + Fleet.ObjectID
+                        + " > " + Fleet.Name
+                        + " > " + Fleet.ClassName
+                        + " > " + ResourceManager.GetString("DESTROYED_BY_WORMHOLE")
+
+                        ;
+                    Console.WriteLine(_text);
+                    civManager.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                    //GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
+                    //civManager.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
+
+
                     Fleet.Destroy();
                 }
                 else
                 {
                     Fleet.Location = (MapLocation)Fleet.Sector.System.WormholeDestination;
-                    GameLog.Core.General.DebugFormat("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
+                                        
+                    _text = Fleet.Location
+                        + " > " + Fleet.ObjectID
+                        + " > " + Fleet.Name
+                        + " > " + Fleet.ClassName
+                        + " > " + ResourceManager.GetString("MOVED_BY_WORMHOLE")
+                        //+ " > " + ResourceManager.GetString("MOVED_BY_WORMHOLE")
 
-                    if (IsComplete)
-                    {
-                        Fleet.SetOrder(Fleet.GetDefaultOrder());
-                    }
+                        ;
+                    Console.WriteLine(_text);
+                    civManager.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                    //GameLog.Core.General.DebugFormat("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
+
+                    if (IsComplete) { Fleet.SetOrder(Fleet.GetDefaultOrder()); }
                 }
             }
         }
@@ -2082,7 +2247,7 @@ namespace Supremacy.Orbitals
             StationBuildProject project = _buildProject;
 
             if (project != null)
-            { 
+            {
                 _text = "Step_8380: " + project.Location + "> project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
                 Console.WriteLine(_text);
                 //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
@@ -2148,12 +2313,12 @@ namespace Supremacy.Orbitals
                 _ = GameContext.Current.Universe.Destroy(destroyedShip);
             }
 
-    //        _text = "Step_8395: " + project.Location
-    //+ " > project: Builder = " + project.Builder
-    //+ ", BuildDesign = " + project.BuildDesign
-    //+ ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
-    ////+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
-    //;
+            //        _text = "Step_8395: " + project.Location
+            //+ " > project: Builder = " + project.Builder
+            //+ ", BuildDesign = " + project.BuildDesign
+            //+ ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
+            ////+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
+            //;
             //Console.WriteLine(_text);
             GameLog.Core.Stations.DebugFormat("Destroyed = {0}", destroyedShip);
         }

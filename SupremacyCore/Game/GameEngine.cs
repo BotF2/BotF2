@@ -657,7 +657,7 @@ namespace Supremacy.Game
                     + " > " + fleet.Owner.Name
                     + " > " + fleet.ObjectID
                     + " " + fleet.Name
-                    + _singleShipDesign
+                    + " " + _singleShipDesign
                     + " at " + fleet.Location
 
                     + ", Type " + fleet.UnitAIType
@@ -1102,7 +1102,7 @@ namespace Supremacy.Game
                         new ReportEntry_ShowDiplo(civ2, _text, "", "", SitRepPriority.BlueDark));
 
                     _text = "Step_6548: " + _text;
-                    Console.WriteLine("Turn " + GameContext.Current.TurnNumber + ";SR for " + civ2.Name + ":; " + _text);
+                    Console.WriteLine(_text + "; Turn " + GameContext.Current.TurnNumber + ";SR for " + civ2.Name);
                 }
             }
 
@@ -1545,12 +1545,12 @@ namespace Supremacy.Game
                             _ = invasionLocations.Add(fleet.Location);
                         }
                     }
-                    else
-                    {
-                        _text = "Step_8006: No Invasion available due to no system at " + fleet.Location + blank + fleet.Name;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.SystemAssault.InfoFormat(_text);
-                    }
+                    //else
+                    //{
+                    //    _text = "Step_8006: No Invasion available due to no system at " + fleet.Location + blank + fleet.Name;
+                    //    Console.WriteLine(_text);
+                    //    //GameLog.Core.SystemAssault.InfoFormat(_text);
+                    //}
                 }
             }
 
@@ -1643,7 +1643,7 @@ namespace Supremacy.Game
                         {
                             popChange = -(int)Math.Floor(0.1 * Math.Sqrt(Math.Abs(colony.Population.CurrentValue * foodDeficit)));
                             _text = string.Format(ResourceManager.GetString("SITREP_STARVATION"), colony.Name, colony.Location);
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Red));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
                             //civManager.SitRepEntries.Add(new StarvationSitRepEntry(civ, colony));
                         }
                         else
@@ -1655,7 +1655,7 @@ namespace Supremacy.Game
                         if (growthRate < 0)
                         {
                             _text = string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), colony.Name, colony.Location);
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Red));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
                             //civManager.SitRepEntries.Add(new PopulationDyingSitRepEntry(civ, colony));
                         }
 
@@ -1674,7 +1674,7 @@ namespace Supremacy.Game
                             + " " + colony.Name
                             + " > Population have died from illness, and the colony has been lost.";
 
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Red));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
                             //civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(colony.Owner, colony.Sector.Location, _note));
                             colony.Destroy();
                             civManager.EnsureSeatOfGovernment();
@@ -1701,7 +1701,7 @@ namespace Supremacy.Game
                                 ;
                                 Console.WriteLine("Step_3281: " + _text);
                                 //GameLog.Core.CombatDetails.DebugFormat("Step_3281: " + _text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1720,7 +1720,7 @@ namespace Supremacy.Game
                                 Console.WriteLine("Step_3282: " + _text);
                                 //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
 
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1738,7 +1738,7 @@ namespace Supremacy.Game
                                   ;
                                 Console.WriteLine("Step_3283: " + _text);
                                 //GameLog.Core.CombatDetails.DebugFormat("Step_3283: " + _text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1755,7 +1755,7 @@ namespace Supremacy.Game
                                     //+ " at " + colony.Location + blank + colony.Name
                                     ;
                                 Console.WriteLine("Step_3284: " + _text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1772,7 +1772,7 @@ namespace Supremacy.Game
                                                                 + " at " + colony.Location + blank + colony.Name
                                 ;
                                 Console.WriteLine("Step_3285: " + _text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1792,7 +1792,7 @@ namespace Supremacy.Game
 
                         if (civManager.Civilization.CivID == colony.Owner.CivID)
                         {
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                         }
 
                         if (newPopulation < colony.Population.Maximum)
@@ -2369,7 +2369,7 @@ namespace Supremacy.Game
                 }
 
                 _ = civManager.Credits.AdjustCurrent(_civMaintance * -1);
-                _text = "Credits > _civMaintance= " + _civMaintance + " for " + civ.Name;
+                _text = "Step_3285: Credits > _civMaintance= " + _civMaintance + " for " + civ.Name;
                 Console.WriteLine(_text);
                 //GameLog.Core.Production.DebugFormat(_text);
 
@@ -2559,7 +2559,7 @@ namespace Supremacy.Game
 
                                 Console.WriteLine(_text);
                                 GameLog.Core.InfoText.DebugFormat(_text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Gray));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Gray));
 
                                 colony.Morale.UpdateAndReset();
                             }
@@ -2600,7 +2600,7 @@ namespace Supremacy.Game
 
                             _text = string.Format(ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
                                 colony.Name, colony.Location);
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Orange));
                             _text = "Step_4165: " + _text;
                             Console.WriteLine(_text);
 
@@ -2654,7 +2654,7 @@ namespace Supremacy.Game
                             Console.WriteLine(_text);
                             GameLog.Core.Production.DebugFormat(_text);
 
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Orange));
                         }
 
 
@@ -2819,7 +2819,7 @@ namespace Supremacy.Game
                                         + colony.BuildSlots[0].Project.BuildDesign.LocalizedName + " - "
                                         + colony.BuildSlots[0].Project.PercentComplete + " done";
 
-                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
+                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                     Console.WriteLine("Step_4270: " + _text);
                                     //civManager.SitRepEntries.Add(new BuildProjectStatusSitRepEntry(colony.Owner, colony.Location, _note, "", "", SitRepPriority.Gray));
                                 }
@@ -2867,7 +2867,7 @@ namespace Supremacy.Game
                             //    //: string.Format(
                             //    //ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
                             //    //Colony.Name, Colony.Location);
-                            //    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
+                            //    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Orange));
                             //    //civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
                         }
                         else
@@ -2900,7 +2900,7 @@ namespace Supremacy.Game
                                         colony.Name, colony.Location);
                                     //Console.WriteLine(_text);
                                     //GameLog.Core.Production.DebugFormat(_text);
-                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Orange));
+                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Orange));
                                 }
                             }
                         }
@@ -2968,7 +2968,7 @@ namespace Supremacy.Game
                           {
                               _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"), colony.Name, colony.Location);
                               if (GameContext.Current.TurnNumber > 4)
-                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, "", "", SitRepPriority.Yellow));
+                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Yellow));
                               //civManager.SitRepEntries.Add(new GrowthByHealthSitRepEntry(civ, colony));
                           }
 
@@ -3016,7 +3016,7 @@ namespace Supremacy.Game
                                             //+ " complete "
                                             ;
 
-                                      civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text1, "", "", SitRepPriority.Gray));
+                                      civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text1, _text1, "", SitRepPriority.Gray));
 
                                       GameLog.Core.ShipProductionDetails.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
                                           slot.SlotID,
@@ -3047,7 +3047,7 @@ namespace Supremacy.Game
                                   + " complete "
                                   ;
 
-                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text2, "", "", SitRepPriority.Gray));
+                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text2, _text2, "", SitRepPriority.Gray));
 
 
                                   if (slot.Project.IsCompleted)
@@ -3194,7 +3194,7 @@ namespace Supremacy.Game
                                     + "was de-activated due to low morale level"
                                     ;
                                   Console.WriteLine(_text);
-                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, colony, _text, "", "", SitRepPriority.Red));
+                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, colony, _text, _text, "", SitRepPriority.Red));
 
                                   //if (b.)
                                   //{
@@ -4265,11 +4265,11 @@ namespace Supremacy.Game
                 GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportEntry_CoS(combat[i].Owner, combat[i].Location, _text, "", "", SitRepPriority.RedYellow));
             }
 
-            _text = "Step_0879: " + _text; 
+            _text = "Step_0877: " + _text; 
             Console.WriteLine(_text);
 
             CombatOccurring?.Invoke(combat);
-            _text = "Step_0879: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx check why Combat screen doesn't close";
+            _text = "Step_0877: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx check why Combat screen doesn't close";
             Console.WriteLine(_text);
 
 

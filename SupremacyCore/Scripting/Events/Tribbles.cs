@@ -8,6 +8,7 @@
 using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -22,6 +23,9 @@ namespace Supremacy.Scripting.Events
         private bool _productionFinished;
         private bool _shipProductionFinished;
         private int _occurrenceChance = 100;
+
+        [NonSerialized]
+        private string _text;
 
         public TribblesEvent()
         {
@@ -97,9 +101,19 @@ namespace Supremacy.Scripting.Events
                     OnUnitTargeted(target);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    civManager?.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target));
+                    //civManager?.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target));
 
-                    GameContext.Current.Universe.UpdateSectors();
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("TRIBBLES_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("TRIBBLES_DETAIL_TEXT")
+                        , "ScriptedEvents/Tribbles.png", SitRepPriority.RedYellow));
+                    //civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target));
+        //                    public override string DetailText => string.Format(ResourceManager.GetString("TRIBBLES_DETAIL_TEXT"), Colony.Name, Colony.Location);
+        //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Tribbles.png";
+
+        GameContext.Current.Universe.UpdateSectors();
                 }
 
                 return;

@@ -8,6 +8,7 @@
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -26,6 +27,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public TradeGuildStrikesEvent()
         {
@@ -106,8 +108,17 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
+
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    civManager?.SitRepEntries.Add(new TradeGuildStrikesSitRepEntry(civManager.Civilization, target));
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("TRADE_GUILD_STRIKES_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT")
+                        , "ScriptedEvents/TradeGuildStrikes.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png";
                 }
 
                 return;

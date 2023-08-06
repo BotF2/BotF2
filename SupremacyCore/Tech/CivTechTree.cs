@@ -514,15 +514,17 @@ namespace Supremacy.Tech
                             //if (civManager == null)
                             //    continue;
                             TechTree techTree = new TechTree(xmlTree);
-                            string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
-                            file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
-                            StreamWriter streamWriter = new StreamWriter(file);
-
                             bool _streamWriterWorks = false;
 
                             bool _traceTechTrees = false;
                             if (_traceTechTrees == true)
                             {
+
+                            string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                            file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
+                            StreamWriter streamWriter = new StreamWriter(file);
+
+
                                 string owner = xmlTree.GetAttribute("Civilization");
                                 string category = "";
 
@@ -590,7 +592,7 @@ namespace Supremacy.Tech
                                         streamWriter.WriteLine(line);
                                 }
                             }
-                            streamWriter.Close();
+                            //streamWriter.Close();
                         }
                         catch (Exception e)
                         {

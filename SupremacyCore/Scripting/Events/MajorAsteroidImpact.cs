@@ -7,6 +7,7 @@
 
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -24,6 +25,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public MajorAsteroidImpact()
         {
@@ -148,8 +150,19 @@ namespace Supremacy.Scripting.Events
                     }
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
+                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    //civManager?.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
+
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    civManager?.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT")
+                        , "ScriptedEvents/MajorAsteroidImpact.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/MajorAsteroidImpact.png";
 
                     target.Population.UpdateAndReset();
 

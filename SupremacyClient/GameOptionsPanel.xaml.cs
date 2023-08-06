@@ -50,7 +50,7 @@ namespace Supremacy.Client
             lstBorgPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstTerranEmpirePlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
 
-            //lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
+            lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
             //lstGamePace.ItemsSource = EnumHelper.GetValues<GamePace>();
             //lstTurnTimer.ItemsSource = EnumHelper.GetValues<TurnTimerEnum>();
 
@@ -148,7 +148,9 @@ namespace Supremacy.Client
             }
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         void TryGetLastPlayerName(string PlayerNameSP)
+#pragma warning restore IDE0051 // Remove unused private members
         {
             try
             {
@@ -181,7 +183,9 @@ namespace Supremacy.Client
             }
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         private void UpdatePlayerNameSP()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             try
             {

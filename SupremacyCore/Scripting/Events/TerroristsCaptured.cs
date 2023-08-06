@@ -6,6 +6,7 @@
 // All other rights reserved.
 
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -18,6 +19,10 @@ namespace Supremacy.Scripting.Events
     public class TerroristsCaptured : UnitScopedEvent<Colony>
     {
         private int _occurrenceChance = 100;
+
+        [NonSerialized]
+        private string _text;
+
 
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
@@ -77,7 +82,13 @@ namespace Supremacy.Scripting.Events
                     target.Morale.UpdateAndReset();
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    civManager?.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("TERRORISTS_CAPTURED_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("TERRORISTS_CAPTURED_DETAIL_TEXT")
+                        , "ScriptedEvents/TerroristsCaptured.png", SitRepPriority.RedYellow));
+
+                    //civManager?.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
                 }
             }
         }

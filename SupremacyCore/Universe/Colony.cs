@@ -2049,8 +2049,10 @@ namespace Supremacy.Universe
             }
             else { _shipyardSlots = 0; }
 
-            _text = "Step_4203: ------------------------------" + newline
-                + "Step_4203: Turn " + GameContext.Current.TurnNumber + ": ";
+            _text = "Step_4202: ------------------------------";
+            Console.WriteLine(_text);
+
+            _text = "Step_4203: Turn " + GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
             _text += colony.Name + " ( "+ colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
@@ -2069,7 +2071,7 @@ namespace Supremacy.Universe
             //int _orbBatused = colony.ActiveOrbitalBatteries;
             _text += ", OrbB: " + colony.ActiveOrbitalBatteries.ToString();
 
-            Console.WriteLine("Step_4205: " + _text);
+            Console.WriteLine(_text);
             ;
             //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
@@ -2490,7 +2492,7 @@ namespace Supremacy.Universe
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[building.OwnerID];
             //civManager.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(civManager.Civilization, building.Sector.System.Colony));
             _text = string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Name, Location);
-            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.RedYellow));
+            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.RedYellow));
 
             GameLog.Core.EnergyDetails.DebugFormat("Turn {0};Shutdown due to missing energy for;{1} {2};at;{3} ({4});{5}"
                 , GameContext.Current.TurnNumber

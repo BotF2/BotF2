@@ -27,16 +27,16 @@ namespace Supremacy.Entities
     public sealed class CivilizationPairedMap<TValue> : IOwnedDataSerializableAndRecreatable, IEnumerable<TValue>
     {
         private Dictionary<int, TValue> _map;
-#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
-#pragma warning disable IDE0052 // Ungelesene private Member entfernen
+//#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
+//#pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private string _text;
-#pragma warning restore IDE0052 // Ungelesene private Member entfernen
-#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
+//#pragma warning restore IDE0052 // Ungelesene private Member entfernen
+//#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
 
         public CivilizationPairedMap()
         {
             Initialize();
-            _text += "";
+            _text = _text + _text; // Dummy - keep it
         }
 
         private void Initialize()

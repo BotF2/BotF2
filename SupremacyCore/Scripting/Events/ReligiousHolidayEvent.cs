@@ -7,6 +7,7 @@
 
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -24,6 +25,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public ReligiousHolidayEvent()
         {
@@ -101,9 +103,19 @@ namespace Supremacy.Scripting.Events
                     _ = target.Morale.AdjustCurrent(+5);
                     target.Morale.UpdateAndReset();
 
+                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+
+                    //civManager?.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
 
-                    civManager?.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
+                    _text = target.Location + " " + target.Name + " > ";
+                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        , _text + ResourceManager.GetString("RELIGIOUS_HOLIDAY_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT")
+                        , "ScriptedEvents/ReligiousHoliday.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png";
                 }
 
                 return;

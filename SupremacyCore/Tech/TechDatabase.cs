@@ -2138,7 +2138,7 @@ namespace Supremacy.Tech
 
             if (_buildCostIgnored == false)
             {
-                _text = "Build Costs ignored and calculated inside game code > for ProductionFacilities";
+                _text = "Step_0196: Build Costs ignored and calculated inside game code > for ProductionFacilities";
                 GameLog.Core.General.InfoFormat(_text);
                 _buildCostIgnored = true;  // just report once
             }
@@ -2199,7 +2199,7 @@ namespace Supremacy.Tech
 
             if (_buildCostShipsIgnored == false)
             {
-                _text = "Build Costs ignored and calculated inside game code > for Ships";
+                _text = "Step_0197: Build Costs ignored and calculated inside game code > for Ships";
                 GameLog.Core.General.InfoFormat(_text);
                 _buildCostShipsIgnored = true; // just report once
             }

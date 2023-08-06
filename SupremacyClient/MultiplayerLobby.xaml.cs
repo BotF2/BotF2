@@ -323,7 +323,7 @@ namespace Supremacy.Client
 
             if (AppContext.LocalPlayer == null)
             {
-                _text = "ERROR: AppContext.LocalPlayer == null";
+                _text = "Step_0287: ERROR: AppContext.LocalPlayer == null";
                 Console.WriteLine(_text);
                 GameLog.Client.General.DebugFormat(_text);
             }
@@ -331,7 +331,7 @@ namespace Supremacy.Client
 
             if (AppContext.IsSinglePlayerGame)
             {
-                GameLog.Client.General.InfoFormat("AppContext.IsSinglePlayerGame={0}", AppContext.IsSinglePlayerGame);
+                GameLog.Client.General.InfoFormat("Step_0289: AppContext.IsSinglePlayerGame={0}", AppContext.IsSinglePlayerGame);
                 return;
             }
 

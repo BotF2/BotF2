@@ -170,6 +170,7 @@ namespace Supremacy.Game
         private StrategyDatabase _strategyDatabase;
         private ICollection<ScriptedEvent> _scriptedEvents;
         private DiplomacyDatabase _diplomacyDatabase;
+
         public string _text;
         public readonly string blank = " ";
         public readonly string newline = Environment.NewLine;
@@ -206,10 +207,10 @@ namespace Supremacy.Game
 
             try
             {
-                GameLog.Core.SaveLoad.DebugFormat("--------------------------------------------------");
+                GameLog.Core.SaveLoad.DebugFormat("Step_3600: --------------------------------------------------");
                 _text = "Step_3600: ########### Deserialising GameContext...";
                 Console.WriteLine(_text);
-                GameLog.Core.SaveLoad.DebugFormat("########### Deserialising GameContext...");
+                GameLog.Core.SaveLoad.DebugFormat(_text);
 
                 IsMultiplayerGame = reader.ReadBoolean();
                 Console.WriteLine("Step_3610: already read  IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
@@ -743,7 +744,8 @@ namespace Supremacy.Game
                     BorgModifier = EmpireModifier.Standard,
                     TerranEmpireModifier = EmpireModifier.Standard,
 
-                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No,
+                    //EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No,
+                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.Run,
                     GamePace = GamePace.Normal,
                     TurnTimerEnum = TurnTimerEnum.Unlimited,
                 },
@@ -846,10 +848,10 @@ namespace Supremacy.Game
 
                 if (_bool_Step_0879_FAILED == false)
                 {
-                    string _text = "Step_0879: No ThreadContext = no GameContext anymore ";
-                    Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
-                    _bool_Step_0879_FAILED = true;
+                    //string _text = "Step_0879: No ThreadContext = no GameContext anymore ";
+                    //Console.WriteLine(_text);
+                    ////GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //_bool_Step_0879_FAILED = true;
                 }
 
                 return null;
@@ -975,7 +977,7 @@ namespace Supremacy.Game
 
                 GalaxyGenerator.GenerateGalaxy(this);
 
-                _text = "Step_1290:Galaxy generated...";
+                _text = "Step_1288: Galaxy generated...";
                 Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
