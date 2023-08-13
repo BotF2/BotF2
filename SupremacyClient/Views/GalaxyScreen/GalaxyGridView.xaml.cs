@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
+//using Obtics.Collections;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Client.Commands;
@@ -7,6 +8,7 @@ using Supremacy.Client.Dialogs;
 using Supremacy.Client.Input;
 using Supremacy.Client.Views.GalaxyScreen;
 using Supremacy.Diplomacy;
+using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
@@ -195,6 +197,8 @@ namespace Supremacy.Client.Views
             string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
             string Second = time.Second.ToString(); Second = CheckDateString(Second);
             string timeString = "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
+
+            string shipnames_text = "";
 
             SectorMap map = _appContext.CurrentGame.Universe.Map;
 
@@ -601,7 +605,8 @@ namespace Supremacy.Client.Views
                 _text += newline;
 
                 //var civMans = GameContext.Current.ScriptedEvents;
-                if (GameContext.Current.ScriptedEvents != null) {
+                if (GameContext.Current.ScriptedEvents != null)
+                {
                     foreach (var item in GameContext.Current.ScriptedEvents)
                     {
                         _text += "Step_4349:"
@@ -614,17 +619,405 @@ namespace Supremacy.Client.Views
                     }
                 }
 
+                _text += newline;
+
+                //IEnumerable<ShipDesign> bd = GameContext.Current.TechDatabase.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign);
+                //if (GameContext.Current.TechDatabase)
+                //{
+                //    foreach (var item in GameContext.Current.TechDatabase)
+                //{
+                bool first_shipname = true;
+                bool first_orbbat = true;
+                bool first_pf = true;
+                bool first_buildings = true;
+                bool first_shipyards = true;
+                bool first_stations = true;
+                bool first_ships = true;
+
+                
+
+
+                foreach (var item in GameContext.Current.TechDatabase) //.Where(i => i. GameContext.Current.TechDatabase[i] as ShipDesign))
+
+                {
+                    string tdb_text = "Step_4347:";
+                    //string shipnames_text = "";
+
+                    tdb_text += "; " + item.DesignID;
+                    tdb_text += "; " + item.Key;
+
+                    tdb_text += " ;" + item.TechRequirements[Tech.TechCategory.BioTech];
+                    tdb_text += ";" + item.TechRequirements[Tech.TechCategory.Computers];
+                    tdb_text += ";" + item.TechRequirements[Tech.TechCategory.Construction];
+                    tdb_text += ";" + item.TechRequirements[Tech.TechCategory.Energy];
+                    tdb_text += ";" + item.TechRequirements[Tech.TechCategory.Propulsion];
+                    tdb_text += ";" + item.TechRequirements[Tech.TechCategory.Weapons];
+                    tdb_text += ";" + item.IsUniversallyAvailable;
+
+                    tdb_text += ";" + item.BuildCost;
+                    tdb_text += ";" + item.Duranium;
+                    tdb_text += ";" + item.MaintenanceCost;
+                    tdb_text += ";" + item.PopulationHealth;
+                    tdb_text += ";" + item.EncyclopediaCategory;
+                    tdb_text += ";" + item.ObsoletedDesigns.Count;
+                    tdb_text += ";" + item.UpgradableDesigns.Count;
+                    //tdb_text += ";" + item.des;
+
+
+
+
+                    //+ "; " + item.DesignID
+                    //+ "; " + item.Name;
+                    ;
+
+
+
+                    //Batteries
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Batteries)
+                    {
+
+                        if (first_orbbat)
+                        {
+                            _text += "Step_4341: ---------------" + newline;
+                            _text += "Step_4341:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COM" + newline;
+                            first_orbbat = false;
+                        }
+
+                        OrbitalBatteryDesign spec = item as OrbitalBatteryDesign;
+                        tdb_text += ";" + spec.ScienceAbility;
+                        tdb_text += ";" + spec.ScanStrength;
+                        tdb_text += ";" + spec.SensorRange;
+                        tdb_text += ";" + spec.HullStrength;
+                        tdb_text += ";" + spec.ShieldStrength;
+                        tdb_text += ";" + spec.ShieldRechargeRate;
+
+                        if (spec.PrimaryWeapon != null)
+                        {
+                            tdb_text += ";" + spec.PrimaryWeaponName;
+                            tdb_text += ";" + spec.PrimaryWeapon.Count;
+                            tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                            tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        }
+
+                        if (spec.SecondaryWeapon != null)
+                        {
+                            tdb_text += ";" + spec.SecondaryWeaponName;
+                            tdb_text += ";" + spec.SecondaryWeapon.Count;
+                            tdb_text += ";" + spec.SecondaryWeapon.Damage;
+                            //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        }
+
+                        //tdb_text += ";" + item.s;
+                    }
+
+                    //ProductionFacilityDesign
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Facilites)
+                    {
+
+                        if (first_pf)
+                        {
+                            _text += "Step_4342: ---------------" + newline;
+                            _text += "Step_4342:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR" + newline;
+                            first_pf = false;
+                        }
+
+                        ProductionFacilityDesign spec = item as ProductionFacilityDesign;
+                        tdb_text += ";" + spec.Duranium;
+                        tdb_text += ";" + spec.LaborCost;
+                        tdb_text += ";" + spec.Category;
+                        tdb_text += ";" + spec.UnitOutput;
+                        //tdb_text += ";" + spec.HullStrength;
+                        //tdb_text += ";" + spec.ShieldStrength;
+                        //tdb_text += ";" + spec.ShieldRechargeRate;
+
+                        //if (spec.Bonuses != null)
+                        //{
+                        //    foreach (var bonus in spec.Bonuses)
+                        //    {
+                        //        tdb_text += ";" + bonus.BonusType;
+                        //        tdb_text += ";" + bonus.Amount;
+                        //        //tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                        //        //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        //    }
+
+
+                        //}
+
+                        ////var re = spec.Restriction.get
+                        //if (spec.Restriction != null)
+                        //{
+                        //    //foreach (var re in spec.Restriction.)
+                        //    //{
+                        //    tdb_text += ";Restrictions";
+                        //    //tdb_text += ";" + re.Amount;
+                        //    //tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                        //    //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        //    //}
+                        //}
+
+
+                    }
+
+                    //Buildings.BuildingDesign
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Buildings)
+                    {
+
+                        if (first_buildings)
+                        {
+                            _text += "Step_4343: ---------------" + newline;
+                            _text += "Step_4343:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR" + newline;
+                            first_buildings = false;
+                        }
+
+                        Buildings.BuildingDesign spec = item as Buildings.BuildingDesign;
+                        tdb_text += ";" + spec.EnergyCost;
+                        //tdb_text += ";" + spec.ScanStrength;
+                        //tdb_text += ";" + spec.SensorRange;
+                        //tdb_text += ";" + spec.HullStrength;
+                        //tdb_text += ";" + spec.ShieldStrength;
+                        //tdb_text += ";" + spec.ShieldRechargeRate;
+
+                        if (spec.Bonuses != null)
+                        {
+                            foreach (var bonus in spec.Bonuses)
+                            {
+                            tdb_text += ";" + bonus.BonusType;
+                            tdb_text += ";" + bonus.Amount;
+                            //tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                            //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                            }
+
+
+                        }
+
+                        //var re = spec.Restriction.get
+                        if (spec.Restriction != null)
+                        {
+                            //foreach (var re in spec.Restriction.)
+                            //{
+                                tdb_text += ";Restrictions";
+                                //tdb_text += ";" + re.Amount;
+                                //tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                                //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                            //}
+                        }
+
+                        //tdb_text += ";" + item.s;
+                    }
+
+                    //ShipyardDesign
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Shipyards)
+                    {
+
+                        if (first_shipyards)
+                        {
+                            _text += "Step_4344: ---------------" + newline;
+                            _text += "Step_4344:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR" + newline;
+                            first_shipyards = false;
+                        }
+
+                        ShipyardDesign spec = item as ShipyardDesign;
+                        tdb_text += ";" + spec.BuildSlotEnergyCost;
+                        tdb_text += ";" + spec.BuildSlots;
+                        tdb_text += ";" + spec.BuildSlotMaxOutput;
+                        tdb_text += ";" + spec.BuildSlotOutputType;
+                        tdb_text += ";" + spec.BuildSlotOutput;
+                        tdb_text += ";" + spec.MaxBuildTechLevel;
+
+                    }
+
+                    //StationDesign
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
+                    {
+
+                        if (first_stations  )
+                        {
+                            _text += "Step_4345: ---------------" + newline;
+                            _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COM" + newline;
+                            first_stations = false;
+                        }
+
+                        StationDesign spec = item as StationDesign;
+                        tdb_text += ";" + spec.ScienceAbility;
+                        tdb_text += ";" + spec.ScanStrength;
+                        tdb_text += ";" + spec.SensorRange;
+                        tdb_text += ";" + spec.HullStrength;
+                        tdb_text += ";" + spec.ShieldStrength;
+                        tdb_text += ";" + spec.ShieldRechargeRate;
+
+                        if (spec.PrimaryWeapon != null)
+                        {
+                            tdb_text += ";" + spec.PrimaryWeaponName;
+                            tdb_text += ";" + spec.PrimaryWeapon.Count;
+                            tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                            tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        }
+
+                        if (spec.SecondaryWeapon != null)
+                        {
+                            tdb_text += ";" + spec.SecondaryWeaponName;
+                            tdb_text += ";" + spec.SecondaryWeapon.Count;
+                            tdb_text += ";" + spec.SecondaryWeapon.Damage;
+                            //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        }
+
+                        //tdb_text += ";" + item.s;
+                    }
+
+                    //ShipDesign
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
+                    {
+                       
+                        if (first_ships)
+                        {
+                            _text += "Step_4346: ---------------" + newline;
+_text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Dil;Spe;Ra;Fu;Man;WO;Sc%;SP;SR;HULL;SH;ShR;Cl;Ca;Ty;CN;W1;W1C;W1D;W1R;W2;W2C;W2D;COM" + newline;
+                            first_ships = false;
+                        }
+
+                        ShipDesign spec = item as ShipDesign;
+
+                        tdb_text += ";" + spec.Dilithium;
+                        tdb_text += ";" + spec.Speed;
+                        tdb_text += ";" + spec.Range;
+                        tdb_text += ";" + spec.FuelCapacity;
+                        tdb_text += ";" + spec.Maneuverability;
+                        tdb_text += ";" + spec.WorkCapacity;
+
+                        tdb_text += ";" + spec.ScienceAbility;
+                        tdb_text += ";" + spec.ScanStrength;
+                        tdb_text += ";" + spec.SensorRange;
+                        tdb_text += ";" + spec.HullStrength;
+                        tdb_text += ";" + spec.ShieldStrength;
+                        tdb_text += ";" + spec.ShieldRechargeRate;
+
+                        tdb_text += ";" + spec.CloakStrength;
+                        tdb_text += ";" + spec.CamouflagedStrength;
+
+                        tdb_text += ";" + spec.ShipType;
+                        tdb_text += ";" + spec.ClassName;
+
+                        if (spec.PrimaryWeapon != null)
+                        {
+                            tdb_text += ";" + spec.PrimaryWeaponName;
+                            tdb_text += ";" + spec.PrimaryWeapon.Count;
+                            tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                            tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        }
+
+                        if (spec.SecondaryWeapon != null)
+                        {
+                            tdb_text += ";" + spec.SecondaryWeaponName;
+                            tdb_text += ";" + spec.SecondaryWeapon.Count;
+                            tdb_text += ";" + spec.SecondaryWeapon.Damage;
+                            //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        }
+
+                        //tdb_text += ";" + spec.ShipType;
+                        //tdb_text += ";" + spec.ClassName;
+
+                        //tdb_text += ";" + item.s;
+                    }
+
+                    //ShipNames
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
+                    {
+
+                        if (first_shipname)
+                        {
+                            //shipnames_text += "Step_4349: ---------------" + newline;
+                            shipnames_text += "Step_4359:;COUNT;KEY;NAMES;COM" + newline;
+                            first_shipname = false;
+                        }
+
+                        ShipDesign spec = item as ShipDesign;
+
+                        //tdb_text += ";" + spec.Dilithium;
+                        //tdb_text += ";" + spec.Speed;
+                        //tdb_text += ";" + spec.Range;
+                        //tdb_text += ";" + spec.FuelCapacity;
+                        //tdb_text += ";" + spec.Maneuverability;
+                        //tdb_text += ";" + spec.WorkCapacity;
+
+                        //tdb_text += ";" + spec.ScienceAbility;
+                        //tdb_text += ";" + spec.ScanStrength;
+                        //tdb_text += ";" + spec.SensorRange;
+                        //tdb_text += ";" + spec.HullStrength;
+                        //tdb_text += ";" + spec.ShieldStrength;
+                        //tdb_text += ";" + spec.ShieldRechargeRate;
+
+                        //tdb_text += ";" + spec.CloakStrength;
+                        //tdb_text += ";" + spec.CamouflagedStrength;
+
+                        //tdb_text += ";" + spec.ShipType;
+                        //tdb_text += ";" + spec.ClassName;
+
+                        int count = spec.PossibleNames.Count;
+
+                        foreach (var name in spec.PossibleNames)
+                        {
+                            shipnames_text += "Step_4359:"
+                                + ";" + count
+                                + ";" + item.Key
+
+                                + " ;" + name.Key
+                                + newline;
+                        }
+
+                        //if (spec.PossibleNames != null)
+                        //{
+                        //    tdb_text += ";" + spec.PrimaryWeaponName;
+                        //    tdb_text += ";" + spec.PrimaryWeapon.Count;
+                        //    tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                        //    tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        //}
+
+                        //if (spec.SecondaryWeapon != null)
+                        //{
+                        //    tdb_text += ";" + spec.SecondaryWeaponName;
+                        //    tdb_text += ";" + spec.SecondaryWeapon.Count;
+                        //    tdb_text += ";" + spec.SecondaryWeapon.Damage;
+                        //    //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                        //}
+
+                        //tdb_text += ";" + spec.ShipType;
+                        //tdb_text += ";" + spec.ClassName;
+
+                        //tdb_text += ";" + item.s;
+                    }
+
+                    
+                    _text += tdb_text + newline;
+
+
+
+
+
+                }
+                //_text += shipnames_text;
+                //}
+
             }
 
             Console.WriteLine(_text);   // Output here as well
 
-            string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "MapData.txt");
+            string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_MapData.txt");
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
                 StreamWriter streamWriter = new StreamWriter(file);
                 streamWriter.Write(_text);
                 streamWriter.Close();
-                _text = "output of MapData done to " + file;
+                _text = "output of _MapData done to " + file;
+                Console.WriteLine(_text);
+            }
+
+            file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_ShipNames.csv");
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            {
+                StreamWriter streamWriter = new StreamWriter(file);
+                streamWriter.Write(shipnames_text);
+                streamWriter.Close();
+                _text = "output of _ShipNames done to " + file;
                 Console.WriteLine(_text);
             }
         }

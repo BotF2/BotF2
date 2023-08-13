@@ -151,11 +151,11 @@ namespace Supremacy.Orbitals
 
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Step_8305: " + buildQueueItem.Project.Location
-                    + " buildQueueItem= " + buildQueueItem.Description + ", index " + count
-                    + ", TurnsRemaining " + buildQueueItem.TurnsRemaining
+                _text = "Step_8305:; " + buildQueueItem.Project.Location
+                    + "; buildQueueItem= " + buildQueueItem.Description + "; index " + count
+                    + "; TurnsRemaining " + buildQueueItem.TurnsRemaining
                     //+ " at " +  
-                    + " at " + buildQueueItem.Project.ProductionCenter;
+                    + "; at " + buildQueueItem.Project.ProductionCenter;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
                 count++;
@@ -164,11 +164,12 @@ namespace Supremacy.Orbitals
             int baysWithProjects = 0;
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
-                _text = "Step_8300: checking " + slot.Shipyard.Design /*+ ", index " + count*/
+                _text = "Step_8300:; "+ slot.Shipyard.Location + "; > checking " 
+                    + slot.Shipyard.Design /*+ ", index " + count*/
 
-                    + " Slot= " + slot.SlotID
-                    + " at " + slot.Shipyard.Location
-                    + ", Owner=" + slot.Shipyard.Owner
+                    + "; Slot= " + slot.SlotID
+                    //+ " at " + slot.Shipyard.Location
+                    + "; Owner=" + slot.Shipyard.Owner
 
                     ;
                 Console.WriteLine(_text);

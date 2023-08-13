@@ -187,7 +187,7 @@ namespace Supremacy.Tech
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
         public static TechDatabase Load()
         {
-            _text = "Step_3020: Loading Resources/Data/TechObjectDatabase.xml";
+            _text = "Step_3018: Loading Resources/Data/TechObjectDatabase.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 

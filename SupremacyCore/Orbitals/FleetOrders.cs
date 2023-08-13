@@ -1363,7 +1363,12 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            if (fleet.Sector.System == null && fleet.Sector.System.Name != fleet.Owner.HomeSystemName)
+            if (fleet.Sector.System == null)
+            {
+                return false;
+            }
+
+            if (fleet.Sector.System.Name != fleet.Owner.HomeSystemName)
             {
                 return false;
             }

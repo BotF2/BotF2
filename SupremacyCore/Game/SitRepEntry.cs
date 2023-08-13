@@ -298,6 +298,8 @@ namespace Supremacy.Game
             _detailName = details;
             _image = image;
 
+            Console.WriteLine("Step_1424:; " + report + "; " + owner + "; " + priority.ToString());
+
         }
 
         public string Report => _report;
@@ -343,7 +345,7 @@ namespace Supremacy.Game
                 //continue;
             }
 
-            Console.WriteLine(owner + priority.ToString() + report);
+            Console.WriteLine("Step_1427:; " + report  + "; " + owner + "; " + priority.ToString());
 
             _loc = loc;
             _report = report;
@@ -375,6 +377,8 @@ namespace Supremacy.Game
         public ReportEntry_ShowGalaxy(Civilization owner, string report, string details, string image, SitRepPriority priority)
             : base(owner)//, SitRepPriority.Pink)
         {
+            Console.WriteLine("Step_1429:; " + report + "; " + owner + "; " + priority.ToString());
+
             _report = report;
             _detailName = details;  // e.g. ENERGY_SHUTDOWN_SHIPYARD
             _image = image;
@@ -416,6 +420,8 @@ namespace Supremacy.Game
                 return;
             }
 
+            Console.WriteLine("Step_1428:; " + report + "; " + owner + "; " + priority.ToString());
+
             _colonyID = colony.ObjectID;
             _report = report;
             _detailName = details;  // e.g. ENERGY_SHUTDOWN_SHIPYARD
@@ -429,8 +435,8 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override bool HasDetails => _image != ""; // true for extra Dialog window
         public override string DetailImage => "vfs:///Resources/Images/" + _image;
-        public override string HeaderText => string.Format(ResourceManager.GetString(_report/* + "_HEADER_TEXT"*/), Colony.Name, Colony.Location);
-        public override string DetailText => string.Format(ResourceManager.GetString(_detailName/* + "_DETAIL_TEXT"*/), Colony.Name, Colony.Location);
+        public override string HeaderText => string.Format(ResourceManager.GetString(_report));//* + "_HEADER_TEXT"*/); , Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString(_detailName));//* + "_DETAIL_TEXT"*/), Colony.Name, Colony.Location);
         public override string SitRepComment { get; set; }
         public override string SummaryText => _detailName;
         public override bool IsPriority => true;
@@ -453,6 +459,8 @@ namespace Supremacy.Game
             _detailName = details;  // e.g. ENERGY_SHUTDOWN_SHIPYARD
             _image = image;
             _priority = priority;
+
+            Console.WriteLine("Step_1423:; " + report + "; " + owner + "; " + priority.ToString());
         }
         //public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;

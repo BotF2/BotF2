@@ -87,9 +87,9 @@ namespace Supremacy.AI
                 // **** The UnitAI fleet by fleet looping 
                 foreach (Fleet fleet in allCivFleets) // each fleet of the current civ
                 {
-                    string _fleetText = "Fleet: " + fleet.Location + blank + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name 
+                    string _fleetText = fleet.Location + " > Fleet: " + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name 
                         + blank + fleet.UnitAIType + ", TargetCiv=NULL" /*+ fleet.Owner.TargetCivilization*/ + blank + fleet.Order.ToString();
-                    Console.WriteLine("Step_6151: " + _fleetText);
+                    Console.WriteLine("Step_6151:; " + _fleetText);
                     // as well go to CTRL+F and 'checking fleets'
                     if (fleet.Ships.Count > 0)
                     {

@@ -1699,9 +1699,9 @@ namespace Supremacy.Game
                                 + " ) - one labor unit was added to Industry Production"
                                 //+ " at " + 
                                 ;
-                                Console.WriteLine("Step_3281: " + _text);
+                                Console.WriteLine("Step_3281:; " + _text);
                                 //GameLog.Core.CombatDetails.DebugFormat("Step_3281: " + _text);
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, "", "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
                             }
                         }
@@ -1788,7 +1788,7 @@ namespace Supremacy.Game
                         + " - Pop: " + colony.Population.CurrentValue + " / " + colony.MaxPopulation
                         + "  for " + colony.Name
                         ;
-                        Console.WriteLine("Step_3281: " + _text);
+                        Console.WriteLine("Step_3287:; " + _text);
 
                         if (civManager.Civilization.CivID == colony.Owner.CivID)
                         {
@@ -2696,18 +2696,21 @@ namespace Supremacy.Game
 
                             _text =
                                 "Step_4210: Turn " + GameContext.Current.TurnNumber
-                                + ": Income TradeRoute= " + colony.CreditsFromTrade
-                                + ", Tax= " + colony.TaxCredits
-                                + ", last change= " + civManager.Credits.LastChange
-                                + ", Deuterium= " + totalResourcesAvailable[ResourceType.Deuterium]
-                                + ", Duranium= " + totalResourcesAvailable[ResourceType.Duranium]
-                                + ", Dilithium= " + totalResourcesAvailable[ResourceType.Dilithium]
-                                + " available for " + civ.Name
-                                + " before construction of " + colony.BuildSlots[0].Project.BuildDesign.Name
-                                + " on " + colony.Name
+                                + "; " + colony.Location
+                                + "; " + colony.Name
+                                + "; " + civ.Name
+                                + "; Income TradeR= " + colony.CreditsFromTrade
+                                + "; Tax= " + colony.TaxCredits
+                                + "; last change= " + civManager.Credits.LastChange
+                                + "; Deu= " + totalResourcesAvailable[ResourceType.Deuterium]
+                                + "; Dur= " + totalResourcesAvailable[ResourceType.Duranium]
+                                + "; Dil= " + totalResourcesAvailable[ResourceType.Dilithium]
+
+                                + "; avail. before construct of; " + colony.BuildSlots[0].Project.BuildDesign.Name
+                                //+ " on " + colony.Name
                                 ;
                             Console.WriteLine(_text);
-                            GameLog.Core.Production.DebugFormat(_text);
+                            //GameLog.Core.Production.DebugFormat(_text);
                             //GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "       Turn {8}: Income TradeRoute={4}, Tax={3}, Deuterium={5}, Dilithium={6}, Duranium={7} available for {0} before construction of {1} on {2}" + Environment.NewLine,
                             //    civ.Name,
                             //    colony.BuildSlots[0].Project.BuildDesign.Name,
@@ -4015,7 +4018,7 @@ namespace Supremacy.Game
                     + "  -  Best: " + _r_Credits_BestValue
 
                     ;
-                Console.WriteLine("Step_3582: " + _text);
+                Console.WriteLine("Step_3582:; " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3582: " + _text);
 
                 // due to AI has Credit Advantage, no Ranking for Credits reported
@@ -4118,7 +4121,7 @@ namespace Supremacy.Game
                     CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
                     // only own civilization
-                    Console.WriteLine("Step_3582: " + _text);
+                    Console.WriteLine("Step_3583:; " + _text);
                     //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
 
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));

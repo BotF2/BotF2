@@ -480,7 +480,7 @@ namespace Supremacy.Combat
                 //{
                 //    GameLog.Core.Combat.DebugFormat("asset of {0} in sector", asset.Owner.Key);
                 //}
-                _text = "Step_3020: " + _sectorString + " > SendUpdates for current friendlyAssets for " + playerAsset.Owner.Key;
+                _text = "Step_3020: " + _sectorString + " SendUpdates for current friendlyAssets for " + playerAsset.Owner.Key;
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
 

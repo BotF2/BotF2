@@ -157,7 +157,7 @@ namespace Supremacy.Combat
 
                 List<Tuple<CombatUnit, CombatWeapon[]>> _cloakedShips = _combatShips.Where(s => s.Item1.IsCloaked).ToList();
                     
-                _text = "Step_3020: " + _sectorString + " > _cloakedShips = " + _cloakedShips.Count;
+                _text = "Step_3022: " + _sectorString + " > _cloakedShips = " + _cloakedShips.Count;
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2225,7 +2225,7 @@ namespace Supremacy.Combat
                                 + " > Ship " + combatent.Item1.Source.ObjectID
                                 + " * " + combatent.Item1.Name
                                 + " * ( " + combatent.Item1.Source.Design
-                                + " ) destroyed."
+                                + " ) > destroyed."
                                 ;
 
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
@@ -2253,7 +2253,7 @@ namespace Supremacy.Combat
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Gray));
 
                                 _text = "Step_3008: " + _text;
-                                //Console.WriteLine(_text);
+                                Console.WriteLine(_text);
                                 GameLog.Core.CombatDetails.DebugFormat(_text);
 
                                 //MessageBox.Show(_text, "INFO", MessageBoxButton.OK);
@@ -2294,7 +2294,7 @@ namespace Supremacy.Combat
                             _text = combatent.Item1.Source.Location
                             + " " + combatent.Item1.Source.Sector.Name
                             + " > " + combatent.Item1.Source.ObjectID
-                            + " " + combatent.Item1.Name
+                            + " * " + combatent.Item1.Name + " * "
                             + " " + combatent.Item1.Source.Design
                             + string.Format(ResourceManager.GetString("DESTROYED"))
                             //+ " destroyed."
@@ -2305,7 +2305,7 @@ namespace Supremacy.Combat
 
 
                             _text = "Step_3306: " + _text;
-                            //Console.WriteLine(_text);
+                            Console.WriteLine(_text);
                             GameLog.Core.CombatDetails.DebugFormat(_text);
 
                         }
@@ -2361,7 +2361,7 @@ namespace Supremacy.Combat
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
                 {
-                    _text = "Step_3316: " +
+                    _text = "Step_3316:; " +
                         ship.Item1.Source.Location
                         + " > _combatShipsTempNotDestroyed: " 
                     
@@ -2413,28 +2413,28 @@ namespace Supremacy.Combat
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
                     _text = "Combat at " + ship.Item1.Source.Location
-                        + " > Ship * " + ship.Item1.Source.ObjectID
+                        + " > Ship " + ship.Item1.Source.ObjectID
 
-                        + " * " + ship.Item1.Name + " * "
-                        + "  " + ship.Item1.Source.Design
-                        + " " + string.Format(ResourceManager.GetString("ALIVE_AND_STAYING"))
+                        + ": * " + ship.Item1.Name + " * "
+                        + " ( " + ship.Item1.Source.Design + " ) "
+                        + " > " + string.Format(ResourceManager.GetString("ALIVE_AND_STAYING"))
                     //+ " still alive and staying." + Resources
                         ;
-                    Console.WriteLine("Step_6282: " + _text);
+                    Console.WriteLine("Step_6282:; " + _text);
                     //GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
 
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
 
                     //-----
 
-                    _text = "Combat at " + ship.Item1.Source.Location
-                        + " > " + string.Format(ResourceManager.GetString("UNITS")) 
-                        + ": " + _allRetreatShips.Count + blank + string.Format(ResourceManager.GetString("RETREATED"))
-                        ;
-                    Console.WriteLine("Step_6282: " + _text);
-                    //GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
+                    //_text = "Combat at " + ship.Item1.Source.Location
+                    //    + " > " + string.Format(ResourceManager.GetString("UNITS")) 
+                    //    + ": " + _allRetreatShips.Count + blank + string.Format(ResourceManager.GetString("RETREATED"))
+                    //    ;
+                    //Console.WriteLine("Step_6283:; " + _text);
+                    ////GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
 
-                    civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
+                    //civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
 
                 }
             }
@@ -2463,13 +2463,14 @@ namespace Supremacy.Combat
 
                             CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
                             _text = "Combat at " + ship.Item1.Source.Location
-                                + " > #" + ship.Item1.Source.ObjectID
-                                + "  " + ship.Item1.Source.Design
-                                + " * " + ship.Item1.Name + " * "
-                                + string.Format(ResourceManager.GetString("RETREATED"))
+                                + " > Ship " + ship.Item1.Source.ObjectID
+
+                                + ": * " + ship.Item1.Name + " * "
+                                + " ( " + ship.Item1.Source.Design + " ) "
+                                + " > " + string.Format(ResourceManager.GetString("RETREATED"))
                                 //+ "retreated."
                                 ;
-                            Console.WriteLine("Step_6382: " + _text);
+                            Console.WriteLine("Step_6382:; " + _text);
                             //GameLog.Core.CombatDetails.DebugFormat("Step_6382: " + _text);
 
                             civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
