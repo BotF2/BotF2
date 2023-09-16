@@ -593,11 +593,11 @@ namespace Supremacy.Universe
             UpdateSectors();
 
             string _text;
-            _text = "Step_4000: Deserializing ships and fleets...";
+            _text = "Step_4000:; Deserializing ships and fleets...";
             Console.WriteLine(_text);
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
-            _text = "Step_4500: ;Objects following from _checkLoading";
+            _text = "Step_4500:; Objects following from _checkLoading";
             Console.WriteLine(_text); 
             GameLog.Core.SaveLoad.DebugFormat(_text);
  

@@ -361,7 +361,7 @@ namespace Supremacy.Universe
                             Sector loc = GameContext.Current.Universe.Map[y, x];
                             if (!loc.Name.Contains("(") && !bool_output_done == true)  // emtpy sector are named e.g. (0,0)
                             {
-                                _text = "Step_1227: ;MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType
+                                _text = "Step_1227:; MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType
                                     + " - no more output or deactivate this line and the boolean"
                                     ;
                                 bool_output_done = true;
@@ -787,7 +787,7 @@ namespace Supremacy.Universe
 
             if (File.Exists(_fileName))
             {
-                _text = "__Step_1256: " + _fileName + " exists and will be overwritten !";
+                _text = "Step_1256:; " + _fileName + " exists and will be overwritten !";
                 Console.WriteLine(_text);
                 GameLog.Client.GameData.InfoFormat(_text);
                 //_ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
@@ -818,7 +818,7 @@ namespace Supremacy.Universe
             }
             writer.Close();
 
-            _text = "No " + file.Name + " available, but we created an empty one named > C_NEW_" + fileNameCanonMAP;
+            _text = "Step_1257:; No " + file.Name + " available, but we created an empty one named > C_NEW_" + fileNameCanonMAP;
             Console.WriteLine(_text);
             GameLog.Client.GameData.InfoFormat(_text);
 

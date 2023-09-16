@@ -40,6 +40,9 @@ namespace Supremacy.Universe
         private int _turnCreated;
         private int _lastOwnershipChange;
 
+        [NonSerialized]
+        public string _text;
+
         //private string _text;
         //private readonly string newline = Environment.NewLine;
 

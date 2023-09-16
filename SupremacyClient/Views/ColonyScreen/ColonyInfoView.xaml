@@ -44,11 +44,11 @@
                 <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" ( " />-->
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.ActiveFoodFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Active1_FoodFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" / " />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.TotalFoodFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Total1_FoodFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" - " />
                 <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource FoodColor}" 
@@ -71,11 +71,11 @@
             <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" ( " />-->
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.ActiveIndustryFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Active2_IndustryFacilities, Mode=OneWay}" />
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" / " />
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.TotalIndustryFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Total2_IndustryFacilities, Mode=OneWay}" />
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" - " />
             <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource IndustryColor}" 
@@ -100,11 +100,11 @@
                 <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" ( " />-->
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.ActiveEnergyFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Active3_EnergyFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" / " />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.TotalEnergyFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Total3_EnergyFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" - " />
                 <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource EnergyColor}" 
@@ -125,11 +125,11 @@
                 <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" ( " />-->
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.ActiveResearchFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Active4_ResearchFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" / " />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.TotalResearchFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Total4_ResearchFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" - " />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource ResearchColor}" 
@@ -150,11 +150,11 @@
                 <!--<TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" ( " />-->
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.ActiveIntelligenceFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Active5_IntelligenceFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" / " />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
-                       Text="{Binding Path=SelectedColony.TotalIntelligenceFacilities, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Total5_IntelligenceFacilities, Mode=OneWay}" />
                 <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"
                        Text=" - " />                
             <TextBlock Margin="0,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource IntelColor}"

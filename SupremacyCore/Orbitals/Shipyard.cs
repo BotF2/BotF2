@@ -30,8 +30,8 @@ namespace Supremacy.Orbitals
         private ArrayWrapper<ShipyardBuildSlot> _buildSlots;
         // private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
-        private string _text;
-        private readonly string newline = Environment.NewLine;
+        //private string _text;
+        //private readonly string newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the type of the UniverseObject.

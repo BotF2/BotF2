@@ -32,7 +32,7 @@ namespace Supremacy.Orbitals
         private Meter _camouflagedMeter;
         [NonSerialized]
         private Meter _firePower;
-        private string _text;
+        //private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.

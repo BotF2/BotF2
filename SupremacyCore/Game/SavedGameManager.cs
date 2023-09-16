@@ -213,11 +213,11 @@ namespace Supremacy.Game
                 {
                     fileName = Path.Combine(SavedGameDirectory, FixFileName(fileName));
                 }
-                GameLog.Core.General.InfoFormat("Step_0275: Loading saved game {0}", fileName);
+                GameLog.Core.General.InfoFormat("Step_0275:; Loading saved game {0}", fileName);
 
                 using (FileStream fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    GameLog.Core.SaveLoad.DebugFormat("Step_0277: beginning loading {0} ...", fileName);
+                    GameLog.Core.SaveLoad.DebugFormat("Step_0277:; beginning loading {0} ...", fileName);
                     header = SavedGameHeader.Read(fileStream);
                     string thisGameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     if (header.GameVersion != thisGameVersion)
@@ -225,7 +225,7 @@ namespace Supremacy.Game
                         if (!fileName.Contains("V17"))
                         throw new Exception(string.Format("Incompatible game save - {0} vs {1}", header.GameVersion, thisGameVersion));
                     }
-                    GameLog.Core.SaveLoad.DebugFormat("Step_0286: loading SavedGameHeader of {0}", fileName);
+                    GameLog.Core.SaveLoad.DebugFormat("Step_0286:; loading SavedGameHeader of {0}", fileName);
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
                         int value;
@@ -233,16 +233,16 @@ namespace Supremacy.Game
                         {
                             memoryStream.WriteByte((byte)value);
                         }
-                        GameLog.Core.SaveLoad.DebugFormat("Step_0283: loading {0}, Stream was read...", fileName);
+                        GameLog.Core.SaveLoad.DebugFormat("Step_0283:; loading {0}, Stream was read...", fileName);
                         _ = memoryStream.Seek(0, SeekOrigin.Begin);
-                        Console.WriteLine("Step_0288: reading memoryStream into game");
+                        Console.WriteLine("Step_0288:; reading memoryStream into game");
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }
                 }
 
-                GameLog.Core.SaveLoad.DebugFormat("Step_0333: loading GameTables from HDD...");
+                GameLog.Core.SaveLoad.DebugFormat("Step_0333:; loading GameTables from HDD...");
                 game.Tables = GameTables.Load();
-                GameLog.Core.SaveLoad.DebugFormat("Step_0344: loading ResearchMatrix from HDD...");
+                GameLog.Core.SaveLoad.DebugFormat("Step_0344:; loading ResearchMatrix from HDD...");
                 game.ResearchMatrix = ResearchMatrix.Load();
                 game.OnDeserialized();
                 
@@ -251,7 +251,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error("Step_4098: Error occurred loading saved game", e);
+                GameLog.Core.General.Error("Step_4098:; Error occurred loading saved game", e);
 
                 header = null;
                 game = null;
@@ -306,7 +306,7 @@ namespace Supremacy.Game
                 fileName = "_manual_save_(CTRL+S)";
             }
 
-            _text = "Step_3100: SaveGame: localPlayer= " + localPlayer + ", fileName= " + fileName;
+            _text = "Step_3100:; SaveGame: localPlayer= " + localPlayer + ", fileName= " + fileName;
             Console.WriteLine(_text);
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
@@ -350,7 +350,7 @@ namespace Supremacy.Game
                     header.IsAutoSave = true;
                 }
 
-                _text = "Step_9000: Writing game... Turn " + game.TurnNumber;
+                _text = "Step_9000:; Writing game... Turn " + game.TurnNumber;
                 Console.WriteLine(_text);
                 GameLog.Client.GameData.DebugFormat(_text);
 
@@ -476,7 +476,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.SaveLoad.WarnFormat("Step_9505: Problem at saving autosav and previous autosav Exception {0} {1}", e.Message, e.StackTrace);
+                GameLog.Core.SaveLoad.WarnFormat("Step_9505:; Problem at saving autosav and previous autosav Exception {0} {1}", e.Message, e.StackTrace);
             }
 
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);

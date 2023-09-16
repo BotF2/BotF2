@@ -225,7 +225,7 @@ namespace Supremacy.AI
                             colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, colony.GetFacilityType(ProductionCategory.Industry))));
                             _text = "Step_1205: HandleBuildings on "
                                 + colony.Name + " " + colony.Owner
-                                + " > added 1 Research Facility Build Order"
+                                + " > added 1 Industry Facility Build Order"
                                 ;
                             Console.WriteLine(_text);
                         }

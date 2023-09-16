@@ -71,7 +71,7 @@ namespace Supremacy.AI
                 {
                     othersHomeSystem = GameContext.Current.CivilizationManagers[civ.TargetCivilization].HomeSystem;
 
-                    _text = "Step_6150: " 
+                    _text = "Step_6150:; " 
                         + homeSystem.Location
                         + " " + civ.Name
                         + " has TargetCivilization " + civ.TargetCivilization.Name
@@ -112,7 +112,7 @@ namespace Supremacy.AI
                         // Have target civilization
                         if (civ.TargetCivilization != null)
                         {
-                            _text = "Step_6260: UnitAI-DoTurn; "
+                            _text = "Step_6260:; UnitAI-DoTurn; "
                                 + "TargetCiv=" + civ.TargetCivilization + " (not null)"
                                 ;
                             Console.WriteLine(_text);
@@ -688,7 +688,7 @@ namespace Supremacy.AI
 
                             if (fleet.IsSpy) // install spy network
                             {
-                                _text = "Step_6810: fleet.IsSpy: " + _fleetText
+                                _text = "Step_6810:; fleet.IsSpy: " + _fleetText
                                         //+ " " + fleet.ObjectID
                                         //+ " " + fleet.Name
                                         ////+ " to go to " + bestSystemToColonize.Name
@@ -732,7 +732,7 @@ namespace Supremacy.AI
 
                             if (fleet.IsScience)
                             {
-                                _text = "Step_6910: fleet.IsScience: " + _fleetText
+                                _text = "Step_6910:; fleet.IsScience: " + _fleetText
                                     //+ " " + fleet.ObjectID
                                     //+ " " + fleet.Name
                                     ////+ " to go to " + bestSystemToColonize.Name
@@ -913,14 +913,14 @@ namespace Supremacy.AI
                 .Where(r => mapData.IsScanned(r.Location) && mapData.IsExplored(r.Location))
                 .Where(w => FleetHelper.IsSectorWithinFuelRange(w.Sector, fleet))
                 .ToList();
-            _text = "Step_6160: GetBestSystemToColonize:; Available systems with FuelRange for " + fleet
+            _text = "Step_6160:; GetBestSystemToColonize:; Available systems with FuelRange for " + fleet
                 + " > " + systemsToControlList.Count
                 ;
             Console.WriteLine(_text);
 
             foreach (var item in systemsToControlList)
             {
-                _text = "Step_6170: GetBestSystemToColonize:; "
+                _text = "Step_6170:; GetBestSystemToColonize:; "
                     + " for " + fleet.Location
                     + " " + fleet.Name
                     + " > " + item.Location
@@ -934,7 +934,7 @@ namespace Supremacy.AI
             // systems is the original result
             if (systems.Count == 0)
             {
-                _text = "Step_6190: Found nothing to colonize > systems.Count = 0 for"
+                _text = "Step_6190:; Found nothing to colonize > systems.Count = 0 for"
                     + ": " + fleet.Location + blank
                     + fleet.Name
                     ;
@@ -951,7 +951,7 @@ namespace Supremacy.AI
             //StarSystem placeholder = enemySystems.FirstOrDefault();
             foreach (StarSystem system in systems)
             {
-                _text = "Step_6195: Colonizing-Aim of " + systems.Count
+                _text = "Step_6195:; Colonizing-Aim of " + systems.Count
                     + ": " + system.Location + blank
                     + system.Name
                     ;
@@ -965,7 +965,7 @@ namespace Supremacy.AI
             foreach (StarSystem removeSystem in enemySystems)
             {
                 _ = systems.Remove(removeSystem);
-                _text = "Step_6197: Colonizing-Aim of " + systems.Count
+                _text = "Step_6197:; Colonizing-Aim of " + systems.Count
                     + " (REMOVED): " + removeSystem.Location + blank
                     + removeSystem.Name
                     ;
@@ -1392,7 +1392,7 @@ namespace Supremacy.AI
                 fleet.UnitAIType = UnitAIType.Building;
                 fleet.Activity = UnitActivity.BuildStation;
 
-                _text = "Step_3700: "
+                _text = "Step_3700:; "
                     + fleet.Location
                     + " > Constructor fleet " + blank + fleet.ObjectID
                     + blank + fleet.Name
@@ -1442,7 +1442,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestSectorForStation(Fleet fleet, List<Fleet> constructionFleets, out Sector bestSector)
         {
-            _text = "Step_6520: GetBestSectorForStation: " + fleet.Name + fleet.Location;
+            _text = "Step_6520:; GetBestSectorForStation: " + fleet.Name + fleet.Location;
             Console.WriteLine(_text);
             //GameLog.Client.AIDetails.DebugFormat(_text);
             GetFleetOwner(fleet);
@@ -1665,7 +1665,7 @@ namespace Supremacy.AI
                         try
                         {
                             bestSector = objectsAroundHome.Last().Sector; //[objectsAroundHome.Count - 1].Sector;
-                            _text = "Step_6550: " + bestSector.Location + " " + bestSector.Name + ": sector selected for station build for " + fleet.Owner.Key;
+                            _text = "Step_6550:; " + bestSector.Location + " " + bestSector.Name + ": sector selected for station build for " + fleet.Owner.Key;
                             Console.WriteLine(_text);
                             // GameLog.Core.AIDetails.DebugFormat(_text);
                         }

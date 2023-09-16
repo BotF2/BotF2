@@ -32,9 +32,9 @@ namespace Supremacy.Universe
         private Colony _colony;
         private ArrayWrapper<Planet> _planets;
         private StarType _starType;
-        public string _text;
+        //public string _text;
         public bool _checkLoading = true;
-        public readonly string newline = Environment.NewLine;
+        //public readonly string newline = Environment.NewLine;
         #endregion
 
         #region Constructors

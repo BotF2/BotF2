@@ -2231,7 +2231,7 @@ namespace Supremacy.Tech
 
             if (!maint_output_done)
             {
-                _text = "Step_3200: Maint old:";
+                _text = "Step_3200:; Maint old:";
                 Console.WriteLine(_text);
 
                 _text = ship.Key

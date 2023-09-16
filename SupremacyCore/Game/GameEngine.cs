@@ -106,6 +106,7 @@ namespace Supremacy.Game
         /// to submit combat orders.
         /// </summary>
         private readonly ManualResetEvent CombatReset = new ManualResetEvent(false);
+        public readonly string _turnNumber;
         #endregion
 
         #region OnTurnPhaseChanged() Method
@@ -2464,6 +2465,7 @@ namespace Supremacy.Game
             int _civsToDo = 0; // for Debug
             _civsToDo = GameContext.Current.Civilizations.Count;
             string _creditsText;
+            string _turnNumber = GameContext.Current.TurnNumber.ToString();
 
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
@@ -2626,7 +2628,9 @@ namespace Supremacy.Game
 
                         GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
                         _text = "Step_4160:; --------------------------------------------------------------" + newline
-                            + "Step_4160:; Turn " + GameContext.Current.TurnNumber + ": " + civ.Key
+                            + "Step_4160:; Turn " + GameContext.Current.TurnNumber 
+                            + ": " + colony.Location 
+                            + "; " + civ.Key
                             + " undone colonies = " + _coloniesToDo
                             + ", last change, " + civManager.Credits.LastChange
                             + ", Credits = " + civManager.Credits
@@ -2712,7 +2716,7 @@ namespace Supremacy.Game
 
                             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Orange));
 
-                            _text = "Step_4162:; " + _text;
+                            _text = "Step_4162:; Turn " + GameContext.Current.TurnNumber + ": " + _text;
                             Console.WriteLine(_text);
                             GameLog.Core.Production.DebugFormat(_text);
 
@@ -2975,7 +2979,10 @@ namespace Supremacy.Game
                                 }
                             }
                         }
-                        _text = "Step_4290:; DoProduction done for " + civ.Name + " trying ### > " + _constructionAim;
+                        _text = "Step_4290:; Turn " + _turnNumber 
+                            + ": " + colony.Location 
+                            + "DoProduction done for " + civ.Name 
+                            + " trying ### > " + _constructionAim;
                         Console.WriteLine(_text);
                         GameLog.Core.Production.DebugFormat(_text);
 

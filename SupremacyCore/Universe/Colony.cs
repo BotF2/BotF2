@@ -101,17 +101,17 @@ namespace Supremacy.Universe
         //private IValueProvider<int> _activeFoodFacilities;
         //private IValueProvider<int> _totalFoodFacilities;
 
-        //private IValueProvider<int> _activeIndustryFacilities;
-        //private IValueProvider<int> _totalIndustryFacilities;
+        //private IValueProvider<int> _active2_IndustryFacilities;
+        //private IValueProvider<int> _total2_IndustryFacilities;
 
-        //private IValueProvider<int> _activeEnergyFacilities;
-        //private IValueProvider<int> _totalEnergyFacilities;
+        //private IValueProvider<int> _active3_EnergyFacilities;
+        //private IValueProvider<int> _total3_EnergyFacilities;
 
-        //private IValueProvider<int> _activeResearchFacilities;
-        //private IValueProvider<int> _totalResearchFacilities;
+        //private IValueProvider<int> _active4_ResearchFacilities;
+        //private IValueProvider<int> _total4_ResearchFacilities;
 
-        //private IValueProvider<int> _activeIntelligenceFacilities;
-        //private IValueProvider<int> _totalIntelligenceFacilities;
+        //private IValueProvider<int> _active5_IntelligenceFacilities;
+        //private IValueProvider<int> _total5_IntelligenceFacilities;
 
         private ColonyFacilitiesAccessor _activeFacilitiesProvider;
         private ColonyFacilitiesAccessor _unusedFacilitiesProvider;
@@ -147,10 +147,6 @@ namespace Supremacy.Universe
         private int _systemId = -1;
         private CollectionBase<TradeRoute> _tradeRoutes;
 
-        //[NonSerialized]
-        public string _text;
-        public string blank = " ";
-        public string newline = Environment.NewLine;
 
         private Colony()
         {
@@ -290,7 +286,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                int _available = GetAvailableLabor() / 10 * -1;
+                int _available = GetAvailableLabor() / 10 /** -1*/;
                 if (_available >= 0)
                 {
                     return _available;
@@ -2049,10 +2045,10 @@ namespace Supremacy.Universe
             }
             else { _shipyardSlots = 0; }
 
-            _text = "Step_4202: ------------------------------";
+            _text = "Step_4202:; ------------------------------";
             Console.WriteLine(_text);
 
-            _text = "Step_4203: Turn " + GameContext.Current.TurnNumber + ": ";
+            _text = "Step_4203:; Turn " + _turnnumber +   GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
             _text += colony.Name + " ( "+ colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = Total1_FoodFacilities - GetActiveFacilities(ProductionCategory.Food);
@@ -2085,16 +2081,16 @@ namespace Supremacy.Universe
 //                + _intelPF_unused;
 
 //            IValueProvider<int> dummy2 = _activeFoodFacilities;
-//            IValueProvider<int> dummy3 = _activeIndustryFacilities;
-//            IValueProvider<int> dummy4 = _activeEnergyFacilities;
-//            IValueProvider<int> dummy5 = _activeResearchFacilities;
-//            IValueProvider<int> dummy6 = _activeIntelligenceFacilities;
+//            IValueProvider<int> dummy3 = _active2_IndustryFacilities;
+//            IValueProvider<int> dummy4 = _active3_EnergyFacilities;
+//            IValueProvider<int> dummy5 = _active4_ResearchFacilities;
+//            IValueProvider<int> dummy6 = _active5_IntelligenceFacilities;
 
 //            IValueProvider<int> dummy11 = _totalFoodFacilities;
-//            IValueProvider<int> dummy12 = _totalIndustryFacilities;
-//            IValueProvider<int> dummy13 = _totalEnergyFacilities;
-//            IValueProvider<int> dummy14 = _totalResearchFacilities;
-//            IValueProvider<int> dummy15 = _totalIntelligenceFacilities;
+//            IValueProvider<int> dummy12 = _total2_IndustryFacilities;
+//            IValueProvider<int> dummy13 = _total3_EnergyFacilities;
+//            IValueProvider<int> dummy14 = _total4_ResearchFacilities;
+//            IValueProvider<int> dummy15 = _total5_IntelligenceFacilities;
 
 //            int dummy21 = _foodPF_unused;
 //            int dummy22 = _industryPF_unused;
@@ -2871,17 +2867,17 @@ namespace Supremacy.Universe
             //_activeFoodFacilities = new ObservableValueProvider<int>();
             //_totalFoodFacilities = new ObservableValueProvider<int>();
 
-            //_activeIndustryFacilities = new ObservableValueProvider<int>();
-            //_totalIndustryFacilities = new ObservableValueProvider<int>();
+            //_active2_IndustryFacilities = new ObservableValueProvider<int>();
+            //_total2_IndustryFacilities = new ObservableValueProvider<int>();
 
-            //_activeEnergyFacilities = new ObservableValueProvider<int>();
-            //_totalEnergyFacilities = new ObservableValueProvider<int>();
+            //_active3_EnergyFacilities = new ObservableValueProvider<int>();
+            //_total3_EnergyFacilities = new ObservableValueProvider<int>();
 
-            //_activeResearchFacilities = new ObservableValueProvider<int>();
-            //_totalResearchFacilities = new ObservableValueProvider<int>();
+            //_active4_ResearchFacilities = new ObservableValueProvider<int>();
+            //_total4_ResearchFacilities = new ObservableValueProvider<int>();
 
-            //_activeIntelligenceFacilities = new ObservableValueProvider<int>();
-            //_totalIntelligenceFacilities = new ObservableValueProvider<int>();
+            //_active5_IntelligenceFacilities = new ObservableValueProvider<int>();
+            //_total5_IntelligenceFacilities = new ObservableValueProvider<int>();
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)

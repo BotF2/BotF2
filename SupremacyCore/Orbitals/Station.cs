@@ -28,7 +28,7 @@ namespace Supremacy.Orbitals
         private IIndexedEnumerable<BuildSlot> _buildSlots;
         private int _buildOutput;
         private List<BuildQueueItem> _buildQueue;
-        private string _text;
+        //private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.

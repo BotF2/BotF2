@@ -25,7 +25,7 @@ namespace Supremacy.Tech
     {
         private int _designId;
         private bool _scrap;
-        private string _text;
+        //private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
