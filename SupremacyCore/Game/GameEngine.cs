@@ -1748,7 +1748,7 @@ namespace Supremacy.Game
 
                         if (newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.TotalIndustryFacilities > colony.ActiveIndustryFacilities)
+                            while (newLabors > 0 && colony.Total2_IndustryFacilities > colony.Active2_IndustryFacilities)
                             {
                                 _ = colony.ActivateFacility(ProductionCategory.Industry);
                                 newLabors -= 1;
@@ -1766,7 +1766,7 @@ namespace Supremacy.Game
 
                         if (newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.TotalResearchFacilities > colony.ActiveResearchFacilities)
+                            while (newLabors > 0 && colony.Total4_ResearchFacilities > colony.Active4_ResearchFacilities)
                             {
                                 _ = colony.ActivateFacility(ProductionCategory.Research);
                                 newLabors -= 1;
@@ -1785,7 +1785,7 @@ namespace Supremacy.Game
 
                         if (newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.TotalIntelligenceFacilities > colony.ActiveIntelligenceFacilities)
+                            while (newLabors > 0 && colony.Total5_IntelligenceFacilities > colony.Active5_IntelligenceFacilities)
                             {
                                 _ = colony.ActivateFacility(ProductionCategory.Intelligence);
                                 newLabors -= 1;
@@ -1803,7 +1803,7 @@ namespace Supremacy.Game
 
                         if (newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.TotalEnergyFacilities > colony.ActiveEnergyFacilities)
+                            while (newLabors > 0 && colony.Total3_EnergyFacilities > colony.Active3_EnergyFacilities)
                             {
                                 _ = colony.ActivateFacility(ProductionCategory.Energy);
                                 newLabors -= 1;
@@ -1820,7 +1820,7 @@ namespace Supremacy.Game
 
                         if (newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.TotalFoodFacilities > colony.ActiveFoodFacilities)
+                            while (newLabors > 0 && colony.Total1_FoodFacilities > colony.Active1_FoodFacilities)
                             {
                                 _ = colony.ActivateFacility(ProductionCategory.Food);
                                 newLabors -= 1;
@@ -1838,11 +1838,11 @@ namespace Supremacy.Game
                         int availableLaborUnits = colony.GetAvailableLabor() / 10;
                         _text = colony.Location /*+ blank + colony.Name*/
                         + " > Labor Pool: " + availableLaborUnits
-                        + " - Food: " + colony.ActiveFoodFacilities + " / " + colony.TotalFoodFacilities
-                        + " - Industry: " + colony.ActiveIndustryFacilities + " / " + colony.TotalIndustryFacilities
-                        + " - Energy: " + colony.ActiveEnergyFacilities + " / " + colony.TotalEnergyFacilities
-                        + " - Research: " + colony.ActiveResearchFacilities + " / " + colony.TotalResearchFacilities
-                        + " - Intel: " + colony.ActiveIntelligenceFacilities + " / " + colony.TotalIntelligenceFacilities
+                        + " - Food: " + colony.Active1_FoodFacilities + " / " + colony.Total1_FoodFacilities
+                        + " - Industry: " + colony.Active2_IndustryFacilities + " / " + colony.Total2_IndustryFacilities
+                        + " - Energy: " + colony.Active3_EnergyFacilities + " / " + colony.Total3_EnergyFacilities
+                        + " - Research: " + colony.Active4_ResearchFacilities + " / " + colony.Total4_ResearchFacilities
+                        + " - Intel: " + colony.Active5_IntelligenceFacilities + " / " + colony.Total5_IntelligenceFacilities
                         + " - Pop: " + colony.Population.CurrentValue + " / " + colony.MaxPopulation
                         + "  for " + colony.Name
                         ;
@@ -2367,7 +2367,7 @@ namespace Supremacy.Game
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
                 foreach (Colony colony in civManager.Colonies)
                 {
-                    int _energyPF_unused = colony.TotalEnergyFacilities - colony.GetActiveFacilities(ProductionCategory.Energy);
+                    int _energyPF_unused = colony.Total3_EnergyFacilities - colony.GetActiveFacilities(ProductionCategory.Energy);
                     //GameLog.Core.EnergyDetails.DebugFormat(" Turn {0}: {1} Energy Facilities unused at {2} {3} {4} "
                     //    , turn
                     //    , _energyPF_unused
@@ -3063,9 +3063,9 @@ namespace Supremacy.Game
                               //int _ratioIndustry;
 
                               // active 25 of total 50 = 50 %;
-                              if (colony.TotalIndustryFacilities > 0)
+                              if (colony.Total2_IndustryFacilities > 0)
                               {
-                                  _ratioIndustryForShipProduction = (100 * colony.ActiveIndustryFacilities / colony.TotalIndustryFacilities) + 1;
+                                  _ratioIndustryForShipProduction = (100 * colony.Active2_IndustryFacilities / colony.Total2_IndustryFacilities) + 1;
                               }
 
                               int output = shipyard.GetBuildOutput(slot.SlotID) / 100 * _ratioIndustryForShipProduction;

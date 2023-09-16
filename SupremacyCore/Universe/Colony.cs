@@ -1302,15 +1302,15 @@ namespace Supremacy.Universe
 
             int _laborpool_unused = AvailableLabor;
             int _foodActive = GetActiveFacilities(ProductionCategory.Food);
-            int _foodPF_unused = TotalFoodFacilities - _foodActive;
+            int _foodPF_unused = Total1_FoodFacilities - _foodActive;
             int _industryActive = GetActiveFacilities(ProductionCategory.Industry);
-            int _industryPF_unused = TotalIndustryFacilities - _industryActive;
+            int _industryPF_unused = Total2_IndustryFacilities - _industryActive;
             int _energyActive = GetActiveFacilities(ProductionCategory.Energy);
-            int _energyPF_unused = TotalEnergyFacilities - _energyActive;
+            int _energyPF_unused = Total3_EnergyFacilities - _energyActive;
             int _researchActive = GetActiveFacilities(ProductionCategory.Research);
-            int _researchPF_unused = TotalEnergyFacilities - _researchActive;
+            int _researchPF_unused = Total3_EnergyFacilities - _researchActive;
             int _intelActive = GetActiveFacilities(ProductionCategory.Intelligence);
-            int _intelPF_unused = TotalIntelligenceFacilities - _intelActive;
+            int _intelPF_unused = Total5_IntelligenceFacilities - _intelActive;
 //#pragma warning restore IDE0059 // Unnecessary assignment of a value
             //int _optimizedPF;
             //int _diff;
@@ -1331,7 +1331,7 @@ namespace Supremacy.Universe
                 GameLog.Core.ProductionDetails.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
                     , GameContext.Current.TurnNumber
                     , _foodActive
-                    , TotalFoodFacilities
+                    , Total1_FoodFacilities
                     , _foodPF_unused
 
                     , Population
@@ -1839,12 +1839,12 @@ namespace Supremacy.Universe
         public void HandlePF()
         {
             //int _laborpool_unused = AvailableLabor;
-            int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
-            //int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
+            int _foodPF_unused = Total1_FoodFacilities - GetActiveFacilities(ProductionCategory.Food);
+            //int _industryPF_unused = Total2_IndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
             // already comes in ... 
-            //int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
-            //int _researchPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Research);
-            //int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
+            //int _energyPF_unused = Total3_EnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
+            //int _researchPF_unused = Total3_EnergyFacilities - GetActiveFacilities(ProductionCategory.Research);
+            //int _intelPF_unused = Total5_IntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
 
             int _orbBat_used = ActiveOrbitalBatteries;
 
@@ -2055,17 +2055,17 @@ namespace Supremacy.Universe
             _text = "Step_4203: Turn " + GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
             _text += colony.Name + " ( "+ colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
-            //int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
-            _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + TotalFoodFacilities + " (" + colony.FoodReserves + ")"; // _foodPF_unused;
-            //int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
-            _text += ", Prod: " + GetActiveFacilities(ProductionCategory.Industry) + "/" + TotalIndustryFacilities; // _industryPF_unused;
+            //int _foodPF_unused = Total1_FoodFacilities - GetActiveFacilities(ProductionCategory.Food);
+            _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + Total1_FoodFacilities + " (" + colony.FoodReserves + ")"; // _foodPF_unused;
+            //int _industryPF_unused = Total2_IndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
+            _text += ", Prod: " + GetActiveFacilities(ProductionCategory.Industry) + "/" + Total2_IndustryFacilities; // _industryPF_unused;
             // already comes in ... 
-            //int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
-            _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + TotalEnergyFacilities + " (" + colony.NetEnergy + ")"; // _energyPF_unused;
-            //int _researchPF_unused = TotalResearchFacilities - GetActiveFacilities(ProductionCategory.Research);
-            _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + TotalResearchFacilities; // _researchPF_unused;
-            //int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
-            _text += ", Int: " + GetActiveFacilities(ProductionCategory.Intelligence) + "/" + TotalIntelligenceFacilities; // _intelPF_unused;
+            //int _energyPF_unused = Total3_EnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
+            _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + Total3_EnergyFacilities + " (" + colony.NetEnergy + ")"; // _energyPF_unused;
+            //int _researchPF_unused = Total4_ResearchFacilities - GetActiveFacilities(ProductionCategory.Research);
+            _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + Total4_ResearchFacilities; // _researchPF_unused;
+            //int _intelPF_unused = Total5_IntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
+            _text += ", Int: " + GetActiveFacilities(ProductionCategory.Intelligence) + "/" + Total5_IntelligenceFacilities; // _intelPF_unused;
             //int _orbBatused = colony.ActiveOrbitalBatteries;
             _text += ", Slots: " + _shipyardSlots;
             //int _orbBatused = colony.ActiveOrbitalBatteries;
@@ -2231,54 +2231,54 @@ namespace Supremacy.Universe
         }
 
         // FOOD
-        public int ActiveFoodFacilities
+        public int Active1_FoodFacilities
         {
             get { try { return GetActiveFacilities(ProductionCategory.Food); } catch { return 0; } }
         }
 
-        public int TotalFoodFacilities
+        public int Total1_FoodFacilities
         {
             get { try { return GetTotalFacilities(ProductionCategory.Food); } catch { return 0; } }
         }
         // Industry
-        public int ActiveIndustryFacilities
+        public int Active2_IndustryFacilities
         {
             get { try { return GetActiveFacilities(ProductionCategory.Industry); } catch { return 0; } }
         }
 
-        public int TotalIndustryFacilities
+        public int Total2_IndustryFacilities
         {
             get { try { return GetTotalFacilities(ProductionCategory.Industry); } catch { return 0; } }
         }
 
 
         // Energy
-        public int ActiveEnergyFacilities
+        public int Active3_EnergyFacilities
         {
             get { try { return GetActiveFacilities(ProductionCategory.Energy); } catch { return 0; } }
         }
 
-        public int TotalEnergyFacilities
+        public int Total3_EnergyFacilities
         {
             get { try { return GetTotalFacilities(ProductionCategory.Energy); } catch { return 0; } }
         }
         // Research
-        public int ActiveResearchFacilities
+        public int Active4_ResearchFacilities
         {
             get { try { return GetActiveFacilities(ProductionCategory.Research); } catch { return 0; } }
         }
 
-        public int TotalResearchFacilities
+        public int Total4_ResearchFacilities
         {
             get { try { return GetTotalFacilities(ProductionCategory.Research); } catch { return 0; } }
         }
         // Intelligence 
-        public int ActiveIntelligenceFacilities
+        public int Active5_IntelligenceFacilities
         {
             get { try { return GetActiveFacilities(ProductionCategory.Intelligence); } catch { return 0; } }
         }
 
-        public int TotalIntelligenceFacilities
+        public int Total5_IntelligenceFacilities
         {
             get { try { return GetTotalFacilities(ProductionCategory.Intelligence); } catch { return 0; } }
         }

@@ -750,11 +750,11 @@ namespace Supremacy.Universe
 
                 + ";mor;" + item.Morale
                 + ";FoodR;" + item.FoodReserves
-                + ";facF;" + item.ActiveFoodFacilities + ";of;" + item.TotalFoodFacilities
-                + ";facI;" + item.ActiveIndustryFacilities + ";of;" + item.TotalIndustryFacilities
-                + ";facE;" + item.ActiveEnergyFacilities + ";of;" + item.TotalEnergyFacilities
-                + ";facR;" + item.ActiveResearchFacilities + ";of;" + item.TotalResearchFacilities
-                + ";facI;" + item.ActiveIntelligenceFacilities + ";of;" + item.TotalIntelligenceFacilities
+                + ";facF;" + item.Active1_FoodFacilities + ";of;" + item.Total1_FoodFacilities
+                + ";facI;" + item.Active2_IndustryFacilities + ";of;" + item.Total2_IndustryFacilities
+                + ";facE;" + item.Active3_EnergyFacilities + ";of;" + item.Total3_EnergyFacilities
+                + ";facR;" + item.Active4_ResearchFacilities + ";of;" + item.Total4_ResearchFacilities
+                + ";facI;" + item.Active5_IntelligenceFacilities + ";of;" + item.Total5_IntelligenceFacilities
 
 
                 + ";since Turn;" + item.TurnCreated

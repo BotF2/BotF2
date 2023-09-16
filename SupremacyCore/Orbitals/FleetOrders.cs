@@ -1262,7 +1262,7 @@ namespace Supremacy.Orbitals
                 system.Colony.GetEnergyUsage(),
                 system.Colony.GetActiveFacilities(ProductionCategory.Energy),
                 system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities before={1}",
+            GameLog.Core.Intel.DebugFormat("{0}: Total3_EnergyFacilities before={1}",
                 system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
 
             //Effect of sabatoge
@@ -1299,7 +1299,7 @@ namespace Supremacy.Orbitals
                 civManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                         civ, system.Owner, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
             }
-            //GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            //GameLog.Core.Intel.DebugFormat("{0}: Total3_EnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
             //civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
