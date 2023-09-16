@@ -1,5 +1,4 @@
 ﻿using Microsoft.Practices.Unity;
-//using Obtics.Collections;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Client.Commands;
@@ -16,7 +15,6 @@ using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
-//using Obtics.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -42,6 +40,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _f06_ScreenCommand;
         private readonly string newline = Environment.NewLine;
         private readonly string _text;
+        private string restriction_text;
 
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
@@ -199,6 +198,7 @@ namespace Supremacy.Client.Views
             string timeString = "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
 
             string shipnames_text = "";
+            string stationnames_text = "";
 
             SectorMap map = _appContext.CurrentGame.Universe.Map;
 
@@ -627,6 +627,7 @@ namespace Supremacy.Client.Views
                 //    foreach (var item in GameContext.Current.TechDatabase)
                 //{
                 bool first_shipname = true;
+                bool first_stationname = true;
                 bool first_orbbat = true;
                 bool first_pf = true;
                 bool first_buildings = true;
@@ -634,7 +635,7 @@ namespace Supremacy.Client.Views
                 bool first_stations = true;
                 bool first_ships = true;
 
-                
+
 
 
                 foreach (var item in GameContext.Current.TechDatabase) //.Where(i => i. GameContext.Current.TechDatabase[i] as ShipDesign))
@@ -679,7 +680,7 @@ namespace Supremacy.Client.Views
                         if (first_orbbat)
                         {
                             _text += "Step_4341: ---------------" + newline;
-                            _text += "Step_4341:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COM" + newline;
+                            _text += "Step_4341:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
                             first_orbbat = false;
                         }
 
@@ -717,12 +718,12 @@ namespace Supremacy.Client.Views
                         if (first_pf)
                         {
                             _text += "Step_4342: ---------------" + newline;
-                            _text += "Step_4342:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR" + newline;
+                            _text += "Step_4342:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;LA;FIELD;OUTP;COMMENT" + newline;
                             first_pf = false;
                         }
 
                         ProductionFacilityDesign spec = item as ProductionFacilityDesign;
-                        tdb_text += ";" + spec.Duranium;
+                        //tdb_text += ";" + spec.Duranium;
                         tdb_text += ";" + spec.LaborCost;
                         tdb_text += ";" + spec.Category;
                         tdb_text += ";" + spec.UnitOutput;
@@ -765,44 +766,35 @@ namespace Supremacy.Client.Views
                         if (first_buildings)
                         {
                             _text += "Step_4343: ---------------" + newline;
-                            _text += "Step_4343:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR" + newline;
+                            _text += "Step_4343:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;R1;R2;R3;R4;Bo1;B1V;Bo2;B2V;COMMENT" + newline;
                             first_buildings = false;
                         }
 
                         Buildings.BuildingDesign spec = item as Buildings.BuildingDesign;
                         tdb_text += ";" + spec.EnergyCost;
-                        //tdb_text += ";" + spec.ScanStrength;
-                        //tdb_text += ";" + spec.SensorRange;
-                        //tdb_text += ";" + spec.HullStrength;
-                        //tdb_text += ";" + spec.ShieldStrength;
-                        //tdb_text += ";" + spec.ShieldRechargeRate;
+
+                        //Restriction
+                        if (spec.Restriction.ToString() != null)
+                        {
+                            restriction_text = ";";
+
+                            if (spec.Restriction.ToString().Contains("HomeSystem")) restriction_text += "HoS;"; else restriction_text += ";";
+                            if (spec.Restriction.ToString().Contains("OnePerEmpire")) restriction_text += "OneE;"; else restriction_text += ";";
+                            if (spec.Restriction.ToString().Contains("OnePerSystem")) restriction_text += "OneS;"; else restriction_text += ";";
+                            //if (spec.Restriction.ToString() == "HomeSystem") restriction_text += "HoS;"; else restriction_text += ";" ;
+                            //if (spec.Restriction.ToString() == "HomeSystem") restriction_text += "HoS;"; else restriction_text += ";" ;
+                            //if (spec.Restriction.ToString() == "HomeSystem") restriction_text += "HoS;"; else restriction_text += ";" ;
+                        }
+                        tdb_text += restriction_text;
 
                         if (spec.Bonuses != null)
                         {
                             foreach (var bonus in spec.Bonuses)
                             {
-                            tdb_text += ";" + bonus.BonusType;
-                            tdb_text += ";" + bonus.Amount;
-                            //tdb_text += ";" + spec.PrimaryWeapon.Damage;
-                            //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                                tdb_text += ";" + bonus.BonusType;
+                                tdb_text += ";" + bonus.Amount;
                             }
-
-
                         }
-
-                        //var re = spec.Restriction.get
-                        if (spec.Restriction != null)
-                        {
-                            //foreach (var re in spec.Restriction.)
-                            //{
-                                tdb_text += ";Restrictions";
-                                //tdb_text += ";" + re.Amount;
-                                //tdb_text += ";" + spec.PrimaryWeapon.Damage;
-                                //tdb_text += ";" + spec.PrimaryWeapon.Refire;
-                            //}
-                        }
-
-                        //tdb_text += ";" + item.s;
                     }
 
                     //ShipyardDesign
@@ -812,16 +804,17 @@ namespace Supremacy.Client.Views
                         if (first_shipyards)
                         {
                             _text += "Step_4344: ---------------" + newline;
-                            _text += "Step_4344:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR" + newline;
+                            _text += "Step_4344:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;SL;OUTP;TYPE;OUTPm;maxLvl;COMMENT" + newline;
                             first_shipyards = false;
                         }
 
                         ShipyardDesign spec = item as ShipyardDesign;
                         tdb_text += ";" + spec.BuildSlotEnergyCost;
                         tdb_text += ";" + spec.BuildSlots;
+                        tdb_text += ";" + spec.BuildSlotOutput;
                         tdb_text += ";" + spec.BuildSlotMaxOutput;
                         tdb_text += ";" + spec.BuildSlotOutputType;
-                        tdb_text += ";" + spec.BuildSlotOutput;
+
                         tdb_text += ";" + spec.MaxBuildTechLevel;
 
                     }
@@ -830,10 +823,10 @@ namespace Supremacy.Client.Views
                     if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
                     {
 
-                        if (first_stations  )
+                        if (first_stations)
                         {
                             _text += "Step_4345: ---------------" + newline;
-                            _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COM" + newline;
+                            _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
                             first_stations = false;
                         }
 
@@ -861,17 +854,63 @@ namespace Supremacy.Client.Views
                             //tdb_text += ";" + spec.PrimaryWeapon.Refire;
                         }
 
-                        //tdb_text += ";" + item.s;
+                        //StationNames
+                        if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
+                        {
+
+                            if (first_stationname)
+                            {
+                                //stationnames_text += "Step_4349: ---------------" + newline;
+                                stationnames_text += "Step_4359:;COUNT;KEY;NAMES;COMMENT" + newline;
+                                first_stationname = false;
+                            }
+
+                            StationDesign spec2 = item as StationDesign;
+
+                            //tdb_text += ";" + spec.Dilithium;
+                            //tdb_text += ";" + spec.Speed;
+                            //tdb_text += ";" + spec.Range;
+                            //tdb_text += ";" + spec.FuelCapacity;
+                            //tdb_text += ";" + spec.Maneuverability;
+                            //tdb_text += ";" + spec.WorkCapacity;
+
+                            //tdb_text += ";" + spec.ScienceAbility;
+                            //tdb_text += ";" + spec.ScanStrength;
+                            //tdb_text += ";" + spec.SensorRange;
+                            //tdb_text += ";" + spec.HullStrength;
+                            //tdb_text += ";" + spec.ShieldStrength;
+                            //tdb_text += ";" + spec.ShieldRechargeRate;
+
+                            //tdb_text += ";" + spec.CloakStrength;
+                            //tdb_text += ";" + spec.CamouflagedStrength;
+
+                            //tdb_text += ";" + spec.StationType;
+                            //tdb_text += ";" + spec.ClassName;
+
+                            int count = spec2.PossibleNames.Count;
+
+                            foreach (var name in spec2.PossibleNames)
+                            {
+                                stationnames_text += "Step_4359:"
+                                    + ";" + count
+                                    + ";" + item.Key
+
+                                    + " ;" + name.Key
+                                    + newline;
+                            }
+
+                        }
                     }
 
                     //ShipDesign
                     if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
                     {
-                       
+
                         if (first_ships)
                         {
                             _text += "Step_4346: ---------------" + newline;
-_text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Dil;Spe;Ra;Fu;Man;WO;Sc%;SP;SR;HULL;SH;ShR;Cl;Ca;Ty;CN;W1;W1C;W1D;W1R;W2;W2C;W2D;COM" + newline;
+                            _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Dil;Spe;Ra;Fu;Man;WO;Sc%;SP;SR;"
+                                                            + "HULL;SH;ShR;Cl;Ca;TYPE;CLASSNAME;W1=Weapon 1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
                             first_ships = false;
                         }
 
@@ -926,7 +965,7 @@ _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;
                         if (first_shipname)
                         {
                             //shipnames_text += "Step_4349: ---------------" + newline;
-                            shipnames_text += "Step_4359:;COUNT;KEY;NAMES;COM" + newline;
+                            shipnames_text += "Step_4359:;COUNT;KEY;NAMES;COMMENT" + newline;
                             first_shipname = false;
                         }
 
@@ -964,6 +1003,7 @@ _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;
                                 + newline;
                         }
 
+
                         //if (spec.PossibleNames != null)
                         //{
                         //    tdb_text += ";" + spec.PrimaryWeaponName;
@@ -986,7 +1026,7 @@ _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;
                         //tdb_text += ";" + item.s;
                     }
 
-                    
+
                     _text += tdb_text + newline;
 
 
@@ -1018,6 +1058,16 @@ _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;
                 streamWriter.Write(shipnames_text);
                 streamWriter.Close();
                 _text = "output of _ShipNames done to " + file;
+                Console.WriteLine(_text);
+            }
+
+            file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_StationNames.csv");
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            {
+                StreamWriter streamWriter = new StreamWriter(file);
+                streamWriter.Write(stationnames_text);
+                streamWriter.Close();
+                _text = "output of _StationNames done to " + file;
                 Console.WriteLine(_text);
             }
         }

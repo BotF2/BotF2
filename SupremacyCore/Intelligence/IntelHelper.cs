@@ -21,7 +21,7 @@ namespace Supremacy.Intelligence
     {
         private static Civilization _newSpyCiv;
         private static List<Civilization> _spiedList = new List<Civilization>();
-        private static List<Civilization> _localSpiedList = new List<Civilization>();
+        //private static List<Civilization> _localSpiedList = new List<Civilization>();
         private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
         public static List<Civilization> _spyingCiv_0_List;

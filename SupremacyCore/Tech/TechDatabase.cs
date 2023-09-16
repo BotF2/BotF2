@@ -1053,7 +1053,8 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    _text = "Cannot write ... " + file + e;
+                    _text = "Step_8888: Cannot write ... " + file + e;
+                    Console.WriteLine(_text);
                     GameLog.Core.GameData.ErrorFormat(_text);
                 }
                 //} end of GameLog.Core.GameInitData.IsDebugEnabled

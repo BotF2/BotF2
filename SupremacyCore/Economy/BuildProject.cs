@@ -51,6 +51,8 @@ namespace Supremacy.Economy
         private byte _priority;
         private BuildProjectFlags _flags;
         private ResourceValueCollection _resourcesInvested;
+
+        [NonSerialized]
         private string _text;
 
 
@@ -439,6 +441,11 @@ namespace Supremacy.Economy
         public virtual void Finish()
         {
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
+            //this.ProductionCenter.Location.
+            //Colony colony = GameContext.Current.Universe.Get<Colony>(ProductionCenter.)
+            //Colony colony2 = GameContext.Current.Universe.FindObjectIDs<Colony>.FirstOrDefault();
+                //Objects.GetType..Where(o => o.Location == ProductionCenter.Location && o.);
+
 
             //if(BuildDesign == StationDes)
 
@@ -450,7 +457,7 @@ namespace Supremacy.Economy
             //    ;
             //Console.WriteLine(_text);
             //GameLog.Core.ProductionDetails.DebugFormat(_text);
-            
+
             // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
             if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out TechObject spawnedInstance))  // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
             {
@@ -465,10 +472,11 @@ namespace Supremacy.Economy
                 {
 
                     newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
-                  
-                    _text = "Step_4283: Turn " + GameContext.Current.TurnNumber
+                    //newEntry = new ReportEntry_ShowColony(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
+
+                    _text = "Step_4283:; "+Location+"Turn " + GameContext.Current.TurnNumber
                         + ": " + Builder
-                        + " built at " + Location + " > " + BuildDesign + " (spawned)"
+                        + " built > " + BuildDesign + " (spawned)"
                         ;
                     Console.WriteLine(_text);
                     //GameLog.Core.Production.DebugFormat(_text);
@@ -483,8 +491,9 @@ namespace Supremacy.Economy
                     ;
 
                 newEntry = new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green);
-                //old: newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location, SitRepPriority.Green);
-                _text = "Step_4286: " + _text;
+                //newEntry = new ReportEntry_ShowColony(this.ProductionCenter., BuildDesign, Location, SitRepPriority.Green);
+
+                _text = "Step_4286:; " + _text;
                 Console.WriteLine(_text);
                 //GameLog.Core.Production.DebugFormat(_text);
             }
@@ -634,7 +643,7 @@ namespace Supremacy.Economy
                 if (timeEstimate == 2)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    _text = "Step_4282: Turn " + GameContext.Current.TurnNumber
+                    _text = "Step_4282:; Turn " + GameContext.Current.TurnNumber
                         + ": " + Location
                         + ": Estimated One Turn... for " + BuildDesign
                         ;
@@ -648,7 +657,7 @@ namespace Supremacy.Economy
 
                     if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
                     {
-                        _text = "Step_4284: Turn " + GameContext.Current.TurnNumber
+                        _text = "Step_4284:; Turn " + GameContext.Current.TurnNumber
                             + ": Estimated One Turn: resource= " + resource.ToString()
                             + ", delta/missing= " + delta.ToString()
                             + " for " + BuildDesign.Description

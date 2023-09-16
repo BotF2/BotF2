@@ -260,7 +260,7 @@
                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
                  Label="{Binding Path=NetIndustry}"
                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOLTIP}" />
-      <TextBlock Text="ENERGY ="
+      <TextBlock Text="ENERGY ( unused ) ="
                 Grid.Row="1"
                 Grid.Column="18"
                 HorizontalAlignment="Right"

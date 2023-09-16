@@ -330,6 +330,7 @@
                     HorizontalScrollBarVisibility="Auto"
                     Margin="5,0,0,0"
                     Width="Auto"
+                    MinWidth="1195"
                     MaxHeight="800"
                     MinHeight="600"
                     HorizontalAlignment="Left">

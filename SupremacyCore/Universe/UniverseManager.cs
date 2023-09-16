@@ -319,7 +319,7 @@ namespace Supremacy.Universe
         /// Gets a list of object IDs for all objects of the specified design.
         /// </summary>
         /// <typeparam name="T">The design of object.</typeparam>
-        /// <returns>The ovbject IDs.</returns>
+        /// <returns>The object IDs.</returns>
         public HashSet<int> FindObjectIDs<T>()
             where T : UniverseObject
         {
@@ -469,6 +469,7 @@ namespace Supremacy.Universe
                 Ship ship = item as Ship;
                 Fleet fleet = ship.Fleet;
 
+                if (fleet != null)
                 fleet.RemoveShip(ship);
 
                 if (fleet.Ships.Count == 0)

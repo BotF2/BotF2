@@ -211,7 +211,7 @@
 
         <!-- Targeting Center SUMMARY of 'other' civs Data Template for one item view  -->
         <DataTemplate x:Key="OthersTreeSummaryTemplate">
-            <StackPanel Margin="0,0,0,0"
+            <StackPanel Margin="0,10,0,0"
                         Orientation="Horizontal"
                         Focusable="False"
                         Background="Black"
@@ -543,10 +543,11 @@
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Center"
-                                Margin="0,4,4,2"
+                                Margin="4,4,4,2"
                                 Width="310"
                                 Height="auto"
-                                BorderBrush="Gray"
+                                BorderBrush="Red"
+                                
                                 BorderThickness="4"
                                 CornerRadius="8">
                             <ListBox x:Name="OtherCivilizationsSummaryItem1"  
@@ -568,7 +569,7 @@
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Margin="0,8,4,2"
+                                Margin="0,38,4,2"
                                 Width="310"
                                 Height="230"
                                 BorderBrush="LightGray"
@@ -579,6 +580,7 @@
                 </StackPanel>
             </TreeView>
         </GroupBox>
+      
 
         <!--right side COMBAT_Hostile(OTHER)_UNITS source path & items name to DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}" 
@@ -594,7 +596,7 @@
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Margin="2">            
                 <TreeView x:Name="OtherCivsView" 
-                          ItemsSource="{Binding otherCivs}"
+                          ItemsSource="{Binding OtherCivs}"
                           BorderThickness="0"
                           VerticalAlignment="Top"
                             Height="541"
@@ -723,7 +725,7 @@
                                     Margin="4,0,0,0"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                     FontSize="11pt" 
-                                    Text="{Binding Path=CivFirePowers2}"/>
+                                    Text="{Binding Path=CivFirePowers2Text}"/>
                         <!--Text="P 3"/>-->
 
 
@@ -775,7 +777,7 @@
                                 Foreground="Red"                             
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="11pt" 
-                                Text="{Binding Path=CivFirePowers3}"/>
+                                Text="{Binding Path=CivFirePowers3Text}"/>
                         <!--Text="P 3"/>-->
 
                         <TextBlock 
@@ -825,7 +827,7 @@
                                     Margin="4,0,0,0"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                     FontSize="11pt" 
-                                    Text="{Binding Path=CivFirePowers4}"/>
+                                    Text="{Binding Path=CivFirePowers4Text}"/>
                         <!--Text="Pow 4"/>-->
 
 

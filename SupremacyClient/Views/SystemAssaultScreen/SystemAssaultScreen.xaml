@@ -880,9 +880,9 @@
         </ItemsControl.GroupStyle>
       </ItemsControl>
 
-            <scc:GameButton Label="{s:StringResource SYSTEM_ASSAULT_ORDER_DONE}" Grid.Column="1" Grid.Row="5" DisplayMode="Tiny" Margin="200,190,200,10"
+            <!--<scc:GameButton Label="{s:StringResource SYSTEM_ASSAULT_ORDER_DONE}" Grid.Column="1" Grid.Row="5" DisplayMode="Tiny" Margin="200,190,200,10"
                                 Command="{Binding Path=DoneCommand}" Background="Red"
-                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
+                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>-->
 
 
             <ItemsControl Grid.Column="3"

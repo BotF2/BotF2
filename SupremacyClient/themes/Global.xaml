@@ -23,7 +23,7 @@
   
     <ObjectDataProvider x:Key="Settings" ObjectInstance="{x:Static propeties:Settings.Default}" />
 
-    <Cursor x:Key="DefaultCursor"> vfs:///Resources/Images/UI/Shell/cursor.cur</Cursor>
+    <Cursor x:Key="DefaultCursor">vfs:///Resources/Images/UI/Shell/cursor.cur</Cursor>
 
     <!--
     ###### BUTTONS ######

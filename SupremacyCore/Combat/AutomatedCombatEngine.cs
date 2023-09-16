@@ -17,7 +17,6 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
 namespace Supremacy.Combat
 {
@@ -156,7 +155,7 @@ namespace Supremacy.Combat
                 //}
 
                 List<Tuple<CombatUnit, CombatWeapon[]>> _cloakedShips = _combatShips.Where(s => s.Item1.IsCloaked).ToList();
-                    
+
                 _text = "Step_3022: " + _sectorString + " > _cloakedShips = " + _cloakedShips.Count;
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -171,7 +170,7 @@ namespace Supremacy.Combat
                         //    + " > Decloaked: "
                         //    + blank + combatShip.Item1.Source.Design + blank + combatShip.Item1.Source.ObjectID + blank + combatShip.Item1.Source.Name
                         //    ;
-                        _text = ("Step_3025: " + _sectorString + blank + combatShip.Item1.IsCloaked + " = cloak status for Ship " + 
+                        _text = ("Step_3025: " + _sectorString + blank + combatShip.Item1.IsCloaked + " = cloak status for Ship " +
                             combatShip.Item1.Source.ObjectID + blank + combatShip.Item1.Name + blank + combatShip.Item1.Source.Design);
                         Console.WriteLine(_text);
                         GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -374,7 +373,7 @@ namespace Supremacy.Combat
                     }
                 }
                 //}
-                _text = ("Step_3033: " + _sectorString + 
+                _text = ("Step_3033: " + _sectorString +
                     " > Empire Civ in Battle: " + empiresInBattle[q, 0]
                     + ", Target1 = " + empiresInBattle[q, 1]
                     + ", Target2 = " + empiresInBattle[q, 2]
@@ -382,7 +381,7 @@ namespace Supremacy.Combat
                     );
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
-                
+
                 q++;
 
                 //    GameLog.Core.CombatDetails.DebugFormat("Empire Civ in Battle: {0} FirstTarget = {1} 2nd Target = {2}", empiresInBattle[q, 0], empiresInBattle[q, 1], empiresInBattle[q, 2]);
@@ -743,7 +742,7 @@ namespace Supremacy.Combat
                                 // Remaining Firepower is only set just after fireing
                                 // let this AttackShip "RemainingFirepower" be returnFireFirepower
                                 //AttackingShip.Item1.RemainingFirepower = remainingFirepowerInWhile;
-                                _text = ("Step_3086: " + _sectorString + " > No more target found in AttackingLoop. Trying to update for ship Name: " + AttackingShip.Item1.Name 
+                                _text = ("Step_3086: " + _sectorString + " > No more target found in AttackingLoop. Trying to update for ship Name: " + AttackingShip.Item1.Name
                                     + "with remaining firepower = " + remainingFirepowerInWhile);
                                 Console.WriteLine(_text);
                                 GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -1337,7 +1336,7 @@ namespace Supremacy.Combat
                     Console.WriteLine(_text);
                     GameLog.Core.CombatDetails.DebugFormat(_text);
 
-                    _text = ("Step_3135: " + _sectorString + " > now damage has just been applies either full weapons  (excluding bonus) " + tempDamage 
+                    _text = ("Step_3135: " + _sectorString + " > now damage has just been applies either full weapons  (excluding bonus) " + tempDamage
                             + " .. OR lower damage if ship can only absorb that " + tempDamage);
                     Console.WriteLine(_text);
                     GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -2125,7 +2124,7 @@ namespace Supremacy.Combat
                         indexOfAttackerEmpires++;
                         if (empiresInBattle[indexOfAttackerEmpires, 0] != 999)
                         {
-                            
+
                             _text = "Step_3233: " + (_sectorString + " > ANOTHER TOTAL LOOP IndexOfAttackerEmpire now = " + indexOfAttackerEmpires);
                             Console.WriteLine(_text);
                             GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -2184,7 +2183,7 @@ namespace Supremacy.Combat
             {
                 _text = ("Step_3253: " + _sectorString
                     + " > Hull = " + combatent.Item1.HullStrength
-                    + " for CombatShip: " + blank + combatent.Item1.Source.ObjectID + blank + combatent.Item1.Name + combatent.Item1.Source.Design 
+                    + " for CombatShip: " + blank + combatent.Item1.Source.ObjectID + blank + combatent.Item1.Name + combatent.Item1.Source.Design
                     );
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -2207,11 +2206,11 @@ namespace Supremacy.Combat
                     {
                         if (Assets != null)
                         {
-                            _text = ("Step_3888: " 
-                                + combatent.Item1.Source.Location + 
+                            _text = ("Step_3888: "
+                                + combatent.Item1.Source.Location +
                                 "REMOVE DESTROYED Name of Owner = " + Assets.Owner.Name
                                 + ", Assets.CombatShips = " + Assets.CombatShips.Count
-                                + ", Assets.NonCobatShips = " +  Assets.NonCombatShips.Count);
+                                + ", Assets.NonCobatShips = " + Assets.NonCombatShips.Count);
                             Console.WriteLine(_text);
                             GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2225,7 +2224,7 @@ namespace Supremacy.Combat
                                 + " > Ship " + combatent.Item1.Source.ObjectID
                                 + " * " + combatent.Item1.Name
                                 + " * ( " + combatent.Item1.Source.Design
-                                + " ) > destroyed."
+                                + " ) > destroyed"
                                 ;
 
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
@@ -2363,11 +2362,11 @@ namespace Supremacy.Combat
                 {
                     _text = "Step_3316:; " +
                         ship.Item1.Source.Location
-                        + " > _combatShipsTempNotDestroyed: " 
-                    
+                        + " > _combatShipsTempNotDestroyed: "
+
                         + blank + ship.Item1.Source.ObjectID
                         + blank + ship.Item1.Source.Name
-                        + blank + ship.Item1.Source.Design    
+                        + blank + ship.Item1.Source.Design
                         ;
                     Console.WriteLine(_text);
                     Console.WriteLine(_text);
@@ -2399,7 +2398,7 @@ namespace Supremacy.Combat
                         _stayingThereShips.Add(ship); // otherwise who is first stays
                         //_allRetreatShips.Add(ship);
                     }
-                    else if (ship.Item1.RemainingFirepower > 100) 
+                    else if (ship.Item1.RemainingFirepower > 100)
                     {
                         _stayingThereShips.Add(ship); // otherwise who is first stays
                         //_allRetreatShips.Add(ship);
@@ -2412,18 +2411,31 @@ namespace Supremacy.Combat
                     //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
-                    _text = "Combat at " + ship.Item1.Source.Location
-                        + " > Ship " + ship.Item1.Source.ObjectID
 
-                        + ": * " + ship.Item1.Name + " * "
-                        + " ( " + ship.Item1.Source.Design + " ) "
-                        + " > " + string.Format(ResourceManager.GetString("ALIVE_AND_STAYING"))
-                    //+ " still alive and staying." + Resources
-                        ;
-                    Console.WriteLine("Step_6282:; " + _text);
-                    //GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
+                    bool also_retreat_ship = false;
 
-                    civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
+                    foreach (var item in _allRetreatShips)
+                    {
+                        if (item != ship)
+                            also_retreat_ship = true;
+                    }
+
+                    if (also_retreat_ship == false) // only a report for retreat, not a double one
+                    {
+                        _text = "Combat at " + ship.Item1.Source.Location
+                                    + " > Ship " + ship.Item1.Source.ObjectID
+
+                                    + ": * " + ship.Item1.Name + " * "
+                                    + " ( " + ship.Item1.Source.Design + " ) "
+                                    + " > " + string.Format(ResourceManager.GetString("ALIVE_AND_STAYING"))
+                                    //+ " still alive and staying." + Resources
+                                    + " ( Hull " + ship.Item1.HullIntegrity + " )"
+                                    ;
+                        Console.WriteLine("Step_6282:; " + _text);
+                        //GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
+
+                        civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
+                    }
 
                     //-----
 

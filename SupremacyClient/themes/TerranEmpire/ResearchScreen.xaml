@@ -359,7 +359,7 @@
                     
                                     <!--Beginn of PROGRESS-->
                     
-                                    <!--<TextBlock Text="{s:StringResource Key=PROGRESS, Case=Upper}" 
+                                    <!--<TextBlock Text="{s:StringResource Key=PROGRESS_TEXT, Case=Upper}" 
                               FontSize="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" Foreground="{DynamicResource HeaderTextBrush}"/>
 
                                     <DockPanel Margin="14,0,0,0">

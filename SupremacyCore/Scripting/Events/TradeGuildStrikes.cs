@@ -97,13 +97,16 @@ namespace Supremacy.Scripting.Events
                     foreach (BuildProject affectedProject in _affectedProjects)
                     {
                         affectedProject.IsPaused = true;
-                        Console.WriteLine("affectedProject: {0}", affectedProject);
-                        GameLog.Client.EventsDetails.DebugFormat("affectedProject: {0}", affectedProject);
+                        _text = "Step_5487:; TradeGuildStrike: affectedProject: " + affectedProject;
+                        Console.WriteLine(_text);
+                        GameLog.Client.EventsDetails.DebugFormat(_text);
                     }
 
                     Entities.Civilization targetCiv = target.Owner;
-                    Console.WriteLine("target.OwnerID: {0}", target.OwnerID);
-                    GameLog.Client.EventsDetails.DebugFormat("target.OwnerID: {0}", target.OwnerID);
+                    _text = "Step_5488:; TradeGuildStrike: target.OwnerID = " + target.OwnerID;
+                    Console.WriteLine(_text);
+                    GameLog.Client.EventsDetails.DebugFormat(_text);
+
                     int targetColonyId = target.ObjectID;
 
                     OnUnitTargeted(target);

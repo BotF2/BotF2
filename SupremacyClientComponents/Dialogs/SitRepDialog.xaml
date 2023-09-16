@@ -401,7 +401,7 @@
                       />
 
 
-                <CheckBox x:Name="GrayCheck" Foreground="Gray" Grid.Row="1" Grid.Column="1" Margin="14,0,0,0"
+                <CheckBox x:Name="GrayCheck" Foreground="Gray" Grid.Row="1" Grid.Column="6" Margin="14,0,0,0"
                 Content="{scc:StringResource Key=SITREP_DIALOG_GRAY_CHECKBOX}"
                 VerticalAlignment="Center" 
                 Checked="OnFilterItemIsCheckedChanged"
@@ -473,7 +473,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <CheckBox x:Name="BlueDarkCheck" Foreground="SteelBlue" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" Margin="14,0,0,0"
+                <CheckBox x:Name="BlueDarkCheck" Foreground="SteelBlue" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0"
                 DockPanel.Dock="Left"
                 Content="{scc:StringResource Key=SITREP_DIALOG_BLUEDARK_CHECKBOX}"
                 

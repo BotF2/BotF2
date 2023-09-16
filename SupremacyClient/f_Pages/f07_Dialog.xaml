@@ -694,6 +694,10 @@ RequestNavigate="DoLink"> Pakled </Hyperlink>
 RequestNavigate="DoLink"> Paradans </Hyperlink>
 
 -
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Qomar"
+RequestNavigate="DoLink"> ( Qomar ) </Hyperlink>
+
+-
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Quarren_(species)" 
 RequestNavigate="DoLink"> Quarren </Hyperlink>
             </TextBlock>
@@ -1047,18 +1051,22 @@ RequestNavigate="DoLink"> ALTERNATE </Hyperlink>
             <TextBlock TextWrapping="Wrap">
 MORE (not included) >  
 
--
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xyrillian" 
-RequestNavigate="DoLink"> xx </Hyperlink>
 
 -
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Yaderan" 
-RequestNavigate="DoLink"> xx </Hyperlink>
-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Next_Generation_-_Birth_of_the_Federation" 
+RequestNavigate="DoLink"> BotE </Hyperlink>
 
 -
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline" 
-RequestNavigate="DoLink"> xx </Hyperlink>
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Planetary_defense_system" 
+RequestNavigate="DoLink"> OrbB </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Fixed_installations" 
+RequestNavigate="DoLink"> Stations </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Shipyards"
+RequestNavigate="DoLink"> Shipyards </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors" 

@@ -246,9 +246,9 @@ namespace Supremacy.UI
             s_fogOfWarBrush = new SolidColorBrush(fogOfWarColor);
             s_fogOfWarBrush.Freeze();
 
-            _text = "Step_1290: PopulateEmpires from MasterResources.CivDB... >>> ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll' or better DEBUG 'just my Code'";
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            //_text = "Step_1290: PopulateEmpires from MasterResources.CivDB... >>> ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll' or better DEBUG 'just my Code'";
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             // https://youtu.be/aQk53OeV9fE?t=38 ...avoid 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'
             var _civDB = (from civ in MasterResources.CivDB

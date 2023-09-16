@@ -456,7 +456,7 @@ namespace Supremacy.Client
         private void Execute_f06_Command(object obj) => _ = _f06_Dialog.ShowDialog();
 
 
-        private void Execute_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();// temporary switched to German _f07
+        private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();// temporary switched to German _f07 > OFF now
         //private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
 
 
@@ -475,7 +475,7 @@ namespace Supremacy.Client
         private void Execute_ctrl_f06_Command(object obj) => _ = _ctrl_f06_Dialog.ShowDialog();
         
         
-        private void Execute_ctrl_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();// temporary switched to German _f07
+        private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();// temporary switched to German _f07 > OFF now
         //private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog(); // temporary
 
 

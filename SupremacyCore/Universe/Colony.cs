@@ -291,12 +291,12 @@ namespace Supremacy.Universe
             get
             {
                 int _available = GetAvailableLabor() / 10 * -1;
-                if (_available < 1)
+                if (_available >= 0)
                 {
-                    _available = 0;
+                    return _available;
                 }
-
-                return _available;
+                else
+                return 0;
             }
         }
         public OrbitalBatteryDesign OrbitalBatteryDesign
@@ -2008,7 +2008,7 @@ namespace Supremacy.Universe
 
         private void DoSitRepGray(string _text)
         {
-            GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+            GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
         }
 
         private void ReduceOneOtherPF()
@@ -2018,25 +2018,25 @@ namespace Supremacy.Universe
             {
                 _ = DeactivateFacility(ProductionCategory.Research);
                 _text = Location + " " + Name + " > One Research facility deactivated - labours sent to other duties";
-                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Intelligence) > 0)
             {
                 _ = DeactivateFacility(ProductionCategory.Intelligence);
                 _text = Location + " " + Name + " > One Intelligence facility deactivated - labours sent to other duties";
-                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Industry) > 0)
             {
                 _ = DeactivateFacility(ProductionCategory.Industry);
                 _text = Location + " " + Name + " > One Industry facility deactivated - labours sent to other duties";
-                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Energy) > 0)
             {
                 _ = DeactivateFacility(ProductionCategory.Energy);
                 _text = Location + " " + Name + " > One Energy facility deactivated - labours sent to other duties";
-                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, "", "", SitRepPriority.Gray));
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
         }
 

@@ -510,29 +510,32 @@ namespace Supremacy.Game
             }
 
             // needs the same sorting as Writing
-            string _readingText = "Step_4030: "/* + reader.BaseStream.*/;
+            string _readingText = "";
+            //_readingText += "Step_4030: "/* + reader.BaseStream.*/;
+
             bool everySingleLine = false;
 
             IsFrozen = reader.ReadBoolean();
-            _readingText += "; IsFrozen=" + IsFrozen; 
+            //_readingText += "; IsFrozen=" + IsFrozen; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             int modIdBytesLength = reader.ReadInt32();
-            _readingText += "; modIdBytesLength=" + modIdBytesLength; 
+            //_readingText += "; modIdBytesLength=" + modIdBytesLength; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             //modIdBytesLength = 16;  // must be
 
             ModID = new Guid(reader.ReadBytes(modIdBytesLength));
-            _readingText += "; ModID=" + ModID; 
+            //_readingText += "; ModID=" + ModID; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             AIMode = (AIMode)reader.ReadByte();
-            _readingText += "; AIMode=" + AIMode; 
+            //_readingText += "; AIMode=" + AIMode; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
 
-            _readingText += newline + "Step_4031: ";
+            //_readingText += newline;
+            _readingText += "Step_4031: ";
 
             GalaxyShape = (GalaxyShape)reader.ReadByte(); 
             _readingText += "; GalaxyShape=" + GalaxyShape; 
@@ -594,62 +597,62 @@ namespace Supremacy.Game
             if (everySingleLine) Console.WriteLine(_readingText);
 
 
-            _readingText += newline + "Step_4033: "; ;
+            //_readingText += newline + "Step_4033: "; ;
 
             FederationModifier = (EmpireModifier)reader.ReadInt32();
-            _readingText += "; Modifier: Federation=" + FederationModifier; 
+            //_readingText += "; Modifier: Federation=" + FederationModifier; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             RomulanModifier = (EmpireModifier)reader.ReadInt32();
-            _readingText += "; Romulan=" + RomulanModifier; 
+            //_readingText += "; Romulan=" + RomulanModifier; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             KlingonModifier = (EmpireModifier)reader.ReadInt32();
-            _readingText += "; Klingon=" + KlingonModifier; 
+            //_readingText += "; Klingon=" + KlingonModifier; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             CardassianModifier = (EmpireModifier)reader.ReadInt32();
-            _readingText += "; Cardassian=" + CardassianModifier; 
+            //_readingText += "; Cardassian=" + CardassianModifier; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             DominionModifier = (EmpireModifier)reader.ReadInt32();
-            _readingText += "; Dominion=" + DominionModifier; 
+            //_readingText += "; Dominion=" + DominionModifier; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             BorgModifier = (EmpireModifier)reader.ReadInt32();
-            _readingText += "; Borg=" + BorgModifier; 
+            //_readingText += "; Borg=" + BorgModifier; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             TerranEmpireModifier = (EmpireModifier)reader.ReadInt32();
-            _readingText += "; TerranEmpireModifier=" + TerranEmpireModifier; 
+            //_readingText += "; TerranEmpireModifier=" + TerranEmpireModifier; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
 
-            _readingText += newline + "Step_4034: "; ;
+            //_readingText += newline + "Step_4034: "; ;
 
 
             EmpireModifierRecurringBalancing = (EmpireModifierRecurringBalancing)reader.ReadByte();
-            _readingText += "; EmpireModifierRecurringBalancing=" + EmpireModifierRecurringBalancing; 
+            //_readingText += "; EmpireModifierRecurringBalancing=" + EmpireModifierRecurringBalancing; 
             if (everySingleLine) Console.WriteLine(_readingText);
             
             GamePace = (GamePace)reader.ReadByte();
-            _readingText += "; GamePace=" + GamePace; 
+            //_readingText += "; GamePace=" + GamePace; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             TurnTimerEnum = (TurnTimerEnum)reader.ReadByte(); // project intel read save game
-            _readingText += "; TurnTimerEnum=" + TurnTimerEnum; 
+            //_readingText += "; TurnTimerEnum=" + TurnTimerEnum; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             AITakeover = reader.ReadBoolean();
-            _readingText += "; AITakeover=" + AITakeover; 
+            //_readingText += "; AITakeover=" + AITakeover; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             TurnTimer = TimeSpan.FromTicks(reader.ReadInt64());
-            _readingText += "; TurnTimer=" + TurnTimer; 
+            //_readingText += "; TurnTimer=" + TurnTimer; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             CombatTimer = TimeSpan.FromTicks(reader.ReadInt64());
-            _readingText += "; CombatTimer=" + CombatTimer; 
+            //_readingText += "; CombatTimer=" + CombatTimer; 
             Console.WriteLine(_readingText);
 
             ; // breakpoint

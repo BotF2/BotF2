@@ -7,15 +7,15 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Diagnostics;
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Supremacy.Orbitals
 {
@@ -109,27 +109,25 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                string displayText;
+                string displayText = "";
                 Percentage? percentComplete = PercentComplete;
 
-                displayText = Fleet.IsInTow
-                    ? string.Format(
-                        ResourceManager.GetString("ORDER_IN_TOW"),
-                        Status)
-                    : Fleet.IsStranded
-                        ? string.Format(
-                                            ResourceManager.GetString("ORDER_STRANDED"),
-                                            Status)
+                if (Fleet != null)
+                {
+                    displayText = Fleet.IsInTow
+                        ? string.Format(ResourceManager.GetString("ORDER_IN_TOW"), Status)
+                        : Fleet.IsStranded ? string.Format(ResourceManager.GetString("ORDER_STRANDED"), Status)
                         : Status;
+                }
 
                 if (percentComplete.HasValue)
                 {
                     // Build station text
-                    displayText = string.Format(" ({0})" + displayText  + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                    displayText = string.Format(" ({0})" + displayText + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
                     //displayText = string.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
                 }
 
-                if (!Fleet.Route.IsEmpty)
+                if (Fleet != null && !Fleet.Route.IsEmpty)
                 {
                     int turns = Fleet.Route.Length / Fleet.Speed;
                     string formatString;

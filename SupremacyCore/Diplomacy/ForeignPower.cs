@@ -53,7 +53,9 @@ namespace Supremacy.Diplomacy
         public IResponse LastResponseReceived { get; set; }
         public PendingDiplomacyAction PendingAction { get; set; }
 
+        [NonSerialized]
         private string _text;
+        //private string _detailImage;
 
         //     public bool IsTotalWarInPlace { get; set; }
 
@@ -285,11 +287,15 @@ namespace Supremacy.Diplomacy
                 if (civ.IsHuman && (civ == counterparty ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
                 {
+                    //"The {0} denounce the {1} for war against the {2}."
+                        _text = "The " + owner + " denounce the " + counterparty + " for war against the " + victim;
+                    //_detailImage = counterparty.InsigniaPath.ToString();
                     GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
-                        new DenounceWarSitRepEntry(
-                            owner,
-                            counterparty,
-                            victim));
+                        new ReportEntry_ShowDiplo(owner, _text, _text, counterparty.InsigniaPath, SitRepPriority.RedYellow));
+                        //new DenounceWarSitRepEntry(
+                        //    owner,
+                        //    counterparty,
+                        //    victim));
                 }
             }
         }
@@ -302,11 +308,13 @@ namespace Supremacy.Diplomacy
                 if (civ.IsHuman && (civ == counterparty ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
                 {
-                    GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
-                        new CommendWarSitRepEntry(
-                            owner,
-                            counterparty,
-                            victim));
+                    _text = "The " + owner + "commend the " + counterparty + " in their war against the " + victim;
+                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
+                        new ReportEntry_ShowDiplo(owner, _text, _text, owner.InsigniaPath, SitRepPriority.Red));
+                            //owner,
+                            //counterparty,
+                            //victim)
+                        ; 
                 }
             }
         }

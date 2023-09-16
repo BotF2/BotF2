@@ -40,6 +40,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Microsoft.Practices.Composite.Presentation.Regions.Behaviors;
 using System.Windows.Input;
+using Supremacy.Collections;
 
 namespace Supremacy.Client
 {
@@ -421,7 +422,9 @@ namespace Supremacy.Client
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
-            _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
+            List<SitRepEntry> sr = (List<SitRepEntry>)_appContext.LocalPlayerEmpire.SitRepEntries;
+            sr.OrderBy(o => o.Action).ToList();
+            _sitRepDialog.SitRepEntries = sr; 
 
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
@@ -442,7 +445,7 @@ namespace Supremacy.Client
 
             
 
-            _text = "ShowSummary... before storing";
+            _text = "Step_4048:; ShowSummary... before storing";
             //Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -462,9 +465,10 @@ namespace Supremacy.Client
                     _text += newline + "Turn;" + GameContext.Current.TurnNumber
                         //+ ";" + _prio
                         + ";" + item.SummaryText
-                        //+ newline
+                        + ";( " + item.Priority + " )"
                         ;
                 }
+                Console.WriteLine(_text);
                 GameLog.Core.SitReps.InfoFormat(_text);
 
                 _text = "Step_4888: SaveSUMMARY_TXT... offline - takes to long time";
@@ -497,6 +501,7 @@ namespace Supremacy.Client
         {
             //_text += " "; // dummy - please keep
             _text = "Step_4777: SaveSUMMARY_TXT..." + _text;
+
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 

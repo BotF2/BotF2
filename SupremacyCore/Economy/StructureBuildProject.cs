@@ -181,7 +181,7 @@ namespace Supremacy.Economy
         {
             if (UpgradeTarget != null)
             {
-                string _text = "upgradeTarget available > " + UpgradeTarget.Location + " " + UpgradeTarget.Name;  // 
+                string _text = "Step_3666:; upgradeTarget available > " + UpgradeTarget.Location + " " + UpgradeTarget.Name;  // 
                 Console.WriteLine(_text);
                 //GameLog.Core.General.ErrorFormat(_text);
 

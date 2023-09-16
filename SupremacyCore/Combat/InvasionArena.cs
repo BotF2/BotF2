@@ -440,7 +440,7 @@ namespace Supremacy.Combat
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
             _canLandTroops = _invadingUnits.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Any(o => o.ShipType == ShipType.Transport);
 
-            _text = "Step_3782: " 
+            _text = "Step_3787:; " 
                 + "_canLandTroops(Transport Ships) = " + _canLandTroops
                 + ", and/but ColonyShieldStrength = " + ColonyShieldStrength.CurrentValue
                 + ", Last Value = " + ColonyShieldStrength.LastValue

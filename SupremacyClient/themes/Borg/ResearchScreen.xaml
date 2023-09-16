@@ -188,7 +188,7 @@
                          <!--<TextBlock Text="Bonus"/>--> 
             <TextBlock Text="{Binding Path=Bonus}"/>
                           <TextBlock Text="- "/>
-              <TextBlock Text="{s:StringResource Key=PROGRESS}"/>
+              <TextBlock Text="{s:StringResource Key=PROGRESS_TEXT}"/>
                           <TextBlock Text=": "/>
               <!--<TextBlock Text="{Binding Path=CurrentProject.Application.ResearchCost}"/>-->
               <TextBlock Text="{Binding Path=Progress}" Foreground="Red"/>
@@ -389,7 +389,7 @@
                     
                     <!--Beginn of PROGRESS-->
 
-                    <!--<TextBlock FontSize="18pt" Text="{s:StringResource Key=PROGRESS, Case=Upper}" 
+                    <!--<TextBlock FontSize="18pt" Text="{s:StringResource Key=PROGRESS_TEXT, Case=Upper}" 
                               Foreground="{DynamicResource HeaderTextBrush}"/>
 
                    

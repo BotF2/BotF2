@@ -50,13 +50,20 @@ namespace Supremacy.Client
         private readonly Civilization _onlyFireIfFiredAppone;
         private Civilization _theTargeted1Civ;
         private Civilization _theTargeted2Civ;
-        private string _text;
+
         private readonly IAppContext _appContext;
 
+        [NonSerialized]
+        private string _text;
+        private string newline = Environment.NewLine;
+        private int _otherFirePower;
 
         public CombatWindow()
         {
             InitializeComponent();
+
+            _theTargeted1Civ = null;
+            _theTargeted2Civ = null;
 
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             _ = ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
@@ -115,10 +122,16 @@ namespace Supremacy.Client
         private void HandleCombatUpdate(CombatUpdate update)
         {
             _update = update;
-            _text = _update.CombatID + ": " + "Combat at " + _update.Location
+            _text = newline; // dummy - just keep
+
+            _text = "Step_6787:; " 
+                + _update.CombatID + ": " + "Combat at " 
+                + _update.Location
                 + " > " + _update.FriendlyAssets.Count() + " on our side - "
                 + _update.HostileAssets.Count() + " hostile "
                 ;
+            Console.WriteLine(_text);
+            //GameLog.Client.EventsDetails.DebugFormat(_text);
 
             List<CivilizationManager> _civs = new List<CivilizationManager>();
             CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
@@ -163,7 +176,7 @@ namespace Supremacy.Client
                     _text += _text + " - no winner";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, _text, "", SitRepPriority.Red));
 
                     //playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
                     //    string.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
@@ -180,7 +193,7 @@ namespace Supremacy.Client
                     _text += _text + " - we were victorious !";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, _text, "", SitRepPriority.Red));
                 }
                 else
                 {
@@ -193,7 +206,7 @@ namespace Supremacy.Client
                     _text += _text + " - we were not victorious !";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, _text, "", SitRepPriority.Red));
                 }
             }
             else
@@ -215,7 +228,19 @@ namespace Supremacy.Client
                 ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
                 _update.Sector.Name);
 
-            //_text = "Hello209" + _text;
+            _otherFirePower = 0;
+            
+            if (update.CivFirePowers2 != 0) _otherFirePower += update.CivFirePowers2;
+            if (update.CivFirePowers3 != 0) _otherFirePower += update.CivFirePowers3;
+            if (update.CivFirePowers4 != 0) _otherFirePower += update.CivFirePowers4;
+
+            //update.CivFirePowers1
+            _text = "Combat at " + update.Location 
+                + " > our Firepower: " + update.CivFirePowers1
+                + " vs " + _otherFirePower
+                //+ _text 
+                //+ newline
+                ;
             //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
             playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
 
@@ -426,7 +451,9 @@ namespace Supremacy.Client
                 || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))));
 
             //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
-            GameLog.Core.CombatDetails.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
+            _text = "Step_5487:; Primary Target is set to .. > " + _theTargeted1Civ.ShortName;
+            Console.WriteLine(_text);
+            GameLog.Core.CombatDetails.DebugFormat(_text); //theTargeted1Civ);
 
         }
 
@@ -449,7 +476,10 @@ namespace Supremacy.Client
             TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))
                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))));
 
-            GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
+            _text = "Step_5487:; Secondary Target is set to .. > " + _theTargeted2Civ.ShortName;
+            Console.WriteLine(_text);
+            GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -496,9 +526,9 @@ namespace Supremacy.Client
                 ;
 
             CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-            playerCivManager.SitRepEntries.Add(new ReportEntry_NoAction(playerCivManager.Civilization, _text, "", "", SitRepPriority.Red));
+            playerCivManager.SitRepEntries.Add(new ReportEntry_NoAction(playerCivManager.Civilization, _text, "", "", SitRepPriority.Yellow));
 
-            _text = "Step_5389: " + _text;
+            _text = "Step_5389:; " + _text;
             Console.WriteLine(_text);
             GameLog.Client.Combat.DebugFormat(_text);
 

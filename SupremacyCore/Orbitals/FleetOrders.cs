@@ -26,6 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace Supremacy.Orbitals
 {
@@ -748,12 +750,12 @@ namespace Supremacy.Orbitals
                 _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
-
-                string _text = Fleet.ObjectID
-                    + blank + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help at"
+                //301 RSE Torvath 1(Medical Ship I Torvath Class) doing Medical help at Romulus(13, 13): value adjusted = 1,08 %, new = 92(old = 86)
+                string _text = "Step_3987:; " + Fleet.Sector.System.Colony.Location
                     + blank + Fleet.Sector.System.Colony.Name
-                    //+ blank + Fleet.Sector.System.Colony.ObjectID 
-                    + blank + Fleet.Sector.System.Colony.Location + ": value adjusted ="
+                    + " > " + Fleet.ObjectID
+                    + blank + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help: value adjusted ="
+                    //+ blank + ": value adjusted ="
                     + blank + healthAdjustment + "%, new ="
                     + blank + Fleet.Sector.System.Colony.Health.CurrentValue
                     + blank + "(old=" + oldHealth + ")";
@@ -1663,7 +1665,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                if (!Fleet.Route.IsEmpty)
+                if (Fleet != null && !Fleet.Route.IsEmpty)
                 {
                     int turns = Fleet.Route.Length / Fleet.Speed;
                     string formatString;

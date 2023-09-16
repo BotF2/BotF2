@@ -352,7 +352,7 @@ namespace Supremacy.Combat
         }
 
         #region Properties for civ firepowers
-        public string CivFirePowers1
+        public int CivFirePowers1
         {
             get
             {
@@ -387,7 +387,7 @@ namespace Supremacy.Combat
                     {
                         if (civShortName == ncs.Owner.ShortName)
                         {
-                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+                            // UPDATE X 25 June 2019: Do total strength instead of just firepower
                             _otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + ncs.Firepower)
                                 + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
                                 * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
@@ -402,18 +402,47 @@ namespace Supremacy.Combat
                         _ = _otherAssetsLocal.Remove(ha);
                     }
                 }
+                _text = "A civilization with firepower " +_otherCivStrength;
                 GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", _otherCivStrength);
-                return _otherCivStrength.ToString("N0") + " " + string.Format(ResourceManager.GetString("COMBAT_POWER"));
+                return _otherCivStrength; //.ToString("N0") + " " + string.Format(ResourceManager.GetString("COMBAT_POWER"));
             }
         }
 
-        public string CivFirePowers2 => GetOthersFirePower();
-        public string CivFirePowers3 => GetOthersFirePower();
+        public int CivFirePowers2 => GetOthersFirePower();
 
-        public string CivFirePowers4 => GetOthersFirePower();
+        public string CivFirePowers2Text
+        {
+            get {
+                if (CivFirePowers2 < 1) return "";
+                else
+                return GetOthersFirePower().ToString(); 
+            }
+        }
+        public int CivFirePowers3 => GetOthersFirePower();
+
+        public string CivFirePowers3Text
+        {
+            get
+            {
+                if (CivFirePowers3 < 1) return "";
+                else
+                    return GetOthersFirePower().ToString();
+            }
+        }
+
+        public int CivFirePowers4 => GetOthersFirePower();
+        public string CivFirePowers4Text
+        {
+            get
+            {
+                if (CivFirePowers4 < 1) return "";
+                else
+                    return GetOthersFirePower().ToString();
+            }
+        }
         #endregion of proerties for civilizations firepowers
 
-        public string GetOthersFirePower()
+        public int GetOthersFirePower()
         {
             if (_civShortNameList.Count > 0)
             {
@@ -463,16 +492,22 @@ namespace Supremacy.Combat
                     }
                 }
                 GameLog.Core.CombatDetails.DebugFormat("A civilization with CombatPower: {0}", otherCivStrength);
-                return otherCivStrength.ToString("N0") + " " + string.Format(ResourceManager.GetString("COMBAT_POWER"));
+                return otherCivStrength; //.ToString("N0") + " " + string.Format(ResourceManager.GetString("COMBAT_POWER"));
             }
 
-            return null;
+            return 0;
         }
 
         public string TargetCiv1Status(Civilization us, Civilization others)
         {
             string _targetCiv1Status = GameContext.Current.DiplomacyData[us, others].Status.ToString();
-            GameLog.Core.CombatDetails.DebugFormat("Status Target 1: Us = {0}, Status = {2}, others = {1}", us, others, _targetCiv1Status);
+            _text = "Step_3476: Status Target 1:"
+                + "; Us = " + us
+                + "; others = " + others
+                + "; _targetCiv1Status = " + _targetCiv1Status
+                ;
+            Console.WriteLine(_text);
+            GameLog.Core.CombatDetails.DebugFormat(_text);
 
             return _targetCiv1Status;
         }

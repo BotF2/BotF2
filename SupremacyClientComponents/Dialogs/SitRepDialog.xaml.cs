@@ -241,9 +241,9 @@ namespace Supremacy.Client.Dialogs
         {
             get
             {
-                //_sitRepEntries.OrderBy(_sitRepEntries, SitRepPriority);
+                _sitRepEntries = _sitRepEntries.OrderBy(x => x.SummaryText);
 
-                _sitRepEntries = _sitRepEntries.OrderByDescending(x => x.Priority).ToList();
+                //_sitRepEntries = _sitRepEntries.OrderBy(x => x.SummaryText).T/*oL*/ist();
                 //foreach (var item in _sitRepEntries)
                 //{
                 //    item.
@@ -253,6 +253,7 @@ namespace Supremacy.Client.Dialogs
             set
             {
                 _sitRepEntries = value;
+                //_sitRepEntries.OrderByDescending(x => x.SummaryText).ToList();
                 ItemsView.ItemsSource = value;
                 ApplyFilter();
             }
@@ -275,10 +276,19 @@ namespace Supremacy.Client.Dialogs
             SitRepCategory visibleCategories = FilterMenu.Items
                 .OfType<MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
-                .Aggregate<MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
+                .Aggregate<MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag)
+                ;
+
+            //SitRepAction visibleCategories2 = FilterMenu.Items
+            //    .OfType<MenuItem>()
+            //    .Where(menuItem => menuItem.IsChecked)
+            //    .Aggregate<MenuItem, SitRepAction>(0, (current, menuItem) => current | (SitRepAction)menuItem.Tag)
+            //    ;
 
             VisibleCategories = visibleCategories;
         }
+
+
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
         {

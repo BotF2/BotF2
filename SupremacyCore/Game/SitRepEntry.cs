@@ -7,7 +7,6 @@
 // All other rights reserved.
 
 using Supremacy.Diplomacy;
-using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -292,13 +291,13 @@ namespace Supremacy.Game
         private readonly string _image;
 
         public ReportEntry_NoAction(Civilization owner, string report, string details, string image, SitRepPriority priority) : base(owner)//, SitRepPriority.Purple)
-        { 
-            _priority = priority; 
+        {
+            _priority = priority;
             _report = report;
             _detailName = details;
             _image = image;
 
-            Console.WriteLine("Step_1424:; " + report + "; " + owner + "; " + priority.ToString());
+            Console.WriteLine("Step_1424:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_NoAction");
 
         }
 
@@ -345,7 +344,7 @@ namespace Supremacy.Game
                 //continue;
             }
 
-            Console.WriteLine("Step_1427:; " + report  + "; " + owner + "; " + priority.ToString());
+            Console.WriteLine("Step_1427:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_CoS");
 
             _loc = loc;
             _report = report;
@@ -377,7 +376,7 @@ namespace Supremacy.Game
         public ReportEntry_ShowGalaxy(Civilization owner, string report, string details, string image, SitRepPriority priority)
             : base(owner)//, SitRepPriority.Pink)
         {
-            Console.WriteLine("Step_1429:; " + report + "; " + owner + "; " + priority.ToString());
+            Console.WriteLine("Step_1429:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_ShowGalaxy");
 
             _report = report;
             _detailName = details;  // e.g. ENERGY_SHUTDOWN_SHIPYARD
@@ -416,17 +415,32 @@ namespace Supremacy.Game
             }
             if (report == "")
             {
-                Console.WriteLine("empty report text");
-                return;
+                Console.WriteLine("Step_1424:;empty report text");
+                //return;
             }
 
-            Console.WriteLine("Step_1428:; " + report + "; " + owner + "; " + priority.ToString());
+            //if (details == "")
+            //{
+            //    Console.WriteLine("Step_1429:; " + details);
+            //}
+
+            Console.WriteLine("Step_1428:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_ShowColony");
+
+            if (details == "")
+            {
+                Console.WriteLine("Step_1429:; empty details text");
+            }
+
+            //if (image != "" && details != "")
+            //{
+            //    Console.WriteLine("Step_1431:;empty details text");
+            //}
 
             _colonyID = colony.ObjectID;
             _report = report;
             _detailName = details;  // e.g. ENERGY_SHUTDOWN_SHIPYARD
             _image = image;
-            
+
             _priority = priority;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -460,7 +474,7 @@ namespace Supremacy.Game
             _image = image;
             _priority = priority;
 
-            Console.WriteLine("Step_1423:; " + report + "; " + owner + "; " + priority.ToString());
+            Console.WriteLine("Step_1423:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_ShowDiplo");
         }
         //public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
@@ -580,47 +594,47 @@ namespace Supremacy.Game
     //}
     //// End of SitRepEntry
 
-    [Serializable]
-    public class BuildProjectResourceShortageSitRepEntry : SitRepEntry
-    {
-        //private readonly bool _isActive;
-        //private readonly int _colonyID;
-        private readonly string _delta;
-        private readonly string _project;
-        private readonly string _resource;
+    //[Serializable]
+    //public class BuildProjectResourceShortageSitRepEntry : SitRepEntry
+    //{
+    //    //private readonly bool _isActive;
+    //    //private readonly int _colonyID;
+    //    private readonly string _delta;
+    //    private readonly string _project;
+    //    private readonly string _resource;
 
-        public BuildProjectResourceShortageSitRepEntry(Civilization owner, string resource, string delta, string project)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            //_colonyID = GameContext.Current.Universe.Map[Location].System.Colony.ObjectID;
+    //    public BuildProjectResourceShortageSitRepEntry(Civilization owner, string resource, string delta, string project)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        //_colonyID = GameContext.Current.Universe.Map[Location].System.Colony.ObjectID;
 
-            _resource = resource;
-            _delta = delta;
-            _project = project;
-            //var sitrepText = "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource;
+    //        _resource = resource;
+    //        _delta = delta;
+    //        _project = project;
+    //        //var sitrepText = "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource;
 
-        }
-        public override SitRepCategory Categories => SitRepCategory.Construction;
-        public override SitRepAction Action => SitRepAction.None;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_BUILDPROJECT_RESOURCE_MISSING"), "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource);
+    //    }
+    //    public override SitRepCategory Categories => SitRepCategory.Construction;
+    //    public override SitRepAction Action => SitRepAction.None;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_BUILDPROJECT_RESOURCE_MISSING"), "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource);
 
-        public override SitRepPriority Priority { get; set; }
+    //    public override SitRepPriority Priority { get; set; }
 
-        //public override string SummaryText
-        //{
-        //    get
-        //    {
-        //        var sitrepText = "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource;
-        //        //var sitrepText = "Not able to finish project {0}, due to missing {1} {2}";
-        //        return sitrepText;
-        //        //return string.Format(ResourceManager.GetString("SITREP_BUILDPROJECT_RESOURCE_MISSING"),
-        //        //    ResourceManager.GetString(ItemType.Name),
-        //        //    GameContext.Current.Universe.Map[Location].Name,
-        //        //    _isActive ? "" : " (unpowered)");
-        //    }
-        //}
-    }
+    //    //public override string SummaryText
+    //    //{
+    //    //    get
+    //    //    {
+    //    //        var sitrepText = "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource;
+    //    //        //var sitrepText = "Not able to finish project {0}, due to missing {1} {2}";
+    //    //        return sitrepText;
+    //    //        //return string.Format(ResourceManager.GetString("SITREP_BUILDPROJECT_RESOURCE_MISSING"),
+    //    //        //    ResourceManager.GetString(ItemType.Name),
+    //    //        //    GameContext.Current.Universe.Map[Location].Name,
+    //    //        //    _isActive ? "" : " (unpowered)");
+    //    //    }
+    //    //}
+    //}
 
     //[Serializable]
     //public class BuildQueueEmptySitRepEntry : SitRepEntry
@@ -656,34 +670,34 @@ namespace Supremacy.Game
     //    public override SitRepPriority Priority { get; set; }
     //}
 
-    [Serializable]
-    public class CreditsStolenAttackerSitRepEntry : SitRepEntry
-    {
-        private readonly int _colonyID;
-        private readonly int _creditsStolen;
-        public CreditsStolenAttackerSitRepEntry(Civilization owner, Colony target, int creditsStolen)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class CreditsStolenAttackerSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _colonyID;
+    //    private readonly int _creditsStolen;
+    //    public CreditsStolenAttackerSitRepEntry(Civilization owner, Colony target, int creditsStolen)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _colonyID = target.ObjectID;
-            _creditsStolen = creditsStolen;
-        }
-        public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => Colony.Sector;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_STOLEN_SUCCESSFULLY"), _creditsStolen, Colony.Name, Colony.Location);
-        //"Our agents stole {0} credits from the treasury on {1}.",
-        public override bool IsPriority => true;
+    //        _colonyID = target.ObjectID;
+    //        _creditsStolen = creditsStolen;
+    //    }
+    //    public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => Colony.Sector;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_STOLEN_SUCCESSFULLY"), _creditsStolen, Colony.Name, Colony.Location);
+    //    //"Our agents stole {0} credits from the treasury on {1}.",
+    //    public override bool IsPriority => true;
 
-        public override SitRepPriority Priority { get; set; }
-    }
-    // End of SitRepEntry
+    //    public override SitRepPriority Priority { get; set; }
+    //}
+    //// End of SitRepEntry
 
     //[Serializable]
     //public class LaborToEnergyAddedSitRepEntry : SitRepEntry
@@ -706,68 +720,69 @@ namespace Supremacy.Game
     //}
     //// End of SitRepEntry
 
-    [Serializable]
-    public class CreditsStolenTargetSitRepEntry : SitRepEntry
-    {
-        private readonly int _colonyID;
-        private readonly int _creditsStolen;
-        public CreditsStolenTargetSitRepEntry(Civilization owner, Colony target, int creditsStolen)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class CreditsStolenTargetSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _colonyID;
+    //    private readonly int _creditsStolen;
+    //    public CreditsStolenTargetSitRepEntry(Civilization owner, Colony target, int creditsStolen)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _colonyID = target.ObjectID;
-            _creditsStolen = creditsStolen;
-        }
-        public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override SitRepAction Action => SitRepAction.ShowColony;
-        public override object ActionTarget => Colony;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_WERE_STOLEN"), _creditsStolen, Colony.Name, Colony.Location);
-        // {0} credits were stolen from our treasury on { 1}.
-        public override bool IsPriority => true;
+    //        _colonyID = target.ObjectID;
+    //        _creditsStolen = creditsStolen;
+    //    }
+    //    public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override SitRepAction Action => SitRepAction.ShowColony;
+    //    public override object ActionTarget => Colony;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CREDITS_WERE_STOLEN"), _creditsStolen, Colony.Name, Colony.Location);
+    //    // {0} credits were stolen from our treasury on { 1}.
+    //    public override bool IsPriority => true;
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
-    [Serializable]
-    public class DeCamouflagedSitRepEntry : SitRepEntry
-    {
-        private readonly string _name;
-        private readonly MapLocation _location;
-        private readonly string _shipType;
-        private readonly int _scanPower;
-        public DeCamouflagedSitRepEntry(Orbital orbital, int scanpower)
-        : base(orbital.Owner)//, SitRepPriority.Orange)
-        {
-            if (orbital == null)
-            {
-                throw new ArgumentNullException("orbital");
-            }
 
-            _name = orbital.Name;
-            _shipType = orbital.OrbitalDesign.ShipType;
-            _location = orbital.Location;
-            _scanPower = scanpower;
-        }
-        public override SitRepCategory Categories => SitRepCategory.Military;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => GameContext.Current.Universe.Map[_location];
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(
-                    ResourceManager.GetString("SITREP_SHIP_DECAMOUFLAGED"),
-                    ResourceManager.GetString(_name),
-                    _shipType,
-                    _location,
-                    _scanPower);
+    //[Serializable]
+    //public class DeCamouflagedSitRepEntry : SitRepEntry
+    //{
+    //    private readonly string _name;
+    //    private readonly MapLocation _location;
+    //    private readonly string _shipType;
+    //    private readonly int _scanPower;
+    //    public DeCamouflagedSitRepEntry(Orbital orbital, int scanpower)
+    //    : base(orbital.Owner)//, SitRepPriority.Orange)
+    //    {
+    //        if (orbital == null)
+    //        {
+    //            throw new ArgumentNullException("orbital");
+    //        }
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //        _name = orbital.Name;
+    //        _shipType = orbital.OrbitalDesign.ShipType;
+    //        _location = orbital.Location;
+    //        _scanPower = scanpower;
+    //    }
+    //    public override SitRepCategory Categories => SitRepCategory.Military;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => GameContext.Current.Universe.Map[_location];
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(
+    //                ResourceManager.GetString("SITREP_SHIP_DECAMOUFLAGED"),
+    //                ResourceManager.GetString(_name),
+    //                _shipType,
+    //                _location,
+    //                _scanPower);
+
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     //[Serializable]
     //public class EnergyShutdownSitRepEntry : SitRepEntry
@@ -1217,33 +1232,33 @@ namespace Supremacy.Game
         public override SitRepPriority Priority { get => _priority; set { } }
     }
 
-    [Serializable]
-    public class FoodReservesDestroyedAttackerSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _destroyedFoodReserves;
-        public FoodReservesDestroyedAttackerSitRepEntry(Civilization owner, Colony target, int destroyedFoodReserves)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class FoodReservesDestroyedAttackerSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _destroyedFoodReserves;
+    //    public FoodReservesDestroyedAttackerSitRepEntry(Civilization owner, Colony target, int destroyedFoodReserves)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-            _destroyedFoodReserves = destroyedFoodReserves;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
+    //        _systemId = target.System.ObjectID;
+    //        _destroyedFoodReserves = destroyedFoodReserves;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
 
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED_SUCCESSFULLY"), System.Name, System.Location, _destroyedFoodReserves);
-        public override string SitRepComment { get; set; }
-        public override bool IsPriority => true;
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED_SUCCESSFULLY"), System.Name, System.Location, _destroyedFoodReserves);
+    //    public override string SitRepComment { get; set; }
+    //    public override bool IsPriority => true;
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     //[Serializable]
     //public class GammaRayBurstSitRepEntry : SitRepEntry
@@ -1317,89 +1332,89 @@ namespace Supremacy.Game
     //}
     //// End of GrowthByHealthSitRepEntry
 
-    [Serializable]
-    public class IntelAttackFailedSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
+    //[Serializable]
+    //public class IntelAttackFailedSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
 
-        public IntelAttackFailedSitRepEntry(Civilization owner, Colony target)
-            : base(owner)//, SitRepPriority.Orange)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //    public IntelAttackFailedSitRepEntry(Civilization owner, Colony target)
+    //        : base(owner)//, SitRepPriority.Orange)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-        }
+    //        _systemId = target.System.ObjectID;
+    //    }
 
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override bool IsPriority => true;
-        //public string SitRepComment => "no"; } set { _sitRepComment = value; 
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_AGENTS_FAILED"), System.Name);
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override bool IsPriority => true;
+    //    //public string SitRepComment => "no"; } set { _sitRepComment = value; 
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_AGENTS_FAILED"), System.Name);
 
-        public override SitRepPriority Priority { get; set; }
-        //"Our agents have failed in their mission on {0}",
+    //    public override SitRepPriority Priority { get; set; }
+    //    //"Our agents have failed in their mission on {0}",
 
-    }
+    //}
 
-    [Serializable]
-    public class IntelDefenceSucceededSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
+    //[Serializable]
+    //public class IntelDefenceSucceededSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
 
-        public IntelDefenceSucceededSitRepEntry(Civilization owner, Colony target)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //    public IntelDefenceSucceededSitRepEntry(Civilization owner, Colony target)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override bool IsPriority => true;
-        public override SitRepAction Action => SitRepAction.ShowColony;
-        public override object ActionTarget => System.Sector;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_AGENTS_FOILED_PLOT"), System.Name);
+    //        _systemId = target.System.ObjectID;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override bool IsPriority => true;
+    //    public override SitRepAction Action => SitRepAction.ShowColony;
+    //    public override object ActionTarget => System.Sector;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_AGENTS_FOILED_PLOT"), System.Name);
 
-        public override SitRepPriority Priority { get; set; }
-        //"Our agents have foiled a plot by spies on {0}",
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //    //"Our agents have foiled a plot by spies on {0}",
+    //}
 
-    [Serializable]
-    public class FoodReservesDestroyedTargetSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _destroyedFoodReserves;
-        public FoodReservesDestroyedTargetSitRepEntry(Civilization owner, Colony target, int destroyedFoodReserves)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class FoodReservesDestroyedTargetSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _destroyedFoodReserves;
+    //    public FoodReservesDestroyedTargetSitRepEntry(Civilization owner, Colony target, int destroyedFoodReserves)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-            _destroyedFoodReserves = destroyedFoodReserves;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED"), System.Name, System.Location, _destroyedFoodReserves);
+    //        _systemId = target.System.ObjectID;
+    //        _destroyedFoodReserves = destroyedFoodReserves;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED"), System.Name, System.Location, _destroyedFoodReserves);
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     [Serializable]
     public class ReportItemBuilt : SitRepEntry  // toDO: Get rid of this special version
@@ -1502,67 +1517,67 @@ namespace Supremacy.Game
     //    public override SitRepPriority Priority { get => SitRepPriority.Green; set => _priority = SitRepPriority.Green; }
     //}
 
-    [Serializable]
-    public class DenounceWarSitRepEntry : SitRepEntry
-    {
-        private readonly int _victimCivilizationID;
-        private readonly int _ownerCivilizationID;
-        private readonly int _denouncerCivilizationID;
-        private readonly CivString _detailText;
+    //[Serializable]
+    //public class DenounceWarSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _victimCivilizationID;
+    //    private readonly int _ownerCivilizationID;
+    //    private readonly int _denouncerCivilizationID;
+    //    private readonly CivString _detailText;
 
-        public override SitRepCategory Categories => SitRepCategory.Diplomacy | SitRepCategory.Military;
+    //    public DenounceWarSitRepEntry(Civilization denouncer, Civilization ownerCiv, Civilization victim)
+    //: base(ownerCiv)//, SitRepPriority.Red)
+    //    {
+    //        if (ownerCiv == null)
+    //        {
+    //            throw new ArgumentNullException("owmer");
+    //        }
+
+    //        if (victim == null)
+    //        {
+    //            throw new ArgumentNullException("victim");
+    //        }
+
+    //        if (denouncer == null)
+    //        {
+    //            throw new ArgumentNullException("denouncer");
+    //        }
+
+    //        _denouncerCivilizationID = denouncer.CivID;
+    //        _ownerCivilizationID = ownerCiv.CivID;
+    //        _victimCivilizationID = victim.CivID;
+    //        _detailText = new CivString(
+    //                ownerCiv,
+    //                victim,
+    //                CivString.DiplomacyCategory,
+    //                "MESSAGE_SITREP_DETAILS_DENOUNCE_WAR_THEM");
+    //    }
+
+    //    public override SitRepCategory Categories => SitRepCategory.Diplomacy | SitRepCategory.Military;
 
 
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
 
 
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_DENOUNCE_WAR"),
-                    Denouncer.LongName, Owner.LongName, Victim.LongName);
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_DENOUNCE_WAR"),
+    //                Denouncer.LongName, Owner.LongName, Victim.LongName);
 
-        public override string DetailImage => Denouncer.InsigniaPath;
+    //    public override string DetailImage => Denouncer.InsigniaPath;
 
-        public override string DetailText => string.Format(_detailText.Value, Owner.LongName, Victim.LongName);
+    //    public override string DetailText => string.Format(_detailText.Value, Owner.LongName, Victim.LongName);
 
-        public override bool IsPriority => true;
+    //    public override bool IsPriority => true;
 
 
-        public Civilization Victim => GameContext.Current.Civilizations[_victimCivilizationID];
+    //    public Civilization Victim => GameContext.Current.Civilizations[_victimCivilizationID];
 
-        public Civilization OwnerCiv => GameContext.Current.Civilizations[_ownerCivilizationID];
+    //    public Civilization OwnerCiv => GameContext.Current.Civilizations[_ownerCivilizationID];
 
-        public Civilization Denouncer => GameContext.Current.Civilizations[_denouncerCivilizationID];
-        public override string SitRepComment { get; set; }
+    //    public Civilization Denouncer => GameContext.Current.Civilizations[_denouncerCivilizationID];
+    //    public override string SitRepComment { get; set; }
 
-        public override SitRepPriority Priority { get; set; }
-
-        public DenounceWarSitRepEntry(Civilization denouncer, Civilization ownerCiv, Civilization victim)
-            : base(ownerCiv)//, SitRepPriority.Red)
-        {
-            if (ownerCiv == null)
-            {
-                throw new ArgumentNullException("owmer");
-            }
-
-            if (victim == null)
-            {
-                throw new ArgumentNullException("victim");
-            }
-
-            if (denouncer == null)
-            {
-                throw new ArgumentNullException("denouncer");
-            }
-
-            _denouncerCivilizationID = denouncer.CivID;
-            _ownerCivilizationID = ownerCiv.CivID;
-            _victimCivilizationID = victim.CivID;
-            _detailText = new CivString(
-                    ownerCiv,
-                    victim,
-                    CivString.DiplomacyCategory,
-                    "MESSAGE_SITREP_DETAILS_DENOUNCE_WAR_THEM");
-        }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     //[Serializable]
     //public class CombatSummarySitRepEntry : SitRepEntry
@@ -1586,159 +1601,158 @@ namespace Supremacy.Game
     //// End of SitRepEntry
 
 
-    [Serializable]
-    public class CommendWarSitRepEntry : SitRepEntry
-    {
-        private readonly int _victimCivilizationID;
-        private readonly int _ownerCivilizationID;
-        private readonly int _commenderCivilizationID;
-        private readonly CivString _detailText;
+    //[Serializable]
+    //public class CommendWarSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _victimCivilizationID;
+    //    private readonly int _ownerCivilizationID;
+    //    private readonly int _commenderCivilizationID;
+    //    private readonly CivString _detailText;
+    //    public CommendWarSitRepEntry(Civilization commender, Civilization ownerCiv, Civilization victim)
+    //: base(ownerCiv)//, SitRepPriority.Red)
+    //    {
+    //        if (ownerCiv == null)
+    //        {
+    //            throw new ArgumentNullException("owmer");
+    //        }
 
-        public override SitRepCategory Categories => SitRepCategory.Diplomacy | SitRepCategory.Military;
+    //        if (victim == null)
+    //        {
+    //            throw new ArgumentNullException("victim");
+    //        }
 
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //        if (commender == null)
+    //        {
+    //            throw new ArgumentNullException("commender");
+    //        }
 
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_COMMEND_WAR"),
-                    Commender.LongName, Owner.LongName, Victim.LongName);
+    //        _commenderCivilizationID = commender.CivID;
+    //        _ownerCivilizationID = ownerCiv.CivID;
+    //        _victimCivilizationID = victim.CivID;
+    //        _detailText = new CivString(
+    //                ownerCiv,
+    //                victim,
+    //                CivString.DiplomacyCategory,
+    //                "MESSAGE_SITREP_DETAILS_COMMEND_WAR_THEM");
+    //    }
 
-        public override string DetailImage => Commender.InsigniaPath;
+    //    public override SitRepCategory Categories => SitRepCategory.Diplomacy | SitRepCategory.Military;
 
-        public override string DetailText => string.Format(_detailText.Value, Owner.LongName, Victim.LongName);
-        public override string SitRepComment { get; set; }
-        public override bool IsPriority => true;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
 
-        public Civilization Victim => GameContext.Current.Civilizations[_victimCivilizationID];
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_COMMEND_WAR"),
+    //                Commender.LongName, Owner.LongName, Victim.LongName);
 
-        public Civilization OwnerCiv => GameContext.Current.Civilizations[_ownerCivilizationID];
+    //    public override string DetailImage => Commender.InsigniaPath;
 
-        public Civilization Commender => GameContext.Current.Civilizations[_commenderCivilizationID];
+    //    public override string DetailText => string.Format(_detailText.Value, Owner.LongName, Victim.LongName);
+    //    public override string SitRepComment { get; set; }
+    //    public override bool IsPriority => true;
 
-        public override SitRepPriority Priority { get; set; }
+    //    public Civilization Victim => GameContext.Current.Civilizations[_victimCivilizationID];
 
-        public CommendWarSitRepEntry(Civilization commender, Civilization ownerCiv, Civilization victim)
-            : base(ownerCiv)//, SitRepPriority.Red)
-        {
-            if (ownerCiv == null)
-            {
-                throw new ArgumentNullException("owmer");
-            }
+    //    public Civilization OwnerCiv => GameContext.Current.Civilizations[_ownerCivilizationID];
 
-            if (victim == null)
-            {
-                throw new ArgumentNullException("victim");
-            }
+    //    public Civilization Commender => GameContext.Current.Civilizations[_commenderCivilizationID];
 
-            if (commender == null)
-            {
-                throw new ArgumentNullException("commender");
-            }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
-            _commenderCivilizationID = commender.CivID;
-            _ownerCivilizationID = ownerCiv.CivID;
-            _victimCivilizationID = victim.CivID;
-            _detailText = new CivString(
-                    ownerCiv,
-                    victim,
-                    CivString.DiplomacyCategory,
-                    "MESSAGE_SITREP_DETAILS_COMMEND_WAR_THEM");
-        }
-    }
+    //[Serializable]
+    //public class NewInfiltrateSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _gainedResearchPointsSum;
+    //    private readonly int _gainedOfTotalResearchPoints;
+    //    public NewInfiltrateSitRepEntry(Civilization owner, Colony colony, int gainedResearchPointsSum, int gainedOfTotalResearchPoints)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (colony == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-    [Serializable]
-    public class NewInfiltrateSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _gainedResearchPointsSum;
-        private readonly int _gainedOfTotalResearchPoints;
-        public NewInfiltrateSitRepEntry(Civilization owner, Colony colony, int gainedResearchPointsSum, int gainedOfTotalResearchPoints)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (colony == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //        _systemId = colony.System.ObjectID;
 
-            _systemId = colony.System.ObjectID;
+    //        _gainedResearchPointsSum = gainedResearchPointsSum;
+    //        _gainedOfTotalResearchPoints = gainedOfTotalResearchPoints;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            if (_gainedResearchPointsSum > 0)
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_INFILTRATE_SUCCESSFULLY"),
+    //                    //"Our spies have infiltrated the {0} at {1} and gained {2} of {3} research points.",
+    //                    System.Owner, System.Name, _gainedResearchPointsSum, _gainedOfTotalResearchPoints);
+    //            }
+    //            else
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_INFILTRATE_NO_SUCCESS"),
+    //                    //"Our spies have tried to infiltrate the {0} at {1} but they had no success.",
+    //                    System.Owner, System.Name);
+    //            }
+    //        }
+    //    }
 
-            _gainedResearchPointsSum = gainedResearchPointsSum;
-            _gainedOfTotalResearchPoints = gainedOfTotalResearchPoints;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText
-        {
-            get
-            {
-                if (_gainedResearchPointsSum > 0)
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_INFILTRATE_SUCCESSFULLY"),
-                        //"Our spies have infiltrated the {0} at {1} and gained {2} of {3} research points.",
-                        System.Owner, System.Name, _gainedResearchPointsSum, _gainedOfTotalResearchPoints);
-                }
-                else
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_INFILTRATE_NO_SUCCESS"),
-                        //"Our spies have tried to infiltrate the {0} at {1} but they had no success.",
-                        System.Owner, System.Name);
-                }
-            }
-        }
-
-        public override SitRepPriority Priority { get; set; }
-    }
-
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
 
-    [Serializable]
-    public class NewInfluenceSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _gainedCreditsSum;
-        private readonly int _gainedOfTotalCredits;
-        public NewInfluenceSitRepEntry(Civilization owner, Colony colony, int gainedCreditsSum, int gainedOfTotalCredits)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (colony == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
 
-            _systemId = colony.System.ObjectID;
+    //[Serializable]
+    //public class NewInfluenceSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _gainedCreditsSum;
+    //    private readonly int _gainedOfTotalCredits;
+    //    public NewInfluenceSitRepEntry(Civilization owner, Colony colony, int gainedCreditsSum, int gainedOfTotalCredits)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (colony == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _gainedCreditsSum = gainedCreditsSum;
-            _gainedOfTotalCredits = gainedOfTotalCredits;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText
-        {
-            get
-            {
-                if (_gainedCreditsSum > 0)
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
-                        //"The {0} at {1} have been influenced: we got {2} of {3} credits.",
-                        System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
-                }
-                else
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
-                        //"Our spies have tried to influence the {0} at {1} but they had no success.",
-                        System.Owner, System.Name);
-                }
-            }
-        }
+    //        _systemId = colony.System.ObjectID;
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //        _gainedCreditsSum = gainedCreditsSum;
+    //        _gainedOfTotalCredits = gainedOfTotalCredits;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            if (_gainedCreditsSum > 0)
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
+    //                    //"The {0} at {1} have been influenced: we got {2} of {3} credits.",
+    //                    System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
+    //            }
+    //            else
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
+    //                    //"Our spies have tried to influence the {0} at {1} but they had no success.",
+    //                    System.Owner, System.Name);
+    //            }
+    //        }
+    //    }
+
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     //[Serializable]
     //public class NewRaidSitRepEntry : SitRepEntry
@@ -1890,7 +1904,7 @@ namespace Supremacy.Game
                         if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
                             _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
                         {
-                            destroyed = string.Format(ResourceManager.GetString("SITREP_SABOTAGE_STOLEN"));
+                            destroyed = string.Format(ResourceManager.GetString("SITREP_SABOTAGE_STOLEN"));  // these are "stolen"
                         }
 
                         return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
@@ -2014,7 +2028,7 @@ namespace Supremacy.Game
                         if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
                             _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
                         {
-                            destroyed = ResourceManager.GetString("SITREP_SABOTAGE_STOLEN");
+                            destroyed = ResourceManager.GetString("SITREP_SABOTAGE_STOLEN");  // these are "stolen"
                         }
 
                         return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
@@ -2115,65 +2129,65 @@ namespace Supremacy.Game
     //    public override SitRepPriority Priority { get; set; }
     //}
 
-    [Serializable]
-    public class PlanetaryDefenceAttackAttackerSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _orbitalBatteriesDestroyed;
-        private readonly int _shieldHealthRemoved;
-        public PlanetaryDefenceAttackAttackerSitRepEntry(Civilization owner, Colony target, int orbitalBatteriesDestroyed, int shieldHealthRemoved)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class PlanetaryDefenceAttackAttackerSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _orbitalBatteriesDestroyed;
+    //    private readonly int _shieldHealthRemoved;
+    //    public PlanetaryDefenceAttackAttackerSitRepEntry(Civilization owner, Colony target, int orbitalBatteriesDestroyed, int shieldHealthRemoved)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-            _orbitalBatteriesDestroyed = orbitalBatteriesDestroyed;
-            _shieldHealthRemoved = shieldHealthRemoved;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES_SUCCESSFULLY"),
-                    System.Name, _orbitalBatteriesDestroyed, _shieldHealthRemoved);//Our agents have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
+    //        _systemId = target.System.ObjectID;
+    //        _orbitalBatteriesDestroyed = orbitalBatteriesDestroyed;
+    //        _shieldHealthRemoved = shieldHealthRemoved;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES_SUCCESSFULLY"),
+    //                System.Name, _orbitalBatteriesDestroyed, _shieldHealthRemoved);//Our agents have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
-    [Serializable]
-    public class PlanetaryDefenceAttackTargetSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _orbitalBatteriesDestroyed;
-        private readonly int _shieldHealthRemoved;
-        public PlanetaryDefenceAttackTargetSitRepEntry(Civilization owner, Colony target, int orbitalBatteriesDestroyed, int shieldHealthRemoved)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class PlanetaryDefenceAttackTargetSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _orbitalBatteriesDestroyed;
+    //    private readonly int _shieldHealthRemoved;
+    //    public PlanetaryDefenceAttackTargetSitRepEntry(Civilization owner, Colony target, int orbitalBatteriesDestroyed, int shieldHealthRemoved)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-            _orbitalBatteriesDestroyed = orbitalBatteriesDestroyed;
-            _shieldHealthRemoved = shieldHealthRemoved;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES"),
-                    System.Name, _orbitalBatteriesDestroyed, _shieldHealthRemoved);//Saboteurs have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
+    //        _systemId = target.System.ObjectID;
+    //        _orbitalBatteriesDestroyed = orbitalBatteriesDestroyed;
+    //        _shieldHealthRemoved = shieldHealthRemoved;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES"),
+    //                System.Name, _orbitalBatteriesDestroyed, _shieldHealthRemoved);//Saboteurs have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     //[Serializable]
     //public class PlagueSitRepEntry : SitRepEntry
@@ -2259,124 +2273,124 @@ namespace Supremacy.Game
     //    public override SitRepPriority Priority { get; set; }
     //}
 
-    [Serializable]
-    public class ProductionFacilitiesDestroyedAttackerSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly ProductionCategory _facilityType;
-        private readonly int _destroyedFacilities;
-        public ProductionFacilitiesDestroyedAttackerSitRepEntry(Civilization owner, Colony target, ProductionCategory productionType, int destroyedFacilities)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class ProductionFacilitiesDestroyedAttackerSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly ProductionCategory _facilityType;
+    //    private readonly int _destroyedFacilities;
+    //    public ProductionFacilitiesDestroyedAttackerSitRepEntry(Civilization owner, Colony target, ProductionCategory productionType, int destroyedFacilities)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-            _facilityType = productionType;
-            _destroyedFacilities = destroyedFacilities;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText
-        {
-            get
-            {
-                switch (_facilityType)
-                {
-                    case ProductionCategory.Energy:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
-                            //"We have sabotaged {0} energy facilities on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Food:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
-                            //"We have sabotaged {0} food facilities  on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Industry:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
-                            //"We have sabotaged {0} industrial facilities on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Intelligence:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
-                            //"We have sabotaged {0} intelligence facilities on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Research:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
-                            //"We have sabotaged {0} research facilities on {1}",
-                            _destroyedFacilities, System.Name);
-                    default:
-                        return null;
-                }
+    //        _systemId = target.System.ObjectID;
+    //        _facilityType = productionType;
+    //        _destroyedFacilities = destroyedFacilities;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            switch (_facilityType)
+    //            {
+    //                case ProductionCategory.Energy:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
+    //                        //"We have sabotaged {0} energy facilities on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Food:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
+    //                        //"We have sabotaged {0} food facilities  on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Industry:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
+    //                        //"We have sabotaged {0} industrial facilities on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Intelligence:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
+    //                        //"We have sabotaged {0} intelligence facilities on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Research:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
+    //                        //"We have sabotaged {0} research facilities on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                default:
+    //                    return null;
+    //            }
 
-            }
-        }
+    //        }
+    //    }
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
-    [Serializable]
-    public class ProductionFacilitiesDestroyedTargetSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly ProductionCategory _facilityType;
-        private readonly int _destroyedFacilities;
-        public ProductionFacilitiesDestroyedTargetSitRepEntry(Civilization owner, Colony target, ProductionCategory productionType, int destroyedFacilities)
-            : base(owner)//, SitRepPriority.Red)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
+    //[Serializable]
+    //public class ProductionFacilitiesDestroyedTargetSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly ProductionCategory _facilityType;
+    //    private readonly int _destroyedFacilities;
+    //    public ProductionFacilitiesDestroyedTargetSitRepEntry(Civilization owner, Colony target, ProductionCategory productionType, int destroyedFacilities)
+    //        : base(owner)//, SitRepPriority.Red)
+    //    {
+    //        if (target == null)
+    //        {
+    //            throw new ArgumentNullException("colony");
+    //        }
 
-            _systemId = target.System.ObjectID;
-            _facilityType = productionType;
-            _destroyedFacilities = destroyedFacilities;
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
-        public override object ActionTarget => System.Sector;
-        public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
-        public override bool IsPriority => true;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText
-        {
-            get
-            {
-                switch (_facilityType)
-                {
-                    case ProductionCategory.Energy:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
-                            //"{0} energy facilities have been sabotaged on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Food:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
-                            //"{0} food facilities have been sabotaged on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Industry:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
-                            //"{0} industrial facilities have been sabotaged on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Intelligence:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
-                            //"{0} intelligence facilities have been sabotaged on {1}",
-                            _destroyedFacilities, System.Name);
-                    case ProductionCategory.Research:
-                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
-                            //"{0} research facilities have been sabotaged on {1}",
-                            _destroyedFacilities, System.Name);
-                    default:
-                        return null;
-                }
-            }
-        }
+    //        _systemId = target.System.ObjectID;
+    //        _facilityType = productionType;
+    //        _destroyedFacilities = destroyedFacilities;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    public override object ActionTarget => System.Sector;
+    //    public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
+    //    public override bool IsPriority => true;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            switch (_facilityType)
+    //            {
+    //                case ProductionCategory.Energy:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
+    //                        //"{0} energy facilities have been sabotaged on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Food:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
+    //                        //"{0} food facilities have been sabotaged on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Industry:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
+    //                        //"{0} industrial facilities have been sabotaged on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Intelligence:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
+    //                        //"{0} intelligence facilities have been sabotaged on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                case ProductionCategory.Research:
+    //                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
+    //                        //"{0} research facilities have been sabotaged on {1}",
+    //                        _destroyedFacilities, System.Name);
+    //                default:
+    //                    return null;
+    //            }
+    //        }
+    //    }
 
-        public override SitRepPriority Priority { get; set; }
-    }
+    //    public override SitRepPriority Priority { get; set; }
+    //}
 
     //[Serializable]
     //public class ReligiousHolidaySitRepEntry : SitRepEntry
@@ -2716,24 +2730,24 @@ namespace Supremacy.Game
         }
     }
 
-    [Serializable]
-    public class ScienceSummarySitRepEntry : SitRepEntry
-    {
-        private readonly string _researchNote;
+    //[Serializable]
+    //public class ScienceSummarySitRepEntry : SitRepEntry
+    //{
+    //    private readonly string _researchNote;
 
-        public ScienceSummarySitRepEntry(Civilization owner, string researchNote)
-                : base(owner)//, SitRepPriority.Blue)
-        { _researchNote = researchNote; }
+    //    public ScienceSummarySitRepEntry(Civilization owner, string researchNote)
+    //            : base(owner)//, SitRepPriority.Blue)
+    //    { _researchNote = researchNote; }
 
-        public string ResearchNote => _researchNote;
-        public override SitRepCategory Categories => SitRepCategory.Research;
-        public override SitRepAction Action => SitRepAction.ShowScienceScreen;
-        public override bool IsPriority => false;
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => _researchNote;
-        public override SitRepPriority Priority { get => SitRepPriority.Purple; set { } }
-    }
-    // End of SitRepEntry
+    //    public string ResearchNote => _researchNote;
+    //    public override SitRepCategory Categories => SitRepCategory.Research;
+    //    public override SitRepAction Action => SitRepAction.ShowScienceScreen;
+    //    public override bool IsPriority => false;
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => _researchNote;
+    //    public override SitRepPriority Priority { get => SitRepPriority.Purple; set { } }
+    //}
+    //// End of SitRepEntry
 
     //[Serializable]
     //public class ScienceShipResearchGainedSitRepEntry : SitRepEntry
@@ -2946,51 +2960,51 @@ namespace Supremacy.Game
     //}
     //// end of Sitrep Starvation
 
-    [Serializable]
-    public class SystemAssaultSitRepEntry : SitRepEntry
-    {
-        private readonly int _colonyID;
-        private readonly string _status;
-        private readonly int _pop;
-        private readonly string _newOwner;
-        private readonly string _invaderUnitsDestroyed;
-        private readonly string _defenderUnitsDestroyed;
-        public SystemAssaultSitRepEntry(Civilization owner, Colony colony, string status, int pop, string newOwner, string invaderUnitsDestroyed, string defenderUnitsDestroyed)
-            : base(owner)//, SitRepPriority.Purple)
-        {
-            if (colony == null)
-            {
-                throw new ArgumentNullException("colony missing for SystemAssault");
-            }
+    //[Serializable]
+    //public class SystemAssaultSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _colonyID;
+    //    private readonly string _status;
+    //    private readonly int _pop;
+    //    private readonly string _newOwner;
+    //    private readonly string _invaderUnitsDestroyed;
+    //    private readonly string _defenderUnitsDestroyed;
+    //    public SystemAssaultSitRepEntry(Civilization owner, Colony colony, string status, int pop, string newOwner, string invaderUnitsDestroyed, string defenderUnitsDestroyed)
+    //        : base(owner)//, SitRepPriority.Purple)
+    //    {
+    //        if (colony == null)
+    //        {
+    //            throw new ArgumentNullException("colony missing for SystemAssault");
+    //        }
 
-            _colonyID = colony.System.ObjectID;
-            _status = status.ToUpper();
-            _pop = pop;
-            _newOwner = newOwner;  // maybe "new" Owner
-            _invaderUnitsDestroyed = invaderUnitsDestroyed;
-            _defenderUnitsDestroyed = defenderUnitsDestroyed;
+    //        _colonyID = colony.System.ObjectID;
+    //        _status = status.ToUpper();
+    //        _pop = pop;
+    //        _newOwner = newOwner;  // maybe "new" Owner
+    //        _invaderUnitsDestroyed = invaderUnitsDestroyed;
+    //        _defenderUnitsDestroyed = defenderUnitsDestroyed;
 
-        }
-        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_colonyID);
-        //public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
-        public override SitRepAction Action => SitRepAction.CenterOnSector;
+    //    }
+    //    public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_colonyID);
+    //    //public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
+    //    public override SitRepAction Action => SitRepAction.CenterOnSector;
 
-        public override object ActionTarget => System.Sector;
-        public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
-        public override bool HasDetails => true; // turn on/off for extra Dialog window
-        public override string HeaderText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT")
-                , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
-        public override string DetailText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT")
-                , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
-        public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/SystemAssault.png";
-        public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT")
-                , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
-        public override bool IsPriority => true;
+    //    public override object ActionTarget => System.Sector;
+    //    public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
+    //    public override bool HasDetails => true; // turn on/off for extra Dialog window
+    //    public override string HeaderText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT")
+    //            , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
+    //    public override string DetailText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT")
+    //            , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
+    //    public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/SystemAssault.png";
+    //    public override string SitRepComment { get; set; }
+    //    public override string SummaryText => string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT")
+    //            , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed);
+    //    public override bool IsPriority => true;
 
-        public override SitRepPriority Priority { get; set; }
-    }
-    // End of SitRepEntry
+    //    public override SitRepPriority Priority { get; set; }
+    //}
+    //// End of SitRepEntry
 
 
     //[Serializable]

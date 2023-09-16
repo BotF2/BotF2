@@ -50,9 +50,9 @@ namespace Supremacy.Game
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
 
-//#pragma warning disable IDE0044 // Add readonly modifier
+        //#pragma warning disable IDE0044 // Add readonly modifier
         private List<Civilization> _spiedCivList;
-//#pragma warning restore IDE0044 // Add readonly modifier
+        //#pragma warning restore IDE0044 // Add readonly modifier
 
 
         private int _homeColonyId;
@@ -373,7 +373,7 @@ namespace Supremacy.Game
                 //if (_credits.LastValue - _maintenanceCostLastTurn + _credits.LastChange > _credits.CurrentValue) 
                 int bc = TaxIncome - ((_credits.LastChange + _maintenanceCostLastTurn) /** -1*/);
                 ////TotalPopulation
-                if (bc < 0)
+                if (bc < 4)
                     bc = 0;
                 return bc;
                 //else
@@ -406,10 +406,10 @@ namespace Supremacy.Game
         /// </summary>
         public int RankingCredits  // AI has credit advantage: Minors 4x, AI 2x ... so ranking doesn't is realistic anymore
         {
-            get 
+            get
             {
                 _rankCredits = -1;
-                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List; 
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List;
 
                 if (CivHist.Count != 0)
                 {
@@ -424,10 +424,10 @@ namespace Supremacy.Game
         /// </summary>
         public int RankingMaint
         {
-            get 
+            get
             {
                 _rankMaint = -1;
-                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List; 
+                var CivHist = GameContext.Current.CivilizationManagers[CivilizationID]._civHist_List;
                 if (CivHist.Count != 0)
                 {
                     _rankMaint = CivHist[CivHist.Count - 1].R_MaintHist;
@@ -514,15 +514,15 @@ namespace Supremacy.Game
         {
             get
             {
-                    if (LocalPlayer != null)
-                    {
-                foreach (SitRepEntry rep in _sitRepEntries)
+                if (LocalPlayer != null)
                 {
+                    foreach (SitRepEntry rep in _sitRepEntries)
+                    {
 
                         CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[LocalPlayer.CivID];
                         if (playerCivManager != null && rep.Owner.ToString() == playerCivManager.ToString())
                         {
-                            _text = "SitRep Turn "
+                            _text = "Step_3333:; SitRep Turn "
                                 + GameContext.Current.TurnNumber
                                 + " Cat= " + rep.Categories
                                 + " " + rep.Priority
@@ -543,6 +543,7 @@ namespace Supremacy.Game
 
                 }
                 _ = _sitRepEntries.Distinct();
+                //_sitRepEntries.OrderBy(o => o.SummaryText);
                 return _sitRepEntries;
             }
         }

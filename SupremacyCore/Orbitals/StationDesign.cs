@@ -61,6 +61,11 @@ namespace Supremacy.Orbitals
         public StationDesign()
         { }
 
+        public Dictionary<string, int> PossibleNames
+        {
+            get => _possibleStationNames;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StationDesign"/> class from XML data.
         /// </summary>

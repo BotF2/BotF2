@@ -165,7 +165,7 @@ namespace Supremacy.Game
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 _text = /*Environment.NewLine + */"Step_0293: fullPath = " + fullPath;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 SavedGameHeader header;

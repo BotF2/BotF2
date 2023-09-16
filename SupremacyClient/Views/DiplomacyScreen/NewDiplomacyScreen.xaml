@@ -170,6 +170,9 @@
                       Margin="6,-1,0,-1" />
                 <scc:RichTextBlock Grid.Column="0"
                              RichText="{Binding Path=Description}"
+                                   FontSize="18" FontWeight="Bold"
+                                   Foreground="Aqua"
+                                   Background="Black"
                              TextWrapping="Wrap" />
             </DockPanel>
         </DataTemplate>
@@ -1248,12 +1251,15 @@
                                                                                     TextWrapping="Wrap"
                                                                                     TextTrimming="CharacterEllipsis"
                                                                                     FontSize="15pt"
+                                                                                    Foreground="Aqua"
                                                                                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                                    Foreground="{StaticResource HeaderTextBrush}"
-                                                                                    Margin="5,0,5,0"
+                                                                                    Margin="0,0,5,0"
                                                                                     Visibility="Visible"
                                                                                     Text="{Binding Path=IsEditing, Converter={scc:BooleanValueConverter TrueValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeaderWhileEditing, CharacterCasing=Upper}, FalseValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeader, CharacterCasing=Upper}}}">
                                                                         </TextBlock>
+                                                                                     <!--Foreground="{StaticResource HeaderTextBrush}"-->
+                                                                       
+                                                                        
                                                                         <TextBlock TextAlignment="Left"
                                                                                     Grid.Column="1"
                                                                                     Grid.Row="0"
@@ -1369,10 +1375,13 @@
                                                                     <TextBlock Text="{Binding Path=TreatyLeadInText}"
                                                                             Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                                             TextWrapping="Wrap"
-                                                                            TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+
                                                                             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                             TextBlock.FontSize="12pt"
-                                                                            Margin="0,12,0,0" />
+                                                                               Foreground="Aqua"
+                                                                            Margin="5,12,0,0" />
+                                                                            <!--TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"-->                                                                    
+                                                                    
                                                                     <ItemsControl Margin="5,12,0,0"
                                                                             ItemsSource="{Binding Path=TreatyElements}"
                                                                             HorizontalContentAlignment="Center"
