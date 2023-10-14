@@ -329,7 +329,7 @@ namespace Supremacy.Tech
             }
 
             // w00t
-            if (colony.TotalOrbitalBatteries > 0)
+            if (colony.OrbitalBatteries_Total > 0)
             {
                 OrbitalBatteryDesign design = colony.OrbitalBatteryDesign;
                 OrbitalBatteryBuildProject baseDesign = new OrbitalBatteryBuildProject(colony, design);
@@ -1245,11 +1245,11 @@ namespace Supremacy.Tech
             {
                 if (includeInactive)
                 {
-                    count += colony.TotalOrbitalBatteries;
+                    count += colony.OrbitalBatteries_Total;
                 }
                 else
                 {
-                    count += colony.ActiveOrbitalBatteries;
+                    count += colony.OrbitalBatteries_Active;
                 }
 
                 return count;

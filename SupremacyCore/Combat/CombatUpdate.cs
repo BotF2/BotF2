@@ -408,6 +408,16 @@ namespace Supremacy.Combat
             }
         }
 
+        public string CivFirePowers1Text
+        {
+            get
+            {
+                if (CivFirePowers1 < 1) return "";
+                else return GetOthersFirePower().ToString();
+                   
+            }
+        }
+
         public int CivFirePowers2 => GetOthersFirePower();
 
         public string CivFirePowers2Text
@@ -440,11 +450,11 @@ namespace Supremacy.Combat
                     return GetOthersFirePower().ToString();
             }
         }
-        #endregion of proerties for civilizations firepowers
+        #endregion of properties for civilizations firepowers
 
         public int GetOthersFirePower()
         {
-            if (_civShortNameList.Count > 0)
+            if (_civShortNameList != null && _civShortNameList.Count > 0)
             {
                 string civShortName = _civShortNameList.FirstOrDefault();
                 List<string> civNameList = new List<string>();

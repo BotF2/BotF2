@@ -46,7 +46,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 65)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 10)  // before 65
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -93,11 +93,11 @@ namespace Supremacy.Scripting.Events
 
                     _text = target.Location + " " + target.Name + " > ";
                     civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
-                        , _text + ResourceManager.GetString("GAMMA_RAY_HEADER_TEXT")
-                        , _text + ResourceManager.GetString("GAMMA_RAY_DETAIL_TEXT")
+                        , _text + ResourceManager.GetString("GAMMA_RAY_BURST_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("GAMMA_RAY_BURST_DETAIL_TEXT")
                         , "ScriptedEvents/GammaRayBurst.png", SitRepPriority.RedYellow));
 
-                    //                    public override string DetailText => string.Format(ResourceManager.GetString("GAMMA_RAY_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("GAMMA_RAY_BURST_DETAIL_TEXT"), Colony.Name, Colony.Location);
                     //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png";
 
                     GameLog.Core.Events.DebugFormat("HomeSystemName is: {0}", target.Name);
@@ -106,7 +106,11 @@ namespace Supremacy.Scripting.Events
                     _ = target.Health.AdjustCurrent(-health / 3 * 2);
                     target.Health.UpdateAndReset();
 
-                    GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
+                    _text = "Step_5494:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
+                        + " > Gamma Ray Burst (Event). Down: Population " + -population / 3 * 2 + ", Health " + -health / 3 * 2;
+                    Console.WriteLine(_text);
+                    GameLog.Core.Events.DebugFormat(_text);
+                    //GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

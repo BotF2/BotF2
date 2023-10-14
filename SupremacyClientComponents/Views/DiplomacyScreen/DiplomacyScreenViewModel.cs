@@ -1052,6 +1052,11 @@ namespace Supremacy.Client.Views
         {
             return _selectedForeignPower;
         }
+
+        public DiplomacyMessageViewModel OutgoingMessage() // new 2023-09-30
+        {
+            return null;
+        }
         public void UpdateSelectedForeignPower()
         {
             OnSelectedForeignPowerChanged();

@@ -24,10 +24,13 @@
     <!--2023-06-04 > does this makes trouble ... reports System.Windows.Data Error -->
     <!--next: if Diplomacy > 'Overview' (outcommented + did show Graph) > show Graph = Visible, otherwise 'Hidden'-->
     <i:Interaction.Behaviors>
-        <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Visible, Else=Hidden}}" />
+        <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph" 
+                                          Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Visible, Else=Hidden}}" />
         <!--<scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph" Visibility="Hidden"/>-->
-        <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Hidden, Else=Visible}}" />
-        <!--<scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"  Visibility="Hidden"/>-->
+        <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default" 
+                                          Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Hidden, Else=Visible}}" />
+        <!--<scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"  
+        Visibility="Hidden"/>-->
     </i:Interaction.Behaviors>
 
     <Control.Resources>
@@ -1276,7 +1279,7 @@
                                                                                     TextWrapping="Wrap"            
                                                                                     TextTrimming="CharacterEllipsis"
                                                                                     FontSize="14pt"
-                                                                                    Foreground="Aqua"
+                                                                                    Foreground="Red"
                                                                                     Margin="0,0,0,0"
                                                                                     Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SendHeader}" 
                                                                                     Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -1981,11 +1984,8 @@
           Relationship Graph
         ================================================================================ 
         -->
-                <Grid Grid.Column="1"
-              Grid.ColumnSpan="4"
-              Grid.Row="0"
-              Grid.RowSpan="6"
-              scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph">
+                <!--<Grid Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="6">
+                   --><!--scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph"--><!-- 
                     <Viewbox Stretch="Uniform"
                            StretchDirection="DownOnly"
                            SnapsToDevicePixels="True">
@@ -1997,12 +1997,12 @@
                          Width="800px"
                          Height="640px" />
                     </Viewbox>
-                </Grid>
+                </Grid>-->
 
                 <scc:GameButton Label="{s:StringResource Key=RESET_GRAPH, Case=Upper}"
                         Grid.Column="2"
                         Grid.Row="0"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
                         MaxWidth="180"
                         scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph"
                         Height="28"
@@ -2010,6 +2010,7 @@
                         Command="{Binding ResetGraphCommand}"
                         VerticalAlignment="Bottom"
                         Margin="0,0,2,0" />
+                
             </Grid>
         </Border>
     </scc:GamePopupSite>

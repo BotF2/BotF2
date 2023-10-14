@@ -76,6 +76,7 @@ namespace Supremacy.Economy
     {
         private readonly int _ownerId;
         private readonly int[] _techLevels;
+        //public new List <string> _alreadyDone = null;
         private readonly DistributionGroup<int> _distributions;
         private readonly ResearchPoolValueCollection _values;
         private readonly ResearchBonusCollection _bonuses;
@@ -122,6 +123,9 @@ namespace Supremacy.Economy
         //{
         //    get { return _points; }
         //}
+
+        //List<string> _alreadyDone = new List<string>();
+
 
         /// <summary>
         /// Determines whether the specified application has been researched.
@@ -255,6 +259,7 @@ namespace Supremacy.Economy
             }
 
             List<int> fieldIds = new List<int>();
+            //_alreadyDone = new List<string>();
 
             _ownerId = owner.CivID;
             _values = new ResearchPoolValueCollection();
@@ -349,7 +354,7 @@ namespace Supremacy.Economy
 
             _distributions.TotalValue = researchPoints;
 
-            List<string> _alreadyDone = new List<string>();
+            //List<string> _alreadyDone = new List<string>();
 
             string researchSummary = "";
             string distributionSummary = "";
@@ -418,18 +423,18 @@ namespace Supremacy.Economy
                     ;
             //distributionSummary += "- Gained = " + researchPoints;
 
-            //if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
-            //{
-            //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, distributionSummary));  // Percentage each field
-            //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));  // Points each field
+            if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
+            {
+                //_alreadyDone.Add(civManager.Civilization.CivID + "-" + 0);
 
-            if(!_alreadyDone.Contains(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
-            { 
+                //    if (!_alreadyDone.Contains(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
+                //{ 
                 civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
                 civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
-            }
+                                                                                                                                //}
 
-            _alreadyDone.Add(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
+                //_alreadyDone.Add(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
+            }
 
             _cumulativePoints.UpdateAndReset();
             //GameLog.Client.ResearchDetails.InfoFormat("UpdatingResearch...DONE");

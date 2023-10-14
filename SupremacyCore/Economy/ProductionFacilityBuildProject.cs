@@ -183,7 +183,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                int count = Source.TotalOrbitalBatteries;
+                int count = Source.OrbitalBatteries_Total;
                 int unitCost = (int)(0.50 * base.IndustryRequired);
                 return count * unitCost;
             }

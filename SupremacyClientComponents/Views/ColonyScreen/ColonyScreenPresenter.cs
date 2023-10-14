@@ -510,7 +510,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedColonyPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "NetEnergy" || e.PropertyName == "ActiveOrbitalBatteries")
+            if (e.PropertyName == "NetEnergy" || e.PropertyName == "OrbitalBatteries_Active")
             {
                 UpdateOrbitalBatteries();
             }
@@ -560,7 +560,7 @@ namespace Supremacy.Client.Views
 
             UpdateBuildLists();
 
-            Model.ActiveOrbitalBatteries = (e.NewValue != null) ? e.NewValue.ActiveOrbitalBatteries : 0;
+            Model.OrbitalBatteries_Active = (e.NewValue != null) ? e.NewValue.OrbitalBatteries_Active : 0;
 
             UpdateOrbitalBatteries();
 
@@ -589,7 +589,7 @@ namespace Supremacy.Client.Views
             InvalidateCommands();
         }
 
-        private void OnActiveOrbitalBatteriesChanged(object sender, EventArgs eventArgs)
+        private void OnOrbitalBatteries_ActiveChanged(object sender, EventArgs eventArgs)
         {
             UpdateOrbitalBatteries();
         }
@@ -611,12 +611,12 @@ namespace Supremacy.Client.Views
                 Colony selectedColony = Model.SelectedColony;
                 if (selectedColony == null || selectedColony.OrbitalBatteryDesign == null)
                 {
-                    Model.ActiveOrbitalBatteries = 0;
-                    Model.MaxActiveOrbitalBatteries = 0;
+                    Model.OrbitalBatteries_Active = 0;
+                    Model.MaxOrbitalBatteries_Active = 0;
                     return;
                 }
 
-                int activeCountDifference = Model.ActiveOrbitalBatteries - selectedColony.ActiveOrbitalBatteries;
+                int activeCountDifference = Model.OrbitalBatteries_Active - selectedColony.OrbitalBatteries_Active;
                 if (activeCountDifference != 0)
                 {
                     do
@@ -649,18 +649,18 @@ namespace Supremacy.Client.Views
                     PlayerOrderService.AddOrder(new UpdateOrbitalBatteriesOrder(selectedColony));
                 }
 
-                int maxActiveOrbitalBatteries = selectedColony.ActiveOrbitalBatteries;
+                int maxOrbitalBatteries_Active = selectedColony.OrbitalBatteries_Active;
                 if (selectedColony.NetEnergy > 0)
                 {
                     int possibleActivations = selectedColony.NetEnergy / selectedColony.OrbitalBatteryDesign.UnitEnergyCost;
                     if (possibleActivations > 0)
                     {
-                        maxActiveOrbitalBatteries += possibleActivations;
+                        maxOrbitalBatteries_Active += possibleActivations;
                     }
                 }
 
-                Model.MaxActiveOrbitalBatteries = maxActiveOrbitalBatteries;
-                Model.ActiveOrbitalBatteries = selectedColony.ActiveOrbitalBatteries;
+                Model.MaxOrbitalBatteries_Active = maxOrbitalBatteries_Active;
+                Model.OrbitalBatteries_Active = selectedColony.OrbitalBatteries_Active;
             }
             finally
             {
@@ -739,7 +739,7 @@ namespace Supremacy.Client.Views
             Model.SelectShipBuildProjectCommand = _selectShipBuildProjectCommand;
 
             Model.SelectedColonyChanged += OnSelectedColonyChanged;
-            Model.ActiveOrbitalBatteriesChanged += OnActiveOrbitalBatteriesChanged;
+            Model.OrbitalBatteries_ActiveChanged += OnOrbitalBatteries_ActiveChanged;
 
             ColonyScreenCommands.ToggleBuildingScrapCommand.RegisterCommand(_toggleBuildingScrapCommand);
             ColonyScreenCommands.PreviousColonyCommand.RegisterCommand(_previousColonyCommand);
@@ -1144,7 +1144,7 @@ namespace Supremacy.Client.Views
             Model.ToggleBuildingScrapCommand = null;
 
             Model.SelectedColonyChanged -= OnSelectedColonyChanged;
-            Model.ActiveOrbitalBatteriesChanged -= OnActiveOrbitalBatteriesChanged;
+            Model.OrbitalBatteries_ActiveChanged -= OnOrbitalBatteries_ActiveChanged;
 
             ColonyScreenCommands.ToggleBuildingScrapCommand.UnregisterCommand(_toggleBuildingScrapCommand);
             ColonyScreenCommands.PreviousColonyCommand.UnregisterCommand(_previousColonyCommand);

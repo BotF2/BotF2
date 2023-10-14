@@ -647,7 +647,7 @@ namespace Supremacy.Intelligence
                 colony.NetFood,
                 colony.GetActiveFacilities(ProductionCategory.Food),
                 colony.GetTotalFacilities(ProductionCategory.Food));
-            GameLog.Core.Intel.DebugFormat("Sabotage Food to {0}: Total1_FoodFacilities before={1}",
+            GameLog.Core.Intel.DebugFormat("Sabotage Food to {0}: Facilities_Total1_Food before={1}",
                 colony.Name, colony.GetTotalFacilities(ProductionCategory.Food));
 
             //Effect of sabotage // value needed for SitRep
@@ -731,7 +731,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat(attack_ING_before);
             GameLog.Core.Intel.DebugFormat(attack_ING_after);
 
-            GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: Total1_FoodFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Food), blamed);
+            GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: Facilities_Total1_Food after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Food), blamed);
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD");
 
@@ -805,7 +805,7 @@ namespace Supremacy.Intelligence
             }
 
             //Effect of sabotage // value needed for SitRep
-            GameLog.Core.Intel.DebugFormat("**** Before Sabotage Energy at {0}: Total3_EnergyFacilities before={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
+            GameLog.Core.Intel.DebugFormat("**** Before Sabotage Energy at {0}: Facilities_Total3_Energy before={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
             //if ratio > 1 than remove one more  EnergyFacility
             if (ratio > 10 /*&& RandomHelper.Chance(4)*/ && colony.GetTotalFacilities(ProductionCategory.Energy) > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
@@ -872,7 +872,7 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY");
 
-            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: Total3_EnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
+            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: Facilities_Total3_Energy after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
 
             // Sitreps   attack*ed* and attack*ing*
             attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
@@ -1009,7 +1009,7 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY");
 
-            GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: Total2_IndustryFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Industry), blamed);
+            GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: Facilities_Total2_Industry after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Industry), blamed);
 
             // Sitreps   attack*ed* and attack*ing*
             attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(

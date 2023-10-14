@@ -1,5 +1,9 @@
 _ChangeLog_for_Rise_Of_The_UFP.txt
 
+2023-10-01;FleetOrder Mission (in any kind)
+2023-10-01;ColonyAI.cs: reordering production
+2023-08-19;Remans out 
+2023-08-19;Science Stations wiped out due to no relevance
 2023-06-26;Code internal: packages.config migrated to PackageReference
 2023-06;output gets Step_Numbers for easier identification - numbers do not have a great system yet
 2023-06;Filename contains V17try to load other SavedGame version - activate Traces SaveLoad for log.txt 

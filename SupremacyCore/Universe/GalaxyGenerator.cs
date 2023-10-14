@@ -826,18 +826,6 @@ namespace Supremacy.Universe
 
         }
 
-        //private static void _text = string _text)
-        //{
-        //    Console.WriteLine(_text);
-        //    GameLog.Client.GameData.InfoFormat(_text);
-        //}
-
-        //private static void _text = string _text)
-        //{
-        //    Console.WriteLine(_text);
-        //    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
-        //}
-
         private static bool PlaceEmpireHomeworlds(List<MapLocation> positions,
             IList<string> starNames,
             HomeSystemsDatabase homeSystemDatabase,

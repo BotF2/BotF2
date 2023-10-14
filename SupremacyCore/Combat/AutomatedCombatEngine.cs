@@ -27,6 +27,7 @@ namespace Supremacy.Combat
         private string _sectorString;
 #pragma warning restore IDE0052 // Remove unread private members
 
+        [NonSerialized]
         private string _text;
         private readonly string blank = " ";
 
@@ -44,7 +45,7 @@ namespace Supremacy.Combat
         {
             MapLocation _sector = _assets.FirstOrDefault().Location;
             _sectorString = _sector.ToString();
-            _text = ("Step_3008: " + _sectorString + " > ResolveCombatRoundCore.... _combatShips.Count: " + _combatShips.Count);
+            _text = ("Step_3007:; " + _sectorString + " > ResolveCombatRoundCore.... _combatShips.Count: " + _combatShips.Count);
             Console.WriteLine(_text);
             GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2183,7 +2184,7 @@ namespace Supremacy.Combat
             {
                 _text = ("Step_3253: " + _sectorString
                     + " > Hull = " + combatent.Item1.HullStrength
-                    + " for CombatShip: " + blank + combatent.Item1.Source.ObjectID + blank + combatent.Item1.Name + combatent.Item1.Source.Design
+                    + " for CombatShip: " + combatent.Item1.Source.ObjectID + blank + combatent.Item1.Name + blank + combatent.Item1.Source.Design
                     );
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -2206,9 +2207,9 @@ namespace Supremacy.Combat
                     {
                         if (Assets != null)
                         {
-                            _text = ("Step_3888: "
+                            _text = ("Step_3887:; "
                                 + combatent.Item1.Source.Location +
-                                "REMOVE DESTROYED Name of Owner = " + Assets.Owner.Name
+                                " > REMOVE DESTROYED Name of Owner = " + Assets.Owner.Name
                                 + ", Assets.CombatShips = " + Assets.CombatShips.Count
                                 + ", Assets.NonCobatShips = " + Assets.NonCombatShips.Count);
                             Console.WriteLine(_text);
@@ -2229,7 +2230,7 @@ namespace Supremacy.Combat
 
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
 
-                                _text = "Step_3008: " + _text;
+                                _text = "Step_3004:; " + _text;
                                 Console.WriteLine(_text);
                                 GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2251,7 +2252,7 @@ namespace Supremacy.Combat
 
                                 civManager.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Gray));
 
-                                _text = "Step_3008: " + _text;
+                                _text = "Step_3005:; " + _text;
                                 Console.WriteLine(_text);
                                 GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2315,7 +2316,7 @@ namespace Supremacy.Combat
             // End the combat... at turn X = 5, by letting all sides reteat
             //if (true) // End Combat after 3 While loops
             //{
-            _text = ("Step_3313: " + _sectorString + " > NOW HANDLE ALL NOT DESTROYED, Number of destroyed ships in total: " + countDestroyed);
+            _text = ("Step_3313:; " + _sectorString + " > NOW HANDLE ALL NOT DESTROYED, Number of destroyed ships in total: " + countDestroyed);
             Console.WriteLine(_text);
             GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2502,7 +2503,7 @@ namespace Supremacy.Combat
             //}
             //CivilizationManager civManager = GameContext.Current.CivilizationManagers[GetAssets.];
 
-            _text = ("Step_3008: " + _sectorString + " > AutomatedCombatEngine ends");
+            _text = ("Step_3006:; " + _sectorString + " > AutomatedCombatEngine ends");
             Console.WriteLine(_text);
             GameLog.Core.CombatDetails.DebugFormat(_text);
         }

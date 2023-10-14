@@ -61,7 +61,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 55)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 15)  // before 55
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -129,6 +129,11 @@ namespace Supremacy.Scripting.Events
                     }
 
                     OnUnitTargeted(target);
+
+                    _text = "Step_5497:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
+                            + " >Terrorist Bombing (Event). Down: Population " + -population / 3 * 2 + ", ";
+                    Console.WriteLine(_text);
+                    GameLog.Core.Events.DebugFormat(_text);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

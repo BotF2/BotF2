@@ -2054,7 +2054,7 @@ namespace Supremacy.Game
     //{
     //    private readonly int _systemId;
     //    private readonly int _removeEnergyFacilities;
-    //    private readonly int _total3_EnergyFacilities;
+    //    private readonly int _Facilities_Total3_Energy;
 
     //public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId); 
     //public override SitRepAction Action => SitRepAction.CenterOnSector;
@@ -2069,7 +2069,7 @@ namespace Supremacy.Game
     //            {
     //                return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_SUCCESS"),
     //                //"Successful sabotage mission to {0} {1}, (ship lost in action): {2} of {3} energy facilities destroyed.",
-    //                   System.Owner, System.Location, _removeEnergyFacilities, _total3_EnergyFacilities + _removeEnergyFacilities);
+    //                   System.Owner, System.Location, _removeEnergyFacilities, _Facilities_Total3_Energy + _removeEnergyFacilities);
     //            }
     //            else
     //            {
@@ -2080,7 +2080,7 @@ namespace Supremacy.Game
     //        }
     //    }
     //public override bool IsPriority => true;
-    //    public NewSabotageFromShipSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int total3_EnergyFacilities)
+    //    public NewSabotageFromShipSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int Facilities_Total3_Energy)
     //        : base(owner)//, SitRepPriority.Red)
     //    {
     //        if (colony == null)
@@ -2088,7 +2088,7 @@ namespace Supremacy.Game
     //        _systemId = colony.System.ObjectID;
 
     //        _removeEnergyFacilities = removeEnergyFacilities;
-    //        _total3_EnergyFacilities = total3_EnergyFacilities;
+    //        _Facilities_Total3_Energy = Facilities_Total3_Energy;
     //    }
     //}
 

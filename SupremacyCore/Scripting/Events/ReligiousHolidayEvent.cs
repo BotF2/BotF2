@@ -61,7 +61,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >= 30)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 10)  // before 30
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c => c.IsEmpire &&

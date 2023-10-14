@@ -47,7 +47,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 30)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 10)  // before 30
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -106,7 +106,11 @@ namespace Supremacy.Scripting.Events
                     _ = target.Health.AdjustCurrent(-(health / 2));
                     target.Health.UpdateAndReset();
 
-                    GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
+                    _text = "Step_5498:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
+                            + " > Plaque (Event). Down: Population " + -population / 3 * 2 + ", Health " + -health / 3 * 2;
+                    Console.WriteLine(_text);
+                    GameLog.Core.Events.DebugFormat(_text);
+                    //GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

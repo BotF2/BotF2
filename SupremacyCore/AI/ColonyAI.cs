@@ -31,9 +31,7 @@ namespace Supremacy.AI
 
         private static string _text;
         private static int neededColonizer;
-#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
-        private const int MaxEmpireColonyCount = 999;
-#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
+        private const int MaxEmpireColonyCount = 999; // currently not used
 
         private static bool need1Colonizer;
         private static readonly string blank = " ";
@@ -48,16 +46,41 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(civ));
             }
 
+
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(civ.CivID))
             {
                 _text = "Step_1100: " + colony.Location + blank + colony.Name + " > Handling colony"
-                    + " Energy > Food > Buildings > BuildQueues >"
+                    + " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues >"
                     ;
                 Console.WriteLine(_text);
 
+                if (MaxEmpireColonyCount == 999)
+                    _text = "";//nothing - just for dummy
+
+                if (colony.BuildQueue.Count > 0)
+                {
+                    _text = "Step_1104: HandleBasicStructures on > "
+                            + colony.Name + " " + colony.Owner
+                            + ", already bulding > " + colony.BuildQueue[0].Description;
+                    ;
+                    Console.WriteLine(_text);
+                }
+                else
+                {
+                    _text = "Step_1106: HandleBasicStructures on > "
+                            + colony.Name + " " + colony.Owner
+                            + " > BuildQueue empty" + colony.BuildQueue[0].Description;
+                    ;
+                    Console.WriteLine(_text);
+                }
+
+
                 HandleEnergyProduction(colony);
                 HandleFoodProduction(colony);
+                HandleBasicStructures(colony, civ);
                 HandleBuildings(colony, civ);
+                HandleAdditionalStructures(colony, civ);
+                HandleUpgrades(colony, civ);
                 colony.ProcessQueue();
                 HandleBuyBuild(colony, civ);
                 HandleIndustryProduction(colony);
@@ -107,9 +130,9 @@ namespace Supremacy.AI
 
         private static void HandleEnergyProduction(Colony colony)
         {
-            _text = "Step_1202: Handle ENERGY on "
+            _text = "Step_1210: Handle ENERGY on "
                     + colony.Name + " " + colony.Owner
-                    + " > no Upgrade INDUSTRY"
+                    //+ " > no Upgrade INDUSTRY"
                     ;
             Console.WriteLine(_text);
 
@@ -133,7 +156,7 @@ namespace Supremacy.AI
             if ((colony.Buildings.Any(b => !b.IsActive && b.BuildingDesign.EnergyCost > 0) || (colony.Shipyard?.BuildSlots.Any(s => !s.IsActive) == true)) && !colony.IsBuilding(facilityType))
             {
                 colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, facilityType)));
-                _text = "Step_1202: HandleBuildings on "
+                _text = "Step_1218: HandleBuildings on "
                     + colony.Name + " " + colony.Owner
                     + " > added 1 ENERGY Facility Build Order"
                     ;
@@ -143,6 +166,12 @@ namespace Supremacy.AI
 
         private static void HandleFoodProduction(Colony colony)
         {
+            _text = "Step_1220: Handle FOOD on "
+                    + colony.Name + " " + colony.Owner
+                    //+ " > no Upgrade INDUSTRY"
+                    ;
+            Console.WriteLine(_text);
+
             double foodOutput = colony.GetFacilityType(ProductionCategory.Food).UnitOutput * (1.0 + colony.GetProductionModifier(ProductionCategory.Food).Efficiency);
             double neededFood = colony.NetFood + colony.FoodReserves.CurrentValue - (10 * foodOutput);
             SetFacility(colony, ProductionCategory.Food, (int)neededFood, foodOutput, new[] { ProductionCategory.Intelligence, ProductionCategory.Research, ProductionCategory.Industry });
@@ -152,7 +181,7 @@ namespace Supremacy.AI
             if (maxFoodProduction < neededFood && !colony.IsBuilding(facilityType))
             {
                 colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, facilityType)));
-                _text = "Step_1202: HandleBuildings on "
+                _text = "Step_1228: HandleFoodProduction on "
                     + colony.Name + " " + colony.Owner
                     + " > added 1 FOOD Facility Build Order"
                     ;
@@ -173,10 +202,11 @@ namespace Supremacy.AI
 
         private static void HandleLabors(Colony colony)
         {
+            while (colony.ActivateFacility(ProductionCategory.Industry)) { }
             while (colony.ActivateFacility(ProductionCategory.Research)) { }
             while (colony.ActivateFacility(ProductionCategory.Intelligence)) { }
             while (colony.ActivateFacility(ProductionCategory.Food)) { }
-            while (colony.ActivateFacility(ProductionCategory.Industry)) { }
+
         }
 
         private static void HandleBuildings(Colony colony, Civilization civ)
@@ -205,7 +235,8 @@ namespace Supremacy.AI
                 ;
                 Console.WriteLine(_text);
 
-                if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+                //if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+                if (colony.BuildQueue.Count == 0)
                 {
                     //INDUSTRY 
                     List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Industry };
@@ -214,7 +245,7 @@ namespace Supremacy.AI
                     {
                         _text = "Step_1204: HandleBuildings on INDUSTRY at "
                             + colony.Name + " " + colony.Owner
-                            + " > "+ flexLabors + " labors available"
+                            + " > " + colony.GetAvailableLabor() + " labors available"
                             ;
                         Console.WriteLine(_text);
 
@@ -251,7 +282,7 @@ namespace Supremacy.AI
                     {
                         _text = "Step_1204: HandleBuildings on INDUSTRY at "
                             + colony.Name + " " + colony.Owner
-                            + " > " + flexLabors + " labors available"
+                            + " > " + colony.GetAvailableLabor() + " labors available"
                             ;
                         Console.WriteLine(_text);
 
@@ -287,7 +318,7 @@ namespace Supremacy.AI
                     {
                         _text = "Step_1204: HandleBuildings on "
                             + colony.Name + " " + colony.Owner
-                            + " " + flexLabors + " > flexLabors available"
+                            + " " + colony.GetAvailableLabor() + " > flexLabors available"
                             ;
                         Console.WriteLine(_text);
                         if (colony.GetTotalFacilities(ProductionCategory.Industry) <= colony.GetTotalFacilities(ProductionCategory.Research) + colony.GetTotalFacilities(ProductionCategory.Intelligence))
@@ -327,6 +358,296 @@ namespace Supremacy.AI
                     else
                     {
                         _text = "Step_1203: HandleBuildings on "
+                                + colony.Name + " " + colony.Owner
+                                + " > no Upgrade INDUSTRY"
+                                ;
+                        Console.WriteLine(_text);
+                    }
+                }
+
+                ////structureProject
+                //StructureBuildProject structureProject = TechTreeHelper
+                //    .GetBuildProjects(colony)
+                //    .OfType<StructureBuildProject>()
+                //    .Where(p =>
+                //            p.GetCurrentIndustryCost() > 0
+                //            && EnumHelper
+                //                .GetValues<ResourceType>()
+                //                .Where(availableResources.ContainsKey)
+                //                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
+                //    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
+                //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                //{
+                //    colony.BuildQueue.Add(new BuildQueueItem(structureProject));
+                //}
+            }
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
+                    * colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue)
+                    * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
+
+                CivilizationManager manager = GameContext.Current.CivilizationManagers[civ];
+
+                Dictionary<ResourceType, int> availableResources = manager.Colonies
+                    .SelectMany(c => c.BuildSlots)
+                    .Where(os => os.Project != null)
+                    .Select(os => os.Project)
+                    .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
+                    .GroupBy(r => r.Resource)
+                    .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
+                    .ToDictionary(r => r.Resource, r => manager.Resources[r.Resource].CurrentValue - r.Used);
+                //structureProject
+                StructureBuildProject structureProject = TechTreeHelper
+                    .GetBuildProjects(colony)
+                    .OfType<StructureBuildProject>()
+                    .Where(p =>
+                            p.GetCurrentIndustryCost() > 0
+                            && EnumHelper
+                                .GetValues<ResourceType>()
+                                .Where(availableResources.ContainsKey)
+                                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
+                    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
+                if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus
+                    + (colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                {
+                    colony.BuildQueue.Add(new BuildQueueItem(structureProject));
+                }
+            }
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Industry, ProductionCategory.Research, ProductionCategory.Intelligence };
+                int flexLabors = colony.GetAvailableLabor() + flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
+                if (flexLabors > 0)
+                {
+                    if (colony.GetTotalFacilities(ProductionCategory.Industry) <= colony.GetTotalFacilities(ProductionCategory.Research) + colony.GetTotalFacilities(ProductionCategory.Intelligence))
+                    {
+                        colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, colony.GetFacilityType(ProductionCategory.Industry))));
+                    }
+                    else
+                    {
+                        colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, colony.GetFacilityType(ProductionCategory.Research))));
+                    }
+                }
+            }
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                IList<BuildProject> projects = TechTreeHelper.GetBuildProjects(colony);
+            }
+        }
+
+        private static void HandleBasicStructures(Colony colony, Civilization civ)
+        {
+            _text = "Step_1230: HandleBasicStructures on > "
+                    + "" + colony.Name + " " + colony.Owner
+                    ;
+            Console.WriteLine(_text);
+
+
+            colony.ProcessQueue();
+
+            if (colony.BuildQueue.Count > 0)
+            {
+                _text = "Step_1234: HandleBasicStructures on > "
+                        + colony.Name + " " + colony.Owner
+                        + ", already bulding > " + colony.BuildQueue[0].Description;
+                        ;
+                Console.WriteLine(_text);
+            }
+
+            if (colony.BuildQueue.Count == 0)
+            {
+                _text = "Step_1232: HandleBasicStructures: "
+                    + " on " + colony.Name + " " + colony.Owner
+                ;
+                Console.WriteLine(_text);
+
+                double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
+                    * colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue)
+                    * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
+
+                CivilizationManager manager = GameContext.Current.CivilizationManagers[civ];
+
+                Dictionary<ResourceType, int> availableResources = manager.Colonies
+                    .SelectMany(c => c.BuildSlots)
+                    .Where(os => os.Project != null)
+                    .Select(os => os.Project)
+                    .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
+                    .GroupBy(r => r.Resource)
+                    .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
+                    .ToDictionary(r => r.Resource, r => manager.Resources[r.Resource].CurrentValue - r.Used);
+                //structureProject
+                StructureBuildProject structureProject = TechTreeHelper
+                    .GetBuildProjects(colony)
+                    .OfType<StructureBuildProject>()
+                    .Where(p =>
+                            p.GetCurrentIndustryCost() > 0
+                            && EnumHelper
+                                .GetValues<ResourceType>()
+                                .Where(availableResources.ContainsKey)
+                                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
+                    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
+                if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus
+                    + (colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                {
+                    colony.BuildQueue.Add(new BuildQueueItem(structureProject));
+                }
+
+
+                if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+                {
+                    IList<BuildProject> projects = TechTreeHelper.GetBuildProjects(colony);
+                }
+            }
+        }
+
+        private static void HandleAdditionalStructures(Colony colony, Civilization civ)
+        {
+            // Build a shipyard ?
+            if (colony.Shipyard == null)
+            {
+                BuildProject project = TechTreeHelper.GetBuildProjects(colony).FirstOrDefault(bp => bp.BuildDesign is ShipyardDesign);
+                if (colony == GameContext.Current.Universe.HomeColonyLookup[civ] && project != null && !colony.IsBuilding(project.BuildDesign))
+                {
+                    colony.BuildQueue.Add(new BuildQueueItem(project));
+                }
+            }
+
+            colony.ProcessQueue();
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                _text = "Step_1208: HandleAdditionalStructures: "
+                        + " on " + colony.Name + " " + colony.Owner
+                        ;
+                Console.WriteLine(_text);
+
+
+                if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+                {
+                    // Industry Upgrade ?
+                    ProductionFacilityUpgradeProject upgradeIndustryProject = TechTreeHelper
+                        .GetBuildProjects(colony)
+                        .OfType<ProductionFacilityUpgradeProject>()
+                        .FirstOrDefault(bp => bp.FacilityDesign == colony.GetFacilityType(ProductionCategory.Industry));
+                    if (upgradeIndustryProject != null)
+                    {
+                        colony.BuildQueue.Add(new BuildQueueItem(upgradeIndustryProject));
+                    }
+                    else
+                    {
+                        _text = "Step_1203: HandleBuildings on "
+                                + colony.Name + " " + colony.Owner
+                                + " > no Upgrade INDUSTRY"
+                                ;
+                        Console.WriteLine(_text);
+                    }
+                }
+
+                ////structureProject
+                //StructureBuildProject structureProject = TechTreeHelper
+                //    .GetBuildProjects(colony)
+                //    .OfType<StructureBuildProject>()
+                //    .Where(p =>
+                //            p.GetCurrentIndustryCost() > 0
+                //            && EnumHelper
+                //                .GetValues<ResourceType>()
+                //                .Where(availableResources.ContainsKey)
+                //                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
+                //    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
+                //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                //{
+                //    colony.BuildQueue.Add(new BuildQueueItem(structureProject));
+                //}
+            }
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
+                    * colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue)
+                    * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
+
+                CivilizationManager manager = GameContext.Current.CivilizationManagers[civ];
+
+                Dictionary<ResourceType, int> availableResources = manager.Colonies
+                    .SelectMany(c => c.BuildSlots)
+                    .Where(os => os.Project != null)
+                    .Select(os => os.Project)
+                    .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
+                    .GroupBy(r => r.Resource)
+                    .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
+                    .ToDictionary(r => r.Resource, r => manager.Resources[r.Resource].CurrentValue - r.Used);
+                //structureProject
+                StructureBuildProject structureProject = TechTreeHelper
+                    .GetBuildProjects(colony)
+                    .OfType<StructureBuildProject>()
+                    .Where(p =>
+                            p.GetCurrentIndustryCost() > 0
+                            && EnumHelper
+                                .GetValues<ResourceType>()
+                                .Where(availableResources.ContainsKey)
+                                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
+                    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
+                if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus
+                    + (colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                {
+                    colony.BuildQueue.Add(new BuildQueueItem(structureProject));
+                }
+            }
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Industry, ProductionCategory.Research, ProductionCategory.Intelligence };
+                int flexLabors = colony.GetAvailableLabor() + flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
+                if (flexLabors > 0)
+                {
+                    if (colony.GetTotalFacilities(ProductionCategory.Industry) <= colony.GetTotalFacilities(ProductionCategory.Research) + colony.GetTotalFacilities(ProductionCategory.Intelligence))
+                    {
+                        colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, colony.GetFacilityType(ProductionCategory.Industry))));
+                    }
+                    else
+                    {
+                        colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, colony.GetFacilityType(ProductionCategory.Research))));
+                    }
+                }
+            }
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                IList<BuildProject> projects = TechTreeHelper.GetBuildProjects(colony);
+            }
+        }
+
+        private static void HandleUpgrades(Colony colony, Civilization civ)
+        {
+
+            colony.ProcessQueue();
+
+            if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+            {
+                _text = "Step_1208: HandleUpgrades: "
+                        + " on " + colony.Name + " " + colony.Owner
+                        ;
+                Console.WriteLine(_text);
+
+
+                if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+                {
+                    // Industry Upgrade ?
+                    ProductionFacilityUpgradeProject upgradeIndustryProject = TechTreeHelper
+                        .GetBuildProjects(colony)
+                        .OfType<ProductionFacilityUpgradeProject>()
+                        .FirstOrDefault(bp => bp.FacilityDesign == colony.GetFacilityType(ProductionCategory.Industry));
+                    if (upgradeIndustryProject != null)
+                    {
+                        colony.BuildQueue.Add(new BuildQueueItem(upgradeIndustryProject));
+                    }
+                    else
+                    {
+                        _text = "Step_1209: HandleUpgrades on "
                                 + colony.Name + " " + colony.Owner
                                 + " > no Upgrade INDUSTRY"
                                 ;

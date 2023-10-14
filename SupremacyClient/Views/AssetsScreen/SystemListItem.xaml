@@ -203,8 +203,8 @@
         <scc:GameLabel Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1}">
-                    <Binding Path="Active1_FoodFacilities" />
-                    <Binding Path="Total1_FoodFacilities" />
+                    <Binding Path="Facilities_Active1_Food" />
+                    <Binding Path="Facilities_Total1_Food" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -226,8 +226,8 @@
         <scc:GameLabel Grid.Row="2" Grid.Column="7" VerticalAlignment="Center"  >
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1} ">
-                    <Binding Path="Active2_IndustryFacilities" />
-                    <Binding Path="Total2_IndustryFacilities" />
+                    <Binding Path="Facilities_Active2_Industry" />
+                    <Binding Path="Facilities_Total2_Industry" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -249,8 +249,8 @@
         <scc:GameLabel Grid.Row="3" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"     >
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1} ">
-                    <Binding Path="Active3_EnergyFacilities" />
-                    <Binding Path="Total3_EnergyFacilities" />
+                    <Binding Path="Facilities_Active3_Energy" />
+                    <Binding Path="Facilities_Total3_Energy" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -261,8 +261,8 @@
             <!--old: Label="{Binding Path=NetEnergy}"-->
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0}  ( Surplus )">
-                    <!--<Binding Path="Active3_EnergyFacilities" />
-                    <Binding Path="Total3_EnergyFacilities" />-->
+                    <!--<Binding Path="Facilities_Active3_Energy" />
+                    <Binding Path="Facilities_Total3_Energy" />-->
                     <Binding Path="NetEnergy" />
                     <!--<Binding Path="NetEnergy" />-->
                 </MultiBinding>
@@ -296,8 +296,8 @@
         <scc:GameLabel Grid.Row="1" Grid.Column="12" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1}">
-                    <Binding Path="Active4_ResearchFacilities" />
-                    <Binding Path="Total4_ResearchFacilities" />
+                    <Binding Path="Facilities_Active4_Research" />
+                    <Binding Path="Facilities_Total4_Research" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -309,7 +309,7 @@
             <!--old: Label="{Binding Path=NetResearch}"-->
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} ">
-                    <!--<Binding Path="Active4_ResearchFacilities" />-->
+                    <!--<Binding Path="Facilities_Active4_Research" />-->
                     <Binding Path="NetResearch" />
                 </MultiBinding>
             </scc:GameLabel.Label>
@@ -322,8 +322,8 @@
         <scc:GameLabel Grid.Row="2" Grid.Column="12" HorizontalAlignment="Center" VerticalAlignment="Center">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1}">
-                    <Binding Path="Active5_IntelligenceFacilities" />
-                    <Binding Path="Total5_IntelligenceFacilities" />
+                    <Binding Path="Facilities_Active5_Intelligence" />
+                    <Binding Path="Facilities_Total5_Intelligence" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -341,8 +341,8 @@
         <scc:GameLabel Grid.Row="3" Grid.Column="12" HorizontalAlignment="Center" VerticalAlignment="Center">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1}">
-                    <Binding Path="ActiveOrbitalBatteries" />
-                    <Binding Path="TotalOrbitalBatteries" />
+                    <Binding Path="OrbitalBatteries_Active" />
+                    <Binding Path="OrbitalBatteries_Total" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -353,7 +353,7 @@
                    ToolTip="{s:StringResource Key=ORBITAL_BATTERIES_TOOLTIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}each {0} Energy">
-                    <!--<Binding Path="ActiveOrbitalBatteries" />-->
+                    <!--<Binding Path="OrbitalBatteries_Active" />-->
                     <Binding Path="EnergyCostEachOrbitalBattery" />
                 </MultiBinding>
             </scc:GameLabel.Label>

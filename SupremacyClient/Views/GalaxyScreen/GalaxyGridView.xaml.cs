@@ -313,11 +313,11 @@ namespace Supremacy.Client.Views
 
                         + ";mor;" + item.Morale
                         + ";FoodR;" + item.FoodReserves
-                        + ";facF;" + item.Active1_FoodFacilities + ";of;" + item.Total1_FoodFacilities
-                        + ";facI;" + item.Active2_IndustryFacilities + ";of;" + item.Total2_IndustryFacilities
-                        + ";facE;" + item.Active3_EnergyFacilities + ";of;" + item.Total3_EnergyFacilities
-                        + ";facR;" + item.Active4_ResearchFacilities + ";of;" + item.Total4_ResearchFacilities
-                        + ";facI;" + item.Active5_IntelligenceFacilities + ";of;" + item.Total5_IntelligenceFacilities
+                        + ";facF;" + item.Facilities_Active1_Food + ";of;" + item.Facilities_Total1_Food
+                        + ";facI;" + item.Facilities_Active2_Industry + ";of;" + item.Facilities_Total2_Industry
+                        + ";facE;" + item.Facilities_Active3_Energy + ";of;" + item.Facilities_Total3_Energy
+                        + ";facR;" + item.Facilities_Active4_Research + ";of;" + item.Facilities_Total4_Research
+                        + ";facI;" + item.Facilities_Active5_Intelligence + ";of;" + item.Facilities_Total5_Intelligence
 
 
                         + ";since Turn;" + item.TurnCreated
@@ -532,6 +532,7 @@ namespace Supremacy.Client.Views
                 //var events = null;
                 if (GameContext.Current.ScriptedEvents != null)
                 {
+                    _text += "Step_4356:; Events following..." + newline;
                     var events = GameContext.Current.ScriptedEvents.ToList();
                     foreach (var item in events)
                     {
@@ -910,7 +911,7 @@ namespace Supremacy.Client.Views
                         {
                             _text += "Step_4346: ---------------" + newline;
                             _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Dil;Spe;Ra;Fu;Man;WO;Sc%;SP;SR;"
-                                                            + "HULL;SH;ShR;Cl;Ca;TYPE;CLASSNAME;W1=Weapon 1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
+                                                            + "HULL;SH;ShR;Cl;Ca;TYPE;CLASSNAME;N_+_Sp;W1=Weapon 1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
                             first_ships = false;
                         }
 
@@ -935,6 +936,7 @@ namespace Supremacy.Client.Views
 
                         tdb_text += ";" + spec.ShipType;
                         tdb_text += ";" + spec.ClassName;
+                        tdb_text += ";" + spec.EncyclopediaHeading;
 
                         if (spec.PrimaryWeapon != null)
                         {

@@ -687,7 +687,7 @@
                                     Foreground="Orange" 
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                     FontSize="11pt" 
-                                    Text="{Binding Path=CivFirePowers1}"/>
+                                    Text="{Binding Path=CivFirePowers1Text}"/>
 
                         <!--CivsAndFirePowers 2-->
 

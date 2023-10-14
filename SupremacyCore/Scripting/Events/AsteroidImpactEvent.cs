@@ -72,7 +72,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >= 80)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 20)  // before 80
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(
@@ -181,6 +181,11 @@ namespace Supremacy.Scripting.Events
                     //    public override string SummaryText => string.Format(ResourceManager.GetString("ASTEROID_IMPACT_SUMMARY_TEXT"), Colony.Name, Colony.Location);
                     //    public override string SitRepComment { get; set; }
                     //    public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png";
+
+                    _text = "Step_5492:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
+                        + " > AsteroidImpact (Event). Down: Population " + -population / 3 * 2 + ", Health " + -health / 3 * 2;
+                    Console.WriteLine(_text);
+                    GameLog.Core.Events.DebugFormat(_text);
 
                     GameContext.Current.Universe.UpdateSectors();
                     return;

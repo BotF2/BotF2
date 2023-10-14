@@ -38,6 +38,7 @@ namespace Supremacy.Orbitals
         public static readonly AssaultSystemOrder AssaultSystemOrder;
         public static readonly AvoidOrder AvoidOrder;
         public static readonly ScrapShipOrder ScrapShipOrder;
+        public static readonly MissionOrder MissionOrder;  // = busy in any kind
         public static readonly IdleOrder IdleOrder;
         public static readonly DefendOrder DefendOrder;
         public static readonly StrandedOrder StrandedOrder;
@@ -68,6 +69,7 @@ namespace Supremacy.Orbitals
             AssaultSystemOrder = new AssaultSystemOrder();
             AvoidOrder = new AvoidOrder();
             ScrapShipOrder = new ScrapShipOrder();
+            MissionOrder = new MissionOrder();
             IdleOrder = new IdleOrder();
             DefendOrder = new DefendOrder();
             StrandedOrder = new StrandedOrder();
@@ -229,8 +231,6 @@ namespace Supremacy.Orbitals
     }
     #endregion AvoidOrder
 
-
-
     #region IdleOrder
     [Serializable]
     public sealed class IdleOrder : FleetOrder
@@ -244,6 +244,20 @@ namespace Supremacy.Orbitals
         }
     }
     #endregion IdleOrder
+
+    #region MissionOrder // Busy in any kind
+    [Serializable]
+    public sealed class MissionOrder : FleetOrder // Busy in any kind
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_MISSION");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_MISSION");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new MissionOrder();
+        }
+    }
+    #endregion MissionOrder
 
     #region StrandedOrder
     [Serializable]
@@ -743,10 +757,17 @@ namespace Supremacy.Orbitals
                 healthAdjustment = 1.24f;
             }
 
+            if (healthAdjustment < 1.10f)
+            {
+                healthAdjustment = 1.10f;
+            }
+
             if (Fleet.Sector.System.Colony is null)
             { /*do nothing*/ }
             else if (Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
             {
+                _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(1); // at least 1
+                Fleet.Sector.System.Colony.Health.UpdateAndReset();
                 _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
@@ -1262,7 +1283,7 @@ namespace Supremacy.Orbitals
                 system.Colony.GetEnergyUsage(),
                 system.Colony.GetActiveFacilities(ProductionCategory.Energy),
                 system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            GameLog.Core.Intel.DebugFormat("{0}: Total3_EnergyFacilities before={1}",
+            GameLog.Core.Intel.DebugFormat("{0}: Facilities_Total3_Energy before={1}",
                 system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
 
             //Effect of sabatoge
@@ -1299,7 +1320,7 @@ namespace Supremacy.Orbitals
                 civManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                         civ, system.Owner, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
             }
-            //GameLog.Core.Intel.DebugFormat("{0}: Total3_EnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            //GameLog.Core.Intel.DebugFormat("{0}: Facilities_Total3_Energy after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
             //civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
@@ -2053,8 +2074,11 @@ namespace Supremacy.Orbitals
     {
         private bool _finished;
         private StationBuildProject _buildProject;
-        private object _text;
         private string _stationDesignName;
+
+        [NonSerialized]
+        private string _text;
+        private int turnnumber = GameContext.Current.TurnNumber;
 
         public StationDesign StationDesign => BuildProject.BuildDesign as StationDesign;
 
@@ -2255,7 +2279,8 @@ namespace Supremacy.Orbitals
 
             if (project != null)
             {
-                _text = "Step_8380: " + project.Location + "> project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
+                _text = "Step_8380:; Turn " + turnnumber 
+                    + project.Location + "> project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
                 Console.WriteLine(_text);
                 //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             }
@@ -2288,7 +2313,7 @@ namespace Supremacy.Orbitals
 
             //DuraniumBefore = usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium];
 
-            _text = "Step_8390: " + project.Location
+            _text = "Step_8390:; " + project.Location
                 + " > project: Builder = " + project.Builder
                 + ", BuildDesign = " + project.BuildDesign
                 + ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue

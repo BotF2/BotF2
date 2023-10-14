@@ -745,33 +745,33 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        #region MaxActiveOrbitalBatteries Property
+        #region MaxOrbitalBatteries_Active Property
 
         [field: NonSerialized]
-        public event EventHandler MaxActiveOrbitalBatteriesChanged;
+        public event EventHandler MaxOrbitalBatteries_ActiveChanged;
 
-        private int _maxActiveOrbitalBatteries;
+        private int _maxOrbitalBatteries_Active;
 
-        public int MaxActiveOrbitalBatteries
+        public int MaxOrbitalBatteries_Active
         {
-            get => _maxActiveOrbitalBatteries;
+            get => _maxOrbitalBatteries_Active;
             set
             {
-                if (Equals(value, _maxActiveOrbitalBatteries))
+                if (Equals(value, _maxOrbitalBatteries_Active))
                 {
                     return;
                 }
 
-                _maxActiveOrbitalBatteries = value;
+                _maxOrbitalBatteries_Active = value;
 
-                OnMaxActiveOrbitalBatteriesChanged();
+                OnMaxOrbitalBatteries_ActiveChanged();
             }
         }
 
-        protected virtual void OnMaxActiveOrbitalBatteriesChanged()
+        protected virtual void OnMaxOrbitalBatteries_ActiveChanged()
         {
-            MaxActiveOrbitalBatteriesChanged.Raise(this);
-            OnPropertyChanged("MaxActiveOrbitalBatteries");
+            MaxOrbitalBatteries_ActiveChanged.Raise(this);
+            OnPropertyChanged("MaxOrbitalBatteries_Active");
         }
 
         #endregion
@@ -783,7 +783,7 @@ namespace Supremacy.Client.Views
 
         private int _activeFoodFacilites;
 
-        public int ActiveFoodFacilites
+        public int Facilities_Active1_Food
         {
             get => _activeFoodFacilites;
             set
@@ -814,7 +814,7 @@ namespace Supremacy.Client.Views
 
         private int _activeIndustryFacilites;
 
-        public int ActiveIndustryFacilites
+        public int Facilities_Active2_Industry
         {
             get => _activeIndustryFacilites;
             set
@@ -845,7 +845,7 @@ namespace Supremacy.Client.Views
 
         private int _activeEnergyFacilites;
 
-        public int ActiveEnergyFacilites
+        public int Facilities_Active3_Energy
         {
             get => _activeEnergyFacilites;
             set
@@ -876,7 +876,7 @@ namespace Supremacy.Client.Views
 
         private int _activeResearchFacilites;
 
-        public int ActiveResearchFacilites
+        public int Facilities_Active4_Research
         {
             get => _activeResearchFacilites;
             set
@@ -907,7 +907,7 @@ namespace Supremacy.Client.Views
 
         private int _activeIntelligenceFacilites;
 
-        public int ActiveIntelligenceFacilites
+        public int Facilities_Active5_Intelligence
         {
             get => _activeIntelligenceFacilites;
             set
@@ -926,38 +926,38 @@ namespace Supremacy.Client.Views
         protected virtual void OnActiveIntelligenceFacilitesChanged()
         {
             ActiveIntelligenceFacilitesChanged.Raise(this);
-            OnPropertyChanged("ActiveIntelligenceFacilites");
+            OnPropertyChanged("Facilities_Active5_Intelligence");
         }
 
         #endregion
 
-        #region ActiveOrbitalBatteries Property
+        #region OrbitalBatteries_Active Property
 
         [field: NonSerialized]
-        public event EventHandler ActiveOrbitalBatteriesChanged;
+        public event EventHandler OrbitalBatteries_ActiveChanged;
 
-        private int _activeOrbitalBatteries;
+        private int _OrbitalBatteries_Active;
 
-        public int ActiveOrbitalBatteries
+        public int OrbitalBatteries_Active
         {
-            get => _activeOrbitalBatteries;
+            get => _OrbitalBatteries_Active;
             set
             {
-                if (Equals(value, _activeOrbitalBatteries))
+                if (Equals(value, _OrbitalBatteries_Active))
                 {
                     return;
                 }
 
-                _activeOrbitalBatteries = value;
+                _OrbitalBatteries_Active = value;
 
-                OnActiveOrbitalBatteriesChanged();
+                OnOrbitalBatteries_ActiveChanged();
             }
         }
 
-        protected virtual void OnActiveOrbitalBatteriesChanged()
+        protected virtual void OnOrbitalBatteries_ActiveChanged()
         {
-            ActiveOrbitalBatteriesChanged.Raise(this);
-            OnPropertyChanged("ActiveOrbitalBatteries");
+            OrbitalBatteries_ActiveChanged.Raise(this);
+            OnPropertyChanged("OrbitalBatteries_Active");
         }
 
         #endregion

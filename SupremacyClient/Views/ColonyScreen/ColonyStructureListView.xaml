@@ -54,9 +54,9 @@
                  VerticalAlignment="Center" />
 -->
       <s:UnitActivationBar Grid.Column="2"
-                           Units="{Binding Path=SelectedColony.TotalOrbitalBatteries, Mode=OneWay}"
-                           MaxActiveUnits="{Binding Path=MaxActiveOrbitalBatteries, Mode=TwoWay}"
-                           ActiveUnits="{Binding Path=ActiveOrbitalBatteries, Mode=TwoWay}" />
+                           Units="{Binding Path=SelectedColony.OrbitalBatteries_Total, Mode=OneWay}"
+                           MaxActiveUnits="{Binding Path=MaxOrbitalBatteries_Active, Mode=TwoWay}"
+                           ActiveUnits="{Binding Path=OrbitalBatteries_Active, Mode=TwoWay}" />
       <TextBlock Grid.Column="3"
                  Foreground="Transparent"
                  FontSize="14pt"
@@ -72,8 +72,8 @@
                  VerticalAlignment="Center">
         <TextBlock.Text>
           <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
-            <Binding Path="SelectedColony.ActiveOrbitalBatteries" />
-            <Binding Path="SelectedColony.TotalOrbitalBatteries" />
+            <Binding Path="SelectedColony.OrbitalBatteries_Active" />
+            <Binding Path="SelectedColony.OrbitalBatteries_Total" />
           </MultiBinding>
         </TextBlock.Text>
       </TextBlock>
@@ -102,9 +102,12 @@
                           VerticalAlignment="Top"
                           CornerRadius="4"
                           Margin="0,0,6,0"
-                          Width="58"
-                          Height="48"
+                          Width="116"
+                          Height="96"
                           Background="Black">
+                      <!--OLD:
+                          Width="58"
+                          Height="48"-->
                     <Border x:Name="ImageBorder"
                             BorderBrush="White"
                             BorderThickness="2"

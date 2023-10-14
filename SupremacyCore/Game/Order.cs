@@ -641,7 +641,7 @@ namespace Supremacy.Game
             }
 
             _colonyId = colony.ObjectID;
-            _activeCount = colony.ActiveOrbitalBatteries;
+            _activeCount = colony.OrbitalBatteries_Active;
         }
 
         public override bool DoExecute()
@@ -652,7 +652,7 @@ namespace Supremacy.Game
                 return false;
             }
 
-            int activeCountDifference = _activeCount - colony.ActiveOrbitalBatteries;
+            int activeCountDifference = _activeCount - colony.OrbitalBatteries_Active;
 
             while (activeCountDifference != 0)
             {

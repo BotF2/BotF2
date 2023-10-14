@@ -961,7 +961,11 @@ namespace Supremacy.Game
                         _scriptedEventGameLogText = scriptedEvent.GetType().ToString();
                         _scriptedEventGameLogText = _scriptedEventGameLogText.Replace("Supremacy.Scripting.Events.", "");
 
-                        GameLog.Client.EventsDetails.InfoFormat("Scripted Event loaded - Options from file: " + _eventOptionsGameLogText + " for {0}", _scriptedEventGameLogText);
+                        _text = "Step_1334:; Scripted Event loaded - Options from file: "
+                            + _eventOptionsGameLogText + " for " + _scriptedEventGameLogText;
+                        Console.WriteLine(_text);
+                        GameLog.Client.EventsDetails.InfoFormat(_text);
+
                         _eventOptionsGameLogText = "";
                         _scriptedEventGameLogText = "";
                     }
@@ -969,7 +973,7 @@ namespace Supremacy.Game
                     {
                         GameLog.Core.General.Error(
                             string.Format(
-                                "Error initializing scripted event \"{0}\".",
+                                "Step_1335:; Error initializing scripted event \"{0}\".",
                                 eventDefinition.Description),
                             e);
                     }
