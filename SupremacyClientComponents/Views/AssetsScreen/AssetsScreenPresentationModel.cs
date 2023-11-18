@@ -124,7 +124,7 @@ namespace Supremacy.Client.Views
                 try
                 {
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
-                    _text = "Step_5450:; "
+                    _text = "Step_5450:; Get TotalIntelProduction =;" + _totalIntelligenceProduction
                               ;
                     Console.WriteLine(_text);
                     //GameLog.Client.Intel.DebugFormat("Get TotalIntelProduction ={0}", _totalIntelligenceProduction);
@@ -148,11 +148,17 @@ namespace Supremacy.Client.Views
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
                     FillUpDefense();
                     _totalIntelligenceProduction = value;
+                    _text = "Step_5450:; Set TotalIntelProduction =;" + _totalIntelligenceProduction;
+
+                    Console.WriteLine(_text);
                     GameLog.Client.Intel.DebugFormat("Set TotalIntelProduction ={0}", _totalIntelligenceProduction);
                     NotifyPropertyChanged("TotalIntelligenceProduction");
                 }
                 catch (Exception e)
                 {
+                    _text = "Step_5450:; Problem occured at TotalIntelligenceProduction set;" + e;
+          
+                    Console.WriteLine(_text);
                     GameLog.Client.Intel.DebugFormat("Problem occured at TotalIntelligenceProduction set, Exception {0} {1}", e.Message, e.StackTrace);
                 }
             }
@@ -165,7 +171,11 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
-                //works   GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                //works
+                _text = "Step_5450:; Get TotalIntelDefenseAccumulated =;" + _totalIntelligenceDefenseAccumulated;
+          
+                Console.WriteLine(_text);
+                //GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 return _totalIntelligenceDefenseAccumulated;
             }
             set
@@ -185,7 +195,11 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
-                //works   GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
+                //works
+                _text = "Step_5450:; Get TotalIntelDefenseAccumulated =;" + _totalIntelligenceProduction;
+          
+                Console.WriteLine(_text);
+                //GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }
             set

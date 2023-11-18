@@ -667,6 +667,7 @@
                                 BorderBrush="{x:Null}"
                                 BorderThickness="0"
                                 ReadOnly="True"
+                                MinHeight="280"
                                 MaxHeight="280"
                                 SelectionMode="Single"
                                 ItemsSource="{Binding Path=ForeignPowers}"
