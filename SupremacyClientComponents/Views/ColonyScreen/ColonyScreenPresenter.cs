@@ -42,8 +42,10 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<ShipyardBuildSlot> _toggleShipyardBuildSlotCommand;
         private readonly DelegateCommand<ShipyardBuildSlot> _selectShipBuildProjectCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
+        private readonly DelegateCommand<object> _firstColonyCommand;
         private readonly DelegateCommand<object> _previousColonyCommand;
         private readonly DelegateCommand<object> _nextColonyCommand;
+        private readonly DelegateCommand<object> _showColonyOnMapCommand;
         //private readonly DelegateCommand<object> _nextTABinsideColonyCommand;
         private readonly DelegateCommand<object> _showColonyManagementCommand;
         private readonly DelegateCommand<object> _showColonyBuildListCommand;
@@ -136,14 +138,37 @@ namespace Supremacy.Client.Views
                     _newColonySelection = colony.ObjectID;
                 });
 
+            _firstColonyCommand = new DelegateCommand<object>(ExecuteFirstColonyCommand);
             _previousColonyCommand = new DelegateCommand<object>(ExecutePreviousColonyCommand);
             _nextColonyCommand = new DelegateCommand<object>(ExecuteNextColonyCommand);
+            _showColonyOnMapCommand = new DelegateCommand<object>(ExecuteShowColonyOnMapCommand);
 
             //_nextTABinsideColonyCommand = new DelegateCommand<object>(ExecuteNextTABinsideColonyCommand);
             _showColonyManagementCommand = new DelegateCommand<object>(ExecuteShowColonyManagementCommand);
             _showColonyBuildListCommand = new DelegateCommand<object>(ExecuteShowColonyBuildListCommand);
             _showShipyardCommand = new DelegateCommand<object>(ExecuteShowShipyardCommand);
 
+        }
+
+        private void ExecuteFirstColonyCommand(object _)
+        {
+            List<Colony> colonies = Model.Colonies.ToList();
+            Colony currentColony = Model.SelectedColony;
+
+            int currentColonyIndex = colonies.IndexOf(currentColony);
+            if (currentColonyIndex <= 0)
+            {
+                if (colonies.Count == 0)
+                {
+                    return;
+                }
+
+                Model.SelectedColony = colonies[0];
+            }
+            else
+            {
+                Model.SelectedColony = colonies[0];
+            }
         }
 
         private void ExecutePreviousColonyCommand(object _)
@@ -176,13 +201,45 @@ namespace Supremacy.Client.Views
             Model.SelectedColony = (currentColonyIndex == (colonies.Count - 1)) || (currentColonyIndex < 0) ? colonies[0] : colonies[currentColonyIndex + 1];
         }
 
+        private void ExecuteShowColonyOnMapCommand(object _)
+        {
+            NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
+            //Sector sector = selection.ActionTarget as Sector;
+
+            List<Colony> colonies = Model.Colonies.ToList();
+            Colony currentColony = Model.SelectedColony;
+
+
+            GalaxyScreenCommands.SelectSector.Execute(currentColony.Sector);
+            GalaxyScreenCommands.CenterOnSector.Execute(currentColony.Sector);
+
+
+
+
+
+            //int currentColonyIndex = colonies.IndexOf(currentColony);
+            //if (currentColonyIndex <= 0)
+            //{
+            //    if (colonies.Count == 0)
+            //    {
+            //        return;
+            //    }
+
+            //    Model.SelectedColony = colonies[colonies.Count - 1];
+            //}
+            //else
+            //{
+            //    Model.SelectedColony = colonies[currentColonyIndex - 1];
+            //}
+        }
+
         //private void ExecuteNextTABinsideColonyCommand(object _)
         //{
         //    //List<Colony> colonies = Model.Colonies.ToList();
         //    //Colony currentColony = Model.SelectedColony;
 
         //    //MessageBox.Show("_nextTABinsideColonyCommand " + TabControl.SelectedContentStringFormatProperty);
-            
+
         //    ColonyScreenDisplayMode = ColonyScreenDisplayMode.Management;
         //    OnViewActivating();
         //    //var _view = ColonyScreenView.SetAppContext;
@@ -742,8 +799,10 @@ namespace Supremacy.Client.Views
             Model.OrbitalBatteries_ActiveChanged += OnOrbitalBatteries_ActiveChanged;
 
             ColonyScreenCommands.ToggleBuildingScrapCommand.RegisterCommand(_toggleBuildingScrapCommand);
+            ColonyScreenCommands.FirstColonyCommand.RegisterCommand(_firstColonyCommand);
             ColonyScreenCommands.PreviousColonyCommand.RegisterCommand(_previousColonyCommand);
             ColonyScreenCommands.NextColonyCommand.RegisterCommand(_nextColonyCommand);
+            ColonyScreenCommands.ShowColonyOnMapCommand.RegisterCommand(_showColonyOnMapCommand);
 
             //ColonyScreenCommands.NextTABinsideColonyCommand.RegisterCommand(_nextTABinsideColonyCommand);
             ColonyScreenCommands.ShowColonyManagementCommand.RegisterCommand(_showColonyManagementCommand);
@@ -1147,8 +1206,10 @@ namespace Supremacy.Client.Views
             Model.OrbitalBatteries_ActiveChanged -= OnOrbitalBatteries_ActiveChanged;
 
             ColonyScreenCommands.ToggleBuildingScrapCommand.UnregisterCommand(_toggleBuildingScrapCommand);
+            ColonyScreenCommands.FirstColonyCommand.UnregisterCommand(_firstColonyCommand);
             ColonyScreenCommands.PreviousColonyCommand.UnregisterCommand(_previousColonyCommand);
             ColonyScreenCommands.NextColonyCommand.UnregisterCommand(_nextColonyCommand);
+            ColonyScreenCommands.ShowColonyOnMapCommand.UnregisterCommand(_showColonyOnMapCommand);
 
             GalaxyScreenCommands.SelectSector.UnregisterCommand(_selectSectorCommand);
 

@@ -425,13 +425,13 @@ namespace Supremacy.UI
         UseSitRepDetailsScreenChangedCallback));
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
-        private static void Report(string v)
-#pragma warning restore IDE0051 // Remove unused private members
-        {
-            Console.WriteLine(v);
-            GameLog.Client.GameData.DebugFormat(v); 
-        }
+//#pragma warning disable IDE0051 // Remove unused private members
+//        private static void Report(string v)
+//#pragma warning restore IDE0051 // Remove unused private members
+//        {
+//            Console.WriteLine(v);
+//            GameLog.Client.GameData.DebugFormat(v); 
+//        }
 
         public GalaxyGridPanel()
             : this(GameContext.Current.Universe.Map, ServiceLocator.Current.GetInstance<ISoundPlayer>()) { }
@@ -1017,13 +1017,19 @@ namespace Supremacy.UI
         private static FormattedText GetStarText(StarSystem system, Civilization playerCiv)
         {
             Civilization owner = system.Owner;
-            Brush brush = Brushes.White;
+            Brush brush = Brushes.Aqua;
+
+            if (system.IsInhabited)
+                brush = Brushes.Black;
+
             if (owner != null)
             {
                 brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
                                 ? s_colonyNameBrushes[system.OwnerID]
                                 : Brushes.White;
             }
+
+            
 
             string nameText;
             switch (system.StarType)
@@ -1320,12 +1326,6 @@ namespace Supremacy.UI
 
             AutoScrollToSector(sector);
         }
-
-        //private void ExecuteView25PercentCommand(Sector sector)
-        //{
-        //    //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
-        //    AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
-        //}
 
         private void ExecuteCenterOnHomeSectorCommand(Sector sector)
         {

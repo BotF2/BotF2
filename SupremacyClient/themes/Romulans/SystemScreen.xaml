@@ -56,13 +56,15 @@
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" />
                   <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
                   <ColumnDefinition Width="*" />
                   <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
@@ -71,34 +73,47 @@
                         Background="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
                         CornerRadius="14,0,0,14"
                         Width="21"
-                        Margin="5,0,0,0" />    
+                        Margin="5,0,0,0" />
+
+                <Rectangle Grid.Column="1"
+                         Margin="4,0,0,0"
+                   Width="14"
+                   SnapsToDevicePixels="True"
+                   Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
+
+                <Button Grid.Column="2"
+                      Margin="3,0,0,0"
+                    Style="{StaticResource LCARS_BorderButtonStyle}"
+                    Content="{s:StringResource Key=FIRST_TEXT, Case=lower}"
+                    Command="{x:Static scc:ColonyScreenCommands.FirstColonyCommand}" />
                   
-                  <Rectangle Grid.Column="1"
+                  <Rectangle Grid.Column="3"
                              Margin="4,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
                        Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
                 
-                  <Button Grid.Column="2"
+                  <Button Grid.Column="4"
                         Margin="3,0,0,0" 
                       Style="{StaticResource LCARS_BorderButtonStyle}"
                       Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
                       Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
                                    
-                  <Rectangle Grid.Column="3"
+                  <Rectangle Grid.Column="5"
                              Margin="3,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
                        Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
-                                
-                  <ComboBox Grid.Column="4"
-                          Grid.Row="0"
-                          Margin="3,0,0,0"
-                          IsEditable="False"
-                          IsReadOnly="True"
-                          MinWidth="200"
-                          ItemsSource="{Binding Path=Colonies, Mode=OneWay}"
-                          SelectedItem="{Binding Path=SelectedColony, Mode=TwoWay}">
+
+                <ComboBox Grid.Column="6"
+                        Grid.Row="0"
+                        Margin="3,0,0,0"
+                        IsEditable="False"
+                        IsReadOnly="True"
+                        MinWidth="200"
+                        
+                  ItemsSource="{Binding Path=Colonies, Mode=OneWay}"
+                  SelectedItem="{Binding Path=SelectedColony, Mode=TwoWay}">
                   <ComboBox.ItemTemplate>
                     <DataTemplate>
                       <TextBlock Text="{Binding Path=Name, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}" />
@@ -114,17 +129,22 @@
                         Margin="5,0,0,0" />-->
 
                                 
-                  <Button Grid.Column="6"
-                        Margin="3,0,0,0" 
-                      Style="{StaticResource LCARS_BorderButtonStyle}"
+                  <Button Grid.Column="7" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
                       Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
-                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+                      Command="{x:Static scc:ColonyScreenCommands.NextColonyCommand}" />
 
-                  <Rectangle Grid.Column="7"
-                             Margin="3,0,0,0" 
-                       Width="14"
-                       SnapsToDevicePixels="True"
-                       Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
+                  <Rectangle Grid.Column="8" Margin="3,0,0,0" SnapsToDevicePixels="True"
+                             Width="14" Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
+
+                <Button Grid.Column="9" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
+                      Content="{s:StringResource Key=SHOW_COLONY_ON_MAP_TEXT, Case=Lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.ShowColonyOnMapCommand}" />
+
+                <Rectangle Grid.Column="10" Margin="3,0,0,0" SnapsToDevicePixels="True"
+                           Width="14" Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
+                      
+                      
+                      
                                 
                               
                   <!--<Border Grid.Column="8"
@@ -135,11 +155,11 @@
                         Margin="3,0,0,0" />-->
                   
                                 
-                  <Rectangle Grid.Column="9"
+                  <Rectangle Grid.Column="11"
                            Grid.Row="0"
                            Margin="3,0,0,0"
                            Fill="{StaticResource Rom1Gradient_Top_Bottom}" />
-                <Border Grid.Column="10"
+                <Border Grid.Column="12"
                         Grid.Row="0"
                         Background="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
                         CornerRadius="0,14,14,0"

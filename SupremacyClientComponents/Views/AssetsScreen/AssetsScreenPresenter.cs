@@ -58,13 +58,13 @@ namespace Supremacy.Client.Views
         {
             //GameLog.Core.Test.DebugFormat("Update on Turn Started at line 61");
             Model.Colonies = IntelHelper.LocalCivManager.Colonies;
-            Model.SpiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
-            Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
-            Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
-            Model.SpiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
-            Model.SpiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
-            Model.SpiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
-            Model.SpiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
+            Model.SpiedZeroColonies = DesignTimeObjects.SpiedCiv_0.Colonies;
+            Model.SpiedOneColonies = DesignTimeObjects.SpiedCiv_1.Colonies;
+            Model.SpiedTwoColonies = DesignTimeObjects.SpiedCiv_2.Colonies;
+            Model.SpiedThreeColonies = DesignTimeObjects.SpiedCiv_3.Colonies;
+            Model.SpiedFourColonies = DesignTimeObjects.SpiedCiv_4.Colonies;
+            Model.SpiedFiveColonies = DesignTimeObjects.SpiedCiv_5.Colonies;
+            Model.SpiedSixColonies = DesignTimeObjects.SpiedCiv_6.Colonies;
         }
         #endregion
     }

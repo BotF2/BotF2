@@ -275,7 +275,7 @@
                         FontSize="14pt"/>
                         <TextBlock Text=" "/>
                     
-                    <TextBlock Grid.Column="6" Margin="3,0,0,0" Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=OneWay}" 
+                    <TextBlock Grid.Column="6" Margin="3,0,0,0" Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=TwoWay}" 
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"

@@ -192,7 +192,7 @@ namespace Supremacy.Combat
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
         {
-            Console.WriteLine("Step_3012: protected CombatEngine...");
+            Console.WriteLine("Step_3012:; protected CombatEngine...");
             _running = false;
             _runningTargetOne = false;
             _runningTargetTwo = false;
@@ -219,7 +219,7 @@ namespace Supremacy.Combat
             _text += newline + _destroyedString + _escapedString + _combatString +_nonCombatString;  // dummy
 
             _sectorString = _assets[0].Location.ToString() + " > ";
-            _text = "Step_3014: " + _sectorString + "_combatId = " + CombatID + ", _roundNumber = " + _roundNumber; //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
+            _text = "Step_3014:; " + _sectorString + "_combatId = " + CombatID + ", _roundNumber = " + _roundNumber; //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
             Console.WriteLine(_text);
             GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -480,9 +480,9 @@ namespace Supremacy.Combat
                 //{
                 //    GameLog.Core.Combat.DebugFormat("asset of {0} in sector", asset.Owner.Key);
                 //}
-                _text = "Step_3020:; " + _sectorString + " SendUpdates for current friendlyAssets for " + playerAsset.Owner.Key;
+                _text = "Step_3020:; " + _sectorString + "SendUpdates for current friendlyAssets for " + playerAsset.Owner.Key;
                 Console.WriteLine(_text);
-                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 foreach (CombatAssets civAsset in _assets.Distinct().ToList())
                 {

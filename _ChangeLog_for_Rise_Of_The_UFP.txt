@@ -1,5 +1,9 @@
 _ChangeLog_for_Rise_Of_The_UFP.txt
 
+2023-11-11;ROM_PLASMA_PHYSICS_COMPLEX > OnePerEmpire (otherwise too much Bonus of EnergyResearch)
+2023-10-21;Medical ships Type 2 = speed 2 from TechLevel 3 to provide needed help quickly
+2023-10-21;Fixed buttons for next and previous systems and created a new FIRST button
+2023-10-15;Inhabited systems now texted in Aqua
 2023-10-01;FleetOrder Mission (in any kind)
 2023-10-01;ColonyAI.cs: reordering production
 2023-08-19;Remans out 
@@ -43,7 +47,7 @@ _ChangeLog_for_Rise_Of_The_UFP.txt
 2021;Balancing stuff going totally in the wrong direction...
 2021;Scripting for FED_MARTIAL_LAW not working anymore ... now Morale Fall below 50 or 25 is slowed down
 2021;Including Empire Credits now shown at Colonies Info Panel
-2021;Limited Population Growth to 14 and Growth Rate (max now 1 labor Unit per turn)
+2021;Limited Population Growth to 12 and Growth Rate (max now 1 labor Unit per turn)
 2021;Fleet Order: DEFEND (shown at SUMMARY) - can be used to know > this ship is there for defense issues
 2021;Fleet Order: IDLE (shown at SUMMARY) - can be used to know > this ship is idle (manually set)
 2021;Fleet Order: REDEPLOY SAME - not working yet > redeploys e.g. all destroyers

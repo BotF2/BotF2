@@ -57,6 +57,7 @@ namespace Supremacy.Orbitals
         //public static readonly EscortOrder EscortOrder;
         public static readonly BuildStationOrder BuildStationOrder;
         public static readonly ExploreOrder ExploreOrder;
+        public static readonly TravelOrder TravelOrder;
 
 
         private static readonly List<FleetOrder> _orders;
@@ -88,12 +89,15 @@ namespace Supremacy.Orbitals
             //EscortOrder = new EscortOrder();
             BuildStationOrder = new BuildStationOrder();
             ExploreOrder = new ExploreOrder();
+            TravelOrder = new TravelOrder();
+
 
 
             _orders = new List<FleetOrder>
                       {
                           EngageOrder,
                           AvoidOrder,
+                          TravelOrder,
                           ExploreOrder,
                           ColonizeOrder,
                           BuildStationOrder,
@@ -106,6 +110,7 @@ namespace Supremacy.Orbitals
                           AssaultSystemOrder,
 
                           // no action, just showing 'a status'
+                          MissionOrder,
                           IdleOrder,
                           DefendOrder,
                           StrandedOrder,
@@ -788,10 +793,10 @@ namespace Supremacy.Orbitals
                 //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
                 //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
 
-                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > " + Fleet.Name + " (our Medical Ship) provided help: new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
+                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name + " * (our Medical Ship) provided help: health before: " + oldHealth  + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
                 GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
 
-                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from " + Fleet.Name + " ( " + Fleet.Owner.ShortName + " Medical Ship ): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
+                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * " + Fleet.Name + " * ( " + Fleet.Owner.ShortName + " Medical Ship ): health before: " + oldHealth + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
                 GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
             }
 
@@ -2455,6 +2460,51 @@ namespace Supremacy.Orbitals
                     Fleet.UnitAIType = UnitAIType.Explorer;
                     Fleet.Activity = UnitActivity.Mission;
                 }
+            }
+        }
+    }
+
+    #endregion ExploreOrder
+
+    #region TravelOrder
+
+    [Serializable]
+    public sealed class TravelOrder : FleetOrder
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_TRAVEL");
+
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_STATUS_TRAVEL");
+
+        public override bool WillEngageHostiles => false;
+
+        public override bool IsCancelledOnRouteChange => true;
+
+        public override FleetOrder Create()
+        {
+            return new TravelOrder();
+        }
+
+        protected internal override void OnTurnBeginning()
+        {
+            base.OnTurnBeginning();
+            if (!IsAssigned)
+            {
+                return;
+            }
+            if (Fleet == null)
+            {
+                return;
+            }
+
+            if (Fleet.Route.IsEmpty && (Fleet.UnitAIType != UnitAIType.SystemAttack || Fleet.UnitAIType != UnitAIType.Reserve))
+            {
+                Fleet.Order = FleetOrders.IdleOrder;
+                //if (UnitAI.GetBestSectorToExplore(Fleet, out Sector bestSector))
+                //{
+                //    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+                //    Fleet.UnitAIType = UnitAIType.Explorer;
+                //    Fleet.Activity = UnitActivity.Mission;
+                //}
             }
         }
     }

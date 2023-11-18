@@ -29,11 +29,13 @@ namespace Supremacy.AI
         private const int ColonyShipEveryTurnsMinor = 5;
         private const int MaxMinorColonyCount = 3;
 
-        private static string _text;
+        //private static string _text;
         private static int neededColonizer;
         private const int MaxEmpireColonyCount = 999; // currently not used
 
         private static bool need1Colonizer;
+        [NonSerialized]
+        private static string _text;
         private static readonly string blank = " ";
 
 
@@ -49,9 +51,10 @@ namespace Supremacy.AI
 
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(civ.CivID))
             {
-                _text = "Step_1100: " + colony.Location + blank + colony.Name + " > Handling colony"
+                _text = "Step_1100:; " + colony.Location + "; " + colony.Name + " > Handling colony"
                     + " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues >"
                     ;
+                _text += blank; // dummy - please keep
                 Console.WriteLine(_text);
 
                 if (MaxEmpireColonyCount == 999)
@@ -59,17 +62,17 @@ namespace Supremacy.AI
 
                 if (colony.BuildQueue.Count > 0)
                 {
-                    _text = "Step_1104: HandleBasicStructures on > "
-                            + colony.Name + " " + colony.Owner
-                            + ", already bulding > " + colony.BuildQueue[0].Description;
+                    _text = "Step_1104:; HandleBasicStructures on; "
+                            + colony.Name + "; " + colony.Owner
+                            + "; already bulding; " + colony.BuildQueue[0].Project.Description;
                     ;
                     Console.WriteLine(_text);
                 }
                 else
                 {
-                    _text = "Step_1106: HandleBasicStructures on > "
-                            + colony.Name + " " + colony.Owner
-                            + " > BuildQueue empty" + colony.BuildQueue[0].Description;
+                    _text = "Step_1106:; HandleBasicStructures on; "
+                            + colony.Name + "; " + colony.Owner
+                            + "; BuildQueue empty";
                     ;
                     Console.WriteLine(_text);
                 }
@@ -130,8 +133,8 @@ namespace Supremacy.AI
 
         private static void HandleEnergyProduction(Colony colony)
         {
-            _text = "Step_1210: Handle ENERGY on "
-                    + colony.Name + " " + colony.Owner
+            _text = "Step_1210: Handle ENERGY on; "
+                    + colony.Name + "; " + colony.Owner
                     //+ " > no Upgrade INDUSTRY"
                     ;
             Console.WriteLine(_text);
@@ -166,8 +169,8 @@ namespace Supremacy.AI
 
         private static void HandleFoodProduction(Colony colony)
         {
-            _text = "Step_1220: Handle FOOD on "
-                    + colony.Name + " " + colony.Owner
+            _text = "Step_1220: Handle FOOD on; "
+                    + colony.Name + "; " + colony.Owner
                     //+ " > no Upgrade INDUSTRY"
                     ;
             Console.WriteLine(_text);
@@ -224,7 +227,7 @@ namespace Supremacy.AI
 
             if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
             {
-                _text = "Step_1202: HandleBuildings: "
+                _text = "Step_1202:; HandleBuildings: "
                     //+ "Credits.Current= " + manager.Credits.CurrentValue
                     //+ ", Costs= " + cost
                     //+ ", industryNeeded= " + industryNeeded
@@ -243,7 +246,7 @@ namespace Supremacy.AI
                     int flexLabors = colony.GetAvailableLabor() - 30; // flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
                     if (flexLabors > -21)  // 2 more facilites as available labors
                     {
-                        _text = "Step_1204: HandleBuildings on INDUSTRY at "
+                        _text = "Step_1204:; HandleBuildings on INDUSTRY at "
                             + colony.Name + " " + colony.Owner
                             + " > " + colony.GetAvailableLabor() + " labors available"
                             ;
@@ -278,7 +281,7 @@ namespace Supremacy.AI
                     //FOOD 
                     List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Food };
                     int flexLabors = colony.GetAvailableLabor() - 30; // flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
-                    if (flexLabors > -21)  // 2 more facilites as available labors
+                    if (flexLabors > -21)  // 2 more facilites as available labors, 10 labors = 1 facility
                     {
                         _text = "Step_1204: HandleBuildings on INDUSTRY at "
                             + colony.Name + " " + colony.Owner
@@ -441,8 +444,8 @@ namespace Supremacy.AI
 
         private static void HandleBasicStructures(Colony colony, Civilization civ)
         {
-            _text = "Step_1230: HandleBasicStructures on > "
-                    + "" + colony.Name + " " + colony.Owner
+            _text = "Step_1231:; HandleBasicStructures on; "
+                    + "" + colony.Name + "; " + colony.Owner
                     ;
             Console.WriteLine(_text);
 
@@ -451,23 +454,28 @@ namespace Supremacy.AI
 
             if (colony.BuildQueue.Count > 0)
             {
-                _text = "Step_1234: HandleBasicStructures on > "
-                        + colony.Name + " " + colony.Owner
-                        + ", already bulding > " + colony.BuildQueue[0].Description;
-                        ;
+                _text = "Step_1234:; HandleBasicStructures on; "
+                        + colony.Name + "; " + colony.Owner
+                        + "; already bulding >; " + colony.BuildQueue[0].Description;
+                ;
                 Console.WriteLine(_text);
             }
 
             if (colony.BuildQueue.Count == 0)
             {
-                _text = "Step_1232: HandleBasicStructures: "
-                    + " on " + colony.Name + " " + colony.Owner
-                ;
-                Console.WriteLine(_text);
-
                 double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
                     * colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue)
                     * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
+
+                _text = "Step_1232:; HandleBasicStructures: "
+                    + " on; " + colony.Name
+                    + "; " + colony.Owner
+                    + "; Morale=; " + colony.Morale
+                    + "; prodOutput=;" + prodOutput
+                ;
+                Console.WriteLine(_text);
+
+
 
                 CivilizationManager manager = GameContext.Current.CivilizationManagers[civ];
 
@@ -490,16 +498,71 @@ namespace Supremacy.AI
                                 .Where(availableResources.ContainsKey)
                                 .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
                     .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
-                if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                    + (colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+
+                string _toBuildText = "no structureProject to build";
+                if (structureProject != null)
                 {
-                    colony.BuildQueue.Add(new BuildQueueItem(structureProject));
+                    _toBuildText = structureProject.BuildDesign.ToString();
                 }
 
 
-                if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count == 0)
+                _text = "Step_1235:; HandleBasicStructures: "
+                            + " on; " + colony.Name
+                            + "; " + colony.Owner
+                            + "; Morale=; " + colony.Morale
+                            + "; prodOutput=;" + prodOutput
+                            + "; NetIndustry=;" + colony.NetIndustry
+                            + "; ToBuild=;" + _toBuildText
+
+                        ;
+                Console.WriteLine(_text);
+
+                if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (colony.GetProductionModifier(ProductionCategory.Industry).Bonus
+                    + (colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 9.0)  // 2023-11-11 9.0 instead of 5.0
+                {
+                    colony.BuildQueue.Add(new BuildQueueItem(structureProject));
+                    _text = "Step_1236:; Added to Build"
+                            + " on; " + colony.Name
+                            + "; " + colony.Owner
+                            + "; Morale=; " + colony.Morale
+                            + "; prodOutput=;" + prodOutput
+                            + "; NetIndustry=;" + colony.NetIndustry
+                            + "; ToBuild=;" + structureProject.BuildDesign.ToString()
+
+                            ;
+                    Console.WriteLine(_text);
+                }
+
+
+                if (colony.BuildSlots.All(t => t.Project == null) /*&& colony.BuildQueue.Count == 0*/)  //2023-11-11
                 {
                     IList<BuildProject> projects = TechTreeHelper.GetBuildProjects(colony);
+                    _text = "Step_1234:; Added to Build"
+                            + " on; " + colony.Name
+                            + "; " + colony.Owner
+                            + "; Morale=; " + colony.Morale
+                            + "; prodOutput=;" + prodOutput
+                            + "; ToBuildonSlots.Count=;" + projects.Count
+
+                            ;
+                    Console.WriteLine(_text);
+                    int count = 0;
+                    foreach (var item in projects)
+                    {
+
+                        _text = "Step_1235:; OPTIONS to Build" 
+                            + " on; " + colony.Name
+                            + "; " + colony.Owner
+                            + "; Morale=; " + colony.Morale
+                            + "; NetIndustry=;" + colony.NetIndustry
+                            + "; BCost=;" + item.BuildDesign.BuildCost
+                            + "; OPTIONStoBuildon #;" + count
+                            + "; " + item.BuildDesign.ToString()
+
+                            ;
+                        count++;
+                        Console.WriteLine(_text);
+                    }
                 }
             }
         }
@@ -539,7 +602,7 @@ namespace Supremacy.AI
                     }
                     else
                     {
-                        _text = "Step_1203: HandleBuildings on "
+                        _text = "Step_1203:; HandleBuildings on; "
                                 + colony.Name + " " + colony.Owner
                                 + " > no Upgrade INDUSTRY"
                                 ;

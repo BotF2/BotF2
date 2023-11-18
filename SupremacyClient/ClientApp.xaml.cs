@@ -74,6 +74,8 @@ namespace Supremacy.Client
         public string _text;
         public string blank = " ";
         public string separator = " ;";
+        public bool _gamelog_bool = true;
+        public bool _ConsoleWriteline_bool = true;
         #endregion
 
         #region Constructors
@@ -98,7 +100,8 @@ namespace Supremacy.Client
                     _text += new FileInfo("SupremacyClient.exe").LastWriteTime.ToString();
                 }
                 //_text = "Step_0200: Current Version = " + Current.Version + _text2;
-                Console.WriteLine(_text);  // "Current Version = "
+                //if (_ConsoleWriteline_bool) 
+                    Console.WriteLine(_text);  // "Current Version = "
                 GameLog.Client.General.InfoFormat(_text);
 
 

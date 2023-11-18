@@ -106,9 +106,11 @@ namespace Supremacy.Collections
                 //GameLog.Core.General.ErrorFormat(_text);
 
                 //searching for crashes
+
                 if (key.ToString() == "-1")
                 {
                     _text = "Step_0875: Searched Key was -1, sometimes this crashes";
+                    //if (_console) 
                     Console.WriteLine(_text);
                     GameLog.Client.GeneralDetails.DebugFormat(_text);
                     return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!

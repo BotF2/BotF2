@@ -171,6 +171,7 @@ namespace Supremacy.Game
         private ICollection<ScriptedEvent> _scriptedEvents;
         private DiplomacyDatabase _diplomacyDatabase;
 
+        [NonSerialized]
         public string _text;
         public readonly string blank = " ";
         public readonly string newline = Environment.NewLine;
@@ -220,8 +221,8 @@ namespace Supremacy.Game
                 Console.WriteLine("Step_3630: already read  _nextObjectId..... > " + _nextObjectId);
 
                 _turnNumber = reader.ReadOptimizedUInt16();
-                Console.WriteLine("Step_3640: already read _turnNumber..... > " + _turnNumber);
-                GameLog.Core.SaveLoad.DebugFormat("Step_3641: _turnNumber = {0}", _turnNumber);
+                Console.WriteLine("Step_3640: already read _turnnumber..... > " + _turnNumber);
+                GameLog.Core.SaveLoad.DebugFormat("Step_3641: _turnnumber = {0}", _turnNumber);
 
                 _options = reader.Read<GameOptions>();
                 Console.WriteLine("Step_3660: already read _options.....");
@@ -923,7 +924,6 @@ namespace Supremacy.Game
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 
-                //string _text; 
 
                 ScriptedEventDatabase scriptedEventDatabase = ScriptedEventDatabase.Load();
 
@@ -955,8 +955,8 @@ namespace Supremacy.Game
                         }
                         _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("MinTurnsBetweenExecutions", "TurnDist.");
                         _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("CivilizationRecurrencePeriod", "CivRecur.");
-                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("UnitRecurrencePeriod", "Unit-Recur.");
-                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("OccurrenceChance", "Occur.");
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("UnitRecurrencePeriod", " Unit-Recur.");
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("OccurrenceChance", " Occur.");
 
                         _scriptedEventGameLogText = scriptedEvent.GetType().ToString();
                         _scriptedEventGameLogText = _scriptedEventGameLogText.Replace("Supremacy.Scripting.Events.", "");

@@ -162,7 +162,7 @@ namespace Supremacy.Client
 
             DataContext = _update;
 
-            if (update.CombatUpdate_IsCombatOver)
+            if (update.CombatUpdate_IsCombatOver)  // Combat is over
             {
 
                 if (_update.IsStandoff)
@@ -185,11 +185,14 @@ namespace Supremacy.Client
                 else if (_playerAssets.HasSurvivingAssets)
                 {
                     _text = string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
+
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
                         + string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
+
                     SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_VICTORY"),
                         _update.Sector.Name);
+
                     _text += _text + " - we were victorious !";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
@@ -198,11 +201,14 @@ namespace Supremacy.Client
                 else
                 {
                     _text = string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
+
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
                         + string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
+
                     SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_DEFEAT"),
                         _update.Sector.Name);
+
                     _text += _text + " - we were not victorious !";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
@@ -216,6 +222,7 @@ namespace Supremacy.Client
                 SubHeaderText.Text = string.Format(
                     ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
                     _update.Sector.Name);
+
                 SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
                 {
                     if (File.Exists("Resources/SoundFX/REDALERT.wav")&&ClientSettings.Current.EnableSoundRedAlert)
@@ -530,7 +537,7 @@ namespace Supremacy.Client
 
             _text = "Step_5389:; " + _text;
             Console.WriteLine(_text);
-            GameLog.Client.Combat.DebugFormat(_text);
+            //GameLog.Client.Combat.DebugFormat(_text);
 
 
             UpperButtonsPanel.IsEnabled = false;

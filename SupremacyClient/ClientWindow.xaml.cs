@@ -58,6 +58,7 @@ namespace Supremacy.Client
         private bool _isClosing;
         private bool _exitInProgress;
         private double _scaleFactor;
+        [NonSerialized]
         private string _text;
 
         static ClientWindow()
@@ -284,7 +285,7 @@ namespace Supremacy.Client
                         long workingSet = process.WorkingSet64;
                         long heapSize = GC.GetTotalMemory(false);
 
-                        string _text = "Forcing garbage collection...";
+                        _text = "Forcing garbage collection...";
                         //Console.WriteLine(_text); GameLog.Client.General.Info(_text);
 
                         GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
@@ -304,7 +305,8 @@ namespace Supremacy.Client
 
                             ;
                         //works  MessageBox.Show(_text, process.ProcessName + " ID: " + process.Id);
-                        Console.WriteLine(_text); GameLog.Client.General.Info(_text);  // Garbage Collection
+                        Console.WriteLine(_text); 
+                        GameLog.Client.General.Info(_text);  // Garbage Collection
 
                         // old code
                         GameLog.Client.General.InfoFormat(
@@ -554,9 +556,10 @@ namespace Supremacy.Client
         {
             base.OnRenderSizeChanged(sizeInfo);
 
-            _text = "Step_4200: AppWindowSize OnRenderSizeChanged = " + sizeInfo.NewSize;
-            Console.WriteLine(_text);
-            GameLog.Core.UIDetails.DebugFormat(_text);
+            // works
+            //_text = "Step_4201:; AppWindowSize OnRenderSizeChanged = " + sizeInfo.NewSize;
+            //Console.WriteLine(_text);
+            //GameLog.Core.UIDetails.DebugFormat(_text);
 
             if (sizeInfo.NewSize.Width > MaxUnscaledScreenWidth)
             {

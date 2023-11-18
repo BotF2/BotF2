@@ -345,7 +345,7 @@ namespace Supremacy.AI
                             // >Check Fleets
                             else if (fleet.IsScout) //(fleet.Ships.Where(o => o.ShipType == ShipType.Scout).Any())
                             {
-                                _text = "Step_6200: fleet.IsScout > EXPLORE  " + _fleetText;
+                                _text = "Step_6200:; fleet.IsScout > EXPLORE  " + _fleetText;
                                 Console.WriteLine(_text);
                                 // exlore is really set in FleetOrders OnTurnBegining()
                                 fleet.SetOrder(new ExploreOrder());
@@ -494,7 +494,7 @@ namespace Supremacy.AI
 
                             if (fleet.IsConstructor || fleet.UnitAIType == UnitAIType.Constructor || (fleet.Ships.Any(a => a.ShipType == ShipType.Construction) && fleet.Ships.Count() == 2))
                             {
-                                _text = "Step_6510: fleet.IsConstructor: " + _fleetText
+                                _text = "Step_6510:; fleet.IsConstructor: " + _fleetText
                                         //+ " " + fleet.ObjectID
                                         //+ " " + fleet.Name
                                         ////+ " to go to " + bestSystemToColonize.Name
@@ -510,7 +510,7 @@ namespace Supremacy.AI
                                         .Where(a => a.IsConstructor || (a.MultiFleetHasAConstructor /*&& a.Ships.Count == 2*/)).ToList();
                                     bool bestSector = GetBestSectorForStation(fleet, allConstuctFleetsHere, out Sector bestSectorForStation);
 
-                                    _text = "Step_6520: Found Constructor: " + _fleetText
+                                    _text = "Step_6520:; Found Constructor: " + _fleetText
                                         + "; " + fleet.Activity.ToString()
 
                                         + "; Route empty= " + fleet.Route.IsEmpty

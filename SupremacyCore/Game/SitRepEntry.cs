@@ -366,7 +366,7 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class ReportEntry_ShowGalaxy : SitRepEntry
+    public class ReportEntry_ShowGalaxy : SitRepEntry  // F1
     {
         //private readonly int _colonyID;
         private readonly string _report;
@@ -399,7 +399,7 @@ namespace Supremacy.Game
 
 
     [Serializable]
-    public class ReportEntry_ShowColony : SitRepEntry
+    public class ReportEntry_ShowColony : SitRepEntry  // F2
     {
         private readonly int _colonyID;
         private readonly string _report;
@@ -459,7 +459,7 @@ namespace Supremacy.Game
 
 
     [Serializable]
-    public class ReportEntry_ShowDiplo : SitRepEntry  // not used - only one: FirstContact see there
+    public class ReportEntry_ShowDiplo : SitRepEntry  // F4 - not used - only one: FirstContact see there
     {
         //private readonly int _colonyID;
         private readonly string _report;
@@ -486,6 +486,65 @@ namespace Supremacy.Game
         public override string DetailText => string.Format(ResourceManager.GetString(_detailName + "_DETAIL_TEXT"));//, Colony.Name, Colony.Location);
         public override string SitRepComment { get; set; }
         public override string SummaryText => _report;
+        public override bool IsPriority => true;
+        public override SitRepPriority Priority { get => _priority; set { } }
+    }
+
+    [Serializable]
+    public class ReportEntry_Show_F5 : SitRepEntry  // F5
+    {
+        private readonly int _colonyID;
+        private readonly string _report;
+        private readonly string _detailName;
+        private readonly string _image;
+
+        public ReportEntry_Show_F5(Civilization owner, Colony colony, string report, string details, string image, SitRepPriority priority)
+            : base(owner)//, SitRepPriority.Pink)
+        {
+            if (colony == null)
+            {
+                throw new ArgumentNullException("colony");
+            }
+            if (report == "")
+            {
+                Console.WriteLine("Step_1425:;empty report text");
+                //return;
+            }
+
+            //if (details == "")
+            //{
+            //    Console.WriteLine("Step_1429:; " + details);
+            //}
+
+            Console.WriteLine("Step_1438:; Turn " + GameContext.Current.TurnNumber + ": " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_ShowColony");
+
+            if (details == "")
+            {
+                Console.WriteLine("Step_1439:; empty details text");
+            }
+
+            //if (image != "" && details != "")
+            //{
+            //    Console.WriteLine("Step_1431:;empty details text");
+            //}
+
+            _colonyID = colony.ObjectID;
+            _report = report;
+            _detailName = details;  // e.g. ENERGY_SHUTDOWN_SHIPYARD
+            _image = image;
+
+            _priority = priority;
+        }
+        public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
+        public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
+        public override SitRepAction Action => SitRepAction.ShowColony;
+        public override object ActionTarget => Colony;
+        public override bool HasDetails => _image != ""; // true for extra Dialog window
+        public override string DetailImage => "vfs:///Resources/Images/" + _image;
+        public override string HeaderText => string.Format(ResourceManager.GetString(_report));//* + "_HEADER_TEXT"*/); , Colony.Name, Colony.Location);
+        public override string DetailText => string.Format(ResourceManager.GetString(_detailName));//* + "_DETAIL_TEXT"*/), Colony.Name, Colony.Location);
+        public override string SitRepComment { get; set; }
+        public override string SummaryText => _detailName;
         public override bool IsPriority => true;
         public override SitRepPriority Priority { get => _priority; set { } }
     }
@@ -2686,7 +2745,7 @@ namespace Supremacy.Game
         public override SitRepPriority Priority { get => SitRepPriority.RedYellow; set { } }
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED"), ResourceManager.GetString(Application.Name), Application.Level);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED"), ResourceManager.GetString(Application.Name), Application.Level, Application.Field.TechCategory);
         public override bool HasDetails => true; // turn on/off for extra Dialog window
 
         public override string DetailText

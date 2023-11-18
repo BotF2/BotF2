@@ -593,13 +593,13 @@ namespace Supremacy.Universe
             UpdateSectors();
 
             string _text;
-            _text = "Step_4000:; Deserializing ships and fleets...";
+            _text = "Step_4005:; Deserializing ships and fleets...";
             Console.WriteLine(_text);
-            GameLog.Core.SaveLoad.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
 
             _text = "Step_4500:; Objects following from _checkLoading";
             Console.WriteLine(_text); 
-            GameLog.Core.SaveLoad.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
  
             foreach (UniverseObject item in _objects)
             {
@@ -699,7 +699,7 @@ namespace Supremacy.Universe
                         colony.BuildingsInternal.Add(building);
                         _text = "Step_4365:; "
                             + _col
-                            + "; Building"
+                            + " Building"
                             + "; " + building.ObjectID
                             + "; " + building.Design
                             + ";" + building.IsActive + "_for_Active"
@@ -801,17 +801,27 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
-            GameLog.Core.SaveLoad.DebugFormat("Step_0355: Deserializing stations...");
+            _text = "Step_0355: Deserializing stations...";
+            Console.WriteLine(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
+
             foreach (Station station in Find<Station>())
             {
                 _map[station.Location].Station = station;
             }
 
-            GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
+            _text = "Step_0366: Deserializing systems...";
+            Console.WriteLine(_text);
+            //GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
+
             foreach (StarSystem system in Find<StarSystem>())
             {
 
                 _map[system.Location].System = system;
+
+                //_text = "Step_0368: Deserializing systems...";
+                //Console.WriteLine(_text);
+                //GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
             }
         }
 

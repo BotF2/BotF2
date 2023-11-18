@@ -19,6 +19,7 @@ namespace Supremacy.Client.Views
     {
         public ColonyScreenView([NotNull] IUnityContainer container) : base(container)
         {
+            _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.FirstColonyCommand,Key.Up,ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.PreviousColonyCommand,Key.Left,ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.NextColonyCommand,Key.Right,ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.PreviousColonyCommand,Key.BrowserBack,ModifierKeys.None));

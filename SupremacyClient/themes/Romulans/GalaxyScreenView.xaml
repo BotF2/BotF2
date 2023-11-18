@@ -613,14 +613,9 @@
                                    Visibility="Hidden"
                                    IsHitTestVisible="False" />
                                                         <Border.ToolTip>
-                                                            <Border x:Name="ImageToolTipBorder"
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        BorderBrush="{StaticResource HeaderTextBrush}"
-                                        BorderThickness="2"
-                                        CornerRadius="4"
-                                        Width="1000"
-                                        Height="840">
+                                                            <Border x:Name="ImageToolTipBorder" Width="1000" Height="840"
+                                        Grid.Column="0" VerticalAlignment="Center" CornerRadius="4"
+                                        BorderThickness="2" BorderBrush="{StaticResource HeaderTextBrush}">
                                                                 <Border.Background>
                                                                     <ImageBrush ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
                                                                 </Border.Background>

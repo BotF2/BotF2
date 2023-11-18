@@ -46,8 +46,7 @@ namespace Supremacy.Client
     public class ClientModule : IModule
     {
         public const string ModuleName = "Supremacy.Client.ClientModule";
-        //public string _text = "";
-
+        // Non-Serialized see below
         #region Fields
         private const string MusicThemeBasePath = "Resources/Specific_Empires_UI";
         private const string MusicPackFileName = "MusicPacks.xml";
@@ -203,6 +202,8 @@ namespace Supremacy.Client
         private int startTechLvl = -1;
 
         public bool _checkLoading = true;
+        public bool _gamelog_bool = true;
+        public bool _ConsoleWriteline_bool = true;
 
 
 

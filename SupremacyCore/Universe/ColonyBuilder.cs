@@ -52,6 +52,18 @@ namespace Supremacy.Universe
                 }
             }
 
+            //Another 2 Industry, not activated !
+            if (industryFacility != null)
+            {
+                int facilityCount = pop / industryFacility.LaborCost;
+                colony.SetFacilityType(ProductionCategory.Industry, industryFacility);
+                for (int i = 0; i < 2; i++)
+                {
+                    colony.AddFacility(ProductionCategory.Industry);
+                    //_ = colony.ActivateFacility(ProductionCategory.Industry);
+                }
+            }
+
             ProductionFacilityDesign energyFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Energy);
             if (energyFacility != null)
             {
@@ -64,29 +76,29 @@ namespace Supremacy.Universe
                 }
             }
 
-            ProductionFacilityDesign researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
-            if (researchFacility != null)
-            {
-                int facilityCount = pop / researchFacility.LaborCost / 2;
-                colony.SetFacilityType(ProductionCategory.Research, researchFacility);
-                for (int i = 0; i < facilityCount; i++)
-                {
-                    colony.AddFacility(ProductionCategory.Research);
-                    _ = colony.ActivateFacility(ProductionCategory.Research);
-                }
-            }
+            //ProductionFacilityDesign researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
+            //if (researchFacility != null)
+            //{
+            //    int facilityCount = pop / researchFacility.LaborCost / 2;
+            //    colony.SetFacilityType(ProductionCategory.Research, researchFacility);
+            //    for (int i = 0; i < facilityCount; i++)
+            //    {
+            //        colony.AddFacility(ProductionCategory.Research);
+            //        _ = colony.ActivateFacility(ProductionCategory.Research);
+            //    }
+            //}
 
-            ProductionFacilityDesign intelligenceFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Intelligence);
-            if (intelligenceFacility != null)
-            {
-                int facilityCount = pop / (intelligenceFacility.LaborCost * 10);
-                colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
-                for (int i = 0; i < facilityCount; i++)
-                {
-                    colony.AddFacility(ProductionCategory.Intelligence);
-                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
-                }
-            }
+            //ProductionFacilityDesign intelligenceFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Intelligence);
+            //if (intelligenceFacility != null)
+            //{
+            //    int facilityCount = pop / (intelligenceFacility.LaborCost * 10);
+            //    colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
+            //    for (int i = 0; i < facilityCount; i++)
+            //    {
+            //        colony.AddFacility(ProductionCategory.Intelligence);
+            //        _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+            //    }
+            //}
         }
     }
 }

@@ -464,7 +464,7 @@ namespace Supremacy.Economy
                 return; // If we do or do not spawn does that change a collection to give out of range?
             }
 
-            //Wtf is going on here?
+            // ReportItemBuilt
             ReportItemBuilt newEntry = null;
             if (spawnedInstance != null)
             {
@@ -474,7 +474,7 @@ namespace Supremacy.Economy
                     newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
                     //newEntry = new ReportEntry_ShowColony(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
 
-                    _text = "Step_4283:; "+Location+"Turn " + GameContext.Current.TurnNumber
+                    _text = "Step_4283:; "+Location+"; Turn " + GameContext.Current.TurnNumber
                         + ": " + Builder
                         + " built > " + BuildDesign + " (spawned)"
                         ;

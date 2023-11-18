@@ -10,6 +10,8 @@
             Background="Transparent"
             Padding="0"
             Margin="0"
+            MinWidth="300"
+            
             BorderBrush="{x:Null}"
             BorderThickness="0"
             ScrollViewer.VerticalScrollBarVisibility="Visible"

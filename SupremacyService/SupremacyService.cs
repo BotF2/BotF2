@@ -225,8 +225,6 @@ namespace Supremacy.WCF
                                 .Subscribe(
                                     _ => { },
                                     e => DropPlayerAsync(player));
-                            
-                            //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         }
                         catch
                         {
@@ -245,8 +243,8 @@ namespace Supremacy.WCF
             {
                 //SendKeys.SendWait("^e"); // Error.txt  
                 //Thread.Sleep(1000);
-                SendKeys.SendWait("^l"); // Log.txt
-                Thread.Sleep(1000);
+                //SendKeys.SendWait("^l"); // Log.txt
+                //Thread.Sleep(1000);
 
                 _ = MessageBox.Show("Step_0098: An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
@@ -258,8 +256,8 @@ namespace Supremacy.WCF
             {
                 //SendKeys.SendWait("^e"); // Error.txt  
                 //Thread.Sleep(1000);
-                SendKeys.SendWait("^l"); // Log.txt
-                Thread.Sleep(1000);
+                //SendKeys.SendWait("^l"); // Log.txt
+                //Thread.Sleep(1000);
                 _ = MessageBox.Show("Step_0099: An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
@@ -1559,9 +1557,9 @@ namespace Supremacy.WCF
         //}
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
-            _text = "Step_3009: SendCombatUpdateCallbac...";
+            _text = "Step_3009:; SendCombatUpdateCallback ...";
             Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             GameContext.PushThreadContext(_game);
 

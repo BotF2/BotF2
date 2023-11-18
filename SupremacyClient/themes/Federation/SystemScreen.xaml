@@ -117,7 +117,7 @@
                         Margin="3,0,0,0" 
                       Style="{StaticResource LCARS_BorderButtonStyle}"
                       Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
-                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+                      Command="{x:Static scc:ColonyScreenCommands.NextColonyCommand}" />
 
                   <Rectangle Grid.Column="7"
                              Margin="3,0,0,0" 

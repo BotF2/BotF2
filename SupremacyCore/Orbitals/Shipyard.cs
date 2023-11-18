@@ -103,7 +103,7 @@ namespace Supremacy.Orbitals
                         output = output / 100 * Sector.System.Colony.Population.CurrentValue;
                         break;
                     case ShipyardOutputType.IndustryRatio:
-                        output = output / 100 * Sector.System.Colony.NetIndustry;
+                        output = output / 100 * Sector.System.Colony.NetIndustry / Sector.System.Colony.Facilities_Active2_Industry;
                         break;
                     case ShipyardOutputType.Static:
                     default:
@@ -257,7 +257,7 @@ namespace Supremacy.Orbitals
                         + " done for " + _design
                         ;
                     Console.WriteLine(_text);
-                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     //}
 
                 }

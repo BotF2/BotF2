@@ -47,7 +47,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 10)  // before 30
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 10)  // not before 30
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -101,16 +101,32 @@ namespace Supremacy.Scripting.Events
                     //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Plague.png";
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    _ = target.Population.AdjustCurrent(-(population / 3));
+                    _ = target.Population.AdjustCurrent(-(population / 4));
                     target.Population.UpdateAndReset();
-                    _ = target.Health.AdjustCurrent(-(health / 2));
+                    _ = target.Health.AdjustCurrent(-(health / 4));
                     target.Health.UpdateAndReset();
 
                     _text = "Step_5498:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
-                            + " > Plaque (Event). Down: Population " + -population / 3 * 2 + ", Health " + -health / 3 * 2;
+                            + " > Plaque (Event). Down: Population " + -population / 4 + " (new: " + target.Population.CurrentValue 
+                            + "), Health " + -health / 4 + " (new: " + target.Health.CurrentValue;
                     Console.WriteLine(_text);
                     GameLog.Core.Events.DebugFormat(_text);
                     //GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
+
+                    //var fac = target.GetActiveFacilities(Economy.ProductionCategory.Intelligence);
+
+                    //for ( var i = 0;)
+                    //target.DeactivateFacility(Economy.ProductionCategory.Food);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Industry);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Energy);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Research);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Intelligence);
+
+                    //target.ActivateFacility(Economy.ProductionCategory.Food);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Industry);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Energy);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Research);
+                    //target.DeactivateFacility(Economy.ProductionCategory.Intelligence);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

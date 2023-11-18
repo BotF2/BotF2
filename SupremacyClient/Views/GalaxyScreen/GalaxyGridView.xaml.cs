@@ -38,6 +38,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _f08_ScreenCommand;
         private readonly DelegateCommand<object> _f07_ScreenCommand;
         private readonly DelegateCommand<object> _f06_ScreenCommand;
+        [NonSerialized]
         private readonly string newline = Environment.NewLine;
         private readonly string _text;
         private string restriction_text;

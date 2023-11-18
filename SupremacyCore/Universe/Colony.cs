@@ -348,7 +348,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                decimal baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * ((decimal)-0.6 + (decimal)_health.PercentFilled) * 5 * 100;  // no growth under 60% Health
+                decimal baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * ((decimal)-0.5 + (decimal)_health.PercentFilled) * 5 * 100;  // no growth under 60% Health
                 //baseGrowthRate += 0.01m;
                 ValueModifier<decimal> modifier = new ValueModifier<decimal>
                 {
@@ -889,7 +889,7 @@ namespace Supremacy.Universe
         public void ProcessQueue()
         {
 
-            _text = "Step_1205: ProcessQueue ... remove complete projects etc."
+            _text = "Step_1205:; ProcessQueue ... remove complete projects etc."
                     //+ "" + colony.Name + " " + colony.Owner
                     ;
             Console.WriteLine(_text);
@@ -897,12 +897,13 @@ namespace Supremacy.Universe
             int count = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Step_1206: buildQueueItem: " + count + "x for " + buildQueueItem.Description
+                _text = "Step_1206:; buildQueueItem # " + count + " = " + buildQueueItem.Description
                         ;
                 Console.WriteLine(_text);
-                GameLog.Client.ProductionDetails.DebugFormat(_text);
+                //GameLog.Client.ProductionDetails.DebugFormat(_text);
                 count++;
             }
+
             foreach (BuildSlot slot in BuildSlots)
             {
                 if (slot.HasProject && slot.Project.IsCancelled)

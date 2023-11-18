@@ -86,10 +86,22 @@
                   <Button Grid.Column="2"
                         Margin="3,0,0,0" 
                       Style="{StaticResource LCARS_BorderButtonStyle}"
-                      Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
-                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+                      Content="{s:StringResource Key=FIRST_TEXT, Case=lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.FirstColonyCommand}" />
+
+                <Rectangle Grid.Column="3" Margin="3,0,0,0" Width="14" SnapsToDevicePixels="True"
+                    Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
+    
+    
+
+
+                <Button Grid.Column="4"
+                      Margin="3,0,0,0"
+                    Style="{StaticResource LCARS_BorderButtonStyle}"
+                    Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
+                    Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
                                    
-                  <Rectangle Grid.Column="3"
+                  <Rectangle Grid.Column="5"
                          Margin="3,0,0,0"
                          Height="28"
                          Width="28">
@@ -109,7 +121,7 @@
                                         </DrawingBrush>
                                     </Rectangle.Fill>
                      </Rectangle>
-                     <ComboBox Grid.Column="4"
+                     <ComboBox Grid.Column="6"
                           Grid.Row="0"
                           Margin="3,0,0,0"
                           IsEditable="False"
@@ -161,12 +173,12 @@
                             Background="Transparent"
                             Text="(not function yet)" 
                             />-->
-                  <Button Grid.Column="6"
+                  <Button Grid.Column="7"
                         Margin="3,0,0,0" 
                       Style="{StaticResource LCARS_BorderButtonStyle}"
                       Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
-                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
-                  <Rectangle Grid.Column="7"
+                      Command="{x:Static scc:ColonyScreenCommands.NextColonyCommand}" />
+                  <Rectangle Grid.Column="8"
                              Margin="3,0,3,0" 
                        Width="14"
                        SnapsToDevicePixels="True"

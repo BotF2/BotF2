@@ -19,23 +19,23 @@ namespace Supremacy.Intelligence
         //{
         //    get { return IntelHelper.NewSpiedColonies; }
         //}
-        public static Civilization CivZero => GameContext.Current.CivilizationManagers[0].Civilization;
-        public static Civilization CivOne => GameContext.Current.CivilizationManagers[1].Civilization;
-        public static Civilization CivTwo => GameContext.Current.CivilizationManagers[2].Civilization;
-        public static Civilization CivThree => GameContext.Current.CivilizationManagers[3].Civilization;
-        public static Civilization CivFour => GameContext.Current.CivilizationManagers[4].Civilization;
-        public static Civilization CivFive => GameContext.Current.CivilizationManagers[5].Civilization;
-        public static Civilization CivSix => GameContext.Current.CivilizationManagers[6].Civilization;
+        public static Civilization Civ0 => GameContext.Current.CivilizationManagers[0].Civilization;
+        public static Civilization Civ1 => GameContext.Current.CivilizationManagers[1].Civilization;
+        public static Civilization Civ2 => GameContext.Current.CivilizationManagers[2].Civilization;
+        public static Civilization Civ3 => GameContext.Current.CivilizationManagers[3].Civilization;
+        public static Civilization Civ4 => GameContext.Current.CivilizationManagers[4].Civilization;
+        public static Civilization Civ5 => GameContext.Current.CivilizationManagers[5].Civilization;
+        public static Civilization Civ6 => GameContext.Current.CivilizationManagers[6].Civilization;
         public static bool IsSpiedZero(Civilization localCivFromScreen)
         {
-            if (DesignTimeObjects.SubedZero)
+            if (DesignTimeObjects.Subed_0)
             {
                 return false;
             }
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
-                if (civList.Contains(CivZero))
+                if (civList.Contains(Civ0))
                 {
                     return true;
                 }
@@ -44,14 +44,14 @@ namespace Supremacy.Intelligence
         }
         public static bool IsSpiedOne(Civilization localCivFromScreen)
         {
-            if (DesignTimeObjects.SubedOne)
+            if (DesignTimeObjects.Subed_1)
             {
                 return false;
             }
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
-                if (civList.Contains(CivOne))
+                if (civList.Contains(Civ1))
                 {
                     return true;
                 }
@@ -60,14 +60,14 @@ namespace Supremacy.Intelligence
         }
         public static bool IsSpiedTwo(Civilization localCivFromScreen)
         {
-            if (DesignTimeObjects.SubedTwo)
+            if (DesignTimeObjects.Subed_2)
             {
                 return false;
             }
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
-                if (civList.Contains(CivTwo))
+                if (civList.Contains(Civ2))
                 {
                     return true;
                 }
@@ -76,14 +76,14 @@ namespace Supremacy.Intelligence
         }
         public static bool IsSpiedThree(Civilization localCivFromScreen)
         {
-            if (DesignTimeObjects.SubedThree)
+            if (DesignTimeObjects.Subed_3)
             {
                 return false;
             }
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
-                if (civList.Contains(CivThree))
+                if (civList.Contains(Civ3))
                 {
                     return true;
                 }
@@ -92,14 +92,14 @@ namespace Supremacy.Intelligence
         }
         public static bool IsSpiedFour(Civilization localCivFromScreen)
         {
-            if (DesignTimeObjects.SubedFour)
+            if (DesignTimeObjects.Subed_4)
             {
                 return false;
             }
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
-                if (civList.Contains(CivFour))
+                if (civList.Contains(Civ4))
                 {
                     return true;
                 }
@@ -108,14 +108,14 @@ namespace Supremacy.Intelligence
         }
         public static bool IsSpiedFive(Civilization localCivFromScreen)
         {
-            if (DesignTimeObjects.SubedFive)
+            if (DesignTimeObjects.Subed_5)
             {
                 return false;
             }
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
-                if (civList.Contains(CivFive))
+                if (civList.Contains(Civ5))
                 {
                     return true;
                 }
@@ -124,14 +124,14 @@ namespace Supremacy.Intelligence
         }
         public static bool IsSpiedSix(Civilization localCivFromScreen)
         {
-            if (DesignTimeObjects.SubedSix)
+            if (DesignTimeObjects.Subed_6)
             {
                 return false;
             }
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
-                if (civList.Contains(CivSix))
+                if (civList.Contains(Civ6))
                 {
                     return true;
                 }

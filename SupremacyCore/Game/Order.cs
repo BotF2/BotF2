@@ -838,6 +838,10 @@ namespace Supremacy.Game
             {
                 fleet.Order = fleet.GetDefaultOrder();
             }
+            else
+            {
+                fleet.Order = FleetOrders.TravelOrder;
+            }
 
             _route = fleet.Route;
         }

@@ -2083,7 +2083,7 @@ namespace Supremacy.Tech
 
             //if (pf.Category == ProductionCategory.Industry)
             int _techLevel = pf.TechRequirements.HighestTechLevel;
-            int _buildcosts = 100 + pf.UnitOutput * (8 + ((_techLevel - 1) * 4));
+            int _buildcosts = 20 + pf.UnitOutput * (8 + ((_techLevel - 1) * 4));  // 2023-11-05: changed 100 to 20 now
 
             // Base Value 100
             // Base criteria = UnitOutput (sorry, Research might be getting quite cheap)

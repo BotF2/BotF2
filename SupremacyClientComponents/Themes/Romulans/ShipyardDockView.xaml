@@ -314,6 +314,7 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
               </Grid.RowDefinitions>
               <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Duranium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Duranium}}" />
               <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
@@ -353,7 +354,15 @@
                            Mode="OneWay" />
                 </TextBlock.Text>
               </TextBlock>
-            </Grid>
+                                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="1,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} / {1}">
+                                            <Binding Path="(s:BuildSlot.BuildSlotOutput)" Mode="OneWay" />
+                                            <Binding Path="(s:BuildSlot.BuildSlotMaxOutput)" Mode="OneWay" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </Grid>
             </StackPanel>
             </Grid>
 

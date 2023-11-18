@@ -106,7 +106,9 @@ namespace Supremacy.Game
         /// to submit combat orders.
         /// </summary>
         private readonly ManualResetEvent CombatReset = new ManualResetEvent(false);
-        public string _turnNumber;
+        [NonSerialized]
+        public string _turnnumber;
+        public int turnnumber;
         #endregion
 
         #region OnTurnPhaseChanged() Method
@@ -482,9 +484,11 @@ namespace Supremacy.Game
 
             errors.Clear();
 
-            _ = ParallelForEach(civManagers, civManager =>
-              {
-                  GameContext.PushThreadContext(game);
+            //_ = ParallelForEach(civManagers, civManager =>
+            //  {
+            foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
+            {
+                GameContext.PushThreadContext(game);
                   civManager.SitRepEntries.Clear();
                   try
                   {
@@ -509,9 +513,12 @@ namespace Supremacy.Game
                   {
                       _ = GameContext.PopThreadContext();
                   }
-              });
+              //});
+              };
 
             IntelHelper.SitReps_Temp.Clear();
+
+            turnnumber = GameContext.Current.TurnNumber;
 
             if (!errors.IsEmpty)
             {
@@ -532,7 +539,9 @@ namespace Supremacy.Game
         {
             ConcurrentStack<Exception> errors = new ConcurrentStack<Exception>();
 
-            _ = ParallelForEach(GameContext.Current.Civilizations, civ =>
+            //_ = ParallelForEach(GameContext.Current.Civilizations, civ =>
+            //  {
+              foreach (Civilization civ in GameContext.Current.Civilizations)
               {
                   GameContext.PushThreadContext(game);
                   try
@@ -553,7 +562,8 @@ namespace Supremacy.Game
                       errors.Push(e);
                   }
                   _ = GameContext.PopThreadContext();
-              });
+              //});
+              };
 
             if (!errors.IsEmpty)
             {
@@ -956,7 +966,7 @@ namespace Supremacy.Game
                 if (fleet.Owner.IsHuman && fleet.Route != null && _fleetAim != "None" && fleet.Route.Length < 1)
                 {
                     _text = fleet.Location 
-                        + " > " + fleet.ObjectID + blank + fleet.Name
+                        + " > " + fleet.Ships[0].Design + " > " + fleet.ObjectID + blank + fleet.Name 
                         + " > aim location is reached - please give further orders"
                         + " ( old order = " + fleet.Order + " ) "
                         ;
@@ -964,7 +974,7 @@ namespace Supremacy.Game
                     fleet.Order = FleetOrders.IdleOrder;
 
                     //GameLog.Client.ShipsDetails.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, fleet.Owner.Key, fleet.Location);
-                    Console.WriteLine("Step_6006:; Turn " + _turnNumber + blank + _text);
+                    Console.WriteLine("Step_6006:; Turn " + _turnnumber + blank + _text);
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(fleet.Owner, fleet.Location, _text, _text, "", SitRepPriority.Green));
                 }
 
@@ -1146,7 +1156,7 @@ namespace Supremacy.Game
                                     ship.Owner = civ1;
                                     Fleet newfleet = ship.CreateFleet();
                                     newfleet.Owner = civ1;
-                                    newfleet.SetOrder(FleetOrders.EngageOrder.Create());
+                                    newfleet.SetOrder(FleetOrders.IdleOrder.Create());
                                     if (newfleet.Order == null)
                                     {
                                         newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
@@ -1177,7 +1187,7 @@ namespace Supremacy.Game
                     GameContext.Current.CivilizationManagers[civ2].SitRepEntries.Add(
                         new ReportEntry_ShowDiplo(civ2, _text, "", "", SitRepPriority.BlueDark));
 
-                    _text = "Step_6548: " + _text;
+                    _text = "Step_6548:; " + _text;
                     Console.WriteLine(_text + "; Turn " + GameContext.Current.TurnNumber + ";SR for " + civ2.Name);
                 }
             }
@@ -1679,7 +1689,7 @@ namespace Supremacy.Game
         #region DoPopulation() Method
         void DoPopulation(GameContext game)
         {
-            _turnNumber = GameContext.Current.TurnNumber.ToString();
+            _turnnumber = GameContext.Current.TurnNumber.ToString();
             //_ = ParallelForEach(GameContext.Current.Civilizations, civ =>
             foreach (var civ in GameContext.Current.Civilizations)
             {
@@ -1729,16 +1739,16 @@ namespace Supremacy.Game
                             popChange = (int)Math.Ceiling(1 + growthRate * colony.Population.CurrentValue);  // minimum growth of 1.0
                         }
 
-                        if (growthRate < 0)
+                        if (popChange < 0 && growthRate < 0 && turnnumber > 2)
                         {
                             _text = string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), colony.Name, colony.Location);
                             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
                             //civManager.SitRepEntries.Add(new PopulationDyingSitRepEntry(civ, colony));
                         }
 
-                        if (popChange > 14)
+                        if (popChange > 12) // popGrowth limited to 12
                         {
-                            popChange = 14;
+                            popChange = 12;
                         }
 
                         int newPopulation = colony.Population.AdjustCurrent(popChange);
@@ -1779,7 +1789,7 @@ namespace Supremacy.Game
 
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                                Console.WriteLine("Step_3281:; Turn " + _turnNumber + ": " + _text);
+                                Console.WriteLine("Step_3281:; Turn " + _turnnumber + ": " + _text);
                                 //GameLog.Core.CombatDetails.DebugFormat("Step_3281: " + _text);
 
                             }
@@ -1800,7 +1810,7 @@ namespace Supremacy.Game
 
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                                Console.WriteLine("Step_3282:; Turn " + _turnNumber + ": " + _text);
+                                Console.WriteLine("Step_3282:; Turn " + _turnnumber + ": " + _text);
                                 //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
                             }
                         }
@@ -1819,7 +1829,7 @@ namespace Supremacy.Game
 
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                                Console.WriteLine("Step_3283:; Turn " + _turnNumber + ": " + _text);
+                                Console.WriteLine("Step_3283:; Turn " + _turnnumber + ": " + _text);
                                 //GameLog.Core.CombatDetails.DebugFormat("Step_3283: " + _text);
                             }
                         }
@@ -1838,7 +1848,7 @@ namespace Supremacy.Game
 
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                                Console.WriteLine("Step_3284:; Turn " + _turnNumber + ": " + _text);
+                                Console.WriteLine("Step_3284:; Turn " + _turnnumber + ": " + _text);
                             }
                         }
 
@@ -1856,7 +1866,7 @@ namespace Supremacy.Game
 
                                 civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
                                 //civManager.SitRepEntries.Add(new LaborToEnergyAddedSitRepEntry(civ, colony.Location, _text));
-                                Console.WriteLine("Step_3285:; Turn " + _turnNumber + ": " + _text);
+                                Console.WriteLine("Step_3285:; Turn " + _turnnumber + ": " + _text);
                             }
                         }
 
@@ -1875,9 +1885,9 @@ namespace Supremacy.Game
 
                         if (civManager.Civilization.CivID == colony.Owner.CivID)
                         {
-                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
+                            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Brown));
                         }
-                        Console.WriteLine("Step_3287:; Turn " + _turnNumber + ": " + _text);
+                        Console.WriteLine("Step_3287:; Turn " + _turnnumber + ": " + _text);
 
 
                         if (colony.Population.CurrentValue < colony.Population.Maximum)
@@ -1942,6 +1952,7 @@ namespace Supremacy.Game
         private void DoResearch(GameContext game)
         {
             IEnumerable<Ship> scienceShips = game.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
+
             _ = ParallelForEach(scienceShips, scienceShip =>
               {
                   GameContext.PushThreadContext(game);
@@ -2070,9 +2081,11 @@ namespace Supremacy.Game
                   }
               });
 
-            _ = ParallelForEach(GameContext.Current.Civilizations, civ =>
-              {
-                  GameContext.PushThreadContext(game);
+            //_ = ParallelForEach(GameContext.Current.Civilizations, civ =>
+            //  {
+            foreach (Civilization civ in GameContext.Current.Civilizations)
+            {
+                GameContext.PushThreadContext(game);
                   try
                   {
                       CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
@@ -2090,7 +2103,8 @@ namespace Supremacy.Game
                   {
                       _ = GameContext.PopThreadContext();
                   }
-              });
+              //});
+              };
         }
         #endregion
 
@@ -2125,9 +2139,14 @@ namespace Supremacy.Game
 
             interference.Start();
 
-            _ = ParallelForEach(game.Civilizations, civ =>
-              {
-                  GameContext.PushThreadContext(game);
+            //_ = ParallelForEach(game.Civilizations, civ =>
+            //  {
+
+            foreach (Civilization civ in GameContext.Current.Civilizations)
+            {
+
+
+                GameContext.PushThreadContext(game);
                   try
                   {
                       HashSet<MapLocation> fuelLocations = new HashSet<MapLocation>();
@@ -2241,7 +2260,8 @@ namespace Supremacy.Game
                   {
                       _ = GameContext.PopThreadContext();
                   }
-              });
+              //});
+              };
         }
         #endregion
 
@@ -2551,11 +2571,11 @@ namespace Supremacy.Game
 
                     _text = "Empire Intelligence Points: "
                             + "Production > " + civManager.TotalIntelligenceProduction
-                            + ", available for Attack > " + civManager.TotalIntelligenceAttackingAccumulated
+                            + ", available for Attack ( F5 ) > " + civManager.TotalIntelligenceAttackingAccumulated
                             + ", accum. Defense > " + civManager.TotalIntelligenceDefenseAccumulated
                             + " for " + civManager.Civilization.Name
                             ;
-                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, civManager.Colonies[0], _text, _text, "", SitRepPriority.Purple));
+                    civManager.SitRepEntries.Add(new ReportEntry_Show_F5(civ, civManager.Colonies[0], _text, _text, "", SitRepPriority.Purple));
                     Console.WriteLine("Step_4118:; Turn " + _turnNumber
                         + ": " + _text);
                     //GameLog.Core.ProductionDetails.DebugFormat(_text);
@@ -3023,9 +3043,11 @@ namespace Supremacy.Game
                             }
                         }
                         _text = "Step_4290:; Turn " + _turnNumber
-                            + ": " + colony.Location
-                            + "DoProduction done for " + civ.Name
-                            + " trying ### > " + _constructionAim;
+                            + "; " + colony.Location
+                            + "; " + colony.Name
+                            + "; " + civ.Name
+                            + "; DoProduction done" 
+                            + "; trying ### > " + _constructionAim;
                         Console.WriteLine(_text);
                         GameLog.Core.Production.DebugFormat(_text);
 
@@ -3055,152 +3077,157 @@ namespace Supremacy.Game
              * from both the colonies and the global reserves, so this is the
              * sensible way to do it.
              */
-            _ = ParallelForEach(GameContext.Current.Civilizations, civ =>
-              {
-                  GameContext.PushThreadContext(game);
-                  try
-                  {
-                      CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
-                      //Get all colonies with a shipyard
-                      List<Colony> colonies = civManager.Colonies.Where(c => c.Shipyard != null).ToList();
-                      /* 
-                       * Shuffle the colonies so they are processed in random order. This
-                       * will help prevent the same colonies from getting priority when
-                       * the global stockpiles are low.
-                       */
-                      colonies.RandomizeInPlace();
 
-                      //Get the resources available for the civilization
-                      ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection
-                      {
-                          [ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue,
-                          [ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue,
-                          [ResourceType.Duranium] = civManager.Resources.Duranium.CurrentValue
-                      };
+            //_ = ParallelForEach(GameContext.Current.Civilizations, civ =>
+            //  {
 
-                      foreach (Colony colony in colonies)
-                      {
-                          Shipyard shipyard = colony.Shipyard;
-                          IList<BuildQueueItem> queue = shipyard.BuildQueue;
+            foreach (Civilization civ in GameContext.Current.Civilizations)
+            {
+                GameContext.PushThreadContext(game);
+                try
+                {
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
+                    //Get all colonies with a shipyard
+                    List<Colony> colonies = civManager.Colonies.Where(c => c.Shipyard != null).ToList();
+                    /* 
+                     * Shuffle the colonies so they are processed in random order. This
+                     * will help prevent the same colonies from getting priority when
+                     * the global stockpiles are low.
+                     */
+                    colonies.RandomizeInPlace();
 
-                          //int colonyHealth = Int32.TryParse(colony.Health.ToString(), out int _health);
+                    //Get the resources available for the civilization
+                    ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection
+                    {
+                        [ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue,
+                        [ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue,
+                        [ResourceType.Duranium] = civManager.Resources.Duranium.CurrentValue
+                    };
 
-                          if (!colony.Population.IsMaximized && colony.GrowthRate == 0) // && Int32.TryParse(colony.Health.ToString(), out int _health) != 100)
-                          {
-                              _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"), colony.Name, colony.Location);
-                              if (GameContext.Current.TurnNumber > 4)
-                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Yellow));
-                              //civManager.SitRepEntries.Add(new GrowthByHealthSitRepEntry(civ, colony));
-                          }
+                    foreach (Colony colony in colonies)
+                    {
+                        Shipyard shipyard = colony.Shipyard;
+                        IList<BuildQueueItem> queue = shipyard.BuildQueue;
 
-                          // >Check ShipProduction
+                        //int colonyHealth = Int32.TryParse(colony.Health.ToString(), out int _health);
 
+                        if (!colony.Population.IsMaximized && colony.GrowthRate == 0) // && Int32.TryParse(colony.Health.ToString(), out int _health) != 100)
+                        {
+                            _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"), colony.Name, colony.Location);
+                            if (GameContext.Current.TurnNumber > 4)
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Yellow));
+                            //civManager.SitRepEntries.Add(new GrowthByHealthSitRepEntry(civ, colony));
+                        }
 
-                          List<ShipyardBuildSlot> buildSlots = colony.Shipyard.BuildSlots.Where(s => s.IsActive && !s.OnHold).ToList();
-                          foreach (ShipyardBuildSlot slot in buildSlots)
-                          {
-
-                              // GameLog is making trouble
-                              /*GameLog.Core.ShipProduction.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, Duranium={5}",
-                                  civ.Name,
-                                  slot.Project.BuildDesign.Name,
-                                  colony.Name,
-                                  totalResourcesAvailable[ResourceType.Deuterium],
-                                  totalResourcesAvailable[ResourceType.Dilithium],
-                                  totalResourcesAvailable[ResourceType.Duranium]);
-                               */
-
-                              //int _ratioIndustry;
-
-                              // active 25 of total 50 = 50 %;
-                              if (colony.Facilities_Total2_Industry > 0)
-                              {
-                                  _ratioIndustryForShipProduction = (100 * colony.Facilities_Active2_Industry / colony.Facilities_Total2_Industry) + 1;
-                              }
-
-                              int output = shipyard.GetBuildOutput(slot.SlotID) / 100 * _ratioIndustryForShipProduction;
-                              while ((slot.HasProject || !shipyard.BuildQueue.IsEmpty()) && (output > 0))
-                              {
-                                  // checking ShipProduction
-                                  if (!slot.HasProject)
-                                  {
-                                      //slot.ProcessQueue();
-                                      shipyard.ProcessQueue();
-                                  }
-                                  if (!slot.HasProject && shipyard.BuildQueue.IsEmpty())
-                                  {
-                                      string _text1 = colony.Location  // needs a new _text here !!!!
-                                            + " " + colony.Name
-                                            + " > Shipyard-Slot " + slot.SlotID
-                                            + ":  nothing to do..."
-                                            //+ "  is " + slot.Project.PercentComplete
-                                            //+ " complete "
-                                            ;
-
-                                      civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text1, _text1, "", SitRepPriority.Gray));
-
-                                      GameLog.Core.ShipProductionDetails.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
-                                          slot.SlotID,
-                                          colony.Name,
-                                          civ.Name);
-                                      continue;
-                                  }
-
-                                  ResourceValueCollection totalResourcesBefore = totalResourcesAvailable.Clone();
-                                  slot.Project.Advance(ref output, totalResourcesAvailable);
-
-                                  //Figure out how what resources have been used
-                                  int deuteriumUsed = totalResourcesBefore[ResourceType.Deuterium] - totalResourcesAvailable[ResourceType.Deuterium];
-                                  int dilithiumUsed = totalResourcesBefore[ResourceType.Dilithium] - totalResourcesAvailable[ResourceType.Dilithium];
-                                  int duraniumUsed = totalResourcesBefore[ResourceType.Duranium] - totalResourcesAvailable[ResourceType.Duranium];
-                                  _ = civManager.Resources.Deuterium.AdjustCurrent(-1 * deuteriumUsed);
-                                  _ = civManager.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
-                                  _ = civManager.Resources.Duranium.AdjustCurrent(-1 * duraniumUsed);
-
-                                  GameLog.Core.ShipProductionDetails.DebugFormat(/*Environment.NewLine + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ Environment.NewLine*/,
-                                      deuteriumUsed, dilithiumUsed, duraniumUsed, slot.Project, colony, GameContext.Current.TurnNumber, colony.Owner);
-
-                                  string _text2 = colony.Location  // needs a new _text here !!!!
-                                  + " " + colony.Name
-                                  + " > Shipyard-Slot " + slot.SlotID
-                                  + ":  " + slot.Project.BuildDesign
-                                  + "  is " + slot.Project.PercentComplete
-                                  + " complete "
-                                  ;
-
-                                  civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text2, _text2, "", SitRepPriority.Gray));
+                        // >Check ShipProduction
 
 
-                                  if (slot.Project.IsCompleted)
-                                  {
-                                      GameLog.Core.ShipProductionDetails.DebugFormat("Turn {4}: {0} in Shipyard Slot {1} on {2} ({3}) is finished",
-                                          slot.Project.BuildDesign,
-                                          slot.SlotID,
-                                          colony.Name,
-                                          civ.Name
-                                          , GameContext.Current.TurnNumber
-                                          );
-                                      slot.Project.Finish();
-                                      slot.Project = null;
-                                  }
-                                  else
-                                  {
-                                      //if there is a gap for DURANIUM than code would go into never ending loop without the break
-                                      break;
-                                  }
-                              }
-                          }
-                      }
-                  }
-                  catch (Exception e)
-                  {
-                      GameLog.Core.ShipProduction.Error(string.Format("DoShipProduction failed for {0}", civ.Name), e);
-                  }
-                  finally
-                  {
-                      _ = GameContext.PopThreadContext();
-                  }
-              });
+                        List<ShipyardBuildSlot> buildSlots = colony.Shipyard.BuildSlots.Where(s => s.IsActive && !s.OnHold).ToList();
+                        foreach (ShipyardBuildSlot slot in buildSlots)
+                        {
+
+                            // GameLog is making trouble
+                            /*GameLog.Core.ShipProduction.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, Duranium={5}",
+                                civ.Name,
+                                slot.Project.BuildDesign.Name,
+                                colony.Name,
+                                totalResourcesAvailable[ResourceType.Deuterium],
+                                totalResourcesAvailable[ResourceType.Dilithium],
+                                totalResourcesAvailable[ResourceType.Duranium]);
+                             */
+
+                            //int _ratioIndustry;
+
+                            // active 25 of total 50 = 50 %;
+                            if (colony.Facilities_Total2_Industry > 0)
+                            {
+                                _ratioIndustryForShipProduction = (100 * colony.Facilities_Active2_Industry / colony.Facilities_Total2_Industry) + 1;
+                            }
+
+                            int output = shipyard.GetBuildOutput(slot.SlotID) / 100 * _ratioIndustryForShipProduction;
+                            while ((slot.HasProject || !shipyard.BuildQueue.IsEmpty()) && (output > 0))
+                            {
+                                // checking ShipProduction
+                                if (!slot.HasProject)
+                                {
+                                    //slot.ProcessQueue();
+                                    shipyard.ProcessQueue();
+                                }
+                                if (!slot.HasProject && shipyard.BuildQueue.IsEmpty())
+                                {
+                                    string _text1 = colony.Location  // needs a new _text here !!!!
+                                          + " " + colony.Name
+                                          + " > Shipyard-Slot " + slot.SlotID
+                                          + ":  nothing to do..."
+                                          //+ "  is " + slot.Project.PercentComplete
+                                          //+ " complete "
+                                          ;
+
+                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text1, _text1, "", SitRepPriority.Gray));
+
+                                    GameLog.Core.ShipProductionDetails.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
+                                        slot.SlotID,
+                                        colony.Name,
+                                        civ.Name);
+                                    continue;
+                                }
+
+                                ResourceValueCollection totalResourcesBefore = totalResourcesAvailable.Clone();
+                                slot.Project.Advance(ref output, totalResourcesAvailable);
+
+                                //Figure out how what resources have been used
+                                int deuteriumUsed = totalResourcesBefore[ResourceType.Deuterium] - totalResourcesAvailable[ResourceType.Deuterium];
+                                int dilithiumUsed = totalResourcesBefore[ResourceType.Dilithium] - totalResourcesAvailable[ResourceType.Dilithium];
+                                int duraniumUsed = totalResourcesBefore[ResourceType.Duranium] - totalResourcesAvailable[ResourceType.Duranium];
+                                _ = civManager.Resources.Deuterium.AdjustCurrent(-1 * deuteriumUsed);
+                                _ = civManager.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
+                                _ = civManager.Resources.Duranium.AdjustCurrent(-1 * duraniumUsed);
+
+                                GameLog.Core.ShipProductionDetails.DebugFormat(/*Environment.NewLine + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ Environment.NewLine*/,
+                                    deuteriumUsed, dilithiumUsed, duraniumUsed, slot.Project, colony, GameContext.Current.TurnNumber, colony.Owner);
+
+                                string _text2 = colony.Location  // needs a new _text here !!!!
+                                + " " + colony.Name
+                                + " > Shipyard-Slot " + slot.SlotID
+                                + ":  " + slot.Project.BuildDesign
+                                + "  is " + slot.Project.PercentComplete
+                                + " complete "
+                                ;
+
+                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text2, _text2, "", SitRepPriority.Gray));
+
+
+                                if (slot.Project.IsCompleted)
+                                {
+                                    GameLog.Core.ShipProductionDetails.DebugFormat("Turn {4}: {0} in Shipyard Slot {1} on {2} ({3}) is finished",
+                                        slot.Project.BuildDesign,
+                                        slot.SlotID,
+                                        colony.Name,
+                                        civ.Name
+                                        , GameContext.Current.TurnNumber
+                                        );
+                                    slot.Project.Finish();
+                                    slot.Project = null;
+                                }
+                                else
+                                {
+                                    //if there is a gap for DURANIUM than code would go into never ending loop without the break
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.ShipProduction.Error(string.Format("DoShipProduction failed for {0}", civ.Name), e);
+                }
+                finally
+                {
+                    _ = GameContext.PopThreadContext();
+                }
+            };
+        //;
         }
         #endregion
 
@@ -3209,9 +3236,11 @@ namespace Supremacy.Game
         {
             ConcurrentStack<Exception> errors = new ConcurrentStack<Exception>();
 
-            _ = ParallelForEach(GameContext.Current.Civilizations, civ =>
-              {
-                  GameContext.PushThreadContext(game);
+            //_ = ParallelForEach(GameContext.Current.Civilizations, civ =>
+            //  {
+            foreach (Civilization civ in GameContext.Current.Civilizations)
+            {
+                GameContext.PushThreadContext(game);
                   try
                   {
                       int globalMorale = 0;
@@ -3233,7 +3262,7 @@ namespace Supremacy.Game
                       int _incomeLowerLimit = -100 * civManager.AverageTechLevel;
                       bool _creditsSitRep = false;
 
-                      Console.WriteLine("Step_5410:; Turn " + _turnNumber
+                      Console.WriteLine("Step_5410:; Turn " + _turnnumber
                           + ": _textCreditsLastChange = "
                           + civManager.Credits.LastChange
                           + "    for " + civManager.Civilization.Key);
@@ -3295,7 +3324,7 @@ namespace Supremacy.Game
                               }
                           }
 
-                          if (colony.Morale.CurrentValue < 50)
+                          if (colony.Morale.CurrentValue < 70)
                           {
                               _ = colony.Morale.AdjustCurrent(1);
 
@@ -3310,7 +3339,7 @@ namespace Supremacy.Game
                               {
                                   var b = GameContext.Current.Universe.Objects[objID] as Building;
                                   b.IsActive = false;
-                                  _text = "Step_5450:; "
+                                  _text = "Step_5456:; "
                                   + b.Location
                                     + b.Sector.Name
                                     + " > "
@@ -3328,9 +3357,14 @@ namespace Supremacy.Game
 
                           }
 
-                          if (colony.Morale.CurrentValue < 25)
+                        if (colony.Morale.CurrentValue < 50)
+                        {
+                            _ = colony.Morale.AdjustCurrent(1);  // another 1 
+                        }
+
+                        if (colony.Morale.CurrentValue < 25)
                           {
-                              _ = colony.Morale.AdjustCurrent(1);  // another 1 + 1 from 50 = +2
+                              _ = colony.Morale.AdjustCurrent(1);  // another 1 
                           }
 
                           /*
@@ -3357,8 +3391,8 @@ namespace Supremacy.Game
                               _ = colony.Morale.AdjustCurrent(drift);
                           }
 
-                          // Health below 60 means morale -1
-                          if (colony.Health.CurrentValue < 60)
+                          // Health below 50 means morale -1
+                          if (colony.Health.CurrentValue < 50)
                               _ = colony.Morale.AdjustCurrent(-1);
 
                           // limited by health value
@@ -3385,7 +3419,8 @@ namespace Supremacy.Game
                   {
                       _ = GameContext.PopThreadContext();
                   }
-              });
+              };
+              //});
 
             if (!errors.IsEmpty)
             {
@@ -3518,10 +3553,10 @@ namespace Supremacy.Game
                                 // text: There is an unassigned trade route
                                 _text = string.Format(ResourceManager.GetString("SITREP_UNASSIGNED_TRADE_ROUTE"), colony, colony.Location);
                                 //civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
-                                Console.WriteLine("SR:; " + _text);
-                                if (_text != null && _text != "" && _text != " ")
-                                    civManager.SitRepEntries.Add(new ReportEntry_CoS(colony.Owner, colony.Location, _text, _text, "", SitRepPriority.Orange));
-                                _text = "";
+                                //Console.WriteLine("SR:; " + _text);
+                                //if (_text != null && _text != "" && _text != " ")
+                                    civManager.SitRepEntries.Add(new ReportEntry_CoS(colony.Owner, colony.Location, _text, _text, "", SitRepPriority.Crimson));
+                                //_text = "";
                             }
                             else
                             {
@@ -4014,7 +4049,7 @@ namespace Supremacy.Game
 
                 //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
                 civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
-                Console.WriteLine("Step_4111:; Turn " + _turnNumber + ": " + _text);
+                Console.WriteLine("Step_4111:; Turn " + _turnnumber + ": " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
 
                 foreach (Colony col in civManager.Colonies)
@@ -4044,7 +4079,7 @@ namespace Supremacy.Game
                     ;
 
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, col.Location, _text, "", "", SitRepPriority.Brown));
-                    Console.WriteLine("Step_4112:; Turn " + _turnNumber + ": " + _text);
+                    Console.WriteLine("Step_4112:; Turn " + _turnnumber + ": " + _text);
                     //GameLog.Core.CombatDetails.DebugFormat("Step_4112: " + _text);
                 }
 
@@ -4133,7 +4168,7 @@ namespace Supremacy.Game
                 // set back to zero
                 _globalMorale = 0;
 
-                Console.WriteLine("Step_3282:; Turn " + _turnNumber + ": " + _text);
+                Console.WriteLine("Step_3282:; Turn " + _turnnumber + ": " + _text);
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
                 PrintCivRank(CivRankList);
@@ -4144,7 +4179,7 @@ namespace Supremacy.Game
                     + "  -  Best: " + _r_Credits_BestValue
 
                     ;
-                Console.WriteLine("Step_3582:; Turn " + _turnNumber + ": " + _text);
+                Console.WriteLine("Step_3582:; Turn " + _turnnumber + ": " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3582: " + _text);
 
                 // due to AI has Credit Advantage, no Ranking for Credits reported
@@ -4160,7 +4195,7 @@ namespace Supremacy.Game
 
 
                 civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
-                Console.WriteLine("Step_3682:; Turn " + _turnNumber + ": " + _text);
+                Console.WriteLine("Step_3682:; Turn " + _turnnumber + ": " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3682: " + _text);
 
 
@@ -4174,7 +4209,7 @@ namespace Supremacy.Game
 
 
                 civManager.SitRepEntries.Add(new ReportEntry_NoAction(civManager.Civilization, _text, "", "", SitRepPriority.Aqua));
-                Console.WriteLine("Step_3782:; Turn " + _turnNumber + ": " + _text);
+                Console.WriteLine("Step_3782:; Turn " + _turnnumber + ": " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3782:; " + _text);
 
                 _text = "Ranking: Intelligence > " + civManager.Civilization.Name
@@ -4234,6 +4269,7 @@ namespace Supremacy.Game
                     {
                         MapLocation _aim = fleet.Route.Waypoints.LastOrDefault();
                         Sector _aimSector = GameContext.Current.Universe.Map[_aim];
+                        fleet.Order = FleetOrders.TravelOrder;
                         //GameContext.Current.Universe.Find<MapLocation>().TryFindFirstItem(o => o == _aim, out Sector _aimSector);
                         _text += " # on the way to " + _aim.ToString() + " named " + _aimSector.Name;
                     }
@@ -4331,12 +4367,16 @@ namespace Supremacy.Game
                         }
                         catch (Exception e)
                         {
+                            _text = "Step_9775: #### problem at DoAIPlayers" + newline + e.ToString();
+                            Console.WriteLine(_text);
                             GameLog.Core.General.Error(e);
                         }
 
                     }
                     catch (Exception e)
                     {
+                        _text = "Step_9777: #### problem at DoAIPlayers" + newline + e.ToString();
+                        Console.WriteLine(_text);
                         errors.Push(e);
                     }
                     //finally
@@ -4403,11 +4443,11 @@ namespace Supremacy.Game
                 GameContext.Current.CivilizationManagers[combat[i].OwnerID].SitRepEntries.Add(new ReportEntry_CoS(combat[i].Owner, combat[i].Location, _text, "", "", SitRepPriority.RedYellow));
             }
 
-            _text = "Step_0877: " + _text;
+            _text = "Step_0877:; " + _text;
             Console.WriteLine(_text);
 
             CombatOccurring?.Invoke(combat);
-            _text = "Step_0877: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx check why Combat screen doesn't close";
+            _text = "Step_0877:; xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx check why Combat screen doesn't close";
             Console.WriteLine(_text);
 
 

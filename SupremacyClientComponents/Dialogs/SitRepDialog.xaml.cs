@@ -332,12 +332,12 @@ namespace Supremacy.Client.Dialogs
 
                 switch (selection.Action)
                 {
-                    case SitRepAction.ShowGalaxyScreen: // F3
+                    case SitRepAction.ShowGalaxyScreen: // F1
                         Close();
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
                         break;
 
-                    case SitRepAction.ShowColony:
+                    case SitRepAction.ShowColony: // F2
                         Close();
                         GalaxyScreenCommands.SelectSector.Execute((selection.ActionTarget as Colony).Sector); // F2
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
@@ -351,18 +351,19 @@ namespace Supremacy.Client.Dialogs
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen); // F3
                         break;
 
-                    case SitRepAction.ShowDiploScreen:
+                    case SitRepAction.ShowDiploScreen: // F4
                         Close();
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.DiplomacyScreen);  // F4
                         break;
 
-                    case SitRepAction.ShowIntelScreen:
+                    case SitRepAction.ShowIntelScreen: // F5
                         Close();
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.IntelScreen); // F5
                         break;
 
                     case SitRepAction.CenterOnSector:
                         Close();
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
                         Sector sector = selection.ActionTarget as Sector;
                         GalaxyScreenCommands.SelectSector.Execute(sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(sector);

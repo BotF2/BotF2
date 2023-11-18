@@ -18,7 +18,9 @@
           <Grid.ToolTip>
             <ToolTip>
               <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                              FontSize="16">
+                              FontSize="16"
+                              Width="200"
+                              >
                 <ContentControl.Content>
                   <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
                                                  Location="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Location)}"
@@ -98,7 +100,7 @@
             <StackPanel.ToolTip>
                             <ToolTip  Width="Auto">
                 <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                                FontSize="16"  Width="Auto">
+                                FontSize="16"  Width="200">
                   <ContentControl.Content>
                     <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildSlot.Project).(s:BuildProject.BuildDesign)}"
                                                    Location="{Binding Path=(s:BuildSlot.Project).(s:BuildProject.Location)}"
@@ -110,9 +112,11 @@
             <TextBlock FontSize="18pt"
                        Margin="0,0,0,7"
                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                       Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       Foreground="Aqua"
                        Text="{s:StringResource Key=NOW_BUILDING, Case=Upper}" />
-            <Grid>
+                        <!--Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"-->
+
+                        <Grid>
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />

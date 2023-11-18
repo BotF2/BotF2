@@ -374,7 +374,7 @@ namespace Supremacy.Client
 
         private void ProcessSitRepEntries()
         {
-            _text = "Step_4000: ProcessSitRepEntries...";
+            _text = "Step_4002: ProcessSitRepEntries...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -419,11 +419,14 @@ namespace Supremacy.Client
             }
 
             _text = "Step_4050: ShowSummary...";
-            Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             List<SitRepEntry> sr = (List<SitRepEntry>)_appContext.LocalPlayerEmpire.SitRepEntries;
-            sr.OrderBy(o => o.Action).ToList();
+
+            //sr.OrderBy(o => o.Action).ToList();
+            sr.OrderBy(o => o.HeaderText).ToList();
+            
             _sitRepDialog.SitRepEntries = sr; 
 
 
@@ -489,8 +492,8 @@ namespace Supremacy.Client
                 ////}
             }
             _text = "Step_4892: ShowSummary... DONE";
-            Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
         }
 

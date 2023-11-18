@@ -14,11 +14,15 @@ namespace Supremacy.Client.Views
     public static class ColonyScreenCommands
     {
         public static CompositeCommand ToggleBuildingScrapCommand = new CompositeCommand();
+        public static CompositeCommand FirstColonyCommand = new CompositeCommand();
         public static CompositeCommand NextColonyCommand = new CompositeCommand();
+        public static CompositeCommand PreviousColonyCommand = new CompositeCommand();
+        public static CompositeCommand ShowColonyOnMapCommand = new CompositeCommand();
+
         //public static CompositeCommand NextTABinsideColonyCommand = new CompositeCommand();
         public static CompositeCommand ShowColonyManagementCommand = new CompositeCommand();
         public static CompositeCommand ShowColonyBuildListCommand = new CompositeCommand();
         public static CompositeCommand ShowShipyardCommand = new CompositeCommand();
-        public static CompositeCommand PreviousColonyCommand = new CompositeCommand();
+
     }
 }

@@ -680,15 +680,18 @@
                                     FontSize="11pt" 
                                     Text="{Binding Path=CivStatus1}"/>
 
-                        <TextBlock Grid.Column="1"
-                                    Grid.Row ="2"
-                                    Margin="4,0,0,0"
+                      <!--<StackPanel Orientation="Horizontal">-->
+                        
+                        
+
+                      
+                        <TextBlock  Grid.Column="1" Grid.Row ="2" Margin="4,0,0,0"
                                     TextWrapping="Wrap"
                                     Foreground="Orange" 
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                     FontSize="11pt" 
                                     Text="{Binding Path=CivFirePowers1Text}"/>
-
+                      <!--</StackPanel>-->
                         <!--CivsAndFirePowers 2-->
 
                         <Border x:Name="ImageBorderOther2"

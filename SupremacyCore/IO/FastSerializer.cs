@@ -5658,7 +5658,7 @@ namespace Supremacy.IO.Serialization
         #endregion
 
         #region Debug
-        [Conditional("DEBUG")]
+        //[Conditional("DEBUG")]
         public void DumpStringTables(ArrayList list)
         {
             list.AddRange(_stringTokenList);

@@ -611,10 +611,13 @@ namespace Supremacy.Game
 
                 if (_totalIntelligenceAttackingAccumulated.CurrentValue == 0)
                 {
-                    updateMeter.CurrentValue = TotalIntelligenceProduction;
+                    updateMeter.CurrentValue = 0;
                 }
-                //works   GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
-                return updateMeter;
+                //works
+                //_text = "Step_3113:; TotalIntelAttackingAccumulated = " + updateMeter.CurrentValue.ToString();
+                //Console.WriteLine(_text);   
+                //GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
+                return _totalIntelligenceAttackingAccumulated;
             }
         }
 
@@ -626,8 +629,11 @@ namespace Supremacy.Game
                 //works   GameLog.Client.Intel.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
-                    updateMeter.CurrentValue = TotalIntelligenceProduction;
+                    updateMeter.CurrentValue = 0;
                 }
+                //_text = "Step_3114:; TotalIntelligenceDefenseAccumulated = " + updateMeter.CurrentValue;
+                //Console.WriteLine(_text);
+                //GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return _totalIntelligenceDefenseAccumulated;
             }
         }

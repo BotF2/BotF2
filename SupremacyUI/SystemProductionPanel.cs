@@ -40,6 +40,7 @@ namespace Supremacy.UI
         private readonly Grid _grid;
         private readonly UnitActivationBar _laborBar;
         private readonly TextBlock _laborPoolText;
+        private readonly TextBlock _shipyardLine_1;
         private readonly UnitActivationGroup _sliderGroup;
 
         private readonly TextBlock _energyActiveText;
@@ -127,6 +128,8 @@ namespace Supremacy.UI
 
             DataContextChanged += OnDataContextChanged;
 
+            _text = "" + _text; // dummy - please keep
+
             Brush headerBrush = FindResource("HeaderTextBrush") as Brush ?? Foreground;
             Brush paragraphBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground;
 
@@ -151,19 +154,21 @@ namespace Supremacy.UI
             _grid.ColumnDefinitions[2].Width = new GridLength(1.0, GridUnitType.Star);  // was .Star
             _grid.ColumnDefinitions[3].Width = new GridLength(1.0, GridUnitType.Auto);
 
-            _grid.RowDefinitions.Add(new RowDefinition());
-            _grid.RowDefinitions.Add(new RowDefinition());
-            _grid.RowDefinitions.Add(new RowDefinition());
-            _grid.RowDefinitions.Add(new RowDefinition());
-            _grid.RowDefinitions.Add(new RowDefinition());
-            _grid.RowDefinitions.Add(new RowDefinition());
+            _grid.RowDefinitions.Add(new RowDefinition()); // Food
+            _grid.RowDefinitions.Add(new RowDefinition()); // Industry
+            _grid.RowDefinitions.Add(new RowDefinition()); // Energy
+            _grid.RowDefinitions.Add(new RowDefinition()); // Research
+            _grid.RowDefinitions.Add(new RowDefinition()); // Intelligence
+            _grid.RowDefinitions.Add(new RowDefinition()); // Labor Pool
+            _grid.RowDefinitions.Add(new RowDefinition()); // Shipyard
 
             _grid.RowDefinitions[0].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[1].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[2].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[3].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[4].Height = new GridLength(1.0, GridUnitType.Auto);
-            _grid.RowDefinitions[5].Height = new GridLength(1.0, GridUnitType.Star);
+            _grid.RowDefinitions[5].Height = new GridLength(1.0, GridUnitType.Auto);
+            _grid.RowDefinitions[6].Height = new GridLength(1.0, GridUnitType.Star);
 
             _sliderGroup = new UnitActivationGroup();
 
@@ -459,6 +464,8 @@ namespace Supremacy.UI
             _intelligenceImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
             _ = _grid.Children.Add(_intelligenceImageBorder);
 
+
+            // Sliders
             _foodSlider.SetValue(Grid.ColumnProperty, 2);
             _industrySlider.SetValue(Grid.ColumnProperty, 2);
             _energySlider.SetValue(Grid.ColumnProperty, 2);
@@ -495,6 +502,7 @@ namespace Supremacy.UI
             _ = _grid.Children.Add(_researchSlider);
             _ = _grid.Children.Add(_intelligenceSlider);
 
+            // laborPool
             _laborBar = new UnitActivationBar
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch
@@ -521,6 +529,19 @@ namespace Supremacy.UI
 
             _ = _grid.Children.Add(_laborBar);
             _ = _grid.Children.Add(_laborPoolText);
+
+            // shipyard
+            _shipyardLine_1 = new TextBlock();
+            _shipyardLine_1.SetValue(Grid.ColumnProperty, 0);
+            _shipyardLine_1.SetValue(Grid.RowProperty, 5);
+            _shipyardLine_1.VerticalAlignment = VerticalAlignment.Top;
+            _shipyardLine_1.HorizontalAlignment = HorizontalAlignment.Right;
+            _shipyardLine_1.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            _shipyardLine_1.FontSize = 20;
+            _shipyardLine_1.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
+            _shipyardLine_1.Foreground = headerBrush;
+
+            _ = _grid.Children.Add(_shipyardLine_1);
 
             #endregion
 
@@ -724,8 +745,8 @@ namespace Supremacy.UI
                 }
 
                 _text = "Step_7102: " + colony.Location + ": old= " + e.OldValue + ", new= " + e.NewValue + " for slider " + category;
-                Console.WriteLine(_text);
-                GameLog.Client.GameData.DebugFormat(_text);
+                //Console.WriteLine(_text);
+                //GameLog.Client.GameData.DebugFormat(_text);
 
                 for (i = 1; i <= delta; i++) // one by one
                 {

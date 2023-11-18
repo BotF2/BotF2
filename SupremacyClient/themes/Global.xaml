@@ -5847,8 +5847,8 @@
               <Setter TargetName="Bd"
                       Property="Background"
                       Value="{StaticResource {x:Static scc:ClientResources.InactiveHighlightBrushKey}}" />
-              <!--<Setter Property="Foreground"
-                      Value="{StaticResource {x:Static SystemColors.ControlTextBrushKey}}" />-->
+              <Setter Property="Foreground"
+                      Value="{StaticResource {x:Static SystemColors.ControlTextBrushKey}}" />
             </MultiTrigger>
             <Trigger Property="IsEnabled"
                      Value="false">

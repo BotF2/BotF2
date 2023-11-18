@@ -251,7 +251,9 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error("Step_4098:; Error occurred loading saved game", e);
+                _text = "Step_4098:; Error occurred loading saved game" + e;
+                Console.WriteLine(_text);
+                GameLog.Core.General.Error(_text);
 
                 header = null;
                 game = null;

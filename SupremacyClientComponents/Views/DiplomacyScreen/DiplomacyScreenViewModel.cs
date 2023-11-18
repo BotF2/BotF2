@@ -1289,11 +1289,13 @@ namespace Supremacy.Client.Views
 
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
-                //Console.WriteLine("RefreshForeignPowers... " + civ.Name);
+
                 if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
                 {
                     continue;
                 }
+                //
+                Console.WriteLine("Step_9333:; RefreshForeignPowers... " + civ.Name);
 
                 ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
                 ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
