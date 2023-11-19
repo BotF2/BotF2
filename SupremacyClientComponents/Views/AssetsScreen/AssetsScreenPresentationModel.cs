@@ -146,7 +146,7 @@ namespace Supremacy.Client.Views
                 try
                 {
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
-                    FillUpDefense();
+                    //FillUpDefense();
                     _totalIntelligenceProduction = value;
                     _text = "Step_5450:; Set TotalIntelProduction =;" + _totalIntelligenceProduction;
 
@@ -169,7 +169,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                FillUpDefense();
+                //FillUpDefense();
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 //works
                 _text = "Step_5450:; Get TotalIntelDefenseAccumulated =;" + _totalIntelligenceDefenseAccumulated;
@@ -180,7 +180,7 @@ namespace Supremacy.Client.Views
             }
             set
             {
-                FillUpDefense();
+                //FillUpDefense();
                 //_totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
@@ -193,7 +193,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                FillUpDefense();
+                //FillUpDefense();
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 //works
                 _text = "Step_5450:; Get TotalIntelDefenseAccumulated =;" + _totalIntelligenceProduction;
@@ -204,7 +204,7 @@ namespace Supremacy.Client.Views
             }
             set
             {
-                FillUpDefense();
+                //FillUpDefense();
                 // _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
@@ -218,29 +218,27 @@ namespace Supremacy.Client.Views
             //works
             _text = "Step_5442:; Before update attackMeter =;" + attackMeter + "; for attacking civ =;" + attackingCiv;
             Console.WriteLine(_text);
-            //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
             //GameLog.Client.Intel.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
             _ = int.TryParse(attackMeter.CurrentValue.ToString(), out int newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
             //works
             _text = "Step_5444:; After update attackMeter =;" + attackMeter + "; for attacking civ =;" + attackingCiv;
             Console.WriteLine(_text);
-            //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
             //GameLog.Client.Intel.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
             return attackMeter;
         }
-        protected virtual void FillUpDefense()
-        {
-            CivilizationManager civ = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization];
-            _ = civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
-            civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
-            _ = civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
-            civ.TotalIntelligenceDefenseAccumulated.UpdateAndReset();
-            //OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
-            //OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
-            //OnPropertyChanged("TotalIntelligenceProduction");
+        //protected virtual void FillUpDefense()
+        //{
+        //    CivilizationManager civ = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization];
+        //    _ = civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
+        //    civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
+        //    _ = civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
+        //    civ.TotalIntelligenceDefenseAccumulated.UpdateAndReset();
+        //    //OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
+        //    //OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
+        //    //OnPropertyChanged("TotalIntelligenceProduction");
 
-        }
+        //}
         #endregion 
 
         [InjectionConstructor]
@@ -256,20 +254,18 @@ namespace Supremacy.Client.Views
             }
 
             _colonies = MyLocalCivManager.Colonies; //not the host on a remote machine, DesignTimeObjects.LocalCivManager.Colonies;
-            _spiedZeroColonies = DesignTimeObjects.SpiedCiv_0.Colonies;
-            _spiedOneColonies = DesignTimeObjects.SpiedCiv_1.Colonies;
-            _spiedTwoColonies = DesignTimeObjects.SpiedCiv_2.Colonies;
-            _spiedThreeColonies = DesignTimeObjects.SpiedCiv_3.Colonies;
-            _spiedFourColonies = DesignTimeObjects.SpiedCiv_4.Colonies;
-            _spiedFiveColonies = DesignTimeObjects.SpiedCiv_5.Colonies;
-            _spiedSixColonies = DesignTimeObjects.SpiedCiv_6.Colonies;
+            _spied_0_Colonies = DesignTimeObjects.SpiedCiv_0.Colonies;
+            _spied_1_Colonies = DesignTimeObjects.SpiedCiv_1.Colonies;
+            _spied_2_Colonies = DesignTimeObjects.SpiedCiv_2.Colonies;
+            _spied_3_Colonies = DesignTimeObjects.SpiedCiv_3.Colonies;
+            _spied_4_Colonies = DesignTimeObjects.SpiedCiv_4.Colonies;
+            _spied_5_Colonies = DesignTimeObjects.SpiedCiv_5.Colonies;
+            _spied_6_Colonies = DesignTimeObjects.SpiedCiv_6.Colonies;
             _totalResearch = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].Research.CumulativePoints;
             _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceProduction;
             _totalIntelligenceAttackingAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
             _totalIntelligenceDefenseAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
             _valuesFromTurn = GameContext.Current.TurnNumber;
-
-
 
             OnPropertyChanged("InstallingSpyNetwork");
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
@@ -295,42 +291,42 @@ namespace Supremacy.Client.Views
         public event EventHandler TotalDeuteriumChanged;
         public event EventHandler TotalDuraniumChanged;
 
-        public event EventHandler SpiedZeroColoniesChanged;
-        public event EventHandler SpiedZeroTotalPopulationChanged;
+        public event EventHandler Spied_0_ColoniesChanged;
+        public event EventHandler Spied_0_TotalPopulationChanged;
 
-        public event EventHandler SpiedOneColoniesChanged;
-        public event EventHandler SpiedOneTotalPopulationChanged;
+        public event EventHandler Spied_1_ColoniesChanged;
+        public event EventHandler Spied_1_TotalPopulationChanged;
 
-        public event EventHandler SpiedTwoColoniesChanged;
-        public event EventHandler SpiedTwoTotalPopulationChanged;
+        public event EventHandler Spied_2_ColoniesChanged;
+        public event EventHandler Spied_2_TotalPopulationChanged;
 
-        public event EventHandler SpiedThreeColoniesChanged;
-        public event EventHandler SpiedThreeTotalPopulationChanged;
+        public event EventHandler Spied_3_ColoniesChanged;
+        public event EventHandler Spied_3_TotalPopulationChanged;
 
-        public event EventHandler SpiedFourColoniesChanged;
-        public event EventHandler SpiedFourTotalPopulationChanged;
+        public event EventHandler Spied_4_ColoniesChanged;
+        public event EventHandler Spied_4_TotalPopulationChanged;
 
-        public event EventHandler SpiedFiveColoniesChanged;
-        public event EventHandler SpiedFiveTotalPopulationChanged;
+        public event EventHandler Spied_5_ColoniesChanged;
+        public event EventHandler Spied_5_TotalPopulationChanged;
 
-        public event EventHandler SpiedSixColoniesChanged;
-        public event EventHandler SpiedSixTotalPopulationChanged;
+        public event EventHandler Spied_6_ColoniesChanged;
+        public event EventHandler Spied_6_TotalPopulationChanged;
 
         private IEnumerable<Colony> _colonies;
 
-        private IEnumerable<Colony> _spiedZeroColonies;
+        private IEnumerable<Colony> _spied_0_Colonies;
 
-        private IEnumerable<Colony> _spiedOneColonies;
+        private IEnumerable<Colony> _spied_1_Colonies;
 
-        private IEnumerable<Colony> _spiedTwoColonies;
+        private IEnumerable<Colony> _spied_2_Colonies;
 
-        private IEnumerable<Colony> _spiedThreeColonies;
+        private IEnumerable<Colony> _spied_3_Colonies;
 
-        private IEnumerable<Colony> _spiedFourColonies;
+        private IEnumerable<Colony> _spied_4_Colonies;
 
-        private IEnumerable<Colony> _spiedFiveColonies;
+        private IEnumerable<Colony> _spied_5_Colonies;
 
-        private IEnumerable<Colony> _spiedSixColonies;
+        private IEnumerable<Colony> _spied_6_Colonies;
 
         public IEnumerable<Colony> Colonies
         {
@@ -347,7 +343,7 @@ namespace Supremacy.Client.Views
 
                 _colonies = value;
 
-                FillUpDefense();
+                //FillUpDefense();
                 OnColoniesChanged();
                 OnTotalPopulationChanged();
                 OnTotalResearchChanged();
@@ -357,116 +353,116 @@ namespace Supremacy.Client.Views
                 OnTotalIntelligenceDefenseAccumulatedChanged();
             }
         }
-        public IEnumerable<Colony> SpiedZeroColonies
+        public IEnumerable<Colony> Spied_0_Colonies
         {
-            get => _spiedZeroColonies;
+            get => _spied_0_Colonies;
             set
             {
-                if (Equals(value, _spiedZeroColonies))
+                if (Equals(value, _spied_0_Colonies))
                 {
                     return;
                 }
 
-                _spiedZeroColonies = value;
+                _spied_0_Colonies = value;
 
-                OnSpiedZeroColoniesChanged();
-                OnSpiedZeroTotalPopulationChanged();
+                OnSpied_0_ColoniesChanged();
+                OnSpied_0_TotalPopulationChanged();
             }
         }
-        public IEnumerable<Colony> SpiedOneColonies
+        public IEnumerable<Colony> Spied_1_Colonies
         {
-            get => _spiedOneColonies;
+            get => _spied_1_Colonies;
             set
             {
-                if (Equals(value, _spiedOneColonies))
+                if (Equals(value, _spied_1_Colonies))
                 {
                     return;
                 }
 
-                _spiedOneColonies = value;
+                _spied_1_Colonies = value;
 
-                OnSpiedOneColoniesChanged();
-                OnSpiedOneTotalPopulationChanged();
+                OnSpied_1_ColoniesChanged();
+                OnSpied_1_TotalPopulationChanged();
             }
         }
-        public IEnumerable<Colony> SpiedTwoColonies
+        public IEnumerable<Colony> Spied_2_Colonies
         {
-            get => _spiedTwoColonies;
+            get => _spied_2_Colonies;
             set
             {
-                if (Equals(value, _spiedTwoColonies))
+                if (Equals(value, _spied_2_Colonies))
                 {
                     return;
                 }
 
-                _spiedTwoColonies = value;
+                _spied_2_Colonies = value;
 
-                OnSpiedTwoColoniesChanged();
-                OnSpiedTwoTotalPopulationChanged();
+                OnSpied_2_ColoniesChanged();
+                OnSpied_2_TotalPopulationChanged();
             }
         }
-        public IEnumerable<Colony> SpiedThreeColonies
+        public IEnumerable<Colony> Spied_3_Colonies
         {
-            get => _spiedThreeColonies;
+            get => _spied_3_Colonies;
             set
             {
-                if (Equals(value, _spiedThreeColonies))
+                if (Equals(value, _spied_3_Colonies))
                 {
                     return;
                 }
 
-                _spiedThreeColonies = value;
+                _spied_3_Colonies = value;
 
-                OnSpiedThreeColoniesChanged();
-                OnSpiedThreeTotalPopulationChanged();
+                OnSpied_3_ColoniesChanged();
+                OnSpied_3_TotalPopulationChanged();
             }
         }
-        public IEnumerable<Colony> SpiedFourColonies
+        public IEnumerable<Colony> Spied_4_Colonies
         {
-            get => _spiedFourColonies;
+            get => _spied_4_Colonies;
             set
             {
-                if (Equals(value, _spiedFourColonies))
+                if (Equals(value, _spied_4_Colonies))
                 {
                     return;
                 }
 
-                _spiedFourColonies = value;
+                _spied_4_Colonies = value;
 
-                OnSpiedFourColoniesChanged();
-                OnSpiedFourTotalPopulationChanged();
+                OnSpied_4_ColoniesChanged();
+                OnSpied_4_TotalPopulationChanged();
             }
         }
-        public IEnumerable<Colony> SpiedFiveColonies
+        public IEnumerable<Colony> Spied_5_Colonies
         {
-            get => _spiedFiveColonies;
+            get => _spied_5_Colonies;
             set
             {
-                if (Equals(value, _spiedFiveColonies))
+                if (Equals(value, _spied_5_Colonies))
                 {
                     return;
                 }
 
-                _spiedFiveColonies = value;
+                _spied_5_Colonies = value;
 
-                OnSpiedFiveColoniesChanged();
-                OnSpiedFiveTotalPopulationChanged();
+                OnSpied_5_ColoniesChanged();
+                OnSpied_5_TotalPopulationChanged();
             }
         }
-        public IEnumerable<Colony> SpiedSixColonies
+        public IEnumerable<Colony> Spied_6_Colonies
         {
-            get => _spiedSixColonies;
+            get => _spied_6_Colonies;
             set
             {
-                if (Equals(value, _spiedSixColonies))
+                if (Equals(value, _spied_6_Colonies))
                 {
                     return;
                 }
 
-                _spiedSixColonies = value;
+                _spied_6_Colonies = value;
 
-                OnSpiedSixColoniesChanged();
-                OnSpiedSixTotalPopulationChanged();
+                OnSpied_6_ColoniesChanged();
+                OnSpied_6_TotalPopulationChanged();
             }
         }
         protected virtual void OnInstallingSpyNetworkChanged()
@@ -533,75 +529,75 @@ namespace Supremacy.Client.Views
             TotalIntelligenceDefenseAccumulatedChanged.Raise(this);
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }
-        protected virtual void OnSpiedZeroColoniesChanged()
+        protected virtual void OnSpied_0_ColoniesChanged()
         {
-            SpiedZeroColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedZeroColonies");
+            Spied_0_ColoniesChanged.Raise(this);
+            OnPropertyChanged("Spied_0_Colonies");
         }
-        protected virtual void OnSpiedOneColoniesChanged()
+        protected virtual void OnSpied_1_ColoniesChanged()
         {
-            SpiedOneColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedOneColonies");
+            Spied_1_ColoniesChanged.Raise(this);
+            OnPropertyChanged("Spied_1_Colonies");
         }
-        protected virtual void OnSpiedTwoColoniesChanged()
+        protected virtual void OnSpied_2_ColoniesChanged()
         {
-            SpiedTwoColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedTwoColonies");
+            Spied_2_ColoniesChanged.Raise(this);
+            OnPropertyChanged("Spied_2_Colonies");
         }
-        protected virtual void OnSpiedThreeColoniesChanged()
+        protected virtual void OnSpied_3_ColoniesChanged()
         {
-            SpiedThreeColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedThreeColonies");
+            Spied_3_ColoniesChanged.Raise(this);
+            OnPropertyChanged("Spied_3_Colonies");
         }
-        protected virtual void OnSpiedFourColoniesChanged()
+        protected virtual void OnSpied_4_ColoniesChanged()
         {
-            SpiedFourColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedFourColonies");
+            Spied_4_ColoniesChanged.Raise(this);
+            OnPropertyChanged("Spied_4_Colonies");
         }
-        protected virtual void OnSpiedFiveColoniesChanged()
+        protected virtual void OnSpied_5_ColoniesChanged()
         {
-            SpiedFiveColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedFiveColonies");
+            Spied_5_ColoniesChanged.Raise(this);
+            OnPropertyChanged("Spied_5_Colonies");
         }
-        protected virtual void OnSpiedSixColoniesChanged()
+        protected virtual void OnSpied_6_ColoniesChanged()
         {
-            SpiedSixColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedSixColonies");
+            Spied_6_ColoniesChanged.Raise(this);
+            OnPropertyChanged("Spied_6_Colonies");
         }
-        protected virtual void OnSpiedZeroTotalPopulationChanged()
+        protected virtual void OnSpied_0_TotalPopulationChanged()
         {
-            SpiedZeroTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedZeroTotalPopulation");
+            Spied_0_TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("Spied_0_TotalPopulation");
         }
-        protected virtual void OnSpiedOneTotalPopulationChanged()
+        protected virtual void OnSpied_1_TotalPopulationChanged()
         {
-            SpiedOneTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedOneTotalPopulation");
+            Spied_1_TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("Spied_1_TotalPopulation");
         }
-        protected virtual void OnSpiedTwoTotalPopulationChanged()
+        protected virtual void OnSpied_2_TotalPopulationChanged()
         {
-            SpiedTwoTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedTwoTotalPopulation");
+            Spied_2_TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("Spied_2_TotalPopulation");
         }
-        protected virtual void OnSpiedThreeTotalPopulationChanged()
+        protected virtual void OnSpied_3_TotalPopulationChanged()
         {
-            SpiedThreeTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedThreeTotalPopulation");
+            Spied_3_TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("Spied_3_TotalPopulation");
         }
-        protected virtual void OnSpiedFourTotalPopulationChanged()
+        protected virtual void OnSpied_4_TotalPopulationChanged()
         {
-            SpiedFourTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedFourTotalPopulation");
+            Spied_4_TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("Spied_4_TotalPopulation");
         }
-        protected virtual void OnSpiedFiveTotalPopulationChanged()
+        protected virtual void OnSpied_5_TotalPopulationChanged()
         {
-            SpiedFiveTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedFiveTotalPopulation");
+            Spied_5_TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("Spied_5_TotalPopulation");
         }
-        protected virtual void OnSpiedSixTotalPopulationChanged()
+        protected virtual void OnSpied_6_TotalPopulationChanged()
         {
-            SpiedSixTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedSixTotalPopulation");
+            Spied_6_TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("Spied_6_TotalPopulation");
         }
         #endregion
 
@@ -715,7 +711,7 @@ namespace Supremacy.Client.Views
         public static Civilization LocalCiv => IntelHelper.LocalCivManager.Civilization;
         // ### Federation ####
         public static string SpiedFedName => "Federation";
-        public static Civilization SpiedZeroCiv
+        public static Civilization Spied_0_Civ
         {
             get
             {
@@ -724,7 +720,7 @@ namespace Supremacy.Client.Views
                 return SpiedCiv.Civilization;
             }
         }
-        public static Colony SpiedZeroSeatOfGovernment
+        public static Colony Spied_0_SeatOfGovernment
         {
             get
             {
@@ -734,20 +730,20 @@ namespace Supremacy.Client.Views
                 return SeatOfGovernment;
             }
         }
-        public static Meter SpiedZeroTotalPopulation
+        public static Meter Spied_0_TotalPopulation
         {
             get
             {
                 CivilizationManager civManager = DesignTimeObjects.SpiedCiv_0;
                 try
                 {
-                    GameLog.Core.Test.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
+                    GameLog.Core.Test.DebugFormat("Spied_0_TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedZeroTotalPopulation:");
+                    GameLog.Core.Intel.WarnFormat("Problem occured at Spied_0_TotalPopulation:");
                     GameLog.Core.General.Error(e);
                     return zero;
                 }
@@ -758,38 +754,37 @@ namespace Supremacy.Client.Views
 
         //## Terran ##
         public static string SpiedTerranName => "Terran Empire";
-        public static Civilization SpiedOneCiv
+        public static Civilization Spied_1_Civ
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_1;
-                _text = "Step_5402:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5402:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
         }
-        public static Colony SpiedOneSeatOfGovernment
+        public static Colony Spied_1_SeatOfGovernment
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_1;
                 Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                _text = "Step_5404:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5404:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv_1 SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
-        public static Meter SpiedOneTotalPopulation
+        public static Meter Spied_1_TotalPopulation
         {
             get
             {
                 CivilizationManager civManager = DesignTimeObjects.SpiedCiv_1;
                 try
                 {
-                    _text = "Step_5412:; SpiedOneTotalPopulation =;" + civManager.TotalPopulation;
+                    _text = "Step_5412:; Spied_1_TotalPopulation =;" + civManager.TotalPopulation;
                     Console.WriteLine(_text);
                     GameLog.Core.Intel.DebugFormat(_text);
                     return civManager.TotalPopulation;
@@ -797,7 +792,7 @@ namespace Supremacy.Client.Views
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    _text = "Step_5414:; Problem occured at SpiedOneTotalPopulation:";
+                    _text = "Step_5414:; Problem occured at Spied_1_TotalPopulation:";
                     Console.WriteLine(_text);
 
                     GameLog.Core.Intel.WarnFormat(_text);
@@ -811,39 +806,38 @@ namespace Supremacy.Client.Views
 
         //## Romulan ##
         public static string SpiedRomName => "Romulans";
-        public static Civilization SpiedTwoCiv
+        public static Civilization Spied_2_Civ
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_2;
-                _text = "Step_5422:; trying to return SpiedTwoCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5422:; trying to return Spied_2_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                //GameLog.Client.Intel.DebugFormat(_text);
 
                 return SpiedCiv.Civilization;
             }
         }
-        public static Colony SpiedTwoSeatOfGovernment
+        public static Colony Spied_2_SeatOfGovernment
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_2;
                 Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                _text = "Step_5432:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5432:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv_2 SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Test.DebugFormat(_text);
                 return SeatOfGovernment;
             }
         }
-        public Meter SpiedTwoTotalPopulation
+        public Meter Spied_2_TotalPopulation
         {
             get
             {
                 CivilizationManager civManager = DesignTimeObjects.SpiedCiv_2;
                 try
                 {
-                    _text = "Step_5422:; trying to return SpiedTwoCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5422:; trying to return Spied_2_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
                     //GameLog.Core.Intel.DebugFormat(_text);
                     return civManager.TotalPopulation;
@@ -851,10 +845,10 @@ namespace Supremacy.Client.Views
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    _text = "Step_5424:; trying to return SpiedTwoCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5424:; trying to return Spied_2_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedTwoTotalPopulation:");
+                    GameLog.Core.Intel.WarnFormat(_text);
+                    xx
                     GameLog.Core.General.Error(e);
                     return zero;
                 }
@@ -863,19 +857,19 @@ namespace Supremacy.Client.Views
 
         // ## Klingons ##
         public static string SpiedKlingName => "Klingons";
-        public static Civilization SpiedThreeCiv
+        public static Civilization Spied_3_Civ
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_3;
-                _text = "Step_5432:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5432:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
 
                 return SpiedCiv.Civilization;
             }
         }
-        public static Colony SpiedThreeSeatOfGovernment
+        public static Colony Spied_3_SeatOfGovernment
         {
             get
             {
@@ -887,24 +881,24 @@ namespace Supremacy.Client.Views
                 return SeatOfGovernment;
             }
         }
-        public Meter SpiedThreeTotalPopulation
+        public Meter Spied_3_TotalPopulation
         {
             get
             {
                 CivilizationManager civManager = DesignTimeObjects.SpiedCiv_3;
                 try
                 {
-                    _text = "Step_5432:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5432:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    GameLog.Core.Intel.DebugFormat("SpiedThreeTotalPopulation ={0}", civManager.TotalPopulation);
+                    GameLog.Core.Intel.DebugFormat("Spied_3_TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    _text = "Step_5432:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5432:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedThreeTotalPopulation:");
+                    GameLog.Core.Intel.WarnFormat("Problem occured at Spied_3_TotalPopulation:");
                     GameLog.Core.General.Error(e);
                     return zero;
                 }
@@ -913,19 +907,19 @@ namespace Supremacy.Client.Views
 
         //## Cardassians ##
         public static string SpiedCardName => "Cardassians";
-        public static Civilization SpiedFourCiv
+        public static Civilization Spied_4_Civ
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_4;
-                _text = "Step_5442:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5442:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat(_text);
 
                 return SpiedCiv.Civilization;
             }
         }
-        public static Colony SpiedFourSeatOfGovernment
+        public static Colony Spied_4_SeatOfGovernment
         {
             get
             {
@@ -937,26 +931,26 @@ namespace Supremacy.Client.Views
                 return SeatOfGovernment;
             }
         }
-        public Meter SpiedFourTotalPopulation
+        public Meter Spied_4_TotalPopulation
         {
             get
             {
                 CivilizationManager civManager = DesignTimeObjects.SpiedCiv_4;
                 try
                 {
-                    _text = "Step_5446:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5446:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                    GameLog.Core.Intel.DebugFormat("SpiedFourTotalPopulation ={0}", civManager.TotalPopulation);
+                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
+                    GameLog.Core.Intel.DebugFormat("Spied_4_TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    _text = "Step_5432:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5432:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFourTotalPopulation:");
+                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at Spied_4_TotalPopulation:");
                     GameLog.Core.General.Error(e);
                     return zero;
                 }
@@ -965,50 +959,50 @@ namespace Supremacy.Client.Views
 
         //## Dominion ##
         public static string SpiedDomName => "Dominion";
-        public static Civilization SpiedFiveCiv
+        public static Civilization Spied_5_Civ
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_5;
-                _text = "Step_5452:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5452:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
 
                 return SpiedCiv.Civilization;
             }
         }
-        public static Colony SpiedFiveSeatOfGovernment
+        public static Colony Spied_5_SeatOfGovernment
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_5;
                 Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                _text = "Step_5454:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5454:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
                 GameLog.Client.Intel.DebugFormat(_text);
                 return SeatOfGovernment;
             }
         }
-        public Meter SpiedFiveTotalPopulation
+        public Meter Spied_5_TotalPopulation
         {
             get
             {
                 CivilizationManager civManager = DesignTimeObjects.SpiedCiv_5;
                 try
                 {
-                    _text = "Step_5456:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5456:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                    GameLog.Core.Intel.DebugFormat("SpiedFiveTotalPopulation ={0}", civManager.TotalPopulation);
+                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
+                    GameLog.Core.Intel.DebugFormat("Spied_5_TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    _text = "Step_5458; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5458; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFiveTotalPopulation:");
+                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at Spied_5_TotalPopulation:");
                     GameLog.Core.General.Error(e);
                     return zero;
                 }
@@ -1017,51 +1011,51 @@ namespace Supremacy.Client.Views
 
         // ## Borg ##
         public static string SpiedBorgName => "Borg";
-        public static Civilization SpiedSixCiv
+        public static Civilization Spied_6_Civ
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_6;
-                _text = "Step_5462:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5462:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
 
                 return SpiedCiv.Civilization;
             }
         }
-        public static Colony SpiedSixSeatOfGovernment
+        public static Colony Spied_6_SeatOfGovernment
         {
             get
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_6;
                 Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                _text = "Step_5464:; trying to return SpiedOneCiv.Civilization =;" + SpiedCiv.Civilization.Key;
+                _text = "Step_5464:; trying to return Spied_1_Civ.Civilization =;" + SpiedCiv.Civilization.Key;
                 Console.WriteLine(_text);
-                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv_6 SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
-        public Meter SpiedSixTotalPopulation
+        public Meter Spied_6_TotalPopulation
         {
             get
             {
                 CivilizationManager civManager = DesignTimeObjects.SpiedCiv_6;
                 try
                 {
-                    _text = "Step_5466:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5466:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                    GameLog.Core.Intel.DebugFormat("SpiedSixTotalPopulation ={0}", civManager.TotalPopulation);
+                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
+                    GameLog.Core.Intel.DebugFormat("Spied_6_TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    _text = "Step_5468:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5468:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedSixTotalPopulation:");
+                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at Spied_6_TotalPopulation:");
                     GameLog.Core.General.Error(e);
                     return zero;
                 }
@@ -1081,15 +1075,15 @@ namespace Supremacy.Client.Views
                 try
                 {
 
-                    _text = "Step_5472:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5472:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
-                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                    //GameLog.Client.Intel.DebugFormat("Step_5432:; trying to return Spied_1_Civ.Civilization = {0}", SpiedCiv.Civilization.Key);
 
                     return civManager.Credits;
                 }
                 catch (Exception e)
                 {
-                    _text = "Step_5474:; trying to return SpiedOneCiv.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5474:; trying to return Spied_1_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
                     GameLog.Core.Intel.WarnFormat("Step_5476: Problem occured at CreditsEmpire: {0} {1}", e.Message, e.StackTrace);
                     Meter zero = new Meter(0, 0, 0);

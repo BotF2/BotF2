@@ -36,13 +36,13 @@ namespace Supremacy.Client.Views
         {
             base.TerminateOverride();
             Model.Colonies = null;
-            Model.SpiedZeroColonies = null;
-            Model.SpiedOneColonies = null;
-            Model.SpiedTwoColonies = null;
-            Model.SpiedThreeColonies = null;
-            Model.SpiedFourColonies = null;
-            Model.SpiedFiveColonies = null;
-            Model.SpiedSixColonies = null;
+            Model.Spied_0_Colonies = null;
+            Model.Spied_1_Colonies = null;
+            Model.Spied_2_Colonies = null;
+            Model.Spied_3_Colonies = null;
+            Model.Spied_4_Colonies = null;
+            Model.Spied_5_Colonies = null;
+            Model.Spied_6_Colonies = null;
         }
 
         #endregion
@@ -58,13 +58,13 @@ namespace Supremacy.Client.Views
         {
             //GameLog.Core.Test.DebugFormat("Update on Turn Started at line 61");
             Model.Colonies = IntelHelper.LocalCivManager.Colonies;
-            Model.SpiedZeroColonies = DesignTimeObjects.SpiedCiv_0.Colonies;
-            Model.SpiedOneColonies = DesignTimeObjects.SpiedCiv_1.Colonies;
-            Model.SpiedTwoColonies = DesignTimeObjects.SpiedCiv_2.Colonies;
-            Model.SpiedThreeColonies = DesignTimeObjects.SpiedCiv_3.Colonies;
-            Model.SpiedFourColonies = DesignTimeObjects.SpiedCiv_4.Colonies;
-            Model.SpiedFiveColonies = DesignTimeObjects.SpiedCiv_5.Colonies;
-            Model.SpiedSixColonies = DesignTimeObjects.SpiedCiv_6.Colonies;
+            Model.Spied_0_Colonies = DesignTimeObjects.SpiedCiv_0.Colonies;
+            Model.Spied_1_Colonies = DesignTimeObjects.SpiedCiv_1.Colonies;
+            Model.Spied_2_Colonies = DesignTimeObjects.SpiedCiv_2.Colonies;
+            Model.Spied_3_Colonies = DesignTimeObjects.SpiedCiv_3.Colonies;
+            Model.Spied_4_Colonies = DesignTimeObjects.SpiedCiv_4.Colonies;
+            Model.Spied_5_Colonies = DesignTimeObjects.SpiedCiv_5.Colonies;
+            Model.Spied_6_Colonies = DesignTimeObjects.SpiedCiv_6.Colonies;
         }
         #endregion
     }

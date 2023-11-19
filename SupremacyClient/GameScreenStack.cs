@@ -423,7 +423,7 @@ namespace Supremacy.Client
             {
                 _itemsContainer.Measure(constraint);
             }
-            catch { Console.WriteLine("Step_0811: MeasureOverride is not allowed to be null."); }
+            catch { Console.WriteLine("Step_0811: MeasureOverride is not allowed to be null or outside the game window measures"); }
             
             return constraint;
         }

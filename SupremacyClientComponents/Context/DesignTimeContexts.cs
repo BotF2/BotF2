@@ -311,13 +311,13 @@ namespace Supremacy.Client.Context
         /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
         /// </summary>
         public static IEnumerable<Colony> Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies);
-        public static IEnumerable<Colony> SpiedZeroColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_0.CivilizationID);
-        public static IEnumerable<Colony> SpiedOneColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_1.CivilizationID);
-        public static IEnumerable<Colony> SpiedTwoColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_2.CivilizationID);
-        public static IEnumerable<Colony> SpiedThreeColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_3.CivilizationID);
-        public static IEnumerable<Colony> SpiedFourColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_4.CivilizationID);
-        public static IEnumerable<Colony> SpiedFiveColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_5.CivilizationID);
-        public static IEnumerable<Colony> SpiedSixColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_6.CivilizationID);
+        public static IEnumerable<Colony> Spied_0_Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_0.CivilizationID);
+        public static IEnumerable<Colony> Spied_1_Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_1.CivilizationID);
+        public static IEnumerable<Colony> Spied_2_Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_2.CivilizationID);
+        public static IEnumerable<Colony> Spied_3_Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_3.CivilizationID);
+        public static IEnumerable<Colony> Spied_4_Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_4.CivilizationID);
+        public static IEnumerable<Colony> Spied_5_Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_5.CivilizationID);
+        public static IEnumerable<Colony> Spied_6_Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCiv_6.CivilizationID);
         public static IEnumerable<StarSystem> StarSystems => GameContext.Current.Universe.Find<StarSystem>();
 
         public static IEnumerable<StarSystem> ControlledSystems

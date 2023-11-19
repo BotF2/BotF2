@@ -496,26 +496,26 @@
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
       <DependentUpon>AssetsScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedZeroColonyList.xaml.cs">
-      <DependentUpon>SpiedZeroColonyList.xaml</DependentUpon>
+    <Compile Include="Views\AssetsScreen\SpiedCiv_0_ColonyList.xaml.cs">
+      <DependentUpon>SpiedCiv_0_ColonyList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedSixColonyList.xaml.cs">
-      <DependentUpon>SpiedSixColonyList.xaml</DependentUpon>
+    <Compile Include="Views\AssetsScreen\SpiedCiv_6_ColonyList.xaml.cs">
+      <DependentUpon>SpiedCiv_6_ColonyList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedFiveColonyList.xaml.cs">
-      <DependentUpon>SpiedFiveColonyList.xaml</DependentUpon>
+    <Compile Include="Views\AssetsScreen\SpiedCiv_5_ColonyList.xaml.cs">
+      <DependentUpon>SpiedCiv_5_ColonyList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedFourColonyList.xaml.cs">
-      <DependentUpon>SpiedFourColonyList.xaml</DependentUpon>
+    <Compile Include="Views\AssetsScreen\SpiedCiv_4_ColonyList.xaml.cs">
+      <DependentUpon>SpiedCiv_4_ColonyList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedThreeColonyList.xaml.cs">
-      <DependentUpon>SpiedThreeColonyList.xaml</DependentUpon>
+    <Compile Include="Views\AssetsScreen\SpiedCiv_3_ColonyList.xaml.cs">
+      <DependentUpon>SpiedCiv_3_ColonyList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedTwoColonyList.xaml.cs">
-      <DependentUpon>SpiedTwoColonyList.xaml</DependentUpon>
+    <Compile Include="Views\AssetsScreen\SpiedCiv_2_ColonyList.xaml.cs">
+      <DependentUpon>SpiedCiv_2_ColonyList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedOneColonyList.xaml.cs">
-      <DependentUpon>SpiedOneColonyList.xaml</DependentUpon>
+    <Compile Include="Views\AssetsScreen\SpiedCiv_1_ColonyList.xaml.cs">
+      <DependentUpon>SpiedCiv_1_ColonyList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AssetsScreen\ColonyList.xaml.cs">
       <DependentUpon>ColonyList.xaml</DependentUpon>
@@ -1401,31 +1401,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AssetsScreen\SpiedZeroColonyList.xaml">
+    <Page Include="Views\AssetsScreen\SpiedCiv_0_ColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AssetsScreen\SpiedSixColonyList.xaml">
+    <Page Include="Views\AssetsScreen\SpiedCiv_6_ColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AssetsScreen\SpiedFiveColonyList.xaml">
+    <Page Include="Views\AssetsScreen\SpiedCiv_5_ColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AssetsScreen\SpiedFourColonyList.xaml">
+    <Page Include="Views\AssetsScreen\SpiedCiv_4_ColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AssetsScreen\SpiedThreeColonyList.xaml">
+    <Page Include="Views\AssetsScreen\SpiedCiv_3_ColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AssetsScreen\SpiedTwoColonyList.xaml">
+    <Page Include="Views\AssetsScreen\SpiedCiv_2_ColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AssetsScreen\SpiedOneColonyList.xaml">
+    <Page Include="Views\AssetsScreen\SpiedCiv_1_ColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

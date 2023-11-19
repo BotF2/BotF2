@@ -37,7 +37,7 @@ namespace Supremacy.Client.Behaviors
 
         private static void OnVisibilityGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            _text = "Step_0701: OnVisibilityGroupChanged-Arg e = " + e.NewValue.ToString();
+            _text = "Step_0701:; OnVisibilityGroupChanged-Arg e = " + e.NewValue.ToString();
             Console.WriteLine(_text);
             GameLog.Core.UIDetails.DebugFormat(_text);
 

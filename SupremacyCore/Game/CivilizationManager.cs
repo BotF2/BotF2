@@ -631,8 +631,8 @@ namespace Supremacy.Game
                 {
                     updateMeter.CurrentValue = 0;
                 }
-                //_text = "Step_3114:; TotalIntelligenceDefenseAccumulated = " + updateMeter.CurrentValue;
-                //Console.WriteLine(_text);
+                _text = "Step_3114:; TotalIntelligenceDefenseAccumulated = " + updateMeter.CurrentValue;
+                Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return _totalIntelligenceDefenseAccumulated;
             }

@@ -26,7 +26,7 @@ namespace Supremacy.Intelligence
         public static Civilization Civ4 => GameContext.Current.CivilizationManagers[4].Civilization;
         public static Civilization Civ5 => GameContext.Current.CivilizationManagers[5].Civilization;
         public static Civilization Civ6 => GameContext.Current.CivilizationManagers[6].Civilization;
-        public static bool IsSpiedZero(Civilization localCivFromScreen)
+        public static bool IsSpied_0_(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.Subed_0)
             {
@@ -42,7 +42,7 @@ namespace Supremacy.Intelligence
                 else { return false; }
             }
         }
-        public static bool IsSpiedOne(Civilization localCivFromScreen)
+        public static bool IsSpied_1_(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.Subed_1)
             {
@@ -58,7 +58,7 @@ namespace Supremacy.Intelligence
                 else { return false; }
             }
         }
-        public static bool IsSpiedTwo(Civilization localCivFromScreen)
+        public static bool IsSpied_2_(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.Subed_2)
             {
@@ -74,7 +74,7 @@ namespace Supremacy.Intelligence
                 else { return false; }
             }
         }
-        public static bool IsSpiedThree(Civilization localCivFromScreen)
+        public static bool IsSpied_3_(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.Subed_3)
             {
@@ -90,7 +90,7 @@ namespace Supremacy.Intelligence
                 else { return false; }
             }
         }
-        public static bool IsSpiedFour(Civilization localCivFromScreen)
+        public static bool IsSpied_4_(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.Subed_4)
             {
@@ -106,7 +106,7 @@ namespace Supremacy.Intelligence
                 else { return false; }
             }
         }
-        public static bool IsSpiedFive(Civilization localCivFromScreen)
+        public static bool IsSpied_5_(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.Subed_5)
             {
@@ -122,7 +122,7 @@ namespace Supremacy.Intelligence
                 else { return false; }
             }
         }
-        public static bool IsSpiedSix(Civilization localCivFromScreen)
+        public static bool IsSpied_6_(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.Subed_6)
             {
