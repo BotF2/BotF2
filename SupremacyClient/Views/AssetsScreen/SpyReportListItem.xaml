@@ -144,7 +144,7 @@
                        Grid.ColumnSpan="2"                        
                        VerticalAlignment="Center"
                        ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/population.png"
-                       ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOLTIP}">
+                       ToolTip="{s:StringResource Key=ASSET_POPULATION_TOOLTIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} / {1} ({2:0.#%})">
                     <Binding Path="Population.CurrentValue" />
@@ -163,7 +163,7 @@
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/morale.png"
                    Foreground="{Binding Path=Morale.CurrentValue, Converter={x:Static s:MoraleBrushConverter.Instance}}"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=MORALE_TOOLTIP}" >
+                   ToolTip="{s:StringResource Key=MORALE_TOOLTIP}" >
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} ({1}) ">
                     <Binding Path="Morale.CurrentValue" 
@@ -248,7 +248,7 @@
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
                   Label="{Binding Path=FoodReserves.CurrentValue}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOLTIP}" />
+                  ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
       <TextBlock Text="INDUSTRY ="
                   Grid.Row="1"
                   Grid.Column="14"
@@ -260,7 +260,7 @@
                  VerticalAlignment="Center"
                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
                  Label="{Binding Path=NetIndustry}"
-                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOLTIP}" />
+                 ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
       <TextBlock Text="ENERGY ( unused ) ="
                 Grid.Row="1"
                 Grid.Column="18"
@@ -272,7 +272,7 @@
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
                   Label="{Binding Path=NetEnergy}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOLTIP}" />
+                  ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
 
         <TextBlock Text="RESEARCH = "
                 Grid.Row="1"
@@ -339,7 +339,7 @@
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
                   Label="{Binding Path=NetDilithium}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOLTIP}" />
+                  ToolTip="{s:StringResource Key=DILITHIUM_TOOLTIP}" />
       <TextBlock Text="DURANIUM ="
                   Grid.Row="2" Grid.Column="14"
                   HorizontalAlignment="Right"/>
@@ -348,7 +348,7 @@
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/duranium.png"
                   Label="{Binding Path=NetDuranium}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOLTIP}" />
+                  ToolTip="{s:StringResource Key=RAW_MATERIALS_TOOLTIP}" />
         <!--<TextBlock Text="RESEARCH (empire) = "
                 Grid.Row="2"
                 Grid.Column="20"
@@ -371,7 +371,7 @@
                   Grid.Row="2"
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/ship.png"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPBUILDING_TOOLTIP}"
+                  ToolTip="{s:StringResource Key=SHIPBUILDING_TOOLTIP}"
                   Visibility="{Binding Path=Shipyard, Converter={StaticResource NullValueVisibilityConverter}}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} x {1}" FallbackValue="n/a">

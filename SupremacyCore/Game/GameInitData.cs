@@ -51,7 +51,7 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("options");
             }
 
-            _text = "Step_1201: CreateSinglePlayerGame: "
+            _text = "Step_1201:; CreateSinglePlayerGame: "
                 + "SP-GameName=" + SinglePlayerGameName
                 + ", SP-Name=" + SinglePlayerName
                 + ", localPlayerEmpireID=" + localPlayerEmpireID

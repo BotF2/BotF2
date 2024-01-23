@@ -337,14 +337,14 @@
                   <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                              Text="RESEARCH"
                              FontSize="18pt"/>
-                  <DockPanel Margin="14,0,0,0">
+                  <!--<DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{s:StringResource Key=RESEARCH_LAST_TURN, Case=Upper}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
                                Text="{Binding Path=CumulativePoints.LastChange}"/>
-                  </DockPanel>
+                  </DockPanel>-->
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"

@@ -162,29 +162,32 @@ namespace Supremacy.Client
 
             DataContext = _update;
 
+            // as long as (relevant) hostileassets is not null
             if (update.CombatUpdate_IsCombatOver)  // Combat is over
             {
-
+                string _combatText = "Combat at " + _update.Sector.Location + " > ";
                 if (_update.IsStandoff)
                 {
-                    _text = string.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
+                    _combatText += string.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
                         + _text;
                     SubHeaderText.Text = string.Format(
                         ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
                         _update.Sector.Name);
-                    _text += _text + " - no winner";
+                    _text += _combatText + " - no winner";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
                     playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, _text, "", SitRepPriority.Red));
 
                     //playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
                     //    string.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
+                    Console.WriteLine("Step_6884:; " + _text);
+
 
                 }
-                else if (_playerAssets.HasSurvivingAssets)
+                else if (_playerAssets.HasSurvivingAssets || _playerAssets.EscapedShips.Count > 0)
                 {
-                    _text = string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
+                    _combatText += string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
 
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
                         + string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
@@ -193,14 +196,15 @@ namespace Supremacy.Client
                         ResourceManager.GetString("COMBAT_TEXT_VICTORY"),
                         _update.Sector.Name);
 
-                    _text += _text + " - we were victorious !";
+                    _text = _combatText + " - we were victorious !";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
                     playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, _text, "", SitRepPriority.Red));
+                    Console.WriteLine("Step_6886:; " + _text);
                 }
                 else
                 {
-                    _text = string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
+                    _combatText += string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
 
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + " >>  "
                         + string.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
@@ -209,13 +213,17 @@ namespace Supremacy.Client
                         ResourceManager.GetString("COMBAT_TEXT_DEFEAT"),
                         _update.Sector.Name);
 
-                    _text += _text + " - we were not victorious !";
+                    _text = _combatText + " - we were not victorious !";
+
+
+                    
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
                     playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, _text, "", SitRepPriority.Red));
+                    Console.WriteLine("Step_6888:; " + _text);
                 }
             }
-            else
+            else // combat is not over
             {
                 HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER"); // + ": "
                                                                               //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
@@ -248,8 +256,10 @@ namespace Supremacy.Client
                 //+ _text 
                 //+ newline
                 ;
+            
             //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
             playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text, "", "", SitRepPriority.Red));
+            Console.WriteLine("Step_3456:; " + _text);
 
             PopulateUnitTrees();
 

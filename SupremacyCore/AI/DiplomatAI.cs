@@ -211,10 +211,10 @@ namespace Supremacy.AI
                         DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(3, 12));
                         DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(2, 10));
                     }
-                    //foreignPower.UpdateRegardAndTrustMeters();
+                    foreignPower.UpdateRegardAndTrustMeters();
 
 
-                    _text = "Step_1175: Turn " + GameContext.Current.TurnNumber
+                    _text = "Step_1175:; Turn " + GameContext.Current.TurnNumber
                         + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                         + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                         + " for " + foreignPower.Counterparty.Key
@@ -224,7 +224,7 @@ namespace Supremacy.AI
                     //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
                     // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
-                    //foreignPower.UpdateStatus();
+                    foreignPower.UpdateStatus();
                     #endregion
                     #region War is possible from hostility
 

@@ -535,6 +535,7 @@ namespace Supremacy.UI
                                 ResourceManager.GetString("SYSTEM_GROWTH_RATE"), system.Colony.GrowthRate * 100);
                             race.Text = string.Format("{0}: {1}",
                                 ResourceManager.GetString("SYSTEM_INHABITANTS"), system.Colony.Inhabitants.PluralName);
+
                             Percentage populationHealth = system.Colony.Health.PercentFilled;
                             health.Text = string.Format("{0}: {1:0.#}%",
                                 ResourceManager.GetString("SYSTEM_HEALTH"), populationHealth * 100);

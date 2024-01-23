@@ -76,29 +76,33 @@ namespace Supremacy.Universe
                 }
             }
 
-            //ProductionFacilityDesign researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
-            //if (researchFacility != null)
-            //{
-            //    int facilityCount = pop / researchFacility.LaborCost / 2;
-            //    colony.SetFacilityType(ProductionCategory.Research, researchFacility);
-            //    for (int i = 0; i < facilityCount; i++)
-            //    {
-            //        colony.AddFacility(ProductionCategory.Research);
-            //        _ = colony.ActivateFacility(ProductionCategory.Research);
-            //    }
-            //}
+            ProductionFacilityDesign researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
+            if (researchFacility != null)
+            {
+                int facilityCount = pop / researchFacility.LaborCost / 2;
+                colony.SetFacilityType(ProductionCategory.Research, researchFacility);
 
-            //ProductionFacilityDesign intelligenceFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Intelligence);
-            //if (intelligenceFacility != null)
-            //{
-            //    int facilityCount = pop / (intelligenceFacility.LaborCost * 10);
-            //    colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
-            //    for (int i = 0; i < facilityCount; i++)
-            //    {
-            //        colony.AddFacility(ProductionCategory.Intelligence);
-            //        _ = colony.ActivateFacility(ProductionCategory.Intelligence);
-            //    }
-            //}
+                // just one
+                for (int i = 0; i < 1; i++)
+                {
+                    colony.AddFacility(ProductionCategory.Research);
+                    _ = colony.ActivateFacility(ProductionCategory.Research);
+                }
+            }
+
+            ProductionFacilityDesign intelligenceFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Intelligence);
+            if (intelligenceFacility != null)
+            {
+                int facilityCount = pop / (intelligenceFacility.LaborCost * 10);
+                colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
+
+                // just one
+                for (int i = 0; i < 1; i++)
+                {
+                    colony.AddFacility(ProductionCategory.Intelligence);
+                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                }
+            }
         }
     }
 }

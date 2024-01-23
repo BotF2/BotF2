@@ -7,7 +7,6 @@
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
                        xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
-                       xmlns:sx="http://schemas.startreksupremacy.com/xaml/core/markup"
                        xmlns:v="clr-namespace:Supremacy.Client.Views"
                        mc:Ignorable="d"
                        d:DesignHeight="768"
@@ -25,10 +24,12 @@
         </Style>
 
     </UserControl.Resources>
+    
+    
+    <TabControl>
+        <!--TAB for Local Player COLONIES
 
-        <!--TAB for Local Player COLONIES-->
-    <TabControl>        
-        <!--<TabItem Header="{s:StringResource Key=COLONIES_TAB_HEADER}">
+        <TabItem Header="{s:StringResource Key=COLONIES_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -105,7 +106,7 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                    
+
                     --><!--TotalPopulation--><!--
                     <TextBlock 
                         Grid.Column="9" Text="{s:StringResource Key=TOTAL_POPULATION}"
@@ -117,7 +118,7 @@
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                    
+
                     --><!--CreditsEmpire--><!--
                     <TextBlock 
                         Grid.Column="13" Text="{s:StringResource Key=TOTAL_CREDITS}"
@@ -190,7 +191,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                 </Grid>
-                
+
                 --><!--ColonyList--><!--
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
@@ -207,8 +208,8 @@
                 </ScrollViewer>
             </Grid>
         </TabItem>-->
-        
-        
+
+
         <!--SPY_REPORT_TAB_HEADER-->
         <TabItem Header="{s:StringResource Key=SPY_REPORT_TAB_HEADER}">
             <!-- Spy Tab and Grid just for Head line -->
@@ -571,13 +572,13 @@
                                         <TextBlock
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Left"
-                                             Margin="10,0,0,0"
+                                             Margin="10,0,5,0"
                                              FontSize="16"
                                              Foreground="AntiqueWhite"
                                              Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                Text="{Binding Path=SpiedFedName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="0,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="3,0,3,0">
                                         </Image>
                                         <!--Food Zero-->
                                         <scc:GameLabel

@@ -76,7 +76,7 @@ namespace Supremacy.Economy
     {
         private readonly int _ownerId;
         private readonly int[] _techLevels;
-        //public new List <string> _alreadyDone = null;
+
         private readonly DistributionGroup<int> _distributions;
         private readonly ResearchPoolValueCollection _values;
         private readonly ResearchBonusCollection _bonuses;
@@ -84,6 +84,13 @@ namespace Supremacy.Economy
 
         private readonly List<ResearchProject>[] _queue;
         private readonly Meter _cumulativePoints;
+
+        [NonSerialized]
+        private string _text;
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+        public new List<string> _alreadyDone = new List<string> { "Dummy-please keep" };
+#pragma warning restore CS0109 // Member does not hide an inherited member; new keyword is not required
+
 
         /// <summary>
         /// Gets the owner of this <see cref="ResearchPool"/>.
@@ -259,7 +266,7 @@ namespace Supremacy.Economy
             }
 
             List<int> fieldIds = new List<int>();
-            //_alreadyDone = new List<string>();
+            _alreadyDone = new List<string>();
 
             _ownerId = owner.CivID;
             _values = new ResearchPoolValueCollection();
@@ -373,6 +380,7 @@ namespace Supremacy.Economy
 
                 fieldPoints += (int)(_bonuses[field.TechCategory] * fieldPoints);
                 _ = _cumulativePoints.AdjustCurrent(fieldPoints);
+                //_cumulativePoints.UpdateAndReset();
 
 
 
@@ -423,22 +431,32 @@ namespace Supremacy.Economy
                     ;
             //distributionSummary += "- Gained = " + researchPoints;
 
-            if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
-            {
-                //_alreadyDone.Add(civManager.Civilization.CivID + "-" + 0);
+            //if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
+            //{
 
-                //    if (!_alreadyDone.Contains(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
-                //{ 
+            if (_alreadyDone != null) 
+            { 
+                if (!_alreadyDone.Contains(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
+            {
                 civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
                 civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
-                                                                                                                                //}
-
-                //_alreadyDone.Add(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
             }
+
+            _alreadyDone.Add(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
+            }
+
+            _text = "Step_0398:; Research for "
+                + Owner.Key
+                + " > currentChange = " + _cumulativePoints.CurrentChange.ToString()
+                + " > lastChange = " + _cumulativePoints.LastChange.ToString()
+                + " > currentValue = " + _cumulativePoints.CurrentValue.ToString()
+                ;
+            Console.WriteLine(_text);
+            //GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
 
             _cumulativePoints.UpdateAndReset();
             //GameLog.Client.ResearchDetails.InfoFormat("UpdatingResearch...DONE");
-        }
+        } // End of Research.UpdateAndReset
 
         /// <summary>
         /// Finishes the project located at the specified index in the queue for a given field.

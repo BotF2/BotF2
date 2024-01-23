@@ -801,7 +801,7 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
-            _text = "Step_0355: Deserializing stations...";
+            _text = "Step_0355:; Deserializing stations...";
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
@@ -810,7 +810,7 @@ namespace Supremacy.Universe
                 _map[station.Location].Station = station;
             }
 
-            _text = "Step_0366: Deserializing systems...";
+            _text = "Step_0366:; Deserializing systems...";
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
 

@@ -569,7 +569,7 @@ namespace Supremacy.Client.Views
 
                     GameLog.Client.SystemAssaultDetails.DebugFormat("GroundCombatOdds...");
                     _text =
-                        "GroundCombatOdds= " + GroundCombatOddsValue
+                        "Step_6555:; GroundCombatOdds= " + GroundCombatOddsValue
                         + " ( Transports: " + SelectedTransportsCombatStrength
                         + " vs DefenderStrength: " + defend
                         ;
@@ -578,7 +578,7 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    GameLog.Client.SystemAssault.ErrorFormat("Exception {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Client.SystemAssault.ErrorFormat("Step_6556:; Exception {0} {1}", e.Message, e.StackTrace);
                 }
 
                 //GroundCombatOddsValue = GroundCombatOddsValue / 100;

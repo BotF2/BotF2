@@ -280,7 +280,7 @@
                     BorderThickness="2"
                     Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
                     CommandParameter="{Binding FallbackValue={x:Null}}" />
-        <TextBlock Grid.Row="3" Grid.Column="3" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock Grid.Row="3" Grid.Column="3" Text=" ? " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <TextBlock Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left"
                Grid.ColumnSpan="2"
                    FontSize="16"  

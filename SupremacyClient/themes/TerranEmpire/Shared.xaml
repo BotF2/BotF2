@@ -1543,6 +1543,11 @@
             Value="120" />
         <Setter Property="MinHeight"
             Value="24" />
+      
+      <!--2024-01-21-->
+      <Setter Property="Height"
+            Value="600" />
+      
         <Setter Property="Focusable"
             Value="False" />
         <Setter Property="IsTabStop"
@@ -1706,11 +1711,8 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0"
-                    Width="14"
-                    Visibility="Collapsed"
-                    Margin="0,0,3,0"
-                    Background="{StaticResource Ter6Gradient_Left_Right}"
+                        <Border Grid.Column="0" Width="14" Margin="0,0,3,0"
+                    Visibility="Collapsed" Background="{StaticResource Ter6Gradient_Left_Right}"
                     SnapsToDevicePixels="True" />
                         <Border x:Name="Border"
                     Grid.Column="1"

@@ -210,10 +210,10 @@ namespace Supremacy.Orbitals
             int afterCount = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Step_8307: Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
+                _text = "Step_8307:; Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
-                GameLog.Client.ShipProductionDetails.DebugFormat("Step_8308: Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
+
                 afterCount++;
             }
         }
@@ -249,7 +249,7 @@ namespace Supremacy.Orbitals
 
                     //if (_percent != "0 %")
                     //{
-                    _text = "Step_7602: Serialize " + slot.Project.Location
+                    _text = "Step_7602:; Serialize " + slot.Project.Location
                         //+ " > Slot= " + slot.SlotID
                         //+ " at " + slot.Shipyard.Name
                         //+ " " + 
@@ -290,7 +290,7 @@ namespace Supremacy.Orbitals
 
                     if (_percent != "0 %")
                     {
-                        _text = "Step_7602: Serialize " + slot.Shipyard.Location
+                        _text = "Step_7603:; Serialize " + slot.Shipyard.Location
                             + " > Slot= " + slot.SlotID
                             + " at " + slot.Shipyard.Name
                             + " " 
@@ -302,7 +302,7 @@ namespace Supremacy.Orbitals
                     }
                     else
                     {
-                        _text = "Step_7606: Serialize " + slot.Shipyard.Location
+                        _text = "Step_7606:; Serialize " + slot.Shipyard.Location
                             + " > Slot= " + slot.SlotID  // crashes with a StackOverFlow
                             //+ " at " + slot.Shipyard.Name
                             + " " 
@@ -317,7 +317,7 @@ namespace Supremacy.Orbitals
             }
             catch
             {
-                _text = "Step_7605: Serialize failed"
+                _text = "Step_7605:; Serialize failed"
                      //+ slot.Project.Location
                      //+ " > Slot= " + slot.SlotID
                      //+ " at " + slot.Shipyard.Name
@@ -341,7 +341,7 @@ namespace Supremacy.Orbitals
             {
                 if (_buildQueue[i].Project != null)
                 {
-                    _text = "Step_7800: " + _buildQueue[i].Project.Location
+                    _text = "Step_7800:; " + _buildQueue[i].Project.Location
                         //+ "; " + _buildQueue[i].Project.ProductionCenter   // crashes
                         //+ "; " + _buildQueue[i].Project.ProductionCenter.Owner
                         + ";Shipyard-Slot-BuildQueue;" + i
@@ -379,7 +379,7 @@ namespace Supremacy.Orbitals
             {
                 if (item.Project != null)
                 {
-                    _text = "Step_5860: " + item.Project.Location
+                    _text = "Step_5860:; " + item.Project.Location
                         //+ "; " + item.Project.ProductionCenter   // crashes
                         //+ "; " + item.Project.ProductionCenter.Owner
                         + ";No Project for _Shipyard._buildslots" + newline/*+ item.Project.Design*/
@@ -417,7 +417,7 @@ namespace Supremacy.Orbitals
                         //        _builder = item.Project.Builder.Key; 
                         //} catch { }
 
-                        _text = "Step_5880: " + _builder
+                        _text = "Step_5880:; " + _builder
                             + ";Project for _Shipyard._buildslots " + item
                             + "; " + item.Project
                             + "; "
@@ -427,7 +427,7 @@ namespace Supremacy.Orbitals
                     }
                     else
                     {
-                        _text += "Step_5885: "
+                        _text += "Step_5885:; "
                             + item.Project.Location
                             + " > Slot " + item.SlotID
                             + " Shipyard._buildslots - unsure whether project..."

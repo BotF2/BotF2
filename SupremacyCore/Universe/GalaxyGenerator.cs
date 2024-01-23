@@ -515,6 +515,7 @@ namespace Supremacy.Universe
             {
                 throw new ArgumentNullException("system");
             }
+            int maxPop = 0;
 
             for (int i = 0; i < system.Planets.Count; i++)
             {
@@ -524,7 +525,12 @@ namespace Supremacy.Universe
                                                  ? "Asteroids"
                                                  : system.Name + " " + RomanNumber.Get(i + 1);
                 }
+                maxPop += system.Planets[i].GetMaxPopulation(system.Planets[i].PlanetType);
+
             }
+
+            if (maxPop == 0)
+                system.Name += " (0)";
         }
 
         private static int GetIdealSlot(StarSystemDescriptor system, PlanetDescriptor planet)

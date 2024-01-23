@@ -209,70 +209,70 @@ namespace Supremacy.Game
             try
             {
                 GameLog.Core.SaveLoad.DebugFormat("Step_3600: --------------------------------------------------");
-                _text = "Step_3600: ########### Deserialising GameContext...";
+                _text = "Step_3600:; ########### Deserialising GameContext...";
                 Console.WriteLine(_text);
                 GameLog.Core.SaveLoad.DebugFormat(_text);
 
                 IsMultiplayerGame = reader.ReadBoolean();
-                Console.WriteLine("Step_3610: already read  IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
+                Console.WriteLine("Step_3610:; already read  IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
                 GameLog.Core.SaveLoad.DebugFormat("Step_3611: IsMultiplayerGame = {0}", IsMultiplayerGame);
 
                 _nextObjectId = reader.ReadOptimizedInt32();
-                Console.WriteLine("Step_3630: already read  _nextObjectId..... > " + _nextObjectId);
+                Console.WriteLine("Step_3630:; already read  _nextObjectId..... > " + _nextObjectId);
 
                 _turnNumber = reader.ReadOptimizedUInt16();
-                Console.WriteLine("Step_3640: already read _turnnumber..... > " + _turnNumber);
+                Console.WriteLine("Step_3640:; already read _turnnumber..... > " + _turnNumber);
                 GameLog.Core.SaveLoad.DebugFormat("Step_3641: _turnnumber = {0}", _turnNumber);
 
                 _options = reader.Read<GameOptions>();
-                Console.WriteLine("Step_3660: already read _options.....");
+                Console.WriteLine("Step_3660:; already read _options.....");
 
                 _gameMod = reader.Read<GameMod>();
-                Console.WriteLine("Step_3680: already read _gameMod.....");
+                Console.WriteLine("Step_3680:; already read _gameMod.....");
 
                 _civilizations = reader.Read<CivDatabase>();
-                Console.WriteLine("Step_3710: already read _civilizations..... > " + _civilizations.Count);
+                Console.WriteLine("Step_3710:; already read _civilizations..... > " + _civilizations.Count);
                 // CivDatabase = basic Civs (like ShortName etc)
 
                 _civManagers = reader.Read<CivilizationManagerMap>();
-                Console.WriteLine("Step_3740: already read _civManagers..... > " + _civManagers.Count);
+                Console.WriteLine("Step_3740:; already read _civManagers..... > " + _civManagers.Count);
                 // _civManagers = basic Civs (like ShortName etc)
 
                 _races = reader.Read<RaceDatabase>();
-                Console.WriteLine("Step_3780: already read _races..... > " + _races.Count);
+                Console.WriteLine("Step_3780:; already read _races..... > " + _races.Count);
 
                 _universe = reader.Read<UniverseManager>();
-                GameLog.Core.SaveLoad.DebugFormat("Step_3810: already read _universe.....");
+                GameLog.Core.SaveLoad.DebugFormat("Step_3810:; already read _universe.....");
 
                 _techDatabase = reader.Read<TechDatabase>();
-                Console.WriteLine("Step_3910: already read _techDatabase.....");
+                Console.WriteLine("Step_3910:; already read _techDatabase.....");
 
                 _researchMatrix = reader.Read<ResearchMatrix>();
-                Console.WriteLine("Step_3920: already read _researchMatrix.....");
+                Console.WriteLine("Step_3920:; already read _researchMatrix.....");
 
                 _sectorClaims = reader.Read<SectorClaimGrid>();
-                Console.WriteLine("Step_3930: already read _sectorClaims.....");
+                Console.WriteLine("Step_3930:; already read _sectorClaims.....");
 
                 _techTrees = reader.Read<TechTreeMap>();
-                Console.WriteLine("Step_3940: already read _techTrees.....");
+                Console.WriteLine("Step_3940:; already read _techTrees.....");
 
                 _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
-                Console.WriteLine("Step_3950: already read _diplomacyData.....");
+                Console.WriteLine("Step_3950:; already read _diplomacyData.....");
 
                 _agreementMatrix = reader.Read<AgreementMatrix>();
-                Console.WriteLine("Step_3960: already read _agreementMatrix.....");
+                Console.WriteLine("Step_3960:; already read _agreementMatrix.....");
 
                 _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
-                Console.WriteLine("Step_3970: already read _diplomats.....");
+                Console.WriteLine("Step_3970:; already read _diplomats.....");
 
                 _strategyDatabase = reader.Read<StrategyDatabase>();
-                Console.WriteLine("Step_3980: already read _strategyDatabase.....");
+                Console.WriteLine("Step_3980:; already read _strategyDatabase.....");
 
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
-                Console.WriteLine("Step_3985: already read _scriptedEvents.....");
+                Console.WriteLine("Step_3985:; already read _scriptedEvents.....");
 
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
-                Console.WriteLine("Step_3990: already read _diplomacyDatabase.....");
+                Console.WriteLine("Step_3990:; already read _diplomacyDatabase.....");
 
 
                 FixupDiplomacyData();
@@ -319,10 +319,24 @@ namespace Supremacy.Game
 
             ITextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
 
+            _text = "Step_0932:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
+            Console.WriteLine(_text);
+
             foreach (TechObjectDesign design in _techDatabase)
             {
+                //_text = "Step_0933:; TextDatabase Key= " + design.Key
+                //    + ", Name= " + design.Name
+                //    + ", Description= " + design.Description
+                //    ;
+                //Console.WriteLine(_text);
                 ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
-                        // This is Orbital Batteries Only!!! 
+                // This is Orbital Batteries Only!!! 
+
+
+                // Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works
+                _text = "Step_0932:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
+                Console.WriteLine(_text);
+
                 if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out LocalizedTextGroup localizedText))
                 {
                     //GameLog.Client.GameInitData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
@@ -330,12 +344,20 @@ namespace Supremacy.Game
                     design.LocalizedText = localizedText;
                     continue;
                 }
+
+                // this populates 'entry'
                 if (!techObjectTable.TryGetEntry(design.Key, out ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry))
                 {
                     continue;
                 }
 
+                // tries to find a Local, maybe German one
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
+                //_text = "Step_0934:; TextDatabase Key = " + design.Key
+                //        + ", Name= " + design.Name
+                //        + ", Description= " + design.Description
+                //        ;
+                //Console.WriteLine(_text);
                 //GameLog.Client.GameInitData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
             }
         }

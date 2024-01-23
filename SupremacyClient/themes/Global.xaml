@@ -74,7 +74,7 @@
     <SolidColorBrush Color="SkyBlue" x:Key="HealthColor"/>
     <SolidColorBrush Color="Aquamarine" x:Key="InhabitantsColor"/> <!--not impelmented yet-->
     <SolidColorBrush Color="SandyBrown" x:Key="MaintColor"/>
-    <SolidColorBrush Color="Firebrick" x:Key="TaxesColor"/>
+    <SolidColorBrush Color="LimeGreen" x:Key="TaxesColor"/>
 
 
     <!--<SolidColorBrush Color="Blue" x:Key="ResearchColor"/>--> 

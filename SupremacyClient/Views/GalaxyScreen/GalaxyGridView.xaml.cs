@@ -52,7 +52,7 @@ namespace Supremacy.Client.Views
 
             InitializeComponent();
 
-            _text = "Step_2100: GalaxyGridView Initialize...";
+            _text = "Step_2101:; GalaxyGridView Initialize...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -90,7 +90,7 @@ namespace Supremacy.Client.Views
             DebugCommands.F07_Screen.RegisterCommand(_f07_ScreenCommand);
             DebugCommands.F06_Screen.RegisterCommand(_f06_ScreenCommand);
 
-            _text = "Step_2101: GalaxyGridView Initialize done...";
+            _text = "Step_2102:; GalaxyGridView Initialize done...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
         }
@@ -336,10 +336,11 @@ namespace Supremacy.Client.Views
                     {
                         _text += "Step_4366:; "
                             + _col
+                            + ";" + building.IsActive + "_for_Active"
                             + "; Building"
                             + "; " + building.ObjectID
                             + "; " + building.Design
-                            + ";" + building.IsActive + "_for_Active"
+
                             + "; since Turn;" + building.TurnCreated
 
                             + newline;

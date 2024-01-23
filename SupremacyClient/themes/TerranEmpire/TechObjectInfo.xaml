@@ -257,6 +257,8 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
+
+          <!--Duranium-->
           <Grid x:Name="Duranium">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />

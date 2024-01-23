@@ -303,7 +303,7 @@ namespace Supremacy.Combat
                 _ = civOwner.Remove(currentOwner);
 
                 _civStatusList = civOwner.ToList();
-                return string.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
+                return string.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + ": " + ReturnTextOfStatus(_targetCiv1Status);
             }
         }
 
@@ -329,7 +329,7 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("_targetCiv1Status = {0}", _targetCiv1Status);
                 _ = civStatusList.Remove(currentCiv);
                 _civStatusList = civStatusList.ToList();
-                return string.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
+                return string.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + ": " + ReturnTextOfStatus(_targetCiv1Status);
             }
 
             return null;
@@ -564,14 +564,14 @@ namespace Supremacy.Combat
                 int hostileAssets = 0;
                 int currentCivStrength = 0;
 
-                _text = "Step_3380:; Combat-Result ? ";
+                _text = "Step_3381:; Combat-Result ? ";
                 Console.WriteLine(_text);
 
                 foreach (CombatAssets asset in FriendlyAssets)
                 {
                     if (asset.HasSurvivingAssets)
                     {
-                        _text = "Step_3381:; Combat: friendlyAssets(assets.CombatShips.Count)=; " + asset.CombatShips.Count;
+                        _text = "Step_3382:; Combat: friendlyAssets(assets.CombatShips.Count)=; " + asset.CombatShips.Count;
                         Console.WriteLine(_text);
                         //GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", asset.CombatShips.Count);
                         friendlyAssets++;
@@ -604,13 +604,13 @@ namespace Supremacy.Combat
                         //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                     }
                 }
-                _text = "Step_3389:; Combat: friendlyAssets(Amount)=;"
+                _text = "Step_3389:; Combat: friendlyAssets(Amount)="
                         + "; for; " + friendlyAssets
                         + "; " + _otherCivStrength
                         ;
                 Console.WriteLine(_text);
                 //GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(Amount)={0} and otherCivStrength ={1}", friendlyAssets, _otherCivStrength);
-                if (friendlyAssets == 0 || _otherCivStrength == 0)// currentCivStrength == 0)
+                if (friendlyAssets == 0) // || _otherCivStrength == 0)// currentCivStrength == 0)
                 {
                     _text = "Step_3381:; Combat: friendlyAssets (number of involved entities)=; " + friendlyAssets;
                     Console.WriteLine(_text);
@@ -647,15 +647,17 @@ namespace Supremacy.Combat
                                 + "; for; " + asset.Station.Source.ObjectID
                                 + "; " + asset.Station.Source.Name
                                 + "; " + asset.Station.Source.Design
-                                + "; " + asset.Station.Source.FirePower
+                                + "; FirePower=" + asset.Station.Source.FirePower
                                 ;
                         Console.WriteLine(_text);
                     }
                 }
 
-                if (hostileAssets == 0 || _otherCivStrength == 0)//currentCivStrength == 0)
+                if (hostileAssets == 0) // && _otherCivStrength == 0)//currentCivStrength == 0)
                 {
-                    _text = "Step_3397; Combat: hostileAssets (number of involved entities)= " + hostileAssets;
+                    _text = "Step_3397:; Combat: hostileAssets (number of involved entities)= " + hostileAssets
+                        + ", hostileAssets = 0"
+                        ;
                     Console.WriteLine(_text);
                     //GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
                     return true;

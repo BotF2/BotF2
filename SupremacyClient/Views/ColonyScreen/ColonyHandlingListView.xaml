@@ -36,14 +36,31 @@
       <!--OrbitalBattery-->
         <Grid DockPanel.Dock="Top" Margin="2">
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="75" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="Auto" />
       </Grid.ColumnDefinitions>
-      <Border Grid.Column="0"
+            <Border Grid.Column="0"
               VerticalAlignment="Center"
-              BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                    HorizontalAlignment="Left"
+              BorderBrush="Orange"
+              BorderThickness="2"
+              CornerRadius="4"
+              Width="70"
+              Height="38"/>
+            <TextBlock Foreground="LightGoldenrodYellow" Margin="0,10,15,0" HorizontalAlignment="Right">
+                <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
+                        <Binding Path="SelectedColony.ActiveBuildings.Count" />
+                    <Binding Path="SelectedColony.Buildings.Count" />
+                </MultiBinding>
+            </TextBlock.Text>
+            </TextBlock>
+            <Border Grid.Column="1"
+              VerticalAlignment="Center"
+              BorderBrush="{StaticResource HeaderTextBrush}"
               BorderThickness="2"
               CornerRadius="4"
               Width="48"
@@ -53,7 +70,7 @@
         </Border.Background>
 
             <Border.ToolTip>
-                <Border Grid.Column="0"
+                <Border Grid.Column="1"
                           VerticalAlignment="Center"
                           BorderBrush="{StaticResource BorderBrush}"
                           BorderThickness="2"
@@ -66,7 +83,7 @@
                 </Border>
             </Border.ToolTip>
             </Border>
-            <StackPanel Grid.Column="1"
+            <StackPanel Grid.Column="2"
                   Orientation="Vertical"
                   VerticalAlignment="Center"
                   HorizontalAlignment="Stretch"
@@ -89,7 +106,7 @@
                  Margin="0,0,14,0"
                  VerticalAlignment="Center" />
 -->
-      <s:UnitActivationBar Grid.Column="2"
+      <s:UnitActivationBar Grid.Column="3"
                            Units="{Binding Path=SelectedColony.OrbitalBatteries_Total, Mode=OneWay}"
                            MaxActiveUnits="{Binding Path=MaxOrbitalBatteries_Active, Mode=TwoWay}"
                            ActiveUnits="{Binding Path=OrbitalBatteries_Active, Mode=TwoWay}" />
@@ -100,7 +117,7 @@
                  Margin="7,0,0,0"
                  VerticalAlignment="Center"
                  Text="999 / 999" />
-      <TextBlock Grid.Column="3"
+      <TextBlock Grid.Column="4"
                  Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                  FontSize="14pt"
                  FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -192,6 +209,7 @@
                                  Text="Online"
                                  Foreground="LimeGreen" />
                     </WrapPanel>
+                      
                     <scc:GameButton Label="{s:StringResource Scrap}"
                                     Margin="0,2,0,0"
                                     DisplayMode="CheckBox"

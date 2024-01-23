@@ -81,7 +81,7 @@ namespace Supremacy.Tech
                         //    , Design.Name                     
                         //    , _designId
                         //    );
-                        _text = "Step_2000: " 
+                        _text = "Step_2050:; " 
                             + "### Problem on Design name" + Design.Name
                             + " designId" + _designId
                             ;

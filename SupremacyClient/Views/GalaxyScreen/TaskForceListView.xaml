@@ -15,7 +15,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListViewItem}">
                         <StackPanel x:Name="ItemContainerGrid">
-                            <TextBlock Foreground="White" HorizontalAlignment="Stretch" FontSize="10" FontStyle="Normal" FontFamily="Serif"
+                            <TextBlock Foreground="White" HorizontalAlignment="Stretch" FontSize="12" FontStyle="Normal" FontFamily="Serif"
                                 Text="{Binding Path=ClassName, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}"/>
                             <StackPanel Orientation="Horizontal">
                                 <Border x:Name="SelectionOuterBorder" VerticalAlignment="Top" Margin="0,0,5,0">
@@ -25,8 +25,8 @@
                                     </Border.ToolTip>
                                 </Border>
                                 <StackPanel>
-                                    <TextBlock FontSize="9" FontFamily="Arial" FontStyle="Italic" Foreground="Wheat" Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}" />
-                                    <TextBlock FontSize="10" FontStyle="Normal" FontFamily="Sans Serif" Foreground="LightGray" x:Name="OrderText" Text="{Binding Path=View.Source.Order.DisplayText, Converter={StaticResource StringResourceConverter}}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock FontSize="12" FontFamily="Arial" FontStyle="Italic" Foreground="Aqua" Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}" />
+                                    <TextBlock FontSize="12" FontStyle="Normal" FontFamily="Sans Serif" Foreground="LightGray" x:Name="OrderText" Text="{Binding Path=View.Source.Order.DisplayText, Converter={StaticResource StringResourceConverter}}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
                             </StackPanel>
                             <Rectangle Fill="{StaticResource DefaultTextBrush}" Height="2" HorizontalAlignment="Stretch" Margin="0,5,0,5"/>

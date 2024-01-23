@@ -347,7 +347,7 @@ namespace Supremacy.Combat
                 
                 CalculateEmpireStrengths();
 
-                _text = "Step_3193: _roundNumber = " + _roundNumber
+                _text = "Step_3193:; _roundNumber = " + _roundNumber
                     + "; AllSidesStandDown() = " + AllSidesStandDown()
                     + "; IsCombatOver = " + IsCombatOver
                     ;
@@ -363,15 +363,15 @@ namespace Supremacy.Combat
                 {
                     PerformAssimilation();
                 }
-                _text = "Step_3194: ResolveCombatRound - at PerformRetreat";
+                _text = "Step_3194:; ResolveCombatRound - at PerformRetreat";
                 //Console.WriteLine(_text);
                 // Detailed_Log(_text);
                 Console.WriteLine(_text);
-                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 PerformRetreat();
 
-                _text = "Step_3196: ResolveCombatRound - at UpdateOrbitals";
+                _text = "Step_3196:; ResolveCombatRound - at UpdateOrbitals";
                 //Console.WriteLine(_text);
                 // Detailed_Log(_text);
                 Console.WriteLine(_text);
@@ -379,7 +379,7 @@ namespace Supremacy.Combat
 
                 UpdateOrbitals();
 
-                _text = "Step_3198: If IsCombatOver = " + IsCombatOver
+                _text = "Step_3198:; If IsCombatOver = " + IsCombatOver
                     + " > then increment round number " + _roundNumber 
                     ;
                 //Console.WriteLine(_text);
@@ -754,7 +754,7 @@ namespace Supremacy.Combat
             {
                 _text = "Step_3001:; PerformRetreat begins";
                 Console.WriteLine(_text);
-                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 foreach (CombatAssets assets in _assets)
                 {

@@ -504,7 +504,7 @@ namespace Supremacy.Tech
                     return ResourceManager.GetResourceUri(localPath).ToString();
                 }
 
-                // if not ShipsUnderConstruction-Image avaiable then try to get regular ship image - each .png or .jpg
+                // if not ShipsUnderConstruction-Image available then try to get regular ship image - each .png or .jpg
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
                         "vfs:///Resources/Images/{0}{1}.png",

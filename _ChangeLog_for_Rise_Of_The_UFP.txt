@@ -1,5 +1,7 @@
 _ChangeLog_for_Rise_Of_The_UFP.txt
 
+2024-01-06;added Shipyard-Queue(!) first entry to Colony Management Panel
+2023-12-10;re-arranged Diplo Screen
 2023-11-11;ROM_PLASMA_PHYSICS_COMPLEX > OnePerEmpire (otherwise too much Bonus of EnergyResearch)
 2023-10-21;Medical ships Type 2 = speed 2 from TechLevel 3 to provide needed help quickly
 2023-10-21;Fixed buttons for next and previous systems and created a new FIRST button

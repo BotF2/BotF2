@@ -1295,7 +1295,7 @@ namespace Supremacy.Client.Views
                     continue;
                 }
                 //
-                Console.WriteLine("Step_9333:; RefreshForeignPowers... " + civ.Name);
+                //Console.WriteLine("Step_9333:; RefreshForeignPowers... " + civ.Name);
 
                 ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
                 ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);

@@ -1134,7 +1134,9 @@
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt" />
               </Grid>
-              <Rectangle x:Name="TopRightCorner"
+
+                            <!--TopRightCorner-->
+                            <Rectangle x:Name="TopRightCorner"
                          Grid.Column="4"
                          Grid.Row="0"
                          Height="42"

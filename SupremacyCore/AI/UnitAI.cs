@@ -37,6 +37,11 @@ namespace Supremacy.AI
 
         public static void DoTurn([NotNull] Civilization civ)
         {
+            _text = "Step_1100:; UnitAI.DoTurn begins..."
+
+        ;
+            Console.WriteLine(_text);
+
             if (civ == null)
             {
                 throw new ArgumentNullException(nameof(civ));
@@ -88,7 +93,8 @@ namespace Supremacy.AI
                 foreach (Fleet fleet in allCivFleets) // each fleet of the current civ
                 {
                     string _fleetText = fleet.Location + " > Fleet: " + fleet.Owner + blank + fleet.ObjectID + blank + fleet.Name 
-                        + blank + fleet.UnitAIType + ", TargetCiv=NULL" /*+ fleet.Owner.TargetCivilization*/ + blank + fleet.Order.ToString();
+                        + blank + fleet.Ships[0].Design + blank + fleet.UnitAIType /*+ ", TargetCiv=NULL" + fleet.Owner.TargetCivilization*/ 
+                        + ", Order= " + fleet.Order.ToString();
                     Console.WriteLine("Step_6151:; " + _fleetText);
                     // as well go to CTRL+F and 'checking fleets'
                     if (fleet.Ships.Count > 0)
@@ -113,7 +119,7 @@ namespace Supremacy.AI
                         if (civ.TargetCivilization != null)
                         {
                             _text = "Step_6260:; UnitAI-DoTurn; "
-                                + "TargetCiv=" + civ.TargetCivilization + " (not null)"
+                                + "TargetCiv > " + civ.TargetCivilization + " (not null)"
                                 ;
                             Console.WriteLine(_text);
                             // Is there a systemattack fleet, YES
@@ -170,7 +176,7 @@ namespace Supremacy.AI
                                 && fleet.Ships.Any(o => o.ShipType == ShipType.Transport) && fleet.Ships.Any(o => o.IsCombatant))
                                 {
                                     // ************* ToDo invasion 
-                                    SystemAssult(fleet);
+                                    SystemAssault(fleet);
                                     GameLog.Core.AIDetails.DebugFormat("## Do Invasion at Target system, civ ={0}, targetCivilization ={1}", civ.Name, civ.TargetCivilization.Name);
                                     // send home and re-set UnitAIType / can we already set ships to reserve here for return to home?
                                 }
@@ -220,6 +226,8 @@ namespace Supremacy.AI
                                         continue;
                                     }
                                 }
+
+
                                 if (fleet.Location != homeSystem.Location && !fleet.Route.Waypoints.Contains(homeSystem.Location))
                                 {
                                     if (fleet.IsScout)
@@ -233,18 +241,46 @@ namespace Supremacy.AI
                                     }
                                     else if (fleet.Ships.Count() > 1)
                                     {
-                                        Fleet anotherFleet = new Fleet();
-                                        foreach (Ship ship in fleet.Ships)
-                                        {
-                                            if (ship.ShipType != ShipType.Colony || ship.ShipType != ShipType.Construction || ship.ShipType != ShipType.Medical)
-                                            {
-                                                fleet.RemoveShip(ship);
-                                            }
+                                        int numberofships = fleet.Ships.Count();
+                                        //Fleet anotherFleet = new Fleet();
+                                        _text = "Step_8789:; " + _fleetText + " > Fleet is to separate into single ships > check the fleet for crashes here "
+                                             //+ _fleetText
+                                                ;
+                                        Console.WriteLine(_text);
 
-                                            anotherFleet.AddShip(ship);
-                                            BuildAndSendFleet(anotherFleet, civ, UnitActivity.Mission, UnitAIType.Reserve, homeSystem.Sector);
-                                            continue;
-                                        }
+                                        //try
+                                        //{
+                                            foreach (Ship currentship in fleet.Ships)
+                                            {
+                                                //Ship currentship = fleet.Ships[i];
+                                                //Fleet anotherFleet = new Fleet();
+                                                if (currentship != null && currentship.IsCombatant)
+                                                {
+                                                    Fleet anotherFleet = new Fleet();
+                                                    fleet.RemoveShip(currentship);
+                                                    anotherFleet.AddShip(currentship);
+                                                    BuildAndSendFleet(anotherFleet, civ, UnitActivity.Mission, UnitAIType.Reserve, homeSystem.Sector);
+                                                }
+                                            }
+                                        //}
+                                        //catch 
+                                        //{
+                                        //    _text = "Step_8789:; " + _fleetText + " > Fleet is to separate into single ships > check the fleet for crashes here "
+                                        //            //+ _fleetText
+                                        //            ;
+                                        //    Console.WriteLine(_text);
+                                        //}
+                                        //foreach (Ship ship in fleet.Ships) // is Colonizer still in fleet or if not > Crash
+                                        //{
+                                        //    if (ship.ShipType != ShipType.Colony || ship.ShipType != ShipType.Construction || ship.ShipType != ShipType.Medical)
+                                        //    {
+                                        //        fleet.RemoveShip(ship);
+                                        //    }
+
+                                        //    anotherFleet.AddShip(ship);
+                                        //    BuildAndSendFleet(anotherFleet, civ, UnitActivity.Mission, UnitAIType.Reserve, homeSystem.Sector);
+                                        //    continue;
+                                        //}
                                     }
                                 }
                                 else if (fleet.Sector == homeSystem.Sector)
@@ -395,10 +431,10 @@ namespace Supremacy.AI
                         {
                             if (fleet.IsColonizer)// || fleet.UnitAIType == UnitAIType.Colonizer)
                             {
-                                _text = "Step_6300: fleet.IsColonizer: " + _fleetText;
+                                _text = "Step_6301:; " + _fleetText + " > fleet.IsColonizer ";
                                 Console.WriteLine(_text);
 
-                                if (fleet.Sector == homeSystem.Sector && (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)) // || fleet.Activity == UnitActivity.Mission
+                                if (/*fleet.Sector == homeSystem.Sector && */(fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)) // || fleet.Activity == UnitActivity.Mission
                                 {
                                     if (GetBestSystemToColonize(fleet, out StarSystem bestSystemToColonize))
                                     {
@@ -411,8 +447,9 @@ namespace Supremacy.AI
                                         {
                                             GetFleetEscort(fleet, bestSystemToColonize.Sector);
                                         }
-                                        _text = "Step_6320: Fleet at HomeSystem: Colonizing: Ordering "
-                                            + _fleetText
+                                        _text = "Step_6320:; " + _fleetText
+                                            + " > Fleet at HomeSystem: Colonizing: Ordering "
+                                            
                                             + " to go to " + bestSystemToColonize.Name
                                             + " " + bestSystemToColonize.Location
                                             ;
@@ -428,24 +465,24 @@ namespace Supremacy.AI
 
                                 if (fleet.Sector != homeSystem.Sector) // only colonize when not at homesystem 
                                 {
-                                    _text = "Step_6410: Colonizer on the road: " + _fleetText;
+                                    //_text = "Step_6410:; " + _fleetText + ": Colonizer on the road:";
+                                    //Console.WriteLine(_text);
+
+                                    _text = "Step_6420:; " + _fleetText + ": WeAreAtSystemToColonize=" + WeAreAtSystemToColonize(fleet);
                                     Console.WriteLine(_text);
 
-                                    _text = "Step_6420: " + _fleetText + ": WeAreAtSystemToColonize=" + WeAreAtSystemToColonize(fleet);
-                                    Console.WriteLine(_text);
-
-                                    _text = "Step_6430: " + _fleetText + ": SystemIsAlreadyTaken=" + SystemIsAlreadyTaken(fleet);
+                                    _text = "Step_6430:; " + _fleetText + ": SystemIsAlreadyTaken=" + SystemIsAlreadyTaken(fleet);
                                     Console.WriteLine(_text);
 
                                     if (WeAreAtSystemToColonize(fleet) && !SystemIsAlreadyTaken(fleet))
                                     {
                                         if (fleet.Ships.Any(a => a.ShipType == ShipType.Colony))
                                         {
-                                            _text = "Step_6440: " + _fleetText + ": AnyColonyShip > ok" ;
+                                            _text = "Step_6440:; " + _fleetText + ": AnyColonyShip > ok = has Colony ship" ;
                                             Console.WriteLine(_text);
                                             //fleet.Route.Clear();
                                             fleet.SetOrder(new ColonizeOrder());
-                                            _text = "Step_6450: ColonizeOrder for " + _fleetText;
+                                            _text = "Step_6450:; " + _fleetText + " > ColonizeOrder !";
                                             Console.WriteLine(_text);
                                             if (!fleet.Ships.Any(x => x.ShipType == ShipType.Colony))
                                             {
@@ -464,7 +501,7 @@ namespace Supremacy.AI
                                     else if ((WeAreAtSystemToColonize(fleet) && SystemIsAlreadyTaken(fleet))
                                         && fleet.Route.IsEmpty || fleet.Route == null)
                                     {
-                                        _text = "Step_6460: Colonizing aim reached: " + _fleetText;
+                                        _text = "Step_6460:; Colonizing aim reached: " + _fleetText;
                                             
                                         Console.WriteLine(_text);
                                         if (GetBestSystemToColonize(fleet, out StarSystem bestSystemToColonize))
@@ -604,7 +641,7 @@ namespace Supremacy.AI
 
                             if (fleet.IsMedical)
                             {
-                                _text = "Step_6610: fleet.IsMedical: " + _fleetText
+                                _text = "Step_6610:; " + _fleetText + " > fleet.IsMedical: "
                                     //+ " " + fleet.ObjectID
                                     //+ " " + fleet.Name
                                     ////+ " to go to " + bestSystemToColonize.Name
@@ -819,7 +856,7 @@ namespace Supremacy.AI
             fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { destination }));
         }
 
-        public static void SystemAssult(Fleet fleet)
+        public static void SystemAssault(Fleet fleet)
         {
             GetFleetOwner(fleet);
             if (fleet.Order != FleetOrders.AssaultSystemOrder)

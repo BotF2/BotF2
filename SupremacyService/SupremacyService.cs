@@ -1168,7 +1168,7 @@ namespace Supremacy.WCF
             if ((initData.GameType == GameType.SinglePlayerLoad) || (initData.GameType == GameType.MultiplayerLoad))
             {
                 SavedGameHeader header = SavedGameManager.LoadSavedGameHeader(initData.SaveGameFileName);
-                Console.WriteLine("Step_0286: loading SavedGameHeader from " + initData.SaveGameFileName);
+                Console.WriteLine("Step_0287:; loading SavedGameHeader from " + initData.SaveGameFileName);
                 if (header == null)
                 {
                     return HostGameResult.LoadGameFailure;

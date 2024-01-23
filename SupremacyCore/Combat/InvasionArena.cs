@@ -922,6 +922,12 @@ namespace Supremacy.Combat
             while (defenderCombatStrength > 0 &&
                    transports.Count != 0)
             {
+                _text = "Step_3762: "
+    + colony.Location
+    + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
+    + " defenderCombatStrength= " + defenderCombatStrength
+    ;
+                Console.WriteLine(_text);
                 //GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
                 //    defenderCombatStrength, transports.Count);
 
@@ -931,16 +937,32 @@ namespace Supremacy.Combat
                     invader,
                     colony.Location,
                     ((Ship)transport.Source).ShipDesign.WorkCapacity);
+                _text = "Step_3762: "
+    + colony.Location
+    + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
+    + " defenderCombatStrength= " + defenderCombatStrength
+    ;
+                Console.WriteLine(_text);
                 GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
                         transportCombatStrength);
 
                 int randomResult = RandomProvider.Shared.Next(1, 21);   //  limits random to 20 %
                 transportCombatStrength -= transportCombatStrength * randomResult / 100;
-                //                                 100 -             (     100                * 15        / 100)    
-                GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
-                        defenderCombatStrength, transports.Count);
+                //                                 100 -             (     100                * 15        / 100)
+                //
+                _text = "Step_0391: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = "
+                    + defenderCombatStrength
+                    + ", attacking Transports = " + transports.Count
+                    ;
+                Console.WriteLine(_text);
+                //GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                //        defenderCombatStrength, transports.Count);
 
-
+                _text = "Step_0366: GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = "
+                    + defenderCombatStrength
+                    + ", attacking Transports = " + transports.Count
+                    ;
+                Console.WriteLine(_text);
                 GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
                     transportCombatStrength, randomResult);
 
@@ -954,9 +976,22 @@ namespace Supremacy.Combat
                     transport.Destroy();
                 }
 
-                GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = {0}, attacking Transports = {1}",
-                    defenderCombatStrength, transports.Count);
+                _text = "Step_0366: GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = "
+                    + defenderCombatStrength
+                    + ", attacking Transports = " + transports.Count
+                    ;
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
 
+                //GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = {0}, attacking Transports = {1}",
+                //    defenderCombatStrength, transports.Count);
+
+                _text = "Step_3762: "
+                    + colony.Location
+                    + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
+                    + " defenderCombatStrength= " + defenderCombatStrength
+                    ;
+                Console.WriteLine(_text);
                 //        GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? : Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                 //targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
             }
@@ -1429,16 +1464,19 @@ namespace Supremacy.Combat
             _invasionArena.Population.UpdateAndReset();
             _invasionArena.ColonyShieldStrength.UpdateAndReset();
 
+            CivilizationManager civManager = CivilizationManager.For(_invasionArena.Colony.OwnerID);
+            civManager.EnsureSeatOfGovernment();
+
             if (_invasionArena.Colony.Population.IsMinimized || _invasionArena.Colony.Population.CurrentValue < 5)
             {
-                CivilizationManager civManager = CivilizationManager.For(_invasionArena.Colony.OwnerID);
+
                 _text = _invasionArena.Colony.Location + _invasionArena.Colony.Name;
                 _invasionArena.Colony.Destroy();
                 _ = GameContext.Current.Universe.Destroy(_invasionArena.Colony);
                 //if (_invasionArena.Colony.is)
                 _text = "Step_3798: " + _text + "Colony destroyed due to Invasion.";
                 Console.WriteLine(_text);
-                GameLog.Core.Combat.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 civManager.EnsureSeatOfGovernment();
                 if(_invasionArena.InvasionID == 6)
@@ -1446,7 +1484,7 @@ namespace Supremacy.Combat
                     Colony colony = new Colony(_invasionArena.Colony.System, GameContext.Current.CivilizationManagers[6].Civilization.Race);
                     _text = "Step_3799: " + _text + "New Borg colony established after Invasion";
                     Console.WriteLine(_text);
-                    GameLog.Core.Combat.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
                 }
                 //_text = "Step_3799: " + _text + "Colony destroyed due to Invasion.";
                 //Console.WriteLine(_text);
@@ -1466,12 +1504,13 @@ namespace Supremacy.Combat
 
 
 
+
             CivilizationManager civManagerAttacked = GameContext.Current.CivilizationManagers[_invasionArena.Defender.CivID];
             //civManagerAttacked.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(),
             //    _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed));
 
             _text = string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT")
-                , _invasionArena.Colony.Name, _invasionArena.Status.ToString(), _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed);
+                , _invasionArena.Colony.Location, _invasionArena.Colony.Name, _invasionArena.Status.ToString(), _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed);
             civManagerAttacked.SitRepEntries.Add(new ReportEntry_CoS(civManagerAttacked.Civilization, _invasionArena.Colony.Location, _text,
                 "SYSTEMASSAULT", "ScriptedEvents/SystemAssault.png", SitRepPriority.RedYellow));
 

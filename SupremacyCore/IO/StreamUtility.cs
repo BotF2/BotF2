@@ -85,14 +85,14 @@ namespace Supremacy.IO
                 }
                 //_text = i + buffer[i].ToString() + newline;
             //}
-            Console.WriteLine("Step_0288: HEX-Reading: " + _text + ", out of buffer");
-            Console.WriteLine("Step_0289: HEX-Reading: - output deactivated-");
+            Console.WriteLine("Step_0288:; HEX-Reading: " + _text + ", out of buffer");
+            Console.WriteLine("Step_0289:; HEX-Reading: - output deactivated-");
                 c_hex = "";
                 X2_text = "";
                 _text = c_hex + X2_text + count;
 
 
-            Console.WriteLine("Step_0291: HEX-Reading-SIN: " + _text + ", BytesRemaining = " + sin.BytesRemaining);
+            Console.WriteLine("Step_0291:; HEX-Reading-SIN: " + _text + ", BytesRemaining = " + sin.BytesRemaining);
 
             count = 0;
             int hexcount = 0;

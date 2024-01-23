@@ -75,7 +75,7 @@ namespace Supremacy.Client
         public string blank = " ";
         public string separator = " ;";
         public bool _gamelog_bool = true;
-        public bool _ConsoleWriteline_bool = true;
+        public static bool _ConsoleWriteline_bool = true;
         #endregion
 
         #region Constructors
@@ -101,7 +101,7 @@ namespace Supremacy.Client
                 }
                 //_text = "Step_0200: Current Version = " + Current.Version + _text2;
                 //if (_ConsoleWriteline_bool) 
-                    Console.WriteLine(_text);  // "Current Version = "
+                    Console.WriteLine(_text);  
                 GameLog.Client.General.InfoFormat(_text);
 
 
@@ -190,7 +190,7 @@ namespace Supremacy.Client
 
                     }
                 }
-                //Console.WriteLine(this._text);
+                Console.WriteLine(this._text);
                 //GameLog.Client.UIDetails.DebugFormat(_text);
             }
             catch
@@ -339,7 +339,10 @@ namespace Supremacy.Client
                 return false;
             }
 
-            // individual UI
+            // ShipyardDockView all the same for all UI - doesn't work
+
+
+            // individual UI - OFF
             Uri themeUriShipyard = new Uri(
                 string.Format(
                     "/SupremacyClientComponents;Component/Themes/{0}/ShipyardDockView.xaml",
@@ -431,6 +434,7 @@ namespace Supremacy.Client
             {
                 GameLog.Initialize();
 
+                
                 var _text = GetTimeString(); // DateTime.Now;
                 //_text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
                 Console.WriteLine(_text);  // "Current Version = "

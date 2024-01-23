@@ -7,19 +7,18 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-
 using Supremacy.Client;
 using Supremacy.Client.Views;
 using Supremacy.Economy;
 using Supremacy.Resources;
 using Supremacy.Universe;
-using Supremacy.Utility;
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Supremacy.UI
 {
@@ -41,6 +40,9 @@ namespace Supremacy.UI
         private readonly UnitActivationBar _laborBar;
         private readonly TextBlock _laborPoolText;
         private readonly TextBlock _shipyardLine_1;
+        //private readonly TextBlock _shipyardLine_1_text;
+        private readonly TextBlock _shipyardBuildQueueText;
+        //private readonly TextBlock _shipyardLine_2_text;
         private readonly UnitActivationGroup _sliderGroup;
 
         private readonly TextBlock _energyActiveText;
@@ -160,7 +162,8 @@ namespace Supremacy.UI
             _grid.RowDefinitions.Add(new RowDefinition()); // Research
             _grid.RowDefinitions.Add(new RowDefinition()); // Intelligence
             _grid.RowDefinitions.Add(new RowDefinition()); // Labor Pool
-            _grid.RowDefinitions.Add(new RowDefinition()); // Shipyard
+            _grid.RowDefinitions.Add(new RowDefinition()); // Shipyard_1
+            _grid.RowDefinitions.Add(new RowDefinition()); // Shipyard_2
 
             _grid.RowDefinitions[0].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[1].Height = new GridLength(1.0, GridUnitType.Auto);
@@ -168,7 +171,8 @@ namespace Supremacy.UI
             _grid.RowDefinitions[3].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[4].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[5].Height = new GridLength(1.0, GridUnitType.Auto);
-            _grid.RowDefinitions[6].Height = new GridLength(1.0, GridUnitType.Star);
+            _grid.RowDefinitions[6].Height = new GridLength(1.0, GridUnitType.Auto);
+            _grid.RowDefinitions[7].Height = new GridLength(1.0, GridUnitType.Star);
 
             _sliderGroup = new UnitActivationGroup();
 
@@ -530,18 +534,58 @@ namespace Supremacy.UI
             _ = _grid.Children.Add(_laborBar);
             _ = _grid.Children.Add(_laborPoolText);
 
-            // shipyard
+            //// shipyard_Queue
+            //_laborPoolText = new TextBlock();
+            //_laborPoolText.SetValue(Grid.ColumnProperty, 0);
+            //_laborPoolText.SetValue(Grid.RowProperty, 5);
+            //_laborPoolText.VerticalAlignment = VerticalAlignment.Top;
+            //_laborPoolText.HorizontalAlignment = HorizontalAlignment.Right;
+            //_laborPoolText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            //_laborPoolText.FontSize = 20;
+            //_laborPoolText.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
+            //_laborPoolText.Foreground = headerBrush;
+
+            // shipyard_2
+            _shipyardBuildQueueText = new TextBlock();
+            _shipyardBuildQueueText.SetValue(Grid.ColumnProperty, 0);
+            _shipyardBuildQueueText.SetValue(Grid.RowProperty, 6);
+            _shipyardBuildQueueText.VerticalAlignment = VerticalAlignment.Top;
+            _shipyardBuildQueueText.HorizontalAlignment = HorizontalAlignment.Right;
+            _shipyardBuildQueueText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            _shipyardBuildQueueText.FontSize = 20;
+            _shipyardBuildQueueText.Text = "Queue:";
+            _shipyardBuildQueueText.Foreground = paragraphBrush;
+
+            _ = _grid.Children.Add(_shipyardBuildQueueText);
+
+            // shipyard_1
             _shipyardLine_1 = new TextBlock();
-            _shipyardLine_1.SetValue(Grid.ColumnProperty, 0);
-            _shipyardLine_1.SetValue(Grid.RowProperty, 5);
+            _shipyardLine_1.SetValue(Grid.ColumnProperty, 1);
+            _shipyardLine_1.SetValue(Grid.ColumnSpanProperty, 2);
+            _shipyardLine_1.SetValue(Grid.RowProperty, 6);
             _shipyardLine_1.VerticalAlignment = VerticalAlignment.Top;
-            _shipyardLine_1.HorizontalAlignment = HorizontalAlignment.Right;
+            _shipyardLine_1.HorizontalAlignment = HorizontalAlignment.Left;
             _shipyardLine_1.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
             _shipyardLine_1.FontSize = 20;
-            _shipyardLine_1.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
+            //string shipyardSlot_1_Status = this.Colony.ShipyardSlot_1_Status();
+            _shipyardLine_1.Text = _shipyardLine_1.ToString();
+            //.ShipyardSlot_1_Status(ShipyardBuildSlot colony.Shipyard.BuildSlots[0].SlotID);
             _shipyardLine_1.Foreground = headerBrush;
 
             _ = _grid.Children.Add(_shipyardLine_1);
+
+            // shipyard_2
+            //_shipyardBuildQueueText = new TextBlock();
+            //_shipyardBuildQueueText.SetValue(Grid.ColumnProperty, 1);
+            //_shipyardBuildQueueText.SetValue(Grid.RowProperty, 7);
+            //_shipyardBuildQueueText.VerticalAlignment = VerticalAlignment.Top;
+            //_shipyardBuildQueueText.HorizontalAlignment = HorizontalAlignment.Right;
+            //_shipyardBuildQueueText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            //_shipyardBuildQueueText.FontSize = 20;
+            //_shipyardBuildQueueText.Text = "just planned";
+            //_shipyardBuildQueueText.Foreground = headerBrush;
+
+            //_ = _grid.Children.Add(_shipyardBuildQueueText);
 
             #endregion
 
@@ -757,8 +801,8 @@ namespace Supremacy.UI
                         {
                             activateCommand.Execute(category);
                         }
-                        //_text = "Step_2101: slider_ActiveUnitsChanged... category " + category + " IN-CREASED " + delta;
-                        //Console.WriteLine(_text);
+                        _text = "Step_2101: slider_ActiveUnitsChanged... category " + category + " IN-CREASED " + delta;
+                        Console.WriteLine(_text);
                         //GameLog.Client.ProductionDetails.DebugFormat(_text);
                     }
                     else
@@ -768,8 +812,8 @@ namespace Supremacy.UI
                         {
                             deactivateCommand.Execute(category);
                         }
-                        //_text = "Step_2102: slider_ActiveUnitsChanged... category " + category + " DE-CREASED " + delta;
-                        //Console.WriteLine(_text);
+                        _text = "Step_2102: slider_ActiveUnitsChanged... category " + category + " DE-CREASED " + delta;
+                        Console.WriteLine(_text);
                         //GameLog.Client.ProductionDetails.DebugFormat(_text);
                     }
                 }
@@ -980,6 +1024,7 @@ namespace Supremacy.UI
                 _energyFacilityText.Text = "";
                 _researchFacilityText.Text = "";
                 _intelligenceFacilityText.Text = "";
+                _shipyardLine_1.Text = "";
 
                 Visibility = Visibility.Hidden;
             }
@@ -1027,6 +1072,61 @@ namespace Supremacy.UI
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
                     colony.GetTotalFacilities(ProductionCategory.Intelligence),
                     _intelligenceOutputText.Text);
+
+                //_shipyardLine_1.Text = "no Shipyard available";
+                string pluralText = "";
+                //string outputText = ""; in Summary the specified ouput value from the *project* is delivered
+                // project here not 
+                if (colony.Shipyard != null && colony.Shipyard.BuildQueue.Count > 0)
+                {
+                    if (colony.Shipyard.BuildQueue[0].TurnsRemaining > 1)
+                        pluralText = "s";
+                    //outputText = " / Slot output = " + colony.Shipyard.ShipyardDesign.BuildSlotOutput;
+
+                    _shipyardLine_1.Text = colony.Shipyard.BuildQueue[0].Description/*.Substring(0, 20) + "... "*/
+                        + " - ( " + colony.Shipyard.BuildQueue[0].TurnsRemaining + " Turn" + pluralText 
+                        //+ outputText 
+                        + " )";
+                }
+                else
+                {
+                    _shipyardLine_1.Text = "Shipyard Queue is empty";// - " + colony.Shipyard.BuildSlots.Count + " Slot";
+                    //if (colony.Shipyard.BuildSlots.Count > 1)
+                    //    _shipyardLine_1.Text += "s";
+
+                    if (colony.Shipyard == null) 
+                        _shipyardLine_1.Text = "no Shipyard available";
+                    else
+                    {
+                        _shipyardLine_1.Text += " - " + colony.Shipyard.BuildSlots.Count + " Slot";
+                        if (colony.Shipyard.BuildSlots.Count > 1)
+                            _shipyardLine_1.Text += "s";
+
+                        //show indicator for unpowered structures
+
+                        if (!colony.Shipyard.BuildSlots.Any(s => s.IsActive))
+                        {
+                            //outputText = " / Slot output = " + colony.Shipyard.ShipyardDesign.BuildSlotOutput;
+                            var _slots = colony.Shipyard.BuildSlots;
+                            int _activeSlotsCount = 0;
+                            foreach (var slot in colony.Shipyard.BuildSlots)
+                            {
+                                if (slot.IsActive)
+                                    _activeSlotsCount += 1;
+                            }
+                            var _activeSlots = colony.Shipyard.BuildSlots;
+                            //int _activeSlotsCount; = _slots.Sum(s => s.IsActive);
+                            _shipyardLine_1.Text = _activeSlotsCount
+                                + " of "
+                                + colony.Shipyard.BuildSlots.Count
+                                + " Build Slot online - one needs " 
+                                + colony.Shipyard.ShipyardDesign.BuildSlotEnergyCost + " energy"
+                                //+ outputText
+                                ;
+                        }
+
+                    }
+                }
 
                 _foodFacilityText.Inlines.Clear();
                 _industryFacilityText.Inlines.Clear();

@@ -143,7 +143,7 @@ namespace Supremacy.Universe
         private Meter _shieldStrength;
 
         private int _shipyardId;
-        //private string shipyard_slot_1_order = "";
+        //private string shipyard_slot_1_status = "no active yard";
         private int _systemId = -1;
         private CollectionBase<TradeRoute> _tradeRoutes;
 
@@ -292,7 +292,7 @@ namespace Supremacy.Universe
                     return _available;
                 }
                 else
-                return 0;
+                    return 0;
             }
         }
         public OrbitalBatteryDesign OrbitalBatteryDesign
@@ -348,7 +348,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                decimal baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * ((decimal)-0.5 + (decimal)_health.PercentFilled) * 5 * 100;  // no growth under 60% Health
+                decimal baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * ((decimal)-0.6 + (decimal)_health.PercentFilled) * 5 * 100;  // no growth under 60% Health
                 //baseGrowthRate += 0.01m;
                 ValueModifier<decimal> modifier = new ValueModifier<decimal>
                 {
@@ -375,14 +375,14 @@ namespace Supremacy.Universe
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
                 Percentage _PercentageGrowthRate = Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
-                if(_PercentageGrowthRate > 0.06)
+                if (_PercentageGrowthRate > 0.06)
                 {
                     _PercentageGrowthRate = (Percentage)0.06;
                 }
 
                 if (_PercentageGrowthRate < -0.02)
                 {
-                    _PercentageGrowthRate = (Percentage)0.02 *-1;
+                    _PercentageGrowthRate = (Percentage)0.02 * -1;
                 }
 
                 return _PercentageGrowthRate;
@@ -481,12 +481,19 @@ namespace Supremacy.Universe
             }
         }
 
-        public string ShipyardSlot_1_Status(ShipyardBuildSlot buildSlot)
-        {
-            string status = GetShipyardSlotStatus(buildSlot);
-            return status;
-            //return "hello";
-        }
+        //public string ShipyardSlot_1_Status()
+        //{
+        //    if (Shipyard == null)
+        //    {
+        //        shipyard_slot_1_status =  "no shipyard";
+        //    }
+        //    else
+        //    {
+        //        shipyard_slot_1_status = "Shipyard av";
+        //    }
+        //    return shipyard_slot_1_status;
+        //    //return "hello";
+        //}
 
         public string GetShipyardSlotStatus(ShipyardBuildSlot buildSlot)
         {
@@ -889,11 +896,11 @@ namespace Supremacy.Universe
         public void ProcessQueue()
         {
 
-            _text = "Step_1205:; ProcessQueue ... remove complete projects etc."
+            _text = "Step_1207:; ProcessQueue ... remove complete projects etc."
                     //+ "" + colony.Name + " " + colony.Owner
                     ;
             Console.WriteLine(_text);
-            
+
             int count = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
@@ -1080,6 +1087,11 @@ namespace Supremacy.Universe
 
             CivilizationManager currentOwnerManager = CivilizationManager.For(OwnerID);
             CivilizationManager newOwnerManager = CivilizationManager.For(newOwner);
+            _text = "Step_0366:; TakeOwnership > oldOwner = "
+                + currentOwnerManager
+                + ", newOwner = " + newOwnerManager
+                ;
+            Console.WriteLine(_text);
 
             Owner = newOwner;
 
@@ -1099,6 +1111,7 @@ namespace Supremacy.Universe
             }
 
             _ = currentOwnerManager.Colonies.Remove(this);
+
             newOwnerManager.Colonies.Add(this);
 
             newOwnerManager.MapData.SetExplored(Location, true);
@@ -1298,135 +1311,145 @@ namespace Supremacy.Universe
         /// <returns>The production output.</returns>
         public int GetProductionOutput(ProductionCategory category)
         {
-            int unitOutput = GetFacilityType(category).UnitOutput;
-            int activeUnits = GetActiveFacilities(category);
-            OutputModifier modifier = GetProductionModifier(category);
-            int baseOutput = unitOutput * activeUnits;
-
-//#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            int tempProd = (int)(baseOutput + (baseOutput * modifier.Efficiency)) + modifier.Bonus;
-
-            /*int _population = */
-            _ = int.TryParse(Population.ToString(), out int _population);
-            int labor = _population / 10;
-            int laborAvailable;
-
-            int _laborpool_unused = AvailableLabor;
-            int _foodActive = GetActiveFacilities(ProductionCategory.Food);
-            int _foodPF_unused = Facilities_Total1_Food - _foodActive;
-            int _industryActive = GetActiveFacilities(ProductionCategory.Industry);
-            int _industryPF_unused = Facilities_Total2_Industry - _industryActive;
-            int _energyActive = GetActiveFacilities(ProductionCategory.Energy);
-            int _energyPF_unused = Facilities_Total3_Energy - _energyActive;
-            int _researchActive = GetActiveFacilities(ProductionCategory.Research);
-            int _researchPF_unused = Facilities_Total3_Energy - _researchActive;
-            int _intelActive = GetActiveFacilities(ProductionCategory.Intelligence);
-            int _intelPF_unused = Facilities_Total5_Intelligence - _intelActive;
-//#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            //int _optimizedPF;
-            //int _diff;
-            //while (GetAvailableLabor() > 0)
-            laborAvailable = GetAvailableLabor() / 10
-                    + GetActiveFacilities(ProductionCategory.Research)
-                    + GetActiveFacilities(ProductionCategory.Intelligence);
-
-            //while (laborAvailable > 0)
-            //{ laborAvailable += GetAvailableLabor; }
-
-
-
-            if (category == ProductionCategory.Food)
+            try
             {
-                int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
+                //if (GetActiveFacilities(category) == 0)
+                //    return 0;
+                int unitOutput = GetFacilityType(category).UnitOutput;
+                int activeUnits = GetActiveFacilities(category);
+                OutputModifier modifier = GetProductionModifier(category);
+                int baseOutput = unitOutput * activeUnits;
 
-                GameLog.Core.ProductionDetails.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
-                    , GameContext.Current.TurnNumber
-                    , _foodActive
-                    , Facilities_Total1_Food
-                    , _foodPF_unused
+                //#pragma warning disable IDE0059 // Unnecessary assignment of a value
+                int tempProd = (int)(baseOutput + (baseOutput * modifier.Efficiency)) + modifier.Bonus;
 
-                    , Population
-                    , Name
-                    , laborAvailable
-                    , _foodDeficit
-                    );
+                /*int _population = */
+                _ = int.TryParse(Population.ToString(), out int _population);
+                int labor = _population / 10;
+                int laborAvailable;
 
-                //_optimizedPF = (_population / unitOutput);
-                //int _diff = _optimizedPF - _foodActive;
+                int _laborpool_unused = AvailableLabor;
+                int _foodActive = GetActiveFacilities(ProductionCategory.Food);
+                int _foodPF_unused = Facilities_Total1_Food - _foodActive;
+                int _industryActive = GetActiveFacilities(ProductionCategory.Industry);
+                int _industryPF_unused = Facilities_Total2_Industry - _industryActive;
+                int _energyActive = GetActiveFacilities(ProductionCategory.Energy);
+                int _energyPF_unused = Facilities_Total3_Energy - _energyActive;
+                int _researchActive = GetActiveFacilities(ProductionCategory.Research);
+                int _researchPF_unused = Facilities_Total3_Energy - _researchActive;
+                int _intelActive = GetActiveFacilities(ProductionCategory.Intelligence);
+                int _intelPF_unused = Facilities_Total5_Intelligence - _intelActive;
+                //#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                //int _optimizedPF;
+                //int _diff;
+                //while (GetAvailableLabor() > 0)
+                laborAvailable = GetAvailableLabor() / 10
+                        + GetActiveFacilities(ProductionCategory.Research)
+                        + GetActiveFacilities(ProductionCategory.Intelligence);
+
+                //while (laborAvailable > 0)
+                //{ laborAvailable += GetAvailableLabor; }
 
 
-                //colony.FoodReserves.AdjustCurrent(GetProductionOutput(ProductionCategory.Food));
-                //int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
-                //FoodReserves.AdjustCurrent(-1 * Population.CurrentValue);
-                //FoodReserves.UpdateAndReset();
 
-                if (Name == "Borg" && category == ProductionCategory.Food)
+                if (category == ProductionCategory.Food)
                 {
-                    GameLog.Core.ProductionDetails.DebugFormat("Borg and Food"); // just for Breakpoint
+                    int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
+
+                    GameLog.Core.ProductionDetails.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
+                        , GameContext.Current.TurnNumber
+                        , _foodActive
+                        , Facilities_Total1_Food
+                        , _foodPF_unused
+
+                        , Population
+                        , Name
+                        , laborAvailable
+                        , _foodDeficit
+                        );
+
+                    //_optimizedPF = (_population / unitOutput);
+                    //int _diff = _optimizedPF - _foodActive;
+
+
+                    //colony.FoodReserves.AdjustCurrent(GetProductionOutput(ProductionCategory.Food));
+                    //int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
+                    //FoodReserves.AdjustCurrent(-1 * Population.CurrentValue);
+                    //FoodReserves.UpdateAndReset();
+
+                    if (Name == "Borg" && category == ProductionCategory.Food)
+                    {
+                        GameLog.Core.ProductionDetails.DebugFormat("Borg and Food"); // just for Breakpoint
+                    }
+
+                    //while (laborAvailable > 0 && _foodPF_unused > 0)
+                    //{
+                    //    if (_foodDeficit > 0)
+                    //    {
+                    //        if (Name == "Borg" && category == ProductionCategory.Food)
+                    //        {
+                    //            GameLog.Core.ProductionDetails.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
+                    //        }
+
+                    //        continue;
+                    //    }
+                    //    //FoodReserves - _population + 
+                    //    //if (_)
+                    //    laborAvailable -= 1;
+                    //    _foodPF_unused -= 1;
+                    //    baseOutput += unitOutput;
+
+                    //}
+                    baseOutput = unitOutput * activeUnits;
+
+                    if (baseOutput < 10) { baseOutput = 10; }
                 }
 
-                //while (laborAvailable > 0 && _foodPF_unused > 0)
-                //{
-                //    if (_foodDeficit > 0)
-                //    {
-                //        if (Name == "Borg" && category == ProductionCategory.Food)
-                //        {
-                //            GameLog.Core.ProductionDetails.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
-                //        }
 
-                //        continue;
-                //    }
-                //    //FoodReserves - _population + 
-                //    //if (_)
-                //    laborAvailable -= 1;
-                //    _foodPF_unused -= 1;
-                //    baseOutput += unitOutput;
 
-                //}
-                baseOutput = unitOutput * activeUnits;
+                switch (category)
+                {
+                    case ProductionCategory.Intelligence:
+                        if (baseOutput < 0)
+                        {
+                            baseOutput = 0;
+                        }
 
-                if (baseOutput < 10) { baseOutput = 10; }
+                        break;
+                    case ProductionCategory.Research:
+                        {
+                            float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                            baseOutput = (int)(moraleMod * baseOutput);
+                        }
+                        break;
+                    case ProductionCategory.Industry:
+                        {
+                            float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                            baseOutput = (int)(moraleMod * baseOutput);
+                            if (baseOutput < 10)
+                            {
+                                baseOutput = 10;
+                            }
+                        }
+                        break;
+                    case ProductionCategory.Energy:
+                        {
+                            float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                            baseOutput = (int)(moraleMod * baseOutput);
+                            if (baseOutput < 10)
+                            {
+                                baseOutput = 0;
+                            }
+                        }
+                        break;
+                }
+
+                return (int)(baseOutput + (baseOutput * modifier.Efficiency)) + modifier.Bonus;
             }
-
-
-
-            switch (category)
+            catch
             {
-                case ProductionCategory.Intelligence:
-                    if (baseOutput < 0)
-                    {
-                        baseOutput = 0;
-                    }
-
-                    break;
-                case ProductionCategory.Research:
-                    {
-                        float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
-                        baseOutput = (int)(moraleMod * baseOutput);
-                    }
-                    break;
-                case ProductionCategory.Industry:
-                    {
-                        float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
-                        baseOutput = (int)(moraleMod * baseOutput);
-                        if (baseOutput < 10)
-                        {
-                            baseOutput = 10;
-                        }
-                    }
-                    break;
-                case ProductionCategory.Energy:
-                    {
-                        float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
-                        baseOutput = (int)(moraleMod * baseOutput);
-                        if (baseOutput < 10)
-                        {
-                            baseOutput = 10;
-                        }
-                    }
-                    break;
+                return 0;
             }
-            return (int)(baseOutput + (baseOutput * modifier.Efficiency)) + modifier.Bonus;
         }
 
         /// <summary>
@@ -1899,12 +1922,12 @@ namespace Supremacy.Universe
                     DoSitRepGray(_text);
                 }
                 else if (_foodPF_unused == 0)
-                    {
-                        _text = "Step_2399: No free food facility";
-                        Console.WriteLine(_text);
+                {
+                    _text = "Step_2399: No free food facility";
+                    Console.WriteLine(_text);
                     if (!Owner.IsHuman)
                         AddFacilities(ProductionCategory.Food, 1);
-                        //; // ToDo - how to build up a build project
+                    //; // ToDo - how to build up a build project
                 }
                 else
                 {
@@ -1924,10 +1947,10 @@ namespace Supremacy.Universe
                 //        ActivateFacility(ProductionCategory.Food);
                 //        DoSitRepGray(_text);
                 //    }
-            //}
+                //}
 
 
-            Report(this);
+                Report(this);
 
                 int shutDown = 0;
                 Shipyard shipyard = Shipyard;
@@ -2068,9 +2091,9 @@ namespace Supremacy.Universe
             _text = "Step_4202:; ------------------------------";
             Console.WriteLine(_text);
 
-            _text = "Step_4203:; Turn " + _turnnumber +   GameContext.Current.TurnNumber + ": ";
+            _text = "Step_4203:; Turn " + _turnnumber + GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
-            _text += colony.Name + " ( "+ colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
+            _text += colony.Name + " ( " + colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = Facilities_Total1_Food - GetActiveFacilities(ProductionCategory.Food);
             _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + Facilities_Total1_Food + " (" + colony.FoodReserves + ")"; // _foodPF_unused;
             //int _industryPF_unused = Facilities_Total2_Industry - GetActiveFacilities(ProductionCategory.Industry);
@@ -2092,32 +2115,32 @@ namespace Supremacy.Universe
             //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
 
-//#pragma warning disable IDE0059 // Unnecessary assignment of a value
-//            int dummy = _foodPF_unused
+            //#pragma warning disable IDE0059 // Unnecessary assignment of a value
+            //            int dummy = _foodPF_unused
 
-//                + _industryPF_unused
-//                + _energyPF_unused
-//                + _researchPF_unused
-//                + _intelPF_unused;
+            //                + _industryPF_unused
+            //                + _energyPF_unused
+            //                + _researchPF_unused
+            //                + _intelPF_unused;
 
-//            IValueProvider<int> dummy2 = _activeFoodFacilities;
-//            IValueProvider<int> dummy3 = _Facilities_Active2_Industry;
-//            IValueProvider<int> dummy4 = _Facilities_Active3_Energy;
-//            IValueProvider<int> dummy5 = _Facilities_Active4_Research;
-//            IValueProvider<int> dummy6 = _Facilities_Active5_Intelligence;
+            //            IValueProvider<int> dummy2 = _activeFoodFacilities;
+            //            IValueProvider<int> dummy3 = _Facilities_Active2_Industry;
+            //            IValueProvider<int> dummy4 = _Facilities_Active3_Energy;
+            //            IValueProvider<int> dummy5 = _Facilities_Active4_Research;
+            //            IValueProvider<int> dummy6 = _Facilities_Active5_Intelligence;
 
-//            IValueProvider<int> dummy11 = _totalFoodFacilities;
-//            IValueProvider<int> dummy12 = _Facilities_Total2_Industry;
-//            IValueProvider<int> dummy13 = _Facilities_Total3_Energy;
-//            IValueProvider<int> dummy14 = _Facilities_Total4_Research;
-//            IValueProvider<int> dummy15 = _Facilities_Total5_Intelligence;
+            //            IValueProvider<int> dummy11 = _totalFoodFacilities;
+            //            IValueProvider<int> dummy12 = _Facilities_Total2_Industry;
+            //            IValueProvider<int> dummy13 = _Facilities_Total3_Energy;
+            //            IValueProvider<int> dummy14 = _Facilities_Total4_Research;
+            //            IValueProvider<int> dummy15 = _Facilities_Total5_Intelligence;
 
-//            int dummy21 = _foodPF_unused;
-//            int dummy22 = _industryPF_unused;
-//            int dummy23 = _energyPF_unused;
-//            int dummy24 = _researchPF_unused;
-//            int dummy25 = _intelPF_unused;
-//#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            //            int dummy21 = _foodPF_unused;
+            //            int dummy22 = _industryPF_unused;
+            //            int dummy23 = _energyPF_unused;
+            //            int dummy24 = _researchPF_unused;
+            //            int dummy25 = _intelPF_unused;
+            //#pragma warning restore IDE0059 // Unnecessary assignment of a value
 
         }
 

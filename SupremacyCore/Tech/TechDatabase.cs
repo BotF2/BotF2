@@ -1076,7 +1076,7 @@ namespace Supremacy.Tech
 
                     streamWriter = new StreamWriter(file);
 
-                    Console.WriteLine("Step_9160: writing {0}", file);  // _TechObj-6-Ships_NAMES_List(autoCreated).csv
+                    Console.WriteLine("Step_9160:; writing {0}", file);  // _TechObj-6-Ships_NAMES_List(autoCreated).csv
 
 
 
@@ -2159,13 +2159,15 @@ namespace Supremacy.Tech
                 _weapon2 = ship.SecondaryWeapon.Count * ship.SecondaryWeapon.Damage / 4;
             }
             int _buildcosts = (ship.Duranium * 5)
-                + (ship.HullStrength * 5) + (ship.ShieldStrength)
-                + (ship.Speed * 40)
+                + (ship.HullStrength * 10) 
+                + (ship.ShieldStrength)
+                + (ship.Speed * 20)
                 + (ship.Maneuverability * 20)
                 + ship.CrewSize
-                + _weapon1 + (_weapon2)
+                + (_weapon1 * 2)
+                + (_weapon2 * 2)
                 ;
-            _buildcosts = 1500 + _buildcosts;// * ship.TechRequirements.HighestTechLevel;// + (ship.CrewSize * 2) / 4000;
+            _buildcosts = 500 + _buildcosts * ship.TechRequirements.HighestTechLevel;//;// + (ship.CrewSize * 2) / 4000;
 
             _text = ship.Key
                 + "; BC old:; " + _buildCostsFromFile

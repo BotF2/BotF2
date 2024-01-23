@@ -15,7 +15,7 @@
              d:DesignWidth="1099"
              Height="690"
              Width="1130"
-             Margin="300,0,0,0"
+             Margin="300,80,0,0"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
@@ -33,7 +33,7 @@
     </Dialogs:Dialog.CommandBindings>
 
     <!--       MAIN CONTENT     -->
-    <Grid Background="Black">
+    <Grid Background="Black" Margin="0,0,0,0">
 
         <Grid.ColumnDefinitions>
 
@@ -45,24 +45,38 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />            
+            <!--<RowDefinition Height="*" />-->
 
-        <TextBlock Grid.ColumnSpan="2"
+        </Grid.RowDefinitions>
+        
+            <Button Grid.Row="0" Grid.Column="1" Margin="106,0,99,0"
+              IsCancel="True"
+              Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
+                <AccessText Text="{local:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}" />
+                <!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />-->
+            </Button>        
+
+        <!--<TextBlock Grid.Row="1" Grid.ColumnSpan="2"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="Black"
-               Margin="1,1,0,0"
+               Margin="1,18,0,0"
                FontSize="18pt"
-               Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
-        <TextBlock Grid.ColumnSpan="2"
+               Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />-->
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="1,5,0,5"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
                FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
 
+        <!--<StackPanel Orientation="Vertical" Grid.Row="0" Grid.ColumnSpan="2" >-->
+
+
+        <!--</StackPanel>-->
+
         <ListBox x:Name="BuildProjectList"
                  Grid.Row="1"
-                 Margin="0,6,0,0"
+                 Margin="0,33,0,0"
                  PreviewMouseDoubleClick="OnBuildProjectListMouseDoubleClick"
                  SelectedItem="{Binding ElementName=_self, Path=SelectedBuildProject, Mode=OneWayToSource}"
                  Background="Black">
@@ -87,7 +101,7 @@
             Grid.RowSpan="2"
             LastChildFill="True"
             Width="360"
-            Margin="10,0,0,0"
+            Margin="10,46,0,0"
             Background="Black">
             <Image DockPanel.Dock="Top"
                 MaxWidth="360"
@@ -148,23 +162,24 @@
             -->
         </DockPanel>
 
-        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+        <!--Grid.ColumnSpan="2"--> 
+        <TextBlock Grid.Row="0" VerticalAlignment="Bottom"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="Aqua"
-               FontSize="20pt"
+               FontSize="16pt"
                Text="{local:StringResource Key=NEW_AT_SELECT_A_SHIP_TO_CONSTRUCT}" />
 
 
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
+        <!--<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
 
 
             <Button Margin="6,0,3,0"
               IsCancel="True"
               Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
                 <AccessText Text="{local:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}" />
-                <!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />-->
+                --><!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />--><!--
             </Button>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 
 </Dialogs:Dialog>

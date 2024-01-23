@@ -36,12 +36,12 @@
     <Setter Property="ToolTip" Value="Build a Ship" />
    
     <Setter Property="Width" Value="50" />
-    <Setter Property="MaxHeight" Value="70" />
+    <Setter Property="MaxHeight" Value="80" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
           <DockPanel>
-            <Border CornerRadius="3" BorderThickness="1" DockPanel.Dock="Left" Width="50" Height="70" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border CornerRadius="3" BorderThickness="1" DockPanel.Dock="Left" Width="50" Height="80" VerticalAlignment="Top" HorizontalAlignment="Left">
               <Border.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.2">
                   <GradientStop Color="#FFC8C8C8" Offset="0"/>
@@ -62,13 +62,21 @@
                        Height="50"
                        Source="vfs:///Resources/Specific_Empires_UI/Federation/ColonyScreen/build_ship.png" Stretch="UniformToFill"
                        HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBlock x:Name="BuildCapacity"
+                           Text="{Binding Path=(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipBuildProject.IndustryCapacity)}" 
+                           Foreground="White"
+                           FontWeight="SemiBold"
+                           Margin="3,0,3,0"
+                           HorizontalAlignment="Center" FontSize="10" />                  
                 <TextBlock x:Name="Build"
                            Text="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_TOOLTIP}" 
                            Foreground="LightGreen"
                            FontWeight="SemiBold"
                            Margin="3,0,3,3"
                            HorizontalAlignment="Center" FontSize="12" />
-              </StackPanel>
+
+                  
+                            </StackPanel>
           </Border>
           </DockPanel>
           <ControlTemplate.Triggers>
@@ -90,7 +98,8 @@
     </Setter>
   </Style>
 
-  <Style x:Key="CancelShipConstructionButton"
+    <!--CancelShipConstructionButton-->
+    <Style x:Key="CancelShipConstructionButton"
            TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
     <Setter Property="IsTabStop" Value="False"/>
@@ -282,7 +291,7 @@
                     Grid.ColumnSpan="2"
                     Grid.Row="0"
                     Style="{StaticResource BuildShipButton}" 
-                    Width="50" Height="70" 
+                    Width="50" Height="85" 
                     VerticalAlignment="Top" 
                     HorizontalAlignment="Left" 
                     Margin="1,85,0,0" 
@@ -306,41 +315,53 @@
                     CommandParameter="{Binding Path=(s:BuildSlot.Project)}" />
             </Grid>
 
-            <StackPanel Grid.Column="3" Grid.Row="0" Width="100">
+            <StackPanel Grid.Column="3" Grid.Row="0" Width="120">
                 <Grid x:Name="ResourcesSite" Margin="0,0,0,0" Opacity="0.33" Visibility="Visible">
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="28" />
                 <ColumnDefinition Width="Auto" />
               </Grid.ColumnDefinitions>
               <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="35" />
               </Grid.RowDefinitions>
-              <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Duranium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Duranium}}" />
-              <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
-              <Image Grid.Row="2" Source="{StaticResource StopwatchImage}" Width="17" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />
+
+
 
               <!-- Invisible text to avoid shifting layouts -->
-              <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
               <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
+              <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
               <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Visibility="Hidden">
-                <TextBlock.Text>
+               
+                  <TextBlock.Text>
                   <Binding Source="999"
                            BindsDirectlyToSource="True"
                            StringFormat="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TURNS_UNTIL_COMPLETION_FORMAT}"
                            Mode="OneTime" />
                 </TextBlock.Text>
               </TextBlock>
+                    
+                    
+                <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/Industry.png" Width="16" 
+                       ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, 
+                    Entry=INDUSTRY}" />
+
+                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} / {1}">
+                            <Binding Path="(s:BuildSlot.Project).(s:BuildProject.IndustryInvested)" Mode="OneWay" />
+                            <Binding Path="(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.BuildCost)" Mode="OneWay" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+
+
+                <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />                    
+                    
               <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
-                <TextBlock.Text>
-                  <MultiBinding StringFormat="{}{0} / {1}">
-                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[Duranium]" Mode="OneWay" />
-                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.BuildResourceCosts)[Duranium]" Mode="OneWay" />
-                  </MultiBinding>
-                </TextBlock.Text>
-              </TextBlock>
-              <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                 <TextBlock.Text>
                   <MultiBinding StringFormat="{}{0} / {1}">
                      <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[Dilithium]" Mode="OneWay" />
@@ -348,8 +369,23 @@
                   </MultiBinding>
                 </TextBlock.Text>
               </TextBlock>
+                    
+              <Image Grid.Row="2" Source="vfs:///Resources/Images/UI/ScreenIcons/Duranium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Duranium}}" />
+                    
               <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
-
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="{}{0} / {1}">
+                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[Duranium]" Mode="OneWay" />
+                     <Binding Path="(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.BuildResourceCosts)[Duranium]" Mode="OneWay" />
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>    
+                    
+                    
+              <Image Grid.Row="3" Source="{StaticResource StopwatchImage}" Width="17" 
+                     ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />     
+                    
+              <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                 <TextBlock.Text>
                   <Binding Path="(s:BuildSlot.Project).(s:BuildProject.TurnsRemaining)"
                            StringFormat="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TURNS_UNTIL_COMPLETION_FORMAT}"

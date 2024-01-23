@@ -74,8 +74,8 @@ namespace Supremacy.Diplomacy
             _counterpartyId = counterpartyId;
             _contactTurn = 0;
             _firstDiplomaticAction = false;
-            _regard = new Meter(500, 0, 1000);
-            _trust = new Meter(500, 0, 1000);
+            _regard = new Meter(481, 0, 1000);
+            _trust = new Meter(460, 0, 1000);
             _regard.CurrentValueChanged += OnRegardCurrentValueChanged;
             _trust.CurrentValueChanged += OnTrustCurrentValueChanged;
         }

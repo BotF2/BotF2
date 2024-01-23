@@ -52,13 +52,19 @@
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" />
                   <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="111" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="40" />                  
+                    <ColumnDefinition Width="Auto" />
+
+                    <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <!--<ColumnDefinition Width="Auto" />-->
                   <ColumnDefinition Width="*" />
                   <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
@@ -73,32 +79,51 @@
                        Fill="{StaticResource Ter3Gradient_Top_Bottom}" />                             
                 
                   <Button Grid.Column="2"
-                        Margin="3,0,0,0" 
+                        Margin="4,0,0,0" 
                       Style="{StaticResource LCARS_BorderButtonStyle}"
-                      Content="{s:StringResource Key=FIRST_TEXT, Case=lower}"
+                      Content="{s:StringResource Key=FIRST_SYSTEM_TEXT, Case=lower}"
                       Command="{x:Static scc:ColonyScreenCommands.FirstColonyCommand}" />
 
                 <Rectangle Grid.Column="3" Margin="4,0,0,0" Width="14" SnapsToDevicePixels="True"
-                      Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
+                    Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
 
                 <Button Grid.Column="4"
+                      Margin="4,0,0,0"
+                    Style="{StaticResource LCARS_BorderButtonStyle}"
+                    Content="&lt;"
+                    Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+
+                <Rectangle Grid.Column="5" Margin="4,0,0,0" Width="14" SnapsToDevicePixels="True"
+      Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
+
+                <Button Grid.Column="6"
+                      Margin="4,0,0,0"
+                    Style="{StaticResource LCARS_BorderButtonStyle}"
+                    Content=">"
+                    Command="{x:Static scc:ColonyScreenCommands.NextColonyCommand}" />
+
+                <Rectangle Grid.Column="7" Margin="4,0,0,0" Width="14" SnapsToDevicePixels="True"
+                      Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
+
+                <!--<Button Grid.Column="8"
                       Margin="3,0,0,0"
                     Style="{StaticResource LCARS_BorderButtonStyle}"
                     Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
                     Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
                                    
-                  <Rectangle Grid.Column="5"
+                  <Rectangle Grid.Column="9"
                              Margin="3,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource Ter5Gradient_Top_Bottom}" />
+                       Fill="{StaticResource Ter5Gradient_Top_Bottom}" />-->
                                 
-                  <ComboBox Grid.Column="6"
+                  <ComboBox Grid.Column="8"
                           Grid.Row="0"
-                          Margin="3,0,0,0"
+                          Margin="4,0,0,0"
                           IsEditable="False"
                           IsReadOnly="True"
                           MinWidth="200"
+                            Height="28"
                           ItemsSource="{Binding Path=Colonies, Mode=OneWay}"
                           SelectedItem="{Binding Path=SelectedColony, Mode=TwoWay}">
                   <ComboBox.ItemTemplate>
@@ -116,12 +141,12 @@
                         Margin="5,0,0,0" />-->
 
                                 
-                  <Button Grid.Column="7" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
+                  <!--<Button Grid.Column="11" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
                       Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
                       Command="{x:Static scc:ColonyScreenCommands.NextColonyCommand}" />
 
-                  <Rectangle Grid.Column="8" Margin="3,0,0,0" Width="14" SnapsToDevicePixels="True"
-                       Fill="{StaticResource Ter5Gradient_Top_Bottom}" />
+                  <Rectangle Grid.Column="12" Margin="3,0,0,0" Width="14" SnapsToDevicePixels="True"
+                       Fill="{StaticResource Ter5Gradient_Top_Bottom}" />-->
                                 
                               
                   <!--<Border Grid.Column="8"
@@ -132,11 +157,11 @@
                         Margin="3,0,0,0" />-->
                   
                                 
-                  <Rectangle Grid.Column="9" Grid.Row="0" Margin="3,0,0,0"
+                  <Rectangle Grid.Column="13" Grid.Row="0" Margin="3,0,0,0"
                            Fill="{StaticResource Ter3Gradient_Bottom_Top}" />
                 
                   
-                  <Border Grid.Column="10" Grid.Row="0" Width="21" CornerRadius="0,14,14,0" Margin="3,0,0,0" 
+                  <Border Grid.Column="14" Grid.Row="0" Width="21" CornerRadius="0,14,14,0" Margin="3,0,0,0" 
                         Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"/>
                        
               </Grid>

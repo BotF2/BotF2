@@ -41,6 +41,11 @@ namespace Supremacy.AI
 
         public static void DoTurn([NotNull] Civilization civ)
         {
+            _text = "Step_1100:; ColonyAI.DoTurn begins..."
+
+                    ;
+            Console.WriteLine(_text);
+
             if (civ == null)
             {
                 need1Colonizer = false;// dummy > just keep
@@ -77,7 +82,7 @@ namespace Supremacy.AI
                     Console.WriteLine(_text);
                 }
 
-
+                CheckPopulation(colony);
                 HandleEnergyProduction(colony);
                 HandleFoodProduction(colony);
                 HandleBasicStructures(colony, civ);
@@ -100,6 +105,10 @@ namespace Supremacy.AI
                     }
                 }
             }
+            _text = "Step_1100:; ColonyAI.DoTurn is done..."
+
+        ;
+            Console.WriteLine(_text);
         }
 
         private static void SetFacility(Colony colony, ProductionCategory category, int netProd, double output, IEnumerable<ProductionCategory> otherCategories)
@@ -131,9 +140,135 @@ namespace Supremacy.AI
             }
         }
 
+        private static void CheckPopulation(Colony colony)
+        {
+            int _popAvailable = colony.Population.CurrentValue / 10;
+
+            int _tmp_Active1_Food = colony.Facilities_Active1_Food;
+            int _tmp_Active2_Industry = colony.Facilities_Active2_Industry;
+            int _tmp_Active3_Energy = colony.Facilities_Active3_Energy;
+            int _tmp_Active4_Research = colony.Facilities_Active4_Research;
+            int _tmp_Active5_Intelligence = colony.Facilities_Active5_Intelligence;
+
+            int _laborPool = colony.GetAvailableLabor() / 10;
+
+            _text = "Step_2345:; Pop= " + _popAvailable
+                + ", Active: Food= " + _tmp_Active1_Food
+                + ", Ind= " + _tmp_Active2_Industry
+                + ", En= " + _tmp_Active3_Energy
+                + ", Res= " + _tmp_Active4_Research
+                + ", Int= " + _tmp_Active5_Intelligence
+                + ", Pool= " + _laborPool
+                + " for " + colony.Name
+                ;
+            Console.WriteLine(_text);
+
+            while (colony.DeactivateFacility(ProductionCategory.Industry)) { }
+            while (colony.DeactivateFacility(ProductionCategory.Research)) { }
+            while (colony.DeactivateFacility(ProductionCategory.Intelligence)) { }
+            while (colony.DeactivateFacility(ProductionCategory.Food)) { }
+            while (colony.DeactivateFacility(ProductionCategory.Energy)) { }
+
+            _laborPool = colony.GetAvailableLabor() / 10;
+
+            _text = "Step_2347:; Pop= " + _popAvailable
+                    + ", Active: Food= " + colony.GetActiveFacilities(ProductionCategory.Food)
+                    + ", Ind= " + colony.GetActiveFacilities(ProductionCategory.Industry)
+                    + ", En= " + colony.GetActiveFacilities(ProductionCategory.Energy)
+                    + ", Res= " + colony.GetActiveFacilities(ProductionCategory.Research)
+                    + ", Int= " + colony.GetActiveFacilities(ProductionCategory.Intelligence)
+                    + ", Pool= " + _laborPool
+                    + " for " + colony.Name
+                    ;
+            Console.WriteLine(_text);
+
+            //checked what's going on here setting _popAvai to Zero'
+        
+
+            for (int i = 0; i < colony.Facilities_Total3_Energy; i++)
+            {
+                while (_popAvailable > colony.Facilities_Total3_Energy)
+                {
+                    colony.ActivateFacility(ProductionCategory.Energy);
+                    _popAvailable -= 1;
+                }
+            }
+            HandleEnergyProduction(colony);
+
+
+            while (_popAvailable > 0 && colony.FoodReserves.CurrentValue > 1000 && colony.NetFood < -10)
+            {
+                colony.ActivateFacility(ProductionCategory.Food);
+                _popAvailable -= 1;
+            }
+
+            while (_popAvailable > 0 && colony.Facilities_Active4_Research < _tmp_Active4_Research)
+            {
+                colony.ActivateFacility(ProductionCategory.Research);
+                _popAvailable -= 1;
+            }
+
+            while (_popAvailable > 0 && colony.Facilities_Active5_Intelligence < _tmp_Active5_Intelligence)
+            {
+                colony.ActivateFacility(ProductionCategory.Intelligence);
+                _popAvailable -= 1;
+            }
+
+            while (_popAvailable > 0 && colony.Facilities_Active2_Industry < colony.Facilities_Total2_Industry)
+            {
+                colony.ActivateFacility(ProductionCategory.Industry);
+                _popAvailable -= 1;
+            }
+
+            while (_popAvailable > 0 && colony.Facilities_Active4_Research < colony.Facilities_Total4_Research)
+            {
+                colony.ActivateFacility(ProductionCategory.Research);
+                _popAvailable -= 1;
+            }
+
+            while (_popAvailable > 0 && colony.Facilities_Active5_Intelligence < colony.Facilities_Total5_Intelligence)
+            {
+                colony.ActivateFacility(ProductionCategory.Intelligence);
+                _popAvailable -= 1;
+            }
+
+            while (_popAvailable > 0 && colony.Facilities_Active1_Food < colony.Facilities_Total1_Food)
+            {
+                colony.ActivateFacility(ProductionCategory.Food);
+                _popAvailable -= 1;
+            }
+
+            // don't fill up energy - put to labor pool instead
+
+            //while (_popAvailable > 1 && colony.Facilities_Active3_Energy < colony.Facilities_Total3_Energy)
+            //{
+            //    colony.ActivateFacility(ProductionCategory.Energy);
+            //    _popAvailable -= 1;
+            //}
+
+            _laborPool = colony.GetAvailableLabor() / 10;
+
+            _text = "Step_2348:; Pop= " + _popAvailable
+                    + ", Active: Food= " + colony.GetActiveFacilities(ProductionCategory.Food)
+                    + ", Ind= " + colony.GetActiveFacilities(ProductionCategory.Industry)
+                    + ", En= " + colony.GetActiveFacilities(ProductionCategory.Energy)
+                    + ", Res= " + colony.GetActiveFacilities(ProductionCategory.Research)
+                    + ", Int= " + colony.GetActiveFacilities(ProductionCategory.Intelligence)
+                    + ", Pool= " + _laborPool
+                    + " for " + colony.Name
+                    ;
+            Console.WriteLine(_text);
+
+            //while (colony.ActivateFacility(ProductionCategory.Industry)) { }
+            //while (colony.ActivateFacility(ProductionCategory.Research)) { }
+            //while (colony.ActivateFacility(ProductionCategory.Intelligence)) { }
+            //while (colony.ActivateFacility(ProductionCategory.Food)) { }
+
+        }
+
         private static void HandleEnergyProduction(Colony colony)
         {
-            _text = "Step_1210: Handle ENERGY on; "
+            _text = "Step_1218:; Handle ENERGY on; "
                     + colony.Name + "; " + colony.Owner
                     //+ " > no Upgrade INDUSTRY"
                     ;
@@ -159,7 +294,7 @@ namespace Supremacy.AI
             if ((colony.Buildings.Any(b => !b.IsActive && b.BuildingDesign.EnergyCost > 0) || (colony.Shipyard?.BuildSlots.Any(s => !s.IsActive) == true)) && !colony.IsBuilding(facilityType))
             {
                 colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, facilityType)));
-                _text = "Step_1218: HandleBuildings on "
+                _text = "Step_1219:; HandleBuildings on "
                     + colony.Name + " " + colony.Owner
                     + " > added 1 ENERGY Facility Build Order"
                     ;
@@ -169,7 +304,7 @@ namespace Supremacy.AI
 
         private static void HandleFoodProduction(Colony colony)
         {
-            _text = "Step_1220: Handle FOOD on; "
+            _text = "Step_1220:; Handle FOOD on; "
                     + colony.Name + "; " + colony.Owner
                     //+ " > no Upgrade INDUSTRY"
                     ;
@@ -550,7 +685,7 @@ namespace Supremacy.AI
                     foreach (var item in projects)
                     {
 
-                        _text = "Step_1235:; OPTIONS to Build" 
+                        _text = "Step_1235:; OPTIONS to Build"
                             + " on; " + colony.Name
                             + "; " + colony.Owner
                             + "; Morale=; " + colony.Morale
@@ -827,7 +962,7 @@ namespace Supremacy.AI
 
                     if (turnsNeeded > 1 && turnsNeeded < 3)  // we buy when turnsNeede = 2
                     {
-                        _text = "Step_1210: HandleBuyBuild: "
+                        _text = "Step_1210:; HandleBuyBuild: "
                             + "Credits.Current= " + manager.Credits.CurrentValue
                             + ", Costs= " + cost
                             + ", industryNeeded= " + industryNeeded
@@ -878,7 +1013,7 @@ namespace Supremacy.AI
 
             if (colony.Sector == homeSector)
             {
-                _text = "Step_5380: ShipProduction at " + colony.Location + " " + colony.Name
+                _text = "Step_5380:; ShipProduction at " + colony.Location + " " + colony.Name
                     //+ " - Not Habited: Habitation= "
                     //+ item.HasColony
                     //+ " at " + item.Location
@@ -994,7 +1129,7 @@ namespace Supremacy.AI
 
             if (colony.Sector != homeSector && colony.Shipyard != null)
             {
-                _text = "Step_5390: next: check for ShipProduction - not at HomeSector: "
+                _text = "Step_5390:; next: check for ShipProduction - not at HomeSector: "
                     + colony.Shipyard.Design
                     + " at " + colony.Location
                     + " - " + colony.Owner
@@ -1021,7 +1156,7 @@ namespace Supremacy.AI
                 if (newProject != null)
                 {
                     colony.Shipyard.BuildQueue.Add(new BuildQueueItem(newProject));
-                    _text = "Step_5386: ShipProduction "
+                    _text = "Step_5386:; ShipProduction "
                         + " at " + colony.Location
                         + " - " + colony.Owner
                         + ": Added Colonizer project..." + newProject.BuildDesign
@@ -1033,7 +1168,7 @@ namespace Supremacy.AI
 
             foreach (var item in colony.Shipyard.BuildQueue)
             {
-                _text = "Step_5386: " + colony.Location
+                _text = "Step_5387:; " + colony.Location
                     + ", ShipProduction > " + item.Project.BuildDesign
                     + ", TurnsRemaining= " + item.Project.TurnsRemaining
 
@@ -1052,7 +1187,7 @@ namespace Supremacy.AI
             if (fleet == null)
                 return;
 
-            _text = "Step_5393: CheckForColonizerBuildProject - using " + fleet.Location + " " + fleet.Ships[0].Design
+            _text = "Step_5393:; CheckForColonizerBuildProject - using " + fleet.Location + " " + fleet.Ships[0].Design
                     //+ " - Not Habited: Habitation Aim= "
                     //+ item.HasColony
                     //+ " at " + item.Location
@@ -1072,7 +1207,7 @@ namespace Supremacy.AI
 
             foreach (var item in possibleSystems)
             {
-                _text = "Step_5396: ShipProduction at " + colony.Location + " " + colony.Name
+                _text = "Step_5396:; ShipProduction at " + colony.Location + " " + colony.Name
                     + " - possible: " + possibleSystems.Count
                     + " - Not Habited: Habitation Aim= "
                     + item.HasColony

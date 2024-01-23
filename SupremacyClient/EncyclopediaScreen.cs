@@ -586,6 +586,8 @@ namespace Supremacy.Client
             IEnumerable<ICollectionView> groupViews = (from groupItem in _researchEntryListView.Items.OfType<TreeViewItem>()
                                                        select groupItem.ItemsSource).OfType<ICollectionView>();
 
+            //show also minor ships ... but how :-)
+
             foreach (ICollectionView groupView in groupViews)
             {
                 groupView.Refresh();

@@ -28,6 +28,10 @@ namespace Supremacy.AI
         private const int DangerRange = 4;
         private const int MaxDistanceInConvexHull = 3;
 
+        [NonSerialized]
+        private static string _text;
+        private static string blank = " ";
+
         #endregion
 
         #region Methods
@@ -35,8 +39,18 @@ namespace Supremacy.AI
         #region DoTurn from GameEngine
         public static void DoTurn(Civilization Civ)
         {
+            _text = "Step_1100:; PlayerAI.DoTurn begins... for CivID " + Civ.CivID + blank + Civ.Key
+
+                    ;
+            Console.WriteLine(_text);
+
             if (Civ.IsEmpire && Civ.CivID != 6 && Civ.SpiedCivList != null)  // Spy
             {
+                _text = "Step_1100:; PlayerAI.DoTurn ...SpiedCivList is NOT null ... for CivID " + Civ.CivID + blank + Civ.Key
+
+        ;
+                Console.WriteLine(_text);
+
                 List<Civilization> spyingCivs = (List<Civilization>)GameContext.Current.Civilizations.Where(o => o.IsEmpire && o.CivID != 6).ToList();
 
                 foreach (Civilization spyingCiv in spyingCivs)
@@ -87,6 +101,10 @@ namespace Supremacy.AI
                     }
                 }
             }
+            _text = "Step_1100:; PlayerAI.DoTurn is done..."
+
+        ;
+            Console.WriteLine(_text);
         }
         #endregion
 

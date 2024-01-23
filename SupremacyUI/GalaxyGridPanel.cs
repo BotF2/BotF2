@@ -165,7 +165,7 @@ namespace Supremacy.UI
         #region Constructors
         static GalaxyGridPanel()
         {
-            _text = "Step_2000: GalaxyGridPanel generated...";
+            _text = "Step_2060:; GalaxyGridPanel generated...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -2466,6 +2466,7 @@ namespace Supremacy.UI
                                         topMargin = -2;
                                     }
 
+                            
                                     dcStarNames.DrawText(
                                         starName,
                                         new Point(p.X + 3,

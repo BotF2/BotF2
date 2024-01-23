@@ -103,7 +103,7 @@ namespace Supremacy.Text
                 //    continue;
 
                 file = pathOutputfile + "_TextDatabase_List(autoCreated).csv";
-                Console.WriteLine("Step_9160: writing {0}", file); // _TextDatabase_List(autoCreated).csv
+                Console.WriteLine("Step_9161:; writing {0}", file); // _TextDatabase_List(autoCreated).csv
 
                 if (file == null)
                 {

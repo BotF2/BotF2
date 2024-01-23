@@ -144,6 +144,20 @@
             </Setter>
         </Style>
 
+        <Style x:Key="DiploButtonStyle"
+             TargetType="{x:Type Button}">
+            <Setter Property="Width"
+                Value="140" />
+            <Setter Property="Height"
+                Value="35" />
+            <Setter Property="OverridesDefaultStyle"
+                Value="False" />
+            <Setter Property="Focusable"
+                Value="False" />
+            <Setter Property="Margin" Value="2,2,2,2">
+            </Setter>
+        </Style>
+
         <!--<Style TargetType="{x:Type scc:GameButton }" x:Key="specificButton">
 
             <Setter Property="BorderThickness" Value="5" />
@@ -160,6 +174,7 @@
             </Setter>
         </Style>-->
 
+        <!--DiplomacyMessageElement-->
         <DataTemplate DataType="{x:Type scc:DiplomacyMessageElement}">
             <DockPanel LastChildFill="True"
                    HorizontalAlignment="Left">
@@ -180,6 +195,7 @@
             </DockPanel>
         </DataTemplate>
 
+        <!--ActiveAgreementViewModel-->
         <DataTemplate DataType="{x:Type scc:ActiveAgreementViewModel}">
             <DockPanel LastChildFill="True">
                 <scc:RichTextBlock DockPanel.Dock="Top"
@@ -195,6 +211,7 @@
             </DockPanel>
         </DataTemplate>
 
+        <!--CreditsDataViewModel-->
         <DataTemplate x:Key="{x:Type scc:CreditsDataViewModel}"
                     DataType="{x:Type scc:CreditsDataViewModel}">
             <Grid>
@@ -294,8 +311,9 @@
             </Grid>
         </DataTemplate>
 
-        <SolidColorBrush x:Key="CommBorderBrush"
-                       Color="#FF848484" />
+        <!--CommBorderBrush-->
+        <SolidColorBrush x:Key="CommBorderBrush" Color="#FF848484" />
+                      
         <!--Gray-->
 
         <LinearGradientBrush x:Key="CommBackgroundBrush"
@@ -353,9 +371,13 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <!--<RowDefinition Height="*"/>-->
 
                 </Grid.RowDefinitions>
+
+                <!--UpperLeftbox-->
                 <Border x:Name="UpperLeftbox"
                         Grid.Column="0"
                         Grid.ColumnSpan="1"
@@ -423,6 +445,7 @@
                             Margin="0,0,0,0"
                             Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></scc:GameButton>
                 </StackPanel>
+                
                 <!-- Upper Left Side -->
                 <Grid x:Name="UpperLeftSide"
                       Grid.Column="0"
@@ -634,6 +657,7 @@
                       VerticalAlignment="Bottom"
                       Data="F1 M 0,48L 28,48C 35.4261,48 42.548,45.05 47.799,39.799C 53.05,34.548 56,27.4261 56,20L 56,0L 28,0L 28,12.2749C 28,14.3718 27.1481,16.3788 25.6396,17.8354C 24.1312,19.292 22.0957,20.0733 20,20L 0,20L 0,48 Z" />
 
+                <!--BoolCellEditor-->
                 <Grid Grid.Column="2"
                       Grid.ColumnSpan="3"
                       Grid.Row="0"
@@ -658,6 +682,7 @@
                         </DataTemplate>
                     </Grid.Resources>
                     <Grid>
+                        <!--PART_CivilizationList-->
                         <xcdg:DataGridControl x:Name="PART_CivilizationList"
                                 scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                                 Background="Transparent"
@@ -760,11 +785,11 @@
                 <DockPanel x:Name="ForeignPowerShortName"
                            scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                            Grid.Column="0"                         
-                           Grid.Row="4"
+                           Grid.Row="6"
                            Grid.ColumnSpan="2"
                            Visibility="Visible"
                            LastChildFill="True"
-                           Margin="0,0,0,0">
+                           Margin="15,-30,0,0">
 
                     <!--
           ================================================================================
@@ -794,6 +819,7 @@
                                     FontSize="17pt"
                                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     Foreground="Aqua"
+                                    Background="Black"
                                     FontWeight="Normal"
                                     Margin="5,-2,5,0">
                             <!--Foreground="LightGoldenrodYellow"-->
@@ -804,40 +830,35 @@
                         </TextBlock>
                     </Border>
                 </DockPanel>
-                <!-- Send Edit Cancel buttons -->
+                
+                 <!--Send Edit Cancel buttons--> 
                 <DockPanel x:Name="SendEditCancel"
                            scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                            Grid.Column="2"  
                            Grid.ColumnSpan="2"
-                           Grid.Row="4"
+                           Grid.Row="6"
                            Visibility="Visible"
+                           VerticalAlignment="Center"
                            LastChildFill="True"
-                           Margin="0,0,0,0">
+                           Margin="150,-30,0,0">
                     <StackPanel Orientation="Horizontal">
-                            <!--IsEnabled="{Binding Path=SendMessageCommand}"-->                        
-                        <Button Content="SEND" 
+                       
+                        <Button Content="SEND" Margin="2,0,5,0"
                             Command="{Binding Path=SendMessageCommand}"
+                            IsEnabled="{Binding Path=SendMessageCommand}"     
+                            MinWidth="150" MaxWidth="151" MaxHeight="28"/>
 
-                            MinWidth="150"
-                            MaxWidth="151"
-                            MaxHeight="28"
-                            Margin="2,0,5,0"/>
-                            <!--IsEnabled="{Binding Path=EditMessageCommand}"-->                        
-                        <Button Content="EDIT" 
+             
+                        <Button Content="EDIT" Margin="2,0,5,0"
                             Command="{Binding Path=EditMessageCommand}"
-
-                            MinWidth="150"
-                            MaxWidth="151"
-                            MaxHeight="28"
-                            Margin="2,0,5,0"/>
-                            <!--IsEnabled="{Binding Path=CancelMessageCommand}"-->                        
-                        <Button Content="CANCEL" 
+                            IsEnabled="{Binding Path=EditMessageCommand}"    
+                            MinWidth="150" MaxWidth="151" MaxHeight="28"/>
+                        
+               
+                        <Button Content="CANCEL" Margin="2,0,2,0" 
                             Command="{Binding Path=CancelMessageCommand}"
-
-                            MinWidth="150"
-                            MaxWidth="151"
-                            MaxHeight="28"
-                            Margin="2,0,2,0"/>
+                            IsEnabled="{Binding Path=CancelMessageCommand}"    
+                            MinWidth="150" MaxWidth="151" MaxHeight="28"/>
                         <!--<Button x:Name="EndWarButton"
                               Content="End War"
                               MinWidth="150"
@@ -850,14 +871,18 @@
                       </Button>-->
                     </StackPanel>
                 </DockPanel>
+                
+                <!--this holds the complete bottom stuff - row is Auto due to the separetor--> 
                 <DockPanel Grid.Column="0"
                            Grid.ColumnSpan="3"                          
                            Grid.Row="5"
                            Visibility="Visible"
                            LastChildFill="True"
                            VerticalAlignment="Top"
-                           MaxHeight="446"
-                           Margin="0,0,0,0">
+                           MinHeight="460"
+                           MaxHeight="460"
+                           Margin="0,-45,0,0">
+                    <!--MaxHeight="446"-->
                     <!--
           ================================================================================
             Tabbed Content but now just one Tab used for agreements, in box and out box
@@ -881,7 +906,7 @@
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                             VerticalScrollBarVisibility="Auto">
                                 <DockPanel LastChildFill="True"
-                                            Margin="0,0,5,0">
+                                            Margin="0,10,5,0">
                                     <StackPanel Orientation="Vertical">
                                         <Border Padding="2"
                                                 MinHeight="45"
@@ -1245,27 +1270,21 @@
                                                                             <ColumnDefinition Width="Auto"/>
                                                                             <ColumnDefinition Width="Auto"/>
                                                                             <ColumnDefinition Width="Auto"/>
+                                                                            <ColumnDefinition Width="Auto"/>
                                                                         </Grid.ColumnDefinitions>
                                                                         <Grid.RowDefinitions>
                                                                             <RowDefinition Height="Auto"/>
                                                                         </Grid.RowDefinitions>
-                                                                        <TextBlock TextAlignment="Left"
-                                                                                   Grid.Column="0"
-                                                                                   Grid.Row="0"                                                                          
-                                                                                    TextWrapping="Wrap"
-                                                                                    TextTrimming="CharacterEllipsis"
-                                                                                    FontSize="15pt"
-                                                                                    Foreground="Aqua"
-                                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                                    Margin="0,0,5,0"
-                                                                                    Visibility="Visible"
+                                                                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,0,8,0" TextAlignment="Left" VerticalAlignment="Center"
+                                                                                    TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Visibility="Visible"
+                                                                                    Foreground="Aqua" FontSize="18pt" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                                                     Text="{Binding Path=IsEditing, Converter={scc:BooleanValueConverter TrueValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeaderWhileEditing, CharacterCasing=Upper}, FalseValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeader, CharacterCasing=Upper}}}">
                                                                         </TextBlock>
                                                                                      <!--Foreground="{StaticResource HeaderTextBrush}"-->
                                                                        
                                                                         
-                                                                        <TextBlock TextAlignment="Left"
-                                                                                    Grid.Column="1"
+                                                                        <!--<TextBlock TextAlignment="Left"
+                                                                                    Grid.Column="2"
                                                                                     Grid.Row="0"
                                                                                     TextWrapping="Wrap"            
                                                                                     TextTrimming="CharacterEllipsis"
@@ -1273,17 +1292,61 @@
                                                                                     Foreground="Red"
                                                                                     Margin="5,0,0,0"
                                                                                     Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=HeadsUpHeader}" 
+                                                                                    Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+
+                                                                        
+                                                                        
+                                                                        <!-- Send Edit Cancel buttons -->
+                                                                        <!--<DockPanel x:Name="SendEditCancel"
+                           scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                           Grid.Column="2"  
+                           Grid.ColumnSpan="4"
+                           Grid.Row="5"
+                                                   
+                           Visibility="Visible"
+                           LastChildFill="True"
+                           Margin="10,0,0,0">-->
+                                                                            
+                                                                            
+                                                                            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">-->
+                                                                                
+                                                                                <!--Style="{StaticResource ButtonStyle}"--> 
+                                                                                <!--<Button Content="SEND" Margin="2,0,5,0"
+                            Command="{Binding Path=SendMessageCommand}"
+                            IsEnabled="{Binding Path=SendMessageCommand}" />-->                                                   
+                            <!--MinWidth="100" MaxWidth="131" MaxHeight="20"-->
+
+                                                                                
+                                                                                <!--<Button Content="EDIT" Margin="2,0,5,0"
+                            Command="{Binding Path=EditMessageCommand}"
+                            IsEnabled="{Binding Path=EditMessageCommand}"  />-->                                                  
+                            <!--MinWidth="100" MaxWidth="131" MaxHeight="28"-->
+
+                                                                                
+                                                                                <!--<Button Content="CANCEL" Margin="2,0,2,0" 
+                            IsEnabled="{Binding Path=CancelMessageCommand}"                                                            
+                            Command="{Binding Path=CancelMessageCommand}"/>-->
+                            <!--MinWidth="100" MaxWidth="131" MaxHeight="28"-->
+                                                                                
+                                                                                
+                                                                                <!--<Button x:Name="EndWarButton"
+                              Content="End War"
+                              MinWidth="150"
+                              MaxWidth="151"
+                              MaxHeight="28"
+                              Margin="2,0,2,0"
+                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonTooltipText', CharacterCasing=Upper}"
+                              Command="{Binding Path=CeaseFireCommand}"
+                              IsEnabled="{Binding Path=CeaseFireCommand}">
+                      </Button>-->
+                                                                            <!--</StackPanel>-->
+                                                                            
+                                                                            
+                                                                            <!--<TextBlock  Grid.Row="0" Grid.Column="2" Margin="10,0,0,0" TextAlignment="Left"
+                                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SendHeader}"
+                                                                                    Foreground="Red" FontSize="14pt" VerticalAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  
                                                                                     Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                                                        <TextBlock TextAlignment="Left"
-                                                                                    Grid.Column="2"
-                                                                                    Grid.Row="0"                                                                                
-                                                                                    TextWrapping="Wrap"            
-                                                                                    TextTrimming="CharacterEllipsis"
-                                                                                    FontSize="14pt"
-                                                                                    Foreground="Red"
-                                                                                    Margin="0,0,0,0"
-                                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SendHeader}" 
-                                                                                    Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                                        </DockPanel>-->
 
                                                                     </Grid>
                                                                 </StackPanel>
@@ -1832,8 +1895,8 @@
                             Margin="7,-14,-14,0"
                             VerticalAlignment="Top">
                     <!--Race Image-->
-                    <Border Width="194"
-                          Height="194"
+                    <Border Width="194" Height="194"
+                          Margin="-90,-350,0,0"
                           BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                           BorderThickness="2"
                           CornerRadius="12">
@@ -1868,7 +1931,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="160" />
+                            <RowDefinition Height="290" />
                         </Grid.RowDefinitions>
 
                         <!--Row 0 = Regard -->
@@ -1965,10 +2028,11 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="Auto">
+                            <!--MaxHeight="360"-->
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" >
                                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                 FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                FontSize="18"
+                                FontSize="18" 
                                 Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"                        
                                 Text="{Binding Path=SelectedForeignPower.CounterpartyDiplomacyReport}"
                                 TextAlignment="Left"
@@ -2000,7 +2064,7 @@
                     </Viewbox>
                 </Grid>-->
 
-                <scc:GameButton Label="{s:StringResource Key=RESET_GRAPH, Case=Upper}"
+                <!--<scc:GameButton Label="{s:StringResource Key=RESET_GRAPH, Case=Upper}"
                         Grid.Column="2"
                         Grid.Row="0"
                         HorizontalAlignment="Right"
@@ -2010,7 +2074,7 @@
                         DisplayMode="GroupedVertically"
                         Command="{Binding ResetGraphCommand}"
                         VerticalAlignment="Bottom"
-                        Margin="0,0,2,0" />
+                        Margin="0,0,2,0" />-->
                 
             </Grid>
         </Border>
