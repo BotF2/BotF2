@@ -360,7 +360,7 @@
                  TextWrapping="Wrap"
                  FontSize="14pt"
                  FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                 Foreground="Red"
+                 Foreground="Aqua"
                  TextAlignment="Left"
                  HorizontalAlignment="Left"/>
             <TextBlock x:Name="SubHeader2Text"

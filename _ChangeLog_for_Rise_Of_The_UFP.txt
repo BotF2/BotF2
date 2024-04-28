@@ -1,6 +1,9 @@
 _ChangeLog_for_Rise_Of_The_UFP.txt
 
-2024-01-06;added Shipyard-Queue(!) first entry to Colony Management Panel
+2024-04-13;expanded Encyclopedia to as much entries as possible
+2024-02-24;TechObjectDatabase.xml splitted into 6 files now
+2024-02-24;new sites CTRL+1 (to 0) added ... expected for Ship classes
+2024-01-06;added Shipyard-Queue first entry to Colony Management Panel
 2023-12-10;re-arranged Diplo Screen
 2023-11-11;ROM_PLASMA_PHYSICS_COMPLEX > OnePerEmpire (otherwise too much Bonus of EnergyResearch)
 2023-10-21;Medical ships Type 2 = speed 2 from TechLevel 3 to provide needed help quickly

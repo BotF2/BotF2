@@ -375,9 +375,9 @@ namespace Supremacy.Universe
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
                 Percentage _PercentageGrowthRate = Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
-                if (_PercentageGrowthRate > 0.06)
+                if (_PercentageGrowthRate > 0.03)
                 {
-                    _PercentageGrowthRate = (Percentage)0.06;
+                    _PercentageGrowthRate = (Percentage)0.03; // down there +0.011 = max 4,1 %
                 }
 
                 if (_PercentageGrowthRate < -0.02)
@@ -385,7 +385,7 @@ namespace Supremacy.Universe
                     _PercentageGrowthRate = (Percentage)0.02 * -1;
                 }
 
-                return _PercentageGrowthRate;
+                return _PercentageGrowthRate + (Percentage)0.011;
             }
         }
 
@@ -1906,7 +1906,7 @@ namespace Supremacy.Universe
                 {
                     if (AvailableLabor < 1)
                     {
-                        _text = "Step_2397: No free Labour (from Pool) - food reserves are low";
+                        _text = "Step_2397:; No free Labour (from Pool) - food reserves are low";
                         Console.WriteLine(_text);
                         ReduceOneOtherPF();
                     }
@@ -2091,7 +2091,7 @@ namespace Supremacy.Universe
             _text = "Step_4202:; ------------------------------";
             Console.WriteLine(_text);
 
-            _text = "Step_4203:; Turn " + _turnnumber + GameContext.Current.TurnNumber + ": ";
+            _text = "Step_4203:; Turn " + GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
             _text += colony.Name + " ( " + colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = Facilities_Total1_Food - GetActiveFacilities(ProductionCategory.Food);

@@ -43,6 +43,28 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand CTRL_F11_Command = new CompositeCommand(true);
         public static readonly CompositeCommand CTRL_F12_Command = new CompositeCommand(true);
 
+        public static readonly CompositeCommand CTRL_0_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_1_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_2_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_3_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_4_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_5_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_6_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_7_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_8_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_9_Command = new CompositeCommand(true);
+
+        public static readonly CompositeCommand SHIFT_0_Command = new CompositeCommand(true);  
+        public static readonly CompositeCommand SHIFT_1_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_2_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_3_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_4_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_5_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_6_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_7_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_8_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_9_Command = new CompositeCommand(true);
+
         public static readonly CompositeCommand S0_Command = new CompositeCommand(true);  // Start Single Player Empire x
         public static readonly CompositeCommand S1_Command = new CompositeCommand(true);
         public static readonly CompositeCommand S2_Command = new CompositeCommand(true);

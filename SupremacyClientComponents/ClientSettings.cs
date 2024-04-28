@@ -182,14 +182,14 @@ namespace Supremacy.Client
                         try
                         {
                             // filePath = SupremacyClient..Settings.xaml
-                            string _text = "Step_0136: for other problems: just try to deleted " + filePath + " manually from your hard disk !";
+                            string _text = "Step_0136:; for other problems: just try to deleted " + filePath + " manually from your hard disk !";
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
 
                             settings = XamlReader.Load(fileReader) as ClientSettings ?? new ClientSettings();
 
 
-                            GameLog.Client.General.InfoFormat("Step_0138: LOADCORE {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+                            GameLog.Client.General.InfoFormat("Step_0138:; LOADCORE {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
 
                             if (settings == null)
                             {
@@ -203,7 +203,7 @@ namespace Supremacy.Client
 
                             //_ = System.Windows.MessageBox.Show("please stop the game and delete manually: " + Environment.NewLine + filePath, "PROBLEM",MessageBoxButton.OK);
 
-                            string _text = "Step_0139: LOADCORE " + filePath + ": Problem reading the file >> will be deleted" + Environment.NewLine + e;
+                            string _text = "Step_0139:; LOADCORE " + filePath + ": Problem reading the file >> will be deleted" + Environment.NewLine + e;
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
                             File.Delete(filePath);

@@ -247,7 +247,7 @@ namespace Supremacy.Utility
         public static void SetRepositoryToDebug(string repository)
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Debug;
-            string _text = "Step_0136: Log.txt: Trace is set to      DEBUG for > " + repository;
+            string _text = "Step_0146:; Log.txt: Trace is set to      DEBUG for > " + repository;
             GameLog.Client.GeneralDetails.DebugFormat(_text);
             Console.WriteLine(_text);
         }

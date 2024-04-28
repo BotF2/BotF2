@@ -42,9 +42,14 @@ namespace Supremacy.Orbitals
         public static readonly IdleOrder IdleOrder;
         public static readonly DefendOrder DefendOrder;
         public static readonly StrandedOrder StrandedOrder;
+
         public static readonly RedeployNoneOrder RedeployNoneOrder;
         public static readonly RedeploySameOrder RedeploySameOrder;
         public static readonly RedeployAllOrder RedeployAllOrder;
+
+        public static readonly RendezvousOrder RendezvousOrder;
+        public static readonly RendezvousQuitOrder RendezvousQuitOrder;
+
         public static readonly ColonizeOrder ColonizeOrder;
         // public static readonly RaidOrder RaidOrder;
         public static readonly SabotageOrder SabotageOrder;
@@ -61,6 +66,8 @@ namespace Supremacy.Orbitals
 
 
         private static readonly List<FleetOrder> _orders;
+
+        [NonSerialized]
         public static string _text;
 
 
@@ -77,6 +84,7 @@ namespace Supremacy.Orbitals
             RedeployNoneOrder = new RedeployNoneOrder();
             RedeploySameOrder = new RedeploySameOrder();
             RedeployAllOrder = new RedeployAllOrder();
+
             ColonizeOrder = new ColonizeOrder();
             // RaidOrder = new RaidOrder();
             SabotageOrder = new SabotageOrder();
@@ -90,7 +98,8 @@ namespace Supremacy.Orbitals
             BuildStationOrder = new BuildStationOrder();
             ExploreOrder = new ExploreOrder();
             TravelOrder = new TravelOrder();
-
+            RendezvousOrder = new RendezvousOrder();
+            RendezvousQuitOrder = new RendezvousQuitOrder();
 
 
             _orders = new List<FleetOrder>
@@ -119,6 +128,9 @@ namespace Supremacy.Orbitals
                           RedeployNoneOrder,
                           RedeploySameOrder,
                           RedeployAllOrder,
+
+                          RendezvousOrder,
+                          RendezvousQuitOrder,
 
                           ScrapShipOrder,
 
@@ -473,7 +485,6 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class RedeployAllOrder : FleetOrder // all = all own ships in the sector
     {
-        private string _text;
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
@@ -531,6 +542,86 @@ namespace Supremacy.Orbitals
             {
                 Ship ship = aFeet.Ships.Last();
                 MapLocation location = ship.Location;
+
+                fleet.AddShip(ship);
+                fleet.Location = location;
+
+                // works
+                //_text = "Step_5555:; RedeployAll is done for:;"
+                //+ "Fleet; " + ship.Name
+                //+ " Ship:;" + ship.ObjectID
+                //;
+                //Console.WriteLine(_text);
+
+            }
+            fleet.Order = FleetOrders.EngageOrder;
+        }
+    }
+    #endregion RedeployAllOrder
+
+
+    #region RendezvousOrder  
+    [Serializable]
+    public sealed class RendezvousOrder : FleetOrder // all = all own ships in the sector
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new RendezvousOrder();
+        }
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            //_text = "ShipOrder 'RendezvousOrder' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+            //return false;
+
+            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            //if (fleets.Count < 2)
+            //    return false;
+
+            //if (fleet.Owner != null)
+            //{
+            //    foreach (var item in fleets)
+            //    {
+            //        if (fleet.Owner == item.Owner)
+            //            return true;
+            //    }
+
+            //    //return false;
+            //}
+
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
+
+            return true;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // RendezvousOrder
+        {
+            base.OnTurnBeginning();
+
+            Fleet fleet = Fleet;
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            foreach (Fleet aFeet in fleets)
+            {
+                Ship ship = aFeet.Ships.Last();
+                MapLocation location = ship.Location;
                 //aFeet.RemoveShip(ship);
                 //if (ship.ShipType == type)
                 //{
@@ -544,10 +635,112 @@ namespace Supremacy.Orbitals
                 Console.WriteLine(_text);
                 //}
             }
+            fleet.Order = FleetOrders.RendezvousOrder;
+        }
+    }
+    #endregion RendezvousOrder
+
+    #region RendezvousQuitOrder  
+    [Serializable]
+    public sealed class RendezvousQuitOrder : FleetOrder // all = all own ships in the sector
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_QUIT");
+        public override string Status
+        {
+            get
+            {
+            return ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_QUIT");
+            }
+
+        }
+
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new RendezvousQuitOrder();
+        }
+        public override bool IsValidOrder(Fleet fleet)  // RendezvousQuitOrder
+        {
+
+            return true;
+
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+
+            //MapLocation null_location = new MapLocation(99, 99);
+
+            //if (civM.RendezvousPlace != null && civM.RendezvousPlace != null_location)
+            //{
+            //    MapLocation null_location = new MapLocation(99,99);
+            //    civM.RendezvousPlace = null_location;
+            //    civM.RendezvousPlace = fleet.Location;
+            //}
+
+            //civM.RendezvousPlace = fleet.Location;
+            //_text = "ShipOrder 'RendezvousQuitOrder' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+
+            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            //if (fleets.Count < 2)
+            //    return false;
+
+            //if (fleet.Owner != null)
+            //{
+            //    foreach (var item in fleets)
+            //    {
+            //        if (fleet.Owner == item.Owner)
+            //            return true;
+            //    }
+
+            //    return false;
+            //}
+
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
+
+            //return false;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // RendezvousQuitOrder
+        {
+            base.OnTurnBeginning();
+
+            Fleet fleet = Fleet;
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            foreach (Fleet aFeet in fleets)
+            {
+                Ship ship = aFeet.Ships.Last();
+                MapLocation location = ship.Location;
+                //aFeet.RemoveShip(ship);
+                //if (ship.ShipType == type)
+                //{
+                fleet.AddShip(ship);
+                fleet.Location = location;
+
+                _text = "RendezvousQuit:;"
+                + "Fleet; " + ship.Name
+                + " Ship:;" + ship.ObjectID
+                ;
+                Console.WriteLine(_text);
+                //}
+            }
             fleet.Order = FleetOrders.EngageOrder;
         }
     }
-    #endregion RedeployAllOrder
+    #endregion RendezvousQuitOrder
 
 
     #region DefendOrder

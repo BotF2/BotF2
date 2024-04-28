@@ -883,15 +883,18 @@
             </Setter.Value>
         </Setter>
     </Style>
+  <!--End of LCARS_StandardButtonStyle-->
 
-
+  <!--StandardButtonStyle-->
     <Style x:Key="StandardButtonStyle"
          TargetType="{x:Type Button}"
          BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+  <!--End of StandardButtonStyle-->
 
+  <!--Button-->
     <Style TargetType="{x:Type Button}"
          BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
-    <!--End of LCARS_StandardButtonStyle-->
+    <!--End of Button-->
 
 
     <!--Production and more - complete Tab-->

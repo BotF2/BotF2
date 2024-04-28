@@ -88,7 +88,7 @@ namespace Supremacy.Orbitals
             }
             else
             {
-                _text = "Step_0498: Stations - now reading " + Name; // dummy to avoid Report2GameData is not used.
+                _text = "Step_0498:; Stations - now reading " + Name; // dummy to avoid Report2GameData is not used.
                 Console.WriteLine(_text);
                 GameLog.Core.GameData.DebugFormat(_text);
                 //GameLog.Core.GameData.DebugFormat("StationNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);

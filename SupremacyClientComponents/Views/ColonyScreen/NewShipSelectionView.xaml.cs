@@ -111,20 +111,23 @@ namespace Supremacy.Client.Views
             {
                 return;
             }
-            string _soundfile = "Resources\\SoundFX\\sound001.wav";
-            if (File.Exists(_soundfile))
-            {
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfile);
-                //GameLog.Client.General.Debug("Playing sound001.wav");
-                //var soundPlayer = new SoundPlayer("Resources/SoundFX/sound001.wav");
-                player.Play();
-            }
-            else
-            {
-                _text = "Resources/SoundFX/Menu/sound001.wav not found...";
-                Console.WriteLine(_text);
-                GameLog.Client.Audio.InfoFormat(_text);
-            }
+
+            //string _soundfile = "Resources\\SoundFX\\sound001.wav"; // player just plays wav
+            //if (File.Exists(_soundfile))
+            //{
+            //    System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfile);
+            //    //GameLog.Client.General.Debug("Playing sound001.wav");
+            //    //var soundPlayer = new SoundPlayer("Resources/SoundFX/sound001.wav");
+            //    player.Play();
+            //}
+            //else
+            //{
+            //    _text = "Resources/SoundFX/sound001.wav not found...";
+            //    Console.WriteLine("Step_1218:; " + _text);
+            //    GameLog.Client.Audio.InfoFormat(_text);
+            //}
+            _text = "dummy" + _text; // please keep
+
 
             DialogResult = true;   // just trying to solve the HowMany Ships to build by keeping screen open
         }

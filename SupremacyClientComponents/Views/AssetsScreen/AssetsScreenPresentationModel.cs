@@ -13,6 +13,7 @@ using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
+using System.Linq;
 
 
 
@@ -124,7 +125,7 @@ namespace Supremacy.Client.Views
                 try
                 {
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
-                    _text = "Step_5450:; Get TotalIntelProduction =;" + _totalIntelligenceProduction
+                    _text = "Step_5454:; Get TotalIntelProduction=; " + _totalIntelligenceProduction
                               ;
                     Console.WriteLine(_text);
                     //GameLog.Client.Intel.DebugFormat("Get TotalIntelProduction ={0}", _totalIntelligenceProduction);
@@ -132,7 +133,7 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    _text = "Step_5450:; Problem occured at TotalIntelligenceProduction get, exception "
+                    _text = "Step_5456:; Problem occured at TotalIntelligenceProduction get, exception "
                         + e.Message
                         + newline + e.TargetSite
           ;
@@ -148,15 +149,15 @@ namespace Supremacy.Client.Views
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
                     //FillUpDefense();
                     _totalIntelligenceProduction = value;
-                    _text = "Step_5450:; Set TotalIntelProduction =;" + _totalIntelligenceProduction;
+                    _text = "Step_5458:; Set TotalIntelProduction=; " + _totalIntelligenceProduction;
 
                     Console.WriteLine(_text);
-                    GameLog.Client.Intel.DebugFormat("Set TotalIntelProduction ={0}", _totalIntelligenceProduction);
+                    //GameLog.Client.Intel.DebugFormat(_text);
                     NotifyPropertyChanged("TotalIntelligenceProduction");
                 }
                 catch (Exception e)
                 {
-                    _text = "Step_5450:; Problem occured at TotalIntelligenceProduction set;" + e;
+                    _text = "Step_5457:; Problem occured at TotalIntelligenceProduction set;" + e.Message + e.StackTrace;
           
                     Console.WriteLine(_text);
                     GameLog.Client.Intel.DebugFormat("Problem occured at TotalIntelligenceProduction set, Exception {0} {1}", e.Message, e.StackTrace);
@@ -172,7 +173,7 @@ namespace Supremacy.Client.Views
                 //FillUpDefense();
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 //works
-                _text = "Step_5450:; Get TotalIntelDefenseAccumulated =;" + _totalIntelligenceDefenseAccumulated;
+                _text = "Step_5450:; Get TotalIntelDefenseAccumulated=; " + _totalIntelligenceDefenseAccumulated;
           
                 Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
@@ -196,7 +197,7 @@ namespace Supremacy.Client.Views
                 //FillUpDefense();
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 //works
-                _text = "Step_5450:; Get TotalIntelDefenseAccumulated =;" + _totalIntelligenceProduction;
+                _text = "Step_5452:; Get TotalIntelDefenseAccumulated=; " + _totalIntelligenceProduction;
           
                 Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
@@ -254,13 +255,19 @@ namespace Supremacy.Client.Views
             }
 
             _colonies = MyLocalCivManager.Colonies; //not the host on a remote machine, DesignTimeObjects.LocalCivManager.Colonies;
-            _spied_0_Colonies = DesignTimeObjects.SpiedCiv_0.Colonies;
-            _spied_1_Colonies = DesignTimeObjects.SpiedCiv_1.Colonies;
-            _spied_2_Colonies = DesignTimeObjects.SpiedCiv_2.Colonies;
-            _spied_3_Colonies = DesignTimeObjects.SpiedCiv_3.Colonies;
-            _spied_4_Colonies = DesignTimeObjects.SpiedCiv_4.Colonies;
-            _spied_5_Colonies = DesignTimeObjects.SpiedCiv_5.Colonies;
-            _spied_6_Colonies = DesignTimeObjects.SpiedCiv_6.Colonies;
+            //_spied_0_Colonies = DesignTimeObjects.SpiedCiv_0.Colonies;
+            _spied_0_Colonies = (IEnumerable<Colony>)DesignTimeObjects.SpiedCiv_0.SeatOfGovernment.System.Colony;
+            _spied_1_Colonies = (IEnumerable<Colony>)DesignTimeObjects.SpiedCiv_1.SeatOfGovernment.System.Colony;
+            _spied_2_Colonies = (IEnumerable<Colony>)DesignTimeObjects.SpiedCiv_2.SeatOfGovernment.System.Colony;
+            _spied_3_Colonies = (IEnumerable<Colony>)DesignTimeObjects.SpiedCiv_3.SeatOfGovernment.System.Colony;
+            _spied_4_Colonies = (IEnumerable<Colony>)DesignTimeObjects.SpiedCiv_4.SeatOfGovernment.System.Colony;
+            _spied_5_Colonies = (IEnumerable<Colony>)DesignTimeObjects.SpiedCiv_5.SeatOfGovernment.System.Colony;
+            _spied_6_Colonies = (IEnumerable<Colony>)DesignTimeObjects.SpiedCiv_6.SeatOfGovernment.System.Colony;
+            //_spied_2_Colonies = DesignTimeObjects.SpiedCiv_2.Colonies;
+            //_spied_3_Colonies = DesignTimeObjects.SpiedCiv_3.Colonies;
+            //_spied_4_Colonies = DesignTimeObjects.SpiedCiv_4.Colonies;
+            //_spied_5_Colonies = DesignTimeObjects.SpiedCiv_5.Colonies;
+            //_spied_6_Colonies = DesignTimeObjects.SpiedCiv_6.Colonies;
             _totalResearch = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].Research.CumulativePoints;
             _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceProduction;
             _totalIntelligenceAttackingAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;

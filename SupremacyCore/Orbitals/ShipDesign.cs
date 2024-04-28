@@ -347,13 +347,20 @@ namespace Supremacy.Orbitals
 
                 foreach (XmlElement name in element["ShipNames"])
                 {
-
+                    
                     _possibleNames.Add(name.InnerText.Trim(), 0);
 
-                    // in TechObjects do not outcomment ShipNames
-                    _text = "Step_4567:; ShipNames - Possible Name for " + Name + " " + name.InnerText.Trim();
-                    //Console.WriteLine(_text);
-                    GameLog.Core.GameData.DebugFormat(_text);
+                    bool _checkForProblems = false;
+                    //bool _checkForProblems = true;
+                    if (_checkForProblems)
+                    {
+                        // in TechObjects do not outcomment ShipNames
+                        // don't give it two times the same name > Exception thrown: 'System.ArgumentException' in mscorlib.dll
+                        _text = "Step_4567:; ShipNames - Possible Name for " + Name + " > " + name.InnerText.Trim();
+                        Console.WriteLine(_text);
+                        GameLog.Core.GameData.DebugFormat(_text);
+                    }
+
                 }
             }
         }

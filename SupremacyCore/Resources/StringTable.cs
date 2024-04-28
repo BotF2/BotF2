@@ -57,7 +57,7 @@ namespace Supremacy.Resources
         {
             if (!File.Exists(fileName))
             {
-                string _text = "Step_0135:  ....could not find " + fileName + " but en.txt is fine";
+                string _text = "Step_0135:;  ....could not find " + fileName + " but en.txt is fine";
                 //GameLog.Client.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
 
@@ -114,7 +114,7 @@ namespace Supremacy.Resources
             }
 
 
-            _text = "Step_0134: no output for EN-Txt-Content";
+            _text = "Step_0134:; no output for EN-Txt-Content";
             Console.WriteLine(_text);
             GameLog.Core.General.DebugFormat(_text);
             // doesn't work

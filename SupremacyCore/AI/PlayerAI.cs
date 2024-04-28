@@ -39,14 +39,14 @@ namespace Supremacy.AI
         #region DoTurn from GameEngine
         public static void DoTurn(Civilization Civ)
         {
-            _text = "Step_1100:; PlayerAI.DoTurn begins... for CivID " + Civ.CivID + blank + Civ.Key
+            _text = "Step_1131:; PlayerAI.DoTurn begins... for CivID " + Civ.CivID + blank + Civ.Key
 
                     ;
             Console.WriteLine(_text);
 
             if (Civ.IsEmpire && Civ.CivID != 6 && Civ.SpiedCivList != null)  // Spy
             {
-                _text = "Step_1100:; PlayerAI.DoTurn ...SpiedCivList is NOT null ... for CivID " + Civ.CivID + blank + Civ.Key
+                _text = "Step_1132:; PlayerAI.DoTurn ...SpiedCivList is NOT null ... for CivID " + Civ.CivID + blank + Civ.Key
 
         ;
                 Console.WriteLine(_text);
@@ -101,7 +101,7 @@ namespace Supremacy.AI
                     }
                 }
             }
-            _text = "Step_1100:; PlayerAI.DoTurn is done..."
+            _text = "Step_1133:; PlayerAI.DoTurn is done..."
 
         ;
             Console.WriteLine(_text);

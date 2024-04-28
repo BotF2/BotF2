@@ -418,7 +418,7 @@
                      IsInsetOnLeft="False" />
         <Grid Grid.Column="1"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=1}">
-          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
+                    <scc:Chevron Background="{StaticResource RedGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -438,7 +438,7 @@
         </Grid>
         <Grid Grid.Column="2"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=2}">
-          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
+                    <scc:Chevron Background="{StaticResource RedGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -458,7 +458,7 @@
         </Grid>
         <Grid Grid.Column="3"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=3}">
-          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
+                    <scc:Chevron Background="{StaticResource RedGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -479,7 +479,7 @@
         </Grid>
         <Grid Grid.Column="4"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=4}">
-          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
+                    <scc:Chevron Background="{StaticResource RedGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -500,7 +500,7 @@
         </Grid>
         <Grid Grid.Column="5"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=5}">
-          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
+                    <scc:Chevron Background="{StaticResource RedGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -547,14 +547,16 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
-                       FontSize="12pt"
-                       Foreground="Black"
+                       FontSize="14pt"
+                       Foreground="White"
+                           FontWeight="Bold"
                        FontFamily="{StaticResource Eurostyle}" />
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
-                           FontSize="12pt"
-                           Foreground="White"
+                           FontSize="14pt"
+                           Foreground="Black"
+                           FontWeight="Bold"
                            FontFamily="{StaticResource Eurostyle}" />
                 <TextBlock Name="InvasionStatus"
                     Margin="1,1,-1,-1"
@@ -624,19 +626,21 @@
               Visibility="{Binding Path=InvasionStatus, Converter={scc:ComparisonConverter ComparisonType=Equal, TrueValue={x:Static Visibility.Visible}, FalseValue={x:Static Visibility.Hidden}}, ConverterParameter={x:Static s:InvasionStatus.Stalemate}}">
                     <scc:Chevron Height="28"
                        Margin="-11,0,0,0"
-                       Background="{StaticResource AzureGradient_Top_Bottom}" />
+                       Background="{StaticResource AquaGradient_Top_Bottom}" />
                     <Grid Margin="-11,0,0,0" UseLayoutRounding="False">
                         <TextBlock Margin="1,1,-1,-1"
                        HorizontalAlignment="Center"
                        Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF, Case=Upper}"
-                       FontSize="12pt"
-                       Foreground="Black"
+                       FontSize="14pt"
+                                   FontWeight="Bold"
+                       Foreground="White"
                        FontFamily="{StaticResource Eurostyle}" />
                         <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF, Case=Upper}"
-                       FontSize="12pt"
-                       Foreground="White"
+                       FontSize="14pt"
+                       Foreground="Black"
+                                   FontWeight="Bold"
                        FontFamily="{StaticResource Eurostyle}" />
                     </Grid>
                 </Grid>
@@ -671,10 +675,7 @@
                      Foreground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                      />
         </Viewbox>
-        <Image Grid.Column="2"
-               Width="48"
-               Height="64"
-               Source="{Binding Path=Defender, Converter={StaticResource CivInsigniaConverter}}" />
+        <Image Grid.Column="2" Width="48" Height="64" Source="{Binding Path=Defender, Converter={StaticResource CivInsigniaConverter}}" />
       </Grid>
 
         <!--Top Left Corner-->
@@ -699,12 +700,10 @@
                    Margin="0,0,3,0" />
       </DockPanel>
 
-            <DockPanel Grid.Column="1"
-                 Grid.Row="5"
-                 LastChildFill="True">
+            <DockPanel Grid.Column="1" Grid.Row="5" LastChildFill="True">
                 <TextBlock DockPanel.Dock="Left"
                            TextWrapping="Wrap"
-                           Margin="5,0"
+                           Margin="5,150,0,0"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                            FontSize="14pt"
                            Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
@@ -716,14 +715,9 @@
                    Margin="0,0,3,0" />-->
             </DockPanel>
 
-            <Path Grid.Column="2"
-            Grid.Row="2"
+            <Path Grid.Column="2" Grid.Row="2" Width="21" Height="42"  Stretch="None"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
-            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
-            Height="42"
-            Stretch="None"
-            Width="21" />
-
+            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
       <DockPanel Grid.Column="3"
                  Grid.Row="2"
                  LastChildFill="True">
@@ -938,16 +932,11 @@
                 <Image Source="vfs:///Resources/Images/UI/ScreenIcons/shield.png"
                     RenderOptions.BitmapScalingMode="HighQuality" />
                 </Border>
-                <Border DockPanel.Dock="Bottom"
-                      Width="48"
-                      Height="24"
-                      Margin="0,4,0,0">
-                <TextBlock 
-                   Margin="0,0"
-                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                   FontSize="14pt"
+                <Border DockPanel.Dock="Bottom" Width="48" Height="24" Margin="0,4,0,0">
+                <TextBlock  Margin="0,0" Text="{Binding Path=ColonyShieldStrength.CurrentValue}"
+                   FontSize="14pt" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                   Text="{Binding Path=ColonyShieldStrength.CurrentValue}" />   
+                    />   
               </Border>
               <s:BlockBar Minimum="0"
                           Maximum="{Binding Path=ColonyShieldStrength.Maximum}"

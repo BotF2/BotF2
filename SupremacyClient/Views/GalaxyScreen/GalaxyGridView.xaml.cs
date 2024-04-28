@@ -42,6 +42,7 @@ namespace Supremacy.Client.Views
         private readonly string newline = Environment.NewLine;
         private readonly string _text;
         private string restriction_text;
+        private string _ownerText;
 
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
@@ -196,14 +197,14 @@ namespace Supremacy.Client.Views
             string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
             string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
             string Second = time.Second.ToString(); Second = CheckDateString(Second);
-            string timeString = "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
+            string timeString = "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second;
 
             string shipnames_text = "";
             string stationnames_text = "";
 
             SectorMap map = _appContext.CurrentGame.Universe.Map;
 
-            string _text = timeString + newline;
+            string _text = timeString + "_Turn_"+ _appContext.CurrentGame.TurnNumber + ".txt" + newline;
             _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   "
                 + newline
                 + newline
@@ -281,13 +282,15 @@ namespace Supremacy.Client.Views
 
                 foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
                 {
-                    _text += civManager.HomeColony.Location.X
-                        + " ; " + civManager.HomeColony.Location.Y
+                    string _x_text = DoDigit(civManager.HomeColony.Location.X.ToString());
+                    string _y_text = DoDigit(civManager.HomeColony.Location.Y.ToString());
+                    _text += civManager.Civilization.HomeQuadrant + "-Quadrant"
+                        + " ; " + _x_text
+                        + " ; " + _y_text
                         + " ; " + civManager.Civilization.HomeSystemName
-                        + " ; " + civManager.Civilization.HomeQuadrant + "-Quadrant"
-                        + " ;" + civManager.Civilization
-
-                        + newline + newline;
+                        + " ; " + civManager.Civilization
+                        + newline;
+                    _text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
                 }
 
                 IEnumerable<Colony> colonies = GameContext.Current.Universe.Objects.OfType<Colony>();
@@ -296,9 +299,10 @@ namespace Supremacy.Client.Views
                     String _col =
                         /*";Colony;" */
                         /*"; " + */item.Location
+                        + "; " + item.ObjectID + ";Colony"
                         + ";" + item.Name
                         + ";" + item.Owner
-                        + ";Colony;"
+
                         ;
 
                     _text += newline
@@ -336,7 +340,7 @@ namespace Supremacy.Client.Views
                     {
                         _text += "Step_4366:; "
                             + _col
-                            + ";" + building.IsActive + "_for_Active"
+                            + "; " + building.IsActive + "_for_Active"
                             + "; Building"
                             + "; " + building.ObjectID
                             + "; " + building.Design
@@ -347,6 +351,24 @@ namespace Supremacy.Client.Views
 
                         //Console.WriteLine(_text);
 
+                    }
+
+                    foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
+                    {
+                        _text += "Step_7608:; "
+                            + _col
+                            + "; BuildQueue - Turns needed= " + buildQueueItem.TurnsRemaining.ToString()
+                            + " ; for; " + buildQueueItem.Description
+
+//+ slot.Project.Location
+//+ " > Slot= " + slot.SlotID
+//+ " at " + slot.Shipyard.Name
+//+ " " + 
+//+ " > " + _percent
+//+ " done for " + _design
++ newline;
+                        //Console.WriteLine(_text);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
 
                     if (item.Shipyard != null)
@@ -367,8 +389,8 @@ namespace Supremacy.Client.Views
 
                                 if (_percent != "0 %")
                                 {
-                                    _text += "Step_7603:; " + slot.Shipyard.Location
-                                        + " > Slot= " + slot.SlotID
+                                    _text += "Step_7603:; " + _col //+ slot.Shipyard.Location
+                                        + "; Slot= " + slot.SlotID
 
                                         + " "
                                         + " > " + _percent
@@ -380,9 +402,9 @@ namespace Supremacy.Client.Views
                                 }
                                 else
                                 {
-                                    _text += "Step_7607:; " + slot.Shipyard.Location
-                                        + " > Slot= " + slot.SlotID  // crashes with a StackOverFlow
-                                                                     //+ " at " + slot.Shipyard.Name
+                                    _text += "Step_7607:; " + _col //+ slot.Shipyard.Location
+                                        + "; Slot= " + slot.SlotID  // crashes with a StackOverFlow
+                                                                    //+ " at " + slot.Shipyard.Name
                                         + " "
                                         + " > " + _percent
                                         + " done for " + _design
@@ -390,8 +412,6 @@ namespace Supremacy.Client.Views
                                     //Console.WriteLine(_text);
                                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                                 }
-
-                                //}
                             }
                             catch
                             {
@@ -407,7 +427,12 @@ namespace Supremacy.Client.Views
                                 //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                             };
                         }
+                        //foreach (BuildQueueItem buildQueueItem in colony.BuildQueue)
                     }
+                    //foreach (BuildQueueItem buildQueueItem in colony.BuildQueue)
+                    //{
+
+                    //}
 
 
                 }
@@ -419,11 +444,15 @@ namespace Supremacy.Client.Views
                 IEnumerable<Ship> ships = GameContext.Current.Universe.Objects.OfType<Ship>();
                 foreach (Ship item in ships)
                 {
+                    if (item.Owner.Key != _ownerText)
+                        _text += newline + newline;
+                    _ownerText = item.Owner.Key;
+
                     _text += "Step_4381:"
                             + "; " + item.Location
                             + "; Ship"
 
-                            + "; " + item.Owner
+                            + "; " + item.Owner.Key
                             + "; " + item.ObjectID
                             + "; " + item.Design
                             + "; " + item.Name
@@ -1074,6 +1103,16 @@ namespace Supremacy.Client.Views
                 _text = "output of _StationNames done to " + file;
                 Console.WriteLine(_text);
             }
+        }
+
+        private string DoDigit(string v)
+        {
+            while (v.Length < 2) 
+            {
+                v = " " + v;
+            } 
+                return v; 
+            
         }
 
         private static string CheckDateString(string _string)

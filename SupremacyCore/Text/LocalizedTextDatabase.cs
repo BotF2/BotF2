@@ -106,6 +106,9 @@ namespace Supremacy.Text
         }
 
         private static readonly Lazy<LocalizedTextDatabase> _instance = new Lazy<LocalizedTextDatabase>(Load, LazyThreadSafetyMode.PublicationOnly);
+        [NonSerialized]
+        private static string _text;
+        private static string newline = Environment.NewLine;
 
         public static LocalizedTextDatabase Instance => _instance.Value;
 
@@ -163,6 +166,8 @@ namespace Supremacy.Text
                 }
                 catch (Exception e)
                 {
+                    _text = "An error occurred while loading localized text file " + file.LocalPath + newline + e;
+                    Console.WriteLine(_text);
                     GameLog.Client.GameData.Error(
                         string.Format(
                             "An error occurred while loading localized text file '{0}'.",

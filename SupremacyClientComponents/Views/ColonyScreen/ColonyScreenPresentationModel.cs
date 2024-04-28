@@ -19,6 +19,8 @@ using Supremacy.Economy;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
+using Supremacy.Collections;
+using System.Linq;
 
 namespace Supremacy.Client.Views
 {
@@ -116,7 +118,7 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<Colony> Colonies
         {
-            get => _colonies;
+            get => _colonies; // doesn't work >> .OrderByDescending(c => c.Name).ToList(); // 2024-03-17
             set
             {
                 if (Equals(_colonies, value))

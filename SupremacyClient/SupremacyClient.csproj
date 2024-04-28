@@ -241,6 +241,66 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="_shift_x_Pages\shift_0_Dialog.xaml.cs">
+      <DependentUpon>shift_0_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_1_Dialog.xaml.cs">
+      <DependentUpon>shift_1_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_2_Dialog.xaml.cs">
+      <DependentUpon>shift_2_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_3_Dialog.xaml.cs">
+      <DependentUpon>shift_3_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_4_Dialog.xaml.cs">
+      <DependentUpon>shift_4_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_5_Dialog.xaml.cs">
+      <DependentUpon>shift_5_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_6_Dialog.xaml.cs">
+      <DependentUpon>shift_6_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_7_Dialog.xaml.cs">
+      <DependentUpon>shift_7_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_8_Dialog.xaml.cs">
+      <DependentUpon>shift_8_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_shift_x_Pages\shift_9_Dialog.xaml.cs">
+      <DependentUpon>shift_9_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_0_Dialog.xaml.cs">
+      <DependentUpon>ctrl_0_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_1_Dialog.xaml.cs">
+      <DependentUpon>ctrl_1_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_2_Dialog.xaml.cs">
+      <DependentUpon>ctrl_2_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_3_Dialog.xaml.cs">
+      <DependentUpon>ctrl_3_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_4_Dialog.xaml.cs">
+      <DependentUpon>ctrl_4_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_5_Dialog.xaml.cs">
+      <DependentUpon>ctrl_5_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_6_Dialog.xaml.cs">
+      <DependentUpon>ctrl_6_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_8_Dialog.xaml.cs">
+      <DependentUpon>ctrl_8_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_7_Dialog.xaml.cs">
+      <DependentUpon>ctrl_7_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ctrl_x_Pages\ctrl_9_Dialog.xaml.cs">
+      <DependentUpon>ctrl_9_Dialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ctrl_f_Pages\ctrl_f06_Dialog.xaml.cs">
       <DependentUpon>ctrl_f06_Dialog.xaml</DependentUpon>
     </Compile>
@@ -589,6 +649,86 @@
     <Page Include="ClientOptionsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_0_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_1_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_2_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_3_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_4_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_5_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_6_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_7_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_8_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_shift_x_Pages\shift_9_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_0_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_1_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_2_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_3_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_4_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_5_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_6_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_8_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_7_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ctrl_x_Pages\ctrl_9_Dialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

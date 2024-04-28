@@ -23,7 +23,7 @@
   
     <ObjectDataProvider x:Key="Settings" ObjectInstance="{x:Static propeties:Settings.Default}" />
 
-    <Cursor x:Key="DefaultCursor"> vfs:///Resources/Images/UI/Shell/cursor.cur </Cursor>
+    <Cursor x:Key="DefaultCursor"> vfs:///Resources/Images/UI/Shell/cursor.cur</Cursor>
 
     <!--
     ###### BUTTONS ######
@@ -3778,8 +3778,7 @@
           <!--<Border x:Name="Border"
                   Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
                   Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">-->
-                        <Border x:Name="Border"
-                  Background="Transparent"
+                        <Border x:Name="Border" Background="Transparent"
                   Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                               ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"

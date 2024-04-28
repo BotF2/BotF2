@@ -39,8 +39,9 @@
         <ColumnDefinition Width="75" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />          
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
+
       </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
               VerticalAlignment="Center"
@@ -50,7 +51,7 @@
               CornerRadius="4"
               Width="70"
               Height="38"/>
-            <TextBlock Foreground="LightGoldenrodYellow" Margin="0,10,15,0" HorizontalAlignment="Right">
+            <TextBlock Foreground="LightGoldenrodYellow" Margin="0,10,5,0" HorizontalAlignment="Center">
                 <TextBlock.Text>
                 <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
                         <Binding Path="SelectedColony.ActiveBuildings.Count" />
@@ -83,6 +84,7 @@
                 </Border>
             </Border.ToolTip>
             </Border>
+            
             <StackPanel Grid.Column="2"
                   Orientation="Vertical"
                   VerticalAlignment="Center"
@@ -106,30 +108,48 @@
                  Margin="0,0,14,0"
                  VerticalAlignment="Center" />
 -->
-      <s:UnitActivationBar Grid.Column="3"
-                           Units="{Binding Path=SelectedColony.OrbitalBatteries_Total, Mode=OneWay}"
-                           MaxActiveUnits="{Binding Path=MaxOrbitalBatteries_Active, Mode=TwoWay}"
-                           ActiveUnits="{Binding Path=OrbitalBatteries_Active, Mode=TwoWay}" />
-      <TextBlock Grid.Column="3"
+
+      <TextBlock Grid.Column="4"
                  Foreground="Transparent"
                  FontSize="14pt"
                  FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                  Margin="7,0,0,0"
                  VerticalAlignment="Center"
                  Text="999 / 999" />
-      <TextBlock Grid.Column="4"
+
+            <!--<Border Grid.Column="3"
+              VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+              BorderBrush="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+              BorderThickness="2"
+              CornerRadius="4"
+              Width="50"
+              Height="38"/>-->
+
+            <TextBlock Grid.Column="3" Margin="0,0,7,0" HorizontalAlignment="Center" VerticalAlignment="Center"
                  Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                 FontSize="14pt"
+                 FontSize="20pt"
                  FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                 Margin="7,0,0,0"
-                 VerticalAlignment="Center">
-        <TextBlock.Text>
+                >
+                            <!--<Border Grid.Column="3"
+              VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+              BorderBrush="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+              BorderThickness="2"
+              CornerRadius="4"
+              Width="50"
+              Height="38"/>-->
+                <TextBlock.Text>
           <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
             <Binding Path="SelectedColony.OrbitalBatteries_Active" />
             <Binding Path="SelectedColony.OrbitalBatteries_Total" />
           </MultiBinding>
         </TextBlock.Text>
       </TextBlock>
+      <s:UnitActivationBar Grid.Column="4"
+                           Units="{Binding Path=SelectedColony.OrbitalBatteries_Total, Mode=OneWay}"
+                           MaxActiveUnits="{Binding Path=MaxOrbitalBatteries_Active, Mode=TwoWay}"
+                           ActiveUnits="{Binding Path=OrbitalBatteries_Active, Mode=TwoWay}" />            
     </Grid>
         <!--End of OrbitalBatteries-->
     

@@ -40,8 +40,10 @@
 
     <SolidColorBrush Color="#ffffc125" x:Key="HeaderTextBrush"/>
     <SolidColorBrush Color="#ffffc125" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
-    <SolidColorBrush Color="#ffDCB960" x:Key="DefaultTextBrush"/>
-    <SolidColorBrush Color="#ffDCB960" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#FFe1acbd" x:Key="DefaultTextBrush"/>
+    <SolidColorBrush Color="#FFe1acbd" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
+  <!--<SolidColorBrush Color="#ffDCB960" x:Key="DefaultTextBrush"/>
+  <SolidColorBrush Color="#ffDCB960" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>-->
     <SolidColorBrush Color="#ffCD9B1D" x:Key="DisabledTextBrush"/>
     <SolidColorBrush Color="#ffCD9B1D" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#7f87DB7A" x:Key="SelectionBrush"/>
@@ -1314,7 +1316,7 @@
                       Data="F1 M 0,0L 14,0L 18,16 28,37L 0,37 Z  " />
                                 <ContentControl Grid.Column="1"
                                 Grid.Row="0"
-                                                VerticalAlignment="Top"
+                                VerticalAlignment="Top"
                                 Margin="7,0,0,0"
                                 Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
                                 FontSize="18pt">
@@ -1331,7 +1333,7 @@
                                            Width="14"
                            Height="28"
                            VerticalAlignment="Top"
-                           Fill="{StaticResource Dom6Gradient_Top_Bottom}"
+                           Fill="{StaticResource Card4Gradient_Top_Bottom}"
                            Margin="3,0,0,0" />
                                 <Rectangle Grid.Column="4"
                            Grid.Row="0"
@@ -1524,7 +1526,7 @@
                         </ToggleButton>
                         <Border x:Name="Border"
                     Grid.Column="0"
-                    BorderBrush="{StaticResource Dom6Gradient_Top_Bottom}"
+                    BorderBrush="{StaticResource Card4Gradient_Top_Bottom}"
                     Background="#FF000000"
                     BorderThickness="2"
                     Focusable="False">
@@ -1671,9 +1673,10 @@
                     Margin="0,0,3,0"
                     Background="{StaticResource Card4Gradient_Left_Right}"
                     SnapsToDevicePixels="True" />
-                        <Border x:Name="Border"
+                      <!--ComboBoxItem-->
+                      <Border x:Name="Border"
                     Grid.Column="1"
-                    Background="{StaticResource Card5Gradient_Left_Right}"
+                    Background="{StaticResource Card5Gradient_Right_Left}"
                     Padding="2"
                     SnapsToDevicePixels="True">
                             <ContentPresenter Margin="7,0,7,0" />

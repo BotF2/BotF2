@@ -56,6 +56,7 @@ namespace Supremacy.Combat
             {
                 throw new ArgumentNullException(nameof(owner));
             }
+
             bool yesStandoff;
             if (hostileAssets.Count == 0)
             {
@@ -567,6 +568,7 @@ namespace Supremacy.Combat
                 _text = "Step_3381:; Combat-Result ? ";
                 Console.WriteLine(_text);
 
+                //FriendlyAssets
                 foreach (CombatAssets asset in FriendlyAssets)
                 {
                     if (asset.HasSurvivingAssets)
@@ -612,17 +614,18 @@ namespace Supremacy.Combat
                 //GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(Amount)={0} and otherCivStrength ={1}", friendlyAssets, _otherCivStrength);
                 if (friendlyAssets == 0) // || _otherCivStrength == 0)// currentCivStrength == 0)
                 {
-                    _text = "Step_3381:; Combat: friendlyAssets (number of involved entities)=; " + friendlyAssets;
+                    _text = "Step_3391:; Combat: friendlyAssets (number of involved entities)=; " + friendlyAssets;
                     Console.WriteLine(_text);
                     //GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
                     return true;
                 }
 
+                //HostileAssets
                 foreach (CombatAssets asset in HostileAssets)
                 {
                     if (asset.HasSurvivingAssets)
                     {
-                        _text = "Step_3391:; Combat: hostileAssets(assets.CombatShips.Count)=; " + asset.CombatShips.Count;
+                        _text = "Step_3392:; Combat: hostileAssets(assets.CombatShips.Count)=; " + asset.CombatShips.Count;
                         Console.WriteLine(_text);
                         //GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets(assets.CombatShips.Count)={0}", asset.CombatShips.Count);
                         hostileAssets++;

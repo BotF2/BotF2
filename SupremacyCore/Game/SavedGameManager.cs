@@ -99,34 +99,31 @@ namespace Supremacy.Game
                     {
                         if (fileName.Contains("V17"))
                         {
-
-                            GameLog.Client.SaveLoad.DebugFormat("currentGameVersion = {2}, but {1} for {0}"
-                                , header.FileName
-                                , header.GameVersion
-                                , _currentGameVersionString
-                                );                            
-                            
-                            _text = "Step_4500: "
-                                + "currentGameVersion =" + _currentGameVersionString
+                            _text = "Step_4500:; " + "currentGameVersion =" + _currentGameVersionString
+                               
                                 + ", but " + header.GameVersion
                                 + " for " + header.FileName
                                 ;
-                            Console.WriteLine(_text);
+                            Console.WriteLine("Step_4500:; " + _text);
+                            GameLog.Client.SaveLoad.DebugFormat(_text);   
+                            //GameLog.Client.SaveLoad.DebugFormat("currentGameVersion = {2}, but {1} for {0}"
+                            //    , header.FileName
+                            //    , header.GameVersion
+                            //    , _currentGameVersionString
+                            //    );
+                            header.GameVersion = _currentGameVersionString;
+                            savedGames.Add(header);                            
+
+                            
                             //var result = MessageBox.Show(_text, "Loading this different version file might cause troubles ! - please move out of the SavedGame-folder !", MessageBoxButton.YesNo) ;
                             //if (result == MessageBoxResult.No) // no - this creates an endless loop
                             //{
                             //    result = MessageBox.Show("please move " + header.FileName + " out of the SavedGame-folder !");
                             //}
-
-
-                            header.GameVersion = _currentGameVersionString;
-                            savedGames.Add(header);
                         }
-
                     }
                 }
             }
-
             return savedGames.OrderByDescending(s => s.Timestamp).ToArray();
         }
 
@@ -160,18 +157,18 @@ namespace Supremacy.Game
                     //Console.WriteLine(fullPath);
                 }
 
-                _text = /*Environment.NewLine + */"Step_0292: --------------";
+                _text = /*Environment.NewLine + */"Step_0292:; --------------";
                 Console.WriteLine(_text);
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
-                _text = /*Environment.NewLine + */"Step_0293: fullPath = " + fullPath;
+                _text = /*Environment.NewLine + */"Step_0293:; fullPath = " + fullPath;
                 //Console.WriteLine(_text);
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 SavedGameHeader header;
                 using (FileStream fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    _text = "Step_0285: reading HEADER of " + fileName;
+                    _text = "Step_0285:; reading HEADER of " + fileName;
                     Console.WriteLine(_text);
                     GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 
@@ -189,7 +186,7 @@ namespace Supremacy.Game
             }
             catch
             {
-                string _text = "Step_0290: is the file there ? ...not able to read HEADER of " + fileName; // command line parameter ... e.g. started out of VS
+                string _text = "Step_0291:; is the file there ? ...not able to read HEADER of " + fileName; // command line parameter ... e.g. started out of VS
                 Console.WriteLine(_text);
                 GameLog.Client.SaveLoad.DebugFormat(_text);
 

@@ -20,17 +20,20 @@ namespace Supremacy.Client.Views
         public ColonyScreenView([NotNull] IUnityContainer container) : base(container)
         {
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.FirstColonyCommand,Key.Up,ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.ColonyUpdateCommand, Key.Down,ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.PreviousColonyCommand,Key.Left,ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.NextColonyCommand,Key.Right,ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.PreviousColonyCommand,Key.BrowserBack,ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.NextColonyCommand,Key.BrowserForward,ModifierKeys.None));
 
-            // ToDo: Numeric 1 to 4  should toggles between Tab 1 to 4  (not done yet)
+            // ToDo: Numeric 1 to 3  should toggles between Tab 1 to 3  (not done yet)
             //_ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.ShowColonyManagementCommand,Key.F7,ModifierKeys.None)); // Key.F7 planned
             //_ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.ShowColonyBuildListCommand, Key.F8,ModifierKeys.None));
             //_ = InputBindings.Add(new KeyBinding(ColonyScreenCommands.ShowShipyardCommand,Key.F9,ModifierKeys.None));
                                    
         }
+
+        //GalaxyScreenOverviewMode on see todo list
 
         public override void OnDestroyed()
         {

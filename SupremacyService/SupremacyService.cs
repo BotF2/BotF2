@@ -31,6 +31,8 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+
 //using System.Windows.Input;
 using Scheduler = System.Concurrency.Scheduler;
 
@@ -71,7 +73,10 @@ namespace Supremacy.WCF
         private int _isProcessingTurn;
         private GameEngine _gameEngine;
         private IDisposable _heartbeat;
+
+        [NonSerialized]
         private string _text;
+        private string _newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -245,8 +250,14 @@ namespace Supremacy.WCF
                 //Thread.Sleep(1000);
                 //SendKeys.SendWait("^l"); // Log.txt
                 //Thread.Sleep(1000);
-
-                _ = MessageBox.Show("Step_0098: An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
+                _text = "An error occurred while starting a new game/n"
+                    + _newline + "Possible reasons:"
+                    + _newline + "- in TechObj_6_Ships.xml a shipname entry is doubled"
+                    + _newline + _newline + "... Please retry or change Settings like Galaxy Size."
+                    ;
+                _text = "Step_0198: " + _text;
+                _ = MessageBox.Show(_text);
+                Console.WriteLine(_text);
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
                 //_errorService.HandleError(e);
 
@@ -258,7 +269,14 @@ namespace Supremacy.WCF
                 //Thread.Sleep(1000);
                 //SendKeys.SendWait("^l"); // Log.txt
                 //Thread.Sleep(1000);
-                _ = MessageBox.Show("Step_0099: An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
+                _text = "An error occurred while starting a new game:"
+                        + _newline + _newline + "Possible reasons:"
+                        + _newline + "- in TechObj_6_Ships.xml a shipname entry is doubled"
+                        + _newline + _newline + "... Please retry or change Settings like Galaxy Size."
+                        ;
+                _text = "Step_0199: " + _text;
+                _ = MessageBox.Show(_text);
+                Console.WriteLine(_text);
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
             }
@@ -530,6 +548,7 @@ namespace Supremacy.WCF
                             }
                             catch (Exception e) //ToDo: Just log or additional handling necessary?
                             {
+                                Console.WriteLine(e);
                                 GameLog.Server.General.Error(e);
                             }
                         },
@@ -537,7 +556,9 @@ namespace Supremacy.WCF
 
                 }
 
-                GameLog.Server.GeneralDetails.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
+                _text = "Step_0675:; AI processing time= " + stopwatch.Elapsed;
+                Console.WriteLine( _text );
+                GameLog.Server.GeneralDetails.InfoFormat(_text);
 
                 stopwatch.Restart();
             OH:
@@ -629,7 +650,7 @@ namespace Supremacy.WCF
             GameUpdateMessage message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
             TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
-            _text = "Step_0575: doing SendEndOfTurnUpdateAsync for " + player.Empire.Key;
+            _text = "Step_0576:; doing SendEndOfTurnUpdateAsync for " + player.Empire.Key;
             Console.WriteLine(_text);
             GameLog.Core.GameDataDetails.DebugFormat(_text);
 
@@ -1446,7 +1467,7 @@ namespace Supremacy.WCF
 
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
-            Console.WriteLine("Step_3004: " + assets[0].Sector.Location + " > OnCombatOccurring ... populating _combatEngine ");
+            Console.WriteLine("Step_3013:; " + assets[0].Sector.Location + " > OnCombatOccurring ... populating _combatEngine ");
             _combatEngine = new AutomatedCombatEngine(
                 assets,
                 SendCombatUpdateCallback,
@@ -1700,7 +1721,7 @@ namespace Supremacy.WCF
 
         private void OnInvasionOccurring(InvasionArena invasionArena)
         {
-            Console.WriteLine("Step_3004: OnInvasionOccurring ... populating _invasionEngine");
+            Console.WriteLine("Step_3014:; OnInvasionOccurring ... populating _invasionEngine");
 
             if (invasionArena.LatelyDoneInTurn > GameContext.Current.TurnNumber)
             {

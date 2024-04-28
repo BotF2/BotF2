@@ -164,7 +164,7 @@ namespace Supremacy.Orbitals
             int baysWithProjects = 0;
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
-                _text = "Step_8300:; "+ slot.Shipyard.Location + "; > checking " 
+                _text = "Step_8300:; "+ slot.Shipyard.Location + "; checking " 
                     + slot.Shipyard.Design /*+ ", index " + count*/
 
                     + "; Slot= " + slot.SlotID
@@ -256,7 +256,7 @@ namespace Supremacy.Orbitals
                         + " > " + _percent
                         + " done for " + _design
                         ;
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     //}
 
@@ -351,7 +351,7 @@ namespace Supremacy.Orbitals
 
 
                     ;
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
                 }
 
                 //if (!item.HasProject)

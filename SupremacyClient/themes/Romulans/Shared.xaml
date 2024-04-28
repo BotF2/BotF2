@@ -232,7 +232,7 @@
                        Width="14"
                        SnapsToDevicePixels="True"
                        Fill="{StaticResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}" />
-                        <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="5,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
+                        <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="5,0,5,0" SnapsToDevicePixels="True"
                                      Background="{StaticResource Rom1Gradient_Right_Left}">
                             <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
                         </scc:PixelSnappingBorder>

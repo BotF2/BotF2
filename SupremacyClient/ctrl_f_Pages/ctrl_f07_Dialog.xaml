@@ -435,7 +435,7 @@ C >
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Deltaner" 
-> Deltan </Hyperlink>
+> Deltans </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Denobulaner" 
@@ -452,13 +452,17 @@ C >
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Dosi" 
 > Dosi </Hyperlink>
+              
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tosk-J%C3%A4ger"
+> Drai </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Dremaner" 
 > Dremans </Hyperlink>
-            </TextBlock>
+</TextBlock>
 
-            <TextBlock TextWrapping="Wrap">
+<TextBlock TextWrapping="Wrap">
 E >  
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Edo" 
 > Edo </Hyperlink>
@@ -570,6 +574,10 @@ K >
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Klaestroner" 
 > Klaestrons </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kolaraner"
+> ( Kolaran ) </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kradin" 

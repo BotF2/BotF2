@@ -145,7 +145,8 @@ namespace Supremacy.Game
         Patrol,
         Intercept,
         Mission,
-        BuildStation
+        BuildStation,
+        AimReached
     }
 
     /// <summary>

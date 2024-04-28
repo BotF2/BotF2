@@ -64,6 +64,9 @@ namespace Supremacy.Universe
 
         private static void ValidateXml(object sender, ValidationEventArgs e)
         {
+            _text = "Step_0611:; ValidateXml > HomeSystems.xml";
+            Console.WriteLine(_text);
+
             XmlHelper.ValidateXml(XmlFilePath, e);
         }
 

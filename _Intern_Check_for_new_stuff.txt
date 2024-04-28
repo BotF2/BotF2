@@ -1,0 +1,13 @@
+_Intern_Check_for_new_stuff.txt
+
+0;1;2;3;4;5;6 Borg;Date;>;what
+FED;TER;ROM;KLING;CARD;DOM;BORG;Date;>;these are the empires
+
+--;--;--;--;--;--;-- Borg;2024-03-23;>;keep this blank dummy
+
+
+FED;TER;ROM;KLING;CARD;DOM;BORG;2024-03-23;>;Colony Screen new buttons refresh + show on map
+FED;TER;ROM;KLING;CARD;DOM;-- Borg;2024-03-23;>;Industry shown at Shipyard Slot
+FED;open;ROM;-open;open;DOM;-- Borg;2024-03-23;>;STRG + 0 to 6 for Ship Classes
+FED;--;--;--;--;DOM;-- Borg;2024-03-23;>;Summary buttons all empire-specific - Screens: F1, F2, not F4, not F5
+FED;--;--;--;--;--;-- Borg;2024-03-23;>;Ship naming better done

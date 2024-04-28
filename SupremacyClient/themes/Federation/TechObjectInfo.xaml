@@ -586,7 +586,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
-                    <Grid x:Name="UpgradableDesigns" MinWidth="270">
+                    <Grid x:Name="UpgradableDesigns" MinWidth="220">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -604,7 +604,7 @@
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
+          <Grid x:Name="ObsoletedDesigns" MinWidth="220">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -871,26 +871,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
-            
-          <Grid x:Name="CamouflagedStrength">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
-                Margin="0,0,7,0"
-                VerticalAlignment="Top"
-                Text="{s:StringResource 'SHIP_CAMOUFLAGE_STRENGTH'}"
-                TextTrimming="CharacterEllipsis"
-                TextWrapping="NoWrap" />
-                        <TextBlock VerticalAlignment="Top"
-                TextAlignment="Right"
-                Text="{Binding Path=Design.(orbitals:ShipDesign.CamouflagedStrength)}"
-                TextTrimming="CharacterEllipsis"
-                TextWrapping="NoWrap" />
-            </Grid>
-            
+                        
             <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -1010,6 +991,26 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
                     </Grid>
+
+          <Grid x:Name="CamouflagedStrength">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                Margin="0,0,7,0"
+                VerticalAlignment="Top"
+                Text="{s:StringResource 'SHIP_CAMOUFLAGE_STRENGTH'}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+    TextAlignment="Right"
+    Text="{Binding Path=Design.(orbitals:ShipDesign.CamouflagedStrength)}"
+    TextTrimming="CharacterEllipsis"
+    TextWrapping="NoWrap" />
+          </Grid>
+          
 
                     <Grid x:Name="UpgradableDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
@@ -1695,7 +1696,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
-          <Grid x:Name="UpgradableDesigns" MinWidth="270">
+          <Grid x:Name="UpgradableDesigns" MinWidth="220">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
@@ -1713,7 +1714,7 @@
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
+          <Grid x:Name="ObsoletedDesigns" MinWidth="220">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />

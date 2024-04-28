@@ -268,8 +268,8 @@ namespace Supremacy.AI
                                 }
                                 if (clause.ClauseType == ClauseType.RequestGiveCredits)
                                 {
-                                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-80, -100));
-                                    DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-85, -120));
+                                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-100, -80)); // lower before !
+                                    DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-120, -85));
                                 }
                                 if (clause.ClauseType == ClauseType.TreatyCeaseFire)
                                 {

@@ -175,6 +175,29 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.Control));  // old F9-Dialog, not used anymore
 
 
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_0_Command, Key.D0, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_1_Command, Key.D1, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_2_Command, Key.D2, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_3_Command, Key.D3, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_4_Command, Key.D4, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_5_Command, Key.D5, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_6_Command, Key.D6, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_7_Command, Key.D7, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_8_Command, Key.D8, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.CTRL_9_Command, Key.D9, ModifierKeys.Control));
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_0_Command, Key.D0, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_1_Command, Key.D1, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_2_Command, Key.D2, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_3_Command, Key.D3, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_4_Command, Key.D4, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_5_Command, Key.D5, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_6_Command, Key.D6, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_7_Command, Key.D7, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_8_Command, Key.D8, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SHIFT_9_Command, Key.D9, ModifierKeys.Alt));
+
+
             //                                                      CheatMenu uses CTRL + C
             _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));

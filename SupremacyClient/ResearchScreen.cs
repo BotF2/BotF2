@@ -89,12 +89,14 @@ namespace Supremacy.Client
 
             techTree.Merge(AppContext.LocalPlayerEmpire.TechTree);
 
-            foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
+            //foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in MasterResources.CivDB)
             {
-                if (DiplomacyHelper.IsMember(civ, playerCiv))
-                {
+                //2024-04-13  ..provide as many Info as possible
+                //if (DiplomacyHelper.IsMember(civ, playerCiv))
+                //{
                     techTree.Merge(GameContext.Current.TechTrees[civ]);
-                }
+                //}
             }
 
             //IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (

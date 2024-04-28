@@ -9,6 +9,7 @@
 
 using Supremacy.Annotations;
 using Supremacy.Entities;
+using Supremacy.Tech;
 using Supremacy.Utility;
 using System;
 using System.ComponentModel;
@@ -70,10 +71,12 @@ namespace Supremacy.Game
                 LocalPlayerName = SinglePlayerName,
             };
 
-            _text = "Step_1202: PopulateEmpires... "
-            ;
+            _text = "Step_1233:; PopulateEmpires... ";
+            
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
+
+            //TechObject.xaml + Klingon shipclass + new site ShipClasses + Info from ..to
 
             initData.PopulateEmpires();
 
@@ -97,7 +100,7 @@ namespace Supremacy.Game
                 initData.SlotClaims[i] = SlotClaim.Unassigned;
                 initData.SlotStatus[i] = Game.SlotStatus.Open;
             }
-            _text = "Step_1203: Returning initData... ";
+            _text = "Step_1223:; Returning initData... ";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
             return initData;
@@ -209,8 +212,8 @@ namespace Supremacy.Game
 
             GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Single or MultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad);
 
-            GameLog.Client.SaveLoad.DebugFormat("Step_9811: Loading Time = {0}", DateTime.Now - _time);
-            Console.WriteLine("Step_9811: Loading Time = {0}", DateTime.Now - _time);
+            GameLog.Client.SaveLoad.DebugFormat("Step_9811:; Loading Time = {0}", DateTime.Now - _time);
+            Console.WriteLine("Step_9811:; Loading Time = {0}", DateTime.Now - _time);
 
 
 
@@ -329,7 +332,7 @@ namespace Supremacy.Game
                 _text = _options.ToString();
                 _text += "GameOptions are set...";
                 //}
-                Console.WriteLine("Step_1200: " + _text);
+                Console.WriteLine("Step_1200:; " + _text);
             }
         }
 

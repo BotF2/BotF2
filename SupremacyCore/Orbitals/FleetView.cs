@@ -118,7 +118,7 @@ namespace Supremacy.Orbitals
 
                 if (IsNumberOfShipsKnown)
                 {
-                    return _ships.Count + " in Nebula, Cloaked or Camouflaged";
+                    return _ships.Count + " " + string.Format(ResourceManager.GetString("FLEET_NOT_SCANABLE")); //" in Nebula, Cloaked or Camouflaged";
                 }
 
                 if (IsOwnerKnown)
@@ -134,6 +134,8 @@ namespace Supremacy.Orbitals
                 return string.Format(ResourceManager.GetString("UNKNOWN_FLEET")); //"Unknown Fleet";
             }
         }
+
+       
 
         public string ClassName
         {

@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Windows.Controls;
 
 namespace Supremacy.Combat
 {
@@ -91,6 +90,9 @@ namespace Supremacy.Combat
         protected InvasionUnit([NotNull] UniverseObject source, TechObjectDesign design)
             : this(source)
         {
+            //if (source == null)
+            //    continue;
+
             if (design != null)
             {
                 _designid = design.DesignID;
@@ -114,7 +116,23 @@ namespace Supremacy.Combat
             }
         }
 
-        public virtual string Name => Source.Name;
+        public virtual string Name
+        {
+            get
+            {
+                if (Source != null)
+                {
+                    return Source.Name;
+                }
+                else
+                {
+                    return "unknown";
+                }
+            }
+        }
+
+
+
 
         public UniverseObject Source => GameContext.Current.Universe.Objects[ObjectID];
 
@@ -166,6 +184,7 @@ namespace Supremacy.Combat
     {
         private readonly CombatWeapon[] _weapons;
         [NonSerialized] private ArrayWrapper<CombatWeapon> _weaponsWrapper;
+        private string _text;
 
         public InvasionOrbital([NotNull] Orbital source)
             : base(source, source.Design)
@@ -240,6 +259,10 @@ namespace Supremacy.Combat
 
             if (IsDestroyed)
             {
+                _text = ("Step_3052:; " + orbital.Name + " is destroyed");
+                Console.WriteLine(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
+
                 orbital.Destroy();
                 return;
             }
@@ -440,13 +463,13 @@ namespace Supremacy.Combat
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
             _canLandTroops = _invadingUnits.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Any(o => o.ShipType == ShipType.Transport);
 
-            _text = "Step_3787:; " 
+            _text = "Step_3787:; "
                 + "_canLandTroops(Transport Ships) = " + _canLandTroops
                 + ", and/but ColonyShieldStrength = " + ColonyShieldStrength.CurrentValue
                 + ", Last Value = " + ColonyShieldStrength.LastValue
                 ;
             Console.WriteLine(_text);
-            GameLog.Core.Combat.DebugFormat(_text);
+            //GameLog.Core.Combat.DebugFormat(_text);
             if (ColonyShieldStrength.CurrentValue > 0)
             {
                 _canLandTroops = false;
@@ -470,7 +493,7 @@ namespace Supremacy.Combat
                 {
                     //_status = InvasionStatus.Victory;
                     AssimilatePopulation(Colony); //crashes the game
-            }
+                }
             }
             else
             {
@@ -501,7 +524,7 @@ namespace Supremacy.Combat
 
 
             colony.Morale.AdjustCurrent(20);
-            colony.Morale.UpdateAndReset(); 
+            colony.Morale.UpdateAndReset();
             GameLog.Client.AI.DebugFormat("Assimilated colony ={0}, owner = {1}, morale = {2}",// inhabitants = {2} ",
                 colony.Name, colony.Owner.Key, /*colony.Inhabitants.Key, */colony.Morale.CurrentValue);
         }
@@ -510,10 +533,10 @@ namespace Supremacy.Combat
         {
             if (colony != null && colony.Population != null)
             {
-                Report_SystemAssaultDetails("Step_3760: ComputeDefenderCombatStrength for " 
+                Report_SystemAssaultDetails("Step_3760:; ComputeDefenderCombatStrength for "
                     + colony.Name
                     + " ( " + Population
-                    + " Pop.) " 
+                    + " Pop.) "
                     );
                 return CombatHelper.ComputeGroundCombatStrength(colony.Owner, colony.Location, colony.Population.CurrentValue);
             }
@@ -523,7 +546,7 @@ namespace Supremacy.Combat
 
         private void Report_SystemAssaultDetails(string v)
         {
-            Console.WriteLine(v);   
+            Console.WriteLine(v);
             GameLog.Core.SystemAssaultDetails.DebugFormat(v);
         }
 
@@ -576,6 +599,8 @@ namespace Supremacy.Combat
     [Serializable]
     public class InvasionStructure : InvasionUnit
     {
+        private string _text;
+
         public InvasionStructure([NotNull] Building building)
             : base(building, building.Design)
         {
@@ -596,6 +621,10 @@ namespace Supremacy.Combat
         {
             if (IsDestroyed)
             {
+                _text = ("Step_3052:; " + Building.Name + " is destroyed");
+                Console.WriteLine(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
+
                 Building.Destroy();
             }
         }
@@ -605,6 +634,9 @@ namespace Supremacy.Combat
     public class InvasionFacility : InvasionUnit
     {
         private readonly int _index;
+
+        [NonSerialized]
+        private string _text;
 
         public InvasionFacility([NotNull] Colony colony, ProductionCategory productionCategory, int index)
             : base(colony, colony.GetFacilityType(productionCategory))
@@ -631,6 +663,10 @@ namespace Supremacy.Combat
         {
             if (IsDestroyed)
             {
+                _text = ("Step_3052:; " + Source.Name + " is destroyed ");
+                Console.WriteLine(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
+
                 ((Colony)Source).RemoveFacility(Category);
             }
         }
@@ -746,7 +782,7 @@ namespace Supremacy.Combat
 
         private void SendUpdate()
         {
-            _text = "Step_3888: SendUpdate (for Human Player)...";
+            _text = "Step_3888:; SendUpdate (for Human Player)...";
             Console.WriteLine(_text);
             GameLog.Core.SystemAssaultDetails.DebugFormat(_text);
 
@@ -764,7 +800,7 @@ namespace Supremacy.Combat
 
             if (orders.InvasionID != _invasionArena.InvasionID)
             {
-                Console.WriteLine("ERROR xxxxx Orders for "+ orders.InvasionID + " submitted for a different invasion " + _invasionArena.InvasionID);
+                Console.WriteLine("ERROR xxxxx Orders for " + orders.InvasionID + " submitted for a different invasion " + _invasionArena.InvasionID);
                 //throw new ArgumentException("Orders submitted for a different invasion.", nameof(orders));
             }
 
@@ -808,7 +844,16 @@ namespace Supremacy.Combat
 
         private void ProcessRound()
         {
-            //RechargeUnits(); // commented, so that Recharge only after invasion is over
+            _text = "Step_3855:; Combat at " + _invasionArena.Colony.Location 
+                + ", Round=" + _invasionArena.RoundNumber
+                + ", Action=" + _orders.Action
+                ;
+            Console.WriteLine(_text);
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
+
+            RechargeUnits(); // commented, so that Recharge only after invasion is over
+
+            //InvasionAction.StandDown
             try
             {
                 if (_orders.Action == InvasionAction.StandDown)
@@ -838,24 +883,26 @@ namespace Supremacy.Combat
                 ProcessSpaceCombat(invadingUnits, defendingUnits);
             }
 
+            // InvasionAction.BombardPlanet || InvasionAction.UnloadAllOrdinance
             if (_orders.Action == InvasionAction.BombardPlanet || _orders.Action == InvasionAction.UnloadAllOrdinance)
             {
-                if (_orders.Action == InvasionAction.BombardPlanet)
-                {
-                    GameLog.Core.SystemAssaultDetails.DebugFormat("Order is Bombardment");
-                }
+                //if (_orders.Action == InvasionAction.BombardPlanet)
+                //{
+                //    GameLog.Core.SystemAssaultDetails.DebugFormat("Order is Bombardment");
+                //}
 
-                if (_orders.Action == InvasionAction.UnloadAllOrdinance)
-                {
-                    GameLog.Core.SystemAssaultDetails.DebugFormat("Order is UnloadAllOrdinance");
-                }
+                //if (_orders.Action == InvasionAction.UnloadAllOrdinance)
+                //{
+                //    GameLog.Core.SystemAssaultDetails.DebugFormat("Order is UnloadAllOrdinance");
+                //}
 
                 ProcessBombardment();
             }
 
+            // InvasionAction.LandTroops
             if (_orders.Action == InvasionAction.LandTroops)
             {
-                GameLog.Core.SystemAssaultDetails.DebugFormat("Order is LandTroops");
+                //GameLog.Core.SystemAssaultDetails.DebugFormat("Order is LandTroops");
                 ProcessGroundCombat();
             }
 
@@ -910,7 +957,7 @@ namespace Supremacy.Combat
             Civilization invader = GameContext.Current.Civilizations[_invasionArena.InvaderID];
 
             int defenderCombatStrength = _invasionArena.DefenderCombatStrength;
-            _text = "Step_3762: " 
+            _text = "Step_3762:; "
                 + colony.Location
                 + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
                 + " defenderCombatStrength= " + defenderCombatStrength
@@ -922,11 +969,11 @@ namespace Supremacy.Combat
             while (defenderCombatStrength > 0 &&
                    transports.Count != 0)
             {
-                _text = "Step_3762: "
-    + colony.Location
-    + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
-    + " defenderCombatStrength= " + defenderCombatStrength
-    ;
+                _text = "Step_3763:; "
+                    + colony.Location
+                    + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
+                    + " defenderCombatStrength= " + defenderCombatStrength
+                    ;
                 Console.WriteLine(_text);
                 //GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
                 //    defenderCombatStrength, transports.Count);
@@ -937,20 +984,20 @@ namespace Supremacy.Combat
                     invader,
                     colony.Location,
                     ((Ship)transport.Source).ShipDesign.WorkCapacity);
-                _text = "Step_3762: "
-    + colony.Location
-    + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
-    + " defenderCombatStrength= " + defenderCombatStrength
-    ;
+                _text = "Step_3764:; "
+                    + colony.Location
+                    + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
+                    + " defenderCombatStrength= " + defenderCombatStrength
+                    ;
                 Console.WriteLine(_text);
-                GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
-                        transportCombatStrength);
+                //GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
+                //        transportCombatStrength);
 
                 int randomResult = RandomProvider.Shared.Next(1, 21);   //  limits random to 20 %
                 transportCombatStrength -= transportCombatStrength * randomResult / 100;
                 //                                 100 -             (     100                * 15        / 100)
                 //
-                _text = "Step_0391: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = "
+                _text = "Step_0391:; GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = "
                     + defenderCombatStrength
                     + ", attacking Transports = " + transports.Count
                     ;
@@ -958,16 +1005,17 @@ namespace Supremacy.Combat
                 //GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
                 //        defenderCombatStrength, transports.Count);
 
-                _text = "Step_0366: GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = "
+                _text = "Step_0366:; GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = "
                     + defenderCombatStrength
                     + ", attacking Transports = " + transports.Count
                     ;
                 Console.WriteLine(_text);
-                GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
-                    transportCombatStrength, randomResult);
+                //GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
+                //    transportCombatStrength, randomResult);
 
                 defenderCombatStrength -= transportCombatStrength;
-                colony.Population.AdjustCurrent(transportCombatStrength / 2 * -1);
+                //int pop = 
+                colony.Population.AdjustCurrent(colony.Population.CurrentValue / 2 * -1);
                 colony.Population.UpdateAndReset();
 
                 if (defenderCombatStrength >= 0)
@@ -976,7 +1024,7 @@ namespace Supremacy.Combat
                     transport.Destroy();
                 }
 
-                _text = "Step_0366: GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = "
+                _text = "Step_0367:; GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = "
                     + defenderCombatStrength
                     + ", attacking Transports = " + transports.Count
                     ;
@@ -986,7 +1034,7 @@ namespace Supremacy.Combat
                 //GameLog.Core.SystemAssaultDetails.DebugFormat("GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = {0}, attacking Transports = {1}",
                 //    defenderCombatStrength, transports.Count);
 
-                _text = "Step_3762: "
+                _text = "Step_3762:; "
                     + colony.Location
                     + " > GroundCombat - LandingTroops by Attacking Transports= " + transports.Count
                     + " defenderCombatStrength= " + defenderCombatStrength
@@ -1016,6 +1064,7 @@ namespace Supremacy.Combat
             // Update Strike Cruiser vs. Shields // Exchange ProcessBombardment
             ChanceTree<object> chanceTree = GetBaseGroundTargetHitChanceTree();
             double totalPopDamage = 0d;
+            CivilizationManager civManagerAttacker = GameContext.Current.CivilizationManagers[InvasionArena.Invader];
 
             foreach (InvasionOrbital unit in _invasionArena.InvadingUnits.OfType<InvasionOrbital>().Where(CanBombard))
             {
@@ -1043,6 +1092,9 @@ namespace Supremacy.Combat
                 if (chanceTree.IsEmpty)
                 {
                     chanceTree = GetBaseGroundTargetHitChanceTree();
+                    //_text = ("Step_3852:; GetBaseGroundTargetHitChanceTree...");
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.CombatDetails.DebugFormat(_text);
                     if (chanceTree.IsEmpty)
                     {
                         break;
@@ -1051,6 +1103,11 @@ namespace Supremacy.Combat
 
                 object target = chanceTree.Take();
                 double defenseMultiplier = CombatHelper.ComputeGroundDefenseMultiplier(_invasionArena.Colony);
+
+                // doesn't work good
+                //_text = ("Step_3853:; Target=" + target + ", defenseMultiplier=" + defenseMultiplier);
+                //Console.WriteLine(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 foreach (CombatWeapon weapon in unit.Weapons.Where(o => o.CanFire))
                 {
@@ -1104,7 +1161,17 @@ namespace Supremacy.Combat
                         //ship.Destroy();   // don't destroy it here
                     }
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
-                    GameLog.Core.SystemAssaultDetails.DebugFormat(" _invasionArena.ColonyShieldStrength = {0}", _invasionArena.ColonyShieldStrength);
+                    
+                    //works
+                    //_text = "Step_3853:; Combat at " + _invasionArena.Colony.Location
+                    //        + ", Round=" + _invasionArena.RoundNumber
+                    //        + ", Action=" + _orders.Action
+                    //        + ", _invasionArena.ColonyShieldStrength=" + _invasionArena.ColonyShieldStrength
+                    //        ;
+                    //Console.WriteLine(_text);
+
+                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.SystemAssaultDetails.DebugFormat(" _invasionArena.ColonyShieldStrength = {0}", _invasionArena.ColonyShieldStrength);
 
                     //weapon.Discharge(); // Update x 21 july 2019. weapons able to fire multiple rounds now
 
@@ -1120,6 +1187,20 @@ namespace Supremacy.Combat
 
                         _ = targetUnit.TakeDamage(maxDamage);   // units, aka buildings, do not beneficiate from Ground Defense bonuses
 
+                        if (targetUnit.Design.ToString() == "SHIELD_GENERATOR")
+                        {
+                            _ = targetUnit.TakeDamage(maxDamage * 20); // Defense Buildings get destroyed quicker
+                        }
+
+                        _text = (targetUnit.Source.Location
+                                + " > Bombardment: one unit " + targetUnit.ObjectID // was hit
+                                + " " + targetUnit.Design.LocalizedName
+                                + " was hit "
+                                + " ( Hull: " + targetUnit.Health.CurrentValue + " )"
+                                + " ,  " + targetUnit.Health.CurrentChange + " )"
+                                );
+                        Console.WriteLine("Step_3877:; " + _text);
+
                         if (targetUnit.IsDestroyed)
                         {
                             if (chanceTree.IsEmpty)
@@ -1127,10 +1208,24 @@ namespace Supremacy.Combat
                                 chanceTree = GetBaseGroundTargetHitChanceTree();
                             }
 
-                            GameLog.Core.SystemAssaultDetails.DebugFormat("Bombardment: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
-                                targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
+                            // this is doubled
+                            //_text = (targetUnit.Source.Location
+                            //    + " > Bombardment: one unit " + targetUnit.ObjectID
+                            //    + " " + targetUnit.Design.LocalizedName
+                            //    + " was destroyed."
+                            //    );
+                            //Console.WriteLine("Step_3877:; " + _text);
+                            //GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.SystemAssaultDetails.DebugFormat("Bombardment: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                            //   targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
+
+                            // this is doubled
+                            //civManagerAttacker.SitRepEntries.Add(new ReportEntry_CoS(civManagerAttacker.Civilization, _invasionArena.Colony.Location, _text,
+                            //    "SYSTEMASSAULT", "", SitRepPriority.Crimson));
+
                         }
 
+                        // totalPopDamage = damage to Population
                         if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumDamage ||
                             _orders.Action == InvasionAction.UnloadAllOrdinance)     // here UnloadAllOrdinance is used
                         {
@@ -1193,6 +1288,13 @@ namespace Supremacy.Combat
             {
                 _ = _invasionArena.Population.AdjustCurrent(-1 * _invasionArena.Population.CurrentValue);
             }
+            _text = (colony.Location
+                + " > SystemAssault: "
+                + Math.Max(1, (int)damage) + " damage appeared to population."
+                );
+            Console.WriteLine("Step_3898:; " + _text);
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
+
             _invasionArena.Population.UpdateAndReset();
         }
 
@@ -1245,6 +1347,14 @@ namespace Supremacy.Combat
         private void ProcessSpaceCombat(IList<InvasionOrbital> invadingUnits, IList<InvasionOrbital> defendingUnits)
         {
             // Update 1701M Name: Orbital Re-balancing. Replace full ProcessSpaceCombat with it.
+
+            _text = ("Step_3893:; ProcessSpaceCombat..." 
+                //+ target + ", defenseMultiplier=" + defenseMultiplier
+                );
+            Console.WriteLine(_text);
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
+
+
             _invasionArena.AttackOccurred = true;
 
             IEnumerable<InvasionOrbital> nonRetreatingUnits = (_orders.Action == InvasionAction.StandDown) ? defendingUnits : defendingUnits.Concat(invadingUnits);
@@ -1432,11 +1542,11 @@ namespace Supremacy.Combat
             }
         }
 
-        //private void RechargeUnits()
-        //{
-        //    _invasionArena.DefendingUnits.OfType<InvasionOrbital>().ForEach(o => o.Recharge());
-        //    _invasionArena.InvadingUnits.OfType<InvasionOrbital>().ForEach(o => o.Recharge());
-        //}
+        private void RechargeUnits()
+        {
+            _invasionArena.DefendingUnits.OfType<InvasionOrbital>().ForEach(o => o.Recharge());
+            _invasionArena.InvadingUnits.OfType<InvasionOrbital>().ForEach(o => o.Recharge());
+        }
 
         protected void FinishInvasion()
         {
@@ -1453,12 +1563,12 @@ namespace Supremacy.Combat
                     continue;
                 }
 
-                if (_invasionArena.Colony.Population.IsMinimized && unit.Design.Key.Contains("CARD_AUTOMATED_MISSILE"))
-                {
-                    GameLog.Core.SystemAssaultDetails.DebugFormat("CARD_AUTOMATED_MISSILE will be destroyed = {0} because colony pop is null", unit.Name);
-                    unit.Destroy();
-                    //GameLog.Core.Combat.DebugFormat("CARD_AUTOMATED_MISSILE was destroyed because colony pop is null");
-                }
+                //if (_invasionArena.Colony.Population.IsMinimized && unit.Design.Key.Contains("CARD_AUTOMATED_MISSILE"))
+                //{
+                //    GameLog.Core.SystemAssaultDetails.DebugFormat("CARD_AUTOMATED_MISSILE will be destroyed = {0} because colony pop is null", unit.Name);
+                //    unit.Destroy();
+                //    //GameLog.Core.Combat.DebugFormat("CARD_AUTOMATED_MISSILE was destroyed because colony pop is null");
+                //}
             }
 
             _invasionArena.Population.UpdateAndReset();
@@ -1474,15 +1584,15 @@ namespace Supremacy.Combat
                 _invasionArena.Colony.Destroy();
                 _ = GameContext.Current.Universe.Destroy(_invasionArena.Colony);
                 //if (_invasionArena.Colony.is)
-                _text = "Step_3798: " + _text + "Colony destroyed due to Invasion.";
+                _text = "Step_3798:; " + _text + " Colony destroyed due to Invasion.";
                 Console.WriteLine(_text);
                 //GameLog.Core.Combat.DebugFormat(_text);
 
                 civManager.EnsureSeatOfGovernment();
-                if(_invasionArena.InvasionID == 6)
+                if (_invasionArena.InvasionID == 6)
                 {
                     Colony colony = new Colony(_invasionArena.Colony.System, GameContext.Current.CivilizationManagers[6].Civilization.Race);
-                    _text = "Step_3799: " + _text + "New Borg colony established after Invasion";
+                    _text = "Step_3799:; " + _text + "New Borg colony established after Invasion";
                     Console.WriteLine(_text);
                     //GameLog.Core.Combat.DebugFormat(_text);
                 }
@@ -1495,31 +1605,71 @@ namespace Supremacy.Combat
 
             _invasionEndedCallback(this);
 
-            string invaderUnitsDestroyed = "0";
-            invaderUnitsDestroyed = _invasionArena.InvadingUnits.Where(o => o.Health.IsMinimized).ToList().Count().ToString();
-            string defenderUnitsDestroyed = "0";
-            defenderUnitsDestroyed = _invasionArena.DefendingUnits.Where(o => o.Health.IsMinimized).ToList().Count().ToString();
+            string invaderUnitsDestroyedCount = "0";
+            var invaderUnitsDestroyed = _invasionArena.InvadingUnits.Where(o => o.Health.IsMinimized).ToList();
+            invaderUnitsDestroyedCount = _invasionArena.InvadingUnits.Where(o => o.Health.IsMinimized).ToList().Count().ToString();
 
-            //_text = "";
-
+            string defenderUnitsDestroyedCount = "0";
+            var defenderUnitsDestroyed = _invasionArena.DefendingUnits.Where(o => o.Health.IsMinimized).ToList();
+            defenderUnitsDestroyedCount = _invasionArena.DefendingUnits.Where(o => o.Health.IsMinimized).ToList().Count().ToString();
 
 
 
             CivilizationManager civManagerAttacked = GameContext.Current.CivilizationManagers[_invasionArena.Defender.CivID];
             //civManagerAttacked.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(),
-            //    _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed));
+            //    _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyedCount, defenderUnitsDestroyedCount));
 
             _text = string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT")
-                , _invasionArena.Colony.Location, _invasionArena.Colony.Name, _invasionArena.Status.ToString(), _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed);
+                , _invasionArena.Colony.Location, _invasionArena.Colony.Name, _invasionArena.Status.ToString(), _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyedCount, defenderUnitsDestroyedCount);
             civManagerAttacked.SitRepEntries.Add(new ReportEntry_CoS(civManagerAttacked.Civilization, _invasionArena.Colony.Location, _text,
                 "SYSTEMASSAULT", "ScriptedEvents/SystemAssault.png", SitRepPriority.RedYellow));
 
 
             CivilizationManager civManagerAssaulting = GameContext.Current.CivilizationManagers[_invasionArena.Invader.CivID];
             //civManagerAssaulting.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(),
-            //    _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed));
+            //    _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyedCount, defenderUnitsDestroyedCount));
             civManagerAssaulting.SitRepEntries.Add(new ReportEntry_CoS(civManagerAssaulting.Civilization, _invasionArena.Colony.Location, _text,
                 "SYSTEMASSAULT", "ScriptedEvents/SystemAssault.png", SitRepPriority.RedYellow));
+
+            foreach (var unit in invaderUnitsDestroyed)
+            {
+                //Attacked Civ
+                _text = "Assault at " + _invasionArena.Colony.Location
+                    + " > Destroyed Unit: " + unit.ObjectID
+                    //+ " " + unit.Name
+                    + " ( " + unit.Design + " )"
+                    ;
+
+                civManagerAttacked.SitRepEntries.Add(new ReportEntry_CoS(civManagerAttacked.Civilization, _invasionArena.Colony.Location, _text,
+                    "SYSTEMASSAULT", "", SitRepPriority.RedYellow));
+
+                // Assaulting Civ
+                //CivilizationManager civManagerAssaulting = GameContext.Current.CivilizationManagers[_invasionArena.Invader.CivID];
+                //civManagerAssaulting.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(),
+                //    _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyedCount, defenderUnitsDestroyedCount));
+                civManagerAssaulting.SitRepEntries.Add(new ReportEntry_CoS(civManagerAssaulting.Civilization, _invasionArena.Colony.Location, _text,
+                    "SYSTEMASSAULT", "", SitRepPriority.Yellow));
+            }
+
+            foreach (var unit in defenderUnitsDestroyed)
+            {
+                //Attacked Civ
+                _text = "Assault at " + _invasionArena.Colony.Location
+                    + " > Destroyed Unit: " + unit.ObjectID
+                    //+ " " + unit.Name
+                    + " ( " + unit.Design + " )"
+                    ;
+
+                civManagerAttacked.SitRepEntries.Add(new ReportEntry_CoS(civManagerAttacked.Civilization, _invasionArena.Colony.Location, _text,
+                    "SYSTEMASSAULT", "", SitRepPriority.RedYellow));
+
+                // Assaulting Civ
+                //CivilizationManager civManagerAssaulting = GameContext.Current.CivilizationManagers[_invasionArena.Invader.CivID];
+                //civManagerAssaulting.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(),
+                //    _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyedCount, defenderUnitsDestroyedCount));
+                civManagerAssaulting.SitRepEntries.Add(new ReportEntry_CoS(civManagerAssaulting.Civilization, _invasionArena.Colony.Location, _text,
+                    "SYSTEMASSAULT", "", SitRepPriority.Yellow));
+            }
 
         }
 

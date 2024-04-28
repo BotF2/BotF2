@@ -834,9 +834,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Rectangle Grid.Column="0"
-                       Width="14"
-                       SnapsToDevicePixels="True"
+                        <Rectangle Grid.Column="0" Width="14" SnapsToDevicePixels="True"
                        Fill="{StaticResource Borg3Gradient_Left_Right}" />
                         <scc:PixelSnappingBorder x:Name="Border"
                                      Grid.Column="1"

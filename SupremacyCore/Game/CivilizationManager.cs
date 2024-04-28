@@ -45,6 +45,45 @@ namespace Supremacy.Game
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
+        private int _shipColonyNeeded;
+        private int _shipColonyOrdered;
+        private int _shipColonyAvailable;
+        private int _shipConstructionNeeded;
+        private int _shipConstructionOrdered;
+        private int _shipConstructionAvailable;
+        private int _shipMedicalNeeded;
+        private int _shipMedicalOrdered;
+        private int _shipMedicalAvailable;
+        private int _shipTransportNeeded;
+        private int _shipTransportOrdered;
+        private int _shipTransportAvailable;
+        private int _shipSpyNeeded;
+        private int _shipSpyOrdered;
+        private int _shipSpyAvailable;
+        private int _shipDiplomaticNeeded;
+        private int _shipDiplomaticOrdered;
+        private int _shipDiplomaticAvailable;
+        private int _shipScienceNeeded;
+        private int _shipScienceOrdered;
+        private int _shipScienceAvailable;
+        private int _shipScoutNeeded;
+        private int _shipScoutOrdered;
+        private int _shipScoutAvailable;
+        private int _shipFastAttackNeeded;
+        private int _shipFastAttackOrdered;
+        private int _shipFastAttackAvailable;
+        private int _shipCruiserNeeded;
+        private int _shipCruiserOrdered;
+        private int _shipCruiserAvailable; 
+        private int _shipHeavyCruiserNeeded;
+        private int _shipHeavyCruiserOrdered;
+        private int _shipHeavyCruiserAvailable; 
+        private int _shipStrikeCruiserNeeded;
+        private int _shipStrikeCruiserOrdered;
+        private int _shipStrikeCruiserAvailable; 
+        private int _shipCommandNeeded;
+        private int _shipCommandOrdered;
+        private int _shipCommandAvailable; 
         //private int _buyCostLastTurn;
         private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
@@ -58,6 +97,7 @@ namespace Supremacy.Game
         private int _homeColonyId;
         private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
+        private MapLocation _rendezvousplace;
         private int _seatOfGovernmentId = -1;
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
@@ -339,6 +379,240 @@ namespace Supremacy.Game
         {
             get => _maintenanceCostLastTurn;
             set => _maintenanceCostLastTurn = value;
+        }
+        // Ship Colony
+        public int ShipColonyNeeded
+        {
+            get => _shipColonyNeeded;
+            set => _shipColonyNeeded = value;
+        }
+        public int ShipColonyOrdered
+        {
+            get => _shipColonyOrdered;
+            set => _shipColonyOrdered = value;
+        }
+        public int ShipColonyAvailable
+        {
+            get => _shipColonyAvailable;
+            set => _shipColonyAvailable = value;
+        }
+
+
+
+        // Ship Construction
+        public int ShipConstructionNeeded
+        {
+            get => _shipConstructionNeeded;
+            set => _shipConstructionNeeded = value;
+        }
+
+        public int ShipConstructionOrdered
+        {
+            get => _shipConstructionOrdered;
+            set => _shipConstructionOrdered = value;
+        }
+
+        public int ShipConstructionAvailable
+        {
+            get => _shipConstructionAvailable;
+            set => _shipConstructionAvailable = value;
+        }
+
+        // Ship Medical
+        public int ShipMedicalNeeded
+        {
+            get => _shipMedicalNeeded;
+            set => _shipMedicalNeeded = value;
+        }
+        public int ShipMedicalOrdered
+        {
+            get => _shipMedicalOrdered;
+            set => _shipMedicalOrdered = value;
+        }
+
+        public int ShipMedicalAvailable
+        {
+            get => _shipMedicalAvailable;
+            set => _shipMedicalAvailable = value;
+        }
+
+        // Ship Transport
+        public int ShipTransportNeeded
+        {
+            get => _shipTransportNeeded;
+            set => _shipTransportNeeded = value;
+        }
+        public int ShipTransportOrdered
+        {
+            get => _shipTransportOrdered;
+            set => _shipTransportOrdered = value;
+        }
+
+        public int ShipTransportAvailable
+        {
+            get => _shipTransportAvailable;
+            set => _shipTransportAvailable = value;
+        }
+
+        // Ship Spy
+        public int ShipSpyNeeded
+        {
+            get => _shipSpyNeeded;
+            set => _shipSpyNeeded = value;
+        }
+        public int ShipSpyOrdered
+        {
+            get => _shipSpyOrdered;
+            set => _shipSpyOrdered = value;
+        }
+
+        public int ShipSpyAvailable
+        {
+            get => _shipSpyAvailable;
+            set => _shipSpyAvailable = value;
+        }
+
+        // Ship Diplomatic
+        public int ShipDiplomaticNeeded
+        {
+            get => _shipDiplomaticNeeded;
+            set => _shipDiplomaticNeeded = value;
+        }
+        public int ShipDiplomaticOrdered
+        {
+            get => _shipDiplomaticOrdered;
+            set => _shipDiplomaticOrdered = value;
+        }
+        public int ShipDiplomaticAvailable
+        {
+            get => _shipDiplomaticAvailable;
+            set => _shipDiplomaticAvailable = value;
+        }
+
+        // Ship Science
+        public int ShipScienceNeeded
+        {
+            get => _shipScienceNeeded;
+            set => _shipScienceNeeded = value;
+        }
+        public int ShipScienceOrdered
+        {
+            get => _shipScienceOrdered;
+            set => _shipScienceOrdered = value;
+        }
+
+        public int ShipScienceAvailable
+        {
+            get => _shipScienceAvailable;
+            set => _shipScienceAvailable = value;
+        }
+
+        // Ship Scout
+        public int ShipScoutNeeded
+        {
+            get => _shipScoutNeeded;
+            set => _shipScoutNeeded = value;
+        }
+        public int ShipScoutOrdered
+        {
+            get => _shipScoutOrdered;
+            set => _shipScoutOrdered = value;
+        }
+
+        public int ShipScoutAvailable
+        {
+            get => _shipScoutAvailable;
+            set => _shipScoutAvailable = value;
+        }
+
+        // Ship FastAttack
+        public int ShipFastAttackNeeded
+        {
+            get => _shipFastAttackNeeded;
+            set => _shipFastAttackNeeded = value;
+        }
+        public int ShipFastAttackOrdered
+        {
+            get => _shipFastAttackOrdered;
+            set => _shipFastAttackOrdered = value;
+        }
+
+        public int ShipFastAttackAvailable
+        {
+            get => _shipFastAttackAvailable;
+            set => _shipFastAttackAvailable = value;
+        }
+
+        // Ship Cruiser
+        public int ShipCruiserNeeded
+        {
+            get => _shipCruiserNeeded;
+            set => _shipCruiserNeeded = value;
+        }
+        public int ShipCruiserOrdered
+        {
+            get => _shipCruiserOrdered;
+            set => _shipCruiserOrdered = value;
+        }
+
+        public int ShipCruiserAvailable
+        {
+            get => _shipCruiserAvailable;
+            set => _shipCruiserAvailable = value;
+        }
+
+        // Ship HeavyCruiser
+        public int ShipHeavyCruiserNeeded
+        {
+            get => _shipHeavyCruiserNeeded;
+            set => _shipHeavyCruiserNeeded = value;
+        }
+        public int ShipHeavyCruiserOrdered
+        {
+            get => _shipHeavyCruiserOrdered;
+            set => _shipHeavyCruiserOrdered = value;
+        }
+
+        public int ShipHeavyCruiserAvailable
+        {
+            get => _shipHeavyCruiserAvailable;
+            set => _shipHeavyCruiserAvailable = value;
+        }
+
+        // Ship StrikeCruiser
+        public int ShipStrikeCruiserNeeded
+        {
+            get => _shipStrikeCruiserNeeded;
+            set => _shipStrikeCruiserNeeded = value;
+        }
+        public int ShipStrikeCruiserOrdered
+        {
+            get => _shipStrikeCruiserOrdered;
+            set => _shipStrikeCruiserOrdered = value;
+        }
+
+        public int ShipStrikeCruiserAvailable
+        {
+            get => _shipStrikeCruiserAvailable;
+            set => _shipStrikeCruiserAvailable = value;
+        }
+
+        // Ship Command
+        public int ShipCommandNeeded
+        {
+            get => _shipCommandNeeded;
+            set => _shipCommandNeeded = value;
+        }
+        public int ShipCommandOrdered
+        {
+            get => _shipCommandOrdered;
+            set => _shipCommandOrdered = value;
+        }
+
+        public int ShipCommandAvailable
+        {
+            get => _shipCommandAvailable;
+            set => _shipCommandAvailable = value;
         }
 
         /// <summary>
@@ -631,8 +905,8 @@ namespace Supremacy.Game
                 {
                     updateMeter.CurrentValue = 0;
                 }
-                _text = "Step_3114:; TotalIntelligenceDefenseAccumulated = " + updateMeter.CurrentValue;
-                Console.WriteLine(_text);
+                //_text = "Step_3114:; TotalIntelligenceDefenseAccumulated = " + updateMeter.CurrentValue;
+                //Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return _totalIntelligenceDefenseAccumulated;
             }
@@ -700,6 +974,19 @@ namespace Supremacy.Game
                 }
 
                 return GameContext.Current.Universe.Map[_homeColonyLocation.Value].System;
+            }
+        }
+
+        public MapLocation RendezvousPlace
+        {
+            get
+            {
+                return _rendezvousplace;
+            }
+            internal set
+            {
+                _rendezvousplace = value;
+
             }
         }
 

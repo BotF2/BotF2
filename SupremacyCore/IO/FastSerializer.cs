@@ -2783,7 +2783,7 @@ namespace Supremacy.IO.Serialization
         /// Internal implementation to store a non-null Byte[].
         /// </summary>
         /// <param name="values">The Byte[] to store.</param>
-        
+
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(byte[] values)
         {
@@ -2944,7 +2944,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="optimizeFlags">A BitArray indicating which of the elements which are optimizable; 
         /// a reference to constant FullyOptimizableValueArray if all the elements are optimizable; or null
         /// if none of the elements are optimizable.</param>
-        
+
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(long[] values, BitArray optimizeFlags)
         {
@@ -3678,6 +3678,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="stream">The stream containing the serialized data</param>
         public SerializationReader(Stream stream) : base(stream)
         {
+            Console.WriteLine("Step_0231:; SerializationReader...");
             _binaryFormatter = new BinaryFormatter
             {
                 AssemblyFormat = FormatterAssemblyStyle.Simple
@@ -3690,11 +3691,14 @@ namespace Supremacy.IO.Serialization
             for (int i = 0; i < _stringTokenList.Length; i++)
             {
                 _stringTokenList[i] = base.ReadString();
+                //Console.WriteLine("Step_0234:; _stringTokenList > " + i + " = " + base.ReadString());
             }
+            Console.WriteLine("Step_0232:; _stringTokenList was read...");
 
             _objectTokens = new object[ReadOptimizedInt32()];
             for (int i = 0; i < _objectTokens.Length; i++)
             {
+                //Console.WriteLine("Step_0235:; _objectTokens > " + i + " was read...");
                 _objectTokens[i] = ReadObject();
             }
             stream.Position = 4;
@@ -4632,10 +4636,20 @@ namespace Supremacy.IO.Serialization
         {
             SerializedType typeCode = ReadTypeCode();
 
-            if (typeCode < SerializedType.NullType)
+            try
             {
-                return ReadTokenizedString((int)typeCode);
+                if (typeCode < SerializedType.NullType)
+                {
+                    return ReadTokenizedString((int)typeCode);
+                }
             }
+            catch
+            {
+                _text = "Step_3355:; ### BIG problem at reading something";
+                Console.WriteLine();
+                return null;
+            }
+
 
             switch (typeCode)
             {
@@ -5202,12 +5216,12 @@ namespace Supremacy.IO.Serialization
                         //{
                         //    _text += " unknown defaultElementType.Name or default >> " + defaultElementType.Name;
                         //}
-                      
+
 
 
                         //Console.WriteLine(_text);
                         //GameLog.Client.SaveLoadDetails.DebugFormat(_text);
-                        
+
                         return result;
                     }
             }
@@ -5232,7 +5246,20 @@ namespace Supremacy.IO.Serialization
                 default:
                     if (typeCode < SerializedType.NullType)
                     {
-                        return ReadTokenizedString((int)typeCode);
+                        try
+                        {
+                            if (typeCode < SerializedType.NullType)
+                            {
+                                return ReadTokenizedString((int)typeCode);
+                            }
+                        }
+                        catch
+                        {
+                            _text = "Step_3356:; ### BIG problem at reading something";
+                            Console.WriteLine();
+                            return null;
+                        }
+
                     }
 
                     switch (typeCode)
@@ -5331,13 +5358,13 @@ namespace Supremacy.IO.Serialization
                             {
                                 return null;
                             }
-                            //var _x = _binaryFormatter.Deserialize(BaseStream);
-                            //if (_x == null)
-                            //    _x = 0;
-                            ////_text = "SerializedType.OtherType= ";// + reader.BytesRemaining;
-                            ////Console.WriteLine(_text);
-                            ////return _binaryFormatter.Deserialize(BaseStream);
-                            //return _x;
+                        //var _x = _binaryFormatter.Deserialize(BaseStream);
+                        //if (_x == null)
+                        //    _x = 0;
+                        ////_text = "SerializedType.OtherType= ";// + reader.BytesRemaining;
+                        ////Console.WriteLine(_text);
+                        ////return _binaryFormatter.Deserialize(BaseStream);
+                        //return _x;
                         case SerializedType.UInt16Type:
                             return ReadUInt16();
                         case SerializedType.ZeroUInt16Type:
@@ -5424,10 +5451,10 @@ namespace Supremacy.IO.Serialization
                                 //    _text += "";
                                 //}
 
-                                    object result = PrepareNewObject(structType);
-                                    ReadOwnedData((IOwnedDataSerializable)result, null);
-                                    return result;
-                                
+                                object result = PrepareNewObject(structType);
+                                ReadOwnedData((IOwnedDataSerializable)result, null);
+                                return result;
+
                             }
                         case SerializedType.OptimizedEnumType:
                             {

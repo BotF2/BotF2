@@ -174,7 +174,7 @@ RequestNavigate="DoLink"> LD </Hyperlink>
 RequestNavigate="DoLink"> PRO </Hyperlink>
 
 -
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Untitled_Section_31_series" 
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Section_31" 
 RequestNavigate="DoLink"> S31 </Hyperlink>
 
 -
@@ -249,7 +249,11 @@ RequestNavigate="DoLink"> ST13 </Hyperlink>
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_XIV" 
 RequestNavigate="DoLink"> ST14 </Hyperlink>
-            </TextBlock>
+    
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_XIV"
+          RequestNavigate="DoLink"> ST15 </Hyperlink>
+          </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
 
@@ -425,7 +429,7 @@ RequestNavigate="DoLink"> Cytherians </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Deltan" 
-RequestNavigate="DoLink"> Deltan </Hyperlink>
+RequestNavigate="DoLink"> Deltans </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Denobulan" 
@@ -442,6 +446,10 @@ RequestNavigate="DoLink"> Dopterians </Hyperlink>
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dosi" 
 RequestNavigate="DoLink"> Dosi </Hyperlink>
+              
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Hunter"
+RequestNavigate="DoLink"> Drai </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dreman" 
@@ -560,6 +568,10 @@ RequestNavigate="DoLink"> Kesprytt </Hyperlink>
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Klaestron" 
 RequestNavigate="DoLink"> Klaestrons </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kolaran"
+RequestNavigate="DoLink"> ( Kolaran ) </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kradin" 

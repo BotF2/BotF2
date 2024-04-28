@@ -42,27 +42,33 @@
               <!-- SUMMARY BUTTON -->
               <Button Grid.Column="0"
                       Style="{StaticResource LCARS_StandardButtonStyle}"
-                      Content="{s:StringResource Key=SUMMARY_BUTTON_TEXT, Case=Upper}"
+                      Content="{s:StringResource Key=BORG_INTEL_BUTTON_TEXT, Case=Upper}"
                       Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}" />
 
               <!-- BEGIN SYSTEM SELECTION BAR -->
               <Grid Grid.Column="1"
                     Grid.Row="0"
                     Grid.IsSharedSizeScope="False">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="*" />
-                  <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
 
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="115" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="37" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="37" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
 
                     <Rectangle Grid.Column="0" Grid.Row="0" Width="24" Height="28" VerticalAlignment="Top" Margin="3,0,0,0">
                         <Rectangle.Fill>
@@ -77,56 +83,50 @@
                     </Rectangle>
 
                                 
-                  <Rectangle Grid.Column="1"
-                             Margin="3,0,0,0" 
-                       Width="14"
-                       SnapsToDevicePixels="True"
+                  <Rectangle Grid.Column="1" Width="14" Margin="3,0,0,0" SnapsToDevicePixels="True" 
                        Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
                 
-                  <Button Grid.Column="2"
-                        Margin="3,0,0,0" 
-                      Style="{StaticResource LCARS_BorderButtonStyle}"
+                  <Button Grid.Column="2" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}" 
                       Content="{s:StringResource Key=FIRST_TEXT, Case=lower}"
                       Command="{x:Static scc:ColonyScreenCommands.FirstColonyCommand}" />
 
                 <Rectangle Grid.Column="3" Margin="3,0,0,0" Width="14" SnapsToDevicePixels="True"
-                    Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
-    
-    
+                    Fill="{StaticResource Borg3Gradient_Left_Right}" />
 
-
-                <Button Grid.Column="4"
-                      Margin="3,0,0,0"
-                    Style="{StaticResource LCARS_BorderButtonStyle}"
+                <Button Grid.Column="4" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
                     Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
                     Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
-                                   
-                  <Rectangle Grid.Column="5"
-                         Margin="3,0,0,0"
-                         Height="28"
-                         Width="28">
-                                    <Rectangle.Fill>
-                                        <DrawingBrush>
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="LightGreen"
-                                       Geometry="F1 M 0,5 14,0 28,5 14,10 Z" />
-                                                    <GeometryDrawing Brush="Green"
-                                       Geometry="F1 M 0,7 13,12 13,28 0,21 Z" />
-                                                    <GeometryDrawing Brush="DarkGreen"
-                                       Geometry="F1 M 28,7 15,12 15,28 28,21 Z" />
 
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Rectangle.Fill>
-                     </Rectangle>
-                     <ComboBox Grid.Column="6"
-                          Grid.Row="0"
-                          Margin="3,0,0,0"
-                          IsEditable="False"
-                          IsReadOnly="True"
-                          MinWidth="200"
+                <Rectangle Grid.Column="5" Margin="3,0,0,0" Width="14" SnapsToDevicePixels="True"
+                    Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
+
+                <Button Grid.Column="6" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
+                    Content=">"
+                    Command="{x:Static scc:ColonyScreenCommands.NextColonyCommand}" />
+
+                <Rectangle Grid.Column="7" Margin="3,0,0,0" Width="14" SnapsToDevicePixels="True"
+                    Fill="{StaticResource Borg3Gradient_Right_Left}" />
+                                   
+  <Rectangle Grid.Column="8" Height="28" Width="28" Margin="3,0,0,0">
+                    <Rectangle.Fill>
+                        <DrawingBrush>
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="LightGreen"
+                        Geometry="F1 M 0,5 14,0 28,5 14,10 Z" />
+                                    <GeometryDrawing Brush="Green"
+                        Geometry="F1 M 0,7 13,12 13,28 0,21 Z" />
+                                    <GeometryDrawing Brush="DarkGreen"
+                        Geometry="F1 M 28,7 15,12 15,28 28,21 Z" />
+
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Rectangle.Fill>
+      </Rectangle>
+                
+                
+                     <ComboBox Grid.Column="9" Grid.Row="0" MinWidth="200" MaxDropDownHeight="800" Margin="3,0,0,0" IsEditable="False" IsReadOnly="True"
                           ItemsSource="{Binding Path=Colonies, Mode=OneWay}"
                           SelectedItem="{Binding Path=SelectedColony, Mode=TwoWay}">
                   <ComboBox.ItemTemplate>
@@ -135,6 +135,8 @@
                     </DataTemplate>
                   </ComboBox.ItemTemplate>
                 </ComboBox>
+                
+                
                         <!--<TextBlock 
                            Grid.Column="2"
                            Grid.Row="0"
@@ -173,41 +175,44 @@
                             Background="Transparent"
                             Text="(not function yet)" 
                             />-->
-                  <Button Grid.Column="7"
-                        Margin="3,0,0,0" 
-                      Style="{StaticResource LCARS_BorderButtonStyle}"
-                      Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
-                      Command="{x:Static scc:ColonyScreenCommands.NextColonyCommand}" />
-                  <Rectangle Grid.Column="8"
-                             Margin="3,0,3,0" 
-                       Width="14"
-                       SnapsToDevicePixels="True"
-                       Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
-                           
 
-                      <!--<Rectangle Grid.Column="8"
-                           Grid.Row="0"
-                           Margin="3,0,0,0"
-                           Fill="{StaticResource AzureGradient_Top_Bottom}"
-                           />-->
-                <!--<Border Grid.Column="3"
-                        Grid.Row="0"
-                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
-                        CornerRadius="0,14,14,0"
-                        Width="21"
-                        Margin="3,0,0,0" />-->
-                                <Ellipse Grid.Row="0" Grid.Column="9" Height="28" Width="28" VerticalAlignment="Center" HorizontalAlignment="Center"
+                
+                  <Rectangle Grid.Column="10" Width="14" Margin="3,0,0,0" SnapsToDevicePixels="True" 
+                       Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
+
+
+                <Button Grid.Column="11" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
+                      Content="{s:StringResource Key=SHOW_COLONY_UPDATE_TEXT, Case=Lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.ColonyUpdateCommand}" />
+
+
+                <Rectangle Grid.Column="12" Margin="3,0,0,0" SnapsToDevicePixels="True"
+                           Width="14" Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
+
+                <Button Grid.Column="13" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
+                      Content="{s:StringResource Key=SHOW_COLONY_ON_MAP_TEXT, Case=Lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.ShowColonyOnMapCommand}" />
+
+                <Rectangle Grid.Column="14" Margin="3,0,0,0" SnapsToDevicePixels="True"
+                      Width="14" Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
+
+                <Rectangle Grid.Column="15" Grid.Row="0" Margin="3,0,0,0"
+                           Fill="{StaticResource Borg2Gradient_Top_Bottom}" Opacity="0.5"></Rectangle>
+                
+                <!--next: art work at the end-->
+                <Ellipse Grid.Column="16" Grid.Row="0" Height="28" Width="28" VerticalAlignment="Center" HorizontalAlignment="Center"
                                          Fill="Green" Opacity="0.3" StrokeThickness="4" Stroke="#1ffe36"/>
-                                <Ellipse Grid.Row="0" Grid.Column="9" Height="9" Width="9" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                
+                <Ellipse Grid.Column="16" Grid.Row="0" Height="9" Width="9" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                          Canvas.Top="15" Canvas.Left="5"
                                          Fill="#cce259" Opacity="0.6" StrokeThickness="2" Stroke="#1fe336"/>
                                        
                                        
                                         
-                                <Rectangle Grid.Column="9"  Grid.Row="0" Fill="{StaticResource Borg3Gradient_Top_Bottom}" Opacity="0.5"></Rectangle>
-                                <Ellipse  
-                                         Grid.Column="9" 
-                                        
+                                
+
+                                
+                <Ellipse Grid.Column="16"   
                                          VerticalAlignment="Center"
                                          HorizontalAlignment="Center"
                                          Height="6"
@@ -216,9 +221,8 @@
                                          Opacity="0.6"
                                          StrokeThickness="2"
                                          Stroke="Goldenrod"/>
-                                <Path 
-                                         Grid.Column="9" 
-                                         Grid.Row="0"                                
+                                
+                <Path Grid.Column="16" Grid.Row="0"       
                                   Stroke="SpringGreen" 
                                   StrokeThickness="2" 
                                   Opacity="0.5" >
@@ -240,9 +244,8 @@
                                         </PathGeometry>
                                     </Path.Data>
                                 </Path>
-                                <Path 
-                                         Grid.Column="9" 
-                                         Grid.Row="0"
+
+                <Path Grid.Column="16" Grid.Row="0"
                                   Stroke="GreenYellow" 
                                   StrokeThickness="1" 
                                   Opacity="0.4" >
@@ -264,9 +267,8 @@
                                         </PathGeometry>
                                     </Path.Data>
                                 </Path>
-                                <Path 
-                                         Grid.Column="9" 
-                                         Grid.Row="0"
+
+                <Path Grid.Column="16" Grid.Row="0"
                                   Stroke="GreenYellow" 
                                   StrokeThickness="1" 
                                   Opacity="0.3">

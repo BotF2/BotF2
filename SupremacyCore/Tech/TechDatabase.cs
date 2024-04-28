@@ -7,9 +7,11 @@
 //
 // All other rights reserved.
 
+using Microsoft.Win32;
 using Supremacy.Buildings;
 using Supremacy.Collections;
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Utility;
@@ -31,7 +33,13 @@ namespace Supremacy.Tech
     [Serializable]
     public sealed class TechDatabase : IEnumerable<TechObjectDesign>, IDeserializationCallback
     {
-        private const string XmlFilePath = "Resources/Data/TechObjectDatabase.xml";
+        //private const string XmlFilePath = "Resources/Data/TechObjectDatabase.xml";
+        private const string XmlFilePath_1_PF = "Resources/Data/TechObj_1_ProdFac.xml";
+        private const string XmlFilePath_2_BU = "Resources/Data/TechObj_2_Buildings.xml";
+        private const string XmlFilePath_3_OB = "Resources/Data/TechObj_3_OrbBat.xml";
+        private const string XmlFilePath_4_SY = "Resources/Data/TechObj_4_Shipyards.xml";
+        private const string XmlFilePath_5_ST = "Resources/Data/TechObj_5_Stations.xml";
+        private const string XmlFilePath_6_SH = "Resources/Data/TechObj_6_Ships.xml";
 
         private readonly TechObjectDesignMap<BuildingDesign> _buildingDesigns;
         private readonly TechObjectDesignMap<ShipDesign> _shipDesigns;
@@ -53,6 +61,7 @@ namespace Supremacy.Tech
         private static bool _buildCostIgnored;
         private static bool _buildCostShipsIgnored;
         private static bool _buildCostTextOnlyOnce;
+        public static bool _checkForProblems = false;
         private static readonly string newline = Environment.NewLine;
 
         /// <summary>
@@ -187,7 +196,10 @@ namespace Supremacy.Tech
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
         public static TechDatabase Load()
         {
-            _text = "Step_3018: Loading Resources/Data/TechObjectDatabase.xml";
+
+
+            //_text = "Step_3018:; Loading Resources/Data/TechObjectDatabase.xml";
+            _text = "Step_3021:; Loading Resources/Data/TechObj_1_ProdFac.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -203,7 +215,7 @@ namespace Supremacy.Tech
                 "Supremacy:TechObjectDatabase.xsd",
                 ResourceManager.GetResourcePath("Resources/Data/TechObjectDatabase.xsd"));
 
-            xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath));
+            xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath_1_PF));
             xmlDoc.Schemas.Add(schemas);
             xmlDoc.Validate(ValidateXml);
 
@@ -219,6 +231,17 @@ namespace Supremacy.Tech
                 };
                 designIdMap[facility.Key] = facility.DesignID;
                 CalculateBuildCostsPF(facility);
+
+                _checkForProblems = false;
+                //_checkForProblems = true;
+                if (_checkForProblems)
+                {
+                    _text = "Step_3052:; TechDatabase.cs; facility.DesignID=" + facility.DesignID
+                            + ", " + facility.LocalizedName
+                            ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
+                }
                 db.ProductionFacilityDesigns.Add(facility);
             }
             foreach (XmlElement xmlFacility in xmlFacilities.GetElementsByTagName("ProductionFacility"))
@@ -275,6 +298,14 @@ namespace Supremacy.Tech
                 }
             }
 
+            _text = "Step_3023:; Loading Resources/Data/TechObj_3_OrbBat.xml";
+            Console.WriteLine(_text);
+            GameLog.Client.General.InfoFormat(_text);
+
+            xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath_3_OB));
+            xmlDoc.Schemas.Add(schemas);
+            xmlDoc.Validate(ValidateXml);
+
             // OrbitalBatteries
             XmlElement xmlBatteries = xmlDoc.DocumentElement["OrbitalBatteries"];
 
@@ -282,8 +313,18 @@ namespace Supremacy.Tech
             {
                 OrbitalBatteryDesign battery = new OrbitalBatteryDesign(xmlBattery) { DesignID = db.GetNewDesignID() };
                 designIdMap[battery.Key] = battery.DesignID;
-                //GameLog works
-                //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: battery.DesignID={0}, {1}", battery.DesignID, battery.LocalizedName);
+
+                //_checkForProblems = true;
+                if (_checkForProblems)
+                {
+                    // works
+                    _text = "Step_1052:; TechDatabase.cs; battery.DesignID=" + battery.DesignID
+                    + ", " + battery.LocalizedName
+                    ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
+                }
+
                 db.OrbitalBatteryDesigns.Add(battery);
             }
 
@@ -341,6 +382,13 @@ namespace Supremacy.Tech
                 }
             }
 
+            _text = "Step_3022:; Loading Resources/Data/TechObj_2_Buildings.xml";
+            Console.WriteLine(_text);
+            GameLog.Client.General.InfoFormat(_text);
+
+            xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath_2_BU));
+            xmlDoc.Schemas.Add(schemas);
+            xmlDoc.Validate(ValidateXml);
 
             // Buildings
 
@@ -352,8 +400,18 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[building.Key] = building.DesignID;
-                //GameLog works
-                //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: building.DesignID={0}, {1}", building.DesignID, building.LocalizedName);
+
+
+                // works
+                if (_checkForProblems)
+                {
+                    _text = "Step_1054:; TechDatabase.cs; building.DesignID=" + building.DesignID
+                        + ", " + building.LocalizedName
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
+                }
+
                 db.BuildingDesigns.Add(building);
             }
             foreach (XmlElement xmlBuilding in xmlBuildings.GetElementsByTagName("Building"))
@@ -412,6 +470,14 @@ namespace Supremacy.Tech
 
             // Shipyards
 
+            _text = "Step_3024:; Loading Resources/Data/TechObj_1_Shipyards.xml";
+            Console.WriteLine(_text);
+            GameLog.Client.General.InfoFormat(_text);
+
+            xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath_4_SY));
+            xmlDoc.Schemas.Add(schemas);
+            xmlDoc.Validate(ValidateXml);
+
             XmlElement xmlShipyards = xmlDoc.DocumentElement["Shipyards"];
             foreach (XmlElement xmlShipyard in xmlShipyards.GetElementsByTagName("Shipyard"))
             {
@@ -421,9 +487,15 @@ namespace Supremacy.Tech
                 };
                 designIdMap[shipyard.Key] = shipyard.DesignID;
 
-                //GameLog works
-                //GameLog.Client.GameDataDetails.DebugFormat("TechDatabase.cs: shipyard.DesignID={0}, {1}", shipyard.DesignID, shipyard.LocalizedName);
-
+                if (_checkForProblems)
+                {
+                    // works
+                    _text = "Step_1055:; TechDatabase.cs; shipyard.DesignID=" + shipyard.DesignID
+                        + ", " + shipyard.LocalizedName
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
+                }
                 db.ShipyardDesigns.Add(shipyard);
             }
             foreach (XmlElement xmlShipyard in xmlShipyards.GetElementsByTagName("Shipyard"))
@@ -487,6 +559,15 @@ namespace Supremacy.Tech
             /*********
              * Ships *
              *********/
+
+            _text = "Step_3026:; Loading Resources/Data/TechObj_6_Ships.xml";
+            Console.WriteLine(_text);
+            GameLog.Client.General.InfoFormat(_text);
+
+            xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath_6_SH));
+            xmlDoc.Schemas.Add(schemas);
+            xmlDoc.Validate(ValidateXml);
+
             XmlElement xmlShips = xmlDoc.DocumentElement["Ships"];
             string lastSuccessfullyLoadedShipDesign = "";
             int successfullyLoadedShipDesignCounter = 0;
@@ -500,12 +581,35 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[ship.Key] = ship.DesignID;
+
+                // works
+                //_checkForProblems = true;
+                _checkForProblems = false;
+                if (_checkForProblems)
+                {
+
+                    _text = "Step_1056:; TechDatabase.cs; ship.DesignID=" + ship.DesignID
+                        + ", " + ship.LocalizedName
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
+                }
+                if (ship.Key == "FED_MEDICAL_SHIP_II")
+                {
+                    _text = "Step_1057:; TechDatabase.cs; ship.DesignID=" + ship.DesignID
+                        + ", " + ship.LocalizedName
+                        ;
+                    Console.WriteLine(_text);
+                }
+
                 CalculateBuildCostsShips(ship);
                 CalculateMaintenanceCosts(ship);
                 db.ShipDesigns.Add(ship);
             }
 
-            GameLog.Core.Production.DebugFormat("Ships BuildCost + Maintenance calculated inside Code - ignoring file values");
+            _text = "Step_3027:; Ships BuildCost + Maintenance calculated inside Code - ignoring file values";
+            Console.WriteLine(_text);
+            GameLog.Core.Production.DebugFormat(_text);
             //GameLog.Core.Production.DebugFormat(_buildCostText);
             //GameLog.Core.Production.DebugFormat(_maintText);
 
@@ -569,6 +673,11 @@ namespace Supremacy.Tech
             /************
              * Stations *
              ************/
+
+            xmlDoc.Load(ResourceManager.GetResourcePath(XmlFilePath_5_ST));
+            xmlDoc.Schemas.Add(schemas);
+            xmlDoc.Validate(ValidateXml);
+
             XmlElement xmlStations = xmlDoc.DocumentElement["SpaceStations"];
             foreach (XmlElement xmlStation in xmlStations.GetElementsByTagName("SpaceStation"))
             {
@@ -577,6 +686,16 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[station.Key] = station.DesignID;
+
+                // works
+                if (_checkForProblems)
+                {
+                    _text = "Step_1058:; TechDatabase.cs; station.DesignID=" + station.DesignID
+                        + ", " + station.LocalizedName
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
+                }
                 db.StationDesigns.Add(station);
             }
             foreach (XmlElement xmlStation in xmlStations.GetElementsByTagName("SpaceStation"))
@@ -633,6 +752,9 @@ namespace Supremacy.Tech
                 }
             }
 
+            //works, but just for testing
+            //var _saveFile = Path.Combine(Environment.CurrentDirectory, "Resources/Data/TechObjectDatabase_SAVED.xml");
+            //db.Save(); // test
 
             bool _traceTechObjectDatabase = false;  // file is writen while starting a game -> Federation -> Start
 
@@ -2123,13 +2245,14 @@ namespace Supremacy.Tech
             if (_buildCostTextOnlyOnce == false)
             {
                 //_text = "Step_4000: AppWindowSize availableSize = " + availableSize;
-                Console.WriteLine("Step_4080: " + _text);
+                Console.WriteLine("Step_4080:; " + _text);
                 GameLog.Core.UIDetails.DebugFormat(_text);
 
                 //GameLog.Core.Production.DebugFormat(_buildCostText);
-                Console.WriteLine(_text + " - no more output");
+                Console.WriteLine(_text + " - no more output for Step_4080"); // 
                 _buildCostTextOnlyOnce = true;
             }
+
 
             //GameLog.Core.Production.DebugFormat(_text);
             pf.BuildCost = _buildcosts;
@@ -2159,15 +2282,15 @@ namespace Supremacy.Tech
                 _weapon2 = ship.SecondaryWeapon.Count * ship.SecondaryWeapon.Damage / 4;
             }
             int _buildcosts = (ship.Duranium * 5)
-                + (ship.HullStrength * 10) 
-                + (ship.ShieldStrength)
+                + (ship.HullStrength * 20)
+                + (ship.ShieldStrength + 2)
                 + (ship.Speed * 20)
                 + (ship.Maneuverability * 20)
-                + ship.CrewSize
+                + (ship.CrewSize * 4) // new 2024-01-28
                 + (_weapon1 * 2)
                 + (_weapon2 * 2)
                 ;
-            _buildcosts = 500 + _buildcosts * ship.TechRequirements.HighestTechLevel;//;// + (ship.CrewSize * 2) / 4000;
+            _buildcosts = 300 + _buildcosts * ship.TechRequirements.HighestTechLevel;//;// + (ship.CrewSize * 2) / 4000;
 
             _text = ship.Key
                 + "; BC old:; " + _buildCostsFromFile
@@ -2191,7 +2314,7 @@ namespace Supremacy.Tech
             if (_buildCostTextOnlyOnce == false)
             {
                 //GameLog.Core.Production.DebugFormat(_buildCostText);
-                Console.WriteLine(_text + " - no more output");
+                Console.WriteLine(_text + " - no more output for ShipData");
                 _buildCostTextOnlyOnce = true;
             }
             //GameLog.Core.Production.DebugFormat(_buildCostText);
@@ -2270,7 +2393,9 @@ namespace Supremacy.Tech
         /// <param name="e">The <see cref="ValidationEventArgs"/> instance containing the event data.</param>
         private static void ValidateXml(object sender, ValidationEventArgs e)
         {
-            XmlHelper.ValidateXml(XmlFilePath, e);
+            //XmlHelper.ValidateXml("Resources/Data/TechObjectDatabase.xml", e);
+
+            ////XmlHelper.ValidateXml(XmlFilePath, e);
         }
 
         /// <summary>
@@ -2278,7 +2403,8 @@ namespace Supremacy.Tech
         /// </summary>
         public void Save()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, XmlFilePath);
+            string path = Path.Combine(Environment.CurrentDirectory, "Resources/Data/TechObjectDatabase_SAVED.xml");
+            //string path = Path.Combine(Environment.CurrentDirectory, XmlFilePath);
             Save(path);
         }
 

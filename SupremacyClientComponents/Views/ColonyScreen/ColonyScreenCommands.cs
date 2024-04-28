@@ -15,6 +15,7 @@ namespace Supremacy.Client.Views
     {
         public static CompositeCommand ToggleBuildingScrapCommand = new CompositeCommand();
         public static CompositeCommand FirstColonyCommand = new CompositeCommand();
+        public static CompositeCommand ColonyUpdateCommand = new CompositeCommand();
         public static CompositeCommand NextColonyCommand = new CompositeCommand();
         public static CompositeCommand PreviousColonyCommand = new CompositeCommand();
         public static CompositeCommand ShowColonyOnMapCommand = new CompositeCommand();

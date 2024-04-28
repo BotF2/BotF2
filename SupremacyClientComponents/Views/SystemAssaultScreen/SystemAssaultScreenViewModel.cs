@@ -570,7 +570,7 @@ namespace Supremacy.Client.Views
                     GameLog.Client.SystemAssaultDetails.DebugFormat("GroundCombatOdds...");
                     _text =
                         "Step_6555:; GroundCombatOdds= " + GroundCombatOddsValue
-                        + " ( Transports: " + SelectedTransportsCombatStrength
+                        + " > Transports: " + SelectedTransportsCombatStrength
                         + " vs DefenderStrength: " + defend
                         ;
                     Console.WriteLine(_text);
@@ -796,18 +796,21 @@ namespace Supremacy.Client.Views
 
             foreach (var item in _destroyedInvadingUnits)
             {
+                
                 _text = 
                     item.Unit.Source.Location
                     + " > " + item.Unit.ObjectID
-                    + " * " + item.Name
-                    + " * was destroyed during System Assault."
-
-
+                    + " * " + item.Name 
+                    + " * ( "+ item.Design.Key + " )" 
+                    
+                    + " was lost during System Assault."
 
                     ;
-                Console.WriteLine(_text);
+                Console.WriteLine("Step_4765:; " + _text);
+
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[item.Unit.OwnerID];
                 civManager.SitRepEntries.Add(new ReportEntry_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
+            
             }
 
             _currentUpdate = null;

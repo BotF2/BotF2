@@ -1,15 +1,5 @@
 //File:DiplomacyMessageViewModel.cs
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows.Data;
-using System.Windows.Input;
 using Microsoft.Practices.ServiceLocation;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Dialogs;
 using Supremacy.Client.Input;
@@ -21,6 +11,15 @@ using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Text;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {
@@ -42,9 +41,9 @@ namespace Supremacy.Client.Views
         private readonly ScriptExpression _requestLeadInTextScript;
 
         private readonly ScriptParameters _leadInParameters;
-#pragma warning disable IDE0044 // Add readonly modifier
+        //#pragma warning disable IDE0044 // Add readonly modifier
         private RuntimeScriptParameters _leadInRuntimeParameters;
-#pragma warning restore IDE0044 // Add readonly modifier
+        //#pragma warning restore IDE0044 // Add readonly modifier
 
 
         private readonly DelegateCommand<ICheckableCommandParameter> _setAcceptButton;
@@ -666,7 +665,7 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("OFFER_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                        GameLog.Client.DiplomacyDetails.DebugFormat("OFFER_DIALOG_HINT is outcommented");
+                        //Console.WriteLine("OFFER_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Request:
@@ -675,7 +674,7 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("REQUEST_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                        GameLog.Client.DiplomacyDetails.DebugFormat("REQUEST_DIALOG_HINT is outcommented");
+                        //Console.WriteLine("REQUEST_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
@@ -683,16 +682,31 @@ namespace Supremacy.Client.Views
                     //if (element != null && element.Description != null && element.SelectedParameter != null && element.ElementType != null)
                     if (element != null && element.Description != null && element.SelectedParameter != null /*&& element.ElementType != null*/)
                     {
-                        GameLog.Client.DiplomacyDetails.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
-                            element.Description.ToString(),
-                            element.SelectedParameter.ToString(),
-                            element.ElementType.ToString());
+                        _text = "Step_8731:; "
+                            + "Proposal element added to _treatyElements" + element.Description.ToString()
+                            + ", " + element.SelectedParameter.ToString()
+                            + ", " + element.ElementType.ToString()
+
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
+                        //    element.Description.ToString(),
+                        //    element.SelectedParameter.ToString(),
+                        //    element.ElementType.ToString());
                     }
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-                    st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                    _text = "Step_8732:; "
+                            + "Proposal element added to _treatyElements > " + element.ElementType.ToString()
+                            //+ ", " + element.SelectedParameter.ToString()
+                            + " > " + element.ElementType.ToString()
+
+                            ;
+                    Console.WriteLine(_text);
+
+                    //st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+
                     //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                    GameLog.Client.DiplomacyDetails.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
+                    _text = "PROPOSE_DIALOG_HINT is outcommented";
+                    //Console.WriteLine(_text);
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
                     _statementElements.Add(element);
@@ -707,7 +721,7 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                    GameLog.Client.DiplomacyDetails.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
+                    //Console.WriteLine("DECLARE_WAR_DIALOG_HINT is outcommented");
                     _statementElements.Add(element);
                     break;
             }
@@ -1070,6 +1084,7 @@ namespace Supremacy.Client.Views
 
             foreach (DiplomacyMessageAvailableElement availableElement in _availableElements)
             {
+                //Add: Demand Credits or Give Credits - this is later added
                 DiplomacyMessageAvailableElement elementCopy = availableElement; // modified closure
 
                 availableElement.AddCommand = new DelegateCommand(
@@ -1255,7 +1270,11 @@ namespace Supremacy.Client.Views
 
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message.Sender) ?? string.Empty);
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
-            GameLog.Core.Diplomacy.DebugFormat("message ={0}", message);
+
+            string _text = "Step_5345:; message= " + message;
+            Console.WriteLine(_text);
+            GameLog.Core.Diplomacy.DebugFormat(_text);
+
             return message;
         }
 

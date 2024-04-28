@@ -457,6 +457,8 @@ namespace Supremacy.Client
                 EngageButton.IsEnabled = false;
                 RushButton.IsEnabled = false;
                 TransportsButton.IsEnabled = false;
+
+                //radioButton1.i = true;  // pres-set the first button to FIRE
             }
             else
             {

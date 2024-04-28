@@ -83,7 +83,7 @@ namespace Supremacy.Client.Audio
             {
                 _ = pack.Dictionary.TryGetValue(trackName, out MusicEntry track);
 
-                _text = "Step_0303: trackName " + trackName
+                _text = "Step_0303:; trackName " + trackName
                     + ", track.FileName " + track.FileName
                     ;
                 Console.WriteLine(_text);

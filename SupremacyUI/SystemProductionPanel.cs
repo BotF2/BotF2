@@ -553,7 +553,7 @@ namespace Supremacy.UI
             _shipyardBuildQueueText.HorizontalAlignment = HorizontalAlignment.Right;
             _shipyardBuildQueueText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
             _shipyardBuildQueueText.FontSize = 20;
-            _shipyardBuildQueueText.Text = "Queue:";
+            _shipyardBuildQueueText.Text = "Queue > ";
             _shipyardBuildQueueText.Foreground = paragraphBrush;
 
             _ = _grid.Children.Add(_shipyardBuildQueueText);
@@ -801,8 +801,8 @@ namespace Supremacy.UI
                         {
                             activateCommand.Execute(category);
                         }
-                        _text = "Step_2101: slider_ActiveUnitsChanged... category " + category + " IN-CREASED " + delta;
-                        Console.WriteLine(_text);
+                        _text = "Step_2111: slider_ActiveUnitsChanged... category " + category + " IN-CREASED " + delta;
+                        //Console.WriteLine(_text);
                         //GameLog.Client.ProductionDetails.DebugFormat(_text);
                     }
                     else
@@ -812,8 +812,8 @@ namespace Supremacy.UI
                         {
                             deactivateCommand.Execute(category);
                         }
-                        _text = "Step_2102: slider_ActiveUnitsChanged... category " + category + " DE-CREASED " + delta;
-                        Console.WriteLine(_text);
+                        _text = "Step_2112: slider_ActiveUnitsChanged... category " + category + " DE-CREASED " + delta;
+                        //Console.WriteLine(_text);
                         //GameLog.Client.ProductionDetails.DebugFormat(_text);
                     }
                 }
@@ -1098,9 +1098,13 @@ namespace Supremacy.UI
                         _shipyardLine_1.Text = "no Shipyard available";
                     else
                     {
-                        _shipyardLine_1.Text += " - " + colony.Shipyard.BuildSlots.Count + " Slot";
+                        _shipyardLine_1.Text += " - " 
+                            //+ colony.Shipyard.BuildSlots. + " of "
+                            + colony.Shipyard.BuildSlots.Count + " Slot";
                         if (colony.Shipyard.BuildSlots.Count > 1)
                             _shipyardLine_1.Text += "s";
+
+                        //_shipyardLine_1.Text += " active" + colony.Shipyard.BuildSlots[0].;
 
                         //show indicator for unpowered structures
 

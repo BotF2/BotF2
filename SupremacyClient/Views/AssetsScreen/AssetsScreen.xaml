@@ -303,11 +303,11 @@
                                 FontSize="12pt"/>
                             <TextBlock Text="{s:StringResource Key=INSTALL_SPY_NETWORK_INSTRUCTIONS}"     
                                 Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,30,0"
-                                Foreground="Red"
+                                Foreground="Aqua"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
                             
-                            <!-- Summary Button -->
+                            <!-- Summary Button > COMMON for all empires -->
                             <Button x:Name="SummaryButton"
                                   Grid.Row="0"
                                   Grid.Column="4"
@@ -316,7 +316,7 @@
                                   Width="250"
                                   Height="32"
                                   Style="{StaticResource LCARS_StandardButtonStyle}"
-                                  Content="Click for Turn Summary"
+                                  Content="{s:StringResource Key=SUMMARY_BUTTON_TEXT}"
                                   FontSize="14pt"
                                   Foreground="{DynamicResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
                                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"                                  

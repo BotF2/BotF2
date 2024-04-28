@@ -334,8 +334,8 @@ namespace Supremacy.Game
 
 
                 // Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works
-                _text = "Step_0932:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
-                Console.WriteLine(_text);
+                _text = "Step_0933:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
+                //Console.WriteLine(_text);
 
                 if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out LocalizedTextGroup localizedText))
                 {
@@ -464,7 +464,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            _text = "Step_4000: ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
+            _text = "Step_4000:; ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -895,7 +895,10 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error("Problem while creating a new game context", e);
+                string _text = "Err_0001:; Problem while creating a new game context" + e;
+                Console.WriteLine(_text);
+                GameLog.Core.General.Error("Err_0001:; Problem while creating a new game context", e);
+
                 return new GameContext(options, isMultiplayerGame);
             }
         }
@@ -918,7 +921,7 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
-            _text = "Step_3000: GameContext Initialize...";
+            _text = "Step_3003:; GameContext Initialize...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -1001,9 +1004,12 @@ namespace Supremacy.Game
                     }
                 }
 
+                _text = "Step_1287:; NEXT:GenerateGalaxy...";
+                Console.WriteLine(_text);
+
                 GalaxyGenerator.GenerateGalaxy(this);
 
-                _text = "Step_1288: Galaxy generated...";
+                _text = "Step_1288:; Galaxy generated...";
                 Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
@@ -1090,7 +1096,7 @@ namespace Supremacy.Game
 
                         if (_bool_Fac_Count_Active == false)
                         {
-                            _text = "Step_1310: ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            _text = "Step_1310:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
                             Console.WriteLine(_text);
                             GameLog.Client.GalaxyGenerator.InfoFormat(_text);
                             _bool_Fac_Count_Active = true; // just do once
@@ -1373,7 +1379,7 @@ namespace Supremacy.Game
                         }
                     }
                 }
-                _text = "Step_4000: Starting items are done!";
+                _text = "Step_4000:; Starting items are done!";
                 Console.WriteLine(_text);
                 GameLog.Core.General.InfoFormat(_text);
 
@@ -1389,7 +1395,7 @@ namespace Supremacy.Game
                         civManager.EnsureSeatOfGovernment();
                     }
                 }
-                _text = "Step_4500: SeatOfGovernment ensured...";
+                _text = "Step_4502:; SeatOfGovernment ensured...";
                 Console.WriteLine(_text);
                 GameLog.Core.General.InfoFormat(_text);
 

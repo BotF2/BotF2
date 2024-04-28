@@ -91,7 +91,7 @@ namespace Supremacy.Client
         {
             get
             {
-                string _text = "Step_0213: Current Version = " + Current.Version;
+                string _text = "Step_0213:; Current Version = " + Current.Version;
                 //string _text2 = "";
                 if (File.Exists("SupremacyClient.exe"))
                 {
@@ -107,7 +107,7 @@ namespace Supremacy.Client
 
 
                 
-                _text = "Step_0220: Time running = " + (DateTime.Now - starttime).ToString();
+                _text = "Step_0219:; Time running = " + (DateTime.Now - starttime).ToString();
                 Console.WriteLine(_text);
                 GameLog.Client.GeneralDetails.DebugFormat(_text);
 
@@ -390,7 +390,7 @@ namespace Supremacy.Client
 
             Licenser.LicenseKey = "DGF20-AUTJ7-3K8MD-DNNA";
 
-            Console.WriteLine("Step_0154: Next: DesiredAnimationFrameRate and checking for local en.txt - mostly not existing e.g. 'de.txt'");   // File.IO.error next
+            Console.WriteLine("Step_0154:; Next: DesiredAnimationFrameRate and checking for local en.txt - mostly not existing e.g. 'de.txt'");   // File.IO.error next
 
             Timeline.DesiredFrameRateProperty.OverrideMetadata(
                typeof(Timeline),
@@ -453,7 +453,7 @@ namespace Supremacy.Client
                 string mnVersion = skey.GetValue("CurrentMinorVersionNumber").ToString();
                 string cBuild = skey.GetValue("CurrentBuild").ToString();
                 string ubr = skey.GetValue("UBR").ToString();
-                _text = "Step_0110: Windows Version = " + $"{name} [Version {mjVersion}.{mnVersion}.{cBuild}.{ubr}]";
+                _text = "Step_0110:; Windows Version = " + $"{name} [Version {mjVersion}.{mnVersion}.{cBuild}.{ubr}]";
                 Console.WriteLine(_text);  // "Current Version = "
                 //GameLog.Client.General.InfoFormat(_text);
 
@@ -472,7 +472,7 @@ namespace Supremacy.Client
 
                 // maybe we don't need this anymore because it is shown at Start Screen as a requirement
 
-                _text = "Step_0130: No Check for Microsoft XNA Framework V3.1 but it must be installed > see folder";
+                _text = "Step_0130:; No Check for Microsoft XNA Framework V3.1 but it must be installed > see folder";
                 Console.WriteLine(_text);
                 //GameLog.Core.General.InfoFormat(_text);
 
@@ -556,7 +556,7 @@ namespace Supremacy.Client
 
                 try
                 {
-                    Console.WriteLine("Step_0132: NEXT: ShowSplashScreen...");
+                    Console.WriteLine("Step_0132:; NEXT: ShowSplashScreen...");
                     ShowSplashScreen();
 
                     string _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
@@ -573,7 +573,7 @@ namespace Supremacy.Client
                         }
                         else
                         {
-                            GameLog.Client.Audio.InfoFormat("Step_0133: Resources/SoundFX/Menu/LoadingSplash.wav not found...");
+                            GameLog.Client.Audio.InfoFormat("Step_0133:; Resources/SoundFX/Menu/LoadingSplash.wav not found...");
 
                             /*Important*/
                             GameLog.Client.Audio.WarnFormat("wav format is needed for several files which are played by System.Media (out of WPF = xaml files), not by the code's own sound player: ");
@@ -754,7 +754,7 @@ namespace Supremacy.Client
             {
                 _text = ".NET Framework is less than 4.6.1";
             }
-            _text = "Step_0120: " + _text;
+            _text = "Step_0120:; " + _text;
             Console.WriteLine(_text);
             GameLog.Client.General.Info(_text);
 
@@ -793,7 +793,7 @@ namespace Supremacy.Client
 
             try
             {
-                Console.WriteLine("Step_0152: opening Error.txt (just in case an Error appears)");
+                Console.WriteLine("Step_0152:; opening Error.txt (just in case an Error appears)");
                 //var file = "Error.txt";
                 //StreamWriter errorFile = new StreamWriter(file);
 
@@ -805,13 +805,13 @@ namespace Supremacy.Client
                 //errorFile.WriteLine("Hello");
                 //errorFile.WriteLine(DateTime.Now.ToString());
                 //if (ClientSettings.Current.EnableOutputToTXT) Console.WriteLine("Time111: " + DateTime.Now);
-                if (true) Console.WriteLine("Time_0103: " + DateTime.Now);
+                if (true) Console.WriteLine("Time_0103:; " + DateTime.Now);
                 //just starts an empty file 
                 // System.Diagnostics.Process.Start("Error.txt");
             }
             catch
             {
-                Console.WriteLine("Step_0163: error.txt could not be created. ");
+                Console.WriteLine("Step_0163:; error.txt could not be created. ");
                 //_ = MessageBox.Show(
                 //    "The error log could not be created.  You may still run the game,\n"
                 //    + "but error details cannot be logged.",

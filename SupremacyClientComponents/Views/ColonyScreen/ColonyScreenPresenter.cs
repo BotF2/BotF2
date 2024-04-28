@@ -43,6 +43,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<ShipyardBuildSlot> _selectShipBuildProjectCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _firstColonyCommand;
+        private readonly DelegateCommand<object> _colonyUpdateCommand;
         private readonly DelegateCommand<object> _previousColonyCommand;
         private readonly DelegateCommand<object> _nextColonyCommand;
         private readonly DelegateCommand<object> _showColonyOnMapCommand;
@@ -139,6 +140,7 @@ namespace Supremacy.Client.Views
                 });
 
             _firstColonyCommand = new DelegateCommand<object>(ExecuteFirstColonyCommand);
+            _colonyUpdateCommand = new DelegateCommand<object>(ExecuteColonyUpdateCommand);
             _previousColonyCommand = new DelegateCommand<object>(ExecutePreviousColonyCommand);
             _nextColonyCommand = new DelegateCommand<object>(ExecuteNextColonyCommand);
             _showColonyOnMapCommand = new DelegateCommand<object>(ExecuteShowColonyOnMapCommand);
@@ -169,6 +171,29 @@ namespace Supremacy.Client.Views
             {
                 Model.SelectedColony = colonies[0];
             }
+        }
+
+        private void ExecuteColonyUpdateCommand(object _)
+        {
+            List<Colony> colonies = Model.Colonies.ToList();
+            Colony currentColony = Model.SelectedColony;
+
+            Model.SelectedColony = currentColony;
+
+            //int currentColonyIndex = colonies.IndexOf(currentColony);
+            //if (currentColonyIndex <= 0)
+            //{
+            //    if (colonies.Count == 0)
+            //    {
+            //        return;
+            //    }
+
+            //    Model.SelectedColony = colonies[0];
+            //}
+            //else
+            //{
+            //    Model.SelectedColony = colonies[0];
+            //}
         }
 
         private void ExecutePreviousColonyCommand(object _)
@@ -800,6 +825,7 @@ namespace Supremacy.Client.Views
 
             ColonyScreenCommands.ToggleBuildingScrapCommand.RegisterCommand(_toggleBuildingScrapCommand);
             ColonyScreenCommands.FirstColonyCommand.RegisterCommand(_firstColonyCommand);
+            ColonyScreenCommands.ColonyUpdateCommand.RegisterCommand(_colonyUpdateCommand);
             ColonyScreenCommands.PreviousColonyCommand.RegisterCommand(_previousColonyCommand);
             ColonyScreenCommands.NextColonyCommand.RegisterCommand(_nextColonyCommand);
             ColonyScreenCommands.ShowColonyOnMapCommand.RegisterCommand(_showColonyOnMapCommand);
@@ -927,7 +953,7 @@ namespace Supremacy.Client.Views
                     + "; civMan.Credits.CurrentValue=" + civMan.Credits.CurrentValue
                     + " "
                     ;
-                Console.WriteLine(_text);
+                Console.WriteLine("Step_1213:; " + _text);
                 return false;
             }
 
@@ -1207,6 +1233,7 @@ namespace Supremacy.Client.Views
 
             ColonyScreenCommands.ToggleBuildingScrapCommand.UnregisterCommand(_toggleBuildingScrapCommand);
             ColonyScreenCommands.FirstColonyCommand.UnregisterCommand(_firstColonyCommand);
+            ColonyScreenCommands.ColonyUpdateCommand.UnregisterCommand(_colonyUpdateCommand);
             ColonyScreenCommands.PreviousColonyCommand.UnregisterCommand(_previousColonyCommand);
             ColonyScreenCommands.NextColonyCommand.UnregisterCommand(_nextColonyCommand);
             ColonyScreenCommands.ShowColonyOnMapCommand.UnregisterCommand(_showColonyOnMapCommand);

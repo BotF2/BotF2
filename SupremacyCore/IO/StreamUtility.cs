@@ -45,11 +45,15 @@ namespace Supremacy.IO
 
         public static T Read<T>(byte[] buffer) where T : class
         {
-            bool boolHEXreading = false;
+            bool boolHEXreading;
+            boolHEXreading = false;
+            //boolHEXreading = true;
+            Console.WriteLine("Step_0827:; boolHEXreading = " + boolHEXreading + newline);
+
             _text = "";
             if (boolHEXreading == true)
             {
-                Console.WriteLine("Step_0833: buffer.length = " + buffer.Length + newline);
+                Console.WriteLine("Step_0833:; buffer.length = " + buffer.Length + newline);
                 int nextgoal = 0;
                 for (int i = 0; i < buffer.Length; i++)
                 {
@@ -66,6 +70,13 @@ namespace Supremacy.IO
                 }
                 Console.WriteLine(_text);
             }
+            //bool boolHEXreading = false;
+            //boolHEXreading = true;
+            _text = "";
+            if (boolHEXreading == true)
+            {
+                Console.WriteLine("Step_0834:; buffer.length = " + buffer.Length + newline);
+            }
 
             using (SerializationReader sin = new SerializationReader(MiniLZO.Decompress(buffer)))
             {
@@ -80,21 +91,22 @@ namespace Supremacy.IO
                 count = 0;
                 while (count > sin.BytesRemaining)
                 {
+                    Console.WriteLine("Step_0266:; " + count + " ..up to " + sin.BytesRemaining);
                     _text += sin.ReadObject().ToString();
                     count += 1;
                 }
                 //_text = i + buffer[i].ToString() + newline;
             //}
-            Console.WriteLine("Step_0288:; HEX-Reading: " + _text + ", out of buffer");
+            //Console.WriteLine("Step_0288:; HEX-Reading: " + _text + ", out of buffer");
             Console.WriteLine("Step_0289:; HEX-Reading: - output deactivated-");
                 c_hex = "";
                 X2_text = "";
                 _text = c_hex + X2_text + count;
 
 
-            Console.WriteLine("Step_0291:; HEX-Reading-SIN: " + _text + ", BytesRemaining = " + sin.BytesRemaining);
+                //Console.WriteLine("Step_0291:; HEX-Reading-SIN: " + _text + ", BytesRemaining = " + sin.BytesRemaining);
 
-            count = 0;
+                count = 0;
             int hexcount = 0;
             _text = "";
                 if (boolHEXreading == true)
@@ -112,7 +124,7 @@ namespace Supremacy.IO
                         }
                         else
                         {
-                            c_hex += c + " - ";
+                            c_hex += c + " -";
                             X2_text += buffer[i].ToString("X2") + " ";
                             Console.WriteLine(c_hex);
                             Console.WriteLine(X2_text);
@@ -162,6 +174,7 @@ namespace Supremacy.IO
                 _ = sout.AppendTokenTables();
                 sout.Flush();
                 byte[] results = MiniLZO.Compress((MemoryStream)sout.BaseStream);
+                //byte[] results = (MemoryStream)sout.BaseStream;
                 return results;
             }
         }
