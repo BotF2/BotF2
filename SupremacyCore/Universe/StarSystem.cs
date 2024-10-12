@@ -367,8 +367,8 @@ namespace Supremacy.Universe
         {
             base.DeserializeOwnedData(reader, context);
             // to often
-            _text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";
-            Console.WriteLine(_text);
+            //_text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";
+            //Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
             string _col = "";
