@@ -60,6 +60,8 @@ namespace Supremacy.Text
     {
         private readonly ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> _techObjectTextTable;
         private readonly ClientTextDatabaseTable<IRaceTextDatabaseEntry> _raceTextTable;
+        [NonSerialized]
+        private static string _text;
 
         private ClientTextDatabase()
         {
@@ -214,6 +216,8 @@ namespace Supremacy.Text
             }
             catch (Exception e)
             {
+                _text = "Cannot write ... ./lib/TextDatabase__List(autoCreated).csv";
+                Console.WriteLine(_text);
                 GameLog.Core.GameData.Error("Cannot write ... ./lib/TextDatabase__List(autoCreated).csv", e);
             }
 

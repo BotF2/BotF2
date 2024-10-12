@@ -49,8 +49,14 @@ namespace Supremacy.Client.Audio
             }
             catch (Exception e)
             {
+                _text = "Step_0333:; MusicPacks.xml is missing ("
+                    + " ( " + libraryPath
+                    + ", " + e.Message
+                    + ", " + e.StackTrace
 
-                GameLog.Client.GameData.DebugFormat("MusicLibrary.cs: MusicPacks.xml is missing ({0} exception {1} {2})", libraryPath, e.Message, e.StackTrace);
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
                 _ = MessageBox.Show("MusicPacks.xml is missing for played empire", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

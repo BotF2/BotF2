@@ -18,7 +18,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
     /// <summary>
     /// Interaction logic for NewDiplomacyScreen.xaml
     /// </summary>
-    public partial class NewDiplomacyScreen : INewDiplomacyScreenView //System.ComponentModel.INotifyPropertyChanged
+    public partial class NewDiplomacyScreen : IDiplomacyScreenViewSecond //System.ComponentModel.INotifyPropertyChanged
     {
 
         public NewDiplomacyScreen()

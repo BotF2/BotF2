@@ -220,7 +220,7 @@ namespace Supremacy.AI
                         + " for " + foreignPower.Counterparty.Key
                         + " AFTER Ongoing Impression " + foreignPower.Owner.Key
                         ;
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
                     //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
                     // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);

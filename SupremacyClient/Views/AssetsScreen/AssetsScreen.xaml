@@ -27,9 +27,9 @@
     
     
     <TabControl>
-        <!--TAB for Local Player COLONIES
+        <!--TAB for Local Player COLONIES-->
 
-        <TabItem Header="{s:StringResource Key=COLONIES_TAB_HEADER}">
+        <!--<TabItem Header="{s:StringResource Key=COLONIES_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -95,7 +95,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
 
-                    --><!--Colonies.Count--><!--
+
                     <TextBlock 
                         Grid.Column="5" Text="{s:StringResource Key=COLONIES}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -107,7 +107,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
 
-                    --><!--TotalPopulation--><!--
+
                     <TextBlock 
                         Grid.Column="9" Text="{s:StringResource Key=TOTAL_POPULATION}"
                         Foreground="LightGoldenrodYellow"
@@ -119,7 +119,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
 
-                    --><!--CreditsEmpire--><!--
+
                     <TextBlock 
                         Grid.Column="13" Text="{s:StringResource Key=TOTAL_CREDITS}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -130,7 +130,7 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                    --><!--TotalResearch--><!--
+
                     <TextBlock 
                         Grid.Column="17" Text="{s:StringResource Key=TOTAL_RESEARCH}"
                         Foreground="SteelBlue"
@@ -141,7 +141,7 @@
                         Foreground="SteelBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                    --><!--TotalIntelligenceProduction--><!--
+
                     <TextBlock 
                         Grid.Column="21" Text="{s:StringResource Key=TOTAL_INTELLIGENCE}"
                         Foreground="Silver"
@@ -190,9 +190,9 @@
                         Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                </Grid>
+                </Grid> 
 
-                --><!--ColonyList--><!--
+
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto"
@@ -278,7 +278,7 @@
                     
                     <TextBlock Grid.Column="6" Margin="3,0,0,0" Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=TwoWay}" 
                         HorizontalAlignment="Left" VerticalAlignment="Center"
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                        Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
             <!--</StackPanel>-->

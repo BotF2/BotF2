@@ -389,7 +389,7 @@ namespace Supremacy.Universe
             }
         }
 
-        public int MaxPopulation
+        public int Population_Max
         {
             get
             {
@@ -896,20 +896,25 @@ namespace Supremacy.Universe
         public void ProcessQueue()
         {
 
-            _text = "Step_1207:; ProcessQueue ... remove complete projects etc."
+            _text = "Step_1207:; ProcessQueue ... multiple stuff like remove completed projects etc."
                     //+ "" + colony.Name + " " + colony.Owner
                     ;
-            Console.WriteLine(_text);
+            //Console.WriteLine(_text);
 
-            int count = 0;
-            foreach (BuildQueueItem buildQueueItem in BuildQueue)
-            {
-                _text = "Step_1206:; buildQueueItem # " + count + " = " + buildQueueItem.Description
-                        ;
-                Console.WriteLine(_text);
-                //GameLog.Client.ProductionDetails.DebugFormat(_text);
-                count++;
-            }
+            //int count = 0;
+            //foreach (BuildQueueItem buildQueueItem in BuildQueue)
+            //{
+            //    _text = "Step_1206:; " + buildQueueItem.Project.Location.ToString()
+            //        + " buildQueueItem # " + count + " = " + buildQueueItem.Description
+            //        + "; needs " + buildQueueItem.Project.TurnsRemaining + " turns " 
+            //        //+ buildQueueItem.Description
+            //            ;
+            //    Console.WriteLine(_text);
+            //    _colony_Full_Report = _text + newline;
+            //    //GameLog.Client.ProductionDetails.DebugFormat(_text);
+            //    count++;
+            //}
+            
 
             foreach (BuildSlot slot in BuildSlots)
             {
@@ -1150,7 +1155,7 @@ namespace Supremacy.Universe
             _ = ActivateBuilding(building);
             if (building.BuildingDesign.Bonuses.Any(o => o.BonusType == BonusType.MaxPopulationPerMoonSize))
             {
-                Population.Maximum = MaxPopulation;
+                Population.Maximum = Population_Max;
             }
         }
 
@@ -1174,7 +1179,7 @@ namespace Supremacy.Universe
 
             if (building.BuildingDesign.Bonuses.Any(o => o.BonusType == BonusType.MaxPopulationPerMoonSize))
             {
-                Population.Maximum = MaxPopulation;
+                Population.Maximum = Population_Max;
             }
         }
 
@@ -1642,6 +1647,17 @@ namespace Supremacy.Universe
 
             modifier.Efficiency *= moraleMod;
 
+            //works
+            //if (modifier.Efficiency > 0 || modifier.Bonus > 0)
+            //{
+            //    _text = "Step_1217:; GetProductionModifier for > " + category
+            //            + ": Efficiency = " + modifier.Efficiency.ToString()
+            //            + ": Bonus = " + modifier.Bonus.ToString()
+            //            ;
+            //    Console.WriteLine(_text);
+            //}
+
+
             return modifier;
         }
 
@@ -1906,7 +1922,9 @@ namespace Supremacy.Universe
                 {
                     if (AvailableLabor < 1)
                     {
-                        _text = "Step_2397:; No free Labour (from Pool) - food reserves are low";
+                        _text = "Step_2398:; Turn " + GameContext.Current.TurnNumber
+                            + "; " + Location 
+                            + " No free Labour (from Pool) - food reserves are low";
                         Console.WriteLine(_text);
                         ReduceOneOtherPF();
                     }
@@ -2082,7 +2100,7 @@ namespace Supremacy.Universe
         private void Report(Colony colony)
         {
             int _shipyardSlots;
-            if (colony._shipyardId != -1)
+            if (colony.Shipyard != null && colony._shipyardId != -1)
             {
                 _shipyardSlots = colony.Shipyard.BuildSlots.Count;
             }
@@ -2093,7 +2111,7 @@ namespace Supremacy.Universe
 
             _text = "Step_4203:; Turn " + GameContext.Current.TurnNumber + ": ";
             //int _laborpool_unused = this.AvailableLabor;
-            _text += colony.Name + " ( " + colony.Population.CurrentValue + " / max " + colony.MaxPopulation + " ): AvailableLabor: " + AvailableLabor.ToString();
+            _text += colony.Name + " ( " + colony.Population.CurrentValue + " / max " + colony.Population_Max + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = Facilities_Total1_Food - GetActiveFacilities(ProductionCategory.Food);
             _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + Facilities_Total1_Food + " (" + colony.FoodReserves + ")"; // _foodPF_unused;
             //int _industryPF_unused = Facilities_Total2_Industry - GetActiveFacilities(ProductionCategory.Industry);

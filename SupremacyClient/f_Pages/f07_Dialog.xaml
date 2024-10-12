@@ -374,6 +374,10 @@ RequestNavigate="DoLink"> Bilanaians </Hyperlink>
 RequestNavigate="DoLink"> Bolians </Hyperlink>
 
 -
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/B%27omar"
+RequestNavigate="DoLink"> B'omar </Hyperlink>
+
+-
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Boslic" 
 RequestNavigate="DoLink"> Boslics </Hyperlink>
 
@@ -656,8 +660,13 @@ RequestNavigate="DoLink"> Mokra </Hyperlink>
 RequestNavigate="DoLink"> Moneans </Hyperlink>
             </TextBlock>
 
-            <TextBlock TextWrapping="Wrap">
-N >  
+<TextBlock TextWrapping="Wrap">
+              
+N >
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nassordin"
+RequestNavigate="DoLink"> ( Nassordin ) </Hyperlink>
+
+-
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nausicaan" 
 RequestNavigate="DoLink"> Nausicaan </Hyperlink>
 
@@ -685,8 +694,10 @@ RequestNavigate="DoLink"> Nuu'Bari </Hyperlink>
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nyrian" 
 RequestNavigate="DoLink"> Nyrians </Hyperlink>
 
--
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ocampa" 
+</TextBlock>
+  <TextBlock TextWrapping="Wrap"> O >
+  
+    <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ocampa" 
 RequestNavigate="DoLink"> Ocampa </Hyperlink>
 
 -
@@ -712,10 +723,12 @@ RequestNavigate="DoLink"> ( Qomar ) </Hyperlink>
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Quarren_(species)" 
 RequestNavigate="DoLink"> Quarren </Hyperlink>
-            </TextBlock>
+    
+    
+</TextBlock>
+<TextBlock TextWrapping="Wrap"> R >
 
-            <TextBlock TextWrapping="Wrap">
-R >                              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakhari" 
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakhari" 
 RequestNavigate="DoLink"> Rakhari </Hyperlink>
 
 -
@@ -1066,7 +1079,7 @@ MORE (not included) >
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Next_Generation_-_Birth_of_the_Federation" 
-RequestNavigate="DoLink"> BotE </Hyperlink>
+RequestNavigate="DoLink"> BotF </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Planetary_defense_system" 

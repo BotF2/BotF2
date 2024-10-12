@@ -519,7 +519,7 @@ namespace Supremacy.UI
                                 ResourceManager.GetString("MORALE"), system.Colony.Morale.CurrentValue);
                             population.Text = string.Format("{0}: {1:#,##0} of {2:#,##0}",
                                 ResourceManager.GetString("SYSTEM_POPULATION"),
-                                system.Colony.Population.CurrentValue, system.Colony.MaxPopulation);
+                                system.Colony.Population.CurrentValue, system.Colony.Population_Max);
 
                             //if (system.Colony.GetAvailableLabor != 0)
                             //    name.Text = "# " + name.Text;

@@ -1,0 +1,57 @@
+All:
+- FleetOrders > 
+- UnitAI > 
+- UnitActivity > 
+
+Colonizer:
+- FleetOrders > MissionOrder + ColonizeOrder
+- UnitAI > Colonizer
+- UnitActivity > Mission + AimReached + NoActivity
+
+Constructor:
+- FleetOrders > MissionOrder + BuildStationOrder
+- UnitAI >  Constructor
+- UnitActivity > Mission + AimReached + NoActivity
+
+Medical:
+- FleetOrders > MissionOrder + MedicalOrder
+- UnitAI >  Medical
+- UnitActivity > Mission + AimReached + NoActivity
+
+Spy:
+- FleetOrders > MissionOrder + SpyOnOrder or SabotageOrder
+- UnitAI > Spy
+- UnitActivity > Mission + AimReached + NoActivity
+
+Diplomatic:
+- FleetOrders > MissionOrder + InflunceOrder
+- UnitAI > Diplomatic
+- UnitActivity > Mission + AimReached + NoActivity
+
+Science: (can be part of combat fleet)
+- FleetOrders > MissionOrder + MedicalOrder
+- UnitAI > Science
+- UnitActivity > Mission + AimReached + NoActivity
+
+Scout: (can be part of combat fleet)
+- FleetOrders > ExploreOrder + AttackOrder + SystemAttack
+- UnitAI > Explorer + Attack
+- UnitActivity > Mission + NoActivity
+
+Combatant: ( // Destroyer and Frigate = FastAttack, Cruiser, HeavyCruiser, StrikeCruiser, Command )
+- FleetOrders > EngageOrder or DefendOrder
+- UnitAI > Explorer or Attacker or SystemAttacker or SystemDefender
+- UnitActivity > Mission + AimReached + NoActivity
+
+Transport: (mostly part for a system attack) >> Freighters are defined as Scout-Behavorior
+- FleetOrders > MissionOrder + SystemAttack
+- UnitAI >  SystemAttack
+- UnitActivity > Mission + AimReached + NoActivity
+
+xxx:
+- FleetOrders > 
+- UnitAI > 
+- UnitActivity > 
+ 
+
+

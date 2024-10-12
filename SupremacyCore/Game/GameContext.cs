@@ -181,24 +181,68 @@ namespace Supremacy.Game
 
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
+
+            GameLog.Core.SaveLoad.DebugFormat("Step_3701: --------------------------------------------------");
+            _text = "Step_3702:; ########### Serialising GameContext...";
+            Console.WriteLine(_text);
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
             writer.Write(IsMultiplayerGame);
+            _text = "Step_3707:; ########### Serialising GameContext...";
+            Console.WriteLine(_text);
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
             writer.WriteOptimized(_nextObjectId);
+            
+            
             writer.WriteOptimized((ushort)_turnNumber);
+            
+            
             writer.WriteObject(_options);
+            
+            
             writer.WriteObject(_gameMod);
+            
+            
             writer.WriteObject(_civilizations);
+            
+            
             writer.WriteObject(_civManagers);
+            
+            
             writer.WriteObject(_races);
+            
+            
             writer.WriteObject(_universe);
+            
+            
             writer.WriteObject(_techDatabase);
+            
+            
             writer.WriteObject(_researchMatrix);
+            
+            
             writer.WriteObject(_sectorClaims);
+            
+            
             writer.WriteObject(_techTrees);
+            
+            
             writer.WriteObject(_diplomacyData);
+            
+            
             writer.WriteObject(_agreementMatrix);
+            
+            
             writer.WriteObject(_diplomats);
+            
+            
             writer.WriteObject(_strategyDatabase);
+            
+            
             writer.WriteObject(_scriptedEvents);
+            
+            
             writer.WriteObject(_diplomacyDatabase);
         }
 
@@ -1111,16 +1155,20 @@ namespace Supremacy.Game
 
                             if (foodFacility != null)
                             {
+
+
                                 // Start by clearing already existing facilities
                                 colony.RemoveFacilities(ProductionCategory.Food, colony.GetTotalFacilities(ProductionCategory.Food));
                                 colony.SetFacilityType(ProductionCategory.Food, null);
 
+
+                                // have a look why some minors (low populated) generate 255 facilities
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Food, foodFacility);
 
                                 int pop = colony.Population.CurrentValue;
                                 float growth = colony.System.GetGrowthRate(colony.Inhabitants);
-                                if (pop == colony.MaxPopulation)
+                                if (pop == colony.Population_Max)
                                 {
                                     growth = 0.0f;
                                 }
@@ -1133,6 +1181,14 @@ namespace Supremacy.Game
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.FoodPF.Count;
                                 }
+
+                                if (facilitiesRequired > 19)
+                                {
+                                    _text = "Step_1312:; ####### From HomeSystems.xml > facilitiesRequired= " + facilitiesRequired;
+                                Console.WriteLine(_text);
+                                }
+
+
 
 
                                 colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);

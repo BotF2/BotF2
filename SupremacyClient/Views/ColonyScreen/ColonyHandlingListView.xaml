@@ -21,9 +21,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-       
+            <!--  before > Width="600"-->
             <ScrollViewer CanContentScroll="True"
-                Width="600"
+                Width="620"
                 Height="Auto"
                 Grid.Column="1"
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -41,7 +41,6 @@
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />          
         <ColumnDefinition Width="*" />
-
       </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
               VerticalAlignment="Center"
@@ -98,7 +97,7 @@
                    FontSize="11pt"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"
-                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.UnitEnergyCost, StringFormat='{}{0} Energy Cost'}"  />
+                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.UnitEnergyCost, StringFormat='{}Energy Consumption: {0}'}"  />
       </StackPanel>
 
 <!--
@@ -146,10 +145,12 @@
           </MultiBinding>
         </TextBlock.Text>
       </TextBlock>
-      <s:UnitActivationBar Grid.Column="4"
+            
+      <s:UnitActivationBar Grid.Column="5" Margin="0,0,0,0" MaxWidth="250"
                            Units="{Binding Path=SelectedColony.OrbitalBatteries_Total, Mode=OneWay}"
                            MaxActiveUnits="{Binding Path=MaxOrbitalBatteries_Active, Mode=TwoWay}"
-                           ActiveUnits="{Binding Path=OrbitalBatteries_Active, Mode=TwoWay}" />            
+                           ActiveUnits="{Binding Path=OrbitalBatteries_Active, Mode=TwoWay}" />  
+            <!---->
     </Grid>
         <!--End of OrbitalBatteries-->
     

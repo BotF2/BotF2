@@ -40,8 +40,10 @@
 
     <SolidColorBrush Color="#ffCF88DF" x:Key="HeaderTextBrush"/>
     <SolidColorBrush Color="#ffCF88DF" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
-    <SolidColorBrush Color="#ffDB62F6" x:Key="DefaultTextBrush"/>
-    <SolidColorBrush Color="#ffDB62F6" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#FFe1acbd" x:Key="DefaultTextBrush"/>
+    <SolidColorBrush Color="#FFe1acbd" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
+  <!--<SolidColorBrush Color="#ffDB62F6" x:Key="DefaultTextBrush"/>
+  <SolidColorBrush Color="#ffDB62F6" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>-->
     <SolidColorBrush Color="#ffE4C9EA" x:Key="DisabledTextBrush"/>
     <SolidColorBrush Color="#ffE4C9EA" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ff87DB7A" x:Key="SelectionBrush"/>

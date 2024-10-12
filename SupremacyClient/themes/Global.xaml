@@ -5159,18 +5159,21 @@
             Value="True" />
   </Style>
 
+    <!--ui:BlockBar-->
   <Style TargetType="{x:Type ui:BlockBar}"
          BasedOn="{StaticResource BaseStyle}">
     <Setter Property="BlockBrush"
             Value="{StaticResource OrangeGradient_Top_Bottom}" />
   </Style>
-  
-  <Style TargetType="{x:Type scc:RangeBar}"
+
+    <!--scc:RangeBar-->
+    <Style TargetType="{x:Type scc:RangeBar}"
          BasedOn="{StaticResource BaseStyle}">
     <Setter Property="BlockBrush"
             Value="{StaticResource OrangeGradient_Top_Bottom}" />
   </Style>
 
+    <!--game:SitRepEntry-->
   <DataTemplate DataType="{x:Type game:SitRepEntry}">
     <DockPanel MaxWidth="540"
                LastChildFill="True"
@@ -5773,7 +5776,11 @@
          TargetType="{x:Type TreeViewItem}">
     <Setter Property="BorderBrush"
             Value="{x:Null}" />
-    <Setter Property="BorderThickness"
+        <Setter Property="HorizontalContentAlignment"
+            Value="Center" />        
+        <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+        <Setter Property="BorderThickness"
             Value="0" />
     <Setter Property="ScrollViewer.CanContentScroll"
             Value="False" />

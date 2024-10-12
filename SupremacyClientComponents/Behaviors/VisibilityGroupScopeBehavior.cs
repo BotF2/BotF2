@@ -39,7 +39,7 @@ namespace Supremacy.Client.Behaviors
         {
             _text = "Step_0701:; OnVisibilityGroupChanged-Arg e = " + e.NewValue.ToString();
             Console.WriteLine(_text);
-            GameLog.Core.UIDetails.DebugFormat(_text);
+            //GameLog.Core.UIDetails.DebugFormat(_text);
 
             if (d is VisibilityGroupScopeBehavior scopeBehavior)
             {

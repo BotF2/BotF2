@@ -367,8 +367,8 @@ namespace Supremacy.Universe
         {
             base.DeserializeOwnedData(reader, context);
             // to often
-            //_text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";
-            //Console.WriteLine(_text);
+            _text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";
+            Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
             string _col = "";
@@ -379,7 +379,7 @@ namespace Supremacy.Universe
 
             _bonuses = (SystemBonus)reader.ReadByte();
             _text = _col;// + _bonuses;
-            //Console.WriteLine(_bonuses);
+            Console.WriteLine(_bonuses);
             _planets = new ArrayWrapper<Planet>((Planet[])reader.ReadOptimizedObjectArray(typeof(Planet)));
             foreach (var item in _planets)
             {

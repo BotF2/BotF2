@@ -1011,6 +1011,25 @@
     TextWrapping="NoWrap" />
           </Grid>
           
+          <!-- also used for Klingons UI-->
+          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
+          </Grid>          
 
                     <Grid x:Name="UpgradableDesigns" MinWidth="270">
             <Grid.ColumnDefinitions>
@@ -1030,24 +1049,9 @@
                           ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
                           ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
           </Grid>
-          <Grid x:Name="ObsoletedDesigns" MinWidth="270">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
-                       Margin="0,0,7,0"
-                       VerticalAlignment="Top"
-                       Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap" />
-            <ItemsControl VerticalAlignment="Top"
-                          HorizontalAlignment="Right"
-                          HorizontalContentAlignment="Right"
-                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
-                          ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
-          </Grid>
+          
+
+          
         </StackPanel>
         <DataTemplate.Triggers>
           <DataTrigger Binding="{Binding Path=Design.Duranium}"

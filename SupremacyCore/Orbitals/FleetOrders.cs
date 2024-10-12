@@ -1,4 +1,4 @@
-// FleetOrders.cs
+// File:FleetOrders.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -26,8 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
 
 namespace Supremacy.Orbitals
 {
@@ -47,7 +45,8 @@ namespace Supremacy.Orbitals
         public static readonly RedeploySameOrder RedeploySameOrder;
         public static readonly RedeployAllOrder RedeployAllOrder;
 
-        public static readonly RendezvousOrder RendezvousOrder;
+        public static readonly RendezvousLocation_Set_Here_Order RendezvousLocation_Set_Here_Order;
+        public static readonly RendezvousLocation_Go_There_Order RendezvousLocation_Go_There_Order;
         public static readonly RendezvousQuitOrder RendezvousQuitOrder;
 
         public static readonly ColonizeOrder ColonizeOrder;
@@ -98,16 +97,17 @@ namespace Supremacy.Orbitals
             BuildStationOrder = new BuildStationOrder();
             ExploreOrder = new ExploreOrder();
             TravelOrder = new TravelOrder();
-            RendezvousOrder = new RendezvousOrder();
+            RendezvousLocation_Set_Here_Order = new RendezvousLocation_Set_Here_Order();
+            RendezvousLocation_Go_There_Order = new RendezvousLocation_Go_There_Order();
             RendezvousQuitOrder = new RendezvousQuitOrder();
 
 
-            _orders = new List<FleetOrder>
+            _orders = new List<FleetOrder>  // defines sorting
                       {
                           EngageOrder,
                           AvoidOrder,
-                          TravelOrder,
                           ExploreOrder,
+                          TravelOrder,
                           ColonizeOrder,
                           BuildStationOrder,
                           SabotageOrder,
@@ -129,7 +129,8 @@ namespace Supremacy.Orbitals
                           RedeploySameOrder,
                           RedeployAllOrder,
 
-                          RendezvousOrder,
+                          RendezvousLocation_Set_Here_Order,
+                          RendezvousLocation_Go_There_Order,
                           RendezvousQuitOrder,
 
                           ScrapShipOrder,
@@ -560,22 +561,249 @@ namespace Supremacy.Orbitals
     #endregion RedeployAllOrder
 
 
-    #region RendezvousOrder  
+    #region RendezvousLocation_Set_Here
     [Serializable]
-    public sealed class RendezvousOrder : FleetOrder // all = all own ships in the sector
+    public sealed class RendezvousLocation_Set_Here_Order : FleetOrder // all = all own ships in the sector
     {
         private string _text;
 
-        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS");
-        public override string Status => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS");
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_SET_HERE");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_SET_HERE");
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
-            return new RendezvousOrder();
+            if (Fleet == null)
+                return new RendezvousLocation_Set_Here_Order();
+
+            Fleet fleet = Fleet;
+            MapLocation _rendezvousLocation = GameContext.Current.CivilizationManagers[fleet.Owner].RendezvousLocation;
+
+            if (Fleet == null)
+            {
+                _text = "Step_3782:; RendezvousLocation_Set_Here_Order for:"
+                    //+ ";Fleet; " + fleet.Name
+                    //+ " ;Ship:;" + fleet.ObjectID
+                    + " ; > Fleet was null (unsolved)"
+                    ;
+                Console.WriteLine(_text);
+                return new RendezvousLocation_Set_Here_Order();
+            }
+            else
+            {
+                _text = "Step_3783:; RendezvousLocation_Set_Here_Order for:"
+                    //+ ";Fleet; " + fleet.Name
+                    //+ " ;Ship:;" + fleet.ObjectID
+                    + " ; > Fleet was NOT null :-)"
+                    ;
+                Console.WriteLine(_text);
+                GameContext.Current.CivilizationManagers[fleet.Owner].RendezvousLocation = fleet.Location;
+                //GameContext.Current.CivilizationManagers[fleet.Owner].RendezvousLocation 
+            }
+
+
+
+
+            ////GameContext.Current.CivilizationManagers[fleet.Owner].RendezvousLocation = 
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //civM.RendezvousLocation = fleet.Location;
+            //civM.RendezvousSector = new Sector(fleet.Location);
+            //_text = "Step_3765:; RendezvousLocation_Set_Here_Order for:"
+            //        + ";Fleet; " + fleet.Name
+            //        + " ;Ship:;" + fleet.ObjectID
+            //        + " ;to:;" + civM.RendezvousLocation
+            //        + " ;=;" + civM.RendezvousSector.ToString()
+            //        ;
+            //Console.WriteLine(_text);
+
+            if (fleet != null) 
+                SetRendezvousPlace();
+
+            return new RendezvousLocation_Set_Here_Order();
+        }
+
+        //private void RendezvousLocation_Set_Here_Order()
+        //{
+
+        //}
+
+        private void SetRendezvousPlace()
+        {
+            if (Fleet == null)
+                return;
+            Fleet fleet = Fleet;
+            //if (fleet)
+            CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            civM.RendezvousLocation = fleet.Location;
+            civM.RendezvousSector = new Sector(fleet.Location);
+            _text = "Step_3765:; RendezvousLocation_Set_Here_Order for:"
+                    + ";Fleet; " + fleet.Name
+                    + " ;Ship:;" + fleet.ObjectID
+                    + " ;to:;" + civM.RendezvousLocation
+                    + " ;=;" + civM.RendezvousSector.ToString()
+                    ;
+            Console.WriteLine(_text);
+        }
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            //if (!base.IsValidOrder(fleet))
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System == null)
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System.Colony == null)
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
+            //{
+            //    return false;
+            //}
+            return true;
+            //_text = "ShipOrder 'RendezvousLocation_Set_Here_Order' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+            //return false;
+
+            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            //if (fleets.Count < 2)
+            //    return false;
+
+            //if (fleet.Owner != null)
+            //{
+            //    foreach (var item in fleets)
+            //    {
+            //        if (fleet.Owner == item.Owner)
+            //            return true;
+            //    }
+
+            //    //return false;
+            //}
+
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
+
+            //return true;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // RendezvousLocation_Set_Here_Order
+        {
+            if (Fleet == null)
+                return; 
+
+            base.OnTurnBeginning();
+
+            Fleet fleet = Fleet;
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //civM.RendezvousLocation = fleet.Location;
+            //_text = "Step_3765:; RendezvousLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + fleet.Name
+            //    + " ;Ship:;" + fleet.ObjectID
+            //    ;
+            //Console.WriteLine(_text);
+            //}
+            Fleet.Order = FleetOrders.RendezvousLocation_Go_There_Order;
+
+            SetRendezvousPlace();
+
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            //foreach (Fleet aFeet in fleets)
+            //{
+            //    Ship ship = aFeet.Ships.Last();
+            //    MapLocation location = ship.Location;
+            //    //aFeet.RemoveShip(ship);
+            //    //if (ship.ShipType == type)
+            //    //{
+            //    fleet.AddShip(ship);
+            //    fleet.Location = location;
+
+            //    _text = "Step_3765:; RendezvousLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + ship.Name
+            //    + " ;Ship:;" + ship.ObjectID
+            //    ;
+            //    Console.WriteLine(_text);
+            //    //}
+            //    fleet.Order = FleetOrders.RendezvousLocation_Go_There_Order;
+            //}
+            //fleet.Order = FleetOrders.RendezvousLocation_Set_Here_Order;
+        }
+
+        protected internal override void OnTurnEnding()  // RendezvousLocation_Set_Here_Order
+        {
+            if (Fleet == null)
+                return;
+
+            base.OnTurnEnding();
+
+            Fleet fleet = Fleet;
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //civM.RendezvousLocation = fleet.Location;
+            //_text = "Step_3765:; RendezvousLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + fleet.Name
+            //    + " ;Ship:;" + fleet.ObjectID
+            //    ;
+            //Console.WriteLine(_text);
+            //}
+            Fleet.Order = FleetOrders.RendezvousLocation_Go_There_Order;
+
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            //foreach (Fleet aFeet in fleets)
+            //{
+            //    Ship ship = aFeet.Ships.Last();
+            //    MapLocation location = ship.Location;
+            //    //aFeet.RemoveShip(ship);
+            //    //if (ship.ShipType == type)
+            //    //{
+            //    fleet.AddShip(ship);
+            //    fleet.Location = location;
+
+            //    _text = "Step_3765:; RendezvousLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + ship.Name
+            //    + " ;Ship:;" + ship.ObjectID
+            //    ;
+            //    Console.WriteLine(_text);
+            //    //}
+            //    fleet.Order = FleetOrders.RendezvousLocation_Go_There_Order;
+            //}
+            //fleet.Order = FleetOrders.RendezvousLocation_Set_Here_Order;
+        }
+    }
+    #endregion RendezvousLocation_Set_Here
+
+    #region RendezvousLocation_Go_There
+    [Serializable]
+    public sealed class RendezvousLocation_Go_There_Order : FleetOrder // all = all own ships in the sector
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_GO_THERE");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_GO_THERE");
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            //Fleet.SetRoute = Fleet.SetRoute(AStar.FindPath(Fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { rendezvousSector }));
+            return new RendezvousLocation_Go_There_Order();
         }
         public override bool IsValidOrder(Fleet fleet)
         {
-            //_text = "ShipOrder 'RendezvousOrder' is turned off due to not working yet";
+            //_text = "ShipOrder 'RendezvousLocation_Go_There_Order' is turned off due to not working yet";
             //Console.WriteLine(_text);
 
             //GameLog.Core.Production.DebugFormat(_text);
@@ -609,12 +837,28 @@ namespace Supremacy.Orbitals
 
             return true;  // to be done: coding !!
         }
-        protected internal override void OnTurnBeginning()  // RendezvousOrder
+        protected internal override void OnTurnBeginning()  // RendezvousLocation_Go_There_Order
         {
+            if (Fleet == null)
+                return;
+
             base.OnTurnBeginning();
 
             Fleet fleet = Fleet;
+            CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            IEnumerable<Sector> _deathStars = GameContext.Current.Universe.FindStarType<Sector>(StarType.BlackHole).ToList()
+                .Concat(GameContext.Current.Universe.FindStarType<Sector>(StarType.NeutronStar).ToList());
+
+            MapLocation rendezvousLocation = new MapLocation(civM.RendezvousLocation.X, civM.RendezvousLocation.Y); 
+            //rendezvousLocation.X = civM.RendezvousLocation.X;
+            //rendezvousLocation.Y = civM.RendezvousLocation.X;
+            Sector rendezvousSector = new Sector(rendezvousLocation);
+
+
+            fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { rendezvousSector }));
             //ShipType type = fleet.Ships[0].ShipType;
+            fleet.Order = FleetOrders.RendezvousLocation_Go_There_Order;
+            //fleet.Activity = UnitActivity.Mission;
 
             List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
 
@@ -628,17 +872,20 @@ namespace Supremacy.Orbitals
                 fleet.AddShip(ship);
                 fleet.Location = location;
 
-                _text = "RedeployAll:;"
-                + "Fleet; " + ship.Name
-                + " Ship:;" + ship.ObjectID
-                ;
+
+                _text = "Step_3765:; RendezvousLocation_Go_There_Order for; "
+                        + ship.ObjectID
+                        + "; " + ship.Name
+                        + "; " + ship.Design
+                        + " > go to " + civM.RendezvousLocation
+                        ;
                 Console.WriteLine(_text);
                 //}
             }
-            fleet.Order = FleetOrders.RendezvousOrder;
+            
         }
     }
-    #endregion RendezvousOrder
+    #endregion RendezvousLocation_Go_There
 
     #region RendezvousQuitOrder  
     [Serializable]
@@ -651,7 +898,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-            return ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_QUIT");
+                return ResourceManager.GetString("FLEET_ORDER_RENDEZVOUS_QUIT");
             }
 
         }
@@ -670,14 +917,14 @@ namespace Supremacy.Orbitals
 
             //MapLocation null_location = new MapLocation(99, 99);
 
-            //if (civM.RendezvousPlace != null && civM.RendezvousPlace != null_location)
+            //if (civM.RendezvousLocation != null && civM.RendezvousLocation != null_location)
             //{
             //    MapLocation null_location = new MapLocation(99,99);
-            //    civM.RendezvousPlace = null_location;
-            //    civM.RendezvousPlace = fleet.Location;
+            //    civM.RendezvousLocation = null_location;
+            //    civM.RendezvousLocation = fleet.Location;
             //}
 
-            //civM.RendezvousPlace = fleet.Location;
+            //civM.RendezvousLocation = fleet.Location;
             //_text = "ShipOrder 'RendezvousQuitOrder' is turned off due to not working yet";
             //Console.WriteLine(_text);
 
@@ -854,6 +1101,7 @@ namespace Supremacy.Orbitals
                 return;
             }
 
+            // DoColonize
             Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
@@ -902,22 +1150,15 @@ namespace Supremacy.Orbitals
     public sealed class MedicalOrder : FleetOrder
     {
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_MEDICAL");
-
         public override string Status => ResourceManager.GetString("FLEET_ORDER_MEDICAL");
-
         public override FleetOrder Create()
         {
             return new MedicalOrder();
         }
-
         public override bool IsCancelledOnMove => true;
-
         public override bool IsCancelledOnRouteChange => true;
-
         public override bool IsRouteCancelledOnAssign => true;
-
         public override bool WillEngageHostiles => false;
-
         public override bool IsValidOrder(Fleet fleet)
         {
             if (!base.IsValidOrder(fleet))
@@ -928,14 +1169,14 @@ namespace Supremacy.Orbitals
             {
                 return false;
             }
-            if (fleet.Sector.System.Colony == null)
-            {
-                return false;
-            }
-            if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
-            {
-                return false;
-            }
+            //if (fleet.Sector.System.Colony == null)
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
+            //{
+            //    return false;
+            //}
             return fleet.Ships.Any(s => s.ShipType == ShipType.Medical);
         }
 
@@ -986,7 +1227,7 @@ namespace Supremacy.Orbitals
                 //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
                 //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
 
-                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name + " * (our Medical Ship) provided help: health before: " + oldHealth  + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
+                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name + " * (our Medical Ship) provided help: health before: " + oldHealth + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
                 GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
 
                 _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * " + Fleet.Name + " * ( " + Fleet.Owner.ShortName + " Medical Ship ): health before: " + oldHealth + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
@@ -1036,7 +1277,7 @@ namespace Supremacy.Orbitals
                     + blank + Fleet.Sector.System.Colony.Health.CurrentValue;
 
                 Console.WriteLine(_text);
-                GameLog.Core.ColoniesDetails.DebugFormat(_text);
+                //GameLog.Core.ColoniesDetails.DebugFormat(_text);
             }
         }
 
@@ -1589,10 +1830,10 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            if (fleet.Sector.System.Name != fleet.Owner.HomeSystemName)
-            {
-                return false;
-            }
+            //if (fleet.Sector.System.Name != fleet.Owner.HomeSystemName)
+            //{
+            //    return false;
+            //}
 
             //if (!fleet.Sector.System.HasColony)
             //{
@@ -1880,7 +2121,7 @@ namespace Supremacy.Orbitals
                     ResourceManager.GetString("FLEET_ORDER_STATUS_TOW"),
                     TargetFleet);
 
-        public override string DisplayText
+        public override string TaskForceStatusText
         {
             get
             {
@@ -2116,7 +2357,7 @@ namespace Supremacy.Orbitals
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE");
         public override string Status => string.Format(ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"), Fleet);
-        public override string DisplayText => string.Format(ResourceManager.GetString("ORDER_ENTER_WORMHOLE"), Status);
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("ORDER_ENTER_WORMHOLE"), Status);
         public override bool WillEngageHostiles => false;
         public override bool IsComplete => Fleet.Location != _startingLocation;
         public override FleetOrder Create() { return new WormholeOrder(); }
@@ -2134,7 +2375,7 @@ namespace Supremacy.Orbitals
         {
 
             if (Fleet != null)
-            {                    
+            {
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
 
                 //Wormhole leads nowhere so destroy the fleet
@@ -2158,7 +2399,7 @@ namespace Supremacy.Orbitals
                 else
                 {
                     Fleet.Location = (MapLocation)Fleet.Sector.System.WormholeDestination;
-                                        
+
                     _text = Fleet.Location
                         + " > " + Fleet.ObjectID
                         + " > " + Fleet.Name
@@ -2477,7 +2718,7 @@ namespace Supremacy.Orbitals
 
             if (project != null)
             {
-                _text = "Step_8380:; Turn " + turnnumber 
+                _text = "Step_8380:; Turn " + turnnumber + ": "
                     + project.Location + "> project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
                 Console.WriteLine(_text);
                 //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);

@@ -1,4 +1,4 @@
-// GameStartMessage.cs
+// File:GameStartMessage.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

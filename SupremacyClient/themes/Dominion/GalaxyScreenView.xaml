@@ -1044,26 +1044,21 @@
                            Margin="0,0,0,0"
                            Fill="{StaticResource Dom6Gradient_Bottom_Top}" />
                             </Grid>
+                            
               <Grid Grid.Column="3"
                     Grid.Row="0"
                     Height="28"
                     Margin="0,0,3,0"
                     VerticalAlignment="Top">
+                  
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Border Grid.Column="0" Margin="0,0,0,0" x:Name="TopEdge"
                                         BorderBrush="Green" BorderThickness="2"
                                         >
-
-                                    <!--Fill="{StaticResource Dom3Gradient_Top_Bottom}" 
-                                           >-->
-
-                                        <!--<Rectangle.BorderBrush="Green" >
-                                            
-                                        </Rectangle.BorderBrush>-->
                                 </Border>
 
                                 <TextBlock Grid.Column="0" Text="{s:StringResource INFO_SHORTCUTS}" 
@@ -1124,15 +1119,10 @@
                                     </Rectangle.Fill>
                                 </Rectangle>-->
                   
-                <TextBlock x:Name="InhabitantsText"
-                           Grid.Column="1"
-                           Margin="7,0,4,0"
+                <TextBlock x:Name="InhabitantsText" Grid.Column="1" Margin="7,0,4,0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Text="{Binding Path=SelectedSector.System.Colony.Inhabitants.PluralName, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"                          
                            Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Text="{Binding Path=SelectedSector.System.Colony.Inhabitants.PluralName, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
-                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="18pt" />
+                           FontSize="18pt"  FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
               </Grid>
 
                             <!--TopRightCorner-->

@@ -1,4 +1,6 @@
 ﻿// File:SitRepDialog.xaml.cs  
+using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Controls;
 using Supremacy.Game;
@@ -8,6 +10,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,10 +26,18 @@ namespace Supremacy.Client.Dialogs
         private SitRepCategory _visibleCategories;
         private IEnumerable<SitRepEntry> _sitRepEntries;
         private string _previoussitRepCommentTextBox;
+        private readonly IMusicPlayer _musicPlayer;
+#pragma warning disable IDE0052 // Remove unread private members
+        private readonly ISoundPlayer _soundPlayer;
+#pragma warning restore IDE0052 // Remove unread private members
 
-        public SitRepDialog()
+        public SitRepDialog([NotNull] IMusicPlayer musicPlayer,
+            [NotNull] ISoundPlayer soundPlayer)
         {
             InitializeComponent();
+
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             SitRepCategory visibleCategories = SitRepDialogSettings.GetVisibleCategories(ClientSettings.Current);
 
@@ -295,6 +306,11 @@ namespace Supremacy.Client.Dialogs
 
             NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
             Close();
+            if (_musicPlayer != null)
+            {
+            _musicPlayer.SwitchMusic("DefaultMusic");
+            }
+
         }
 
         private void OnMapButtonClick(object sender, ExecuteRoutedEventArgs e)
@@ -302,6 +318,11 @@ namespace Supremacy.Client.Dialogs
 
             NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
             Close();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("DefaultMusic");
+            }
+
             System.Windows.Forms.SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
         }
 
@@ -334,6 +355,10 @@ namespace Supremacy.Client.Dialogs
                 {
                     case SitRepAction.ShowGalaxyScreen: // F1
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F1_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
                         break;
 
@@ -344,25 +369,45 @@ namespace Supremacy.Client.Dialogs
                         //Refresh the screen on an easy way
                         //SendKeys.SendWait("{F5}");
                         //SendKeys.SendWait("{F2}");
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F2_ScreenMusic");
+                        }
                         break;
 
                     case SitRepAction.ShowScienceScreen: // F3
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F3_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen); // F3
                         break;
 
                     case SitRepAction.ShowDiploScreen: // F4
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F4_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.DiplomacyScreen);  // F4
                         break;
 
                     case SitRepAction.ShowIntelScreen: // F5
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F5_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.IntelScreen); // F5
                         break;
 
                     case SitRepAction.CenterOnSector:
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F1_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
                         Sector sector = selection.ActionTarget as Sector;
                         GalaxyScreenCommands.SelectSector.Execute(sector);
@@ -371,6 +416,10 @@ namespace Supremacy.Client.Dialogs
 
                     case SitRepAction.SelectTaskForce:
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F1_ScreenMusic");
+                        }
                         Fleet fleet = selection.ActionTarget as Fleet;
                         GalaxyScreenCommands.SelectSector.Execute(fleet.Sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(fleet.Sector);
@@ -379,6 +428,10 @@ namespace Supremacy.Client.Dialogs
 
                     case SitRepAction.None:
                     default:
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("DefaultMusic");
+                        }
                         break;
 
                 }

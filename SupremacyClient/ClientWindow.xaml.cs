@@ -59,7 +59,7 @@ namespace Supremacy.Client
         private bool _exitInProgress;
         private double _scaleFactor;
         [NonSerialized]
-        private string _text;
+        public string _text;
 
         static ClientWindow()
         {

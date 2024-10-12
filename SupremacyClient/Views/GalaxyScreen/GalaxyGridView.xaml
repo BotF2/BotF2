@@ -1,7 +1,9 @@
-﻿<UserControl x:Class="Supremacy.Client.Views.GalaxyGridView"
+﻿<!--File:GalaxyGridView.xaml--> 
+<UserControl x:Class="Supremacy.Client.Views.GalaxyGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:s="http://schemas.startreksupremacy.com/xaml/core">
+   
   <Grid>
     <Border x:Name="GameScreensRegionBorder">
         <!--<Border.Background>
@@ -13,7 +15,7 @@
                   ScrollViewer.VerticalScrollBarVisibility="Visible"
                   ScrollViewer.HorizontalScrollBarVisibility="Visible">
            <s:GalaxyGridPanel x:Name="GalaxyGrid"
-                         SelectedFleet="{Binding Path=SelectedTaskForce.Source, Mode=OneWay}"
+                         SelectedFleet="{Binding Path=SelectTaskForce.Source, Mode=OneWay}"
                          SelectedSector="{Binding Path=SelectedSector, Mode=TwoWay}"
                          SelectedTradeRoute="{Binding Path=SelectedTradeRoute, Mode=TwoWay}"
                          SnapsToDevicePixels="True" />

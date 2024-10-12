@@ -69,25 +69,25 @@ namespace Supremacy.Client
                 switch (CivSelector.SelectedValue.ToString())
                 {
                     case "Federation":
-                        _soundPlayer.Play("Menu", "FedSelection");
+                        _soundPlayer.Play("Menu", "Selection_Fed");
                         break;
                     case "Terran Empire":
-                        _soundPlayer.Play("Menu", "TerranSelection");
+                        _soundPlayer.Play("Menu", "Selection_Terran");
                         break;
                     case "Romulans":
-                        _soundPlayer.Play("Menu", "RomSelection");
+                        _soundPlayer.Play("Menu", "Selection_Rom");
                         break;
                     case "Klingons":
-                        _soundPlayer.Play("Menu", "KlingSelection");
+                        _soundPlayer.Play("Menu", "Selection_Kling");
                         break;
                     case "Cardassians":
-                        _soundPlayer.Play("Menu", "CardSelection");
+                        _soundPlayer.Play("Menu", "Selection_Card");
                         break;
                     case "Dominion":
-                        _soundPlayer.Play("Menu", "DomSelection");
+                        _soundPlayer.Play("Menu", "Selection_Dom");
                         break;
                     case "Borg":
-                        _soundPlayer.Play("Menu", "BorgSelection");
+                        _soundPlayer.Play("Menu", "Selection_Borg");
                         break;
                 }
             }

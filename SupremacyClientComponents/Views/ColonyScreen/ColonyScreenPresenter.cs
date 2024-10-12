@@ -2,6 +2,7 @@ using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Dialogs;
 using Supremacy.Client.Events;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -52,6 +54,9 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _showColonyBuildListCommand;
         private readonly DelegateCommand<object> _showShipyardCommand;
 
+        private readonly IMusicPlayer _musicPlayer = null;
+        //private readonly ISoundPlayer _soundPlayer;
+
 
         private int _newColonySelection;
 
@@ -59,8 +64,12 @@ namespace Supremacy.Client.Views
         public ColonyScreenPresenter(
             [NotNull] IUnityContainer container,
             [NotNull] ColonyScreenPresentationModel model,
+            [NotNull] IMusicPlayer musicPlayer,
             [NotNull] IColonyScreenView view) : base(container, model, view)
         {
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
+            //_soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+
             _addToPlanetaryBuildQueueCommand = new DelegateCommand<BuildProject>(
                 ExecuteAddToPlanetaryBuildQueueCommand,
                 CanExecuteAddToPlanetaryBuildQueueCommand);
@@ -397,7 +406,7 @@ namespace Supremacy.Client.Views
 
             OnceAgain:
 
-            NewShipSelectionView view = new NewShipSelectionView(buildSlot);
+            NewShipSelectionView view = new NewShipSelectionView(buildSlot, _musicPlayer);
             TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
 
             _ = BindingOperations.SetBinding(

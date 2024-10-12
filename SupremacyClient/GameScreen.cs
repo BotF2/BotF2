@@ -25,6 +25,7 @@ using Supremacy.Client.Views;
 using Supremacy.Game;
 using Supremacy.Client.Context;
 using Supremacy.Utility;
+using Supremacy.Client.Audio;
 
 namespace Supremacy.Client
 {
@@ -35,6 +36,8 @@ namespace Supremacy.Client
         #region Static Members
         public static readonly DependencyProperty AppContextProperty;
         public static readonly RoutedEvent ChatMessageReceivedEvent;
+        //private string _moreInfo;
+        public static IMusicPlayer _musicPlayer;
 
         static GameScreenBase()
         {

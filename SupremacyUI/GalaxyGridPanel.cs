@@ -820,6 +820,15 @@ namespace Supremacy.UI
             }
         }
 
+        public string PlayerCivilizationRendezvousPlace
+        {
+            get
+            {
+                CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
+                return playerEmpire?.RendezvousLocation.ToString();
+            }
+        }
+
         public GalaxyViewOptions Options
         {
             get => (GalaxyViewOptions)GetValue(OptionsProperty);
@@ -1018,6 +1027,10 @@ namespace Supremacy.UI
         {
             Civilization owner = system.Owner;
             Brush brush = Brushes.Aqua;
+
+            //int _maxPOP = system.GetMaxPopulation(AppContext.LocalPlayerEmpire.Civilization.Race);
+            if (system.GetMaxPopulation(AppContext.LocalPlayerEmpire.Civilization.Race) < 81)
+                brush = Brushes.SandyBrown;
 
             if (system.IsInhabited)
                 brush = Brushes.Black;

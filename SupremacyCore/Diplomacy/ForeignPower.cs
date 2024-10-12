@@ -84,6 +84,8 @@ namespace Supremacy.Diplomacy
 
         public int LastStatusChange => _diplomacyData.LastStatusChange;
 
+        //public string ForeignPowerLocation - no, don't cheat Homeworlds location 
+
         public int TurnsSinceLastStatusChange
         {
             get

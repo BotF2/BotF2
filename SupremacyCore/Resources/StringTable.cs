@@ -57,7 +57,7 @@ namespace Supremacy.Resources
         {
             if (!File.Exists(fileName))
             {
-                string _text = "Step_0135:;  ....could not find " + fileName + " but en.txt is fine";
+                string _text = "Step_0135:;  ....could not find " + fileName + " (causes a FileNotFound) but en.txt is fine";
                 //GameLog.Client.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
 

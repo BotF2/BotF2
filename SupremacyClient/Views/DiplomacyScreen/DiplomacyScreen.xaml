@@ -1,4 +1,4 @@
-﻿<!--File:NewDiplomacyScreen.xaml-->
+﻿<!--File:DiplomacyScreen.xaml-->
 <scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
                        x:Name="_self"
                        x:FieldModifier="private"
@@ -710,7 +710,14 @@
                                 KeyboardNavigation.DirectionalNavigation="Cycle"
                                 KeyboardNavigation.ControlTabNavigation="None"
                                 KeyboardNavigation.AcceptsReturn="False">
+                                <!--<xcdg:Column FieldName="Location" - no !!
+                                         Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Location, CharacterCasing=Upper}"
+                                         Width="150"
+                                         DisplayMemberBinding="{Binding Path=Counterparty.Location, Mode=OneWay}"
+                                         IsMainColumn="True"
+                                         VisiblePosition="0" />-->                            
                             <xcdg:DataGridControl.Columns>
+
                                 <xcdg:Column FieldName="Counterparty.LongName"
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Civilization, CharacterCasing=Upper}"
                                          Width="150"
@@ -731,28 +738,33 @@
                                          VisiblePosition="2" />
 
                                 <!--Attitude-->
-                                <xcdg:Column FieldName="EffectiveRegard"
+                                <!--<xcdg:Column FieldName="EffectiveRegard"
                                         Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EffectiveRegard, CharacterCasing=Upper}"
                                         DisplayMemberBinding="{Binding Path=EffectiveRegard, Mode=OneWay, Converter={StaticResource LocalizedEnumStringConverter}}"
-                                        VisiblePosition="3" />
-                                <!--<xcdg:Column FieldName="OutgoingMessageCategory"
+                                        VisiblePosition="3" />-->
+
+                                <!--OutgoingMessageCategory-->
+                                <xcdg:Column FieldName="OutgoingMessageCategory"
                                     Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Outgoing, CharacterCasing=Upper}"
                                     Width="150"
                                     ReadOnly="True"
                                     VisiblePosition="4"
-                                    DisplayMemberBinding="{Binding Path=OutgoingMessageCategory, Converter={StaticResource LocalizedEnumStringConverter}}" />-->
+                                    DisplayMemberBinding="{Binding Path=OutgoingMessageCategory, Converter={StaticResource LocalizedEnumStringConverter}}" />
+                                
                                 <xcdg:Column FieldName="IncomingMessageCategory"
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Incoming, CharacterCasing=Upper}"
                                          Width="150"
                                          ReadOnly="True"
                                          VisiblePosition="5"
                                          DisplayMemberBinding="{Binding Path=IncomingMessageCategory, Converter={StaticResource LocalizedEnumStringConverter}}" />
+                                
                                 <xcdg:Column FieldName="Regard"
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Regard, CharacterCasing=Upper}"
                                          Width="100"
                                          ReadOnly="True"
                                          VisiblePosition="6"
                                          DisplayMemberBinding="{Binding Path=CounterpartyRegard.CurrentValue, Mode=OneWay}" />
+                                
                                 <xcdg:Column FieldName="Trust"
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Trust, CharacterCasing=Upper}"
                                          Width="100"
@@ -760,6 +772,7 @@
                                          VisiblePosition="6"
                                          DisplayMemberBinding="{Binding Path=CounterpartyTrust.CurrentValue, Mode=OneWay}" />
                             </xcdg:DataGridControl.Columns>
+                            
                             <xcdg:DataGridControl.View>
                                 <xcdg:TableView ShowFixedColumnSplitter="False"
                                             ShowRowSelectorPane="False"
@@ -847,19 +860,19 @@
                            Margin="150,-30,0,0">
                     <StackPanel Orientation="Horizontal">
                        
-                        <Button Content="SEND" Margin="2,0,5,0"
+                        <Button Name="SendButton" Content="SEND" Margin="2,0,5,0"
                             Command="{Binding Path=SendMessageCommand}"
                             IsEnabled="{Binding Path=SendMessageCommand}"     
                             MinWidth="150" MaxWidth="151" MaxHeight="28"/>
 
-             
-                        <Button Content="EDIT" Margin="2,0,5,0"
+
+                        <Button Name="EditButton" Content="EDIT" Margin="2,0,5,0"
                             Command="{Binding Path=EditMessageCommand}"
                             IsEnabled="{Binding Path=EditMessageCommand}"    
                             MinWidth="150" MaxWidth="151" MaxHeight="28"/>
-                        
-               
-                        <Button Content="CANCEL" Margin="2,0,2,0" 
+
+
+                        <Button Name="CancelButton" Content="CANCEL" Margin="2,0,2,0" 
                             Command="{Binding Path=CancelMessageCommand}"
                             IsEnabled="{Binding Path=CancelMessageCommand}"    
                             MinWidth="150" MaxWidth="151" MaxHeight="28"/>
@@ -951,7 +964,7 @@
                                                                             TextTrimming="CharacterEllipsis"
                                                                             FontSize="15pt"
                                                                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                            Foreground="LightGoldenrodYellow"
+                                                                            Foreground="Aqua"
                                                                             Margin="5,0,10,0"
                                                                             Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=MemberHeader, CharacterCasing=Upper}" 
                                                                             Visibility="{Binding Path=MemberMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
@@ -1238,7 +1251,8 @@
                                                         <!--DEBUG Border.IsEnabled-->
                                                         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                                                   VerticalScrollBarVisibility="Auto">
-                                                            <ItemsControl Background="Transparent"
+                                                            <ItemsControl x:Name="OutgoingMessage_AvailableElements"
+                                                                Background="Transparent"
                                                                     BorderBrush="{x:Null}"
                                                                     BorderThickness="0"
                                                                     Foreground="{StaticResource DefaultTextBrush}"
@@ -1247,8 +1261,8 @@
                                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                                     ItemTemplate="{StaticResource StipulationTreeItemTemplate}"
-                                                                    ItemsSource="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements}"
-                                                                    IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements}"
+                                                                    ItemsSource="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements, Mode=OneWay}"
+                                                                    IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements, Mode=OneWay}"
                                                                     Visibility="Visible">
                                                                 <!--DEBUG ItemsControl.IsEnabled-->
                                                                 <ItemsControl.GroupStyle>
@@ -1291,7 +1305,7 @@
                                                                         </Grid.RowDefinitions>
                                                                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,0,8,0" TextAlignment="Left" VerticalAlignment="Center"
                                                                                     TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Visibility="Visible"
-                                                                                    Foreground="Aqua" FontSize="18pt" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                                    Foreground="Red" FontSize="18pt" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                                                     Text="{Binding Path=IsEditing, Converter={scc:BooleanValueConverter TrueValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeaderWhileEditing, CharacterCasing=Upper}, FalseValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeader, CharacterCasing=Upper}}}">
                                                                         </TextBlock>
                                                                                      <!--Foreground="{StaticResource HeaderTextBrush}"-->

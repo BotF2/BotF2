@@ -625,8 +625,8 @@
     <Compile Include="Views\GalaxyScreen\GameInfoScreen.xaml.cs">
       <DependentUpon>GameInfoScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DiplomacyScreen\NewDiplomacyScreen.xaml.cs">
-      <DependentUpon>NewDiplomacyScreen.xaml</DependentUpon>
+    <Compile Include="Views\DiplomacyScreen\DiplomacyScreen.xaml.cs">
+      <DependentUpon>DiplomacyScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SystemAssaultScreen\ChooseAssaultActionView.xaml.cs">
       <DependentUpon>ChooseAssaultActionView.xaml</DependentUpon>
@@ -1727,7 +1727,7 @@
       <DependentUpon>ClientApp.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\DiplomacyScreen\NewDiplomacyScreen.xaml">
+    <Page Include="Views\DiplomacyScreen\DiplomacyScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -166,7 +166,7 @@ namespace Supremacy.Diplomacy
             LastColdWarAttack = reader.ReadOptimizedInt32();
             LastIncursion = reader.ReadOptimizedInt32();
 
-            //_text = "Step_0832: Deserialize" 
+            //_text = "Step_0832: Deserialize"
             //    //+ reader.BytesRemaining
             //    + ", mot_Count= " + _motivations.Count
             //    + ", mot_Count= " + _motivations.Count

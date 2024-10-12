@@ -33,13 +33,13 @@ namespace Supremacy.Client.Views
 
         // order dictionary is located in IntelOrders.cs constructor, store orders in core of host?
 
-        private string _blameWho_0 = "No one";
-        private string _blameWho_1 = "No one";
-        private string _blameWho_2 = "No one";
-        private string _blameWho_3 = "No one";
-        private string _blameWho_4 = "No one";
-        private string _blameWho_5 = "No one";
-        private string _blameWho_6 = "No one";
+        private string _blameWho_0 = "No one is blamed";
+        private string _blameWho_1 = "No one is blamed";
+        private string _blameWho_2 = "No one is blamed";
+        private string _blameWho_3 = "No one is blamed";
+        private string _blameWho_4 = "No one is blamed";
+        private string _blameWho_5 = "No one is blamed";
+        private string _blameWho_6 = "No one is blamed";
 
 //#pragma warning disable IDE0044 // Add readonly modifier
         private RadioButton[] _radioButton_0;
@@ -355,7 +355,7 @@ namespace Supremacy.Client.Views
                     ForeignPower ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[empireID]);
                     bool _checkedVisibleForSabotagePending = true;
 
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                    _checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
 
                     //if (ForeignPower.LastStatementSent != null)
                     if (diplomat1.GetLastStatementSent(ForeignPower) != null)
@@ -940,7 +940,8 @@ namespace Supremacy.Client.Views
             SabotageEnergyZero.Visibility = Visibility.Collapsed;
             SabotageFoodZero.Visibility = Visibility.Collapsed;
             SabotageIndustryZero.Visibility = Visibility.Collapsed;
-            EmpireExpander_0.IsExpanded = false;
+            //EmpireExpander_0.IsExpanded = false;
+            EmpireExpander_0.IsExpanded = true;
         }
         private void Close_1_SabotageButtons()
         {
@@ -949,7 +950,8 @@ namespace Supremacy.Client.Views
             SabotageEnergyOne.Visibility = Visibility.Collapsed;
             SabotageFoodOne.Visibility = Visibility.Collapsed;
             SabotageIndustryOne.Visibility = Visibility.Collapsed;
-            EmpireExpander_1.IsExpanded = false;
+            //EmpireExpander_1.IsExpanded = false;
+            EmpireExpander_1.IsExpanded = true;
         }
         private void Close_2_SabotageButtons()
         {
@@ -958,7 +960,8 @@ namespace Supremacy.Client.Views
             SabotageEnergyTwo.Visibility = Visibility.Collapsed;
             SabotageFoodTwo.Visibility = Visibility.Collapsed;
             SabotageIndustryTwo.Visibility = Visibility.Collapsed;
-            EmpireExpander_2.IsExpanded = false;
+            //EmpireExpander_2.IsExpanded = false;
+            EmpireExpander_2.IsExpanded = true;
         }
         private void Close_3_SabotageButtons()
         {
@@ -967,7 +970,8 @@ namespace Supremacy.Client.Views
             SabotageEnergyThree.Visibility = Visibility.Collapsed;
             SabotageFoodThree.Visibility = Visibility.Collapsed;
             SabotageIndustryThree.Visibility = Visibility.Collapsed;
-            EmpireExpander_3.IsExpanded = false;
+            //EmpireExpander_3.IsExpanded = false;
+            EmpireExpander_3.IsExpanded = true;
         }
         private void Close_4_SabotageButtons()
         {
@@ -976,7 +980,8 @@ namespace Supremacy.Client.Views
             SabotageEnergyFour.Visibility = Visibility.Collapsed;
             SabotageFoodFour.Visibility = Visibility.Collapsed;
             SabotageIndustryFour.Visibility = Visibility.Collapsed;
-            EmpireExpander_4.IsExpanded = false;
+            //EmpireExpander_4.IsExpanded = false;
+            EmpireExpander_4.IsExpanded = true;
         }
         private void Close_5_SabotageButtons()
         {
@@ -985,7 +990,8 @@ namespace Supremacy.Client.Views
             SabotageEnergyFive.Visibility = Visibility.Collapsed;
             SabotageFoodFive.Visibility = Visibility.Collapsed;
             SabotageIndustryFive.Visibility = Visibility.Collapsed;
-            EmpireExpander_5.IsExpanded = false;
+            //EmpireExpander_5.IsExpanded = false;
+            EmpireExpander_5.IsExpanded = true;
         }
         private void Close_6_SabotageButtons()
         {
@@ -994,7 +1000,8 @@ namespace Supremacy.Client.Views
             SabotageEnergySix.Visibility = Visibility.Collapsed;
             SabotageFoodSix.Visibility = Visibility.Collapsed;
             SabotageIndustrySix.Visibility = Visibility.Collapsed;
-            EmpireExpander_6.IsExpanded = false;
+            //EmpireExpander_6.IsExpanded = false;
+            EmpireExpander_6.IsExpanded = true;
         }
 
         private void OnCredits_0_Click(object sender, RoutedEventArgs e) // we are using attacking spy civ as peramiter here in Creidt only so far

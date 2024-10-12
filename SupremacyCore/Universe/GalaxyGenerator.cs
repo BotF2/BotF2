@@ -401,7 +401,7 @@ namespace Supremacy.Universe
                             }
                         }
                     }
-                    _text = "Step_1228:; ### MapContent-Count:;" + count;
+                    _text = "Step_1258:; ### MapContent-Count:;" + count;
                     Console.WriteLine(_text);
                     GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
 
@@ -440,14 +440,14 @@ namespace Supremacy.Universe
                             //        ;
                             bool_output_done = true;
                             if (item.Sector.System.Colony != null)
-                                _text += ";" + item.Sector.System.Colony.MaxPopulation;
+                                _text += ";" + item.Sector.System.Colony.Population_Max;
                             Console.WriteLine(_text);
                             //GameLog.Core.GalaxyGenerator.DebugFormat(_text);  // hiding info in Log.txt
                             count += 1;
                         }
 
                     }
-                    _text = "Step_1231:; ### Systems-Count:;" + count;
+                    _text = "Step_1281:; ### Systems-Count:;" + count;
                     Console.WriteLine(_text);
                     GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
@@ -559,7 +559,7 @@ namespace Supremacy.Universe
 
             }
 
-            if (maxPop == 0)
+            if (system.StarType != StarType.Nebula && maxPop == 0)
                 system.Name += " (0)";
         }
 
@@ -588,7 +588,7 @@ namespace Supremacy.Universe
             Civilization civ,
             MapLocation location)
         {
-            _text = "Step_1209: FinalizaHomeworldPlacement: "
+            _text = "Step_1289:; FinalizaHomeworldPlacement: "
                 + location
                 + " " + civ.Key
                 ;
@@ -973,6 +973,7 @@ namespace Supremacy.Universe
             List<Civilization> chosenCivs,
             bool mustRespectQuadrants)
         {
+
             //Firstly, we need to find out how many minor races that we need
             string minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency.ToString();
             float minorRacePercentage = 0.25f;
@@ -1117,8 +1118,9 @@ namespace Supremacy.Universe
                     + ", positions.Count= " + positions.Count
                     ;
             Console.WriteLine(_text);
-            GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
+            // have a look why some minors (low populated) generate 255 facilities
             return true;
 
         }

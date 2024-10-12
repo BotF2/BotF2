@@ -18,6 +18,7 @@ using Supremacy.Resources;
 using Supremacy.Universe;
 
 using System.Linq;
+using Supremacy.Entities;
 
 namespace Supremacy.Orbitals
 {
@@ -1039,6 +1040,25 @@ namespace Supremacy.Orbitals
             UnitAIType = (UnitAIType)reader.ReadOptimizedInt32();
             _activity = (UnitActivity)reader.ReadOptimizedInt32();
             ActivityStart = reader.ReadOptimizedInt32();
+        }
+
+        //internal void GetFleetText()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        internal Civilization GetCiv(Fleet fleet, out Civilization civ)
+        {
+            
+            civ = GameContext.Current.CivilizationManagers[fleet.Owner].Civilization;
+            return civ;
+        }
+
+        internal CivilizationManager GetCivM(Fleet fleet, out CivilizationManager civM)
+        {
+
+            civM = GameContext.Current.CivilizationManagers[fleet.Owner.CivID];
+            return civM;
         }
 
         public UnitAIType UnitAIType { get; set; }

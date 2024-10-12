@@ -3687,20 +3687,33 @@ namespace Supremacy.IO.Serialization
             _endPosition = ReadInt32();
             stream.Position = _endPosition;
 
+            //_text = "";
+            //string _hex = "";
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    var value = stream.Position;
+            //    _hex = stream.ReadByte().ToString("X");
+            //    _text += _hex + " ";
+            //    Console.WriteLine("Step_0236:; stream.Position > " + i + " = " + _hex);
+
+            //}
+            //Console.WriteLine(_text);
+
             _stringTokenList = new string[ReadOptimizedInt32()];
             for (int i = 0; i < _stringTokenList.Length; i++)
             {
                 _stringTokenList[i] = base.ReadString();
-                //Console.WriteLine("Step_0234:; _stringTokenList > " + i + " = " + base.ReadString());
+                Console.WriteLine("Step_0234:; _stringTokenList > " + i + " = " + _stringTokenList[i]);
             }
             Console.WriteLine("Step_0232:; _stringTokenList was read...");
 
             _objectTokens = new object[ReadOptimizedInt32()];
             for (int i = 0; i < _objectTokens.Length; i++)
             {
-                //Console.WriteLine("Step_0235:; _objectTokens > " + i + " was read...");
+                Console.WriteLine("Step_0235:; _objectTokens > " + i + " was read...");
                 _objectTokens[i] = ReadObject();
             }
+
             stream.Position = 4;
         }
         #endregion Constructor
@@ -4716,7 +4729,20 @@ namespace Supremacy.IO.Serialization
         /// <returns>A Type instance.</returns>
         public Type ReadOptimizedType(bool throwOnError)
         {
-            return Type.GetType(ReadOptimizedString(), throwOnError);
+            try
+            {
+                return Type.GetType(ReadOptimizedString());
+            }
+            catch
+            {
+                //throwOnError;
+                _text = "Step_9333:; ##### Error on > Type.GetType(ReadOptimizedString())";
+                //if (writeDirectly) 
+                    Console.WriteLine(_text);
+                //_colony_full_Report += _text + newline;
+                return Type.GetType(ReadOptimizedString());
+            }
+
         }
 
         /// <summary>
@@ -5246,19 +5272,19 @@ namespace Supremacy.IO.Serialization
                 default:
                     if (typeCode < SerializedType.NullType)
                     {
-                        try
-                        {
+                        //try
+                        //{
                             if (typeCode < SerializedType.NullType)
                             {
                                 return ReadTokenizedString((int)typeCode);
                             }
-                        }
-                        catch
-                        {
-                            _text = "Step_3356:; ### BIG problem at reading something";
-                            Console.WriteLine();
-                            return null;
-                        }
+                        //}
+                        //catch
+                        //{
+                        //    _text = "Step_3356:; ### BIG problem at reading something";
+                        //    Console.WriteLine();
+                        //    return ReadTokenizedString((int)typeCode);
+                        //}
 
                     }
 
@@ -5350,14 +5376,14 @@ namespace Supremacy.IO.Serialization
                             return (byte)0;
                         case SerializedType.OtherType:
                             //var _x ;
-                            try
-                            {
+                            //try
+                            //{
                                 return _binaryFormatter.Deserialize(BaseStream);
-                            }
-                            catch
-                            {
-                                return null;
-                            }
+                            //}
+                            //catch
+                            //{
+                            //    return null;
+                            //}
                         //var _x = _binaryFormatter.Deserialize(BaseStream);
                         //if (_x == null)
                         //    _x = 0;

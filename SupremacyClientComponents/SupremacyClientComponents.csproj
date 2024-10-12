@@ -388,7 +388,7 @@
     <Compile Include="Views\DiplomacyScreen\DiplomaticMessageCategory.cs" />
     <Compile Include="Views\DiplomacyScreen\ForeignPowerViewModel.cs" />
     <Compile Include="Views\DiplomacyScreen\IClauseParameterInfo.cs" />
-    <Compile Include="Views\DiplomacyScreen\NewDiplomacyScreenView.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyScreenViewSecond.cs" />
     <Compile Include="Views\Enums.cs" />
     <Compile Include="Views\GalaxyScreen\EmpirePlayerStatus.cs" />
     <Compile Include="Views\GalaxyScreen\GalaxyScreenPresentationModel.cs" />

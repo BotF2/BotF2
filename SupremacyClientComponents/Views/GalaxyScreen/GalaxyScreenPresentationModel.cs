@@ -46,7 +46,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                Civilization _playerCiv = AppContext.LocalPlayer.Empire;
+                _playerCiv = AppContext.LocalPlayer.Empire;
                 return _playerCiv;
             }
             set

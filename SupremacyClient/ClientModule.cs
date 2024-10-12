@@ -262,11 +262,8 @@ namespace Supremacy.Client
         public bool _gamelog_bool = true;
         public bool _ConsoleWriteline_bool = true;
 
-
-
         public string _text;
         public readonly string newline = Environment.NewLine;
-
 
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;
@@ -555,18 +552,69 @@ namespace Supremacy.Client
         //private void Execute_f03_Command(object obj) => _ = _f03_Dialog.ShowDialog();
         //private void Execute_f04_Command(object obj) => _ = _f04_Dialog.ShowDialog();
         //private void Execute_f05_Command(object obj) => _ = _f05_Dialog.ShowDialog();
-        private void Execute_f06_Command(object obj) => _ = _f06_Dialog.ShowDialog();
+        private void Execute_f06_Command(object obj)
+        {
+            _f06_Dialog.ShowDialog();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("F6_ScreenMusic");
+            }
+        }
+
+    // temporary switched to German _f07 > OFF now
+    //private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
+        private void Execute_f07_Command(object obj)
+        {
+            _f07_Dialog.ShowDialog();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("F7_ScreenMusic");
+            }
+        }
 
 
-        private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();// temporary switched to German _f07 > OFF now
-        //private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
 
 
-        private void Execute_f08_Command(object obj) => _ = _f08_Dialog.ShowDialog();
-        private void Execute_f09_Command(object obj) => _ = _f09_Dialog.ShowDialog();
-        private void Execute_f10_Command(object obj) => _ = _f10_Dialog.ShowDialog();
-        private void Execute_f11_Command(object obj) => _ = _f11_Dialog.ShowDialog();
-        private void Execute_f12_Command(object obj) => _ = _f12_Dialog.ShowDialog();
+    private void Execute_f08_Command(object obj)
+        {
+            _f08_Dialog.ShowDialog();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("F8_ScreenMusic");
+            }
+        }
+        private void Execute_f09_Command(object obj)
+        {
+            _f09_Dialog.ShowDialog();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("F9_ScreenMusic");
+            }
+        }
+        private void Execute_f10_Command(object obj)
+        {
+            _f10_Dialog.ShowDialog();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("F10_ScreenMusic");
+            }
+        }
+        private void Execute_f11_Command(object obj)
+        {
+            _f11_Dialog.ShowDialog();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("F11_ScreenMusic");
+            }
+        }
+        private void Execute_f12_Command(object obj)
+        {
+            _f12_Dialog.ShowDialog();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("F12_ScreenMusic");
+            }
+        }
 
 
         private void Execute_ctrl_f01_Command(object obj) { _ = _ctrl_f01_Dialog.ShowDialog(); }
@@ -577,8 +625,9 @@ namespace Supremacy.Client
         private void Execute_ctrl_f06_Command(object obj) => _ = _ctrl_f06_Dialog.ShowDialog();
         
         
-        private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();// temporary switched to German _f07 > OFF now
-                                                                                               //private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog(); // temporary
+        private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();
+        // temporary switched to German _f07 > OFF now
+        //private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog(); // temporary
 
 
         //private void Execute_ctrl_f08_Command(object obj) { _ = _ctrl_f08_Dialog.ShowDialog(); }
@@ -1002,6 +1051,7 @@ namespace Supremacy.Client
         public void Initialize()
         {
             _text = "Step_0210:; Initializing... !";
+            _text += newline + "Step_0211:; ..just notice: all these Step-Numbers have no logic inside (sorry) .. but easy to find by a search";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -1090,7 +1140,7 @@ namespace Supremacy.Client
 
             _ = _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
             _ = _container.RegisterType<IColonyScreenView, ColonyScreenView>(new ExternallyControlledLifetimeManager());
-            _ = _container.RegisterType<INewDiplomacyScreenView, NewDiplomacyScreen>(new ExternallyControlledLifetimeManager());
+            _ = _container.RegisterType<IDiplomacyScreenViewSecond, NewDiplomacyScreen>(new ExternallyControlledLifetimeManager());
             _ = _container.RegisterType<IScienceScreenView, ResearchScreen>(new ExternallyControlledLifetimeManager());
             // _container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
             _ = _container.RegisterType<IAssetsScreenView, AssetsScreen>(new ExternallyControlledLifetimeManager());
@@ -1379,7 +1429,11 @@ namespace Supremacy.Client
 
         }
 
-        private void OnGameEnding(ClientEventArgs obj) => UpdateCommands();
+        private void OnGameEnding(ClientEventArgs obj)
+        {
+            _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/Game_Ending.ogg");
+            UpdateCommands();
+        } 
 
         private void OnClientConnected(ClientConnectedEventArgs obj) => UpdateCommands();
 

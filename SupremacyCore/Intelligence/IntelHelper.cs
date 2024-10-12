@@ -161,7 +161,7 @@ namespace Supremacy.Intelligence
                     {
                         _spyingCiv_0_List.Add(spiedCiv);
                     }
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
+                    GameContext.Current.CivilizationManagers[spyCiv].UpdateSpiedList(_spyingCiv_0_List);
                     break;
                 case 1:
                     if (_spyingCiv_1_List == null)
@@ -172,7 +172,7 @@ namespace Supremacy.Intelligence
                     {
                         _spyingCiv_1_List.Add(spiedCiv);
                     }
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_1_List);
+                    GameContext.Current.CivilizationManagers[spyCiv].UpdateSpiedList(_spyingCiv_1_List);
                     break;
                 case 2:
                     if (_spyingCiv_2_List == null)
@@ -183,7 +183,7 @@ namespace Supremacy.Intelligence
                     {
                         _spyingCiv_2_List.Add(spiedCiv);
                     }
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_2_List);
+                    GameContext.Current.CivilizationManagers[spyCiv].UpdateSpiedList(_spyingCiv_2_List);
                     break;
                 case 3:
                     if (_spyingCiv_3_List == null)
@@ -194,7 +194,7 @@ namespace Supremacy.Intelligence
                     {
                         _spyingCiv_3_List.Add(spiedCiv);
                     }
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_3_List);
+                    GameContext.Current.CivilizationManagers[spyCiv].UpdateSpiedList(_spyingCiv_3_List);
                     break;
                 case 4:
                     if (_spyingCiv_4_List == null)
@@ -205,7 +205,7 @@ namespace Supremacy.Intelligence
                     {
                         _spyingCiv_4_List.Add(spiedCiv);
                     }
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_4_List);
+                    GameContext.Current.CivilizationManagers[spyCiv].UpdateSpiedList(_spyingCiv_4_List);
                     break;
                 case 5:
                     if (_spyingCiv_5_List == null)
@@ -216,7 +216,7 @@ namespace Supremacy.Intelligence
                     {
                         _spyingCiv_5_List.Add(spiedCiv);
                     }
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_5_List);
+                    GameContext.Current.CivilizationManagers[spyCiv].UpdateSpiedList(_spyingCiv_5_List);
                     break;
                 case 6:
                     if (_spyingCiv_6_List == null)
@@ -227,7 +227,7 @@ namespace Supremacy.Intelligence
                     {
                         _spyingCiv_6_List.Add(spiedCiv);
                     }
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_6_List);
+                    GameContext.Current.CivilizationManagers[spyCiv].UpdateSpiedList(_spyingCiv_6_List);
                     break;
             }
             GameLog.Client.UI.DebugFormat("********* end of sending spied list to CM **********");

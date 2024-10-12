@@ -352,7 +352,7 @@ namespace Supremacy.Orbitals
 
                     bool _checkForProblems = false;
                     //bool _checkForProblems = true;
-                    if (_checkForProblems)
+                    if (_checkForProblems) // for shipnames
                     {
                         // in TechObjects do not outcomment ShipNames
                         // don't give it two times the same name > Exception thrown: 'System.ArgumentException' in mscorlib.dll

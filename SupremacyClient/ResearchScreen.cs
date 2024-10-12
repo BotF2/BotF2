@@ -26,6 +26,7 @@ using System.Windows.Threading;
 using Microsoft.Practices.Unity;
 
 using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Themes;
 using Supremacy.Client.Views;
 using Supremacy.Diplomacy;
@@ -59,7 +60,6 @@ namespace Supremacy.Client
         private TreeView _encyclopediaEntryListView;
         private TextBox _searchText;
         private FlowDocumentScrollViewer _encyclopediaViewer;
-        //private string _moreInfo;
 
         //private List<Paragraph> newline;
 
@@ -78,6 +78,13 @@ namespace Supremacy.Client
             {
                 Resources.MergedDictionaries.Add(themeResources);
             }
+
+            //doesn't work
+            if (_musicPlayer != null)
+            {
+            _musicPlayer.SwitchMusic("F3_ScreenMusic");
+            }
+
         }
 
         private void LoadEncyclopediaEntries()
@@ -826,7 +833,7 @@ namespace Supremacy.Client
 
         public ResearchFieldData(ResearchField field, ResearchPool pool)
         {
-            Field = field ?? throw new ArgumentNullException("field");
+            Field = field ?? throw new ArgumentNullException("researchField");
             _pool = pool ?? throw new ArgumentNullException("pool");
         }
     }
@@ -918,11 +925,11 @@ namespace Supremacy.Client
             {
                 List<TechObjectDesign> results = new List<TechObjectDesign>();
                 TechCategory techCategory = TechCategory.BioTech;
-                foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
+                foreach (ResearchField researchField in GameContext.Current.ResearchMatrix.Fields)
                 {
-                    if (field.Applications.Contains(Application))
+                    if (researchField.Applications.Contains(Application))
                     {
-                        techCategory = field.TechCategory;
+                        techCategory = researchField.TechCategory;
                         break;
                     }
                 }
@@ -979,11 +986,11 @@ namespace Supremacy.Client
             {
                 List<ShipDesign> results = new List<ShipDesign>();
                 TechCategory techCategory = TechCategory.BioTech;
-                foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
+                foreach (ResearchField researchField in GameContext.Current.ResearchMatrix.Fields)
                 {
-                    if (field.Applications.Contains(Application))
+                    if (researchField.Applications.Contains(Application))
                     {
-                        techCategory = field.TechCategory;
+                        techCategory = researchField.TechCategory;
                         break;
                     }
                 }

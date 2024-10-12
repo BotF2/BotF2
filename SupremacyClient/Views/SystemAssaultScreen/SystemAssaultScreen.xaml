@@ -31,7 +31,7 @@
   <Control.Background>
     <ImageBrush Stretch="UniformToFill">
       <ImageBrush.ImageSource>
-        <BitmapImage UriSource="vfs:///Resources/Images/UI/Backgrounds/Default.png" />
+        <BitmapImage UriSource="vfs:///Resources/Images/UI/Backgrounds/starmap.png" />
       </ImageBrush.ImageSource>
     </ImageBrush>
   </Control.Background>

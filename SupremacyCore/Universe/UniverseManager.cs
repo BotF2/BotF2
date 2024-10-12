@@ -470,12 +470,16 @@ namespace Supremacy.Universe
                 Fleet fleet = ship.Fleet;
 
                 if (fleet != null)
-                fleet.RemoveShip(ship);
-
-                if (fleet.Ships.Count == 0)
                 {
-                    _ = Destroy(fleet);
+                fleet.RemoveShip(ship);
                 }
+
+
+                // this crashes - I guess the fleet with no ships is destroyed anywhere - yes, inside RemoveShip
+                //if (fleet.Ships.Count == 0)
+                //{
+                //    _ = Destroy(fleet);
+                //}
             }
 
             else if (item is Fleet)
@@ -673,8 +677,8 @@ namespace Supremacy.Universe
                 String _col =
                     /*";Colony;" */
                     /*"; " + */colony.Location
-                    + ";" + colony.Name
-                    + ";" + colony.Owner
+                    + "; " + colony.Name
+                    + "; " + colony.Owner
                     + ";Colony;"
                     ;
                 //Console.WriteLine(_col);
@@ -745,7 +749,7 @@ namespace Supremacy.Universe
                 + ";" + item.Name
                 + ";" + item.Owner
                 + ";pop;" + item.Population
-                + ";max;" + item.MaxPopulation
+                + ";max;" + item.Population_Max
 
 
                 + ";mor;" + item.Morale

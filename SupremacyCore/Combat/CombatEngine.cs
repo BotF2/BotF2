@@ -488,7 +488,7 @@ namespace Supremacy.Combat
                 {
                     //_text = "Step_3001: beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
 
-                    int currentEmpireStrength = 0;
+                    int currentCivStrength = 0;
 
                     foreach (CombatAssets cs in _assets)  // only combat ships
                     {
@@ -499,23 +499,23 @@ namespace Supremacy.Combat
 
                             foreach (CombatUnit ship in cs.CombatShips)
                             {
-                                currentEmpireStrength += ship.Firepower;
+                                currentCivStrength += ship.Firepower;
                                 //_text = "Step_3001: added Firepower into {0} for {1} {2} ({3}) = {4}",
                                 //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                             }
 
                             if (cs.Station != null)
                             {
-                                currentEmpireStrength += cs.Station.Firepower;
+                                currentCivStrength += cs.Station.Firepower;
                             }
 
                             if (!_empireStrengths.Any(e => e.Key == cs.Owner.ToString()))
                             {
-                                _empireStrengths.Add(civAsset.Owner.ToString(), currentEmpireStrength);
+                                _empireStrengths.Add(civAsset.Owner.ToString(), currentCivStrength);
                             }
                         }
                     }
-                    _text = "Step_3030:; " + _sectorString + "SendUpdates: currentEmpireStrength = " + currentEmpireStrength + " for " + civAsset.Owner.Key;
+                    _text = "Step_3030:; " + _sectorString + "SendUpdates: currentCivStrength = " + currentCivStrength + " for " + civAsset.Owner.Key;
                     Console.WriteLine(_text);
                     GameLog.Core.CombatDetails.DebugFormat(_text);
                 }
@@ -769,7 +769,7 @@ namespace Supremacy.Combat
                         foreach (CombatUnit shipStats in assets.EscapedShips)
                         {
                             ((Ship)shipStats.Source).Fleet.Location = destination.Location;
-                            _text = "Step_3026:; " + _sectorString + "PerformRetreat: retreating "
+                            _text = "Step_3025:; " + _sectorString + "PerformRetreat: retreating "
                                 + ((Ship)shipStats.Source).Fleet.ObjectID + " " + ((Ship)shipStats.Source).Fleet.Name
                                 + " to " + destination.Location.ToString();
                             Console.WriteLine(_text);
@@ -859,7 +859,10 @@ namespace Supremacy.Combat
         {
             if (_targetOneByCiv.Keys.Contains(source.OwnerID))
             {
-                _text = "Step_3021:; " + _sectorString + "GetTargetOne = " + _targetOneByCiv[source.OwnerID].GetTargetOne(source);//if (targetCiv == null)  
+                _text = "Step_3021:; " 
+                    + _sectorString + "GetTargetOne = " + _targetOneByCiv[source.OwnerID].GetTargetOne(source)
+                    + " ( 888 = only return fire, 777 = no target)"
+                    ;//if (targetCiv == null)  
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 //if(source !=null)

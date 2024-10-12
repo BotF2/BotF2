@@ -48,15 +48,16 @@ namespace Supremacy.Combat
             _sectorString = _sector.ToString();
             _text = ("Step_3007:; " + _sectorString + " > ResolveCombatRoundCore.... _combatShips.Count: " + _combatShips.Count);
             Console.WriteLine(_text);
-            GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
 
             foreach (var item in _combatShips)
             {
-                _text = (_sectorString
+                _text = ("Step_3008:; " + _sectorString
                     + " > " + item.Item1.Source.ObjectID
                     + " " + item.Item1.Source.Name
                     + " " + item.Item1.Source.Design
                     );
+                Console.WriteLine(_text);
             }
 
 
@@ -172,7 +173,7 @@ namespace Supremacy.Combat
                         //    + " > Decloaked: "
                         //    + blank + combatShip.Item1.Source.Design + blank + combatShip.Item1.Source.ObjectID + blank + combatShip.Item1.Source.Name
                         //    ;
-                        _text = ("Step_3025:; " + _sectorString + blank + combatShip.Item1.IsCloaked + " = cloak status for Ship " +
+                        _text = ("Step_3025:; " + _sectorString + " > " + combatShip.Item1.IsCloaked + " = cloak status for Ship " +
                             combatShip.Item1.Source.ObjectID + blank + combatShip.Item1.Name + blank + combatShip.Item1.Source.Design);
                         Console.WriteLine(_text);
                         GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -490,8 +491,8 @@ namespace Supremacy.Combat
                     mainpowerID = AttackingEmpireID;
                 }
 
-                _text = ("Step_3051:; --------------------------------------");
-                Console.WriteLine(_text);
+                //_text = ("Step_3051:; --------------------------------------");
+                //Console.WriteLine(_text);
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 // CHANGE X (switched AttackingEmpireID and targetedEmpireID)
@@ -1144,7 +1145,7 @@ namespace Supremacy.Combat
                     }
                     if (currentTargets.Count == 0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
                     {
-                        _text = ("Step_3103:; " + _sectorString + " > Still Attacking loop: No more targets Found after checking transports/frigates etc. Break out of Attacking lopp");
+                        _text = ("Step_3109:; " + _sectorString + " > Still Attacking loop: No more targets Found after checking transports/frigates etc. Break out of Attacking lopp");
                         Console.WriteLine(_text);
                         GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -1245,9 +1246,9 @@ namespace Supremacy.Combat
                         {
                             rememberForDamage = Convert.ToInt32(AttackingShip.Item1.RemainingFirepower);  // Change X
                             remainingFirepowerInWhile = -1;
-                            _text = ("Step_3123: " + _sectorString + " > its the run on the first target in attacking loop and it can already absorb all weapons");
+                            _text = ("Step_3124:; " + _sectorString + " > its the run on the first target in attacking loop and it can already absorb all weapons");
                             Console.WriteLine(_text);
-                            GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                             //foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire)) // Discharge Weapons
                             //{
@@ -2198,7 +2199,7 @@ namespace Supremacy.Combat
             // Update _combatShips to current _combatShipsTemp
             // Investigate how and where "friendlyships" etc. are used to display remaining ships fitting to the screen
             // FINISH BATTLE destroy ships/stations
-            _text = ("Step_3246:; " + _sectorString + " > THE ENTIRE BATTLE WAS FULLY COMPLETED. May need to remove destroyed ships");
+            _text = ("Step_3246:; " + _sectorString + " ###  THE ENTIRE BATTLE WAS FULLY COMPLETED. May need to remove destroyed ships");
             Console.WriteLine(_text);
             //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -2509,12 +2510,12 @@ namespace Supremacy.Combat
                             }
                             else
                             {
-                            _allRetreatShips.Add(ship);
+                                _stayingThereShips.Add(ship); // 2024-06-02
 
                             _text = "Step_3324:; Combat at " +
                                 ship.Item1.Source.Location
                                 + blank + "> Ship " + _shipText
-                                + " > added for RETREAT:"
+                                + " > added for STAYING:"
                                     + " (Construct or Colony)"
                                     ;
                             Console.WriteLine(_text);
@@ -2591,9 +2592,11 @@ namespace Supremacy.Combat
                                     + " ( " + ship.Item1.Source.Design + " ) "
                                     + " > " + string.Format(ResourceManager.GetString("ALIVE_AND_STAYING"))
                                     //+ " still alive and staying." + Resources
-                                    + " ( Hull " + ship.Item1.HullIntegrity + " )"
+                                    + " ( Shields " + ship.Item1.ShieldIntegrity + ", "
+                                    + " Hull " + ship.Item1.HullIntegrity + " )"
+
                                     ;
-                        Console.WriteLine("Step_6282:; " + _text);
+                        //Console.WriteLine("Step_6282:; " + _text);
                         //GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
 
                         civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));

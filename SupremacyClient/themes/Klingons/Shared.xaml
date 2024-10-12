@@ -1027,8 +1027,8 @@
   <ImageBrush x:Key="RightRepeatButton2"
               ImageSource="vfs:///Resources/Specific_Empires_UI/Klingons/Shared/RightRepeatButton2.png" />-->
 
-
-    <Style x:Key="LockToggleButtonStyle"
+  <!--LockToggleButtonStyle-->
+  <Style x:Key="LockToggleButtonStyle"
          TargetType="{x:Type ToggleButton}">
     <Setter Property="IsTabStop"
             Value="False"/>
@@ -1064,14 +1064,34 @@
       </EventTrigger>-->
     </Style.Triggers>
   </Style>
-    <Style TargetType="{x:Type s:UnitActivationBar}">
+
+  <!--UnitActivationBar-->
+  <Style TargetType="{x:Type s:UnitActivationBar}">
         <Style.Resources>
           <!--<ControlTemplate x:Key="LeftRepeatButton1Template"-->
             <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
                            TargetType="{x:Type RepeatButton}">
-                <Border x:Name="LeftButton"
+                <!--<Border x:Name="LeftButton"
                      Background="{StaticResource Kling1Gradient_TopLeft_BottomRight}"
-                     CornerRadius="0,0,1,48" />
+                     CornerRadius="0,0,1,48" />-->
+
+              <!--<Rectangle Grid.Column="3"
+           Grid.Row="3"-->
+              <Rectangle Width="21"
+           Height="28"
+           VerticalAlignment="Top"
+           Margin="3,0,0,0">
+                <Rectangle.Fill>
+                  <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                      <GeometryDrawing PresentationOptions:Freeze="True"
+                 Brush="{StaticResource Kling1Gradient_Right_Left}"
+                 Geometry="F1 M 14,0L 21,0L 21,28 14,28 10,21 0,14 10,7 14,0 Z  " />
+                    </DrawingBrush.Drawing>
+                  </DrawingBrush>
+                </Rectangle.Fill>
+              </Rectangle>
+              
                 <ControlTemplate.Triggers>
                     <MultiTrigger>
                         <MultiTrigger.Conditions>
@@ -1080,13 +1100,16 @@
                             <Condition Property="IsPressed"
                              Value="False" />
                         </MultiTrigger.Conditions>
-                        <Setter TargetName="LeftButton"
+                        <!--<Setter TargetName="LeftButton"
                             Property="Background"
-                            Value="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />
+                            Value="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />-->
                     </MultiTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            <!--<ControlTemplate x:Key="RightRepeatButtonTemplate"
+
+          <!--</Rectangle>-->
+
+          <!--<ControlTemplate x:Key="RightRepeatButtonTemplate"
                            TargetType="{x:Type RepeatButton}">
             <Border x:Name="RightButton"
                     Background="{StaticResource RightRepeatButton1 }" />
@@ -1106,9 +1129,27 @@
             </ControlTemplate>-->
             <ControlTemplate x:Key="RightRepeatButtonTemplate"
                            TargetType="{x:Type RepeatButton}">
-            <Border x:Name="RightButton"
+            <!--<Border x:Name="RightButton"
                     Background="{StaticResource Kling1Gradient_TopLeft_BottomRight}"
-                    CornerRadius="1,48,0,0" />
+                    CornerRadius="1,48,0,0" />-->
+              
+              <!--<Rectangle Grid.Column="3"
+           Grid.Row="3"-->
+              <Rectangle
+                            Width="21"
+           Height="28"
+           VerticalAlignment="Top"
+           Margin="6,0,0,0">
+                <Rectangle.Fill>
+                  <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                      <GeometryDrawing PresentationOptions:Freeze="True"
+                 Brush="{StaticResource Kling1Gradient_Left_Right}"
+                 Geometry="F1 M 0,0L 7,0L 10,7L 21,14L 10,21L 7,28L 0,28 Z  " />
+                    </DrawingBrush.Drawing>
+                  </DrawingBrush>
+                </Rectangle.Fill>
+              </Rectangle>
             <ControlTemplate.Triggers>
               <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -1117,13 +1158,14 @@
                   <Condition Property="IsPressed"
                              Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="RightButton"
+                <!--<Setter TargetName="RightButton"
                         Property="Background"
-                        Value="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />
+                        Value="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />-->
               </MultiTrigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Style.Resources>
+    
     <Setter Property="UnitBrush"
             Value="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}" />
     <Setter Property="Template">

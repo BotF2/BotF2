@@ -125,15 +125,15 @@ namespace Supremacy.Client.Views
                 try
                 {
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
-                    _text = "Step_5454:; Get TotalIntelProduction=; " + _totalIntelligenceProduction
+                    _text = "Step_5464:; Get TotalIntelProduction=; " + _totalIntelligenceProduction
                               ;
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
                     //GameLog.Client.Intel.DebugFormat("Get TotalIntelProduction ={0}", _totalIntelligenceProduction);
                     return _totalIntelligenceProduction;
                 }
                 catch (Exception e)
                 {
-                    _text = "Step_5456:; Problem occured at TotalIntelligenceProduction get, exception "
+                    _text = "Step_5466:; Problem occured at TotalIntelligenceProduction get, exception "
                         + e.Message
                         + newline + e.TargetSite
           ;
@@ -175,7 +175,7 @@ namespace Supremacy.Client.Views
                 //works
                 _text = "Step_5450:; Get TotalIntelDefenseAccumulated=; " + _totalIntelligenceDefenseAccumulated;
           
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 return _totalIntelligenceDefenseAccumulated;
             }
@@ -197,9 +197,9 @@ namespace Supremacy.Client.Views
                 //FillUpDefense();
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 //works
-                _text = "Step_5452:; Get TotalIntelDefenseAccumulated=; " + _totalIntelligenceProduction;
+                _text = "Step_5462:; Get TotalIntelDefenseAccumulated=; " + _totalIntelligenceProduction;
           
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }

@@ -463,6 +463,11 @@ namespace Supremacy.Combat
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
             _canLandTroops = _invadingUnits.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Any(o => o.ShipType == ShipType.Transport);
 
+            if (ColonyShieldStrength.CurrentValue > 0)
+            {
+                _canLandTroops = false;
+            }
+
             _text = "Step_3787:; "
                 + "_canLandTroops(Transport Ships) = " + _canLandTroops
                 + ", and/but ColonyShieldStrength = " + ColonyShieldStrength.CurrentValue
@@ -470,10 +475,7 @@ namespace Supremacy.Combat
                 ;
             Console.WriteLine(_text);
             //GameLog.Core.Combat.DebugFormat(_text);
-            if (ColonyShieldStrength.CurrentValue > 0)
-            {
-                _canLandTroops = false;
-            }
+
 
             if (_status != InvasionStatus.InProgress)
             {
@@ -533,21 +535,17 @@ namespace Supremacy.Combat
         {
             if (colony != null && colony.Population != null)
             {
-                Report_SystemAssaultDetails("Step_3760:; ComputeDefenderCombatStrength for "
+                _text = "Step_3760:; ComputeDefenderCombatStrength for "
                     + colony.Name
                     + " ( " + Population
                     + " Pop.) "
-                    );
+                    ;
+                Console.WriteLine(_text);
+                //GameLog.Core.SystemAssaultDetails.DebugFormat(v);
                 return CombatHelper.ComputeGroundCombatStrength(colony.Owner, colony.Location, colony.Population.CurrentValue);
             }
             else
                 return 0;
-        }
-
-        private void Report_SystemAssaultDetails(string v)
-        {
-            Console.WriteLine(v);
-            GameLog.Core.SystemAssaultDetails.DebugFormat(v);
         }
 
         private int ComputeInvaderCombatStrength()

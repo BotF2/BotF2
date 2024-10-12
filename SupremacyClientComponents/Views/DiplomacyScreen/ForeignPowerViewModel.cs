@@ -1,17 +1,15 @@
 //File:ForeignPowerViewModel.cs
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading;
-
 using Supremacy.Annotations;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Types;
 using Supremacy.Utility;
-
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 
 namespace Supremacy.Client.Views
 {
@@ -79,7 +77,7 @@ namespace Supremacy.Client.Views
             foreach (IAgreement agreement in agreements.OrderByDescending(o => o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
-                _text = "Step_5777: Turn " + GameContext.Current.TurnNumber
+                _text = "Step_5777:; Turn " + GameContext.Current.TurnNumber
                     + ";added;sender=; " + agreement.Sender
                     + " ;recipient=; " + agreement.Recipient
                     + " ;agreement=; " + agreement.Proposal.Clauses[0].ClauseType.ToString()
@@ -198,19 +196,48 @@ namespace Supremacy.Client.Views
 
                 string _gamelogPart2 = "";
 
-                if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
+                if (_outgoingMessage != null)
                 {
-                    for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                    //for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                    //{
+                    _text =
+                        "Step_6577:; OutgoingMessage SET = " + _outgoingMessage.Sender.Name
+                        //{0} to {1}, count{2}, {3} = {4} {5}",
+                        + " to " + _outgoingMessage.Recipient.Name
+                    //+ ", count= " + _outgoingMessage.Elements.Count().ToString()
+                    //+ ", " + _outgoingMessage.Elements[i].ActionCategory.ToString()
+                    //+ ", " + _outgoingMessage.Elements[i].Description.ToString()
+                    //+ ". " + _gamelogPart2
+                    ;
+                    if (_outgoingMessage.AcceptedRejected.Count > 0)
                     {
-                        GameLog.Client.Diplomacy.DebugFormat(
-                            "OutgoingMessage SET = {0} to {1}, count{2}, {3} = {4} {5}",
-                            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
-                            , _outgoingMessage.Elements.Count().ToString()
-                            , _outgoingMessage.Elements[i].ActionCategory.ToString()
-                            , _outgoingMessage.Elements[i].Description.ToString()
-                            , _gamelogPart2
-                        );
+                        foreach (var item in _outgoingMessage.AcceptedRejected)
+                        {
+                            if (item.Key.ToString() != "999")
+                            {
+                                _text += ", key= " + _outgoingMessage.AcceptedRejected.FirstOrDefault().Key
+                                        + ", value= " + _outgoingMessage.AcceptedRejected.FirstOrDefault().Value
+                                        //+ ", " + _outgoingMessage.Elements[i].Description.ToStrin
+                                        + ". " + _gamelogPart2;
+                            }
+                        }
+
                     }
+
+
+                    if (_outgoingMessage.Elements.Count() > 0)
+                    {
+                        for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                        {
+                            _text += ", count= " + _outgoingMessage.Elements.Count().ToString()
+                            + ", " + _outgoingMessage.Elements[i].ActionCategory.ToString()
+                            + ", " + _outgoingMessage.Elements[i].Description.ToString()
+                            + ". " + _gamelogPart2;
+                        }
+                    }
+                    Console.WriteLine(_text);
+                    //GameLog.Client.Diplomacy.DebugFormat(_text);
+                    //}
                 }
             }
         }
@@ -220,6 +247,7 @@ namespace Supremacy.Client.Views
             //GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingMessageChanged() - call OnPropertyChanged");
             OutgoingMessageChanged.Raise(this);
             OnPropertyChanged("OutgoingMessage");
+            //if (this.OutgoingMessageCategory != null) // doesn't work
             OnOutgoingMessageCategoryChanged();
         }
 
@@ -355,6 +383,7 @@ namespace Supremacy.Client.Views
                     }
                 }
                 catch { GameLog.Client.Diplomacy.DebugFormat("Unable to get outgoing message to reslove catagory"); }
+
                 if (ResolveMessageCategory(OutgoingMessage).ToString() != "None")
                 {
                     GameLog.Client.Diplomacy.DebugFormat("OutgoingMessageCategory = {0}", ResolveMessageCategory(OutgoingMessage));

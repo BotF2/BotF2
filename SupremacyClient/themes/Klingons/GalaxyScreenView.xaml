@@ -97,6 +97,7 @@
                       Grid.Column="0"
                       Grid.Row="0"
                       FontSize="16pt"  
+                      FontWeight="Bold"
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                 <Button.Content>
                   <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -206,11 +207,13 @@
                       Margin="3,0,0,0"
                       Background="{StaticResource Kling3Gradient_Top_Bottom}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="18pt"
-                           Foreground="{StaticResource Borg1Gradient_Bottom_Top}"
-                           Text="{s:StringResource AFFILIATION_TEXT}"
-                           HorizontalAlignment="Center" />
-              </Border>
+                           FontSize="18pt" HorizontalAlignment="Center" Foreground="Black" 
+                           Text="{Binding Path=PlayerCivilizationRendezvousPlace, Mode=OneWay}"
+                           />
+                           <!--Text="{s:StringResource AFFILIATION_TEXT}"
+                  Foreground="{StaticResource Borg1Gradient_Bottom_Top}" 
+                           />-->                    
+                            </Border>
               <Border Grid.Column="4"
                       Grid.Row="1"
                       Padding="14,0,14,0"
@@ -218,10 +221,9 @@
                       Background="{StaticResource Kling2Gradient_Bottom_Top}">
                 <TextBlock x:Name="SectorOwnerText"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="18pt"
-                           Foreground="Orange"
+                           FontSize="18pt" Foreground="Orange" HorizontalAlignment="Center"
                            Text="{Binding Path=SelectedSectorAllegiance, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
-                           HorizontalAlignment="Center" />
+                           />
               </Border>
               <Border Grid.Column="5"
                       Grid.Row="0"

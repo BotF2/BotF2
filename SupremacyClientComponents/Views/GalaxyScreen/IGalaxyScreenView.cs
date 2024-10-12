@@ -34,7 +34,7 @@ namespace Supremacy.Client.Views
 
     public interface IDiplomacyScreenView : IGameScreenView<DiplomacyScreenPresentationModel> { }
 
-    public interface INewDiplomacyScreenView : IGameScreenView<DiplomacyScreenViewModel> { }
+    public interface IDiplomacyScreenViewSecond : IGameScreenView<DiplomacyScreenViewModel> { }
 
     public interface IScienceScreenView : IGameScreenView<ScienceScreenPresentationModel> { }
 

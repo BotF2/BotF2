@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Supremacy.UI
 {
@@ -37,13 +38,20 @@ namespace Supremacy.UI
         private readonly VisualCollection _children;
 
         private readonly Grid _grid;
+        private readonly UnitActivationGroup _sliderGroup;
+
+        private readonly ImageBrush _laborImage;
+        private readonly Border _laborImageBorder;
+        private readonly Border _laborImageBorder_TOOLTIP;
+
         private readonly UnitActivationBar _laborBar;
         private readonly TextBlock _laborPoolText;
-        private readonly TextBlock _shipyardLine_1;
-        //private readonly TextBlock _shipyardLine_1_text;
+        private readonly TextBlock _shipyardLine;
         private readonly TextBlock _shipyardBuildQueueText;
-        //private readonly TextBlock _shipyardLine_2_text;
-        private readonly UnitActivationGroup _sliderGroup;
+
+        private readonly TextBlock _buildQueueLine;
+        private readonly TextBlock _buildQueueLineText;
+
 
         private readonly TextBlock _energyActiveText;
         private readonly TextBlock _energyFacilityText;
@@ -89,6 +97,8 @@ namespace Supremacy.UI
         private readonly TextBlock _intelligenceOutputText;
         private readonly TextBlock _intelligenceScrapText;
         private readonly UnitActivationBar _intelligenceSlider;
+
+
         [NonSerialized]
         private string _text;
         #endregion
@@ -143,7 +153,7 @@ namespace Supremacy.UI
 
             _grid = new Grid
             {
-                Width = 580
+                Width = 600 // was 580
             };
 
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -156,14 +166,16 @@ namespace Supremacy.UI
             _grid.ColumnDefinitions[2].Width = new GridLength(1.0, GridUnitType.Star);  // was .Star
             _grid.ColumnDefinitions[3].Width = new GridLength(1.0, GridUnitType.Auto);
 
-            _grid.RowDefinitions.Add(new RowDefinition()); // Food
-            _grid.RowDefinitions.Add(new RowDefinition()); // Industry
-            _grid.RowDefinitions.Add(new RowDefinition()); // Energy
-            _grid.RowDefinitions.Add(new RowDefinition()); // Research
-            _grid.RowDefinitions.Add(new RowDefinition()); // Intelligence
-            _grid.RowDefinitions.Add(new RowDefinition()); // Labor Pool
-            _grid.RowDefinitions.Add(new RowDefinition()); // Shipyard_1
-            _grid.RowDefinitions.Add(new RowDefinition()); // Shipyard_2
+
+            // new: 0 = labor pool
+            _grid.RowDefinitions.Add(new RowDefinition()); // 2 Food
+            _grid.RowDefinitions.Add(new RowDefinition()); // 3 Industry
+            _grid.RowDefinitions.Add(new RowDefinition()); // 4 Energy
+            _grid.RowDefinitions.Add(new RowDefinition()); // 5 Research
+            _grid.RowDefinitions.Add(new RowDefinition()); // 6 Intelligence
+            _grid.RowDefinitions.Add(new RowDefinition()); // 0 Labor Pool
+            _grid.RowDefinitions.Add(new RowDefinition()); // 1 _shipyardLine
+            _grid.RowDefinitions.Add(new RowDefinition()); // 7 _buildQueueLine // not used yet
 
             _grid.RowDefinitions[0].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[1].Height = new GridLength(1.0, GridUnitType.Auto);
@@ -172,7 +184,7 @@ namespace Supremacy.UI
             _grid.RowDefinitions[4].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[5].Height = new GridLength(1.0, GridUnitType.Auto);
             _grid.RowDefinitions[6].Height = new GridLength(1.0, GridUnitType.Auto);
-            _grid.RowDefinitions[7].Height = new GridLength(1.0, GridUnitType.Star);
+            _grid.RowDefinitions[7].Height = new GridLength(1.0, GridUnitType.Auto);
 
             _sliderGroup = new UnitActivationGroup();
 
@@ -201,6 +213,8 @@ namespace Supremacy.UI
             _energyImage = new ImageBrush();
             _researchImage = new ImageBrush();
             _intelligenceImage = new ImageBrush();
+
+            _laborImage = new ImageBrush();
 
             _foodFacilityText = new TextBlock();
             _industryFacilityText = new TextBlock();
@@ -298,11 +312,17 @@ namespace Supremacy.UI
             _researchFacilityText.SetValue(Grid.ColumnProperty, 1);
             _intelligenceFacilityText.SetValue(Grid.ColumnProperty, 1);
 
-            _foodFacilityText.SetValue(Grid.RowProperty, 0);
-            _industryFacilityText.SetValue(Grid.RowProperty, 1);
-            _energyFacilityText.SetValue(Grid.RowProperty, 2);
-            _researchFacilityText.SetValue(Grid.RowProperty, 3);
-            _intelligenceFacilityText.SetValue(Grid.RowProperty, 4);
+            //_foodFacilityText.SetValue(Grid.RowProperty, 0);
+            //_industryFacilityText.SetValue(Grid.RowProperty, 1);
+            //_energyFacilityText.SetValue(Grid.RowProperty, 2);
+            //_researchFacilityText.SetValue(Grid.RowProperty, 3);
+            //_intelligenceFacilityText.SetValue(Grid.RowProperty, 4);
+
+            _foodFacilityText.SetValue(Grid.RowProperty, 3);
+            _industryFacilityText.SetValue(Grid.RowProperty, 4);
+            _energyFacilityText.SetValue(Grid.RowProperty, 5);
+            _researchFacilityText.SetValue(Grid.RowProperty, 6);
+            _intelligenceFacilityText.SetValue(Grid.RowProperty, 7);
 
             _foodOutputText.SetValue(Grid.ColumnProperty, 1);
             _industryOutputText.SetValue(Grid.ColumnProperty, 1);
@@ -310,11 +330,17 @@ namespace Supremacy.UI
             _researchOutputText.SetValue(Grid.ColumnProperty, 1);
             _intelligenceOutputText.SetValue(Grid.ColumnProperty, 1);
 
-            _foodOutputText.SetValue(Grid.RowProperty, 0);
-            _industryOutputText.SetValue(Grid.RowProperty, 1);
-            _energyOutputText.SetValue(Grid.RowProperty, 2);
-            _researchOutputText.SetValue(Grid.RowProperty, 3);
-            _intelligenceOutputText.SetValue(Grid.RowProperty, 4);
+            //_foodOutputText.SetValue(Grid.RowProperty, 0);
+            //_industryOutputText.SetValue(Grid.RowProperty, 1);
+            //_energyOutputText.SetValue(Grid.RowProperty, 2);
+            //_researchOutputText.SetValue(Grid.RowProperty, 3);
+            //_intelligenceOutputText.SetValue(Grid.RowProperty, 4);
+
+            _foodOutputText.SetValue(Grid.RowProperty, 3);
+            _industryOutputText.SetValue(Grid.RowProperty, 4);
+            _energyOutputText.SetValue(Grid.RowProperty, 5);
+            _researchOutputText.SetValue(Grid.RowProperty, 6);
+            _intelligenceOutputText.SetValue(Grid.RowProperty, 7);
 
             _ = _grid.Children.Add(_foodFacilityText);
             _ = _grid.Children.Add(_industryFacilityText);
@@ -328,6 +354,38 @@ namespace Supremacy.UI
             _ = _grid.Children.Add(_researchOutputText);
             _ = _grid.Children.Add(_intelligenceOutputText);
 
+            /* Labor IMAGE */
+            _laborImageBorder = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                //MinWidth = imageWidth,
+                //MinHeight = imageHeight,
+                Height = 28,
+                Width = 58,
+                Margin = new Thickness(0, 0, 0, 4),
+                Background = _laborImage
+            };
+            _laborImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, 0, 0, 0),
+                Background = _laborImage
+            };
+            _laborImageBorder.ToolTip = _laborImageBorder_TOOLTIP;
+            _laborImageBorder.SetValue(Grid.ColumnProperty, 0);
+            //_laborImageBorder.SetValue(Grid.RowProperty, 0);
+            _laborImageBorder.SetValue(Grid.RowProperty, 0);
+            //_laborImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
+            //_laborImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
+            _ = _grid.Children.Add(_laborImageBorder);
+
             /* FOOD IMAGE */
             _foodImageBorder = new Border
             {
@@ -336,6 +394,7 @@ namespace Supremacy.UI
                 CornerRadius = new CornerRadius(2.0),
                 MinWidth = imageWidth,
                 MinHeight = imageHeight,
+
                 Margin = new Thickness(0, rowSpacing, 0, 0),
                 Background = _foodImage
             };
@@ -346,12 +405,13 @@ namespace Supremacy.UI
                 CornerRadius = new CornerRadius(0.0),
                 MinWidth = 8 * imageWidth,
                 MinHeight = 8 * imageHeight,
-                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 Background = _foodImage
             };
             _foodImageBorder.ToolTip = _foodImageBorder_TOOLTIP;
             _foodImageBorder.SetValue(Grid.ColumnProperty, 0);
-            _foodImageBorder.SetValue(Grid.RowProperty, 0);
+            //_foodImageBorder.SetValue(Grid.RowProperty, 0);
+            _foodImageBorder.SetValue(Grid.RowProperty, 3);
             _foodImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _foodImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
             _ = _grid.Children.Add(_foodImageBorder);
@@ -374,12 +434,13 @@ namespace Supremacy.UI
                 CornerRadius = new CornerRadius(0.0),
                 MinWidth = 8 * imageWidth,
                 MinHeight = 8 * imageHeight,
-                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 Background = _industryImage
             };
             _industryImageBorder.ToolTip = _industryImageBorder_TOOLTIP;
             _industryImageBorder.SetValue(Grid.ColumnProperty, 0);
-            _industryImageBorder.SetValue(Grid.RowProperty, 1);
+            //_industryImageBorder.SetValue(Grid.RowProperty, 1);
+            _industryImageBorder.SetValue(Grid.RowProperty, 4);
             _industryImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _industryImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
             _ = _grid.Children.Add(_industryImageBorder);
@@ -402,12 +463,13 @@ namespace Supremacy.UI
                 CornerRadius = new CornerRadius(0.0),
                 MinWidth = 8 * imageWidth,
                 MinHeight = 8 * imageHeight,
-                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 Background = _energyImage
             };
             _energyImageBorder.ToolTip = _energyImageBorder_TOOLTIP;
             _energyImageBorder.SetValue(Grid.ColumnProperty, 0);
-            _energyImageBorder.SetValue(Grid.RowProperty, 2);
+            //_energyImageBorder.SetValue(Grid.RowProperty, 2);
+            _energyImageBorder.SetValue(Grid.RowProperty, 5);
             _energyImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _energyImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
             _ = _grid.Children.Add(_energyImageBorder);
@@ -430,12 +492,13 @@ namespace Supremacy.UI
                 CornerRadius = new CornerRadius(0.0),
                 MinWidth = 8 * imageWidth,
                 MinHeight = 8 * imageHeight,
-                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 Background = _researchImage
             };
             _researchImageBorder.ToolTip = _researchImageBorder_TOOLTIP;
             _researchImageBorder.SetValue(Grid.ColumnProperty, 0);
-            _researchImageBorder.SetValue(Grid.RowProperty, 3);
+            //_researchImageBorder.SetValue(Grid.RowProperty, 3);
+            _researchImageBorder.SetValue(Grid.RowProperty, 6);
             _researchImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _researchImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
             _ = _grid.Children.Add(_researchImageBorder);
@@ -458,12 +521,13 @@ namespace Supremacy.UI
                 CornerRadius = new CornerRadius(0.0),
                 MinWidth = 8 * imageWidth,
                 MinHeight = 8 * imageHeight,
-                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 Background = _intelligenceImage
             };
             _intelligenceImageBorder.ToolTip = _intelligenceImageBorder_TOOLTIP;
             _intelligenceImageBorder.SetValue(Grid.ColumnProperty, 0);
-            _intelligenceImageBorder.SetValue(Grid.RowProperty, 4);
+            //_intelligenceImageBorder.SetValue(Grid.RowProperty, 4);
+            _intelligenceImageBorder.SetValue(Grid.RowProperty, 7);
             _intelligenceImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _intelligenceImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
             _ = _grid.Children.Add(_intelligenceImageBorder);
@@ -488,11 +552,23 @@ namespace Supremacy.UI
             _researchSlider.MinHeight = 28;
             _intelligenceSlider.MinHeight = 28;
 
-            _foodSlider.SetValue(Grid.RowProperty, 0);
-            _industrySlider.SetValue(Grid.RowProperty, 1);
-            _energySlider.SetValue(Grid.RowProperty, 2);
-            _researchSlider.SetValue(Grid.RowProperty, 3);
-            _intelligenceSlider.SetValue(Grid.RowProperty, 4);
+            //_foodSlider.SetValue(Grid.RowProperty, 0);
+            //_industrySlider.SetValue(Grid.RowProperty, 1);
+            //_energySlider.SetValue(Grid.RowProperty, 2);
+            //_researchSlider.SetValue(Grid.RowProperty, 3);
+            //_intelligenceSlider.SetValue(Grid.RowProperty, 4);
+
+            _foodSlider.SetValue(Grid.RowProperty, 3);
+            _industrySlider.SetValue(Grid.RowProperty, 4);
+            _energySlider.SetValue(Grid.RowProperty, 5);
+            _researchSlider.SetValue(Grid.RowProperty, 6);
+            _intelligenceSlider.SetValue(Grid.RowProperty, 7);
+
+            _foodSlider.Margin = new Thickness(0, 0, 26, 0);
+            _industrySlider.Margin = new Thickness(0, 0, 26, 0);
+            _energySlider.Margin = new Thickness(0, 0, 26, 0);
+            _researchSlider.Margin = new Thickness(0, 0, 26, 0);
+            _intelligenceSlider.Margin = new Thickness(0, 0, 26, 0);
 
             _foodSlider.IsEnabled = true;
             _industrySlider.IsEnabled = true;
@@ -511,28 +587,78 @@ namespace Supremacy.UI
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            _laborBar.SetValue(Grid.ColumnProperty, 1);
-            _laborBar.SetValue(Grid.ColumnSpanProperty, 4);
-            _laborBar.SetValue(Grid.RowProperty, 5);
+            _laborBar.SetValue(Grid.ColumnProperty, 2);  // was 2
+            _laborBar.SetValue(Grid.ColumnSpanProperty, 6); // _laborBar.ColumnSpan was 4
+            _laborBar.SetValue(Grid.RowProperty, 0);
             _laborBar.VerticalAlignment = VerticalAlignment.Top;
-            _laborBar.Margin = new Thickness(0, rowSpacing * 2, 0, rowSpacing);
+            _laborBar.HorizontalAlignment = HorizontalAlignment.Center;
+            //_laborBar.Margin = new Thickness(0, rowSpacing * 2, 0, rowSpacing);
+            _laborBar.Margin = new Thickness(0, rowSpacing, 0, rowSpacing);
             _laborBar.Height = 28;
             _laborBar.IsReadOnly = true;
             _laborBar.IsEnabled = true;
             _laborBar.Foreground = Brushes.Red;
 
+            _text = "Step_3434:; LaborBar; "
+                + "Col= " + Colony
+                + "; Width= " + _laborBar.Width
+                + "; Max= " + _laborBar.MaxActiveUnits
+                + "; colSpacing= " + colSpacing
+                //+ "colSpacing= " + colSpacing
+                ;
+            Console.WriteLine(_text);
+
+
+
             _laborPoolText = new TextBlock();
-            _laborPoolText.SetValue(Grid.ColumnProperty, 0);
-            _laborPoolText.SetValue(Grid.RowProperty, 5);
-            _laborPoolText.VerticalAlignment = VerticalAlignment.Top;
+            //_laborPoolText.SetValue(Grid.ColumnProperty, 0);
+            _laborPoolText.SetValue(Grid.ColumnProperty, 1);
+            //_laborPoolText.SetValue(Grid.RowProperty, 5);
+            _laborPoolText.SetValue(Grid.RowProperty, 0);
+            _laborPoolText.VerticalAlignment = VerticalAlignment.Center;
             _laborPoolText.HorizontalAlignment = HorizontalAlignment.Right;
-            _laborPoolText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
-            _laborPoolText.FontSize = 20;
-            _laborPoolText.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
+            //_laborPoolText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            _laborPoolText.Margin = new Thickness(0, rowSpacing, colSpacing, rowSpacing);
+            _laborPoolText.FontSize = 18;
+            //_laborPoolText.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
+            //if (Colony != null )
+            //    _laborPoolText.Text = (Colony.Population_Max - Colony.Population.CurrentValue).ToString();
             _laborPoolText.Foreground = headerBrush;
 
             _ = _grid.Children.Add(_laborBar);
             _ = _grid.Children.Add(_laborPoolText);
+
+
+            // buildQueueLine
+            _buildQueueLineText = new TextBlock();
+            _buildQueueLineText.SetValue(Grid.ColumnProperty, 0);
+            //_buildQueueLineText.SetValue(Grid.ColumnSpanProperty, 2);
+            //_buildQueueLineText.SetValue(Grid.RowProperty, 6);
+            _buildQueueLineText.SetValue(Grid.RowProperty, 1);
+            _buildQueueLineText.VerticalAlignment = VerticalAlignment.Top;
+            _buildQueueLineText.HorizontalAlignment = HorizontalAlignment.Left;
+            //_buildQueueLineText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            _buildQueueLineText.Margin = new Thickness(0, 5, colSpacing, 5);
+            _buildQueueLineText.FontSize = 20;
+            _buildQueueLineText.Text = "Queue > ";
+            _buildQueueLineText.Foreground = headerBrush;
+
+            _ = _grid.Children.Add(_buildQueueLineText);
+
+            // _buildQueue
+            _buildQueueLine = new TextBlock();
+            _buildQueueLine.SetValue(Grid.ColumnProperty, 1);
+            _buildQueueLine.SetValue(Grid.ColumnSpanProperty, 2);
+            _buildQueueLine.SetValue(Grid.RowProperty, 1);
+            _buildQueueLine.VerticalAlignment = VerticalAlignment.Top;
+            _buildQueueLine.HorizontalAlignment = HorizontalAlignment.Right;
+            _buildQueueLine.Margin = new Thickness(20, 5, colSpacing, 5);
+            _buildQueueLine.FontSize = 20;
+            _buildQueueLine.Text = _buildQueueLineText.ToString();
+            _buildQueueLine.Foreground = paragraphBrush;
+
+            _ = _grid.Children.Add(_buildQueueLine);
+
 
             //// shipyard_Queue
             //_laborPoolText = new TextBlock();
@@ -545,47 +671,39 @@ namespace Supremacy.UI
             //_laborPoolText.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
             //_laborPoolText.Foreground = headerBrush;
 
-            // shipyard_2
+            // shipyardQueueLine
             _shipyardBuildQueueText = new TextBlock();
             _shipyardBuildQueueText.SetValue(Grid.ColumnProperty, 0);
-            _shipyardBuildQueueText.SetValue(Grid.RowProperty, 6);
+            //_shipyardBuildQueueText.SetValue(Grid.RowProperty, 6);
+            _shipyardBuildQueueText.SetValue(Grid.RowProperty, 2);
             _shipyardBuildQueueText.VerticalAlignment = VerticalAlignment.Top;
             _shipyardBuildQueueText.HorizontalAlignment = HorizontalAlignment.Right;
-            _shipyardBuildQueueText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            //_shipyardBuildQueueText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            _shipyardBuildQueueText.Margin = new Thickness(0, rowSpacing, colSpacing, rowSpacing);
             _shipyardBuildQueueText.FontSize = 20;
             _shipyardBuildQueueText.Text = "Queue > ";
-            _shipyardBuildQueueText.Foreground = paragraphBrush;
+            _shipyardBuildQueueText.Foreground = headerBrush;
 
             _ = _grid.Children.Add(_shipyardBuildQueueText);
 
-            // shipyard_1
-            _shipyardLine_1 = new TextBlock();
-            _shipyardLine_1.SetValue(Grid.ColumnProperty, 1);
-            _shipyardLine_1.SetValue(Grid.ColumnSpanProperty, 2);
-            _shipyardLine_1.SetValue(Grid.RowProperty, 6);
-            _shipyardLine_1.VerticalAlignment = VerticalAlignment.Top;
-            _shipyardLine_1.HorizontalAlignment = HorizontalAlignment.Left;
-            _shipyardLine_1.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
-            _shipyardLine_1.FontSize = 20;
+            // _shipyardLine
+            _shipyardLine = new TextBlock();
+            _shipyardLine.SetValue(Grid.ColumnProperty, 1);
+            _shipyardLine.SetValue(Grid.ColumnSpanProperty, 2);
+            _shipyardLine.SetValue(Grid.RowProperty, 2);
+            _shipyardLine.VerticalAlignment = VerticalAlignment.Top;
+            _shipyardLine.HorizontalAlignment = HorizontalAlignment.Right;
+            //_shipyardLine.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
+            _shipyardLine.Margin = new Thickness(20, rowSpacing, colSpacing, rowSpacing);
+            _shipyardLine.FontSize = 20;
             //string shipyardSlot_1_Status = this.Colony.ShipyardSlot_1_Status();
-            _shipyardLine_1.Text = _shipyardLine_1.ToString();
+            _shipyardLine.Text = _shipyardLine.ToString();
             //.ShipyardSlot_1_Status(ShipyardBuildSlot colony.Shipyard.BuildSlots[0].SlotID);
-            _shipyardLine_1.Foreground = headerBrush;
+            _shipyardLine.Foreground = paragraphBrush;
 
-            _ = _grid.Children.Add(_shipyardLine_1);
+            _ = _grid.Children.Add(_shipyardLine);
 
-            // shipyard_2
-            //_shipyardBuildQueueText = new TextBlock();
-            //_shipyardBuildQueueText.SetValue(Grid.ColumnProperty, 1);
-            //_shipyardBuildQueueText.SetValue(Grid.RowProperty, 7);
-            //_shipyardBuildQueueText.VerticalAlignment = VerticalAlignment.Top;
-            //_shipyardBuildQueueText.HorizontalAlignment = HorizontalAlignment.Right;
-            //_shipyardBuildQueueText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
-            //_shipyardBuildQueueText.FontSize = 20;
-            //_shipyardBuildQueueText.Text = "just planned";
-            //_shipyardBuildQueueText.Foreground = headerBrush;
 
-            //_ = _grid.Children.Add(_shipyardBuildQueueText);
 
             #endregion
 
@@ -648,6 +766,7 @@ namespace Supremacy.UI
 
             if ((sender == _foodImageBorder) ||
                 (sender == _industryImageBorder) ||
+                //(sender == _laborImageBorder) ||
                 (sender == _energyImageBorder) ||
                 (sender == _researchImageBorder) ||
                 (sender == _intelligenceImageBorder)
@@ -706,6 +825,10 @@ namespace Supremacy.UI
             {
                 category = ProductionCategory.Intelligence;
             }
+            //else if (sender == _laborImageBorder)
+            //{
+            //    category = ProductionCategory.Industry;
+            //}
 
             if (!category.HasValue)
             {
@@ -1019,12 +1142,15 @@ namespace Supremacy.UI
                 _researchImage.ImageSource = TechObjectImageConverter.Convert("");
                 _intelligenceImage.ImageSource = TechObjectImageConverter.Convert("");
 
+                _laborImage.ImageSource = TechObjectImageConverter.Convert("");
+
                 _foodFacilityText.Text = "";
                 _industryFacilityText.Text = "";
                 _energyFacilityText.Text = "";
                 _researchFacilityText.Text = "";
                 _intelligenceFacilityText.Text = "";
-                _shipyardLine_1.Text = "";
+                _shipyardLine.Text = "";
+                _buildQueueLine.Text = "";
 
                 Visibility = Visibility.Hidden;
             }
@@ -1040,6 +1166,16 @@ namespace Supremacy.UI
                     colony.GetFacilityType(ProductionCategory.Research).Image);
                 _intelligenceImage.ImageSource = TechObjectImageConverter.Convert(
                     colony.GetFacilityType(ProductionCategory.Intelligence).Image);
+
+                //_laborImage.ImageSource = TechObjectImageConverter.Convert(
+                //    colony.GetFacilityType(ProductionCategory.Industry).Image);
+                _laborImage.ImageSource = new CachedBitmap(
+                new BitmapImage(
+                    new Uri(
+                        "Resources/Images/Research/Fields/Sociology.png",
+                        UriKind.Relative)),
+                BitmapCreateOptions.None,
+                BitmapCacheOption.OnLoad);
 
                 _foodFacilityText.Inlines.Clear();
                 _industryFacilityText.Inlines.Clear();
@@ -1073,7 +1209,44 @@ namespace Supremacy.UI
                     colony.GetTotalFacilities(ProductionCategory.Intelligence),
                     _intelligenceOutputText.Text);
 
-                //_shipyardLine_1.Text = "no Shipyard available";
+                string _populationText = "Pop.";
+                if (colony.Population.CurrentValue == colony.Population_Max)
+                {
+                    _populationText += " 100 %";
+                }
+                else
+                {
+                    _populationText += " + " + ((colony.Population_Max - colony.Population.CurrentValue) / 10).ToString();
+                }
+
+                _laborPoolText.Text = _populationText + ", "
+                                        + ResourceManager.GetString("NOT_EMPLOYED") + " >";
+
+                string pluralBQText = "";
+                if (colony.BuildQueue != null && colony.BuildQueue.Count > 0)
+                {
+                    if (colony.BuildQueue[0].TurnsRemaining > 1)
+                        pluralBQText = "s";
+                    _buildQueueLine.Text = colony.BuildQueue[0].Description
+                        + " - ( " + colony.BuildQueue[0].TurnsRemaining + " Turn" + pluralBQText
+                        + " )";
+                }
+                else
+                {
+                    _buildQueueLine.Text = "Planetary Queue * is empty * ";
+                }
+
+                if (colony.BuildSlots[0].HasProject)
+                {
+                    _buildQueueLine.Text +=
+                        " + " + colony.BuildSlots[0].Project.TurnsRemaining
+                        + " Turn"
+                        ;
+                    if (colony.BuildSlots[0].Project.TurnsRemaining > 1)
+                        _buildQueueLine.Text += "s";
+                }
+
+                //_shipyardLine.Text = "no Shipyard available";
                 string pluralText = "";
                 //string outputText = ""; in Summary the specified ouput value from the *project* is delivered
                 // project here not 
@@ -1083,48 +1256,66 @@ namespace Supremacy.UI
                         pluralText = "s";
                     //outputText = " / Slot output = " + colony.Shipyard.ShipyardDesign.BuildSlotOutput;
 
-                    _shipyardLine_1.Text = colony.Shipyard.BuildQueue[0].Description/*.Substring(0, 20) + "... "*/
-                        + " - ( " + colony.Shipyard.BuildQueue[0].TurnsRemaining + " Turn" + pluralText 
+                    _shipyardLine.Text = colony.Shipyard.BuildQueue[0].Description/*.Substring(0, 20) + "... "*/
+                        + " - ( " + colony.Shipyard.BuildQueue[0].TurnsRemaining + " Turn" + pluralText
                         //+ outputText 
                         + " )";
                 }
                 else
                 {
-                    _shipyardLine_1.Text = "Shipyard Queue is empty";// - " + colony.Shipyard.BuildSlots.Count + " Slot";
+                    _shipyardLine.Text = "Shipyard Queue * is empty * ";// - " + colony.Shipyard.BuildSlots.Count + " Slot";
                     //if (colony.Shipyard.BuildSlots.Count > 1)
-                    //    _shipyardLine_1.Text += "s";
+                    //    _shipyardLine.Text += "s";
 
-                    if (colony.Shipyard == null) 
-                        _shipyardLine_1.Text = "no Shipyard available";
+                    if (colony.Shipyard == null)
+                        _shipyardLine.Text = "no Shipyard available";
                     else
                     {
-                        _shipyardLine_1.Text += " - " 
+                        _shipyardLine.Text += " - "
                             //+ colony.Shipyard.BuildSlots. + " of "
                             + colony.Shipyard.BuildSlots.Count + " Slot";
                         if (colony.Shipyard.BuildSlots.Count > 1)
-                            _shipyardLine_1.Text += "s";
+                            _shipyardLine.Text += "s";
 
-                        //_shipyardLine_1.Text += " active" + colony.Shipyard.BuildSlots[0].;
+                        //_shipyardLine.Text += " active" + colony.Shipyard.BuildSlots[0].;
 
                         //show indicator for unpowered structures
+                            int _activeSlotsCount = 0;
 
                         if (!colony.Shipyard.BuildSlots.Any(s => s.IsActive))
                         {
                             //outputText = " / Slot output = " + colony.Shipyard.ShipyardDesign.BuildSlotOutput;
-                            var _slots = colony.Shipyard.BuildSlots;
-                            int _activeSlotsCount = 0;
+                            //var _slots = colony.Shipyard.BuildSlots;
+
                             foreach (var slot in colony.Shipyard.BuildSlots)
                             {
                                 if (slot.IsActive)
                                     _activeSlotsCount += 1;
                             }
-                            var _activeSlots = colony.Shipyard.BuildSlots;
+                            //var _activeSlots = colony.Shipyard.BuildSlots;
                             //int _activeSlotsCount; = _slots.Sum(s => s.IsActive);
-                            _shipyardLine_1.Text = _activeSlotsCount
+                            _shipyardLine.Text = _activeSlotsCount
                                 + " of "
                                 + colony.Shipyard.BuildSlots.Count
-                                + " Build Slot online - one needs " 
+                                + " Build Slot online - one needs "
                                 + colony.Shipyard.ShipyardDesign.BuildSlotEnergyCost + " energy"
+                                //+ outputText
+                                ;
+                        }
+                        else
+                        {
+                            foreach (var slot in colony.Shipyard.BuildSlots)
+                            {
+                                if (slot.HasProject)
+                                    _activeSlotsCount += 1;
+                            }
+                            //var _activeSlots = colony.Shipyard.BuildSlots;
+                            //int _activeSlotsCount; = _slots.Sum(s => s.IsActive);
+                            _shipyardLine.Text += ", " + _activeSlotsCount + " active"
+                                //+ " of "
+                                //+ colony.Shipyard.BuildSlots.Count
+                                //+ " Build Slot online - one needs "
+                                //+ colony.Shipyard.ShipyardDesign.BuildSlotEnergyCost + " energy"
                                 //+ outputText
                                 ;
                         }

@@ -9,6 +9,7 @@
 
 using Supremacy.Collections;
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Universe;
@@ -151,25 +152,31 @@ namespace Supremacy.Orbitals
 
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Step_8305:; " + buildQueueItem.Project.Location
-                    + "; buildQueueItem= " + buildQueueItem.Description + "; index " + count
-                    + "; TurnsRemaining " + buildQueueItem.TurnsRemaining
+                _text = "Step_8305:; " + GameEngine.LocationString(buildQueueItem.Project.Location.ToString())
+                    + " buildQueueItem index " + count + "= " + buildQueueItem.Description
+
                     //+ " at " +  
-                    + "; at " + buildQueueItem.Project.ProductionCenter;
+                    + "; at " + buildQueueItem.Project.ProductionCenter
+                    + "; TurnsRemaining " + buildQueueItem.TurnsRemaining
+;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
                 count++;
             }
+
             //int bays = BuildSlots.Count();
             int baysWithProjects = 0;
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
-                _text = "Step_8300:; "+ slot.Shipyard.Location + "; checking " 
+                _text = "Step_8301:; "+ GameEngine.LocationString(slot.Shipyard.Location.ToString()) + " checking " 
                     + slot.Shipyard.Design /*+ ", index " + count*/
 
                     + "; Slot= " + slot.SlotID
                     //+ " at " + slot.Shipyard.Location
                     + "; Owner=" + slot.Shipyard.Owner
+                    + "; HasProject=" + slot.HasProject
+                    + "; IsActive=" + slot.IsActive
+                    + "; > each " + slot.Shipyard.ShipyardDesign.BuildSlotEnergyCost
 
                     ;
                 Console.WriteLine(_text);
@@ -210,7 +217,8 @@ namespace Supremacy.Orbitals
             int afterCount = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Step_8307:; Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
+                _text = "Step_8307:; "+ GameEngine.LocationString(buildQueueItem.Project.Location.ToString())  
+                    + " Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
 
@@ -249,7 +257,7 @@ namespace Supremacy.Orbitals
 
                     //if (_percent != "0 %")
                     //{
-                    _text = "Step_7602:; Serialize " + slot.Project.Location
+                    _text = "Step_7609:; Serialize " + slot.Project.Location
                         //+ " > Slot= " + slot.SlotID
                         //+ " at " + slot.Shipyard.Name
                         //+ " " + 
@@ -290,7 +298,7 @@ namespace Supremacy.Orbitals
 
                     if (_percent != "0 %")
                     {
-                        _text = "Step_7603:; Serialize " + slot.Shipyard.Location
+                        _text = "Step_7604:; Serialize " + slot.Shipyard.Location
                             + " > Slot= " + slot.SlotID
                             + " at " + slot.Shipyard.Name
                             + " " 

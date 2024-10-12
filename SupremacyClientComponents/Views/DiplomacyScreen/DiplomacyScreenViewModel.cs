@@ -20,7 +20,7 @@ using System.Windows.Input;
 namespace Supremacy.Client.Views
 {
 
-    public class DiplomacyScreenViewModel : ViewModelBase<INewDiplomacyScreenView, DiplomacyScreenViewModel>
+    public class DiplomacyScreenViewModel : ViewModelBase<IDiplomacyScreenViewSecond, DiplomacyScreenViewModel>
     {
 
         private bool _isMembershipButtonVisible;
@@ -215,11 +215,15 @@ namespace Supremacy.Client.Views
 
         private void ExecuteMakeProposalCommand()
         {
+            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteNewProposalCommandCore(out ForeignPowerViewModel foreignPower))
+            if (!CanExecuteNewProposalCommandCore(out foreignPower))
             {
                 return;
             }
+
+            _text = "Step_3343:; next one leeds to > System.Windows.Data Error: 1";
+            Console.WriteLine(_text);
 
             foreignPower.OutgoingMessage = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
             foreignPower.OutgoingMessage.Edit();
@@ -229,7 +233,9 @@ namespace Supremacy.Client.Views
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
             InvalidateCommands();
-            //Refresh(); crashes
+            _text = "Step_3334:; maybe crash";
+            Console.WriteLine(_text);
+            Refresh(); //crashes
         }
 
         #region DeclareWarCommandButton
@@ -331,7 +337,7 @@ namespace Supremacy.Client.Views
         #region OpenBordersCommandButton
         private bool CanExecuteOpenBordersCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -378,7 +384,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion OpenBordersCommandButton
 
@@ -386,7 +392,7 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteAcceptRejectDictionaryCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel foreignPower);
         }
         private bool CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel selectedForeignPower)
@@ -409,7 +415,7 @@ namespace Supremacy.Client.Views
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -457,7 +463,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion NonAgressionCommandButton
 
@@ -519,7 +525,7 @@ namespace Supremacy.Client.Views
         #region DefenceAllianceCommandButton
         private bool CanExecuteDefenceAllianceCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -574,7 +580,7 @@ namespace Supremacy.Client.Views
         #region FullAllianceCommandButton
         private bool CanExecuteFullAllianceCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -663,7 +669,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion MembershipCommandButton
 
@@ -849,6 +855,9 @@ namespace Supremacy.Client.Views
         {
             base.InvalidateCommands();
 
+            //_text = "Step_9337:; InvalidateCommands check... for Diplomacy";
+            //Console.WriteLine(_text);
+
             _setDisplayModeCommand.RaiseCanExecuteChanged();
 
             _commendCommand.RaiseCanExecuteChanged();
@@ -867,6 +876,9 @@ namespace Supremacy.Client.Views
             _cancelMessageCommand.RaiseCanExecuteChanged();
 
             _selectedForeignPower?.InvalidateCommands();
+
+            //_text = "Step_9338:; InvalidateCommands checked for Diplomacy";
+            //Console.WriteLine(_text);
         }
 
         private void OnTurnStarted(GameContextEventArgs args)
@@ -879,7 +891,7 @@ namespace Supremacy.Client.Views
             PlayerCivilization = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
 
             RefreshForeignPowers();
-            RefreshRelationshipGraph();
+            //RefreshRelationshipGraph();
         }
 
         #region Overrides of ViewModelBase<INewDiplomacyScreenView,DiplomacyScreenViewModel>
@@ -1219,6 +1231,7 @@ namespace Supremacy.Client.Views
         public event EventHandler DisplayModeChanged;
 
         private DiplomacyScreenDisplayMode _displayMode;
+        private string _text;
 
         public DiplomacyScreenDisplayMode DisplayMode
         {
@@ -1281,7 +1294,10 @@ namespace Supremacy.Client.Views
 
             SelectedForeignPower = null;
 
-            _foreignPowers.Clear();
+            if (_foreignPowers.Count > 0)
+                _foreignPowers.Clear();
+
+            _text = "dummy" + _text;
 
 
             int playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
@@ -1314,7 +1330,9 @@ namespace Supremacy.Client.Views
             }
         }
 
-        private void RefreshRelationshipGraph()
+#pragma warning disable IDE0051 // Remove unused private members
+        private void RefreshRelationshipGraph()  // de-activated atm ... this is just a gimmick content
+#pragma warning restore IDE0051 // Remove unused private members
         {
             int count = GameContext.Current.Civilizations.Count;
             List<DiplomacyGraphNode> nodes = new List<DiplomacyGraphNode>(count);

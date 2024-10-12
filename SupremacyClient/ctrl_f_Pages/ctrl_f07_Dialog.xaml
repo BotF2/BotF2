@@ -380,6 +380,10 @@ B >
 > Bolians </Hyperlink>
 
 -
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/B%27omar"
+> B'omar </Hyperlink>
+
+-
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Boslic" 
 > Boslics </Hyperlink>
 
@@ -666,8 +670,11 @@ K >
 
             <TextBlock TextWrapping="Wrap"> N > 
                 
-                
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nausicaaner" 
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nassordin"
+> ( Nassordin ) </Hyperlink>
+
+            -
+            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nausicaaner" 
 > Nausicaan </Hyperlink>
 
 -
@@ -694,7 +701,10 @@ K >
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nyrianer" 
 > Nyrians </Hyperlink>
 
--
+</TextBlock>
+<TextBlock TextWrapping="Wrap"> O >
+
+
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ocampa" 
 > Ocampa </Hyperlink>
 
@@ -721,10 +731,12 @@ K >
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Quarren_(Volk)" 
 > Quarren </Hyperlink>
-            </TextBlock>
-
-            <TextBlock TextWrapping="Wrap">
-R >                              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Rakhari" 
+              
+              
+</TextBlock>
+<TextBlock TextWrapping="Wrap"> R >
+            
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Rakhari" 
 > RAKHARI </Hyperlink>
 
 -

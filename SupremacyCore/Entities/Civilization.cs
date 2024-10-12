@@ -518,9 +518,9 @@ namespace Supremacy.Entities
             set { if (_targetCivilization == null) { _targetCivilization = value; } }
         }
 
-        public string TargetCiv1Status;
+        public string TargetCiv1Status = "";
 
-        public string TargetCiv2Status;
+        public string TargetCiv2Status = "";
 
         /// <summary>
         /// Gets the <see cref="bool"/> this civ AI attacking fleet on the move />        

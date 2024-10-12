@@ -836,12 +836,26 @@ namespace Supremacy.Client.Views
 
         private Statement CreateStatement()
         {
-            if (_elements.Count != 1)
+            //if (_elements.Count != 1)
+            //{
+            //    return null;
+            //}
+
+            StatementType statementType = StatementType.NoStatement;
+
+            try
             {
-                return null;
+                if (_elements.Count != 0)
+                {
+                    statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
+                }
+            }
+            catch
+            {
+
             }
 
-            StatementType statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
+
             if (statementType == StatementType.NoStatement)
             {
                 return null;

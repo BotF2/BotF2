@@ -234,7 +234,7 @@ namespace Supremacy.Tech
 
                 _checkForProblems = false;
                 //_checkForProblems = true;
-                if (_checkForProblems)
+                if (_checkForProblems) // for ProductionFacilities
                 {
                     _text = "Step_3052:; TechDatabase.cs; facility.DesignID=" + facility.DesignID
                             + ", " + facility.LocalizedName
@@ -470,7 +470,7 @@ namespace Supremacy.Tech
 
             // Shipyards
 
-            _text = "Step_3024:; Loading Resources/Data/TechObj_1_Shipyards.xml";
+            _text = "Step_3024:; Loading Resources/Data/TechObj_4_Shipyards.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -573,7 +573,7 @@ namespace Supremacy.Tech
             int successfullyLoadedShipDesignCounter = 0;
             foreach (XmlElement xmlShip in xmlShips.GetElementsByTagName("Ship"))
             {
-                lastSuccessfullyLoadedShipDesign = xmlShip.Name;
+                //lastSuccessfullyLoadedShipDesign = xmlShip.OuterXml;
                 successfullyLoadedShipDesignCounter += 1;
 
                 ShipDesign ship = new ShipDesign(xmlShip)
@@ -581,26 +581,27 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[ship.Key] = ship.DesignID;
+                lastSuccessfullyLoadedShipDesign = ship.Key;
 
                 // works
                 //_checkForProblems = true;
                 _checkForProblems = false;
                 if (_checkForProblems)
                 {
-
                     _text = "Step_1056:; TechDatabase.cs; ship.DesignID=" + ship.DesignID
                         + ", " + ship.LocalizedName
                         ;
                     Console.WriteLine(_text);
                     //GameLog.Client.GameData.DebugFormat(_text);
                 }
-                if (ship.Key == "FED_MEDICAL_SHIP_II")
-                {
-                    _text = "Step_1057:; TechDatabase.cs; ship.DesignID=" + ship.DesignID
-                        + ", " + ship.LocalizedName
-                        ;
-                    Console.WriteLine(_text);
-                }
+
+                //if (ship.Key == "FED_MEDICAL_SHIP_II")
+                //{
+                //    _text = "Step_1057:; TechDatabase.cs; ship.DesignID=" + ship.DesignID
+                //        + ", " + ship.LocalizedName
+                //        ;
+                //    Console.WriteLine(_text);
+                //}
 
                 CalculateBuildCostsShips(ship);
                 CalculateMaintenanceCosts(ship);
@@ -666,9 +667,14 @@ namespace Supremacy.Tech
                 }
 
             }
-            GameLog.Core.XMLCheck.InfoFormat("Step_0200: lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
+            _text = "Step_0201:; lastSuccessfullyLoadedShipDesign = " + lastSuccessfullyLoadedShipDesign;
+            Console.WriteLine(_text);
+            GameLog.Core.XMLCheck.InfoFormat(_text);
+
+            _text = "Step_0202:; " + successfullyLoadedShipDesignCounter  + " of successfullyLoadedShipDesign (once 393 were fine)";
+            Console.WriteLine(_text);
             //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
-            GameLog.Client.General.InfoFormat("Step_0200: {0} of successfullyLoadedShipDesign (once 391 were fine)", successfullyLoadedShipDesignCounter);
+            GameLog.Client.General.InfoFormat(_text);
 
             /************
              * Stations *
@@ -756,7 +762,14 @@ namespace Supremacy.Tech
             //var _saveFile = Path.Combine(Environment.CurrentDirectory, "Resources/Data/TechObjectDatabase_SAVED.xml");
             //db.Save(); // test
 
-            bool _traceTechObjectDatabase = false;  // file is writen while starting a game -> Federation -> Start
+            bool _traceTechObjectDatabase = false;
+            // file is writen while starting a game -> Federation -> Start
+
+            //bool _traceTechObjectDatabase = true;  
+            // file is writen while starting a game -> Federation -> Start
+            _text = "Step_0266:; Output of Data files= " + _traceTechObjectDatabase;
+            Console.WriteLine(_text);
+
 
             //if (ClientSettings.TracesXML2CSV == true)
 
@@ -786,7 +799,7 @@ namespace Supremacy.Tech
                     {
                         goto WriterClose;
                     }
-                    Console.WriteLine("Step_9130: writing {0}", file);  // _TechObj-1-ProdFac_List(autoCreated).csv
+                    Console.WriteLine("Step_9130:; writing {0}", file);  // _TechObj-1-ProdFac_List(autoCreated).csv
                     streamWriter = new StreamWriter(file);
 
                     strHeader =    // Head line
@@ -985,7 +998,7 @@ namespace Supremacy.Tech
                     {
                         goto WriterClose;
                     }
-                    Console.WriteLine("Step_9140: writing {0}", file);
+                    Console.WriteLine("Step_9140:; writing {0}", file);
                     streamWriter = new StreamWriter(file);
 
                     strHeader =    // Head line
@@ -1213,7 +1226,7 @@ namespace Supremacy.Tech
                         _text = "";
                         foreach (KeyValuePair<string, int> _pair in item.PossibleNames)
                         {
-                            _text += _pair.Key + ";" + item.Name + newline;
+                            _text += item.Name + ";" + _pair.Key   + newline;
                         }
                         streamWriter.WriteLine(_text + "next");
                     }
@@ -1797,7 +1810,7 @@ namespace Supremacy.Tech
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
                     file = pathOutputFile + "_TechObj-5-Stations_List(autoCreated).csv";
-                    Console.WriteLine("Step_9180: writing {0}", file);  // _TechObj-5-Stations_List(autoCreated).csv
+                    Console.WriteLine("Step_9180:; writing {0}", file);  // _TechObj-5-Stations_List(autoCreated).csv
 
                     if (file == null)
                     {
@@ -1990,7 +2003,7 @@ namespace Supremacy.Tech
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
                     file = pathOutputFile + "_TechObj-3-OrbBat_List(autoCreated).csv";
-                    Console.WriteLine("Step_9190: writing {0}", file); // _TechObj-3-OrbBat_List(autoCreated).csv
+                    Console.WriteLine("Step_9190:; writing {0}", file); // _TechObj-3-OrbBat_List(autoCreated).csv
 
                     if (file == null)
                     {

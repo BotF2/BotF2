@@ -252,7 +252,9 @@ namespace Supremacy.WCF
                 //Thread.Sleep(1000);
                 _text = "An error occurred while starting a new game/n"
                     + _newline + "Possible reasons:"
+                    + _newline + "- for TechObj_6_Ships.xml & inside C#-Code > turn on > 'checkforproblems'"
                     + _newline + "- in TechObj_6_Ships.xml a shipname entry is doubled"
+                    + _newline + "- in TechObj_6_Ships.xml a shipname is outcommented"
                     + _newline + _newline + "... Please retry or change Settings like Galaxy Size."
                     ;
                 _text = "Step_0198: " + _text;
@@ -568,9 +570,12 @@ namespace Supremacy.WCF
                 }
                 catch (Exception)
                 {
-                    GameLog.Core.GeneralDetails.DebugFormat("Hit await, ************** issue #398 *******************");
+                    _text = "Hit await, ************** issue #398 *******************";
+                    Console.WriteLine( _text );
+                    GameLog.Core.GeneralDetails.DebugFormat(_text);
                     Thread.Sleep(0050);
-                    goto OH;
+
+                    goto OH;  // try again
                 }
 
 

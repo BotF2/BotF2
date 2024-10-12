@@ -41,6 +41,8 @@ using System.Windows.Forms;
 using Microsoft.Practices.Composite.Presentation.Regions.Behaviors;
 using System.Windows.Input;
 using Supremacy.Collections;
+using Supremacy.Client.Audio;
+using System.Media;
 
 namespace Supremacy.Client
 {
@@ -60,6 +62,8 @@ namespace Supremacy.Client
         private readonly IUnityContainer _container;
         private readonly INavigationService _navigationService;
         private readonly IGameWindow _gameWindow;
+        private readonly ISoundPlayer _soundPlayer;
+        private readonly IMusicPlayer _musicPlayer;
         private readonly SitRepDialog _sitRepDialog;
         //private readonly ShipOverview _shipOverview;
         private readonly IAppContext _appContext;
@@ -94,7 +98,10 @@ namespace Supremacy.Client
             [NotNull] IRegionViewRegistry regionViewRegistry,
             [NotNull] IAppContext appContext,
             [NotNull] IGameClient client,
+            [NotNull] ISoundPlayer soundPlayer,
+            [NotNull] IMusicPlayer musicPlayer,
             [NotNull] IPlayerOrderService playerOrderService)
+
         {
             if (regionManager == null)
             {
@@ -109,6 +116,8 @@ namespace Supremacy.Client
             _container = container ?? throw new ArgumentNullException("container");
             _navigationService = navigationService ?? throw new ArgumentNullException("navigationService");
             _gameWindow = gameWindow ?? throw new ArgumentNullException("gameWindow");
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
             _sitRepDialog = container.Resolve<SitRepDialog>();
             //_shipOverview = container.Resolve<ShipOverview>();
             _appContext = appContext ?? throw new ArgumentNullException("appContext");
@@ -349,7 +358,7 @@ namespace Supremacy.Client
             {
                 return;
             }
-            ProcessSitRepEntries();
+            //ProcessSitRepEntries();
 
             ClientEvents.ScreenRefreshRequired.Publish(ClientEventArgs.Default);
 
@@ -359,6 +368,8 @@ namespace Supremacy.Client
                 _ = _navigationService.ActivateScreen(StandardGameScreens.GalaxyScreen);
                 ClearGameStartWaitCursor();
             }
+
+            ProcessSitRepEntries();
 
             foreach (IInfoCardSubject infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
             {
@@ -374,13 +385,13 @@ namespace Supremacy.Client
 
         private void ProcessSitRepEntries()
         {
-            _text = "Step_4002:; ProcessSitRepEntries...";
+            _text = "Step_4004:; ProcessSitRepEntries...";
             Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
             {
-                return;
+                return; // e.g. at Game Start
             }
 
             bool _showDetailDialog = false;
@@ -424,17 +435,23 @@ namespace Supremacy.Client
 
             List<SitRepEntry> sr = (List<SitRepEntry>)_appContext.LocalPlayerEmpire.SitRepEntries;
 
-            //sr.OrderBy(o => o.Action).ToList();
-            sr.OrderBy(o => o.HeaderText).ToList();
-            
+            sr.OrderBy(o => o.Action).ToList();
+            //sr.OrderBy(o => o.DetailText).ToList();
+
             _sitRepDialog.SitRepEntries = sr; 
 
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+            //IPlayerOrderService _soundplayer = ServiceLocator.Current.GetInstance<ISoundPlayer>();
 
             if (showIfEmpty)
             {
                 _sitRepDialog.Show();
+
+                //_musicPlayer.SwitchMusic("SummaryScreenMusic");  // I don't like if Music changes on Summary
+
+                _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/Summary.ogg"); // better a short sound
+
             }
             else if (!service.AutoTurn)
             {
@@ -443,6 +460,8 @@ namespace Supremacy.Client
                 {
                     //GameLog.Client.GeneralDetails.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
+                    //_musicPlayer.SwitchMusic("SummaryScreenMusic");
+                    _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/Summary.ogg"); // better a short sound
                 }
             }
 
@@ -450,7 +469,7 @@ namespace Supremacy.Client
 
             _text = "Step_4048:; ShowSummary... before storing";
             //Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             //string _lastOneDone;
             if (GameContext.Current.TurnNumber > _lastOneDone)
@@ -472,11 +491,11 @@ namespace Supremacy.Client
                         ;
                 }
                 Console.WriteLine(_text);
-                GameLog.Core.SitReps.InfoFormat(_text);
+                //GameLog.Core.SitReps.InfoFormat(_text);
 
                 _text = "Step_4888:; SaveSUMMARY_TXT... offline - takes to long time";
                 Console.WriteLine(_text);
-                GameLog.Core.GeneralDetails.DebugFormat(_text);
+                //GameLog.Core.GeneralDetails.DebugFormat(_text);
                 //SaveSUMMARY_TXT(_text);
                 _lastOneDone = GameContext.Current.TurnNumber;
                 //// \lib\_SUMMARY.txt
@@ -694,8 +713,8 @@ namespace Supremacy.Client
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
                 GameLog.Client.UIDetails.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
 
-                _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, INewDiplomacyScreenView>>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: INewDiplomacyScreenView");  // F3-Screen
+                _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, IDiplomacyScreenViewSecond>>());
+                GameLog.Client.UIDetails.DebugFormat("DONE: IDiplomacyScreenViewSecond");  // F3-Screen
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
                 GameLog.Client.UIDetails.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen

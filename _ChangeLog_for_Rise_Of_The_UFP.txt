@@ -1,5 +1,8 @@
 _ChangeLog_for_Rise_Of_The_UFP.txt
 
+2024-07-20;re-arranged System Management: LaborPool now on top + Pop. Indicator + BuildQueue + ShipyardQueue
+2024-07-20;ScienceShips do not gain Research atm, but Research works stable
+2024-05-19;inhabitant system below 81 population are displayed in color SandyBrown for leave out for colonization
 2024-04-13;expanded Encyclopedia to as much entries as possible
 2024-02-24;TechObjectDatabase.xml splitted into 6 files now
 2024-02-24;new sites CTRL+1 (to 0) added ... expected for Ship classes

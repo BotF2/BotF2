@@ -344,7 +344,8 @@ namespace Supremacy.Game
                 //continue;
             }
 
-            Console.WriteLine("Step_1427:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_CoS");
+            //Console.WriteLine("Step_1427:; Turn " + GameContext.Current.TurnNumber + " > " 
+            //    + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_CoS");
 
             _loc = loc;
             _report = report;
@@ -424,7 +425,9 @@ namespace Supremacy.Game
             //    Console.WriteLine("Step_1429:; " + details);
             //}
 
-            Console.WriteLine("Step_1428:; Turn " +GameContext.Current.TurnNumber + ": " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_ShowColony");
+            Console.WriteLine("Step_1428:; Turn " + GameContext.Current.TurnNumber 
+                + "; " + report + "; " + owner + "; " 
+                + priority.ToString() + ";ReportEntry_ShowColony");
 
             if (details == "")
             {
@@ -433,7 +436,7 @@ namespace Supremacy.Game
 
             //if (image != "" && details != "")
             //{
-            //    Console.WriteLine("Step_1431:;empty details text");
+            //    Console.WriteLine("Step_1439:;empty details text");
             //}
 
             _colonyID = colony.ObjectID;
@@ -474,7 +477,7 @@ namespace Supremacy.Game
             _image = image;
             _priority = priority;
 
-            Console.WriteLine("Step_1423:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_ShowDiplo");
+            //Console.WriteLine("Step_1423:; " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_ShowDiplo");
         }
         //public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
         public override SitRepCategory Categories => SitRepCategory.SpecialEvent;
@@ -525,7 +528,7 @@ namespace Supremacy.Game
 
             //if (image != "" && details != "")
             //{
-            //    Console.WriteLine("Step_1431:;empty details text");
+            //    Console.WriteLine("Step_1438:;empty details text");
             //}
 
             _colonyID = colony.ObjectID;
@@ -2778,10 +2781,10 @@ namespace Supremacy.Game
         {
             get
             {
-                ResearchField field = Application.Field;
-                if (field != null)
+                ResearchField researchField = Application.Field;
+                if (researchField != null)
                 {
-                    return field.Image;
+                    return researchField.Image;
                 }
 
                 return base.DetailImage;

@@ -36,6 +36,8 @@ using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Services;
 using Supremacy.Resources;
+using Supremacy.Scripting.Ast;
+using Supremacy.Universe;
 using Supremacy.Utility;
 using Supremacy.VFS;
 using System;
@@ -401,6 +403,68 @@ namespace Supremacy.Client
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
         }
+
+        //public string Do_2_Digit(string v)
+        //{
+        //    while (v.Length < 2)
+        //    {
+        //        v = " " + v;
+        //    }
+        //    return v;
+        //}
+
+        //public string Do_3_Digit(string v)
+        //{
+        //    while (v.Length < 3)
+        //    {
+        //        v = " " + v;
+        //    }
+        //    return v;
+        //}
+
+        //public string Do_4_Digit(string v)
+        //{
+        //    while (v.Length < 4)
+        //    {
+        //        v = " " + v;
+        //    }
+        //    return v;
+        //}
+
+        //public string Do_5_Digit(string v)
+        //{
+        //    while (v.Length < 5)
+        //    {
+        //        v = " " + v;
+        //    }
+        //    return v;
+        //}
+
+        //public string LocationString(string _in_text) // changes 1 numeric to 2 numeric
+        //{
+        //    string _out_text = _in_text.ToString();
+
+        //    string aT = "";
+        //    string bT = "";
+
+
+        //    if (_out_text.Length != 8)
+        //    {
+        //        int intComma = _out_text.IndexOf(',');
+        //        aT = _out_text.Substring(1, intComma-1);
+        //        bT = _out_text.Substring(intComma+2,2);
+
+        //        if (aT.Length == 1) aT = " " + aT;
+
+        //        bT = bT.Replace(")","");
+        //        if (bT.Length == 1) 
+        //            bT = " " + bT;
+
+        //        _out_text = "("+aT+", "+bT+")";
+        //    }
+
+        //    return _out_text;
+        //}
 
         private static void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {

@@ -241,6 +241,10 @@ namespace Supremacy.Tech
             {
                 ProductionFacilityDesign localFacilityType = colony.GetFacilityType(productionCategory);
 
+                _text = "Step_6125: GetBuildProjects...productionCategory= " + productionCategory;
+                //Console.WriteLine(_text);
+                //GameLog.Client.GameData.ErrorFormat(_text);
+
                 if (colony.GetTotalFacilities(productionCategory) > 0)
                 {
                     bool keepLooking = true;
@@ -307,6 +311,7 @@ namespace Supremacy.Tech
                     }
 
                 NextCategory:
+                    //;
                     continue;
                 }
 

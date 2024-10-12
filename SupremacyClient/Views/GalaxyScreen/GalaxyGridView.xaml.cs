@@ -1,17 +1,21 @@
-﻿using Microsoft.Practices.Unity;
+﻿//using Microsoft.Practices.Composite.Logging;
+using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
 using Supremacy.Client.Input;
 using Supremacy.Client.Views.GalaxyScreen;
+using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
+using Supremacy.Tech;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -43,6 +47,12 @@ namespace Supremacy.Client.Views
         private readonly string _text;
         private string restriction_text;
         private string _ownerText;
+        private bool writeDirectly = true;
+//#pragma warning disable IDE0051 // Remove unused private members
+        //private readonly IMusicPlayer _musicPlayer;
+        //private readonly ISoundPlayer _soundPlayer;
+//#pragma warning restore IDE0051 // Remove unused private members
+
 
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
@@ -54,7 +64,7 @@ namespace Supremacy.Client.Views
             InitializeComponent();
 
             _text = "Step_2101:; GalaxyGridView Initialize...";
-            Console.WriteLine(_text);
+            if (writeDirectly) Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
             Loaded += delegate
@@ -92,7 +102,7 @@ namespace Supremacy.Client.Views
             DebugCommands.F06_Screen.RegisterCommand(_f06_ScreenCommand);
 
             _text = "Step_2102:; GalaxyGridView Initialize done...";
-            Console.WriteLine(_text);
+            if (writeDirectly) Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
         }
 
@@ -204,7 +214,7 @@ namespace Supremacy.Client.Views
 
             SectorMap map = _appContext.CurrentGame.Universe.Map;
 
-            string _text = timeString + "_Turn_"+ _appContext.CurrentGame.TurnNumber + ".txt" + newline;
+            string _text = timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + newline;
             _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   "
                 + newline
                 + newline
@@ -242,10 +252,10 @@ namespace Supremacy.Client.Views
                         if (map[x, y].System.StarType == StarType.Wormhole) type = "w";
                     }
                     _text += owner + type + " ";
-                    //Console.WriteLine(_text);
+                    //if (writeDirectly) Console.WriteLine(_text);
                 }
                 _text += newline;
-                //Console.WriteLine(_text);
+                //if (writeDirectly) Console.WriteLine(_text);
             }
 
             _text +=
@@ -280,15 +290,15 @@ namespace Supremacy.Client.Views
             if (GameContext.Current != null)
             {
 
-                foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
+                foreach (CivilizationManager civM in GameContext.Current.CivilizationManagers)
                 {
-                    string _x_text = DoDigit(civManager.HomeColony.Location.X.ToString());
-                    string _y_text = DoDigit(civManager.HomeColony.Location.Y.ToString());
-                    _text += civManager.Civilization.HomeQuadrant + "-Quadrant"
+                    string _x_text = GameEngine.Do_2_Digit(civM.HomeColony.Location.X.ToString());
+                    string _y_text = GameEngine.Do_2_Digit(civM.HomeColony.Location.Y.ToString());
+                    _text += civM.Civilization.HomeQuadrant + "-Quadrant"
                         + " ; " + _x_text
                         + " ; " + _y_text
-                        + " ; " + civManager.Civilization.HomeSystemName
-                        + " ; " + civManager.Civilization
+                        + " ; " + civM.Civilization.HomeSystemName
+                        + " ; " + civM.Civilization
                         + newline;
                     _text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
                 }
@@ -298,47 +308,86 @@ namespace Supremacy.Client.Views
                 {
                     String _col =
                         /*";Colony;" */
-                        /*"; " + */item.Location
+                        /*"; " + */GameEngine.LocationString(item.Location.ToString())
                         + "; " + item.ObjectID + ";Colony"
                         + ";" + item.Name
                         + ";" + item.Owner
 
                         ;
 
-                    _text += newline
-                        + "Step_4361:"
-                        + "; " + item.Location
+                    int pf = item.Facilities_Total1_Food
+                            + item.Facilities_Total2_Industry
+                            + item.Facilities_Total3_Energy
+                            + item.Facilities_Total4_Research
+                            + item.Facilities_Total5_Intelligence
+
+                        ;
+
+                    _text += newline + timeString + newline
+                        + "Step_4363:"
+                        + "; " + GameEngine.LocationString(item.Location.ToString())
                         + "; " + item.ObjectID
                         + ";Colony"
-                        + ";" + item.Name
-                        + ";" + item.Owner
+                        + "; " + item.Name
+                        + "; " + item.Owner
                         + ";pop;" + item.Population
-                        + ";max;" + item.MaxPopulation
+                        + ";max; " + item.Population_Max
+                        + ";Fac; " + pf
 
 
                         + ";mor;" + item.Morale
                         + ";FoodR;" + item.FoodReserves
-                        + ";facF;" + item.Facilities_Active1_Food + ";of;" + item.Facilities_Total1_Food
-                        + ";facI;" + item.Facilities_Active2_Industry + ";of;" + item.Facilities_Total2_Industry
-                        + ";facE;" + item.Facilities_Active3_Energy + ";of;" + item.Facilities_Total3_Energy
-                        + ";facR;" + item.Facilities_Active4_Research + ";of;" + item.Facilities_Total4_Research
-                        + ";facI;" + item.Facilities_Active5_Intelligence + ";of;" + item.Facilities_Total5_Intelligence
+                        + ";facF;" + item.Facilities_Active1_Food + ";of; " + item.Facilities_Total1_Food
+                        + "; facI;" + item.Facilities_Active2_Industry + ";of; " + item.Facilities_Total2_Industry
+                        + "; facE;" + item.Facilities_Active3_Energy + ";of; " + item.Facilities_Total3_Energy
+                        + "; facR;" + item.Facilities_Active4_Research + ";of; " + item.Facilities_Total4_Research
+                        + "; facI;" + item.Facilities_Active5_Intelligence + ";of; " + item.Facilities_Total5_Intelligence
 
 
-                        + ";since Turn;" + item.TurnCreated
+                        //+ ";since Turn;" + item.TurnCreated
 
                                                     + newline;
-                    //Console.WriteLine(_text);
+                    //if (writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
                     ILookup<MapLocation, StarSystem> systemLocationLookup = GameContext.Current.Universe.Objects.OfType<StarSystem>().ToLookup(o => o.Location);
 
+                    //_text += newline;
+                    //ILookup<MapLocation, GameObject> gameObjectLocationLookup = GameContext.Current.Universe.Objects.OfType<GameObject>().ToLookup(o => o.GetType() != Type.EmptyTypes);
+                    //int pf = item.Facilities_Total1_Food
+                    //        + item.Facilities_Total2_Industry
+                    //        + item.Facilities_Total3_Energy
+                    //        + item.Facilities_Total4_Research
+                    //        + item.Facilities_Total5_Intelligence
+                        
+                    //    ;
+                    //foreach (var item2 in pf)
+                    //{
+                        //_text += "Step_4366:; "
+                        //    + _col
+                        //    //+ "; " + pf.IsActive + "_for_Active"
+                        //    //+ "; Building"
+                        //    //+ "; " + pf.ObjectID
+                        //    + "; TotalFacilities=; " + pf
+
+                        //    //+ "; since Turn;" + pf.TurnCreated
+
+                        //    + newline;
+
+                        //if (writeDirectly) Console.WriteLine(_text);
+
+                    //}
+
+                    //for (int i = 0;i < item.TotalFacilities.Count(); i++)
+                    //{
+
+                    //}
 
                     //_text += newline;
                     ILookup<MapLocation, Building> buildingLocationLookup = GameContext.Current.Universe.Objects.OfType<Building>().ToLookup(o => o.Location);
                     foreach (Building building in buildingLocationLookup[item.Location])
                     {
-                        _text += "Step_4366:; "
+                        _text += "Step_4367:; "
                             + _col
                             + "; " + building.IsActive + "_for_Active"
                             + "; Building"
@@ -349,27 +398,107 @@ namespace Supremacy.Client.Views
 
                             + newline;
 
-                        //Console.WriteLine(_text);
+                        //if (writeDirectly) Console.WriteLine(_text);
 
                     }
 
+                    // just for info
+                    var Project_Available = TechTreeHelper
+                        .GetBuildProjects(item).ToList()
+                        //.OfType<StructureBuildProject>()
+                        //.Where(p =>
+                        //        p.GetCurrentIndustryCost() > 0
+                        //        && EnumHelper
+                        //            .GetValues<ResourceType>()
+                        //            .Where(availableResources.ContainsKey)
+                        //            .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
+                        //.OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault()
+                        ;
+                    foreach (var item2 in Project_Available)
+                    {
+                        _text += "Step_4235:; " + _col + ";  Available to build"
+                                //+ " on; " + item.Name
+                                //+ "; " + item.Owner
+
+                                + "; needs " + GameEngine.Do_2_Digit(item2.TurnsRemaining.ToString()) + " turns"
+                                + "; costs= " + GameEngine.Do_5_Digit(item2.GetCurrentIndustryCost().ToString())
+                                + "; " + item2.BuildDesign.Key
+                                + "; and Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
+                                + "; Dur=" + item2.GetCurrentResourceCost(ResourceType.Duranium)
+                                + "; Dil=" + item2.GetCurrentResourceCost(ResourceType.Dilithium)
+                                + newline
+                                ;
+                        //if (writeDirectly) Console.WriteLine(_text);
+
+                    }
+
+                    _text += "Step_7605:; " + _col
+                           
+                            + "; Stockpile Deu= " + item.NetDeuterium
+                            + "; Dur= " + item.NetDuranium
+                            + "; Dil= " + item.NetDilithium
+                            + "; Credits= " + item.CreditsEmpire
+                            + newline;
+
+                    _text += "Step_4369:"
+                            + "; " + GameEngine.LocationString(item.Location.ToString())
+                            + "; " + item.ObjectID
+                            + ";Colony"
+                            + "; " + item.Name
+                            + "; " + item.Owner
+                            + ";pop;" + item.Population
+                            + ";max; " + item.Population_Max
+                            + ";Fac; " + pf
+
+                            + ";mor;" + item.Morale
+                            + ";FoodR;" + item.FoodReserves
+                            + ";facF;" + item.Facilities_Active1_Food + ";of; " + item.Facilities_Total1_Food
+                            + "; facI;" + item.Facilities_Active2_Industry + ";of; " + item.Facilities_Total2_Industry
+                            + "; facE;" + item.Facilities_Active3_Energy + ";of; " + item.Facilities_Total3_Energy
+                            + "; facR;" + item.Facilities_Active4_Research + ";of; " + item.Facilities_Total4_Research
+                            + "; facI;" + item.Facilities_Active5_Intelligence + ";of; " + item.Facilities_Total5_Intelligence
+
+                            //+ ";since Turn;" + item.TurnCreated
+                            + newline;
+
+                    if (item.BuildSlots[0].HasProject)
+                    {
+                        _text += "Step_7607:; "
+                                + _col
+                                + "; IS BUILDING > " + item.BuildSlots[0].Project.BuildDesign
+                                + " > needs " + item.BuildSlots[0].Project.TurnsRemaining + " turns or a BUY"
+
+                                + newline;
+                    }
+                    else
+                    {
+                        _text += "Step_7602:; "
+                            + _col
+                            + "; is building > * NOTHING * or just finished this turn" + newline;
+                    }
+
+                    // not necessary
+                    //_text += "Step_7609:; "
+                    //        + _col
+                    //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + newline;
                     foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
                     {
                         _text += "Step_7608:; "
                             + _col
-                            + "; BuildQueue - Turns needed= " + buildQueueItem.TurnsRemaining.ToString()
-                            + " ; for; " + buildQueueItem.Description
+                            + "; BUILDQUEUE  > " + buildQueueItem.Description + " > Turns needed= " + buildQueueItem.TurnsRemaining.ToString()
+                            //+ " ; for; " + 
 
-//+ slot.Project.Location
-//+ " > Slot= " + slot.SlotID
-//+ " at " + slot.Shipyard.Name
-//+ " " + 
-//+ " > " + _percent
-//+ " done for " + _design
-+ newline;
-                        //Console.WriteLine(_text);
+                            //+ slot.Project.Location
+                            //+ " > Slot= " + slot.SlotID
+                            //+ " at " + slot.Shipyard.Name
+                            //+ " " + 
+                            //+ " > " + _percent
+                            //+ " done for " + _design
+                            + newline;
+                        //if (writeDirectly) Console.WriteLine(_text);
                         //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
+                    //if (writeDirectly) Console.WriteLine(_text);
 
                     if (item.Shipyard != null)
                     {
@@ -397,7 +526,7 @@ namespace Supremacy.Client.Views
                                         + " done for " + _design
                                         + " at " + slot.Shipyard.Name
                                         + newline;
-                                    //Console.WriteLine(_text);
+                                    //if (writeDirectly) Console.WriteLine(_text);
                                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                                 }
                                 else
@@ -409,7 +538,7 @@ namespace Supremacy.Client.Views
                                         + " > " + _percent
                                         + " done for " + _design
                                         + newline;
-                                    //Console.WriteLine(_text);
+                                    //if (writeDirectly) Console.WriteLine(_text);
                                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                                 }
                             }
@@ -423,7 +552,7 @@ namespace Supremacy.Client.Views
                                      //+ " > " + _percent
                                      //+ " done for " + _design
                                      + newline;
-                                //Console.WriteLine(_text);
+                                //if (writeDirectly) Console.WriteLine(_text);
                                 //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                             };
                         }
@@ -436,12 +565,13 @@ namespace Supremacy.Client.Views
 
 
                 }
-
+                if (writeDirectly) Console.WriteLine(_text);
                 _text += newline;
 
 
 
-                IEnumerable<Ship> ships = GameContext.Current.Universe.Objects.OfType<Ship>();
+                IEnumerable<Ship> ships = GameContext.Current.Universe.Objects.OfType<Ship>().OrderBy(s => s.OwnerID);
+
                 foreach (Ship item in ships)
                 {
                     if (item.Owner.Key != _ownerText)
@@ -449,7 +579,7 @@ namespace Supremacy.Client.Views
                     _ownerText = item.Owner.Key;
 
                     _text += "Step_4381:"
-                            + "; " + item.Location
+                            + "; " + GameEngine.LocationString(item.Location.ToString())
                             + "; Ship"
 
                             + "; " + item.Owner.Key
@@ -470,7 +600,7 @@ namespace Supremacy.Client.Views
 
                                                         + newline;
                     //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                    //Console.WriteLine(_text);
+                    //if (writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 }
@@ -482,7 +612,7 @@ namespace Supremacy.Client.Views
                 foreach (Station item in stations)
                 {
                     _text += "Step_4391:"
-                            + "; " + item.Location
+                            + "; " + GameEngine.LocationString(item.Location.ToString())
                             + "; Station"
 
                             + "; " + item.Owner
@@ -510,7 +640,7 @@ namespace Supremacy.Client.Views
                 foreach (Shipyard item in shipyards)
                 {
                     _text += "Step_4391:"
-                            + "; " + item.Location
+                            + "; " + GameEngine.LocationString(item.Location.ToString())
                             + "; Shipyard"
 
                             + "; " + item.Owner
@@ -597,7 +727,7 @@ namespace Supremacy.Client.Views
                 foreach (Civilization item in civs)
                 {
                     _text += "Step_4346:"
-                            //+ "; " + item.Location
+                            //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
                             + "; Civ"
                             + "; " + item.Name
                             + "; " + item.CivilizationType
@@ -625,7 +755,7 @@ namespace Supremacy.Client.Views
                 foreach (CivilizationManager item in civMans)
                 {
                     _text += "Step_4348:"
-                            //+ "; " + item.Location
+                            //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
                             + "; CivMan"
                             + "; " + item.Civilization
                             + "; ID=" + item.CivilizationID
@@ -642,7 +772,7 @@ namespace Supremacy.Client.Views
                     foreach (var item in GameContext.Current.ScriptedEvents)
                     {
                         _text += "Step_4349:"
-                                //+ "; " + item.Location
+                                //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
                                 + "; CivMan"
                                 + "; " + item.EventID
                                                             //+ "; " + item.Civilization
@@ -1072,7 +1202,7 @@ namespace Supremacy.Client.Views
 
             }
 
-            Console.WriteLine(_text);   // Output here as well
+            if (writeDirectly) Console.WriteLine(_text);   // Output here as well
 
             string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_MapData.txt");
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
@@ -1081,7 +1211,7 @@ namespace Supremacy.Client.Views
                 streamWriter.Write(_text);
                 streamWriter.Close();
                 _text = "output of _MapData done to " + file;
-                Console.WriteLine(_text);
+                if (writeDirectly) Console.WriteLine(_text);
             }
 
             file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_ShipNames.csv");
@@ -1091,7 +1221,7 @@ namespace Supremacy.Client.Views
                 streamWriter.Write(shipnames_text);
                 streamWriter.Close();
                 _text = "output of _ShipNames done to " + file;
-                Console.WriteLine(_text);
+                if (writeDirectly) Console.WriteLine(_text);
             }
 
             file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_StationNames.csv");
@@ -1101,19 +1231,31 @@ namespace Supremacy.Client.Views
                 streamWriter.Write(stationnames_text);
                 streamWriter.Close();
                 _text = "output of _StationNames done to " + file;
-                Console.WriteLine(_text);
+                if (writeDirectly) Console.WriteLine(_text);
             }
+
+            System.Media.SoundPlayer wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav");
+            wav_player.Play();
+            
+
         }
 
-        private string DoDigit(string v)
-        {
-            while (v.Length < 2) 
-            {
-                v = " " + v;
-            } 
-                return v; 
-            
-        }
+        //private string LocationString(MapLocation loc) // changes 1 numeric to 2 numeric
+        //{
+        //    string _locationString = loc.ToString();
+
+        //    return _locationString;
+        //}
+
+        //private string Do_2_Digit(string v)
+        //{
+        //    while (v.Length < 2)
+        //    {
+        //        v = " " + v;
+        //    }
+        //    return v;
+
+        //}
 
         private static string CheckDateString(string _string)
         {

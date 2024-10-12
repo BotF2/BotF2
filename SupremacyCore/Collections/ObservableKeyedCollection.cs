@@ -109,7 +109,7 @@ namespace Supremacy.Collections
 
                 if (key.ToString() == "-1")
                 {
-                    _text = "Step_0875: Searched Key was -1, sometimes this crashes";
+                    _text = "Step_0875:; Searched Key was -1, sometimes this crashes";
                     //if (_console) 
                     Console.WriteLine(_text);
                     GameLog.Client.GeneralDetails.DebugFormat(_text);
@@ -150,7 +150,7 @@ namespace Supremacy.Collections
                 }
                 // avoids crashes
 
-                _text = "Step_0878: Key not found >> " + key.ToString();
+                _text = "Step_0878:; Key not found >> key" + key.ToString();
                 Console.WriteLine(_text);
                 GameLog.Core.General.ErrorFormat(_text);
 

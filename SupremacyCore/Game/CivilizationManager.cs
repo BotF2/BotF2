@@ -14,7 +14,6 @@ using Supremacy.Entities;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
-using Supremacy.Utility;
 
 using System;
 using System.Collections.Generic;
@@ -74,16 +73,16 @@ namespace Supremacy.Game
         private int _shipFastAttackAvailable;
         private int _shipCruiserNeeded;
         private int _shipCruiserOrdered;
-        private int _shipCruiserAvailable; 
+        private int _shipCruiserAvailable;
         private int _shipHeavyCruiserNeeded;
         private int _shipHeavyCruiserOrdered;
-        private int _shipHeavyCruiserAvailable; 
+        private int _shipHeavyCruiserAvailable;
         private int _shipStrikeCruiserNeeded;
         private int _shipStrikeCruiserOrdered;
-        private int _shipStrikeCruiserAvailable; 
+        private int _shipStrikeCruiserAvailable;
         private int _shipCommandNeeded;
         private int _shipCommandOrdered;
-        private int _shipCommandAvailable; 
+        private int _shipCommandAvailable;
         //private int _buyCostLastTurn;
         private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
@@ -98,6 +97,9 @@ namespace Supremacy.Game
         private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
         private MapLocation _rendezvousplace;
+#pragma warning disable IDE0052 // Remove unread private members
+        private Sector _rendezvousSector;
+#pragma warning restore IDE0052 // Remove unread private members
         private int _seatOfGovernmentId = -1;
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
@@ -796,7 +798,7 @@ namespace Supremacy.Game
                         CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[LocalPlayer.CivID];
                         if (playerCivManager != null && rep.Owner.ToString() == playerCivManager.ToString())
                         {
-                            _text = "Step_3333:; SitRep Turn "
+                            _text = "Step_3337:; SitRep Turn "
                                 + GameContext.Current.TurnNumber
                                 + " Cat= " + rep.Categories
                                 + " " + rep.Priority
@@ -809,18 +811,20 @@ namespace Supremacy.Game
                                 ;
 
                             Console.WriteLine(_text);
-                            GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                                "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
+                            //GameLog.Core.SitReps.DebugFormat(_text);
+                            //GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                            //     "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
 
                         }
                     }
 
                 }
                 _ = _sitRepEntries.Distinct();
-                //_sitRepEntries.OrderBy(o => o.SummaryText);
+                _sitRepEntries.OrderBy(o => o.SummaryText);
                 return _sitRepEntries;
             }
         }
+
 
         public List<Civilization> SpiedCivList => _spiedCivList;
 
@@ -977,15 +981,55 @@ namespace Supremacy.Game
             }
         }
 
-        public MapLocation RendezvousPlace
+        public MapLocation RendezvousLocation
         {
             get
             {
+                if (_rendezvousplace == null || _rendezvousplace.ToString() == "(0, 0)")
+                {
+                    _rendezvousplace = HomeSystem.Location;
+                    _text = "Step_3338:; Turn "
+                            + GameContext.Current.TurnNumber
+                            + " > RendezvousLocation for " + this.Civilization
+                            + " is set to " + _rendezvousplace.ToString()
+                            ;
+
+                    Console.WriteLine(_text);
+                }
                 return _rendezvousplace;
             }
             internal set
             {
+
                 _rendezvousplace = value;
+
+            }
+        }
+
+        public Sector RendezvousSector
+        {
+            get
+            {
+                Sector _rendezvousSector = new Sector(RendezvousLocation);
+                //new Sector()
+                if (_rendezvousSector == null || _rendezvousSector.Location.ToString() == "{(0, 0)}")
+                {
+                    _rendezvousSector = this.HomeSystem.Sector;
+                    _text = "Step_3339:; "
+                            + GameContext.Current.TurnNumber
+                            + " _rendezvousSector for " + this.Civilization
+                            + " is set to " + _rendezvousSector.ToString()
+                            + " ( HomeSystem ) "
+                            ;
+
+                    Console.WriteLine(_text);
+                }
+                return _rendezvousSector;
+            }
+            internal set
+            {
+
+                _rendezvousSector = value;
 
             }
         }
@@ -1021,13 +1065,76 @@ namespace Supremacy.Game
 
         #region Methods
 
-        public void UpDateSpiedList(List<Civilization> civList)
+        public void UpdateSpiedList(List<Civilization> civList)
         {
             _spiedCivList.AddRange(civList);
             //foreach (var item in civList)
             //{
             //    GameLog.Client.Intel.DebugFormat("Updated the spied list = {0}", item);
             //}
+        }
+
+        public void ShipsOrdered_Check()
+        {
+
+            _shipColonyNeeded = 0;
+            _shipConstructionNeeded = 0;
+            _shipMedicalNeeded = 0;
+            _shipSpyNeeded = 0;
+            _shipDiplomaticNeeded = 0;
+            _shipScienceNeeded = 0;
+            _shipScoutOrdered = 0;
+            _shipFastAttackNeeded = 0;
+            _shipCruiserNeeded = 0;
+            _shipStrikeCruiserNeeded = 0;
+            _shipHeavyCruiserNeeded = 0;
+            _shipCommandNeeded = 0;
+            _shipTransportNeeded = 0;
+
+            foreach (var colony in Colonies)
+            {
+                if (colony.Shipyard == null) continue;
+                if (colony.Shipyard.BuildQueue.Count == 0) continue;
+                foreach (var item in colony.Shipyard.BuildQueue)
+                {
+                    if (item.Project.BuildDesign.Key.Contains("COLONY")) _shipColonyNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("CONSTRUCTION")) _shipConstructionNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("MEDICAL")) _shipMedicalNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("SPY")) _shipSpyNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("DIPLO")) _shipDiplomaticNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("SCIENCE")) _shipScienceNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("SCOUT")) _shipScoutOrdered += 1;
+                    if (item.Project.BuildDesign.Key.Contains("DESTROYER") || item.Project.BuildDesign.Key.Contains("FRIGATE")) _shipFastAttackNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("_CRUISER_")) _shipCruiserNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("STRIKE_CRUISER")) _shipStrikeCruiserNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("HEAVY_CRUISER")) _shipHeavyCruiserNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("COMMAND")) _shipCommandNeeded += 1;
+                    if (item.Project.BuildDesign.Key.Contains("TRANSPORT")) _shipTransportNeeded += 1;
+
+                }
+
+            }
+            Report_Ships_Demand();
+        }
+
+        public void Report_Ships_Demand()
+        {
+            _text = newline + "Step_7456:; Ships ( Available / Needed / Ordered ) for " + Civilization + " "
+    + newline + ShipColonyAvailable + " - " + ShipColonyNeeded + " - " + ShipColonyOrdered + " > Colonizer"
+    + newline + ShipConstructionAvailable + " - " + ShipConstructionNeeded + " - " + ShipConstructionOrdered + " > Constructor"
+    + newline + ShipMedicalAvailable + " - " + ShipMedicalNeeded + " - " + ShipMedicalOrdered + " > Medical Ship"
+    + newline + ShipSpyAvailable + " - " + ShipSpyNeeded + " - " + ShipSpyOrdered + " > Spy Ship"
+    + newline + ShipDiplomaticAvailable + " - " + ShipDiplomaticNeeded + " - " + ShipDiplomaticOrdered + " > Diplomatic Ship"
+    + newline + ShipScienceAvailable + " - " + ShipScienceNeeded + " - " + ShipScienceOrdered + " > Science Ship"
+    + newline + ShipScoutAvailable + " - " + ShipScoutNeeded + " - " + ShipScoutOrdered + " > Scout Ship"
+    + newline + ShipFastAttackAvailable + " - " + ShipFastAttackNeeded + " - " + ShipFastAttackOrdered + " > Fast Attack Ship"
+    + newline + ShipCruiserAvailable + " - " + ShipCruiserNeeded + " - " + ShipCruiserOrdered + " > Cruiser"
+    + newline + ShipHeavyCruiserAvailable + " - " + ShipHeavyCruiserNeeded + " - " + ShipHeavyCruiserOrdered + " > HeavyCruiser"
+    + newline + ShipStrikeCruiserAvailable + " - " + ShipStrikeCruiserNeeded + " - " + ShipStrikeCruiserOrdered + " > StrikeCruiser"
+    + newline + ShipCommandAvailable + " - " + ShipCommandNeeded + " - " + ShipCommandOrdered + " > Command Ship"
+    + newline + ShipTransportAvailable + " - " + ShipTransportNeeded + " - " + ShipTransportOrdered + " > Transport Ship Fleet"
+    ;
+            if (true) Console.WriteLine(_text);
         }
 
         /// <summary>

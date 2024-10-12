@@ -42,6 +42,7 @@ namespace Supremacy.Universe
 
         [NonSerialized]
         public string _text;
+        public string _colony_Full_Report;
 
         //private string _text;
         //private readonly string newline = Environment.NewLine;
