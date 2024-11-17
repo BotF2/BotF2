@@ -1472,7 +1472,8 @@ namespace Supremacy.WCF
 
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
-            Console.WriteLine("Step_3013:; " + assets[0].Sector.Location + " > OnCombatOccurring ... populating _combatEngine ");
+
+            //Console.WriteLine("Step_3013:; " + assets[0].Sector.Location + " > OnCombatOccurring ... populating _combatEngine ");
             _combatEngine = new AutomatedCombatEngine(
                 assets,
                 SendCombatUpdateCallback,
@@ -1583,8 +1584,8 @@ namespace Supremacy.WCF
         //}
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
-            _text = "Step_3009:; SendCombatUpdateCallback ...";
-            Console.WriteLine(_text);
+            _text = "Step_3007:; SendCombatUpdateCallback ...";
+            //Console.WriteLine(_text);
             //GameLog.Client.GameData.DebugFormat(_text);
 
             GameContext.PushThreadContext(_game);
@@ -1607,6 +1608,7 @@ namespace Supremacy.WCF
                     return;
                 }
 
+                // civ 888 = "Only Return Fire"
                 Civilization _target = new Civilization
                 {
                     ShortName = "Only Return Fire",

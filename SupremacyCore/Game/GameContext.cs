@@ -151,7 +151,7 @@ namespace Supremacy.Game
         #region Instance Members
         #region Fields
         private int _nextObjectId;
-        private int _turnNumber = 0;
+        private int _turnnumber = 0;
         private GameOptions _options;
         private GameMod _gameMod;
         private CivDatabase _civilizations;
@@ -195,7 +195,7 @@ namespace Supremacy.Game
             writer.WriteOptimized(_nextObjectId);
             
             
-            writer.WriteOptimized((ushort)_turnNumber);
+            writer.WriteOptimized((ushort)_turnnumber);
             
             
             writer.WriteObject(_options);
@@ -258,65 +258,85 @@ namespace Supremacy.Game
                 GameLog.Core.SaveLoad.DebugFormat(_text);
 
                 IsMultiplayerGame = reader.ReadBoolean();
-                Console.WriteLine("Step_3610:; already read  IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
+                _text = "Step_3610:; already read  IsMultiplayerGame..... > " + IsMultiplayerGame.ToString();
+                Console.WriteLine(_text);
                 GameLog.Core.SaveLoad.DebugFormat("Step_3611: IsMultiplayerGame = {0}", IsMultiplayerGame);
 
                 _nextObjectId = reader.ReadOptimizedInt32();
-                Console.WriteLine("Step_3630:; already read  _nextObjectId..... > " + _nextObjectId);
+                _text = "Step_3630:; already read  _nextObjectId..... > " + _nextObjectId;
+                Console.WriteLine(_text);
 
-                _turnNumber = reader.ReadOptimizedUInt16();
-                Console.WriteLine("Step_3640:; already read _turnnumber..... > " + _turnNumber);
-                GameLog.Core.SaveLoad.DebugFormat("Step_3641: _turnnumber = {0}", _turnNumber);
+                _turnnumber = reader.ReadOptimizedUInt16();
+                _text = "Step_3640:; already read _turnnumber..... > " + _turnnumber;
+                Console.WriteLine(_text);
+                GameLog.Core.SaveLoad.DebugFormat("Step_3641: _turnnumber = {0}", _turnnumber);
 
                 _options = reader.Read<GameOptions>();
-                Console.WriteLine("Step_3660:; already read _options.....");
+                _text = "Step_3660:; already read _options.....";
+                Console.WriteLine(_text);
 
                 _gameMod = reader.Read<GameMod>();
-                Console.WriteLine("Step_3680:; already read _gameMod.....");
+                _text = "Step_3680:; already read _gameMod.....";
+                Console.WriteLine(_text);
 
                 _civilizations = reader.Read<CivDatabase>();
-                Console.WriteLine("Step_3710:; already read _civilizations..... > " + _civilizations.Count);
+                _text = "Step_3710:; already read _civilizations..... > " + _civilizations.Count;
+                Console.WriteLine(_text);
                 // CivDatabase = basic Civs (like ShortName etc)
 
                 _civManagers = reader.Read<CivilizationManagerMap>();
-                Console.WriteLine("Step_3740:; already read _civManagers..... > " + _civManagers.Count);
+                _text = "Step_3740:; already read _civManagers..... > " + _civManagers.Count;
+                Console.WriteLine(_text);
                 // _civManagers = basic Civs (like ShortName etc)
 
                 _races = reader.Read<RaceDatabase>();
-                Console.WriteLine("Step_3780:; already read _races..... > " + _races.Count);
+                _text = "Step_3780:; already read _races..... > " + _races.Count;
+                Console.WriteLine(_text);
 
                 _universe = reader.Read<UniverseManager>();
-                GameLog.Core.SaveLoad.DebugFormat("Step_3810:; already read _universe.....");
+                _text = "Step_3810:; already read _universe.....";
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
 
                 _techDatabase = reader.Read<TechDatabase>();
-                Console.WriteLine("Step_3910:; already read _techDatabase.....");
+                _text = "Step_3910:; already read _techDatabase.....";
+                Console.WriteLine(_text);
 
                 _researchMatrix = reader.Read<ResearchMatrix>();
-                Console.WriteLine("Step_3920:; already read _researchMatrix.....");
+                _text = "Step_3920:; already read _researchMatrix.....";
+                Console.WriteLine(_text);
 
                 _sectorClaims = reader.Read<SectorClaimGrid>();
-                Console.WriteLine("Step_3930:; already read _sectorClaims.....");
+                _text = "Step_3930:; already read _sectorClaims.....";
+                Console.WriteLine(_text);
 
                 _techTrees = reader.Read<TechTreeMap>();
-                Console.WriteLine("Step_3940:; already read _techTrees.....");
+                _text = "Step_3940:; already read _techTrees.....";
+                Console.WriteLine(_text);
 
                 _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
-                Console.WriteLine("Step_3950:; already read _diplomacyData.....");
+                _text = "Step_3950:; already read _diplomacyData.....";
+                Console.WriteLine(_text);
 
                 _agreementMatrix = reader.Read<AgreementMatrix>();
-                Console.WriteLine("Step_3960:; already read _agreementMatrix.....");
+                _text = "Step_3960:; already read _agreementMatrix.....";
+                Console.WriteLine(_text);
 
                 _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
-                Console.WriteLine("Step_3970:; already read _diplomats.....");
+                _text = "Step_3970:; already read _diplomats.....";
+                Console.WriteLine(_text);
 
                 _strategyDatabase = reader.Read<StrategyDatabase>();
-                Console.WriteLine("Step_3980:; already read _strategyDatabase.....");
+                _text = "Step_3980:; already read _strategyDatabase.....";
+                Console.WriteLine(_text);
 
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
-                Console.WriteLine("Step_3985:; already read _scriptedEvents.....");
+                _text = "Step_3985:; already read _scriptedEvents.....";
+                Console.WriteLine(_text);
 
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
-                Console.WriteLine("Step_3990:; already read _diplomacyDatabase.....");
+                _text = "Step_3990:; already read _diplomacyDatabase.....";
+                Console.WriteLine(_text);
 
 
                 FixupDiplomacyData();
@@ -368,17 +388,17 @@ namespace Supremacy.Game
 
             foreach (TechObjectDesign design in _techDatabase)
             {
-                //_text = "Step_0933:; TextDatabase Key= " + design.Key
-                //    + ", Name= " + design.Name
-                //    + ", Description= " + design.Description
-                //    ;
+                _text = "Step_0933:; TextDatabase Key= " + design.Key
+                    + ", Name= " + design.Name
+                    + ", Description= " + design.Description
+                    ;
                 //Console.WriteLine(_text);
                 ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
                 // This is Orbital Batteries Only!!! 
 
 
                 // Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works
-                _text = "Step_0933:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
+                //_text = "Step_0933:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
                 //Console.WriteLine(_text);
 
                 if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out LocalizedTextGroup localizedText))
@@ -508,7 +528,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            _text = "Step_4000:; ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
+            _text = "Step_4001:; ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -527,15 +547,15 @@ namespace Supremacy.Game
         /// <value>The turn number.</value>
         public int TurnNumber
         {
-            get => _turnNumber;
+            get => _turnnumber;
             set
             {
-                if (Equals(_turnNumber, value))
+                if (Equals(_turnnumber, value))
                 {
                     return;
                 }
 
-                _turnNumber = value;
+                _turnnumber = value;
                 OnTurnNumberChanged();
             }
         }
@@ -1435,7 +1455,7 @@ namespace Supremacy.Game
                         }
                     }
                 }
-                _text = "Step_4000:; Starting items are done!";
+                _text = "Step_4002:; Starting items are done!";
                 Console.WriteLine(_text);
                 GameLog.Core.General.InfoFormat(_text);
 

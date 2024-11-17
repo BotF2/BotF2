@@ -1502,7 +1502,7 @@ namespace Supremacy.Game
         public override string SitRepComment { get; set; }
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I")
             , GameContext.Current.Universe.Map[Location].Name
-            , Location
+            , GameEngine.LocationString(Location.ToString())
             , ResourceManager.GetString(ItemType.Name));
 
         public override SitRepPriority Priority { get => _priority; set { } }

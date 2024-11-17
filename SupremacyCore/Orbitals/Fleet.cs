@@ -968,8 +968,9 @@ namespace Supremacy.Orbitals
         protected internal virtual FleetOrder GetDefaultOrder()
         {
             return IsCombatant
-                ? FleetOrders.EngageOrder.Create()
-                : FleetOrders.AvoidOrder.Create();
+                ? FleetOrders.IdleOrder.Create() // old: Engage
+                : FleetOrders.IdleOrder.Create() // old: Avoid
+                ;
         }
 
         /// <summary>

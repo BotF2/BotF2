@@ -295,12 +295,44 @@ namespace Supremacy.Client.Views
                     string _x_text = GameEngine.Do_2_Digit(civM.HomeColony.Location.X.ToString());
                     string _y_text = GameEngine.Do_2_Digit(civM.HomeColony.Location.Y.ToString());
                     _text += civM.Civilization.HomeQuadrant + "-Quadrant"
+                        + " ; " + GameEngine.Do_X_String(19, civM.Civilization.Key).ToString()
                         + " ; " + _x_text
                         + " ; " + _y_text
+
                         + " ; " + civM.Civilization.HomeSystemName
                         + " ; " + civM.Civilization
                         + newline;
                     _text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
+                }
+
+                _text += newline;
+
+                IEnumerable<StarSystem> otherSystems = GameContext.Current.Universe.Objects.OfType<StarSystem>();
+                foreach (StarSystem _sec  in otherSystems)
+                {
+                    string _owner;
+                    if (_sec.Owner == null)
+                    {
+                        _owner = "---- No Owner -----";
+                    }
+                    else
+                    {
+                        _owner = GameEngine.Do_X_String(19, _sec.Owner.Key);
+                    }
+
+                    string _x_text = GameEngine.Do_2_Digit(_sec.Location.X.ToString());
+                    string _y_text = GameEngine.Do_2_Digit(_sec.Location.Y.ToString());
+                    _text +=  "--------------"//Quadrant"
+                        + " ; " + _owner
+                        + " ; " + _x_text
+                        + " ; " + _y_text
+                        + " ; " + _sec.Name
+                        + " ; " + _sec.StarType
+
+                        + newline;
+                    //_text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
+                    
+
                 }
 
                 IEnumerable<Colony> colonies = GameContext.Current.Universe.Objects.OfType<Colony>();
@@ -390,11 +422,12 @@ namespace Supremacy.Client.Views
                         _text += "Step_4367:; "
                             + _col
                             + "; " + building.IsActive + "_for_Active"
+                            + "; since Turn;" + GameEngine.Do_3_Digit(building.TurnCreated.ToString())
                             + "; Building"
                             + "; " + building.ObjectID
                             + "; " + building.Design
 
-                            + "; since Turn;" + building.TurnCreated
+
 
                             + newline;
 

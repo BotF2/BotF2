@@ -48,19 +48,27 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv;
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
+        protected Dictionary<string, int> _civDurabilities; // string in key of civ and int is total fire power of civ
 
         [NonSerialized]
         private string _text;
+        private string _combatEngine_full_Report;
+        private bool _combatWriteDirectly;
         private readonly string _destroyedString = "";
         private readonly string _escapedString = "";
         private readonly string _combatString = "";
         private readonly string _nonCombatString = "";
         private readonly string newline = Environment.NewLine;
         private readonly string blank = " ";
+        private readonly List<Civilization> _friendlyCivs = new List<Civilization> { };
+        private readonly List<Civilization> _otherCivs = new List<Civilization> { };
 
         public bool BattelInOwnTerritory { get; set; }
 
         public int TotalFirepower { get; set; }
+
+        protected List<Civilization> FriendlyCivs => _friendlyCivs; // test 
+        protected List<Civilization> OtherCivs => _otherCivs;  // test 
 
         protected int CombatID { get; }
 
@@ -138,11 +146,23 @@ namespace Supremacy.Combat
                 //GameLog.Core.Combat.DebugFormat("_allSidesStandDown ={0}, IsCombatOver ={1} as HasSurvivingAssets ", _allSidesStandDown, (_assets.Count(assets => assets.HasSurvivingAssets) <= 1));
                 if (_allSidesStandDown)
                 {
+                    Console.WriteLine(newline + "Step_3665:; _combatEngine_full_Report" + newline
+                            + _combatEngine_full_Report + " > end of _combatEngine_full_Report");
+
                     return true;
                 }
 
                 if (_roundNumber > 1)
                 {
+                    //_text = _combat_Automated_full_Report += newline + _text;
+                    Console.WriteLine(newline + "Step_3667:; _combatEngine_full_Report > " /*+ newline */
+                            + _combatEngine_full_Report + " > end of _combatEngine_full_Report"
+                            + newline + newline
+                            + "Step_3668:;  > _combat_Automated_full_Report"
+                            + Combat_Automated_full_Report + newline + " > end of _combat_Automated_full_Report"
+                            + newline
+                            );
+
                     return true;
                 }
 
@@ -155,7 +175,10 @@ namespace Supremacy.Combat
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.Combat.WarnFormat("We changed _assets while counting, error message {0}", e);
+                    _text = "Step_3398:; We changed _assets while counting, error message " + e;
+                    Console.WriteLine(_text);
+                    //_combat_Automated_full_Report += newline + _text;
+                    GameLog.Core.Combat.WarnFormat(_text);
                     System.Threading.Thread.Sleep(1000); // wait for a second
                     if (coutner > 2)
                     {
@@ -167,8 +190,12 @@ namespace Supremacy.Combat
                     //throw;
                 }
 
+                // how ever:
+                //return true;
 
-            }
+
+            } // end of get{}
+
         }
 
         public bool Ready
@@ -190,9 +217,15 @@ namespace Supremacy.Combat
         protected CombatEngine(
             List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
-            NotifyCombatEndedCallback combatEndedCallback)
+            NotifyCombatEndedCallback combatEndedCallback,
+            string combat_Automated_full_Report = null)
         {
-            Console.WriteLine("Step_3012:; protected CombatEngine...");
+            _combatWriteDirectly = true;
+
+            _text = /*newline + */"Step_3012:; protected CombatEngine...";
+            if (_combatWriteDirectly) Console.WriteLine(_text);
+            //_combatEngine_full_Report += newline + _text;
+
             _running = false;
             _runningTargetOne = false;
             _runningTargetTwo = false;
@@ -210,17 +243,20 @@ namespace Supremacy.Combat
             _combatEndedCallback = combatEndedCallback ?? throw new ArgumentNullException(nameof(combatEndedCallback));
             _orders = new Dictionary<int, CombatOrders>(); // in CombatOrders class there is the _orders dictionary of int object orbital id and value enum combat order. Here int is OwnerID
             _empireStrengths = new Dictionary<string, int>();
+            _civDurabilities = new Dictionary<string, int>();
             _targetOneByCiv = new Dictionary<int, CombatTargetPrimaries>();
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
             SyncLock = _orders;
             SyncLockTargetOnes = _targetOneByCiv;
             SyncLockTargetTwos = _targetTwoByCiv;
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            _text += newline + _destroyedString + _escapedString + _combatString +_nonCombatString;  // dummy
+            _text += newline + _destroyedString + _escapedString + _combatString + _nonCombatString;  // dummy
 
-            _sectorString = _assets[0].Location.ToString() + " > ";
-            _text = "Step_3014:; " + _sectorString + "_combatId = " + CombatID + ", _roundNumber = " + _roundNumber; //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
-            Console.WriteLine(_text);
+            _sectorString = GameEngine.LocationString(_assets[0].Location.ToString()) + " > ";
+
+            _text = "Step_3017:; " + _sectorString + "_combatId = " + CombatID + ", _roundNumber = " + _roundNumber; //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
+            if (_combatWriteDirectly) Console.WriteLine(_text);
+            _combatEngine_full_Report += newline + _text;
             GameLog.Core.CombatDetails.DebugFormat(_text);
 
             foreach (CombatAssets civAssets in _assets.ToList())
@@ -244,6 +280,8 @@ namespace Supremacy.Combat
                         CombatWeapon.CreateWeapons(shipStats.Source)));
                 }
             }
+
+            //Combat_Automated_full_Report = combat_Automated_full_Report;
         }
 
         public void SubmitOrders(CombatOrders orders)
@@ -256,9 +294,10 @@ namespace Supremacy.Combat
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
                     _orders[orders.OwnerID] = orders;
-                    _text = "Step_3078: adding orders in dictionary for ID " + orders.OwnerID;
+                    _text = "Step_3078:; adding orders in dictionary for civ.ID " + orders.OwnerID + " > " + _orders[orders.OwnerID].ToString();
                     Console.WriteLine(_text);
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //_combatEngine_full_Report += newline + _text;
+                    //GameLog.Core.CombatDetails.DebugFormat(_text);
                 }
 
                 List<int> outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
@@ -344,18 +383,18 @@ namespace Supremacy.Combat
                 Running = true;
 
                 _assets.ForEach(a => a.CombatID = CombatID); // assign combatID for each asset _assets
-                
+
                 CalculateEmpireStrengths();
 
                 _text = "Step_3193:; _roundNumber = " + _roundNumber
                     + "; AllSidesStandDown() = " + AllSidesStandDown()
                     + "; IsCombatOver = " + IsCombatOver
                     ;
-                //Console.WriteLine(_text);
-                // Detailed_Log(_text);
-                Console.WriteLine(_text);
+                if (_combatWriteDirectly) Console.WriteLine(_text);
+                _combatEngine_full_Report += newline + _text;
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 //_text = "Step_3001: _roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
+
                 RechargeWeapons();
                 ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
 
@@ -363,28 +402,25 @@ namespace Supremacy.Combat
                 {
                     PerformAssimilation();
                 }
-                _text = "Step_3194:; ResolveCombatRound - at PerformRetreat";
-                //Console.WriteLine(_text);
-                // Detailed_Log(_text);
-                Console.WriteLine(_text);
+                _text = "Step_3194:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at PerformRetreat";
+                if (_combatWriteDirectly) Console.WriteLine(_text);
+                _combatEngine_full_Report += newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 PerformRetreat();
 
-                _text = "Step_3196:; ResolveCombatRound - at UpdateOrbitals";
-                //Console.WriteLine(_text);
-                // Detailed_Log(_text);
-                Console.WriteLine(_text);
+                _text = "Step_3196:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at UpdateOrbitals";
+                if (_combatWriteDirectly) Console.WriteLine(_text);
+                _combatEngine_full_Report += newline + _text;
                 GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 UpdateOrbitals();
 
-                _text = "Step_3198:; If IsCombatOver = " + IsCombatOver
-                    + " > then increment round number " + _roundNumber 
+                _text = "Step_3198:; " + _sectorString + "_combatId = " + CombatID + " > If IsCombatOver = " + IsCombatOver
+                    + " > then increment round number " + _roundNumber
                     ;
-                //Console.WriteLine(_text);
-                // Detailed_Log(_text);
-                Console.WriteLine(_text);
+                if (_combatWriteDirectly) Console.WriteLine(_text);
+                _combatEngine_full_Report += newline + _text;
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 //_text = "Step_3001: If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
                 if (!IsCombatOver)
@@ -407,8 +443,9 @@ namespace Supremacy.Combat
             if (IsCombatOver)
             {
                 _text = "Step_3090:; now IsCombatOver = TRUE so invoked AsyncHelper" + blank;
-                Console.WriteLine(_text);
-                GameLog.Core.CombatDetails.DebugFormat(_text);
+                if (_combatWriteDirectly) Console.WriteLine(_text);
+                _combatEngine_full_Report += newline + _text;
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
@@ -424,16 +461,18 @@ namespace Supremacy.Combat
                 // Combat ships
                 if (civAssets.CombatShips.Select(unit => GetCombatOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
-                    _text = "Step_3001:; Combat ships - AllSidesStandDown is false";
-                    Console.WriteLine(_text);
+                    _text = "Step_3091:; Combat ships - AllSidesStandDown is false";
+                    if (_combatWriteDirectly) Console.WriteLine(_text);
+                    _combatEngine_full_Report += newline + _text;
                     GameLog.Core.CombatDetails.DebugFormat(_text);
                     return false;
                 }
                 // Non-combat ships
                 if (civAssets.NonCombatShips.Select(unit => GetCombatOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
-                    _text = "Step_3001:; NON Combat ships - AllSidesStandDown is false";
-                    Console.WriteLine(_text);
+                    _text = "Step_3092:; NON Combat ships - AllSidesStandDown is false";
+                    if (_combatWriteDirectly) Console.WriteLine(_text);
+                    _combatEngine_full_Report += newline + _text;
                     GameLog.Core.CombatDetails.DebugFormat(_text);
 
                     return false;
@@ -441,31 +480,37 @@ namespace Supremacy.Combat
                 // Station
                 if ((civAssets.Station != null) && (GetCombatOrder(civAssets.Station.Source) == CombatOrder.Engage || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Transports || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Rush || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Formation))
                 {
-                    _text = "Step_3001:; Station - AllSidesStandDown is false";
-                    Console.WriteLine(_text);
+                    _text = "Step_3093:; Station - AllSidesStandDown is false";
+                    if (_combatWriteDirectly) Console.WriteLine(_text);
+                    _combatEngine_full_Report += newline + _text;
                     GameLog.Core.CombatDetails.DebugFormat(_text);
 
                     return false;
                 }
             }
-            _text = "Step_3001:; AllSidesStandDown is true";
-            Console.WriteLine(_text);
+            _text = "Step_3098:; AllSidesStandDown is true";
+            if (_combatWriteDirectly) Console.WriteLine(_text);
+            _combatEngine_full_Report += newline + _text;
             GameLog.Core.CombatDetails.DebugFormat(_text);
             return true;
         }
 
         public void SendInitialUpdate()
         {
-            //Console.WriteLine("Step_3005: SendInitialUpdate");
-            _text = "Step_3006:; Called SendInitalUpdate to now call SendUpdates()";
-            Console.WriteLine(_text);
-            GameLog.Core.CombatDetails.DebugFormat(_text);
+
+            _text = "Step_3007:; Called SendInitalUpdate to now call SendUpdates()";
+            if (_combatWriteDirectly) Console.WriteLine(_text);
+            //_combatEngine_full_Report += newline + _text;
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
+
             SendUpdates();
         }
 
         protected void SendUpdates()
         {
-            Console.WriteLine("Step_3010:; SendUpdates");
+            _text = "Step_3010:; SendUpdates"; // Step_3020 is enough
+            //if (_combatWriteDirectly) Console.WriteLine(_text);
+            //_combatEngine_full_Report += newline + _text;
 
             foreach (CombatAssets playerAsset in _assets) // _assets is list of current player (friend) assets so one list for our friends, friend's and other's asset are in asset (not _assets)
             {
@@ -481,43 +526,71 @@ namespace Supremacy.Combat
                 //    GameLog.Core.Combat.DebugFormat("asset of {0} in sector", asset.Owner.Key);
                 //}
                 _text = "Step_3020:; " + _sectorString + "SendUpdates for current friendlyAssets for " + playerAsset.Owner.Key;
-                Console.WriteLine(_text);
+                if (_combatWriteDirectly) Console.WriteLine(_text);
+                //_combatEngine_full_Report += newline + _text; // > less output !!
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 foreach (CombatAssets civAsset in _assets.Distinct().ToList())
                 {
                     //_text = "Step_3001: beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
 
-                    int currentCivStrength = 0;
+                    int _currentCivStrength = 0;
+                    int _civDurability = 0;
 
                     foreach (CombatAssets cs in _assets)  // only combat ships
                     {
-                        //_text = "Step_3001: calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
+                        //_text = "Step_3001: calculating empireStrengths"
+                        //    + " for Ship.Owner=" + cs.Owner.Key
+                        //    + " and Empire= " + civAsset.Owner.Key
+                        //    ;
+                        //if (_combatWriteDirectly) Console.WriteLine(_text);
+                        //_combatEngine_full_Report += newline + _text;
+
                         if (cs.Owner.Key == civAsset.Owner.Key)
                         {
                             //_text = "Step_3001: calculating empireStrengths for Ship.Owner = {0} and Empire {1}", cs.Owner.Key, civ.Owner.ToString());
 
                             foreach (CombatUnit ship in cs.CombatShips)
                             {
-                                currentCivStrength += ship.Firepower;
+                                _currentCivStrength += ship.Firepower;
+                                _civDurability += CalculateStrength_CombatShip_in_CombatEngine(ship);
+                                //_text = "Step_3001: added Firepower into {0} for {1} {2} ({3}) = {4}",
+                                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                            }
+
+                            foreach (CombatUnit ship in cs.NonCombatShips)
+                            {
+                                //_currentCivStrength += ship.Firepower;
+                                _civDurability += CalculateStrength_CombatShip_in_CombatEngine(ship);
                                 //_text = "Step_3001: added Firepower into {0} for {1} {2} ({3}) = {4}",
                                 //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                             }
 
                             if (cs.Station != null)
                             {
-                                currentCivStrength += cs.Station.Firepower;
+                                _currentCivStrength += cs.Station.Firepower;
+                                _civDurability += cs.Station.Firepower + cs.Station.HullStrength + cs.Station.ShieldStrength;
                             }
 
-                            if (!_empireStrengths.Any(e => e.Key == cs.Owner.ToString()))
+                            if (_empireStrengths.Any(e => e.Key.ToString() == cs.Owner.Name.ToString()))
                             {
-                                _empireStrengths.Add(civAsset.Owner.ToString(), currentCivStrength);
+                                ;
+                                // already exist
+                            }
+                            else
+                            {
+                                try { 
+                                _empireStrengths.Add(civAsset.Owner.ToString(), _currentCivStrength);
+                                _civDurabilities.Add(civAsset.Owner.ToString(), _civDurability);
+                            } catch { }
                             }
                         }
                     }
-                    _text = "Step_3030:; " + _sectorString + "SendUpdates: currentCivStrength = " + currentCivStrength + " for " + civAsset.Owner.Key;
-                    Console.WriteLine(_text);
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //to often
+                    //_text = "Step_3030:; " + _sectorString + "SendUpdates: _currentCivStrength = " + _currentCivStrength + " for " + civAsset.Owner.Key;
+                    //if (_combatWriteDirectly) Console.WriteLine(_text);
+                    //_combatEngine_full_Report += newline + _text;
+                    //GameLog.Core.CombatDetails.DebugFormat(_text);
                 }
 
                 foreach (CombatAssets otherAsset in _assets) // _assets is all combat assest in sector while "otherAsset" is not of type "friendly" first asset
@@ -572,7 +645,13 @@ namespace Supremacy.Combat
                     friendlyAssets,
                     hostileAssets
                     );
-                Console.WriteLine("Step_3040:; new CombatUpdate for " + owner);
+
+                AsyncHelper.Invoke(_updateCallback, this, update);
+
+                // to often
+                //_text = "Step_3041:; new CombatUpdate for " + owner;
+                //if (_combatWriteDirectly) Console.WriteLine(_text);
+                //_combatEngine_full_Report += newline + _text;
                 // sends data back to combat window
 
                 // ToDo>try to build in here the Sitreps
@@ -598,12 +677,33 @@ namespace Supremacy.Combat
                 //    ;
 
                 //GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ReportEntry_CoS(owner, _location, _text, "", "", SitRepPriority.Red));
-                
-                
-                AsyncHelper.Invoke(_updateCallback, this, update);
-                Console.WriteLine("Step_3049:; _updateCallback for " + owner);
+
+
+                //AsyncHelper.Invoke(_updateCallback, this, update);
+
+                // to often
+                //_text = "Step_3048:; _updateCallback for " + owner;
+                //if (_combatWriteDirectly) Console.WriteLine(_text);
+                //_combatEngine_full_Report += newline + _text;
             }
         }
+
+        private int CalculateStrength_CombatShip_in_CombatEngine(CombatUnit cs)
+        {
+            // UPDATE X 25 June 2019: Do total strength instead of just firepower
+            return Convert.ToInt32(Convert.ToDouble(cs.Firepower)
+                    + (Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
+                    * (1 + (Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
+        }
+
+        //private int CalculateStrength_CombatShip_in_CombatEngine(CombatUnit cs)
+        //{
+        //    // UPDATE X 25 June 2019: Do total strength instead of just firepower
+        //    return Convert.ToInt32(Convert.ToDouble(cs.Firepower)
+        //            + (Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
+        //            * (1 + (Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
+        //}
+
 
         /// <summary>
         /// Remove the assets of defeated players from the combat
@@ -626,8 +726,9 @@ namespace Supremacy.Combat
                     _assets.RemoveAt(i--);
                 }
             }
-            _text = "Step_3001:; --------------------";
-            Console.WriteLine(_text);
+            _text = "Step_3009:; --------------------";
+            if (_combatWriteDirectly) Console.WriteLine(_text);
+            _combatEngine_full_Report += newline + _text;
             GameLog.Core.CombatDetails.DebugFormat(_text);
         }
 
@@ -683,7 +784,9 @@ namespace Supremacy.Combat
 
             foreach (KeyValuePair<string, int> empire in _empireStrengths)
             {
-                _text = "Step_3053:; " + _sectorString + "Strength for " + empire.Key + ": " + empire.Value;
+                _text = "Step_3053:; " + _sectorString
+                    + " > " + GameEngine.Do_5_Digit(empire.Value.ToString())
+                    + " = Strength for " + empire.Key + ": ";
                 // Detailed_Log(_text);
                 Console.WriteLine(_text);
                 GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -724,7 +827,7 @@ namespace Supremacy.Combat
                     newfleet.Name = "Assimilated Assets";
                     GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
-                    _text = "Step_3021:; " + ship.Location 
+                    _text = "Step_3021:; " + ship.Location
                         + " > Ship assimilated: " + ship.ObjectID + " * " + ship.Name + " * ( " + ship.Design + " )";
 
                     // Detailed_Log(_text);
@@ -738,7 +841,7 @@ namespace Supremacy.Combat
 
                     //for Borg only: 
                     _text += ": We gained " + gainedResearchPoints + " research points.";
-                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ReportEntry_CoS(borg, ship.Location, _text,"", "", SitRepPriority.Green));
+                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ReportEntry_CoS(borg, ship.Location, _text, "", "", SitRepPriority.Green));
                     //GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(borg, ship.Location, _text));
 
                 }
@@ -752,7 +855,7 @@ namespace Supremacy.Combat
         {
             try // CHANGE X
             {
-                _text = "Step_3001:; PerformRetreat begins";
+                _text = "Step_3093:; " + _sectorString + "_combatId = " + CombatID + " > PerformRetreat begins";
                 Console.WriteLine(_text);
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -806,40 +909,40 @@ namespace Supremacy.Combat
         {
             CombatOrder _localOrder = CombatOrder.Engage;
 
-            if(!source.IsMobile) _localOrder = CombatOrder.Engage;
-            if(source.HullStrength.CurrentValue < source.HullStrength.Maximum / 5)  // Hull below 20%
+            if (!source.IsMobile) _localOrder = CombatOrder.Engage;
+            if (source.HullStrength.CurrentValue < source.HullStrength.Maximum / 5)  // Hull below 20%
                 _localOrder = CombatOrder.Retreat;
             if (source.IsCombatant) return CombatOrder.Engage; // 
             if (source.Sector.Owner == source.Owner) return CombatOrder.Hail; // Non-Combatant ships
 
-                //try
+            //try
 
-                //{
+            //{
 
-                //    Detailed_Log(_sectorString + "Try Get Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name);
-                //    //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
+            //    Detailed_Log(_sectorString + "Try Get Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name);
+            //    //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
 
-                //    _localOrder = _orders[source.OwnerID].GetOrder(source);
-                //    //_localOrder = _orders[_orders.Count-1].GetOrder(source);
-                //    Detailed_Log(_sectorString + "Got Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name
-                //        + " -> order = " + _orders[source.OwnerID].GetOrder(source));
-                //    return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
-                //}
-                //catch //(Exception e)
-                //{
-                //    //if (source.Owner.IsHuman == false)
-                //    //{
-                //    //    // Gamelog works but makes no sense ... or "nothing to win" with this error message (Example: Scout, before Engage, here fails 
-                //    Detailed_Log(_sectorString + "Returning Engage due to > Unable to get order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name + blank + source.Owner.Name
-                //        /*+ newline + e*/);
-                //    _localOrder = CombatOrder.Engage;
-                //    //}
-                //    //GameLog.LogException(e);
-                //}
+            //    _localOrder = _orders[source.OwnerID].GetOrder(source);
+            //    //_localOrder = _orders[_orders.Count-1].GetOrder(source);
+            //    Detailed_Log(_sectorString + "Got Order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name
+            //        + " -> order = " + _orders[source.OwnerID].GetOrder(source));
+            //    return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
+            //}
+            //catch //(Exception e)
+            //{
+            //    //if (source.Owner.IsHuman == false)
+            //    //{
+            //    //    // Gamelog works but makes no sense ... or "nothing to win" with this error message (Example: Scout, before Engage, here fails 
+            //    Detailed_Log(_sectorString + "Returning Engage due to > Unable to get order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name + blank + source.Owner.Name
+            //        /*+ newline + e*/);
+            //    _localOrder = CombatOrder.Engage;
+            //    //}
+            //    //GameLog.LogException(e);
+            //}
 
-                //Detailed_Log(_sectorString + "Setting order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name 
-                //    + " (Owner= " + source.Owner.Name + ") > " + _localOrder.ToString());
-                return _localOrder; //CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
+            //Detailed_Log(_sectorString + "Setting order for " + source.ObjectID + blank + source.Name + blank + source.Design.Name 
+            //    + " (Owner= " + source.Owner.Name + ") > " + _localOrder.ToString());
+            return _localOrder; //CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
         }
 
         //private void Detailed_Log(string _rep)
@@ -859,7 +962,7 @@ namespace Supremacy.Combat
         {
             if (_targetOneByCiv.Keys.Contains(source.OwnerID))
             {
-                _text = "Step_3021:; " 
+                _text = "Step_3021:; "
                     + _sectorString + "GetTargetOne = " + _targetOneByCiv[source.OwnerID].GetTargetOne(source)
                     + " ( 888 = only return fire, 777 = no target)"
                     ;//if (targetCiv == null)  
@@ -889,6 +992,9 @@ namespace Supremacy.Combat
         }
 
         protected abstract void ResolveCombatRoundCore();
+        protected string Combat_Automated_full_Report => _combatEngine_full_Report;
+
+
     }
 }
 

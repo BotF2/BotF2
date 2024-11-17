@@ -305,10 +305,12 @@ namespace Supremacy.VFS
             }
             catch
             {
-                string message = "File is NOT available > " + resolvedName;
-                _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                string message = "Step_9981:; ############## File is NOT available > " + resolvedName;
                 Console.WriteLine(message);
                 GameLog.Client.General.ErrorFormat(message);
+                _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                Console.WriteLine(message);
+                //GameLog.Client.General.ErrorFormat(message);
                 //var path = "vfs:///Resources/Images/";
                 //var file = path + "__image_missing.png";
                 return File.Open("__image_missing.png", FileMode.Open, access, share);

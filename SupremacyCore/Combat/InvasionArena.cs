@@ -842,7 +842,7 @@ namespace Supremacy.Combat
 
         private void ProcessRound()
         {
-            _text = "Step_3855:; Combat at " + _invasionArena.Colony.Location 
+            _text = "Step_3855:; Red Alert at " + _invasionArena.Colony.Location 
                 + ", Round=" + _invasionArena.RoundNumber
                 + ", Action=" + _orders.Action
                 ;
@@ -1161,7 +1161,7 @@ namespace Supremacy.Combat
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
                     
                     //works
-                    //_text = "Step_3853:; Combat at " + _invasionArena.Colony.Location
+                    //_text = "Step_3853:; Red Alert at " + _invasionArena.Colony.Location
                     //        + ", Round=" + _invasionArena.RoundNumber
                     //        + ", Action=" + _orders.Action
                     //        + ", _invasionArena.ColonyShieldStrength=" + _invasionArena.ColonyShieldStrength

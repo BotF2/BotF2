@@ -84,7 +84,7 @@ namespace Supremacy.Client.Views
 
                     ;
                 Console.WriteLine(_text);
-                GameLog.Client.Diplomacy.DebugFormat(/*Environment.NewLine + */_text);
+                //GameLog.Client.Diplomacy.DebugFormat(/*Environment.NewLine + */_text);
             }
         }
 
@@ -201,7 +201,7 @@ namespace Supremacy.Client.Views
                     //for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
                     //{
                     _text =
-                        "Step_6577:; OutgoingMessage SET = " + _outgoingMessage.Sender.Name
+                        "Step_6578:; OutgoingMessage SET = " + _outgoingMessage.Sender.Name
                         //{0} to {1}, count{2}, {3} = {4} {5}",
                         + " to " + _outgoingMessage.Recipient.Name
                     //+ ", count= " + _outgoingMessage.Elements.Count().ToString()

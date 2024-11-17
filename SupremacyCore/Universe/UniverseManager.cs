@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Windows;
 
 namespace Supremacy.Universe
 {
@@ -676,7 +677,7 @@ namespace Supremacy.Universe
             {
                 String _col =
                     /*";Colony;" */
-                    /*"; " + */colony.Location
+                    /*"; " + */GameEngine.LocationString(colony.Location.ToString())
                     + "; " + colony.Name
                     + "; " + colony.Owner
                     + ";Colony;"
@@ -859,8 +860,18 @@ namespace Supremacy.Universe
 
             _homeColonyLookup.DeserializeOwnedData(reader, context);
 
-            GameLog.Core.SaveLoad.DebugFormat("Step_3644: Deserializing _objects...");
-            GameLog.Core.SaveLoad.DebugFormat("Step_3647: Deserializing _homeColonyLookup...");
+            _text = "Step_3644: Deserializing _objects...";
+            //if (writeDirectlyFleets) 
+                Console.WriteLine(_text);
+            //_colony_full_Report += _text + newline;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+            _text = "Step_3647: Deserializing _homeColonyLookup...";
+            //if (writeDirectlyFleets) 
+            Console.WriteLine(_text);
+            //_colony_full_Report += _text + newline;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
 
             // no big result
             //foreach (var item in _homeColonyLookup.Keys)

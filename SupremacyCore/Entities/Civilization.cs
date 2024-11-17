@@ -50,12 +50,16 @@ namespace Supremacy.Entities
     {
         Warlike = 0x0001, // only used in one line in DiplomacyHelper.cs at this time
         Peaceful = 0x0002,
+
         Superiority = 0x0004,
         Submissive = 0x0008,
+        
         Materialistic = 0x0010,
         Spiritual = 0x0020,
+        
         Kindness = 0x0040,
         Hostile = 0x0080,
+        
         Honourable = 0x0100,
         Subversive = 0x0200
         //Spiritual = 0x0400

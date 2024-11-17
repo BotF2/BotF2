@@ -153,12 +153,11 @@ namespace Supremacy.Orbitals
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
                 _text = "Step_8305:; " + GameEngine.LocationString(buildQueueItem.Project.Location.ToString())
-                    + " buildQueueItem index " + count + "= " + buildQueueItem.Description
-
-                    //+ " at " +  
-                    + "; at " + buildQueueItem.Project.ProductionCenter
+                    + " " + buildQueueItem.Project.ProductionCenter
                     + "; TurnsRemaining " + buildQueueItem.TurnsRemaining
-;
+                    + " buildQueueItem index " + count + " = " + buildQueueItem.Description
+
+                    ;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
                 count++;
@@ -176,7 +175,7 @@ namespace Supremacy.Orbitals
                     + "; Owner=" + slot.Shipyard.Owner
                     + "; HasProject=" + slot.HasProject
                     + "; IsActive=" + slot.IsActive
-                    + "; > each " + slot.Shipyard.ShipyardDesign.BuildSlotEnergyCost
+                    + "; > each " + slot.Shipyard.ShipyardDesign.BuildSlotEnergyCost + " energy"
 
                     ;
                 Console.WriteLine(_text);
@@ -293,12 +292,12 @@ namespace Supremacy.Orbitals
                     if (slot.Project != null && slot.Project.BuildDesign != null)
                     {
                         _design = slot.Project.BuildDesign.ToString();
-                        _percent = slot.Project.PercentComplete.ToString();
+                        _percent = GameEngine.Do_3_Digit(slot.Project.PercentComplete.ToString());
                     }
 
                     if (_percent != "0 %")
                     {
-                        _text = "Step_7604:; Serialize " + slot.Shipyard.Location
+                        _text = "Step_7605:; Serialize " + GameEngine.LocationString(slot.Shipyard.Location.ToString())
                             + " > Slot= " + slot.SlotID
                             + " at " + slot.Shipyard.Name
                             + " " 

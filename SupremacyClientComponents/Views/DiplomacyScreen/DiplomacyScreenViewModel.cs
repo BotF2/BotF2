@@ -74,6 +74,7 @@ namespace Supremacy.Client.Views
         public bool localIsHost => ServiceLocator.Current.GetInstance<IAppContext>().IsGameHost;
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
+        //private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowersNew;
 
         /*
           DISPLAY MODE
@@ -126,7 +127,7 @@ namespace Supremacy.Client.Views
             _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
-            Refresh();
+            Refresh(); // just do this refresh .. other one's will lead to crash
         }
 
 
@@ -233,9 +234,9 @@ namespace Supremacy.Client.Views
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
             InvalidateCommands();
-            _text = "Step_3334:; maybe crash";
+            _text = "Step_3335:; maybe crash";
             Console.WriteLine(_text);
-            Refresh(); //crashes
+            //Refresh(); //crashes
         }
 
         #region DeclareWarCommandButton
@@ -329,7 +330,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            //Refresh();
         }
         #endregion EndWarCommandButton
 
@@ -337,7 +338,7 @@ namespace Supremacy.Client.Views
         #region OpenBordersCommandButton
         private bool CanExecuteOpenBordersCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -384,7 +385,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+            //Refresh();
         }
         #endregion OpenBordersCommandButton
 
@@ -392,7 +393,7 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteAcceptRejectDictionaryCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel foreignPower);
         }
         private bool CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel selectedForeignPower)
@@ -415,7 +416,7 @@ namespace Supremacy.Client.Views
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -463,7 +464,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+            //Refresh();
         }
         #endregion NonAgressionCommandButton
 
@@ -517,7 +518,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            //Refresh();
         }
         #endregion AffiliationCommandButton
 
@@ -525,7 +526,7 @@ namespace Supremacy.Client.Views
         #region DefenceAllianceCommandButton
         private bool CanExecuteDefenceAllianceCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -573,14 +574,14 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            //Refresh();
         }
         #endregion DefenceAllianceCommandButton
 
         #region FullAllianceCommandButton
         private bool CanExecuteFullAllianceCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -621,14 +622,14 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            //Refresh();
         }
         #endregion FullAllianceCommandButton
 
         #region MembershipCommandButton
         private bool CanExecuteMembershipCommand()
         {
-            // Refresh();
+            //Refresh();
             return CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -669,7 +670,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+            //Refresh();
         }
         #endregion MembershipCommandButton
 
@@ -700,10 +701,12 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteSendMessageCommand()
         {
-            return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
-                   SelectedForeignPower != null &&
-                   SelectedForeignPower.OutgoingMessage != null &&
-                   SelectedForeignPower.OutgoingMessage.IsEditing; //&&
+            return DisplayMode == DiplomacyScreenDisplayMode.Outbox 
+                   && SelectedForeignPower != null 
+                   && SelectedForeignPower.OutgoingMessage != null 
+                   && SelectedForeignPower.OutgoingMessage.IsEditing
+                   && SelectedForeignPower.OutgoingMessage.Elements.Count != 0
+                   ; //&&
                                                                    //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
         }
 
@@ -794,7 +797,7 @@ namespace Supremacy.Client.Views
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
-            Refresh();
+            //Refresh();
         }
 
         private void ExecuteSetDisplayModeComand(ICheckableCommandParameter p)
@@ -883,7 +886,7 @@ namespace Supremacy.Client.Views
 
         private void OnTurnStarted(GameContextEventArgs args)
         {
-            Refresh();
+            //Refresh();
         }
 
         private void Refresh()
@@ -1084,10 +1087,13 @@ namespace Supremacy.Client.Views
 
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
+
             if (AreNewMessageCommandsVisible) { }
             OnAreNewMessageCommandsVisibleChanged();
+            
             if (IsMembershipButtonVisible) { }
             OnMembershipButtonVisibleChanged();
+            
             if (IsFullAllianceButtonVisible) { }
             OnFullAllianceButtonVisibleChanged();
         }
@@ -1290,39 +1296,63 @@ namespace Supremacy.Client.Views
 
         private void RefreshForeignPowers()
         {
+            //if (_foreignPowers.Count > 0)
+            //    _foreignPowers.Clear();  // crashes due to the screen has a selected one
+
             Civilization selectedForeignPower = SelectedForeignPower?.Counterparty;
 
             SelectedForeignPower = null;
 
-            if (_foreignPowers.Count > 0)
-                _foreignPowers.Clear();
 
-            _text = "dummy" + _text;
+
+            //_foreignPowers = ForeignPowerViewModel(foreignPower);
+
+            //foreach (var item in _foreignPowers)
+            //{
+
+            //}
+
+            //for (int i = 1; i < _foreignPowers.Count; i++)
+            //{
+            //    _foreignPowers[i].
+            //}
+
+            //_text = "dummy" + _text;
 
 
             int playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
             Diplomat playerDiplomat = Diplomat.Get(playerEmpireId);
 
+            //_foreignPowers = null;
+
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
 
-                if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
+                if (civ.CivID == playerEmpireId 
+                    || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) 
+                    || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
                 {
                     continue;
                 }
-                //
-                //Console.WriteLine("Step_9333:; RefreshForeignPowers... " + civ.Name);
+                //Console.WriteLine("Step_9332:; RefreshForeignPowers... " + civ.Name);
 
                 ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
                 ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
+                //if (!_foreignPowers.Contains(foreignPowerViewModel))
+                //{
                 _foreignPowers.Add(foreignPowerViewModel);
+                //}
+
                 // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
                 //, foreignPowerViewModel.Status
                 //, foreignPowerViewModel.CounterpartyRegard
                 //, foreignPowerViewModel.CounterpartyTrust
                 //);
             }
+
+            //_foreignPowers = _foreignPowers.Distinct();
+            //_foreignPowers = _foreignPowersNew;
 
             if (selectedForeignPower != null)
             {

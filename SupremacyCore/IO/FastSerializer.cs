@@ -3511,12 +3511,12 @@ namespace Supremacy.IO.Serialization
             StringBuilder sb = new StringBuilder("Type Usage Dump\r\n---------------\r\n");
             for (int i = 0; i < 256; i++)
             {
-#if DEBUG
+//#if DEBUG
                 if (typeUsage[i] != 0)
                 {
                     sb.AppendFormat("{0, 8:n0}: {1}\r\n", typeUsage[i], (SerializedType)i);
                 }
-#endif
+//#endif
             }
             Console.WriteLine(sb);
         }
@@ -3687,6 +3687,8 @@ namespace Supremacy.IO.Serialization
             _endPosition = ReadInt32();
             stream.Position = _endPosition;
 
+            // unneccessary "stream.read" moves position to the next byte and destroys everything !!
+
             //_text = "";
             //string _hex = "";
             //for (int i = 0; i < 20; i++)
@@ -3703,14 +3705,14 @@ namespace Supremacy.IO.Serialization
             for (int i = 0; i < _stringTokenList.Length; i++)
             {
                 _stringTokenList[i] = base.ReadString();
-                Console.WriteLine("Step_0234:; _stringTokenList > " + i + " = " + _stringTokenList[i]);
+                //Console.WriteLine("Step_0234:; _stringTokenList > " + i + " = " + _stringTokenList[i]);
             }
             Console.WriteLine("Step_0232:; _stringTokenList was read...");
 
             _objectTokens = new object[ReadOptimizedInt32()];
             for (int i = 0; i < _objectTokens.Length; i++)
             {
-                Console.WriteLine("Step_0235:; _objectTokens > " + i + " was read...");
+                //Console.WriteLine("Step_0235:; _objectTokens > " + i + " was read...");
                 _objectTokens[i] = ReadObject();
             }
 
@@ -4737,7 +4739,7 @@ namespace Supremacy.IO.Serialization
             {
                 //throwOnError;
                 _text = "Step_9333:; ##### Error on > Type.GetType(ReadOptimizedString())";
-                //if (writeDirectly) 
+                //if (writeDirectly_Colony) 
                     Console.WriteLine(_text);
                 //_colony_full_Report += _text + newline;
                 return Type.GetType(ReadOptimizedString());

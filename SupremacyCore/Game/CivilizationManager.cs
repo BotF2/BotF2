@@ -985,7 +985,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_rendezvousplace == null || _rendezvousplace.ToString() == "(0, 0)")
+                if (_rendezvousplace == null || _rendezvousplace.ToString() == "( 0, 0)")
                 {
                     _rendezvousplace = HomeSystem.Location;
                     _text = "Step_3338:; Turn "

@@ -1201,7 +1201,6 @@ namespace Supremacy.Tech
                 #region PossibleShipNames_To_CSV
                 try // avoid hang up if this file is opened by another program 
                 {
-                    // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
                     file = pathOutputFile + "_TechObj-6-Ships_NAMES_List(autoCreated).csv";
 
                     if (file == null)

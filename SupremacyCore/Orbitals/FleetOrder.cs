@@ -105,7 +105,7 @@ namespace Supremacy.Orbitals
         /// Gets the complete status text that should be displayed in the task forces list in the game.
         /// </summary>
         /// <value>The complete status text.</value>
-        public virtual string TaskForceStatusText
+        public virtual string TaskForceStatusText// (Fleet fleet, out string taskForceStatusText)
         {
             get
             {
