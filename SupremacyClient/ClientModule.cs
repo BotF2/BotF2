@@ -268,7 +268,7 @@ namespace Supremacy.Client
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;
 
-        private string _resultText;
+        //private string _resultText;
         #endregion
 
         #region Constructor & Lifetime
@@ -772,22 +772,22 @@ namespace Supremacy.Client
                 if (!item.Contains("True") && !item.Contains("False")) { _rest.Add(item); }
             }
 
-            _resultText = "CONTENT OF SupremacyClient..Settings.xaml " + DateTime.Now + newline;
+            _text = "CONTENT OF SupremacyClient..Settings.xaml " + DateTime.Now + newline;
 
-            _resultText += newline + "VALUES" + newline + "======" + newline;
-            foreach (string item in _rest) { _resultText += item + newline; }
+            _text += newline + "VALUES" + newline + "======" + newline;
+            foreach (string item in _rest) { _text += item + newline; }
 
-            _resultText += newline + "TRUE" + newline + "====" + newline;
-            foreach (string item in _trues) { _resultText += item + newline; }
+            _text += newline + "TRUE" + newline + "====" + newline;
+            foreach (string item in _trues) { _text += item + newline; }
 
-            _resultText += newline + "FALSE" + newline + "=====" + newline;
-            foreach (string item in _false) { _resultText += item + newline; }
+            _text += newline + "FALSE" + newline + "=====" + newline;
+            foreach (string item in _false) { _text += item + newline; }
 
 
-            _resultText += newline + newline;
+            _text += newline + newline;
 
             StreamWriter streamWriter = new StreamWriter(file + ".txt");
-            streamWriter.Write(_resultText);
+            streamWriter.Write(_text);
             streamWriter.Close();
 
             string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
@@ -814,7 +814,7 @@ namespace Supremacy.Client
 
 
             //StreamWriter streamWriter = new StreamWriter(file);
-            //streamWriter.Write(_resultText);
+            //streamWriter.Write(_text);
             //streamWriter.Close();
             file += ".bat";
 

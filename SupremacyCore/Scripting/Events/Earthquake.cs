@@ -90,7 +90,11 @@ namespace Supremacy.Scripting.Events
 
                     foreach (BuildProject affectedProject in _affectedProjects)
                     {
-                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
+                        _text = "Step_7222:; " + GameEngine.LocationString(target.Location.ToString())
+                            + " > Turn " + GameContext.Current.TurnNumber
+                            + " > Earthquake - affectedProject= " + affectedProject.Description;
+                        Console.WriteLine(_text);
+                        GameLog.Client.GameData.DebugFormat(_text);
                     }
 
                     Entities.Civilization targetCiv = target.Owner;
@@ -101,6 +105,23 @@ namespace Supremacy.Scripting.Events
                     OnUnitTargeted(target);
 
                     _ = target.Morale.AdjustCurrent(-5);
+
+                    _text = "Step_7224:; " + GameEngine.LocationString(target.Location.ToString())
+                        + " > Turn " + GameContext.Current.TurnNumber
+                        + " > BEFORE Earthquake:" 
+                        + "; Pop= " + target.Population.CurrentValue
+                        + "; Health= " + target.Health.CurrentValue
+                        + "; FacFood= " + target.GetTotalFacilities(ProductionCategory.Food)
+                        + "; FacInd= " + target.GetTotalFacilities(ProductionCategory.Industry)
+                        + "; FacEn= " + target.GetTotalFacilities(ProductionCategory.Energy)
+                        + "; FacRes= " + target.GetTotalFacilities(ProductionCategory.Research)
+                        + "; FacInt= " + target.GetTotalFacilities(ProductionCategory.Intelligence)
+
+
+
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
 
                     // Population
                     //Don't reduce the population if it is already low
@@ -134,12 +155,19 @@ namespace Supremacy.Scripting.Events
                     }
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
 
-                    int removeResearch = 1;   // If you have research 4 or more then take out 1
+                    int removeResearch = 2;   // If you have research 4 or more then take out 1
                     if (target.GetTotalFacilities(ProductionCategory.Research) < 4)
                     {
                         removeResearch = 0;
                     }
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
+
+                    int removeIntelligence = 2;   // If you have research 4 or more then take out 1
+                    if (target.GetTotalFacilities(ProductionCategory.Intelligence) < 2)
+                    {
+                        removeIntelligence = 0;
+                    }
+                    target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence);
 
                     //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     //civManager?.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
@@ -153,6 +181,23 @@ namespace Supremacy.Scripting.Events
 
                     //                    public override string DetailText => string.Format(ResourceManager.GetString("EARTHQUAKE_DETAIL_TEXT"), Colony.Name, Colony.Location);
                     //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Earthquake.png";
+
+                    _text = "Step_7224:; " + GameEngine.LocationString(target.Location.ToString())
+                                + " > Turn " + GameContext.Current.TurnNumber
+                                + " > AFTER  Earthquake:"
+                                + "; Pop= " + target.Population.CurrentValue
+                                + "; Health= " + target.Health.CurrentValue
+                                + "; FacFood= " + target.GetTotalFacilities(ProductionCategory.Food)
+                                + "; FacInd= " + target.GetTotalFacilities(ProductionCategory.Industry)
+                                + "; FacEn= " + target.GetTotalFacilities(ProductionCategory.Energy)
+                                + "; FacRes= " + target.GetTotalFacilities(ProductionCategory.Research)
+                                + "; FacInt= " + target.GetTotalFacilities(ProductionCategory.Intelligence)
+
+
+
+                                ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat(_text);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

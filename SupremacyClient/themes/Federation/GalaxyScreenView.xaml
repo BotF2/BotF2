@@ -87,6 +87,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+                            
                             <Button x:Name="PART_TurnButton"
                       Grid.Column="0"
                       Grid.Row="0"
@@ -265,6 +266,7 @@
                             <!--/>-->
                             <!--</Rectangle>-->
 
+                            <!--Player Insignia-->
                             <Image Grid.Column="8"
                      Grid.Row="0"
                      Grid.RowSpan="2"
@@ -273,6 +275,7 @@
                      Height="60"
                      VerticalAlignment="Center"
                      Source="{Binding Path=(scc:GameScreenViewBase.AppContext).LocalPlayer.Empire, Converter={StaticResource CivInsigniaConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type scc:GalaxyScreenView}}}" />
+                            
                             <Border Grid.Column="9"
                       Grid.Row="0"
                       Margin="3,0,0,0"
@@ -286,11 +289,8 @@
                            Text="{s:StringResource DIPLOMACY_TEXT}" 
                            />
                             </Border>
-                            <Border Grid.Column="9"
-                      Grid.Row="1"
-                      Margin="0,4,0,0"
-                      Height="28"
-                      VerticalAlignment="Top">
+                            
+                            <Border Grid.Column="9" Grid.Row="1" Height="28" Margin="0,4,0,0" VerticalAlignment="Top">
                                 <ItemsControl ItemsSource="{Binding Path=(scc:GalaxyScreenPresentationModel.EmpirePlayers)}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -652,9 +652,20 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Rectangle x:Name="LeftCenterTopEdge"
+                                <!--<Rectangle x:Name="LeftCenterTopEdge"-->
+                                <Border x:Name="LeftCenterTopEdge"
                            Grid.Column="0"
-                           Fill="{StaticResource BlueGradient_Top_Bottom}" />
+                           Background="{StaticResource BlueGradient_Top_Bottom}" >
+                                    <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="18pt" Foreground="Black" HorizontalAlignment="Center"
+                           
+                                     Text="{Binding Path=PlayerCivilizationRendezvousPlace, Mode=OneWay}" />
+                                    <!--PlayerCivilizationRendezvousPlace unfortunately not working-->
+                                </Border>
+                                
+                                <!--Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.LocalPlayer, StringFormat={scc:StringFormatConverter} ,Mode=OneWay}" />-->
+                                    
+                                <!--</Rectangle>-->
                                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             Margin="0,0,0,0">

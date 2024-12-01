@@ -411,7 +411,7 @@ namespace Supremacy.Client.Views
 
             _ = BindingOperations.SetBinding(
                 statsViewModel,
-                TechObjectDesignViewModel.DesignProperty,
+                TechObjectDesignViewModel.DesignProperty, // "SelectedBuildProject.BuildDesign"
                 new Binding
                 {
                     Source = view,

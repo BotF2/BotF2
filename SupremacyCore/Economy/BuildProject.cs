@@ -644,8 +644,8 @@ namespace Supremacy.Economy
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
                     _text = "Step_4282:; Turn " + GameContext.Current.TurnNumber
-                        + ": " + Location
-                        + ": Estimated One Turn... for " + BuildDesign
+                        + ": " + GameEngine.LocationString(Location.ToString())
+                        + " > Estimated One Turn... for " + BuildDesign
                         ;
                         //+ " by " + Builder
                         //+ " at " + Location

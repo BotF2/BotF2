@@ -510,7 +510,7 @@ namespace Supremacy.Game
             }
             if (report == "")
             {
-                Console.WriteLine("Step_1425:;empty report text");
+                Console.WriteLine("Step_1435:;empty report text");
                 //return;
             }
 
@@ -622,9 +622,10 @@ namespace Supremacy.Game
         public override SitRepAction Action => SitRepAction.ShowColony;
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
+        public string LocationText => GameEngine.LocationString(Location.ToString());
         public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_UNPOWERED"),
                     GameContext.Current.Universe.Map[Location].Name,
-                    GameContext.Current.Universe.Map[Location].Location,
+                    LocationText,
                     ResourceManager.GetString(ItemType.Name),
                     _isActive ? "" : " ("
                     + string.Format(ResourceManager.GetString("UN"))

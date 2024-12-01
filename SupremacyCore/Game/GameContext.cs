@@ -293,6 +293,7 @@ namespace Supremacy.Game
                 _text = "Step_3780:; already read _races..... > " + _races.Count;
                 Console.WriteLine(_text);
 
+                Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off");
                 _universe = reader.Read<UniverseManager>();
                 _text = "Step_3810:; already read _universe.....";
                 Console.WriteLine(_text);

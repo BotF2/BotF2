@@ -206,6 +206,8 @@ namespace Supremacy.Client.Views
         #region Properties and Indexers
         public IEmpirePlayerStatusCollection EmpirePlayers => _empirePlayers;
 
+        public string PlayerCivilizationRendezvousPlace => "R: " + GameContext.Current.CivilizationManagers[0].RendezvousSector.ToString();
+
         public IEnumerable<Ship> AvailableShips
         {
             get => _availableShips;

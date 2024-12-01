@@ -3514,7 +3514,7 @@ namespace Supremacy.IO.Serialization
 //#if DEBUG
                 if (typeUsage[i] != 0)
                 {
-                    sb.AppendFormat("{0, 8:n0}: {1}\r\n", typeUsage[i], (SerializedType)i);
+                    sb.AppendFormat("Step_1229:; {0, 8:n0}: {1}\r\n", typeUsage[i], (SerializedType)i);
                 }
 //#endif
             }

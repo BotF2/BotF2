@@ -159,7 +159,7 @@ namespace Supremacy.Combat
                             + _combatEngine_full_Report + " > end of _combatEngine_full_Report"
                             + newline + newline
                             + "Step_3668:;  > _combat_Automated_full_Report"
-                            + Combat_Automated_full_Report + newline + " > end of _combat_Automated_full_Report"
+                            + Combat_Automated_full_Report + "............. > end of _combat_Automated_full_Report"
                             + newline
                             );
 

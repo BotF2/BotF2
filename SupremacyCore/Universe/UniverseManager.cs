@@ -705,7 +705,7 @@ namespace Supremacy.Universe
                         _text = "Step_4365:; "
                             + _col
                             + " Building"
-                            + "; " + building.ObjectID
+                            + "; " + GameEngine.Do_4_Digit(building.ObjectID.ToString())
                             + "; " + building.Design
                             + ";" + building.IsActive + "_for_Active"
                             + "; since Turn;" + building.TurnCreated
@@ -860,13 +860,13 @@ namespace Supremacy.Universe
 
             _homeColonyLookup.DeserializeOwnedData(reader, context);
 
-            _text = "Step_3644: Deserializing _objects...";
+            _text = "Step_3644:; Deserializing _objects...";
             //if (writeDirectlyFleets) 
                 Console.WriteLine(_text);
             //_colony_full_Report += _text + newline;
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
-            _text = "Step_3647: Deserializing _homeColonyLookup...";
+            _text = "Step_3647:; Deserializing _homeColonyLookup...";
             //if (writeDirectlyFleets) 
             Console.WriteLine(_text);
             //_colony_full_Report += _text + newline;

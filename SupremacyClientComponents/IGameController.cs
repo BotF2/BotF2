@@ -493,7 +493,7 @@ namespace Supremacy.Client
                 Console.WriteLine(_text);
                 //GameLog.Core.SitReps.InfoFormat(_text);
 
-                _text = "Step_4888:; SaveSUMMARY_TXT... offline - takes to long time";
+                _text = "Step_4889:; SaveSUMMARY_TXT... offline - takes to long time";
                 Console.WriteLine(_text);
                 //GameLog.Core.GeneralDetails.DebugFormat(_text);
                 //SaveSUMMARY_TXT(_text);
