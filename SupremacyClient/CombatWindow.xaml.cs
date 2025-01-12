@@ -110,7 +110,10 @@ namespace Supremacy.Client
                 //_onlyFireIfFiredAppone.ShortName = "Only Return Fire";
                 ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE"),
                 CivID = 888,
-                Key = "Only Return Fire"
+                Key = "Only Return Fire",
+                TargetCiv1Status = "",
+                TargetCiv2Status = ""
+
             };
             // The click of "Only Return Fire" radio button by human player
             // _targeted1Civ = new Civilization();

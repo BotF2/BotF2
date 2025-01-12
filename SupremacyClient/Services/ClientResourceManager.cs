@@ -11,6 +11,15 @@ namespace Supremacy.Client.Services
         {
             return ResourceManager.GetString(key);
         }
+        //public string Get_DE_String(string key)
+        //{
+        //    return ResourceManager.Get_DE_String(key);
+        //}
+
+        //public string Get_FR_String(string key)
+        //{
+        //    return ResourceManager.Get_FR_String(key);
+        //}
 
         public string GetResourcePath(string path)
         {

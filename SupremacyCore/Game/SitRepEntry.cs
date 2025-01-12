@@ -1290,7 +1290,7 @@ namespace Supremacy.Game
         public override string DetailText => Civilization.DiplomacyReport ?? Civilization.Race.Description;
         public override SitRepCategory Categories => SitRepCategory.Diplomacy | SitRepCategory.FirstContact;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FIRST_CONTACT"), Sector, Sector.Location, ResourceManager.GetString(Civilization.ShortName));
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_FIRST_CONTACT"), Sector, GameEngine.LocationString(Sector.Location.ToString()), ResourceManager.GetString(Civilization.ShortName));
         public override bool IsPriority => true;
         public override SitRepPriority Priority { get => _priority; set { } }
     }

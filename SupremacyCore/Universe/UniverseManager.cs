@@ -699,17 +699,18 @@ namespace Supremacy.Universe
 
                 //if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
                 //{
+                string _active = "";
                     foreach (Building building in buildingLocationLookup[colony.Location])
                     {
                         colony.BuildingsInternal.Add(building);
+                        _active = building.IsActive.ToString() + "_for_Active"; if (_active == "True") _active = " " + _active;
                         _text = "Step_4365:; "
                             + _col
+                            + ";" + _active
                             + " Building"
                             + "; " + GameEngine.Do_4_Digit(building.ObjectID.ToString())
                             + "; " + building.Design
-                            + ";" + building.IsActive + "_for_Active"
                             + "; since Turn;" + building.TurnCreated
-
                             ;
                         //_checkLoading = true; 
                         //if(_checkLoading == true)
@@ -861,13 +862,13 @@ namespace Supremacy.Universe
             _homeColonyLookup.DeserializeOwnedData(reader, context);
 
             _text = "Step_3644:; Deserializing _objects...";
-            //if (writeDirectlyFleets) 
+            //if (_writeDirectly_Fleets) 
                 Console.WriteLine(_text);
             //_colony_full_Report += _text + newline;
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
             _text = "Step_3647:; Deserializing _homeColonyLookup...";
-            //if (writeDirectlyFleets) 
+            //if (_writeDirectly_Fleets) 
             Console.WriteLine(_text);
             //_colony_full_Report += _text + newline;
             GameLog.Core.SaveLoad.DebugFormat(_text);

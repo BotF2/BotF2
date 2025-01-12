@@ -211,6 +211,24 @@
         />
 
 
+        <!--AddGermanText-->
+        <CheckBox Grid.Row="18" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.AddGermanText), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_ADD_GERMAN_TEXT}"
+        ToolTip="{s:StringResource SETTINGS_ADD_GERMAN_TEXT_TOOLTIP}" 
+        />
+
+
+        <!--AddFrenchText-->
+        <CheckBox Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3"
+
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.AddFrenchText), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_ADD_FRENCH_TEXT}"
+        ToolTip="{s:StringResource SETTINGS_ADD_FRENCH_TEXT_TOOLTIP}" 
+        />
+
+
         <!--### SettingsOnOff is turned on/off by GalaxyScreen ###  FREE-->
         <!--<CheckBox Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3"
 

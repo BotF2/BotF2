@@ -46,6 +46,7 @@ namespace Supremacy.Client
     public class ClientModule : IModule
     {
         public const string ModuleName = "Supremacy.Client.ClientModule";
+        public const bool AddGerman = true;
         // Non-Serialized see below
         #region Fields
         private const string MusicThemeBasePath = "Resources/Specific_Empires_UI";

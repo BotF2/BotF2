@@ -1,4 +1,4 @@
-// File:Fleet.cs
+//// File:Fleet.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -445,10 +445,10 @@ namespace Supremacy.Orbitals
 
         public bool IsFastAttack => Ships.Count == 1 && Ships[0].ShipType == ShipType.FastAttack;
 
-        public bool IsTransport => Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport;
-        public bool IsColonizer => Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony;
+        public bool IsTransport => Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport && Ships.Any(t => t.ShipType >= ShipType.Transport);
+        public bool IsColonizer => Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony && Ships.Any(t => t.ShipType >= ShipType.Colony);
         public bool MultiFleetHasAColonizer => Ships.Any(s => s.ShipType == ShipType.Colony) && Ships.Any(t => t.ShipType >= ShipType.FastAttack);
-        public bool IsConstructor => Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction;
+        public bool IsConstructor => Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction && Ships.Any(t => t.ShipType >= ShipType.Construction);
         public bool MultiFleetHasAConstructor => Ships.Any(s => s.ShipType == ShipType.Construction) && Ships.Any(t => t.ShipType >= ShipType.FastAttack);
 
         public bool IsDiplomatic => Ships.Count == 1 && Ships[0].ShipType == ShipType.Diplomatic;
@@ -623,7 +623,7 @@ namespace Supremacy.Orbitals
         {
             _route = TravelRoute.Empty;
             _ships = new CollectionBase<Ship>();
-            _activity = UnitActivity.NoActivity;
+            _activity = UnitActivity.GoToAccumulateSector;
             UnitAIType = UnitAIType.NoUnitAI;
         }
 

@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using System;
+using System.Diagnostics;
 using Supremacy.Economy;
 using Supremacy.Tech;
 
@@ -76,6 +77,9 @@ namespace Supremacy.Universe
                 }
             }
 
+            bool _newGame = true;
+            //bool _newGame = false;
+
             ProductionFacilityDesign researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
             if (researchFacility != null)
             {
@@ -87,6 +91,10 @@ namespace Supremacy.Universe
                 {
                     colony.AddFacility(ProductionCategory.Research);
                     _ = colony.ActivateFacility(ProductionCategory.Research);
+                    if (!_newGame)
+                    {
+                        Debugger.Break();
+                    }
                 }
             }
 
@@ -101,6 +109,10 @@ namespace Supremacy.Universe
                 {
                     colony.AddFacility(ProductionCategory.Intelligence);
                     _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                    if (!_newGame)
+                    {
+                        Debugger.Break();
+                    }
                 }
             }
         }

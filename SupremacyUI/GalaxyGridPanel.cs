@@ -67,6 +67,7 @@ namespace Supremacy.UI
         public static readonly DependencyProperty UseSummaryScreenProperty;
         public static readonly DependencyProperty UseSitRepDetailsScreenProperty;
         public static readonly DependencyProperty SelectedFleetProperty;
+        public static readonly DependencyProperty SelectedTaskForceProperty;
         public static readonly DependencyProperty SelectedSectorProperty;
         public static readonly DependencyProperty SelectedSectorAllegianceProperty;
         public static readonly DependencyProperty SelectedTradeRouteProperty;
@@ -157,6 +158,7 @@ namespace Supremacy.UI
         #region Events
         public event DependencyPropertyChangedEventHandler<GalaxyViewOptions> OptionsChanged;
         public event DependencyPropertyChangedEventHandler<Fleet> SelectedFleetChanged;
+        public event DependencyPropertyChangedEventHandler<Fleet> SelectedTaskForceChanged;
         public event DependencyPropertyChangedEventHandler<TradeRoute> SelectedTradeRouteChanged;
         public event DependencyPropertyChangedEventHandler<Sector> SelectedSectorChanged;
         public event SectorEventHandler SectorDoubleClicked;
@@ -358,6 +360,14 @@ namespace Supremacy.UI
                     null,
                     SelectedFleetChangedCallback,
                     SelectedFleetCoerceValueCallback));
+            SelectedTaskForceProperty = DependencyProperty.Register(
+    "SelectedTaskForce",
+    typeof(Fleet),
+    typeof(GalaxyGridPanel),
+    new PropertyMetadata(
+        null,
+        SelectedTaskForceChangedCallback,
+        SelectedTaskForceCoerceValueCallback));
             SelectedTradeRouteProperty = DependencyProperty.Register(
                 "SelectedTradeRoute",
                 typeof(TradeRoute),
@@ -721,6 +731,7 @@ namespace Supremacy.UI
                 return;
             }
 
+            //2024-12-21
             FleetViewWrapper selectedTaskForce = _screenModel.SelectedTaskForce;
 
             if (Equals(selectedTaskForce, SelectedFleet))
@@ -820,14 +831,29 @@ namespace Supremacy.UI
             }
         }
 
-        public string PlayerCivilizationRendezvousPlace
+        //public string PlayerCivilizationAccumulatePlace
+        //{
+        //    get
+        //    {
+        //        CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
+        //        return playerEmpire?.AccumulateLocation.ToString();
+        //    }
+        //}
+
+        public string PlayerCivilizationSystemAssaultPlaces
         {
+            // dummy - not sed
             get
             {
                 CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
-                return playerEmpire?.RendezvousLocation.ToString();
+                string _line = "Assaults > " + playerEmpire.SystemAssaultLocation_1
+                    + "   " + playerEmpire.SystemAssaultLocation_2
+                    ;
+                return _line;
             }
         }
+
+
 
         public GalaxyViewOptions Options
         {
@@ -1194,6 +1220,27 @@ namespace Supremacy.UI
         }
 
         private static object SelectedFleetCoerceValueCallback(
+            DependencyObject source,
+            object value)
+        {
+            Fleet fleet = value as Fleet;
+            return (!(source is GalaxyGridPanel grid)) || (fleet == null) ? null : fleet.Owner != grid.PlayerCivilization ? null : value;
+        }
+
+        private static void SelectedTaskForceChangedCallback(DependencyObject source,
+                                                 DependencyPropertyChangedEventArgs e)
+        {
+            if ((!(source is GalaxyGridPanel view)) || (view.SelectedTaskForceChanged == null))
+            {
+                return;
+            }
+
+            view.SelectedTaskForceChanged(
+                source,
+                new DependencyPropertyChangedEventArgs<Fleet>(e));
+        }
+
+        private static object SelectedTaskForceCoerceValueCallback(
             DependencyObject source,
             object value)
         {

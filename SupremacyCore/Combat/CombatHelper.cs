@@ -529,7 +529,8 @@ namespace Supremacy.Combat
             {
                 ShortName = "Only Return Fire",
                 CivID = 888, // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
-                Key = "Only Return Fire"
+                Key = "Only Return Fire",
+                TargetCiv1Status = ""
             };
         }
     }

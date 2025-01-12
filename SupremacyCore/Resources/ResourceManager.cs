@@ -7,14 +7,14 @@
 //
 // All other rights reserved.
 
+using Supremacy.Game;
+using Supremacy.Orbitals;
+using Supremacy.Utility;
+using Supremacy.VFS;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-
-using Supremacy.Game;
-
-using Supremacy.VFS;
-using Supremacy.Utility;
 
 namespace Supremacy.Resources
 {
@@ -25,11 +25,17 @@ namespace Supremacy.Resources
 
         public static readonly CultureInfo NeutralCulture;
         public static readonly CultureInfo CurrentCulture;
+        //public static readonly CultureInfo GermanCulture;
+        //public static readonly CultureInfo FrenchCulture;
         public static readonly string NeutralLocale;
         public static readonly string CurrentLocale;
+        //public static readonly string GermanLocale;
+        //public static readonly string FrenchLocale;
 
         private static readonly StringTable _localStrings;
         private static readonly StringTable _defaultStrings;
+        //private static readonly StringTable _GermanStrings;
+        //private static readonly StringTable _FrenchStrings;
         private static readonly GameMod _commandLineMod;
         private static readonly IVfsService _vfsService;
         private static string _text;
@@ -85,6 +91,16 @@ namespace Supremacy.Resources
 
             NeutralCulture = CultureInfo.GetCultureInfo("en");
             CurrentCulture = CultureInfo.CurrentCulture;
+            //GermanCulture = CultureInfo.GetCultureInfo("de");
+            //FrenchCulture = CultureInfo.GetCultureInfo("fr");
+
+            string _enTXT = GetResourcePath(@"Resources\Data\en.txt");
+            try { if (File.Exists(_enTXT)) { File.Copy(_enTXT, GetResourcePath(@"Resources\Data\de.txt"), true); } }
+            catch
+            {
+                _text = GameEngine.Newline + "Step_0131:; ############### PROBLME - is _strings.csv or .txt in use ?";
+                Console.WriteLine(_text);
+            }
 
             while (!CurrentCulture.IsNeutralCulture &&
                    CurrentCulture.Parent != null &&
@@ -95,18 +111,80 @@ namespace Supremacy.Resources
 
             NeutralLocale = NeutralCulture.Name;
             CurrentLocale = CurrentCulture.Name;
+            //GermanLocale = GermanCulture.Name;
+            //FrenchLocale = FrenchCulture.Name;
 
             VfsWebRequestFactory.EnsureRegistered();
 
             _commandLineMod = GameModLoader.GetModFromCommandLine();
 
-            _defaultStrings = StringTable.Load(
-                GetResourcePath(@"Resources\Data\" + NeutralLocale + ".txt"));
+            _defaultStrings = StringTable.Load(GetResourcePath(@"Resources\Data\" + NeutralLocale + ".txt"));
 
-            //for (int i = 0; i < _defaultStrings.Keys.Count; i++)
+
+            //try { _GermanStrings = StringTable.Load(GetResourcePath(@"Resources\Data\de_added.txt")); } catch { }
+
+
+            //try { _FrenchStrings = StringTable.Load(GetResourcePath(@"Resources\Data\fr.txt")); } catch { }
+
+            // output en.txt + de.txt + fr.txt
+
+            // now in en.tx with #>DE: >>> remove "#" or add by Replace ">DE: " by "#>DE: "
+
+            //try
             //{
-            //    _text = _defaultStrings.Keys.[i]
+            //    int c = 0;
+            //    _text = "";
+            //    string _key = "";
+            //    foreach (var item in _defaultStrings.Keys)
+            //    {
+            //        c += 1;
+            //        _key = item.ToString();
+
+            //        string _entry = GameEngine.Do_4_Digit(c.ToString()) + " ; " + _key;
+            //        _entry += " ; ";
+            //        _entry += _defaultStrings[_key].ToString();
+            //        _entry += " ; ";
+            //        _entry += _GermanStrings[_key].ToString();
+            //        _entry += " ; ";
+            //        _entry += _FrenchStrings[_key].ToString();
+
+            //        _entry = _entry.Replace("\r\n", GameEngine.Blank);
+
+            //        _text += _entry + GameEngine.Newline;
+
+            //        //Console.WriteLine("Step_0135:; " + _text);
+            //        //if (_key == "Blackhole")
+            //    }
+            //    _text = "Entry;Key;EN  ;DE  ;FR  " + GameEngine.Newline + _text;
+            //    //Console.WriteLine("Step_0146:; " + GameEngine.Newline + _text);
+            //    Console.WriteLine("Step_0146:; " + GameEngine.Newline + "No output of strings in EN / DE /FR");
+
+            //    string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_Strings.txt");
+            //    string file_csv = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_Strings.csv");
+
+
+            //    if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            //    {
+            //        StreamWriter streamWriter = new StreamWriter(file);
+            //        streamWriter.Write(_text);
+            //        streamWriter.Close();
+            //        _text = "output of _Strings done to " + file;
+            //        if (true) Console.WriteLine(_text);
+            //        try { if (File.Exists(file)) { File.Copy(file, file_csv, true); } } catch
+            //        {
+            //            _text = GameEngine.Newline + "Step_0131:; ############### PROBLME - is _strings.csv or .txt in use ?";
+            //            Console.WriteLine(_text);
+            //        }
+            //    }
             //}
+            //catch
+            //{
+            //    _text = "Step_0139:; en.txt and de.txt and fr.txt are structered in different amount of keys"
+            //        + GameEngine.Newline + "or _strings.txt or csv is in use"
+            //        ;
+            //    Console.WriteLine(_text);
+            //}
+
 
             if (CurrentLocale == NeutralLocale)
             {
@@ -118,10 +196,29 @@ namespace Supremacy.Resources
                 {
                     _localStrings = StringTable.Load(
                         GetResourcePath(@"Resources\Data\" + CurrentLocale + ".txt"));
+
+                    //if (true)
+                    //{
+                    //    foreach (var item in _localStrings.Values)
+                    //    {
+                    //        if (item == "STAR_TYPE_BLACKHOLE_DESCRIPTION"
+                    //            || item == "STAR_TYPE_WORMHOLE_DESCRIPTION"
+                    //            || item == "STAR_TYPE_BLACKHOLE_DESCRIPTION")
+                    //        {
+                    //            //item.
+                    //            Debugger.Break();
+                    //        }
+                    //    }
+                    //}
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Info("Step_0140: Hint: local file \\Data\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done");
+                    _text = "Step_0140: Hint: local file \\Data\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done"
+                        + GameEngine.Newline + "exception" + e.Message
+                        + GameEngine.Newline + e.StackTrace + e.Source
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.GameData.Info(_text);
                     GameLog.Core.GameData.DebugFormat("exception {0} {1}", e.Message, e.StackTrace);
                 }
             }
@@ -164,6 +261,38 @@ namespace Supremacy.Resources
 
             return result ?? key;
         }
+
+        //public static string Get_DE_String(string key)
+        //{
+        //    string result = null;
+        //    if (_GermanStrings != null)
+        //    {
+        //        result = _GermanStrings[key];
+        //    }
+
+        //    if (result == null)
+        //    {
+        //        result = _defaultStrings[key];
+        //    }
+
+        //    return result ?? key;
+        //}
+
+        //public static string Get_FR_String(string key)
+        //{
+        //    string result = null;
+        //    //if (_FrenchStrings != null)
+        //    //{
+        //    //    result = _FrenchStrings[key];
+        //    //}
+
+        //    if (result == null)
+        //    {
+        //        result = _defaultStrings[key];
+        //    }
+
+        //    return result ?? key;
+        //}
 
         public static string GetResourcePath(string path)
         {

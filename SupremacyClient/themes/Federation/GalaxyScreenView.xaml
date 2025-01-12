@@ -152,11 +152,11 @@
                            Text="{Binding Path=SelectedSector, Mode=OneWay, Converter={StaticResource SectorNameConverter}, ConverterParameter=UpperCase}"
                            HorizontalAlignment="Center" />
                             </Border>
-                            <Rectangle Grid.Column="3"
-                         Grid.Row="0"
-                         Width="14"
-                         Margin="3,0,0,0"
-                         Fill="{StaticResource PurpleGradient_Top_Bottom}" />
+                            
+                            <Rectangle Grid.Column="3" Grid.Row="0" Margin="3,0,0,0"
+                                       Width="14" Fill="{StaticResource PurpleGradient_Top_Bottom}" />
+                        
+                        
                             <Rectangle Grid.Column="3"
                                      Grid.Row="1"
                                      Width="14"
@@ -195,17 +195,21 @@
                            Text="{s:StringResource SCAN_TEXT}"
                            HorizontalAlignment="Center" />
                             </Border>
-                            <Border Grid.Column="5"
-                      Grid.Row="1"
-                      Padding="7,0,7,0"
-                      Margin="3,4,0,0">
+                            
+                            <Border Grid.Row="1" Grid.Column="5" Padding="7,0,7,0" Margin="3,4,0,0">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="18pt"
+                           Text="{Binding Path=HoveredSector, Mode=OneWay, Converter={StaticResource SectorScanStrengthConverter}}"                          
                            Foreground="{Binding Path=HoveredSector, Mode=OneWay, Converter={StaticResource SectorScanStrengthBrushConverter}}"
-                           Text="{Binding Path=HoveredSector, Mode=OneWay, Converter={StaticResource SectorScanStrengthConverter}}"
-                           HorizontalAlignment="Center" />
+                           HorizontalAlignment="Center"  FontSize="18pt"/>
                             </Border>
-                            <Rectangle Grid.Column="6"
+
+                            <Rectangle Grid.Column="6" Grid.Row="0" Margin="3,0,0,0"
+                                       Width="14" Fill="{StaticResource PurpleGradient_Top_Bottom}" />
+
+                            <Rectangle Grid.Column="6" Grid.Row="1" Margin="3,4,0,0"
+                                       Width="14" Fill="{StaticResource PurpleGradient_Top_Bottom}" />
+
+                            <!--<Rectangle Grid.Column="6"
                          Grid.Row="0"
                          Margin="3,0,0,0"
                          Height="28"
@@ -219,6 +223,7 @@
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
+                            
                             <Rectangle Grid.Column="6"
                          Grid.Row="1"
                          Margin="3,4,0,0"
@@ -232,14 +237,27 @@
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle Grid.Column="7"
+                            </Rectangle>-->
+
+                            <Border Grid.Column="7" Grid.Row="0" Padding="7,0,7,0" Margin="3,0,0,0" Background="{StaticResource BlueGradient_Top_Bottom}">
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           Text="{Binding Path=PlayerCivilizationAccumulatePlace, Mode=OneWay}"                          
+                           Foreground="Black" HorizontalAlignment="Center"  FontSize="18pt"/>
+                            </Border>
+
+                            <Border Grid.Column="7" Grid.Row="1" Padding="7,0,7,0" Margin="3,4,0,0" Background="{StaticResource PinkGradient_Top_Bottom}">
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           Text="{Binding Path=PlayerCivilizationSystemAssaultPlaces, Mode=OneWay}"                          
+                           Foreground="Black" HorizontalAlignment="Center"  FontSize="18pt"/>
+                            </Border>
+
+                            <!--<Rectangle Grid.Column="7"
                          Grid.Row="0"
                          Margin="3,0,0,0"
                          Height="14"
                          VerticalAlignment="Bottom"
                          Fill="{StaticResource BlueGradient_Top_Bottom}" 
-                                       />
+                                       />-->
                             <!-- doesn't work atm
                                 >
                             <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
@@ -249,13 +267,14 @@
                            Text="{s:StringResource FEDERATION_HEADLINE}"-->
                             <!--/>-->
                             <!--</Rectangle>-->
-                            <Rectangle Grid.Column="7"
+                            
+                            <!--<Rectangle Grid.Column="7"
                          Grid.Row="1"
                          Margin="3,4,0,0"
                          Height="14"
                          VerticalAlignment="Top"
                          Fill="{StaticResource OrangeGradient_Top_Bottom}" 
-                                       />
+                                       />-->
                             <!-- doesn't work atm
                                 >
                             <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
@@ -653,14 +672,13 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <!--<Rectangle x:Name="LeftCenterTopEdge"-->
-                                <Border x:Name="LeftCenterTopEdge"
-                           Grid.Column="0"
-                           Background="{StaticResource BlueGradient_Top_Bottom}" >
-                                    <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                        FontSize="18pt" Foreground="Black" HorizontalAlignment="Center"
-                           
-                                     Text="{Binding Path=PlayerCivilizationRendezvousPlace, Mode=OneWay}" />
-                                    <!--PlayerCivilizationRendezvousPlace unfortunately not working-->
+                                <Border x:Name="LeftCenterTopEdge" Grid.Column="0"
+                                    Background="{StaticResource BlueGradient_Top_Bottom}" >
+                                    <!--<TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                               Text="{Binding Path=PlayerCivilizationAccumulatePlace, Mode=OneWay}" 
+                                               FontSize="14pt" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     />-->
+                                    <!--PlayerCivilizationAccumulatePlace unfortunately not working-->
                                 </Border>
                                 
                                 <!--Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.LocalPlayer, StringFormat={scc:StringFormatConverter} ,Mode=OneWay}" />-->
@@ -848,8 +866,8 @@
                                         </Button>
 
                                     </StackPanel>
-                                    
-                                    
+
+                                    <!--ChatButton-->
                                     <ToggleButton x:Name="ChatButton"
                             Focusable="False"
                             Style="{StaticResource LCARS_BorderToggleButtonStyle}"
@@ -987,44 +1005,23 @@
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <ContentControl x:Name="AssignedShipListRegion"
-                              Grid.Column="1"
-                              Grid.ColumnSpan="3"
-                              Grid.Row="1"
-                              Margin="7,0,7,0"
-                              Height="128"
-                              Visibility="Hidden"
-                              cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.AssignedShipList}" />
-                            <ContentControl x:Name="PlanetsViewRegion"
-                              Grid.Column="1"
-                              Grid.ColumnSpan="3"
-                              Grid.Row="1"
-                              Margin="7,0,7,0"
-                              Height="128"
-                              Visibility="Visible"
-                                            Background="Yellow"
-                              FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                              cal:RegionManager.RegionName="{x:Static scc:CommonGameScreenRegions.PlanetsView}" />
-                                            
-                            <local:ChatPanel x:Name="PART_ChatPanel"
-                               Grid.Column="1"
-                               Grid.ColumnSpan="3"
-                               Grid.Row="1"
-                               Margin="7,0,7,0"
-                               Height="128"
-                               Visibility="Hidden" />
                             
-                             <!--Hello just for testing-->
-                            <!--
-                            <TextBlock  Text="Hello"                                
-                              Grid.Row="1"                                
-                                Grid.Column="3"
-                                Foreground="White"
-                                FontSize="20"
-                                 />
-                            -->
+                            <ContentControl x:Name="AssignedShipListRegion" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                              cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.AssignedShipList}"                               
+                                            Visibility="Hidden" Height="128" Margin="7,0,7,0"
 
+                                            />
+                            
+                            <ContentControl x:Name="PlanetsViewRegion" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                              cal:RegionManager.RegionName="{x:Static scc:CommonGameScreenRegions.PlanetsView}" 
+                              Visibility="Visible" Background="Yellow" Height="128" Margin="7,0,7,0"
+                              FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                />
 
+                            <local:ChatPanel x:Name="PART_ChatPanel" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                              Visibility="Hidden" Height="128" Margin="7,0,7,0"
+                                />
+                            
                         </Grid>
                         <!-- END SYSTEM PANEL -->
 

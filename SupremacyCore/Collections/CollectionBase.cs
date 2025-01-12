@@ -56,7 +56,7 @@ namespace Supremacy.Collections
         private object _syncRoot;
         [NonSerialized]
         private StateScope _suppressChangeNotificationsScope;
-        private string _text;
+        public string _text;
 //#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
 #pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private int _count;

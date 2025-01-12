@@ -1097,13 +1097,43 @@ RequestNavigate="DoLink"> Shipyards </Hyperlink>
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors" 
 RequestNavigate="DoLink"> Sectors </Hyperlink>
 
--
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects" 
-RequestNavigate="DoLink"> Galaxy Objects </Hyperlink>
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks"
+              RequestNavigate="DoLink"> ST ranks </Hyperlink>
+              
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
 
 -
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks" 
-RequestNavigate="DoLink"> ST ranks </Hyperlink>
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects"
+RequestNavigate="DoLink"> Galaxy Objects </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Black_hole"
+              RequestNavigate="DoLink"> Black hole </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nebula"
+              RequestNavigate="DoLink"> Nebula </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Neutron_star"
+              RequestNavigate="DoLink"> Neutron star </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Pulsar"
+RequestNavigate="DoLink"> Pulsar </Hyperlink>
+              
+             
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Quasar" 
+RequestNavigate="DoLink"> Quasar </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Wormhole"
+              RequestNavigate="DoLink"> Wormhole </Hyperlink>
+
 
 
             </TextBlock>

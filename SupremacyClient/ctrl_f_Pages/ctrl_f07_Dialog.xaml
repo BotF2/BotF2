@@ -1104,14 +1104,41 @@ MORE (not included) >
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Sektor" 
 > Sectors </Hyperlink>
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Sternenflottenr%C3%A4nge"
+> ST ranks </Hyperlink>
+              
+            </TextBlock>
+
+<TextBlock TextWrapping="Wrap">
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Liste_von_astronomischen_Objekten" 
 > Galaxy Objects </Hyperlink>
 
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Stellarer_Nebel"
+> Nebel </Hyperlink>
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Neutronenstern"
+> Neutronenstern </Hyperlink>
+
 -
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Sternenflottenr%C3%A4nge" 
-> ST ranks </Hyperlink>
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Pulsar"
+> Pulsare </Hyperlink>
+              
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Quasar" 
+> Quasare </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Schwarzes_Loch"
+> Schwarzes Loch </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Wurmloch"
+> Wurmloch </Hyperlink>
+
 
 
             </TextBlock>

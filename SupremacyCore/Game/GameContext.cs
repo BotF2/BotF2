@@ -293,7 +293,7 @@ namespace Supremacy.Game
                 _text = "Step_3780:; already read _races..... > " + _races.Count;
                 Console.WriteLine(_text);
 
-                Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off");
+                Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off - use ALT+M at Map > \\lib\\_MapData.txt");
                 _universe = reader.Read<UniverseManager>();
                 _text = "Step_3810:; already read _universe.....";
                 Console.WriteLine(_text);
@@ -384,7 +384,7 @@ namespace Supremacy.Game
 
             ITextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
 
-            _text = "Step_0932:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
+            // outdated .. maybe somewhere else >> _text = "Step_0932:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
             Console.WriteLine(_text);
 
             foreach (TechObjectDesign design in _techDatabase)

@@ -161,7 +161,10 @@ namespace Supremacy.Client.Views
         private IEnumerable<FleetViewWrapper> _otherVisibleTaskForces;
         private IEnumerable<FleetViewWrapper> _iSpyTaskForces;
         private IEnumerable<TradeRoute> _tradeRoutes;
+        
         private readonly EmpirePlayerStatusCollection _empirePlayers;
+        [NonSerialized]
+        public string _text;
         #endregion
 
         #region Events
@@ -179,9 +182,15 @@ namespace Supremacy.Client.Views
         public event EventHandler TaskForcesChanged;
         public event EventHandler LocalPlayerTaskForcesChanged;
         public event EventHandler VisibleTaskForcesChanged;
+
         public event EventHandler SelectedTradeRouteChanged;
         public event EventHandler TradeRoutesChanged;
+
         public event EventHandler SelectedSectorStationChanged;
+
+        public event EventHandler PlayerCivilizationAccumulatePlaceChanged;
+        public event EventHandler PlayerCivilizationSystemAssaultPlacesChanged;
+
         #endregion
 
         #region Constructors and Finalizers
@@ -206,7 +215,49 @@ namespace Supremacy.Client.Views
         #region Properties and Indexers
         public IEmpirePlayerStatusCollection EmpirePlayers => _empirePlayers;
 
-        public string PlayerCivilizationRendezvousPlace => "R: " + GameContext.Current.CivilizationManagers[0].RendezvousSector.ToString();
+        public string PlayerCivilizationAccumulatePlace
+        {
+            get
+            {
+                _text = GameContext.Current.CivilizationManagers[0].AccumulateSector.Location.ToString();
+                if (_text == "(0, 0)") _text = "-";
+                return "Accumulate at: " + _text;
+            }
+            set
+            {
+                //if (Equals(_availableShips, value))
+                //{
+                //    return;
+                //}
+
+                //_availableShips = value;
+                OnPlayerCivilizationAccumulatePlaceChanged();
+            }
+        }
+
+        public string PlayerCivilizationSystemAssaultPlaces
+        {
+            get
+            {
+                string _return = "Assault: ";
+                if (GameContext.Current.CivilizationManagers[0].SystemAssaultSector_1.Location.ToString() == "(0, 0)")
+                {
+                    _return += " - ";
+                }
+                if (GameContext.Current.CivilizationManagers[0].SystemAssaultSector_2.Location.ToString() != "(0, 0)")
+                {
+                    _return += " ,   Assault 2: " + GameContext.Current.CivilizationManagers[0].SystemAssaultSector_2.Location.ToString();
+                }
+
+                return _return;
+            }
+            set
+            {
+
+                OnPlayerCivilizationSystemAssaultPlacesChanged();
+            }
+        }
+        ////public string PlayerCivilizationSystemAssaultPlace_2 => 
 
         public IEnumerable<Ship> AvailableShips
         {
@@ -695,6 +746,16 @@ namespace Supremacy.Client.Views
         private void OnTradeRoutesChanged()
         {
             TradeRoutesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnPlayerCivilizationAccumulatePlaceChanged()
+        {
+            PlayerCivilizationAccumulatePlaceChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnPlayerCivilizationSystemAssaultPlacesChanged()
+        {
+            PlayerCivilizationSystemAssaultPlacesChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

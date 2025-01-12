@@ -61,6 +61,7 @@ namespace Supremacy.Resources
                 //GameLog.Client.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
 
+                //
                 //throw new FileNotFoundException(
                 //    "String table file could not be located: "
                 //    + fileName);

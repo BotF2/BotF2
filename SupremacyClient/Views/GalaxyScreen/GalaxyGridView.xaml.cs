@@ -465,7 +465,7 @@ namespace Supremacy.Client.Views
 
                     }
 
-                    _text += "Step_7605:; " + _col
+                    _text += "Step_7604:; " + _col
                            
                             + "; Stockpile Deu= " + item.NetDeuterium
                             + "; Dur= " + item.NetDuranium

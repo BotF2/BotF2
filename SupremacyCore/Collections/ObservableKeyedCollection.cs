@@ -53,7 +53,7 @@ namespace Supremacy.Collections
         private int _keyCount;
 
         private Func<TValue, TKey> _keyRetriever;
-        private string _text;
+        private string _text_ObKeyCol;
 
         public KeyedCollectionBase(Func<TValue, TKey> keyRetriever)
             : this(keyRetriever, null, DefaultDictionaryCreationThreshold) { }
@@ -94,43 +94,43 @@ namespace Supremacy.Collections
             {
                 if (key == null)
                 {
-                    _text = "Step_0873: Searched Key was null";
-                    Console.WriteLine(_text);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    _text_ObKeyCol = "Step_0873: Searched Key was null";
+                    Console.WriteLine(_text_ObKeyCol);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                     throw new ArgumentNullException(nameof(key));
                 }
 
                 // next works, but it is too often
-                //_text = "Step_0874: working on key > " + key.ToString();
-                //Console.WriteLine(_text);
-                //GameLog.Core.General.ErrorFormat(_text);
+                //_text_ObKeyCol = "Step_0874: working on key > " + key.ToString();
+                //Console.WriteLine(_text_ObKeyCol);
+                //GameLog.Core.General.ErrorFormat(_text_ObKeyCol);
 
                 //searching for crashes
 
                 if (key.ToString() == "-1")
                 {
-                    _text = "Step_0875:; Searched Key was -1, sometimes this crashes";
+                    _text_ObKeyCol = "Step_0875:; Searched Key was -1, sometimes this crashes";
                     //if (_console) 
-                    Console.WriteLine(_text);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    Console.WriteLine(_text_ObKeyCol);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                     return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
                 }
 
                 //searching for crashes
                 //if (key.ToString() == "999")
                 //{
-                //    _text = "Searched Key was '999', sometimes this crashes";
-                //    Console.WriteLine(_text);
-                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    _text_ObKeyCol = "Searched Key was '999', sometimes this crashes";
+                //    Console.WriteLine(_text_ObKeyCol);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                 //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
                 //}
 
                 //searching for crashes
                 //if (key.ToString() == "789")
                 //{
-                //    _text = "Searched Key was '789', sometimes this crashes";
-                //    Console.WriteLine(_text);
-                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    _text_ObKeyCol = "Searched Key was '789', sometimes this crashes";
+                //    Console.WriteLine(_text_ObKeyCol);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                 //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
                 //}
 
@@ -150,9 +150,9 @@ namespace Supremacy.Collections
                 }
                 // avoids crashes
 
-                _text = "Step_0878:; Key not found >> key" + key.ToString();
-                Console.WriteLine(_text);
-                GameLog.Core.General.ErrorFormat(_text);
+                _text_ObKeyCol = "Step_0878:; Key not found >> key= " + key.ToString();
+                Console.WriteLine(_text_ObKeyCol);
+                GameLog.Core.General.ErrorFormat(_text_ObKeyCol);
 
                 throw new KeyNotFoundException();
 
@@ -374,8 +374,8 @@ namespace Supremacy.Collections
 
             foreach (TValue item in Items)
             {
-                //_text = "Step_4199: GetKeyForItem= " + item;
-                //Console.WriteLine(_text);
+                //_text_ObKeyCol = "Step_4199: GetKeyForItem= " + item;
+                //Console.WriteLine(_text_ObKeyCol);
                 //if (_keyRetriever != null)  // 2023-06-24
                     AddKey(GetKeyForItem(item), item);
             }
@@ -412,10 +412,10 @@ namespace Supremacy.Collections
 
         protected virtual void OnKeyCollision(TKey key, TValue item)
         {
-            _text = "Step_0496: OnKeyCollision: key= " + key.ToString()
+            _text_ObKeyCol = "Step_0496: OnKeyCollision: key= " + key.ToString()
                     + ", item= " + item.ToString();
-            Console.WriteLine(_text);
-            GameLog.Core.General.ErrorFormat(_text);
+            Console.WriteLine(_text_ObKeyCol);
+            GameLog.Core.General.ErrorFormat(_text_ObKeyCol);
             throw new ArgumentException("Collection already contains an item with the specified key.");
         }
 

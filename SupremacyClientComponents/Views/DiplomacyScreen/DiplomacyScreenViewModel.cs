@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Supremacy.Client.Views
@@ -1558,5 +1559,56 @@ namespace Supremacy.Client.Views
                     return StatementType.NoStatement;
             }
         }
+
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+
+            return false;
+        }
+
+        #region IsEnabledButtonEditMessageCommand Property
+
+        [field: NonSerialized]
+        public event EventHandler IsEnabledButtonEditMessageCommandHandler;
+
+        public bool IsEnabledButtonEditMessageCommand
+        {
+            get
+            {
+                
+
+                return CanExecuteEditMessageCommand();
+            }
+
+        }
+
+
+        protected virtual void OnIsEnabledButtonEditMessageCommandChanged()
+        {
+            IsEnabledButtonEditMessageCommandHandler.Raise(this);
+            OnPropertyChanged("IsEnabledButtonEditMessageCommand");
+        }
+
+        //private bool _isEnabledButtonEditMessageCommand = false;
+
+        //public bool IsEnabledButtonEditMessageCommand { get => CanExecuteEditMessageCommand(); set => SetProperty(ref _isEnabledButtonEditMessageCommand, value); }
+
+        //private bool canExecuteEditMessageCommand;
+
+        //public bool CanExecuteEditMessageCommand { get => canExecuteEditMessageCommand; set => SetProperty(ref canExecuteEditMessageCommand, value); }
+
+        //protected virtual void OnIsEnabledButtonEditMessageCommandChanged()
+        //{
+        //    SelectedGraphNodeChanged.Raise(this);
+        //    OnPropertyChanged("IsEnabledButtonEditMessageCommand");
+        //}
+
+        #endregion
     }
 }

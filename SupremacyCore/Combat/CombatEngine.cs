@@ -817,11 +817,11 @@ namespace Supremacy.Combat
                     Fleet newfleet = ship.CreateFleet();
                     newfleet.Location = destination.Location;
                     newfleet.Owner = borg;
-                    newfleet.SetOrder(FleetOrders.EngageOrder.Create());
-                    if (newfleet.Order == null)
-                    {
-                        newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
-                    }
+                    newfleet.SetOrder(FleetOrders.IdleOrder.Create());
+                    //if (newfleet.Order == null)
+                    //{
+                    //    newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
+                    //}
                     ship.IsAssimilated = true;
                     ship.Scrap = false;
                     newfleet.Name = "Assimilated Assets";

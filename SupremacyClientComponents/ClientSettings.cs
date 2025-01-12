@@ -422,6 +422,9 @@ namespace Supremacy.Client
         //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> EnableCombatScreenChanged;
         //private void OnEnableCombatScreenChanged(bool oldValue, bool newValue)
         //=> EnableCombatScreenChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        //public bool AddGerman = true;
+
         public bool EnableCombatScreen
         {
             get => (bool)GetValue(EnableCombatScreenProperty);
@@ -2887,6 +2890,74 @@ namespace Supremacy.Client
             set => SetValue(ClientWindowHeightProperty, value);
         }
         #endregion ClientWindowHeight Property
+
+        #region AddGermanText Property
+        public static readonly DependencyProperty AddGermanTextProperty = DependencyProperty.Register(
+            "AddGermanText",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> AddGermanTextChanged;
+
+        //private void OnAddGermanTextChanged(bool oldValue, bool newValue)
+        //=> AddGermanTextChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        public bool AddGermanText
+        {
+            get => (bool)GetValue(AddGermanTextProperty);
+            set
+            {
+                SetValue(AddGermanTextProperty, value);
+                //GameLog.Client.General.InfoFormat("AddGermanText = {0}", value);
+                if (value)
+                {
+                    GameLog.SetRepositoryToDebug("AddGermanText");
+                }
+                else
+                {
+                    GameLog.SetRepositoryToErrorOnly("AddGermanText");
+                }
+            }
+        }
+        #endregion AddGermanText Property
+
+
+        #region AddFrenchText Property
+        public static readonly DependencyProperty AddFrenchTextProperty = DependencyProperty.Register(
+            "AddFrenchText",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> AddFrenchTextChanged;
+
+        //private void OnAddFrenchTextChanged(bool oldValue, bool newValue)
+        //=> AddFrenchTextChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        public bool AddFrenchText
+        {
+            get => (bool)GetValue(AddFrenchTextProperty);
+            set
+            {
+                SetValue(AddFrenchTextProperty, value);
+                //GameLog.Client.General.InfoFormat("AddFrenchText = {0}", value);
+                if (value)
+                {
+                    GameLog.SetRepositoryToDebug("AddFrenchText");
+                }
+                else
+                {
+                    GameLog.SetRepositoryToErrorOnly("AddFrenchText");
+                }
+            }
+        }
+        #endregion AddFrenchText Property
+
 
         #region WidthSpecial1 Property
         public static readonly DependencyProperty WidthSpecial1Property = DependencyProperty.Register(

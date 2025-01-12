@@ -80,7 +80,7 @@ namespace Supremacy.Universe
         /// The maximum number of production facilities per category that can exist
         /// on a single colony.
         /// </summary>
-        public const int MaxProductionFacilities = 255;
+        public const int MaxProductionFacilities = 100;
 
         /// <summary>
         /// The base amount of food that is automatically produced without any food facilities
@@ -1937,11 +1937,12 @@ namespace Supremacy.Universe
                     _ = ActivateFacility(ProductionCategory.Food);
                     _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
-                    DoSitRepGray(_text);
+                    GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
+                    //DoSitRepGray(_text);
                 }
                 else if (_foodPF_unused == 0)
                 {
-                    _text = "Step_2399: No free food facility";
+                    _text = "Step_2399:; "+ Location + "No free food facility";
                     Console.WriteLine(_text);
                     if (!Owner.IsHuman)
                         AddFacilities(ProductionCategory.Food, 1);
@@ -1954,7 +1955,8 @@ namespace Supremacy.Universe
                     _ = ActivateFacility(ProductionCategory.Food);
                     _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
-                    DoSitRepGray(_text);
+                    GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
+                    //DoSitRepGray(_text);
                 }
 
                 //if (_foodReserves > 2000)
@@ -2063,10 +2065,10 @@ namespace Supremacy.Universe
             }
         }
 
-        private void DoSitRepGray(string _text)
-        {
-            GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
-        }
+        //private void DoSitRepGray(string _text)
+        //{
+        //    GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
+        //}
 
         private void ReduceOneOtherPF()
         {
@@ -2548,17 +2550,20 @@ namespace Supremacy.Universe
         {
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[building.OwnerID];
             //civManager.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(civManager.Civilization, building.Sector.System.Colony));
-            _text = string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Name, Location);
+            _text = string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Name, GameEngine.LocationString(Location.ToString()));
             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.RedYellow));
 
-            GameLog.Core.EnergyDetails.DebugFormat("Turn {0};Shutdown due to missing energy for;{1} {2};at;{3} ({4});{5}"
-                , GameContext.Current.TurnNumber
-                , building.ObjectID
-                , building.Name
-                , building.Sector.Name
-                , building.Sector.Location
-                , building.Sector.Owner
-                );
+            _text = "Turn " + GameContext.Current.TurnNumber
+                + "; " + GameEngine.LocationString(building.Sector.Location.ToString())
+                + " > Shutdown due to missing energy for " + building.ObjectID
+                + " " + building.Name
+                + " " + building.Owner
+
+                ;
+
+            Console.WriteLine("Step_3446:; "+_text); 
+
+            //GameLog.Core.EnergyDetails.DebugFormat(_text);
             return SetBuildingActive(building, false);
         }
 

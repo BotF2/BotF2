@@ -394,11 +394,11 @@
                     </Grid.ColumnDefinitions>
 
 
-                <!--Map-Button-->
-                <controls:GameButton Grid.Row="0" Grid.Column="0" Margin="10,0,80,0" 
+                <!--Map-Button - works but not necassary anymore -->
+                <!--<controls:GameButton Grid.Row="0" Grid.Column="0" Margin="10,0,80,0" 
                       VerticalAlignment="Top" IsEnabled="True" Click="OnMapButtonClick" DisplayMode="Tiny"
                       Label="{scc:StringResource Key=MAP}" 
-                      />
+                      />-->
 
 
                 <CheckBox x:Name="GrayCheck" Foreground="Gray" Grid.Row="1" Grid.Column="6" Margin="14,0,0,0"

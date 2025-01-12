@@ -289,6 +289,7 @@ namespace Supremacy.Orbitals
                 {
                     string _design = "nothing";
                     string _percent = "0 %";
+                    string _slots_summary = "";
                     if (slot.Project != null && slot.Project.BuildDesign != null)
                     {
                         _design = slot.Project.BuildDesign.ToString();
@@ -304,12 +305,13 @@ namespace Supremacy.Orbitals
                             + " > " + _percent
                             + " done for " + _design
                             ;
-                        Console.WriteLine(_text);
+                        //Console.WriteLine(_text);
+                        _slots_summary += newline + _text;
                         //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
                     else
                     {
-                        _text = "Step_7606:; Serialize " + slot.Shipyard.Location
+                        _text = "Step_7606:; Serialize " + GameEngine.LocationString(slot.Shipyard.Location.ToString())
                             + " > Slot= " + slot.SlotID  // crashes with a StackOverFlow
                             //+ " at " + slot.Shipyard.Name
                             + " " 
@@ -317,14 +319,15 @@ namespace Supremacy.Orbitals
                             + " done for " + _design
                             ;
                         //Console.WriteLine(_text);
+                        _slots_summary += /*newline +*/ _text;
                         //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
-
+                    Console.WriteLine(newline + _slots_summary);
                 }
             }
             catch
             {
-                _text = "Step_7605:; Serialize failed"
+                _text = "Step_7609:; Serialize failed"
                      //+ slot.Project.Location
                      //+ " > Slot= " + slot.SlotID
                      //+ " at " + slot.Shipyard.Name

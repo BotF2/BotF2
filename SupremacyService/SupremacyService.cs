@@ -1613,7 +1613,9 @@ namespace Supremacy.WCF
                 {
                     ShortName = "Only Return Fire",
                     CivID = 888,
-                    Key = "Only Return Fire"
+                    Key = "Only Return Fire",
+                    TargetCiv1Status = "",
+                    TargetCiv2Status = ""
                 }; // The AI generates a dummy target for non-human player civ
 
                 CombatOrder blanketOrder = CombatOrder.Engage;

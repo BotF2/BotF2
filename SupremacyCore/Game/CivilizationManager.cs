@@ -96,9 +96,15 @@ namespace Supremacy.Game
         private int _homeColonyId;
         private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
-        private MapLocation _rendezvousplace;
+        private MapLocation _accumulateplace;
+        private MapLocation _systemAssaultLocation_1;
+        private MapLocation _systemAssaultLocation_2;
+
 #pragma warning disable IDE0052 // Remove unread private members
-        private Sector _rendezvousSector;
+        private Sector _accumulateSector;
+        private Sector _systemAssaultSector_1;
+        private Sector _systemAssaultSector_2;
+        private int _buyCostLastTurn;
 #pragma warning restore IDE0052 // Remove unread private members
         private int _seatOfGovernmentId = -1;
         private readonly Meter _totalIntelligenceAttackingAccumulated;
@@ -108,9 +114,7 @@ namespace Supremacy.Game
         private int _rankIntelAttack;
         private bool _destroyOfShipOrdered;
         private string _text;
-#pragma warning disable IDE0052 // Remove unread private members
-        private int _buyCostLastTurn;
-#pragma warning restore IDE0052 // Remove unread private members
+
 
         //private int bc;  // buildingCosts
         private readonly string newline = Environment.NewLine;
@@ -981,55 +985,162 @@ namespace Supremacy.Game
             }
         }
 
-        public MapLocation RendezvousLocation
+        public MapLocation AccumulateLocation
         {
             get
             {
-                if (_rendezvousplace == null || _rendezvousplace.ToString() == "( 0, 0)")
+                if (_accumulateplace == null || _accumulateplace.ToString() == "( 0, 0)")
                 {
-                    _rendezvousplace = HomeSystem.Location;
+                    _accumulateplace = HomeSystem.Location;
                     _text = "Step_3338:; Turn "
                             + GameContext.Current.TurnNumber
-                            + " > RendezvousLocation for " + this.Civilization
-                            + " is set to " + _rendezvousplace.ToString()
+                            + " > AccumulateLocation for " + this.Civilization
+                            + " is set to " + _accumulateplace.ToString()
                             ;
 
                     Console.WriteLine(_text);
                 }
-                return _rendezvousplace;
+                return _accumulateplace;
             }
             internal set
             {
 
-                _rendezvousplace = value;
+                _accumulateplace = value;
 
             }
         }
 
-        public Sector RendezvousSector
+        public Sector AccumulateSector
         {
             get
             {
-                Sector _rendezvousSector = new Sector(RendezvousLocation);
+                Sector _accumulateSector = new Sector(AccumulateLocation);
                 //new Sector()
-                if (_rendezvousSector == null || _rendezvousSector.Location.ToString() == "{(0, 0)}")
+                if (_accumulateSector == null || _accumulateSector.Location.ToString() == "{(0, 0)}")
                 {
-                    _rendezvousSector = this.HomeSystem.Sector;
+                    _accumulateSector = this.HomeSystem.Sector;
                     _text = "Step_3339:; "
                             + GameContext.Current.TurnNumber
-                            + " _rendezvousSector for " + this.Civilization
-                            + " is set to " + _rendezvousSector.ToString()
+                            + " _accumulateSector for " + this.Civilization
+                            + " is set to " + _accumulateSector.ToString()
                             + " ( HomeSystem ) "
                             ;
 
                     Console.WriteLine(_text);
                 }
-                return _rendezvousSector;
+                return _accumulateSector;
             }
             internal set
             {
 
-                _rendezvousSector = value;
+                _accumulateSector = value;
+
+            }
+        }
+
+
+        public MapLocation SystemAssaultLocation_1
+        {
+            get
+            {
+                if (_systemAssaultLocation_1 == null || _systemAssaultLocation_1.ToString() == "( 0, 0)")
+                {
+                    _systemAssaultLocation_1 = HomeSystem.Location;
+                    _text = "Step_3351:; Turn "
+                            + GameContext.Current.TurnNumber
+                            + " > AccumulateLocation for " + this.Civilization
+                            + " is set to " + _systemAssaultLocation_1.ToString()
+                            ;
+
+                    Console.WriteLine(_text);
+                }
+                return _systemAssaultLocation_1;
+            }
+            internal set
+            {
+
+                _systemAssaultLocation_1 = value;
+
+            }
+        }
+
+        public Sector SystemAssaultSector_1
+        {
+            get
+            {
+                Sector _systemAssaultSector_1 = new Sector(SystemAssaultLocation_1);
+                //new Sector()
+                if (_systemAssaultSector_1 == null || _systemAssaultSector_1.Location.ToString() == "{(0, 0)}")
+                {
+                    _systemAssaultSector_1 = this.HomeSystem.Sector;
+                    _text = "Step_3339:; "
+                            + GameContext.Current.TurnNumber
+                            + " _accumulateSector for " + this.Civilization
+                            + " is set to " + _systemAssaultSector_1.ToString()
+                            + " ( HomeSystem ) "
+                            ;
+
+                    Console.WriteLine(_text);
+                }
+                return _systemAssaultSector_1;
+            }
+            internal set
+            {
+
+                _systemAssaultSector_1 = value;
+
+            }
+        }
+
+        public MapLocation SystemAssaultLocation_2
+        {
+            get
+            {
+                if (_systemAssaultLocation_2 == null || _systemAssaultLocation_2.ToString() == "( 0, 0)")
+                {
+                    _systemAssaultLocation_2 = HomeSystem.Location;
+                    _text = "Step_3338:; Turn "
+                            + GameContext.Current.TurnNumber
+                            + " > AccumulateLocation for " + this.Civilization
+                            + " is set to " + _systemAssaultLocation_2.ToString()
+                            ;
+
+                    Console.WriteLine(_text);
+                }
+                return _systemAssaultLocation_2;
+            }
+            internal set
+            {
+
+                _systemAssaultLocation_2 = value;
+
+            }
+        }
+
+        public Sector SystemAssaultSector_2
+        {
+            get
+            {
+                Sector _systemAssaultSector_2 = new Sector(SystemAssaultLocation_2);
+                //new Sector()
+                if (_systemAssaultSector_2 == null || _systemAssaultSector_2.Location.ToString() == "{(0, 0)}")
+                {
+                    _systemAssaultSector_2 = this.HomeSystem.Sector;
+                    _text = "Step_3339:; "
+                            + GameContext.Current.TurnNumber
+                            + " _accumulateSector for " + this.Civilization
+                            + " is set to " + _systemAssaultSector_2.ToString()
+                            + " ( HomeSystem ) "
+                            ;
+
+                    Console.WriteLine(_text);
+                }
+                return _systemAssaultSector_2;
+            }
+            internal set
+            {
+
+                _systemAssaultSector_2 = value;
 
             }
         }

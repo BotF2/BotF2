@@ -740,7 +740,7 @@ namespace Supremacy.Combat
                 {
                     _text = string.Format(ResourceManager.GetString("COMBAT_POWER")) + ": " + _otherCivStrength.ToString();
                     Console.WriteLine("Step_8881:; "
-                        + "" + GameEngine.LocationString(Location.ToString())
+                        + "" + GameEngine.LocationString(_hostileAssets[0].Location.ToString())
                         + " > " + civName + " > " + _text)
                         ;
 
@@ -765,7 +765,7 @@ namespace Supremacy.Combat
                     return "abc";
                 }
 
-                return "ofg";
+                //return "ofg";
 
             }
             ////end of froeach civName
@@ -987,7 +987,7 @@ namespace Supremacy.Combat
                         //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                     }
                 }
-                _text = "Step_3389:; Combat: friendlyAssets(Amount)="
+                _text = "Step_3388:; Combat: friendlyAssets(Amount)="
                         + "; for; " + friendlyAssets
                         //+ "; " + _otherCivStrength
                         ;
@@ -1053,15 +1053,15 @@ namespace Supremacy.Combat
                     return true;
                 }
 
-                return true;
-                //return hostileAssets == 0;
+                //return true;
+                return hostileAssets == 0;
             }
         }
         //}
 
         private void GetCurrentCivStrength(IList<CombatAssets> _assets)
         {
-            int _assetCount;
+            //int _assetCount;
             int _currentCivStrength = 0;
             foreach (CombatAssets asset in _assets)
             {
@@ -1101,7 +1101,7 @@ namespace Supremacy.Combat
                 }
             }
             _text = "Step_3389:; Combat: _assets(Amount)="
-                    + "; for; " + _assets
+                    + "; for; " + _assets.Count
                     //+ "; " + _otherCivStrength
                     ;
             Console.WriteLine(_text);

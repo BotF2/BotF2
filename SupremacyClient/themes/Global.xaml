@@ -2875,26 +2875,19 @@
                                 <ColumnDefinition Width="0.25*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Path Grid.Column="0"
-                  Grid.Row="0"
-                  SnapsToDevicePixels="True"
-                  Data="{StaticResource LCARS_Corner_TopLeft_Small}"
-                  Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-                            <Path Grid.Column="4"
-                    Grid.Row="0"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_TopRight_Small}"
-                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-                            <Path Grid.Column="0"
-                    Grid.Row="2"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_BottomLeft_Small}"
-                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-                            <Path Grid.Column="4"
-                    Grid.Row="2"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_BottomRight_Small}"
-                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                            
+                            <Path Grid.Column="0" Grid.Row="0" SnapsToDevicePixels="True"
+                                                  Data="{StaticResource LCARS_Corner_TopLeft_Small}"
+                                                  Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="4" Grid.Row="0" SnapsToDevicePixels="True"
+                                                Data="{StaticResource LCARS_Corner_TopRight_Small}"
+                                                Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="0" Grid.Row="2" SnapsToDevicePixels="True"
+                                                Data="{StaticResource LCARS_Corner_BottomLeft_Small}"
+                                                Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="4" Grid.Row="2" SnapsToDevicePixels="True"
+                                                Data="{StaticResource LCARS_Corner_BottomRight_Small}"
+                                                Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
 
                             <Rectangle x:Name="LeftTopEdge"
                          Grid.Column="1"

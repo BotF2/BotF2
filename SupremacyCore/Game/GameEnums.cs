@@ -138,12 +138,15 @@ namespace Supremacy.Game
     public enum UnitActivity : byte
     {
         NoActivity = 0,
-        UnMothball,
+        //UnMothball, // not used
         Hold,
-        Mothball,
-        Repair,
-        Patrol,
-        Intercept,
+        //Mothball, // not used, in German > Einmotten
+        //Repair,  // not used
+        //Patrol,  // not used
+        //Intercept, // not used
+        Explore,
+        EscortAnotherOne,
+        GoToAccumulateSector,
         Mission,
         BuildStation,
         AimReached

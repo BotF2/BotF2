@@ -36,7 +36,9 @@ namespace Supremacy.Entities
         /// The set of XML schemas needed to validate the race database.
         /// </summary>
         private static XmlSchemaSet _xmlSchemas;
-        private static string _text;
+
+        //[NonSerialized]
+        private static string _text_RaceDB;
 
         /// <summary>
         /// Constructs a new RaceDatabase
@@ -175,9 +177,9 @@ namespace Supremacy.Entities
                             streamWriter.WriteLine(strHeader);
                             // End of head line
 
-                            _text = "begin writing " + file + " ... beware of NO dismatch of Keys between Civ..xml and Races.xml";
-                            Console.WriteLine(_text);
-                            GameLog.Core.GameData.DebugFormat(_text);
+                            _text_RaceDB = "begin writing " + file + " ... beware of NO dismatch of Keys between Civ..xml and Races.xml";
+                            Console.WriteLine(_text_RaceDB);
+                            GameLog.Core.GameData.DebugFormat(_text_RaceDB);
                             string RaceName = "";
                             foreach (Race race in raceDatabase)   // each race
                             {

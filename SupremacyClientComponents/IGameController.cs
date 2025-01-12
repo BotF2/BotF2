@@ -63,7 +63,9 @@ namespace Supremacy.Client
         private readonly INavigationService _navigationService;
         private readonly IGameWindow _gameWindow;
         private readonly ISoundPlayer _soundPlayer;
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly IMusicPlayer _musicPlayer;
+#pragma warning restore IDE0052 // Remove unread private members
         private readonly SitRepDialog _sitRepDialog;
         //private readonly ShipOverview _shipOverview;
         private readonly IAppContext _appContext;

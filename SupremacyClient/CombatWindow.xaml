@@ -235,7 +235,8 @@
                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                FontSize="16pt"
                                Text="{Binding Path=ShortName}" />
-                    <TextBlock x:Name="TextTargetCiv1Status"
+                  
+                    <!--<TextBlock x:Name="TextTargetCiv1Status"
                       Foreground="LightYellow"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
@@ -244,8 +245,10 @@
                                 Margin="5,0,10,0"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                 FontSize="20pt"
-                                Text="{Binding Path=TargetCiv1Status}" />
-                                <!--Text="Hello" />-->
+                                Text="{Binding Path=TargetCiv1Status}" 
+                               />-->
+                  <!--Text="Hello"-->
+                  <!--Text="" />-->
                     <RadioButton 
                             Grid.Column="1"
                             Grid.Row="0"                            

@@ -40,7 +40,7 @@ namespace Supremacy.Entities
         private int _nextCivId;
         [NonSerialized]
         private Dictionary<string, Civilization> _reverseLookup;
-        private static string _text;
+        //private static string _text;
 
         //private readonly  _appContext;
 

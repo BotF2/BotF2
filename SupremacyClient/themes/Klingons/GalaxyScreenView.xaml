@@ -208,7 +208,7 @@
                       Background="{StaticResource Kling3Gradient_Top_Bottom}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt" HorizontalAlignment="Center" Foreground="Black" 
-                           Text="{Binding Path=PlayerCivilizationRendezvousPlace, Mode=OneWay}"
+                           Text="{Binding Path=PlayerCivilizationAccumulatePlace, Mode=OneWay}"
                            />
                            <!--Text="{s:StringResource AFFILIATION_TEXT}"
                   Foreground="{StaticResource Borg1Gradient_Bottom_Top}" 

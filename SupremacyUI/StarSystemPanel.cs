@@ -468,6 +468,14 @@ namespace Supremacy.UI
                     case StarType.XRayPulsar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
+                        //if (ClientSettings.Current.AddGermanText)
+                        //{
+                        //    details.Text += GameEngine.Newline + ResourceManager.Get_DE_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
+                        //}
+                        //if (ClientSettings.Current.AddFrenchText)
+                        //{
+                        //    details.Text += GameEngine.Newline + ResourceManager.Get_FR_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
+                        //}
                         _ = statsPanel.Children.Add(details);
                         break;
 

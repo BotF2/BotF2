@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Scripting;
 
 using Obtics.Values;
@@ -118,7 +119,8 @@ namespace Supremacy.Scripting
         public object Evaluate(RuntimeScriptParameters parameters)
         {
             _ = CompileScript();
-            return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());  // on break check parameters - mostly for Martial Law checking Morale value condition
+            return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());  
+            // on break check parameters - mostly for Martial Law checking Morale value condition
         }
 
         public bool CompileScript([CanBeNull] ErrorSink errorSink = null)
@@ -127,8 +129,10 @@ namespace Supremacy.Scripting
             {
                 return true;
             }
-
-            ScriptService scriptService = ScriptService.Instance;// ServiceLocator.Current.GetInstance<IScriptService>();
+                                                                 
+            //
+            //ServiceLocator.Current.GetInstance<IScriptService>();
+            ScriptService scriptService = ScriptService.Instance;
             SourceUnit source = scriptService.Context.CreateSnippet(ScriptCode, SourceCodeKind.Expression);
             ScriptCompilerOptions options = new ScriptCompilerOptions(new ScriptParameters(Parameters));
             ErrorCounter errorCounter = (errorSink != null) ? new ErrorCounter(errorSink) : new ErrorCounter(new LogErrorSink());
