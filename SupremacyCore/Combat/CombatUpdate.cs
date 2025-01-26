@@ -747,11 +747,11 @@ namespace Supremacy.Combat
                     if (civName == CivName1 && CivInsigniaOther1 != "BlackInsignia")
                         _civFirePowers1Text = _text;
                     if (civName == CivName2 && CivInsigniaOther2 != "BlackInsignia")
-                        _civFirePowers2Text = _text;
+                        _civFirePowers2Text = (_otherCivStrength - CivFirePowers1).ToString();
                     if (civName == CivName3 && CivInsigniaOther3 != "BlackInsignia")
-                        _civFirePowers3Text = _text;
+                        _civFirePowers3Text = (_otherCivStrength - CivFirePowers1 - CivFirePowers2).ToString();
                     if (civName == CivName4 && CivInsigniaOther4 != "BlackInsignia")
-                        _civFirePowers4Text = _text;
+                        _civFirePowers4Text = (_otherCivStrength - CivFirePowers1 - CivFirePowers2 - CivFirePowers3).ToString();
 
                     _anyAsset = false;
 

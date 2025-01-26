@@ -7,6 +7,7 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Text;
@@ -1226,13 +1227,29 @@ namespace Supremacy.Client.Views
 
         public static DiplomacyMessageViewModel FromReponse([NotNull] IResponse response)
         {
-            GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() proposal turnSent ={0} tone ={1} recipient ={2} sender ={3} responce type = {4} proposal clause type ={5}"
-                , response.Proposal.TurnSent
-                , response.Tone
-                , response.Recipient.ShortName
-                , response.Sender.ShortName
-                , response.ResponseType.ToString()
-                , response.Proposal.Clauses[0].ClauseType.ToString());
+            string _text = "Step_3366:; Turn " + GameContext.Current.TurnNumber + " > Diplomacy " 
+                + "> sender= " + response.Sender.ShortName
+                + ", recipient= " + response.Recipient.ShortName
+
+
+
+                + ", responce type= " + response.ResponseType.ToString()
+                + ", proposal clause type= " + response.Proposal.Clauses[0].ClauseType.ToString()
+                //+ "FromResponse() proposal turnSent= " + response.Proposal.TurnSent
+            //+ "FromResponse() proposal turnSent= " + response.Proposal.TurnSent
+                //+ Supremacy.AI.UnitAI.CreateShipText(ship, out string _shipText) + " > is new ordered "
+            ;
+            //if (_writeDirectly_Fleets) 
+            Console.WriteLine(_text);
+            //_fleet_Text += newline + _text;
+
+            //GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() proposal turnSent ={0} tone ={1} recipient ={2} sender ={3} responce type = {4} proposal clause type ={5}"
+            //    , response.Proposal.TurnSent
+            //    , response.Tone
+            //    , response.Recipient.ShortName
+            //    , response.Sender.ShortName
+            //    , response.ResponseType.ToString()
+            //    , response.Proposal.Clauses[0].ClauseType.ToString());
             if (response == null)
             {
                 throw new ArgumentNullException("response");
@@ -1264,9 +1281,14 @@ namespace Supremacy.Client.Views
                     }
                     else
                     {
-                        leadInId = response.Proposal.IsDemand()
-                            ? DiplomacyStringID.RejectDemandLeadIn
-                            : !response.Proposal.HasTreaty() ? DiplomacyStringID.RejectExchangeLeadIn : DiplomacyStringID.RejectProposalLeadIn;
+                        if (response.Proposal.IsDemand())
+                        {
+                            leadInId = DiplomacyStringID.RejectDemandLeadIn;
+                        }
+                        else
+                        {
+                            leadInId = !response.Proposal.HasTreaty() ? DiplomacyStringID.RejectExchangeLeadIn : DiplomacyStringID.RejectProposalLeadIn;
+                        }
                     }
 
                     break;
@@ -1285,7 +1307,7 @@ namespace Supremacy.Client.Views
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message.Sender) ?? string.Empty);
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
 
-            string _text = "Step_5345:; message= " + message;
+            _text = "Step_5345:; message= " + message;
             Console.WriteLine(_text);
             GameLog.Core.Diplomacy.DebugFormat(_text);
 

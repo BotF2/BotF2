@@ -404,7 +404,7 @@ namespace Supremacy.Client
             bootstrapper.Run();
         }
 
-        //public string Do_2_Digit(string v)
+        //public string Do_x2_Digit_String(string v)
         //{
         //    while (v.Length < 2)
         //    {

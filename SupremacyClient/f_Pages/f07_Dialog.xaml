@@ -632,6 +632,10 @@ RequestNavigate="DoLink"> Malcorians </Hyperlink>
 RequestNavigate="DoLink"> Malon </Hyperlink>
 
 -
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Malurian"
+RequestNavigate="DoLink"> ( Malurians ) </Hyperlink>
+              
+-
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Markalian" 
 RequestNavigate="DoLink"> Markalians </Hyperlink>
 

@@ -67,7 +67,7 @@ namespace Supremacy.AI
             CivilizationManager civM = GameContext.Current.CivilizationManagers[civ.CivID];
             //string _col_location = ClientApp.;
 
-            _text = newline + "Step_1101:; ColonyAI.DoTurn begins... for > " + civ.Key
+            _text = newline + "Step_1101:; ColonyAI.Do_09_Turn begins... for > " + civ.Key
                 + ": Deu=" + civM.Resources.Deuterium.CurrentValue
                 + ", Dur=" + civM.Resources.Duranium.CurrentValue
                 + ", Dil=" + civM.Resources.Dilithium.CurrentValue
@@ -335,7 +335,7 @@ namespace Supremacy.AI
                         foreach (BuildQueueItem buildQueueItem in colony.BuildQueue) // just > Console.WriteLine
                         {
                             _text = "Step_1206:; " + GameEngine.LocationString(colony.Location.ToString()) + " > " + _name_col
-                                + "; needs " + GameEngine.Do_2_Digit(buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
+                                + "; needs " + GameEngine.Do_x2_Digit_String(buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
                                 + "; buildQueueItem # " + count + " = " + buildQueueItem.Description
 
                                     //+ buildQueueItem.Description
@@ -386,7 +386,7 @@ namespace Supremacy.AI
                 }// end of try
                 catch
                 {
-                    _text = "Step_1105:; ### Problem at ColonyAI.DoTurn ..." + colony.Name;
+                    _text = "Step_1105:; ### Problem at ColonyAI.Do_09_Turn ..." + colony.Name;
                     if (writeDirectly_Colony) Console.WriteLine(_text);
                 }// end of catch
 
@@ -402,10 +402,10 @@ namespace Supremacy.AI
                      + "end of > Colony_Full_Report"
                      + newline);
             }// end of 
-            _text = "Step_1109:; Finish of ColonyAI.DoTurn ";
+            _text = "Step_1109:; Finish of ColonyAI.Do_09_Turn ";
             if (writeDirectly_Colony) Console.WriteLine(_text);
             //Console.WriteLine(newline + newline + "_colony_full_Report" + newline + newline + _colony_full_Report + newline + "End of _colony_full_Report");
-        
+
         } // End of Main "Do Turn"
 
 
@@ -704,11 +704,11 @@ namespace Supremacy.AI
                 if (writeDirectly_Colony) Console.WriteLine(_text);
             }
 
-            //_text = "Step_1109:; Finish of ColonyAI.DoTurn ";
+            //_text = "Step_1109:; Finish of ColonyAI.Do_09_Turn ";
             //if (writeDirectly_Colony) Console.WriteLine(_text);
             ////Console.WriteLine(newline + newline + "_colony_full_Report" + newline + newline + _colony_full_Report + newline + "End of _colony_full_Report");
 
-        } // End of DoTurn
+        } // End of Do_09_Turn
 
         private static void CheckFor_ShipProduction(Colony colony)
         {
@@ -784,7 +784,9 @@ namespace Supremacy.AI
             bool checkForShipProduction = true;
             //bool checkForShipProduction = false;
             if (checkForShipProduction)
-                _text = ""; /*just for breakpoint*/
+            {
+                //Debugger.Break();
+            }
 
             Handle_Ship_Production(colony, colony.Owner, _listPrioShipBuild_tmp);
             //if (!PlayerAI.IsInFinancialTrouble(civ))
@@ -980,7 +982,7 @@ namespace Supremacy.AI
             List<BuildProject> _BuildQueueItemsTo_Remove = new List<BuildProject>();
             for (int i = 0; i < _total; i++)
             {
-                if (i +1 > colony.BuildQueue.Count)
+                if (i + 1 > colony.BuildQueue.Count)
                     continue;
 
                 _text = "Step_1431:; " + GameEngine.LocationString(colony.Location.ToString()) /*+ " Build_Queue_Clean; "*/
@@ -1015,7 +1017,7 @@ namespace Supremacy.AI
             {
                 _text = "Step_1439:; " + GameEngine.LocationString(colony.Location.ToString()) /*+ " Build_Queue_Clean; "*/
                     + " > " + _name_col + " ; " + _owner_col
-                    + ", _BuildQueueItemsTo_Remove "  + " > " + item.Description
+                    + ", _BuildQueueItemsTo_Remove " + " > " + item.Description
 
                     ;
                 if (writeDirectly_Colony) Console.WriteLine(_text);
@@ -1081,8 +1083,8 @@ namespace Supremacy.AI
                     //+ "; Morale=; " + colony.Morale
                     //+ "; NetIndustry=;" + colony.NetIndustry
                     + "; BCost=;" + GameEngine.Do_5_Digit(item.BuildDesign.BuildCost.ToString())
-                    + "; TurnsNeeded=;" + GameEngine.Do_2_Digit(item.TurnsRemaining.ToString()) // not avaible
-                    + "; OPTIONS_to_Build_on #;" + GameEngine.Do_2_Digit(count.ToString())
+                    + "; TurnsNeeded=;" + GameEngine.Do_x2_Digit_String(item.TurnsRemaining.ToString()) // not avaible
+                    + "; OPTIONS_to_Build_on #;" + GameEngine.Do_x2_Digit_String(count.ToString())
                     + "; ID= " + _designID_string
                     + "; " + item.BuildDesign.ToString()
 
@@ -1355,7 +1357,7 @@ namespace Supremacy.AI
         {
             _text = "Step_2346:; " + GameEngine.LocationString(colony.Location.ToString())
         + " > Pool= " + _laborPool
-            + " vs " + GameEngine.Do_2_Digit(_popAvailable.ToString()) // should be zero
+            + " vs " + GameEngine.Do_x2_Digit_String(_popAvailable.ToString()) // should be zero
 
         + " ,Active: Food= " + colony.GetActiveFacilities(ProductionCategory.Food)
         + " of " + colony.GetTotalFacilities(ProductionCategory.Food)
@@ -2670,7 +2672,7 @@ namespace Supremacy.AI
                     //{
                     //    _text = "Step_1226:; > " + GameEngine.LocationString(colony.Location.ToString()) + " " + _name_col
                     //        + " structureProject: available "
-                    //        + ", turnsNeeded= " + GameEngine.Do_2_Digit(item.TurnsRemaining.ToString())
+                    //        + ", turnsNeeded= " + GameEngine.Do_x2_Digit_String(item.TurnsRemaining.ToString())
                     //        + ", industryRemaining= " + GameEngine.Do_4_Digit(item.IndustryRemaining.ToString())
                     //        + ", NetIndustry= " + _net_industry_text
                     //        + ", item= " + item.BuildDesign
@@ -3111,7 +3113,7 @@ namespace Supremacy.AI
                     + " ShipProduction"
                     + " - " + _owner_col
 
-                    + " (needs " + GameEngine.Do_2_Digit(proj.TurnsRemaining.ToString()) + " Turns)"
+                    + " (needs " + GameEngine.Do_x2_Digit_String(proj.TurnsRemaining.ToString()) + " Turns)"
                     + ": available= " + proj.BuildDesign
                     ;
                 if (writeDirectly_Colony) Console.WriteLine(_text);
@@ -3217,7 +3219,10 @@ namespace Supremacy.AI
                 _text = _listPrioShipBuild[0].Item2.ToString();
 
                 if (civ.Key.Contains("Botha"))
-                    _text += _text + newline; // just for breakpoint
+                {
+                    Debugger.Break();
+                }
+
 
                 //_neededShipType = _listPrioShipBuild.;
                 switch (_listPrioShipBuild[0].Item2)
@@ -3265,15 +3270,17 @@ namespace Supremacy.AI
                         //    break;
                 }
 
-                if (GameContext.Current.TurnNumber < 7)
-                {
-                    _neededShipType = ShipType.Colony;
-                }
 
                 if (GameContext.Current.TurnNumber < 15)
                 {
                     _neededShipType = ShipType.Construction;
                 }
+
+                if (GameContext.Current.TurnNumber < 7)
+                {
+                    _neededShipType = ShipType.Colony;
+                }
+
 
                 if (GameContext.Current.TurnNumber < 20 && colony.Owner.Key == "BORG")
                 {
@@ -3292,7 +3299,9 @@ namespace Supremacy.AI
 
 
             if (checkForShipProduction)
-                _text = ""; /*just for breakpoint*/
+            {
+                //Debugger.Break();
+            }
 
             // Already checked before but here to hover the count
             if (colony.Shipyard.BuildQueue.Count > 1) { goto ProcessQueue; }
@@ -3305,7 +3314,7 @@ namespace Supremacy.AI
                 //if (checkForShipProduction)
                 //    _text = ""; /*just for breakpoint*/
 
-                if (potentialProjects.Count == 1)
+                if (potentialProjects.Count == 1) // build the only existing option
                 {
                     // just use Proj[0], ShipType.Medical = DUMMY
                     _text = "Step_1209:; " + GameEngine.LocationString(colony.Location.ToString()) + " Only this one available > "
@@ -3481,7 +3490,10 @@ namespace Supremacy.AI
             //}
 
             if (boolCheckShipProduction)
-                _text = "do a breakpoint here";
+            {
+                //Debugger.Break();
+            }
+                
 
             if (colony.Shipyard.BuildQueue.Count > 1) { goto ProcessQueue; } // only for Colony Ships we try to order 2 ones
 

@@ -38,7 +38,10 @@ namespace Supremacy.Resources
         //private static readonly StringTable _FrenchStrings;
         private static readonly GameMod _commandLineMod;
         private static readonly IVfsService _vfsService;
+
+        [NonSerialized]
         private static string _text;
+        private static string _newline = Environment.NewLine;
 
         public static string WorkingDirectory { get; private set; }
 
@@ -98,7 +101,7 @@ namespace Supremacy.Resources
             try { if (File.Exists(_enTXT)) { File.Copy(_enTXT, GetResourcePath(@"Resources\Data\de.txt"), true); } }
             catch
             {
-                _text = GameEngine.Newline + "Step_0131:; ############### PROBLME - is _strings.csv or .txt in use ?";
+                _text = _newline + "Step_0131:; ############### PROBLME - is _strings.csv or .txt in use ?";
                 Console.WriteLine(_text);
             }
 
@@ -150,14 +153,14 @@ namespace Supremacy.Resources
 
             //        _entry = _entry.Replace("\r\n", GameEngine.Blank);
 
-            //        _text += _entry + GameEngine.Newline;
+            //        _text += _entry + _newline;
 
             //        //Console.WriteLine("Step_0135:; " + _text);
             //        //if (_key == "Blackhole")
             //    }
-            //    _text = "Entry;Key;EN  ;DE  ;FR  " + GameEngine.Newline + _text;
-            //    //Console.WriteLine("Step_0146:; " + GameEngine.Newline + _text);
-            //    Console.WriteLine("Step_0146:; " + GameEngine.Newline + "No output of strings in EN / DE /FR");
+            //    _text = "Entry;Key;EN  ;DE  ;FR  " + _newline + _text;
+            //    //Console.WriteLine("Step_0146:; " + _newline + _text);
+            //    Console.WriteLine("Step_0146:; " + _newline + "No output of strings in EN / DE /FR");
 
             //    string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_Strings.txt");
             //    string file_csv = Path.Combine(ResourceManager.GetResourcePath(".\\lib"), "_Strings.csv");
@@ -172,7 +175,7 @@ namespace Supremacy.Resources
             //        if (true) Console.WriteLine(_text);
             //        try { if (File.Exists(file)) { File.Copy(file, file_csv, true); } } catch
             //        {
-            //            _text = GameEngine.Newline + "Step_0131:; ############### PROBLME - is _strings.csv or .txt in use ?";
+            //            _text = _newline + "Step_0131:; ############### PROBLME - is _strings.csv or .txt in use ?";
             //            Console.WriteLine(_text);
             //        }
             //    }
@@ -180,7 +183,7 @@ namespace Supremacy.Resources
             //catch
             //{
             //    _text = "Step_0139:; en.txt and de.txt and fr.txt are structered in different amount of keys"
-            //        + GameEngine.Newline + "or _strings.txt or csv is in use"
+            //        + _newline + "or _strings.txt or csv is in use"
             //        ;
             //    Console.WriteLine(_text);
             //}
@@ -214,8 +217,8 @@ namespace Supremacy.Resources
                 catch (Exception e)
                 {
                     _text = "Step_0140: Hint: local file \\Data\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done"
-                        + GameEngine.Newline + "exception" + e.Message
-                        + GameEngine.Newline + e.StackTrace + e.Source
+                        + _newline + "exception" + e.Message
+                        + _newline + e.StackTrace + e.Source
                         ;
                     Console.WriteLine(_text);
                     GameLog.Core.GameData.Info(_text);

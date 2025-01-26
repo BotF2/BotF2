@@ -3678,7 +3678,8 @@ namespace Supremacy.IO.Serialization
         /// <param name="stream">The stream containing the serialized data</param>
         public SerializationReader(Stream stream) : base(stream)
         {
-            Console.WriteLine("Step_0231:; SerializationReader...");
+            // too often - at each .autosav 
+            //Console.WriteLine("Step_0231:; SerializationReader...");
             _binaryFormatter = new BinaryFormatter
             {
                 AssemblyFormat = FormatterAssemblyStyle.Simple
@@ -3707,7 +3708,8 @@ namespace Supremacy.IO.Serialization
                 _stringTokenList[i] = base.ReadString();
                 //Console.WriteLine("Step_0234:; _stringTokenList > " + i + " = " + _stringTokenList[i]);
             }
-            Console.WriteLine("Step_0232:; _stringTokenList was read...");
+            // too often - at each .autosav 
+            //Console.WriteLine("Step_0232:; _stringTokenList was read...");
 
             _objectTokens = new object[ReadOptimizedInt32()];
             for (int i = 0; i < _objectTokens.Length; i++)

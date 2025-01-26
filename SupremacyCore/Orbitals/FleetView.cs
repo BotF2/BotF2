@@ -53,7 +53,7 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    return View.Name;
+                    return View.FleetName;
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace Supremacy.Orbitals
 
         public bool IsPresenceKnown => _isPresenceKnown;
 
-        public string Name
+        public string FleetName
         {
             get
             {

@@ -46,7 +46,7 @@ namespace Supremacy.AI
 
             if (Civ.IsEmpire && Civ.CivID != 6 && Civ.SpiedCivList != null)  // Spy
             {
-                _text = "Step_1132:; PlayerAI.DoTurn ...SpiedCivList is NOT null ... for CivID " + Civ.CivID + blank + Civ.Key
+                _text = "Step_1132:; PlayerAI.Do_09_Turn ...SpiedCivList is NOT null ... for CivID " + Civ.CivID + blank + Civ.Key
 
         ;
                 Console.WriteLine(_text);

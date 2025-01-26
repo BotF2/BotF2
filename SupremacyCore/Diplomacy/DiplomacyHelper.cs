@@ -30,6 +30,10 @@ namespace Supremacy.Diplomacy
         //private static Dictionary<string, Civilization> _warPactDictionary = new Dictionary<string, Civilization> { { "987", GameContext.Current.CivilizationManagers[0].Civilization} };
         public static Civilization _diploScreenSelectedForeignPower;
 
+        [NonSerialized]
+        private static string _text;
+        private static string _diploText = "";
+
         public static Civilization DiploScreenSelectedForeignPower
         {
             get => _diploScreenSelectedForeignPower;
@@ -345,23 +349,28 @@ namespace Supremacy.Diplomacy
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
 
-                            GameLog.Client.Diplomacy.DebugFormat(
-                                "## PendingAction: ACCEPT ={0}, Counterparty = {1} Onwer = {2}"
-                                , foreignPower.PendingAction.ToString()
-                                , foreignPower.Counterparty.ShortName
-                                , foreignPower.Owner.ShortName);
-                            //if(foreignPower.ProposalReceived != null)
-                            //GameLog.Client.Diplomacy.DebugFormat(
-                            //   "## ProposlaReceived count={0},  = {1} LastProposalReceived= {2}"
-                            //   , foreignPower.ProposalReceived.Clauses.Count()
-                            //   , foreignPower.LastProposalReceived.Clauses.Count()
-                            //   , foreignPower.Owner.ShortName);
-                            //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                            //foreignPower.ProposalReceived = null;
-                            //GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
-                            //    , foreignPower.LastProposalReceived.ToString()
-                            //    , foreignPower.LastProposalReceived.Clauses.Count()
-                            //    );
+                            _text = "Step_1372:; "
+                                + "PendingAction: ACCEPT = " + foreignPower.PendingAction.ToString()
+                                + ", Counterparty= " + foreignPower.Counterparty.ShortName
+                                + ", Onwer= " + foreignPower.Owner.ShortName
+
+                                ;
+                            _diploText += _text;
+                            Console.WriteLine(_text);
+                            //GameLog.Client.Diplomacy.DebugFormat(_text);
+
+                            //////if (foreignPower.ProposalReceived != null)
+                            //////    GameLog.Client.Diplomacy.DebugFormat(
+                            //////       "## ProposlaReceived count={0},  = {1} LastProposalReceived= {2}"
+                            //////       , foreignPower.ProposalReceived.Clauses.Count()
+                            //////       , foreignPower.LastProposalReceived.Clauses.Count()
+                            //////       , foreignPower.Owner.ShortName);
+                            //////foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                            //////foreignPower.ProposalReceived = null;
+                            //////GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
+                            //////    , foreignPower.LastProposalReceived.ToString()
+                            //////    , foreignPower.LastProposalReceived.Clauses.Count()
+                            //////    );
                         }
                     }
                     else
@@ -370,10 +379,16 @@ namespace Supremacy.Diplomacy
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
 
-                            GameLog.Client.Diplomacy.DebugFormat(
-                                "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                foreignPower.Owner.ShortName);
+                            _text = "Step_1374:; "
+                                + "PendingAction: REJECT = " + foreignPower.PendingAction.ToString()
+                                + ", Counterparty= " + foreignPower.Counterparty.ShortName
+                                + ", Onwer= " + foreignPower.Owner.ShortName
+
+                                ;
+                            _diploText += _text;
+                            Console.WriteLine(_text);
+                            //GameLog.Client.Diplomacy.DebugFormat(_text);
+
                             //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             //foreignPower.ProposalReceived = null;
                         }

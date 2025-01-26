@@ -292,8 +292,8 @@ namespace Supremacy.Client.Views
 
                 foreach (CivilizationManager civM in GameContext.Current.CivilizationManagers)
                 {
-                    string _x_text = GameEngine.Do_2_Digit(civM.HomeColony.Location.X.ToString());
-                    string _y_text = GameEngine.Do_2_Digit(civM.HomeColony.Location.Y.ToString());
+                    string _x_text = GameEngine.Do_x2_Digit_String(civM.HomeColony.Location.X.ToString());
+                    string _y_text = GameEngine.Do_x2_Digit_String(civM.HomeColony.Location.Y.ToString());
                     _text += civM.Civilization.HomeQuadrant + "-Quadrant"
                         + " ; " + GameEngine.Do_X_String(19, civM.Civilization.Key).ToString()
                         + " ; " + _x_text
@@ -320,8 +320,8 @@ namespace Supremacy.Client.Views
                         _owner = GameEngine.Do_X_String(19, _sec.Owner.Key);
                     }
 
-                    string _x_text = GameEngine.Do_2_Digit(_sec.Location.X.ToString());
-                    string _y_text = GameEngine.Do_2_Digit(_sec.Location.Y.ToString());
+                    string _x_text = GameEngine.Do_x2_Digit_String(_sec.Location.X.ToString());
+                    string _y_text = GameEngine.Do_x2_Digit_String(_sec.Location.Y.ToString());
                     _text +=  "--------------"//Quadrant"
                         + " ; " + _owner
                         + " ; " + _x_text
@@ -453,7 +453,7 @@ namespace Supremacy.Client.Views
                                 //+ " on; " + item.Name
                                 //+ "; " + item.Owner
 
-                                + "; needs " + GameEngine.Do_2_Digit(item2.TurnsRemaining.ToString()) + " turns"
+                                + "; needs " + GameEngine.Do_x2_Digit_String(item2.TurnsRemaining.ToString()) + " turns"
                                 + "; costs= " + GameEngine.Do_5_Digit(item2.GetCurrentIndustryCost().ToString())
                                 + "; " + item2.BuildDesign.Key
                                 + "; and Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
@@ -1280,7 +1280,7 @@ namespace Supremacy.Client.Views
         //    return _locationString;
         //}
 
-        //private string Do_2_Digit(string v)
+        //private string Do_x2_Digit_String(string v)
         //{
         //    while (v.Length < 2)
         //    {

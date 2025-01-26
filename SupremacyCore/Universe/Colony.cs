@@ -1942,7 +1942,7 @@ namespace Supremacy.Universe
                 }
                 else if (_foodPF_unused == 0)
                 {
-                    _text = "Step_2399:; "+ Location + "No free food facility";
+                    _text = "Step_2382:; "+ Location + " > No free food facility";
                     Console.WriteLine(_text);
                     if (!Owner.IsHuman)
                         AddFacilities(ProductionCategory.Food, 1);
@@ -1951,9 +1951,10 @@ namespace Supremacy.Universe
                 else
                 {
                     ReduceOneOtherPF();
-
+                    
                     _ = ActivateFacility(ProductionCategory.Food);
                     _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
+                    Console.WriteLine("Step_2384:; " + _text);
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
                     //DoSitRepGray(_text);

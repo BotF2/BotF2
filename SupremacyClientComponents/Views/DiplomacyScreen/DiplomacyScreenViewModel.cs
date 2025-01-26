@@ -836,7 +836,9 @@ namespace Supremacy.Client.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+#pragma warning disable IDE0051 // Remove unused private members
         private void RaisePropertyChanged(string propertyName)
+#pragma warning restore IDE0051 // Remove unused private members
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -1560,40 +1562,39 @@ namespace Supremacy.Client.Views
             }
         }
 
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
-        {
-            if (!Equals(field, newValue))
-            {
-                field = newValue;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
+        //protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        //{
+        //    if (!Equals(field, newValue))
+        //    {
+        //        field = newValue;
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        #region IsEnabledButtonEditMessageCommand Property
+        //#region IsEnabledButtonEditMessageCommand Property
 
-        [field: NonSerialized]
-        public event EventHandler IsEnabledButtonEditMessageCommandHandler;
+        //[field: NonSerialized]
+        //public event EventHandler IsEnabledButtonEditMessageCommandHandler;
 
-        public bool IsEnabledButtonEditMessageCommand
-        {
-            get
-            {
-                
+        //public bool IsEnabledButtonEditMessageCommand
+        //{
+        //    get
+        //    {
+        //        return CanExecuteEditMessageCommand();
+        //    }
 
-                return CanExecuteEditMessageCommand();
-            }
-
-        }
+        //}
 
 
-        protected virtual void OnIsEnabledButtonEditMessageCommandChanged()
-        {
-            IsEnabledButtonEditMessageCommandHandler.Raise(this);
-            OnPropertyChanged("IsEnabledButtonEditMessageCommand");
-        }
+
+        //protected virtual void OnIsEnabledButtonEditMessageCommandChanged()
+        //{
+        //    IsEnabledButtonEditMessageCommandHandler.Raise(this);
+        //    OnPropertyChanged("IsEnabledButtonEditMessageCommand");
+        //}
 
         //private bool _isEnabledButtonEditMessageCommand = false;
 
@@ -1609,6 +1610,6 @@ namespace Supremacy.Client.Views
         //    OnPropertyChanged("IsEnabledButtonEditMessageCommand");
         //}
 
-        #endregion
+        //#endregion
     }
 }

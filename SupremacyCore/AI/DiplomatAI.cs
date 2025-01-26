@@ -61,9 +61,10 @@ namespace Supremacy.AI
 
                     + " vs " + otherCiv.Key
                     + " (DiplomatAI.cs)" 
-                    + ", Status= * " + foreignPower.DiplomacyData.Status
+
                     + "; regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                     + "; trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                    + ", Status= * " + foreignPower.DiplomacyData.Status
                     + " * > Traits= " + aCiv.Traits
                     + " - vs - " + otherCiv.Traits
 
@@ -237,7 +238,7 @@ namespace Supremacy.AI
                     //foreignPower.UpdateRegardAndTrustMeters();
 
 
-                    //_text = "Step_1175:; Turn " + GameContext.Current.TurnNumber
+                    //_text = "Step_xxxx:; Turn " + GameContext.Current.TurnNumber
                     //    + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                     //    + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                     //    + " for " + foreignPower.Counterparty.Key
@@ -749,11 +750,12 @@ namespace Supremacy.AI
                 + foreignPower.Owner.Key
                 + " vs " + foreignPower.Counterparty.Key
                 + " (Turn " + GameContext.Current.TurnNumber
-                + ") AFTER Ongoing Impression "
-                + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
+
+                + "),regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                 + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
+                + " > AFTER Ongoing Impression"
                 ;
-            Console.WriteLine(_text);
+            //Console.WriteLine(_text);
             _diploSummary = _newline + _text;
             //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 

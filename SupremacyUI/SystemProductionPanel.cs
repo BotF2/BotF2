@@ -1226,7 +1226,7 @@ namespace Supremacy.UI
                 if (colony.BuildQueue != null && colony.BuildQueue.Count > 0)
                 {
                     if (colony.BuildQueue[0].TurnsRemaining > 1)
-                        pluralBQText = "s";
+                        pluralBQText = ResourceManager.GetString("PLURAL_S");
                     _buildQueueLine.Text = colony.BuildQueue[0].Description
                         + " - ( " + colony.BuildQueue[0].TurnsRemaining + " Turn" + pluralBQText
                         + " )";
@@ -1243,7 +1243,7 @@ namespace Supremacy.UI
                         + " Turn"
                         ;
                     if (colony.BuildSlots[0].Project.TurnsRemaining > 1)
-                        _buildQueueLine.Text += "s";
+                        _buildQueueLine.Text += ResourceManager.GetString("PLURAL_S");
                 }
 
                 //_shipyardLine.Text = "no Shipyard available";
@@ -1253,7 +1253,7 @@ namespace Supremacy.UI
                 if (colony.Shipyard != null && colony.Shipyard.BuildQueue.Count > 0)
                 {
                     if (colony.Shipyard.BuildQueue[0].TurnsRemaining > 1)
-                        pluralText = "s";
+                        pluralText = ResourceManager.GetString("PLURAL_S");
                     //outputText = " / Slot output = " + colony.Shipyard.ShipyardDesign.BuildSlotOutput;
 
                     _shipyardLine.Text = colony.Shipyard.BuildQueue[0].Description/*.Substring(0, 20) + "... "*/
@@ -1275,7 +1275,7 @@ namespace Supremacy.UI
                             //+ colony.Shipyard.BuildSlots. + " of "
                             + colony.Shipyard.BuildSlots.Count + " Slot";
                         if (colony.Shipyard.BuildSlots.Count > 1)
-                            _shipyardLine.Text += "s";
+                            _shipyardLine.Text += ResourceManager.GetString("PLURAL_S"); 
 
                         //_shipyardLine.Text += " active" + colony.Shipyard.BuildSlots[0].;
 

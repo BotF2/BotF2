@@ -235,7 +235,7 @@ namespace Supremacy.Diplomacy.Visitors
             }
 
             List<int> transferredColonyIds = new List<int>();
-            // Transferr Ship Owner in GameEngine DoDiplomacy
+            // Transferr Ship Owner in GameEngine Do_13_Diplomacy
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(member))
             {
                 colony.TakeOwnership(empire, false);

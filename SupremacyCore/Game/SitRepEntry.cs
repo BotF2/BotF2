@@ -425,13 +425,14 @@ namespace Supremacy.Game
             //    Console.WriteLine("Step_1429:; " + details);
             //}
 
-            Console.WriteLine("Step_1428:; Turn " + GameContext.Current.TurnNumber 
-                + "; " + report + "; " + owner + "; " 
-                + priority.ToString() + ";ReportEntry_ShowColony");
+            // too disturbing 
+            //Console.WriteLine("Step_1428:; Turn " + GameContext.Current.TurnNumber 
+            //    + "; " + report + "; " + owner + "; " 
+            //    + priority.ToString() + ";ReportEntry_ShowColony");
 
             if (details == "")
             {
-                Console.WriteLine("Step_1429:; empty details text");
+                Console.WriteLine("Step_1429:; " + report + "empty details text");
             }
 
             //if (image != "" && details != "")

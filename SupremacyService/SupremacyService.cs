@@ -199,7 +199,7 @@ namespace Supremacy.WCF
                         GameContext.PushThreadContext(_game);
                         try
                         {
-                            _gameEngine.DoPreGameSetup(_game);
+                            _gameEngine.Do_04_PreGameSetup(_game);
                         }
                         finally
                         {
@@ -635,7 +635,7 @@ namespace Supremacy.WCF
             GameContext gameContext = _game;
 
             _ = Observable
-                .ToAsync(() => _gameEngine.DoTurn(gameContext), _threadPoolScheduler)()
+                .ToAsync(() => _gameEngine.Do_09_Turn(gameContext), _threadPoolScheduler)()
                 .Subscribe(tcs.SetResult, tcs.SetException);
 
             _ = await tcs.Task;

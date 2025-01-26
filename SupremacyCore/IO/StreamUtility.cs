@@ -96,9 +96,10 @@ namespace Supremacy.IO
                     count += 1;
                 }
                 //_text = i + buffer[i].ToString() + newline;
-            //}
-            //Console.WriteLine("Step_0288:; HEX-Reading: " + _text + ", out of buffer");
-            Console.WriteLine("Step_0289:; HEX-Reading: - output deactivated-");
+                //}
+                //Console.WriteLine("Step_0288:; HEX-Reading: " + _text + ", out of buffer");
+                // too often - at each .autosav 
+                //Console.WriteLine("Step_0287:; HEX-Reading: - output deactivated-");
                 c_hex = "";
                 X2_text = "";
                 _text = c_hex + X2_text + count;

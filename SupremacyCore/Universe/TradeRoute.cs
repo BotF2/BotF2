@@ -172,16 +172,19 @@ namespace Supremacy.Universe
 
                     int _creditsFromTradeRoute = (int)((1.0 + bonus) * Credits);
 
-                    _text = "Step_4888:; Turn " + GameContext.Current.TurnNumber
-                        + ": Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute= " 
-                        + _creditsFromTradeRoute
-                        + " for " + empire 
-                        + "; from = " + TargetColony.Name
-                        + " " + TargetColony.Location
-                        + "; to Source= " + SourceColony.Name
-                        + " " + SourceColony.Location
-                        ;
-                    Console.WriteLine(_text);
+                    // to often = everytime it is click > do it on GameEngine = once per turn
+                    //_text = "Step_4888:; Turn " + GameContext.Current.TurnNumber
+                    //    + ": Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute= " 
+                    //    + _creditsFromTradeRoute
+                    //    + " for " + empire 
+                    //    + "; from = " + TargetColony.Name
+                    //    + " " + TargetColony.Location
+                    //    + "; to Source= " + SourceColony.Name
+                    //    + " " + SourceColony.Location
+                    //    ;
+                    //Console.WriteLine(_text);
+
+
                     //GameLog.Core.TradeRoutesDetails.DebugFormat(_text);
                     // 2021-10-16: Credits devided by 4
                     return _creditsFromTradeRoute;

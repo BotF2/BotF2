@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Supremacy.Diplomacy;
@@ -73,6 +74,9 @@ namespace Supremacy.Pathfinding
 
     public static class AStar
     {
+        [NonSerialized]
+        private static string _text;
+
         #region Methods
         public static TravelRoute FindPath(Fleet fleet, IEnumerable<Sector> forbiddenSectors, Sector waypoint, params Sector[] waypoints)
         {
@@ -139,22 +143,53 @@ namespace Supremacy.Pathfinding
                 //GameLog.Client.AI.DebugFormat("TravelRout fleet is null");
                 throw new ArgumentNullException("fleet");
             }
+
             if (waypoints == null)
             {
                 //GameLog.Client.AI.DebugFormat("TravelRout waypoints is null");
                 throw new ArgumentNullException("waypoints");
             }
+
+            _text = "Step_6442:; " + Supremacy.AI.UnitAI.CreateUpdateFleetText(fleet, out string _fleetText) /*+ " > is new ordered "*/
+                        ;
+            //if (_writeDirectly_Fleets) 
+            Console.WriteLine(_text);
+            //_fleet_Text += newline + _text;
+
             foreach (Ship ship in fleet.Ships)
             {
-                if (fleet.Owner != null)
+                _text = "Step_6444:; " + Supremacy.AI.UnitAI.CreateShipText(ship, out string _shipText) + " > is new ordered "
+                    ;
+                //if (_writeDirectly_Fleets) 
+                Console.WriteLine(_text);
+                //_fleet_Text += newline + _text;
+
+                if (fleet.Owner == null)
                 {
+                    _text = "Step_6446:; " + _shipText + " > fleet.Owner = null(!) "
+                                ;
+                    //if (_writeDirectly_Fleets) 
+                        Console.WriteLine(_text);
+                    //_fleet_Text += newline + _text;
+
+                    Debugger.Break();
+
                     break;
                 }
 
-                if (ship.Owner != null)
+                else if (ship.Owner == null)
                 {
                     fleet.Owner = ship.Owner;
-                    break;
+
+                    _text = "Step_6448:; " + _shipText + " > ship.Owner = null(!) "
+            ;
+                    //if (_writeDirectly_Fleets) 
+                    Console.WriteLine(_text);
+                    //_fleet_Text += newline + _text;
+
+                    Debugger.Break();
+
+                    //break;
                 }
             }
 

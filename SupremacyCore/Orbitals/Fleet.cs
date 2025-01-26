@@ -828,7 +828,13 @@ namespace Supremacy.Orbitals
         /// <param name="route">The route.</param>
         public void SetRoute(TravelRoute route)
         {
-            //GameLog.Core.Combat.DebugFormat("SetRoute begins...");
+            //_text = "Step_6492:; SetRoute begins..." 
+            //;
+            ////if (_writeDirectly_Fleets) 
+            //Console.WriteLine(_text);
+            ////_fleet_Text += newline + _text;
+            ////GameLog.Core.Combat.DebugFormat("SetRoute begins...");
+
             if (IsRouteLocked)
             {
                 return;
