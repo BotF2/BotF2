@@ -31,6 +31,7 @@ namespace Supremacy.Orbitals
         private byte _camouflagedStrength;
         private bool _isCamouflaged;
         private bool _isAssimilated;
+        private bool _isEscort;
         private Meter _fuelReserve;
         private ShipType _shipType;
 #pragma warning disable IDE0052 // Remove unread private members
@@ -221,6 +222,23 @@ namespace Supremacy.Orbitals
                 OnPropertyChanged("IsAssimilated");
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Ship"/> is Escort.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this <see cref="Ship"/> is Escort otherwise, <c>false</c>.
+        /// </value>
+        public bool IsEscort
+        {
+            get => _isEscort;
+            set
+            {
+                _isEscort = value;
+                OnPropertyChanged("IsEscort");
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating whether this <see cref="Ship"/> can camouflage.
         /// </summary>
@@ -386,6 +404,7 @@ namespace Supremacy.Orbitals
             writer.Write(_isCloaked);
             writer.Write(_isCamouflaged);
             writer.Write(_isAssimilated);
+            writer.Write(_isEscort);
             writer.Write(_range);
             writer.Write(_speed);
             writer.Write((byte)_shipType);
@@ -401,6 +420,7 @@ namespace Supremacy.Orbitals
             _isCloaked = reader.ReadBoolean();
             _isCamouflaged = reader.ReadBoolean();
             _isAssimilated = reader.ReadBoolean();
+            _isEscort = reader.ReadBoolean();
             _range = reader.ReadByte();
             _speed = reader.ReadByte();
             _shipType = (ShipType)reader.ReadByte();

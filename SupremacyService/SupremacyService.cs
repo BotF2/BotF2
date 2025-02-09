@@ -1591,13 +1591,15 @@ namespace Supremacy.WCF
             GameContext.PushThreadContext(_game);
 
             ServerPlayerInfo player = _playerInfo.FromEmpireId(update.OwnerID);
-            if (player != null)
+
+            // 2025-02-08
+            if (player != null /*&& update.RoundNumber < 2*/)
             {
                 ISupremacyCallback callback = player.Callback;
                 callback?.NotifyCombatUpdate(update);
             }
             //No proper CombatAI, so just for now fake some orders
-            else if (!engine.IsCombatOver && !update.Owner.IsHuman)
+            else if (!engine.IsCombatOver && !update.Owner.IsHuman/* && update.RoundNumber < 2*/)
             {
                 // works   GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
                 CombatAssets ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);

@@ -111,7 +111,7 @@ namespace Supremacy.Game
         private readonly ManualResetEvent CombatReset = new ManualResetEvent(false);
         [NonSerialized]
         public string _turnnumber;
-        public int turnnumber;
+        //public int turnnumber;
         public bool _gamelog_bool = false;
         private bool boolCheckDeuterium = false;
         private bool writeDirectly = true;
@@ -540,7 +540,7 @@ namespace Supremacy.Game
             //_ = ParallelForEach(objects, item =>
             foreach (var item in objects)
             {
-                GameContext.PushThreadContext(game);
+                //GameContext.PushThreadContext(game);
                 // GameLog.Core.General.DebugFormat("next item will be: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                 try
                 {
@@ -584,7 +584,7 @@ namespace Supremacy.Game
             //  {
             foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
             {
-                GameContext.PushThreadContext(game);
+                //GameContext.PushThreadContext(game);
                 civManager.SitRepEntries.Clear();
                 try
                 {
@@ -620,7 +620,7 @@ namespace Supremacy.Game
 
             //IntelHelper.SitReps_Temp.Clear();
 
-            turnnumber = GameContext.Current.TurnNumber;
+            //turnnumber = GameContext.Current.TurnNumber;
 
             if (!errors.IsEmpty)
             {
@@ -628,19 +628,19 @@ namespace Supremacy.Game
             }
 
             // This block is not guaranteed to be safe for parallel execution.
-            GameContext.PushThreadContext(game);
+            //GameContext.PushThreadContext(game);
             foreach (Fleet fleet in fleets)
             {
-                //_text = "Step_1157:; "
-                //    /*+ " > "*/ + fleet.Location.ToString()
-                //    + " > " + fleet.ObjectID
-                //    + " > " + fleet.Name
-                //    + " > " + fleet.ClassName
-                //    + " > " + fleet.Order
-                //    + " > " + fleet.Order
+                _text = "Step_1157:; "
+                    /*+ " > "*/ + fleet.Location.ToString()
+                    + " > " + fleet.ObjectID
+                    + " > " + fleet.Name
+                    + " > " + fleet.ClassName
+                    + " > " + fleet.Order
+                    + " > " + fleet.Order
 
-                //    ;
-                //if (writeDirectly) Console.WriteLine(_text);
+                    ;
+                if (writeDirectly) Console.WriteLine(_text);
                 fleet.Order?.OnTurnBeginning();
             }
         }
@@ -2103,7 +2103,7 @@ namespace Supremacy.Game
                             popChange = (int)Math.Ceiling(1 + growthRate * colony.Population.CurrentValue);  // minimum growth of 1.0
                         }
 
-                        if (popChange < 0 && growthRate < 0 && turnnumber > 2)
+                        if (popChange < 0 && growthRate < 0 && GameContext.Current.TurnNumber > 2)
                         {
                             _text = string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
                             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
@@ -2391,7 +2391,7 @@ namespace Supremacy.Game
 
                     civManager.Research.UpdateResearch(_rp);
 
-                    _text = newline + "Step_8767:; " + civ.Name + " > Research.UpdateResearch"
+                    _text = /*newline + */"Step_8767:; " + civ.Name + " > Research.UpdateResearch"
                         + " with RP= " + _rp
                         + ", after= " + civManager.Research.CumulativePoints
 
@@ -2910,8 +2910,8 @@ namespace Supremacy.Game
         #region DoMaintenance() Method
         private void Do_19_Maintenance(GameContext game)
         {
-            int turn = game.TurnNumber;
-            _ = turn + 0; // dummy to avoid an unused for turnnumber or game
+            //int turn = game.TurnNumber;
+            //_ = turn + 0; // dummy to avoid an unused for turnnumber or game
 
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
@@ -3802,7 +3802,7 @@ namespace Supremacy.Game
                     int _incomeLowerLimit = -100 * civManager.AverageTechLevel;
                     bool _creditsSitRep = false;
 
-                    Console.WriteLine("Step_5410:; Turn " + turnnumber
+                    Console.WriteLine("Step_5410:; Turn " + GameContext.Current.TurnNumber
                         + ": _textCreditsLastChange = "
                         + Do_5_Digit(civManager.Credits.LastChange.ToString())
                         + "  for " + civManager.Civilization.Key);
@@ -4814,7 +4814,7 @@ namespace Supremacy.Game
                         Sector _aimSector = GameContext.Current.Universe.Map[_aim];
                         fleet.Order = FleetOrders.TravelOrder.Create();
                         //GameContext.Current.Universe.Find<MapLocation>().TryFindFirstItem(o => o == _aim, out Sector _aimSector);
-                        _text += " # going to " + _aim.ToString() + " named " + _aimSector.Name;
+                        _text += " # going to " + _aim.ToString() + " named " + _aimSector.Name/* + " (PostTurnOps)"*/;
                     }
 
                     // is here something to do ? 2024-12-29
@@ -4911,7 +4911,7 @@ namespace Supremacy.Game
                     civM.ShipCommandAvailable = GameContext.Current.Universe.FindOwned<Fleet>(civ).Where(f => f.Ships.Any(s => s.ShipType == ShipType.Command)).Count();
 
                     //CivilizationManager.re
-                    //_text = newline + "Step_7456:; Ships ( Available / Needed / Ordered ) for " + civM.Civilization + " "
+                    //_text = newline + "Step_7456:; "+ civM.Civilization + "-"+ "Ships ( Available / Needed / Ordered ) for " 
                     //    + newline + civM.ShipColonyAvailable + " - " + civM.ShipColonyNeeded + " - " + civM.ShipColonyOrdered + " > Colonizer"
                     //    + newline + civM.ShipConstructionAvailable + " - " + civM.ShipConstructionNeeded + " - " + civM.ShipConstructionOrdered + " > Constructor"
                     //    + newline + civM.ShipMedicalAvailable + " - " + civM.ShipMedicalNeeded + " - " + civM.ShipMedicalOrdered + " > Medical Ship"
@@ -4927,6 +4927,8 @@ namespace Supremacy.Game
                     //    + newline + civM.ShipTransportAvailable + " - " + civM.ShipTransportNeeded + " - " + civM.ShipTransportOrdered + " > Transport Ship Fleet"
                     //    ;
                     //if (writeDirectly) Console.WriteLine(_text);
+
+
                     bool checkForShipProduction = true;
 
                     if (checkForShipProduction)
@@ -5120,50 +5122,6 @@ namespace Supremacy.Game
                 body);
         }
 
-        // new list/stuff to find out 'Best' and 'Places' values for each civ
-        public class CivValue
-        {
-            public int AA_CIV_ID;
-            public string CIV_KEY;
-            public int TOT_POP;
-            public int MOR;
-            public int TOT_VAL;
-            public int CRED;
-            public int MAINT;
-            public int RES;
-            public int IPROD;
-            public int R_CRED;
-            public int R_MAINT;
-
-
-            public CivValue(
-                int aa_civ_ID
-                , string civ_key
-                , int tot_pop
-                , int mor
-                , int tot_val
-                , int cred
-                , int maint
-                , int res
-                , int iprod
-                , int r_cred
-                , int r_maint
-                )
-            {
-                AA_CIV_ID = aa_civ_ID;
-                CIV_KEY = civ_key;
-                TOT_POP = tot_pop;
-                MOR = mor;
-                TOT_VAL = tot_val;
-                CRED = cred;
-                MAINT = maint;
-                RES = res;
-                IPROD = iprod;
-                R_CRED = r_cred;
-                R_MAINT = r_maint;
-            }
-        }
-
         public void AddCivValue(int civID, string civKey, int TotPop, int Mor, int TotVal, int cred, int maint, int TotRes, int IProd, int r_cred, int r_maint)
         {
             CivValue civValueNew = new CivValue(
@@ -5250,6 +5208,50 @@ namespace Supremacy.Game
 
                 );
             CivRankList.Add(civRankNew);
+        }
+
+        // new list/stuff to find out 'Best' and 'Places' values for each civ
+        public class CivValue
+        {
+            public int AA_CIV_ID;
+            public string CIV_KEY;
+            public int TOT_POP;
+            public int MOR;
+            public int TOT_VAL;
+            public int CRED;
+            public int MAINT;
+            public int RES;
+            public int IPROD;
+            public int R_CRED;
+            public int R_MAINT;
+
+
+            public CivValue(
+                int aa_civ_ID
+                , string civ_key
+                , int tot_pop
+                , int mor
+                , int tot_val
+                , int cred
+                , int maint
+                , int res
+                , int iprod
+                , int r_cred
+                , int r_maint
+                )
+            {
+                AA_CIV_ID = aa_civ_ID;
+                CIV_KEY = civ_key;
+                TOT_POP = tot_pop;
+                MOR = mor;
+                TOT_VAL = tot_val;
+                CRED = cred;
+                MAINT = maint;
+                RES = res;
+                IPROD = iprod;
+                R_CRED = r_cred;
+                R_MAINT = r_maint;
+            }
         }
 
         public static string Do_x2_Digit_String(string v)

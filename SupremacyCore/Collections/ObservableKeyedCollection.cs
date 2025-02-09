@@ -412,7 +412,7 @@ namespace Supremacy.Collections
 
         protected virtual void OnKeyCollision(TKey key, TValue item)
         {
-            _text_ObKeyCol = "Step_0496: OnKeyCollision: key= " + key.ToString()
+            _text_ObKeyCol = "Step_0496:; OnKeyCollision: key= " + key.ToString()
                     + ", item= " + item.ToString();
             Console.WriteLine(_text_ObKeyCol);
             GameLog.Core.General.ErrorFormat(_text_ObKeyCol);

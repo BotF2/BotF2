@@ -9,7 +9,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 
@@ -54,13 +54,19 @@ namespace Supremacy.Universe
         {
             _path = new List<MapLocation>();
             _waypoints = new List<MapLocation>();
+
             foreach (Sector sector in waypoints)
             {
+                    if (sector != null)
+                {
                 _waypoints.Add(sector.Location);
+                }
+
             }
 
             _waypoints.TrimExcess();
         }
+        
 
         /// <summary>
         /// Gets the waypoints of a <see cref="TravelRoute"/>.

@@ -989,7 +989,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_accumulateplace == null || _accumulateplace.ToString() == "( 0, 0)")
+                if (_accumulateplace == null || _accumulateplace.ToString() == "(0, 0)")
                 {
                     _accumulateplace = HomeSystem.Location;
                     _text = "Step_3338:; Turn "
@@ -1016,7 +1016,7 @@ namespace Supremacy.Game
             {
                 Sector _accumulateSector = new Sector(AccumulateLocation);
                 //new Sector()
-                if (_accumulateSector == null || _accumulateSector.Location.ToString() == "{(0, 0)}")
+                if (_accumulateSector == null || _accumulateSector.Location.ToString() == "(0, 0)")
                 {
                     _accumulateSector = this.HomeSystem.Sector;
                     _text = "Step_3339:; "
@@ -1230,7 +1230,7 @@ namespace Supremacy.Game
 
         public void Report_Ships_Demand()
         {
-            _text = newline + "Step_7456:; Ships ( Available / Needed / Ordered ) for " + Civilization + " "
+            _text = newline + "Step_7455:; "+ Civilization + "-"+"Ships ( Available / Needed / Ordered ) for " 
     + newline + ShipColonyAvailable + " - " + ShipColonyNeeded + " - " + ShipColonyOrdered + " > Colonizer"
     + newline + ShipConstructionAvailable + " - " + ShipConstructionNeeded + " - " + ShipConstructionOrdered + " > Constructor"
     + newline + ShipMedicalAvailable + " - " + ShipMedicalNeeded + " - " + ShipMedicalOrdered + " > Medical Ship"

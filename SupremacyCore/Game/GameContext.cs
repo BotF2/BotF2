@@ -677,6 +677,9 @@ namespace Supremacy.Game
         /// <param name="context">The context.</param>
         public static void PushThreadContext(GameContext context)
         {
+            
+            //Console.WriteLine("Step_0567:; ####### PushThreadContext(GameContext context) !!!!");
+
             ThreadStack.Push(context);
         }
 

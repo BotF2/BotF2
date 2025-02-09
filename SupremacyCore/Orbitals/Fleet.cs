@@ -56,16 +56,16 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                string _NameString = "";
+                string _FleetNameString = "";
 
                 if (_ships.Count == 0)
                 {
-                    _NameString = base.Name;
+                    _FleetNameString = base.Name;
                 }
 
                 if (_ships.Count == 1)
                 {
-                    _NameString = _ships[0].IsCloaked == true
+                    _FleetNameString = _ships[0].IsCloaked == true
                         ? _ships[0].Name + " " + ResourceManager.GetString("CLOAKED")
                         : _ships[0].IsCamouflaged == true ? _ships[0].Name + " " + ResourceManager.GetString("CAMOUFLAGED") : _ships[0].Name;
                 }
@@ -82,13 +82,13 @@ namespace Supremacy.Orbitals
 
                             if (design == null)
                             {
-                                _NameString = string.Format(
+                                _FleetNameString = string.Format(
                                     "{0}x {1}",
                                     _ships.Count, " Unknown ShipDesign");
                             }
                             else
                             {
-                                _NameString = string.Format(
+                                _FleetNameString = string.Format(
                                     "{0}x {1}",
                                     _ships.Count,
                                     ResourceManager.GetString(design.Name));
@@ -97,28 +97,28 @@ namespace Supremacy.Orbitals
 
                         if (design != ship.ShipDesign)
                         {
-                            _NameString = string.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
+                            _FleetNameString = string.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
                         }
 
                         if (ship.IsCloaked)
                         {
-                            _NameString += string.Format(ResourceManager.GetString("CLOAKED"));
+                            _FleetNameString += string.Format(ResourceManager.GetString("CLOAKED"));
                         }
 
                         if (ship.IsCamouflaged)
                         {
-                            _NameString += string.Format(ResourceManager.GetString("CAMOUFLAGED"));
+                            _FleetNameString += string.Format(ResourceManager.GetString("CAMOUFLAGED"));
                         }
                     }
 
                     if (design == null || design.Name == null)
                     {
-                        _NameString = string.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
+                        _FleetNameString = string.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
                     }
                     //ToDo: After a changed (Cloaked/Camouflaged) a 'RefreshTaskListView' has to be done, but didn't found a way to do it directly
                 }
 
-                return _NameString;
+                return _FleetNameString;
             }
         }
 
@@ -566,6 +566,37 @@ namespace Supremacy.Orbitals
                 OnPropertyChanged("IsCamouflaged");
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Fleet"/> is Escort.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this <see cref="Fleet"/> is Escort; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsEscort
+        {
+            get
+            {
+                foreach (Ship ship in Ships)
+                {
+                    if (ship.IsEscort)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            set
+            {
+                foreach (Ship ship in Ships)
+                {
+                    ship.IsEscort = value;
+                }
+
+                OnPropertyChanged("IsEscort");
+            }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Fleet"/> is assimilated.
         /// </summary>
@@ -595,6 +626,7 @@ namespace Supremacy.Orbitals
                 OnPropertyChanged("IsAssimilated");
             }
         }
+
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> can enter wormhole.
         /// </summary>

@@ -28,6 +28,7 @@
         TextOptions.TextHintingMode="Fixed"
         TextOptions.TextRenderingMode="ClearType"
         scc:ClientSettings.EnableDialogAnimations="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableDialogAnimations), Mode=OneWay}">
+    
     <scc:GamePopupSite>
       <Grid>
         <Border x:Name="GameScreensRegionBorder">

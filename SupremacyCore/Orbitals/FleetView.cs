@@ -36,7 +36,7 @@ namespace Supremacy.Orbitals
 
         public bool IsUnScannable { get; set; }
 
-        public string Name
+        public string FleetName
         {
             get
             {

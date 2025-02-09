@@ -495,7 +495,7 @@ namespace Supremacy.Orbitals
                 //aFeet.RemoveShip(ship);
                 if (ship.ShipType == type)
                 {
-                    fleet.AddShip(ship);
+                    //fleet.AddShip(ship);  // redeploysame
                     fleet.Location = location;
 
                     _text = "RedeploySame:;"
@@ -514,6 +514,7 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class RedeployAllOrder : FleetOrder // all = all own ships in the sector
     {
+        private string _text;
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
@@ -573,15 +574,15 @@ namespace Supremacy.Orbitals
                 Ship ship = aFeet.Ships.Last();
                 MapLocation location = ship.Location;
 
-                fleet.AddShip(ship);
+                //fleet.AddShip(ship); // redeployALL
                 fleet.Location = location;
 
                 // works
-                //_text = "Step_5555:; RedeployAll is done for:;"
-                //+ "Fleet; " + ship.Name
-                //+ " Ship:;" + ship.ObjectID
-                //;
-                //Console.WriteLine(_text);
+                _text = "Step_5555:; RedeployAll is done for:;"
+                + "Fleet; " + ship.Name
+                + " Ship:;" + ship.ObjectID
+                ;
+                Console.WriteLine(_text);
 
             }
             fleet.Order = FleetOrders.IdleOrder;
@@ -902,7 +903,7 @@ namespace Supremacy.Orbitals
                 //aFeet.RemoveShip(ship);
                 //if (ship.ShipType == type)
                 //{
-                fleet.AddShip(ship);
+                //fleet.AddShip(ship);
                 fleet.Location = location;
 
 
@@ -1002,7 +1003,7 @@ namespace Supremacy.Orbitals
                 //aFeet.RemoveShip(ship);
                 //if (ship.ShipType == type)
                 //{
-                fleet.AddShip(ship);
+                //fleet.AddShip(ship); // AccumulateQuit
                 fleet.Location = location;
 
                 _text = "AccumulateQuit:;"
@@ -2623,10 +2624,10 @@ namespace Supremacy.Orbitals
                 if (_buildProject != null)
                     _stationDesignName = _buildProject.StationDesign.Name;
                 else
-                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION");
+                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION");
 
                 return string.Format(
-                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION"),
+                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION"),
                     _stationDesignName);
             }
         }
@@ -2638,10 +2639,10 @@ namespace Supremacy.Orbitals
                 if (_buildProject != null)
                     _stationDesignName = _buildProject.StationDesign.Name;
                 else
-                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION");
+                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION");
 
                 return string.Format(
-                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION"),
+                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION"),
                     _stationDesignName);
             }
         }

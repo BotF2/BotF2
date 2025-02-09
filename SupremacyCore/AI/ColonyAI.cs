@@ -279,6 +279,11 @@ namespace Supremacy.AI
                         // next_Check / set Breakpoint
                         if (_colonyAIControlled)  // not for human player
                         {
+                            if (colony.Owner.IsHuman)
+                            {
+                                //Debugger.Break();
+                            }
+
                             Build_for_LaborPool(colony, civ); // this first
                             Handle_Upgrades(colony, civ);
                             Handle_Basic_Structures(colony, civ);
@@ -365,6 +370,8 @@ namespace Supremacy.AI
                             Handle_Industry_Production(colony);
                             //Handle_Research_Distribution(colony);
 
+                            colony.ProcessQueue();
+
                             Handle_Nothing_to_Build(colony);
                         }
 
@@ -411,8 +418,8 @@ namespace Supremacy.AI
 
         private static void Handle_Flex_Production(Colony colony, Civilization civ)
         {
-            _text = /*newline + */"Step_1209:; " + GameEngine.LocationString(colony.Location.ToString())
-                    + " > " + _name_col + " ; " + _owner_col
+            _text = /*newline + */"Step_1218:; " + GameEngine.LocationString(colony.Location.ToString())
+                    + " > " + _name_col + "; " + _owner_col
                     + " > Check for Handle_Flex_Production (older code): "
                     + ", BuildQueue.Count= " + colony.BuildQueue.Count
                     + ", colony.AvailableLabor= " + colony.AvailableLabor
@@ -1577,7 +1584,7 @@ namespace Supremacy.AI
 
             if (boolCheckColonyProduction)
             {
-                //Debugger.Break();
+                //if (colony.Owner.IsHuman) Debugger.Break();
             }
         }
 
@@ -1608,7 +1615,7 @@ namespace Supremacy.AI
 
             if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count < 2)
             {
-                _text = "Step_1202:; " + GameEngine.LocationString(colony.Location.ToString()) + " Handle_Buildings: "
+                _text = "Step_1202:; " + GameEngine.LocationString(colony.Location.ToString()) + " > Handle_Buildings: "
                     //+ "Credits.Current= " + civM.Credits.CurrentValue
                     //+ ", Costs= " + cost
                     //+ ", industryNeeded= " + industryNeeded
@@ -1704,20 +1711,21 @@ namespace Supremacy.AI
                 if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count < 2)
                 {
                     List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Industry, ProductionCategory.Research, ProductionCategory.Intelligence };
-                    int flexLabors = colony.GetAvailableLabor() + flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
-                    if (flexLabors > 0)
+                    int flexLabors = colony.GetAvailableLabor() - 30; // flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
+                    if (flexLabors > -21)  // 2 more facilites as available labors, 10 labors = 1 facility
                     {
-                        _text = "Step_1274:; " + GameEngine.LocationString(colony.Location.ToString()) + " Handle_Buildings on "
+                        _text = "Step_1274:; " + GameEngine.LocationString(colony.Location.ToString()) + " > Handle_Buildings on "
                             + _name_col + " " + _owner_col
                             + " " + colony.GetAvailableLabor() + " > flexLabors available"
                             ;
                         if (writeDirectly_Colony) Console.WriteLine(_text);
                         _colony_full_Report += newline + _text;
+
                         if (colony.GetTotalFacilities(ProductionCategory.Industry) <= colony.GetTotalFacilities(ProductionCategory.Research) + colony.GetTotalFacilities(ProductionCategory.Intelligence))
                         {
                             //Industry
                             colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, colony.GetFacilityType(ProductionCategory.Industry))));
-                            _text = "Step_1275:; " + GameEngine.LocationString(colony.Location.ToString()) + " Handle_Buildings on "
+                            _text = "Step_1275:; " + GameEngine.LocationString(colony.Location.ToString()) + " > Handle_Buildings on "
                                 + _name_col + " " + _owner_col
                                 + " > added 1 Research Facility Build Order"
                                 ;
@@ -1728,7 +1736,7 @@ namespace Supremacy.AI
                         {
                             //than Research
                             colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(colony, colony.GetFacilityType(ProductionCategory.Research))));
-                            _text = "Step_1276:; " + GameEngine.LocationString(colony.Location.ToString()) + " Handle_Buildings on "
+                            _text = "Step_1276:; " + GameEngine.LocationString(colony.Location.ToString()) + " > Handle_Buildings on "
                                 + _name_col + " " + _owner_col
                                 + " > added 1 Research Facility Build Order"
                                 ;
@@ -1752,7 +1760,7 @@ namespace Supremacy.AI
                     }
                     else
                     {
-                        _text = "Step_1213:; " + GameEngine.LocationString(colony.Location.ToString()) + " Handle_Buildings on "
+                        _text = "Step_1213:; " + GameEngine.LocationString(colony.Location.ToString()) + " > Handle_Buildings on "
                                 + _name_col + " " + _owner_col
                                 + " > no Upgrade INDUSTRY"
                                 ;
@@ -1815,8 +1823,8 @@ namespace Supremacy.AI
             if (colony.BuildSlots.All(t => t.Project == null) && colony.BuildQueue.Count < 2)
             {
                 List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Industry, ProductionCategory.Research, ProductionCategory.Intelligence };
-                int flexLabors = colony.GetAvailableLabor() + flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
-                if (flexLabors > 0)
+                int flexLabors = colony.GetAvailableLabor() - 30; // flexProduction.Sum(c => colony.GetFacilityType(c).LaborCost * colony.GetActiveFacilities(c));
+                if (flexLabors > -21)  // 2 more facilites as available labors, 10 labors = 1 facility
                 {
                     if (colony.GetTotalFacilities(ProductionCategory.Industry) <= colony.GetTotalFacilities(ProductionCategory.Research) + colony.GetTotalFacilities(ProductionCategory.Intelligence))
                     {
@@ -3051,7 +3059,7 @@ namespace Supremacy.AI
                 int cost = s.Project.GetTotalCreditsCost() * 2;  // we take max half of the credits
 
                 //if ((civM.Credits.CurrentValue - (cost * 0.2)) > s.Project.GetTotalCreditsCost())
-                if ((manager.Credits.CurrentValue > cost))
+                if ((manager.Credits.CurrentValue > cost && manager.Credits.CurrentValue > 1000))
                 {
                     double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput * (colony.Morale.CurrentValue
                         / (0.5f * MoraleHelper.MaxValue)) * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
@@ -4144,9 +4152,9 @@ namespace Supremacy.AI
                 {
                     _ownerText = item.Owner.Key;
                 }
-                _text = "Step_5396:; " + GameEngine.LocationString(colony.Location.ToString()) + " ShipProduction at " + _name_col
+                _text = "Step_5396:; " + GameEngine.LocationString(colony.Location.ToString()) + " Check for possible Colony at " + _name_col
                     + " - possible: " + possibleSystems.Count
-                    + " - inhabited ? > " + item.HasColony //" for HasColony"
+                    + " - inhabited ? > " + item.IsInhabited //" for HasColony"
 
 
                     + " > at " + GameEngine.LocationString(item.Location.ToString())

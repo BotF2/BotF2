@@ -239,11 +239,17 @@ namespace Supremacy.Client.Views
         {
             get
             {
+                
                 string _return = "Assault: ";
                 if (GameContext.Current.CivilizationManagers[0].SystemAssaultSector_1.Location.ToString() == "(0, 0)")
                 {
                     _return += " - ";
                 }
+                else
+                {
+                    return _return += GameContext.Current.CivilizationManagers[0].SystemAssaultSector_1.Location.ToString();
+                }
+
                 if (GameContext.Current.CivilizationManagers[0].SystemAssaultSector_2.Location.ToString() != "(0, 0)")
                 {
                     _return += " ,   Assault 2: " + GameContext.Current.CivilizationManagers[0].SystemAssaultSector_2.Location.ToString();

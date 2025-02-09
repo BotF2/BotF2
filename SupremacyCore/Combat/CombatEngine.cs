@@ -142,6 +142,20 @@ namespace Supremacy.Combat
         {
             get
             {
+                if (_roundNumber > 1)
+                {
+                    //_text = _combat_Automated_full_Report += newline + _text;
+                    Console.WriteLine(newline + "Step_3667:; _combatEngine_full_Report > " /*+ newline */
+                            + _combatEngine_full_Report + " > end of _combatEngine_full_Report"
+                            + newline + newline
+                            + "Step_3668:;  > _combat_Automated_full_Report"
+                            + Combat_Automated_full_Report + "............. > end of _combat_Automated_full_Report"
+                            + newline
+                            );
+
+                    return true;
+                }
+
                 //GameLog.Core.Combat.DebugFormat("_roundNumber = {0}", _roundNumber);
                 //GameLog.Core.Combat.DebugFormat("_allSidesStandDown ={0}, IsCombatOver ={1} as HasSurvivingAssets ", _allSidesStandDown, (_assets.Count(assets => assets.HasSurvivingAssets) <= 1));
                 if (_allSidesStandDown)
@@ -166,7 +180,9 @@ namespace Supremacy.Combat
                     return true;
                 }
 
-                int coutner = 0;
+                //return false;
+
+                int counter = 0;
             TryAgain:
 
                 try
@@ -180,19 +196,19 @@ namespace Supremacy.Combat
                     //_combat_Automated_full_Report += newline + _text;
                     GameLog.Core.Combat.WarnFormat(_text);
                     System.Threading.Thread.Sleep(1000); // wait for a second
-                    if (coutner > 2)
+                    if (counter > 2)
                     {
                         return true;
                     }
 
-                    coutner++;
+                    counter++;
                     goto TryAgain;
                     //throw;
                 }
 
-                // how ever:
+                //how ever:
                 //return true;
-
+                return false;
 
             } // end of get{}
 
@@ -382,9 +398,11 @@ namespace Supremacy.Combat
             {
                 Running = true;
 
+                //RunningTargetOne = true; // 2025-02-08
+
                 _assets.ForEach(a => a.CombatID = CombatID); // assign combatID for each asset _assets
 
-                CalculateEmpireStrengths();
+                //CalculateEmpireStrengths();
 
                 _text = "Step_3193:; _roundNumber = " + _roundNumber
                     + "; AllSidesStandDown() = " + AllSidesStandDown()
@@ -416,13 +434,14 @@ namespace Supremacy.Combat
 
                 UpdateOrbitals();
 
-                _text = "Step_3198:; " + _sectorString + "_combatId = " + CombatID + " > If IsCombatOver = " + IsCombatOver
+                _text = "Step_3199:; " + _sectorString + "_combatId = " + CombatID + " > If IsCombatOver = " + IsCombatOver
                     + " > then increment round number " + _roundNumber
                     ;
                 if (_combatWriteDirectly) Console.WriteLine(_text);
                 _combatEngine_full_Report += newline + _text;
                 GameLog.Core.CombatDetails.DebugFormat(_text);
                 //_text = "Step_3001: If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
+
                 if (!IsCombatOver)
                 {
                     //_text = "Step_3001: incrementing - round number {0} to {1}", _roundNumber, _roundNumber + 1);
@@ -435,6 +454,8 @@ namespace Supremacy.Combat
 
             //_text = "Step_3001: ResolveCombatRound Sent SendUpdates then call RemoveDefeatedPlayers()");
             RemoveDefeatedPlayers();
+
+            //_roundNumber++; // 2025-02-08
 
             RunningTargetOne = false;
             RunningTargetTwo = false;
