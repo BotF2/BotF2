@@ -980,10 +980,11 @@ namespace Supremacy.Game
                         Debugger.Break();
                     }
 
-                    if (_civM.StrandedShipsSector != _civM.HomeSystem.Sector && _civM.StrandedShipsSector != _fleet.Sector)
+                    if (_civM.StrandedShipsSector.Location.ToString() == _civM.HomeSystem.Sector.Location.ToString() 
+                        && _civM.StrandedShipsSector.Location.ToString() != _fleet.Sector.Location.ToString())
                     {
                         _civM.StrandedShipsSector = _fleet.Sector;
-                        _text = _fleet.Location
+                        _text = GameEngine.LocationString(_fleet.Location.ToString())
                             + " > was added as StrandedShipSector"
                             ;
                         _civM.SitRepEntries.Add(new ReportEntry_CoS(_fleet.Owner, _fleet.Location, _text, "", "", SitRepPriority.Pink));
@@ -4238,7 +4239,7 @@ namespace Supremacy.Game
 
                             _text = "Step_4162:; Turn " + GameContext.Current.TurnNumber + "; " + _text;
                             if (writeDirectly) Console.WriteLine(_text);
-                            GameLog.Core.Production.DebugFormat(_text);
+                            //GameLog.Core.Production.DebugFormat(_text);
 
                             //Handle_Buildings in ColonyAI.cs via DoTurn
                             //    if (!_colony.Owner.IsHuman && _colony.AvailableLabor > 20)

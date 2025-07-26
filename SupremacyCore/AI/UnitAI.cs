@@ -1592,7 +1592,7 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_fleet.Activity == UnitActivity.GoToAccumulateSector
@@ -3818,11 +3818,13 @@ namespace Supremacy.AI
                         }
                     }
                 }
+                else
+                {
+                    BuildStation(fleet);
+                    fleet.AITypeUnit = UnitAIType.Building;
+                }
             }
-            else
-            {
-                BuildStation(fleet);
-            }
+
         }
 
         /*
@@ -4072,7 +4074,7 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Sector;
@@ -4125,6 +4127,12 @@ namespace Supremacy.AI
             foreach (var _sector in _availableSectors)
             {
                 int _distance2 = MapLocation.GetDistance(_sector.Location, homeSector.Location);
+
+                if (_distance2 != _distance - 1)  // not all sectors > too much > only the far away
+                {
+                    continue;
+                }
+
                 _text = "Step_6913:; "
                      + "" + _fleets_Summary
                      + " >  DistfromHome > " + GameEngine.Do_x2_Digit_String(_distance2.ToString())
@@ -4134,7 +4142,7 @@ namespace Supremacy.AI
 
                     ;
                 //if (_write) 
-                    //Console.WriteLine(_text);
+                Console.WriteLine(_text);
                 _availableSectorsText += _text;
                 //_fleet_Text += _newline + _text;
 
@@ -4185,7 +4193,7 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             //_availableSectors = MapHelper.GetSectorsWithinRadius(_fleet.Sector, _distance).ToList();
@@ -4209,7 +4217,7 @@ namespace Supremacy.AI
 
                 if (_bestSector != null)
                 {
-                return true;
+                    return true;
                 }
 
 
@@ -4306,7 +4314,7 @@ namespace Supremacy.AI
             //}
 
             //default: // non of the Empires
-                    //_bestSector = null;
+            //_bestSector = null;
             _text = "Step_7759:; " + CreateUpdateFleetText(_fleet, out _fleet_Text) + " > no _location for station";
             if (_writeDirectly_Fleets) Console.WriteLine(_text);
             //GameLog.Core.AIDetails.DebugFormat(_text);
