@@ -224,7 +224,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            _text = "Step_3343:; next one leeds to > System.Windows.Data Error: 1";
+            _text = "Step_3348:; next one leeds to > System.Windows.Data Error: 1";
             Console.WriteLine(_text);
 
             foreignPower.OutgoingMessage = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
@@ -836,9 +836,9 @@ namespace Supremacy.Client.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-#pragma warning disable IDE0051 // Remove unused private members
+//#pragma warning disable IDE0051 // Remove unused private members
         private void RaisePropertyChanged(string propertyName)
-#pragma warning restore IDE0051 // Remove unused private members
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -1363,9 +1363,9 @@ namespace Supremacy.Client.Views
             }
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
+//#pragma warning disable IDE0051 // Remove unused private members
         private void RefreshRelationshipGraph()  // de-activated atm ... this is just a gimmick content
-#pragma warning restore IDE0051 // Remove unused private members
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             int count = GameContext.Current.Civilizations.Count;
             List<DiplomacyGraphNode> nodes = new List<DiplomacyGraphNode>(count);

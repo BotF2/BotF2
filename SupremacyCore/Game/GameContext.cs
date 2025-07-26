@@ -150,7 +150,7 @@ namespace Supremacy.Game
     {
         #region Instance Members
         #region Fields
-        private int _nextObjectId;
+        private int _nextObjectId;// = 0; //2025-06-14
         private int _turnnumber = 0;
         private GameOptions _options;
         private GameMod _gameMod;
@@ -171,84 +171,170 @@ namespace Supremacy.Game
         private ICollection<ScriptedEvent> _scriptedEvents;
         private DiplomacyDatabase _diplomacyDatabase;
 
-        [NonSerialized]
-        public string _text;
-        public readonly string blank = " ";
-        public readonly string newline = Environment.NewLine;
+        //[NonSerialized]
+        //public string _text;
+        //public readonly string _newline = Environment.NewLine;
 
-        private bool _bool_Fac_Count_Active;
-        #endregion
+        //private bool _bool_Fac_Count_Active;
+        #endregion Fields
 
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
+            string _summary_write_serialized = "";
+            string _newline = Environment.NewLine;
+            string _text;
 
-            GameLog.Core.SaveLoad.DebugFormat("Step_3701: --------------------------------------------------");
+            bool _write_serialized = true;
+            //bool _write_serialized = false;
+
+
+
+            _text = "Step_3701: --------------------------------------------------";
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
             _text = "Step_3702:; ########### Serialising GameContext...";
-            Console.WriteLine(_text);
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
             writer.Write(IsMultiplayerGame);
-            _text = "Step_3707:; ########### Serialising GameContext...";
-            Console.WriteLine(_text);
+            _text = "Step_3707:; write > IsMultiplayerGame= " + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
             writer.WriteOptimized(_nextObjectId);
-            
-            
+            _text = "Step_3712:; write > _nextObjectId= " + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteOptimized((ushort)_turnnumber);
-            
-            
+            _text = "Step_3713:; write > _turnnumber= " + _turnnumber;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_options);
-            
-            
+            _text = "Step_3714:; write > _options= xx";// + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_gameMod);
-            
-            
+            _text = "Step_3715:; write > _gameMod= " + _gameMod;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_civilizations);
-            
-            
+            _text = "Step_3716:; write > _civilizations...";// + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_civManagers);
-            
-            
+            _text = "Step_3717:; write > _civManagers...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_races);
-            
-            
+            _text = "Step_3718:; write > _races...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_universe);
-            
-            
+            _text = "Step_3721:; write > _universe...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_techDatabase);
-            
-            
+            _text = "Step_3725:; write > _techDatabase...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_researchMatrix);
-            
-            
+            _text = "Step_3727:; write > _researchMatrix...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_sectorClaims);
-            
-            
+            _text = "Step_3731:; write > _sectorClaims...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_techTrees);
-            
-            
+            _text = "Step_3735:; write > _techTrees...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_diplomacyData);
-            
-            
+            _text = "Step_3737:; write > _diplomacyData...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_agreementMatrix);
-            
-            
+            _text = "Step_3741:; write > _agreementMatrix...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_diplomats);
-            
-            
+            _text = "Step_3745:; write > _diplomats...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_strategyDatabase);
-            
-            
+            _text = "Step_3747:; write > _strategyDatabase...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_scriptedEvents);
-            
-            
+            _text = "Step_3751:; write > _scriptedEvents...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_diplomacyDatabase);
+            _text = "Step_3755:; write > _diplomacyDatabase...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
         }
 
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
             PushThreadContext(this);
+            string _text;
 
             try
             {
@@ -381,6 +467,7 @@ namespace Supremacy.Game
             {
                 throw new ArgumentNullException("textDatabase");
             }
+            string _text = "";
 
             ITextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
 
@@ -529,7 +616,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            _text = "Step_4001:; ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
+            string _text = "Step_4001:; ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------" + DateTime.Now;
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -678,7 +765,7 @@ namespace Supremacy.Game
         public static void PushThreadContext(GameContext context)
         {
             
-            //Console.WriteLine("Step_0567:; ####### PushThreadContext(GameContext context) !!!!");
+            //Console.WriteLine("Step_0567:; ####### PushThreadContext(GameContext context) !!!!  " + DateTime.Now);
 
             ThreadStack.Push(context);
         }
@@ -689,12 +776,13 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext PopThreadContext()
         {
-
             if (!ThreadStack.TryPop(out GameContext result))
             {
+                Console.WriteLine("Step_0568:; ####### PopThreadContext(GameContext context) !!!!  " + DateTime.Now);
                 return result;
             }
 
+            //Console.WriteLine("Step_0569:; ####### PopThreadContext(GameContext) !!!! = null    " + DateTime.Now);
             return null;
         }
 
@@ -989,7 +1077,7 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
-            _text = "Step_3003:; GameContext Initialize...";
+            string _text = "Step_3003:; GameContext Initialize...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -1161,6 +1249,8 @@ namespace Supremacy.Game
 
                         bool _checkXML;
                         _checkXML = true;
+
+                        bool _bool_Fac_Count_Active = false;
 
                         if (_bool_Fac_Count_Active == false)
                         {

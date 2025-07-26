@@ -1,4 +1,6 @@
-﻿using FMOD;
+﻿// File:ClientWindow.xaml.cs
+
+using FMOD;
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.ServiceLocation;
@@ -41,9 +43,9 @@ namespace Supremacy.Client
 
         private static readonly Func<double, double> PixelToPoint;
 
-#pragma warning disable IDE0052 // Remove unread private members
+//#pragma warning disable IDE0052 // Remove unread private members
         private readonly IClientApplication _app;
-#pragma warning restore IDE0052 // Remove unread private members
+//#pragma warning restore IDE0052 // Remove unread private members
         private readonly IAppContext _appContext;
         private readonly IEventAggregator _eventAggregator;
         private readonly INavigationCommandsProxy _navigationCommands;
@@ -316,15 +318,17 @@ namespace Supremacy.Client
 
                         process.Refresh();
 
-                        _text = "Garbage Collection: Process= " + process.ProcessName
+                        _text = "Step_0090:; Garbage Collection: Process= " + process.ProcessName
                             + ", ProcessID= " + process.Id
                             + ", Threads= " + process.Threads.Count.ToString()
-                            + ", Memory= " + process.PagedMemorySize64
+                            + ", TIMEtotal= " + ((int)process.TotalProcessorTime.TotalMinutes) + " minutes"
+                            //+ ", VirtualMemory= " + ((int)process.VirtualMemorySize64 / 1000000) // works
+                            + ", Memory= " + (int)(process.PagedMemorySize64 / 1000000)
                             //+ ", Memory= " + process.PagedSystemMemorySize64
                             //+ ", Memory= " + process.PrivateMemorySize64
-                            //+ ", Memory= " + process.VirtualMemorySize64
-                            //+ ", TIMEtotal= " + process.TotalProcessorTime
-                            //+ ", Memory= " + process.VirtualMemorySize64
+
+                            + ", WorkingSet= " + (int)(process.WorkingSet64 / 1000000)
+                            + ", Nonpaged= " + (int)(process.NonpagedSystemMemorySize64 / 1000)
 
                             ;
                         //works  MessageBox.Show(_text, process.ProcessName + " ID: " + process.Id);

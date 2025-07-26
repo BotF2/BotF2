@@ -437,8 +437,8 @@ namespace Supremacy.UI
                 switch (system.StarType)
                 {
                     case StarType.BlackHole:
-                        name.Text = ResourceManager.GetString("STAR_TYPE_BLACKHOLE");
-                        details.Text = ResourceManager.GetString("STAR_TYPE_BLACKHOLE_DESCRIPTION");
+                        name.Text = ResourceManager.GetString("STAR_TYPE_BLACK_HOLE");
+                        details.Text = ResourceManager.GetString("STAR_TYPE_BLACK_HOLE_DESCRIPTION");
                         _ = statsPanel.Children.Add(details);
                         break;
                     case StarType.Wormhole:
@@ -470,11 +470,11 @@ namespace Supremacy.UI
                         details.Text = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
                         //if (ClientSettings.Current.AddGermanText)
                         //{
-                        //    details.Text += GameEngine.Newline + ResourceManager.Get_DE_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
+                        //    details.Text += GameEngine._newline + ResourceManager.Get_DE_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
                         //}
                         //if (ClientSettings.Current.AddFrenchText)
                         //{
-                        //    details.Text += GameEngine.Newline + ResourceManager.Get_FR_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
+                        //    details.Text += GameEngine._newline + ResourceManager.Get_FR_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
                         //}
                         _ = statsPanel.Children.Add(details);
                         break;

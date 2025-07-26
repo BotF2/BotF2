@@ -22,6 +22,7 @@ namespace Supremacy.Game
     public interface IGameObject
     {
         int ObjectID { get; }
+        
     }
 
     [Serializable]
@@ -37,8 +38,7 @@ namespace Supremacy.Game
         [field: NonSerialized]
         public event EventHandler ObjectIDChanged;
         public string _turnnumber = GameContext.Current.TurnNumber.ToString();
-        public string blank = " ";
-        public string newline = Environment.NewLine;
+        public string _newline = Environment.NewLine;
 
         protected GameObject()
         {

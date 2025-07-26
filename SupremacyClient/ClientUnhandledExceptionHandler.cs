@@ -25,7 +25,7 @@ namespace Supremacy.Client
         #region Fields
         private readonly object _syncLock = new object();
         private string _text;
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
 
         #endregion
 
@@ -94,10 +94,10 @@ namespace Supremacy.Client
                     ["StackTrace"] = stackTrace
                 };
 
-                _text = newline + newline
+                _text = _newline + _newline
                     + DateTime.Now + " #### ERROR " /*+ Environment.NewLine*/
-                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + newline + newline
-                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + newline + newline
+                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + _newline + _newline
+                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + _newline + _newline
                     + "StackTrace complete:;" + stackTrace;
 
                 GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
@@ -112,8 +112,8 @@ namespace Supremacy.Client
                 }
                 catch (Exception ex) 
                 {
-                    _text = newline + newline
-                        + DateTime.Now + " #### ERROR 9998 - a missing file could be the reason as well" + newline; 
+                    _text = _newline + _newline
+                        + DateTime.Now + " #### ERROR 9998 - a missing file could be the reason as well" + _newline; 
                     Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
 

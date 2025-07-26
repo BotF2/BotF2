@@ -14,7 +14,7 @@ using Supremacy.Scripting.Runtime;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2023 Rise of the UFP Team")]
+[assembly: AssemblyCopyright("Copyright (c) Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

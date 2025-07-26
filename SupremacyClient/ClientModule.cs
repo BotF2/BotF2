@@ -39,6 +39,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Collections.Generic;
+//using System.Windows.Forms;
 
 
 namespace Supremacy.Client
@@ -264,7 +265,7 @@ namespace Supremacy.Client
         public bool _ConsoleWriteline_bool = true;
 
         public string _text;
-        public readonly string newline = Environment.NewLine;
+        public readonly string _newline = Environment.NewLine;
 
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;
@@ -490,6 +491,12 @@ namespace Supremacy.Client
         }
         #endregion
 
+        public MessageDialogResult MessageDialogShow(string _header, string _message, MessageDialogButtons _buttons/*, out MessageDialogResult _dialog_result*/)
+        {
+            MessageDialogResult _dialog_result = MessageDialog.Show(_header, _message, _buttons);
+            return _dialog_result;
+        }
+
         #region Commands
         private static void ExecuteShowCreditsDialogCommand(object parameter)
         {
@@ -701,11 +708,11 @@ namespace Supremacy.Client
             {
                 double fileSize = new FileInfo(errorFile).Length;
                 _text = "Error.txt is empty - nothing to load"
-                    + newline
-                    + newline + "> see file > 'Error-txt - First Run.txt'"
-                    + newline + "> on start: rename 'SupremacyClient..Settings.xaml' ... will be re-created"
-                    + newline
-                    + newline + "> NOW please shot down the program... sorry"
+                    + _newline
+                    + _newline + "> see file > 'Error-txt - First Run.txt'"
+                    + _newline + "> on start: rename 'SupremacyClient..Settings.xaml' ... will be re-created"
+                    + _newline
+                    + _newline + "> NOW please shot down the program... sorry"
                     ;
                 // OFF   if (fileSize == 0) { _ = MessageBox.Show(_text); return; }
                 // OFF   if (fileSize < 0) { _ = MessageBox.Show("Could not load Error.txt"); return; }
@@ -768,24 +775,24 @@ namespace Supremacy.Client
             foreach (string item in coll)
             {
                 Console.WriteLine(item);
-                if (item.Contains("True")) { _trues.Add(item); }// += item + newline;}
+                if (item.Contains("True")) { _trues.Add(item); }// += item + _newline;}
                 if (item.Contains("False")) { _false.Add(item); }
                 if (!item.Contains("True") && !item.Contains("False")) { _rest.Add(item); }
             }
 
-            _text = "CONTENT OF SupremacyClient..Settings.xaml " + DateTime.Now + newline;
+            _text = "CONTENT OF SupremacyClient..Settings.xaml " + DateTime.Now + _newline;
 
-            _text += newline + "VALUES" + newline + "======" + newline;
-            foreach (string item in _rest) { _text += item + newline; }
+            _text += _newline + "VALUES" + _newline + "======" + _newline;
+            foreach (string item in _rest) { _text += item + _newline; }
 
-            _text += newline + "TRUE" + newline + "====" + newline;
-            foreach (string item in _trues) { _text += item + newline; }
+            _text += _newline + "TRUE" + _newline + "====" + _newline;
+            foreach (string item in _trues) { _text += item + _newline; }
 
-            _text += newline + "FALSE" + newline + "=====" + newline;
-            foreach (string item in _false) { _text += item + newline; }
+            _text += _newline + "FALSE" + _newline + "=====" + _newline;
+            foreach (string item in _false) { _text += item + _newline; }
 
 
-            _text += newline + newline;
+            _text += _newline + _newline;
 
             StreamWriter streamWriter = new StreamWriter(file + ".txt");
             streamWriter.Write(_text);
@@ -912,13 +919,13 @@ namespace Supremacy.Client
             {
 
                 var _hist = civ._civHist_List.ToList();
-                _text += newline;
+                _text += _newline;
 
                 foreach (var item in _hist)
                 {
 
                     _text +=
-                          //newline + "   " + 
+                          //_newline + "   " + 
                           "Civ+Turn:;_" + item.CivIDHistAndTurn
 
                         + ";Research;" + item.ResearchHist
@@ -946,7 +953,7 @@ namespace Supremacy.Client
                         + ";" + item.CivKeyHist
                         + ";" + item.CivIDHist
                         //+ ";" + item.c
-                        + newline
+                        + _newline
                         ;
                     //Console.WriteLine(_text);
                     //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
@@ -1052,7 +1059,7 @@ namespace Supremacy.Client
         public void Initialize()
         {
             _text = "Step_0210:; Initializing... !";
-            _text += newline + "Step_0211:; ..just notice: all these Step-Numbers have no logic inside (sorry) .. but easy to find by a search";
+            _text += _newline + "Step_0211:; ..just notice: all these Step-Numbers have no logic inside (sorry) .. but easy to find by a search";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -1297,7 +1304,14 @@ namespace Supremacy.Client
                     _resourceManager.GetStringFormat("PLAYER_EXITED_MESSAGE_CONTENT", player.Name),
                     MessageDialogButtons.Ok);
             }
+            
         }
+
+        //public MessageDialogShow(string _header, string _message, MessageDialogButtons _buttons/*, out MessageDialogResult _dialog_result*/)
+        //{
+        //    MessageDialogResult _dialog_result = MessageDialog.Show(_header, _message, _buttons);
+        //    return _dialog_result;
+        //}
 
         private void OnLocalPlayerJoined(LocalPlayerJoinedEventArgs args)
         {
@@ -1313,6 +1327,11 @@ namespace Supremacy.Client
             {
                 ShowLoadingScreen();
             }
+        }
+
+        public void AShowDialog(string _header, string _message)
+            {
+             MessageDialog.Show(_header, _message, MessageDialogButtons.Ok);
         }
 
         private void ShowLoadingScreen()

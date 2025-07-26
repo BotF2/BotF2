@@ -1,7 +1,7 @@
 // Remove the DEBUG condition if you want to always check for not optimizable values at the small expense of runtime speed
-#if DEBUG___
-#define THROW_IF_NOT_OPTIMIZABLE
-#endif
+//#if DEBUG___
+//#define THROW_IF_NOT_OPTIMIZABLE
+//#endif
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
@@ -128,8 +128,8 @@ namespace Supremacy.IO.Serialization
         public static bool DefaultPreserveDecimalScale;
 
 
-        private string _text;
-        private readonly string newline = Environment.NewLine;
+        //private string _text;
+        //private readonly string _newline = Environment.NewLine;
 
         private bool _trace;
 
@@ -926,6 +926,8 @@ namespace Supremacy.IO.Serialization
         public void WriteObject(object value)
         {
             _trace = false;  // turn true, even for getting some loaded or saved game content
+            string _newline = Environment.NewLine;
+            string _text = "";
 
             if (value == null)
             {
@@ -1334,7 +1336,7 @@ namespace Supremacy.IO.Serialization
             {
                 if (_trace)
                 {
-                    _text = "Write Object (isTypeRecreatable): " + newline + "Write Object:; " + value.ToString();
+                    _text = "Write Object (isTypeRecreatable): " + Environment.NewLine + "Write Object:; " + value.ToString();
                     Console.WriteLine(_text);
                     GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 }
@@ -3727,8 +3729,8 @@ namespace Supremacy.IO.Serialization
         private readonly int _endPosition;
         private readonly object[] _objectTokens;
         private readonly string[] _stringTokenList;
-        [NonSerialized]
-        private string _text;
+        //[NonSerialized]
+        //private string _text;
         //private var _x;
         #endregion
 
@@ -4652,6 +4654,7 @@ namespace Supremacy.IO.Serialization
         public string ReadOptimizedString()
         {
             SerializedType typeCode = ReadTypeCode();
+            string _text = "";
 
             try
             {
@@ -4663,7 +4666,7 @@ namespace Supremacy.IO.Serialization
             catch
             {
                 _text = "Step_3355:; ### BIG problem at reading something";
-                Console.WriteLine();
+                Console.WriteLine(_text);
                 return null;
             }
 
@@ -4733,6 +4736,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>A Type instance.</returns>
         public Type ReadOptimizedType(bool throwOnError)
         {
+            string _text;
             try
             {
                 return Type.GetType(ReadOptimizedString());
@@ -4743,7 +4747,10 @@ namespace Supremacy.IO.Serialization
                 _text = "Step_9333:; ##### Error on > Type.GetType(ReadOptimizedString())";
                 //if (writeDirectly_Colony) 
                     Console.WriteLine(_text);
-                //_colony_full_Report += _text + newline;
+
+                //Debugger.Break();
+                
+                //_colony_full_Report += _text + _newline;
                 return Type.GetType(ReadOptimizedString());
             }
 
@@ -5265,6 +5272,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>An object instance.</returns>
         private object ProcessObject(SerializedType typeCode)
         {
+            string _text;
             switch (typeCode)
             {
                 case SerializedType.NullType:
@@ -5276,19 +5284,19 @@ namespace Supremacy.IO.Serialization
                 default:
                     if (typeCode < SerializedType.NullType)
                     {
-                        //try
-                        //{
+                        try
+                        {
                             if (typeCode < SerializedType.NullType)
                             {
                                 return ReadTokenizedString((int)typeCode);
                             }
-                        //}
-                        //catch
-                        //{
-                        //    _text = "Step_3356:; ### BIG problem at reading something";
-                        //    Console.WriteLine();
-                        //    return ReadTokenizedString((int)typeCode);
-                        //}
+                        }
+                        catch
+                        {
+                            _text = "Step_3356:; ### BIG problem at reading something";
+                            Console.WriteLine();
+                            return ReadTokenizedString((int)typeCode);
+                        }
 
                     }
 
@@ -5545,7 +5553,7 @@ namespace Supremacy.IO.Serialization
                             }
                         default:
                             {
-                                //_text = newline; // dummy
+                                //_text = _newline; // dummy
                                 _text = "switch (typeCode) FAILED";
                                 Console.WriteLine(_text);
                                 object result = ProcessArrayTypes(typeCode, null);

@@ -89,15 +89,9 @@
         <!--MaintenanceCost-->
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
             
-            <TextBlock Foreground="LightBlue" 
-               Text="{Binding Source={s:StringResource CREDITS_BALANCE_TEXT}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
-                <TextBlock.ToolTip>
-                    <TextBlock Text="{Binding Source={s:StringResource CREDITS_BALANCE_VALUE_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
-                            FontSize="20"/>
-                </TextBlock.ToolTip>
-        </TextBlock>       
+    
             
-            <TextBlock HorizontalAlignment="Right" Text=" / " />            
+          
             
             <TextBlock Foreground="{StaticResource MaintColor}" 
                Text="{Binding Source={s:StringResource MAINTENANCE_COST_LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
@@ -109,14 +103,22 @@
             </TextBlock.ToolTip>
         </TextBlock>
             
-
+            <TextBlock HorizontalAlignment="Right" Text=" / " />              
+            
+            <TextBlock Foreground="LightBlue" 
+               Text="{Binding Source={s:StringResource CREDITS_BALANCE_TEXT}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource CREDITS_BALANCE_VALUE_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+        </TextBlock>   
 
 
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <TextBlock Foreground="{StaticResource RankingColor}" Text="* " />
-            <TextBlock Foreground="{StaticResource RankingColor}" HorizontalAlignment="Right" Text="{Binding Path=RankingMaint, Mode=OneWay}" >
+            <TextBlock Foreground="{StaticResource RankingColor}" HorizontalAlignment="Right" Text="{Binding Path=Z_RankingMaint, Mode=OneWay}" >
                 <TextBlock.ToolTip>
                     <TextBlock Text="{Binding Source={s:StringResource RANKING_TOOLTIP_MAINTENANCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                             FontSize="20"/>
@@ -266,7 +268,7 @@
       
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <TextBlock Foreground="{StaticResource RankingColor}" Text="* " />
-            <TextBlock Foreground="{StaticResource RankingColor}" HorizontalAlignment="Right" Text="{Binding Path=RankingResearch, Mode=OneWay}" >
+            <TextBlock Foreground="{StaticResource RankingColor}" HorizontalAlignment="Right" Text="{Binding Path=Z_RankingResearch, Mode=OneWay}" >
                 <TextBlock.ToolTip>
                     <TextBlock Text="{Binding Source={s:StringResource RANKING_TOOLTIP_RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                             FontSize="20"/>
@@ -291,7 +293,7 @@
 
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <TextBlock Foreground="{StaticResource RankingColor}" Text="* " />
-            <TextBlock Foreground="{StaticResource RankingColor}" HorizontalAlignment="Right" Text="{Binding Path=RankingIntelAttack, Mode=OneWay}" >
+            <TextBlock Foreground="{StaticResource RankingColor}" HorizontalAlignment="Right" Text="{Binding Path=Z_RankingIntelAttack, Mode=OneWay}" >
                 <TextBlock.ToolTip>
                     <TextBlock Text="{Binding Source={s:StringResource RANKING_TOOLTIP_INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                             FontSize="20"/>

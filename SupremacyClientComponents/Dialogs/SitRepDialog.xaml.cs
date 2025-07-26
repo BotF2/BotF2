@@ -27,10 +27,12 @@ namespace Supremacy.Client.Dialogs
         private IEnumerable<SitRepEntry> _sitRepEntries;
         private string _previoussitRepCommentTextBox;
         private readonly IMusicPlayer _musicPlayer;
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly ISoundPlayer _soundPlayer;
-#pragma warning restore IDE0052 // Remove unread private members
 
+#pragma warning restore IDE0052 // Remove unread private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         public SitRepDialog([NotNull] IMusicPlayer musicPlayer,
             [NotNull] ISoundPlayer soundPlayer)
         {

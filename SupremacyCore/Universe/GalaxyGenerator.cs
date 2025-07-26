@@ -391,7 +391,7 @@ namespace Supremacy.Universe
                             Sector loc = GameContext.Current.Universe.Map[y, x];
                             if (!loc.Name.Contains("(") && !bool_output_done == true)  // emtpy sector are named e.g. (0,0)
                             {
-                                _text = "Step_1227:; MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType
+                                _text = "Step_1226:; MapContent for;" + y + ";" + x + ";" + loc.Name + " - " + loc.System.StarType
                                     + " - no more output or deactivate this line and the boolean"
                                     ;
                                 bool_output_done = true;
@@ -756,9 +756,9 @@ namespace Supremacy.Universe
             //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
+//#pragma warning disable IDE0051 // Remove unused private members
         private static void MAP_Load(string fileNameCanonMAP)
-#pragma warning restore IDE0051 // Remove unused private members
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             _loadedMapEntries.Clear();
 

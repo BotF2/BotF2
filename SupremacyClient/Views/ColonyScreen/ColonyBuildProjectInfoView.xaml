@@ -28,6 +28,10 @@
                     <ContentControl FontSize="12pt" Background="Black"
                           Style="{DynamicResource TechObjectInfoPanelStyle}">
                         <ContentControl.Content>
+                            <!-- by clicking an entry to the planetary build option list
+                            System.Windows.Data Error: 2 : Cannot find governing FrameworkElement or FrameworkContentElement for target element. BindingExpression:Path=(0); DataItem='ProductionFacilityBuildProject' (HashCode=2348991); target element is 'TechObjectDesignViewModel' (HashCode=36893205); target property is 'Design' (type 'TechObjectDesign')
+                            System.Windows.Data Error: 2 : Cannot find governing FrameworkElement or FrameworkContentElement for target element. BindingExpression:Path=(0); DataItem='ProductionFacilityBuildProject' (HashCode=2348991); target element is 'TechObjectDesignViewModel' (HashCode=36893205); target property is 'Location' (type 'Nullable`1')
+                            System.Windows.Data Error: 2 : Cannot find governing FrameworkElement or FrameworkContentElement for target element. BindingExpression:Path=(0); DataItem='ProductionFacilityBuildProject' (HashCode=2348991); target element is 'TechObjectDesignViewModel' (HashCode=36893205); target property is 'Civilization' (type 'Civilization')-->
                             <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildProject.BuildDesign)}"
                                              Location="{Binding Path=(s:BuildProject.Location)}"
                                              Civilization="{Binding Path=(s:BuildProject.Builder)}" />

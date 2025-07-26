@@ -62,7 +62,7 @@ namespace Supremacy.Collections
         private int _count;
 #pragma warning restore IDE0052 // Ungelesene private Member entfernen
 //#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
         //private bool _firstRun;
 
         public CollectionBase()
@@ -592,7 +592,7 @@ namespace Supremacy.Collections
 
             _items = reader.ReadList<T>();
 
-            //_text = "Reader_0801: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+            //_text = "Reader_0801: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + _newline;
             //Console.WriteLine(_text);
             //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
@@ -605,12 +605,12 @@ namespace Supremacy.Collections
                 )
             {
                 //BinaryWriter writer = new BinaryWriter(File.Open(_file, FileMode.Create));
-                _text = "Reader_0802: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+                _text = "Reader_0802: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + _newline;
                 for (int i = 0; i < _items.Count/*-1*/; i++)
                 {
                     //if (_firstRun == false)
                     //{
-                        //_text = "Reader_0803: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + newline;
+                        //_text = "Reader_0803: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + _newline;
                         //Console.WriteLine(_text);
                         //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     //writer.Write(_text);
@@ -621,7 +621,7 @@ namespace Supremacy.Collections
 
 
                     //works
-                    //_text = "Reader_0804: reader-item_" + i + ": " + _items[i].ToString() + newline;
+                    //_text = "Reader_0804: reader-item_" + i + ": " + _items[i].ToString() + _newline;
                     //Console.WriteLine(_text);
                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 

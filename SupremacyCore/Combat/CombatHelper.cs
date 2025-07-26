@@ -527,10 +527,10 @@ namespace Supremacy.Combat
 
             return new Civilization
             {
-                ShortName = "Only Return Fire",
-                CivID = 888, // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
-                Key = "Only Return Fire",
-                TargetCiv1Status = ""
+                ShortName = "Only Return Fire"
+                ,CivID = 888 // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
+                ,Key = "Only Return Fire"
+                //,TargetCiv1Status = ""
             };
         }
     }

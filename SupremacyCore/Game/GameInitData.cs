@@ -36,7 +36,7 @@ namespace Supremacy.Game
         private SlotStatus[] _slotStatus;
 
         private static string _text;
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
         //private int _count;
         #endregion
 
@@ -243,7 +243,7 @@ namespace Supremacy.Game
                 _localPlayerEmpireID = value;
                 OnPropertyChanged("LocalPlayerEmpireID");
                 GameLog.Core.General.InfoFormat("Step_0287: LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
-                _text += value + ";;LocalPlayerEmpireID;" + newline;
+                _text += value + ";;LocalPlayerEmpireID;" + _newline;
             }
         }
 
@@ -254,7 +254,7 @@ namespace Supremacy.Game
             {
                 _localPlayerName = value;
                 OnPropertyChanged("LocalPlayerName");
-                _text += value + ";;LocalPlayerName;" + newline;
+                _text += value + ";;LocalPlayerName;" + _newline;
             }
         }
 
@@ -269,7 +269,7 @@ namespace Supremacy.Game
                 //foreach (var item in _empireIDs)
                 //{
 
-                //    _loadGameText += value[_count] + ";;EmpireIDs;" +_count + newline;
+                //    _loadGameText += value[_count] + ";;EmpireIDs;" +_count + _newline;
                 //    _count += 1;
                 //}
                 
@@ -288,7 +288,7 @@ namespace Supremacy.Game
                 //_count = 0;
                 //foreach (var item in _empireNames)
                 //{
-                //    _loadGameText += value[_count] + ";;EmpireNames;" +_count + newline;
+                //    _loadGameText += value[_count] + ";;EmpireNames;" +_count + _newline;
                 //    _count += 1;
                 //}
                 //Console.WriteLine("Step 222: " + _loadGameText);
@@ -302,7 +302,7 @@ namespace Supremacy.Game
             {
                 _gameName = value;
                 OnPropertyChanged("GameName");
-                _text += value + ";;GameName;" + newline;
+                _text += value + ";;GameName;" + _newline;
             }
         }
 
@@ -314,8 +314,8 @@ namespace Supremacy.Game
                 _gameType = value;
                 OnPropertyChanged("GameType");
                 OnPropertyChanged("IsMultiplayerGame");
-                _text += value + ";;GameType" + newline;
-                _text += value + ";;IsMultiplayerGame" + newline;
+                _text += value + ";;GameType" + _newline;
+                _text += value + ";;IsMultiplayerGame" + _newline;
             }
         }
 
@@ -328,7 +328,7 @@ namespace Supremacy.Game
                 OnPropertyChanged("Options");
                 //foreach (var item in value)
                 //{
-                //    //_loadGameText += item.value + ";;Options:" + item + newline;
+                //    //_loadGameText += item.value + ";;Options:" + item + _newline;
                 _text = _options.ToString();
                 _text += "GameOptions are set...";
                 //}

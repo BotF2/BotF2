@@ -1241,7 +1241,7 @@ namespace Supremacy.Client.Views
             ;
             //if (_writeDirectly_Fleets) 
             Console.WriteLine(_text);
-            //_fleet_Text += newline + _text;
+            //_fleet_Text += _newline + _text;
 
             //GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() proposal turnSent ={0} tone ={1} recipient ={2} sender ={3} responce type = {4} proposal clause type ={5}"
             //    , response.Proposal.TurnSent

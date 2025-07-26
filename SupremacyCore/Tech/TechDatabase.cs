@@ -52,17 +52,15 @@ namespace Supremacy.Tech
         [NonSerialized]
         private Dictionary<string, int> _designIdMap;
         private static string _text;
-#pragma warning disable IDE0052 // Ungelesene private Member entfernen
-        private static string _maintText;
-        private static string _buildCostText;
-#pragma warning restore IDE0052 // Ungelesene private Member entfernen
 
-        private static bool maint_output_done;
-        private static bool _buildCostIgnored;
-        private static bool _buildCostShipsIgnored;
+        //private static string _maintText;
+        //private static string _buildCostText;
+        //private static bool _maint_output_done;
+        //private static bool _buildCostIgnored;
+        //private static bool _buildCostShipsIgnored;
         private static bool _buildCostTextOnlyOnce;
-        public static bool _checkForProblems = false;
-        private static readonly string newline = Environment.NewLine;
+        //public static bool _checkForProblems = false;
+        //private static readonly string _newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the <see cref="TechObjectDesign"/> with the specified design id.
@@ -196,10 +194,10 @@ namespace Supremacy.Tech
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
         public static TechDatabase Load()
         {
-
+            bool _checkForProblems = false;
 
             //_text = "Step_3018:; Loading Resources/Data/TechObjectDatabase.xml";
-            _text = "Step_3021:; Loading Resources/Data/TechObj_1_ProdFac.xml";
+            _text = "Step_3031:; Loading Resources/Data/TechObj_1_ProdFac.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -1202,6 +1200,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     file = pathOutputFile + "_TechObj-6-Ships_NAMES_List(autoCreated).csv";
+                    string _newline = Environment.NewLine;
 
                     if (file == null)
                     {
@@ -1225,7 +1224,7 @@ namespace Supremacy.Tech
                         _text = "";
                         foreach (KeyValuePair<string, int> _pair in item.PossibleNames)
                         {
-                            _text += item.Name + ";" + _pair.Key   + newline;
+                            _text += item.Name + ";" + _pair.Key   + _newline;
                         }
                         streamWriter.WriteLine(_text + "next");
                     }
@@ -1406,24 +1405,24 @@ namespace Supremacy.Tech
                              "ObsoletedItems" + item.Key + separator +
 
                              //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
-                             //"<ObsoletedItems> + newline + " +                 // not helpful
+                             //"<ObsoletedItems> + _newline + " +                 // not helpful
                              //"<ObsoletedItem></ObsoletedItem>" +// not helpful
-                             //" + newline + </ObsoletedItems>" +                 // not helpful
+                             //" + _newline + </ObsoletedItems>" +                 // not helpful
                              //separator +
 
                              //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
                              "UpgradeOptions" + item.Key + separator +
                             //item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
-                            //"<UpgradeOptions> + newline + " +                // not helpful
+                            //"<UpgradeOptions> + _newline + " +                // not helpful
                             //"<UpgradeOption></UpgradeOption> + " +// not helpful
                             //separator +
 
 
 
                             // Possibles ShipNames
-                            //"<ShipNames> + newline + " +                // not helpful
+                            //"<ShipNames> + _newline + " +                // not helpful
                             //"<ShipName></ShipName>" +// not helpful
-                            //" + newline + </ShipNames>" +                 // not helpful
+                            //" + _newline + </ShipNames>" +                 // not helpful
                             "PossibleShipNames" + item.Key
                             ;
 
@@ -1629,24 +1628,24 @@ namespace Supremacy.Tech
                         // "ObsoletedItems" + item.Key + separator +
 
                         // //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
-                        // //"<ObsoletedItems> + newline + " +                 // not helpful
+                        // //"<ObsoletedItems> + _newline + " +                 // not helpful
                         // //"<ObsoletedItem></ObsoletedItem>" +// not helpful
-                        // //" + newline + </ObsoletedItems>" +                 // not helpful
+                        // //" + _newline + </ObsoletedItems>" +                 // not helpful
                         // //separator +
 
                         // //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
                         // "UpgradeOptions" + item.Key + separator +
                         ////item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
-                        ////"<UpgradeOptions> + newline + " +                // not helpful
+                        ////"<UpgradeOptions> + _newline + " +                // not helpful
                         ////"<UpgradeOption></UpgradeOption> + " +// not helpful
                         ////separator +
 
 
 
                         //// Possibles ShipNames
-                        ////"<ShipNames> + newline + " +                // not helpful
+                        ////"<ShipNames> + _newline + " +                // not helpful
                         ////"<ShipName></ShipName>" +// not helpful
-                        ////" + newline + </ShipNames>" +                 // not helpful
+                        ////" + _newline + </ShipNames>" +                 // not helpful
                         //"PossibleShipNames" + item.Key
                         ;
 
@@ -2206,6 +2205,10 @@ namespace Supremacy.Tech
             //int _techLevel = 1;
             //int _weapon2 = 0;
             int _buildCostsFromFile = pf.BuildCost;
+            string _buildCostText = "";
+            string _newline = Environment.NewLine;
+            bool _buildCostIgnored = false;
+            //bool _buildCostTextOnlyOnce = false;  // not here
             //if (pf.PrimaryWeapon != null)
             //{
             //    _weapon1 = pf.PrimaryWeapon.Count * pf.PrimaryWeapon.Damage / 4;
@@ -2252,7 +2255,7 @@ namespace Supremacy.Tech
                 //+ "; Cr= " + pf.CrewSize
 
                 ;
-            _buildCostText += newline + _text;
+            _buildCostText += _newline + _text;
 
             if (_buildCostTextOnlyOnce == false)
             {
@@ -2285,6 +2288,11 @@ namespace Supremacy.Tech
             int _weapon1 = 0;
             int _weapon2 = 0;
             int _buildCostsFromFile = ship.BuildCost;
+            string _buildCostText = "";
+            string _newline = Environment.NewLine;
+            bool _buildCostShipsIgnored = false;
+            bool _buildCostTextOnlyOnce = false;
+
             if (ship.PrimaryWeapon != null)
             {
                 _weapon1 = ship.PrimaryWeapon.Count * ship.PrimaryWeapon.Damage / 4;
@@ -2321,7 +2329,7 @@ namespace Supremacy.Tech
                 + "; Cr= " + ship.CrewSize
 
                 ;
-            _buildCostText += newline + _text;
+            _buildCostText += _newline + _text;
 
             if (_buildCostTextOnlyOnce == false)
             {
@@ -2348,6 +2356,7 @@ namespace Supremacy.Tech
             int _weapon1 = 0;
             int _weapon2 = 0;
             int _maintFromFile = ship.MaintenanceCost;
+            bool _maint_output_done = false;
 
             if (ship.PrimaryWeapon != null)
             {
@@ -2366,7 +2375,7 @@ namespace Supremacy.Tech
 
 
 
-            if (!maint_output_done)
+            if (!_maint_output_done)
             {
                 _text = "Step_3200:; Maint old:";
                 Console.WriteLine(_text);
@@ -2388,11 +2397,11 @@ namespace Supremacy.Tech
                     + "; Cr= " + ship.CrewSize / 30
                     + " - no more output or deactivate this line and the boolean"
                     ;
-                maint_output_done = true;
+                _maint_output_done = true;
                 Console.WriteLine(_text);
 
-                _maintText += newline + _text;
-                //GameLog.Core.Production.DebugFormat(_maintText);
+                //string _maintText += _newline + _text;
+                //GameLog.Core.Production.DebugFormat(_newline + _text);
             }
 
             ship.MaintenanceCost = _maint;

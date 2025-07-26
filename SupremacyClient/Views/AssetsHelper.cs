@@ -7,18 +7,7 @@ namespace Supremacy.Intelligence
 {
     public static class AssetsHelper
     {
-        //public static Civilization NewSpyCiv
-        //{
-        //    get { return IntelHelper.NewSpyCiv; }
-        //}
-        //public static Civilization NewTargetCiv
-        //{
-        //    get {return IntelHelper.NewTargetCiv; }
-        //}
-        //public static UniverseObjectList<Colony> NewSpiedColonies
-        //{
-        //    get { return IntelHelper.NewSpiedColonies; }
-        //}
+
         public static Civilization Civ0 => GameContext.Current.CivilizationManagers[0].Civilization;
         public static Civilization Civ1 => GameContext.Current.CivilizationManagers[1].Civilization;
         public static Civilization Civ2 => GameContext.Current.CivilizationManagers[2].Civilization;

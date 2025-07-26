@@ -41,7 +41,7 @@ namespace Supremacy.Economy
     {
         public const int MaxPriority = byte.MaxValue;
         public const int MinPriority = byte.MinValue;
-
+        private readonly string _locationString;
         private readonly int _productionCenterId;
 
         private int _buildTypeId;
@@ -83,6 +83,7 @@ namespace Supremacy.Economy
             _ownerId = owner.CivID;
             _buildTypeId = buildType.DesignID;
             _location = productionCenter.Location;
+            _locationString = GameEngine.LocationString(_location.ToString());
             _productionCenterId = productionCenter.ObjectID;
             _resourcesInvested = new ResourceValueCollection();
         }
@@ -209,7 +210,7 @@ namespace Supremacy.Economy
 
                     if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
                     {
-                        _text = _location + " > " + BuildDesign + " not complete... " + PercentComplete.ToString() + " done";
+                        _text = _locationString + " > " + BuildDesign + " not complete... " + PercentComplete.ToString() + " done";
                         civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Gray));
                         //GameLog.Core.Stations.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
                         //BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
@@ -226,14 +227,20 @@ namespace Supremacy.Economy
                     return false;
                 }
 
-                foreach (ResourceType resource in EnumUtilities.GetValues<ResourceType>())
+                foreach (ResourceType _resource in EnumUtilities.GetValues<ResourceType>())
                 {
-                    if (_resourcesInvested[resource] < ResourcesRequired[resource])
+                    if (_resourcesInvested[_resource] < ResourcesRequired[_resource])
                     {
-                        GameLog.Core.ProductionDetails.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
-                            BuildDesign, _location, resource);
+                        _text = "Step_8555:; " + _locationString
+                            + " > " + BuildDesign
+                            + " not complete - insufficient " + _resource + " invested, but no checking whether enough resources there "
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Core.ProductionDetails.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
+                        //    BuildDesign, _location, _resource);
 
-                        GameLog.Core.ProductionDetails.DebugFormat("not checking whether enough resources there");
+                        //GameLog.Core.ProductionDetails.DebugFormat("not checking whether enough resources there");
+
                         return true;  // cheating
 
                         //return false;
@@ -444,7 +451,7 @@ namespace Supremacy.Economy
             //this.ProductionCenter.Location.
             //Colony colony = GameContext.Current.Universe.Get<Colony>(ProductionCenter.)
             //Colony colony2 = GameContext.Current.Universe.FindObjectIDs<Colony>.FirstOrDefault();
-                //Objects.GetType..Where(o => o.Location == ProductionCenter.Location && o.);
+            //Objects.GetType..Where(o => o.Location == ProductionCenter.Location && o.);
 
 
             //if(BuildDesign == StationDes)
@@ -474,26 +481,30 @@ namespace Supremacy.Economy
                     newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
                     //newEntry = new ReportEntry_ShowColony(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
 
-                    _text = "Step_4283:; "+Location+"; Turn " + GameContext.Current.TurnNumber
-                        + ": " + Builder
+                    _text = "Step_4283:; " + GameEngine.LocationString(Location.ToString()) 
+                        + " ; " + Builder
+                        + "; Turn " + GameContext.Current.TurnNumber
+                        //+ ": " + Builder
                         + " built > " + BuildDesign + " (spawned)"
                         ;
                     Console.WriteLine(_text);
                     //GameLog.Core.Production.DebugFormat(_text);
                 }
             }
-            
+
             if (newEntry == null)
             {
-                _text = "Turn " + GameContext.Current.TurnNumber
-                    + ": " + Builder
-                    + " built at " + Location + " > " + BuildDesign
+                _text = GameEngine.LocationString(Location.ToString()) 
+                    //+ " " + Builder.
+                    + " > " + Builder
+                    + " built " + " > " + BuildDesign
+                    + " in Turn " + GameContext.Current.TurnNumber
                     ;
 
                 newEntry = new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green);
                 //newEntry = new ReportEntry_ShowColony(this.ProductionCenter., BuildDesign, Location, SitRepPriority.Green);
 
-                _text = "Step_4286:; " + _text;
+                _text = "Step_4287:; " + _text;
                 Console.WriteLine(_text);
                 //GameLog.Core.Production.DebugFormat(_text);
             }
@@ -582,8 +593,7 @@ namespace Supremacy.Economy
 
         protected virtual void AdvanceOverride(ref int industry, ResourceValueCollection resources)
         {
-
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[6];  // ToDo - not always Borg
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder.CivID];
             Civilization civ = civManager.Civilization;
             int timeEstimate = GetTimeEstimate();
             if (timeEstimate <= 0)
@@ -627,15 +637,17 @@ namespace Supremacy.Economy
                     SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
 
                     _text = "Turn " + GameContext.Current.TurnNumber
-                        + ": Estimated One Turn: resource= " + resource.ToString()
+                        + ": Estimated One Turn: _resource= " + resource.ToString()
                         + ", delta/missing= " + delta.ToString()
-                        + " for " + BuildDesign.Description
+                        + " for " + BuildDesign.Key
                         ;
-                    Console.WriteLine(_text);
+                    Console.WriteLine("Step_4733:; " + _text + " (SR)");
                     //GameLog.Core.Test.DebugFormat(_text);
 
+                    //Debugger.Break();
+
                     civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
-                    //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
+                    //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
 
                     deltaIndustry -= delta;
                 }
@@ -643,33 +655,64 @@ namespace Supremacy.Economy
                 if (timeEstimate == 2)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    _text = "Step_4282:; Turn " + GameContext.Current.TurnNumber
-                        + ": " + GameEngine.LocationString(Location.ToString())
+                    _text = "Step_4282:; "
+                        /*+ ": "*/ + GameEngine.LocationString(Location.ToString())
+                        + " > Turn " + GameContext.Current.TurnNumber
                         + " > Estimated One Turn... for " + BuildDesign
                         ;
-                        //+ " by " + Builder
-                        //+ " at " + Location
-                        //;
-                    //GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
-                    //    , resource.ToString(), delta.ToString(), BuildDesign, GameContext.Current.TurnNumber);
+                    //+ " by " + Builder
+                    //+ " at " + Location
+                    //;
+                    //GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn... checking for resources: _resource = {0}, delta/needed for finish = {1} for {2}"
+                    //    , _resource.ToString(), delta.ToString(), BuildDesign, GameContext.Current.TurnNumber);
                     Console.WriteLine(_text);
                     //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
                     if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
                     {
-                        _text = "Step_4284:; Turn " + GameContext.Current.TurnNumber
-                            + ": Estimated One Turn: resource= " + resource.ToString()
+                        _text = /*"Step_4284:; "*/ 
+                            /*+ ":  + "*/GameEngine.LocationString(Location.ToString())
+                            + " > Turn " + GameContext.Current.TurnNumber
+                            + " > Estimated One Turn: _resource= " + resource.ToString()
                             + ", delta/missing= " + delta.ToString()
-                            + " for " + BuildDesign.Description
+                            + " for " + BuildDesign.Key
                             ;
-                        Console.WriteLine(_text);
-                        GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}, too less available !!!", resource.ToString(), delta);
+                        Console.WriteLine("Step_4284:; " + _text + " (SR)");
+                        //GameLog.Core.Test.DebugFormat("Step_4286:; _resource = {0}, delta/missing = {1}, too less available !!!", _resource.ToString(), delta);
                         civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
-                        //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), BuildDesign.Description));
-
+                        //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
                     }
                     //deltaIndustry -= delta;
 
+                    if (delta > 0 && resource == ResourceType.Deuterium && delta > civManager.Resources.Deuterium.CurrentValue)
+                    {
+                        _text = "Step_4287:; "
+                            /*+ ": "*/ + GameEngine.LocationString(Location.ToString())
+                            + " > Turn " + GameContext.Current.TurnNumber
+                            + " > Estimated One Turn: _resource= " + resource.ToString()
+                            + ", delta/missing= " + delta.ToString()
+                            + " for " + BuildDesign.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Core.Test.DebugFormat("Step_4286:; _resource = {0}, delta/missing = {1}, too less available !!!", _resource.ToString(), delta);
+                        civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+                        //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
+                    }
+
+                    if (delta > 0 && resource == ResourceType.Dilithium && delta > civManager.Resources.Duranium.CurrentValue)
+                    {
+                        _text = "Step_4288:; "
+                            /*+ ": "*/ + GameEngine.LocationString(Location.ToString())
+                            + " > Turn " + GameContext.Current.TurnNumber
+                            + " > Estimated One Turn: _resource= " + resource.ToString()
+                            + ", delta/missing= " + delta.ToString()
+                            + " for " + BuildDesign.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Core.Test.DebugFormat("Step_4286:; _resource = {0}, delta/missing = {1}, too less available !!!", _resource.ToString(), delta);
+                        civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+                        //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
+                    }
 
                 }
 
@@ -687,7 +730,7 @@ namespace Supremacy.Economy
                 _resourcesInvested[resource] += delta;
 
                 //if (delta > 0)
-                //GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}", resource.ToString(), delta);
+                //GameLog.Core.Test.DebugFormat("_resource = {0}, delta/missing = {1}", _resource.ToString(), delta);
 
                 //if (timeEstimate == 1)
                 //{
@@ -753,9 +796,9 @@ namespace Supremacy.Economy
         protected virtual void ApplyIndustry(int industry) { }
 
         /// <summary>
-        /// Applies the specified amount of a given resource to this <see cref="BuildProject"/>.
+        /// Applies the specified amount of a given _resource to this <see cref="BuildProject"/>.
         /// </summary>
-        /// <param name="resource">The type of resource.</param>
+        /// <param name="resource">The type of _resource.</param>
         /// <param name="amount">The amount to apply.</param>
         protected virtual void ApplyResource(ResourceType resource, int amount) { }
 

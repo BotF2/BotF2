@@ -104,6 +104,10 @@ namespace Supremacy.Universe
         public void Clear()
         {
             _path.Clear();
+            if (_waypoints.Count > 0)
+            {
+                _waypoints.Clear();
+            }
         }
 
         /// <summary>

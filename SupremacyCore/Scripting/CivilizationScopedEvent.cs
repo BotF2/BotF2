@@ -46,7 +46,7 @@ namespace Supremacy.Scripting
 
         protected IKeyedCollection<int, CivTargetHistoryEntry> CivilizationTargetHistory => _civilizationTargetHistory;
 
-        protected virtual bool CanTargetCivilization([NotNull] Civilization civ)
+        protected virtual bool CanTargetEventCivilization([NotNull] Civilization civ)
         {
             if (civ == null)
             {

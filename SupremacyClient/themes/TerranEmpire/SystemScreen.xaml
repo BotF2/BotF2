@@ -84,9 +84,7 @@
                     Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
 
                 <Button Grid.Column="4" Margin="3,0,0,0" Style="{StaticResource LCARS_BorderButtonStyle}"
-                     
-                   
-                    Content=">"
+                    Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
                     Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
 
                 <Rectangle Grid.Column="5" Margin="4,0,0,0" Width="14" SnapsToDevicePixels="True"

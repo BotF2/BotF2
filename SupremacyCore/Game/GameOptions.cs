@@ -190,7 +190,7 @@ namespace Supremacy.Game
     [Serializable]
     public sealed class GameOptions : ICloneable
     {
-        private string newline = Environment.NewLine;
+        private string _newline = Environment.NewLine;
         #region Constructors
         public GameOptions()
         {
@@ -534,7 +534,7 @@ namespace Supremacy.Game
             if (everySingleLine) Console.WriteLine(_readingText);
 
 
-            //_readingText += newline;
+            //_readingText += _newline;
             _readingText += "Step_4031:";
 
             GalaxyShape = (GalaxyShape)reader.ReadByte(); 
@@ -565,7 +565,7 @@ namespace Supremacy.Game
             _readingText += "; StartingTechLevel=" + StartingTechLevel; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
-            _readingText += newline + "Step_4032:";
+            _readingText += _newline + "Step_4032:";
 
 
             FederationPlayable = (EmpirePlayable)reader.ReadByte();
@@ -597,7 +597,7 @@ namespace Supremacy.Game
             if (everySingleLine) Console.WriteLine(_readingText);
 
 
-            //_readingText += newline + "Step_4033:"; ;
+            //_readingText += _newline + "Step_4033:"; ;
 
             FederationModifier = (EmpireModifier)reader.ReadInt32();
             //_readingText += "; Modifier: Federation=" + FederationModifier; 
@@ -628,7 +628,7 @@ namespace Supremacy.Game
             if (everySingleLine) Console.WriteLine(_readingText);
 
 
-            //_readingText += newline + "Step_4034:"; ;
+            //_readingText += _newline + "Step_4034:"; ;
 
 
             EmpireModifierRecurringBalancing = (EmpireModifierRecurringBalancing)reader.ReadByte();

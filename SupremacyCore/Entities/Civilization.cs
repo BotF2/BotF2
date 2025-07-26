@@ -111,7 +111,7 @@ namespace Supremacy.Entities
         private readonly int _baseMoraleLevel = 100;
         private readonly int _moraleDriftRate = 1;
         private List<Civilization> _spiedCivList;
-        private Civilization _targetCivilization;
+        //private Civilization _assault_targetCiv; // now in CivManager
         private bool _inTransit;
 
         #endregion
@@ -212,7 +212,7 @@ namespace Supremacy.Entities
             _traits = (string)element.Element(ns + "Traits");
             _traits = _traits.Trim();
             _spiedCivList = SpiedCivList;
-            _targetCivilization = TargetCivilization;
+
 
             if (_traits.Contains("Warlike")) _baseMoraleLevel -= 2;
             if (_traits.Contains("Peaceful")) _baseMoraleLevel += 2;
@@ -511,20 +511,9 @@ namespace Supremacy.Entities
         /// <value>The tech curve.</value>
         public string Traits => _traits;
 
-        /// <summary>
-        /// Gets the <see cref="Civilization"/> this <see cref="Civilization"/>
-        /// is at in Total War with
-        /// </summary>
-        /// <value>The tech curve.</value>
-        public Civilization TargetCivilization
-        {
-            get => _targetCivilization;
-            set { if (_targetCivilization == null) { _targetCivilization = value; } }
-        }
+        //public string TargetCiv1Status = "";
 
-        public string TargetCiv1Status = "";
-
-        public string TargetCiv2Status = "";
+        //public string TargetCiv2Status = "";
 
         /// <summary>
         /// Gets the <see cref="bool"/> this civ AI attacking fleet on the move />        

@@ -55,7 +55,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                string _text = "HasDuraniumShortage on StationBuildProject... "
+                string _text = "Step_6655:; HasDuraniumShortage on StationBuildProject... "
                     + StationDesign.Description
                     + " at " + _productionCenterId
 

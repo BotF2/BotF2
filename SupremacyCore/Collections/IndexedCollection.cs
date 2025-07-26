@@ -22,6 +22,7 @@ using Supremacy.Annotations;
 
 using E = System.Linq.Expressions.Expression;
 using Supremacy.Utility;
+using System.Diagnostics;
 
 namespace Supremacy.Collections
 {
@@ -993,17 +994,17 @@ namespace Supremacy.Collections
             return outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer<TKey>.Default);
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
+//#pragma warning disable IDE0051 // Remove unused private members
         private static bool HasIndexablePropertyOnLeft<T>(E leftSide, IndexedCollection<T> sourceCollection)
-#pragma warning restore IDE0051 // Remove unused private members
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             return leftSide.NodeType == ExpressionType.MemberAccess
                     && sourceCollection.PropertyHasIndex(((MemberExpression)leftSide).Member.Name);
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
+//#pragma warning disable IDE0051 // Remove unused private members
         private static int? GetHashRight<T>(IndexedCollection<T> sourceCollection, E leftSide, E rightSide)
-#pragma warning restore IDE0051 // Remove unused private members
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             //rightside is where we get our hash...
             switch (rightSide.NodeType)
@@ -1121,11 +1122,23 @@ namespace Supremacy.Collections
                 //}
                 //if (noIndex) //no index?  just do it the normal slow way then...
                 //{
+
+                //try can't be done here 
+                //try { 
+
                     IEnumerable<TSource> sourceEnum = sourceCollection.AsEnumerable();
                     foreach (TSource resultItem in sourceEnum.Where(expr.Compile()))
                     {
                         yield return resultItem;
                     }
+                //}
+                //catch
+                //{
+                //    Debugger.Break();
+                //    //return null;
+                //}
+
+                
                 //}
             }
         }

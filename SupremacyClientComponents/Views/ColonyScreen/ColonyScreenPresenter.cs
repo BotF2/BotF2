@@ -854,7 +854,7 @@ namespace Supremacy.Client.Views
             Colony selectedColony = Model.SelectedColony;
             if (selectedColony == null)
             {
-                Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
+                Model.SelectedColony = AppContext.LocalPlayerEmpire.HomeColony;
             }
 
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
@@ -962,7 +962,7 @@ namespace Supremacy.Client.Views
                     + "; civMan.Credits.CurrentValue=" + civMan.Credits.CurrentValue
                     + " "
                     ;
-                Console.WriteLine("Step_1213:; " + _text);
+                Console.WriteLine("Step_1212:; " + _text);
                 return false;
             }
 
@@ -1077,7 +1077,7 @@ namespace Supremacy.Client.Views
             AddProjectToBuildQueue(project, colony.Shipyard);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void ExecuteAddOneMoreToShipyardBuildQueueCommand(BuildProject project)
         {
             Colony colony = Model.SelectedColony;

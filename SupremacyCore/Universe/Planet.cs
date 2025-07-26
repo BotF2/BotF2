@@ -39,8 +39,8 @@ namespace Supremacy.Universe
         private PlanetBonus _bonuses;
         private BitVector32 _data;
         private string _name;
-        private string _text;
-        private readonly string newline = Environment.NewLine;
+        //private string _text;
+        //private readonly /*string _newline = Environment.NewLine;*/
         #endregion
 
         #region Constructors
@@ -211,8 +211,8 @@ namespace Supremacy.Universe
         /// <returns>The environment.</returns>
         public PlanetEnvironment GetEnvironment(PlanetType homePlanetType)
         {
-            _text = "";
-            _text = _text + _text + newline;  // dummy - do not remove
+            //string _text = "";
+            //_text = _text + _text + _newline;  // dummy - do not remove
 
             switch (PlanetType)
             {
@@ -317,7 +317,7 @@ namespace Supremacy.Universe
                 GameLog.Client.GalaxyGenerator.ErrorFormat("Generated at HomeSystem with 99 Population due to avoid crash > GetMaxPopulation");
                 GameLog.Client.GalaxyGenerator.ErrorFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
             }
-            //_text = /*newline + */"GetMaxPopulation by homePlanetType " + homePlanetType.ToString() + " > " + maxPop;
+            //_text = /*_newline + */"GetMaxPopulation by homePlanetType " + homePlanetType.ToString() + " > " + maxPop;
             ////Console.WriteLine(_text);
             //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
 
@@ -335,7 +335,7 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(Race race)
         {
-            _text = "GetMaxPopulation by race " + race.Key;
+            string _text = "GetMaxPopulation by race " + race.Key;
             //Console.WriteLine(_text);
             //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
 

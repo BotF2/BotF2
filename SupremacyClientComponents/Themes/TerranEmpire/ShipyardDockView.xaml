@@ -62,12 +62,14 @@
                        Height="50"
                        Source="vfs:///Resources/Specific_Empires_UI/Federation/ColonyScreen/build_ship.png" Stretch="UniformToFill"
                        HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                  
+                           <!--Text="{Binding Path=(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipBuildProject.IndustryCapacity)}"--><!--                   
                 <TextBlock x:Name="BuildCapacity"
-                           Text="{Binding Path=(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipBuildProject.IndustryCapacity)}" 
+                           Text=""
                            Foreground="White"
                            FontWeight="SemiBold"
                            Margin="3,0,3,0"
-                           HorizontalAlignment="Center" FontSize="10" />                  
+                           HorizontalAlignment="Center" FontSize="10" />-->                  
                 <TextBlock x:Name="Build"
                            Text="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_TOOLTIP}" 
                            Foreground="LightGreen"

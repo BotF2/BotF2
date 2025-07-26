@@ -72,7 +72,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
@@ -110,7 +110,7 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     int population = target.Population.CurrentValue;
 
@@ -124,9 +124,9 @@ namespace Supremacy.Scripting.Events
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
 
-                        //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                        //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
                         //civManager?.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
-                        CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                        CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                         _text = target.Location + " " + target.Name + " > ";
                         civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target

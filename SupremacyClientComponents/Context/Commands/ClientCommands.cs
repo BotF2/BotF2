@@ -1,4 +1,4 @@
-// ClientCommands.cs
+// File:ClientCommands.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -8,7 +8,6 @@
 // All other rights reserved.
 
 using System.Windows.Input;
-
 using Microsoft.Practices.Composite.Presentation.Commands;
 
 namespace Supremacy.Client.Commands
@@ -124,7 +123,6 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand Hotkey_Alt_Y = new CompositeCommand(true);
         public static readonly CompositeCommand Hotkey_Alt_Z = new CompositeCommand(true);
 
-        //public static readonly CompositeCommand FakeCommand = new CompositeCommand(true);
         public static readonly CompositeCommand LogTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ErrorTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ShowSettingsFileCommand = new CompositeCommand(true);
@@ -146,7 +144,6 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand CancelCommand = new CompositeCommand(true);
         public static readonly CompositeCommand EndTurn = new CompositeCommand(true);
         public static readonly CompositeCommand ShowEndOfTurnSummary = new CompositeCommand(true);
-        //public static readonly CompositeCommand ShowShipOverview = new CompositeCommand(true);
         public static readonly CompositeCommand SendChatMessage = new CompositeCommand(true);
         public static readonly CompositeCommand EndGame = new CompositeCommand(true);
         public static readonly CompositeCommand Exit = new CompositeCommand(false);

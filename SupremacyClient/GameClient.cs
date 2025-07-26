@@ -186,6 +186,7 @@ namespace Supremacy.Client
             _ = Observable.ToAsync(
                 () => ClientEvents.ServerHeartbeat.Publish(ClientEventArgs.Default),
                 _scheduler)();
+            //Console.WriteLine("Step_7897:; Ping at " + DateTime.Now);
         }
 
         public void NotifyCombatUpdate(CombatUpdate update)

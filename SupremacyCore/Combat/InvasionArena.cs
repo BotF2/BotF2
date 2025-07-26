@@ -798,7 +798,7 @@ namespace Supremacy.Combat
 
             if (orders.InvasionID != _invasionArena.InvasionID)
             {
-                Console.WriteLine("ERROR xxxxx Orders for " + orders.InvasionID + " submitted for a different invasion " + _invasionArena.InvasionID);
+                Console.WriteLine("Step_8743:; Error: Orders for " + orders.InvasionID + " submitted for a different invasion " + _invasionArena.InvasionID);
                 //throw new ArgumentException("Orders submitted for a different invasion.", nameof(orders));
             }
 
@@ -816,7 +816,8 @@ namespace Supremacy.Combat
 
                 if (!_invasionArena.HasAttackingUnits)
                 {
-                    throw new InvalidOperationException("Cannot give order to attack orbital defenses because no combat-capable attacking units remain.");
+                    Console.WriteLine("Step_8747:; Error: Orders for " + orders.InvasionID + " submitted but no remaining attacking units at InvasionID " + _invasionArena.InvasionID);
+                    //throw new InvalidOperationException("Cannot give order to attack orbital defenses because no combat-capable attacking units remain.");
                 }
             }
 

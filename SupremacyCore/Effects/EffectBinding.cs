@@ -147,10 +147,13 @@ namespace Supremacy.Effects
                     return;
                 }
 
-                GameLog.Core.General.DebugFormat(
-                    "Attaching effect to object {{{0}}}: {1}",
-                    Target,
-                    Description);
+                _text = "Step_2468:; EffectBinding.Attach to object= " + Target + "; Description= ; " + Description;
+                Console.WriteLine(_text);
+                //GameLog.Core.General.DebugFormat(_text);
+                //GameLog.Core.General.DebugFormat(
+                //    "Attaching effect to object {{{0}}}: {1}",
+                //    Target,
+                //    Description);
 
                 try
                 {
@@ -242,6 +245,7 @@ namespace Supremacy.Effects
 
         [field: NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
+        private string _text;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {

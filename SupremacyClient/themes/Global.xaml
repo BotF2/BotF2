@@ -24,6 +24,7 @@
     <ObjectDataProvider x:Key="Settings" ObjectInstance="{x:Static propeties:Settings.Default}" />
 
     <Cursor x:Key="DefaultCursor"> vfs:///Resources/Images/UI/Shell/cursor.cur</Cursor>
+    <!--<Cursor x:Key="DefaultCursor">pack://application:,,,/Resources/Images/UI/Shell/cursor.cur</Cursor>-->
 
     <!--
     ###### BUTTONS ######
@@ -2987,7 +2988,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ContentControl}">
                     <Border Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
-                  CornerRadius="14">
+                            CornerRadius="14">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />

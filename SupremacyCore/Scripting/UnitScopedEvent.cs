@@ -80,7 +80,7 @@ namespace Supremacy.Scripting
             }
 
             Civilization owner = unit.Owner;
-            if (owner != null && !CanTargetCivilization(owner))
+            if (owner != null && !CanTargetEventCivilization(owner))
             {
                 return false;
             }

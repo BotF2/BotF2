@@ -8,7 +8,7 @@
 // All other rights reserved.
 
 using System;
-
+using System.Diagnostics;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
@@ -53,7 +53,17 @@ namespace Supremacy.Tech
         /// <value>The name.</value>
         public override string Name
         {
-            get => base.Name ?? (Design?.Name);
+            get
+            {
+                string v = base.Name ?? (Design?.Name);
+                if (v == null) 
+                { 
+                    v = "MissingName";
+                }
+                ;
+                return v;
+            }
+
             set => base.Name = value;
         }
 
@@ -67,10 +77,10 @@ namespace Supremacy.Tech
             {
                 try
                 {
+                    //_text = "Step_0256:; working on _designId= " + _designId;
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.General.DebugFormat(_text);
 
-                    //GameLog.Core.General.DebugFormat("working on design ID {0}"
-                    //    , _designId
-                    //    );
                     if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
                     {
                         return GameContext.Current.TechDatabase[_designId];
@@ -81,18 +91,33 @@ namespace Supremacy.Tech
                         //    , Design.Name                     
                         //    , _designId
                         //    );
-                        _text = "Step_2050:; " 
-                            + "### Problem on Design name" + Design.Name
-                            + " designId" + _designId
+
+                        // is this causing the stack overflow ? > should not
+
+                        // at start TechDatabase is simply not loaded yet
+                        
+                        _text = "Step_2051:; "
+                            + "### Problem on Design name" //+ Design.Name
+                            + " designId= " + _designId + " ( > mostly Shipyards due to missing TechDatabase ?)"
                             ;
-                        Console.WriteLine(_text);
-                        GameLog.Client.GameData.DebugFormat(_text);
+                        //Console.WriteLine(_text);
+
+                        //Debugger.Break();
+                        
+                        //GameLog.Client.GameData.ErrorFormat(_text);
                         return null;
                     }
 
                 }
                 catch (Exception e)
                 {
+                    Debugger.Break();
+                    _text = "Step_2053:; "
+                        + "### Problem on Design name" + Design.Name
+                        + " designId" + _designId
+                        + " > " + e.ToString()
+                        ;
+                    Console.WriteLine(_text);
                     GameLog.Core.General.Error(string.Format("### Problem on Design name {0} design ID {1}"
                         , Design.Name
                         , _designId

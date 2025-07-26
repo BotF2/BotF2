@@ -70,7 +70,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
@@ -101,7 +101,7 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     int population = target.Population.CurrentValue;
                     int health = target.Health.CurrentValue;
@@ -150,10 +150,10 @@ namespace Supremacy.Scripting.Events
                     }
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
-                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
                     //civManager?.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
                     civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target

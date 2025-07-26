@@ -43,7 +43,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _f07_ScreenCommand;
         private readonly DelegateCommand<object> _f06_ScreenCommand;
         [NonSerialized]
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
         private readonly string _text;
         private string restriction_text;
         private string _ownerText;
@@ -214,12 +214,12 @@ namespace Supremacy.Client.Views
 
             SectorMap map = _appContext.CurrentGame.Universe.Map;
 
-            string _text = timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + newline;
+            string _text = timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + _newline;
             _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   "
-                + newline
-                + newline
-                + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline
-                + newline
+                + _newline
+                + _newline
+                + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline
+                + _newline
                 ;
             int yhalf = map.Height / 2;
             int xhalf = map.Width / 2;
@@ -228,7 +228,7 @@ namespace Supremacy.Client.Views
             {
                 if (y < 10) _text += " ";  // 1 to 9 getting a blank before
 
-                if (y == yhalf) _text += "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline;
+                if (y == yhalf) _text += "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline;
                 _text += y + ":  ";
                 for (int x = 0; x < map.Width; x++)
                 {
@@ -254,36 +254,36 @@ namespace Supremacy.Client.Views
                     _text += owner + type + " ";
                     //if (writeDirectly) Console.WriteLine(_text);
                 }
-                _text += newline;
+                _text += _newline;
                 //if (writeDirectly) Console.WriteLine(_text);
             }
 
             _text +=
-                newline + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + newline
-                + newline
-                + "1st character:                                     2nd character: StarSystem" + newline
-                + "   0 = Federation                                     B = Blue star" + newline//" + newline
-                + "   1 = Terrans                                        O = Orange star" + newline//" + newline
-                + "   2 = Romulans                                       N = Nebula" + newline//" + newline
-                + "   3 = Klingons                                       R = Red star" + newline//" + newline
-                + "   4 = Cardassian                                     Y = Yellow star" + newline//" + newline
-                + "   5 = Dominion                                       W = White star" + newline//" + newline
-                + "   6 = Borg                                           B = Blue star" + newline//" + newline
-                + newline /*+ newline*/
-                + "   M = Minor                                          b = black hole" + newline
-                + "                                                      n = Neutron star" + newline
-                + "                                                      Q = Quasar" + newline
-                + "                                                      r = Radio Pulsar" + newline
-                + "                                                      w = worm hole" + newline
-                + "                                                      x = x-ray Pulsar" + newline
-                //+ "2nd character: StarSystem" + newline
-                //+ "   B = Blue star" + newline
-                //+ "   O = Orange star" + newline
-                //+ "   N = Nebula" + newline
-                //+ "   R = Red star" + newline
-                //+ "   Y = Yellow star" + newline
-                //+ "   W = White star" + newline
-                //+ newline
+                _newline + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline
+                + _newline
+                + "1st character:                                     2nd character: StarSystem" + _newline
+                + "   0 = Federation                                     B = Blue star" + _newline//" + _newline
+                + "   1 = Terrans                                        O = Orange star" + _newline//" + _newline
+                + "   2 = Romulans                                       N = Nebula" + _newline//" + _newline
+                + "   3 = Klingons                                       R = Red star" + _newline//" + _newline
+                + "   4 = Cardassian                                     Y = Yellow star" + _newline//" + _newline
+                + "   5 = Dominion                                       W = White star" + _newline//" + _newline
+                + "   6 = Borg                                           B = Blue star" + _newline//" + _newline
+                + _newline /*+ _newline*/
+                + "   M = Minor                                          b = black hole" + _newline
+                + "                                                      n = Neutron star" + _newline
+                + "                                                      Q = Quasar" + _newline
+                + "                                                      r = Radio Pulsar" + _newline
+                + "                                                      w = worm hole" + _newline
+                + "                                                      x = x-ray Pulsar" + _newline
+                //+ "2nd character: StarSystem" + _newline
+                //+ "   B = Blue star" + _newline
+                //+ "   O = Orange star" + _newline
+                //+ "   N = Nebula" + _newline
+                //+ "   R = Red star" + _newline
+                //+ "   Y = Yellow star" + _newline
+                //+ "   W = White star" + _newline
+                //+ _newline
                 ;
 
 
@@ -301,11 +301,11 @@ namespace Supremacy.Client.Views
 
                         + " ; " + civM.Civilization.HomeSystemName
                         + " ; " + civM.Civilization
-                        + newline;
+                        + _newline;
                     _text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
                 }
 
-                _text += newline;
+                _text += _newline;
 
                 IEnumerable<StarSystem> otherSystems = GameContext.Current.Universe.Objects.OfType<StarSystem>();
                 foreach (StarSystem _sec  in otherSystems)
@@ -329,7 +329,7 @@ namespace Supremacy.Client.Views
                         + " ; " + _sec.Name
                         + " ; " + _sec.StarType
 
-                        + newline;
+                        + _newline;
                     //_text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
                     
 
@@ -355,7 +355,7 @@ namespace Supremacy.Client.Views
 
                         ;
 
-                    _text += newline + timeString + newline
+                    _text += _newline + timeString + _newline
                         + "Step_4363:"
                         + "; " + GameEngine.LocationString(item.Location.ToString())
                         + "; " + item.ObjectID
@@ -378,13 +378,13 @@ namespace Supremacy.Client.Views
 
                         //+ ";since Turn;" + item.TurnCreated
 
-                                                    + newline;
+                                                    + _newline;
                     //if (writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
                     ILookup<MapLocation, StarSystem> systemLocationLookup = GameContext.Current.Universe.Objects.OfType<StarSystem>().ToLookup(o => o.Location);
 
-                    //_text += newline;
+                    //_text += _newline;
                     //ILookup<MapLocation, GameObject> gameObjectLocationLookup = GameContext.Current.Universe.Objects.OfType<GameObject>().ToLookup(o => o.GetType() != Type.EmptyTypes);
                     //int pf = item.Facilities_Total1_Food
                     //        + item.Facilities_Total2_Industry
@@ -404,7 +404,7 @@ namespace Supremacy.Client.Views
 
                         //    //+ "; since Turn;" + pf.TurnCreated
 
-                        //    + newline;
+                        //    + _newline;
 
                         //if (writeDirectly) Console.WriteLine(_text);
 
@@ -415,7 +415,7 @@ namespace Supremacy.Client.Views
 
                     //}
 
-                    //_text += newline;
+                    //_text += _newline;
                     ILookup<MapLocation, Building> buildingLocationLookup = GameContext.Current.Universe.Objects.OfType<Building>().ToLookup(o => o.Location);
                     foreach (Building building in buildingLocationLookup[item.Location])
                     {
@@ -429,7 +429,7 @@ namespace Supremacy.Client.Views
 
 
 
-                            + newline;
+                            + _newline;
 
                         //if (writeDirectly) Console.WriteLine(_text);
 
@@ -459,7 +459,7 @@ namespace Supremacy.Client.Views
                                 + "; and Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
                                 + "; Dur=" + item2.GetCurrentResourceCost(ResourceType.Duranium)
                                 + "; Dil=" + item2.GetCurrentResourceCost(ResourceType.Dilithium)
-                                + newline
+                                + _newline
                                 ;
                         //if (writeDirectly) Console.WriteLine(_text);
 
@@ -471,7 +471,7 @@ namespace Supremacy.Client.Views
                             + "; Dur= " + item.NetDuranium
                             + "; Dil= " + item.NetDilithium
                             + "; Credits= " + item.CreditsEmpire
-                            + newline;
+                            + _newline;
 
                     _text += "Step_4369:"
                             + "; " + GameEngine.LocationString(item.Location.ToString())
@@ -492,7 +492,7 @@ namespace Supremacy.Client.Views
                             + "; facI;" + item.Facilities_Active5_Intelligence + ";of; " + item.Facilities_Total5_Intelligence
 
                             //+ ";since Turn;" + item.TurnCreated
-                            + newline;
+                            + _newline;
 
                     if (item.BuildSlots[0].HasProject)
                     {
@@ -501,19 +501,19 @@ namespace Supremacy.Client.Views
                                 + "; IS BUILDING > " + item.BuildSlots[0].Project.BuildDesign
                                 + " > needs " + item.BuildSlots[0].Project.TurnsRemaining + " turns or a BUY"
 
-                                + newline;
+                                + _newline;
                     }
                     else
                     {
                         _text += "Step_7602:; "
                             + _col
-                            + "; is building > * NOTHING * or just finished this turn" + newline;
+                            + "; is building > * NOTHING * or just finished this turn" + _newline;
                     }
 
                     // not necessary
                     //_text += "Step_7609:; "
                     //        + _col
-                    //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + newline;
+                    //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
                     foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
                     {
                         _text += "Step_7608:; "
@@ -527,7 +527,7 @@ namespace Supremacy.Client.Views
                             //+ " " + 
                             //+ " > " + _percent
                             //+ " done for " + _design
-                            + newline;
+                            + _newline;
                         //if (writeDirectly) Console.WriteLine(_text);
                         //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
@@ -558,7 +558,7 @@ namespace Supremacy.Client.Views
                                         + " > " + _percent
                                         + " done for " + _design
                                         + " at " + slot.Shipyard.Name
-                                        + newline;
+                                        + _newline;
                                     //if (writeDirectly) Console.WriteLine(_text);
                                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                                 }
@@ -570,7 +570,7 @@ namespace Supremacy.Client.Views
                                         + " "
                                         + " > " + _percent
                                         + " done for " + _design
-                                        + newline;
+                                        + _newline;
                                     //if (writeDirectly) Console.WriteLine(_text);
                                     //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                                 }
@@ -584,7 +584,7 @@ namespace Supremacy.Client.Views
                                      //+ " " + 
                                      //+ " > " + _percent
                                      //+ " done for " + _design
-                                     + newline;
+                                     + _newline;
                                 //if (writeDirectly) Console.WriteLine(_text);
                                 //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                             };
@@ -599,7 +599,7 @@ namespace Supremacy.Client.Views
 
                 }
                 if (writeDirectly) Console.WriteLine(_text);
-                _text += newline;
+                _text += _newline;
 
 
 
@@ -608,7 +608,7 @@ namespace Supremacy.Client.Views
                 foreach (Ship item in ships)
                 {
                     if (item.Owner.Key != _ownerText)
-                        _text += newline + newline;
+                        _text += _newline + _newline;
                     _ownerText = item.Owner.Key;
 
                     _text += "Step_4381:"
@@ -631,7 +631,7 @@ namespace Supremacy.Client.Views
 
                             + "; since Turn;" + item.TurnCreated
 
-                                                        + newline;
+                                                        + _newline;
                     //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
                     //if (writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
@@ -639,7 +639,7 @@ namespace Supremacy.Client.Views
                 }
 
 
-                _text += newline;
+                _text += _newline;
 
                 IEnumerable<Station> stations = GameContext.Current.Universe.Objects.OfType<Station>();
                 foreach (Station item in stations)
@@ -664,10 +664,10 @@ namespace Supremacy.Client.Views
 
                             + "; since Turn;" + item.TurnCreated
 
-                                                        + newline;
+                                                        + _newline;
                 }
 
-                _text += newline;
+                _text += _newline;
 
                 IEnumerable<Shipyard> shipyards = GameContext.Current.Universe.Objects.OfType<Shipyard>();
                 foreach (Shipyard item in shipyards)
@@ -692,10 +692,10 @@ namespace Supremacy.Client.Views
 
                             + "; since Turn;" + item.TurnCreated
 
-                                                        + newline;
+                                                        + _newline;
                 }
 
-                _text += newline;
+                _text += _newline;
 
                 var races = GameContext.Current.Races.ToList();
                 foreach (var item in races)
@@ -720,13 +720,13 @@ namespace Supremacy.Client.Views
 
                                                         //+ "; since Turn;" + item.TurnCreated
 
-                                                        + newline;
+                                                        + _newline;
                 }
 
                 //var events = null;
                 if (GameContext.Current.ScriptedEvents != null)
                 {
-                    _text += "Step_4356:; Events following..." + newline;
+                    _text += "Step_4356:; Events following..." + _newline;
                     var events = GameContext.Current.ScriptedEvents.ToList();
                     foreach (var item in events)
                     {
@@ -750,11 +750,11 @@ namespace Supremacy.Client.Views
 
                                                             //+ "; since Turn;" + item.TurnCreated
 
-                                                            + newline;
+                                                            + _newline;
                     }
                 }
 
-                _text += newline;
+                _text += _newline;
 
                 var civs = GameContext.Current.Civilizations.ToList();
                 foreach (Civilization item in civs)
@@ -779,10 +779,10 @@ namespace Supremacy.Client.Views
 
                                                         //+ "; since Turn;" + item.TurnCreated
 
-                                                        + newline;
+                                                        + _newline;
                 }
 
-                _text += newline;
+                _text += _newline;
 
                 var civMans = GameContext.Current.CivilizationManagers.ToList();
                 foreach (CivilizationManager item in civMans)
@@ -794,10 +794,10 @@ namespace Supremacy.Client.Views
                             + "; ID=" + item.CivilizationID
 
 
-                                                        + newline;
+                                                        + _newline;
                 }
 
-                _text += newline;
+                _text += _newline;
 
                 //var civMans = GameContext.Current.ScriptedEvents;
                 if (GameContext.Current.ScriptedEvents != null)
@@ -810,11 +810,11 @@ namespace Supremacy.Client.Views
                                 + "; " + item.EventID
                                                             //+ "; " + item.Civilization
 
-                                                            + newline;
+                                                            + _newline;
                     }
                 }
 
-                _text += newline;
+                _text += _newline;
 
                 //IEnumerable<ShipDesign> bd = GameContext.Current.TechDatabase.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign);
                 //if (GameContext.Current.TechDatabase)
@@ -874,8 +874,8 @@ namespace Supremacy.Client.Views
 
                         if (first_orbbat)
                         {
-                            _text += "Step_4341: ---------------" + newline;
-                            _text += "Step_4341:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
+                            _text += "Step_4341: ---------------" + _newline;
+                            _text += "Step_4341:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
                             first_orbbat = false;
                         }
 
@@ -912,8 +912,8 @@ namespace Supremacy.Client.Views
 
                         if (first_pf)
                         {
-                            _text += "Step_4342: ---------------" + newline;
-                            _text += "Step_4342:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;LA;FIELD;OUTP;COMMENT" + newline;
+                            _text += "Step_4342: ---------------" + _newline;
+                            _text += "Step_4342:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;LA;FIELD;OUTP;COMMENT" + _newline;
                             first_pf = false;
                         }
 
@@ -960,8 +960,8 @@ namespace Supremacy.Client.Views
 
                         if (first_buildings)
                         {
-                            _text += "Step_4343: ---------------" + newline;
-                            _text += "Step_4343:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;R1;R2;R3;R4;Bo1;B1V;Bo2;B2V;COMMENT" + newline;
+                            _text += "Step_4343: ---------------" + _newline;
+                            _text += "Step_4343:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;R1;R2;R3;R4;Bo1;B1V;Bo2;B2V;COMMENT" + _newline;
                             first_buildings = false;
                         }
 
@@ -998,8 +998,8 @@ namespace Supremacy.Client.Views
 
                         if (first_shipyards)
                         {
-                            _text += "Step_4344: ---------------" + newline;
-                            _text += "Step_4344:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;SL;OUTP;TYPE;OUTPm;maxLvl;COMMENT" + newline;
+                            _text += "Step_4344: ---------------" + _newline;
+                            _text += "Step_4344:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;SL;OUTP;TYPE;OUTPm;maxLvl;COMMENT" + _newline;
                             first_shipyards = false;
                         }
 
@@ -1020,8 +1020,8 @@ namespace Supremacy.Client.Views
 
                         if (first_stations)
                         {
-                            _text += "Step_4345: ---------------" + newline;
-                            _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
+                            _text += "Step_4345: ---------------" + _newline;
+                            _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
                             first_stations = false;
                         }
 
@@ -1055,8 +1055,8 @@ namespace Supremacy.Client.Views
 
                             if (first_stationname)
                             {
-                                //stationnames_text += "Step_4349: ---------------" + newline;
-                                stationnames_text += "Step_4359:;COUNT;KEY;NAMES;COMMENT" + newline;
+                                //stationnames_text += "Step_4349: ---------------" + _newline;
+                                stationnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
                                 first_stationname = false;
                             }
 
@@ -1091,7 +1091,7 @@ namespace Supremacy.Client.Views
                                     + ";" + item.Key
 
                                     + " ;" + name.Key
-                                    + newline;
+                                    + _newline;
                             }
 
                         }
@@ -1103,9 +1103,9 @@ namespace Supremacy.Client.Views
 
                         if (first_ships)
                         {
-                            _text += "Step_4346: ---------------" + newline;
+                            _text += "Step_4346: ---------------" + _newline;
                             _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Dil;Spe;Ra;Fu;Man;WO;Sc%;SP;SR;"
-                                                            + "HULL;SH;ShR;Cl;Ca;TYPE;CLASSNAME;N_+_Sp;W1=Weapon 1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + newline;
+                                                            + "HULL;SH;ShR;Cl;Ca;TYPE;CLASSNAME;N_+_Sp;W1=Weapon 1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
                             first_ships = false;
                         }
 
@@ -1160,8 +1160,8 @@ namespace Supremacy.Client.Views
 
                         if (first_shipname)
                         {
-                            //shipnames_text += "Step_4349: ---------------" + newline;
-                            shipnames_text += "Step_4359:;COUNT;KEY;NAMES;COMMENT" + newline;
+                            //shipnames_text += "Step_4349: ---------------" + _newline;
+                            shipnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
                             first_shipname = false;
                         }
 
@@ -1196,7 +1196,8 @@ namespace Supremacy.Client.Views
                                 + ";" + item.Key
 
                                 + " ;" + name.Key
-                                + newline;
+                                + _newline;
+                            Console.WriteLine(shipnames_text);
                         }
 
 
@@ -1223,7 +1224,7 @@ namespace Supremacy.Client.Views
                     }
 
 
-                    _text += tdb_text + newline;
+                    _text += tdb_text + _newline;
 
 
 

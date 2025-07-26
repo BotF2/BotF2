@@ -16,7 +16,6 @@ using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
 using Supremacy.Pathfinding;
-using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Text;
@@ -26,6 +25,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Supremacy.Orbitals
@@ -67,8 +67,8 @@ namespace Supremacy.Orbitals
 
         private static readonly List<FleetOrder> _orders;
 
-        [NonSerialized]
-        public static string _text;
+        //[NonSerialized]
+        //public static string _text;
 
 
         static FleetOrders()
@@ -505,7 +505,7 @@ namespace Supremacy.Orbitals
                     Console.WriteLine(_text);
                 }
             }
-            fleet.Order = FleetOrders.IdleOrder;
+            //fleet.Order = FleetOrders.IdleOrder;
         }
     }
     #endregion RedeploySameOrder
@@ -585,7 +585,7 @@ namespace Supremacy.Orbitals
                 Console.WriteLine(_text);
 
             }
-            fleet.Order = FleetOrders.IdleOrder;
+            //fleet.Order = FleetOrders.IdleOrder;
         }
     }
     #endregion RedeployAllOrder
@@ -1013,7 +1013,7 @@ namespace Supremacy.Orbitals
                 Console.WriteLine(_text);
                 //}
             }
-            fleet.Order = FleetOrders.IdleOrder;
+            //fleet.Order = FleetOrders.IdleOrder;
         }
     }
     #endregion AccumulateQuitOrder
@@ -1136,12 +1136,12 @@ namespace Supremacy.Orbitals
                 return;
             }
 
-            // DoColonize
+            // DoColonize = new colony
             Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
             colony.ObjectID = GameContext.Current.GenerateID();
-            colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity;
+            colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity; // population on new colony
             colony.Population.Reset();
             colony.Name = Fleet.Sector.System.Name;
             colony.Owner = Fleet.Owner;
@@ -1218,16 +1218,12 @@ namespace Supremacy.Orbitals
 
         protected internal override void OnTurnEnding()
         {
-            string blank = " ";
-
             //Medicate the colony --- // PopulationHealth is a percent value !!  // healthAdjustment is also a percent valuee.g. 80% * 1,3= 104% 
             //PopHealth = 0.16 (not 16)
             //int helpByShip = Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth);
 
             int oldHealth = 0;
             float healthAdjustment = 0f;
-
-            blank = " ";
 
             if (Fleet is null)
             { /*do nothing*/ }
@@ -1259,13 +1255,13 @@ namespace Supremacy.Orbitals
 
                     //301 RSE Torvath 1(Medical Ship I Torvath Class) doing Medical help at Romulus(13, 13): value adjusted = 1,08 %, new = 92(old = 86)
                     string _text = "Step_3987:; " + Fleet.Sector.System.Colony.Location
-                        + blank + Fleet.Sector.System.Colony.Name
+                        + " " + Fleet.Sector.System.Colony.Name
                         + " > " + Fleet.ObjectID
-                        + blank + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help: value adjusted ="
-                        //+ blank + ": value adjusted ="
-                        + blank + healthAdjustment + "%, new ="
-                        + blank + Fleet.Sector.System.Colony.Health.CurrentValue
-                        + blank + "(old=" + oldHealth + ")";
+                        + " " + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help: value adjusted ="
+                        //+ " " + ": value adjusted ="
+                        + " " + healthAdjustment + "%, new ="
+                        + " " + Fleet.Sector.System.Colony.Health.CurrentValue
+                        + " " + "(old=" + oldHealth + ")";
 
                     Console.WriteLine(_text);
                     GameLog.Core.ColoniesDetails.DebugFormat(_text);
@@ -1316,12 +1312,12 @@ namespace Supremacy.Orbitals
                     }
 
                     string _text = Fleet.ObjectID
-                        + blank + Fleet.Name + " doing Medical help at "
-                        + blank + Fleet.Sector.System.Colony.Name
-                        //+ blank + Fleet.Sector.System.Colony.ObjectID 
-                        + blank + Fleet.Sector.System.Colony.Location + ": value adjusted = "
-                        + blank + healthAdjustment + "%, new = "
-                        + blank + Fleet.Sector.System.Colony.Health.CurrentValue;
+                        + " " + Fleet.Name + " doing Medical help at "
+                        + " " + Fleet.Sector.System.Colony.Name
+                        //+ " " + Fleet.Sector.System.Colony.ObjectID 
+                        + " " + Fleet.Sector.System.Colony.Location + ": value adjusted = "
+                        + " " + healthAdjustment + "%, new = "
+                        + " " + Fleet.Sector.System.Colony.Health.CurrentValue;
 
                     Console.WriteLine(_text);
                     //GameLog.Core.ColoniesDetails.DebugFormat(_text);
@@ -2086,6 +2082,7 @@ namespace Supremacy.Orbitals
             {
                 return;
             }
+            string _text = "";
 
             Ship _influenceShip = FindBestInfluenceShip();
             if (_influenceShip == null)
@@ -2105,23 +2102,23 @@ namespace Supremacy.Orbitals
             // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
             if (Fleet.Sector.System.Owner == Fleet.Owner)
             {
-               Fleet._text = GameEngine.LocationString(Fleet.Location.ToString())
-                    + _fleetText
-                    + " is influencing the colony"
-                    ;
-                Console.WriteLine("Step_5432:; " + Fleet._text);
-                //GameLog.Core.Diplomacy.DebugFormat(Fleet._text);
+                _text = GameEngine.LocationString(Fleet.Location.ToString())
+                     + _fleetText
+                     + " is influencing the colony"
+                     ;
+                Console.WriteLine("Step_5432:; " + _text);
+                //GameLog.Core.Diplomacy.DebugFormat(_text);
                 if (Fleet.Sector.System.Colony.Morale.CurrentValue < 95)
                 {
                     _ = Fleet.Sector.System.Colony.Morale.AdjustCurrent(+3);
                     Fleet.Sector.System.Colony.Morale.UpdateAndReset();
 
-                    Fleet._text = GameEngine.LocationString(Fleet.Location.ToString())
+                    _text = GameEngine.LocationString(Fleet.Location.ToString())
                          + _fleetText
                          + " successfully increased the morale"
                          ;
-                    Console.WriteLine("Step_5434:; " + Fleet._text);
-                    //GameLog.Core.Diplomacy.DebugFormat(Fleet._text);
+                    Console.WriteLine("Step_5434:; " + _text);
+                    //GameLog.Core.Diplomacy.DebugFormat(_text);
                     //GameLog.Core.Diplomacy.DebugFormat("{0} successfully increased the morale at {1}",
                     //    influencerCiv, Fleet.Sector.System.Name);
                 }
@@ -2136,13 +2133,13 @@ namespace Supremacy.Orbitals
                 //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
                 DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +50);
 
-                Fleet._text = _fleetText
-                         + influencerCiv + " is attempting to influence the "
-                         + influencedCiv
+                _text = _fleetText + " > "
+                         + influencerCiv.Civilization + " is attempting to influence the "
+                         + influencedCiv.Civilization
                          + ", regard = " + foreignPower.DiplomacyData.Regard.CurrentValue
                          + ", trust = " + foreignPower.DiplomacyData.Trust.CurrentValue
                          ;
-                Console.WriteLine("Step_5438:; " + Fleet._text);
+                Console.WriteLine("Step_5438:; " + _text);
 
                 //GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2} regard ={3} trust ={4}",
                 //       influencerCiv, influencedCiv, Fleet.Sector.System,
@@ -2785,7 +2782,14 @@ namespace Supremacy.Orbitals
             // if build order already set, can't assign it again
             if (fleet.Order is BuildStationOrder)
             {
-                return false;
+                if (fleet.Order.PercentComplete != null)
+                {
+                    if (fleet.Order.PercentComplete * 100 < 1)
+                    {
+                        return false;
+                    }
+                }
+                
             }
 
             // can't start building if any other ship is already building an outpost
@@ -2995,16 +2999,57 @@ namespace Supremacy.Orbitals
             {
                 return;
             }
+            string _text;
+            string _fleetText;
 
-            if (Fleet.Route.IsEmpty && (Fleet.UnitAIType != UnitAIType.SystemAttack || Fleet.UnitAIType != UnitAIType.Reserve))
+            _text = "Step_5552:; " + UnitAI.CreateUpdateFleetText(Fleet, out _fleetText);
+            Console.WriteLine(_text);
+
+            // checkScoutShips;  
+            // Minor's ships are defined as Scout with the intention to fly around like Scouts
+            //Debugger.Break();
+            //if (Fleet.Owner.IsHuman) { Debugger.Break();  }
+
+            if (Fleet.Route.IsEmpty && (Fleet.AITypeUnit != UnitAIType.SystemAttack || Fleet.AITypeUnit != UnitAIType.Reserve))
             {
                 if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
                 {
                     Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
-                    Fleet.UnitAIType = UnitAIType.Explorer;
+                    Fleet.AITypeUnit = UnitAIType.Explorer;
                     Fleet.Activity = UnitActivity.Mission;
                 }
+                else
+                {
+                    StarSystem homeSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;                    
+                    StarSystem fleetSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;  
+                    StarSystem bestSystem; 
+
+                    // fly somewhere
+                    if (Fleet.Sector.System != null)
+                    {
+                        fleetSystem = Fleet.Sector.System;
+                    }
+
+                    if (UnitAI.GetBestSystemFor_Science(Fleet, out bestSystem))
+                    {
+                        if (bestSystem.Location != fleetSystem.Location)
+                        {
+                            Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+                            Fleet.AITypeUnit = UnitAIType.Explorer;
+                            Fleet.Activity = UnitActivity.Mission;
+                        }
+                        else
+                        {
+                            // 'vacation at home' 
+                            Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
+                            Fleet.AITypeUnit = UnitAIType.Explorer;
+                            Fleet.Activity = UnitActivity.Mission;
+                        }
+                    }
+                }
             }
+            _text = "Step_5554:; " + UnitAI.CreateUpdateFleetText(Fleet, out _fleetText);
+            Console.WriteLine(_text);
         }
     }
 
@@ -3040,16 +3085,16 @@ namespace Supremacy.Orbitals
                 return;
             }
 
-            if (Fleet.Route.IsEmpty && (Fleet.UnitAIType != UnitAIType.SystemAttack || Fleet.UnitAIType != UnitAIType.Reserve))
-            {
-                Fleet.Order = FleetOrders.IdleOrder;
-                //if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
-                //{
-                //    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
-                //    Fleet.UnitAIType = UnitAIType.Explorer;
-                //    Fleet.Activity = UnitActivity.Mission;
-                //}
-            }
+            //if (Fleet.Route.IsEmpty && (Fleet.AITypeUnit != AITypeUnit.SystemAttack || Fleet.AITypeUnit != AITypeUnit.Reserve))
+            //{
+            //    Fleet.Order = FleetOrders.IdleOrder;
+            //    //if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
+            //    //{
+            //    //    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+            //    //    Fleet.AITypeUnit = AITypeUnit.Explorer;
+            //    //    Fleet.Activity = UnitActivity.Mission;
+            //    //}
+            //}
         }
     }
 

@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.AI;
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Types;
@@ -120,13 +121,6 @@ namespace Supremacy.Orbitals
                         : Status;
                 }
 
-                if (percentComplete.HasValue)
-                {
-                    // Build station text
-                    taskForceStatusText = string.Format(" ({0})" + taskForceStatusText + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
-                    //taskForceStatusText = string.Format(taskForceStatusText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
-                }
-
                 if (Fleet != null && !Fleet.Route.IsEmpty)
                 {
                     int turns = Fleet.Route.Length / Fleet.Speed;
@@ -136,10 +130,22 @@ namespace Supremacy.Orbitals
                         turns++;
                     }
 
-                    formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN") : ResourceManager.GetString("ORDER_ETA_TURNS");
+                    formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN") + " " : ResourceManager.GetString("ORDER_ETA_TURNS");
 
                     taskForceStatusText = string.Format(formatString, taskForceStatusText, turns);
+
+                    
+                    //if (Fleet.Owner.IsHuman) { Debugger.Break(); }
                 }
+
+                if (percentComplete.HasValue)
+                {
+                    // Build station text
+                    taskForceStatusText = string.Format(" ({0})" + taskForceStatusText /*+ Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY")*/, percentComplete.Value);
+                    //taskForceStatusText = string.Format(taskForceStatusText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                }
+
+                //Console.WriteLine("Step_8921:; taskForceStatusText= " + taskForceStatusText + " > for " + UnitAI.CreateUpdateFleetText(Fleet, out String _fleetText));
 
                 return taskForceStatusText;
             }

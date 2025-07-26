@@ -32,8 +32,8 @@ namespace Supremacy.Game
     {
         [NonSerialized]
         public const string AutoSaveFileName = ".autosav";
-        private static readonly string newline=Environment.NewLine;
-        private static string _text;
+        //private static readonly string _newline=Environment.NewLine;
+        //private static string _text;
 
         public static string SavedGameDirectory
         {
@@ -88,6 +88,7 @@ namespace Supremacy.Game
             {
                 SavedGameHeader header = LoadSavedGameHeader(fileName);
                 string _currentGameVersionString = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                string _text;
                 if (header != null)
                 {
 
@@ -138,6 +139,7 @@ namespace Supremacy.Game
             {
                 throw new ArgumentNullException("fileName");
             }
+            string _text;
 
             try
             {
@@ -186,7 +188,7 @@ namespace Supremacy.Game
             }
             catch
             {
-                string _text = "Step_0291:; is the file there ? ...not able to read HEADER of " + fileName; // command line parameter ... e.g. started out of VS
+                _text = "Step_0291:; is the file there ? ...not able to read HEADER of " + fileName; // command line parameter ... e.g. started out of VS
                 Console.WriteLine(_text);
                 GameLog.Client.SaveLoad.DebugFormat(_text);
 
@@ -204,6 +206,7 @@ namespace Supremacy.Game
         /// <returns></returns>
         public static bool LoadGame(string fileName, out SavedGameHeader header, out GameContext game, out DateTime timestamp)
         {
+            string _text;
             try
             {
                 if (!Path.IsPathRooted(fileName))
@@ -304,6 +307,7 @@ namespace Supremacy.Game
             {
                 fileName = "_manual_save_(CTRL+S)";
             }
+            string _text;
 
             _text = "Step_3100:; SaveGame: localPlayer= " + localPlayer + ", fileName= " + fileName;
             Console.WriteLine(_text);
@@ -397,7 +401,7 @@ namespace Supremacy.Game
                 if (File.Exists(file))
                 {
                     File.Delete(file);
-                    _ = MessageBox.Show("Deleted: " + file + newline + "Create again with CTRL+S");
+                    _ = MessageBox.Show("Deleted: " + file + Environment.NewLine + "Create again with CTRL+S");
                     return true;
                 }
             }
@@ -408,6 +412,7 @@ namespace Supremacy.Game
         public static bool SaveGameDeleteAutoSaved()
         {
             string file = Path.Combine(Environment.CurrentDirectory + "\\" + SavedGameDirectory, FixFileName(".autosav"));
+            string _text;
 
             //ResourceManager.GetString("Do you really want to delete > ")
             var result = MessageBox.Show(
@@ -427,7 +432,7 @@ namespace Supremacy.Game
                     _text = "Deleted: " + file;
                     Console.WriteLine(_text);
                 
-                //_ = MessageBox.Show("Deleted: " + file /*+ newline + "Create again with CTRL+S"*/);
+                //_ = MessageBox.Show("Deleted: " + file /*+ _newline + "Create again with CTRL+S"*/);
                 return true;
                 }
             }

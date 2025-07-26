@@ -288,7 +288,28 @@ namespace Supremacy.Collections
 
         protected internal TKey GetKeyForItem(TValue item)
         {
-            return _keyRetriever(item);
+            try
+            {
+                if (_keyRetriever != null)
+                {
+                return _keyRetriever(item);
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+            catch
+            {
+                //var x = new TValue();
+
+                _text = "Step_3345:; Problem here > " + item;
+                Console.WriteLine(_text);
+
+                Debugger.Break();
+
+                throw new InvalidOperationException();
+            }
         }
 
         protected override void InsertItem(int index, TValue item)
@@ -413,7 +434,11 @@ namespace Supremacy.Collections
         protected virtual void OnKeyCollision(TKey key, TValue item)
         {
             _text_ObKeyCol = "Step_0496:; OnKeyCollision: key= " + key.ToString()
-                    + ", item= " + item.ToString();
+                    + ", item= " + item.ToString()
+                    //+ ", item= " + item._lo
+                    //+ ", item= " + item.ToString()
+                    
+                    ;
             Console.WriteLine(_text_ObKeyCol);
             GameLog.Core.General.ErrorFormat(_text_ObKeyCol);
             throw new ArgumentException("Collection already contains an item with the specified key.");

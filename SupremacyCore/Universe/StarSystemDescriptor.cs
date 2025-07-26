@@ -23,7 +23,6 @@ namespace Supremacy.Universe
     public class HomeSystemsDatabase : Dictionary<string, StarSystemDescriptor>
     {
         private const string XmlFilePath = "Resources/Data/HomeSystems.xml";
-        private static readonly string blank = " ";
         private static string _startingBuildingsSummary;
         private static string _text;
         private static string _startingShipsSummary = " ;";
@@ -138,8 +137,6 @@ namespace Supremacy.Universe
                     //}
 
                     streamWriter = new StreamWriter(file);
-
-                    strHeader = blank; // Dummy, needed
 
                     strHeader =    // Head line
                         "Civilization" + separator +

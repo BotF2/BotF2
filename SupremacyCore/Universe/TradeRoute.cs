@@ -31,7 +31,7 @@ namespace Supremacy.Universe
         private int _targetColonyId;
         private int _credits;
         private string _text;
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the <see cref="Colony"/> from which the <see cref="TradeRoute"/> originates.
@@ -196,7 +196,7 @@ namespace Supremacy.Universe
                         + Credits
                         ;
                     Console.WriteLine(_text);
-                    GameLog.Core.TradeRoutes.ErrorFormat(_text + newline + e);
+                    GameLog.Core.TradeRoutes.ErrorFormat(_text + _newline + e);
                     return Credits;
                 }
 

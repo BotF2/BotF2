@@ -116,7 +116,11 @@ namespace Supremacy.Game
 
             GameUpdateData data = new GameUpdateData();
 
-            GameLog.Server.MultiplayDetails.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
+            string _text = "Step_4004:; Turn "+ game.TurnNumber + " ... try to Create GameUpdateData for " + player.Empire.Key;
+            Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+
+            //GameLog.Server.MultiplayDetails.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
 
             GameContext.PushThreadContext(game);
             try
@@ -125,6 +129,23 @@ namespace Supremacy.Game
                 data._civManagers = game.CivilizationManagers.ToArray();
                 data._objects = game.Universe.Objects;
                 data._sectorClaims = game.SectorClaims;
+
+                foreach (var item in game.DiplomacyData)
+                {
+                    _text = "Step_4014:; GameUpdateData... "
+                        + "; Status= " + item.Status
+                        + "; OwnerID= " + item.OwnerID
+                        + "; CounterpartyID= " + item.CounterpartyID
+
+                        ;
+                    if (item.Status.ToString() != "NoContact")
+                    {
+                        Console.WriteLine(_text);
+                        //GameLog.Core.GeneralDetails.DebugFormat(_text);
+                    }
+                    
+                }
+
                 data._agreementMatrix = game.AgreementMatrix;
                 data._diplomacyData = game.DiplomacyData;
                 //                game.Diplomats.TryGetValue(player.EmpireID, out data._diplomat);

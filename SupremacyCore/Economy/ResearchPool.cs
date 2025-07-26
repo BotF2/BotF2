@@ -448,10 +448,10 @@ namespace Supremacy.Economy
             _text = "Step_0398:; Research for "
                 + Owner.Key
                 + " > currentChange = " + _cumulativePoints.CurrentChange.ToString()
-                + " > lastChange = " + _cumulativePoints.LastChange.ToString()
+                //+ " > lastChange = " + _cumulativePoints.LastChange.ToString()
                 + " > currentValue = " + _cumulativePoints.CurrentValue.ToString()
                 ;
-            Console.WriteLine(_text);
+            //Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
 
             _cumulativePoints.UpdateAndReset();

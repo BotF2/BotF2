@@ -30,7 +30,7 @@ namespace Supremacy.Resources
 
         private readonly Dictionary<string, string> _strings;
         private static string _text;
-        private static readonly string newline = Environment.NewLine;
+        private static readonly string _newline = Environment.NewLine;
 
         public ICollection<string> Keys => _strings.Keys;
 
@@ -126,7 +126,7 @@ namespace Supremacy.Resources
                 _text = "EN.txt_Content-Key;Value;empty1;empty2;empty3";
                 foreach (var item in result._strings)
                 {
-                    _text += newline + item.Key + ";\"" + item.Value + "\"";
+                    _text += _newline + item.Key + ";\"" + item.Value + "\"";
                 }
                 string file = Path.Combine(ResourceManager.GetResourcePath("Resources\\Data"), "EN-Txt-Content");
 

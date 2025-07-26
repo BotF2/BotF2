@@ -143,6 +143,7 @@ namespace Supremacy.Client.Views
     public class GalaxyScreenPresentationModel : PresentationModelBase
     {
         #region Fields
+        private Civilization _playerCiv = null;
         private IEnumerable<Ship> _availableShips;
         private GalaxyScreenInputMode _inputMode;
         private GalaxyScreenOverviewMode _overviewMode;
@@ -194,6 +195,20 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Constructors and Finalizers
+        public Civilization PlayerCiv
+        {
+            get
+            {
+                _playerCiv = AppContext.LocalPlayer.Empire;
+                return _playerCiv;
+            }
+            set
+            {
+                _playerCiv = value;
+                //Update();
+            }
+        }
+
         public GalaxyScreenPresentationModel([NotNull] IAppContext appContext)
             : base(appContext)
         {
@@ -219,7 +234,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                _text = GameContext.Current.CivilizationManagers[0].AccumulateSector.Location.ToString();
+                _text = GameContext.Current.CivilizationManagers[PlayerCiv.CivID].AccumulateSector.Location.ToString();
                 if (_text == "(0, 0)") _text = "-";
                 return "Accumulate at: " + _text;
             }
@@ -241,25 +256,25 @@ namespace Supremacy.Client.Views
             {
                 
                 string _return = "Assault: ";
-                if (GameContext.Current.CivilizationManagers[0].SystemAssaultSector_1.Location.ToString() == "(0, 0)")
+                if (GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssaultSector_1.Location.ToString() == "(0, 0)")
                 {
                     _return += " - ";
                 }
                 else
                 {
-                    return _return += GameContext.Current.CivilizationManagers[0].SystemAssaultSector_1.Location.ToString();
+                    return _return += GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssaultSector_1.Location.ToString();
                 }
 
-                if (GameContext.Current.CivilizationManagers[0].SystemAssaultSector_2.Location.ToString() != "(0, 0)")
+                if (GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssaultSector_2.Location.ToString() != "(0, 0)")
                 {
-                    _return += " ,   Assault 2: " + GameContext.Current.CivilizationManagers[0].SystemAssaultSector_2.Location.ToString();
+                    _return += " ,   Assault 2: " + GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssaultSector_2.Location.ToString();
                 }
 
                 return _return;
             }
             set
             {
-
+                this.PlayerCivilizationSystemAssaultPlaces = value;
                 OnPlayerCivilizationSystemAssaultPlacesChanged();
             }
         }

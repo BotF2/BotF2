@@ -16,6 +16,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace Supremacy.Combat
 {
@@ -29,15 +30,17 @@ namespace Supremacy.Combat
         private List<Civilization> _civStatusList;
         //private List<Civilization> FriendlyCivs = new List<Civilization>(); // dummy - just a test if this is helpful to avoid BindingExpression path error:
         //private List<Civilization> OtherCivs = new List<Civilization>();    // dummy - just a test if this is helpful to avoid BindingExpression path error:
-        private int _friendlyEmpireStrength;
-        private int _allHostileEmpireStrength;
+        //private int _friendlyEmpireStrength;
+        //private int _allHostileEmpireStrength;
         [NonSerialized]
-        private object _sectorString;
-        private string _text;
+        //private object _sectorString;
+        //private string _text;
+        private string _CombatUpdate_Text;
+        //private string _combatText_CombatUpdate;
         //private int _otherCivStrength = 0;
 
         //private Dictionary<string, int> civStrengthValues;
-        private string _newline = Environment.NewLine;
+        //private string _newline = Environment.NewLine;
         private string _civName1;
         private string _civName2;
         private string _civName3;
@@ -55,9 +58,9 @@ namespace Supremacy.Combat
         private string _civFirePowers3Text;
         private string _civFirePowers4Text;
         //private bool _anyAsset;
-#pragma warning disable IDE0052 // Remove unread private members
-        private string _combatText_CombatUpdate;
-#pragma warning restore IDE0052 // Remove unread private members
+//#pragma warning disable IDE0052 // Remove unread private members
+        //private bool Write_Combat_Directly = true;
+//#pragma warning restore IDE0052 // Remove unread private members
 
         public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location
             , IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
@@ -82,30 +85,6 @@ namespace Supremacy.Combat
                 yesStandoff = standoff;
             }
 
-            //GameLog.Core.CombatDetails.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
-            //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
-            _text = _newline; // dummy - please keep
-            _text = "Step_3199:; "
-                + GameEngine.LocationString(location.ToString())
-                + " > ### combatId " + combatId
-                + " Round " + roundNumber
-                + ", standoff= " + standoff
-                + ", civID= " + owner.CivID
-
-                + ", CIVs friendly= " + friendlyAssets.Count
-                + " vs hostile= " + hostileAssets.Count
-                ;
-            Console.WriteLine(_text);
-            _combatText_CombatUpdate += _text;
-            //GameLog.Core.CombatDetails.DebugFormat(_text);
-
-            CivName_GetOthers(hostileAssets.ToList());
-            CivFirePowerText_GetOthers(hostileAssets.ToList());
-
-            //var _list_1 = FriendlyCivs;
-            //var _list_2 = OtherCivs;
-
-
             CombatID = combatId;
             RoundNumber = roundNumber;
             IsStandoff = yesStandoff;
@@ -113,17 +92,43 @@ namespace Supremacy.Combat
             Location = location;
             FriendlyAssets = friendlyAssets ?? throw new ArgumentNullException(nameof(friendlyAssets));
             HostileAssets = hostileAssets ?? throw new ArgumentNullException(nameof(hostileAssets));
+
+            CivName_GetOthers(hostileAssets.ToList());
+            CivFirePowerText_GetOthers(hostileAssets.ToList());
+
+            //GameLog.Core.CombatDetails.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
+            //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
+            string _text = ""; // _newline; // dummy - please keep
+            _text = "Step_3199:; "
+                + GameEngine.LocationString(location.ToString())
+                + " cUpda > ### combatId " + combatId
+                + " Round " + this.RoundNumber
+                + ", standoff= " + standoff
+                + ", CIVs friendly= " + friendlyAssets.Count
+                + " vs hostile= " + hostileAssets.Count
+                + " > update for civID= " + owner.CivID
+                + " = " + owner.Key + "  << ####################"
+                ;
+            if (Write_Combat_Directly) Console.WriteLine(_text); 
+            _CombatUpdate_Text += _text;
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
+
+
+
         }
         #region Properties for total fire power of the friends and Others (hostiles)
         public int FriendlyEmpireStrength
         {
             get
             {
+                //string _text;
+                string _sectorString = "";
+                int _friendlyEmpireStrength = 0;
 
                 foreach (CombatAssets fa in FriendlyAssets)
                 {
                     Civilization civ = GameContext.Current.Civilizations.First();
-                    _sectorString = FriendlyAssets.First().Location;
+                    _sectorString = FriendlyAssets.First().Location.ToString();
 
                     // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
                     foreach (CombatUnit ncs in fa.NonCombatShips)   // only NonCombat ships 
@@ -166,8 +171,11 @@ namespace Supremacy.Combat
                             fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
                     }
                     //Civilization pair = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
-                    _text = _sectorString + " > Combat Durability Friendly Assets = " + _friendlyEmpireStrength;
-                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, FriendlyAssets.First().Location, _text, "", "", SitRepPriority.Red));
+                    //_text = _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength;
+                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
+                        new ReportEntry_CoS(civ, FriendlyAssets.First().Location 
+                        , _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength
+                        , "", "", SitRepPriority.Red));
                 }
                 //GameContext.Current.CivilizationManagers[pair].SitRepEntries.Add
 
@@ -179,10 +187,13 @@ namespace Supremacy.Combat
         {
             get
             {
+                string _sectorString = "";
+                int _allHostileEmpireStrength = 0;
+
                 foreach (CombatAssets ha in HostileAssets)
                 {
                     Civilization civ = GameContext.Current.Civilizations.First();
-                    _sectorString = HostileAssets.First().Location;
+                    _sectorString = HostileAssets.First().Location.ToString();
 
                     foreach (CombatUnit ncs in ha.NonCombatShips)   // only NonCombat ships 
                     {
@@ -224,8 +235,10 @@ namespace Supremacy.Combat
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0}  - in total now {1}",
                         //    ha.Station.Name, _hostileEmpireStrength); 
                     }
-                    _text = _sectorString + " > Combat Durability Hostile Assets = " + _allHostileEmpireStrength;
-                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, HostileAssets.First().Location, _text, "", "", SitRepPriority.Red));
+                    //_text = _sectorString + " cUpda > Combat Durability Hostile Assets = " + _allHostileEmpireStrength;
+                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, HostileAssets.First().Location
+                        , _sectorString + " cUpda > Combat Durability Hostile Assets = " + _allHostileEmpireStrength
+                        , "", "", SitRepPriority.Red));
                 }
                 return _allHostileEmpireStrength;
             }
@@ -386,19 +399,28 @@ namespace Supremacy.Combat
             }
         }
 
-        public string CivStatus2 => CivStatus_GetOthers();
+        public string CivStatus2 => CivStatus_GetOthers(out string _status);
+        //{
+        //    get
+        //    {
+        //        string _status; 
+        //        _status = CivStatus_GetOthers(out _status);
+        //        return _status;
+        //    }
+        //}
 
-        public string CivStatus3 => CivStatus_GetOthers();
+        public string CivStatus3 => CivStatus_GetOthers(out string _status);
 
-        public string CivStatus4 => CivStatus_GetOthers();
+        public string CivStatus4 => CivStatus_GetOthers(out string _status);
         #endregion
 
-        public string CivStatus_GetOthers()
+        public string CivStatus_GetOthers(out string _targetCivStatus)
         {
             if (_civStatusList.Count > 0)
             {
                 Civilization currentCiv = _civStatusList.FirstOrDefault();
                 string _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, currentCiv].Status.ToString();
+                //string _targetCivStatusReturn = "";
                 List<Civilization> civStatusList = new List<Civilization>();
                 foreach (Civilization civilization in _civStatusList)
                 {
@@ -408,10 +430,11 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("_targetCiv1Status = {0}", _targetCiv1Status);
                 _ = civStatusList.Remove(currentCiv);
                 _civStatusList = civStatusList.ToList();
-                return string.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + ": " + ReturnTextOfStatus(_targetCiv1Status);
+                /*string*/ _targetCivStatus = string.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + ": " + ReturnTextOfStatus(_targetCiv1Status);
+                return _targetCivStatus;
             }
-
-            return null;
+            _targetCivStatus = "";
+            return _targetCivStatus;
         }
 
         private string ReturnTextOfStatus(string status)
@@ -522,7 +545,8 @@ namespace Supremacy.Combat
 
                 //works
                 //_text = "Step_7345:; A civilization with firepower " + _otherCivStrength;
-                //Console.WriteLine(_text);
+                //if (Write_Combat_Directly) Console.WriteLine(_text);
+                //_CombatUpdate_Text += _text;
 
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
                 return 0; //.ToString("N0") + " " + string.Format(ResourceManager.GetString("COMBAT_POWER"));
@@ -611,7 +635,8 @@ namespace Supremacy.Combat
 
         //        //works
         //        //_text = "Step_7345:; A civilization with firepower " + _otherCivStrength;
-        //        //Console.WriteLine(_text);
+        //        //if (Write_Combat_Directly) Console.WriteLine(_text);
+        //        _CombatUpdate_Text += _text;
         //        //GameLog.Core.CombatDetails.DebugFormat(_text);
 
         //        return ""; //.ToString("N0") + " " + string.Format(ResourceManager.GetString("COMBAT_POWER"));
@@ -738,20 +763,22 @@ namespace Supremacy.Combat
 
                 if (_anyAsset == true)
                 {
-                    _text = string.Format(ResourceManager.GetString("COMBAT_POWER")) + ": " + _otherCivStrength.ToString();
+                    string _text = string.Format(ResourceManager.GetString("COMBAT_POWER")) + ": " /*+ _otherCivStrength.ToString()*/;
                     Console.WriteLine("Step_8881:; "
                         + "" + GameEngine.LocationString(_hostileAssets[0].Location.ToString())
-                        + " > " + civName + " > " + _text)
-                        ;
+                        + " cUpda > " + civName
+                        + " > " + _text + _otherCivStrength.ToString()
+                        );
+                        
 
                     if (civName == CivName1 && CivInsigniaOther1 != "BlackInsignia")
-                        _civFirePowers1Text = _text;
+                        _civFirePowers1Text = _text + _otherCivStrength.ToString();
                     if (civName == CivName2 && CivInsigniaOther2 != "BlackInsignia")
-                        _civFirePowers2Text = (_otherCivStrength - CivFirePowers1).ToString();
+                        _civFirePowers2Text = _text + (_otherCivStrength - CivFirePowers1).ToString();
                     if (civName == CivName3 && CivInsigniaOther3 != "BlackInsignia")
-                        _civFirePowers3Text = (_otherCivStrength - CivFirePowers1 - CivFirePowers2).ToString();
+                        _civFirePowers3Text = _text + (_otherCivStrength - CivFirePowers1 - CivFirePowers2).ToString();
                     if (civName == CivName4 && CivInsigniaOther4 != "BlackInsignia")
-                        _civFirePowers4Text = (_otherCivStrength - CivFirePowers1 - CivFirePowers2 - CivFirePowers3).ToString();
+                        _civFirePowers4Text = _text + (_otherCivStrength - CivFirePowers1 - CivFirePowers2 - CivFirePowers3).ToString();
 
                     _anyAsset = false;
 
@@ -761,7 +788,7 @@ namespace Supremacy.Combat
                 else
                 {
                     //_text = string.Format(ResourceManager.GetString("COMBAT_POWER")) + ": " + _otherCivStrength.ToString();
-                    Console.WriteLine("Step_8882:; " + civName + " > no Durability necessary in this one");
+                    Console.WriteLine("Step_8882:; cUpda" + civName + " > no Durability necessary in this one");
                     return "abc";
                 }
 
@@ -891,13 +918,14 @@ namespace Supremacy.Combat
         public string TargetCiv1Status(Civilization us, Civilization others)
         {
             string _targetCiv1Status = GameContext.Current.DiplomacyData[us, others].Status.ToString();
-            _text = "Step_3476: Status Target 1:"
+            string _text = "Step_3476:  cUpda Status Target 1:"
                 + "; Us = " + us
                 + "; others = " + others
                 + "; _targetCiv1Status = " + _targetCiv1Status
                 ;
-            Console.WriteLine(_text);
-            GameLog.Core.CombatDetails.DebugFormat(_text);
+            if (Write_Combat_Directly) Console.WriteLine(_text); 
+            _CombatUpdate_Text += _text;
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
 
             return _targetCiv1Status;
         }
@@ -928,189 +956,228 @@ namespace Supremacy.Combat
                 //CivName_GetOthers();
                 //CivFirePowerText_GetOthers();
 
-                //currentCivStrength from FriendlyAssets
-                GetCurrentCivStrength(FriendlyAssets);
-                GetCurrentCivStrength(HostileAssets);
 
-                _text = "Step_3381:; Combat: > Result ? ";
-                Console.WriteLine(_text);
+
+                //GetCurrentCivStrength(FriendlyAssets);
+                //GetCurrentCivStrength(HostileAssets);
+
+                string _text = "Step_3381:; cUpda: > Result ? (this is CombatUpdate_IsCombatOver)";
+                if (Write_Combat_Directly) Console.WriteLine(_text); 
+                _CombatUpdate_Text += _text;
 
                 if (IsStandoff)
                 {
                     return true;
                 }
 
-                // CHANGE X
-                int friendlyAssets = 0;
-                int hostileAssets = 0;
-                int currentCivStrength = 0;
-
-
-
-
-
-
-                foreach (CombatAssets asset in FriendlyAssets)
+                if (FriendlyAssets.Count == 0) // || _otherCivStrength == 0)// currentCivStrength == 0)
                 {
-                    if (asset.HasSurvivingAssets)
-                    {
-                        _text = "Step_3382:; Combat: friendlyAssets(_assets.CombatShips.Count)=; " + asset.CombatShips.Count;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
-                        friendlyAssets++;
-                    }
-                    //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", _cs.Owner.Key, pair.Owner.Key);
-                    foreach (CombatUnit ship in asset.CombatShips)
-                    {
-                        currentCivStrength += ship.Firepower;
-                        _text = "Step_3383:; Combat: added Firepower into; " + ship.Owner.Key
-                            + "; for; " + ship.Source.ObjectID
-                            + "; " + ship.Source.Name
-                            + "; " + ship.Source.Design
-                            + "; " + ship.Source.FirePower
-                            ;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
-                    }
-                    if (asset.Station != null)
-                    {
-                        currentCivStrength += asset.Station.Firepower;
-                        _text = "Step_3385:; Combat: added Firepower into; " + asset.Station.Owner.Key
-                                + "; for; " + asset.Station.Source.ObjectID
-                                + "; " + asset.Station.Source.Name
-                                + "; " + asset.Station.Source.Design
-                                + "; " + asset.Station.Source.FirePower
-                                ;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
-                    }
-                }
-                _text = "Step_3388:; Combat: friendlyAssets(Amount)="
-                        + "; for; " + friendlyAssets
-                        //+ "; " + _otherCivStrength
-                        ;
-                Console.WriteLine(_text);
-                //GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(Amount)={0} and otherCivStrength ={1}", friendlyAssets, _otherCivStrength);
-                if (friendlyAssets == 0) // || _otherCivStrength == 0)// currentCivStrength == 0)
-                {
-                    _text = "Step_3391:; Combat: friendlyAssets (number of involved entities)=; " + friendlyAssets;
-                    Console.WriteLine(_text);
-                    //GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+                    _text = "Step_3391:; cUpda: friendlyAssets (number of involved entities)=; 0"/* + friendlyAssets*/;
+                    if (Write_Combat_Directly) Console.WriteLine(_text);
+                    _CombatUpdate_Text += _text;
+                    //GameLog.Core.CombatDetails.DebugFormat("cUpda: friendlyAssets (number of involved entities)={0}", friendlyAssets);
                     return true;
                 }
 
-
-
-                //this.CivFirePowers1Text
-
-                //currentCivStrength from HostileAssets
-                foreach (CombatAssets asset in HostileAssets)
+                if (HostileAssets.Count == 0) // && _otherCivStrength == 0)//currentCivStrength == 0)
                 {
-                    if (asset.HasSurvivingAssets)
-                    {
-                        _text = "Step_3392:; Combat: hostileAssets(_assets.CombatShips.Count)=; " + asset.CombatShips.Count;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
-                        hostileAssets++;
-                    }
-
-                    foreach (CombatUnit ship in asset.CombatShips)
-                    {
-                        currentCivStrength += ship.Firepower;
-                        _text = "Step_3393:; Combat: added Firepower into; " + ship.Owner.Key
-                                + "; for; " + ship.Source.ObjectID
-                                + "; " + ship.Source.Name
-                                + "; " + ship.Source.Design
-                                + "; " + ship.Source.FirePower
-                                ;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
-                    }
-
-                    if (asset.Station != null)
-                    {
-                        currentCivStrength += asset.Station.Firepower;
-                        _text = "Step_3395:; Combat: added Firepower into; " + asset.Station.Owner.Key
-                                + "; for; " + asset.Station.Source.ObjectID
-                                + "; " + asset.Station.Source.Name
-                                + "; " + asset.Station.Source.Design
-                                + "; FirePower=" + asset.Station.Source.FirePower
-                                ;
-                        Console.WriteLine(_text);
-                    }
-                }
-
-                if (hostileAssets == 0) // && _otherCivStrength == 0)//currentCivStrength == 0)
-                {
-                    _text = "Step_3397:; Combat: hostileAssets (number of involved entities)= " + hostileAssets
+                    _text = "Step_3397:; cUpda: hostileAssets (number of involved entities)= " /*+ hostileAssets*/
                         + ", hostileAssets = 0"
                         ;
-                    Console.WriteLine(_text);
-                    //GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
+                    if (Write_Combat_Directly) Console.WriteLine(_text);
+                    _CombatUpdate_Text += _text;
+                    //GameLog.Core.CombatDetails.DebugFormat("cUpda: hostileAssets (number of involved entities)={0}", hostileAssets);
                     return true;
                 }
 
-                //return true;
-                return hostileAssets == 0;
+                if (RoundNumber > 1)
+                {
+                    return true;
+                }
+                //
+                return HostileAssets.Count == 0;
+
+                //// CHANGE X
+                //int friendlyAssets = 0;
+                //int hostileAssets = 0;
+                //int currentCivStrength = 0;
+
+                //foreach (CombatAssets asset in FriendlyAssets)
+                //{
+                //    if (asset.HasSurvivingAssets)
+                //    {
+                //        _text = "Step_3382:; cUpda: friendlyAssets(_assets.CombatShips.Count)=; " + asset.CombatShips.Count;
+                //        //if (Write_Combat_Directly) Console.WriteLine(_text);
+                //        //_CombatUpdate_Text += _text;
+                //        //GameLog.Core.CombatDetails.DebugFormat("cUpda: friendlyAssets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
+                //        friendlyAssets++;
+                //    }
+                //    //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", _cs.Owner.Key, pair.Owner.Key);
+                //    foreach (CombatUnit ship in asset.CombatShips)
+                //    {
+                //        currentCivStrength += ship.Firepower;
+                //        _text = "Step_3383:; cUpda: added Firepower into; " + ship.Owner.Key
+                //            + "; for; " + ship.Source.ObjectID
+                //            + "; " + ship.Source.Name
+                //            + "; " + ship.Source.Design
+                //            + "; " + ship.Source.FirePower
+                //            ;
+                //        if (Write_Combat_Directly) Console.WriteLine(_text); 
+                //        _CombatUpdate_Text += _text;
+                //        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
+                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                //    }
+                //    if (asset.Station != null)
+                //    {
+                //        currentCivStrength += asset.Station.Firepower;
+                //        _text = "Step_3385:; cUpda: added Firepower into; " + asset.Station.Owner.Key
+                //                + "; for; " + asset.Station.Source.ObjectID
+                //                + "; " + asset.Station.Source.Name
+                //                + "; " + asset.Station.Source.Design
+                //                + "; " + asset.Station.Source.FirePower
+                //                ;
+                //        if (Write_Combat_Directly) Console.WriteLine(_text); 
+                //        _CombatUpdate_Text += _text;
+                //        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
+                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                //    }
+                //}
+                //_text = "Step_3388:; cUpda: friendlyAssets(Amount)="
+                //        + "; for; " + friendlyAssets
+                //        //+ "; " + _otherCivStrength
+                //        ;
+                ////if (Write_Combat_Directly) Console.WriteLine(_text);
+                ////_CombatUpdate_Text += _text;
+                ////GameLog.Core.CombatDetails.DebugFormat("cUpda: friendlyAssets(Amount)={0} and otherCivStrength ={1}", friendlyAssets, _otherCivStrength);
+
+
+
+
+                ////this.CivFirePowers1Text
+
+                ////currentCivStrength from HostileAssets
+                //foreach (CombatAssets asset in HostileAssets)
+                //{
+                //    if (asset.HasSurvivingAssets)
+                //    {
+                //        _text = "Step_3392:; cUpda: hostileAssets(_assets.CombatShips.Count)=; " + asset.CombatShips.Count;
+                //        if (Write_Combat_Directly) Console.WriteLine(_text); 
+                //        _CombatUpdate_Text += _text;
+                //        //GameLog.Core.CombatDetails.DebugFormat("cUpda: hostileAssets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
+                //        hostileAssets++;
+                //    }
+
+                //    foreach (CombatUnit ship in asset.CombatShips)
+                //    {
+                //        currentCivStrength += ship.Firepower;
+                //        _text = "Step_3393:; cUpda: added Firepower into; " + ship.Owner.Key
+                //                + "; for; " + ship.Source.ObjectID
+                //                + "; " + ship.Source.Name
+                //                + "; " + ship.Source.Design
+                //                + "; " + ship.Source.FirePower
+                //                ;
+                //        if (Write_Combat_Directly) Console.WriteLine(_text); 
+                //        _CombatUpdate_Text += _text;
+                //        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
+                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                //    }
+
+                //    if (asset.Station != null)
+                //    {
+                //        currentCivStrength += asset.Station.Firepower;
+                //        _text = "Step_3395:; cUpda: added Firepower into; " + asset.Station.Owner.Key
+                //                + "; for; " + asset.Station.Source.ObjectID
+                //                + "; " + asset.Station.Source.Name
+                //                + "; " + asset.Station.Source.Design
+                //                + "; FirePower=" + asset.Station.Source.FirePower
+                //                ;
+                //        if (Write_Combat_Directly) Console.WriteLine(_text); 
+                //        _CombatUpdate_Text += _text;
+                //    }
+                //}
+
+                //if (hostileAssets == 0) // && _otherCivStrength == 0)//currentCivStrength == 0)
+                //{
+                //    _text = "Step_3397:; cUpda: hostileAssets (number of involved entities)= " + hostileAssets
+                //        + ", hostileAssets = 0"
+                //        ;
+                //    if (Write_Combat_Directly) Console.WriteLine(_text); 
+                //    _CombatUpdate_Text += _text;
+                //    //GameLog.Core.CombatDetails.DebugFormat("cUpda: hostileAssets (number of involved entities)={0}", hostileAssets);
+                //    return true;
+                //}
+
+                //if (RoundNumber > 1)
+                //{
+                //    return true;
+                //}
+                ////
+                //return hostileAssets == 0;
             }
         }
+
+        public bool Write_Combat_Directly { get => true; }
+
         //}
 
         private void GetCurrentCivStrength(IList<CombatAssets> _assets)
         {
             //int _assetCount;
+            string _text;
             int _currentCivStrength = 0;
             foreach (CombatAssets asset in _assets)
             {
                 if (asset.HasSurvivingAssets)
                 {
-                    _text = "Step_3382:; Combat: _assets(_assets.CombatShips.Count)=; " + asset.CombatShips.Count;
-                    Console.WriteLine(_text);
-                    //GameLog.Core.CombatDetails.DebugFormat("Combat: _assets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
+                    _text = "Step_3382:; cUpda: _assets(_assets.CombatShips.Count)=; " + asset.CombatShips.Count;
+                    if (Write_Combat_Directly) Console.WriteLine(_text); 
+                    _CombatUpdate_Text += _text;
+                    //GameLog.Core.CombatDetails.DebugFormat("cUpda: _assets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
                     //_assets++;
                 }
                 //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", _cs.Owner.Key, pair.Owner.Key);
                 foreach (CombatUnit ship in asset.CombatShips)
                 {
                     _currentCivStrength += ship.Firepower;
-                    _text = "Step_3383:; Combat: added Firepower into; " + ship.Owner.Key
+                    _text = "Step_3383:; cUpda: added Firepower into; " + ship.Owner.Key
                         + "; for; " + ship.Source.ObjectID
                         + "; " + ship.Source.Name
                         + "; " + ship.Source.Design
                         + "; " + ship.Source.FirePower
                         ;
-                    Console.WriteLine(_text);
+                    if (Write_Combat_Directly) Console.WriteLine(_text); 
+                    _CombatUpdate_Text += _text;
                     //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
                     //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                 }
                 if (asset.Station != null)
                 {
                     _currentCivStrength += asset.Station.Firepower;
-                    _text = "Step_3385:; Combat: added Firepower into; " + asset.Station.Owner.Key
+                    _text = "Step_3385:; cUpda: added Firepower into; " + asset.Station.Owner.Key
                             + "; for; " + asset.Station.Source.ObjectID
                             + "; " + asset.Station.Source.Name
                             + "; " + asset.Station.Source.Design
                             + "; " + asset.Station.Source.FirePower
                             ;
-                    Console.WriteLine(_text);
+                    if (Write_Combat_Directly) Console.WriteLine(_text); 
+                    _CombatUpdate_Text += _text;
                     //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
                     //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                 }
             }
-            _text = "Step_3389:; Combat: _assets(Amount)="
+            _text = "Step_3389:; cUpda: _assets(Amount)="
                     + "; for; " + _assets.Count
                     //+ "; " + _otherCivStrength
                     ;
-            Console.WriteLine(_text);
-            //GameLog.Core.CombatDetails.DebugFormat("Combat: _assets(Amount)={0} and otherCivStrength ={1}", _assets, _otherCivStrength);
+            if (Write_Combat_Directly) Console.WriteLine(_text); 
+            _CombatUpdate_Text += _text;
+            //GameLog.Core.CombatDetails.DebugFormat("cUpda: _assets(Amount)={0} and otherCivStrength ={1}", _assets, _otherCivStrength);
             //if (_assets == 0) // || _otherCivStrength == 0)// currentCivStrength == 0)
             //{
-            //    _text = "Step_3391:; Combat: _assets (number of involved entities)=; " + _assets;
-            //    Console.WriteLine(_text);
-            //    //GameLog.Core.CombatDetails.DebugFormat("Combat: _assets (number of involved entities)={0}", _assets);
+            //    _text = "Step_3391:; cUpda: _assets (number of involved entities)=; " + _assets;
+            //    if (Write_Combat_Directly) Console.WriteLine(_text);
+            //    _CombatUpdate_Text += _text;
+            //    //GameLog.Core.CombatDetails.DebugFormat("cUpda: _assets (number of involved entities)={0}", _assets);
             //    return true;
             //}
             //return _currentCivStrength;

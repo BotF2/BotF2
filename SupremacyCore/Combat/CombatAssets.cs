@@ -67,15 +67,15 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (CombatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Transport"))
-                {
-                    return true;
-                }
+                    if (CombatShips.Any(cs => cs.Source != null && cs.Source.OrbitalDesign.ShipType == "Transport"))
+                    {
+                        return true;
+                    }
 
-                if (NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))
-                {
-                    return true;
-                }
+                    if (NonCombatShips.Any(ncs => ncs.Source != null && ncs.Source.OrbitalDesign.ShipType == "Transport"))
+                    {
+                        return true;
+                    }
 
                 return false;
             }

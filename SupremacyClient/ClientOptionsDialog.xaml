@@ -16,7 +16,7 @@
             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
             xmlns:cal="http://www.codeplex.com/CompositeWPF"
             Width="580"
-            Height="550"
+            Height="650"
             Header="Settings"
             Background="Transparent"
             SnapsToDevicePixels="True">

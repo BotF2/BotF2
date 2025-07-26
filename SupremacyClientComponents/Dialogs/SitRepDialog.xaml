@@ -8,7 +8,7 @@
                 xmlns:controls="clr-namespace:Supremacy.Client.Controls"
                 IsModal="False"
                 Height="750"
-                Margin="220,0,0,0"
+                Margin="220,40,0,0"
                 Width="1230">
 
   <dialogs:Dialog.Resources>

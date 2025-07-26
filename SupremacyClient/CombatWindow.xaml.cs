@@ -12,18 +12,21 @@ using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
+using Supremacy.Client.Dialogs;
 using Supremacy.Client.Events;
 using Supremacy.Combat;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Types;
+using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -41,24 +44,24 @@ namespace Supremacy.Client
         private CombatAssets _otherAssets;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
-//#pragma warning disable IDE0052 // Remove unread private members
-        //private List<Civilization> OtherCivs = new List<Civilization> { }; // just a dummy to avoid: Error: 40 : BindingExpression path error:
-        //private List<Civilization> FriendlyCivs = new List<Civilization> { }; // just a dummy to avoid: Error: 40 : BindingExpression path error:  
-//#pragma warning restore IDE0052 // Remove unread private members
+                                                  //#pragma warning disable IDE0052 // Remove unread private members
+                                                  //private List<Civilization> OtherCivs = new List<Civilization> { }; // just a dummy to avoid: Error: 40 : BindingExpression path error:
+                                                  //private List<Civilization> FriendlyCivs = new List<Civilization> { }; // just a dummy to avoid: Error: 40 : BindingExpression path error:  
+                                                  //#pragma warning restore IDE0052 // Remove unread private members
         private readonly Civilization _onlyFireIfFiredAppone;
         private Civilization _targeted1Civ;
         private Civilization _targeted2Civ;
 
         private readonly IAppContext _appContext;
 
-        [NonSerialized]
-        private string _text_combatWindow;
-        private string newline = Environment.NewLine;
-        private int _otherFirePower;
+        //[NonSerialized]
+        //private string _text_combatWindow;
+        //private string _newline = Environment.NewLine;
+        //private int _otherFirePower;
 
         public List<Civilization> FriendlyCivs { get; private set; }
         public List<Civilization> OtherCivs { get; private set; }
-        
+
         public Civilization Targeted1Civ { get; private set; }
         public Civilization Targeted2Civ { get; private set; }
 
@@ -108,11 +111,13 @@ namespace Supremacy.Client
             _onlyFireIfFiredAppone = new Civilization
             {
                 //_onlyFireIfFiredAppone.ShortName = "Only Return Fire";
-                ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE"),
-                CivID = 888,
-                Key = "Only Return Fire",
-                TargetCiv1Status = "",
-                TargetCiv2Status = ""
+                ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE")
+                ,
+                CivID = 888
+                ,
+                Key = "Only Return Fire"
+                //TargetCiv1Status = "",
+                //TargetCiv2Status = ""
 
             };
             // The click of "Only Return Fire" radio button by human player
@@ -132,9 +137,9 @@ namespace Supremacy.Client
         private void HandleCombatUpdate(CombatUpdate update)
         {
             _update = update;
-            _text_combatWindow = newline; // dummy - just keep
+            //_text_combatWindow = _newline; // dummy - just keep
 
-            _text_combatWindow = "Step_6787:; "
+            string _text_combatWindow = "Step_6787:; "
                 + "CombatID=" + _update.CombatID + ": " + "Red Alert at "
                 + _update.Location
                 + " > " + _update.FriendlyAssets.Count() + " on our side - "
@@ -184,9 +189,88 @@ namespace Supremacy.Client
 
             DataContext = _update;
 
+            SubHeader2Text.Text = string.Format(ResourceManager.GetString("COMBAT_TEXT_DURABILITY"));
+
+            //, _update.Sector.Name);
+
             // as long as (relevant) hostileassets is not null
             if (update.CombatUpdate_IsCombatOver)  // Combat is over
             {
+
+                DialogResult = true;
+                Close();
+                // -----------------------------------------------------
+                //if (update.CombatUpdate_IsCombatOver)
+                //{
+                string _newline = Environment.NewLine;
+
+                Civilization _localPlayer = _appContext.LocalPlayer.Empire;
+                MapLocation _loc = update.Location;
+
+
+
+
+                //string _civ2 = "";
+                //if (update.CivName2 != "")
+                //{
+                //    _civ2 = update.CivName2;
+                //}
+
+                //string _civ3 = "";
+                //if (update.CivName3 != "")
+                //{
+                //    _civ3 = update.CivName3;
+                //}
+
+                //string _civ4 = "";
+                //if (update.CivName4 != "")
+                //{
+                //    _civ4 = update.CivName4;
+                //}
+                
+                //string _allFriendlyAssetsText = "";
+
+
+                //string _allHostileAssetsText = "";
+
+
+                string _resultHeaderText = _update.Owner.ToString().ToUpper() + ":  --- RESULT for  > Combat" // at = " + update.CombatID
+                                                                                                                      //+ " Round= " + update.RoundNumber
+                    + " at " + update.Location.ToString() 
+                    + " ---"
+    
+                    /*+ _newline*/
+                    //+ " > Durability " + update.FriendlyEmpireStrength + " vs " + update.AllHostileEmpireStrength
+                    ; // + _newline
+
+                //string _resultText =
+                ////_update.Owner.ToString().ToUpper() + " > Combat" // at = " + update.CombatID
+                ////                              //+ " Round= " + update.RoundNumber
+                ////    + " at " + update.Location.ToString() /*+ _newline*/
+                ////    + " > Durability " + update.FriendlyEmpireStrength + " vs " + update.AllHostileEmpireStrength + _newline
+                //    "----------------------------------------------------------------------------------------------------------------"
+                ////    //+ update.CivFirePowers1 + " = " + update.CivFirePowers1Text + _newline
+                ////    //+ _newline + _update.Owner + _newline
+                ////    //+ _update.CivName1 + _newline
+                //    + _allFriendlyAssetsText + _newline
+                //    + _newline
+                //    + _allHostileAssetsText + _newline
+                //    ;
+
+                // No Output, no MessageBox here !!
+
+            //    MessageDialogResult _result = MessageDialog.Show(_resultHeaderText
+            //        , _resultText, MessageDialogButtons.Ok);
+
+            //Again:;
+            //    if (_result != MessageDialogResult.Ok)
+            //    {
+            //        Thread.Sleep(100);
+            //        goto Again;
+            //    }
+
+
+
                 string _combatText = "Red Alert at " + _update.Sector.Location + " > ";
                 if (_update.IsStandoff)
                 {
@@ -199,7 +283,7 @@ namespace Supremacy.Client
                     _text_combatWindow += _combatText + " - no winner";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text_combatWindow, _text_combatWindow, "", SitRepPriority.Red));
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text_combatWindow, "", "", SitRepPriority.Red));
 
                     //playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
                     //    string.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
@@ -221,7 +305,7 @@ namespace Supremacy.Client
                     _text_combatWindow = _combatText + " - we were victorious !";
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text_combatWindow, _text_combatWindow, "", SitRepPriority.Red));
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text_combatWindow, "", "", SitRepPriority.Red));
                     Console.WriteLine("Step_6886:; " + _text_combatWindow);
                 }
                 else
@@ -241,9 +325,10 @@ namespace Supremacy.Client
 
 
                     //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text_combatWindow, _text_combatWindow, "", SitRepPriority.Red));
+                    playerCivManager.SitRepEntries.Add(new ReportEntry_CoS(playerCivManager.Civilization, _update.Sector.Location, _text_combatWindow, "", "", SitRepPriority.Red));
                     Console.WriteLine("Step_6888:; " + _text_combatWindow);
                 }
+
             }
             else // combat is not over
             {
@@ -261,13 +346,13 @@ namespace Supremacy.Client
                     }
                 }
             }
-            SubHeader2Text.Text = string.Format(
-                ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
-                _update.Sector.Name);
+            //SubHeader2Text.Text = string.Format(
+            //    ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
+            //    _update.Sector.Name);
 
-            _otherFirePower = 0;
+            //int _otherFirePower = 0;
 
-            
+
 
             //if (CivFirePowers2 != 0) _otherFirePower += CivFirePowers2;
             //if (update.CivFirePowers3 != 0) _otherFirePower += update.CivFirePowers3;
@@ -275,10 +360,13 @@ namespace Supremacy.Client
 
             //update.GetCivFirePowers
             _text_combatWindow = "Red Alert at " + update.Location
-                + " > our Firepower: " + update.CivFirePowers1
-                + " vs " + _otherFirePower
+                //+ " > our Firepower: " + update.CivFirePowers1
+                //+ " vs " + update.CivFirePowers2
+                //+ " + " + update.CivFirePowers3
+                //+ " + " + update.CivFirePowers4
+
                 //+ _text_combatWindow 
-                //+ newline
+                //+ _newline
                 ;
 
             //CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
@@ -286,7 +374,7 @@ namespace Supremacy.Client
 
             _text_combatWindow = "Step_3456:; CombatID= " + update.CombatID + ": " + _text_combatWindow;
             Console.WriteLine(_text_combatWindow);
-            //_combat_full_Report += _text_combatWindow + newline;
+            //_combat_full_Report += _text_combatWindow + _newline;
 
             PopulateUnitTrees();
 
@@ -309,13 +397,28 @@ namespace Supremacy.Client
             UpperButtonsPanel.IsEnabled = true;
             LowerButtonsPanel.IsEnabled = true;
 
-            if (!IsVisible)
+
+
+            if (!IsVisible && update.RoundNumber == 1)
             {
                 _ = Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
             }
+
+
         }
 
-    
+        private string CreateShipText(CombatUnit _ship, out string _shipText)
+        {
+            _shipText = Environment.NewLine +
+                    "ICH: " + _ship.HullIntegrity
+                    + ", S: " + _ship.ShieldIntegrity
+                    //+ " f." + _ship.Owner.ShortName
+                    + " Ship " + GameEngine.Do_5_Digit(_ship.Source.ObjectID.ToString())
+                    + " - " + _ship.Source.OrbitalDesign.Key
+                    + " - " + _ship.Source.Name;
+            return _shipText;
+        }
+
         private void ClearUnitTrees()
         {
 
@@ -334,7 +437,7 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
-            GameLog.Core.CombatDetails.DebugFormat("cleared all ClearUnitTrees");
+            //GameLog.Core.CombatDetails.DebugFormat("cleared all ClearUnitTrees");
 
         }
 
@@ -498,9 +601,9 @@ namespace Supremacy.Client
                 || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))));
 
             //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
-            _text_combatWindow = "Step_5487:; Primary Target is set to .. > " + _targeted1Civ.ShortName;
+            string _text_combatWindow = "Step_5487:; Primary Target is set to .. > " + _targeted1Civ.ShortName;
             Console.WriteLine(_text_combatWindow);
-            GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow); //theTargeted1Civ);
+            //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow); //theTargeted1Civ);
 
         }
 
@@ -523,9 +626,9 @@ namespace Supremacy.Client
             TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))))
                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))));
 
-            _text_combatWindow = "Step_5487:; Secondary Target is set to .. > " + _targeted2Civ.ShortName;
+            string _text_combatWindow = "Step_5487:; Secondary Target is set to .. > " + _targeted2Civ.ShortName;
             Console.WriteLine(_text_combatWindow);
-            GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow);
+            //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow);
             //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
         }
 
@@ -566,8 +669,8 @@ namespace Supremacy.Client
                 //Close();
             }
 
-            _text_combatWindow = /*"###########################" +*/
-                GameEngine.LocationString(_playerAssets.Location.ToString()) + " > Red Alert at " + _playerAssets.Sector 
+            string _text_combatWindow = /*"###########################" +*/
+                GameEngine.LocationString(_playerAssets.Location.ToString()) + " > Red Alert at " + _playerAssets.Sector
                 + " > Target 1: " + _targeted1Civ.Name + ", 2: " + _targeted2Civ.Name
                 + " > Player's choice: " + order /*+ " button was clicked by player "*/
                 ;

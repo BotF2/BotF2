@@ -204,9 +204,9 @@ namespace Supremacy.Resources
                     //{
                     //    foreach (var item in _localStrings.Values)
                     //    {
-                    //        if (item == "STAR_TYPE_BLACKHOLE_DESCRIPTION"
+                    //        if (item == "STAR_TYPE_BLACK_HOLE_DESCRIPTION"
                     //            || item == "STAR_TYPE_WORMHOLE_DESCRIPTION"
-                    //            || item == "STAR_TYPE_BLACKHOLE_DESCRIPTION")
+                    //            || item == "STAR_TYPE_BLACK_HOLE_DESCRIPTION")
                     //        {
                     //            //item.
                     //            Debugger.Break();

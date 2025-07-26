@@ -20,6 +20,7 @@ using Supremacy.Types;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -61,7 +62,7 @@ namespace Supremacy.Universe
         private GameObjectLookupCollection<Civilization, Colony> _homeColonyLookup;
         //private string _text;
         //private bool _checkLoading = true;
-        //private readonly string newline = Environment.NewLine;
+        //private readonly string _newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the map of the game universe.
@@ -150,7 +151,9 @@ namespace Supremacy.Universe
         {
             if (civilization == null)
             {
-                throw new ArgumentNullException("civilization");
+                Debugger.Break();
+                //throw new ArgumentNullException("civilization");
+                return null;
             }
 
             IEnumerable<UniverseObject> items = from item in _objects
@@ -602,7 +605,7 @@ namespace Supremacy.Universe
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
-            _text = "Step_4500:; Objects following from _checkLoading";
+            _text = "Step_4501:; Objects following from _checkLoading";
             Console.WriteLine(_text); 
             //GameLog.Core.SaveLoad.DebugFormat(_text);
  
@@ -672,7 +675,13 @@ namespace Supremacy.Universe
             ILookup<MapLocation, StarSystem> systemLocationLookup = _objects.OfType<StarSystem>().ToLookup(o => o.Location);
             ILookup<MapLocation, Building> buildingLocationLookup = _objects.OfType<Building>().ToLookup(o => o.Location);
 
-            GameLog.Core.SaveLoad.DebugFormat("Step_4550: Deserialized: item=Colony;Location;Owner;Name;Population");
+            _text = "Step_4550:; Deserialized: item=Colony;Location;Owner;Name;Population\"";
+            Console.WriteLine(_text);
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+            _text = "Step_4364:; buildingLocationLookup might be turned out";
+            Console.WriteLine(_text);
+
             foreach (Colony colony in colonies)
             {
                 String _col =
@@ -699,6 +708,10 @@ namespace Supremacy.Universe
 
                 //if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
                 //{
+
+                //_text = "Step_4364:; buildingLocationLookup might be turned out";
+                //Console.WriteLine(_text);
+
                 string _active = "";
                     foreach (Building building in buildingLocationLookup[colony.Location])
                     {
@@ -715,8 +728,10 @@ namespace Supremacy.Universe
                         //_checkLoading = true; 
                         //if(_checkLoading == true)
                         //{
-                        Console.WriteLine(_text);
-                        //PrintBuilding(building);    
+
+                        //Console.WriteLine(_text);  // turn on if you want
+                        
+                    //PrintBuilding(building);    
                         //}
                         //else
                         //{
@@ -864,20 +879,20 @@ namespace Supremacy.Universe
             _text = "Step_3644:; Deserializing _objects...";
             //if (_writeDirectly_Fleets) 
                 Console.WriteLine(_text);
-            //_colony_full_Report += _text + newline;
+            //_colony_full_Report += _text + _newline;
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
             _text = "Step_3647:; Deserializing _homeColonyLookup...";
             //if (_writeDirectly_Fleets) 
             Console.WriteLine(_text);
-            //_colony_full_Report += _text + newline;
+            //_colony_full_Report += _text + _newline;
             GameLog.Core.SaveLoad.DebugFormat(_text);
 
 
             // no big result
             //foreach (var item in _homeColonyLookup.Keys)
             //{
-            //    _text = newline + "Deserialized _homeColonyLookup: "
+            //    _text = _newline + "Deserialized _homeColonyLookup: "
             //        + item.CivID
             //        + ";" + item.Key
             //        //+ ";" + item.

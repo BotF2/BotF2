@@ -63,9 +63,12 @@ namespace Supremacy.Client
         private readonly INavigationService _navigationService;
         private readonly IGameWindow _gameWindow;
         private readonly ISoundPlayer _soundPlayer;
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly IMusicPlayer _musicPlayer;
+
 #pragma warning restore IDE0052 // Remove unread private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         private readonly SitRepDialog _sitRepDialog;
         //private readonly ShipOverview _shipOverview;
         private readonly IAppContext _appContext;
@@ -90,7 +93,7 @@ namespace Supremacy.Client
         private string _text;
         private int _lastOneDone;
         private string _contentHistoryFile = "";
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
 
         public GameController(
             [NotNull] IUnityContainer container,
@@ -355,6 +358,9 @@ namespace Supremacy.Client
 
         private void OnTurnStarted(EventArgs args)
         {
+            _text = "Step_4007:; OnTurnStarted... (currentGame)";
+            Console.WriteLine(_text);
+
             IGameContext currentGame = _appContext.CurrentGame;
             if (currentGame == null)
             {
@@ -371,25 +377,40 @@ namespace Supremacy.Client
                 ClearGameStartWaitCursor();
             }
 
-            ProcessSitRepEntries();
+            //ProcessSitRepEntries();
+
+
 
             foreach (IInfoCardSubject infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
             {
+                _text = "Step_4008:; InfoCard...";
+                Console.WriteLine(_text);
+                //GameLog.Core.GeneralDetails.DebugFormat(_text);
+
                 infoCardSubject.RefreshData();
             }
 
+            _text = "Step_4007:; ClearTurnWaitCursor()...";
+            Console.WriteLine(_text);
+
             ClearTurnWaitCursor();
+
+            _text = "Step_4009:; _endTurnCommand...";
+            Console.WriteLine(_text);
 
             _endTurnCommand.IsActive = true;
 
-            //ProcessSitRepEntries();
+            ProcessSitRepEntries();
+
+            _text = "Step_4011:; ProcessSitRepEntries is DONE..." + DateTime.Now;
+            Console.WriteLine(_text);
         }
 
         private void ProcessSitRepEntries()
         {
             _text = "Step_4004:; ProcessSitRepEntries...";
             Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
             {
@@ -417,11 +438,13 @@ namespace Supremacy.Client
                 }
             }
 
-            _text = "Step_4090:; ProcessSitRepEntries... done ";
-            Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
 
             ShowSummary(false);
+
+            _text = "Step_4090:; ProcessSitRepEntries... done ";
+            Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
         }
 
         private void ShowSummary(bool showIfEmpty)
@@ -435,12 +458,14 @@ namespace Supremacy.Client
             //Console.WriteLine(_text);
             //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
+            // works but less sense
+            //if (1 == 2)
+            //{
             List<SitRepEntry> sr = (List<SitRepEntry>)_appContext.LocalPlayerEmpire.SitRepEntries;
-
-            sr.OrderBy(o => o.Action).ToList();
-            //sr.OrderBy(o => o.DetailText).ToList();
-
+             // for working /*sr =*/ sr.OrderBy(o => o.Action).ToList();
             _sitRepDialog.SitRepEntries = sr; 
+            //}
+
 
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
@@ -486,17 +511,17 @@ namespace Supremacy.Client
                     //    _prio += " ";
                     //}
 
-                    _text += newline + "Turn;" + GameContext.Current.TurnNumber
+                    _text += _newline + "Turn;" + GameContext.Current.TurnNumber
                         //+ ";" + _prio
-                        + ";" + item.SummaryText
+                        + "; " + item.SummaryText
                         + ";( " + item.Priority + " )"
                         ;
                 }
                 Console.WriteLine(_text);
                 //GameLog.Core.SitReps.InfoFormat(_text);
 
-                _text = "Step_4889:; SaveSUMMARY_TXT... offline - takes to long time";
-                Console.WriteLine(_text);
+                _text = "Step_4887:; SaveSUMMARY_TXT... offline - takes to long time";
+                //Console.WriteLine(_text);
                 //GameLog.Core.GeneralDetails.DebugFormat(_text);
                 //SaveSUMMARY_TXT(_text);
                 _lastOneDone = GameContext.Current.TurnNumber;
@@ -519,9 +544,12 @@ namespace Supremacy.Client
         }
 
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0051 // Remove unused private members
         private void SaveSUMMARY_TXT(string _text)
 #pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
+
         {
             //_text += " "; // dummy - please keep
             _text = "Step_4777:; SaveSUMMARY_TXT..." + _text;
@@ -664,7 +692,7 @@ namespace Supremacy.Client
                     var line = reader.ReadLine();
                     if (line == null)
                         break;
-                    _contentHistoryFile += line + newline;
+                    _contentHistoryFile += line + _newline;
                 }
                 reader.Close();
             }

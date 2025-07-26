@@ -48,6 +48,18 @@ namespace Supremacy.Orbitals
         /// <value>The type of the UniverseObject.</value>
         public sealed override UniverseObjectType ObjectType => UniverseObjectType.Fleet;
 
+        public string All_Info
+        {
+            get
+            {
+                string _all_info = this.ObjectID + " " + Name + " " + this.Location 
+                    + " " + AITypeUnit
+                    ;
+                
+                return _all_info;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the name of this <see cref="Fleet"/>.
         /// </summary>
@@ -656,7 +668,7 @@ namespace Supremacy.Orbitals
             _route = TravelRoute.Empty;
             _ships = new CollectionBase<Ship>();
             _activity = UnitActivity.GoToAccumulateSector;
-            UnitAIType = UnitAIType.NoUnitAI;
+            AITypeUnit = UnitAIType.NoUnitAI;
         }
 
         /// <summary>
@@ -864,7 +876,7 @@ namespace Supremacy.Orbitals
             //;
             ////if (_writeDirectly_Fleets) 
             //Console.WriteLine(_text);
-            ////_fleet_Text += newline + _text;
+            ////_fleet_Text += _newline + _text;
             ////GameLog.Core.Combat.DebugFormat("SetRoute begins...");
 
             if (IsRouteLocked)
@@ -1059,7 +1071,7 @@ namespace Supremacy.Orbitals
             writer.Write(_isRouteLocked);
             writer.WriteObject(_order);
             writer.WriteObject(_route);
-            writer.WriteOptimized((int)UnitAIType);
+            writer.WriteOptimized((int)AITypeUnit);
             writer.WriteOptimized((int)_activity);
             writer.WriteOptimized(ActivityStart);
         }
@@ -1076,7 +1088,7 @@ namespace Supremacy.Orbitals
             _isRouteLocked = reader.ReadBoolean();
             _order = reader.Read<FleetOrder>();
             _route = reader.Read<TravelRoute>();
-            UnitAIType = (UnitAIType)reader.ReadOptimizedInt32();
+            AITypeUnit = (UnitAIType)reader.ReadOptimizedInt32();
             _activity = (UnitActivity)reader.ReadOptimizedInt32();
             ActivityStart = reader.ReadOptimizedInt32();
         }
@@ -1100,7 +1112,7 @@ namespace Supremacy.Orbitals
             return civM;
         }
 
-        public UnitAIType UnitAIType { get; set; }
+        public UnitAIType AITypeUnit { get; set; }
 
         public UnitActivity Activity
         {

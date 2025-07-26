@@ -121,6 +121,7 @@ namespace Supremacy.Client
 
         public void EndTurn(PlayerOrdersMessage orders) //not combat orders, see below sendCombatOrders
         {
+            // EndTurn pressed = go to next turn
             try { Channel.EndTurn(orders); }
             catch (FaultException) { }
 

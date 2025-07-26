@@ -327,7 +327,7 @@
                     </StackPanel>
                 </Grid>
                 <ScrollViewer 
-                    VerticalScrollBarVisibility="Visible"
+                    VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto"
                     Margin="5,0,0,0"
                     Width="Auto"

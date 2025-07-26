@@ -1,3 +1,4 @@
+// File:GalaxyScreenPresenter.cs
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -109,6 +110,8 @@ namespace Supremacy.Client.Views
             _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             ISoundPlayer dummy = _soundPlayer;
+
+            //GalaxyScreenCommands.SelectSector.Execute(colony.Sector);
         }
         #endregion
 

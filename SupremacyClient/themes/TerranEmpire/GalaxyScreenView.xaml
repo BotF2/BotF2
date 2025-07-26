@@ -192,12 +192,11 @@
                       Grid.Row="0"
                       Padding="7,0,7,0"
                       Margin="3,0,0,0">
-                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="18pt"
+                                <TextBlock Text="{s:StringResource SCAN_TEXT}" HorizontalAlignment="Center"
+                           FontSize="18pt" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            Foreground="{StaticResource HeaderTextBrush}"
-                           Text="{s:StringResource SCAN_TEXT}"
-                           HorizontalAlignment="Center" />
-              </Border>
+                           />
+                            </Border>
               <Border Grid.Column="5"
                       Grid.Row="1"
                       Padding="7,0,7,0"
@@ -859,6 +858,45 @@
                                                 </ToolTip>
                                             </Button.ToolTip>
                                         </Button>
+
+                                        <!--<Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterAccumulateButton"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnAccumulateSector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_ACCUMULATE_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_ACCUMULATE_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterSystemAssault_1_Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnSystemAssault_1_Sector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_SYSTEM_ASSAULT_1_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_SYSTEM_ASSAULT_1_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterSystemAssault_2_Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnSystemAssault_2_Sector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_CENTER_SYSTEM_ASSAULT_2_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_SYSTEM_ASSAULT_2_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>-->
 
                                     </StackPanel>
 

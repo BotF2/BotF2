@@ -150,19 +150,22 @@ namespace Supremacy.Pathfinding
                 throw new ArgumentNullException("waypoints");
             }
 
-            _text = "Step_6442:; " + Supremacy.AI.UnitAI.CreateUpdateFleetText(fleet, out string _fleetText) /*+ " > is new ordered "*/
-                        ;
+            // too often
+            //_text = "Step_6442:; " + Supremacy.AI.UnitAI.CreateUpdateFleetText(fleet, out string _fleetText) /*+ " > is new ordered "*/
+            //            ;
             //if (_writeDirectly_Fleets) 
-            Console.WriteLine(_text);
-            //_fleet_Text += newline + _text;
+            //Console.WriteLine(_text);
+            //_fleet_Text += _newline + _text;
 
             foreach (Ship ship in fleet.Ships)
             {
-                _text = "Step_6444:; " + Supremacy.AI.UnitAI.CreateShipText(ship, out string _shipText) + " > is new ordered "
-                    ;
+                Supremacy.AI.UnitAI.CreateShipText(ship, out string _shipText);
+                // too often
+                //_text = "Step_6444:; " + Supremacy.AI.UnitAI.CreateShipText(ship, out string _shipText) + " > is new ordered "
+                //    ;
                 //if (_writeDirectly_Fleets) 
-                Console.WriteLine(_text);
-                //_fleet_Text += newline + _text;
+                //Console.WriteLine(_text);
+                //_fleet_Text += _newline + _text;
 
                 if (fleet.Owner == null)
                 {
@@ -170,7 +173,7 @@ namespace Supremacy.Pathfinding
                                 ;
                     //if (_writeDirectly_Fleets) 
                         Console.WriteLine(_text);
-                    //_fleet_Text += newline + _text;
+                    //_fleet_Text += _newline + _text;
 
                     Debugger.Break();
 
@@ -185,7 +188,7 @@ namespace Supremacy.Pathfinding
             ;
                     //if (_writeDirectly_Fleets) 
                     Console.WriteLine(_text);
-                    //_fleet_Text += newline + _text;
+                    //_fleet_Text += _newline + _text;
 
                     Debugger.Break();
 
@@ -199,6 +202,11 @@ namespace Supremacy.Pathfinding
 
             foreach (Sector waypoint in waypoints)
             {
+                if (waypoint == null)
+                {
+                    continue;
+                }
+
                 MapLocation waypointLocation = waypoint.Location;
 
                 Path<Sector> segment = FindPath(

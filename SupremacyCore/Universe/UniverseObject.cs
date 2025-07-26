@@ -45,7 +45,7 @@ namespace Supremacy.Universe
         public string _colony_Full_Report;
 
         //private string _text;
-        //private readonly string newline = Environment.NewLine;
+        //private readonly string _newline = Environment.NewLine;
 
 
 
@@ -283,7 +283,7 @@ namespace Supremacy.Universe
             //Console.WriteLine("UniverseObjects: DeserializeOwnedData... ");
 
             // no big result
-            //_text = newline
+            //_text = _newline
             //    + ";" + _location
             //    + ";" + _name
             //    + ";" + _ownerId
@@ -453,7 +453,10 @@ namespace Supremacy.Universe
                 catch (Exception e)
                 {
                     // doesn't work - only crashes when using Live Visual Tree directly in Visual Studio - then just click on Continue - use F5 to continue
-                    GameLog.Core.General.Error("No EffectBindings available " + e);
+                    _text = "Step_2589:; EffectBindings crashed > " + e.Message;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.General.Error(_text);
+                    Debugger.Break();
                     return _effectBindings.Value;
                 }
             }

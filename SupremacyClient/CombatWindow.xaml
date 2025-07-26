@@ -211,7 +211,7 @@
 
         <!-- Targeting Center SUMMARY of 'other' civs Data Template for one item view  -->
         <DataTemplate x:Key="OthersTreeSummaryTemplate">
-            <StackPanel Margin="0,10,0,0"
+            <StackPanel Margin="0,0,0,0"
                         Orientation="Horizontal"
                         Focusable="False"
                         Background="Black"
@@ -223,14 +223,24 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <!--<RowDefinition Height="10"/>                        just for margin -->
+                      <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
+                  <!--<TextBlock x:Name="JustForMargin"
+  Foreground="LightYellow"
+           HorizontalAlignment="Left"
+           VerticalAlignment="Top"
+           Margin="0,0,0,0"
+           FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+           FontSize="16pt"
+           Text=" ." />-->
+                  
                     <TextBlock x:Name="ShortName"
                       Foreground="LightYellow"
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
+                               VerticalAlignment="Center"
                                Margin="5,0,10,0"
                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                FontSize="16pt"
@@ -340,7 +350,7 @@
                 Margin="6,6,5,6"
                 Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Sector.Location}"
+                <!--<TextBlock Text="{Binding Path=Sector.Location}"
                      FontSize="20pt"
                      FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      Foreground="{DynamicResource DefaultTextBrush}"
@@ -349,7 +359,7 @@
                      FontSize="20pt"
                      FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      Foreground="{DynamicResource DefaultTextBrush}"
-                     />                
+                     />-->                
                 <TextBlock x:Name="HeaderText"
                      FontSize="20pt"
                      FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -511,8 +521,9 @@
                   Grid.Column="1"
                   Grid.Row="1"
                   VerticalAlignment="Top"
-                  Width="Auto"            
-                  Margin="2">
+                  Width="Auto"
+                  Margin="2,20,0,0"
+                  >
             <TreeView x:Name="TargetingAndSummary"
                         BorderThickness="0"
                         VerticalAlignment="Top"
@@ -534,15 +545,39 @@
                 <StackPanel
                         Grid.Column="1"
                         Grid.Row="1"
+                        Margin="0,0,0,0"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left"
                         Orientation="Vertical">
+
                     <StackPanel
                             Grid.Column="1"
                             Grid.ColumnSpan="1"
                             Grid.Row="1"
                             HorizontalAlignment="Left">
-                        <Border x:Name="SummaryBorder"
+
+                      <StackPanel x:Name="CombatString" Orientation="Horizontal" Margin="90,0,0,0"
+            TextBlock.FontSize="18pt" TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+            TextBlock.Foreground="Red"
+                              >
+                        <!--TextBlock.HorizontalAlignment="Center" TextBlock.VerticalAlignment="Center"-->
+                        <TextBlock Text="{s:StringResource SECTOR_TEXT}" />
+                        <TextBlock Text="  >  " />
+                        <TextBlock Text="{Binding Path=Sector.Location}" />
+                      </StackPanel>
+                      
+                      
+                  <!--<TextBlock Text="{s:StringResource HINT_DEFAULT_ONLY_RETURN_FIRE}" 
+                                                           TextBlock.FontSize="12pt" TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                              TextBlock.Foreground="Red" TextBlock.HorizontalAlignment="Center" TextBlock.VerticalAlignment="Center"
+                             />
+                      
+                      <TextBlock Text="{s:StringResource FIRE_FIRST_HINT}"
+                                         TextBlock.FontSize="12pt" TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+            TextBlock.Foreground="Red" TextBlock.HorizontalAlignment="Center" TextBlock.VerticalAlignment="Center"
+                             />-->
+                      
+                      <Border x:Name="SummaryBorder"
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Center"
@@ -553,6 +588,7 @@
                                 
                                 BorderThickness="4"
                                 CornerRadius="8">
+                         
                             <ListBox x:Name="OtherCivilizationsSummaryItem1"  
                                     IsSynchronizedWithCurrentItem="True"
                                     ItemsSource="{Binding}"
@@ -568,11 +604,31 @@
                         </Border>
                     </StackPanel>
 
-                    <Border x:Name="ImageBorder1"
+                  <!--<StackPanel x:Name="CombatString" Orientation="Horizontal" Margin="99,10,0,0"
+                              TextBlock.FontSize="18pt" TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                              TextBlock.Foreground="Red" 
+                              >
+                    --><!--TextBlock.HorizontalAlignment="Center" TextBlock.VerticalAlignment="Center"--><!--
+                    <TextBlock Text="{s:StringResource SECTOR_TEXT}" />
+                    <TextBlock Text="  >  " />
+                    <TextBlock Text="{Binding Path=Sector.Location}" />
+                  </StackPanel>-->
+
+                  <TextBlock Text="{s:StringResource HINT_DEFAULT_ONLY_RETURN_FIRE}"
+                        Margin="0,0,0,0"                TextBlock.FontSize="12pt" TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        TextBlock.Foreground="Red" TextBlock.HorizontalAlignment="Center" TextBlock.VerticalAlignment="Center"
+                             />
+
+                  <TextBlock Text="{s:StringResource FIRE_FIRST_HINT}"
+                        Margin="0,0,0,0"             TextBlock.FontSize="12pt" TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        TextBlock.Foreground="Red" TextBlock.HorizontalAlignment="Center" TextBlock.VerticalAlignment="Center"
+                             />
+                  
+                  <Border x:Name="ImageBorder1"
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Margin="0,38,4,2"
+                                Margin="0,10,4,2"
                                 Width="310"
                                 Height="230"
                                 BorderBrush="LightGray"
@@ -973,17 +1029,11 @@
                 Visibility="Collapsed"
                 Click="OnCloseButtonClicked" Grid.RowSpan="1"/>
 
-        <Button x:Name="EscapeButton"
-                Margin="0,106,0,0"                       
-                Grid.Column="0"
-                Grid.Row="0"
-                Grid.ColumnSpan="3"
-                FontSize="12"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Content="{s:StringResource COMBAT_CLOSE_COMBAT_WINDOW}"
-                Visibility="Visible"
-                Click="OnOrderButtonClicked" />
+        <Button x:Name="EscapeButton" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                Margin="190,85,30,10" VerticalAlignment="Top" HorizontalAlignment="Left"                       
+                FontSize="14" Content="{s:StringResource COMBAT_CLOSE_COMBAT_WINDOW}"
+          Visibility="Hidden" Click="OnOrderButtonClicked"
+                />
     </Grid>
 </scc:Dialog>
 <!--Main Combat Window -END-->

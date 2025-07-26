@@ -77,7 +77,8 @@ namespace Supremacy.Combat
         {
             if (orbital == null)
             {
-                throw new ArgumentNullException(nameof(orbital));
+                //throw new ArgumentNullException(nameof(orbital));
+                return null;
             }
 
             int beams = orbital.OrbitalDesign.PrimaryWeapon.Count;

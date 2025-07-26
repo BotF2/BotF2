@@ -360,7 +360,7 @@ namespace Supremacy.Data
                         if (tokens.Length == 1)
                         {
                             throw new TableParseException(
-                                "expected table name, found newline");
+                                "expected table name, found _newline");
                         }
                         if (TableNameRegex.IsMatch(tokens[1]))
                         {
@@ -377,7 +377,7 @@ namespace Supremacy.Data
                         //    && !tokens[2].StartsWith("#"))
                         //{
                         //    throw new TableParseException(
-                        //        "expected newline, found \"" +
+                        //        "expected _newline, found \"" +
                         //        tokens[2] + "\"");
                         //}
                         table = new Table<TRowKey>(tableName);
@@ -434,7 +434,7 @@ namespace Supremacy.Data
                         //    && !tokens[1].StartsWith("#"))
                         //{
                         //    throw new TableParseException(
-                        //        "expected newline, found \""
+                        //        "expected _newline, found \""
                         //        + tokens[1] + "\"");
                         //}
                         state = ReadState.Rows;

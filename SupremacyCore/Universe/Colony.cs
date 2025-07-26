@@ -37,18 +37,18 @@ namespace Supremacy.Universe
     [Serializable]
     public class Colony : UniverseObject, IProductionCenter, ITradeCenter, IContactCenter
     {
-        #region TotalEnergy Dynamic Property
-        public static readonly DynamicProperty<int> TotalEnergyProperty = DynamicProperty<int>.Register(
-            "TotalEnergy",
+        #region Energy_Total Dynamic Property
+        public static readonly DynamicProperty<int> Energy_Total_Property = DynamicProperty<int>.Register(
+            "Energy_Total",
             typeof(Colony),
-            new DynamicPropertyMetadata<int>(OnTotalEnergyChanged));
+            new DynamicPropertyMetadata<int>(OnEnergyTotalChanged));
 
-        private static void OnTotalEnergyChanged(DynamicObject d, DynamicPropertyChangedEventArgs<int> e)
+        private static void OnEnergyTotalChanged(DynamicObject d, DynamicPropertyChangedEventArgs<int> e)
         {
-            ((Colony)d).OnPropertyChanged("TotalEnergy");
+            ((Colony)d).OnPropertyChanged("Energy_Total");
         }
 
-        public int TotalEnergy => GetValue(TotalEnergyProperty).CurrentValue;
+        public int Energy_Total => GetValue(Energy_Total_Property).CurrentValue;
         #endregion
 
 
@@ -97,21 +97,6 @@ namespace Supremacy.Universe
         private IValueProvider<int> orbitalBatteries_active;
         private IValueProvider<int> orbitalBatteries_scrapped;
         private IValueProvider<int> orbitalBatteries_total;
-
-        //private IValueProvider<int> _Facilities_Active1_Food;
-        //private IValueProvider<int> _Facilities_Total1_Food;
-
-        //private IValueProvider<int> _Facilities_Active2_Industry;
-        //private IValueProvider<int> _Facilities_Total2_Industry;
-
-        //private IValueProvider<int> _Facilities_Active3_Energy;
-        //private IValueProvider<int> _Facilities_Total3_Energy;
-
-        //private IValueProvider<int> _Facilities_Active4_Research;
-        //private IValueProvider<int> _Facilities_Total4_Research;
-
-        //private IValueProvider<int> _Facilities_Active5_Intelligence;
-        //private IValueProvider<int> _Facilities_Total5_Intelligence;
 
         private ColonyFacilitiesAccessor _activeFacilitiesProvider;
         private ColonyFacilitiesAccessor _unusedFacilitiesProvider;
@@ -178,11 +163,13 @@ namespace Supremacy.Universe
             _shipyardId = -1;
             _systemId = system.ObjectID;
 
+            Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+            
             if (system.HasDuraniumBonus)
             {
                 _baseDuranium = (byte)(RandomHelper.Random(25) + 14);  // UPDATE X 31 july 2019. Adjust base duranium generation   // base value just in case its not customized
 
-                Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+
                 if (baseResProdTable != null)
                 {
                     string random = "NO";
@@ -222,10 +209,10 @@ namespace Supremacy.Universe
             }
 
             // Calculate random automatic generation/collection of Deuterium for this colony
-            {
-                byte baseValuePerGG = 10;
+            //{
+                byte baseValuePerGasGiant = 10;
 
-                Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+                //Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
                 if (baseResProdTable != null)
                 {
                     string random = "NO";
@@ -255,7 +242,7 @@ namespace Supremacy.Universe
                             tmpBaseValue -= (byte)rndValue;
                         }
 
-                        baseValuePerGG = tmpBaseValue;
+                        baseValuePerGasGiant = tmpBaseValue;
                     }
                     catch (Exception e)
                     {
@@ -263,8 +250,8 @@ namespace Supremacy.Universe
                     }
                 }
 
-                _baseDeuteriumGeneration = (byte)system.Planets.Where(p => p.PlanetType == PlanetType.GasGiant).Sum(p => baseValuePerGG);
-            }
+                _baseDeuteriumGeneration = (byte)system.Planets.Where(p => p.PlanetType == PlanetType.GasGiant).Sum(p => baseValuePerGasGiant);
+            //}
 
             Location = system.Location;
             Owner = system.Owner;
@@ -385,6 +372,11 @@ namespace Supremacy.Universe
                     _PercentageGrowthRate = (Percentage)0.02 * -1;
                 }
 
+                if (Owner.Key == "BORG")
+                {
+                    _PercentageGrowthRate += 0.01f;
+                }
+
                 return _PercentageGrowthRate + (Percentage)0.011;
             }
         }
@@ -427,6 +419,22 @@ namespace Supremacy.Universe
         /// </summary>
         /// <value>The name.</value>
         public override string Name => base.Name ?? (System?.Name);
+
+
+        /// <summary>
+        /// Gets or sets the name of this <see cref="Colony"/>.
+        /// </summary>
+        /// <value>The name.</value>
+        public string All_Info
+        {
+            get
+            {
+                string _all_info = base.Name ?? (System?.Name);
+                _all_info += " " + base.Location.ToString() + " " + base.Owner;  
+
+                return _all_info;
+            }
+        }
 
         /// <summary>
         /// Gets the race that inhabits this <see cref="Colony"/>.
@@ -525,7 +533,7 @@ namespace Supremacy.Universe
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
             _text = buildSlot.Shipyard.Location
-                + blank + buildSlot.SlotID
+                + " " + buildSlot.SlotID
                 + buildSlot.Project.BuildDesign.ToString()
                 ;
             Console.WriteLine("SR:; " + _text);
@@ -610,7 +618,19 @@ namespace Supremacy.Universe
         /// Gets the population health level at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The population health level.</value>
-        public Meter Health => _health;
+        public Meter Health
+        {
+            get
+            {
+                Meter _health1 = _health;
+                if(Owner.Key == "BORG")
+                {
+                    _health1 = new Meter (100,100);
+                    //_health = (decimal)1f;
+                }
+                return _health1;
+            }
+        }
 
         #region Properties for System Panel Data Binding
         /// <summary>
@@ -660,6 +680,8 @@ namespace Supremacy.Universe
                 // NEW - 2021-SEP-26 > Industry devided by two
                 // NEW - 2021-OCT-09 > Industry devided by ten
                 int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (NetIndustry / 10)/* * 1.5*/ + 200);
+
+                if (Owner.Key == "BORG") { _taxCredits = 1; }
 
                 // TaxCredits minus Maintenance = Credits plus
 
@@ -910,11 +932,11 @@ namespace Supremacy.Universe
             //        //+ buildQueueItem.Description
             //            ;
             //    Console.WriteLine(_text);
-            //    _colony_Full_Report = _text + newline;
+            //    _colony_Full_Report = _text + _newline;
             //    //GameLog.Client.ProductionDetails.DebugFormat(_text);
             //    count++;
             //}
-            
+
 
             foreach (BuildSlot slot in BuildSlots)
             {
@@ -1923,7 +1945,7 @@ namespace Supremacy.Universe
                     if (AvailableLabor < 1)
                     {
                         _text = "Step_2398:; Turn " + GameContext.Current.TurnNumber
-                            + "; " + Location 
+                            + "; " + Location
                             + " No free Labour (from Pool) - food reserves are low";
                         Console.WriteLine(_text);
                         ReduceOneOtherPF();
@@ -1938,11 +1960,11 @@ namespace Supremacy.Universe
                     _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
-                    //DoSitRepGray(_text);
+
                 }
                 else if (_foodPF_unused == 0)
                 {
-                    _text = "Step_2382:; "+ Location + " > No free food facility";
+                    _text = "Step_2382:; " + Location + " > No free food facility";
                     Console.WriteLine(_text);
                     if (!Owner.IsHuman)
                         AddFacilities(ProductionCategory.Food, 1);
@@ -1951,13 +1973,13 @@ namespace Supremacy.Universe
                 else
                 {
                     ReduceOneOtherPF();
-                    
+
                     _ = ActivateFacility(ProductionCategory.Food);
                     _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     Console.WriteLine("Step_2384:; " + _text);
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
-                    //DoSitRepGray(_text);
+
                 }
 
                 //if (_foodReserves > 2000)
@@ -1966,7 +1988,6 @@ namespace Supremacy.Universe
                 //    {
                 //        ReduceOneOtherPF();
                 //        ActivateFacility(ProductionCategory.Food);
-                //        DoSitRepGray(_text);
                 //    }
                 //}
 
@@ -2066,24 +2087,18 @@ namespace Supremacy.Universe
             }
         }
 
-        //private void DoSitRepGray(string _text)
-        //{
-        //    GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
-        //}
-
         private void ReduceOneOtherPF()
         {
-
-            if (GetActiveFacilities(ProductionCategory.Research) > 0)
-            {
-                _ = DeactivateFacility(ProductionCategory.Research);
-                _text = Location + " " + Name + " > One Research facility deactivated - labours sent to other duties";
-                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
-            }
-            else if (GetActiveFacilities(ProductionCategory.Intelligence) > 0)
+            if (GetActiveFacilities(ProductionCategory.Intelligence) > 0)
             {
                 _ = DeactivateFacility(ProductionCategory.Intelligence);
                 _text = Location + " " + Name + " > One Intelligence facility deactivated - labours sent to other duties";
+                GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
+            }
+            else if (GetActiveFacilities(ProductionCategory.Research) > 0)
+            {
+                _ = DeactivateFacility(ProductionCategory.Research);
+                _text = Location + " " + Name + " > One Research facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Industry) > 0)
@@ -2562,7 +2577,7 @@ namespace Supremacy.Universe
 
                 ;
 
-            Console.WriteLine("Step_3446:; "+_text); 
+            Console.WriteLine("Step_3446:; " + _text);
 
             //GameLog.Core.EnergyDetails.DebugFormat(_text);
             return SetBuildingActive(building, false);

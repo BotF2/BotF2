@@ -25,7 +25,7 @@ namespace Supremacy.Diplomacy
         private int _ownerId;
         private int _seatOfGovernmentId;
         private CivilizationKeyedMap<ForeignPower> _foreignPowers;
-        private string _text;
+        //private string _text;
 
         public int OwnerID => _ownerId;
 
@@ -253,6 +253,7 @@ namespace Supremacy.Diplomacy
             _ownerId = reader.ReadOptimizedInt32();
             _seatOfGovernmentId = reader.ReadOptimizedInt32();
             _foreignPowers = reader.Read<CivilizationKeyedMap<ForeignPower>>();
+            string _text;
 
             if (GameContext.Current != null && GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
             {

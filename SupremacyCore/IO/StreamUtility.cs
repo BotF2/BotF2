@@ -23,7 +23,7 @@ namespace Supremacy.IO
         [NonSerialized]
 //#pragma warning disable IDE0052 // Ungelesene private Member entfernen
         private static string _text;
-        private static readonly string newline = Environment.NewLine;
+        private static readonly string _newline = Environment.NewLine;
 //#pragma warning restore IDE0052 // Ungelesene private Member entfernen
 
         private static int count;
@@ -48,17 +48,17 @@ namespace Supremacy.IO
             bool boolHEXreading;
             boolHEXreading = false;
             //boolHEXreading = true;
-            Console.WriteLine("Step_0827:; boolHEXreading = " + boolHEXreading + newline);
+            Console.WriteLine("Step_0827:; boolHEXreading = " + boolHEXreading/* + _newline*/);
 
             _text = "";
             if (boolHEXreading == true)
             {
-                Console.WriteLine("Step_0833:; buffer.length = " + buffer.Length + newline);
+                Console.WriteLine("Step_0833:; buffer.length = " + buffer.Length + _newline);
                 int nextgoal = 0;
                 for (int i = 0; i < buffer.Length; i++)
                 {
 
-                    _text += i + ": " + buffer[i].ToString() + newline;
+                    _text += i + ": " + buffer[i].ToString() + _newline;
 
                     nextgoal += 1;
                     if(nextgoal == 10000)
@@ -75,7 +75,7 @@ namespace Supremacy.IO
             _text = "";
             if (boolHEXreading == true)
             {
-                Console.WriteLine("Step_0834:; buffer.length = " + buffer.Length + newline);
+                Console.WriteLine("Step_0834:; buffer.length = " + buffer.Length + _newline);
             }
 
             using (SerializationReader sin = new SerializationReader(MiniLZO.Decompress(buffer)))
@@ -84,7 +84,7 @@ namespace Supremacy.IO
                 //_text = "";
                 //for (int i = 0; i < buffer.Length; i++)
                 //{
-                //    _text += i + ": " + buffer[i].ToString() + newline;
+                //    _text += i + ": " + buffer[i].ToString() + _newline;
                 //}
                 //Console.WriteLine(_text);
 
@@ -95,7 +95,7 @@ namespace Supremacy.IO
                     _text += sin.ReadObject().ToString();
                     count += 1;
                 }
-                //_text = i + buffer[i].ToString() + newline;
+                //_text = i + buffer[i].ToString() + _newline;
                 //}
                 //Console.WriteLine("Step_0288:; HEX-Reading: " + _text + ", out of buffer");
                 // too often - at each .autosav 
@@ -134,7 +134,7 @@ namespace Supremacy.IO
                             hexcount = 0;
                         }
 
-                        //_text += i + " > " + c + " > " + buffer[i].ToString("X2") + ", dec: " + buffer[i] + newline;
+                        //_text += i + " > " + c + " > " + buffer[i].ToString("X2") + ", dec: " + buffer[i] + _newline;
                         //Console.WriteLine("HEX-Reading-BUFFER: " + _text + ", out of buffer");
                         //count += 1;
                         //if (hexcount == 15)
@@ -157,7 +157,7 @@ namespace Supremacy.IO
                     {
                         char c = (char)buffer[i];
                         _text += c;
-                        Console.WriteLine(i + " > " + c + " > " + buffer[i].ToString("X2") + ", dec: " + buffer[i] + newline);
+                        Console.WriteLine(i + " > " + c + " > " + buffer[i].ToString("X2") + ", dec: " + buffer[i] + _newline);
                     }
                     Console.WriteLine("HEX-Reading: " + _text + ", out of savedgame");
                 }

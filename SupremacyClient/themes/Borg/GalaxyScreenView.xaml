@@ -97,7 +97,10 @@
                       Grid.Row="0"
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                 <Button.Content>
-                  <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
+                  <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" 
+
+                             />
+                             <!--FontSize="18" Margin="0,0,0,0"-->                    
                 </Button.Content>
                 <Button.Style>
                   <Style TargetType="{x:Type Button}"
@@ -112,10 +115,8 @@
                   </Style>
                 </Button.Style>
               </Button>
-              <Button x:Name="SummaryButton"
-                      Grid.Column="0"
-                      Grid.Row="1"
-                      FontSize="14pt"                            
+              <Button x:Name="SummaryButton" Grid.Column="0" Grid.Row="1"
+                      FontSize="16pt"                            
                       Style="{StaticResource LCARS_StandardButtonStyle}"
                       Content="{s:StringResource Key=BORG_INTEL_BUTTON_TEXT, Case=Upper}"
                       Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"
@@ -214,7 +215,8 @@
                       Margin="3,0,0,0"
                            BorderBrush="DarkGreen"
                            BorderThickness="2"                                      
-                           Background="{StaticResource Borg1Gradient_Top_Bottom}">
+                           Background="{StaticResource Borg1Gradient_Top_Bottom}"
+                      >
              <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="#7CFC00"
@@ -239,11 +241,10 @@
                       Grid.Row="0"
                       Padding="7,0,7,0"
                       Margin="3,0,0,0">
-                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="18pt"
+                <TextBlock Text="{s:StringResource SCAN_TEXT}" HorizontalAlignment="Center"
+                           FontSize="18pt" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            Foreground="{StaticResource HeaderTextBrush}"
-                           Text="{s:StringResource SCAN_TEXT}"
-                           HorizontalAlignment="Center" />
+                           />
               </Border>
                             <Border Grid.Column="5"
                       Grid.Row="1"
@@ -341,11 +342,11 @@
                          Margin="3,0,0,0"
                          Height="28"
                          VerticalAlignment="Center"                 
-                         Background="Transparent"
+                         Background="{StaticResource Borg1Gradient_Top_Bottom}"
                          BorderBrush="GreenYellow"
                          BorderThickness="2"
                          Padding="14,0,14,0">
-                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                <TextBlock Name="GALAXY_HEADLINE" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="#7CFC00"
                            HorizontalAlignment="Center"
@@ -362,7 +363,7 @@
                          BorderBrush="DarkGreen"
                          BorderThickness="2"        
                            Padding="14,0,14,0">
-                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                <TextBlock Name="GALAXY_SUBLINE" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="#7CFC00"
                            HorizontalAlignment="Center"
@@ -827,7 +828,7 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="21" />
-                                <ColumnDefinition Width="0.2*" />
+                                <ColumnDefinition Width="0.1*" />
                                 <ColumnDefinition Width="0.6*" />
                                 <ColumnDefinition Width="0.2*" />
                                 <ColumnDefinition Width="21" />
@@ -837,12 +838,14 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="21" />-->
                             </Grid.ColumnDefinitions>
+                            
                             <!-- Begin of Drawing -->
                             <Rectangle x:Name="TopLeftCorner"
                          Grid.Column="0"
                          Grid.Row="0"
                          Height="42"
                          Width="21">
+                                
                                 <Rectangle.RenderTransform>
                                     <ScaleTransform ScaleX="1"
                                   ScaleY="1"
@@ -857,15 +860,19 @@
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
+                            
                             <Grid Grid.Column="1"
                     Grid.Row="0"
                     Height="28"
                     Margin="0,0,3,0"
                     VerticalAlignment="Top">
+                                
+                                
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
+                                
                                 <Rectangle x:Name="TopEdge" Opacity="0.6"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
@@ -1371,14 +1378,52 @@
                                             </Button.ToolTip>
                                         </Button>
 
+                                        <!--<Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterAccumulateButton"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnAccumulateSector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_ACCUMULATE_SECTOR_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_ACCUMULATE_SECTOR_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterSystemAssault_1_Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnSystemAssault_1_Sector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_SYSTEM_ASSAULT_1_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_SYSTEM_ASSAULT_1_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterSystemAssault_2_Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnSystemAssault_2_Sector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_SYSTEM_ASSAULT_2_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_SYSTEM_ASSAULT_2_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>-->
+
                                     </StackPanel>
 
 
-                                    <ToggleButton x:Name="ChatButton"
-                            Focusable="False"
-                            Style="{StaticResource LCARS_BorderToggleButtonStyle}"
-                            Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
-                            Margin="0,0,3,0">
+                                    <ToggleButton x:Name="ChatButton" FontSize="18" Focusable="False" Margin="0,0,3,0"
+                                                Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
+                                                Style="{StaticResource LCARS_BorderToggleButtonStyle}"
+                                                >
                                         <ToggleButton.ToolTip>
                                             <ToolTip>
                                                 <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"

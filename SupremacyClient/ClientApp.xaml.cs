@@ -71,13 +71,12 @@ namespace Supremacy.Client
         private static Mutex _singleInstanceMutex;
 
         [NonSerialized]
-        public static string newline = Environment.NewLine;
+        //public static string _newline = Environment.NewLine;
         public static DateTime starttime = DateTime.Now;
         public string _text;
-        public string blank = " ";
-        public string separator = " ;";
-        public bool _gamelog_bool = true;
-        public static bool _ConsoleWriteline_bool = true;
+        //public string separator = " ;";
+        //public bool _gamelog_bool = true;
+        //public static bool _ConsoleWriteline_bool = true;
         #endregion
 
         #region Constructors
@@ -119,7 +118,7 @@ namespace Supremacy.Client
 
         public Version Version => Assembly.GetEntryAssembly().GetName().Version;
 
-        public string ClientHint => ClientVersion + newline + ResourceManager.GetString("HINT_FOR_RUNNING");
+        public string ClientHint => ClientVersion + Environment.NewLine + ResourceManager.GetString("HINT_FOR_RUNNING");
 
         public bool IsShuttingDown { get; private set; }
 
@@ -498,10 +497,10 @@ namespace Supremacy.Client
             {
                 GameLog.Initialize();
 
-                
+                string _newline = Environment.NewLine;
                 var _text = GetTimeString(); // DateTime.Now;
                 //_text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
-                Console.WriteLine(_text);  // "Current Version = "
+                Console.WriteLine("Output_" + _text);  // "Current Version = "
                 //GameLog.Client.General.InfoFormat(_text);
 
                 //Add dll subdirectories to current process PATH variable
@@ -526,7 +525,7 @@ namespace Supremacy.Client
                 {
                     _ = MessageBox.Show(
                             "Rise of the UFP requires Microsoft .NET Framework 4.8 or greater"
-                            + newline
+                            + _newline
                             + "It must be installed before running the game.",
                             "Rise of the UFP",
                             MessageBoxButton.OK,
@@ -626,7 +625,8 @@ namespace Supremacy.Client
                     string _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
 
 
-                    if (File.Exists(_soundfileSplashScreen)&&ClientSettings.Current.EnableSoundStartSplashScreen)
+                    if (ClientSettings.Current.EnableSoundStartSplashScreen
+                        && File.Exists(_soundfileSplashScreen)&&ClientSettings.Current.EnableSoundStartSplashScreen)
                     {
                         GameLog.Client.General.Debug("Step_0205: Playing LoadingSplash.wav");
                         //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
@@ -680,7 +680,7 @@ namespace Supremacy.Client
                 string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
                 string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
                 string Second = time.Second.ToString(); Second = CheckDateString(Second);
-                return "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
+                return Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
             }
 
             private static string CheckDateString(string _string)
@@ -692,11 +692,15 @@ namespace Supremacy.Client
             }
         }
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0051 // Remove unused private members
         private static bool CheckXNAFramework31()
+
 #pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         {
             string _text;
+            string _newline = Environment.NewLine;
 
             //RegRead HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\XNA\Framework\v3.1
 
@@ -731,10 +735,10 @@ namespace Supremacy.Client
                 }
                 else
                 {
-                    _text = "Did not found file " + xna_copy + newline + "to check for XNA 3.1"
-                        + newline + newline + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
-                        + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'"
-                        + newline + newline + "For Coders: Make sure you have fill the \\Resources folder"
+                    _text = "Did not found file " + xna_copy + _newline + "to check for XNA 3.1"
+                        + _newline + _newline + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
+                        + _newline + _newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'"
+                        + _newline + _newline + "For Coders: Make sure you have fill the \\Resources folder"
                         ;
                     _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
@@ -746,12 +750,12 @@ namespace Supremacy.Client
             if (!File.Exists(xna_check))
             {
                 _text = "Sorry, Microsoft XNA Framework V3.1 might not be installed - but it is necessary. "
-                    + newline + newline + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !"
-                    + newline + newline + "Install out of folder \\Resources\\XNA31_NEEDED_INSTALL\\ or"
-                    + newline + newline + "Download it at www.microsoft.com/download/details.aspx?id=15163"
-                    + newline + newline + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'"
-                    + newline + newline + "Download  it at www.microsoft.com/download/details.aspx?id=15163"
-                    + newline + newline + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
+                    + _newline + _newline + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !"
+                    + _newline + _newline + "Install out of folder \\Resources\\XNA31_NEEDED_INSTALL\\ or"
+                    + _newline + _newline + "Download it at www.microsoft.com/download/details.aspx?id=15163"
+                    + _newline + _newline + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'"
+                    + _newline + _newline + "Download  it at www.microsoft.com/download/details.aspx?id=15163"
+                    + _newline + _newline + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
                     ;
                 GameLog.Client.General.Info(_text);
                 _ = MessageBox.Show(_text, "CHECK", MessageBoxButton.OK);

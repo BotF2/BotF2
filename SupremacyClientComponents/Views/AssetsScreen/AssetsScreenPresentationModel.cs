@@ -135,7 +135,7 @@ namespace Supremacy.Client.Views
                 {
                     _text = "Step_5466:; Problem occured at TotalIntelligenceProduction get, exception "
                         + e.Message
-                        + newline + e.TargetSite
+                        + _newline + e.TargetSite
           ;
                     Console.WriteLine(_text);
                     //GameLog.Client.Intel.DebugFormat(_text);
@@ -1082,7 +1082,7 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    _text = "Step_5476: Problem occured at CreditsEmpire: " + newline + e.Message + newline + e.StackTrace;
+                    _text = "Step_5476: Problem occured at CreditsEmpire: " + _newline + e.Message + _newline + e.StackTrace;
                     Console.WriteLine(_text);
                     GameLog.Core.Intel.WarnFormat(_text);
                     Meter zero = new Meter(0, 0, 0);
@@ -1106,7 +1106,7 @@ namespace Supremacy.Client.Views
         [NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
         public static string _text;
-        public string newline = Environment.NewLine;
+        public string _newline = Environment.NewLine;
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {

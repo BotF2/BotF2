@@ -55,7 +55,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
@@ -74,22 +74,22 @@ namespace Supremacy.Scripting.Events
                         }
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     int population = target.Population.CurrentValue;
                     int health = target.Health.CurrentValue;
 
                     GameLog.Core.Events.DebugFormat("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
 
-                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 2)
+                    if (game.Universe.FindOwned<Colony>(targetEventCiv).Count > 2)
                     {
                         GameLog.Core.Events.DebugFormat("colony amount > 1 for: {0}", target.Name);
                     }
 
-                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
                     //civManager?.SitRepEntries.Add(new GammaRayBurstSitRepEntry(civManager.Civilization, target));
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
                     civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target

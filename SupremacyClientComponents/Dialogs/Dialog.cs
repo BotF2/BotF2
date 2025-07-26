@@ -7,20 +7,18 @@
 //
 // All other rights reserved.
 
+using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.ServiceLocation;
+using Supremacy.Utility;
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-
-using Microsoft.Practices.Composite.Regions;
-using Microsoft.Practices.ServiceLocation;
-
-using System.Linq;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Dialogs
 {
@@ -533,12 +531,21 @@ namespace Supremacy.Client.Dialogs
         {
             if (_showingAsDialog)
             {
-                GameLog.Client.General.Error("Cannot call ShowDialog() on a dialog that was already opened with ShowDialog().");
+                Close();
+                string _text = "Step_9355:; "
+                    + "Cannot call ShowDialog() on a dialog that was already opened with ShowDialog()."
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Client.General.Error(_text);
             }
 
             if (IsOpen)
             {
-                GameLog.Client.General.Error("Cannot call ShowDialog() on a dialog that is already open.");
+                string _text = "Step_9357:; "
+                        + "Cannot call ShowDialog() on a dialog that is already open."
+                        ;
+                Console.WriteLine(_text);
+                GameLog.Client.General.Error(_text);
 
             }
 
@@ -554,7 +561,7 @@ namespace Supremacy.Client.Dialogs
             {
                 _showingAsDialog = false;
 
-                //throw; if you want to game to crash
+                //throw; if you want the game to crash
             }
             finally
             {
@@ -564,6 +571,7 @@ namespace Supremacy.Client.Dialogs
                 }
 
                 _showingAsDialog = false;
+                //_showingAsDialog = true; // 2025-04-19
             }
 
             return _dialogResult;
@@ -580,9 +588,14 @@ namespace Supremacy.Client.Dialogs
             {
                 _dispatcherFrame = new DispatcherFrame();
                 Dispatcher.PushFrame(_dispatcherFrame);
+                Close(); // 2025-04-19
             }
             catch (Exception e)
             {
+                string _text = "Step_9359:; "
+                        + "Cannot call ShowDialog() on a dialog that is already open." + e
+                        ;
+                Console.WriteLine(_text);
                 GameLog.Client.General.Error(e);
             }
         }

@@ -142,6 +142,9 @@ namespace Supremacy.UI
         private readonly DelegateCommand<Sector> _centerOn3Command;
         private readonly DelegateCommand<Sector> _centerOn4Command;
         private readonly DelegateCommand<Sector> _SummaryOnOffCommand;
+        private readonly DelegateCommand<Sector> _centerOnAccumulateSectorCommand;
+        private readonly DelegateCommand<Sector> _centerOnSystemAssault_1_SectorCommand;
+        private readonly DelegateCommand<Sector> _centerOnSystemAssault_2_SectorCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _zoomInCommand;
         private readonly DelegateCommand<object> _zoomOutCommand;
@@ -497,6 +500,9 @@ namespace Supremacy.UI
             _zoom25Command = new DelegateCommand<object>(ExecuteZoom25Command);
             _zoomMaxCommand = new DelegateCommand<object>(ExecuteZoomMaxCommand);
             _centerOnHomeSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnHomeSectorCommand);
+            _centerOnAccumulateSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnAccumulateSectorCommand);
+            _centerOnSystemAssault_1_SectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnSystemAssault_1_SectorCommand);
+            _centerOnSystemAssault_2_SectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnSystemAssault_2_SectorCommand);
             //_view25PercentCommand = new DelegateCommand<Sector>(ExecuteView25PercentCommand);
             _centerOn1Command = new DelegateCommand<Sector>(ExecuteCenterOn1Command);
             _centerOn2Command = new DelegateCommand<Sector>(ExecuteCenterOn2Command);
@@ -511,6 +517,9 @@ namespace Supremacy.UI
             GalaxyScreenCommands.MapZoom25.RegisterCommand(_zoom25Command);
             GalaxyScreenCommands.MapZoomMax.RegisterCommand(_zoomMaxCommand);
             GalaxyScreenCommands.CenterOnHomeSector.RegisterCommand(_centerOnHomeSectorCommand);
+            GalaxyScreenCommands.CenterOnAccumulateSector.RegisterCommand(_centerOnAccumulateSectorCommand);
+            GalaxyScreenCommands.CenterOnSystemAssault_1_Sector.RegisterCommand(_centerOnSystemAssault_1_SectorCommand);
+            GalaxyScreenCommands.CenterOnSystemAssault_2_Sector.RegisterCommand(_centerOnSystemAssault_2_SectorCommand);
             GalaxyScreenCommands.CenterOn1.RegisterCommand(_centerOn1Command);
             GalaxyScreenCommands.CenterOn2.RegisterCommand(_centerOn2Command);
             GalaxyScreenCommands.CenterOn3.RegisterCommand(_centerOn3Command);
@@ -801,7 +810,18 @@ namespace Supremacy.UI
         public Sector SelectedSector
         {
             get => GetValue(SelectedSectorProperty) as Sector;
-            set => SetValue(SelectedSectorProperty, value);
+            set
+            {
+                if (value != null && value.ToString() != "(0, 0)")
+                {
+                SetValue(SelectedSectorProperty, value);
+                }
+                else
+                {
+
+                }
+
+            }
         }
 
         public Sector HoveredSector
@@ -1393,6 +1413,59 @@ namespace Supremacy.UI
             AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
         }
 
+        private void ExecuteCenterOnAccumulateSectorCommand(Sector sector)
+        {
+            //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
+            if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector != null 
+                && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector.Location.ToString() 
+                    != "(0, 0)")
+            {
+                SelectedSector = (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector);
+            AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector);
+            }
+            else
+            {
+                //_ = MessageBox.Show("Not available", "Info", MessageBoxButton.OK);
+                SoundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
+
+            }
+
+        }
+
+        private void ExecuteCenterOnSystemAssault_1_SectorCommand(Sector sector)
+        {
+            if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultSector_1 != null
+                && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultLocation_1.ToString()
+                != "(0, 0)")
+            {
+                SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultSector_1;
+                AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultSector_1);
+            }
+            else
+            {
+                //_ = MessageBox.Show("Not available", "Info", MessageBoxButton.OK);
+                SoundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
+
+            }
+        }
+
+        private void ExecuteCenterOnSystemAssault_2_SectorCommand(Sector sector)
+        {
+            if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultSector_2 != null
+                && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultLocation_2.ToString()
+                != "(0, 0)")
+            {
+                SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultSector_2;
+                AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssaultSector_2);
+            }
+            else
+            {
+                //_ = MessageBox.Show("Not available", "Info", MessageBoxButton.OK);
+                SoundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
+
+            }
+        }
+
 
         private void ExecuteCenterOn1Command(Sector sector)  // Center to Quadrant 1
         {
@@ -1463,6 +1536,23 @@ namespace Supremacy.UI
         public void CenterOnHomeSector()
         {
             ExecuteCenterOnHomeSectorCommand(SelectedSector);
+        }
+
+        public void CenterOnAccumulateSector()
+        {
+            ExecuteCenterOnAccumulateSectorCommand(SelectedSector);
+            //SelectedSector = _screenModel.SelectedSector;
+        }
+
+        public void CenterOnSystemAssault_1_Sector()
+        {
+            ExecuteCenterOnSystemAssault_1_SectorCommand(SelectedSector);
+        }
+
+
+        public void CenterOnSystemAssault_2_Sector()
+        {
+            ExecuteCenterOnSystemAssault_2_SectorCommand(SelectedSector);
         }
 
         public void SetHorizontalOffset(double offset, bool snapToGrid)

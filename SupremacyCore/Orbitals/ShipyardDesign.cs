@@ -43,6 +43,15 @@ namespace Supremacy.Orbitals
         private ushort _buildSlotMaxOutput;
         private ShipyardOutputType _buildSlotOutputType = ShipyardOutputType.Static;
 
+        // non sense .. sorry 
+        //public string SYName
+        //{
+        //    get {
+        //        Shipyard shipyard = new Shipyard(this);
+        //        return shipyard.Design.ToString();
+        //    }
+        //}
+
         /// <summary>
         /// Gets or sets the number of build slots.
         /// </summary>

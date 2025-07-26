@@ -59,7 +59,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
@@ -76,14 +76,14 @@ namespace Supremacy.Scripting.Events
                         return;
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     OnUnitTargeted(target);
 
                     _ = target.Morale.AdjustCurrent(+3);
                     target.Morale.UpdateAndReset();
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
                     _text = target.Location + " " + target.Name + " > ";
                     civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
                         , _text + ResourceManager.GetString("TERRORISTS_CAPTURED_HEADER_TEXT")

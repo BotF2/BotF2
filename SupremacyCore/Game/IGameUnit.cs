@@ -13,7 +13,7 @@ namespace Supremacy.Game
 {
     public interface IGameUnit : IUniverseObject
     {
-        UnitAIType UnitAIType { get; set; }
+        UnitAIType AITypeUnit { get; set; }
         UnitActivity Activity { get; set; }
         int ActivityStart { get; }
         int ActivityDuration { get; }

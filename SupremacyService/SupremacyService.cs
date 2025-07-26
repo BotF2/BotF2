@@ -33,8 +33,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
-//using System.Windows.Input;
+using System.Windows.Input;
 using Scheduler = System.Concurrency.Scheduler;
+using System.Web;
 
 namespace Supremacy.WCF
 {
@@ -74,9 +75,9 @@ namespace Supremacy.WCF
         private GameEngine _gameEngine;
         private IDisposable _heartbeat;
 
-        [NonSerialized]
-        private string _text;
-        private string _newline = Environment.NewLine;
+        //[NonSerialized]
+        //private string _text;
+        //private string _newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -149,6 +150,8 @@ namespace Supremacy.WCF
             }
 
             _isGameStarted = true;
+            string _text;
+            string _newline = Environment.NewLine;
 
             try
             {
@@ -186,7 +189,7 @@ namespace Supremacy.WCF
                         //NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         if (!SavedGameManager.LoadGame(_gameInitData.SaveGameFileName, out SavedGameHeader header, out _game, out DateTime timestamp))
                         {
-                            _text = "Step_4987: Loading failed - end game";
+                            _text = "Step_4987: Loading failed - end game ##################################################################";
                             Console.WriteLine(_text);
                             EndGame();
                             
@@ -250,6 +253,8 @@ namespace Supremacy.WCF
                 //Thread.Sleep(1000);
                 //SendKeys.SendWait("^l"); // Log.txt
                 //Thread.Sleep(1000);
+                //string _newline = Environment.NewLine;
+
                 _text = "An error occurred while starting a new game/n"
                     + _newline + "Possible reasons:"
                     + _newline + "- for TechObj_6_Ships.xml & inside C#-Code > turn on > 'checkforproblems'"
@@ -507,8 +512,12 @@ namespace Supremacy.WCF
 
         internal async void ProcessTurn()
         {
+            string _text;
             try
             {
+                _text = "Step_5001:; ProcessTurn...";
+                Console.WriteLine(_text);
+
                 await SendAllTurnEndedNotificationsAsync().ConfigureAwait(false);
                 _ = new AutoResetEvent(false).WaitOne(100, true);
 
@@ -536,6 +545,9 @@ namespace Supremacy.WCF
                 lock (_aiAsyncLock)
                 {
                     Action<GameContext, List<Civilization>> doAiPlayers = _gameEngine.DoAIPlayers;
+
+                    //Thread.Sleep(2000); // just for testing - why is the turn done before all AI is done ?
+                    
                     _aiAsyncResult = doAiPlayers.BeginInvoke(
                         _game, autoTurnCivs,
                         delegate (IAsyncResult result)
@@ -560,7 +572,7 @@ namespace Supremacy.WCF
 
                 _text = "Step_0675:; AI processing time= " + stopwatch.Elapsed;
                 Console.WriteLine( _text );
-                GameLog.Server.GeneralDetails.InfoFormat(_text);
+                //GameLog.Server.GeneralDetails.InfoFormat(_text);
 
                 stopwatch.Restart();
             OH:
@@ -578,8 +590,9 @@ namespace Supremacy.WCF
                     goto OH;  // try again
                 }
 
-
-                GameLog.Server.GeneralDetails.InfoFormat("Turn processing time: {0}", stopwatch.Elapsed);
+                _text = "Step_4444:; Turn processing time= " + stopwatch.Elapsed;
+                Console.WriteLine(_text);
+                GameLog.Server.GeneralDetails.InfoFormat(_text);
 
                 Task autoSaveTask = null;
 
@@ -628,6 +641,10 @@ namespace Supremacy.WCF
 
         private async Task DoTurnCore()
         {
+            string _text = "Step_0577:; DoTurnCore... to go to the next Turn" ;
+            Console.WriteLine(_text);
+            //GameLog.Core.GameDataDetails.DebugFormat(_text);
+
             TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
             _gameEngine.TurnPhaseChanged += OnGameEngineTurnPhaseChanged;
@@ -635,7 +652,7 @@ namespace Supremacy.WCF
             GameContext gameContext = _game;
 
             _ = Observable
-                .ToAsync(() => _gameEngine.Do_09_Turn(gameContext), _threadPoolScheduler)()
+                .ToAsync(() => _gameEngine.DoTurn(gameContext), _threadPoolScheduler)()
                 .Subscribe(tcs.SetResult, tcs.SetException);
 
             _ = await tcs.Task;
@@ -655,7 +672,7 @@ namespace Supremacy.WCF
             GameUpdateMessage message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
             TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
-            _text = "Step_0576:; doing SendEndOfTurnUpdateAsync for " + player.Empire.Key;
+            string _text = "Step_0576:; doing SendEndOfTurnUpdateAsync for " + player.Empire.Key;
             Console.WriteLine(_text);
             GameLog.Core.GameDataDetails.DebugFormat(_text);
 
@@ -847,9 +864,9 @@ namespace Supremacy.WCF
             OnTurnPhaseChanged(phase);
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
+//#pragma warning disable IDE0051 // Remove unused private members
         private void OnAITaskCompleted()
-#pragma warning restore IDE0051 // Remove unused private members
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             lock (_aiAsyncLock)  // is this used anyway ??? ...reported by VS: it is not used
             {
@@ -1473,8 +1490,8 @@ namespace Supremacy.WCF
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
 
-            //Console.WriteLine("Step_3013:; " + assets[0].Sector.Location + " > OnCombatOccurring ... populating _combatEngine ");
-            _combatEngine = new AutomatedCombatEngine(
+            Console.WriteLine("Step_3013:; SupService.cs > " + GameEngine.LocationString(assets[0].Sector.Location.ToString()) + " > OnCombatOccurring ... populating _combatEngine ");
+            _combatEngine = new CombatEngineAutomated(
                 assets,
                 SendCombatUpdateCallback,
                 NotifyCombatEndedCallback);
@@ -1483,6 +1500,7 @@ namespace Supremacy.WCF
 
         public void SendCombatOrders(CombatOrders orders)
         {
+            string _text;
             try
             {
                 if (_combatEngine == null || orders == null)
@@ -1501,6 +1519,8 @@ namespace Supremacy.WCF
                         if (orders.CombatID != -1 && _combatEngine != null)
                         {
                             _combatEngine.SubmitOrders(orders);
+                            _text = "Step_7877:; _combatEngine.SubmitOrders > " + orders.Count() + " orders";
+                            Console.WriteLine(_text);
                         }
                     }
                     catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
@@ -1584,8 +1604,8 @@ namespace Supremacy.WCF
         //}
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
-            _text = "Step_3007:; SendCombatUpdateCallback ...";
-            //Console.WriteLine(_text);
+            string _text = "Step_3007:; SendCombatUpdateCallback ...";
+            Console.WriteLine(_text);
             //GameLog.Client.GameData.DebugFormat(_text);
 
             GameContext.PushThreadContext(_game);
@@ -1593,13 +1613,14 @@ namespace Supremacy.WCF
             ServerPlayerInfo player = _playerInfo.FromEmpireId(update.OwnerID);
 
             // 2025-02-08
-            if (player != null /*&& update.RoundNumber < 2*/)
+            if (player != null && update.RoundNumber < 2)
             {
                 ISupremacyCallback callback = player.Callback;
                 callback?.NotifyCombatUpdate(update);
             }
+
             //No proper CombatAI, so just for now fake some orders
-            else if (!engine.IsCombatOver && !update.Owner.IsHuman/* && update.RoundNumber < 2*/)
+            else if (!engine.IsCombatOver && !update.Owner.IsHuman && update.RoundNumber < 2)
             {
                 // works   GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
                 CombatAssets ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
@@ -1616,8 +1637,8 @@ namespace Supremacy.WCF
                     ShortName = "Only Return Fire",
                     CivID = 888,
                     Key = "Only Return Fire",
-                    TargetCiv1Status = "",
-                    TargetCiv2Status = ""
+                    //TargetCiv1Status = "",
+                    //TargetCiv2Status = ""
                 }; // The AI generates a dummy target for non-human player civ
 
                 CombatOrder blanketOrder = CombatOrder.Engage;
@@ -1874,11 +1895,14 @@ namespace Supremacy.WCF
             catch { DropPlayer(player); }
         }
 
-        public void Pong(int pingId) { }
+        public void Pong(int pingId) 
+        {
+            //Console.WriteLine("Step_7988:; Pong(int pingId) " + pingId + " at " + DateTime.Now);
+        }
 
         internal void StartHeartbeat()
         {
-            _heartbeat = Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(15))
+            _heartbeat = Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(15)) // was 15 seconds
                 .Select(_ => ((Action)PingClients).ToAsync(_threadPoolScheduler)())
                 .Subscribe();
         }

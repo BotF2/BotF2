@@ -57,19 +57,21 @@ namespace Supremacy.AI
                 ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
 
                 _text = "Step_5405:; "
+                    + "; regard= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
+
+                    + "; regard= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
+                    + ", Status= * " + GameEngine.Do_X_String(12,foreignPower.DiplomacyData.Status.ToString())
                     + aCiv.Key
 
                     + " vs " + otherCiv.Key
                     + " (DiplomatAI.cs)" 
 
-                    + "; regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
-                    + "; trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
-                    + ", Status= * " + foreignPower.DiplomacyData.Status
+
                     + " * > Traits= " + aCiv.Traits
                     + " - vs - " + otherCiv.Traits
 
                     ;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
                 _diploSummary = _newline + _text;
 
                 if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || otherForeignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
@@ -266,23 +268,23 @@ namespace Supremacy.AI
                         DoSabotage(foreignPower, otherCiv);
                     }
 
-                    Console.WriteLine(_diploSummary);
+                    
 
                     #region War is possible from hostility
 
                     // Hostile AND ShouldTheyGoToWar
                     if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile && DiplomacyHelper.ShouldTheyGoToWar(foreignPower.Owner, foreignPower.Counterparty)) //foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile &&
                     {
-                        Civilization firstCiv = foreignPower.Owner;
-                        Civilization secondCiv = foreignPower.Counterparty;
-                        CivilizationManager firstManager = GameContext.Current.CivilizationManagers[firstCiv];
-                        CivilizationManager secondManager = GameContext.Current.CivilizationManagers[secondCiv];
+                        Civilization _civ_1 = foreignPower.Owner;
+                        Civilization _civ_2 = foreignPower.Counterparty;
+                        CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ_1];
+                        CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[_civ_2];
                         foreignPower.DeclareWar();
                         _boolDoSabotage = true;
-                        firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
-                        secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
-                        DiplomacyHelper.ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                        DiplomacyHelper.ApplyRegardChange(secondCiv, firstCiv, foreignPower.CounterpartyForeignPower.DiplomacyData.Regard.CurrentValue * -1);
+                        _civM_1.SitRepEntries.Add(new WarDeclaredSitRepEntry(_civ_1, _civ_2));
+                        _civM_2.SitRepEntries.Add(new WarDeclaredSitRepEntry(_civ_1, _civ_2));
+                        DiplomacyHelper.ApplyTrustChange(_civ_1, _civ_2, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+                        DiplomacyHelper.ApplyRegardChange(_civ_2, _civ_1, foreignPower.CounterpartyForeignPower.DiplomacyData.Regard.CurrentValue * -1);
                     }
                     #endregion
 
@@ -705,7 +707,7 @@ namespace Supremacy.AI
                     //foreignPower.UpdateStatus();
                 }
             }
-
+            //Console.WriteLine("Step_7733:; Begin of _diploSummary" + _newline + _diploSummary + _newline + "End of _diploSummary" + _newline);
         }
 
         private static void DoSabotage(ForeignPower foreignPower, Civilization otherCiv)
@@ -717,7 +719,7 @@ namespace Supremacy.AI
         private static void DoOngoingRegardTrust(ForeignPower foreignPower, Civilization otherCiv)
         {
 
-            string _diploSummary = "";
+            string _DoOngoingRegardTrust = "";
             string _newline = Environment.NewLine;
 
             // if no other changes some variation over time
@@ -746,17 +748,16 @@ namespace Supremacy.AI
             foreignPower.UpdateRegardAndTrustMeters();
 
 
-            _text = "Step_1175:; " 
-                + foreignPower.Owner.Key
+            _text = "Step_1175:;" 
+                + " Turn " + GameContext.Current.TurnNumber
+                + " > AFTER Ongoing Impression: "
+                + " regard= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
+                + ", trust= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
+                + " for " +foreignPower.Owner.Key
                 + " vs " + foreignPower.Counterparty.Key
-                + " (Turn " + GameContext.Current.TurnNumber
-
-                + "),regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
-                + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
-                + " > AFTER Ongoing Impression"
                 ;
-            //Console.WriteLine(_text);
-            _diploSummary = _newline + _text;
+            Console.WriteLine(_text);
+            _DoOngoingRegardTrust = _newline + _text;
             //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
             // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);

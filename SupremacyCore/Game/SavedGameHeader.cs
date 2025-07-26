@@ -106,46 +106,46 @@ namespace Supremacy.Game
 
             IsMultiplayerGame = game.IsMultiplayerGame;
             string _saveSummaryText = "";
-            string newline = Environment.NewLine;
+            string _newline = Environment.NewLine;
             _text = "Step_8101:; IsMultiplayerGame > " + IsMultiplayerGame.ToString();
             //Console.WriteLine(_text);
-            _saveSummaryText += newline + _text;
+            _saveSummaryText += _newline + _text;
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             LocalPlayerName = localPlayer.Name;
             _text = "Step_8103:; LocalPlayerName > " + LocalPlayerName.ToString();
             //Console.WriteLine(_text);
-            _saveSummaryText += newline + _text;
+            _saveSummaryText += _newline + _text;
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             LocalPlayerEmpireID = localPlayer.EmpireID;
             _text = "Step_8105:; LocalPlayerEmpireID > " + LocalPlayerEmpireID.ToString();
             //Console.WriteLine(_text);
-            _saveSummaryText += newline + _text;
+            _saveSummaryText += _newline + _text;
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             TurnNumber = game.TurnNumber;
             _text = "Step_8107:; TurnNumber > " + TurnNumber.ToString();
             //Console.WriteLine(_text);
-            _saveSummaryText += newline + _text;
+            _saveSummaryText += _newline + _text;
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             Options = game.Options;
             _text = "Step_8111:; Options > " + Options.ToString();
             //Console.WriteLine(_text);
-            //_saveSummaryText += newline + _text;
+            //_saveSummaryText += _newline + _text;
             //GameLog.Client.SaveLoad.DebugFormat(_text);
 
             Timestamp = DateTimeOffset.Now;
             _text = "Step_8121:; Timestamp > " + Timestamp.ToString();
             //Console.WriteLine(_text);
-            _saveSummaryText += newline + _text;
+            _saveSummaryText += _newline + _text;
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             GameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             _text = "Step_8123:; GameVersion > " + GameVersion.ToString();
             //Console.WriteLine(_text);
-            _saveSummaryText += newline + _text;
+            _saveSummaryText += _newline + _text;
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
             Entities.Civilization[] empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
@@ -183,7 +183,7 @@ namespace Supremacy.Game
                 EmpireNames[i] = empires[i].ShortName;
                 _text = "Step_8165:; Empire > " + EmpireIDs[i].ToString() + " " + EmpireNames[i].ToString();
                 //Console.WriteLine(_text);
-                _saveSummaryText += newline + _text;
+                _saveSummaryText += _newline + _text;
                 GameLog.Client.SaveLoad.DebugFormat(_text);
 
             }

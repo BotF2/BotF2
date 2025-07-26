@@ -462,7 +462,7 @@ namespace Supremacy.Client
             if (entry.EncyclopediaCategory == EncyclopediaCategory.Races)
             {
                 doc.Blocks.AddRange(paragraphs
-                    //+ newline + "Hello"
+                    //+ _newline + "Hello"
                     ); ;
             }
 

@@ -1166,6 +1166,7 @@
     <Content Include="Resources\Fonts\Romulan Header Text.CompositeFont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\.editorconfig" />
     <None Include="Resources\Fonts\SW721B13.OTF" />
     <None Include="Resources\Fonts\SW911BTE.OTF" />
     <None Include="Resources\Fonts\SW911BTU.OTF" />

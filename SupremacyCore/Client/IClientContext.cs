@@ -9,7 +9,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using Supremacy.Client;
 using Supremacy.Collections;
 using Supremacy.Game;
 
@@ -43,4 +43,6 @@ namespace Supremacy.Client
         bool IsTurnFinished { get; }
         #endregion
     }
+
 }
+    

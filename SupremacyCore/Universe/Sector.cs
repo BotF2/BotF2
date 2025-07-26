@@ -63,7 +63,16 @@ namespace Supremacy.Universe
         /// <value>The system.</value>
         public StarSystem System
         {
-            get => _system.Value;
+            get
+            {
+                if (_system == null)
+                {
+                    return null;
+                }
+                //StarSystem _system
+                return _system.Value;
+            }
+
             internal set
             {
                 _system = new Lazy<StarSystem>(() => value);

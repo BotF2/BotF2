@@ -19,12 +19,15 @@ namespace Supremacy.Utility
 {
     public class GameLog
     {
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly string _name;
+
 #pragma warning restore IDE0052 // Remove unread private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         private static bool _initialized;
-        public static string _text;
-        public static readonly string newline = Environment.NewLine;
+        //public static string _text;
+        //public static readonly string _newline = Environment.NewLine;
         private static readonly object _syncLock;
 
         static GameLog()
@@ -46,12 +49,12 @@ namespace Supremacy.Utility
                 _ = BasicConfigurator.Configure(new ChannelLogAppender());
                 _initialized = true;
             }
-            _text += newline; // just avoid a "not used" for both
+            //_text += _newline; // just avoid a "not used" for both
             // not anymore
-            //_text = newline + "sorry... Game is sending a F1-Key, and sometimes it's targetting Visual Studio > Browser... saying 'No special help available'";
+            //_text = _newline + "sorry... Game is sending a F1-Key, and sometimes it's targetting Visual Studio > Browser... saying 'No special help available'";
             //Console.WriteLine(_text);
 
-            Core.General.Info("Step_0100: Log Initialized");
+            Core.General.Info("Step_0100: Log Initialized" + Environment.NewLine);
             //Core.General.Info(_text);
 
             string now = "Step_0101: Possible file name prepared... (see next line)" + Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog.txt" + Environment.NewLine;

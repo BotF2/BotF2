@@ -690,6 +690,12 @@
                             CornerRadius="14,0,0,14"
                             Background="{StaticResource Borg3Gradient_TopLeft_BottomRight}"/>-->
                     <!-- Bottom Left Rounded Corner -->
+                    <Border Grid.Column="0" Grid.Row="4"
+        BorderBrush="Green" BorderThickness="2" Background="Transparent"
+                                               />
+                    <Border Grid.Column="1" Grid.Row="4"
+        BorderBrush="Green" BorderThickness="2" Background="Transparent"
+                                               />
                     <!--<Border Grid.Column="0"
                             Grid.Row="4"
                             CornerRadius="14,0,0,14"
@@ -709,6 +715,7 @@
 
 
                     <!--Begin of Drawing-->
+                    
                     <Path x:Name="LeftEdge" Stroke="SpringGreen" StrokeThickness="2" Opacity="0.5" >
                         <Path.Data>
                             <PathGeometry>
@@ -862,21 +869,14 @@
                                  HorizontalAlignment="Right"
                                  Text="COLLECTIVE KNOWLEDGE"/>
                                         <!--Part left side in front of COLLECTIVE KNOWLEDGE-->
-                                        <Border
-                                                Grid.Column="5"
-                                                Grid.Row="4"   
-                                                BorderBrush="Green"
-                                                BorderThickness="2"
-                                                Background="Transparent"/>
+                                        <Border Grid.Column="5" Grid.Row="4"
+                                                BorderBrush="Green" BorderThickness="2" Background="Transparent"
+                                               />
 
                                         <!-- Begin of Drawing -->
-                                        <Canvas 
-                                            
-                                 Grid.Column="5"
-                                 Grid.Row="4"             
-                                            Grid.ColumnSpan="2"
-                                 Height="28"
-                                 Margin="3,0,0,0">
+                                        <Canvas  Height="28" Margin="3,0,0,0"
+                                 Grid.Column="5" Grid.Row="4" Grid.ColumnSpan="2"
+                                >
 
                                             <Ellipse 
                                          Grid.Column="0" 
