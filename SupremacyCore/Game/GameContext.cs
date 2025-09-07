@@ -977,15 +977,15 @@ namespace Supremacy.Game
                 homeColony.OrbitalBatteryDesign = batteryDesign;
                 homeColony.AddOrbitalBatteries(5);
 
-                while (homeColony.DeactivateFacility(ProductionCategory.Industry))
+                while (homeColony.Facility_Deactivate(ProductionCategory.Industry))
                 {
-                    if (!homeColony.ActivateFacility(ProductionCategory.Energy))
+                    if (!homeColony.Facility_Activate(ProductionCategory.Energy))
                     {
                         break;
                     }
                 }
 
-                while (homeColony.ActivateOrbitalBattery())
+                while (homeColony.OrbitalBattery_Activate())
                 {
                     continue;
                 }
@@ -1145,7 +1145,7 @@ namespace Supremacy.Game
                         _text = "Step_1334:; Scripted Event loaded - Options from file: "
                             + _eventOptionsGameLogText + " for " + _scriptedEventGameLogText;
                         Console.WriteLine(_text);
-                        GameLog.Client.EventsDetails.InfoFormat(_text);
+                        GameLog.Client.Events.InfoFormat(_text);
 
                         _eventOptionsGameLogText = "";
                         _scriptedEventGameLogText = "";
@@ -1314,7 +1314,7 @@ namespace Supremacy.Game
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Food);
+                                    _ = colony.Facility_Activate(ProductionCategory.Food);
                                     _laborAvailable -= 1;
                                 }
                             }
@@ -1352,7 +1352,7 @@ namespace Supremacy.Game
 
                                 for (int i = 0; i < facilitiesRequired + 2; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Energy);
+                                    _ = colony.Facility_Activate(ProductionCategory.Energy);
                                     _laborAvailable -= 1;
                                 }
                             }
@@ -1395,7 +1395,7 @@ namespace Supremacy.Game
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Industry);
+                                    _ = colony.Facility_Activate(ProductionCategory.Industry);
                                     _laborAvailable -= 1;
                                 }
                             }
@@ -1430,7 +1430,7 @@ namespace Supremacy.Game
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                                    _ = colony.Facility_Activate(ProductionCategory.Intelligence);
                                     _laborAvailable -= 1;
                                 }
                             }
@@ -1465,7 +1465,7 @@ namespace Supremacy.Game
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Research);
+                                    _ = colony.Facility_Activate(ProductionCategory.Research);
                                     //_laborAvailable -= 1;
                                 }
                             }
@@ -1486,7 +1486,7 @@ namespace Supremacy.Game
                                 //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
                                 if (instance != null)
                                 {
-                                    _ = colony.ActivateBuilding(instance as Building);
+                                    _ = colony.Building_Activate(instance as Building);
                                 }
                             }
                         }
@@ -1505,7 +1505,7 @@ namespace Supremacy.Game
                                     Shipyard newShipyard = instance as Shipyard;
                                     foreach (ShipyardBuildSlot buildSlot in newShipyard.BuildSlots)
                                     {
-                                        _ = colony.ActivateShipyardBuildSlot(buildSlot);
+                                        _ = colony.ShipyardBuildSlot_Activate(buildSlot);
                                     }
                                 }
                             }
@@ -1543,7 +1543,7 @@ namespace Supremacy.Game
                                 _ = Current.TechDatabase.OrbitalBatteryDesigns[OBDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 if (instance != null)
                                 {
-                                    _ = colony.ActivateOrbitalBattery();
+                                    _ = colony.OrbitalBattery_Activate();
                                 }
                             }
                         }

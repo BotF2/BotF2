@@ -99,13 +99,13 @@ namespace Supremacy.Scripting.Events
                         affectedProject.IsPaused = true;
                         _text = "Step_5487:; TradeGuildStrike: affectedProject: " + affectedProject;
                         Console.WriteLine(_text);
-                        GameLog.Client.EventsDetails.DebugFormat(_text);
+                        GameLog.Client.Events.DebugFormat(_text);
                     }
 
                     Entities.Civilization targetEventCiv = target.Owner;
                     _text = "Step_5488:; TradeGuildStrike: target.OwnerID = " + target.OwnerID;
                     Console.WriteLine(_text);
-                    GameLog.Client.EventsDetails.DebugFormat(_text);
+                    GameLog.Client.Events.DebugFormat(_text);
 
                     int targetColonyId = target.ObjectID;
 

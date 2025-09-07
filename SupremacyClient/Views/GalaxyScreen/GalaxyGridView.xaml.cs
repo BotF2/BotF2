@@ -2,7 +2,6 @@
 using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
-using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
@@ -34,6 +33,7 @@ namespace Supremacy.Client.Views
         private readonly INavigationCommandsProxy _navigationCommands;
         private readonly DelegateCommand<object> _revealMapCommand;
         private readonly DelegateCommand<object> _outputMapCommand;
+        private readonly DelegateCommand<object> _outputMapSectorInfoCommand;
         private readonly DelegateCommand<object> _cheatMenuCommand;
         private readonly DelegateCommand<object> _f12_ScreenCommand;
         private readonly DelegateCommand<object> _f11_ScreenCommand;
@@ -42,16 +42,16 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _f08_ScreenCommand;
         private readonly DelegateCommand<object> _f07_ScreenCommand;
         private readonly DelegateCommand<object> _f06_ScreenCommand;
-        [NonSerialized]
-        private readonly string _newline = Environment.NewLine;
-        private readonly string _text;
-        private string restriction_text;
-        private string _ownerText;
-        private bool writeDirectly = true;
-//#pragma warning disable IDE0051 // Remove unused private members
+        //[NonSerialized]
+        //private readonly string _newline = Environment.NewLine;
+        //private readonly string _text;
+        //private string _restriction_text;
+        //private string _ownerText;
+        //private bool writeDirectly = true;
+        //#pragma warning disable IDE0051 // Remove unused private members
         //private readonly IMusicPlayer _musicPlayer;
         //private readonly ISoundPlayer _soundPlayer;
-//#pragma warning restore IDE0051 // Remove unused private members
+        //#pragma warning restore IDE0051 // Remove unused private members
 
 
         #region Constructors and Finalizers
@@ -63,8 +63,13 @@ namespace Supremacy.Client.Views
 
             InitializeComponent();
 
+            bool writeDirectly = true;
+            string _text = "";
+            string _newline = Environment.NewLine;
+
             _text = "Step_2101:; GalaxyGridView Initialize...";
-            if (writeDirectly) Console.WriteLine(_text);
+            if (writeDirectly) 
+                Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
             Loaded += delegate
@@ -81,6 +86,7 @@ namespace Supremacy.Client.Views
 
             _revealMapCommand = new DelegateCommand<object>(ExecuteRevealMapCommand);
             _outputMapCommand = new DelegateCommand<object>(ExecuteOutputMapCommand);
+            _outputMapSectorInfoCommand = new DelegateCommand<object>(ExecuteOutputMapSectorInfoCommand);
             _cheatMenuCommand = new DelegateCommand<object>(ExecuteCheatMenuCommand);
             _f12_ScreenCommand = new DelegateCommand<object>(Execute_f12_ScreenCommand);
             _f11_ScreenCommand = new DelegateCommand<object>(Execute_f11_ScreenCommand);
@@ -92,6 +98,7 @@ namespace Supremacy.Client.Views
 
             DebugCommands.RevealMap.RegisterCommand(_revealMapCommand);
             DebugCommands.OutputMap.RegisterCommand(_outputMapCommand);
+            DebugCommands.OutputMapSectorInfo.RegisterCommand(_outputMapSectorInfoCommand);
             DebugCommands.CheatMenu.RegisterCommand(_cheatMenuCommand);
             DebugCommands.F12_Screen.RegisterCommand(_f12_ScreenCommand);
             DebugCommands.F11_Screen.RegisterCommand(_f11_ScreenCommand);
@@ -102,7 +109,8 @@ namespace Supremacy.Client.Views
             DebugCommands.F06_Screen.RegisterCommand(_f06_ScreenCommand);
 
             _text = "Step_2102:; GalaxyGridView Initialize done...";
-            if (writeDirectly) Console.WriteLine(_text);
+            if (writeDirectly) 
+                Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
         }
 
@@ -113,6 +121,7 @@ namespace Supremacy.Client.Views
             GalaxyGrid = null;
             DebugCommands.RevealMap.UnregisterCommand(_revealMapCommand);
             DebugCommands.OutputMap.UnregisterCommand(_outputMapCommand);
+            DebugCommands.OutputMapSectorInfo.UnregisterCommand(_outputMapSectorInfoCommand);
             DebugCommands.CheatMenu.UnregisterCommand(_cheatMenuCommand);
             DebugCommands.F12_Screen.UnregisterCommand(_f12_ScreenCommand);
             DebugCommands.F11_Screen.UnregisterCommand(_f11_ScreenCommand);
@@ -194,62 +203,452 @@ namespace Supremacy.Client.Views
             GalaxyGrid.Update();
         }
 
+        private void ExecuteOutputMapSectorInfoCommand(object t)
+        {
+            string _timeString = GameEngine.GetTimeString();
+
+            string _system_text = "( no system ) ";
+            string _colony_text = "( no colony ) ";
+            string _orbBat_text = "";
+            //string _shipnames_text = "( no ships ) ";
+            //string _station_text = "( no station ) ";
+
+            string _newline = Environment.NewLine;
+
+            //SectorMap _map = _appContext.CurrentGame.Universe.Map;
+
+            //var _mapdata = _appContext.LocalPlayerEmpire.MapData;
+            //NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
+            Sector _sector = GalaxyGrid.SelectedSector;
+            //GalaxyScreenCommands.SelectSector.Execute(_sector);
+            //GalaxyScreenCommands.CenterOnSector.Execute(_sector);
+
+            MapLocation _loc = _sector.Location;
+
+            if (_sector.System != null)
+            {
+                _system_text = " * " + _sector.System.Name + " * ( " + _sector.System.StarType + " ) ";
+
+                if (_sector.System.HasColony)
+                {
+                    _colony_text = GetInfoText_Colony(_sector.System.Colony);
+                    //_orbBat_text = "( no Orbital Batteries)";
+
+                }
+            }
+
+
+            IEnumerable<Ship> ships = GameContext.Current.Universe.Objects.OfType<Ship>()
+                .Where(s => s.Location == _loc)
+                .OrderBy(s => s.OwnerID);
+            //_shipnames_text = GetInfoText_Ships(ships);  // MapSectorInfo
+
+            //IEnumerable<Station> station = GameContext.Current.Universe.Objects.OfType<Station>()
+            //    .Where(s => s.Location == _loc)
+            //    .OrderBy(s => s.OwnerID);
+            //_station_text = GetInfoText_Station(_sector.Station);  // MapSectorInfo
+
+            //string _dialogHeadline = "-------------------------- * Sector Info * -------------------------- " /*+ _timeString*/;
+            string _dialogHeadline = "" /*+ _timeString*/;
+
+            //MessageDialogResult result = new MessageDialog();
+            //MessageDialog.FontSizeProperty = 16;
+            MessageDialogResult result = MessageDialog.Show(_dialogHeadline,
+                ""
+                //_timeString + _newline + _newline
+                + "Sector Location " + GameEngine.LocationString(_loc.ToString())
+                    + " " + _system_text
+                    + " ...  ( " + _timeString + " ) " + _newline /*+ _newline*/
+
+                    + "----------------------------------------------------------------------------------------------------------------" + _newline
+
+                //+ "Sector > " + _system_text + _newline + _newline
+
+                /*+ "> Station: "*/ + GetInfoText_Station(_sector.Station) + _newline /*+ _newline*/
+
+                + "> Ships: " + ships.Count() + GetInfoText_Ships(ships) + _newline /*+ _newline*/
+
+                + "> Colony: " + _colony_text + _newline + _newline
+
+
+
+                    //, MessageDialog.FontSizeProperty = 16
+                    , MessageDialogButtons.Ok);
+            //if (result == MessageDialogResult.No)
+            //{
+            //    _ = EndGame(false);
+            //}
+
+        }
+
+        private string GetInfoText_Ships(IEnumerable<Ship> ships)
+        {
+            string _shipsInfo = "";
+            string _ownerText = "";
+            string _newline = Environment.NewLine;
+
+            foreach (Ship item in ships)
+            {
+                if (item.Owner.Key != _ownerText)
+                    _shipsInfo += _newline /*+ _newline*/;
+                _ownerText = item.Owner.Key;
+
+                _shipsInfo += "" //"Step_4381:"
+                                 //+ "; " + GameEngine.LocationString(item.Location.ToString())
+                                 //+ "; Ship"
+
+                        /*+ "; "*/ + item.Owner.Key
+
+                        + ": " + item.Design.Key
+                        + " > " + item.ObjectID
+                        //+ " " + item.Design
+                        
+                        + " " + item.Name
+
+                        //+ "; Crew=;" + item.Crew
+                        //+ "; Exp=;" + item.ExperiencePercent
+                        + ", Hull=" + item.HullStrength
+                        + ", Sh=" + item.ShieldStrength
+                        //+ "; Cloak=;" + item.CloakStrength
+                        //+ "; Camo=;" + item.CamouflagedStrength
+                        //+ "; Camo=;" + item.
+                        + ", Fuel=" + item.FuelReserve
+
+                        //+ "; since Turn;" + item.TurnCreated
+                        + _newline
+                                                    //+ _newline
+                                                    ;
+                //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                //if (writeDirectly) Console.WriteLine(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            }
+
+
+            //_shipsInfo += _newline;
+
+            return _shipsInfo;
+        }
+
+        private string GetInfoText_Station(Station item)
+        {
+            string _info = "( no station )";
+            if (item == null)
+            {
+                return _info;
+            }
+
+            _info = "" //"Step_4381:"
+                       //+ "; " + GameEngine.LocationString(item.Location.ToString())
+                       //+ "; Ship"
+                    + item.Design
+                    ///*+ "; "*/ + item.Owner.Key
+                    + " > " + item.ObjectID
+                    + " " + item.Name
+                    //+ " ( " 
+
+                    //+ " ) "
+
+
+                    //+ "; Crew=;" + item.Crew
+                    //+ "; Exp=;" + item.ExperiencePercent
+                    + ", Hull=" + item.HullStrength
+                    + ", Sh=" + item.ShieldStrength
+                    ;
+            return _info;
+        }
+
+        private string GetInfoText_Colony(Colony item)
+        {
+            string _info = "( no colony )";
+            //string _ownerText = "";
+            //if (item.Owner.Key != _ownerText)
+            //    _info += _newline + _newline;
+            //_ownerText = item.Owner.Key;
+            string _text = "";
+            string _newline = Environment.NewLine;
+
+            int pf = item.Facilities_Total1_Food
+                    + item.Facilities_Total2_Industry
+                    + item.Facilities_Total3_Energy
+                    + item.Facilities_Total4_Research
+                    + item.Facilities_Total5_Intelligence
+                    ;
+
+            string _buildings_Text = "";
+
+            foreach (var _building in item.Buildings)
+            {
+                _buildings_Text += ""
+                        + "Building"
+                        + " since Turn;" + GameEngine.Do_3_Digit(_building.TurnCreated.ToString())
+                        + ", " + (_building.IsActive ? "__Active" : "Inactive").ToString()
+                        + "; " + _building.ObjectID
+                        + "; " + _building.Design
+                        + _newline;
+            }
+            if (_buildings_Text == "") _buildings_Text = "( no buildings )";
+
+
+            string _orbBat_text = "no Orbital Batteries";
+
+            if (item.OrbitalBatteries.Count > 0)
+            {
+                _orbBat_text = item.OrbitalBatteryDesign
+                    + ": " + item.OrbitalBatteries_Active
+                    + " of " + item.OrbitalBatteries_Total + " active"
+                    //+ " ( " + item.OrbitalBatteryDesign + " ) "
+                    ;
+            }
+
+            string _stockpile_Text = ""//"Step_7604:; " + _col
+                    + "Stockpile Deu= " + item.NetDeuterium
+                    + ", Dur= " + item.NetDuranium
+                    + ", Dil= " + item.NetDilithium
+                    + ", Credits= " + item.CreditsEmpire
+                    + " ) "
+                    //+ _newline
+                    ;
+
+
+            string _proj_Text = "> available Build Projects ( " + _stockpile_Text + " ) " + _newline;
+
+            var Project_Available = TechTreeHelper
+    .GetBuildProjects(item).ToList()
+    //.OfType<StructureBuildProject>()
+    //.Where(p =>
+    //        p.GetCurrentIndustryCost() > 0
+    //        && EnumHelper
+    //            .GetValues<ResourceType>()
+    //            .Where(availableResources.ContainsKey)
+    //            .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
+    //.OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault()
+    ;
+            foreach (var item2 in Project_Available)
+            {
+                _proj_Text += //"Step_4235:; " + colony + ";  Available to build"
+                              //+ " on; " + item.Name
+                              //+ "; " + item.Owner
+                        ""
+
+                        + "costs " + GameEngine.Do_5_Digit(item2.GetCurrentIndustryCost().ToString())
+                        + " aka " + GameEngine.Do_x2_Digit_String(item2.TurnsRemaining.ToString()) + " turns"
+                        + " > " + item2.BuildDesign.Key
+                        + " (Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
+                        + ", Dur=" + item2.GetCurrentResourceCost(ResourceType.Duranium)
+                        + ", Dil=" + item2.GetCurrentResourceCost(ResourceType.Dilithium) + " )"
+                        + _newline
+                        ;
+                //if (writeDirectly) Console.WriteLine(_text);
+
+            }
+
+
+            string _building_text = "";
+            if (item.BuildSlots[0].HasProject)
+            {
+                _building_text += "" //"Step_7607:; "
+                                     //+ _col
+                        + "now BUILDING > " + item.BuildSlots[0].Project.BuildDesign
+                        + " > needs " + item.BuildSlots[0].Project.TurnsRemaining + " turns or a BUY"
+
+                        + _newline;
+            }
+            else
+            {
+                _building_text += "" //"Step_7602:; "
+                                     //+ _col
+                    + "now building > * NOTHING * or just finished this turn" + _newline;
+            }
+
+
+            string _buildQueue_Text = "";//"""Build Queue" + _newline;
+            // not necessary
+            //_text += "Step_7609:; "
+            //        + _col
+            //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
+            foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
+            {
+                _buildQueue_Text += "" //"Step_7608:; "
+                                       //+ _col
+                    + "BUILD QUEUE  > " + buildQueueItem.Description + " > Turns needed= " + buildQueueItem.TurnsRemaining.ToString()
+                    //+ " ; for; " + 
+
+                    //+ slot.Project.Location
+                    //+ " > Slot= " + slot.SlotID
+                    //+ " at " + slot.Shipyard.Name
+                    //+ " " + 
+                    //+ " > " + _percent
+                    //+ " done for " + _design
+                    + _newline;
+                //if (writeDirectly) Console.WriteLine(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            }
+            //if (writeDirectly) Console.WriteLine(_text);
+
+
+            string _slots_Text = "";
+            if (item.Shipyard != null)
+            {
+                foreach (var slot in item.Shipyard.BuildSlots)
+                {
+                    //try
+                    //{
+                    //foreach (ShipyardBuildSlot slot in shipyard)
+                    //{
+                    string _design = "nothing";
+                    string _percent = "0 %";
+                    if (slot.Project != null && slot.Project.BuildDesign != null)
+                    {
+                        _design = slot.Project.BuildDesign.Key.ToString();
+                        _percent = slot.Project.PercentComplete.ToString();
+                    }
+
+                    if (_percent != "0 %")
+                    {
+                        _slots_Text += "" //"Step_7603:; " + _col //+ slot.Shipyard.Location
+                            + "Shipyard-Slot= " + slot.SlotID
+
+                            + " "
+                            + " > " + _percent
+                            + " done for " + _design
+                            + "  at  " + slot.Shipyard.Name
+                            + _newline;
+                        //if (writeDirectly) Console.WriteLine(_text);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    }
+                    else
+                    {
+                        _slots_Text += "" // "Step_7607:; " + _col //+ slot.Shipyard.Location
+                            + "Shipyard-Slot= " + slot.SlotID  // crashes with a StackOverFlow
+                                                        //+ " at " + slot.Shipyard.Name
+                            + " "
+                            + " > " + _percent
+                            + " done for " + _design
+                            + _newline;
+                        //if (writeDirectly) Console.WriteLine(_text);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    }
+                }
+            }
+
+            //
+            // Combine full text
+            //
+
+            _info = "" //"Step_4381:"
+                       //+ "; " + GameEngine.LocationString(item.Location.ToString())
+                       //+ "; Ship"
+
+
+        + " " + item.ObjectID
+        + " " + item.Name
+        + " - " + item.Owner.Key/* + " ) "*/
+            //+ "; " + GameEngine.LocationString(item.Location.ToString())
+            //+ "; " + item.ObjectID
+            //+ ";Colony"
+            //+ "; " + item.Name
+            //+ "; " + item.Owner
+            + _newline
+            /*+ ", "*/ + "Facilities total= " + pf
+            + ", Population > " + item.Population
+            + " of max " + item.Population_Max
+            + ", Morale= " + item.Morale
+            + ", Credits = " + item.CreditsEmpire
+
+            + _newline
+
+            //+ ";fac      Food > " 
+            + item.Facilities_Active1_Food + " of " + item.Facilities_Total1_Food + " Food"
+            + " Food" + ", Food Reserves= " + item.FoodReserves + _newline
+            + item.Facilities_Active2_Industry + " of " + item.Facilities_Total2_Industry + " Industry" + _newline
+            + item.Facilities_Active3_Energy + " of " + item.Facilities_Total3_Energy + " Energy ( " + _orbBat_text + " ) " + _newline
+            + item.Facilities_Active4_Research + " of " + item.Facilities_Total4_Research + " Research" + _newline
+            + item.Facilities_Active5_Intelligence + " of " + item.Facilities_Total5_Intelligence + " Intelligence" + _newline
+            + "----" + _newline
+//+ _newline
+
++ _building_text //+ _newline 
++ _buildQueue_Text //+ _newline 
++ _slots_Text //+ _newline 
++ _proj_Text + _newline
+            + _buildings_Text //+ _newline
+
+                                    //+ _newline
+            ;
+
+            //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+            //if (writeDirectly) Console.WriteLine(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //}
+
+
+            //_info += _newline;
+
+            return _info;
+        }
+
         private void ExecuteOutputMapCommand(object t)
         {
             //if (!_appContext.IsSinglePlayerGame)
             //{
             //    return;
             //}
-            var time = DateTime.Now;
-            string Year = time.Year.ToString(); Year = CheckDateString(Year);
-            string Month = time.Month.ToString(); Month = CheckDateString(Month);
-            string Day = time.Day.ToString(); Day = CheckDateString(Day);
-            string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
-            string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
-            string Second = time.Second.ToString(); Second = CheckDateString(Second);
-            string timeString = "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second;
+            //var time = DateTime.Now;
+            //string Year = time.Year.ToString(); Year = CheckDateString(Year);
+            //string Month = time.Month.ToString(); Month = CheckDateString(Month);
+            //string Day = time.Day.ToString(); Day = CheckDateString(Day);
+            //string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
+            //string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
+            //string Second = time.Second.ToString(); Second = CheckDateString(Second);
+            string _timeString = GameEngine.GetTimeString();
+            //"Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second;
 
-            string shipnames_text = "";
-            string stationnames_text = "";
+            string _shipnames_text = "";
+            string _stationnames_text = "";
+            string _text = "";
+            string _newline = Environment.NewLine;
+            bool writeDirectly = true;
 
-            SectorMap map = _appContext.CurrentGame.Universe.Map;
+            SectorMap _map = _appContext.CurrentGame.Universe.Map;
 
-            string _text = timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + _newline;
+            _text = _timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + _newline;
             _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   "
                 + _newline
                 + _newline
                 + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline
                 + _newline
                 ;
-            int yhalf = map.Height / 2;
-            int xhalf = map.Width / 2;
+            int yhalf = _map.Height / 2;
+            int xhalf = _map.Width / 2;
 
-            for (int y = 0; y < map.Height; y++)
+            for (int y = 0; y < _map.Height; y++)
             {
                 if (y < 10) _text += " ";  // 1 to 9 getting a blank before
 
                 if (y == yhalf) _text += "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline;
                 _text += y + ":  ";
-                for (int x = 0; x < map.Width; x++)
+                for (int x = 0; x < _map.Width; x++)
                 {
                     if (x == xhalf) _text += "| ";
                     string owner = ".";
-                    if (map[x, y].Owner != null)
+                    if (_map[x, y].Owner != null)
                     {
-                        owner = map[x, y].Owner.CivID.ToString();
-                        if (map[x, y].Owner.CivID > 6) owner = "M"; // Minor
+                        owner = _map[x, y].Owner.CivID.ToString();
+                        if (_map[x, y].Owner.CivID > 6) owner = "M"; // Minor
                     }
 
                     string type = ".";
-                    if (map[x, y].System != null)
+                    if (_map[x, y].System != null)
                     {
-                        type = map[x, y].System.StarType.ToString().Substring(0, 1);
-                        if (map[x, y].System.StarType == StarType.BlackHole) type = "b";
-                        if (map[x, y].System.StarType == StarType.NeutronStar) type = "n";
-                        //if (map[x, y].System.StarType == StarType.Quasar) type = "Q";
-                        if (map[x, y].System.StarType == StarType.RadioPulsar) type = "r";
-                        if (map[x, y].System.StarType == StarType.XRayPulsar) type = "x";
-                        if (map[x, y].System.StarType == StarType.Wormhole) type = "w";
+                        type = _map[x, y].System.StarType.ToString().Substring(0, 1);
+                        if (_map[x, y].System.StarType == StarType.BlackHole) type = "b";
+                        if (_map[x, y].System.StarType == StarType.NeutronStar) type = "n";
+                        //if (_map[x, y].System.StarType == StarType.Quasar) type = "Q";
+                        if (_map[x, y].System.StarType == StarType.RadioPulsar) type = "r";
+                        if (_map[x, y].System.StarType == StarType.XRayPulsar) type = "x";
+                        if (_map[x, y].System.StarType == StarType.Wormhole) type = "w";
                     }
                     _text += owner + type + " ";
                     //if (writeDirectly) Console.WriteLine(_text);
@@ -308,7 +707,7 @@ namespace Supremacy.Client.Views
                 _text += _newline;
 
                 IEnumerable<StarSystem> otherSystems = GameContext.Current.Universe.Objects.OfType<StarSystem>();
-                foreach (StarSystem _sec  in otherSystems)
+                foreach (StarSystem _sec in otherSystems)
                 {
                     string _owner;
                     if (_sec.Owner == null)
@@ -322,7 +721,7 @@ namespace Supremacy.Client.Views
 
                     string _x_text = GameEngine.Do_x2_Digit_String(_sec.Location.X.ToString());
                     string _y_text = GameEngine.Do_x2_Digit_String(_sec.Location.Y.ToString());
-                    _text +=  "--------------"//Quadrant"
+                    _text += "--------------"//Quadrant"
                         + " ; " + _owner
                         + " ; " + _x_text
                         + " ; " + _y_text
@@ -331,7 +730,7 @@ namespace Supremacy.Client.Views
 
                         + _newline;
                     //_text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
-                    
+
 
                 }
 
@@ -355,7 +754,7 @@ namespace Supremacy.Client.Views
 
                         ;
 
-                    _text += _newline + timeString + _newline
+                    _text += _newline + _timeString + _newline
                         + "Step_4363:"
                         + "; " + GameEngine.LocationString(item.Location.ToString())
                         + "; " + item.ObjectID
@@ -376,7 +775,7 @@ namespace Supremacy.Client.Views
                         + "; facI;" + item.Facilities_Active5_Intelligence + ";of; " + item.Facilities_Total5_Intelligence
 
 
-                        //+ ";since Turn;" + item.TurnCreated
+                                                    //+ ";since Turn;" + item.TurnCreated
 
                                                     + _newline;
                     //if (writeDirectly) Console.WriteLine(_text);
@@ -391,22 +790,22 @@ namespace Supremacy.Client.Views
                     //        + item.Facilities_Total3_Energy
                     //        + item.Facilities_Total4_Research
                     //        + item.Facilities_Total5_Intelligence
-                        
+
                     //    ;
                     //foreach (var item2 in pf)
                     //{
-                        //_text += "Step_4366:; "
-                        //    + _col
-                        //    //+ "; " + pf.IsActive + "_for_Active"
-                        //    //+ "; Building"
-                        //    //+ "; " + pf.ObjectID
-                        //    + "; TotalFacilities=; " + pf
+                    //_text += "Step_4366:; "
+                    //    + _col
+                    //    //+ "; " + pf.IsActive + "_for_Active"
+                    //    //+ "; Building"
+                    //    //+ "; " + pf.ObjectID
+                    //    + "; TotalFacilities=; " + pf
 
-                        //    //+ "; since Turn;" + pf.TurnCreated
+                    //    //+ "; since Turn;" + pf.TurnCreated
 
-                        //    + _newline;
+                    //    + _newline;
 
-                        //if (writeDirectly) Console.WriteLine(_text);
+                    //if (writeDirectly) Console.WriteLine(_text);
 
                     //}
 
@@ -466,7 +865,7 @@ namespace Supremacy.Client.Views
                     }
 
                     _text += "Step_7604:; " + _col
-                           
+
                             + "; Stockpile Deu= " + item.NetDeuterium
                             + "; Dur= " + item.NetDuranium
                             + "; Dil= " + item.NetDilithium
@@ -507,7 +906,7 @@ namespace Supremacy.Client.Views
                     {
                         _text += "Step_7602:; "
                             + _col
-                            + "; is building > * NOTHING * or just finished this turn" + _newline;
+                            + "; is _building > * NOTHING * or just finished this turn" + _newline;
                     }
 
                     // not necessary
@@ -587,7 +986,8 @@ namespace Supremacy.Client.Views
                                      + _newline;
                                 //if (writeDirectly) Console.WriteLine(_text);
                                 //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
-                            };
+                            }
+                            ;
                         }
                         //foreach (BuildQueueItem buildQueueItem in colony.BuildQueue)
                     }
@@ -598,48 +998,53 @@ namespace Supremacy.Client.Views
 
 
                 }
-                if (writeDirectly) Console.WriteLine(_text);
+
+
+                if (writeDirectly) 
+                    Console.WriteLine(_text);
                 _text += _newline;
 
 
 
                 IEnumerable<Ship> ships = GameContext.Current.Universe.Objects.OfType<Ship>().OrderBy(s => s.OwnerID);
 
-                foreach (Ship item in ships)
-                {
-                    if (item.Owner.Key != _ownerText)
-                        _text += _newline + _newline;
-                    _ownerText = item.Owner.Key;
+                string _shipsInfo_text = GetInfoText_Ships(ships);  // Alt+M = all MapData
 
-                    _text += "Step_4381:"
-                            + "; " + GameEngine.LocationString(item.Location.ToString())
-                            + "; Ship"
+                //foreach (Ship item in ships)
+                //{
+                //    if (item.Owner.Key != _ownerText)
+                //        _text += _newline + _newline;
+                //    _ownerText = item.Owner.Key;
 
-                            + "; " + item.Owner.Key
-                            + "; " + item.ObjectID
-                            + "; " + item.Design
-                            + "; " + item.Name
+                //    _text += "Step_4381:"
+                //            + "; " + GameEngine.LocationString(item.Location.ToString())
+                //            + "; Ship"
 
-                            + "; Crew=;" + item.Crew
-                            + "; Exp=;" + item.ExperiencePercent
-                            + "; Hull=;" + item.HullStrength
-                            + "; Sh=;" + item.ShieldStrength
-                            + "; Cloak=;" + item.CloakStrength
-                            + "; Camo=;" + item.CamouflagedStrength
-                            //+ "; Camo=;" + item.
-                            + "; Fuel=;" + item.FuelReserve
+                //            + "; " + item.Owner.Key
+                //            + "; " + item.ObjectID
+                //            + "; " + item.Design
+                //            + "; " + item.Name
 
-                            + "; since Turn;" + item.TurnCreated
+                //            + "; Crew=;" + item.Crew
+                //            + "; Exp=;" + item.ExperiencePercent
+                //            + "; Hull=;" + item.HullStrength
+                //            + "; Sh=;" + item.ShieldStrength
+                //            + "; Cloak=;" + item.CloakStrength
+                //            + "; Camo=;" + item.CamouflagedStrength
+                //            //+ "; Camo=;" + item.
+                //            + "; Fuel=;" + item.FuelReserve
 
-                                                        + _newline;
-                    //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                    //if (writeDirectly) Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
-                }
+                //            + "; since Turn;" + item.TurnCreated
+
+                //                                        + _newline;
+                //    //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                //    //if (writeDirectly) Console.WriteLine(_text);
+                //    //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                //    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //}
 
 
-                _text += _newline;
+                //_text += _newline;
 
                 IEnumerable<Station> stations = GameContext.Current.Universe.Objects.OfType<Station>();
                 foreach (Station item in stations)
@@ -837,7 +1242,7 @@ namespace Supremacy.Client.Views
 
                 {
                     string tdb_text = "Step_4347:";
-                    //string shipnames_text = "";
+                    //string _shipnames_text = "";
 
                     tdb_text += "; " + item.DesignID;
                     tdb_text += "; " + item.Key;
@@ -968,19 +1373,23 @@ namespace Supremacy.Client.Views
                         Buildings.BuildingDesign spec = item as Buildings.BuildingDesign;
                         tdb_text += ";" + spec.EnergyCost;
 
+
+
                         //Restriction
+                        string _restriction_text = ";";
+
                         if (spec.Restriction.ToString() != null)
                         {
-                            restriction_text = ";";
 
-                            if (spec.Restriction.ToString().Contains("HomeSystem")) restriction_text += "HoS;"; else restriction_text += ";";
-                            if (spec.Restriction.ToString().Contains("OnePerEmpire")) restriction_text += "OneE;"; else restriction_text += ";";
-                            if (spec.Restriction.ToString().Contains("OnePerSystem")) restriction_text += "OneS;"; else restriction_text += ";";
-                            //if (spec.Restriction.ToString() == "HomeSystem") restriction_text += "HoS;"; else restriction_text += ";" ;
-                            //if (spec.Restriction.ToString() == "HomeSystem") restriction_text += "HoS;"; else restriction_text += ";" ;
-                            //if (spec.Restriction.ToString() == "HomeSystem") restriction_text += "HoS;"; else restriction_text += ";" ;
+
+                            if (spec.Restriction.ToString().Contains("HomeSystem")) _restriction_text += "HoS;"; else _restriction_text += ";";
+                            if (spec.Restriction.ToString().Contains("OnePerEmpire")) _restriction_text += "OneE;"; else _restriction_text += ";";
+                            if (spec.Restriction.ToString().Contains("OnePerSystem")) _restriction_text += "OneS;"; else _restriction_text += ";";
+                            //if (spec.Restriction.ToString() == "HomeSystem") _restriction_text += "HoS;"; else _restriction_text += ";" ;
+                            //if (spec.Restriction.ToString() == "HomeSystem") _restriction_text += "HoS;"; else _restriction_text += ";" ;
+                            //if (spec.Restriction.ToString() == "HomeSystem") _restriction_text += "HoS;"; else _restriction_text += ";" ;
                         }
-                        tdb_text += restriction_text;
+                        tdb_text += _restriction_text;
 
                         if (spec.Bonuses != null)
                         {
@@ -1055,8 +1464,8 @@ namespace Supremacy.Client.Views
 
                             if (first_stationname)
                             {
-                                //stationnames_text += "Step_4349: ---------------" + _newline;
-                                stationnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
+                                //_stationnames_text += "Step_4349: ---------------" + _newline;
+                                _stationnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
                                 first_stationname = false;
                             }
 
@@ -1086,7 +1495,7 @@ namespace Supremacy.Client.Views
 
                             foreach (var name in spec2.PossibleNames)
                             {
-                                stationnames_text += "Step_4359:"
+                                _stationnames_text += "Step_4359:"
                                     + ";" + count
                                     + ";" + item.Key
 
@@ -1160,8 +1569,8 @@ namespace Supremacy.Client.Views
 
                         if (first_shipname)
                         {
-                            //shipnames_text += "Step_4349: ---------------" + _newline;
-                            shipnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
+                            //_shipnames_text += "Step_4349: ---------------" + _newline;
+                            _shipnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
                             first_shipname = false;
                         }
 
@@ -1191,13 +1600,13 @@ namespace Supremacy.Client.Views
 
                         foreach (var name in spec.PossibleNames)
                         {
-                            shipnames_text += "Step_4359:"
+                            _shipnames_text += "Step_4359:"
                                 + ";" + count
                                 + ";" + item.Key
 
                                 + " ;" + name.Key
                                 + _newline;
-                            Console.WriteLine(shipnames_text);
+                            Console.WriteLine(_shipnames_text);
                         }
 
 
@@ -1231,7 +1640,7 @@ namespace Supremacy.Client.Views
 
 
                 }
-                //_text += shipnames_text;
+                //_text += _shipnames_text;
                 //}
 
             }
@@ -1252,7 +1661,7 @@ namespace Supremacy.Client.Views
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
                 StreamWriter streamWriter = new StreamWriter(file);
-                streamWriter.Write(shipnames_text);
+                streamWriter.Write(_shipnames_text);
                 streamWriter.Close();
                 _text = "output of _ShipNames done to " + file;
                 if (writeDirectly) Console.WriteLine(_text);
@@ -1262,7 +1671,7 @@ namespace Supremacy.Client.Views
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
                 StreamWriter streamWriter = new StreamWriter(file);
-                streamWriter.Write(stationnames_text);
+                streamWriter.Write(_stationnames_text);
                 streamWriter.Close();
                 _text = "output of _StationNames done to " + file;
                 if (writeDirectly) Console.WriteLine(_text);
@@ -1270,9 +1679,10 @@ namespace Supremacy.Client.Views
 
             System.Media.SoundPlayer wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav");
             wav_player.Play();
-            
+
 
         }
+
 
         //private string LocationString(MapLocation loc) // changes 1 numeric to 2 numeric
         //{
@@ -1291,13 +1701,7 @@ namespace Supremacy.Client.Views
 
         //}
 
-        private static string CheckDateString(string _string)
-        {
-            if (_string.Length == 1)
-                _string = "0" + _string;
 
-            return _string;
-        }
 
         private void ExecuteCheatMenuCommand(object t)
         {

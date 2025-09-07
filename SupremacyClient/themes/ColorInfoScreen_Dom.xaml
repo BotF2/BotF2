@@ -246,7 +246,7 @@ Gradients defined in GLOBAL.XAML to have it available all the time
         <!--Row="9" -->
         <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
                    Foreground="{StaticResource GreenTextBrush}" >
-Text+Border (Shared.xaml)
+Text+Border (Shared .xaml)
         </TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
                    Foreground="{StaticResource HeaderTextBrush}" >

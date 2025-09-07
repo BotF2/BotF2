@@ -367,6 +367,8 @@ namespace Supremacy.Universe
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
+            string _text;
+
             base.DeserializeOwnedData(reader, context);
             // to often
             //_text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";

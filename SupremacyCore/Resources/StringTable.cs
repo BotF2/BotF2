@@ -29,8 +29,8 @@ namespace Supremacy.Resources
         private static readonly Regex KeyRegex = new Regex(@"^\[([^\[]+)\]$", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private readonly Dictionary<string, string> _strings;
-        private static string _text;
-        private static readonly string _newline = Environment.NewLine;
+        //private static string _text;
+        //private static readonly string _newline = Environment.NewLine;
 
         public ICollection<string> Keys => _strings.Keys;
 
@@ -55,9 +55,10 @@ namespace Supremacy.Resources
 
         public static StringTable Load(string fileName)
         {
+            string _text;
             if (!File.Exists(fileName))
             {
-                string _text = "Step_0135:;  ....could not find " + fileName + " (causes a FileNotFound) but en.txt is fine";
+                _text = "Step_0135:;  ....could not find " + fileName + " (causes a FileNotFound) but en.txt is fine";
                 //GameLog.Client.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
 
@@ -126,7 +127,7 @@ namespace Supremacy.Resources
                 _text = "EN.txt_Content-Key;Value;empty1;empty2;empty3";
                 foreach (var item in result._strings)
                 {
-                    _text += _newline + item.Key + ";\"" + item.Value + "\"";
+                    _text += Environment.NewLine + item.Key + ";\"" + item.Value + "\"";
                 }
                 string file = Path.Combine(ResourceManager.GetResourcePath("Resources\\Data"), "EN-Txt-Content");
 

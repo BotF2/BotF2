@@ -23,8 +23,9 @@
   
     <ObjectDataProvider x:Key="Settings" ObjectInstance="{x:Static propeties:Settings.Default}" />
 
-    <Cursor x:Key="DefaultCursor"> vfs:///Resources/Images/UI/Shell/cursor.cur</Cursor>
-    <!--<Cursor x:Key="DefaultCursor">pack://application:,,,/Resources/Images/UI/Shell/cursor.cur</Cursor>-->
+    <Cursor x:Key="DefaultCursor"> ./cursor.cur</Cursor>
+    <!--<Cursor x:Key="DefaultCursor"> vfs:///Resources/Images/UI/Shell/cursor.cur</Cursor>-->
+    <!--<Cursor x:Key="DefaultCursor">../../Resources/Images/UI/Shell/cursor.cur</Cursor>-->
 
     <!--
     ###### BUTTONS ######
@@ -4158,7 +4159,7 @@
     </Setter>
   </Style>
 
-    <!--Expander Menus e.g. Empire Info, Requisition,  see race specific in each Shared.xaml -->
+    <!--Expander Menus e.g. Empire Info, Requisition,  see race specific in each Shared .xaml -->
     <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource BaseStyle}">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
@@ -6737,5 +6738,606 @@
       </Setter.Value>
     </Setter>
   </Style>
+
+    <Style x:Key="1-TERRAN_LCARS_StandardButtonStyle"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}"
+         TargetType="{x:Type Button}">
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="Padding" Value="16,0,16,0" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Button Background-->
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource PurpleGradient_Top_Bottom}">
+
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <Path x:Name="LeftEdge"
+                  Grid.Column="0"
+                  Fill="{StaticResource Ter5Gradient_Top_Bottom}"
+                  Data="M 0,28 L 28,28 28,0 5,0 0,5 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+                        <Path x:Name="RightEdge"
+                  Grid.Column="2"
+                  Fill="{StaticResource Ter5Gradient_Top_Bottom}"
+                  Data="M 28,28L0,28 0,0 23,0 28,5 28,28 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Ter3Gradient_Top_Bottom}" />
+                            <!--<Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource TerHoverGradient_Top_Bottom}" />
+              <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource TerHoverGradient_Top_Bottom}" />-->
+                        </Trigger>
+                        <!--IsPressed-->
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Ter6Gradient_Bottom_Top}" />
+                            <!--<Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource Ter6Gradient_Bottom_Top}" />
+              <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource Ter6Gradient_Bottom_Top}" />-->
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="2-ROM_LCARS_StandardButtonStyle"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}"
+         TargetType="{x:Type Button}">
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="MinHeight"
+            Value="28" />
+        <Setter Property="Padding"
+            Value="16,0,16,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource RomGreenGradient_Top_Bottom}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <Path x:Name="LeftEdge"
+                  Grid.Column="0"
+                  Fill="{StaticResource RomPurpleBlueGradient_Top_Bottom}"
+                  Data="M 0,28 L 28,28 28,0 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill"
+                  Margin="0,0,2,0"/>
+                        <Path x:Name="RightEdge"
+                  Grid.Column="2"
+                  Fill="{StaticResource RomPurpleBlueGradient_Top_Bottom}"
+                  Data="M 0,0 L 28,0 0,28 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" 
+                  Margin="2,0,0,0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource RomHoverGradient_Top_Bottom}" />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource RomHoverGradient_Top_Bottom}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource RomHoverGradient_Top_Bottom}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource RomGreenGradient_Bottom_Top}" />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource RomGreenGradient_Bottom_Top}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource RomGreenGradient_Bottom_Top}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="3-KLING_LCARS_StandardButtonStyle"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}"
+         TargetType="{x:Type Button}">
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="MinHeight"
+            Value="28" />
+        <Setter Property="Padding"
+            Value="16,0,16,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource Kling1Gradient_Bottom_Top}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <Path x:Name="LeftEdge"
+                  Grid.Column="0"
+                  Fill="{StaticResource AzureGradient_Top_Bottom}"
+                  Data="M 0,25L10,10 18,4 26,0 28,0 28,24 25,20 21,20 18,27 14,20 10,21 0,25 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+                        <Path x:Name="RightEdge"
+                  Grid.Column="2"
+                  Fill="{StaticResource AzureGradient_Top_Bottom}"
+                  Data="M 28,25 L 18,10 10,4 2,0 0,0 0,24  3,20 7,20 10,27 14,20 18,21 28,25 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource KlingHoverGradient_Top_Bottom}" />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource KlingHoverGradient_Top_Bottom}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource KlingHoverGradient_Top_Bottom}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Kling1Gradient_Bottom_Top}" />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource Kling1Gradient_Bottom_Top}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource Kling1Gradient_Bottom_Top}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="4-CARD_LCARS_StandardButtonStyle"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}"
+         TargetType="{x:Type Button}">
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="MinHeight"
+            Value="28" />
+        <Setter Property="Padding"
+            Value="16,0,16,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource AquaDarkGradient_Top_Bottom}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <Path x:Name="LeftEdge"
+                  Grid.Column="0"
+                  Fill="{StaticResource Card4Gradient_Top_Bottom}"
+                  Data="M 0,25 L 10,10 18,4 26,0 28,0 28,28 26,28 24,26 20,21 12,21 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+                        <Path x:Name="RightEdge"
+                  Grid.Column="2"
+                  Fill="{StaticResource Card4Gradient_Top_Bottom}"
+                  Data="M 28,3 L 18,18 10,24 2,28 0,28 0,0 2,0 4,2 8,7 16,7 28,3 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Card4Gradient_Top_Bottom}" />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource Card3Gradient_Top_Bottom}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource Card3Gradient_Top_Bottom}" />
+                        </Trigger>
+                        <!--IsPressed-->
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Card3Gradient_Top_Bottom}" />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource Card4Gradient_Top_Bottom}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource Card4Gradient_Top_Bottom}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="5-DOM_LCARS_StandardButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="18pt" />
+        <!--<Setter Property="FontWeight"
+            Value="Normal" />-->
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Padding"
+            Value="16,0,16,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <!--<ColumnDefinition Width="Auto" />-->
+                        </Grid.ColumnDefinitions>
+
+                        <!--Turned off = Transparent, but "Border" is needed-->
+                        <Border Grid.Column="0"
+                    Background="Transparent"
+                    CornerRadius="14,0,0,14"
+                    Width="21" />
+                        <Path Grid.Column="0"
+                    Height="28"
+                    Width="14"
+                    Stretch="Fill" 
+                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}"
+                    Data="F1 M 16,32C 7.16345,28 3.8147e-006,24.8366 3.8147e-006,16C 3.8147e-006,7.16344 7.16345,5.72205e-006 16,5.72205e-006L 16,16L 16,28 Z"/>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Margin="3,0,3,0"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource Dom4Gradient_Top_Bottom}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+
+                        <!--Button Left Side-->
+                        <Path 
+                      Grid.Column="0"
+                      Width="21"
+                      Height="28"
+                      Stretch="Fill"
+                      Fill="{StaticResource Dom1Gradient_Right_Left}"                    
+                      Data="F1 M 28,0 L 8,0 0,7 0,19 0,28 8,37 28,37 28,0 Z  " />
+                        <!--<Rectangle Grid.Column="2"
+                       Stretch="Fill"
+                       Fill="{StaticResource OrangeGradient_Left_Right}"
+                       Margin="0,0,3,0"
+                       Width="14" />-->
+                        <!--<Border Grid.Column="3"
+                    Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
+                    CornerRadius="0,14,14,0"
+                    Width="21" />-->
+
+                        <!--Button Right Side-->
+                        <Path Grid.Column="3"
+                    Height="28"
+                    Width="21" 
+                    Stretch="Fill"
+                    Fill="{StaticResource Dom1Gradient_Left_Right}" 
+                    Data="F1 M 0,0 L 14,0 21,8 21,20 14,28 0,28 Z  " />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Dom4Gradient_Bottom_Top}" />
+                        </Trigger>
+                        <!--IsPressed-->
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Dom1Gradient_Bottom_Top}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="6-BORG_StandardButtonStyle"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}"
+         TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{StaticResource BorgHoverGradient_Top_Bottom}" />
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="Padding" Value="16,0,16,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource Borg1Gradient_Top_Bottom}"
+                    BorderBrush="GreenYellow"
+                    BorderThickness="2"
+                        >
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
+                        </Border>
+                        <!--Begin of Drawing-->
+                        <Path x:Name="LeftEdge" Stroke="SpringGreen" StrokeThickness="2" Opacity="0.5" >
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigure StartPoint="0,1">
+                                            <PathFigure.Segments>
+                                                <BezierSegment Point1="5,5"
+                                                            Point2="6,10"
+                                                            Point3="10,12"/>
+                                                <LineSegment Point="14,14" />
+                                                <BezierSegment Point1="14,18"
+                                                            Point2="26,20"
+                                                            Point3="28,25"/>
+                                            </PathFigure.Segments>
+                                        </PathFigure>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.4" >
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigure StartPoint="0,28">
+                                            <PathFigure.Segments>
+                                                <BezierSegment Point1="5,25"
+                                                            Point2="9,20"
+                                                            Point3="13,18"/>
+                                                <LineSegment Point="14,14" />
+                                                <BezierSegment Point1="20,10"
+                                                            Point2="22,5"
+                                                            Point3="26,3"/>
+                                            </PathFigure.Segments>
+                                        </PathFigure>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.3">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigure StartPoint="13,0">
+                                            <PathFigure.Segments>
+                                                <BezierSegment Point1="16,8"
+                                                            Point2="11,11"
+                                                            Point3="14,14"/>
+                                                <LineSegment Point="19,17" />
+                                                <BezierSegment Point1="13,21"
+                                                            Point2="15,24"
+                                                            Point3="15,28"/>
+                                            </PathFigure.Segments>
+                                        </PathFigure>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <Ellipse 
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="28"
+                                         Width="28"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="4"
+                                         Stroke="#1ffe36"/>
+
+                        <Ellipse  
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="5"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                        <Ellipse  
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                        <!--End of Drawing-->
+
+                        <Path x:Name="RightEdge"
+                  Grid.Column="2"
+                  Fill="{StaticResource Borg1Gradient_Top_Bottom}"
+                  Data="F1 M 0,37 L  8,37 28,28  28,18 28,9 8,0 0,0 Z"                             
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Borg1Gradient_Top_Bottom}" 
+                      />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource PurpleDarkGradient_Top_Bottom}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource BorgHoverGradient_Top_Bottom}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource Borg4Gradient_Bottom_Top}" />
+                            <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource Borg4Gradient_Bottom_Top}" />
+                            <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource Borg4Gradient_Bottom_Top}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

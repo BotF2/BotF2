@@ -497,7 +497,7 @@ namespace Supremacy.Client
             {
                 GameLog.Initialize();
 
-                string _newline = Environment.NewLine;
+                //string _newline = Environment.NewLine;
                 var _text = GetTimeString(); // DateTime.Now;
                 //_text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
                 Console.WriteLine("Output_" + _text);  // "Current Version = "
@@ -525,7 +525,7 @@ namespace Supremacy.Client
                 {
                     _ = MessageBox.Show(
                             "Rise of the UFP requires Microsoft .NET Framework 4.8 or greater"
-                            + _newline
+                            + Environment.NewLine
                             + "It must be installed before running the game.",
                             "Rise of the UFP",
                             MessageBoxButton.OK,
@@ -700,7 +700,7 @@ namespace Supremacy.Client
 #pragma warning restore IDE0079 // Remove unnecessary suppression
         {
             string _text;
-            string _newline = Environment.NewLine;
+            //string _newline = Environment.NewLine;
 
             //RegRead HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\XNA\Framework\v3.1
 
@@ -735,10 +735,10 @@ namespace Supremacy.Client
                 }
                 else
                 {
-                    _text = "Did not found file " + xna_copy + _newline + "to check for XNA 3.1"
-                        + _newline + _newline + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
-                        + _newline + _newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'"
-                        + _newline + _newline + "For Coders: Make sure you have fill the \\Resources folder"
+                    _text = "Did not found file " + xna_copy + Environment.NewLine + "to check for XNA 3.1"
+                        + Environment.NewLine + Environment.NewLine + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
+                        + Environment.NewLine + Environment.NewLine + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'"
+                        + Environment.NewLine + Environment.NewLine + "For Coders: Make sure you have fill the \\Resources folder"
                         ;
                     _ = MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
@@ -750,12 +750,12 @@ namespace Supremacy.Client
             if (!File.Exists(xna_check))
             {
                 _text = "Sorry, Microsoft XNA Framework V3.1 might not be installed - but it is necessary. "
-                    + _newline + _newline + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !"
-                    + _newline + _newline + "Install out of folder \\Resources\\XNA31_NEEDED_INSTALL\\ or"
-                    + _newline + _newline + "Download it at www.microsoft.com/download/details.aspx?id=15163"
-                    + _newline + _newline + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'"
-                    + _newline + _newline + "Download  it at www.microsoft.com/download/details.aspx?id=15163"
-                    + _newline + _newline + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
+                    + Environment.NewLine + Environment.NewLine + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !"
+                    + Environment.NewLine + Environment.NewLine + "Install out of folder \\Resources\\XNA31_NEEDED_INSTALL\\ or"
+                    + Environment.NewLine + Environment.NewLine + "Download it at www.microsoft.com/download/details.aspx?id=15163"
+                    + Environment.NewLine + Environment.NewLine + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'"
+                    + Environment.NewLine + Environment.NewLine + "Download  it at www.microsoft.com/download/details.aspx?id=15163"
+                    + Environment.NewLine + Environment.NewLine + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
                     ;
                 GameLog.Client.General.Info(_text);
                 _ = MessageBox.Show(_text, "CHECK", MessageBoxButton.OK);

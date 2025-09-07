@@ -339,7 +339,7 @@ namespace Supremacy.Orbitals
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
             _firePower = (Meter)reader.ReadObject();
 
-            _text = "." + _text;
+            //string _text;
 
             //_text = "Orbital: " 
             //    + "crew=" + _crew

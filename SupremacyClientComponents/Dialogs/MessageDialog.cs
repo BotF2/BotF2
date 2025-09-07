@@ -172,6 +172,7 @@ namespace Supremacy.Client.Dialogs
         {
             MessageDialog dialog = new MessageDialog { Header = header, Content = content, Buttons = buttons };
             bool? dialogResult = dialog.ShowDialog();
+            //dialog.FontSize = 16;
             if (!dialogResult.HasValue)
             {
                 if ((buttons & MessageDialogButtons.Cancel) == MessageDialogButtons.Cancel)

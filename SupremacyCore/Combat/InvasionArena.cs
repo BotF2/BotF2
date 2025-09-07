@@ -804,7 +804,9 @@ namespace Supremacy.Combat
 
             if (_invasionArena.Status != InvasionStatus.InProgress)
             {
-                throw new InvalidOperationException("Orders submitted for an invasion which is no longer in progress.");
+                Console.WriteLine("Step_8744:; Error: Orders for " + orders.InvasionID + " were submitted for a different invasion " + _invasionArena.InvasionID);
+                Debugger.Break();
+                //throw new InvalidOperationException("Orders submitted for an invasion which is no longer in progress.");
             }
 
             if (orders.Action == InvasionAction.AttackOrbitalDefenses)

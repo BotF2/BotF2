@@ -41,7 +41,7 @@ namespace Supremacy.Universe
         private int _lastOwnershipChange;
 
         [NonSerialized]
-        public string _text;
+        //public string _text;
         public string _colony_Full_Report;
 
         //private string _text;
@@ -453,7 +453,7 @@ namespace Supremacy.Universe
                 catch (Exception e)
                 {
                     // doesn't work - only crashes when using Live Visual Tree directly in Visual Studio - then just click on Continue - use F5 to continue
-                    _text = "Step_2589:; EffectBindings crashed > " + e.Message;
+                    string _text = "Step_2589:; EffectBindings crashed > " + e.Message;
                     Console.WriteLine(_text);
                     //GameLog.Core.General.Error(_text);
                     Debugger.Break();

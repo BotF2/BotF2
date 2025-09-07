@@ -16,9 +16,9 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:e="http://schemas.microsoft.com/expression/2010/interactions">
 
-  <ResourceDictionary.MergedDictionaries>
-    <scc:SharedResourceDictionary Source="/SupremacyClient;Component/themes/Romulans/Shared.xaml" />
-  </ResourceDictionary.MergedDictionaries>
+  <!--<ResourceDictionary.MergedDictionaries>
+    <scc:SharedResourceDictionary Source="/SupremacyClient;Component/themes/Romulans/Shared .xaml" />
+  </ResourceDictionary.MergedDictionaries>-->
 
   <!--
     **************************

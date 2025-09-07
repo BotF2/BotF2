@@ -562,7 +562,7 @@ namespace Supremacy.Orbitals
 
                 _text = ship.ObjectID + " " + ship.Name + " ( " + ship.ShipDesign + " ) got " + fuelNeeded + "fuel (=Dilithium)";
                 Console.WriteLine(_text);
-                GameLog.Core.DeuteriumDetails.DebugFormat(_text);
+                GameLog.Core.Deuterium.DebugFormat(_text);
             }
 
             // default we want to be "camouflaged"

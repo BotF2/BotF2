@@ -92,7 +92,7 @@ namespace Supremacy.Client.Audio
                         _musicDict.Add(trackName, entry);
                         _text = "Step_0157: Track available > " + trackName;
                         //Console.WriteLine(_text);
-                        GameLog.Client.AudioDetails.DebugFormat(_text);
+                        GameLog.Client.Audio.DebugFormat(_text);
                     }
                 }
             }

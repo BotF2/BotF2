@@ -1,4 +1,6 @@
-﻿using Supremacy.Game;
+﻿// File:SitRepDetailDialog.xaml.cs = .cs for DetailDialog
+
+using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Utility;
 using System;

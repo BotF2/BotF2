@@ -101,7 +101,7 @@ namespace Supremacy.Game
         private List<Civilization> _targetCivList;
         //#pragma warning restore IDE0044 // Add readonly modifier
 
-        public List<string> _neededShiptypesList ;
+        public List<string> _neededShiptypesList;
 
 
         private int _homeColonyId;
@@ -111,12 +111,12 @@ namespace Supremacy.Game
         private Sector _accumulateSector;
 
         private MapLocation _systemAssaultLocation_1;
-        private Sector _systemAssaultSector_1;
+        private Sector _systemAssault_Accumulate_Sector_1;
         //private int _systemAssaultPower_1;
 
 
-        private MapLocation _systemAssaultLocation_2;
-        private Sector _systemAssaultSector_2;
+        //private MapLocation _systemAssault_Accumulate_Location_2;
+        //private Sector _systemAssault_Accumulate_Sector_2;
         //private int _systemAssaultPower_2;
 
 
@@ -427,7 +427,7 @@ namespace Supremacy.Game
         {
             get
             {
-                int z_shipNeeded = 4 - ((int)GameContext.Current.TurnNumber / 10); // no common need after Turn 55
+                int z_shipNeeded = 2 - ((int)GameContext.Current.TurnNumber / 10); // no common need after Turn 55
 
                 z_shipNeeded -= (Z_Ship_Colony_Available + Z_Ship_Colony_Ordered);
                 if (z_shipNeeded > 0)
@@ -660,7 +660,7 @@ namespace Supremacy.Game
         //    //set => z_ship_Scout_Ordered = value;
         //}
 
-        private int Z_Ship_Scout_Available
+        public int Z_Ship_Scout_Available
         {
             get => GameContext.Current.Universe.FindOwned<Fleet>(Civilization).Where(s => s.IsScout).Count();
             //set => z_shipScoutAvailable = value;
@@ -1254,26 +1254,27 @@ namespace Supremacy.Game
                     _assault_targetCiv = null;
                     Assault_TargetCiv = null;
                 }
+            }
+        }
 
-                //List<Fleet> _allFleetsToAccumulate = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)
-                //    .Where(_o => _o.ObjectType == UniverseObjectType.Fleet
-                //    && _o.OwnerID == CivilizationID
-                //    ).ToList());
+        public int Assault_DefenseValue
+        {
+            get => _assault_DefenseValue;
 
-                //List<Fleet> _allFleetsToAccumulate = GameContext.Current.Universe.Objects<Fleet>
-                //    .Where(_o => _o.ObjectType == UniverseObjectType.Fleet
-                //    && _o.OwnerID == CivilizationID
-                //    //&& _o.
-                //    ).ToList();
+            set
+            {
+                _assault_DefenseValue = value;
+            }
+        }
+        
 
-                //foreach (var item in _allFleetsToAccumulate)
-                //{
-                //    if (item.Order.ToString().Contains("Accumulate"))
-                //    {
-                //        item.Route.Clear();
-                //        item.SetOrder(new AccumulateLocation_Go_There_Order());
-                //    }
-                //}
+        public int Assault_AttackValue
+        {
+            get => _assault_AttackValue;
+
+            set
+            {
+                _assault_AttackValue = value;
             }
         }
 
@@ -1282,8 +1283,10 @@ namespace Supremacy.Game
         //public string TargetCiv2Status = "why2";
 
         private Civilization _assault_targetCiv;
+        private int _assault_AttackValue = 0;
+        private int _assault_DefenseValue;
 
-        public MapLocation SystemAssaultLocation_1
+        public MapLocation SystemAssault_Accumulate_Location_1
         {
             get
             {
@@ -1308,33 +1311,33 @@ namespace Supremacy.Game
             }
         }
 
-        public Sector SystemAssaultSector_1
+        public Sector SystemAssault_Accumulate_Sector_1
         {
             get
             {
-                Sector _systemAssaultSector_1 = new Sector(SystemAssaultLocation_1);
+                Sector _systemAssault_Accumulate_Sector_1 = new Sector(SystemAssault_Accumulate_Location_1);
                 //new Sector()
-                if (_systemAssaultSector_1 == null || _systemAssaultSector_1.Location.ToString() == "{(0, 0)}")
+                if (_systemAssault_Accumulate_Sector_1 == null || _systemAssault_Accumulate_Sector_1.Location.ToString() == "{(0, 0)}")
                 {
-                    //_systemAssaultSector_1 = this.HomeSystem.Sector;
-                    _systemAssaultSector_1 = this.SystemAssaultSector_1;
+                    //_systemAssault_Accumulate_Sector_1 = this.HomeSystem.Sector;
+                    _systemAssault_Accumulate_Sector_1 = this.SystemAssault_Accumulate_Sector_1;
                     string _text = "Step_3345:; "
                             //+ GameContext.Current.TurnNumber
                             + " _accumulateSector for " + this.Civilization
-                            + " is set to " + _systemAssaultSector_1.ToString()
+                            + " is set to " + _systemAssault_Accumulate_Sector_1.ToString()
                             + " ( HomeSystem ) "
                             + " in Turn " + GameContext.Current.TurnNumber
                             ;
 
                     Console.WriteLine(_text);
                 }
-                return _systemAssaultSector_1;
+                return _systemAssault_Accumulate_Sector_1;
             }
             set
             {
 
-                _systemAssaultSector_1 = value;
-                //SystemAssaultSector_1 = value;
+                _systemAssault_Accumulate_Sector_1 = value;
+                //SystemAssault_Accumulate_Sector_1 = value;
 
             }
         }
@@ -1343,12 +1346,12 @@ namespace Supremacy.Game
         //{
         //    get
         //    {
-        //        //Sector _systemAssaultPower_1 = new Sector(SystemAssaultLocation_1);
+        //        //Sector _systemAssaultPower_1 = new Sector(SystemAssault_Accumulate_Location_1);
         //        ////new Sector()
         //        //if (_systemAssaultPower_1 == null || _systemAssaultPower_1.Location.ToString() == "{(0, 0)}")
         //        //{
         //        //    //_systemAssaultPower_1 = this.HomeSystem.Sector;
-        //        //    _systemAssaultPower_1 = this.SystemAssaultSector_1;
+        //        //    _systemAssaultPower_1 = this.SystemAssault_Accumulate_Sector_1;
         //        //    string _text = "Step_3345:; "
         //        //            //+ GameContext.Current.TurnNumber
         //        //            + " _accumulateSector for " + this.Civilization
@@ -1365,74 +1368,74 @@ namespace Supremacy.Game
         //    {
 
         //        _systemAssaultPower_1 = value;
-        //        //SystemAssaultSector_1 = value;
+        //        //SystemAssault_Accumulate_Sector_1 = value;
 
         //    }
         //}
 
-        public MapLocation SystemAssaultLocation_2
-        {
-            get
-            {
-                //Sector _systemAssaultSector_2 = new Sector(SystemAssaultLocation_2);
-                if (_systemAssaultLocation_2 == null || _systemAssaultLocation_2.ToString() == "( 0, 0)")
-                {
-                    //_systemAssaultLocation_2 = HomeSystem.Location;
-                    //if (SystemAssaultLocation_2.ToString() != "(0, 0)")
-                    //{
-                    _systemAssaultLocation_2 = this.SystemAssaultLocation_2;
-                    string _text = "Step_3338:; "
+        //public MapLocation SystemAssault_Accumulate_Location_2
+        //{
+        //    get
+        //    {
+        //        //Sector _systemAssault_Accumulate_Sector_2 = new Sector(SystemAssault_Accumulate_Location_2);
+        //        if (_systemAssault_Accumulate_Location_2 == null || _systemAssault_Accumulate_Location_2.ToString() == "( 0, 0)")
+        //        {
+        //            //_systemAssault_Accumulate_Location_2 = HomeSystem.Location;
+        //            //if (SystemAssault_Accumulate_Location_2.ToString() != "(0, 0)")
+        //            //{
+        //            _systemAssault_Accumulate_Location_2 = this.SystemAssault_Accumulate_Location_2;
+        //            string _text = "Step_3338:; "
 
-                            + " > AccumulateLocation for " + this.Civilization
-                            + " is set to " + _systemAssaultLocation_2.ToString()
-                            + " in Turn " + GameContext.Current.TurnNumber
-                            ;
+        //                    + " > AccumulateLocation for " + this.Civilization
+        //                    + " is set to " + _systemAssault_Accumulate_Location_2.ToString()
+        //                    + " in Turn " + GameContext.Current.TurnNumber
+        //                    ;
 
-                    Console.WriteLine(_text);
-                    //}
+        //            Console.WriteLine(_text);
+        //            //}
 
-                }
-                return _systemAssaultLocation_2;
-            }
-            set
-            {
+        //        }
+        //        return _systemAssault_Accumulate_Location_2;
+        //    }
+        //    set
+        //    {
 
-                _systemAssaultLocation_2 = value;
-                //SystemAssaultLocation_2 = value;
+        //        _systemAssault_Accumulate_Location_2 = value;
+        //        //SystemAssault_Accumulate_Location_2 = value;
 
-            }
-        }
+        //    }
+        //}
 
-        public Sector SystemAssaultSector_2
-        {
-            get
-            {
-                Sector _systemAssaultSector_2 = new Sector(SystemAssaultLocation_2);
-                //new Sector()
-                if (_systemAssaultSector_2 == null || _systemAssaultSector_2.Location.ToString() == "{(0, 0)}")
-                {
-                    //_systemAssaultSector_2 = this.HomeSystem.Sector;
-                    _systemAssaultSector_2 = this.SystemAssaultSector_2;
-                    string _text = "Step_3347:; "
+        //public Sector SystemAssault_Accumulate_Sector_2
+        //{
+        //    get
+        //    {
+        //        Sector _systemAssault_Accumulate_Sector_2 = new Sector(SystemAssault_Accumulate_Location_2);
+        //        //new Sector()
+        //        if (_systemAssault_Accumulate_Sector_2 == null || _systemAssault_Accumulate_Sector_2.Location.ToString() == "{(0, 0)}")
+        //        {
+        //            //_systemAssault_Accumulate_Sector_2 = this.HomeSystem.Sector;
+        //            _systemAssault_Accumulate_Sector_2 = this.SystemAssault_Accumulate_Sector_2;
+        //            string _text = "Step_3347:; "
 
-                            + " _accumulateSector for " + this.Civilization
-                            + " is set to " + _systemAssaultSector_2.ToString()
-                            + " ( HomeSystem ) "
-                            + " in Turn " + GameContext.Current.TurnNumber
-                            ;
+        //                    + " _accumulateSector for " + this.Civilization
+        //                    + " is set to " + _systemAssault_Accumulate_Sector_2.ToString()
+        //                    + " ( HomeSystem ) "
+        //                    + " in Turn " + GameContext.Current.TurnNumber
+        //                    ;
 
-                    Console.WriteLine(_text);
-                }
-                return _systemAssaultSector_2;
-            }
-            set
-            {
+        //            Console.WriteLine(_text);
+        //        }
+        //        return _systemAssault_Accumulate_Sector_2;
+        //    }
+        //    set
+        //    {
 
-                _systemAssaultSector_2 = value;
-                //SystemAssaultSector_2 = value;
+        //        _systemAssault_Accumulate_Sector_2 = value;
+        //        //SystemAssault_Accumulate_Sector_2 = value;
 
-            }
-        }
+        //    }
+        //}
 
         /// <summary>
         /// Gets the civilization's tech tree.
@@ -1553,7 +1556,7 @@ namespace Supremacy.Game
                     //+ " at " + item.Location
                     //+ " - " + item.Owner
                     ;
-            //if (writeDirectly_Colony) 
+            //if (_writeDirectly_Colony) 
             Console.WriteLine(_text);
 
             var possibleSystems = GameContext.Current.Universe.Find<StarSystem>()
@@ -1579,7 +1582,7 @@ namespace Supremacy.Game
                     + " > at " + GameEngine.LocationString(item.Location.ToString())
                     + " - " + _ownerText
                     ;
-                //if (writeDirectly_Colony) 
+                //if (_writeDirectly_Colony) 
                 Console.WriteLine(_text);
             }
             //neededColonizer = possibleSystems.Count;

@@ -168,7 +168,7 @@ namespace Supremacy.Game
         #region IOwnedDataSerializable Members
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
-            GameLog.Server.MultiplayDetails.DebugFormat("try to SerializeOwnedData GameUpdateData");
+            GameLog.Server.Multiplay.DebugFormat("try to SerializeOwnedData GameUpdateData");
             writer.WriteOptimized(_turnNumber);
             _objects.SerializeOwnedData(writer, context);
             writer.WriteObject(_civManagers);

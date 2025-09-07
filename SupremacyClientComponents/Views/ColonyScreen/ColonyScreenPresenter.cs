@@ -288,7 +288,9 @@ namespace Supremacy.Client.Views
         //}
         private void ExecuteShowColonyManagementCommand(object _)
         {
+            //Colony currentColony = Model.SelectedColony;
             ColonyScreenDisplayMode = ColonyScreenDisplayMode.Management;
+
             
             OnViewActivating();
         }
@@ -311,6 +313,7 @@ namespace Supremacy.Client.Views
 
         protected override void OnViewActivating()
         {
+            //Colony currentColony = Model.SelectedColony;
             int newColonySelection = _newColonySelection;
             if (newColonySelection == -1)
             {
@@ -333,7 +336,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            _ = building.IsActive ? colony.DeactivateBuilding(building) : colony.ActivateBuilding(building);
+            _ = building.IsActive ? colony.Building_Deactivate(building) : colony.Building_Activate(building);
 
             PlayerOrderService.AddOrder(new UpdateBuildingOrder(building));
         }
@@ -367,7 +370,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            _ = buildSlot.IsActive ? colony.DeactivateShipyardBuildSlot(buildSlot) : colony.ActivateShipyardBuildSlot(buildSlot);
+            _ = buildSlot.IsActive ? colony.ShipyardBuildSlot_Deactivate(buildSlot) : colony.ShipyardBuildSlot_Activate(buildSlot);
 
             PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(buildSlot));
         }
@@ -551,7 +554,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            _ = colony.DeactivateFacility(category);
+            _ = colony.Facility_Deactivate(category);
 
             PlayerOrderService.AddOrder(new SetColonyProductionOrder(colony));
         }
@@ -569,7 +572,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            _ = colony.ActivateFacility(category);
+            _ = colony.Facility_Activate(category);
 
             PlayerOrderService.AddOrder(new SetColonyProductionOrder(colony));
         }
@@ -714,7 +717,7 @@ namespace Supremacy.Client.Views
                     {
                         if (activeCountDifference > 0)
                         {
-                            if (selectedColony.ActivateOrbitalBattery())
+                            if (selectedColony.OrbitalBattery_Activate())
                             {
                                 --activeCountDifference;
                             }
@@ -725,7 +728,7 @@ namespace Supremacy.Client.Views
                         }
                         else
                         {
-                            if (selectedColony.DeactivateOrbitalBattery())
+                            if (selectedColony.OrbitalBattery_Deactivate())
                             {
                                 ++activeCountDifference;
                             }

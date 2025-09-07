@@ -265,7 +265,7 @@ namespace Supremacy.Client
         private bool _isConnected;
         private bool _isDisconnecting;
         private bool _isDisposed;
-        private string _text;
+        //private string _text;
 
         public GameClient(
             [NotNull] ISupremacyCallback clientCallback,
@@ -744,6 +744,8 @@ namespace Supremacy.Client
 
         private void PlayerOrderServiceOnOrdersChanged(object sender, EventArgs eventArgs)
         {
+            string _text;
+
             ServiceClient serviceClient;
             lock (_clientLock)
             {

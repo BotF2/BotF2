@@ -264,8 +264,8 @@ namespace Supremacy.Client
         public bool _gamelog_bool = true;
         public bool _ConsoleWriteline_bool = true;
 
-        public string _text;
-        public readonly string _newline = Environment.NewLine;
+        //public string _text;
+        //public readonly string _newline = Environment.NewLine;
 
         //private int SpecialWidth1 = 576;
         //private int SpecialHeight1 = 480;
@@ -703,6 +703,8 @@ namespace Supremacy.Client
         private void ExecuteErrorTxtCommand(object obj)
         {
             string errorFile = Path.Combine(ResourceManager.GetResourcePath(""), "Error.txt");
+            string _newline = Environment.NewLine;
+            string _text;
 
             if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
@@ -736,7 +738,8 @@ namespace Supremacy.Client
                 ResourceManager.GetResourcePath(""),
                 "SupremacyClient..Settings.xaml");
             file = file.Replace(".\\", "");
-            //string _text1;
+            string _text = "";
+            string _newline = Environment.NewLine;
 
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
@@ -745,7 +748,7 @@ namespace Supremacy.Client
                     FileMode.Open,
                     FileAccess.Read);
 
-                _text = "";
+                //_text = "";
 
                 using (StreamReader reader = new StreamReader(stream))
                 {
@@ -913,13 +916,13 @@ namespace Supremacy.Client
                 "AllHistory");
             //file = file.Replace(".\\", "");
             //string _text1;
-            _text = "";
+            string _text = "";
 
             foreach (var civ in GameContext.Current.CivilizationManagers)
             {
 
                 var _hist = civ._civHist_List.ToList();
-                _text += _newline;
+                _text += Environment.NewLine;
 
                 foreach (var item in _hist)
                 {
@@ -953,7 +956,7 @@ namespace Supremacy.Client
                         + ";" + item.CivKeyHist
                         + ";" + item.CivIDHist
                         //+ ";" + item.c
-                        + _newline
+                        + Environment.NewLine
                         ;
                     //Console.WriteLine(_text);
                     //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
@@ -1058,8 +1061,8 @@ namespace Supremacy.Client
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Initialize()
         {
-            _text = "Step_0210:; Initializing... !";
-            _text += _newline + "Step_0211:; ..just notice: all these Step-Numbers have no logic inside (sorry) .. but easy to find by a search";
+            string _text = "Step_0210:; Initializing... !";
+            _text += Environment.NewLine + "Step_0211:; ..just notice: all these Step-Numbers have no logic inside (sorry) .. but easy to find by a search";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -1919,7 +1922,7 @@ namespace Supremacy.Client
                     break;
             }
 
-            _text = "Step_1000:; GameInitData.CreateSinglePlayerGame .... ";
+            string _text = "Step_1000:; GameInitData.CreateSinglePlayerGame .... ";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
             GameInitData initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
@@ -2004,6 +2007,8 @@ namespace Supremacy.Client
             {
                 return;
             }
+
+            string _text;
 
             try
             {

@@ -99,7 +99,7 @@ namespace Supremacy.Scripting.Events
 
                     List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
                     tmpBuildings.AddRange(target.Buildings);
-                    tmpBuildings.ForEach(o => target.DeactivateFacility(ProductionCategory.Food));
+                    tmpBuildings.ForEach(o => target.Facility_Deactivate(ProductionCategory.Food));
 
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves before : {0}", target.FoodReserves);
 
@@ -107,7 +107,7 @@ namespace Supremacy.Scripting.Events
                     target.FoodReserves.UpdateAndReset();
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves after : {0}", target.FoodReserves);
 
-                    _ = target.DeactivateFacility(ProductionCategory.Food);
+                    _ = target.Facility_Deactivate(ProductionCategory.Food);
 
                     OnUnitTargeted(target);
 

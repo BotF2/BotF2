@@ -23,7 +23,7 @@
       
       
       
-    <!--<ResourceDictionary Source="BORG-Shared.xaml"/>
+    <!--<ResourceDictionary Source="BORG-Shared .xaml"/>
     <ResourceDictionary Source="BORG-GameContextMenu.xaml"/>
     <ResourceDictionary Source="BORG-TechObjectInfo.xaml"/>
     <ResourceDictionary Source="BORG-InfoCard.xaml" />
@@ -31,7 +31,7 @@
     <ResourceDictionary Source="BORG-SystemScreen.xaml"/>
     <ResourceDictionary Source="BORG-GalaxyScreenView.xaml" />
     <ResourceDictionary Source="BORG-AffairsScreen.xaml"/>
-    <ResourceDictionary Source="BORG-Dialogs.xaml" />-->
+    <ResourceDictionary Source="BORG-Dialogs .xaml" />-->
   </ResourceDictionary.MergedDictionaries>
  
   <Style TargetType="{x:Type local:CombatWindow}"

@@ -129,7 +129,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8">
-                    <TextBlock Text="UI elements coming from Global.xaml, overwritten by Shared.xaml e.g. SupremacyClient\Themes\Dominion\Shared.xaml" 
+                    <TextBlock Text="UI elements coming from Global .xaml, overwritten by Shared .xaml e.g. SupremacyClient\Themes\Dominion\Shared .xaml" 
                            Foreground="{DynamicResource DefaultTextBrush}"
                            >
                 </TextBlock>
@@ -248,7 +248,7 @@
                 <!--Grid.Column="4"-->
                 <StackPanel Orientation="Vertical" Grid.Column="4" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="3,0,0,0">
                     <TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text=" " />
-                    <TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text=" * Empire's Shared.xaml *" />
+                    <TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text=" * Empire's Shared .xaml *" />
                     <TextBox Foreground="{DynamicResource WhiteHeaderBrush}" Text="WhiteHeaderBrush" />
                     <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="HeaderTextBrush" />                    
                     <TextBox Foreground="{DynamicResource DefaultTextBrush}" Text="DefaultTextBrush" />

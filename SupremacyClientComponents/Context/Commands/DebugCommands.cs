@@ -15,6 +15,7 @@ namespace Supremacy.Client.Commands
     {
         public static readonly CompositeCommand RevealMap = new CompositeCommand();  // ALT + F
         public static readonly CompositeCommand OutputMap = new CompositeCommand();  // ALT + M
+        public static readonly CompositeCommand OutputMapSectorInfo = new CompositeCommand();  // ALT + I
 
         public static readonly CompositeCommand ShowBuildings = new CompositeCommand();  // ALT + 1
         public static readonly CompositeCommand ShowBuildList = new CompositeCommand();  // ALT + 2

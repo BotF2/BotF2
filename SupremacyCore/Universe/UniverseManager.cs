@@ -125,7 +125,7 @@ namespace Supremacy.Universe
         {
             // works 
             //GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
-            //_text = "Step_4770: Deserializing ships and fleets...Searching for Crash: Find(UniverseObjectType objectType)";
+            //_text = "Step_4770: Deserializing ships and _fleets...Searching for Crash: Find(UniverseObjectType objectType)";
             //Console.WriteLine(_text);
             return _objects.Where(o => o.ObjectType == objectType).ToHashSet();
         }
@@ -520,14 +520,14 @@ namespace Supremacy.Universe
                 Civilization colonyOwner = colony.Owner;
                 if (colonyOwner != null)
                 {
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[colonyOwner];
-                    if (civManager != null)
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[colonyOwner.CivID];
+                    if (_civM != null)
                     {
-                        if (civManager.HomeColony == colony)
+                        if (_civM.HomeColony == colony)
                         {
-                            civManager.HomeColony = null;
+                            _civM.HomeColony = null;
                         }
-                        _ = civManager.Colonies.Remove(colony);
+                        _ = _civM.Colonies.Remove(colony);
                     }
 
                     Colony ownerHomeColony = _homeColonyLookup[colonyOwner];
@@ -601,7 +601,7 @@ namespace Supremacy.Universe
             UpdateSectors();
 
             string _text;
-            _text = "Step_4005:; Deserializing ships and fleets...";
+            _text = "Step_4005:; Deserializing ships and _fleets...";
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
@@ -642,7 +642,7 @@ namespace Supremacy.Universe
                     //}
                     //else
                     //{
-                        //Console.WriteLine("Print of List of ships and fleets from saved game is turned off");
+                        //Console.WriteLine("Print of List of ships and _fleets from saved game is turned off");
                     //}
                 }
 

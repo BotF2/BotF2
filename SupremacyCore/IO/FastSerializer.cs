@@ -4745,7 +4745,7 @@ namespace Supremacy.IO.Serialization
             {
                 //throwOnError;
                 _text = "Step_9333:; ##### Error on > Type.GetType(ReadOptimizedString())";
-                //if (writeDirectly_Colony) 
+                //if (_writeDirectly_Colony) 
                     Console.WriteLine(_text);
 
                 //Debugger.Break();

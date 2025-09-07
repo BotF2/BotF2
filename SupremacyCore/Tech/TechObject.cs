@@ -73,8 +73,10 @@ namespace Supremacy.Tech
         /// <value>The design.</value>
         public TechObjectDesign Design
         {
+
             get
             {
+            string _text;
                 try
                 {
                     //_text = "Step_0256:; working on _designId= " + _designId;

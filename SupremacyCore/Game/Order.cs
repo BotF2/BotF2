@@ -416,7 +416,7 @@ namespace Supremacy.Game
 
             foreach (ProductionCategory category in EnumUtilities.GetValues<ProductionCategory>())
             {
-                while (colony.DeactivateFacility(category))
+                while (colony.Facility_Deactivate(category))
                 {
                     continue;
                 }
@@ -427,7 +427,7 @@ namespace Supremacy.Game
                 int facilitiesToActivate = _activeFacilities[(int)category];
                 while (facilitiesToActivate-- > 0)
                 {
-                    _ = colony.ActivateFacility(category);
+                    _ = colony.Facility_Activate(category);
                 }
             }
 
@@ -608,8 +608,8 @@ namespace Supremacy.Game
             if (_isActive != building.IsActive)
             {
                 _ = _isActive
-                    ? building.Sector.System.Colony.ActivateBuilding(building)
-                    : building.Sector.System.Colony.DeactivateBuilding(building);
+                    ? building.Sector.System.Colony.Building_Activate(building)
+                    : building.Sector.System.Colony.Building_Deactivate(building);
             }
 
             return true;
@@ -658,7 +658,7 @@ namespace Supremacy.Game
             {
                 if (activeCountDifference > 0)
                 {
-                    if (colony.ActivateOrbitalBattery())
+                    if (colony.OrbitalBattery_Activate())
                     {
                         --activeCountDifference;
                     }
@@ -669,7 +669,7 @@ namespace Supremacy.Game
                 }
                 else
                 {
-                    if (colony.DeactivateOrbitalBattery())
+                    if (colony.OrbitalBattery_Deactivate())
                     {
                         ++activeCountDifference;
                     }
@@ -726,10 +726,10 @@ namespace Supremacy.Game
 
             if (_isActive)
             {
-                return shipyard.Sector.System.Colony.ActivateShipyardBuildSlot(buildSlot);
+                return shipyard.Sector.System.Colony.ShipyardBuildSlot_Activate(buildSlot);
             }
 
-            return shipyard.Sector.System.Colony.DeactivateShipyardBuildSlot(buildSlot);
+            return shipyard.Sector.System.Colony.ShipyardBuildSlot_Deactivate(buildSlot);
         }
 
         public override bool Overrides(Order o)

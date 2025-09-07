@@ -104,6 +104,7 @@ namespace Supremacy.Orbitals
             _buildSlots = new ArrayWrapper<BuildSlot>((BuildSlot[])reader.ReadOptimizedObjectArray(typeof(BuildSlot)));
             _buildOutput = reader.ReadOptimizedInt32();
             _buildQueue = reader.ReadList<BuildQueueItem>();
+            string _text;
 
 
             foreach (var item in _buildSlots)

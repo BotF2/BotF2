@@ -244,7 +244,7 @@ namespace Supremacy.Buildings
             building.Location = system.Colony.Location;
 
             system.Colony.AddBuilding(building);
-            _ = system.Colony.ActivateBuilding(building);
+            _ = system.Colony.Building_Activate(building);
 
             GameContext.Current.Universe.Objects.Add(building);
             //building.EffectBindingsInternal.AddRange(this.Effects);

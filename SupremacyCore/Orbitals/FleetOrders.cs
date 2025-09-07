@@ -700,14 +700,14 @@ namespace Supremacy.Orbitals
             //GameLog.Core.Production.DebugFormat(_text);
             //return false;
 
-            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
 
-            //if (fleets.Count < 2)
+            //if (_fleets.Count < 2)
             //    return false;
 
             //if (fleet.Owner != null)
             //{
-            //    foreach (var item in fleets)
+            //    foreach (var item in _fleets)
             //    {
             //        if (fleet.Owner == item.Owner)
             //            return true;
@@ -750,9 +750,9 @@ namespace Supremacy.Orbitals
 
             //ShipType type = fleet.Ships[0].ShipType;
 
-            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
 
-            //foreach (Fleet aFeet in fleets)
+            //foreach (Fleet aFeet in _fleets)
             //{
             //    Ship ship = aFeet.Ships.Last();
             //    MapLocation location = ship.Location;
@@ -793,9 +793,9 @@ namespace Supremacy.Orbitals
 
             //ShipType type = fleet.Ships[0].ShipType;
 
-            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
 
-            //foreach (Fleet aFeet in fleets)
+            //foreach (Fleet aFeet in _fleets)
             //{
             //    Ship ship = aFeet.Ships.Last();
             //    MapLocation location = ship.Location;
@@ -843,14 +843,14 @@ namespace Supremacy.Orbitals
             //GameLog.Core.Production.DebugFormat(_text);
             //return false;
 
-            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
 
-            //if (fleets.Count < 2)
+            //if (_fleets.Count < 2)
             //    return false;
 
             //if (fleet.Owner != null)
             //{
-            //    foreach (var item in fleets)
+            //    foreach (var item in _fleets)
             //    {
             //        if (fleet.Owner == item.Owner)
             //            return true;
@@ -959,14 +959,14 @@ namespace Supremacy.Orbitals
 
             //GameLog.Core.Production.DebugFormat(_text);
 
-            //List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
 
-            //if (fleets.Count < 2)
+            //if (_fleets.Count < 2)
             //    return false;
 
             //if (fleet.Owner != null)
             //{
-            //    foreach (var item in fleets)
+            //    foreach (var item in _fleets)
             //    {
             //        if (fleet.Owner == item.Owner)
             //            return true;
@@ -1163,7 +1163,7 @@ namespace Supremacy.Orbitals
             _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_HEADER"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
             _detailText = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_DETAIL"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, _detailText, "GeneralEvents/NewColonyEstablished.png", SitRepPriority.Blue));
-            //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
+            //_civM.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
             _ = GameContext.Current.Universe.Destroy(colonyShip);
         }
@@ -1264,7 +1264,7 @@ namespace Supremacy.Orbitals
                         + " " + "(old=" + oldHealth + ")";
 
                     Console.WriteLine(_text);
-                    GameLog.Core.ColoniesDetails.DebugFormat(_text);
+                    //GameLog.Core.ColoniesDetails.DebugFormat(_text);
                     //GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}%, new = {7}"
                     //    , Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
                     //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
@@ -1393,12 +1393,12 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            //var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //var _civM = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (!base.IsValidOrder(fleet))
             {
                 return false;
             }
-            // if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
+            // if (_civM.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
             // return false;
             if (fleet.Sector.System == null)
             {
@@ -1479,7 +1479,7 @@ namespace Supremacy.Orbitals
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
             UniverseObjectList<Colony> colonies = GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
-                                                                                                                   //var civManager = GameContext.Current.CivilizationManagers[civ];
+                                                                                                                   //var _civM = GameContext.Current.CivilizationManagers[civ];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             //if (defenseIntelligence - 1 < 0.1)
@@ -1822,7 +1822,7 @@ namespace Supremacy.Orbitals
                         civ, system.Owner, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
             }
             //GameLog.Core.Intel.DebugFormat("{0}: Facilities_Total3_Energy after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            //civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+            //_civM.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
     }
@@ -2481,7 +2481,7 @@ namespace Supremacy.Orbitals
                     Console.WriteLine(_text);
                     civManager.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
                     //GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
-                    //civManager.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
+                    //_civM.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
 
 
                     Fleet.Destroy();
@@ -2606,9 +2606,9 @@ namespace Supremacy.Orbitals
         private StationBuildProject _buildProject;
         private string _stationDesignName;
 
-        [NonSerialized]
-        private string _text;
-        private int turnnumber = GameContext.Current.TurnNumber;
+        //[NonSerialized]
+        //private string _text;
+        //private int turnnumber = GameContext.Current.TurnNumber;
 
         public StationDesign StationDesign => BuildProject.BuildDesign as StationDesign;
 
@@ -2818,7 +2818,7 @@ namespace Supremacy.Orbitals
             return true;
         }
 
-        protected internal override void OnTurnBeginning()
+        protected internal override void OnTurnBeginning()  // here Station actually are build
         {
             base.OnTurnBeginning();
 
@@ -2828,10 +2828,11 @@ namespace Supremacy.Orbitals
             }
 
             StationBuildProject project = _buildProject;
+            string _text;
 
             if (project != null)
             {
-                _text = "Step_8380:; Turn " + turnnumber + ": "
+                _text = "Step_8380:; Turn " + GameContext.Current.TurnNumber + ": "
                     + project.Location + "> project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
                 Console.WriteLine(_text);
                 //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
@@ -2842,8 +2843,8 @@ namespace Supremacy.Orbitals
                 return;
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[project.Builder];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[project.Builder];
+            if (_civM == null)
             {
                 Civilization owner = project.ProductionCenter.Owner;
                 GameLog.Core.General.WarnFormat(
@@ -2853,10 +2854,15 @@ namespace Supremacy.Orbitals
                 return;
             }
 
+            if (_civM.Civilization.IsHuman)
+            {
+                //Debugger.Break();
+            }
+
             int buildOutput = project.ProductionCenter.GetBuildOutput(0);
             ResourceValueCollection resources = new ResourceValueCollection
             {
-                [ResourceType.Duranium] = civManager.Resources[ResourceType.Duranium].CurrentValue
+                [ResourceType.Duranium] = 1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10
             };
 
             ResourceValueCollection usedResources = resources.Clone();
@@ -2868,16 +2874,17 @@ namespace Supremacy.Orbitals
             _text = "Step_8390:; " + project.Location
                 + " > project: Builder = " + project.Builder
                 + ", BuildDesign = " + project.BuildDesign
-                + ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
+                + ", Duranium before = " + _civM.Resources[ResourceType.Duranium].CurrentValue
                 //+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
                 ;
             Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
-            //    , project.BuildDesign, civManager.Resources[ResourceType.Duranium].CurrentValue
+            //    , project.BuildDesign, _civM.Resources[ResourceType.Duranium].CurrentValue
             //    , usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
 
-            _ = civManager.Resources[ResourceType.Duranium].AdjustCurrent(
-                usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
+            _ = _civM.Resources[ResourceType.Duranium].AdjustCurrent(
+                //usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
+                1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10 * -1);
 
         }
 
@@ -2900,7 +2907,7 @@ namespace Supremacy.Orbitals
             //        _text = "Step_8395: " + project.Location
             //+ " > project: Builder = " + project.Builder
             //+ ", BuildDesign = " + project.BuildDesign
-            //+ ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
+            //+ ", Duranium before = " + _civM.Resources[ResourceType.Duranium].CurrentValue
             ////+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
             //;
             //Console.WriteLine(_text);
@@ -3003,53 +3010,83 @@ namespace Supremacy.Orbitals
             string _fleetText;
 
             _text = "Step_5552:; " + UnitAI.CreateUpdateFleetText(Fleet, out _fleetText);
-            Console.WriteLine(_text);
+            //Console.WriteLine(_text);
 
             // checkScoutShips;  
             // Minor's ships are defined as Scout with the intention to fly around like Scouts
             //Debugger.Break();
-            //if (Fleet.Owner.IsHuman) { Debugger.Break();  }
-
-            if (Fleet.Route.IsEmpty && (Fleet.AITypeUnit != UnitAIType.SystemAttack || Fleet.AITypeUnit != UnitAIType.Reserve))
+            if (Fleet.Owner.IsHuman) 
             {
-                if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
-                {
-                    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
-                    Fleet.AITypeUnit = UnitAIType.Explorer;
-                    Fleet.Activity = UnitActivity.Mission;
-                }
-                else
-                {
-                    StarSystem homeSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;                    
-                    StarSystem fleetSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;  
-                    StarSystem bestSystem; 
-
-                    // fly somewhere
-                    if (Fleet.Sector.System != null)
-                    {
-                        fleetSystem = Fleet.Sector.System;
-                    }
-
-                    if (UnitAI.GetBestSystemFor_Science(Fleet, out bestSystem))
-                    {
-                        if (bestSystem.Location != fleetSystem.Location)
-                        {
-                            Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
-                            Fleet.AITypeUnit = UnitAIType.Explorer;
-                            Fleet.Activity = UnitActivity.Mission;
-                        }
-                        else
-                        {
-                            // 'vacation at home' 
-                            Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
-                            Fleet.AITypeUnit = UnitAIType.Explorer;
-                            Fleet.Activity = UnitActivity.Mission;
-                        }
-                    }
-                }
+                //Debugger.Break(); 
             }
-            _text = "Step_5554:; " + UnitAI.CreateUpdateFleetText(Fleet, out _fleetText);
-            Console.WriteLine(_text);
+
+            //StarSystem fleetSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;
+            //StarSystem homeSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;
+            //StarSystem bestSystem;
+
+            //if (UnitAI.GetBestSystemFor_Science(Fleet, out bestSystem))
+            //{
+            //    if (bestSystem.Location != fleetSystem.Location)
+            //    {
+            //        Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystem.Sector }));
+            //        Fleet.AITypeUnit = UnitAIType.Explorer;
+            //        Fleet.Activity = UnitActivity.Mission;
+            //    }
+            //}
+
+            //    //this crashes on OnTurnBeginning
+
+            //    //if (!Fleet.Route.IsEmpty && Fleet.Route.Waypoints.LastOrDefault().X == homeSystem.Location.X)
+            //    //{
+            //    //    if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
+            //    //    {
+            //    //        Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+            //    //        Fleet.AITypeUnit = UnitAIType.Explorer;
+            //    //        Fleet.Activity = UnitActivity.Mission;
+            //    //    }
+            //    //}
+
+            //    if (Fleet.Route.IsEmpty && (Fleet.AITypeUnit != UnitAIType.SystemAttack || Fleet.AITypeUnit != UnitAIType.Reserve))
+            //{
+            //    if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
+            //    {
+            //        Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+            //        Fleet.AITypeUnit = UnitAIType.Explorer;
+            //        Fleet.Activity = UnitActivity.Mission;
+            //    }
+            //    else
+            //    {
+            //        //StarSystem homeSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;                    
+            //        //StarSystem fleetSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;  
+
+
+            //        // fly somewhere
+            //        if (Fleet.Sector.System != null)
+            //        {
+            //            fleetSystem = Fleet.Sector.System;
+            //        }
+
+            //        if (UnitAI.GetBestSystemFor_Science(Fleet, out bestSystem))
+            //        {
+            //            if (bestSystem.Location != fleetSystem.Location)
+            //            {
+            //                //Sector _bestSystemSector = new Sector();
+            //                Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystem.Sector }));
+            //                Fleet.AITypeUnit = UnitAIType.Explorer;
+            //                Fleet.Activity = UnitActivity.Mission;
+            //            }
+            //            else
+            //            {
+            //                // 'vacation at home' 
+            //                Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
+            //                Fleet.AITypeUnit = UnitAIType.Explorer;
+            //                Fleet.Activity = UnitActivity.Mission;
+            //            }
+            //        }
+            //    }
+            //}
+            //_text = "Step_5554:; " + UnitAI.CreateUpdateFleetText(Fleet, out _fleetText);
+            //Console.WriteLine(_text);
         }
     }
 

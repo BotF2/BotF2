@@ -2392,7 +2392,7 @@ namespace Supremacy.Combat
                                     if (!_thisShipIsReported && id != combatent.Item1.Owner.CivID)
                                     {
                                         CivilizationManager civManager2 = GameContext.Current.CivilizationManagers[id];
-                                        civManager2.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+                                        //civManager2.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                                         _thisShipIsReported = true;
                                     }
                                 }

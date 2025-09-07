@@ -119,7 +119,7 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("{0} Shipyard: {1}, affectedProject: {2}", target.Name, target.Shipyard.Name, target.Shipyard.BuildSlots.Count);
                         List<ShipyardBuildSlot> tmpShipyards = new List<ShipyardBuildSlot>(target.Shipyard.BuildSlots.Count);
                         tmpShipyards.AddRange(target.Shipyard.BuildSlots.ToList());
-                        tmpShipyards.ForEach(o => target.DeactivateShipyardBuildSlot(o));
+                        tmpShipyards.ForEach(o => target.ShipyardBuildSlot_Deactivate(o));
                         tmpShipyards.ForEach(o => GameLog.Client.GameData.DebugFormat("affectedProject: {0}", target.Shipyard.BuildSlots.Count));
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);

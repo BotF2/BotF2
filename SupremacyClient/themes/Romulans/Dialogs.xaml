@@ -1,4 +1,4 @@
-﻿<!--File:Dialogs.xaml for Romulans -->
+﻿<!--File:Dialogs.xaml for 2-Romulans -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
@@ -9,6 +9,6 @@
 
   <Style x:Key="{x:Static scc:ClientResources.MessageDialogButtonStyleKey}"
          TargetType="{x:Type Button}"
-         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+         BasedOn="{StaticResource 2-ROM-LCARS_StandardButtonStyle}" />
 
 </ResourceDictionary>

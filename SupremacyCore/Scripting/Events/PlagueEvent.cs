@@ -116,17 +116,17 @@ namespace Supremacy.Scripting.Events
                     //var fac = target.GetActiveFacilities(Economy.ProductionCategory.Intelligence);
 
                     //for ( var i = 0;)
-                    //target.DeactivateFacility(Economy.ProductionCategory.Food);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Industry);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Energy);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Research);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Intelligence);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Food);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Industry);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Energy);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Research);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Intelligence);
 
-                    //target.ActivateFacility(Economy.ProductionCategory.Food);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Industry);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Energy);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Research);
-                    //target.DeactivateFacility(Economy.ProductionCategory.Intelligence);
+                    //target.Facility_Activate(Economy.ProductionCategory.Food);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Industry);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Energy);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Research);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Intelligence);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

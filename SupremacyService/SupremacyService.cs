@@ -9,8 +9,6 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
-using Supremacy.Client;
-using Supremacy.Client.Commands;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
@@ -31,11 +29,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
-
-using System.Windows.Input;
 using Scheduler = System.Concurrency.Scheduler;
-using System.Web;
 
 namespace Supremacy.WCF
 {
@@ -192,7 +186,7 @@ namespace Supremacy.WCF
                             _text = "Step_4987: Loading failed - end game ##################################################################";
                             Console.WriteLine(_text);
                             EndGame();
-                            
+
                             return;
                         }
                     }
@@ -287,7 +281,7 @@ namespace Supremacy.WCF
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
 
             }
-            
+
             //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
         }
 
@@ -547,7 +541,7 @@ namespace Supremacy.WCF
                     Action<GameContext, List<Civilization>> doAiPlayers = _gameEngine.DoAIPlayers;
 
                     //Thread.Sleep(2000); // just for testing - why is the turn done before all AI is done ?
-                    
+
                     _aiAsyncResult = doAiPlayers.BeginInvoke(
                         _game, autoTurnCivs,
                         delegate (IAsyncResult result)
@@ -571,7 +565,7 @@ namespace Supremacy.WCF
                 }
 
                 _text = "Step_0675:; AI processing time= " + stopwatch.Elapsed;
-                Console.WriteLine( _text );
+                Console.WriteLine(_text);
                 //GameLog.Server.GeneralDetails.InfoFormat(_text);
 
                 stopwatch.Restart();
@@ -583,7 +577,7 @@ namespace Supremacy.WCF
                 catch (Exception)
                 {
                     _text = "Hit await, ************** issue #398 *******************";
-                    Console.WriteLine( _text );
+                    Console.WriteLine(_text);
                     GameLog.Core.GeneralDetails.DebugFormat(_text);
                     Thread.Sleep(0050);
 
@@ -641,7 +635,7 @@ namespace Supremacy.WCF
 
         private async Task DoTurnCore()
         {
-            string _text = "Step_0577:; DoTurnCore... to go to the next Turn" ;
+            string _text = "Step_0577:; DoTurnCore... to go to the next Turn";
             Console.WriteLine(_text);
             //GameLog.Core.GameDataDetails.DebugFormat(_text);
 
@@ -864,9 +858,9 @@ namespace Supremacy.WCF
             OnTurnPhaseChanged(phase);
         }
 
-//#pragma warning disable IDE0051 // Remove unused private members
+        //#pragma warning disable IDE0051 // Remove unused private members
         private void OnAITaskCompleted()
-//#pragma warning restore IDE0051 // Remove unused private members
+        //#pragma warning restore IDE0051 // Remove unused private members
         {
             lock (_aiAsyncLock)  // is this used anyway ??? ...reported by VS: it is not used
             {
@@ -1895,7 +1889,7 @@ namespace Supremacy.WCF
             catch { DropPlayer(player); }
         }
 
-        public void Pong(int pingId) 
+        public void Pong(int pingId)
         {
             //Console.WriteLine("Step_7988:; Pong(int pingId) " + pingId + " at " + DateTime.Now);
         }

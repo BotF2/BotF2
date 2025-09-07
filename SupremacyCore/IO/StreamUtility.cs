@@ -172,6 +172,7 @@ namespace Supremacy.IO
             {
                 sout.OptimizeForSize = true;
                 sout.WriteObject(value);
+                //Console.WriteLine("Step_0555:; value of SerializationWriter = " + value.ToString() + Environment.NewLine + sout.BaseStream.ToString());
                 _ = sout.AppendTokenTables();
                 sout.Flush();
                 byte[] results = MiniLZO.Compress((MemoryStream)sout.BaseStream);

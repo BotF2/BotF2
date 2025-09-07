@@ -23,7 +23,7 @@
     <ResourceDictionary Source="AffairsScreen.xaml"/>
     <ResourceDictionary Source="Dialogs.xaml" />
       
-    <!--<ResourceDictionary Source="ROM-Shared.xaml"/>
+    <!--<ResourceDictionary Source="ROM-x-Shared .xaml"/>
     <ResourceDictionary Source="ROM-GameContextMenu.xaml"/>
     <ResourceDictionary Source="ROM-TechObjectInfo.xaml"/>
     <ResourceDictionary Source="ROM-InfoCard.xaml" />

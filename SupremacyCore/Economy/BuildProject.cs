@@ -263,6 +263,7 @@ namespace Supremacy.Economy
             {
                 if (GetFlag(BuildProjectFlags.Cancelled))
                 {
+                    Console.WriteLine("Step_4443:; ##### Project has flag: IsCancelled");
                     GameLog.Core.Production.DebugFormat("##### Project has flag: IsCancelled");
                 }
 
@@ -626,7 +627,7 @@ namespace Supremacy.Economy
 
                 int delta = ResourcesRequired[resource] - _resourcesInvested[resource];
 
-                if (delta <= 0)
+                if (delta <= 1)
                 {
                     continue;
                 }

@@ -133,8 +133,8 @@ namespace Supremacy.Scripting.Events
                     target.RemoveFacilities(ProductionCategory.Food, removeFood);
                     for (int i = 0; i < target.GetActiveFacilities(ProductionCategory.Food); i++)
                     {
-                        target.DeactivateFacility(ProductionCategory.Food);
-                        target.ActivateFacility(ProductionCategory.Food);
+                        target.Facility_Deactivate(ProductionCategory.Food);
+                        target.Facility_Activate(ProductionCategory.Food);
                     }
 
                     int removeIndustry = 4;  // If you have industry 8 or more then take out 4
@@ -146,8 +146,8 @@ namespace Supremacy.Scripting.Events
                     target.RemoveFacilities(ProductionCategory.Industry, removeIndustry);
                     for (int i = 0; i < target.GetActiveFacilities(ProductionCategory.Industry); i++)
                     {
-                        target.DeactivateFacility(ProductionCategory.Industry);
-                        target.ActivateFacility(ProductionCategory.Industry);
+                        target.Facility_Deactivate(ProductionCategory.Industry);
+                        target.Facility_Activate(ProductionCategory.Industry);
                     }
 
                     int removeEnergy = 2; ;  // If you have energy 6 or more then take out 2
@@ -159,8 +159,8 @@ namespace Supremacy.Scripting.Events
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
                     for (int i = 0; i < target.GetActiveFacilities(ProductionCategory.Energy); i++)
                     {
-                        target.DeactivateFacility(ProductionCategory.Energy);
-                        target.ActivateFacility(ProductionCategory.Energy);
+                        target.Facility_Deactivate(ProductionCategory.Energy);
+                        target.Facility_Activate(ProductionCategory.Energy);
                     }
 
                     int removeResearch = 2;   // If you have research 4 or more then take out 2
@@ -172,8 +172,8 @@ namespace Supremacy.Scripting.Events
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
                     for (int i = 0; i < target.GetActiveFacilities(ProductionCategory.Research); i++)
                     {
-                        target.DeactivateFacility(ProductionCategory.Research);
-                        target.ActivateFacility(ProductionCategory.Research);
+                        target.Facility_Deactivate(ProductionCategory.Research);
+                        target.Facility_Activate(ProductionCategory.Research);
                     }
 
                     int removeIntelligence = 3;   // If you have intel 4 or more than take out 3
@@ -185,8 +185,8 @@ namespace Supremacy.Scripting.Events
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence);
                     for (int i = 0; i < target.GetActiveFacilities(ProductionCategory.Intelligence); i++)
                     {
-                        target.DeactivateFacility(ProductionCategory.Intelligence);
-                        target.ActivateFacility(ProductionCategory.Intelligence);
+                        target.Facility_Deactivate(ProductionCategory.Intelligence);
+                        target.Facility_Activate(ProductionCategory.Intelligence);
                     }
 
 

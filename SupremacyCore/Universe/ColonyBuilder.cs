@@ -37,7 +37,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Food);
-                    _ = colony.ActivateFacility(ProductionCategory.Food);
+                    _ = colony.Facility_Activate(ProductionCategory.Food);
                 }
             }
 
@@ -49,7 +49,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Industry);
-                    _ = colony.ActivateFacility(ProductionCategory.Industry);
+                    _ = colony.Facility_Activate(ProductionCategory.Industry);
                 }
             }
 
@@ -61,7 +61,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < 2; i++)
                 {
                     colony.AddFacility(ProductionCategory.Industry);
-                    //_ = colony.ActivateFacility(ProductionCategory.Industry);
+                    //_ = colony.Facility_Activate(ProductionCategory.Industry);
                 }
             }
 
@@ -73,7 +73,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Energy);
-                    _ = colony.ActivateFacility(ProductionCategory.Energy);
+                    _ = colony.Facility_Activate(ProductionCategory.Energy);
                 }
             }
 
@@ -90,7 +90,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < 1; i++)
                 {
                     colony.AddFacility(ProductionCategory.Research);
-                    _ = colony.ActivateFacility(ProductionCategory.Research);
+                    _ = colony.Facility_Activate(ProductionCategory.Research);
                     if (!_newGame)
                     {
                         Debugger.Break();
@@ -108,7 +108,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < 1; i++)
                 {
                     colony.AddFacility(ProductionCategory.Intelligence);
-                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                    _ = colony.Facility_Activate(ProductionCategory.Intelligence);
                     if (!_newGame)
                     {
                         Debugger.Break();

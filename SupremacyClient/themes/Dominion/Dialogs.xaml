@@ -1,4 +1,4 @@
-﻿<!--File:Dialogs.xaml for Dominion -->
+﻿<!--File:Dialogs.xaml for 5-Dominion -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
@@ -9,6 +9,6 @@
 
   <Style x:Key="{x:Static scc:ClientResources.MessageDialogButtonStyleKey}"
          TargetType="{x:Type Button}"
-         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+         BasedOn="{StaticResource 5-DOM-LCARS_StandardButtonStyle}" />
 
 </ResourceDictionary>

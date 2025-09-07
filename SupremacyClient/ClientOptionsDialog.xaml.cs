@@ -1,4 +1,4 @@
-// <!-- File:ClientOptionsDialog.xaml.cs
+// File:ClientOptionsDialog.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

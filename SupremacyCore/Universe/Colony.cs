@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Supremacy.Universe
@@ -164,7 +165,7 @@ namespace Supremacy.Universe
             _systemId = system.ObjectID;
 
             Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
-            
+
             if (system.HasDuraniumBonus)
             {
                 _baseDuranium = (byte)(RandomHelper.Random(25) + 14);  // UPDATE X 31 july 2019. Adjust base duranium generation   // base value just in case its not customized
@@ -210,47 +211,47 @@ namespace Supremacy.Universe
 
             // Calculate random automatic generation/collection of Deuterium for this colony
             //{
-                byte baseValuePerGasGiant = 10;
+            byte baseValuePerGasGiant = 10;
 
-                //Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
-                if (baseResProdTable != null)
+            //Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+            if (baseResProdTable != null)
+            {
+                string random = "NO";
+
+                try
                 {
-                    string random = "NO";
+                    _ = double.TryParse(baseResProdTable["Deuterium"]["BaseValue"], out double baseValue);
+                    random = baseResProdTable["Deuterium"]["Random"];
+                    random = random.ToUpperInvariant();
+                    _ = double.TryParse(baseResProdTable["Deuterium"]["MinRandom"], out double rndMin);
+                    _ = double.TryParse(baseResProdTable["Deuterium"]["MaxRandom"], out double rndMax);
 
-                    try
+                    byte tmpBaseValue = (byte)baseValue;
+
+                    int rndRange = (int)rndMax - (int)rndMin;
+                    int rndValue = RandomHelper.Random(rndRange) + (int)rndMin;
+                    if (random.Equals("YES"))
                     {
-                        _ = double.TryParse(baseResProdTable["Deuterium"]["BaseValue"], out double baseValue);
-                        random = baseResProdTable["Deuterium"]["Random"];
-                        random = random.ToUpperInvariant();
-                        _ = double.TryParse(baseResProdTable["Deuterium"]["MinRandom"], out double rndMin);
-                        _ = double.TryParse(baseResProdTable["Deuterium"]["MaxRandom"], out double rndMax);
-
-                        byte tmpBaseValue = (byte)baseValue;
-
-                        int rndRange = (int)rndMax - (int)rndMin;
-                        int rndValue = RandomHelper.Random(rndRange) + (int)rndMin;
-                        if (random.Equals("YES"))
-                        {
-                            tmpBaseValue = (byte)rndValue;
-                        }
-                        else if (random.Equals("ADD"))
-                        {
-                            tmpBaseValue += (byte)rndValue;
-                        }
-                        else if (random.Equals("SUB"))
-                        {
-                            tmpBaseValue -= (byte)rndValue;
-                        }
-
-                        baseValuePerGasGiant = tmpBaseValue;
+                        tmpBaseValue = (byte)rndValue;
                     }
-                    catch (Exception e)
+                    else if (random.Equals("ADD"))
                     {
-                        GameLog.Core.General.Error(e);
+                        tmpBaseValue += (byte)rndValue;
                     }
+                    else if (random.Equals("SUB"))
+                    {
+                        tmpBaseValue -= (byte)rndValue;
+                    }
+
+                    baseValuePerGasGiant = tmpBaseValue;
                 }
+                catch (Exception e)
+                {
+                    GameLog.Core.General.Error(e);
+                }
+            }
 
-                _baseDeuteriumGeneration = (byte)system.Planets.Where(p => p.PlanetType == PlanetType.GasGiant).Sum(p => baseValuePerGasGiant);
+            _baseDeuteriumGeneration = (byte)system.Planets.Where(p => p.PlanetType == PlanetType.GasGiant).Sum(p => baseValuePerGasGiant);
             //}
 
             Location = system.Location;
@@ -374,7 +375,7 @@ namespace Supremacy.Universe
 
                 if (Owner.Key == "BORG")
                 {
-                    _PercentageGrowthRate += 0.01f;
+                    _PercentageGrowthRate += 0.02f;
                 }
 
                 return _PercentageGrowthRate + (Percentage)0.011;
@@ -430,7 +431,7 @@ namespace Supremacy.Universe
             get
             {
                 string _all_info = base.Name ?? (System?.Name);
-                _all_info += " " + base.Location.ToString() + " " + base.Owner;  
+                _all_info += " " + base.Location.ToString() + " " + base.Owner;
 
                 return _all_info;
             }
@@ -505,10 +506,13 @@ namespace Supremacy.Universe
 
         public string GetShipyardSlotStatus(ShipyardBuildSlot buildSlot)
         {
+            string _text;
+
             if (buildSlot == null)
             {
                 return "not available";
             }
+
 
             Shipyard shipyard = Shipyard;
             if (shipyard == null || !Equals(shipyard, buildSlot.Shipyard))
@@ -623,9 +627,9 @@ namespace Supremacy.Universe
             get
             {
                 Meter _health1 = _health;
-                if(Owner.Key == "BORG")
+                if (Owner.Key == "BORG")
                 {
-                    _health1 = new Meter (100,100);
+                    _health1 = new Meter(100, 100);
                     //_health = (decimal)1f;
                 }
                 return _health1;
@@ -657,13 +661,13 @@ namespace Supremacy.Universe
                         if (bonus.BonusType == BonusType.Credits)
                         {
                             modifier.Bonus += bonus.Amount;
-                            GameLog.Core.CreditsDetails.DebugFormat("{0}: Bonus Credits Amount = {1}", building.Design, bonus.Amount);
+                            //GameLog.Core.CreditsDetails.DebugFormat("{0}: Bonus Credits Amount = {1}", building.Design, bonus.Amount);
 
                         }
                         else if (bonus.BonusType == BonusType.PercentCredits)
                         {
                             modifier.Efficiency += bonus.Amount / 100f;
-                            GameLog.Core.CreditsDetails.DebugFormat("{0}: Bonus Credits Percent = {1}", building.Design, bonus.Amount / 100f);
+                            //GameLog.Core.CreditsDetails.DebugFormat("{0}: Bonus Credits Percent = {1}", building.Design, bonus.Amount / 100f);
                         }
                     }
                 }
@@ -688,7 +692,7 @@ namespace Supremacy.Universe
 
                 // only for LocalPlayer
                 //if (this.OwnerID == )
-                GameLog.Core.CreditsDetails.DebugFormat("## Turn;{0};MoraleMOD=;{4};Effic.MOD=;{5};BonusMOD=;{7};Pop=;{3};NetIndustry=;{6};TaxCredits=;{8}; for ;{1};{2}"
+                GameLog.Core.Credits.DebugFormat("## Turn;{0};MoraleMOD=;{4};Effic.MOD=;{5};BonusMOD=;{7};Pop=;{3};NetIndustry=;{6};TaxCredits=;{8}; for ;{1};{2}"
                     , GameContext.Current.TurnNumber
                     , Name
                     , Location
@@ -918,7 +922,7 @@ namespace Supremacy.Universe
         public void ProcessQueue()
         {
 
-            _text = "Step_1207:; ProcessQueue ... multiple stuff like remove completed projects etc."
+            string _text = "Step_1207:; ProcessQueue ... multiple stuff like remove completed projects etc."
                     //+ "" + colony.Name + " " + colony.Owner
                     ;
             //Console.WriteLine(_text);
@@ -1114,7 +1118,7 @@ namespace Supremacy.Universe
 
             CivilizationManager currentOwnerManager = CivilizationManager.For(OwnerID);
             CivilizationManager newOwnerManager = CivilizationManager.For(newOwner);
-            _text = "Step_0366:; TakeOwnership > oldOwner = "
+            string _text = "Step_0366:; TakeOwnership > oldOwner = "
                 + currentOwnerManager
                 + ", newOwner = " + newOwnerManager
                 ;
@@ -1174,7 +1178,7 @@ namespace Supremacy.Universe
             building.IsActive = false;
             building.Location = Location;
             _buildings.Add(building);
-            _ = ActivateBuilding(building);
+            _ = Building_Activate(building);
             if (building.BuildingDesign.Bonuses.Any(o => o.BonusType == BonusType.MaxPopulationPerMoonSize))
             {
                 Population.Maximum = Population_Max;
@@ -1192,7 +1196,7 @@ namespace Supremacy.Universe
                 return;
             }
 
-            _ = DeactivateBuilding(building);
+            _ = Building_Deactivate(building);
             _ = _buildings.Remove(building);
             if (Shipyard == building)
             {
@@ -1243,7 +1247,7 @@ namespace Supremacy.Universe
             int toDeactivate = -(facilities_total[(int)category].Value - facilities_active[(int)category].Value - count);
             for (int i = 0; i < toDeactivate; i++)
             {
-                _ = DeactivateFacility(category);
+                _ = Facility_Deactivate(category);
             }
 
             facilities_total[(int)category].Value -= (byte)count;
@@ -1308,7 +1312,7 @@ namespace Supremacy.Universe
         /// <returns>The natural production level.</returns>
         protected internal int GetBaseResourceProduction(ResourceType resourceType, int currentPopulation)
         {
-            _text = currentPopulation.ToString();  // just a dummy to avoid a "curPop can be removed"
+            string _text = currentPopulation.ToString();  // just a dummy to avoid a "curPop can be removed"
             switch (resourceType)
             {
                 case ResourceType.Deuterium:
@@ -1755,7 +1759,7 @@ namespace Supremacy.Universe
         /// </summary>
         /// <param name="category">The production category.</param>
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
-        public bool ActivateFacility(ProductionCategory category)
+        public bool Facility_Activate(ProductionCategory category)
         {
             lock (facilities_active)
             {
@@ -1807,7 +1811,7 @@ namespace Supremacy.Universe
         /// </summary>
         /// <param name="category">The production category.</param>
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
-        public bool DeactivateFacility(ProductionCategory category)
+        public bool Facility_Deactivate(ProductionCategory category)
         {
             lock (facilities_active)
             {
@@ -1915,6 +1919,8 @@ namespace Supremacy.Universe
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
         public void HandlePF()
         {
+            string _text;
+
             //int _laborpool_unused = AvailableLabor;
             int _foodPF_unused = Facilities_Total1_Food - GetActiveFacilities(ProductionCategory.Food);
             //int _industryPF_unused = Facilities_Total2_Industry - GetActiveFacilities(ProductionCategory.Industry);
@@ -1956,7 +1962,7 @@ namespace Supremacy.Universe
                         ReduceOneOtherPF();
                     }
 
-                    _ = ActivateFacility(ProductionCategory.Food);
+                    _ = Facility_Activate(ProductionCategory.Food);
                     _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
@@ -1974,7 +1980,7 @@ namespace Supremacy.Universe
                 {
                     ReduceOneOtherPF();
 
-                    _ = ActivateFacility(ProductionCategory.Food);
+                    _ = Facility_Activate(ProductionCategory.Food);
                     _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     Console.WriteLine("Step_2384:; " + _text);
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
@@ -1987,7 +1993,7 @@ namespace Supremacy.Universe
                 //    if (GetUnusedFacilities(ProductionCategory.Food) > 0)
                 //    {
                 //        ReduceOneOtherPF();
-                //        ActivateFacility(ProductionCategory.Food);
+                //        Facility_Activate(ProductionCategory.Food);
                 //    }
                 //}
 
@@ -2021,7 +2027,7 @@ namespace Supremacy.Universe
                     {
                         ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
                             .Where(o => o.IsActive && !o.HasProject)
-                            .FirstOrDefault(DeactivateShipyardBuildSlot);
+                            .FirstOrDefault(ShipyardBuildSlot_Deactivate);
 
                         if (deactivatedBuildSlot != null)
                         {
@@ -2049,7 +2055,7 @@ namespace Supremacy.Universe
                     }
 
                     if (mostCostlyBuilding != null &&
-                        DeactivateBuilding(mostCostlyBuilding))
+                        Building_Deactivate(mostCostlyBuilding))
                     {
                         shutDown++;
                         goto Next;
@@ -2057,7 +2063,7 @@ namespace Supremacy.Universe
 
                     foreach (Building building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
                     {
-                        if (DeactivateBuilding(building))
+                        if (Building_Deactivate(building))
                         {
                             shutDown++;
                             goto Next;
@@ -2072,7 +2078,7 @@ namespace Supremacy.Universe
                     {
                         ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
                             .Where(o => o.IsActive && !o.HasProject)
-                            .FirstOrDefault(DeactivateShipyardBuildSlot);
+                            .FirstOrDefault(ShipyardBuildSlot_Deactivate);
 
                         if (deactivatedBuildSlot != null)
                         {
@@ -2089,27 +2095,28 @@ namespace Supremacy.Universe
 
         private void ReduceOneOtherPF()
         {
+            string _text;
             if (GetActiveFacilities(ProductionCategory.Intelligence) > 0)
             {
-                _ = DeactivateFacility(ProductionCategory.Intelligence);
+                _ = Facility_Deactivate(ProductionCategory.Intelligence);
                 _text = Location + " " + Name + " > One Intelligence facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Research) > 0)
             {
-                _ = DeactivateFacility(ProductionCategory.Research);
+                _ = Facility_Deactivate(ProductionCategory.Research);
                 _text = Location + " " + Name + " > One Research facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Industry) > 0)
             {
-                _ = DeactivateFacility(ProductionCategory.Industry);
+                _ = Facility_Deactivate(ProductionCategory.Industry);
                 _text = Location + " " + Name + " > One Industry facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Energy) > 0)
             {
-                _ = DeactivateFacility(ProductionCategory.Energy);
+                _ = Facility_Deactivate(ProductionCategory.Energy);
                 _text = Location + " " + Name + " > One Energy facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
@@ -2117,6 +2124,8 @@ namespace Supremacy.Universe
 
         private void Report(Colony colony)
         {
+            string _text;
+
             int _shipyardSlots;
             if (colony.Shipyard != null && colony._shipyardId != -1)
             {
@@ -2197,7 +2206,7 @@ namespace Supremacy.Universe
             {
                 for (int i = 0; i < OrbitalBatteries.Count; i++)
                 {
-                    _ = DeactivateOrbitalBattery();
+                    _ = OrbitalBattery_Deactivate();
                     //_text = "OrbitalBattery de-activated > Energy = " + netEnergy;
                     //Console.WriteLine(_text);
                 }
@@ -2216,7 +2225,7 @@ namespace Supremacy.Universe
                     List<OrbitalBattery> deactivateOrbBat = OrbitalBatteries.Where(o => o.IsActive).ToList();
                     foreach (OrbitalBattery item in deactivateOrbBat)
                     {
-                        _ = DeactivateOrbitalBattery();
+                        _ = OrbitalBattery_Deactivate();
                     }
                 }
 
@@ -2228,7 +2237,7 @@ namespace Supremacy.Universe
                 if (shipyard != null)
                 {
                     ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
-                        .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(DeactivateShipyardBuildSlot);
+                        .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(ShipyardBuildSlot_Deactivate);
 
                     if (deactivatedBuildSlot != null)
                     {
@@ -2256,7 +2265,7 @@ namespace Supremacy.Universe
                 }
 
                 if (mostCostlyBuilding != null &&
-                    DeactivateBuilding(mostCostlyBuilding))
+                    Building_Deactivate(mostCostlyBuilding))
                 {
                     shutDown++;
                     goto Next;
@@ -2264,7 +2273,7 @@ namespace Supremacy.Universe
 
                 foreach (Building building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
                 {
-                    if (DeactivateBuilding(building))
+                    if (Building_Deactivate(building))
                     {
                         shutDown++;
                         goto Next;
@@ -2278,7 +2287,7 @@ namespace Supremacy.Universe
                 if (shipyard != null)
                 {
                     ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
-                        .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(DeactivateShipyardBuildSlot);
+                        .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(ShipyardBuildSlot_Deactivate);
 
                     if (deactivatedBuildSlot != null)
                     {
@@ -2297,7 +2306,7 @@ namespace Supremacy.Universe
                 if (Activate_OrbBat > 0) Activate_OrbBat -= 1;  // in peace two active OrbBat are enough
                 for (int i = 0; i < Activate_OrbBat; i++)
                 {
-                    _ = ActivateOrbitalBattery();
+                    _ = OrbitalBattery_Activate();
                     //_text = "OrbitalBattery activated > Energy = " + netEnergy;
                     //Console.WriteLine(_text);
                 }
@@ -2308,54 +2317,54 @@ namespace Supremacy.Universe
         // FOOD
         public int Facilities_Active1_Food
         {
-            get { try { return GetActiveFacilities(ProductionCategory.Food); } catch { return 0; } }
+            get { try { return GetActiveFacilities(ProductionCategory.Food); } catch { Debugger.Break(); return 0; } }
         }
 
         public int Facilities_Total1_Food
         {
-            get { try { return GetTotalFacilities(ProductionCategory.Food); } catch { return 0; } }
+            get { try { return GetTotalFacilities(ProductionCategory.Food); } catch { Debugger.Break(); return 0; } }
         }
         // Industry
         public int Facilities_Active2_Industry
         {
-            get { try { return GetActiveFacilities(ProductionCategory.Industry); } catch { return 0; } }
+            get { try { return GetActiveFacilities(ProductionCategory.Industry); } catch { Debugger.Break(); return 0; } }
         }
 
         public int Facilities_Total2_Industry
         {
-            get { try { return GetTotalFacilities(ProductionCategory.Industry); } catch { return 0; } }
+            get { try { return GetTotalFacilities(ProductionCategory.Industry); } catch { Debugger.Break(); return 0; } }
         }
 
 
         // Energy
         public int Facilities_Active3_Energy
         {
-            get { try { return GetActiveFacilities(ProductionCategory.Energy); } catch { return 0; } }
+            get { try { return GetActiveFacilities(ProductionCategory.Energy); } catch { Debugger.Break(); return 0; } }
         }
 
         public int Facilities_Total3_Energy
         {
-            get { try { return GetTotalFacilities(ProductionCategory.Energy); } catch { return 0; } }
+            get { try { return GetTotalFacilities(ProductionCategory.Energy); } catch { Debugger.Break(); return 0; } }
         }
         // Research
         public int Facilities_Active4_Research
         {
-            get { try { return GetActiveFacilities(ProductionCategory.Research); } catch { return 0; } }
+            get { try { return GetActiveFacilities(ProductionCategory.Research); } catch { Debugger.Break(); return 0; } }
         }
 
         public int Facilities_Total4_Research
         {
-            get { try { return GetTotalFacilities(ProductionCategory.Research); } catch { return 0; } }
+            get { try { return GetTotalFacilities(ProductionCategory.Research); } catch { Debugger.Break(); return 0; } }
         }
         // Intelligence 
         public int Facilities_Active5_Intelligence
         {
-            get { try { return GetActiveFacilities(ProductionCategory.Intelligence); } catch { return 0; } }
+            get { try { return GetActiveFacilities(ProductionCategory.Intelligence); } catch { Debugger.Break(); return 0; } }
         }
 
         public int Facilities_Total5_Intelligence
         {
-            get { try { return GetTotalFacilities(ProductionCategory.Intelligence); } catch { return 0; } }
+            get { try { return GetTotalFacilities(ProductionCategory.Intelligence); } catch { Debugger.Break(); return 0; } }
         }
 
         public int EnergyCostEachOrbitalBattery
@@ -2366,7 +2375,11 @@ namespace Supremacy.Universe
                 {
                     return OrbitalBatteryDesign != null ? OrbitalBatteryDesign.UnitEnergyCost : 0;
                 }
-                catch { return 0; }
+                catch
+                {
+                    Debugger.Break();
+                    return 0;
+                }
             }
         }
         /// <summary>
@@ -2379,7 +2392,7 @@ namespace Supremacy.Universe
 
         public int OrbitalBatteries_Scrapped => orbitalBatteries_scrapped.Value;
 
-        public bool ActivateOrbitalBattery()
+        public bool OrbitalBattery_Activate()
         {
             OrbitalBatteryDesign design = OrbitalBatteryDesign;
             if (design == null)
@@ -2422,7 +2435,7 @@ namespace Supremacy.Universe
             return true;
         }
 
-        public bool DeactivateOrbitalBattery()
+        public bool OrbitalBattery_Deactivate()
         {
             OrbitalBatteryDesign design = OrbitalBatteryDesign;
             if (design == null)
@@ -2481,7 +2494,7 @@ namespace Supremacy.Universe
 
             for (int i = 0; i < toDeactivate; i++)
             {
-                _ = DeactivateOrbitalBattery();
+                _ = OrbitalBattery_Deactivate();
             }
 
             orbitalBatteries_total.Value = (byte)(orbitalBatteries_total.Value - count);
@@ -2562,11 +2575,11 @@ namespace Supremacy.Universe
         /// Deactivates the specified building.
         /// </summary>
         /// <param name="building">The building to deactivate.</param>
-        public bool DeactivateBuilding(Building building)
+        public bool Building_Deactivate(Building building)
         {
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[building.OwnerID];
             //civManager.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(civManager.Civilization, building.Sector.System.Colony));
-            _text = string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Name, GameEngine.LocationString(Location.ToString()));
+            string _text = string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Name, GameEngine.LocationString(Location.ToString()));
             civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.RedYellow));
 
             _text = "Turn " + GameContext.Current.TurnNumber
@@ -2580,7 +2593,7 @@ namespace Supremacy.Universe
             Console.WriteLine("Step_3446:; " + _text);
 
             //GameLog.Core.EnergyDetails.DebugFormat(_text);
-            return SetBuildingActive(building, false);
+            return Building_SetActive(building, false);
         }
 
         /// <summary>
@@ -2588,12 +2601,12 @@ namespace Supremacy.Universe
         /// </summary>
         /// <param name="building">The building to activate.</param>
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
-        public bool ActivateBuilding(Building building)
+        public bool Building_Activate(Building building)
         {
-            return SetBuildingActive(building, true);
+            return Building_SetActive(building, true);
         }
 
-        public bool ActivateShipyardBuildSlot(ShipyardBuildSlot buildSlot)
+        public bool ShipyardBuildSlot_Activate(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
             {
@@ -2623,7 +2636,7 @@ namespace Supremacy.Universe
             return true;
         }
 
-        public bool DeactivateShipyardBuildSlot(ShipyardBuildSlot buildSlot)
+        public bool ShipyardBuildSlot_Deactivate(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
             {
@@ -2648,7 +2661,7 @@ namespace Supremacy.Universe
             return true;
         }
 
-        private bool SetBuildingActive(Building building, bool value)
+        private bool Building_SetActive(Building building, bool value)
         {
             if (building == null)
             {

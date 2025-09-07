@@ -23,11 +23,14 @@ using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -56,8 +59,8 @@ namespace Supremacy.Game
         //private int _r_Research_Average_5;
         //private int _r_IntelAttack_BestValue;
         //private int _r_IntelAttack_Average_5;
-        private int _globalMorale;
-        private int _ratioIndustryForShipProduction;
+        //private int _globalMorale;
+        //private int _ratioIndustryForShipProduction;
         //private string _constructionAim;
 
         //[NonSerialized]
@@ -114,9 +117,9 @@ namespace Supremacy.Game
         //public int turnnumber;
         //public bool _gamelog_bool = false;
         //private bool boolCheckDeuterium = false;
-        private bool writeDirectly = true;
-        private HashSet<Fleet> fleets;
-        private Dictionary<Civilization, int> _targetCivDistance_Dictionary;
+        private bool _writeDirectly = true;
+        //private HashSet<Fleet> _fleets;
+        //private Dictionary<Civilization, int> _targetCivDistance_Dictionary;
 
 
         #endregion
@@ -199,8 +202,8 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("game");
             }
 
-            _text = "Step_0705:; ...DoTurn ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            _text = "Step_0705:; ...DoTurn in GameEngine.cs  ..." + DateTime.Now;
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -213,7 +216,7 @@ namespace Supremacy.Game
             //try  // Scripted Events ...
             //{
             //    _text = "Step_0710:; ...Scripted Events > beginning from Turn x on ...";
-            //    if (writeDirectly) Console.WriteLine(_text);
+            //    if (_writeDirectly) Console.WriteLine(_text);
             //    if (_gamelog_bool)
             //        GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -232,9 +235,9 @@ namespace Supremacy.Game
             //        }
             //    }
 
-            //    fleets = game.Universe.Find<Fleet>();
+            //    _fleets = game.Universe.Find<Fleet>();
 
-            //    foreach (Fleet _fleet in fleets)
+            //    foreach (Fleet _fleet in _fleets)
             //    {
             //        _fleet.LocationChanged += HandleFleetLocationChanged;
             //    }
@@ -243,7 +246,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0715:; ...next > Do_11_PreTurnOperations..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -255,7 +258,7 @@ namespace Supremacy.Game
 
 
             //_text = "Step_0720: ...beginning SpyOperations...";
-            //if (writeDirectly) Console.WriteLine(_text);
+            //if (_writeDirectly) Console.WriteLine(_text);
             //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             //OnTurnPhaseChanged(game, TurnPhase.SpyOperations);
@@ -266,7 +269,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0725:; next > Do_12_FleetMovement..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -280,7 +283,7 @@ namespace Supremacy.Game
             // DoSabotage is part of DiplomatAI - we just Sabotage non-Allies
 
             //_text = "Step_0728:; next > Sabotage...";
-            //if (writeDirectly) Console.WriteLine(_text);
+            //if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
             //    GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -290,7 +293,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0730:; next > Do_13_Diplomacy..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -302,7 +305,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0735:; next >  Do_15_Combat..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -314,7 +317,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0740:; next > Do_16_PopulationGrowth ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -326,7 +329,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0745:; next > Do_17_Research ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -338,7 +341,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0750:; next > Do_18_Scrapping ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -350,7 +353,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0755:; next > Do_19_Maintenance ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -362,7 +365,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0760:; next > Do_20_ShipProduction ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -375,7 +378,7 @@ namespace Supremacy.Game
 
             // test 2022-07-17 Production after ShipProduction
             _text = "Step_0765:; next > Do_21_Production ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -387,7 +390,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0770:; next > Do_22_Trade ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -407,7 +410,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0775:; next > Do_23_Morale ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -419,7 +422,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0780:; next > Do_24_MapUpdates ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -431,7 +434,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0785:; next > Do_25_PostTurnOperations ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -443,14 +446,14 @@ namespace Supremacy.Game
 
 
             _text = "Step_0790:; next > SendUpdates ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
             OnTurnPhaseChanged(game, TurnPhase.SendUpdates);
 
 
             _text = "Step_0795:; next > PushThreadContext ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
             GameContext.PushThreadContext(game);
@@ -468,7 +471,7 @@ namespace Supremacy.Game
 
 
             _text = "Step_0797:; next > HandleFleetLocationChanged ..." + DateTime.Now;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -486,7 +489,7 @@ namespace Supremacy.Game
         private void Do_10_ScriptedEvents(GameContext game)
         {
             string _text = "Step_0710:; ...Scripted Events > beginning from Turn x on ...";
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             bool _gamelog_bool = false;
             if (_gamelog_bool)
                 GameLog.Core.GeneralDetails.DebugFormat(_text);
@@ -506,9 +509,11 @@ namespace Supremacy.Game
                 }
             }
 
-            fleets = game.Universe.Find<Fleet>();
+            HashSet<Fleet> _fleets = game.Universe.Find<Fleet>(); 
 
-            foreach (Fleet fleet in fleets)
+            //_fleets = game.Universe.Find<Fleet>();
+
+            foreach (Fleet fleet in _fleets)
             {
                 fleet.LocationChanged += HandleFleetLocationChanged;
             }
@@ -534,7 +539,7 @@ namespace Supremacy.Game
             // these here > foreach....
             HashSet<UniverseObject> objects = GameContext.Current.Universe.Objects.ToHashSet();
             HashSet<CivilizationManager> civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
-            //HashSet<Fleet> fleets = objects.OfType<Fleet>().ToHashSet();
+            //HashSet<Fleet> _fleets = objects.OfType<Fleet>().ToHashSet();
 
             string _text;
 
@@ -565,6 +570,7 @@ namespace Supremacy.Game
                         ;
                     Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text);
+                    Debugger.Break();
                     errors.Push(e);
                 }
                 finally
@@ -573,6 +579,8 @@ namespace Supremacy.Game
                     GameContext.PushThreadContext(game);
                 }
             }
+            // jump over and break here
+            //Debugger.Break();
             ;
             //});
 
@@ -581,7 +589,7 @@ namespace Supremacy.Game
             {
                 foreach (var err in errors)
                 {
-                    _text = "Step_1156:; ERROR > " + err.Message;
+                    _text = "Step_1157:; ERROR > " + err.Message;
                     Console.WriteLine(_text);
                     GameLog.Core.General.DebugFormat(_text);
 
@@ -593,10 +601,13 @@ namespace Supremacy.Game
 
             errors.Clear();
 
-            foreach (Fleet fleet in fleets)
+            HashSet<Fleet> _fleets = game.Universe.Find<Fleet>();
+
+            foreach (Fleet fleet in _fleets)
             {
                 if (fleet == null)
                 {
+                    Debugger.Break();
                     continue;
                 }
 
@@ -609,20 +620,21 @@ namespace Supremacy.Game
                 //else
                 //{
                 //    //_text = "Step_1151:; trying > " + _fleet.ObjectID + " "+ _fleet.Name;
-                //    //if (writeDirectly) Console.WriteLine(_text);
+                //    //if (_writeDirectly) Console.WriteLine(_text);
 
                 //    _text += "Step_1157:; " + UnitAI.CreateUpdateFleetText(fleet, out string _fleetText)
                 //        ;
-                //    //if (writeDirectly) Console.WriteLine(_text);
+                //    //if (_writeDirectly) Console.WriteLine(_text);
                 //    _allFleetsReport += _newline + _text;
                 //}
-                //if (writeDirectly) Console.WriteLine("Step_1158:; begin of > _allFleetsReport:" + _newline 
+                //if (_writeDirectly) Console.WriteLine("Step_1158:; begin of > _allFleetsReport:" + _newline 
                 //    + _allFleetsReport + _newline
                 //    + "end of > _allFleetsReport" 
                 //    );
 
                 fleet.Order?.OnTurnBeginning();
             }
+            Debugger.Break();
 
             //_ = ParallelForEach(civManagers, _civM_1 =>
             //  {
@@ -765,7 +777,7 @@ namespace Supremacy.Game
             //AAASpecialWidth1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Width"][0]);
             //AAASpecialHeight1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Height"][0]);
             //string _text = "AAASpecialWidth1=" + AAASpecialWidth1 + " x " + "AAASpecialHeight1=" + AAASpecialHeight1;
-            //if (writeDirectly) Console.WriteLine(_text);
+            //if (_writeDirectly) Console.WriteLine(_text);
             //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             Table BuyModTable = GameContext.Current.Tables.GameOptionTables["BuyModifier"];
@@ -822,12 +834,12 @@ namespace Supremacy.Game
                 //+ ColonyTroopStrenghtMod + " for ColonyTroopStrenghtMod" + _newline
                 ;
 
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
             GameLog.Core.GameInitDataDetails.DebugFormat(_text);
 
             //doesn't work'
             //_text = "Step_0997: Window-Size" + (Frame).w + " x " + System.Windows.Window.Size + ", Normal or Maximized? =" + Window.WindowStateProperty;
-            //if (writeDirectly) Console.WriteLine(_text);
+            //if (_writeDirectly) Console.WriteLine(_text);
             //GameLog.Core.General.DebugFormat(_text);
 
             game.TurnNumber = 1;
@@ -842,19 +854,73 @@ namespace Supremacy.Game
             //#pragma warning disable IDE0059 // Unnecessary assignment of a value
             //int turnnumber = game.TurnNumber;  // Dummy, do not remove
             //                                   //#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            List<Fleet> allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
+            List<Fleet> _allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
+
             int fuelNeeded;
             string _newline = Environment.NewLine;
             string _text = "";
             string _text2 = "";
 
-            _text = "Step_6001:; allFleets.Count = " + allFleets.Count;
-            if (writeDirectly) Console.WriteLine(_text);
+
+            _text = "Step_6001:; _allFleets.Count = " + _allFleets.Count;
+            if (_writeDirectly) Console.WriteLine(_text);
             string _allFleets_report = _text + _newline;
 
             //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
-            foreach (Fleet _fleet in allFleets)
+            foreach (var _civ in GameContext.Current.Civilizations)
+            {
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
+                List<Fleet> strandedFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civ).Where(o => o.IsStranded).ToList();
+
+                List<Sector> sectorList = new List<Sector>();
+
+                sectorList = UnitAI.FindStrandedShipSectors(_civ);
+
+                bool _strandedShipsSectorStillRelevant = false;
+
+                Sector _tmpStrandedShipsSector = _civM.HomeSystem.Sector;
+
+                foreach (var _fleet in strandedFleets)
+                {
+                    //UnitAI.CreateUpdateFleetText(_fleet, out string _fleetText);
+                    _text = _fleet.Location
+                        + "   " + _fleet.ObjectID
+                        + " " + _fleet.Name
+                        + " ( " + _fleet.Ships[0].DesignName + " )"
+                        //+ " > " + _fleet.des
+                    //GameEngine.LocationString(_fleet.Location.ToString())
+                    //    + " > " +
+                    //UnitAI.CreateUpdateFleetText(_fleet, out string _fleetText)
+                    + " is stranded there..."
+
+                        ;
+                    _civM.SitRepEntries.Add(new ReportEntry_CoS(_civ, _fleet.Location, _text, "", "", SitRepPriority.Yellow));
+
+                    if (_civM.StrandedShipsSector.Location.ToString() == _fleet.Sector.Location.ToString())
+                    {
+                        _strandedShipsSectorStillRelevant = true;
+                    }
+
+
+                }
+
+                if (_strandedShipsSectorStillRelevant == false && _tmpStrandedShipsSector != null)
+                {
+                    _civM.StrandedShipsSector = _tmpStrandedShipsSector;
+
+                    //_text =
+                    //        _civM.StrandedShipsSector.Location
+                    //        + " > = new StrandedShipsSector"
+
+                    //            ;
+                    //_civM.SitRepEntries.Add(new ReportEntry_CoS(_civ, _civM.StrandedShipsSector.Location, _text, "", "", SitRepPriority.Yellow));
+
+
+                }
+            }
+
+            foreach (Fleet _fleet in _allFleets)
             {
                 int shipNum = _fleet.Ships.Count();
                 //GameEngine.LocationString(_colony.Location.ToString()) = GameEngine.LocationString(_fleet.Location.ToString());
@@ -881,7 +947,7 @@ namespace Supremacy.Game
                             "Step_6090:; Fleet " + _fleet.ObjectID
                             + " will arrive it's aim soon";
                         ;
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (_writeDirectly) Console.WriteLine(_text);
                         _allFleets_report += _text + _newline;
                         _fleet.Activity = UnitActivity.Hold;
                     }
@@ -908,11 +974,11 @@ namespace Supremacy.Game
                     + ", RouteSteps = " + _fleetRouteSteps
 
                     ;
-                //if (writeDirectly) Console.WriteLine(_text);
+                //if (_writeDirectly) Console.WriteLine(_text);
                 _allFleets_report += _text + _newline;
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
-                // works - output for each single ship
+                // works - _output for each single ship
                 //if (_fleet.Route.Steps.Count() > 0 && shipNum > 1)
                 //{
                 //    for (int i = 0; i < shipNum; i++)
@@ -927,7 +993,7 @@ namespace Supremacy.Game
 
 
 
-                //        if (writeDirectly) Console.WriteLine(_text);
+                //        if (_writeDirectly) Console.WriteLine(_text);
                 //        _allFleets_report += _text + _newline;
                 //        //GameLog.Core.AIDetails.DebugFormat(_text);
                 //    }
@@ -942,7 +1008,7 @@ namespace Supremacy.Game
                 //        + " > Activity = " + _fleet.Activity
                 //        + " > AITypeUnit = " + _fleet.AITypeUnit
                 //    ;
-                //    if (writeDirectly) Console.WriteLine(_text);
+                //    if (_writeDirectly) Console.WriteLine(_text);
                 //}
 
                 //if (_fleet.AITypeUnit == AITypeUnit.Reserve)
@@ -960,7 +1026,7 @@ namespace Supremacy.Game
                         _text = "Step_6005:; # doubled # Fleet# Ship " + i;
                         Ship ship = _fleet.Ships[i];
                         _text += " = " + ship.ObjectID + " " + ship.Name + " - " + ship.Design.Key;
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (_writeDirectly) Console.WriteLine(_text);
                         //GameLog.Core.AIDetails.DebugFormat(_text);
                     }
                 }
@@ -977,15 +1043,15 @@ namespace Supremacy.Game
 
                     if (_fleet.Owner.IsHuman)
                     {
-                        Debugger.Break();
+                        //Debugger.Break();
                     }
 
-                    if (_civM.StrandedShipsSector.Location.ToString() == _civM.HomeSystem.Sector.Location.ToString() 
+                    if (_civM.StrandedShipsSector.Location.ToString() == _civM.HomeSystem.Sector.Location.ToString()
                         && _civM.StrandedShipsSector.Location.ToString() != _fleet.Sector.Location.ToString())
                     {
                         _civM.StrandedShipsSector = _fleet.Sector;
                         _text = GameEngine.LocationString(_fleet.Location.ToString())
-                            + " > was added as StrandedShipSector"
+                            + " > a stranded ship was reported"  // that's a cheat > only StrandedShipsSector is reported, not every sector/ship
                             ;
                         _civM.SitRepEntries.Add(new ReportEntry_CoS(_fleet.Owner, _fleet.Location, _text, "", "", SitRepPriority.Pink));
                     }
@@ -1034,7 +1100,7 @@ namespace Supremacy.Game
                                 + " ;for; " + ship.Design
 
                                 ;
-                            if (writeDirectly) Console.WriteLine(_text);
+                            if (_writeDirectly) Console.WriteLine(_text);
                         }
                     }
                 }
@@ -1065,7 +1131,7 @@ namespace Supremacy.Game
                         //    + ";for;" + _fleet.Ships.Count
 
                         //    ;
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (_writeDirectly) Console.WriteLine(_text);
 
 
                         //Destroy ships due to financial problems
@@ -1121,7 +1187,7 @@ namespace Supremacy.Game
                             //    + " for " + _civM_1.Civilization.Key
                             //    ;
                             //if (boolCheckDeuterium)
-                            //    if (writeDirectly) Console.WriteLine(_text);
+                            //    if (_writeDirectly) Console.WriteLine(_text);
                             //GameLog.Client.General.InfoFormat(_text);
                         }
 
@@ -1134,7 +1200,7 @@ namespace Supremacy.Game
                         _text = "Step_3038:; _civM_1 Deuterium CurrentValue= "
                             + _civM.Resources[ResourceType.Deuterium].CurrentValue
                             ;
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         //GameLog.Client.General.InfoFormat(_text);
                     }
 
@@ -1198,7 +1264,7 @@ namespace Supremacy.Game
                         _text = string.Format(ResourceManager.GetString("SITREP_BLACK_HOLE_ENCOUNTER"), _fleet.Location, shipsDestroyed, shipsDamaged);
 
                         //GameLog.Client.ShipsDetails.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, _fleet.Owner.Key, _fleet.Location);
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (_writeDirectly) Console.WriteLine(_text);
                         _civM.SitRepEntries.Add(new ReportEntry_CoS(_fleet.Owner, _fleet.Location, _text, _text, "", SitRepPriority.Blue));
                     }
                 } // End of Black Hole
@@ -1209,7 +1275,7 @@ namespace Supremacy.Game
                     _text = GameEngine.LocationString(_fleet.Location.ToString())
                         + " > " + _fleet.Ships[0].Design + " > " + _fleet.ObjectID
                         + ":  " + _fleet.Name
-                        + " > aim location is reached - please give further orders"
+                        + " > aim location is reached - please check for further orders"
                         //+ " ( old order = " + _fleet.Order + " ) "
                         ;
                     //FleetOrder _oldOrder = _fleet.Order;
@@ -1223,7 +1289,7 @@ namespace Supremacy.Game
 
             }
             _allFleets_report += _text + _newline;
-            Console.WriteLine(_newline + "Step_6016:; ## _allFleets_report " + _newline + _allFleets_report + "End of _allFleets_report" + _newline);
+            Console.WriteLine(_newline + "Step_6016:; ## _allFleets_report " + _newline + _allFleets_report + "End of _allFleets_report, Count = " + _allFleets.Count + _newline);
         }
         #endregion
 
@@ -1237,7 +1303,7 @@ namespace Supremacy.Game
             foreach (Civilization _civ1 in GameContext.Current.Civilizations)
             {
                 _text = "Step_1351:; Do_13_Diplomacy for > " + _civ1;
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
 
                 string _diploStatusText = "";
                 _diploStatusText += " " + _diploStatusText; // dummy - please keep
@@ -1309,10 +1375,10 @@ namespace Supremacy.Game
                     //Debugger.Break();
                 }
 
-                if (_civM_1.Assault_TargetCiv != null && _civM_1.SystemAssaultLocation_1.ToString() != "(0, 0)")
+                if (_civM_1.Assault_TargetCiv != null && _civM_1.SystemAssault_Accumulate_Location_1.ToString() != "(0, 0)")
                 {
                     Civilization _civ2 = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID].Civilization;
-                    //_text += "SystemAssault Location 1 = " + _civM_1.SystemAssaultLocation_1 + ", ";
+                    //_text += "SystemAssault Location 1 = " + _civM_1.SystemAssault_Accumulate_Location_1 + ", ";
                     _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1
                         , "SystemAssault TargetCiv = " + _civM_1.Assault_TargetCiv, "", "", SitRepPriority.Purple));
                     // no center on Target
@@ -1326,15 +1392,41 @@ namespace Supremacy.Game
                     if (_foreignPowerStatus != ForeignPowerStatus.AtWar)
                     {
                         _foreignPowerCiv2.DeclareWar();
-                        UnitAI.GetBestSystemFor_AccumulateFor_SystemAttack(GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID]
-                            .HomeSystem.Sector, _civM_1.HomeSystem.Sector, out Sector _sector);
-                        _civM_1.SystemAssaultSector_1 = _sector;
-                        string _systemAssaultSector_Text = "SystemAssaultSector_1 is set to Sector " + _sector.ToString();
+                        CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID];
+                        UnitAI.GetBestSystemFor_AccumulateFor_SystemAttack(_civM_2.HomeSystem.Sector, _civM_1.HomeSystem.Sector, out Sector _sector);
+                        _civM_1.SystemAssault_Accumulate_Sector_1 = _sector;
+
+                        string _systemAssaultSector_Text = "SystemAssault_Accumulate_Sector_1 is set to Sector " + _sector.ToString();
                         _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _sector.Location, _systemAssaultSector_Text, "", "", SitRepPriority.Purple));
 
-                        string _systemAssaultLocation_Text = "SystemAssaultLocation_1 is set to Location " + _sector.Location.ToString();
+                        string _systemAssaultLocation_Text = "SystemAssault_Accumulate_Location_1 is set to Location " + _sector.Location.ToString();
                         _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _sector.Location, _systemAssaultLocation_Text, "", "", SitRepPriority.Purple));
+
+
+                int _defense = 10; // 
+
+                if (_civM_2.HomeSystem.Sector.Station != null)
+                {
+                    _defense += _civM_2.HomeSystem.Sector.Station.Firepower() / 200;  // station only half
+                    _defense += _civM_2.HomeSystem.Colony.Population.CurrentValue;  // 
+                    if (_civM_2.HomeSystem.Colony.OrbitalBatteries.Count > 0)
+                    {
+                        _defense += _civM_2.HomeSystem.Colony.OrbitalBatteries.Count
+                                         * (_civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Count
+                                         * _civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Damage)
+                                         + (_civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Count
+                                         * _civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Damage)
+
+                                         ;  // 
+
+
                     }
+                            _civM_1.Assault_DefenseValue = _defense;
+                }
+
+            }
+        
+    
                 }
                 else
                 {
@@ -1345,21 +1437,21 @@ namespace Supremacy.Game
                             ;
                         _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _targetCivtext, "", "", SitRepPriority.Gray));
 
-                        if (_civM_1.SystemAssaultSector_1 != null)
+                        if (_civM_1.SystemAssault_Accumulate_Sector_1 != null)
                         {
                             CivilizationManager _civM_temp = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv];
                             UnitAI.GetBestSystemFor_AccumulateFor_SystemAttack(_civM_temp.HomeSystem.Sector, _civM_1.HomeSystem.Sector, out Sector _sector);
-                            _civM_1.SystemAssaultSector_1 = _sector;
-                            string _systemAssaultSector_Text = "SystemAssaultSector_1 is set to Sector " + _sector.ToString();
+                            _civM_1.SystemAssault_Accumulate_Sector_1 = _sector;
+                            string _systemAssaultSector_Text = "SystemAssault_Accumulate_Sector_1 is set to Sector " + _sector.ToString();
                             _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _systemAssaultSector_Text, "", "", SitRepPriority.Purple));
 
-                            string _systemAssaultLocation_Text = "SystemAssaultLocation_1 is set to Location " + _sector.Location.ToString();
+                            string _systemAssaultLocation_Text = "SystemAssault_Accumulate_Location_1 is set to Location " + _sector.Location.ToString();
                             _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _systemAssaultLocation_Text, "", "", SitRepPriority.Purple));
                         }
                         else
                         {
 
-                            string _noTargetCivtext = "Not set: SystemAssaultLocation_1";
+                            string _noTargetCivtext = "Not set: SystemAssault_Accumulate_Location_1";
                             _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _noTargetCivtext, "", "", SitRepPriority.Gray));
 
                         }
@@ -1367,7 +1459,7 @@ namespace Supremacy.Game
                 } // end of else
 
 
-                //if (writeDirectly) Console.WriteLine("Step_7727:; _diplomacyBasicsSummary_Text="
+                //if (_writeDirectly) Console.WriteLine("Step_7727:; _diplomacyBasicsSummary_Text="
                 //    + _diplomacyBasicsSummary_Text + _newline
                 //    + "End of _diplomacyBasicsSummary_Text" + _newline
 
@@ -1381,7 +1473,7 @@ namespace Supremacy.Game
                             + " at " + _civM_1.HomeSystem.Location
                             + " for " + _civM_1.Civilization.Key
                             ;
-                    //if (writeDirectly)
+                    //if (_writeDirectly)
                     Console.WriteLine(_text);
                 }
 
@@ -1427,7 +1519,8 @@ namespace Supremacy.Game
                     + " ; to ; " + _civ2
 
                     ;
-                if (writeDirectly) Console.WriteLine(_text);
+                if (_writeDirectly) 
+                    Console.WriteLine(_text);
                 _diplomacyBasicsSummary_Text += _newline + _text;
 
 
@@ -1447,14 +1540,14 @@ namespace Supremacy.Game
 
                 //_text = "Step_7742:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 
                 //    + "; > Regard =;" + _regard + "; > Trust =;" + _trust;
-                //if (writeDirectly) Console.WriteLine(_text);
+                //if (_writeDirectly) Console.WriteLine(_text);
                 //////_text = "Step_7744:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Trust =;" + _trust;
-                //////if (writeDirectly) Console.WriteLine(_text);
+                //////if (_writeDirectly) Console.WriteLine(_text);
 
                 if (_foreignPowerStatus == ForeignPowerStatus.Affiliated)
                 {
                     //_text = "Step_7750:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Affiliated";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     if (_regard < 850)
                         DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3); // 2 each turnnumber
                     if (_trust < 800)
@@ -1465,7 +1558,7 @@ namespace Supremacy.Game
                 if (_foreignPowerStatus == ForeignPowerStatus.Allied)
                 {
                     //_text = "Step_7760:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Allied";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     if (_regard < 850)
                         DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
                     if (_trust < 800)
@@ -1476,7 +1569,7 @@ namespace Supremacy.Game
                 if (_foreignPowerStatus == ForeignPowerStatus.Friendly)  // Open Borders
                 {
                     //_text = "Step_7770:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Friendly";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     if (_regard < 650)
                         DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
                     if (_trust < 600)
@@ -1488,7 +1581,7 @@ namespace Supremacy.Game
                 if (_foreignPowerStatus == ForeignPowerStatus.Peace)
                 {
                     //_text = "Step_7780:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Peace";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     //if (_regard < 850)
                     //    DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
                     if (_trust < 600)
@@ -1499,7 +1592,7 @@ namespace Supremacy.Game
                 if (_foreignPowerStatus == ForeignPowerStatus.Neutral)
                 {
                     //_text = "Step_7710:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Neutral";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     if (_regard < 650)
                         DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
                     if (_trust < 600)
@@ -1517,7 +1610,7 @@ namespace Supremacy.Game
                     DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
                     DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
                     _text = "Step_7732:; Do_13_Diplomacy > " + _civ1 + "; vs ; " + _civ2 + "; > AtWar";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     _diplomacyBasicsSummary_Text += _newline + _text;
 
                     //List<Civilization> _possibleTargetCivs = new List<Civilization>();
@@ -1565,7 +1658,7 @@ namespace Supremacy.Game
                 //_civM_1.TargetList_Update(_target_help_list);
                 //_civM_1.TargetList_Update(_civ1);
 
-                _targetCivDistance_Dictionary = new Dictionary<Civilization, int>(); // find out the nearest one
+                Dictionary<Civilization, int> _targetCivDistance_Dictionary = new Dictionary<Civilization, int>(); // find out the nearest one
                 _targetCivDistance_Dictionary.Add(_civ1, 99);  // avoid an empty Dictionary
 
                 if (_civM_1.TargetCivList != null && _civM_1.TargetCivList.Count > 0)
@@ -1625,7 +1718,7 @@ namespace Supremacy.Game
                                             //+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
 
                                             ;
-                                //if (writeDirectly) Console.WriteLine(_text);
+                                //if (_writeDirectly) Console.WriteLine(_text);
                                 _diplomacyBasicsSummary_Text += _newline + _text;
 
 
@@ -1641,7 +1734,7 @@ namespace Supremacy.Game
                     }
                     //}
                 }
-                //if (writeDirectly) Console.WriteLine("Step_7727:; _diplomacyBasicsSummary_Text="
+                //if (_writeDirectly) Console.WriteLine("Step_7727:; _diplomacyBasicsSummary_Text="
                 //    + _diplomacyBasicsSummary_Text + _newline
                 //    + "End of _diplomacyBasicsSummary_Text" + _newline
 
@@ -1696,7 +1789,7 @@ namespace Supremacy.Game
                     //    //+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
 
                     //    ;
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
 
 
 
@@ -1726,7 +1819,7 @@ namespace Supremacy.Game
                     //                    //+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
 
                     //                    ;
-                    //        if (writeDirectly) Console.WriteLine(_text);
+                    //        if (_writeDirectly) Console.WriteLine(_text);
                     //        _diplomacyBasicsSummary_Text += _newline + _text;
 
                     //        //if (_civ1.IsHuman) { Debugger.Break(); }
@@ -1743,7 +1836,7 @@ namespace Supremacy.Game
                             + " * for " + _civ2 + " at " + _civM_2.HomeSystem.Location
                             + " <<<<<<<<<<<<<<<<<<"
                             ;
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     _diplomacyBasicsSummary_Text += _newline + _text;
                     _atWarText = _text;
 
@@ -1762,7 +1855,7 @@ namespace Supremacy.Game
                         && _foreignPowerStatus != ForeignPowerStatus.AtWar)
                     {
                         if (_atWarText == "") _atWarText = "Step_7738:; Do_13_Diplomacy > with nobody for " + _civ1;
-                        if (writeDirectly) Console.WriteLine(_atWarText);
+                        if (_writeDirectly) Console.WriteLine(_atWarText);
                         //Debugger.Break();
                     }
                 }
@@ -1802,7 +1895,7 @@ namespace Supremacy.Game
                 //    continue;
                 //}
                 //_text = "Step_7720:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Borg involved";
-                ////if (writeDirectly) Console.WriteLine(_text);
+                ////if (_writeDirectly) Console.WriteLine(_text);
                 ////continue;
                 ////}
 
@@ -1829,7 +1922,7 @@ namespace Supremacy.Game
                     continue;
                 }
                 //_text = "Step_7720:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Borg involved";
-                ////if (writeDirectly) Console.WriteLine(_text);
+                ////if (_writeDirectly) Console.WriteLine(_text);
                 //continue;
                 //}
 
@@ -1841,7 +1934,7 @@ namespace Supremacy.Game
                 {
                     _Contact = " > No Contact !";
                     //_text = "Step_7710:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > NoContact";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.DiplomacyDetails.DebugFormat("DiplomacyData.Status = NoContact for {0} vs {1}", _civ1, _civ2);
                     continue;
                 }
@@ -1853,7 +1946,7 @@ namespace Supremacy.Game
                 //        + " > " + _foreignPowerStatus
                 //        + "" + _Contact
                 //        ;
-                //    //if (writeDirectly)
+                //    //if (_writeDirectly)
                 //    Console.WriteLine(_text);
 
                 //    Debugger.Break();
@@ -1905,7 +1998,7 @@ namespace Supremacy.Game
                         + "" + _Contact
                         + _newline
                         ;
-                    //if (writeDirectly)
+                    //if (_writeDirectly)
                     Console.WriteLine(_text);
                     _diplomacyBasicsSummary_Text += _text;
 
@@ -1937,23 +2030,23 @@ namespace Supremacy.Game
 
 
 
-                if (_civM_1.SystemAssaultLocation_1 != null && _civM_1.SystemAssaultLocation_1.ToString() != "(0, 0)")
+                if (_civM_1.SystemAssault_Accumulate_Location_1 != null && _civM_1.SystemAssault_Accumulate_Location_1.ToString() != "(0, 0)")
                 {
-                    //_text += "SystemAssault Location 1 = " + _civM_1.SystemAssaultLocation_1 + ", ";
-                    _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _civM_1.SystemAssaultLocation_1
-                        , "SystemAssault Location 1 = " + _civM_1.SystemAssaultLocation_1 + _text, "", "", SitRepPriority.Purple));
+                    //_text += "SystemAssault Location 1 = " + _civM_1.SystemAssault_Accumulate_Location_1 + ", ";
+                    _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _civM_1.SystemAssault_Accumulate_Location_1
+                        , "SystemAssault Accumulate Location 1 = " + _civM_1.SystemAssault_Accumulate_Location_1 + _text, "", "", SitRepPriority.Purple));
                 }
 
-                if (_civM_1.SystemAssaultLocation_2 != null && _civM_1.SystemAssaultLocation_2.ToString() != "(0, 0)")
-                {
-                    //_text += "SystemAssault Location 2 = " + _civM_1.SystemAssaultLocation_2 + ", ";
-                    _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _civM_1.SystemAssaultLocation_2
-                        , "SystemAssault Location 2 = " + _civM_1.SystemAssaultLocation_2 + _text, "", "", SitRepPriority.Purple));
-                }
+                //if (_civM_1.SystemAssault_Accumulate_Location_2 != null && _civM_1.SystemAssault_Accumulate_Location_2.ToString() != "(0, 0)")
+                //{
+                //    //_text += "SystemAssault Location 2 = " + _civM_1.SystemAssault_Accumulate_Location_2 + ", ";
+                //    _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _civM_1.SystemAssault_Accumulate_Location_2
+                //        , "SystemAssault Accumulate Location 2 = " + _civM_1.SystemAssault_Accumulate_Location_2 + _text, "", "", SitRepPriority.Purple));
+                //}
 
                 if (_civM_1.StrandedShipsSector.Location != _civM_1.HomeSystem.Sector.Location && _civM_1.StrandedShipsSector != null && _civM_1.StrandedShipsSector.ToString() != "(0, 0)")
                 {
-                    //_text += "SystemAssault Location 2 = " + _civM_1.SystemAssaultLocation_2 + ", ";
+                    //_text += "SystemAssault Location 2 = " + _civM_1.SystemAssault_Accumulate_Location_2 + ", ";
                     _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _civM_1.StrandedShipsSector.Location
                         , "StrandedShipsSector = " + _civM_1.StrandedShipsSector + _text, "", "", SitRepPriority.Purple));
                 }
@@ -1988,7 +2081,7 @@ namespace Supremacy.Game
         //    //    //continue;
         //    //}
         //    //_text = "Step_7720:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Borg involved";
-        //    //if (writeDirectly) Console.WriteLine(_text);
+        //    //if (_writeDirectly) Console.WriteLine(_text);
         //}
 
         private void Diplomacy_Response_Sent(Civilization _civ_1, Civilization civ2)
@@ -2007,7 +2100,7 @@ namespace Supremacy.Game
                     + " sent Response " + _diplomatCiv2.ResponseSent.Proposal.ToString()
                     + " to " + _diplomatCiv2.Counterparty.Key
                     ;
-                if (writeDirectly) Console.WriteLine(_text);
+                if (_writeDirectly) Console.WriteLine(_text);
                 //GameLog.Client.DiplomacyDetails.DebugFormat("{0} sent Response {1} to {2}"
                 //    , _diplomatForeignPower_Civ2.Owner.Key, _diplomatForeignPower_Civ2.ResponseSent.Proposal.ToString(), _diplomatForeignPower_Civ2.Counterparty.Key);
                 _diplomatCiv2.LastResponseSent = responseSent;
@@ -2015,7 +2108,7 @@ namespace Supremacy.Game
                         /*_diplomatForeignPower_Civ2.Owner.Key
                         + */" Response Sent stored in LastResponseSent " + _diplomatCiv2.ResponseSent.ToString()
                         ;
-                if (writeDirectly) Console.WriteLine(_text);
+                if (_writeDirectly) Console.WriteLine(_text);
                 //GameLog.Client.DiplomacyDetails.DebugFormat("Response Sent stored in LastResponseSent, {0}", _diplomatForeignPower_Civ2.ResponseSent.ToString());
                 _diplomatCiv2.ResponseSent = null;
 
@@ -2072,7 +2165,7 @@ namespace Supremacy.Game
                         + "; got StatementReceived= " + Enum.GetName(typeof(StatementType), statementSent.StatementType)
                         + "; from= " + statementSent.Sender.Key
                         ;
-                if (writeDirectly) Console.WriteLine(_text);
+                if (_writeDirectly) Console.WriteLine(_text);
                 //GameLog.Client.DiplomacyDetails.DebugFormat("_diplomatForeignPower_Civ2.Owner {0} got StatementReceived {1} from {2}"
                 //    , _diplomatForeignPower_Civ2.CounterpartyForeignPower.Owner.Key
                 //    , Enum.GetName(typeof(StatementType), statementSent.StatementType)
@@ -2126,7 +2219,7 @@ namespace Supremacy.Game
                     + "; to=; " + _diplomatCiv2.Counterparty.ToString()
                     + " (ProposalSent)"
                     ;
-                if (writeDirectly) Console.WriteLine(_text);
+                if (_writeDirectly) Console.WriteLine(_text);
 
                 //GameLog.Client.DiplomacyDetails.DebugFormat("** ProposalSent becomes Counterparty ProposalReceived [{0}], Counterparty = {1}, Owner = {2}"
                 //    , _diplomatForeignPower_Civ2.LastProposalSent.Clauses[0].ClauseType.ToString(), _diplomatForeignPower_Civ2.Counterparty.ToString(), _diplomatForeignPower_Civ2.Owner.ToString()); ;
@@ -2283,7 +2376,7 @@ namespace Supremacy.Game
             //        DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
             //        DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
             //        _text = "Step_7732:; Do_13_Diplomacy > " + _civ1 + "; vs ; " + _civ2 + "; > AtWar";
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
 
             //        //List<Civilization> _possibleTargetCivs = new List<Civilization>();
 
@@ -2371,7 +2464,7 @@ namespace Supremacy.Game
             //        //    //+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
 
             //        //    ;
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
 
             //        //if (_civ1.IsHuman) { Debugger.Break(); }
 
@@ -2394,7 +2487,7 @@ namespace Supremacy.Game
             //                            //+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
 
             //                            ;
-            //                if (writeDirectly) Console.WriteLine(_text);
+            //                if (_writeDirectly) Console.WriteLine(_text);
             //                _diplomacyBasicsSummary_Text += _newline + _text;
 
             //                //if (_civ1.IsHuman) { Debugger.Break(); }
@@ -2409,7 +2502,7 @@ namespace Supremacy.Game
             //                + "; AtWar > Distance= " + MapLocation.GetDistance(_civM_1.HomeSystem.Location, _civM_2.HomeSystem.Location)
             //                + " for " + _civ2 + " at " + _civM_2.HomeSystem.Location
             //                ;
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
             //        _atWarText = _text;
 
 
@@ -2418,7 +2511,7 @@ namespace Supremacy.Game
 
             //    }
 
-            //        Console.WriteLine(_newline + "Step_7731:; Begin of _diplomacyBasicsSummary_Text" + /*_newline + */_diplomacyBasicsSummary_Text + _newline + "End of _diplomacyBasicsSummary_Text" + _newline);
+            //        Console.WriteLine(_newline + "Step_7732:; Begin of _diplomacyBasicsSummary_Text" + /*_newline + */_diplomacyBasicsSummary_Text + _newline + "End of _diplomacyBasicsSummary_Text" + _newline);
 
 
             //    if (_civ1.IsHuman 
@@ -2426,7 +2519,7 @@ namespace Supremacy.Game
             //        && _foreignPowerStatus != ForeignPowerStatus.AtWar)
             //    {
             //        if (_atWarText == "") _atWarText = "Step_7738:; Do_13_Diplomacy > with nobody for " + _civ1;
-            //        if (writeDirectly) Console.WriteLine(_atWarText);
+            //        if (_writeDirectly) Console.WriteLine(_atWarText);
             //        //Debugger.Break();
             //    }
 
@@ -2449,14 +2542,14 @@ namespace Supremacy.Game
 
             //    //_text = "Step_7742:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 
             //    //    + "; > Regard =;" + _regard + "; > Trust =;" + _trust;
-            //    //if (writeDirectly) Console.WriteLine(_text);
+            //    //if (_writeDirectly) Console.WriteLine(_text);
             //    //////_text = "Step_7744:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Trust =;" + _trust;
-            //    //////if (writeDirectly) Console.WriteLine(_text);
+            //    //////if (_writeDirectly) Console.WriteLine(_text);
 
             //    if (_foreignPowerStatus == ForeignPowerStatus.Affiliated)
             //    {
             //        //_text = "Step_7750:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Affiliated";
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 850)
             //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3); // 2 each turnnumber
             //        if (_trust < 800)
@@ -2467,7 +2560,7 @@ namespace Supremacy.Game
             //    if (_foreignPowerStatus == ForeignPowerStatus.Allied)
             //    {
             //        //_text = "Step_7760:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Allied";
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 850)
             //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 800)
@@ -2478,7 +2571,7 @@ namespace Supremacy.Game
             //    if (_foreignPowerStatus == ForeignPowerStatus.Friendly)  // Open Borders
             //    {
             //        //_text = "Step_7770:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Friendly";
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 650)
             //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 600)
@@ -2490,7 +2583,7 @@ namespace Supremacy.Game
             //    if (_foreignPowerStatus == ForeignPowerStatus.Peace)
             //    {
             //        //_text = "Step_7780:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Peace";
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
             //        //if (_regard < 850)
             //        //    DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 600)
@@ -2501,7 +2594,7 @@ namespace Supremacy.Game
             //    if (_foreignPowerStatus == ForeignPowerStatus.Neutral)
             //    {
             //        //_text = "Step_7710:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Neutral";
-            //        //if (writeDirectly) Console.WriteLine(_text);
+            //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 650)
             //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 600)
@@ -2528,7 +2621,7 @@ namespace Supremacy.Game
             //    //    continue;
             //    //}
             //    //_text = "Step_7720:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Borg involved";
-            //    ////if (writeDirectly) Console.WriteLine(_text);
+            //    ////if (_writeDirectly) Console.WriteLine(_text);
             //    ////continue;
             //    ////}
         }
@@ -2551,7 +2644,7 @@ namespace Supremacy.Game
                 _text = "Step_7721:; Do_13_Diplomacy > * " + civ1.Key + " * vs * " + civ2.Key
                         + ": PendingAction > Accept Status= >>> " + _diplomatCiv2.PendingAction.ToString()
                         ;
-                //if (writeDirectly)
+                //if (_writeDirectly)
                 Console.WriteLine(_text);
             }
 
@@ -2568,7 +2661,7 @@ namespace Supremacy.Game
                         _text = "Step_7722:; Do_13_Diplomacy > * " + civ1.Key + " * vs * " + civ2.Key
                             + ", Accept Status=" + _diplomatCiv2.PendingAction.ToString()
                             ;
-                        //if (writeDirectly)
+                        //if (_writeDirectly)
                         Console.WriteLine(_text);
 
                         Debugger.Break();
@@ -2589,7 +2682,7 @@ namespace Supremacy.Game
                         _text = "Step_7724:; Do_13_Diplomacy > * " + civ1.Key + " * vs * " + civ2.Key
                                 + ", Reject Status=" + _diplomatCiv2.PendingAction.ToString()
                                 ;
-                        //if (writeDirectly)
+                        //if (_writeDirectly)
                         Console.WriteLine(_text);
 
                         Debugger.Break();
@@ -2617,7 +2710,7 @@ namespace Supremacy.Game
                 if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == ForeignPowerStatus.CounterpartyIsMember)
                 {
                     //_text = "Searching for Crash: _objectsCiv2";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
                     List<UniverseObject> _objectsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
                             .Where(s => s.ObjectType == UniverseObjectType.Ship).ToList();
                     foreach (UniverseObject minorsObject in _objectsCiv2)
@@ -2876,7 +2969,7 @@ namespace Supremacy.Game
                     //else
                     //{
                     //    _text = "Step_8006:; No Invasion available due to no system at " + _fleet.Location + blank + _fleet.Name;
-                    //    if (writeDirectly) Console.WriteLine(_text);
+                    //    if (_writeDirectly) Console.WriteLine(_text);
                     //    //GameLog.Core.SystemAssault.InfoFormat(_text);
                     //}
                 }
@@ -2953,17 +3046,17 @@ namespace Supremacy.Game
 
                     _text = "";
 
-                    foreach (Colony colony in _civM.Colonies)
+                    foreach (Colony _colony in _civM.Colonies)
                     {
-                        colony.Population.Maximum = colony.Population_Max;
+                        _colony.Population.Maximum = _colony.Population_Max;
 
                         int popChange = 0;
                         int foodDeficit;
 
-                        _ = colony.FoodReserves.AdjustCurrent(colony.GetProductionOutput(ProductionCategory.Food));
-                        foodDeficit = Math.Min(colony.FoodReserves.CurrentValue - colony.Population.CurrentValue, 0);
-                        _ = colony.FoodReserves.AdjustCurrent(-1 * colony.Population.CurrentValue);
-                        colony.FoodReserves.UpdateAndReset();
+                        _ = _colony.FoodReserves.AdjustCurrent(_colony.GetProductionOutput(ProductionCategory.Food));
+                        foodDeficit = Math.Min(_colony.FoodReserves.CurrentValue - _colony.Population.CurrentValue, 0);
+                        _ = _colony.FoodReserves.AdjustCurrent(-1 * _colony.Population.CurrentValue);
+                        _colony.FoodReserves.UpdateAndReset();
 
                         /*
                          * If there is not enough food to feed the population, we need to kill off some of the
@@ -2974,39 +3067,40 @@ namespace Supremacy.Game
                         //if (_colony.Name == "Ledos")
                         //    ; // ddd;
 
-                        Percentage growthRate = colony.GrowthRate;
+                        Percentage growthRate = _colony.GrowthRate;
 
 
                         if (foodDeficit < 0)
                         {
-                            popChange = -(int)Math.Floor(0.1 * Math.Sqrt(Math.Abs(colony.Population.CurrentValue * foodDeficit)));
-                            _text = string.Format(ResourceManager.GetString("SITREP_STARVATION"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
-                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
+                            popChange = -(int)Math.Floor(0.1 * Math.Sqrt(Math.Abs(_colony.Population.CurrentValue * foodDeficit)));
+                            _text = string.Format(ResourceManager.GetString("SITREP_STARVATION"), _colony.Name, GameEngine.LocationString(_colony.Location.ToString()));
+                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Red));
                             //_civM_1.SitRepEntries.Add(new StarvationSitRepEntry(_civ, _colony));
 
-                            colony.Health.AdjustCurrent(-3);
-                            colony.Health.UpdateAndReset();
+                            _colony.Health.AdjustCurrent(-3);
+                            _colony.Health.UpdateAndReset();
 
-                            colony.Morale.AdjustCurrent(-2);
-                            colony.Morale.UpdateAndReset();
+                            _colony.Morale.AdjustCurrent(-2);
+                            _colony.Morale.UpdateAndReset();
                         }
                         else
                         {
                             // minimum growth of 1.0, otherwise minors and even Majors stays and begin value e.g. 16 (not getting more!!)
-                            popChange = (int)Math.Ceiling(1 + growthRate * colony.Population.CurrentValue);  // minimum growth of 1.0
+                            popChange = (int)Math.Ceiling(1 + growthRate * _colony.Population.CurrentValue);  // minimum growth of 1.0
+                            
                         }
 
                         if (popChange < 0 && growthRate < 0 && GameContext.Current.TurnNumber > 2)
                         {
-                            _text = string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
-                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
+                            _text = string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"), _colony.Name, GameEngine.LocationString(_colony.Location.ToString()));
+                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Red));
                             //_civM_1.SitRepEntries.Add(new PopulationDyingSitRepEntry(_civ, _colony));
 
-                            colony.Health.AdjustCurrent(-2);
-                            colony.Health.UpdateAndReset();
+                            _colony.Health.AdjustCurrent(-2);
+                            _colony.Health.UpdateAndReset();
 
-                            colony.Morale.AdjustCurrent(-3);
-                            colony.Morale.UpdateAndReset();
+                            _colony.Morale.AdjustCurrent(-3);
+                            _colony.Morale.UpdateAndReset();
 
                         }
 
@@ -3015,37 +3109,37 @@ namespace Supremacy.Game
                             popChange = 12;
                         }
 
-                        int newPopulation = colony.Population.AdjustCurrent(popChange);
+                        int newPopulation = _colony.Population.AdjustCurrent(popChange);
 
                         // TODO: We need to figure out how to deal with a civilization having no _colonies
                         // and no _colony ships
-                        if (colony.Population.CurrentValue == 0)
+                        if (_colony.Population.CurrentValue == 0)
                         {
-                            _text = "Step_3277:; " + GameEngine.LocationString(colony.Location.ToString())
-                            + " " + colony.Name
+                            _text = "Step_3277:; " + GameEngine.LocationString(_colony.Location.ToString())
+                            + " " + _colony.Name
                             + " > Population have died from illness, and the _colony has been lost.";
 
-                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Red));
+                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Red));
                             //_civM_1.SitRepEntries.Add(new PopulationDiedSitRepEntry(_colony.Owner, _colony.Sector.Location, _note));
-                            colony.Destroy();
+                            _colony.Destroy();
                             _civM.EnsureSeatOfGovernment();
                             return;
                         }
-                        colony.Population.UpdateAndReset();
-                        _ = _civM.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
+                        _colony.Population.UpdateAndReset();
+                        _ = _civM.TotalPopulation.AdjustCurrent(_colony.Population.CurrentValue);
 
 
-                        int newLabors = colony.GetAvailableLabor() / 10;
-                        int curPop = colony.Population.CurrentValue;
-                        int maxPop = colony.Population_Max;
+                        int newLabors = _colony.GetAvailableLabor() / 10;
+                        int curPop = _colony.Population.CurrentValue;
+                        int maxPop = _colony.Population_Max;
 
                         if (popChange > 0 && newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.Facilities_Total2_Industry > colony.Facilities_Active2_Industry)
+                            while (newLabors > 0 && _colony.Facilities_Total2_Industry > _colony.Facilities_Active2_Industry)
                             {
-                                _ = colony.ActivateFacility(ProductionCategory.Industry);
+                                _ = _colony.Facility_Activate(ProductionCategory.Industry);
                                 newLabors -= 1;
-                                _text = GameEngine.LocationString(colony.Location.ToString()) + " " + colony.Name
+                                _text = GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
                                 + " > Population growing (now " + curPop + " max. " + maxPop
                                 + " ) - one labor unit was sent to Industry Production"
                                 //+ " at " + 
@@ -3063,11 +3157,11 @@ namespace Supremacy.Game
 
                         if (popChange > 0 && newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.Facilities_Total4_Research > colony.Facilities_Active4_Research)
+                            while (newLabors > 0 && _colony.Facilities_Total4_Research > _colony.Facilities_Active4_Research)
                             {
-                                _ = colony.ActivateFacility(ProductionCategory.Research);
+                                _ = _colony.Facility_Activate(ProductionCategory.Research);
                                 newLabors -= 1;
-                                _text = GameEngine.LocationString(colony.Location.ToString()) + " " + colony.Name
+                                _text = GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
                                 + " > Population growing (now " + curPop + " max. " + maxPop
                                 + " ) - one labor unit was sent to Research Facility"
                                 //+ " at " + GameEngine.LocationString(_colony.Location.ToString()) + blank + _colony.Name
@@ -3082,11 +3176,11 @@ namespace Supremacy.Game
 
                         if (popChange > 0 && newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.Facilities_Total5_Intelligence > colony.Facilities_Active5_Intelligence)
+                            while (newLabors > 0 && _colony.Facilities_Total5_Intelligence > _colony.Facilities_Active5_Intelligence)
                             {
-                                _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                                _ = _colony.Facility_Activate(ProductionCategory.Intelligence);
                                 newLabors -= 1;
-                                _text = GameEngine.LocationString(colony.Location.ToString()) + " " + colony.Name
+                                _text = GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
                                 + " > Population growing (now " + curPop + " max. " + maxPop
                                   + " ) - one labor unit was sent to Intelligence Facility"
                                   //+ " at " + GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
@@ -3100,11 +3194,11 @@ namespace Supremacy.Game
 
                         if (popChange > 0 && newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.Facilities_Total3_Energy > colony.Facilities_Active3_Energy)
+                            while (newLabors > 0 && _colony.Facilities_Total3_Energy > _colony.Facilities_Active3_Energy)
                             {
-                                _ = colony.ActivateFacility(ProductionCategory.Energy);
+                                _ = _colony.Facility_Activate(ProductionCategory.Energy);
                                 newLabors -= 1;
-                                _text = GameEngine.LocationString(colony.Location.ToString()) + " " + colony.Name
+                                _text = GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
                                 + " > Population growing (now " + curPop + " max. " + maxPop
                                     + " ) - one labor unit was sent to Energy Production"
                                     //+ " at " + GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
@@ -3117,11 +3211,11 @@ namespace Supremacy.Game
 
                         if (popChange > 0 && newLabors > 0)
                         {
-                            while (newLabors > 0 && colony.Facilities_Total1_Food > colony.Facilities_Active1_Food)
+                            while (newLabors > 0 && _colony.Facilities_Total1_Food > _colony.Facilities_Active1_Food)
                             {
-                                _ = colony.ActivateFacility(ProductionCategory.Food);
+                                _ = _colony.Facility_Activate(ProductionCategory.Food);
                                 newLabors -= 1;
-                                _text = GameEngine.LocationString(colony.Location.ToString()) + " " + colony.Name
+                                _text = GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
                                 + " > Population growing (now " + curPop + " max. " + maxPop
                                 + " ) - one labor unit was sent to Food Production"
                                 //+ " at " + GameEngine.LocationString(_colony.Location.ToString()) + " " + _colony.Name
@@ -3132,36 +3226,36 @@ namespace Supremacy.Game
                             }
                         }
 
-                        int availableLaborUnits = colony.GetAvailableLabor() / 10;
-                        _text = GameEngine.LocationString(colony.Location.ToString()) /*+ " " + _colony.Name*/
+                        int availableLaborUnits = _colony.GetAvailableLabor() / 10;
+                        _text = GameEngine.LocationString(_colony.Location.ToString()) /*+ " " + _colony.Name*/
                         + " > Labor Pool: " + availableLaborUnits
-                        + " - Food: " + colony.Facilities_Active1_Food + " / " + colony.Facilities_Total1_Food
-                        + " - Industry: " + colony.Facilities_Active2_Industry + " / " + colony.Facilities_Total2_Industry
-                        + " - Energy: " + colony.Facilities_Active3_Energy + " / " + colony.Facilities_Total3_Energy
-                        + " - Research: " + colony.Facilities_Active4_Research + " / " + colony.Facilities_Total4_Research
-                        + " - Intel: " + colony.Facilities_Active5_Intelligence + " / " + colony.Facilities_Total5_Intelligence
-                        + " - Pop: " + colony.Population.CurrentValue + " / " + colony.Population_Max
-                        + "  for " + colony.Name
+                        + " - Food: " + _colony.Facilities_Active1_Food + " / " + _colony.Facilities_Total1_Food
+                        + " - Industry: " + _colony.Facilities_Active2_Industry + " / " + _colony.Facilities_Total2_Industry
+                        + " - Energy: " + _colony.Facilities_Active3_Energy + " / " + _colony.Facilities_Total3_Energy
+                        + " - Research: " + _colony.Facilities_Active4_Research + " / " + _colony.Facilities_Total4_Research
+                        + " - Intel: " + _colony.Facilities_Active5_Intelligence + " / " + _colony.Facilities_Total5_Intelligence
+                        + " - Pop: " + _colony.Population.CurrentValue + " / " + _colony.Population_Max
+                        + "  for " + _colony.Name
                         ;
 
 
-                        if (_civM.Civilization.CivID == colony.Owner.CivID)
+                        if (_civM.Civilization.CivID == _colony.Owner.CivID)
                         {
-                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(colony.Owner, colony, _text, _text, "", SitRepPriority.Gray));
+                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Gray));
                         }
                         //Console.WriteLine("Step_3287:; Turn " + _turnnumber + ": " + _text);
 
 
-                        if (colony.Population.CurrentValue < colony.Population.Maximum)
+                        if (_colony.Population.CurrentValue < _colony.Population.Maximum)
                         {
-                            ProductionFacilityDesign foodFacilityType = colony.GetFacilityType(ProductionCategory.Food);
-                            if ((foodFacilityType != null) && (colony.GetAvailableLabor() >= foodFacilityType.LaborCost))
+                            ProductionFacilityDesign foodFacilityType = _colony.GetFacilityType(ProductionCategory.Food);
+                            if ((foodFacilityType != null) && (_colony.GetAvailableLabor() >= foodFacilityType.LaborCost))
                             {
-                                int popInThreeTurns = Math.Min(colony.Population.Maximum,
-                                    (int)(newPopulation * (1 + colony.GrowthRate) * (1 + colony.GrowthRate) * (1 + colony.GrowthRate)));
-                                while (popInThreeTurns > colony.GetProductionOutput(ProductionCategory.Food))
+                                int popInThreeTurns = Math.Min(_colony.Population.Maximum,
+                                    (int)(newPopulation * (1 + _colony.GrowthRate) * (1 + _colony.GrowthRate) * (1 + _colony.GrowthRate)));
+                                while (popInThreeTurns > _colony.GetProductionOutput(ProductionCategory.Food))
                                 {
-                                    if (!colony.ActivateFacility(ProductionCategory.Food))
+                                    if (!_colony.Facility_Activate(ProductionCategory.Food))
                                     {
                                         break;
                                     }
@@ -3169,13 +3263,13 @@ namespace Supremacy.Game
                             }
                         }
 
-                        while (colony.ActivateFacility(ProductionCategory.Industry))
+                        while (_colony.Facility_Activate(ProductionCategory.Industry))
                         {
                             continue;
                         }
 
 
-                        int healthBonus = (from building in colony.Buildings
+                        int healthBonus = (from building in _colony.Buildings
                                            where building.IsActive
                                            from bonus in building.BuildingDesign.Bonuses
                                            where bonus.BonusType == BonusType.PercentPopulationHealth
@@ -3187,8 +3281,8 @@ namespace Supremacy.Game
                             healthBonus = 1 + (healthBonus / 10);
                             if (healthBonus < 1)
                                 healthBonus = 1;
-                            colony.Health.AdjustCurrent(healthBonus);
-                            colony.Health.UpdateAndReset();
+                            _colony.Health.AdjustCurrent(healthBonus);
+                            _colony.Health.UpdateAndReset();
                         }
 
                     }
@@ -3198,7 +3292,7 @@ namespace Supremacy.Game
                 catch (Exception e)
                 {
                     _text = "Step_3285:; Exception on Do_23_Morale";
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text);
                     GameLog.Core.General.Error(e);
                 }
@@ -3277,7 +3371,7 @@ namespace Supremacy.Game
                         + ", before= " + civManager.Research.CumulativePoints
 
                         ;
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (_writeDirectly) Console.WriteLine(_text);
 
 
 
@@ -3288,7 +3382,7 @@ namespace Supremacy.Game
                         + ", after= " + civManager.Research.CumulativePoints
 
                         ;
-                //if (writeDirectly) Console.WriteLine(_text);
+                //if (_writeDirectly) Console.WriteLine(_text);
 
                 NoCivM:;
                     //Console.WriteLine("Step_8768:; ---");
@@ -3296,7 +3390,7 @@ namespace Supremacy.Game
                 catch (Exception e)
                 {
                     _text = "Step_8769: Error on Do_17_Research for " + civ.Name;
-                    //if (writeDirectly) 
+                    //if (_writeDirectly) 
                     Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text);
                     GameLog.Core.General.Error(string.Format("Do_17_Research failed for {0}", civ.Name), e);
@@ -3531,7 +3625,7 @@ namespace Supremacy.Game
                 {
                     _text = "Step_3459:; ### Problem (doubled) with " + to_check;
 
-                    //if (writeDirectly_Colony) 
+                    //if (_writeDirectly_Colony) 
                     Console.WriteLine(_text);
                     col.Name += " I";
                     //_colony_full_Report += _text + _newline;
@@ -3556,7 +3650,7 @@ namespace Supremacy.Game
                     CivilizationMapData mapData = civManager.MapData;
 
                     mapData.ResetScanStrengthAndFuelRange();
-                    //fleets
+                    //_fleets
                     foreach (Fleet fleet in game.Universe.FindOwned<Fleet>(civ))
                     {
                         //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from FLEET {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", _fleet.ObjectID, _fleet.Name, 
@@ -3676,7 +3770,7 @@ namespace Supremacy.Game
 
             sectorClaims.ClearClaims();
 
-            //_ = ParallelForEach(GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList(), civ =>
+            //_ = ParallelForEach(GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList(), _civ =>
             foreach (var civ in GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList())
             {
 
@@ -3851,7 +3945,7 @@ namespace Supremacy.Game
                                 + " " + _colony.Owner
 
                                 ;
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         _civMaintanceText += _text + _newline;
                         GameLog.Core.EnergyDetails.DebugFormat(_text);
                     }
@@ -3875,7 +3969,7 @@ namespace Supremacy.Game
                             + item.Location + " "
                             + item.Owner
                             ;
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (_writeDirectly) Console.WriteLine(_text);
                         _civMaintanceText += _text + _newline;
                         //GameLog.Core.Production.DebugFormat(_text);
                     }
@@ -3899,11 +3993,11 @@ namespace Supremacy.Game
                 if (_civM.Civilization.IsHuman)
                 {
                     _text = "Step_3286:; Credits > _civMaintance= " + _civMaintance + " for " + _civ.Name;
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.Production.DebugFormat(_text);
                     // --------------
 
-                    Console.WriteLine("Step_3287:; no output of _civMaintanceText");
+                    Console.WriteLine("Step_3287:; no _output of _civMaintanceText");
 
                     //Console.WriteLine("Step_3287:; # begin of _civMaintanceText" + _newline + _civMaintanceText
                     //        /*+ _newline*/ + "Step_3287:; # end of _civMaintanceText");
@@ -3916,7 +4010,7 @@ namespace Supremacy.Game
                 //    + " > BuildProject costs " + _creditsCosts
                 //    + " just for reducing credits..."
                 //    ;
-                //if (writeDirectly) Console.WriteLine(_text);
+                //if (_writeDirectly) Console.WriteLine(_text);
 
                 // works, values part of Log of CivsAndRaces
                 //GameLog.Core.Credits.DebugFormat("Turn {0}: {3} _civMaintenanceCost for _civ {1} {2} "
@@ -3960,7 +4054,7 @@ namespace Supremacy.Game
                 //GameLog.Core.Production.DebugFormat("#####################################################");
                 //string _gameTurnNumber = GameContext.Current.TurnNumber.ToString();
                 _text = "------------------------------------------------------------------------------";
-                if (writeDirectly) Console.WriteLine(_text);
+                if (_writeDirectly) Console.WriteLine(_text);
                 //GameLog.Core.Production.DebugFormat(_text);
 
                 int civOfCivs = GameContext.Current.Civilizations.Count - _civsToDo + 1;
@@ -4047,7 +4141,7 @@ namespace Supremacy.Game
                         + _newIntelligenceAttacking + " IAtt, "
                         + "added from all _colonies to " + _civM.Civilization
                         ;
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
                     //GameLog.Client.ProductionDetails.DebugFormat("Turn {3}: TotalIntelDefenseAccumulated = {1}, TotalIntelAccumulated = {2} for {0}",
@@ -4076,7 +4170,7 @@ namespace Supremacy.Game
                         + _civM.TotalIntelligenceAttackingAccumulated + " IAtt, "
                         + "available in TOTAL for " + _civM.Civilization
                         ;
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
                     /* 
@@ -4137,7 +4231,7 @@ namespace Supremacy.Game
 
                                     ;
 
-                                if (writeDirectly) Console.WriteLine(_text);
+                                if (_writeDirectly) Console.WriteLine(_text);
                                 GameLog.Core.InfoText.DebugFormat(_text);
                                 _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text, _text, "", SitRepPriority.Gray));
 
@@ -4159,7 +4253,7 @@ namespace Supremacy.Game
                             + " (Maint. " + _civM.MaintenanceCostLastTurn  // Shipyard yes ??
                             + " )"
                             ;
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         GameLog.Core.ProductionDetails.DebugFormat(_text);
 
 
@@ -4184,8 +4278,8 @@ namespace Supremacy.Game
                             _text = string.Format(ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
                                 _colony.Name, GameEngine.LocationString(_colony.Location.ToString()));
                             _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text, _text, "", SitRepPriority.Orange));
-                            _text = "Step_4165:; " + _text;
-                            if (writeDirectly) Console.WriteLine(_text);
+                            _text = "Step_4165:; Turn " + GameContext.Current.TurnNumber + ": " + _text;
+                            if (_writeDirectly) Console.WriteLine(_text);
 
                             continue;
                         }
@@ -4195,17 +4289,17 @@ namespace Supremacy.Game
                             _colony.ClearBuildPrioritiesAndConsolidate();
                         }
 
-                        /* We want to capture the _industry output available at the _colony. */
+                        /* We want to capture the _industry _output available at the _colony. */
                         int _industry = _colony.NetIndustry;
 
-                        //int _shipProduction;  // reducing _industry by 1 / 6 per active shipyard slot (max 90%)
+                        //int _shipProduction;  // reducing _industry by 1 / 6 per active _shipyard _slot (max 90%)
                         //if (_colony.Shipyard != null)
                         //{
 
                         //    //foreach
                         //    List<ShipyardBuildSlot> activatedBuildSlot = _colony.Shipyard.BuildSlots
                         //        .Where(o => o.IsActive).ToList();
-                        //        // && !o.HasProject).FirstOrDefault(DeactivateShipyardBuildSlot);
+                        //        // && !o.HasProject).FirstOrDefault(ShipyardBuildSlot_Deactivate);
 
                         //    foreach(var _slot in activatedBuildSlot)
                         //    {
@@ -4238,10 +4332,10 @@ namespace Supremacy.Game
                             _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text, _text, "", SitRepPriority.Orange));
 
                             _text = "Step_4162:; Turn " + GameContext.Current.TurnNumber + "; " + _text;
-                            if (writeDirectly) Console.WriteLine(_text);
+                            if (_writeDirectly) Console.WriteLine(_text);
                             //GameLog.Core.Production.DebugFormat(_text);
 
-                            //Handle_Buildings in ColonyAI.cs via DoTurn
+                            //Colony_Step_65_Handle_Buildings in ColonyAI.cs via DoTurn
                             //    if (!_colony.Owner.IsHuman && _colony.AvailableLabor > 20)
                             //    {
                             //        if (_colony.FoodReserves < 500)
@@ -4254,7 +4348,7 @@ namespace Supremacy.Game
                         while ((_industry > 0) && ((!_colony.BuildQueue.IsEmpty()) || _colony.BuildSlots[0].HasProject))
                         {
                             _colonyBuildProject_SameTurn += 1;
-                            //Move the top of the queue in to the build slot
+                            //Move the top of the queue in to the build _slot
                             if (!_colony.BuildSlots[0].HasProject)
                             {
                                 _colony.ProcessQueue();
@@ -4300,7 +4394,7 @@ namespace Supremacy.Game
                                 + "; avail. before construct of; " + _colony.BuildSlots[0].Project.BuildDesign.Name
                                 //+ " on " + _colony.Name
                                 ;
-                            if (writeDirectly) Console.WriteLine(_text);
+                            if (_writeDirectly) Console.WriteLine(_text);
                             //GameLog.Core.Production.DebugFormat(_text);
                             //GameLog.Core.ProductionDetails.DebugFormat(_newline + "       Turn {8}: Income TradeRoute={4}, Tax={3}, Deuterium={5}, Dilithium={6}, Duranium={7} available for {0} before construction of {1} on {2}" + _newline,
                             //    _civ.Name,
@@ -4350,7 +4444,7 @@ namespace Supremacy.Game
                                     + _civ.Name + " ) "
                                     //+ _civM_1.Credits.LastChange + " last change "
                                     ;
-                                if (writeDirectly) Console.WriteLine(_text);
+                                if (_writeDirectly) Console.WriteLine(_text);
                                 //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
 
@@ -4374,7 +4468,7 @@ namespace Supremacy.Game
                                 //    + " > BuildProject costs " + _creditsCosts
                                 //    + " just for reducing credits..."
                                 //    ;
-                                //if (writeDirectly) Console.WriteLine(_text);
+                                //if (_writeDirectly) Console.WriteLine(_text);
                                 //_civM_1.Credits.UpdateAndReset();
 
 
@@ -4406,7 +4500,7 @@ namespace Supremacy.Game
                                 //, _colonyBuildProject_SameTurn, _industry, _colony.BuildSlots[0].Project.PercentComplete
                                 //, GameEngine.LocationString(_colony.Location.ToString())
                                 //);
-                                //if (writeDirectly) Console.WriteLine(_text);
+                                //if (_writeDirectly) Console.WriteLine(_text);
                                 //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
                                 if (_colony.BuildSlots[0].Project.PercentComplete < 0.01)
@@ -4462,7 +4556,7 @@ namespace Supremacy.Game
                             //    //_civM_1.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(_civ, _colony, false));
                             //    _text = string.Format(ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
                             //        _colony.Name, GameEngine.LocationString(_colony.Location.ToString()));
-                            //    //if (writeDirectly) Console.WriteLine(_text);
+                            //    //if (_writeDirectly) Console.WriteLine(_text);
                             //    //GameLog.Core.Production.DebugFormat(_text);
 
                             //    //? string.Format(
@@ -4491,12 +4585,12 @@ namespace Supremacy.Game
                         {
                             for (int i = 0; i < _colony.BuildSlots.Count; i++)
                             {
-                                //_ = _civM_1.Credits.AdjustCurrent(-10);  // for each ship yard build slot
+                                //_ = _civM_1.Credits.AdjustCurrent(-10);  // for each ship yard build _slot
                                 //_text = GameEngine.LocationString(_colony.Location.ToString())
                                 //    + " > Shipyard Slot costs 10 credits "
                                 //    + " just for reducing credits..."
                                 //    ;
-                                //if (writeDirectly) Console.WriteLine(_text);
+                                //if (_writeDirectly) Console.WriteLine(_text);
                                 //_civM_1.Credits.UpdateAndReset();  // ..does this crash the credit calculation ??
 
                                 if (_colony.Shipyard.BuildSlots[i].IsActive && !_colony.Shipyard.BuildSlots[i].HasProject)
@@ -4518,7 +4612,7 @@ namespace Supremacy.Game
                             + "; Do_21_Production done"
                             //+ "; trying ### > " + _colony.BuildSlots[0].Project.BuildDesign.Name
                             ;
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         GameLog.Core.Production.DebugFormat(_text);
 
                         //_constructionAim = "";
@@ -4533,7 +4627,7 @@ namespace Supremacy.Game
                     //+ ", trying " + _colony.BuildSlots[0].Project.BuildDesign.Name
                     + _newline + e
                         ;
-                    //if (writeDirectly) 
+                    //if (_writeDirectly) 
                     Console.WriteLine(_text);
                     GameLog.Core.Production.Error(_text);
                 }
@@ -4562,9 +4656,9 @@ namespace Supremacy.Game
             //_ = ParallelForEach(GameContext.Current.Civilizations, _civ =>
             //  {
 
-            foreach (Civilization civ in GameContext.Current.Civilizations)
+            foreach (Civilization _civ in GameContext.Current.Civilizations)
             {
-                //if (civ.Key == "BORG")
+                //if (_civ.Key == "BORG")
                 //{
                 //    Debugger.Break();
                 //}
@@ -4573,163 +4667,165 @@ namespace Supremacy.Game
 
                 try
                 {
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
-                    //Get all _colonies with a shipyard
-                    List<Colony> colonies = civManager.Colonies.Where(c => c.Shipyard != null).ToList();
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
+                    //Get all _colonies with a _shipyard
+                    List<Colony> _colonies = _civM.Colonies.Where(c => c.Shipyard != null).ToList();
                     /* 
                      * Shuffle the _colonies so they are processed in random order. This
                      * will help prevent the same _colonies from getting priority when
                      * the global stockpiles are low.
                      */
-                    colonies.RandomizeInPlace();
+                    _colonies.RandomizeInPlace();
 
                     //Get the resources available for the civilization
                     ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection
                     {
-                        [ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue,
-                        [ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue,
-                        [ResourceType.Duranium] = civManager.Resources.Duranium.CurrentValue
+                        [ResourceType.Deuterium] = _civM.Resources.Deuterium.CurrentValue,
+                        [ResourceType.Dilithium] = _civM.Resources.Dilithium.CurrentValue,
+                        [ResourceType.Duranium] = _civM.Resources.Duranium.CurrentValue
                     };
 
-                    foreach (Colony colony in colonies)
+                    foreach (Colony _colony in _colonies)
                     {
-                        Shipyard shipyard = colony.Shipyard;
-                        IList<BuildQueueItem> queue = shipyard.BuildQueue;
+                        Shipyard _shipyard = _colony.Shipyard;
+                        IList<BuildQueueItem> queue = _shipyard.BuildQueue;
 
                         //int colonyHealth = Int32.TryParse(_colony.Health.ToString(), out int _health);
 
-                        if (!colony.Population.IsMaximized && colony.GrowthRate == 0) // && Int32.TryParse(_colony.Health.ToString(), out int _health) != 100)
+                        if (!_colony.Population.IsMaximized && _colony.GrowthRate == 0) // && Int32.TryParse(_colony.Health.ToString(), out int _health) != 100)
                         {
-                            _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
+                            _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"), _colony.Name, GameEngine.LocationString(_colony.Location.ToString()));
                             if (GameContext.Current.TurnNumber > 4)
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text, _text, "", SitRepPriority.Yellow));
+                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text, _text, "", SitRepPriority.Yellow));
                             //_civM_1.SitRepEntries.Add(new GrowthByHealthSitRepEntry(_civ, _colony));
                         }
 
                         // >Check ShipProduction
 
 
-                        List<ShipyardBuildSlot> buildSlots = colony.Shipyard.BuildSlots.Where(s => s.IsActive && !s.OnHold).ToList();
-                        foreach (ShipyardBuildSlot slot in buildSlots)
+                        List<ShipyardBuildSlot> _buildSlots = _colony.Shipyard.BuildSlots.Where(s => s.IsActive && !s.OnHold).ToList();
+                        foreach (ShipyardBuildSlot _slot in _buildSlots)
                         {
                             //int _ratioIndustry;
 
                             _text = "Step_4732:; "
-                                    + GameEngine.LocationString(colony.Location.ToString())
-                                    + " " + colony.Name
-                                    + " > " + civ.Name
+                                    + GameEngine.LocationString(_colony.Location.ToString())
+                                    + " " + _colony.Name
+                                    + " > " + _civ.Name
                                     + " > Do_20_ShipProduction:"
                                     + " Deu= " + totalResourcesAvailable[ResourceType.Deuterium]
                                     + ", Dur= " + totalResourcesAvailable[ResourceType.Duranium]
                                     + ", Dil= " + totalResourcesAvailable[ResourceType.Dilithium]
 
                                     ;
-                            //if (writeDirectly) Console.WriteLine(_text);
+                            //if (_writeDirectly) Console.WriteLine(_text);
 
                             //Debugger.Break();
 
                             // GameLog is making trouble
                             /*GameLog.Core.ShipProduction.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, Duranium={5}",
                                 _civ.Name,
-                                slot.Project.BuildDesign.Name,
+                                _slot.Project.BuildDesign.Name,
                                 _colony.Name,
                                 totalResourcesAvailable[ResourceType.Deuterium],
                                 totalResourcesAvailable[ResourceType.Dilithium],
                                 totalResourcesAvailable[ResourceType.Duranium]);
                              */
 
+                            int _ratioIndustryForShipProduction = 0;
+
                             // active 25 of total 50 = 50 %;
-                            if (colony.Facilities_Total2_Industry > 0)
+                            if (_colony.Facilities_Total2_Industry > 0)
                             {
-                                _ratioIndustryForShipProduction = (100 * colony.Facilities_Active2_Industry / colony.Facilities_Total2_Industry) + 1;
+                                _ratioIndustryForShipProduction = (100 * _colony.Facilities_Active2_Industry / _colony.Facilities_Total2_Industry) + 1;
                             }
 
-                            int output = shipyard.GetBuildOutput(slot.SlotID) / 100 * _ratioIndustryForShipProduction;
-                            while ((slot.HasProject || !shipyard.BuildQueue.IsEmpty()) && (output > 0))
+                            int _output = _shipyard.GetBuildOutput(_slot.SlotID) / 100 * _ratioIndustryForShipProduction;
+                            while ((_slot.HasProject || !_shipyard.BuildQueue.IsEmpty()) && (_output > 0))
                             {
                                 // checking ShipProduction
-                                if (!slot.HasProject)
+                                if (!_slot.HasProject)
                                 {
-                                    //slot.ProcessQueue();
-                                    shipyard.ProcessQueue();
+                                    //_slot.ProcessQueue();
+                                    _shipyard.ProcessQueue();
                                 }
 
-                                if (!slot.HasProject && shipyard.BuildQueue.IsEmpty())
+                                if (!_slot.HasProject && _shipyard.BuildQueue.IsEmpty())
                                 {
-                                    string _text1 = GameEngine.LocationString(colony.Location.ToString())  // needs a new _text here !!!!
-                                          + " " + colony.Name
-                                          + " > Shipyard-Slot " + slot.SlotID
+                                    string _text1 = GameEngine.LocationString(_colony.Location.ToString())  // needs a new _text here !!!!
+                                          + " " + _colony.Name
+                                          + " > Shipyard-Slot " + _slot.SlotID
                                           + ":  nothing to do..."
-                                          //+ "  is " + slot.Project.PercentComplete
+                                          //+ "  is " + _slot.Project.PercentComplete
                                           //+ " complete "
                                           ;
 
-                                    civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text1, _text1, "", SitRepPriority.Gray));
+                                    _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text1, _text1, "", SitRepPriority.Gray));
 
                                     Console.WriteLine("Step_4734:; " + _text1);
                                     //GameLog.Core.ShipProductionDetails.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
-                                    //    slot.SlotID,
+                                    //    _slot.SlotID,
                                     //    _colony.Name,
                                     //    _civ.Name);
                                     continue;
                                 }
 
                                 ResourceValueCollection totalResourcesBefore = totalResourcesAvailable.Clone();
-                                slot.Project.Advance(ref output, totalResourcesAvailable);
+                                _slot.Project.Advance(ref _output, totalResourcesAvailable);
 
                                 //Figure out how what resources have been used
                                 int deuteriumUsed = totalResourcesBefore[ResourceType.Deuterium] - totalResourcesAvailable[ResourceType.Deuterium];
                                 int dilithiumUsed = totalResourcesBefore[ResourceType.Dilithium] - totalResourcesAvailable[ResourceType.Dilithium];
                                 int duraniumUsed = totalResourcesBefore[ResourceType.Duranium] - totalResourcesAvailable[ResourceType.Duranium];
-                                _ = civManager.Resources.Deuterium.AdjustCurrent(-1 * deuteriumUsed);
-                                _ = civManager.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
-                                _ = civManager.Resources.Duranium.AdjustCurrent(-1 * duraniumUsed);
+                                _ = _civM.Resources.Deuterium.AdjustCurrent(-1 * deuteriumUsed);
+                                _ = _civM.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
+                                _ = _civM.Resources.Duranium.AdjustCurrent(-1 * duraniumUsed);
 
 
                                 GameLog.Core.ShipProductionDetails.DebugFormat(/*_newline + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ _newline*/,
-                                    deuteriumUsed, dilithiumUsed, duraniumUsed, slot.Project, colony, GameContext.Current.TurnNumber, colony.Owner);
+                                    deuteriumUsed, dilithiumUsed, duraniumUsed, _slot.Project, _colony, GameContext.Current.TurnNumber, _colony.Owner);
 
-                                string _text2 = GameEngine.LocationString(colony.Location.ToString())  // needs a new _text here !!!!
-                                + " " + colony.Name
-                                + " > Shipyard-Slot " + slot.SlotID
-                                + " > has " + slot.Project.ProductionCenter.GetBuildOutput(slot.SlotID)
-                                + " industry output:  " + slot.Project.BuildDesign
-                                + "  is " + slot.Project.PercentComplete
+                                string _text2 = GameEngine.LocationString(_colony.Location.ToString())  // needs a new _text here !!!!
+                                + " " + _colony.Name
+                                + " > Shipyard-Slot " + _slot.SlotID
+                                + " > has " + _slot.Project.ProductionCenter.GetBuildOutput(_slot.SlotID)
+                                + " industry _output:  " + _slot.Project.BuildDesign
+                                + "  is " + _slot.Project.PercentComplete
                                 + " complete "
                                 ;
 
-                                civManager.SitRepEntries.Add(new ReportEntry_ShowColony(civ, colony, _text2, _text2, "", SitRepPriority.Gray));
+                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text2, _text2, "", SitRepPriority.Gray));
 
                                 Console.WriteLine("Step_4736:; " + _text2 + " (SR)");
 
-                                //if (civ.Key == "DOMINION")
+                                //if (_civ.Key == "DOMINION")
                                 //{
                                 //    Debugger.Break();
                                 //}
 
-                                if (slot.Project.IsCompleted)
+                                if (_slot.Project.IsCompleted)
                                 {
                                     _text = "Step_4738:; "
-                                            + GameEngine.LocationString(colony.Location.ToString())
-                                            + " " + colony.Name
-                                            + " > " + civ.Name
-                                            + " > Do_20_ShipProduction > Slot= " + slot.SlotID
-                                            + " > " + slot.Project.BuildDesign
+                                            + GameEngine.LocationString(_colony.Location.ToString())
+                                            + " " + _colony.Name
+                                            + " > " + _civ.Name
+                                            + " > Do_20_ShipProduction > Slot= " + _slot.SlotID
+                                            + " > " + _slot.Project.BuildDesign
 
                                             + " is finished"
 
                                             ;
-                                    if (writeDirectly) Console.WriteLine(_text);
+                                    if (_writeDirectly) Console.WriteLine(_text);
 
                                     //GameLog.Core.ShipProductionDetails.DebugFormat("Turn {4}: {0} in Shipyard Slot {1} on {2} ({3}) is finished",
-                                    //    slot.Project.BuildDesign,
-                                    //    slot.SlotID,
+                                    //    _slot.Project.BuildDesign,
+                                    //    _slot.SlotID,
                                     //    _colony.Name,
                                     //    _civ.Name
                                     //    , GameContext.Current.TurnNumber
                                     //    );
-                                    slot.Project.Finish();
-                                    slot.Project = null;
+                                    _slot.Project.Finish();
+                                    _slot.Project = null;
                                 }
                                 else
                                 {
@@ -4747,13 +4843,13 @@ namespace Supremacy.Game
                     _text = "Step_4739:; "
     //+ GameEngine.LocationString(_colony.Location.ToString())
     //+ " > " + _colony.Name
-    + " > " + civ.Name
-    + " Do_20_ShipProduction failed for  " + civ.Name
+    + " > " + _civ.Name
+    + " Do_20_ShipProduction failed for  " + _civ.Name
     + _newline + e.Message
     ;
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
 
-                    GameLog.Core.ShipProduction.Error(string.Format("Do_20_ShipProduction failed for {0}", civ.Name), e);
+                    GameLog.Core.ShipProduction.Error(string.Format("Do_20_ShipProduction failed for {0}", _civ.Name), e);
                     Debugger.Break();
                 }
                 finally
@@ -4895,7 +4991,7 @@ namespace Supremacy.Game
                                   + b.Name
                                   + "was de-activated due to low morale level"
                                   ;
-                                if (writeDirectly) Console.WriteLine(_text);
+                                if (_writeDirectly) Console.WriteLine(_text);
                                 _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, colony, _text, _text, "", SitRepPriority.Red));
 
                                 //if (b.)
@@ -4965,7 +5061,7 @@ namespace Supremacy.Game
                 catch (Exception e)
                 {
                     _text = "Step_5480:; Exception on Do_23_Morale";
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text);
                     errors.Push(e);
                 }
@@ -5096,7 +5192,7 @@ namespace Supremacy.Game
                         }
 
                         //_text = "Trade-Credits -----------------------" + _newline;
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (_writeDirectly) Console.WriteLine(_text);
 
                         /*
                          * Iterate through the remaining trade routes and deposit the credit
@@ -5147,7 +5243,7 @@ namespace Supremacy.Game
                         if (tradeBonuses > 0)
                         {
                             _text = "Credits > CreditsFromTrade=" + tradeBonuses;
-                            if (writeDirectly) Console.WriteLine(_text);
+                            if (_writeDirectly) Console.WriteLine(_text);
                             //GameLog.Core.Production.DebugFormat(_text);
                         }
 
@@ -5167,7 +5263,7 @@ namespace Supremacy.Game
                     if (globalBonusAdjustment > 0)
                     {
                         _text = "Credits > globalBonusAdjustment=" + globalBonusAdjustment;
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         //GameLog.Core.Production.DebugFormat(_text);
                     }
 
@@ -5177,7 +5273,7 @@ namespace Supremacy.Game
                 catch (Exception e)
                 {
                     _text = "Do_22_Trade failed " + _newline + e;
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
                     GameLog.Core.ProductionDetails.DebugFormat(_text);
                     //e);
                 }
@@ -5207,6 +5303,10 @@ namespace Supremacy.Game
             HashSet<Orbital> destroyedOrbitals = GameContext.Current.Universe.Find<Orbital>(o => o.HullStrength.IsMinimized);
             HashSet<Fleet> allFleets = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
 
+            List<CivRank> CivRankList = new List<CivRank>();
+
+            int _globalMorale = 0;
+
             foreach (Orbital orbital in destroyedOrbitals)
             {
                 _ = GameContext.Current.Universe.Destroy(orbital);
@@ -5223,7 +5323,7 @@ namespace Supremacy.Game
             }
 
 
-            // foreach civManager in GameContext.Current.CivilizationManagers
+            // foreach _civM in GameContext.Current.CivilizationManagers
             foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
             {
 
@@ -5386,7 +5486,7 @@ namespace Supremacy.Game
                 //_text += _newline + "   " + civValueShipSummary1;
 
 
-                //if (writeDirectly) Console.WriteLine(_text);
+                //if (_writeDirectly) Console.WriteLine(_text);
                 //GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
 
             }
@@ -5401,7 +5501,7 @@ namespace Supremacy.Game
             //    _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civM_1.Civilization, station.Location, _text, "", "", SitRepPriority.Pink));
             //}
 
-            //foreach (Fleet _fleet in allFleets)
+            //foreach (Fleet _fleet in _allFleets)
             //{
             //    foreach (Ship ship in _fleet.Ships)
             //    {
@@ -5911,7 +6011,7 @@ namespace Supremacy.Game
                                        //    //        + ";" + _item.R_RESEARCH
                                        //    //        + ";" + _item.R_INTEL_ATTACK
                                        //    //        ;
-                                       //    //    if (writeDirectly) Console.WriteLine(_text);
+                                       //    //    if (_writeDirectly) Console.WriteLine(_text);
 
             //}
         }
@@ -5936,15 +6036,16 @@ namespace Supremacy.Game
             {
                 foreach (var civ in game.Civilizations)
                 {
-                    _text = _newline + "Step_9773:; >>>>>>>>>>>  DoAIPlayers for " + civ.Key + "   " + DateTime.Now;
-                    if (writeDirectly) Console.WriteLine(_text);
+                    _text = _newline + "Step_9773:; >>>>>>>>>>>  DoAIPlayers for " + civ.Key + "   " + DateTime.Now 
+                        + "  called from > SupremacyService.cs";
+                    if (_writeDirectly) Console.WriteLine(_text);
                     //GameLog.Core.General.Error(e);
 
                     GameContext.PushThreadContext(game);
 
                     CivilizationManager _civM = GameContext.Current.CivilizationManagers[civ.CivID];
 
-                    //if (civ.IsHuman)
+                    //if (_civ.IsHuman)
                     //{
                     //    Debugger.Break();
                     //}
@@ -5956,13 +6057,13 @@ namespace Supremacy.Game
                     {
                         //continue; //return;
                         _text = "Step_9789:; #### AI-Ship Production as well for human player for TEST-Purpose";
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                     }
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
                     civManager.DesiredBorders = PlayerAI.CreateDesiredBorders(civ);
 
-                    //if (civ.Key == "BORG")
+                    //if (_civ.Key == "BORG")
                     //{
                     //    Debugger.Break();
                     //}
@@ -5971,13 +6072,13 @@ namespace Supremacy.Game
                     try
                     {
                         _text = "Step_9781:; next > DiplomatAI.DoTurn(_civ);";
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         DiplomatAI.DoTurn(civ);
                     }
                     catch (Exception e)
                     {
                         _text = "Step_9782:; #### problem at DiplomatAI.DoTurn" + _newline + e.ToString();
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         GameLog.Core.General.Error(e);
 
                         Debugger.Break();
@@ -5991,14 +6092,14 @@ namespace Supremacy.Game
                         if (DiplomacyHelper.IsIndependent(civ))
                         {
                             _text = "Step_9781:; next > ColonyAI.DoTurn(_civ);";
-                            if (writeDirectly) Console.WriteLine(_text);
+                            if (_writeDirectly) Console.WriteLine(_text);
                             ColonyAI.DoTurn(civ);
                         }
                     }
                     catch (Exception e)
                     {
                         _text = "Step_9782:; #### problem at DoAIPlayers" + _newline + e.ToString();
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         GameLog.Core.General.Error(e);
 
                         Debugger.Break();
@@ -6009,7 +6110,7 @@ namespace Supremacy.Game
                         if (DiplomacyHelper.IsIndependent(civ))
                         {
                             _text = "Step_9783:; next > ColonyAI.DoTurn(_civ);";
-                            if (writeDirectly) Console.WriteLine(_text);
+                            if (_writeDirectly) Console.WriteLine(_text);
 
 
                             PlayerAI.DoTurn(civ);
@@ -6018,7 +6119,7 @@ namespace Supremacy.Game
                     catch (Exception e)
                     {
                         _text = "Step_9784:; #### problem at DoAIPlayers" + _newline + e.ToString();
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         GameLog.Core.General.Error(e);
 
                         Debugger.Break();
@@ -6029,7 +6130,7 @@ namespace Supremacy.Game
                         if (DiplomacyHelper.IsIndependent(civ))
                         {
                             _text = "Step_9785:; next > ColonyAI.DoTurn(_civ);";
-                            if (writeDirectly) Console.WriteLine(_text);
+                            if (_writeDirectly) Console.WriteLine(_text);
 
                             UnitAI.DoTurn(civ);
                         }
@@ -6037,7 +6138,7 @@ namespace Supremacy.Game
                     catch (Exception e)
                     {
                         _text = "Step_9786:; #### problem at DoAIPlayers" + _newline + e.ToString();
-                        if (writeDirectly) Console.WriteLine(_text);
+                        if (_writeDirectly) Console.WriteLine(_text);
                         GameLog.Core.General.Error(e);
 
                         Debugger.Break();
@@ -6047,7 +6148,7 @@ namespace Supremacy.Game
                     //catch (Exception e)
                     //{
                     //    _text = "Step_9777:; #### problem at DoAIPlayers" + _newline + e.ToString();
-                    //    if (writeDirectly) Console.WriteLine(_text);
+                    //    if (_writeDirectly) Console.WriteLine(_text);
                     //    errors.Push(e);
                     ////    }
                     ////        finally
@@ -6062,7 +6163,7 @@ namespace Supremacy.Game
             catch (Exception e)
             {
                 _text = "Step_9793:; #### problem at DoAIPlayers" + _newline + e.ToString();
-                if (writeDirectly) Console.WriteLine(_text);
+                if (_writeDirectly) Console.WriteLine(_text);
                 GameLog.Core.General.Error(e);
 
                 Debugger.Break();
@@ -6072,11 +6173,18 @@ namespace Supremacy.Game
             {
                 _ = GameContext.PopThreadContext();
 
+                //_soundPlayer = new SoundPlayer("Resources/SoundFX/NewTurn.wav");
+                //{
+                //    if (File.Exists("Resources/SoundFX/NewTurn.ogg"))
+                //    {
+                //        SoundPlayer.PlayFile("Resources/SoundFX/NewTurn.ogg");
+                //    }
+                //}
 
                 if (!errors.IsEmpty)
                 {
                     _text = "Step_5489:; Errors not empty ";
-                    if (writeDirectly) Console.WriteLine(_text);
+                    if (_writeDirectly) Console.WriteLine(_text);
                     GameLog.Core.CombatDetails.DebugFormat(_text);
                     //
                     Debugger.Break();
@@ -6085,6 +6193,8 @@ namespace Supremacy.Game
             }
         }
         #endregion
+
+
 
         #region OnCombatOccurring() Method
         /// <summary>
@@ -6129,11 +6239,11 @@ namespace Supremacy.Game
             }
 
             _text = "Step_0877:; GameEngins.cs > " + _text;
-            if (writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly) Console.WriteLine(_text);
 
             CombatOccurring?.Invoke(combat);
             //_text = "Step_0877:; xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx check why Combat screen doesn't close";
-            //if (writeDirectly) Console.WriteLine(_text);
+            //if (_writeDirectly) Console.WriteLine(_text);
 
 
         }
@@ -6355,6 +6465,13 @@ namespace Supremacy.Game
             return v;
         }
 
+        public static CivilizationManager Get_civM (Civilization civ) //, out CivilizationManager civM)
+        {
+
+            CivilizationManager civM = GameContext.Current.CivilizationManagers[civ.CivID];
+            return civM;
+        }
+
         //public static string _newline => _newline;// (string _in_text)//
         //public static string Blank => " ";// (string _in_text)//
 
@@ -6407,8 +6524,26 @@ namespace Supremacy.Game
             return _in;
         }
 
+        public static string GetTimeString()
+        {
+            var time = DateTime.Now;
+            string Year = time.Year.ToString(); Year = CheckDateString(Year);
+            string Month = time.Month.ToString(); Month = CheckDateString(Month);
+            string Day = time.Day.ToString(); Day = CheckDateString(Day);
+            string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
+            string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
+            string Second = time.Second.ToString(); Second = CheckDateString(Second);
+            return "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second;
+        }
+        public static string CheckDateString(string _string)
+        {
+            if (_string.Length == 1)
+                _string = "0" + _string;
 
+            return _string;
+        }
     }
+    
 
 
 

@@ -267,7 +267,7 @@ namespace Supremacy.Client
             _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_G, Key.G, ModifierKeys.Alt));
             //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_H, Key.H, ModifierKeys.Alt));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowAllHistoryFileCommand, Key.H, ModifierKeys.Alt));
-            _ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_I, Key.I, ModifierKeys.Alt));
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_I, Key.I, ModifierKeys.Alt));
             //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_J, Key.J, ModifierKeys.Alt));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteAutoSaved, Key.J, ModifierKeys.Alt)); // deletes autosav file 
             //_ = InputBindings.Add(new KeyBinding(ClientCommands.Hotkey_Alt_K, Key.K, ModifierKeys.Alt));
@@ -667,7 +667,9 @@ namespace Supremacy.Client
 
         private void OnTurnStarted(ClientEventArgs e)
         {
-            _soundPlayer.PlayFile("Resources/SoundFX/NewTurn.ogg");
+            //_soundPlayer.PlayFile("Resources/SoundFX/NewTurn.ogg"); > now played as .wav
+
+
             //SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
             _soundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
            

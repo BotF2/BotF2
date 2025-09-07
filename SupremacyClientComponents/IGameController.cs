@@ -373,6 +373,7 @@ namespace Supremacy.Client
             if (!_firstTurnStarted)
             {
                 _firstTurnStarted = true;
+                //colony = 
                 _ = _navigationService.ActivateScreen(StandardGameScreens.GalaxyScreen);
                 ClearGameStartWaitCursor();
             }
@@ -390,7 +391,7 @@ namespace Supremacy.Client
                 infoCardSubject.RefreshData();
             }
 
-            _text = "Step_4007:; ClearTurnWaitCursor()...";
+            _text = "Step_4013:; ClearTurnWaitCursor()...";
             Console.WriteLine(_text);
 
             ClearTurnWaitCursor();
@@ -403,6 +404,9 @@ namespace Supremacy.Client
             ProcessSitRepEntries();
 
             _text = "Step_4011:; ProcessSitRepEntries is DONE..." + DateTime.Now;
+            Console.WriteLine(_text);
+
+            _text = "Step_4012:; 5 binding errors following and I couldn't find out how to resolve...";
             Console.WriteLine(_text);
         }
 

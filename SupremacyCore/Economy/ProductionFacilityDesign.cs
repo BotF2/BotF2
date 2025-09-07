@@ -137,7 +137,7 @@ namespace Supremacy.Economy
 
             system.Colony.SetFacilityType(Category, this);
             system.Colony.AddFacility(Category);
-            _ = system.Colony.ActivateFacility(Category);
+            _ = system.Colony.Facility_Activate(Category);
 
             spawnedInstance = null;
             return true;

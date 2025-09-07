@@ -158,7 +158,7 @@ namespace Supremacy.Client.Audio
                     {
                         _text = "Step_0158: " + i + " > " + musicPack.Entries[i].FileName;
                         //Console.WriteLine(_text);
-                        GameLog.Client.AudioDetails.DebugFormat(_text);
+                        GameLog.Client.Audio.DebugFormat(_text);
                     } 
 
                     if (trackName != null)

@@ -141,6 +141,7 @@ namespace Supremacy.Orbitals
         public void ProcessQueue()
         {
             int count = 0;
+            string _text;
             //if (_buildQueue.Count > 0)
             //{
 
@@ -151,7 +152,7 @@ namespace Supremacy.Orbitals
 
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Step_8305:; " + GameEngine.LocationString(buildQueueItem.Project.Location.ToString())
+                _text = "Step_8301:; " + GameEngine.LocationString(buildQueueItem.Project.Location.ToString())
                     + " " + buildQueueItem.Project.ProductionCenter
                     + "; TurnsRemaining " + buildQueueItem.TurnsRemaining
                     + " buildQueueItem index " + count + " = " + buildQueueItem.Description
@@ -166,8 +167,8 @@ namespace Supremacy.Orbitals
             int baysWithProjects = 0;
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
-                _text = "Step_8301:; " + GameEngine.LocationString(slot.Shipyard.Location.ToString()) + " checking "
-                    + slot.Shipyard.Design /*+ ", index " + count*/
+                _text = "Step_8303:; " + GameEngine.LocationString(slot.Shipyard.Location.ToString()) //+ " checking"
+                    + " " + slot.Shipyard.Design /*+ ", index " + count*/
 
                     + "; Slot= " + slot.SlotID
                     //+ " at " + slot.Shipyard.Location
@@ -237,6 +238,7 @@ namespace Supremacy.Orbitals
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
 
+            string _text;
             string _newline = Environment.NewLine;
 
             //_text = "Step_7601: SerializeOwnedData ------------";
@@ -358,7 +360,7 @@ namespace Supremacy.Orbitals
                 //Console.WriteLine("Step_7609:; "+ "Begin of _slots_summary" + _newline + _slots_summary + _newline + "end of _slots_summary");
             }else
             {
-                Console.WriteLine("Step_7604:; " /*begin of _slots_summary= "*/ + _newline + _slots_summary /*+ _newline + "end of _slots_summary"*/);
+                Console.WriteLine( /*begin of _slots_summary= "*/  _newline + _slots_summary + " from Step_7607:; "/*+ _newline + "end of _slots_summary"*/);
             }
 
         }
@@ -366,6 +368,8 @@ namespace Supremacy.Orbitals
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
             base.DeserializeOwnedData(reader, context);
+
+            string _text;
 
             _buildQueue = new ObservableCollection<BuildQueueItem>((BuildQueueItem[])reader.ReadObjectArray(typeof(BuildQueueItem)));
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>((ShipyardBuildSlot[])reader.ReadOptimizedObjectArray(typeof(ShipyardBuildSlot)));
@@ -435,7 +439,7 @@ namespace Supremacy.Orbitals
                     //    + " > BuildSlot: No Project" + _newline;
                     //Console.WriteLine(_text);
                     //GameLog.Core.Stations.DebugFormat(_text);
-                    _text += "";
+                    //_text += "";
                 }
                 else
                 {

@@ -117,7 +117,12 @@ namespace Supremacy.Universe
         public MapLocation Pop()
         {
             MapLocation result = _path[0];
+            if (_path.Count != 0)
+            {
+
             _path.RemoveAt(0);
+            }
+
             if ((_waypoints.Count > 0) && (_waypoints[0] == result))
             {
                 _waypoints.RemoveAt(0);
