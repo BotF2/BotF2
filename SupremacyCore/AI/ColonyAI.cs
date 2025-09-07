@@ -864,10 +864,6 @@ namespace Supremacy.AI
 
         private static void CheckFor_5_Intelligence_Facility(Colony _colony, BuildProject _available_item, ProductionCategory _available_item_Category)
         {
-            if (_colony.Owner.IsHuman /*&& _colony.Name == "Sol"*/)
-            {
-                //Debugger.Break();
-            }
             string _newline = Environment.NewLine;
             string _text;
 
@@ -884,6 +880,11 @@ namespace Supremacy.AI
 
             if (_writeDirectly_Colony) Console.WriteLine(_text);
             _colony_full_Report += _newline + _text;
+
+            if (_colony.Owner.IsHuman /*&& _colony.Name == "Sol"*/)
+            {
+                Debugger.Break();
+            }
 
             if (_colony.Facilities_Total5_Intelligence - 2 < _intelligencePerPop) // each 100 pop = 1 intel = 10%
             {

@@ -116,7 +116,9 @@ namespace Supremacy.Game
 
             GameUpdateData data = new GameUpdateData();
 
-            string _text = "Step_4004:; Turn "+ game.TurnNumber + " ... try to Create GameUpdateData for " + player.Empire.Key;
+            string _text = "Step_4004:; Turn "+ game.TurnNumber + " ... try to Create GameUpdateData for " + player.Empire.Key
+                + " > Turn off in the next lines !" 
+                ;
             Console.WriteLine(_text);
             //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -140,7 +142,7 @@ namespace Supremacy.Game
                         ;
                     if (item.Status.ToString() != "NoContact")
                     {
-                        Console.WriteLine(_text);
+                        //Console.WriteLine(_text); // works well !!
                         //GameLog.Core.GeneralDetails.DebugFormat(_text);
                     }
                     

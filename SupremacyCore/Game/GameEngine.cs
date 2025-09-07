@@ -596,7 +596,7 @@ namespace Supremacy.Game
                     Debugger.Break();
                 }
 
-                //throw new AggregateException(errors);   // causes crashes - not able to find out why
+                //throw new AggregateException(errors);   // avoid crashes = stopps for player as much as possible !
             }
 
             errors.Clear();
