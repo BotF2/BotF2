@@ -721,7 +721,7 @@ namespace Supremacy.Universe
                             + _col
                             + ";" + _active
                             + " Building"
-                            + "; " + GameEngine.Do_4_Digit(building.ObjectID.ToString())
+                            + "; " + GameEngine.Do_x_Digit_String(4, building.ObjectID.ToString())
                             + "; " + building.Design
                             + "; since Turn;" + building.TurnCreated
                             ;

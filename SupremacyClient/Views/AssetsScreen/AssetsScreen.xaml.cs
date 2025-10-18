@@ -52,7 +52,7 @@ namespace Supremacy.Client.Views
         private RadioButton[] _radioButton_6;
 //#pragma warning restore IDE0044 // Add readonly modifier
 
-#pragma warning disable IDE0052 // Remove unread private members
+//#pragma warning disable IDE0052 // Remove unread private members
         readonly Civilization _spiedCiv_0 = DesignTimeObjects.SpiedCiv_0.Civilization;
 
         readonly Civilization _spiedCiv_1 = DesignTimeObjects.SpiedCiv_1.Civilization;
@@ -61,7 +61,7 @@ namespace Supremacy.Client.Views
         readonly Civilization _spiedCiv_4 = DesignTimeObjects.SpiedCiv_4.Civilization;
         readonly Civilization _spiedCiv_5 = DesignTimeObjects.SpiedCiv_5.Civilization;
         readonly Civilization _spiedCiv_6 = DesignTimeObjects.SpiedCiv_6.Civilization;
-#pragma warning restore IDE0052 // Remove unread private members
+//#pragma warning restore IDE0052 // Remove unread private members
 
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;

@@ -57,7 +57,7 @@ namespace Supremacy.Combat
         [NonSerialized]
         //private string _text;
         private string _combatEngine_full_Report;
-        private bool _combatWriteDirectly;
+        //private bool _combatWriteDirectly;
         //private readonly string _destroyedString = "";
         //private readonly string _escapedString = "";
         //private readonly string _combatString = "";
@@ -241,9 +241,9 @@ namespace Supremacy.Combat
             List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback,
-            string combat_Automated_full_Report = null)
+            string combReport = null)
         {
-            _combatWriteDirectly = true;
+            bool _combatWriteDirectly = true;
             string _newline = Environment.NewLine;
 
             string _text = /*_newline + */"Step_3012:; protected CombatEngine...";
@@ -307,7 +307,7 @@ namespace Supremacy.Combat
                 }
             }
 
-            //Combat_Automated_full_Report = combat_Automated_full_Report;
+            //Combat_Automated_full_Report = combReport;
         }
 
         public void SubmitOrders(CombatOrders orders)
@@ -411,6 +411,8 @@ namespace Supremacy.Combat
         {
             string _text = "";
             string _newline = Environment.NewLine;
+            bool _combatWriteDirectly = true;
+
             lock (_orders)
             {
                 Running = true;
@@ -510,6 +512,8 @@ namespace Supremacy.Combat
         private void DoSitRepsAboutCombat(List<CombatAssets> _assets)//, List<Civilization> _friendlyCivs)
         {
             string _text = "Step_3097:; begin DoSitRepsAboutCombat..";
+            bool _combatWriteDirectly = true;
+
             if (_combatWriteDirectly) Console.WriteLine(_text);
 
             //if (!_allreadySitRepDONE && _leftSideCiv.Key == "BORG")
@@ -595,8 +599,8 @@ namespace Supremacy.Combat
                 foreach (var _ship in item.DestroyedShips)
                 {
                     _allFriendlyAssetsText = CreateShipText(_ship, out string _shipText) + " > destroyed";
-                    _leftSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_leftSideCiv, _loc, _allFriendlyAssetsText, "", "", SitRepPriority.Yellow));
-                    _rightSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_rightSideCiv, _loc, _allFriendlyAssetsText, "", "", SitRepPriority.Yellow));
+                    _leftSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_leftSideCiv, _loc, _allFriendlyAssetsText, "", "", SitRepPriority.Red));
+                    _rightSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_rightSideCiv, _loc, _allFriendlyAssetsText, "", "", SitRepPriority.Red));
                 }
 
                 if (item.EscapedShips.Count > 0) { /*_allFriendlyAssetsText += _newline + "> ESCAPED friendly ships: " + _newline*/; }
@@ -665,8 +669,8 @@ namespace Supremacy.Combat
                 foreach (var _ship in item.DestroyedShips)
                 {
                     _allHostileAssetsText = CreateShipText(_ship, out string _shipText) + " > destroyed";
-                    _leftSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_leftSideCiv, _loc, _allHostileAssetsText, "", "", SitRepPriority.Yellow));
-                    _rightSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_rightSideCiv, _loc, _allHostileAssetsText, "", "", SitRepPriority.Yellow));
+                    _leftSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_leftSideCiv, _loc, _allHostileAssetsText, "", "", SitRepPriority.Red));
+                    _rightSideCivM.SitRepEntries.Add(new ReportEntry_CoS(_rightSideCiv, _loc, _allHostileAssetsText, "", "", SitRepPriority.Red));
                 }
 
                 //if (item.EscapedShips.Count > 0) { _allHostileAssetsText += _newline + "> ESCAPED Hostile Ships : "/* + _newline*/; }
@@ -711,6 +715,8 @@ namespace Supremacy.Combat
             string _text = "";
             //_text = "Step_3001: Now AllsideStandDown ={0} based on combat orders", AllSidesStandDown());
             string _newline = Environment.NewLine;
+            bool _combatWriteDirectly = true;
+
             foreach (CombatAssets civAssets in _assets)
             {
                 // Combat ships
@@ -752,8 +758,9 @@ namespace Supremacy.Combat
 
         public void SendInitialUpdate()
         {
-
             string _text = "Step_3007:; cEngine > Called SendInitalUpdate to now call SendUpdates()";
+            bool _combatWriteDirectly = true;
+
             if (_combatWriteDirectly) Console.WriteLine(_text);
             //_combatEngine_full_Report += _newline + _text;
             //GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -764,6 +771,7 @@ namespace Supremacy.Combat
         protected void SendUpdates()
         {
             string _text = "Step_3010:; cEngine > SendUpdates"; // Step_3020 is enough
+            bool _combatWriteDirectly = true;
 
             if (_combatWriteDirectly) Console.WriteLine(_text);
             //_combatEngine_full_Report += _newline + _text;
@@ -1015,11 +1023,11 @@ namespace Supremacy.Combat
             _shipText = /*Environment.NewLine +*/
                 "Red Alert at " + _ship.Source.Location
         + " > " + _ownerString
-        + " > H: " + GameEngine.Do_3_Digit(_ship.HullIntegrity.ToString())
-        + ", S: " + GameEngine.Do_3_Digit(_ship.ShieldIntegrity.ToString())
+        + " > H: " + GameEngine.Do_x_Digit_String( 3, _ship.HullIntegrity.ToString())
+        + ", S: " + GameEngine.Do_x_Digit_String( 3, _ship.ShieldIntegrity.ToString())
         + " - " + _ship.Source.OrbitalDesign.Key
 
-        + " > " + GameEngine.Do_5_Digit(_ship.Source.ObjectID.ToString())
+        + " > " + GameEngine.Do_x_Digit_String( 5, _ship.Source.ObjectID.ToString())
 
         + " - " + _ship.Source.Name /*+ " > "*/;
             return _shipText;
@@ -1048,18 +1056,19 @@ namespace Supremacy.Combat
         private void RemoveDefeatedPlayers()
         {
             string _text = "";
+            bool _combatWriteDirectly = true;
             // CHANGE X
             for (int i = 0; i < _assets.Count; i++)
             {
                 _text = "Step_3048:; " + _sectorString + "Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets;
                 Console.WriteLine(_text);
-                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 if (!_assets[i].HasSurvivingAssets)
                 {
                     _text = "Step_3049:; " + _sectorString + "remove defeated assets for Player " + _assets[i].Owner.Key;
                     Console.WriteLine(_text);
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                     _assets.RemoveAt(i--);
                 }
@@ -1067,7 +1076,7 @@ namespace Supremacy.Combat
             _text = "Step_3009:; --------------------";
             if (_combatWriteDirectly) Console.WriteLine(_text);
             _combatEngine_full_Report += Environment.NewLine + _text;
-            GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.CombatDetails.DebugFormat(_text);
         }
 
         private void UpdateOrbitals()
@@ -1124,7 +1133,7 @@ namespace Supremacy.Combat
             foreach (KeyValuePair<int, int> empire in _empireStrengths)
             {
                 _text = "Step_3053:; " + _sectorString
-                    + " > " + GameEngine.Do_5_Digit(empire.Value.ToString())
+                    + " > " + GameEngine.Do_x_Digit_String( 5, empire.Value.ToString())
                     + " = Strength for civID " + empire.Key;
                 // Detailed_Log(_text);
                 Console.WriteLine(_text);
@@ -1149,7 +1158,7 @@ namespace Supremacy.Combat
                     Civilization assimilatedCiv = assimilatedShip.Owner;
                     CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[assimilatedCiv];
                     Universe.Colony assimiltedCivHome = targetEmpire.HomeColony;
-                    int gainedResearchPoints = assimiltedCivHome.NetResearch;
+                    int gainedResearchPoints = assimiltedCivHome.Research_Net;
                     Universe.Sector destination = CombatHelper.CalculateRetreatDestination(assets);
                     Ship ship = (Ship)assimilatedShip.Source;
                     ship.Owner = borg;

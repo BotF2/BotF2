@@ -2820,10 +2820,10 @@ namespace Supremacy.Combat
         {
             _shipText = " > "
                 + _ship.Owner
-        + " >, H: " + GameEngine.Do_3_Digit(_ship.HullIntegrity.ToString())
-        + ", S: " + GameEngine.Do_3_Digit(_ship.ShieldIntegrity.ToString())
+        + " >, H: " + GameEngine.Do_x_Digit_String( 3, _ship.HullIntegrity.ToString())
+        + ", S: " + GameEngine.Do_x_Digit_String( 3, _ship.ShieldIntegrity.ToString())
         //+ " f." + _ship.Owner.ShortName
-        + " Ship " + GameEngine.Do_5_Digit(_ship.Source.ObjectID.ToString())
+        + " Ship " + GameEngine.Do_x_Digit_String( 5, _ship.Source.ObjectID.ToString())
         + " - " + _ship.Source.OrbitalDesign.Key
         + " - " + _ship.Source.Name;
             return _shipText;

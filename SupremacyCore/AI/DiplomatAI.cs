@@ -57,10 +57,10 @@ namespace Supremacy.AI
                 ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
 
                 _text = "Step_5405:; "
-                    + "; regard= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
+                    + "; regard= " + GameEngine.Do_x_Digit_String( 4, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
 
-                    + "; regard= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
-                    + ", Status= * " + GameEngine.Do_X_String(12,foreignPower.DiplomacyData.Status.ToString())
+                    + "; regard= " + GameEngine.Do_x_Digit_String( 4, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
+                    + ", Status= * " + GameEngine.Do_x_String(12,foreignPower.DiplomacyData.Status.ToString())
                     + aCiv.Key
 
                     + " vs " + otherCiv.Key
@@ -751,8 +751,8 @@ namespace Supremacy.AI
             _text = "Step_1175:;" 
                 + " Turn " + GameContext.Current.TurnNumber
                 + " > AFTER Ongoing Impression: "
-                + " regard= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
-                + ", trust= " + GameEngine.Do_4_Digit(foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
+                + " regard= " + GameEngine.Do_x_Digit_String( 4, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
+                + ", trust= " + GameEngine.Do_x_Digit_String( 4, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
                 + " for " +foreignPower.Owner.Key
                 + " vs " + foreignPower.Counterparty.Key
                 ;

@@ -403,7 +403,7 @@ namespace Supremacy.Client
             bootstrapper.Run();
         }
 
-        //public string Do_x2_Digit_String(string v)
+        //public string Do_x_Digit_String(string v)
         //{
         //    while (v.Length < 2)
         //    {
@@ -412,7 +412,7 @@ namespace Supremacy.Client
         //    return v;
         //}
 
-        //public string Do_3_Digit(string v)
+        //public string Do_x_Digit_String(3,string v)
         //{
         //    while (v.Length < 3)
         //    {
@@ -421,7 +421,7 @@ namespace Supremacy.Client
         //    return v;
         //}
 
-        //public string Do_4_Digit(string v)
+        //public string Do_x_Digit_String(4,string v)
         //{
         //    while (v.Length < 4)
         //    {
@@ -430,7 +430,7 @@ namespace Supremacy.Client
         //    return v;
         //}
 
-        //public string Do_5_Digit(string v)
+        //public string Do_x_Digit_String(5,string v)
         //{
         //    while (v.Length < 5)
         //    {

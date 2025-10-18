@@ -21,6 +21,7 @@ using Supremacy.Utility;
 using Supremacy.Client.Context;
 using Supremacy.Collections;
 using System.Linq;
+using Supremacy.Game;
 
 namespace Supremacy.Client.Views
 {
@@ -93,9 +94,19 @@ namespace Supremacy.Client.Views
 
         public bool AddShipToQueue => true;
 
+        public string ColonyHeadBarInfo => ""; // "  Turn: " + GameContext.Current.TurnNumber; > doesn't update !
+
         public Colony SelectedColony
         {
-            get => _selectedColony;
+            get
+            {
+                if (_selectedColony == null)
+                {
+                    _selectedColony = GameContext.Current.Universe.HomeColonyLookup[AppContext.LocalPlayer.Empire];
+                }
+                return _selectedColony;
+            }
+
             set
             {
                 Colony oldValue = _selectedColony;

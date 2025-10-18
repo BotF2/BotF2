@@ -1,3 +1,23 @@
+All: 
+FleetOrders:         //Engage, //Avoid, // Raid, //Escort
+        Colonize, BuildStation, AssaultSystem, Sabotage, Influence, Medical, SpyOn, , , , , 
+        Mission, Explore, Travel, Tow, Wormhole, CollectDeuterium
+        Idle
+        Defend
+        Stranded
+        ScrapShip
+
+        RedeployNone, RedeploySame, RedeployAll
+        AccumulateLocation_Set_Here, AccumulateLocation_Go_There, AccumulateQuit
+      
+OrderName e.g. FLEET_ORDER_TOW = Tow
+
+TaskForceStatusText e.g. ORDER_ETA_TURN_MULTILINE = eta x Turns
+
+Status e.g. FLEET_ORDER_STATUS_TOW = Towing {0}
+      
+        
+
 All:
 - FleetOrders > 
 - UnitAI > 

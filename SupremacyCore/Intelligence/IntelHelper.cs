@@ -644,7 +644,7 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) at {2} (sabotaged): Food={3} out of facilities={4}, in total={5}",
                 colony.Owner, colony.Name, colony.Location,
-                colony.NetFood,
+                colony.Food_Net,
                 colony.GetActiveFacilities(ProductionCategory.Food),
                 colony.GetTotalFacilities(ProductionCategory.Food));
             GameLog.Core.Intel.DebugFormat("Sabotage Food to {0}: Facilities_Total1_Food before={1}",

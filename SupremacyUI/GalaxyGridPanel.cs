@@ -866,7 +866,7 @@ namespace Supremacy.UI
             get
             {
                 CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
-                string _line = "Assaults > " + playerEmpire.SystemAssault_Accumulate_Location_1
+                string _line = "Assaults > " + playerEmpire.Assault_Accumulate_Location_1
                     //+ "   " + playerEmpire.SystemAssault_Accumulate_Location_2
                     ;
                 return _line;
@@ -1434,12 +1434,12 @@ namespace Supremacy.UI
 
         private void ExecuteCenterOnSystemAssault_1_SectorCommand(Sector sector)
         {
-            if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Sector_1 != null
-                && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Location_1.ToString()
+            if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Sector_1 != null
+                && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Location_1.ToString()
                 != "(0, 0)")
             {
-                SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Sector_1;
-                AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Sector_1);
+                SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Sector_1;
+                AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Sector_1);
             }
             else
             {

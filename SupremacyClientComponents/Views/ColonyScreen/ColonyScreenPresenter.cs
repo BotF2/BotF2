@@ -604,11 +604,11 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedColonyPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "NetEnergy" || e.PropertyName == "OrbitalBatteries_Active")
+            if (e.PropertyName == "Energy_Net" || e.PropertyName == "OrbitalBatteries_Active")
             {
                 UpdateOrbitalBatteries();
             }
-            else if (e.PropertyName == "NetIndustry")
+            else if (e.PropertyName == "Industry_Net")
             {
                 UpdateBuildLists();
 
@@ -744,9 +744,9 @@ namespace Supremacy.Client.Views
                 }
 
                 int maxOrbitalBatteries_Active = selectedColony.OrbitalBatteries_Active;
-                if (selectedColony.NetEnergy > 0)
+                if (selectedColony.Energy_Net > 0)
                 {
-                    int possibleActivations = selectedColony.NetEnergy / selectedColony.OrbitalBatteryDesign.UnitEnergyCost;
+                    int possibleActivations = selectedColony.Energy_Net / selectedColony.OrbitalBatteryDesign.UnitEnergyCost;
                     if (possibleActivations > 0)
                     {
                         maxOrbitalBatteries_Active += possibleActivations;

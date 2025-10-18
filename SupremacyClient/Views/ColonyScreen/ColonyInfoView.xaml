@@ -3,11 +3,15 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
                        xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation" 
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+
                        TextElement.FontSize="{StaticResource {x:Static scc:ClientResources.InfoPaneFontSizeKey}}"
                        TextElement.FontFamily="{StaticResource {x:Static scc:ClientResources.InfoPaneFontFamilyKey}}"
                        TextElement.FontWeight="{StaticResource {x:Static scc:ClientResources.InfoPaneFontWeightKey}}">
+                       <!--d:DataContext="{d:DesignInstance Type=scc:ColonyScreenPresentationModel}"-->    
 
     <StackPanel>
+        <!--<DataContext="{d:DesignInstance Type=scc:ColonyScreenPresentationModel}"></DataContext>-->
 
         <!-- SYSTEM INFO HEADER -->
         <!--<TextBlock TextAlignment="Right" FontSize="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" Foreground="{StaticResource {x:Static scc:ClientResources.ControlDisabledBorderBrushKey}}" 
@@ -16,7 +20,7 @@
         <!-- MORALE -->
         <DockPanel HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+                <TextBlock Margin="0,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
                        />
                 <TextBlock Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" 
                        Text=" > " 
@@ -58,8 +62,8 @@
                 <scc:TextBlockExtensions.FormattedText>
                     <MultiBinding StringFormat="{}{0} / [f {1}]{2}[/]">
                         <Binding Path="SelectedColony.FoodReserves.CurrentValue" Mode="OneWay" />
-                        <Binding Path="SelectedColony.NetFood" Mode="OneWay" Converter="{StaticResource NetValueBrushConverter}" ConverterParameter="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
-                        <Binding Path="SelectedColony.NetFood" Mode="TwoWay" Converter="{StaticResource NetValueConverter}" />
+                        <Binding Path="SelectedColony.Food_Net" Mode="OneWay" Converter="{StaticResource NetValueBrushConverter}" ConverterParameter="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
+                        <Binding Path="SelectedColony.Food_Net" Mode="TwoWay" Converter="{StaticResource NetValueConverter}" />
                     </MultiBinding>
                 </scc:TextBlockExtensions.FormattedText>
             </TextBlock>
@@ -91,7 +95,7 @@
 
 
         <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{StaticResource IndustryColor}" 
-                       Text="{Binding Path=SelectedColony.NetIndustry, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Industry_Net, Mode=OneWay}" />
         </DockPanel>
 
         <!-- NET ENERGY -->
@@ -115,8 +119,8 @@
                 </TextBlock.ToolTip>
             </TextBlock>
                 </StackPanel>
-                <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" 
-                       Text="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay}" />
+            <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{Binding Path=SelectedColony.Energy_Net, Mode=OneWay, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" 
+                       Text="{Binding Path=SelectedColony.Energy_Net, Mode=OneWay}" />
         </DockPanel>
 
         <!-- RESEARCH -->
@@ -141,7 +145,7 @@
             </TextBlock>
                 </StackPanel>
                 <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource ResearchColor}" 
-                       Text="{Binding Path=SelectedColony.NetResearch, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Research_Net, Mode=OneWay}" />
         </DockPanel>
 
         <!-- INTELLIGENCE -->
@@ -167,7 +171,7 @@
 
             </StackPanel>
     <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource IntelColor}" 
-                       Text="{Binding Path=SelectedColony.NetIntelligence, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Intelligence_Net, Mode=OneWay}" />
         </DockPanel>
 
         <!-- RESOURCES HEADER -->
@@ -183,7 +187,7 @@
                 </TextBlock.ToolTip>
             </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource DilithiumColor}" 
-                       Text="{Binding Path=SelectedColony.NetDilithium, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Dilithium_Net, Mode=OneWay}" />
         </DockPanel>
 
         <!-- DEUTERIUM -->
@@ -196,7 +200,7 @@
                 </TextBlock.ToolTip>
             </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource DeuteriumColor}" 
-                       Text="{Binding Path=SelectedColony.NetDeuterium, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Deuterium_Net, Mode=OneWay}" />
         </DockPanel>
 
         <!-- DURANIUM -->
@@ -209,7 +213,7 @@
                 </TextBlock.ToolTip>
             </TextBlock>
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource DuraniumColor}" 
-                       Text="{Binding Path=SelectedColony.NetDuranium, Mode=OneWay}" />
+                       Text="{Binding Path=SelectedColony.Duranium_Net, Mode=OneWay}" />
         </DockPanel>
 
         <!-- CreditsEmpire -->

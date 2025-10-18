@@ -215,7 +215,7 @@
                    ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" >
             <MultiBinding StringFormat="{}{0}    (# {1} ) ">
                 <Binding Path="FoodReserves" />
-                <Binding Path="NetFood" />
+                <Binding Path="Food_Net" />
             </MultiBinding>
         </scc:GameLabel>
         <!--<TextBlock Grid.Row="1" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Col 10 " />-->
@@ -237,7 +237,7 @@
                    ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" >
             <scc:GameLabel.Label>
                     <MultiBinding StringFormat="{}{0}  ( LP: {1} )">
-                    <Binding Path="NetIndustry" />
+                    <Binding Path="Industry_Net" />
                     <Binding Path="AvailableLabor" />
                 </MultiBinding>
             </scc:GameLabel.Label>
@@ -258,13 +258,12 @@
         <scc:GameLabel Grid.Row="3" Grid.Column="9" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
                    ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" >
-            <!--old: Label="{Binding Path=NetEnergy}"-->
+            <!--old: Label="{Binding Path=Energy_Net}"-->
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0}  ( Surplus )">
                     <!--<Binding Path="Facilities_Active3_Energy" />
                     <Binding Path="Facilities_Total3_Energy" />-->
-                    <Binding Path="NetEnergy" />
-                    <!--<Binding Path="NetEnergy" />-->
+                    <Binding Path="Energy_Net" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -306,11 +305,11 @@
                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
                    
                    ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" >
-            <!--old: Label="{Binding Path=NetResearch}"-->
+            <!--old: Label="{Binding Path=Research_Net}"-->
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} ">
                     <!--<Binding Path="Facilities_Active4_Research" />-->
-                    <Binding Path="NetResearch" />
+                    <Binding Path="Research_Net" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -332,7 +331,7 @@
                    Grid.Row="2" Grid.Column="14"
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/intelligence.png"
-                   Label="{Binding Path=NetIntelligence}"
+                   Label="{Binding Path=Intelligence_Net}"
                    ToolTip="{s:StringResource Key=INTELLIGENCE_TOOLTIP}" />
 
         <!--ORBITAL BATTERIES-->
@@ -425,7 +424,7 @@
         <TextBlock Grid.Row="1" Grid.Column="22" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="1"  Grid.Column="23" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
-                   Label="{Binding Path=NetDilithium}"
+                   Label="{Binding Path=Dilithium_Net}"
                    ToolTip="{s:StringResource Key=DILITHIUM_TOOLTIP}" />
 
         <!--DEUTERIUM-->
@@ -438,7 +437,7 @@
             <!--old: Label="{Binding Path=NetDeuterium}"-->
             <scc:GameLabel.Label>
             <MultiBinding StringFormat="{}{0} ">
-                    <Binding Path="NetDeuterium" />
+                    <Binding Path="Deuterium_Net" />
                 <!--<Binding Path="SelectedColony.Resources.Deuterium.LastChange" />-->
             </MultiBinding>
         </scc:GameLabel.Label>
@@ -451,7 +450,7 @@
         <TextBlock Grid.Row="3" Grid.Column="22" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="3" Grid.Column="23" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/duranium.png"
-                   Label="{Binding Path=NetDuranium}"
+                   Label="{Binding Path=Duranium_Net}"
                    ToolTip="{s:StringResource Key=DURANIUM_TOOLTIP}" />
 
 

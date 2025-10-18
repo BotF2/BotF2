@@ -807,8 +807,8 @@
                           />
                         </Grid>
 
-                        <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Column="1"
-                                          Grid.Row="1"
+                        <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Column="1" Grid.Row="1"
+                                         
                               ContentSource="SelectedContent" />
                     </Grid>
                 </ControlTemplate>
@@ -1736,12 +1736,14 @@
                                 </Rectangle.Fill>
                             </Rectangle>
                             <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
-                    <Border Grid.Column="2"
-                         Grid.Row="3"
-                         Background="Transparent"
-                         BorderBrush="DarkGreen"
-                         BorderThickness="2"
-                         Margin="3,0,0,0" />
+                          <Border Grid.Column="2"
+                               Grid.Row="3"
+                               Background="Transparent"
+                               BorderBrush="DarkGreen"
+                               BorderThickness="2"
+                               Margin="3,0,0,0" >
+                            
+                          </Border>
                    <Rectangle Grid.Column="3"
                          Grid.Row="3"
                          Width="21"
@@ -2076,8 +2078,8 @@
                    HorizontalOffset="-14"
                    VerticalOffset="2">
 
-                            <Border Background="Black"
-                      CornerRadius="14">
+                            <Border Background="Black" CornerRadius="14">
+                     
                                 <Grid Name="DropDown"
                       SnapsToDevicePixels="True"
                       MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"

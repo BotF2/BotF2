@@ -256,13 +256,13 @@ namespace Supremacy.Client.Views
             {
                 
                 string _return = "Assault: ";
-                if (GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssault_Accumulate_Sector_1.Location.ToString() == "(0, 0)")
+                if (GameContext.Current.CivilizationManagers[_playerCiv.CivID].Assault_Accumulate_Sector_1.Location.ToString() == "(0, 0)")
                 {
                     _return += " - ";
                 }
                 else
                 {
-                    return _return += GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssault_Accumulate_Sector_1.Location.ToString();
+                    return _return += GameContext.Current.CivilizationManagers[_playerCiv.CivID].Assault_Accumulate_Sector_1.Location.ToString();
                 }
 
                 //if (GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssault_Accumulate_Sector_2.Location.ToString() != "(0, 0)")

@@ -406,7 +406,7 @@ namespace Supremacy.Client
             _text = "Step_4011:; ProcessSitRepEntries is DONE..." + DateTime.Now;
             Console.WriteLine(_text);
 
-            _text = "Step_4012:; 5 binding errors following and I couldn't find out how to resolve...";
+            _text = "Step_4012:; 5 binding errors (only at starting) ... resolve not found out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
             Console.WriteLine(_text);
         }
 

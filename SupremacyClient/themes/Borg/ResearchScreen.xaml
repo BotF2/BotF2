@@ -277,7 +277,7 @@
     </Border>
   </DataTemplate>
 
-    <!--Details-->
+   <!--Details-->
   <DataTemplate DataType="{x:Type local:ResearchApplicationDetails}">
     <ScrollViewer CanContentScroll="False" Height="Auto" VerticalScrollBarVisibility="Auto">
       <Grid>
@@ -618,21 +618,22 @@
                                 </StackPanel>
                             </Expander>
 
-                <!-- Tab RESEARCH_MATRIX-->
-                <TabControl Margin="4,0,0,0">
+<TabControl Margin="4,0,0,0">
+               <!-- Tab RESEARCH_MATRIX--><!--
+                
                 <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
-                  <Grid>
+                  <Grid>-->
                                         <!--<Grid.ColumnDefinitions>
                                             <ColumnDefinition Height="Auto"/>
                                             <ColumnDefinition Height="140"/>
                                             <ColumnDefinition Height="Auto"/>
-                                        </Grid.ColumnDefinitions>-->
+                                        </Grid.ColumnDefinitions>--><!--
                     <Grid.RowDefinitions>
                       <RowDefinition Height="Auto"/>
-                                            <!--<RowDefinition Height="2*"-->
+                                            --><!--<RowDefinition Height="2*"--><!--
                       <RowDefinition Height="*"
                                                                           MinHeight="20"/>
-                                     <!--MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>-->
+                                     --><!--MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>--><!--
                       <RowDefinition Height="160"
                                      MinHeight="20"/>
                     </Grid.RowDefinitions>
@@ -658,7 +659,7 @@
                       <Border x:Name="PART_ApplicationDetailsHost"/>
                     </ContentControl>
                   </Grid>
-                </TabItem>
+                </TabItem>-->
                     
                   <!--
                     ***************************
@@ -1682,19 +1683,65 @@
                     *************************
                   -->
                 </TabItem>
-              </TabControl>
-            </DockPanel>
-          </Border>
-          <ControlTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=AppContext.IsTurnFinished, RelativeSource={RelativeSource TemplatedParent}}"
-                         Value="True">
-              <Setter Property="IsEnabled"
-                      Value="False"/>
-            </DataTrigger>
-          </ControlTemplate.Triggers>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
+
+
+
+ 
+  <!-- Tab RESEARCH_MATRIX-->
+  <!--<TabControl Margin="4,0,0,0">-->
+    <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
+      <Grid>
+        <!--<Grid.ColumnDefinitions>
+                                            <ColumnDefinition Height="Auto"/>
+                                            <ColumnDefinition Height="140"/>
+                                            <ColumnDefinition Height="Auto"/>
+                                        </Grid.ColumnDefinitions>-->
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <!--<RowDefinition Height="2*"-->
+          <RowDefinition Height="*"
+                                                              MinHeight="20"/>
+          <!--MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>-->
+          <RowDefinition Height="160"
+                         MinHeight="20"/>
+        </Grid.RowDefinitions>
+        <Border x:Name="PART_ResearchFieldItemsHost"
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,7"
+                Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+        <ScrollViewer x:Name="ResearchMatrixScrollViewer"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Visible"
+                      CanContentScroll="False"
+                      Grid.Row="1">
+          <Border x:Name="PART_ResearchMatrixHost"
+                  BorderBrush="{DynamicResource DefaultTextBrush}"
+                  BorderThickness="0,0,1,1"
+                  SnapsToDevicePixels="True"
+                  Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+        </ScrollViewer>
+        <ContentControl Grid.Row="2"
+                        Margin="0,7,0,0"
+                        Style="{StaticResource LCARS_BorgThinBorderStyle}">
+          <Border x:Name="PART_ApplicationDetailsHost"/>
+        </ContentControl>
+      </Grid>
+    </TabItem>
+
+  </TabControl>
+</DockPanel>
+</Border>
+<ControlTemplate.Triggers>
+<DataTrigger Binding="{Binding Path=AppContext.IsTurnFinished, RelativeSource={RelativeSource TemplatedParent}}"
+             Value="True">
+  <Setter Property="IsEnabled"
+          Value="False"/>
+</DataTrigger>
+</ControlTemplate.Triggers>
+</ControlTemplate>
+</Setter.Value>
+</Setter>
+</Style>
 
 </ResourceDictionary>

@@ -413,7 +413,7 @@ namespace Supremacy.Client
                     "ICH: " + _ship.HullIntegrity
                     + ", S: " + _ship.ShieldIntegrity
                     //+ " f." + _ship.Owner.ShortName
-                    + " Ship " + GameEngine.Do_5_Digit(_ship.Source.ObjectID.ToString())
+                    + " Ship " + GameEngine.Do_x_Digit_String(5,_ship.Source.ObjectID.ToString())
                     + " - " + _ship.Source.OrbitalDesign.Key
                     + " - " + _ship.Source.Name;
             return _shipText;

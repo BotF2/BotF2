@@ -513,7 +513,7 @@ namespace Supremacy.Combat
             Civilization borg = borgManager.Civilization;
             CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
             Colony assimilatedCivHome = targetEmpireCivManager.HomeColony;
-            int gainedResearchPoints = assimilatedCivHome.NetResearch;
+            int gainedResearchPoints = assimilatedCivHome.Research_Net;
             borgManager.Research.UpdateResearch(gainedResearchPoints);
 
             colony.InhabitantsID = borg.Key;// "8";  // 8 = Borg in Races

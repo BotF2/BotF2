@@ -198,6 +198,12 @@
 
                 <Rectangle Grid.Column="15" Grid.Row="0" Margin="3,0,0,0"
                            Fill="{StaticResource Borg2Gradient_Top_Bottom}" Opacity="0.5"></Rectangle>
+
+                <TextBlock Grid.Column="15" Grid.Row="0" Margin="3,0,0,0"
+                                TextAlignment="Center" FontSize="20"
+                                Foreground="{StaticResource DefaultTextBrush}" Background="Transparent"
+                                Text="{Binding Path=ColonyHeadBarInfo}"
+                            />
                 
                 <!--next: art work at the end-->
                 <Ellipse Grid.Column="16" Grid.Row="0" Height="28" Width="28" VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -372,8 +378,8 @@
 
                                                 <Image.Source>
                                                     <Binding Path="SelectedPlanetaryBuildProject.BuildDesign"
-                                               Mode="OneWay"
-                                               Converter="{StaticResource TechObjectImageConverter}">
+                                                       Mode="OneWay"
+                                                       Converter="{StaticResource TechObjectImageConverter}">
                                                     </Binding>
                                                 </Image.Source>
                                             </Image>

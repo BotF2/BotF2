@@ -143,7 +143,7 @@ namespace Supremacy.Resources
             //        c += 1;
             //        _key = item.ToString();
 
-            //        string _entry = GameEngine.Do_4_Digit(c.ToString()) + " ; " + _key;
+            //        string _entry = GameEngine.Do_x_Digit_String(4,c.ToString()) + " ; " + _key;
             //        _entry += " ; ";
             //        _entry += _defaultStrings[_key].ToString();
             //        _entry += " ; ";

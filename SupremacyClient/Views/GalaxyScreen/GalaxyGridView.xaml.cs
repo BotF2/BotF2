@@ -298,8 +298,15 @@ namespace Supremacy.Client.Views
                                  //+ "; Ship"
 
                         /*+ "; "*/ + item.Owner.Key
+                        + " > Hull=" + item.HullStrength
+                        + ", Sh=" + item.ShieldStrength
+                        //+ "; Cloak=;" + item.CloakStrength
+                        //+ "; Camo=;" + item.CamouflagedStrength
+                        //+ "; Camo=;" + item.
+                        + ", Fuel=" + item.FuelReserve
+                        + " > " + item.Design.Key
 
-                        + ": " + item.Design.Key
+
                         + " > " + item.ObjectID
                         //+ " " + item.Design
                         
@@ -307,12 +314,7 @@ namespace Supremacy.Client.Views
 
                         //+ "; Crew=;" + item.Crew
                         //+ "; Exp=;" + item.ExperiencePercent
-                        + ", Hull=" + item.HullStrength
-                        + ", Sh=" + item.ShieldStrength
-                        //+ "; Cloak=;" + item.CloakStrength
-                        //+ "; Camo=;" + item.CamouflagedStrength
-                        //+ "; Camo=;" + item.
-                        + ", Fuel=" + item.FuelReserve
+
 
                         //+ "; since Turn;" + item.TurnCreated
                         + _newline
@@ -381,7 +383,7 @@ namespace Supremacy.Client.Views
             {
                 _buildings_Text += ""
                         + "Building"
-                        + " since Turn;" + GameEngine.Do_3_Digit(_building.TurnCreated.ToString())
+                        + " since Turn;" + GameEngine.Do_x_Digit_String(3,_building.TurnCreated.ToString())
                         + ", " + (_building.IsActive ? "__Active" : "Inactive").ToString()
                         + "; " + _building.ObjectID
                         + "; " + _building.Design
@@ -402,11 +404,11 @@ namespace Supremacy.Client.Views
             }
 
             string _stockpile_Text = ""//"Step_7604:; " + _col
-                    + "Stockpile Deu= " + item.NetDeuterium
-                    + ", Dur= " + item.NetDuranium
-                    + ", Dil= " + item.NetDilithium
+                    + "Stockpile Deu= " + item.Deuterium_Net
+                    + ", Dur= " + item.Duranium_Net
+                    + ", Dil= " + item.Dilithium_Net
                     + ", Credits= " + item.CreditsEmpire
-                    + " ) "
+                    //+ " ) "
                     //+ _newline
                     ;
 
@@ -431,8 +433,8 @@ namespace Supremacy.Client.Views
                               //+ "; " + item.Owner
                         ""
 
-                        + "costs " + GameEngine.Do_5_Digit(item2.GetCurrentIndustryCost().ToString())
-                        + " aka " + GameEngine.Do_x2_Digit_String(item2.TurnsRemaining.ToString()) + " turns"
+                        + "costs " + GameEngine.Do_x_Digit_String(5,item2.GetCurrentIndustryCost().ToString())
+                        + " aka " + GameEngine.Do_x_Digit_String(2, item2.TurnsRemaining.ToString()) + " turns"
                         + " > " + item2.BuildDesign.Key
                         + " (Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
                         + ", Dur=" + item2.GetCurrentResourceCost(ResourceType.Duranium)
@@ -691,10 +693,10 @@ namespace Supremacy.Client.Views
 
                 foreach (CivilizationManager civM in GameContext.Current.CivilizationManagers)
                 {
-                    string _x_text = GameEngine.Do_x2_Digit_String(civM.HomeColony.Location.X.ToString());
-                    string _y_text = GameEngine.Do_x2_Digit_String(civM.HomeColony.Location.Y.ToString());
+                    string _x_text = GameEngine.LocationString(civM.HomeColony.Location.X.ToString());
+                    string _y_text = GameEngine.LocationString(civM.HomeColony.Location.Y.ToString());
                     _text += civM.Civilization.HomeQuadrant + "-Quadrant"
-                        + " ; " + GameEngine.Do_X_String(19, civM.Civilization.Key).ToString()
+                        + " ; " + GameEngine.Do_x_String(19, civM.Civilization.Key).ToString()
                         + " ; " + _x_text
                         + " ; " + _y_text
 
@@ -716,11 +718,11 @@ namespace Supremacy.Client.Views
                     }
                     else
                     {
-                        _owner = GameEngine.Do_X_String(19, _sec.Owner.Key);
+                        _owner = GameEngine.Do_x_String(19, _sec.Owner.Key);
                     }
 
-                    string _x_text = GameEngine.Do_x2_Digit_String(_sec.Location.X.ToString());
-                    string _y_text = GameEngine.Do_x2_Digit_String(_sec.Location.Y.ToString());
+                    string _x_text = GameEngine.Do_x_Digit_String(2, _sec.Location.X.ToString());
+                    string _y_text = GameEngine.Do_x_Digit_String(2, _sec.Location.Y.ToString());
                     _text += "--------------"//Quadrant"
                         + " ; " + _owner
                         + " ; " + _x_text
@@ -821,7 +823,7 @@ namespace Supremacy.Client.Views
                         _text += "Step_4367:; "
                             + _col
                             + "; " + building.IsActive + "_for_Active"
-                            + "; since Turn;" + GameEngine.Do_3_Digit(building.TurnCreated.ToString())
+                            + "; since Turn;" + GameEngine.Do_x_Digit_String(3,building.TurnCreated.ToString())
                             + "; Building"
                             + "; " + building.ObjectID
                             + "; " + building.Design
@@ -852,8 +854,8 @@ namespace Supremacy.Client.Views
                                 //+ " on; " + item.Name
                                 //+ "; " + item.Owner
 
-                                + "; needs " + GameEngine.Do_x2_Digit_String(item2.TurnsRemaining.ToString()) + " turns"
-                                + "; costs= " + GameEngine.Do_5_Digit(item2.GetCurrentIndustryCost().ToString())
+                                + "; needs " + GameEngine.Do_x_Digit_String(2, item2.TurnsRemaining.ToString()) + " turns"
+                                + "; costs= " + GameEngine.Do_x_Digit_String(5,item2.GetCurrentIndustryCost().ToString())
                                 + "; " + item2.BuildDesign.Key
                                 + "; and Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
                                 + "; Dur=" + item2.GetCurrentResourceCost(ResourceType.Duranium)
@@ -866,9 +868,9 @@ namespace Supremacy.Client.Views
 
                     _text += "Step_7604:; " + _col
 
-                            + "; Stockpile Deu= " + item.NetDeuterium
-                            + "; Dur= " + item.NetDuranium
-                            + "; Dil= " + item.NetDilithium
+                            + "; Stockpile Deu= " + item.Deuterium_Net
+                            + "; Dur= " + item.Duranium_Net
+                            + "; Dil= " + item.Dilithium_Net
                             + "; Credits= " + item.CreditsEmpire
                             + _newline;
 
@@ -1691,7 +1693,7 @@ namespace Supremacy.Client.Views
         //    return _locationString;
         //}
 
-        //private string Do_x2_Digit_String(string v)
+        //private string Do_x_Digit_String(string v)
         //{
         //    while (v.Length < 2)
         //    {

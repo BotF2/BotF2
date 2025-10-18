@@ -97,10 +97,12 @@
                       Grid.Row="0"
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                 <Button.Content>
-                  <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" 
+                  <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber
+                      , StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}
+                      , RelativeSource={RelativeSource TemplatedParent}}" 
 
                              />
-                             <!--FontSize="18" Margin="0,0,0,0"-->                    
+                             <!-- FontSize="18" Margin="0,0,0,0" -->                    
                 </Button.Content>
                 <Button.Style>
                   <Style TargetType="{x:Type Button}"
@@ -1239,7 +1241,18 @@
                                             </Button.ToolTip>
                                         </Button>
 
-
+                                        <Button  Margin="3,0,0,0" MinWidth="30" x:Name="ZoomMaxButton"
+                            Command="{x:Static scc:GalaxyScreenCommands.MapZoomMax}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=ZOOM_MAX_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource ZOOM_MAX_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
 
                                         <Button x:Name="ZoomInButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
@@ -1287,18 +1300,7 @@
                                             </Button.ToolTip>
                                         </Button>
                                         
-                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="ZoomMaxButton"
-                            Command="{x:Static scc:GalaxyScreenCommands.MapZoomMax}"                                                 
-                            Style="{StaticResource LCARS_BorderButtonStyle}"
-                            Content="{s:StringResource Key=ZOOM_MAX_BUTTON_TEXT, Case=Upper}"
-                                            >
-                                            <Button.ToolTip>
-                                                <ToolTip>
-                                                    <TextBlock FontSize="20" Text="{s:StringResource ZOOM_MAX_BUTTON_TOOLTIP}"
-                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
-                                                </ToolTip>
-                                            </Button.ToolTip>
-                                        </Button>
+
 
                                         <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterHomeButton"
                             Command="{x:Static scc:GalaxyScreenCommands.CenterOnHomeSector}"                                                 
@@ -1419,8 +1421,8 @@
 
                                     </StackPanel>
 
-
-                                    <ToggleButton x:Name="ChatButton" FontSize="18" Focusable="False" Margin="0,0,3,0"
+                                    <!--works but thrown out-->
+                                    <!--<ToggleButton x:Name="ChatButton" FontSize="18" Focusable="False" Margin="0,0,3,0"
                                                 Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
                                                 Style="{StaticResource LCARS_BorderToggleButtonStyle}"
                                                 >
@@ -1431,12 +1433,12 @@
                                                         FontSize="20"/>
                                             </ToolTip>
                                         </ToggleButton.ToolTip>
-                                        <!--<ToggleButton.Foreground>
+                                        --><!--<ToggleButton.Foreground>
                                             <SolidColorBrush x:Name="ChatButtonForeground"
                                                 Color="red" />
-                                        </ToggleButton.Foreground>-->
+                                        </ToggleButton.Foreground>--><!--
 
-                                    </ToggleButton>
+                                    </ToggleButton>-->
                                 </StackPanel>
 
                                 <Canvas x:Name="RightTopEdge"
@@ -2159,7 +2161,7 @@
                       Property="IsEnabled"
                       Value="False" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=AppContext.IsSinglePlayerGame, RelativeSource={RelativeSource TemplatedParent}}"
+            <!--<DataTrigger Binding="{Binding Path=AppContext.IsSinglePlayerGame, RelativeSource={RelativeSource TemplatedParent}}"
                          Value="True">
               <Setter TargetName="ChatButton"
                       Property="IsChecked"
@@ -2167,7 +2169,7 @@
               <Setter TargetName="ChatButton"
                       Property="Visibility"
                       Value="Collapsed" />
-            </DataTrigger>
+            </DataTrigger>-->
             <Trigger SourceName="PART_ChatPanel"
                      Property="IsMessageWaiting"
                      Value="True">
@@ -2188,13 +2190,13 @@
                 <StopStoryboard BeginStoryboardName="BeginChatButtonStoryboard" />
               </Trigger.ExitActions>
             </Trigger>
-            <Trigger SourceName="ChatButton"
+            <!--<Trigger SourceName="ChatButton"
                      Property="IsChecked"
                      Value="True">
               <Setter TargetName="PART_ChatPanel"
                       Property="Visibility"
                       Value="Visible" />
-            </Trigger>
+            </Trigger>-->
             <DataTrigger Binding="{Binding Path=InputMode}"
                          Value="{x:Static scc:GalaxyScreenInputMode.RedeployShips}">
               <Setter TargetName="RedeployButton"

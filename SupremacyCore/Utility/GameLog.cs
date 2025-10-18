@@ -105,8 +105,9 @@ namespace Supremacy.Utility
             public const string XMLCheck = "XMLCheck";
             public const string XML2CSVOutput = "XML2CSVOutput";
 
-            // Details
-            public const string AIDetails = "AIDetailsDetailsDetails";
+            // GameLog-Details > see here what is deactivated
+            public const string AIDetails = "AIDetails";
+            //public const string AIDetails = "AIDetailsDetailsDetails";
             public const string AudioDetails = "AudioDetails";
             public const string CivsAndRacesDetails = "CivsAndRacesDetails";
             public const string ColoniesDetails = "ColoniesDetails";
@@ -127,7 +128,7 @@ namespace Supremacy.Utility
             public const string MapDataDetails = "MapDataDetails";
             public const string MultiplayDetails = "MultiplayDetails";
             public const string ProductionDetails = "ProductionDetails";
-            //public const string ReportErrorsToEmail = "ReportErrorsToEmailDetails";  // that's no category
+            public const string ReportErrorsToEmail = "ReportErrorsToEmailDetails";  // that's no category
             public const string ResearchDetails = "ResearchDetails";
             public const string SaveLoadDetails = "SaveLoadDetails";
             public const string ShipsDetails = "ShipsDetails";

@@ -95,7 +95,7 @@ namespace Supremacy.Orbitals
         public int GetBuildOutput(int slot)
         {
             float output = ShipyardDesign.BuildSlotOutput;
-            if (Sector.System.Colony != null && Sector.System.Colony.NetIndustry != 0) // to avoid crashes
+            if (Sector.System.Colony != null && Sector.System.Colony.Industry_Net != 0) // to avoid crashes
             {
                 switch (ShipyardDesign.BuildSlotOutputType)
                 {
@@ -103,7 +103,7 @@ namespace Supremacy.Orbitals
                         output = output / 100 * Sector.System.Colony.Population.CurrentValue;
                         break;
                     case ShipyardOutputType.IndustryRatio:
-                        output = output / 100 * Sector.System.Colony.NetIndustry / Sector.System.Colony.Facilities_Active2_Industry;
+                        output = output / 100 * Sector.System.Colony.Industry_Net / Sector.System.Colony.Facilities_Active2_Industry;
                         break;
                     case ShipyardOutputType.Static:
                     default:
@@ -303,7 +303,7 @@ namespace Supremacy.Orbitals
                     if (slot.Project != null && slot.Project.BuildDesign != null)
                     {
                         _design = slot.Project.BuildDesign.ToString();
-                        _percent = GameEngine.Do_3_Digit(slot.Project.PercentComplete.ToString());
+                        _percent = GameEngine.Do_x_Digit_String(3, slot.Project.PercentComplete.ToString());
                     }
 
                     if (_percent != "0 %")

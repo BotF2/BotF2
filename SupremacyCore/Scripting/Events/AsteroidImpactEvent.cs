@@ -94,6 +94,14 @@ namespace Supremacy.Scripting.Events
                     Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
+                    if (GameContext.Current.TurnNumber < 150)  // impacts on HomeWorlds are hard !!!!
+                    {
+                        if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                        {
+                            return;
+                        }
+                    }
+
                     List<BuildProject> _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
                         .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)

@@ -2673,7 +2673,8 @@
                       Value="{StaticResource HoverAquaGradient_Left_Right}" />
             </Trigger>
                         <!--IsPressed-->
-                        <Trigger Property="IsPressed"
+               
+              <Trigger Property="IsPressed"
                      Value="True">
               <Setter TargetName="ContentBorder"
                       Property="Background"

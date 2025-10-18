@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Supremacy.AI
 {
@@ -54,7 +55,7 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
 
             _writeDirectly_Colony = true;
-            string _text = _newline + "Step_1101:; ColonyAI.cs > DoTurn begins... for > " + _civ.Key
+            string _text = _newline + "Step_1101:; ColonyAI.cs > Do_0_Turn_Unit begins... for > " + _civ.Key
                 + ": Deu=" + _civM.Resources.Deuterium.CurrentValue
                 + ", Dur=" + _civM.Resources.Duranium.CurrentValue
                 + ", Dil=" + _civM.Resources.Dilithium.CurrentValue
@@ -70,14 +71,14 @@ namespace Supremacy.AI
             // foreach _colony
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(_civ.CivID))
             {
-                _writeDirectly_Colony = false;
+                _writeDirectly_Colony = true;
                 try
                 {
                     // checkcolony
 
                     _name_col = colony.Name; _text += " "; // dummy - please keep
                     _owner_col = colony.Owner.Key;
-                    //string _net_industry_text = GameEngine.Do_4_Digit(_colony.NetIndustry.ToString());
+                    //string _net_industry_text = GameEngine.Do_x_Digit_String( 4, _colony.Industry_Net.ToString());
 
                     _colony_full_Report = _civ_text_ColonyAI; // _newline; // new one for each _colony
 
@@ -179,7 +180,7 @@ namespace Supremacy.AI
 
                     // next_Check / set Breakpoint
                     //colony.ProcessQueue();
-                    Colony_Step_01_Check_Population(colony);  // + Handle_Energy_Production(_colony); // done inside Colony_Step_01_Check_Population
+                    Colony_Step_01_Check_Population(colony);  // + Colony_Step_03_Handle_Energy_Production(_colony); // done inside Colony_Step_01_Check_Population
                     Colony_Step_05_Handle_Food_Production(colony);
 
                     //// just for info
@@ -250,6 +251,13 @@ namespace Supremacy.AI
                     {
                         //Debugger.Break();
                     }
+
+                    int _buildDuration = 0; // just measure the duration (in Turns) to decide next build order
+                    foreach (var proj in colony.BuildQueue)
+                    {
+                        _buildDuration += proj.TurnsRemaining;
+                    }
+
 
                     //checkcolproduction
                     if (colony.BuildQueue.Count < 3)  // ColonyAI ..foreach _colony
@@ -337,7 +345,7 @@ namespace Supremacy.AI
                         foreach (BuildQueueItem buildQueueItem in colony.BuildQueue) // just > Console.WriteLine
                         {
                             _text = "Step_1206:; " + GameEngine.LocationString(colony.Location.ToString()) + " > " + _name_col
-                                + "; needs " + GameEngine.Do_x2_Digit_String(buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
+                                + "; needs " + GameEngine.Do_x_Digit_String( 2, buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
                                 + "; buildQueueItem # " + count + " = " + buildQueueItem.Description
 
                                     //+ buildQueueItem.Description
@@ -379,6 +387,11 @@ namespace Supremacy.AI
 
                         if (colony.Shipyard != null)
                         {
+                            //if (colony.Owner.IsHuman)
+                            //{
+                            //    //Debugger.Break();
+                            //}
+
                             //CheckFor_OFF_ShipProduction(colony);
                             if (/*_colony.Shipyard.BuildSlots != null && */!PlayerAI.IsInFinancialTrouble_BelowMinus2000(colony.Owner))
                             {
@@ -411,11 +424,12 @@ namespace Supremacy.AI
                     } // end of foreach _colony
                     //}
                 }// end of try
-                catch
+                catch (Exception e)
                 {
 
-                    _text = "Step_1105:; ##################### Problem at ColonyAI.DoTurn ..." + colony.Name;
-                    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    _text = "Step_1105:; ##################### Problem at ColonyAI.Do_0_Turn_Unit ..." + colony.Name + _newline + e;
+                    //if (_writeDirectly_Colony) 
+                        Console.WriteLine(_text);
                     Debugger.Break();
                 }// end of catch
 
@@ -435,7 +449,7 @@ namespace Supremacy.AI
 
 
             }// end of 
-            _text = "Step_1109:; Finish of ColonyAI.DoTurn ";
+            _text = "Step_1109:; Finish of ColonyAI.Do_0_Turn_Unit ";
             if (_writeDirectly_Colony) Console.WriteLine(_text);
             //Console.WriteLine(_newline + _newline + "_colony_full_Report" + _newline + _newline + _colony_full_Report + _newline + "End of _colony_full_Report");
 
@@ -754,17 +768,17 @@ namespace Supremacy.AI
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
             }
 
-            //_text = "Step_1109:; Finish of ColonyAI.DoTurn ";
+            //_text = "Step_1109:; Finish of ColonyAI.Do_0_Turn_Unit ";
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
             ////Console.WriteLine(_newline + _newline + "_colony_full_Report" + _newline + _newline + _colony_full_Report + _newline + "End of _colony_full_Report");
 
-        } // End of DoTurn
+        } // End of Do_0_Turn_Unit
 
         private static void CheckFor_OFF_ShipProduction(Colony _colony)
         {
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_colony.Owner.CivID];
 
-            _civM.ShipsOrdered_Check();
+            //_civM.ShipsOrdered_Check();
 
             string _newline = Environment.NewLine;
             //string _text;
@@ -883,7 +897,7 @@ namespace Supremacy.AI
 
             if (_colony.Owner.IsHuman /*&& _colony.Name == "Sol"*/)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_colony.Facilities_Total5_Intelligence - 2 < _intelligencePerPop) // each 100 pop = 1 intel = 10%
@@ -1030,7 +1044,7 @@ namespace Supremacy.AI
             string _text = "Step_1421:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Food on; "*/
                      + " > " + _name_col + " ; " + _owner_col
                      + " >  Check for Food > "
-                              + "current _colony.NetFood= " + _colony.NetFood
+                              + "current _colony.Food_Net= " + _colony.Food_Net
                      //+ _colony.Facilities_Active1_Food
                      + ", maxPop= " + _colony.Population_Max
 
@@ -1038,15 +1052,32 @@ namespace Supremacy.AI
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
             //_colony_full_Report += _newline + _text;
 
+            if (_colony.Owner.IsHuman)
+            {
+                //Debugger.Break();  // checkforfood_removing a facility
+            }
+
             // if food is minus and all are active
-            if (_colony.NetFood < 0 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food)
+            if (_colony.Food_Net < 0 && _colony.Facilities_Active1_Food + 2 > _colony.Facilities_Total1_Food)
             {
                 _itemToBuild_Facility = _available_item;
             }
-            //else
-            //{
-            //    //_colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
-            //}
+            else
+            {
+                if (_colony.Facilities_Active1_Food + 2 > _colony.Facilities_Total1_Food)
+                {
+                    _colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
+                    _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
+                        + " > " + _name_col + " ; " + _owner_col
+                        + " >  Check for Food > "
+                        + "current " + _colony.Facilities_Total1_Food
+                        //+ ", calc by maxPop= (max) " + _researchCalc
+                        + " > removed ONE facility "
+                        ;
+                    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    _colony_full_Report += Environment.NewLine + _text;
+                }
+            }
         }
 
         //private static void Handle_Research_Distribution(Colony _colony) // this 
@@ -1164,7 +1195,7 @@ namespace Supremacy.AI
 
             foreach (var item in all_Build_Projects)
             {
-                string _designID_string = GameEngine.Do_3_Digit(item.BuildDesign.DesignID.ToString());
+                string _designID_string = GameEngine.Do_x_Digit_String(4, item.BuildDesign.DesignID.ToString());
 
                 //_text = /*_newline + */"Step_1420:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Food on; "*/
                 //                + " > " + _name_col + " ; " + _owner_col
@@ -1177,15 +1208,15 @@ namespace Supremacy.AI
                     + " > " + _name_col
                     + " ; " + _owner_col
                     + "; IsUpgrade= " + GameEngine.BoolString_x5(item.IsUpgrade.ToString())
-                    + "; BCost=;" + GameEngine.Do_5_Digit(item.BuildDesign.BuildCost.ToString())
-                    + " ; TurnsNeeded=;" + GameEngine.Do_x2_Digit_String(item.TurnsRemaining.ToString()) // not avaible
-                    + " ; OPTIONS_to_Build_on #;" + GameEngine.Do_x2_Digit_String(count.ToString())
+                    + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
+                    + " ; TurnsNeeded=;" + GameEngine.Do_x_Digit_String( 2, item.TurnsRemaining.ToString()) // not avaible
+                    + " ; OPTIONS_to_Build_on #;" + GameEngine.Do_x_Digit_String( 2, count.ToString())
                     + " ; ID= " + _designID_string
                     + " ; " + item.BuildDesign.ToString()
 
                     //+ " > OPTIONS to Build incl. Upgrades > "
                     //+ "; Morale=; " + _colony.Morale
-                    //+ "; NetIndustry=;" + _colony.NetIndustry
+                    //+ "; Industry_Net=;" + _colony.Industry_Net
                     ;
                 count++;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -1336,22 +1367,22 @@ namespace Supremacy.AI
                 //Debugger.Break();
             }
 
-            Handle_Energy_Production(_colony);
+            Colony_Step_03_Handle_Energy_Production(_colony);
 
-            //while (_colony.NetEnergy - _colony.GetFacilityType(ProductionCategory.Energy).UnitOutput > 0)  // later another one is added if possible
+            //while (_colony.Energy_Net - _colony.GetFacilityType(ProductionCategory.Energy).UnitOutput > 0)  // later another one is added if possible
             //{
             //    _colony.Facility_Deactivate(ProductionCategory.Energy);
             //    _popAvailable += 1;
             //}
 
             // Food 1
-            //while (_popAvailable > 0 && _colony.FoodReserves.CurrentValue > 1000 && _colony.NetFood < -50)
+            //while (_popAvailable > 0 && _colony.FoodReserves.CurrentValue > 1000 && _colony.Food_Net < -50)
             // CheckFood
-            while (_popAvailable > 0 && _colony.NetFood < -50)
+            while (_popAvailable > 0 && _colony.Food_Net < -50)
             {
                 _text = "Step_2347:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Pop= " + _popAvailable
                         + ", Active: Food= " + _colony.GetActiveFacilities(ProductionCategory.Food)
-                        + ", NetFood= " + _colony.NetFood
+                        + ", Food_Net= " + _colony.Food_Net
                         //+ ", En= " + _colony.GetActiveFacilities(ProductionCategory.Energy)
                         //+ ", Res= " + _colony.GetActiveFacilities(ProductionCategory.Research)
                         //+ ", Int= " + _colony.GetActiveFacilities(ProductionCategory.Intelligence)
@@ -1373,7 +1404,7 @@ namespace Supremacy.AI
 
                 //_text = "Step_2348:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Pop= " + _popAvailable
                 //        + ", Active: Food= " + _colony.GetActiveFacilities(ProductionCategory.Food)
-                //        + ", NetFood= " + _colony.NetFood
+                //        + ", Food_Net= " + _colony.Food_Net
                 //        + ", Reserve= " + _colony.FoodReserves.CurrentValue
                 //        + " for " + _name_col
                 //        ;
@@ -1467,30 +1498,30 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
             string _text;
             _text = "Step_2346:; " + GameEngine.LocationString(_colony.Location.ToString())
-        + " > Pool= " + GameEngine.Do_x2_Digit_String(_laborPool.ToString())
-            + " vs " + GameEngine.Do_x2_Digit_String(_popAvailable.ToString()) // should be zero
+        + " > Pool= " + GameEngine.Do_x_Digit_String( 2, _laborPool.ToString())
+            + " vs " + GameEngine.Do_x_Digit_String( 2, _popAvailable.ToString()) // should be zero
 
-        + " ,Active: Food= " + GameEngine.Do_x2_Digit_String(_colony.GetActiveFacilities(ProductionCategory.Food).ToString())
-        + " of " + GameEngine.Do_x2_Digit_String(_colony.GetTotalFacilities(ProductionCategory.Food).ToString())
-        + ", Ind= " + GameEngine.Do_x2_Digit_String(_colony.GetActiveFacilities(ProductionCategory.Industry).ToString())
-        + " of " + GameEngine.Do_x2_Digit_String(_colony.GetTotalFacilities(ProductionCategory.Industry).ToString())
-        + ", En= " + GameEngine.Do_x2_Digit_String(_colony.GetActiveFacilities(ProductionCategory.Energy).ToString())
-        + " of " + GameEngine.Do_x2_Digit_String(_colony.GetTotalFacilities(ProductionCategory.Energy).ToString())
-        + ", Res= " + GameEngine.Do_x2_Digit_String(_colony.GetActiveFacilities(ProductionCategory.Research).ToString())
-        + " of " + GameEngine.Do_x2_Digit_String(_colony.GetTotalFacilities(ProductionCategory.Research).ToString())
-        + ", Int= " + GameEngine.Do_x2_Digit_String(_colony.GetActiveFacilities(ProductionCategory.Intelligence).ToString())
-        + " of " + GameEngine.Do_x2_Digit_String(_colony.GetTotalFacilities(ProductionCategory.Intelligence).ToString())
+        + " ,Active: Food= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Food).ToString())
+        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Food).ToString())
+        + ", Ind= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Industry).ToString())
+        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Industry).ToString())
+        + ", En= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Energy).ToString())
+        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Energy).ToString())
+        + ", Res= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Research).ToString())
+        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Research).ToString())
+        + ", Int= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Intelligence).ToString())
+        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Intelligence).ToString())
 
         + " for " + _name_col
-        + ", Pop now " + GameEngine.Do_3_Digit(_colony.Population.ToString())
-        + " max " + GameEngine.Do_3_Digit(_colony.Population_Max.ToString())
+        + ", Pop now " + GameEngine.Do_x_Digit_String( 3, _colony.Population.ToString())
+        + " max " + GameEngine.Do_x_Digit_String( 3, _colony.Population_Max.ToString())
         //+ " (Checking Population ...DONE)"
         ;
             if (_writeDirectly_Colony) Console.WriteLine(_text);
             _colony_full_Report += _newline + _text;
         }
 
-        private static void Handle_Energy_Production(Colony _colony)
+        private static void Colony_Step_03_Handle_Energy_Production(Colony _colony)
         {
             string _newline = Environment.NewLine;
             string _text;
@@ -1504,7 +1535,7 @@ namespace Supremacy.AI
             List<Buildings.Building> _offlineBuilding = _colony.Buildings.Where(b => !b.IsActive && b.BuildingDesign.EnergyCost > 0).ToList();
             List<OrbitalBattery> _orbBatteries = _colony.OrbitalBatteries.ToList();
             List<ShipyardBuildSlot> _offlineShipyardSlots = _colony.Shipyard == null ? new List<ShipyardBuildSlot>() : _colony.Shipyard.BuildSlots.Where(s => !s.IsActive).ToList();
-            int _netEnergy = _colony.NetEnergy - _offlineBuilding.Sum(b => b.BuildingDesign.EnergyCost) - _offlineShipyardSlots.Sum(s => s.Shipyard.ShipyardDesign.BuildSlotEnergyCost);
+            int _energy_net = _colony.Energy_Net - _offlineBuilding.Sum(b => b.BuildingDesign.EnergyCost) - _offlineShipyardSlots.Sum(s => s.Shipyard.ShipyardDesign.BuildSlotEnergyCost);
 
             while (_colony.Facility_Deactivate(ProductionCategory.Industry)) { } // take it from industry and...
 
@@ -1565,45 +1596,59 @@ namespace Supremacy.AI
                 _colony_full_Report += _newline + _text;
             }
 
-            //SetFacility(_colony, ProductionCategory.Energy, _netEnergy, _energyOutput, new[] { ProductionCategory.Intelligence, ProductionCategory.Research, ProductionCategory.Industry, ProductionCategory.Food });
+            //SetFacility(_colony, ProductionCategory.Energy, _energy_net, _energyOutput, new[] { ProductionCategory.Intelligence, ProductionCategory.Research, ProductionCategory.Industry, ProductionCategory.Food });
 
 
-            // do NOT do a while here > NetEnergy is not updated > so we do it > one per turn
-            if (_colony.NetEnergy/* - (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
+            // do NOT do a while here > Energy_Net is not updated > so we do it > one per turn
+            if (_colony.Energy_Net/* - (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
             {
                 _colony.Facility_Deactivate(ProductionCategory.Energy);
                 //_popAvailable += 1;
             }
 
             // do it 3times
-            if (_colony.NetEnergy /*- (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
+            if (_colony.Energy_Net /*- (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
             {
                 _colony.Facility_Deactivate(ProductionCategory.Energy);
                 //_popAvailable += 1;
             }
 
-            if (_colony.NetEnergy /*- (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
+            if (_colony.Energy_Net /*- (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
             {
                 _colony.Facility_Deactivate(ProductionCategory.Energy);
                 //_popAvailable += 1;
             }
 
-            if (_colony.NetEnergy /*- (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
+            if (_colony.Energy_Net /*- (int)_energyOutput*/ > (int)_energyOutput)  // later another one is added if possible
             {
                 _colony.Facility_Deactivate(ProductionCategory.Energy);
                 //_popAvailable += 1;
+            }
+
+            if (_colony.Energy_Net - (3*(int)_energyOutput) > (int)_energyOutput)
+            {
+                _colony.RemoveFacility(ProductionCategory.Energy);
+                _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Energy on; "*/
+                    + " > " + _name_col + " ; " + _owner_col
+                    + " >  Check for Energy > "
+                    + "current " + _colony.Facilities_Total3_Energy
+                    //+ ", calc by maxPop= (max) " + _researchCalc
+                    + " > removed ONE facility "
+                    ;
+                if (_writeDirectly_Colony) Console.WriteLine(_text);
+                _colony_full_Report += _newline + _text;
             }
 
             var _activeOrbBat = new List<OrbitalBattery> ();
             foreach (var orb in _colony.OrbitalBatteries)
             {
-                if (_colony.NetEnergy < 1 && orb.IsActive)
+                if (_colony.Energy_Net < 1 && orb.IsActive)
                 {
                     //orb.s
                 }
             }
             //}
-            //while (_colony.NetEnergy < 1)
+            //while (_colony.Energy_Net < 1)
             //{
             //    for 
             //}
@@ -1614,7 +1659,7 @@ namespace Supremacy.AI
 
             _text = "Step_1259:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Handle ENERGY on "
                     + _name_col + " " + _owner_col
-                    + " >>> _netEnergy= " + _colony.NetEnergy
+                    + " >>> _energy_net= " + _colony.Energy_Net
                     + " > OrbBat: active " + _colony.OrbitalBatteries_Active + " of " + _colony.OrbitalBatteries_Total
                     + ", _offlineBuilding= " + _offlineBuilding.Where(b => b.IsActive == false).Count()
                     + ", _offlineShipyardSlots= " + _offlineShipyardSlots.Count
@@ -1627,7 +1672,7 @@ namespace Supremacy.AI
                 //Debugger.Break();
             }
 
-        } // End of Handle_Energy_Production(Colony _colony)
+        } // End of Colony_Step_03_Handle_Energy_Production(Colony _colony)
 
         private static void Colony_Step_05_Handle_Food_Production(Colony _colony)
         {
@@ -1635,7 +1680,7 @@ namespace Supremacy.AI
             string _text;
 
             double foodOutput = _colony.GetFacilityType(ProductionCategory.Food).UnitOutput * (1.0 + _colony.GetProductionModifier(ProductionCategory.Food).Efficiency);
-            //double neededFood = _colony.NetFood + _colony.FoodReserves.CurrentValue - (10 * foodOutput);
+            //double neededFood = _colony.Food_Net + _colony.FoodReserves.CurrentValue - (10 * foodOutput);
             double neededFood = _colony.Population.CurrentValue - foodOutput;
 
             //SetFacility(_colony, ProductionCategory.Food, (int)neededFood, foodOutput, new[] { ProductionCategory.Intelligence, ProductionCategory.Research, ProductionCategory.Industry });
@@ -1647,7 +1692,7 @@ namespace Supremacy.AI
                     + "; neededFood= " + (int)neededFood
                     + "; maxFoodProduction= " + (int)maxFoodProduction
                     + "; for Pop= " + _colony.Population
-                    + "; NetFood= " + _colony.NetFood
+                    + "; Food_Net= " + _colony.Food_Net
                     + ", Reserve= " + _colony.FoodReserves.CurrentValue
                     //+ " > no Upgrade INDUSTRY"
                     ;
@@ -1655,7 +1700,7 @@ namespace Supremacy.AI
             //_colony_full_Report += _newline + _text;
 
             ProductionFacilityDesign facilityType = _colony.GetFacilityType(ProductionCategory.Food);
-            if (_colony.NetFood < 15 && _colony.FoodReserves.CurrentValue + 1 / _colony.Population.CurrentValue + 1 < 5 && !_colony.IsBuilding(facilityType))
+            if (_colony.Food_Net < 15 && _colony.FoodReserves.CurrentValue + 1 / _colony.Population.CurrentValue + 1 < 5 && !_colony.IsBuilding(facilityType))
             {
                 _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, facilityType)));
                 _text = "Step_1228:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col + " " + _owner_col + " > Handle_FOOD_Production "
@@ -1676,7 +1721,7 @@ namespace Supremacy.AI
                     + "; neededFood= " + (int)neededFood
                     + "; maxFoodProduction= " + (int)maxFoodProduction
                     + "; for Pop= " + _colony.Population
-                    + "; NetFood= " + _colony.NetFood
+                    + "; Food_Net= " + _colony.Food_Net
                     + ", Reserve= " + _colony.FoodReserves.CurrentValue
                     ;
             if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -1695,11 +1740,11 @@ namespace Supremacy.AI
             int industryNeeded = _colony.BuildSlots.Where(s => s.Project != null).Select(s => s.Project.IsRushed ? 0 : s.Project.GetCurrentIndustryCost()).Sum();
             int turnsNeeded = industryNeeded == 0 ? 0 : (int)Math.Ceiling(industryNeeded / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (maxProdFacility * prodOutput)));
             double facilityNeeded = turnsNeeded == 0 ? 0 : Math.Truncate(((industryNeeded / turnsNeeded) - _colony.GetProductionModifier(ProductionCategory.Industry).Bonus) / prodOutput);
-            double netIndustry = -(facilityNeeded - _colony.ActiveFacilities[ProductionCategory.Industry].Value) * prodOutput;
+            double _industry_Net = -(facilityNeeded - _colony.ActiveFacilities[ProductionCategory.Industry].Value) * prodOutput;
 
             //Print_Labors(_colony, _colony.AvailableLabor, _colony.AvailableLabor / 10);
 
-            SetFacility(_colony, ProductionCategory.Industry, (int)netIndustry, prodOutput, new[] { ProductionCategory.Intelligence, ProductionCategory.Research });
+            SetFacility(_colony, ProductionCategory.Industry, (int)_industry_Net, prodOutput, new[] { ProductionCategory.Intelligence, ProductionCategory.Research });
 
             Print_Labors(_colony, _colony.AvailableLabor, _colony.AvailableLabor / 10);
         }
@@ -2142,7 +2187,7 @@ namespace Supremacy.AI
 
                 //            + "; StockpileGLOBAL=; " + item.Value
                 //            + " ; for; " + item.Key
-                //        //+ "; NetIndustry=;" + _colony.NetIndustry
+                //        //+ "; Industry_Net=;" + _colony.Industry_Net
                 //        //+ "; ToBuild=;" + _toBuildText
 
                 //        ;
@@ -2197,7 +2242,7 @@ namespace Supremacy.AI
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
                 //            //+ "; prodOutput=;" + prodOutput // per unit
-                //            + "; NetIndustry=;" + _colony.NetIndustry
+                //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + _toBuildText
 
                 //        ;
@@ -2208,7 +2253,7 @@ namespace Supremacy.AI
                         + " ; " + _owner_col
                         + " ; Morale=; " + _colony.Morale
                         //+ "; prodOutput=;" + prodOutput // per unit
-                        + "; NetIndustry=;" + _colony.NetIndustry
+                        + "; Industry_Net=;" + _colony.Industry_Net
                         + "; BuildQueue.Count=; " + _colony.BuildQueue.Count
                         + "; Colony_Step_60_Handle_Basic_Structures=;" + _toBuildText
 
@@ -2233,7 +2278,7 @@ namespace Supremacy.AI
                             + " ; " + _owner_col
                             + "; Morale=; " + _colony.Morale
                             + "; prodOutput=;" + prodOutput
-                            + "; NetIndustry=;" + _colony.NetIndustry
+                            + "; Industry_Net=;" + _colony.Industry_Net
                             + "; > Added to Build=;" + structureProject.BuildDesign.ToString()
 
                             ;
@@ -2266,8 +2311,8 @@ namespace Supremacy.AI
                 //                        //    + "; " + _owner_col
                 //                        //    + " OPTIONS to Build > "
                 //                        //    + "; Morale=; " + _colony.Morale
-                //                        //    + "; NetIndustry=;" + _colony.NetIndustry
-                //                        //    + "; BCost=;" + GameEngine.Do_5_Digit(item.BuildDesign.BuildCost.ToString())
+                //                        //    + "; Industry_Net=;" + _colony.Industry_Net
+                //                        //    + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
                 //                        //    + "; OPTIONS_to_Build_on #;" + count
                 //                        //    + "; " + item.BuildDesign.ToString()
 
@@ -2335,7 +2380,7 @@ namespace Supremacy.AI
 
             colony.ProcessQueue();
 
-            int _laborAvailable = colony.AvailableLabor;
+            int _laborAvailable = colony.AvailableLabor - 2;
 
             //if (_colony.BuildQueue.Count > 0) // already building
             //{
@@ -2349,6 +2394,11 @@ namespace Supremacy.AI
 
             if (_laborAvailable > 0 && colony.BuildQueue.Count < 4) // Colony_Step_60_Handle_Basic_Structures
             {
+                if (colony.Owner.IsHuman)
+                {
+                    Debugger.Break();
+                }
+
                 double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
                     * (colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue))
                     * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
@@ -2382,7 +2432,7 @@ namespace Supremacy.AI
 
                 //            + "; StockpileGLOBAL=; " + item.Value
                 //            + " ; for; " + item.Key
-                //        //+ "; NetIndustry=;" + _colony.NetIndustry
+                //        //+ "; Industry_Net=;" + _colony.Industry_Net
                 //        //+ "; ToBuild=;" + _toBuildText
 
                 //        ;
@@ -2437,7 +2487,7 @@ namespace Supremacy.AI
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
                 //            //+ "; prodOutput=;" + prodOutput // per unit
-                //            + "; NetIndustry=;" + _colony.NetIndustry
+                //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + _toBuildText
 
                 //        ;
@@ -2449,7 +2499,7 @@ namespace Supremacy.AI
                         + " > Colony_Step_40_Build_for_LaborPool"
                         + "; Morale=; " + colony.Morale
                         //+ "; prodOutput=;" + prodOutput // per unit
-                        + "; NetIndustry=;" + colony.NetIndustry
+                        + "; Industry_Net=;" + colony.Industry_Net
                         //+ "; ToBuild=;" + _toBuildText
                         + "; BuildQueue.Count=" + colony.BuildQueue.Count
                     //+ "; MathCeiling=; " + Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
@@ -2473,7 +2523,7 @@ namespace Supremacy.AI
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
                 //            + "; prodOutput=;" + prodOutput
-                //            + "; NetIndustry=;" + _colony.NetIndustry
+                //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + structureProject.BuildDesign.ToString()
 
                 //            ;
@@ -2576,8 +2626,8 @@ namespace Supremacy.AI
                     //                        //    + "; " + _owner_col
                     //                        //    + " OPTIONS to Build > "
                     //                        //    + "; Morale=; " + _colony.Morale
-                    //                        //    + "; NetIndustry=;" + _colony.NetIndustry
-                    //                        //    + "; BCost=;" + GameEngine.Do_5_Digit(item.BuildDesign.BuildCost.ToString())
+                    //                        //    + "; Industry_Net=;" + _colony.Industry_Net
+                    //                        //    + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
                     //                        //    + "; OPTIONS_to_Build_on #;" + count
                     //                        //    + "; " + item.BuildDesign.ToString()
 
@@ -2617,7 +2667,12 @@ namespace Supremacy.AI
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
 
-                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 2)
+                if (_colony.Owner.IsHuman)
+                {
+                    //Debugger.Break();
+                }
+
+                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 2)
                 //{
                 //    // Industry Upgrade ?
                 //    ProductionFacilityUpgradeProject upgrade_IndustryProject = TechTreeHelper
@@ -2658,8 +2713,13 @@ namespace Supremacy.AI
                 //    _colony.BuildQueue.Add(new BuildQueueItem(structureProject));
                 //}
 
+                int _buildDuration = 0; // just measure the duration (in Turns) to decide next build order
+                foreach (var proj in _colony.BuildQueue)
+                {
+                    _buildDuration += proj.TurnsRemaining;
+                }
 
-                if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 2) // Colony_Step_70_Handle_Additional_Structures
+                if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 2) // Colony_Step_70_Handle_Additional_Structures
                 {
                     double prodOutput = _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
                         * _colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue)
@@ -2702,7 +2762,7 @@ namespace Supremacy.AI
                     }
                 }
 
-                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 2)
+                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 2)
                 //{
                 //    List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Industry, ProductionCategory.Research, ProductionCategory.Intelligence };
                 //    int flexLabors = _colony.GetAvailableLabor() + flexProduction.Sum(c => _colony.GetFacilityType(c).LaborCost * _colony.GetActiveFacilities(c));
@@ -2719,7 +2779,7 @@ namespace Supremacy.AI
                 //    }
                 //}
 
-                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 2)
+                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 2)
                 //{
                 //    IList<BuildProject> projects = TechTreeHelper.GetBuildProjects(_colony);
                 //}
@@ -2753,10 +2813,16 @@ namespace Supremacy.AI
 
 
 
-            //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 1 && _colony.AvailableLabor < 1)
+            //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 1 && _colony.AvailableLabor < 1)
+
+            int _buildDuration = 0; // just measure the duration (in Turns) to decide next build order
+            foreach (var proj in _colony.BuildQueue)
+            {
+                _buildDuration += proj.TurnsRemaining;
+            }
 
             // Queue < 1 for not blocking the queue for a long time
-            if (_colony.BuildQueue.Count < 1 && _colony.AvailableLabor < 1)
+            if (_buildDuration < 1 && _colony.AvailableLabor < 1)
             {
                 try
                 {
@@ -2768,7 +2834,7 @@ namespace Supremacy.AI
                     _colony_full_Report += _newline + _text;
 
 
-                    //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 2)
+                    //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 2)
                     //{
                     // Industry Upgrade ?
                     var _all = TechTreeHelper
@@ -3001,7 +3067,7 @@ namespace Supremacy.AI
                     //}
                 }
 
-                if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 2)
+                if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 2)
                 {
                     double prodOutput = _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
                         * (_colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue))
@@ -3042,14 +3108,14 @@ namespace Supremacy.AI
                     //{
                     //    _text = "Step_1226:; > " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
                     //        + " structureProject: available "
-                    //        + ", turnsNeeded= " + GameEngine.Do_x2_Digit_String(item.TurnsRemaining.ToString())
-                    //        + ", industryRemaining= " + GameEngine.Do_4_Digit(item.IndustryRemaining.ToString())
-                    //        + ", NetIndustry= " + _net_industry_text
+                    //        + ", turnsNeeded= " + GameEngine.Do_x_Digit_String( 2, item.TurnsRemaining.ToString())
+                    //        + ", industryRemaining= " + GameEngine.Do_x_Digit_String( 4, item.IndustryRemaining.ToString())
+                    //        + ", Industry_Net= " + _net_industry_text
                     //        + ", item= " + item.BuildDesign
 
                     //    //+ ", Costs= " + cost
 
-                    //    //+ ", NetIndustry= " + item.BuildDesign.BuildCost.
+                    //    //+ ", Industry_Net= " + item.BuildDesign.BuildCost.
 
                     //    //+ "; Credits.Current= " + _civM.Credits.CurrentValue
                     //    //+ " > IsRushed for " + s.Project
@@ -3106,8 +3172,8 @@ namespace Supremacy.AI
 
                                 //+ ", Costs= " + cost
                                 + ", industryRemaining= " + structureProject.IndustryRemaining
-                                + ", NetIndustry= " + GameEngine.Do_4_Digit(_colony.NetIndustry.ToString())
-                        //+ ", NetIndustry= " + item.BuildDesign.BuildCost.
+                                + ", Industry_Net= " + GameEngine.Do_x_Digit_String( 4, _colony.Industry_Net.ToString())
+                        //+ ", Industry_Net= " + item.BuildDesign.BuildCost.
 
                         //+ "; Credits.Current= " + _civM.Credits.CurrentValue
                         //+ " > Math.Ceiling= " + Math.Ceiling(structureProject.GetCurrentIndustryCost()
@@ -3129,13 +3195,13 @@ namespace Supremacy.AI
                             goto StructureProjectAdded;
                         }
 
-                        if (_colony.BuildQueue.Count < 2 && _turns_needed < 5.0) // not more as 3 turns
+                        if (_buildDuration < 2 && _turns_needed < 5.0) // not more as 3 turns
                         {
                             _colony.BuildQueue.Add(new BuildQueueItem(structureProject));
                             goto StructureProjectAdded;
                         }
 
-                        if (_colony.BuildQueue.Count < 2 && _turns_needed < 19.0) // not more as 18 turns
+                        if (_buildDuration < 2 && _turns_needed < 19.0) // not more as 18 turns
                         {
                             _colony.BuildQueue.Add(new BuildQueueItem(structureProject));
                             _text = "Step_1279:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
@@ -3145,10 +3211,10 @@ namespace Supremacy.AI
 
                                     //+ ", Costs= " + cost
                                     + ", industryRemaining= " + structureProject.IndustryRemaining
-                                    + ", NetIndustry= " + GameEngine.Do_4_Digit(_colony.NetIndustry.ToString())
+                                    + ", Industry_Net= " + GameEngine.Do_x_Digit_String( 4, _colony.Industry_Net.ToString())
 
                                     + "  ..( max. 18)"
-                                //+ ", NetIndustry= " + item.BuildDesign.BuildCost.
+                                //+ ", Industry_Net= " + item.BuildDesign.BuildCost.
 
                                 //+ "; Credits.Current= " + _civM.Credits.CurrentValue
                                 //+ " > Math.Ceiling= " + Math.Ceiling(structureProject.GetCurrentIndustryCost()
@@ -3203,8 +3269,13 @@ namespace Supremacy.AI
 
             _colony.ProcessQueue();
 
+            int _buildDuration = 0; // just measure the duration (in Turns) to decide next build order
+            foreach (var proj in _colony.BuildQueue)
+            {
+                _buildDuration += proj.TurnsRemaining;
+            }
 
-            if (_colony.BuildQueue.Count < 2) //Colony_Step_85_Handle_Build_Anything
+            if (_buildDuration < 2) //Colony_Step_85_Handle_Build_Anything
             {
                 double prodOutput = _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
                     * (_colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue))
@@ -3239,7 +3310,7 @@ namespace Supremacy.AI
 
                 //            + "; StockpileGLOBAL=; " + item.Value
                 //            + "; for; " + item.Key
-                //        //+ "; NetIndustry=;" + _colony.NetIndustry
+                //        //+ "; Industry_Net=;" + _colony.Industry_Net
                 //        //+ "; ToBuild=;" + _toBuildText
 
                 //        ;
@@ -3312,7 +3383,7 @@ namespace Supremacy.AI
                 //                + "; " + _owner_col
                 //                + "; Morale=; " + _colony.Morale
                 //                //+ "; prodOutput=;" + prodOutput // per unit
-                //                + "; NetIndustry=;" + _colony.NetIndustry
+                //                + "; Industry_Net=;" + _colony.Industry_Net
                 //                + "; Available=;" + item.BuildDesign
 
                 //            ;
@@ -3359,7 +3430,7 @@ namespace Supremacy.AI
                         + " > Colony_Step_85_Handle_Build_Anything"
                             + "; Morale=; " + _colony.Morale
                             //+ "; prodOutput=;" + prodOutput // per unit
-                            + "; NetIndustry=;" + _colony.NetIndustry
+                            + "; Industry_Net=;" + _colony.Industry_Net
                             + "; ToBuild=;" + _toBuildText
                             + "; BuildQueue.Count= " + _colony.BuildQueue.Count
                         //+ "; MathCeiling=; " + Math.Ceiling(anyProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
@@ -3375,7 +3446,7 @@ namespace Supremacy.AI
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
                 //            //+ "; prodOutput=;" + prodOutput // per unit
-                //            + "; NetIndustry=;" + _colony.NetIndustry
+                //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + _toBuildText
 
                 //        ;
@@ -3386,7 +3457,7 @@ namespace Supremacy.AI
                         + " ; " + _owner_col
                         + " ; Morale=; " + _colony.Morale
                         //+ "; prodOutput=;" + prodOutput // per unit
-                        + "; NetIndustry=;" + _colony.NetIndustry
+                        + "; Industry_Net=;" + _colony.Industry_Net
                         + "; Colony_Step_85_Handle_Build_Anything=;" + _toBuildText
                         + "; BuildQueue.Count=" + _colony.BuildQueue.Count
                     //+ "; MathCeiling=; " + Math.Ceiling(anyProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
@@ -3437,7 +3508,7 @@ namespace Supremacy.AI
                             + " ; " + _owner_col
                             + " ; Morale=; " + _colony.Morale
                             + "; prodOutput=;" + prodOutput
-                            + "; NetIndustry=;" + _colony.NetIndustry
+                            + "; Industry_Net=;" + _colony.Industry_Net
                             + "; Added_to_Build=;" + _itemToBuild.BuildDesign.ToString()
 
                             ;
@@ -3446,14 +3517,14 @@ namespace Supremacy.AI
                 }
 
                 // doubled
-                //if (_colony.BuildQueue.Count < 2)
+                //if (_buildDuration < 2)
                 //{
                 //    _colony.BuildQueue.Add(new BuildQueueItem(obProject));
                 //}
 
 
 
-                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_colony.BuildQueue.Count < 2)  //2023-11-11
+                //if (/*_colony.BuildSlots.All(t => t.Project == null) && */_buildDuration < 2)  //2023-11-11
                 //{
                 //    IList<BuildProject> projects = TechTreeHelper.GetBuildProjects(_colony);
                 //    _text = "Step_1234:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Added to Build"
@@ -3475,8 +3546,8 @@ namespace Supremacy.AI
                 //            + " on; " + _name_col
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
-                //            + "; NetIndustry=;" + _colony.NetIndustry
-                //            + "; BCost=;" + GameEngine.Do_5_Digit(item.BuildDesign.BuildCost.ToString())
+                //            + "; Industry_Net=;" + _colony.Industry_Net
+                //            + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
                 //            + "; OPTIONS_to_Build_on #;" + count
                 //            + "; " + item.BuildDesign.ToString()
 
@@ -3579,13 +3650,22 @@ namespace Supremacy.AI
 
             //ShipType _neededShipType;
 
+            if (_colony.Owner.IsHuman)
+            {
+                //Debugger.Break();
+            }
+
             //_neededShipType = ShipType.Construction; // here more code to do
 
             if (_civM._neededShiptypesList != null && _civM._neededShiptypesList.Count > 1)
             {
                 _neededShipTypeText = _civM._neededShiptypesList[1].ToString();
                 _civM._neededShiptypesList.RemoveAt(1);
+                _neededShipType = (ShipType)Enum.Parse(typeof(ShipType), _neededShipTypeText);
+                //return neededShipType;// = (ShipType)Enum.Parse(typeof(ShipType), _neededShipTypeText);
             }
+
+
 
             BuildProject newProject = potentialProjects.LastOrDefault(p => shipDesigns.Any(d => d.ShipType == _neededShipType && p.BuildDesign == d));
             if (newProject != null)
@@ -3597,10 +3677,11 @@ namespace Supremacy.AI
                     //+ ""
 
 
-                    + " > ShipProduction: Added Colonizer _proj..." + newProject.BuildDesign
+                    + " > ShipProduction: Added Ship- _proj..." + newProject.BuildDesign
 
                     ;
-                if (_writeDirectly_Colony) Console.WriteLine(_text);
+                if (_writeDirectly_Colony) 
+                    Console.WriteLine(_text);
             }
 
 
@@ -3650,961 +3731,990 @@ namespace Supremacy.AI
                 _text = "Step_1213:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Ship_Production: "
                         + "potential < _proj.Description= " + _proj.Description
                         ;
-                if (_writeDirectly_Colony) Console.WriteLine(_text);
+                //if (_writeDirectly_Colony) 
+                    Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
             }
 
-            // just listing available projects
-            foreach (BuildProject _proj in projects)
+
+            if (_colony.Owner.IsHuman)
             {
-                _text = "Step_5781:; "
-                        + GameEngine.LocationString(_colony.Location.ToString())
-                        + " > " + _name_col
-                        + " ; " + _owner_col
-                        + " > ShipProduction"
+                //Debugger.Break();  // next: checking each project is one is "needed" and "avaible"
+            }
 
-                    + " (needs " + GameEngine.Do_x2_Digit_String(_proj.TurnsRemaining.ToString()) + " Turns)"
-                    + ": available= " + _proj.BuildDesign
-                    ;
-                if (_writeDirectly_Colony) Console.WriteLine(_text);
-                _colony_full_Report += _newline + _text;
+            try
+            {
 
 
-
-                // Ship production
-                //_potentialProjects.Add(_proj); - this is already populated
-
-                // this works by the sorting out of the data file 'TechObj_6_Ships.xml'
-                // if 2nd is transport > it will check for Transport and block the BuildQueue with it
-
-                //if (_proj.Description.Contains("COLONY")) CheckFor_ColonyShip(_colony, _civM, ShipType.Colony, _proj);
-                //if (_proj.Description.Contains("MEDICAL")) CheckFor_BuildShip(_colony, _civM, ShipType.Medical, _proj);
-                //if (_proj.Description.Contains("SPY")) CheckFor_BuildShip(_colony, _civM, ShipType.Spy, _proj);
-                //if (_proj.Description.Contains("DIPLOMATIC")) CheckFor_BuildShip(_colony, _civM, ShipType.Diplomatic, _proj);
-
-                //if (_proj.Description.Contains("COMMAND")) CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj);
-                //if (_proj.Description.Contains("CRUISER")) CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj); // includes Heavy and StrikeCruiser
-                //if (_proj.Description.Contains("DESTROYER")) CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                //if (_proj.Description.Contains("FRIGATE")) CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                //if (_proj.Description.Contains("SCOUT")) CheckFor_BuildShip(_colony, _civM, ShipType.Scout, _proj);
-                //if (_proj.Description.Contains("SCIENCE")) CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
-
-                //if (_proj.Description.Contains("TRANSPORT")) CheckFor_BuildShip(_colony, _civM, ShipType.Transport, _proj);
-                //if (_proj.Description.Contains("CONSTRUCTION")) CheckFor_BuildShip(_colony, _civM, ShipType.Construction, _proj);
-
-                //}
-
-                #region oldstuff
-                //Dictionary<int, ShipType> _listPrioShipBuild_tmp = new Dictionary<int, ShipType>();
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Colony_Needed, ShipType.Colony);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Construction_Needed, ShipType.Construction);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Medical_Needed, ShipType.Medical);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Spy_Needed, ShipType.Spy);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Diplomatic_Needed, ShipType.Diplomatic);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Science_Needed, ShipType.Science);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Scout_Needed, ShipType.Scout);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_FastAttack_Needed, ShipType.FastAttack);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Cruiser_Needed, ShipType.Cruiser);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_StrikeCruiser_Needed, ShipType.StrikeCruiser);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_HeavyCruiser_Needed, ShipType.HeavyCruiser);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Command_Needed, ShipType.Command);
-                //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Transport_Needed, ShipType.Transport);
-
-                //int _gp = GameContext.Current.TurnNumber / 10;
-
-                //// first value is basic requirement
-                //int _civM.Z_Ship_Colony_Needed = 1 + _civM.Z_Ship_Colony_Needed;// - _civM.Z_Ship_Colony_Available - _civM.Z_Ship_Colony_Ordered;
-                //int _civM.Z_Ship_Construction_Needed = 1 + _civM.Z_Ship_Construction_Needed;// - _civM.Z_Ship_Construction_Available - _civM.Z_Ship_Construction_Ordered;
-                //int _civM.Z_Ship_Medical_Needed = 1 + _civM.Z_Ship_Medical_Needed;// - _civM.Z_Ship_Medical_Available - _civM.Z_ShipMedicalOrdered;
-                //int _civM.Z_Ship_Spy_Needed = 0 + _civM.Z_Ship_Spy_Needed;// - _civM.Z_Ship_Spy_Available - _civM.Z_ShipSpyOrdered;
-                //int _civM.Z_Ship_Diplomatic_Needed = _gp + _civM.Z_Ship_Diplomatic_Needed;// - _civM.Z_Ship_Diplomatic_Available - _civM.Z_ShipDiplomaticOrdered;
-                //int _civM.Z_Ship_Science_Needed = 1 + _civM.Z_Ship_Science_Needed;// - _civM.Z_Ship_Science_Available - _civM.Z_ShipScienceOrdered;
-                //int _civM.Z_Ship_Scout_Needed = 1 + _civM.Z_Ship_Scout_Needed;// - _civM.Z_Ship_Scout_Available - _civM.Z_ShipScoutOrdered;
-                //int _civM.Z_Ship_FastAttack_Needed = 1 + _civM.Z_Ship_FastAttack_Available;// - _civM.Z_Ship_FastAttack_Available - _civM.Z_ShipFastAttackOrdered;
-                ////int _shipNeeded_destroyer = _civM. - _civM.Z_ShipDestroyerAvailable - _civM.Z_ShipDestroyerOrdered;
-                //int _civM.Z_Ship_Cruiser_Needed = 1 + _civM.Z_Ship_Cruiser_Needed;// - _civM.Z_Ship_Cruiser_Available - _civM.Z_ShipCruiserOrdered;
-
-                //int _civM.Z_Ship_StrikeCruiser_Needed = _gp + _civM.Z_Ship_StrikeCruiser_Needed;// - _civM.Z_Ship_StrikeCruiser_Available - _civM.Z_ShipStrikeCruiserOrdered;
-                //int _civM.Z_Ship_HeavyCruiser_Needed = _gp + _civM.Z_Ship_HeavyCruiser_Needed;// - _civM.Z_Ship_HeavyCruiser_Available - _civM.Z_ShipHeavyCruiserOrdered;
-                //int _civM.Z_Ship_Command_Needed = _gp + _civM.Z_Ship_Command_Needed;// - _civM.Z_ShipCommandAvailable - _civM.Z_ShipCommandOrdered;
-                //int _civM.Z_Ship_Transport_Needed = _gp + _civM.Z_Ship_Transport_Needed;// - _civM.Z_Ship_Transport_Available - _civM.Z_ShipTransportOrdered;
-
-                //if (GameContext.Current.TurnNumber < 9)
-                //{ _civM.Z_Ship_Colony_Needed = +10; }
-
-                //int _ship_Total_Needed =
-                //      _civM.Z_Ship_Colony_Needed
-                //    + _civM.Z_Ship_Construction_Needed
-                //    + _civM.Z_Ship_Medical_Needed
-                //    + _civM.Z_Ship_Spy_Needed
-                //    + _civM.Z_Ship_Diplomatic_Needed
-                //    + _civM.Z_Ship_Science_Needed
-                //    + _civM.Z_Ship_Scout_Needed
-                //    + _civM.Z_Ship_FastAttack_Needed
-                //    + _civM.Z_Ship_Cruiser_Needed
-                //    + _civM.Z_Ship_StrikeCruiser_Needed
-                //    + _civM.Z_Ship_HeavyCruiser_Needed
-                //    + _civM.Z_Ship_Command_Needed
-                //    + _civM.Z_Ship_Transport_Needed
-                //    ;
-                //ggg
-
-
-                //_text = "Step_5785:; "
-                //            + GameEngine.LocationString(_colony.Location.ToString())
-                //            + " > " + _name_col
-                //            + " ; " + _owner_col
-                //            + " > ShipProduction"
-                //            + " > _listPrioShipBuild.Count= " + _listPrioShipBuild.Count
-                //    ;
-                //if (_writeDirectly_Colony) Console.WriteLine(_text);
-                //_colony_full_Report += _newline + _text;
-
-                //if (_listPrioShipBuild.Count == 0)
-                //{
-                //    //
-                //    //_text = _bool_listPrioShipBuild_Empty.ToString(); // dummy, just keep
-
-                //    //_bool_listPrioShipBuild_Empty = true;
-                //}
-                //else
-                //{
-                //if (_listPrioShipBuild.Count > 1)
-                //{
-                //    _listPrioShipBuild.OrderByDescending(_l => _l.Value);
-                //}
-
-                //_text = _listPrioShipBuild[0].Item2.ToString(); // > this crashes on Item2
-                #endregion oldstuff
-
-                //if (_civ.Key.Contains("Botha"))
-                //{
-                //    //Debugger.Break();
-                //}
-
-
-                if (_civM._neededShiptypesList != null && _civM._neededShiptypesList.Count > 1)
+                // just listing available projects
+                foreach (BuildProject _proj in projects)
                 {
-                    _neededShipTypeText = _civM._neededShiptypesList[1].ToString();
-                    _civM._neededShiptypesList.RemoveAt(1);
-                }
+                    _text = "Step_5781:; "
+                            + GameEngine.LocationString(_colony.Location.ToString())
+                            + " > " + _name_col
+                            + " ; " + _owner_col
+                            + " > ShipProduction"
 
-                //_neededShipType = _listPrioShipBuild.;
-                //switch (_neededShipTypeText)
-                //{
-                //    case "COLONY":
-                //        _neededShipType = ShipType.Colony;
-                //        break;
-                //    case "CONSTRUCTION":
-                //        _neededShipType = ShipType.Construction;
-                //        break;
-                //    case "MEDICAL":
-                //        _neededShipType = ShipType.Medical;
-                //        break;
-                //    case "TRANSPORT":
-                //        _neededShipType = ShipType.Transport;
-                //        break;
-                //    case "SPY":
-                //        _neededShipType = ShipType.Spy;
-                //        break;
-                //    case "DIPLOMATIC":
-                //        _neededShipType = ShipType.Science;
-                //        break;
-                //    case "SCIENCE":
-                //        _neededShipType = ShipType.Colony;
-                //        break;
-                //    case "SCOUT":
-                //        _neededShipType = ShipType.Scout;
-                //        break;
-                //    case "FASTATTACK":
-                //        _neededShipType = ShipType.FastAttack;
-                //        break;
-                //    case "CRUISER":
-                //        _neededShipType = ShipType.Cruiser;
-                //        break;
-                //    case "HEAVYCRUISER":
-                //        _neededShipType = ShipType.HeavyCruiser;
-                //        break;
-                //    case "STRIKECRUISER":
-                //        _neededShipType = ShipType.StrikeCruiser;
-                //        break;
-                //    case "COMMAND":
-                //        _neededShipType = ShipType.Command;
-                //        break;
-                //        //default":
-                //        //    break;
-                //}
-
-
-                if (GameContext.Current.TurnNumber < 15)
-                {
-                    _neededShipType = ShipType.Construction;
-                    _neededShipTypeText = "CONSTRUCTION";
-                }
-
-                if (GameContext.Current.TurnNumber < 7)
-                {
-                    _neededShipType = ShipType.Colony;
-                    _neededShipTypeText = "COLONY";
-                }
-
-
-                if (GameContext.Current.TurnNumber < 14 && _colony.Owner.Key == "BORG")
-                {
-                    _neededShipType = ShipType.Construction;
-                    _neededShipTypeText = "CONSTRUCTION";
-                }
-
-
-                // Already checked before but here to hover the count
-                if (_colony.Shipyard.BuildQueue.Count > 0) { goto ProcessQueue; }
-
-                _shipOrderIsDone = false;
-
-                // 
-                if (_civM._neededShiptypesList != null)
-                {
-
-
-                    foreach (var item in _civM._neededShiptypesList)
-                    {
-                        if (item.ToString() == "dummy")
-                        {
-                            // nothing
-                        }
-                        else
-                        {
-                            _text = _civM.Civilization
-                                + " _neededShiptypesList= " + item.ToString()
-                                ;
-                            Console.WriteLine(_text);
-                        }
-                    }
-                }
-
-                //check _listPrioShipBuild2
-
-                //var _listPrioShipBuild2 = new List<ShipType>();// _listPrioShipBuild2 is out of the options if first list is empty
-
-
-                //foreach (BuildProject _proj in _potentialProjects)  // find Prio
-                //{
-                //    _text = "Step_1213:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Ship_Production: "
-                //            + "potential < _proj.Description= " + _proj.Description
-                //            ;
-                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                //    _colony_full_Report += _newline + _text;
-                //}
-
-                //foreach (BuildProject _proj in _potentialProjects)  // find Prio
-                //{
-                //    //if (checkForShipProduction)
-                //    //    _text = ""; /*just for breakpoint*/
-
-                if (_colony.Owner.IsHuman)
-                {
-                    //Debugger.Break();
-                }
-
-                //    if (_colony.Shipyard.BuildQueue.Count > 1)
-                //    {
-                //        continue;
-                //    }
-
-                if (potentialProjects.Count == 1) // build the only existing option
-                {
-                    // just use Proj[0], ShipType.Medical = DUMMY
-                    _text = "Step_1209:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Only this one available > "
-                        + potentialProjects[0].BuildDesign
-
+                        + " (needs " + GameEngine.Do_x_Digit_String( 2, _proj.TurnsRemaining.ToString()) + " Turns)"
+                        + ": available= " + _proj.BuildDesign
                         ;
                     if (_writeDirectly_Colony) Console.WriteLine(_text);
                     _colony_full_Report += _newline + _text;
 
-                    BuildShipType(_colony, _civM, ShipType.Medical); //, potentialProjects[0]);
-                    _shipOrderIsDone = true;
-                    goto ProcessQueue;
-                }
 
 
-                //_text = "Step_1213:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Ship_Production: "
-                //        + "potential < _proj.Description= " + _proj.Description
-                //        ;
-                //if (_writeDirectly_Colony) Console.WriteLine(_text);
-                //_colony_full_Report += _newline + _text;
 
-                //if (_colony.Owner.IsHuman)
-                //{
-                //    Debugger.Break();
-                //}
+                    // Ship production
+                    //_potentialProjects.Add(_proj); - this is already populated
+
+                    // this works by the sorting out of the data file 'TechObj_6_Ships.xml'
+                    // if 2nd is transport > it will check for Transport and block the BuildQueue with it
+
+                    //if (_proj.Description.Contains("COLONY")) CheckFor_ColonyShip(_colony, _civM, ShipType.Colony, _proj);
+                    //if (_proj.Description.Contains("MEDICAL")) CheckFor_BuildShip(_colony, _civM, ShipType.Medical, _proj);
+                    //if (_proj.Description.Contains("SPY")) CheckFor_BuildShip(_colony, _civM, ShipType.Spy, _proj);
+                    //if (_proj.Description.Contains("DIPLOMATIC")) CheckFor_BuildShip(_colony, _civM, ShipType.Diplomatic, _proj);
+
+                    //if (_proj.Description.Contains("COMMAND")) CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj);
+                    //if (_proj.Description.Contains("CRUISER")) CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj); // includes Heavy and StrikeCruiser
+                    //if (_proj.Description.Contains("DESTROYER")) CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                    //if (_proj.Description.Contains("FRIGATE")) CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                    //if (_proj.Description.Contains("SCOUT")) CheckFor_BuildShip(_colony, _civM, ShipType.Scout, _proj);
+                    //if (_proj.Description.Contains("SCIENCE")) CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
+
+                    //if (_proj.Description.Contains("TRANSPORT")) CheckFor_BuildShip(_colony, _civM, ShipType.Transport, _proj);
+                    //if (_proj.Description.Contains("CONSTRUCTION")) CheckFor_BuildShip(_colony, _civM, ShipType.Construction, _proj);
+
+                    //}
+
+                    #region oldstuff
+                    //Dictionary<int, ShipType> _listPrioShipBuild_tmp = new Dictionary<int, ShipType>();
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Colony_Needed, ShipType.Colony);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Construction_Needed, ShipType.Construction);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Medical_Needed, ShipType.Medical);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Spy_Needed, ShipType.Spy);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Diplomatic_Needed, ShipType.Diplomatic);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Science_Needed, ShipType.Science);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Scout_Needed, ShipType.Scout);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_FastAttack_Needed, ShipType.FastAttack);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Cruiser_Needed, ShipType.Cruiser);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_StrikeCruiser_Needed, ShipType.StrikeCruiser);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_HeavyCruiser_Needed, ShipType.HeavyCruiser);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Command_Needed, ShipType.Command);
+                    //_listPrioShipBuild_tmp.Add(_civM.Z_Ship_Transport_Needed, ShipType.Transport);
+
+                    //int _gp = GameContext.Current.TurnNumber / 10;
+
+                    //// first value is basic requirement
+                    //int _civM.Z_Ship_Colony_Needed = 1 + _civM.Z_Ship_Colony_Needed;// - _civM.Z_Ship_Colony_Available - _civM.Z_Ship_Colony_Ordered;
+                    //int _civM.Z_Ship_Construction_Needed = 1 + _civM.Z_Ship_Construction_Needed;// - _civM.Z_Ship_Construction_Available - _civM.Z_Ship_Construction_Ordered;
+                    //int _civM.Z_Ship_Medical_Needed = 1 + _civM.Z_Ship_Medical_Needed;// - _civM.Z_Ship_Medical_Available - _civM.Z_ShipMedicalOrdered;
+                    //int _civM.Z_Ship_Spy_Needed = 0 + _civM.Z_Ship_Spy_Needed;// - _civM.Z_Ship_Spy_Available - _civM.Z_ShipSpyOrdered;
+                    //int _civM.Z_Ship_Diplomatic_Needed = _gp + _civM.Z_Ship_Diplomatic_Needed;// - _civM.Z_Ship_Diplomatic_Available - _civM.Z_ShipDiplomaticOrdered;
+                    //int _civM.Z_Ship_Science_Needed = 1 + _civM.Z_Ship_Science_Needed;// - _civM.Z_Ship_Science_Available - _civM.Z_ShipScienceOrdered;
+                    //int _civM.Z_Ship_Scout_Needed = 1 + _civM.Z_Ship_Scout_Needed;// - _civM.Z_Ship_Scout_Available - _civM.Z_ShipScoutOrdered;
+                    //int _civM.Z_Ship_FastAttack_Needed = 1 + _civM.Z_Ship_FastAttack_Available;// - _civM.Z_Ship_FastAttack_Available - _civM.Z_ShipFastAttackOrdered;
+                    ////int _shipNeeded_destroyer = _civM. - _civM.Z_ShipDestroyerAvailable - _civM.Z_ShipDestroyerOrdered;
+                    //int _civM.Z_Ship_Cruiser_Needed = 1 + _civM.Z_Ship_Cruiser_Needed;// - _civM.Z_Ship_Cruiser_Available - _civM.Z_ShipCruiserOrdered;
+
+                    //int _civM.Z_Ship_StrikeCruiser_Needed = _gp + _civM.Z_Ship_StrikeCruiser_Needed;// - _civM.Z_Ship_StrikeCruiser_Available - _civM.Z_ShipStrikeCruiserOrdered;
+                    //int _civM.Z_Ship_HeavyCruiser_Needed = _gp + _civM.Z_Ship_HeavyCruiser_Needed;// - _civM.Z_Ship_HeavyCruiser_Available - _civM.Z_ShipHeavyCruiserOrdered;
+                    //int _civM.Z_Ship_Command_Needed = _gp + _civM.Z_Ship_Command_Needed;// - _civM.Z_ShipCommandAvailable - _civM.Z_ShipCommandOrdered;
+                    //int _civM.Z_Ship_Transport_Needed = _gp + _civM.Z_Ship_Transport_Needed;// - _civM.Z_Ship_Transport_Available - _civM.Z_ShipTransportOrdered;
+
+                    //if (GameContext.Current.TurnNumber < 9)
+                    //{ _civM.Z_Ship_Colony_Needed = +10; }
+
+                    //int _ship_Total_Needed =
+                    //      _civM.Z_Ship_Colony_Needed
+                    //    + _civM.Z_Ship_Construction_Needed
+                    //    + _civM.Z_Ship_Medical_Needed
+                    //    + _civM.Z_Ship_Spy_Needed
+                    //    + _civM.Z_Ship_Diplomatic_Needed
+                    //    + _civM.Z_Ship_Science_Needed
+                    //    + _civM.Z_Ship_Scout_Needed
+                    //    + _civM.Z_Ship_FastAttack_Needed
+                    //    + _civM.Z_Ship_Cruiser_Needed
+                    //    + _civM.Z_Ship_StrikeCruiser_Needed
+                    //    + _civM.Z_Ship_HeavyCruiser_Needed
+                    //    + _civM.Z_Ship_Command_Needed
+                    //    + _civM.Z_Ship_Transport_Needed
+                    //    ;
+                    //ggg
 
 
-                // above we had already selected a "neededshiptype"
-                if (_shipOrderIsDone == false)
-                {
-                    switch (_neededShipTypeText)
+                    //_text = "Step_5785:; "
+                    //            + GameEngine.LocationString(_colony.Location.ToString())
+                    //            + " > " + _name_col
+                    //            + " ; " + _owner_col
+                    //            + " > ShipProduction"
+                    //            + " > _listPrioShipBuild.Count= " + _listPrioShipBuild.Count
+                    //    ;
+                    //if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    //_colony_full_Report += _newline + _text;
+
+                    //if (_listPrioShipBuild.Count == 0)
+                    //{
+                    //    //
+                    //    //_text = _bool_listPrioShipBuild_Empty.ToString(); // dummy, just keep
+
+                    //    //_bool_listPrioShipBuild_Empty = true;
+                    //}
+                    //else
+                    //{
+                    //if (_listPrioShipBuild.Count > 1)
+                    //{
+                    //    _listPrioShipBuild.OrderByDescending(_l => _l.Value);
+                    //}
+
+                    //_text = _listPrioShipBuild[0].Item2.ToString(); // > this crashes on Item2
+                    #endregion oldstuff
+
+                    //if (_civ.Key.Contains("Botha"))
+                    //{
+                    //    //Debugger.Break();
+                    //}
+
+
+                    //if (_civM._neededShiptypesList != null && _civM._neededShiptypesList.Count > 1)
+                    //{
+                    //    _neededShipTypeText = _civM._neededShiptypesList[1].ToString();
+                    //    _civM._neededShiptypesList.RemoveAt(1);
+                    //}
+
+                    //_neededShipType = _listPrioShipBuild.;
+                    //switch (_neededShipTypeText)
+                    //{
+                    //    case "COLONY":
+                    //        _neededShipType = ShipType.Colony;
+                    //        break;
+                    //    case "CONSTRUCTION":
+                    //        _neededShipType = ShipType.Construction;
+                    //        break;
+                    //    case "MEDICAL":
+                    //        _neededShipType = ShipType.Medical;
+                    //        break;
+                    //    case "TRANSPORT":
+                    //        _neededShipType = ShipType.Transport;
+                    //        break;
+                    //    case "SPY":
+                    //        _neededShipType = ShipType.Spy;
+                    //        break;
+                    //    case "DIPLOMATIC":
+                    //        _neededShipType = ShipType.Science;
+                    //        break;
+                    //    case "SCIENCE":
+                    //        _neededShipType = ShipType.Colony;
+                    //        break;
+                    //    case "SCOUT":
+                    //        _neededShipType = ShipType.Scout;
+                    //        break;
+                    //    case "FASTATTACK":
+                    //        _neededShipType = ShipType.FastAttack;
+                    //        break;
+                    //    case "CRUISER":
+                    //        _neededShipType = ShipType.Cruiser;
+                    //        break;
+                    //    case "HEAVYCRUISER":
+                    //        _neededShipType = ShipType.HeavyCruiser;
+                    //        break;
+                    //    case "STRIKECRUISER":
+                    //        _neededShipType = ShipType.StrikeCruiser;
+                    //        break;
+                    //    case "COMMAND":
+                    //        _neededShipType = ShipType.Command;
+                    //        break;
+                    //        //default":
+                    //        //    break;
+                    //}
+
+
+                    if (GameContext.Current.TurnNumber < 15)
                     {
-                        case "COLONY":
-                            _neededShipType = ShipType.Colony;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Colony, _proj);
-                            break;
-                        case "CONSTRUCTION":
-                            _neededShipType = ShipType.Construction;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Construction, _proj);
-                            break;
-                        case "MEDICAL":
-                            _neededShipType = ShipType.Medical;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Medical, _proj);
-                            break;
-                        case "TRANSPORT":
-                            _neededShipType = ShipType.Transport;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Transport, _proj);
-                            break;
-                        case "SPY":
-                            _neededShipType = ShipType.Spy;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Spy, _proj);
-                            break;
-                        case "DIPLOMATIC":
-                            _neededShipType = ShipType.Science;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
-                            break;
-                        case "SCIENCE":
-                            _neededShipType = ShipType.Science;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
-                            break;
-                        case "SCOUT":
-                            _neededShipType = ShipType.Scout;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Scout, _proj);
-                            break;
-                        case "FASTATTACK":
-                            _neededShipType = ShipType.FastAttack;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                            break;
-                        case "CRUISER":
-                            _neededShipType = ShipType.Cruiser;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Cruiser, _proj);
-                            break;
-                        case "HEAVYCRUISER":
-                            _neededShipType = ShipType.HeavyCruiser;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.HeavyCruiser, _proj);
-                            break;
-                        case "STRIKECRUISER":
-                            _neededShipType = ShipType.StrikeCruiser;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.StrikeCruiser, _proj);
-                            break;
-                        case "COMMAND":
-                            _neededShipType = ShipType.Command;
-                            CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj);
-                            break;
+                        _neededShipType = ShipType.Construction;
+                        _neededShipTypeText = "Construction";
                     }
-                }
-                //if (_civM._neededShiptypesList.Contains("COMBATANT"))
-                //{
-                //    if (_proj.Description.Contains("COMMAND"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
-                //        CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj);
-                //    if (_proj.Description.Contains("CRUISER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
-                //        CheckFor_BuildShip(_colony, _civM, ShipType.Cruiser, _proj); // includes Heavy and StrikeCruiser
-                //    if (_proj.Description.Contains("DESTROYER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
-                //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                //    if (_proj.Description.Contains("FRIGATE"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
-                //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                //    if (_proj.Description.Contains("FIGHTER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
-                //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                //    if (_proj.Description.Contains("SURVEYOR"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
-                //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                //    if (_proj.Description.Contains("RAIDER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
-                //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
-                //}
 
-                //if (_proj.Description.Contains("SCOUT") && _civM._neededShiptypesList.Contains("SCOUT")) //COMMAND"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Scout, _proj);
-                //if (_proj.Description.Contains("SCIENCE") && _civM._neededShiptypesList.Contains("SCIENCE"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
-                //if (_proj.Description.Contains("TRANSPORT") && _civM._neededShiptypesList.Contains("TRANSPORT"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Transport, _proj);
-                //if (_proj.Description.Contains("CONSTRUCTION") && _civM._neededShiptypesList.Contains("CONSTRUCTION"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Construction, _proj);
-                //if (_proj.Description.Contains("MEDICAL") && _civM._neededShiptypesList.Contains("MEDICAL"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Medical, _proj);
-                //if (_proj.Description.Contains("SPY") && _civM._neededShiptypesList.Contains("SPY"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Spy, _proj);
-                //if (_proj.Description.Contains("DIPLOMATIC") && _civM._neededShiptypesList.Contains("DIPLOMATIC"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Diplomatic, _proj);
-                //if (_proj.Description.Contains("COLONY") && _civM._neededShiptypesList.Contains("COLONY"))
-                //    CheckFor_BuildShip(_colony, _civM, ShipType.Colony, _proj);
+                    if (GameContext.Current.TurnNumber < 7)
+                    {
+                        _neededShipType = ShipType.Colony;
+                        _neededShipTypeText = "Colony";
+                    }
 
-                //_text = _shipOrderIsDone.ToString();
 
-                //if (_proj.Description.Contains("COLONY") && _civM.Z_Ship_Colony_Needed > 0)
-                //{
-                //    _text = "Step_1210:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Buy_Build: "
-                //            + "_civM.Z_Ship_Colony_Needed= " + _civM.Z_Ship_Colony_Needed
-                //        //+ ", Costs= " + cost
-                //        //+ ", industryNeeded= " + industryNeeded
-                //        //+ ", prodOutput= " + prodOutput.ToString()
-                //        //+ ", turnsNeeded= " + turnsNeeded
-                //        //+ " > IsRushed for " + s.Project
-                //        //+ " on " + _name_col + " " + s.Project.Location
-                //        ;
-                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                //    _colony_full_Report += _newline + _text;
+                    if (GameContext.Current.TurnNumber < 14 && _colony.Owner.Key == "BORG")
+                    {
+                        _neededShipType = ShipType.Construction;
+                        _neededShipTypeText = "Construction";
+                    }
 
-                //    if (_colony.Owner.IsHuman)
-                //    {
-                //        Debugger.Break();
-                //    }
 
-                //    CheckFor_ColonyShip(_colony, _civM, ShipType.Colony, _proj);
-                //}
+                    // Already checked before but here to hover the count
+                    if (_colony.Shipyard.BuildQueue.Count > 0) { goto ProcessQueue; }
 
+                    _shipOrderIsDone = false;
 
+                    // 
+                    if (_civM._neededShiptypesList != null)
+                    {
 
-                // _colony ships done above or better in > CheckFor_ColonyShip
 
-                //foreach (var item in _civM._neededShiptypesList)
-                //{
-                //    if (item.ToString() == "dummy")
-                //    {
-                //        // nothing
-                //    }
-                //    else
-                //    {
-                //        _text = _civM.Civilization
-                //            + " _neededShiptypesList= " + item.ToString()
-                //            ;
-                //        Console.WriteLine(_text);
-                //    }
-                //}
+                        foreach (var item in _civM._neededShiptypesList)
+                        {
+                            if (item.ToString() == "dummy")
+                            {
+                                // nothing
+                            }
+                            else
+                            {
+                                _text = "Step_7766:; " + _civM.Civilization
+                                    + " >  _neededShiptypesList= " + item.ToString()
+                                    //+ " for " + _civ
+                                    ;
+                                Console.WriteLine(_text);
+                            }
+                        }
+                    }
 
-                //if (_colony.Owner.IsHuman)
-                //{
-                //    Debugger.Break();
-                //}
+                    //check _listPrioShipBuild2
 
+                    //var _listPrioShipBuild2 = new List<ShipType>();// _listPrioShipBuild2 is out of the options if first list is empty
 
 
-
-
-                //if (_ship_Total_Needed < 1) // no ship is needed
-                //{
-
-                //if (_civM.Civilization.IsHuman)
-                //{
-                //    Debugger.Break();
-                //}
-
-
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("COMMAND"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("CRUISER"))
-                //{
-                //    if (_shipOrderIsDone = false && _proj.Description.Contains("HEAVY_CRUISER"))
-                //    {
-                //        if (_proj.TurnsRemaining < 10)
-                //        {
-                //            BuildShipType(_colony, _civM, ShipType.HeavyCruiser, _proj);
-                //        }
-                //        //_listPrioShipBuild2.Add(ShipType.Command); 
-                //        _shipOrderIsDone = true;
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.HeavyCruiser); _shipOrderIsDone = true;
-
-
-                //    if (_shipOrderIsDone == false && _proj.Description.Contains("STRIKE_CRUISER"))
-                //    {
-                //        if (_proj.TurnsRemaining < 10)
-                //        {
-                //            BuildShipType(_colony, _civM, ShipType.StrikeCruiser, _proj);
-                //        }
-                //        //_listPrioShipBuild2.Add(ShipType.Command); 
-                //        //_shipOrderIsDone = true;
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.StrikeCruiser); _shipOrderIsDone = true;
-                //    //}
-
-                //    if (_shipOrderIsDone == false && _proj.Description.Contains("CRUISER"))
-                //    {
-                //        if (_proj.TurnsRemaining < 10)
-                //        {
-                //            BuildShipType(_colony, _civM, ShipType.Cruiser, _proj);
-                //        }
-                //        //_listPrioShipBuild2.Add(ShipType.Command); 
-                //        _shipOrderIsDone = true;
-                //    }
-                //}
-
-
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("DESTROYER"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("FRIGATE"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("FIGHTER"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("SURVEYOR"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
-
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("RAIDER"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
-
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
-                //if (_shipOrderIsDone == false && _proj.Description.Contains("SCOUT"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.Scout, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                ////_listPrioShipBuild2.Add(ShipType.Scout); _shipOrderIsDone = true; }
-
-
-
-                //if (_proj.Description.Contains("SCIENCE")) { _listPrioShipBuild2.Add(ShipType.Science); _shipOrderIsDone = true; }
-                //if (_proj.Description.Contains("MEDICAL")) { _listPrioShipBuild2.Add(ShipType.Medical); _shipOrderIsDone = true; }
-                //if (_proj.Description.Contains("COLONY")) { _listPrioShipBuild2.Add(ShipType.Colony); _shipOrderIsDone = true; }
-
-
-
-
-                //if (_proj.Description.Contains("CONSTRUCTION")) { _listPrioShipBuild2.Add(ShipType.Construction); _shipOrderIsDone = true; }
-                //if (_shipOrderIsDone = false && _proj.Description.Contains("CONSTRUCTION"))
-                //{
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-
-                //    if (_proj.Description.Contains("TRANSPORT")) {
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                //_listPrioShipBuild2.Add(ShipType.Transport); _shipOrderIsDone = true; }
-                //    if (_proj.Description.Contains("DIPOMATIC")) {
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                //_listPrioShipBuild2.Add(ShipType.Diplomatic); _shipOrderIsDone = true; }
-                //    if (_proj.Description.Contains("SPY")) {
-                //    if (_proj.TurnsRemaining < 10)
-                //    {
-                //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
-                //    }
-                //    //_listPrioShipBuild2.Add(ShipType.Command); 
-                //    _shipOrderIsDone = true;
-                //}
-                //_listPrioShipBuild2.Add(ShipType.Spy); _shipOrderIsDone = true; }
-
-                //needed_ShipType_1 = ShipType.;
-                //break; 
-
-                //if (_proj.Description.Contains("CRUISER")) {
-                //    _listPrioShipBuild2.Add(ShipType.Cruiser); 
-                //    //needed_ShipType_1 = ShipType.Cruiser; 
-                //    //break; 
-                //}
-                //if (_proj.Description.Contains("DESTROYER")) {
-                //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
-                //    //needed_ShipType_1 = ShipType.FastAttack; 
-                //    //break; 
-                //}
-                //if (_proj.Description.Contains("FRIGATE")) {
-                //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
-                //    //needed_ShipType_1 = ShipType.FastAttack; 
-                //    //break; 
-                //}
-                //if (_proj.Description.Contains("FIGHTER")) {
-                //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
-                //    //needed_ShipType_1 = ShipType.FastAttack; 
-                //    //break; 
-                //}
-                //if (_proj.Description.Contains("SURVEYOR")) {
-                //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
-                //    //needed_ShipType_1 = ShipType.FastAttack; 
-                //    //break; 
-                //}
-                //if (_proj.Description.Contains("RAIDER")) {
-                //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
-                //    //needed_ShipType_1 = ShipType.FastAttack; 
-                //    //break; 
-                //}
-                //if (_proj.Description.Contains("SCOUT")) {
-                //    _listPrioShipBuild2.Add(ShipType.Scout); 
-                //    //needed_ShipType_1 = ShipType.Scout; 
-                //    //break; 
-                //}
-                //if (_proj.Description.Contains("SCIENCE")) {
-                //    _listPrioShipBuild2.Add(ShipType.Science); 
-                //    //needed_ShipType_1 = ShipType.Science; 
-                //    //break; 
-                //}
-                //}
-                //checked Map.txt and JNAI Surveyor
-                //#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
-                //if (_shipTypeToBuild == null || PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
-                //{
-                //    goto ProcessQueue;
-                //    //nothing;  > _shipTypeToBuild is never "!= null"
-                //}
-                //else
-                //{
-                //    BuildShipType(_colony, _civM, _shipTypeToBuild, _proj);  // _proj is relevant here !!!
-                //}
-                //#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
-
-
-                //}
-
-                //doubled
-                //int xy = 0;
-                //foreach (var item in _colony.Shipyard.BuildQueue)
-                //{
-                //    xy += 1;
-                //    _text = _text = "Step_5787:; " + GameEngine.LocationString(_colony.Location.ToString())
-                //        + " ShipProduction-Queue # " + xy
-                //        + " - " + _owner_col
-
-                //        + " (needs " + item.TurnsRemaining + " Turns)"
-                //        + ": in queue= " + item.Project.BuildDesign
-                //        ;
-                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                //    _colony_full_Report += _newline + _text;
-                //}
-
-                //if (boolCheckShipProduction)
-                //{
-                //    //Debugger.Break();
-                //}
-
-
-                if (_colony.Shipyard.BuildQueue.Count > 1)
-                {
-                    goto ProcessQueue;
-                } // only for Colony Ships we try to order 2 ones
-
-
-                //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
-
-                //CheckFor_SystemsToColonizeProject(_colony);
-                //int _shipcolonyNeeded = _civM.Z_Ship_Colony_Needed - _civM.Z_Ship_Colony_Available - _civM.Z_Ship_Colony_Ordered;
-                //if (_shipcolonyNeeded > 0)
-                //{
-                //    needed_ShipType_1 = ShipType.Colony;
-                //    BuildShipType(_colony, _civM, needed_ShipType_1, _proj);
-                //    if (_shipcolonyNeeded > 2) 
-                //    { 
-                //        needed_ShipType_2 = ShipType.Colony; 
-                //        BuildShipType(_colony, _civM, needed_ShipType_2, _proj);
-                //        goto ProcessQueue;
-                //    }
-                //}
-
-                //_text = "Step_5782:; ShipProduction_2"
-                //        + " at " + GameEngine.LocationString(_colony.Location.ToString())
-                //        + " - " + _owner_col
-                //        + ": ColonyShips: Available= " + _civM.Z_Ship_Colony_Available
-                //        + ", Needed= " + _civM.Z_Ship_Colony_Needed
-                //        + ", Ordered= " + _civM.Z_Ship_Colony_Ordered
-
-                //        ;
-                //if (_writeDirectly_Colony) Console.WriteLine(_text);
-
-                //BuildShipType(_colony, _civM, needed_ShipType_1, _proj); needed_1_done = true;
-                //BuildShipType(_colony, _civM, needed_ShipType_2, _proj); needed_2_done = true;
-
-                //if (_colony.Shipyard.BuildQueue.Count > 1) { goto ProcessQueue; } // only for Colony Ships we try to order 2 ones
-                //else...
-                //_civM.Z_Ship_Spy_Needed = 2; // always 2 Medical needed as storage
-                //int _shipMedicalNeeded = _civM.Z_Ship_Medical_Needed - _civM.Z_Ship_Medical_Available - _civM.Z_ShipMedicalOrdered;
-
-                // Medical
-                //while (_colony.Shipyard.BuildQueue.Count > 1)
-                //{
-                //    _civM.Z_Ship_Medical_Needed = 2; // always 2 Medical needed as storage
-                //    int _shipMedicalNeeded = _civM.Z_Ship_Medical_Needed - _civM.Z_Ship_Medical_Available - _civM.Z_ShipMedicalOrdered;
-                //    if(_shipMedicalNeeded > 0) BuildShipType(_colony, _civM, ShipType.Medical, _proj);
-                //}
-
-                //// Spy
-                //while (_colony.Shipyard.BuildQueue.Count > 1)
-                //{
-                //    _civM.Z_Ship_Spy_Needed = 1; // always 2 Medical needed as storage
-                //    int _ShipSpyNeeded = _civM.Z_Ship_Spy_Needed - _civM.Z_Ship_Spy_Available - _civM.Z_ShipSpyOrdered;
-                //    if (_ShipSpyNeeded > 0) BuildShipType(_colony, _civM, ShipType.Spy, _proj);
-                //}
-
-                //// Spy
-                //while (_colony.Shipyard.BuildQueue.Count > 1)
-                //{
-                //    _civM.Z_Ship_Spy_Needed = 1; // always 2 Medical needed as storage
-                //    int _ShipSpyNeeded = _civM.Z_Ship_Spy_Needed - _civM.Z_Ship_Spy_Available - _civM.Z_ShipSpyOrdered;
-                //    if (_ShipSpyNeeded > 0) BuildShipType(_colony, _civM, ShipType.Spy, _proj);
-                //}
-
-
-
-                //if (_civM.Z_Ship_Colony_Needed > _civM.Z_Ship_Colony_Available && _colony.Sector.GetOwnedFleets(_civ).All(o => !o.IsColonizer) &&
-                //    !_shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(_colony.Shipyard.IsBuilding))
-                //if (needed_ShipType_1 == ShipType.Colony) BuildShipType(_colony, _civM, needed_ShipType_1);
-                //if (needed_ShipType_2 == ShipType.Colony) BuildShipType(_colony, _civM, needed_ShipType_2);
-                //{
-                //    BuildShipType(_colony, _civM);
-                //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
-                //    //if (_proj != null)
-                //    //{
-                //    //    _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
-                //    //    _text = "Step_5383:; ShipProduction "
-                //    //        + " at " + GameEngine.LocationString(_colony.Location.ToString())
-                //    //        + " > " + _name_col
-                //    //        + " - " + _owner_col
-                //    //        + ": Added Colonizer _proj..." + _proj.BuildDesign
-                //    //        ;
-                //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-
-                //    //    _civM.Z_Ship_Colony_Ordered += 1;
-                //    //}
-                //}
-
-
-                // Construction
-                //if (_civM.Z_Ship_Construction_Available < 2 &&
-                //    _colony.Sector.GetOwnedFleets(_civ).All(o => !o.IsConstructor) &&
-                //    !_shipDesigns.Where(o => o.ShipType == ShipType.Construction).Any(_colony.Shipyard.IsBuilding))
-                //{
-                //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Construction && p.BuildDesign == d));
-                //    if (_proj != null)
-                //    {
-                //        _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
-                //        _text = "Step_5384:; ShipProduction "
-                //            + " at " + GameEngine.LocationString(_colony.Location.ToString())
-                //            + " - " + _owner_col
-                //            + ": Added Construction ship _proj..." + _proj.BuildDesign
-
-                //            ;
-                //        if (_writeDirectly_Colony) Console.WriteLine(_text);
-                //    }
-                //}
-
-
-                // Military
-                //Fleet defenseFleet = homeSector.GetOwnedFleets(_civ).FirstOrDefault(o => o.AITypeUnit == AITypeUnit.SystemDefense);
-                //if ((defenseFleet?.HasCommandShip != true) &&
-                //    homeFleets.All(o => !o.HasCommandShip) &&
-                //    !_shipDesigns.Where(o => o.ShipType == ShipType.Command).Any(_colony.Shipyard.IsBuilding))
-                //{
-                //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Command && p.BuildDesign == d));
-                //    if (_proj != null)
-                //    {
-                //        _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
-                //    }
-                //}
-                //if ((defenseFleet == null || defenseFleet.Ships.Count < 5) &&
-                //    homeFleets.Where(o => o.IsBattleFleet).Sum(o => o.Ships.Count) < 5 &&
-                //    !_shipDesigns.Where(o => o.ShipType == ShipType.FastAttack || o.ShipType == ShipType.Cruiser).Any(_colony.Shipyard.IsBuilding))
-                //{
-                //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Cruiser && p.BuildDesign == d));
-                //    if (_proj != null)
-                //    {
-                //        _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.FastAttack && p.BuildDesign == d));
-                //    }
-                //    if (_proj != null)
-                //    {
-                //        _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
-                //    }
-                //}
-
-                //// Exploration - HomeSector has Starting Scouts
-                //if (!_shipDesigns.Where(o => o.ShipType == ShipType.Scout).Any(_colony.Shipyard.IsBuilding))
-                //{
-                //    for (int i = _fleets.Count(o => o.IsScout); i < NOT_USED_NumScouts; i++)
-                //    {
-                //        //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Scout && p.BuildDesign == d));
-                //        if (_proj != null)
-                //        {
-                //            _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
-                //        }
-                //    }
-                //}
-
-
-                //} // end of HomeSector
-
-                // all Colonies - build _colony ships
-                //        if (GameContext.Current.Universe.FindOwned<Colony>(_civ).Count < MaxEmpireColonyCount &&
-                //GameContext.Current.TurnNumber % ColonyShipEveryTurns == 0 &&
-                //!_shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(_colony.Shipyard.IsBuilding))
-                //        {
-                //            BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
-                //            if (_proj != null)
-                //            {
-                //                _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
-                //            }
-                //        }
-
-                // not HomeSector or especially SeatOfGovernment
-                //if (_colony.Sector != homeSector && _colony.Shipyard != null)
-                //if (_colony.Shipyard != null && _colony.Shipyard.BuildQueue.Count == 0)
-                //{
-                //    _text = "Step_5360:; " + GameEngine.LocationString(_colony.Location.ToString()) //+ " next: check for ShipProduction - not at HomeSector: "
-                //        + " " + _colony.Shipyard.Design
-
-                //        + " at " + _name_col
-                //        + ", Owner= " + _owner_col
-                //        + " - here no ship is building - maybe on the next code"
-                //        ;
-                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                //    //CheckFor_SystemsToColonizeProject(_colony);
-                //}
-
-
-                // this builds a colonizer - why only colonizer ?
-                if (_colony.Shipyard.BuildSlots.Any(t => t.Project == null) && _colony.Shipyard.BuildQueue.Count == 0)
-                {
-                    //if (_colony.Owner.IsHuman)
+                    //foreach (BuildProject _proj in _potentialProjects)  // find Prio
                     //{
-                    //    Debugger.Break();
-                    //}
-
-                    IList<BuildProject> projects2 = TechTreeHelper.GetShipyardBuildProjects(_colony.Shipyard);
-                    //foreach (BuildProject _proj in projects2)
-                    //{
-                    //    _text = "ShipProduction at HomeSector: "
-                    //        + " at " + GameEngine.LocationString(_colony.Location.ToString())
-                    //        + " - " + _owner_col
-                    //        + ": available= " + _proj.BuildDesign
-
-                    //        ;
+                    //    _text = "Step_1213:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Ship_Production: "
+                    //            + "potential < _proj.Description= " + _proj.Description
+                    //            ;
                     //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    //    _colony_full_Report += _newline + _text;
                     //}
 
-                    //if (boolCheckShipProduction)
-                    //    _text = ""; // just for breakpoint
-
-                    //if (_neededShipType == ShipType.Medical)  // medical is set as default
+                    //foreach (BuildProject _proj in _potentialProjects)  // find Prio
                     //{
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Colony)) _neededShipType = ShipType.Colony;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Medical)) _neededShipType = ShipType.Medical;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Spy)) _neededShipType = ShipType.Spy;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Diplomatic)) _neededShipType = ShipType.Diplomatic;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Construction)) _neededShipType = ShipType.Construction;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Transport)) _neededShipType = ShipType.Transport;
-
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Scout)) _neededShipType = ShipType.Scout;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Science)) _neededShipType = ShipType.Science;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.FastAttack)) _neededShipType = ShipType.FastAttack;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Cruiser)) _neededShipType = ShipType.Cruiser;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.HeavyCruiser)) _neededShipType = ShipType.HeavyCruiser;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.StrikeCruiser)) _neededShipType = ShipType.StrikeCruiser;
-                    //    if (_listPrioShipBuild2.Contains(ShipType.Command)) _neededShipType = ShipType.Command;
-                    //}
-
-
-
-
-                    //_neededShipType = ShipType.Construction; // here more code to do
-                    //if (needed_ShipType_1 != null)
-                    //    _neededShipType = needed_ShipType_1;
+                    //    //if (checkForShipProduction)
+                    //    //    _text = ""; /*just for breakpoint*/
 
                     if (_colony.Owner.IsHuman)
                     {
                         //Debugger.Break();
                     }
 
+                    //    if (_colony.Shipyard.BuildQueue.Count > 1)
+                    //    {
+                    //        continue;
+                    //    }
 
-                    //BuildProject newProject = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == _neededShipType && p.BuildDesign == d));
-                    if (newProject != null && _colony.Shipyard.BuildQueue.Count < 1)
+                    if (potentialProjects.Count == 1) // build the only existing option
                     {
-                        _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(newProject));
-
-                        _text = "Step_5388:; "
-                            + GameEngine.LocationString(_colony.Location.ToString())
-                            + " > " + _name_col
-                            + " ; " + _owner_col
-                            + " > ShipProduction"
-
-                            + ": Added Construction _proj..." + newProject.BuildDesign
+                        // just use Proj[0], ShipType.Medical = DUMMY
+                        _text = "Step_1209:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Only this one available > "
+                            + potentialProjects[0].BuildDesign
 
                             ;
                         if (_writeDirectly_Colony) Console.WriteLine(_text);
                         _colony_full_Report += _newline + _text;
+
+                        BuildShipType(_colony, _civM, ShipType.Medical); //, potentialProjects[0]);
+                        _shipOrderIsDone = true;
+                        goto ProcessQueue;
                     }
+
+
+                    //_text = "Step_1213:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Ship_Production: "
+                    //        + "potential < _proj.Description= " + _proj.Description
+                    //        ;
+                    //if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    //_colony_full_Report += _newline + _text;
+
+                    //if (_colony.Owner.IsHuman)
+                    //{
+                    //    Debugger.Break();
+                    //}
+
+
+                    // above we had already selected a "neededshiptype"
+                    if (_shipOrderIsDone == false)
+                    {
+                        switch (_neededShipTypeText)
+                        {
+                            case "Colony":
+                                _neededShipType = ShipType.Colony;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Colony, _proj);
+                                break;
+                            case "Construction":
+                                _neededShipType = ShipType.Construction;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Construction, _proj);
+                                break;
+                            case "MedicalL":
+                                _neededShipType = ShipType.Medical;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Medical, _proj);
+                                break;
+                            case "Transport":
+                                _neededShipType = ShipType.Transport;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Transport, _proj);
+                                break;
+                            case "Spy":
+                                _neededShipType = ShipType.Spy;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Spy, _proj);
+                                break;
+                            case "Diplomatic":
+                                _neededShipType = ShipType.Science;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
+                                break;
+                            case "Science":
+                                _neededShipType = ShipType.Science;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
+                                break;
+                            case "Scout":
+                                _neededShipType = ShipType.Scout;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Scout, _proj);
+                                break;
+                            case "FastAttack":
+                                _neededShipType = ShipType.FastAttack;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                                break;
+                            case "CRUISER":
+                                _neededShipType = ShipType.Cruiser;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Cruiser, _proj);
+                                break;
+                            case "HEAVYCRUISER":
+                                _neededShipType = ShipType.HeavyCruiser;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.HeavyCruiser, _proj);
+                                break;
+                            case "STRIKECRUISER":
+                                _neededShipType = ShipType.StrikeCruiser;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.StrikeCruiser, _proj);
+                                break;
+                            case "COMMAND":
+                                _neededShipType = ShipType.Command;
+                                CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj);
+                                break;
+                        }
+                    }
+                    //if (_civM._neededShiptypesList.Contains("COMBATANT"))
+                    //{
+                    //    if (_proj.Description.Contains("COMMAND"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
+                    //        CheckFor_BuildShip(_colony, _civM, ShipType.Command, _proj);
+                    //    if (_proj.Description.Contains("CRUISER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
+                    //        CheckFor_BuildShip(_colony, _civM, ShipType.Cruiser, _proj); // includes Heavy and StrikeCruiser
+                    //    if (_proj.Description.Contains("DESTROYER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
+                    //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                    //    if (_proj.Description.Contains("FRIGATE"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
+                    //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                    //    if (_proj.Description.Contains("FIGHTER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
+                    //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                    //    if (_proj.Description.Contains("SURVEYOR"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
+                    //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                    //    if (_proj.Description.Contains("RAIDER"))// && _civM._neededShiptypesList.Contains("COMBATANT")) //COMMAND"))
+                    //        CheckFor_BuildShip(_colony, _civM, ShipType.FastAttack, _proj);
+                    //}
+
+                    //if (_proj.Description.Contains("SCOUT") && _civM._neededShiptypesList.Contains("SCOUT")) //COMMAND"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Scout, _proj);
+                    //if (_proj.Description.Contains("SCIENCE") && _civM._neededShiptypesList.Contains("SCIENCE"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Science, _proj);
+                    //if (_proj.Description.Contains("TRANSPORT") && _civM._neededShiptypesList.Contains("TRANSPORT"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Transport, _proj);
+                    //if (_proj.Description.Contains("CONSTRUCTION") && _civM._neededShiptypesList.Contains("CONSTRUCTION"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Construction, _proj);
+                    //if (_proj.Description.Contains("MEDICAL") && _civM._neededShiptypesList.Contains("MEDICAL"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Medical, _proj);
+                    //if (_proj.Description.Contains("SPY") && _civM._neededShiptypesList.Contains("SPY"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Spy, _proj);
+                    //if (_proj.Description.Contains("DIPLOMATIC") && _civM._neededShiptypesList.Contains("DIPLOMATIC"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Diplomatic, _proj);
+                    //if (_proj.Description.Contains("COLONY") && _civM._neededShiptypesList.Contains("COLONY"))
+                    //    CheckFor_BuildShip(_colony, _civM, ShipType.Colony, _proj);
+
+                    //_text = _shipOrderIsDone.ToString();
+
+                    //if (_proj.Description.Contains("COLONY") && _civM.Z_Ship_Colony_Needed > 0)
+                    //{
+                    //    _text = "Step_1210:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Buy_Build: "
+                    //            + "_civM.Z_Ship_Colony_Needed= " + _civM.Z_Ship_Colony_Needed
+                    //        //+ ", Costs= " + cost
+                    //        //+ ", industryNeeded= " + industryNeeded
+                    //        //+ ", prodOutput= " + prodOutput.ToString()
+                    //        //+ ", turnsNeeded= " + turnsNeeded
+                    //        //+ " > IsRushed for " + s.Project
+                    //        //+ " on " + _name_col + " " + s.Project.Location
+                    //        ;
+                    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    //    _colony_full_Report += _newline + _text;
+
+                    //    if (_colony.Owner.IsHuman)
+                    //    {
+                    //        Debugger.Break();
+                    //    }
+
+                    //    CheckFor_ColonyShip(_colony, _civM, ShipType.Colony, _proj);
+                    //}
+
+
+
+                    // _colony ships done above or better in > CheckFor_ColonyShip
+
+                    //foreach (var item in _civM._neededShiptypesList)
+                    //{
+                    //    if (item.ToString() == "dummy")
+                    //    {
+                    //        // nothing
+                    //    }
+                    //    else
+                    //    {
+                    //        _text = _civM.Civilization
+                    //            + " _neededShiptypesList= " + item.ToString()
+                    //            ;
+                    //        Console.WriteLine(_text);
+                    //    }
+                    //}
+
+                    //if (_colony.Owner.IsHuman)
+                    //{
+                    //    Debugger.Break();
+                    //}
+
+
+
+
+
+                    //if (_ship_Total_Needed < 1) // no ship is needed
+                    //{
+
+                    //if (_civM.Civilization.IsHuman)
+                    //{
+                    //    Debugger.Break();
+                    //}
+
+
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("COMMAND"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("CRUISER"))
+                    //{
+                    //    if (_shipOrderIsDone = false && _proj.Description.Contains("HEAVY_CRUISER"))
+                    //    {
+                    //        if (_proj.TurnsRemaining < 10)
+                    //        {
+                    //            BuildShipType(_colony, _civM, ShipType.HeavyCruiser, _proj);
+                    //        }
+                    //        //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //        _shipOrderIsDone = true;
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.HeavyCruiser); _shipOrderIsDone = true;
+
+
+                    //    if (_shipOrderIsDone == false && _proj.Description.Contains("STRIKE_CRUISER"))
+                    //    {
+                    //        if (_proj.TurnsRemaining < 10)
+                    //        {
+                    //            BuildShipType(_colony, _civM, ShipType.StrikeCruiser, _proj);
+                    //        }
+                    //        //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //        //_shipOrderIsDone = true;
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.StrikeCruiser); _shipOrderIsDone = true;
+                    //    //}
+
+                    //    if (_shipOrderIsDone == false && _proj.Description.Contains("CRUISER"))
+                    //    {
+                    //        if (_proj.TurnsRemaining < 10)
+                    //        {
+                    //            BuildShipType(_colony, _civM, ShipType.Cruiser, _proj);
+                    //        }
+                    //        //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //        _shipOrderIsDone = true;
+                    //    }
+                    //}
+
+
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("DESTROYER"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("FRIGATE"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("FIGHTER"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("SURVEYOR"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
+
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("RAIDER"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.FastAttack, _proj);
+
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    ////_listPrioShipBuild2.Add(ShipType.FastAttack); _shipOrderIsDone = true; }
+                    //if (_shipOrderIsDone == false && _proj.Description.Contains("SCOUT"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.Scout, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    ////_listPrioShipBuild2.Add(ShipType.Scout); _shipOrderIsDone = true; }
+
+
+
+                    //if (_proj.Description.Contains("SCIENCE")) { _listPrioShipBuild2.Add(ShipType.Science); _shipOrderIsDone = true; }
+                    //if (_proj.Description.Contains("MEDICAL")) { _listPrioShipBuild2.Add(ShipType.Medical); _shipOrderIsDone = true; }
+                    //if (_proj.Description.Contains("COLONY")) { _listPrioShipBuild2.Add(ShipType.Colony); _shipOrderIsDone = true; }
+
+
+
+
+                    //if (_proj.Description.Contains("CONSTRUCTION")) { _listPrioShipBuild2.Add(ShipType.Construction); _shipOrderIsDone = true; }
+                    //if (_shipOrderIsDone = false && _proj.Description.Contains("CONSTRUCTION"))
+                    //{
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+
+                    //    if (_proj.Description.Contains("TRANSPORT")) {
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    //_listPrioShipBuild2.Add(ShipType.Transport); _shipOrderIsDone = true; }
+                    //    if (_proj.Description.Contains("DIPOMATIC")) {
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    //_listPrioShipBuild2.Add(ShipType.Diplomatic); _shipOrderIsDone = true; }
+                    //    if (_proj.Description.Contains("SPY")) {
+                    //    if (_proj.TurnsRemaining < 10)
+                    //    {
+                    //        BuildShipType(_colony, _civM, ShipType.Command, _proj);
+                    //    }
+                    //    //_listPrioShipBuild2.Add(ShipType.Command); 
+                    //    _shipOrderIsDone = true;
+                    //}
+                    //_listPrioShipBuild2.Add(ShipType.Spy); _shipOrderIsDone = true; }
+
+                    //needed_ShipType_1 = ShipType.;
+                    //break; 
+
+                    //if (_proj.Description.Contains("CRUISER")) {
+                    //    _listPrioShipBuild2.Add(ShipType.Cruiser); 
+                    //    //needed_ShipType_1 = ShipType.Cruiser; 
+                    //    //break; 
+                    //}
+                    //if (_proj.Description.Contains("DESTROYER")) {
+                    //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
+                    //    //needed_ShipType_1 = ShipType.FastAttack; 
+                    //    //break; 
+                    //}
+                    //if (_proj.Description.Contains("FRIGATE")) {
+                    //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
+                    //    //needed_ShipType_1 = ShipType.FastAttack; 
+                    //    //break; 
+                    //}
+                    //if (_proj.Description.Contains("FIGHTER")) {
+                    //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
+                    //    //needed_ShipType_1 = ShipType.FastAttack; 
+                    //    //break; 
+                    //}
+                    //if (_proj.Description.Contains("SURVEYOR")) {
+                    //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
+                    //    //needed_ShipType_1 = ShipType.FastAttack; 
+                    //    //break; 
+                    //}
+                    //if (_proj.Description.Contains("RAIDER")) {
+                    //    _listPrioShipBuild2.Add(ShipType.FastAttack); 
+                    //    //needed_ShipType_1 = ShipType.FastAttack; 
+                    //    //break; 
+                    //}
+                    //if (_proj.Description.Contains("SCOUT")) {
+                    //    _listPrioShipBuild2.Add(ShipType.Scout); 
+                    //    //needed_ShipType_1 = ShipType.Scout; 
+                    //    //break; 
+                    //}
+                    //if (_proj.Description.Contains("SCIENCE")) {
+                    //    _listPrioShipBuild2.Add(ShipType.Science); 
+                    //    //needed_ShipType_1 = ShipType.Science; 
+                    //    //break; 
+                    //}
+                    //}
+                    //checked Map.txt and JNAI Surveyor
+                    //#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+                    //if (_shipTypeToBuild == null || PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
+                    //{
+                    //    goto ProcessQueue;
+                    //    //nothing;  > _shipTypeToBuild is never "!= null"
+                    //}
+                    //else
+                    //{
+                    //    BuildShipType(_colony, _civM, _shipTypeToBuild, _proj);  // _proj is relevant here !!!
+                    //}
+                    //#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+
+
+                    //}
+
+                    //doubled
+                    //int xy = 0;
+                    //foreach (var item in _colony.Shipyard.BuildQueue)
+                    //{
+                    //    xy += 1;
+                    //    _text = _text = "Step_5787:; " + GameEngine.LocationString(_colony.Location.ToString())
+                    //        + " ShipProduction-Queue # " + xy
+                    //        + " - " + _owner_col
+
+                    //        + " (needs " + item.TurnsRemaining + " Turns)"
+                    //        + ": in queue= " + item.Project.BuildDesign
+                    //        ;
+                    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    //    _colony_full_Report += _newline + _text;
+                    //}
+
+                    //if (boolCheckShipProduction)
+                    //{
+                    //    //Debugger.Break();
+                    //}
+
+
+                    if (_colony.Shipyard.BuildQueue.Count > 1)
+                    {
+                        goto ProcessQueue;
+                    } // only for Colony Ships we try to order 2 ones
+
+
+                    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
+
+                    //CheckFor_SystemsToColonizeProject(_colony);
+                    //int _shipcolonyNeeded = _civM.Z_Ship_Colony_Needed - _civM.Z_Ship_Colony_Available - _civM.Z_Ship_Colony_Ordered;
+                    //if (_shipcolonyNeeded > 0)
+                    //{
+                    //    needed_ShipType_1 = ShipType.Colony;
+                    //    BuildShipType(_colony, _civM, needed_ShipType_1, _proj);
+                    //    if (_shipcolonyNeeded > 2) 
+                    //    { 
+                    //        needed_ShipType_2 = ShipType.Colony; 
+                    //        BuildShipType(_colony, _civM, needed_ShipType_2, _proj);
+                    //        goto ProcessQueue;
+                    //    }
+                    //}
+
+                    //_text = "Step_5782:; ShipProduction_2"
+                    //        + " at " + GameEngine.LocationString(_colony.Location.ToString())
+                    //        + " - " + _owner_col
+                    //        + ": ColonyShips: Available= " + _civM.Z_Ship_Colony_Available
+                    //        + ", Needed= " + _civM.Z_Ship_Colony_Needed
+                    //        + ", Ordered= " + _civM.Z_Ship_Colony_Ordered
+
+                    //        ;
+                    //if (_writeDirectly_Colony) Console.WriteLine(_text);
+
+                    //BuildShipType(_colony, _civM, needed_ShipType_1, _proj); needed_1_done = true;
+                    //BuildShipType(_colony, _civM, needed_ShipType_2, _proj); needed_2_done = true;
+
+                    //if (_colony.Shipyard.BuildQueue.Count > 1) { goto ProcessQueue; } // only for Colony Ships we try to order 2 ones
+                    //else...
+                    //_civM.Z_Ship_Spy_Needed = 2; // always 2 Medical needed as storage
+                    //int _shipMedicalNeeded = _civM.Z_Ship_Medical_Needed - _civM.Z_Ship_Medical_Available - _civM.Z_ShipMedicalOrdered;
+
+                    // Medical
+                    //while (_colony.Shipyard.BuildQueue.Count > 1)
+                    //{
+                    //    _civM.Z_Ship_Medical_Needed = 2; // always 2 Medical needed as storage
+                    //    int _shipMedicalNeeded = _civM.Z_Ship_Medical_Needed - _civM.Z_Ship_Medical_Available - _civM.Z_ShipMedicalOrdered;
+                    //    if(_shipMedicalNeeded > 0) BuildShipType(_colony, _civM, ShipType.Medical, _proj);
+                    //}
+
+                    //// Spy
+                    //while (_colony.Shipyard.BuildQueue.Count > 1)
+                    //{
+                    //    _civM.Z_Ship_Spy_Needed = 1; // always 2 Medical needed as storage
+                    //    int _ShipSpyNeeded = _civM.Z_Ship_Spy_Needed - _civM.Z_Ship_Spy_Available - _civM.Z_ShipSpyOrdered;
+                    //    if (_ShipSpyNeeded > 0) BuildShipType(_colony, _civM, ShipType.Spy, _proj);
+                    //}
+
+                    //// Spy
+                    //while (_colony.Shipyard.BuildQueue.Count > 1)
+                    //{
+                    //    _civM.Z_Ship_Spy_Needed = 1; // always 2 Medical needed as storage
+                    //    int _ShipSpyNeeded = _civM.Z_Ship_Spy_Needed - _civM.Z_Ship_Spy_Available - _civM.Z_ShipSpyOrdered;
+                    //    if (_ShipSpyNeeded > 0) BuildShipType(_colony, _civM, ShipType.Spy, _proj);
+                    //}
+
+
+
+                    //if (_civM.Z_Ship_Colony_Needed > _civM.Z_Ship_Colony_Available && _colony.Sector.GetOwnedFleets(_civ).All(o => !o.IsColonizer) &&
+                    //    !_shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(_colony.Shipyard.IsBuilding))
+                    //if (needed_ShipType_1 == ShipType.Colony) BuildShipType(_colony, _civM, needed_ShipType_1);
+                    //if (needed_ShipType_2 == ShipType.Colony) BuildShipType(_colony, _civM, needed_ShipType_2);
+                    //{
+                    //    BuildShipType(_colony, _civM);
+                    //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
+                    //    //if (_proj != null)
+                    //    //{
+                    //    //    _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
+                    //    //    _text = "Step_5383:; ShipProduction "
+                    //    //        + " at " + GameEngine.LocationString(_colony.Location.ToString())
+                    //    //        + " > " + _name_col
+                    //    //        + " - " + _owner_col
+                    //    //        + ": Added Colonizer _proj..." + _proj.BuildDesign
+                    //    //        ;
+                    //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+
+                    //    //    _civM.Z_Ship_Colony_Ordered += 1;
+                    //    //}
+                    //}
+
+
+                    // Construction
+                    //if (_civM.Z_Ship_Construction_Available < 2 &&
+                    //    _colony.Sector.GetOwnedFleets(_civ).All(o => !o.IsConstructor) &&
+                    //    !_shipDesigns.Where(o => o.ShipType == ShipType.Construction).Any(_colony.Shipyard.IsBuilding))
+                    //{
+                    //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Construction && p.BuildDesign == d));
+                    //    if (_proj != null)
+                    //    {
+                    //        _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
+                    //        _text = "Step_5384:; ShipProduction "
+                    //            + " at " + GameEngine.LocationString(_colony.Location.ToString())
+                    //            + " - " + _owner_col
+                    //            + ": Added Construction ship _proj..." + _proj.BuildDesign
+
+                    //            ;
+                    //        if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    //    }
+                    //}
+
+
+                    // Military
+                    //Fleet defenseFleet = homeSector.GetOwnedFleets(_civ).FirstOrDefault(o => o.AITypeUnit == AITypeUnit.SystemDefense);
+                    //if ((defenseFleet?.HasCommandShip != true) &&
+                    //    homeFleets.All(o => !o.HasCommandShip) &&
+                    //    !_shipDesigns.Where(o => o.ShipType == ShipType.Command).Any(_colony.Shipyard.IsBuilding))
+                    //{
+                    //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Command && p.BuildDesign == d));
+                    //    if (_proj != null)
+                    //    {
+                    //        _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
+                    //    }
+                    //}
+                    //if ((defenseFleet == null || defenseFleet.Ships.Count < 5) &&
+                    //    homeFleets.Where(o => o.IsBattleFleet).Sum(o => o.Ships.Count) < 5 &&
+                    //    !_shipDesigns.Where(o => o.ShipType == ShipType.FastAttack || o.ShipType == ShipType.Cruiser).Any(_colony.Shipyard.IsBuilding))
+                    //{
+                    //    //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Cruiser && p.BuildDesign == d));
+                    //    if (_proj != null)
+                    //    {
+                    //        _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.FastAttack && p.BuildDesign == d));
+                    //    }
+                    //    if (_proj != null)
+                    //    {
+                    //        _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
+                    //    }
+                    //}
+
+                    //// Exploration - HomeSector has Starting Scouts
+                    //if (!_shipDesigns.Where(o => o.ShipType == ShipType.Scout).Any(_colony.Shipyard.IsBuilding))
+                    //{
+                    //    for (int i = _fleets.Count(o => o.IsScout); i < NOT_USED_NumScouts; i++)
+                    //    {
+                    //        //BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Scout && p.BuildDesign == d));
+                    //        if (_proj != null)
+                    //        {
+                    //            _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
+                    //        }
+                    //    }
+                    //}
+
+
+                    //} // end of HomeSector
+
+                    // all Colonies - build _colony ships
+                    //        if (GameContext.Current.Universe.FindOwned<Colony>(_civ).Count < MaxEmpireColonyCount &&
+                    //GameContext.Current.TurnNumber % ColonyShipEveryTurns == 0 &&
+                    //!_shipDesigns.Where(o => o.ShipType == ShipType.Colony).Any(_colony.Shipyard.IsBuilding))
+                    //        {
+                    //            BuildProject _proj = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == ShipType.Colony && p.BuildDesign == d));
+                    //            if (_proj != null)
+                    //            {
+                    //                _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(_proj));
+                    //            }
+                    //        }
+
+                    // not HomeSector or especially SeatOfGovernment
+                    //if (_colony.Sector != homeSector && _colony.Shipyard != null)
+                    //if (_colony.Shipyard != null && _colony.Shipyard.BuildQueue.Count == 0)
+                    //{
+                    //    _text = "Step_5360:; " + GameEngine.LocationString(_colony.Location.ToString()) //+ " next: check for ShipProduction - not at HomeSector: "
+                    //        + " " + _colony.Shipyard.Design
+
+                    //        + " at " + _name_col
+                    //        + ", Owner= " + _owner_col
+                    //        + " - here no ship is building - maybe on the next code"
+                    //        ;
+                    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                    //    //CheckFor_SystemsToColonizeProject(_colony);
+                    //}
+
+
+                    // this builds a colonizer - why only colonizer ?
+                    if (_colony.Shipyard.BuildSlots.Any(t => t.Project == null) && _colony.Shipyard.BuildQueue.Count == 0)
+                    {
+                        //if (_colony.Owner.IsHuman)
+                        //{
+                        //    Debugger.Break();
+                        //}
+
+                        IList<BuildProject> projects2 = TechTreeHelper.GetShipyardBuildProjects(_colony.Shipyard);
+                        //foreach (BuildProject _proj in projects2)
+                        //{
+                        //    _text = "ShipProduction at HomeSector: "
+                        //        + " at " + GameEngine.LocationString(_colony.Location.ToString())
+                        //        + " - " + _owner_col
+                        //        + ": available= " + _proj.BuildDesign
+
+                        //        ;
+                        //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                        //}
+
+                        //if (boolCheckShipProduction)
+                        //    _text = ""; // just for breakpoint
+
+                        //if (_neededShipType == ShipType.Medical)  // medical is set as default
+                        //{
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Colony)) _neededShipType = ShipType.Colony;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Medical)) _neededShipType = ShipType.Medical;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Spy)) _neededShipType = ShipType.Spy;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Diplomatic)) _neededShipType = ShipType.Diplomatic;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Construction)) _neededShipType = ShipType.Construction;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Transport)) _neededShipType = ShipType.Transport;
+
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Scout)) _neededShipType = ShipType.Scout;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Science)) _neededShipType = ShipType.Science;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.FastAttack)) _neededShipType = ShipType.FastAttack;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Cruiser)) _neededShipType = ShipType.Cruiser;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.HeavyCruiser)) _neededShipType = ShipType.HeavyCruiser;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.StrikeCruiser)) _neededShipType = ShipType.StrikeCruiser;
+                        //    if (_listPrioShipBuild2.Contains(ShipType.Command)) _neededShipType = ShipType.Command;
+                        //}
+
+
+
+
+                        //_neededShipType = ShipType.Construction; // here more code to do
+                        //if (needed_ShipType_1 != null)
+                        //    _neededShipType = needed_ShipType_1;
+
+                        if (_colony.Owner.IsHuman)
+                        {
+                            //Debugger.Break();
+                        }
+
+
+                        //BuildProject newProject = _potentialProjects.LastOrDefault(p => _shipDesigns.Any(d => d.ShipType == _neededShipType && p.BuildDesign == d));
+                        if (newProject != null && _colony.Shipyard.BuildQueue.Count < 1)
+                        {
+                            _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(newProject));
+
+                            _text = "Step_5388:; "
+                                + GameEngine.LocationString(_colony.Location.ToString())
+                                + " > " + _name_col
+                                + " ; " + _owner_col
+                                + " > ShipProduction"
+
+                                + ": Added Construction _proj..." + newProject.BuildDesign
+
+                                ;
+                            if (_writeDirectly_Colony) Console.WriteLine(_text);
+                            _colony_full_Report += _newline + _text;
+                        }
+                    }
+
+
+
+                    //foreach (var item in _colony.Shipyard.BuildQueue)
+                    //{
+                    //    _text = "Step_5387:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
+                    //        + ", ShipProduction > " + item.Project.BuildDesign
+                    //        + ", TurnsRemaining= " + item.Project.TurnsRemaining
+
+
+                    //        ;
+                    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+
                 }
-
-
-
-                //foreach (var item in _colony.Shipyard.BuildQueue)
-                //{
-                //    _text = "Step_5387:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
-                //        + ", ShipProduction > " + item.Project.BuildDesign
-                //        + ", TurnsRemaining= " + item.Project.TurnsRemaining
-
-
-                //        ;
-                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-
+            }
+            catch (Exception e)
+            {
+                _text = "Step_5387:; " + e;
+                Console.WriteLine(_text);
+                Debugger.Break();
             }
 
         ProcessQueue:;
             _colony.Shipyard.ProcessQueue();
         }
+
+        //private static ShipType GetNeededShiptype(CivilizationManager _civM, out ShipType neededShipType)
+        //{
+        //    string _neededShipTypeText = _civM._neededShiptypesList[1].ToString();
+        //    _civM._neededShiptypesList.RemoveAt(1);
+        //    neededShipType = (ShipType)Enum.Parse(typeof(ShipType), _neededShipTypeText);
+        //    return neededShipType;// = (ShipType)Enum.Parse(typeof(ShipType), _neededShipTypeText);
+        //}
+
         //}
         //}
 

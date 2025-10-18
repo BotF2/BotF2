@@ -172,9 +172,13 @@ namespace Supremacy.Combat
                     }
                     //Civilization pair = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
                     //_text = _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength;
+
+                    int _hostStrength = AllHostileEmpireStrength;
+
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
-                        new ReportEntry_CoS(civ, FriendlyAssets.First().Location 
-                        , _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength
+                        new ReportEntry_CoS(civ, FriendlyAssets.First().Location
+                        , _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength 
+                            + " vs " + _hostStrength
                         , "", "", SitRepPriority.Red));
                 }
                 //GameContext.Current.CivilizationManagers[pair].SitRepEntries.Add
@@ -211,10 +215,18 @@ namespace Supremacy.Combat
                         civ = ha.CombatShips.First().Owner;
                         // _allHostileEmpireStrength += _cs.FirePower;
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
+
+                        double _maneuverability = 1;
+
+                        if (cs.Source != null)
+                        {
+                            _maneuverability = 1 + (Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100);
+                        }
+
                         _allHostileEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_allHostileEmpireStrength + cs.Firepower)
                                 + (Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
-                                * (1 + (Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100)))
+                                * _maneuverability)
                                 );
 
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",

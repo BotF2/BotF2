@@ -35,14 +35,15 @@ namespace Supremacy.Universe
     {
         private Lazy<EffectBindingCollection> _effectBindings = new Lazy<EffectBindingCollection>();
         private MapLocation _location;
+        private int _location_fire_power;
         private short _ownerId = (short)Civilization.InvalidID;
         private string _name;
         private int _turnCreated;
         private int _lastOwnershipChange;
 
-        [NonSerialized]
+        //[NonSerialized]
         //public string _text;
-        public string _colony_Full_Report;
+        //public string _colony_Full_Report;
 
         //private string _text;
         //private readonly string _newline = Environment.NewLine;
@@ -249,6 +250,15 @@ namespace Supremacy.Universe
                 _location = value;
                 OnLocationChanged();
                 OnPropertyChanged("Location");
+            }
+        }
+
+        public int LocationFirePower (MapLocation _loc)
+        { 
+            
+            {
+                _location_fire_power = 10;
+                return _location_fire_power;
             }
         }
 

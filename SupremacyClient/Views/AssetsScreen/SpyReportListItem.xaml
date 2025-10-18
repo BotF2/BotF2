@@ -181,7 +181,7 @@
                  Grid.Row="1"
                  VerticalAlignment="Center"
                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
-                 Label="{Binding Path=NetResearch}"
+                 Label="{Binding Path=Research_Net}"
                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOLTIP}" />-->
         <!--<TextBlock Text="1x"
                   Grid.Column="1"
@@ -259,7 +259,7 @@
                  Grid.Row="1"
                  VerticalAlignment="Center"
                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
-                 Label="{Binding Path=NetIndustry}"
+                 Label="{Binding Path=Industry_Net}"
                  ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
       <TextBlock Text="ENERGY ( unused ) ="
                 Grid.Row="1"
@@ -271,7 +271,7 @@
                   Grid.Row="1"
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
-                  Label="{Binding Path=NetEnergy}"
+                  Label="{Binding Path=Energy_Net}"
                   ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
 
         <TextBlock Text="RESEARCH = "
@@ -338,7 +338,7 @@
                   Grid.Row="2"
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
-                  Label="{Binding Path=NetDilithium}"
+                  Label="{Binding Path=Dilithium_Net}"
                   ToolTip="{s:StringResource Key=DILITHIUM_TOOLTIP}" />
       <TextBlock Text="DURANIUM ="
                   Grid.Row="2" Grid.Column="14"
@@ -347,7 +347,7 @@
                   Grid.Row="2"
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/duranium.png"
-                  Label="{Binding Path=NetDuranium}"
+                  Label="{Binding Path=Duranium_Net}"
                   ToolTip="{s:StringResource Key=RAW_MATERIALS_TOOLTIP}" />
         <!--<TextBlock Text="RESEARCH (empire) = "
                 Grid.Row="2"

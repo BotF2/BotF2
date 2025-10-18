@@ -127,6 +127,7 @@ namespace Supremacy.Universe
         private short _originalOwnerId;
         private Meter _population;
         private Meter _shieldStrength;
+        private int _shields_max;
 
         private int _shipyardId;
         //private string shipyard_slot_1_status = "no active yard";
@@ -134,10 +135,7 @@ namespace Supremacy.Universe
         private CollectionBase<TradeRoute> _tradeRoutes;
 
 
-        private Colony()
-        {
-            Initialize();
-        }
+        private Colony() => Initialize();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Colony"/> class.
@@ -399,7 +397,19 @@ namespace Supremacy.Universe
                                             select building.BuildingDesign.GetBonuses(BonusType.MaxPopulationPerMoonSize).Sum(o => o.Amount)
                                         ).Sum();
 
-                return baseValue + (maxPopPerMoonSize * totalMoonSizes);
+                int _population_Max = baseValue + (maxPopPerMoonSize * totalMoonSizes);
+
+                if (this.Owner.Key == "BORG")
+                {
+                    int _borgPopPlus = 3 * GameContext.Current.TurnNumber;
+                    if (_borgPopPlus > 210)
+                        _borgPopPlus = 210;
+
+                    _population_Max = baseValue + _borgPopPlus;
+
+                }
+
+                return _population_Max;
             }
         }
 
@@ -468,9 +478,9 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
-        /// Gets or sets the shipyard present at this <see cref="Colony"/>.
+        /// Gets or sets the _shipyard present at this <see cref="Colony"/>.
         /// </summary>
-        /// <value>The shipyard.</value>
+        /// <value>The _shipyard.</value>
         public Shipyard Shipyard
         {
             get
@@ -494,7 +504,7 @@ namespace Supremacy.Universe
         //{
         //    if (Shipyard == null)
         //    {
-        //        shipyard_slot_1_status =  "no shipyard";
+        //        shipyard_slot_1_status =  "no _shipyard";
         //    }
         //    else
         //    {
@@ -525,7 +535,7 @@ namespace Supremacy.Universe
                 return "in-active";
             }
 
-            if (shipyard.ShipyardDesign.BuildSlotEnergyCost > NetEnergy)
+            if (shipyard.ShipyardDesign.BuildSlotEnergyCost > Energy_Net)
             {
                 return "out of energy";
             }
@@ -577,7 +587,7 @@ namespace Supremacy.Universe
         /// Gets the buildings at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The buildings.</value>
-        public IObservableIndexedCollection<Building> Buildings => _buildings;// .OrderBy(o => o.IsActive);//  this.NetEnergy);
+        public IObservableIndexedCollection<Building> Buildings => _buildings;// .OrderBy(o => o.IsActive);//  this.Energy_Net);
 
         /// <summary>
         /// Gets the active buildings at this <see cref="Colony"/>.
@@ -636,11 +646,23 @@ namespace Supremacy.Universe
             }
         }
 
+        public int Shields_Max
+        {
+            get
+            {
+                return _shields_max;
+            }
+            set
+            {
+                _shields_max = value;
+            }
+        }                    
+
         #region Properties for System Panel Data Binding
-        /// <summary>
-        /// Gets the credits produced at this <see cref="Colony"/>.
-        /// </summary>
-        /// <value>The credits.</value>
+            /// <summary>
+            /// Gets the credits produced at this <see cref="Colony"/>.
+            /// </summary>
+            /// <value>The credits.</value>
         public int TaxCredits
         {
             get
@@ -674,8 +696,8 @@ namespace Supremacy.Universe
 
 
                 // it's: 
-                // a) Pop (* modifier, mostly 1.0) + modifier.Bonus (often 0) + NetIndustry
-                // b) NetIndustry: it's 150% tax income from NetIndustry, so more income from Industry than from Population
+                // a) Pop (* modifier, mostly 1.0) + modifier.Bonus (often 0) + Industry_Net
+                // b) Industry_Net: it's 150% tax income from Industry_Net, so more income from Industry than from Population
                 // c) base value = 200
 
                 // OLD - 2019-JUL-19  > *3 to *3.5 and +500
@@ -683,7 +705,7 @@ namespace Supremacy.Universe
                 // NEW - 2021-JUN-21 > Tax out of pop just 50% ans Ind. 100%, + base value 200 independend from Tech, Ind and Pop
                 // NEW - 2021-SEP-26 > Industry devided by two
                 // NEW - 2021-OCT-09 > Industry devided by ten
-                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (NetIndustry / 10)/* * 1.5*/ + 200);
+                int _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod / 2) + modifier.Bonus + (Industry_Net / 10)/* * 1.5*/ + 200);
 
                 if (Owner.Key == "BORG") { _taxCredits = 1; }
 
@@ -692,14 +714,14 @@ namespace Supremacy.Universe
 
                 // only for LocalPlayer
                 //if (this.OwnerID == )
-                GameLog.Core.Credits.DebugFormat("## Turn;{0};MoraleMOD=;{4};Effic.MOD=;{5};BonusMOD=;{7};Pop=;{3};NetIndustry=;{6};TaxCredits=;{8}; for ;{1};{2}"
+                GameLog.Core.Credits.DebugFormat("## Turn;{0};MoraleMOD=;{4};Effic.MOD=;{5};BonusMOD=;{7};Pop=;{3};Industry_Net=;{6};TaxCredits=;{8}; for ;{1};{2}"
                     , GameContext.Current.TurnNumber
                     , Name
                     , Location
                     , adjustedPop
                     , moraleMod
                     , modifier.Efficiency
-                    , NetIndustry
+                    , Industry_Net
                     , modifier.Bonus
                     , _taxCredits
                 );
@@ -724,6 +746,7 @@ namespace Supremacy.Universe
                 return creditsForSpyScreen;
             }
         }
+
 
         /// <summary>
         /// Gets the credits the civilization<see cref="Colony"/>.
@@ -778,19 +801,19 @@ namespace Supremacy.Universe
         /// Gets the net food production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net food production.</value>
-        public int NetFood => GetProductionOutput(ProductionCategory.Food) - Population.CurrentValue;
+        public int Food_Net => GetProductionOutput(ProductionCategory.Food) - Population.CurrentValue;
 
         /// <summary>
         /// Gets the net industry production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net industry production.</value>
-        public int NetIndustry => GetProductionOutput(ProductionCategory.Industry);
+        public int Industry_Net => GetProductionOutput(ProductionCategory.Industry);
 
         /// <summary>
         /// Gets the net energy production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net energy production.</value>
-        public int NetEnergy
+        public int Energy_Net
         {
             get
             {
@@ -820,33 +843,32 @@ namespace Supremacy.Universe
         /// Gets the net research production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net research production.</value>
-        public int NetResearch => GetProductionOutput(ProductionCategory.Research);
+        public int Research_Net => GetProductionOutput(ProductionCategory.Research);
 
         /// <summary>
         /// Gets the net intelligence production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net intelligence production.</value>
-        public int NetIntelligence =>
-                //GameLog.Client.Intel.DebugFormat("NetIntelligence ={0}", GetProductionOutput(ProductionCategory.Intelligence));
-                GetProductionOutput(ProductionCategory.Intelligence);
+        public int Intelligence_Net => GetProductionOutput(ProductionCategory.Intelligence);
+                
 
         /// <summary>
         /// Gets the net dilithium production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net dilithium production.</value>
-        public int NetDilithium => GetResourceProduction(ResourceType.Dilithium);
+        public int Dilithium_Net => GetResourceProduction(ResourceType.Dilithium);
 
         /// <summary>
         /// Gets the net deuterium production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net deuterium production.</value>
-        public int NetDeuterium => GetResourceProduction(ResourceType.Deuterium);
+        public int Deuterium_Net => GetResourceProduction(ResourceType.Deuterium);
 
         /// <summary>
         /// Gets the net DURANIUM production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net DURANIUM production.</value>
-        public int NetDuranium => GetResourceProduction(ResourceType.Duranium);
+        public int Duranium_Net => GetResourceProduction(ResourceType.Duranium);
         #endregion
 
         #region IProductionCenter Members
@@ -1050,7 +1072,7 @@ namespace Supremacy.Universe
         #endregion
 
 
-        private void Initialize()
+        private void Initialize() // new colony
         {
             EnumValueCollection<ProductionCategory> categories = EnumUtilities.GetValues<ProductionCategory>();
 
@@ -1096,7 +1118,7 @@ namespace Supremacy.Universe
         {
             if (e.PropertyName == "CurrentValue")
             {
-                OnPropertyChanged("NetFood");
+                OnPropertyChanged("Food_Net");
             }
         }
 
@@ -1785,19 +1807,19 @@ namespace Supremacy.Universe
             switch (category)
             {
                 case ProductionCategory.Food:
-                    OnPropertyChanged("NetFood");
+                    OnPropertyChanged("Food_Net");
                     break;
                 case ProductionCategory.Industry:
-                    OnPropertyChanged("NetIndustry");
+                    OnPropertyChanged("Industry_Net");
                     break;
                 case ProductionCategory.Energy:
-                    OnPropertyChanged("NetEnergy");
+                    OnPropertyChanged("Energy_Net");
                     break;
                 case ProductionCategory.Research:
-                    OnPropertyChanged("NetResearch");
+                    OnPropertyChanged("Research_Net");
                     break;
                 case ProductionCategory.Intelligence:
-                    OnPropertyChanged("NetIntelligence");
+                    OnPropertyChanged("Intelligence_Net");
                     break;
             }
             this.InvalidateBuildTimes();
@@ -1826,19 +1848,19 @@ namespace Supremacy.Universe
             switch (category)
             {
                 case ProductionCategory.Food:
-                    OnPropertyChanged("NetFood");
+                    OnPropertyChanged("Food_Net");
                     break;
                 case ProductionCategory.Industry:
-                    OnPropertyChanged("NetIndustry");
+                    OnPropertyChanged("Industry_Net");
                     break;
                 case ProductionCategory.Energy:
-                    OnPropertyChanged("NetEnergy");
+                    OnPropertyChanged("Energy_Net");
                     break;
                 case ProductionCategory.Research:
-                    OnPropertyChanged("NetResearch");
+                    OnPropertyChanged("Research_Net");
                     break;
                 case ProductionCategory.Intelligence:
-                    OnPropertyChanged("NetIntelligence");
+                    OnPropertyChanged("Intelligence_Net");
                     break;
             }
             this.InvalidateBuildTimes();
@@ -1883,8 +1905,8 @@ namespace Supremacy.Universe
         /// <summary>
         /// Determines whether a <see cref="Shipyard"/> of the specified design exists at this <see cref="Colony"/>.
         /// </summary>
-        /// <param name="design">The shipyard design.</param>
-        /// <returns><c>true</c> if a shipyard of the specified design exists; otherwise, <c>false</c>.</returns>
+        /// <param name="design">The _shipyard design.</param>
+        /// <returns><c>true</c> if a _shipyard of the specified design exists; otherwise, <c>false</c>.</returns>
         internal bool HasShipyard(ShipyardDesign design)
         {
             Shipyard shipyard = Shipyard;
@@ -1944,7 +1966,7 @@ namespace Supremacy.Universe
             Report(this);
 
             //int _foodReservesIntended = 100 * _TechLevel;
-            if (NetFood < 0 && _foodReserves < (Population.CurrentValue * 2))
+            if (Food_Net < 0 && _foodReserves < (Population.CurrentValue * 2))
             {
                 if (_foodPF_unused > 0)
                 {
@@ -2005,8 +2027,8 @@ namespace Supremacy.Universe
 
                 while (true)
                 {
-                    int netEnergy = NetEnergy;
-                    if (netEnergy >= 0)  // no energy shortage !
+                    int _energy_Net = Energy_Net;
+                    if (_energy_Net >= 0)  // no energy shortage !
                     {
                         break;
                     }
@@ -2020,7 +2042,7 @@ namespace Supremacy.Universe
                     OnPropertyChanged("OrbitalBatteries_Active");
 
                     /*
-                     * First try to shut down any unutilized shipyard build slots.  Those can be considered
+                     * First try to shut down any unutilized _shipyard build slots.  Those can be considered
                      * less critical than active buildings.
                      */
                     if (shipyard != null)
@@ -2044,7 +2066,7 @@ namespace Supremacy.Universe
                     Building mostCostlyBuilding = Buildings
                         .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
                         .OrderBy(o => o.BuildingDesign.EnergyCost)
-                        .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -netEnergy);
+                        .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -_energy_Net);
 
                     if (mostCostlyBuilding == null)
                     {
@@ -2071,7 +2093,7 @@ namespace Supremacy.Universe
                     }
 
                     /*
-                     * Lastly, try to shut down some shipyard build slots.  To be fair to the player, we'll favor
+                     * Lastly, try to shut down some _shipyard build slots.  To be fair to the player, we'll favor
                      * shutting down build slots with the least build progress.
                      */
                     if (shipyard != null)
@@ -2145,7 +2167,7 @@ namespace Supremacy.Universe
             _text += ", Prod: " + GetActiveFacilities(ProductionCategory.Industry) + "/" + Facilities_Total2_Industry; // _industryPF_unused;
             // already comes in ... 
             //int _energyPF_unused = Facilities_Total3_Energy - GetActiveFacilities(ProductionCategory.Energy);
-            _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + Facilities_Total3_Energy + " (" + colony.NetEnergy + ")"; // _energyPF_unused;
+            _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + Facilities_Total3_Energy + " (" + colony.Energy_Net + ")"; // _energyPF_unused;
             //int _researchPF_unused = Facilities_Total4_Research - GetActiveFacilities(ProductionCategory.Research);
             _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + Facilities_Total4_Research; // _researchPF_unused;
             //int _intelPF_unused = Facilities_Total5_Intelligence - GetActiveFacilities(ProductionCategory.Intelligence);
@@ -2198,24 +2220,24 @@ namespace Supremacy.Universe
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>")]
         public int EnsureEnergyForBuildings()
         {
-            int shutDown = 0;
-            Shipyard shipyard = Shipyard;
-            int netEnergy = NetEnergy;
+            int _shutDown = 0;
+            Shipyard _shipyard = Shipyard;
+            int _energy_Net = Energy_Net;
 
             if (OrbitalBatteries.Count > 0)
             {
                 for (int i = 0; i < OrbitalBatteries.Count; i++)
                 {
                     _ = OrbitalBattery_Deactivate();
-                    //_text = "OrbitalBattery de-activated > Energy = " + netEnergy;
+                    //_text = "OrbitalBattery de-activated > Energy = " + _energy_Net;
                     //Console.WriteLine(_text);
                 }
             }
 
             while (true)
             {
-                netEnergy = NetEnergy;
-                if (netEnergy >= 0)  // no energy shortage !
+                _energy_Net = Energy_Net;
+                if (_energy_Net >= 0)  // no energy shortage !
                 {
                     break;
                 }
@@ -2231,17 +2253,17 @@ namespace Supremacy.Universe
 
 
                 /*
-                 * First try to shut down any unutilized shipyard build slots.  Those can be considered
+                 * First try to shut down any unutilized _shipyard build slots.  Those can be considered
                  * less critical than active buildings.
                  */
-                if (shipyard != null)
+                if (_shipyard != null)
                 {
-                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
+                    ShipyardBuildSlot deactivatedBuildSlot = _shipyard.BuildSlots
                         .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(ShipyardBuildSlot_Deactivate);
 
                     if (deactivatedBuildSlot != null)
                     {
-                        ++shutDown;
+                        ++_shutDown;
                         goto Next;
                     }
                 }
@@ -2254,7 +2276,7 @@ namespace Supremacy.Universe
                 Building mostCostlyBuilding = Buildings
                     .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
                     .OrderBy(o => o.BuildingDesign.EnergyCost)
-                    .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -netEnergy);
+                    .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -_energy_Net);
 
                 if (mostCostlyBuilding == null)
                 {
@@ -2267,7 +2289,7 @@ namespace Supremacy.Universe
                 if (mostCostlyBuilding != null &&
                     Building_Deactivate(mostCostlyBuilding))
                 {
-                    shutDown++;
+                    _shutDown++;
                     goto Next;
                 }
 
@@ -2275,23 +2297,23 @@ namespace Supremacy.Universe
                 {
                     if (Building_Deactivate(building))
                     {
-                        shutDown++;
+                        _shutDown++;
                         goto Next;
                     }
                 }
 
                 /*
-                 * Lastly, try to shut down some shipyard build slots.  To be fair to the player, we'll favor
+                 * Lastly, try to shut down some _shipyard build slots.  To be fair to the player, we'll favor
                  * shutting down build slots with the least build progress.
                  */
-                if (shipyard != null)
+                if (_shipyard != null)
                 {
-                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
+                    ShipyardBuildSlot deactivatedBuildSlot = _shipyard.BuildSlots
                         .Where(o => o.IsActive && !o.HasProject).FirstOrDefault(ShipyardBuildSlot_Deactivate);
 
                     if (deactivatedBuildSlot != null)
                     {
-                        ++shutDown;
+                        ++_shutDown;
                         goto Next;
                     }
                 }
@@ -2302,16 +2324,16 @@ namespace Supremacy.Universe
 
             if (OrbitalBatteries.Count > 0)
             {
-                int Activate_OrbBat = netEnergy / OrbitalBatteries[0].Design.UnitEnergyCost;
+                int Activate_OrbBat = _energy_Net / OrbitalBatteries[0].Design.UnitEnergyCost;
                 if (Activate_OrbBat > 0) Activate_OrbBat -= 1;  // in peace two active OrbBat are enough
                 for (int i = 0; i < Activate_OrbBat; i++)
                 {
                     _ = OrbitalBattery_Activate();
-                    //_text = "OrbitalBattery activated > Energy = " + netEnergy;
+                    //_text = "OrbitalBattery activated > Energy = " + _energy_Net;
                     //Console.WriteLine(_text);
                 }
             }
-            return shutDown;
+            return _shutDown;
         }
 
         // FOOD
@@ -2409,8 +2431,8 @@ namespace Supremacy.Universe
 
                 if (design.UnitEnergyCost > 0)
                 {
-                    int netEnergy = NetEnergy;
-                    if (netEnergy - design.UnitEnergyCost < 0)
+                    int _energy_Net = Energy_Net;
+                    if (_energy_Net - design.UnitEnergyCost < 0)
                     {
                         return false;
                     }
@@ -2427,7 +2449,7 @@ namespace Supremacy.Universe
 
             if (design.UnitEnergyCost > 0)
             {
-                OnPropertyChanged("NetEnergy");
+                OnPropertyChanged("Energy_Net");
             }
 
             OnPropertyChanged("OrbitalBatteries_Active");
@@ -2461,7 +2483,7 @@ namespace Supremacy.Universe
 
             if (design.UnitEnergyCost > 0)
             {
-                OnPropertyChanged("NetEnergy");
+                OnPropertyChanged("Energy_Net");
             }
 
             OnPropertyChanged("OrbitalBatteries_Active");
@@ -2624,14 +2646,14 @@ namespace Supremacy.Universe
                 return true;
             }
 
-            if (shipyard.ShipyardDesign.BuildSlotEnergyCost > NetEnergy)
+            if (shipyard.ShipyardDesign.BuildSlotEnergyCost > Energy_Net)
             {
                 return false;
             }
 
             buildSlot.IsActive = true;
 
-            OnPropertyChanged("NetEnergy");
+            OnPropertyChanged("Energy_Net");
 
             return true;
         }
@@ -2656,7 +2678,7 @@ namespace Supremacy.Universe
 
             buildSlot.IsActive = false;
 
-            OnPropertyChanged("NetEnergy");
+            OnPropertyChanged("Energy_Net");
 
             return true;
         }
@@ -2689,13 +2711,13 @@ namespace Supremacy.Universe
 
             if (value && energyCost > 0)
             {
-                result = energyCost <= NetEnergy;
+                result = energyCost <= Energy_Net;
             }
 
             if (result)
             {
                 building.IsActive = value;
-                _ = propertyChanges.Add("NetEnergy");
+                _ = propertyChanges.Add("Energy_Net");
                 foreach (Bonus bonus in building.BuildingDesign.Bonuses)
                 {
                     if (BonusHelper.IsGlobalBonus(bonus.BonusType))
@@ -2731,35 +2753,35 @@ namespace Supremacy.Universe
                                 break;
                             case BonusType.Food:
                             case BonusType.PercentFood:
-                                _ = propertyChanges.Add("NetFood");
+                                _ = propertyChanges.Add("Food_Net");
                                 break;
                             case BonusType.Industry:
                             case BonusType.PercentIndustry:
-                                _ = propertyChanges.Add("NetIndustry");
+                                _ = propertyChanges.Add("Industry_Net");
                                 this.InvalidateBuildTimes();
                                 Shipyard?.InvalidateBuildTimes();
 
                                 break;
                             case BonusType.Energy:
                             case BonusType.PercentEnergy:
-                                _ = propertyChanges.Add("NetEnergy");
+                                _ = propertyChanges.Add("Energy_Net");
                                 break;
                             case BonusType.Research:
-                                _ = propertyChanges.Add("NetResearch");
+                                _ = propertyChanges.Add("Research_Net");
                                 break;
                             case BonusType.Intelligence:
-                                _ = propertyChanges.Add("NetIntelligence");
+                                _ = propertyChanges.Add("Intelligence_Net");
                                 break;
                             case BonusType.Dilithium:
-                                _ = propertyChanges.Add("NetDilithium");
+                                _ = propertyChanges.Add("Dilithium_Net");
                                 break;
                             case BonusType.Deuterium:
                             case BonusType.PercentDeuterium:
-                                _ = propertyChanges.Add("NetDeuterium");
+                                _ = propertyChanges.Add("Deuterium_Net");
                                 break;
                             case BonusType.Duranium:
                             case BonusType.PercentDuranium:
-                                _ = propertyChanges.Add("NetDuranium");
+                                _ = propertyChanges.Add("Duranium_Net");
                                 break;
                             case BonusType.GrowthRate:
                             case BonusType.PercentGrowthRate:
@@ -2829,6 +2851,8 @@ namespace Supremacy.Universe
             }
 
             _shieldStrength.Maximum = maxShielding;
+            Shields_Max = maxShielding;
+
 
             if (!regenerate)
             {
@@ -3115,6 +3139,29 @@ namespace Supremacy.Universe
         protected override Cloneable CreateInstance(ICloneContext context)
         {
             return new Colony();
+        }
+
+        public static int DefenseValue(Colony colony)
+        {
+            int _defensevalue = 10 + colony.Population.CurrentValue; // basic defense value
+
+            int _active = colony.orbitalBatteries_active.Value;
+            int _one_orb = colony.OrbitalBatteryDesign != null ? colony.OrbitalBatteries[0].Firepower() : 0;
+
+            _defensevalue += _active * _one_orb;
+
+            _defensevalue = colony.ShieldStrength.CurrentValue;
+
+            string _text = "Step_3449:; Colony Defense Value for " + colony.Name
+                + " Turn " + GameContext.Current.TurnNumber
+                + "; Population: " + colony.Population.CurrentValue
+                + "; Active Orbital Batteries: " + _active
+                + "; One Orbital Battery Firepower: " + _one_orb
+                + "; Shield Strength: " + colony.ShieldStrength.CurrentValue
+                + " => Defense Value: " + _defensevalue * 1.1f
+                ;
+
+            return (int)(1.1f * _defensevalue);
         }
     }
 

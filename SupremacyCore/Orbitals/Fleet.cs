@@ -48,12 +48,14 @@ namespace Supremacy.Orbitals
         /// <value>The type of the UniverseObject.</value>
         public sealed override UniverseObjectType ObjectType => UniverseObjectType.Fleet;
 
-        public string All_Info
+        public string About_This
         {
             get
             {
-                string _all_info = this.ObjectID + " " + Name + " " + this.Location 
+                string _all_info = /*this.ObjectID + " " +*/ Name + " " + this.Location 
                     + " " + AITypeUnit
+                    + " " + Order.OrderName
+                    
                     ;
                 
                 return _all_info;
@@ -129,6 +131,8 @@ namespace Supremacy.Orbitals
                     }
                     //ToDo: After a changed (Cloaked/Camouflaged) a 'RefreshTaskListView' has to be done, but didn't found a way to do it directly
                 }
+
+                _FleetNameString = ObjectID + " " + _FleetNameString;
 
                 return _FleetNameString;
             }

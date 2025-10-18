@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 
 namespace Supremacy.AI
 {
@@ -54,7 +55,7 @@ namespace Supremacy.AI
         //private static string _designText;
         private static string _fleet_Text;
         private static string _fleets_Summary = "";
-        private static bool _writeDirectly_Fleets = false;
+        private static bool _writeDirectly_Fleets = true;
         //private static double _defenseSectorIntValue;
 
 
@@ -101,43 +102,30 @@ namespace Supremacy.AI
             }
         }
 
-        public static void DoTurn([NotNull] Civilization _civ)
+        public static void Do_0_Turn_Unit([NotNull] Civilization _civ)
         {
             //_soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
             StarSystem _ourHomeSystem = _civM.HomeSystem;
             //MapLocation accumulateSystem = GameContext.Current.CivilizationManagers[_civM].AccumulateLocation;
             Sector _accumulateSector = _ourHomeSystem.Sector;
-            //_accumulateSector.Location = GameContext.Current.CivilizationManagers[_civM].AccumulateLocation.
-            Sector _strandedShips_Sector;
-            _fleets_Summary = "" + _fleets_Summary;
+            _accumulateSector = GameContext.Current.CivilizationManagers[_civM].AccumulateSector;
+            Sector _strandedShips_Sector = GameContext.Current.CivilizationManagers[_civM].StrandedShipsSector;
+            //_fleets_Summary = "" + _fleets_Summary;
             string _newline = Environment.NewLine;
 
             //_civM.Assault_AttackValue = _civM.Assault_AttackValue * -1; // it's a += so this sets to zero
 
-
-
-
-            string _text = "Step_1103:; ##################### UnitAI.DoTurn begins...for "
-                + _civ.Key + " #####################   " + DateTime.Now;
-            if (_writeDirectly_Fleets) Console.WriteLine(_text);
-
-            if (_civ.Key == "DOMINION")
-            {
-                //Debugger.Break();
-
-            }
-
-            //_text = _designText;// dummy - please keep
 
             if (_civ == null)
             {
                 throw new ArgumentNullException(nameof(_civ));
             }
 
+
             //if (_civM.Assault_TargetCiv != null) // Just for info
             //{
-            //    //_text = "Step_6260:; UnitAI-DoTurn; "
+            //    //_text = "Step_6260:; UnitAI-Do_0_Turn_Unit; "
             //    //    + "Assault_TargetCiv (not null !!) > " + _civM.Assault_TargetCiv + " "
             //    //    ;
             //    //if (_writeDirectly_Fleets) Console.WriteLine(_text);
@@ -220,7 +208,7 @@ namespace Supremacy.AI
             //    }
             //    else
             //    {
-            //        _civM.Assault_TargetCiv = null;
+            //        _civM.Assault_Location = null;
             //    }
             //}
             //else
@@ -239,755 +227,676 @@ namespace Supremacy.AI
 
 
 
-            if (_civ.CivID < 999) // unit AI only for empires >> 999 is 'for all', below '7' is just Empires
+            //if (_civ.CivID < 999) // unit AI only for empires >> 999 is 'for all', below '7' is just Empires
+            //{
+            //_text = "Step_3102:; ##########################################   UnitAI for Empires or as well for minors...";
+            //if (_writeDirectly_Colony) Console.WriteLine(_text);
+
+
+            List<Fleet> _all_Fleets_of_Civ = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList();
+            // finds also _fleets with ID -1 ... maybe Colonizer which disappered and just deleted in next round?
+
+            // in case of ..
+            //List<Ship> _allAttackWarShips = new List<Ship>();
+            //if (true)
+            //{
+            //foreach (Fleet civFleet in _all_Fleets_of_Civ)
+            //{
+            //foreach (Ship _ship in civFleet.Ships.Where(s => s.ShipType >= ShipType.Scout || s.ShipType == ShipType.Transport).ToList())
+            //{
+            //    if (civFleet.OwnerID != -1)
+            //    {
+            //        _allAttackWarShips.Add(_ship);
+            //        CreateShipText(_ship, out string _shipText);
+            //        if (_writeDirectly_Colony) Console.WriteLine("Step_3103:; in case of .. added to _allAttackWarShips; " + _shipText);
+            //        // GameLog.Client.AI.DebugFormat("A _ship all attack ships {0} location ={1}", _ship.Name, _ship.Location );
+            //    }
+            //}
+
+
+
+
+            //_text = "--------------------";
+            //if (_writeDirectly_Colony) Console.WriteLine(_text);
+
+
+            string _text = "Step_1103:; ##################### UnitAI.Do_0_Turn_Unit begins...for "
+                            + _civ.Key + " #####################   " + DateTime.Now;
+            if (_writeDirectly_Fleets) Console.WriteLine(_text);
+
+            if (_civ.IsHuman)
             {
-                //_text = "Step_3102:; ##########################################   UnitAI for Empires or as well for minors...";
-                //if (_writeDirectly_Colony) Console.WriteLine(_text);
+                //Debugger.Break();
+
+            }
 
 
-                List<Fleet> _all_Fleets_of_Civ = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList();
-                // finds also _fleets with ID -1 ... maybe Colonizer which disappered and just deleted in next round?
+            // **** The UnitAI _fleet by _fleet looping 
+            foreach (Fleet _fleet in _all_Fleets_of_Civ) // each _fleet of the current _civM
+            {
+                _fleet_Text = ""; // collects all Console_Textes 
+                _fleets_Summary = ""; // dummy - please keep
 
-                // in case of ..
-                //List<Ship> _allAttackWarShips = new List<Ship>();
-                //if (true)
+                if (_fleet.ObjectID == -1)
+                {
+                    _fleet.Destroy();
+                    Debugger.Break();
+                    continue;
+                }
+
+
+                bool _accumulateAble = true;
+                //if (_writeDirectly_Colony)
+                //Console.WriteLine("Step_7848:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary) + " > Order= " + _fleet.Order);
+
+                switch (_fleet.Order.OrderName)
+                {
+
+                    //case FleetOrders.IdleOrder.OrderName:
+                    //case "On Idle Status":
+                    //case "Engage":
+                    //    _accumulateAble = true;
+                    //    break;
+                    case "Going":
+                        _accumulateAble = false;
+                        break;
+                    default:
+                        _accumulateAble = true;
+                        break;
+                }
+                //if (_writeDirectly_Colony)
+                if (_fleet.Owner.IsHuman)
+                {
+                    Console.WriteLine("Step_7888:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary)
+                        //+ " > Order= " + _fleet.Order
+                        );
+                }
+
+
+                if (_fleet.IsStranded)
+                {
+                    _strandedShips_Sector = _fleet.Sector;
+                }
+
+                if (_fleet.IsColonizer) _accumulateAble = false;
+                if (_fleet.IsScout) _accumulateAble = false;
+                if (_fleet.IsConstructor) _accumulateAble = false;
+                if (_fleet.IsMedical) _accumulateAble = false;
+                if (_fleet.IsSpy) _accumulateAble = false;
+                if (_fleet.IsDiplomatic) _accumulateAble = false;
+                if (_fleet.IsScience) _accumulateAble = false;
+
+
+                //try
                 //{
-                //foreach (Fleet civFleet in _all_Fleets_of_Civ)
+                //    //_designText = _fleet.Ships[0].Design.ToString(); 
+                //}
+                //catch
                 //{
-                //foreach (Ship _ship in civFleet.Ships.Where(s => s.ShipType >= ShipType.Scout || s.ShipType == ShipType.Transport).ToList())
+                //    _text = "Step_6147:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary);
+                //    if (_writeDirectly_Fleets) Console.WriteLine("Step_6149:; " + _text);
+                //    _fleet_Text += _newline + _text;
+                //}
+
+                ////string _fleetOrderText = "NoOrder";
+                //if (_fleet.Order != null)
+                //    _fleetOrderText = _fleet.Order.ToString();
+
+
+                //CreateUpdateFleetText(_fleet, out _fleets_Summary);
+                //Console.WriteLine("Step_6152:; " + _fleets_Summary);
+
+                _fleet_Text += _newline + _text;
+
+                if (_fleet.Ships.Count > 1) { Print_Ships_of_Fleet(_fleet); }
+
+                //_fleets_Summary = _fleet.Location
+                //    + " > " + _fleet.Ships[0].Design.ToString()
+                //    + " > " + _fleet.ObjectID + ":  " + _fleet.Name
+
+                //    //+ " " + _fleet.Owner
+                //    + " " + ", AITypeUnit=> ** " + _fleet.AITypeUnit /*+ ", Assault_TargetCiv=NULL" + _fleet.Owner.Assault_TargetCiv*/
+                //    + " " + ", Activity=> ** " + _fleet.Activity /*+ ", Assault_TargetCiv=NULL" + _fleet.Owner.Assault_TargetCiv*/
+                //    + ", Order= ** " + _fleetOrderText;
+
+                // double
+                //if (_writeDirectly_Colony)
+                //
+
+
+                //_fleet_Text += _newline + _text;
+                // as well go to CTRL+F and 'checking _fleets'
+
+                CloakAll(_fleet);
+
+                if (_fleet.IsStranded)  // is stranded
+                {
+                    goto All_Done_UnitAI;
+                }
+
+
+                // hm .. Tow is coded !!!! ???
+                if (_fleet.LowestFuelLevel < 3        // running out of fuel
+                    && _fleet.IsConstructor == false) // not for Constructors on "Rescue Mission"
+                {
+                    _fleet.Route.Clear();
+                    _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _ourHomeSystem.Sector }));
+
+                    if (_fleet.Owner.IsHuman)
+                    {
+                        //Debugger.Break();
+                    }
+                }
+
+                //if (_fleet.LowestFuelLevel < 3        // running out of fuel
+                //        && _fleet.IsConstructor == false) // not for Constructors on "Rescue Mission"
                 //{
-                //    if (civFleet.OwnerID != -1)
-                //    {
-                //        _allAttackWarShips.Add(_ship);
-                //        CreateShipText(_ship, out string _shipText);
-                //        if (_writeDirectly_Colony) Console.WriteLine("Step_3103:; in case of .. added to _allAttackWarShips; " + _shipText);
-                //        // GameLog.Client.AI.DebugFormat("A _ship all attack ships {0} location ={1}", _ship.Name, _ship.Location );
-                //    }
+                //    _fleet.Route.Clear();
+                //    _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _ourHomeSystem.Sector }));
                 //}
 
 
 
 
-                //_text = "--------------------";
+                // ****  a) Main stuff - we don't have a target _civM > for b) some orders are changed
+                //if (_civM.Assault_TargetCiv == null)
+                //{
+
+
+                //_text = "Step_6153:; " // Turn " + GameContext.Current.TurnNumber
+                //    + "" + _fleets_Summary
+                //    + " ... ( no CIV to target > just usual business )"
+                //    + ", _accumulateAble= " + _accumulateAble
+                //    ;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
+                //_fleet_Text += /*_newline + */_text;
 
-                // **** The UnitAI _fleet by _fleet looping 
-                foreach (Fleet _fleet in _all_Fleets_of_Civ) // each _fleet of the current _civM
+
+
+                // >Check Fleets
+
+                // just for testing
+
+                //bool _checkFleetOrders = false;
+                //bool _checkOnlyPlayersUnits = false;
+                //if (_fleet.Owner.IsHuman)
+                //{
+                //    //continue;
+                //    _checkFleetOrders = true;
+                //    _checkOnlyPlayersUnits = true;
+
+                //Debugger.Break();
+
+                //}
+
+
+
+                Do_2_Accumulate(_fleet);
+
+                // no more actions here if owner is human player
+                if (_fleet.Owner.IsHuman)
                 {
-                    _fleet_Text = ""; // collects all Console_Textes 
-                    _fleets_Summary = ""; // dummy - please keep
+                    //continue;
+                }
 
-                    if (_fleet.ObjectID == -1)
-                    {
-                        _fleet.Destroy();
-                        continue;
-                    }
+                //SELECT
+                //_checkShips_Construction = true;
+                if (_fleet.IsConstructor) DoConstructionShip(_fleet); // Constructor get the first "GetEscort"
+                                                                      //_checkShips_Colony = true;
+                if (_fleet.IsColonizer) DoColonyShip(_fleet);
+                //_checkShips_Scout = true;
+                if (_fleet.IsScout) DoScout(_fleet);
+                //_checkShips_Medical = true;
+                if (_fleet.IsMedical) DoMedical(_fleet);
+                //_checkShips_Spy = true;
+                if (_fleet.IsSpy) DoSpy(_fleet);
+                //_checkShips_Diplomatic = true;
+                if (_fleet.IsDiplomatic) DoDiplomatic(_fleet);
+                //_checkShips_Science = true;
+                if (_fleet.IsScience) DoScienceShip(_fleet);
 
+                //_checkShips_Transport = true;
+                if (_fleet.IsTransport) DoTransportShip(_fleet);
 
-                    bool _accumulateAble = true;
-                    //if (_writeDirectly_Colony) Console.WriteLine("Step_7888:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary) + " > Order= " + _fleet.Order);
+                // let transport ships explore instead of doing nothing at the beginning
+                if (_fleet.IsTransport && _civM.Assault_Location == null)
+                {
+                    DoScout(_fleet); // ..using Scout-Explore for ... let transport ships explore instead of doing nothing at the beginning
+                }
 
-                    switch (_fleet.Order.OrderName)
-                    {
+                //bool _checkShips_Battle = true;
 
-                        //case FleetOrders.IdleOrder.OrderName:
-                        case "On Idle Status":
-                        case "Engage":
-                            _accumulateAble = true;
-                            break;
-                        case "On The Way":
-                        default:
-                            _accumulateAble = false;
-                            break;
-                    }
+                if (_fleet.Owner.IsHuman)
+                {
+                    //Debugger.Break();
+                }
 
-                    //AdaptShips_UNUSED(_fleet);
-
-                    //switch
-
-                    if (_fleet.IsStranded)
-                    {
-                        _strandedShips_Sector = _fleet.Sector;
-                    }
-
-                    if (_fleet.IsColonizer) _accumulateAble = false;
-                    if (_fleet.IsScout) _accumulateAble = false;
-                    if (_fleet.IsConstructor) _accumulateAble = false;
-                    if (_fleet.IsMedical) _accumulateAble = false;
-                    if (_fleet.IsSpy) _accumulateAble = false;
-                    if (_fleet.IsDiplomatic) _accumulateAble = false;
-                    if (_fleet.IsScience) _accumulateAble = false;
-
-
-                    //try
-                    //{
-                    //    //_designText = _fleet.Ships[0].Design.ToString(); 
-                    //}
-                    //catch
-                    //{
-                    //    _text = "Step_6147:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary);
-                    //    if (_writeDirectly_Fleets) Console.WriteLine("Step_6149:; " + _text);
-                    //    _fleet_Text += _newline + _text;
-                    //}
-
-                    ////string _fleetOrderText = "NoOrder";
-                    //if (_fleet.Order != null)
-                    //    _fleetOrderText = _fleet.Order.ToString();
-
-
-                    CreateUpdateFleetText(_fleet, out _fleets_Summary);
-                    //Console.WriteLine("Step_6152:; " + _fleets_Summary);
-
-                    _fleet_Text += _newline + _text;
-
-                    if (_fleet.Ships.Count > 1) { Print_Ships_of_Fleet(_fleet); }
-
-                    //_fleets_Summary = _fleet.Location
-                    //    + " > " + _fleet.Ships[0].Design.ToString()
-                    //    + " > " + _fleet.ObjectID + ":  " + _fleet.Name
-
-                    //    //+ " " + _fleet.Owner
-                    //    + " " + ", AITypeUnit=> ** " + _fleet.AITypeUnit /*+ ", Assault_TargetCiv=NULL" + _fleet.Owner.Assault_TargetCiv*/
-                    //    + " " + ", Activity=> ** " + _fleet.Activity /*+ ", Assault_TargetCiv=NULL" + _fleet.Owner.Assault_TargetCiv*/
-                    //    + ", Order= ** " + _fleetOrderText;
-
-                    // double
-                    //if (_writeDirectly_Colony)
-                    //
-
-
-                    //_fleet_Text += _newline + _text;
-                    // as well go to CTRL+F and 'checking _fleets'
-
-                    CloakAll(_fleet);
-
-                    if (_fleet.IsStranded)  // is stranded
-                    {
-                        goto All_Done_UnitAI;
-                    }
-
-                    if (_fleet.LowestFuelLevel < 3        // running out of fuel
-                        && _fleet.IsConstructor == false) // not for Constructors on "Rescue Mission"
-                    {
-                        _fleet.Route.Clear();
-                        _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _ourHomeSystem.Sector }));
-
-                        if (_fleet.Owner.IsHuman)
-                        {
-                            Debugger.Break();
-                        }
-                    }
-
-                    //if (_fleet.LowestFuelLevel < 3        // running out of fuel
-                    //        && _fleet.IsConstructor == false) // not for Constructors on "Rescue Mission"
-                    //{
-                    //    _fleet.Route.Clear();
-                    //    _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _ourHomeSystem.Sector }));
-                    //}
-
-
-
-
-                    // ****  a) Main stuff - we don't have a target _civM > for b) some orders are changed
-                    //if (_civM.Assault_TargetCiv == null)
-                    //{
-
-
-                    //_text = "Step_6153:; " // Turn " + GameContext.Current.TurnNumber
-                    //    + "" + _fleets_Summary
-                    //    + " ... ( no CIV to target > just usual business )"
-                    //    + ", _accumulateAble= " + _accumulateAble
-                    //    ;
-                    //if (_writeDirectly_Colony) Console.WriteLine(_text);
-                    //_fleet_Text += /*_newline + */_text;
-
-
-
-                    // >Check Fleets
-
-                    // just for testing
-
-                    //bool _checkFleetOrders = false;
-                    //bool _checkOnlyPlayersUnits = false;
+                if (_fleet.IsCombatant
+                    && !_fleet.IsMedical
+                    && !_fleet.IsDiplomatic
+                    && !_fleet.IsColonizer
+                    && !_fleet.IsConstructor
+                    && !_fleet.IsSpy
+                    && !_fleet.IsScout
+                    && !_fleet.IsScience
+                    )
+                {
                     //if (_fleet.Owner.IsHuman)
                     //{
-                    //    //continue;
-                    //    _checkFleetOrders = true;
-                    //    _checkOnlyPlayersUnits = true;
-
-                    //Debugger.Break();
-
+                    //    Debugger.Break(); // Combatant - see below
                     //}
 
+                    _fleet.AITypeUnit = UnitAIType.SystemAttack;
+                    if (_fleet.IsTransport)
+                    {
+                        _fleet.AITypeUnit = UnitAIType.Transport;
+                    }
 
 
-                    DoAccumulate(_fleet);
 
-                    // no more actions here if owner is human player
+                    //DoBattleShips(_fleet); // inclusive TransportShips
+                    //                       //_checkShips_Transport = true;
+                    //                       //DoTransportShip(_fleet);
+                    //                       //}
+                    //                       //else
+                    //                       //{
+                    //                       //    //goto End_Ships;
+                    //                       //}
+
                     if (_fleet.Owner.IsHuman)
                     {
-                        //continue;
+                        //Debugger.Break();  // Combatant && no TargetCiv
                     }
 
-                    //SELECT
-                    //_checkShips_Construction = true;
-                    if (_fleet.IsConstructor) DoConstructionShip(_fleet); // Constructor get the first "GetEscort"
-                    //_checkShips_Colony = true;
-                    if (_fleet.IsColonizer) DoColonyShip(_fleet);
-                    //_checkShips_Scout = true;
-                    if (_fleet.IsScout) DoScout(_fleet);
-                    //_checkShips_Medical = true;
-                    if (_fleet.IsMedical) DoMedical(_fleet);
-                    //_checkShips_Spy = true;
-                    if (_fleet.IsSpy) DoSpy(_fleet);
-                    //_checkShips_Diplomatic = true;
-                    if (_fleet.IsDiplomatic) DoDiplomatic(_fleet);
-                    //_checkShips_Science = true;
-                    if (_fleet.IsScience) DoScienceShip(_fleet);
-
-                    //_checkShips_Transport = true;
-                    if (_fleet.IsTransport) DoTransportShip(_fleet);
-                        
-                    // let transport ships explore instead of doing nothing at the beginning
-                    if (_fleet.IsTransport && _civM.Assault_TargetCiv != null)
+                    // if Type=SystemAttack and (before) no Assault_TargetCiv => return to HomeSystem
+                    if (_fleet.AITypeUnit == UnitAIType.SystemAttack && _civM.Assault_Location == null) // call off attack
                     {
-                        DoScout(_fleet); // ..using Scout-Exlore for ... let transport ships explore instead of doing nothing at the beginning
-                    }
+                        _text = /*"UnitAI-Do_0_Turn_Unit; "*/
+                            /*+ */"Step_3657:; " + _fleets_Summary
+                            ;
+                        if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                        _fleet_Text += _newline + _text;
 
-                    //bool _checkShips_Battle = true;
-
-                    //if (_fleet.Owner.IsHuman) { Debugger.Break(); }
-
-                    if (_fleet.IsCombatant
-                        && !_fleet.IsMedical
-                        && !_fleet.IsDiplomatic
-                        && !_fleet.IsColonizer
-                        && !_fleet.IsConstructor
-                        && !_fleet.IsSpy
-                        && !_fleet.IsScout
-                        && !_fleet.IsScience
-                        )
-                    {
-                        if (_fleet.Owner.IsHuman)
+                        List<Ship> shipList = _fleet.Ships.ToList();
+                        if (shipList.Count() > 0)  //&& _fleet.AITypeUnit != AITypeUnit.SystemDefense )
                         {
-                            //Debugger.Break();
-                        }
 
-                        //DoBattleShips(_fleet); // inclusive TransportShips
-                        //                       //_checkShips_Transport = true;
-                        //                       //DoTransportShip(_fleet);
-                        //                       //}
-                        //                       //else
-                        //                       //{
-                        //                       //    //goto End_Ships;
-                        //                       //}
-
-                        if (_fleet.Owner.IsHuman)
-                        {
-                            //Debugger.Break();
-                        }
-
-                        // if Type=SystemAttack and (before) no Assault_TargetCiv => return to HomeSystem
-                        if (_fleet.AITypeUnit == UnitAIType.SystemAttack && _civM.Assault_TargetCiv == null) // call off attack
-                        {
-                            _text = /*"UnitAI-DoTurn; "*/
-                                /*+ */"Step_3657:; " + _fleets_Summary
-                                ;
-                            if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                            _fleet_Text += _newline + _text;
-
-                            List<Ship> shipList = _fleet.Ships.ToList();
-                            if (shipList.Count() > 0)  //&& _fleet.AITypeUnit != AITypeUnit.SystemDefense )
+                            foreach (Ship ship in shipList)
                             {
-
-                                foreach (Ship ship in shipList)
+                                if (ship.ShipType >= ShipType.Scout)
                                 {
-                                    if (ship.ShipType >= ShipType.Scout)
+                                    Fleet tempFleet = new Fleet(); // keep making a new 'tempFleet'
+                                    _fleet.RemoveShip(ship);
+                                    tempFleet.AddShip(ship);
+                                    tempFleet.Owner = _fleet.Owner;
+                                    tempFleet.AITypeUnit = UnitAIType.NoUnitAI;
+                                    tempFleet.Activity = UnitActivity.NoActivity;
+                                    if (_fleet.Location != _civM.AccumulateLocation)
                                     {
-                                        Fleet tempFleet = new Fleet(); // keep making a new 'tempFleet'
-                                        _fleet.RemoveShip(ship);
-                                        tempFleet.AddShip(ship);
-                                        tempFleet.Owner = _fleet.Owner;
-                                        tempFleet.AITypeUnit = UnitAIType.NoUnitAI;
-                                        tempFleet.Activity = UnitActivity.NoActivity;
-                                        if (_fleet.Location != _ourHomeSystem.Location)
-                                        {
-                                            tempFleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _ourHomeSystem.Sector }));
-                                        }
-                                        else
-                                        {
-                                            tempFleet.Route.Clear();
-                                        }
+                                        tempFleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _accumulateSector }));
+                                    }
+                                    else
+                                    {
+                                        tempFleet.Route.Clear();
                                     }
                                 }
                             }
-                        } // end of if Type=SystemAttack and (before) no Assault_TargetCiv => return to HomeSystem
-                          // >Check Fleets
-
-                        //else // if nothing special
-
-
-                        //else 
-                        if (GameContext.Current.TurnNumber > 0    // before > 4 = why just from turn 5 on ?
-                         && _fleet.Ships.Count > 0  // 2024-03-30
-                         && _civM.Assault_TargetCiv == null
-                         && !_fleet.Ships.Any(o =>
-                            o.ShipType == ShipType.Colony
-                         || o.ShipType == ShipType.Construction
-                         || o.ShipType == ShipType.Medical
-                         || o.ShipType == ShipType.Science
-                         || o.ShipType == ShipType.Scout
-                         || o.ShipType == ShipType.Diplomatic
-                         || o.ShipType == ShipType.Spy)) // do not mess with esorted _fleets or these _ship types 
-                                                         // so any combat _ship without the types above
-                        {
-                            // if not in home _location AND _fleet is busy in Reserve or Escort
-                            // than > Go to OLD: HomeSystem, NEW: AccumulateLocation
-
-                            //if (_fleet.Owner.IsHuman) { Debugger.Break(); }
-
-                            // so combatant ships
-                            if (/*_fleet.Sector != _ourHomeSystem.Sector &&*/
-                                (_fleet.AITypeUnit != UnitAIType.Reserve && _fleet.Route.IsEmpty)) // escort left over after colonizing, construction...
-                            {
-                                _fleet.Owner = _civ;
-                                _fleet.OwnerID = _civ.CivID;
-                                _fleet.AITypeUnit = UnitAIType.Attack;
-                                _fleet.Activity = UnitActivity.NoActivity;
-                                _fleet.SetOrder(new ExploreOrder()); // 2024-03-30
-                                _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _accumulateSector }));
-
-                                foreach (var ship in _fleet.Ships)
-                                {
-                                    CreateShipText(ship, out string _shipText);
-                                    _text = "Step_6231:; " + _fleets_Summary + " > Explore";
-                                    //if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                                    _fleet_Text += _newline + _text;
-                                }
-
-                            }
-                            //GameLog.Core.AI.DebugFormat("## NOT Total War, _fleet = {0}, Ships ={1}, {2}, {3}, {4}, {5}", _fleet.Ships[0].DesignName, _fleet.Ships.Count(), _fleet.Owner, _fleet.Sector.Name, _fleet.AITypeUnit, _fleet.Activity, _fleet.Location);
-                            //if (_fleet.Ships.Count() > 1)
-                            //{
-                            //    GameLog.Core.AI.DebugFormat("## NOT Total War, first Ship = {0} {1}", _fleet.Ships[0].Name, _fleet.Ships[0].DesignName);
-                            //    GameLog.Core.AI.DebugFormat("## NOT Total War, second Ship = {0} {1}", _fleet.Ships[1].Name, _fleet.Ships[1].DesignName);
-                            //}
                         }
-                        //else 
+                    } // end of if Type=SystemAttack and (before) no Assault_TargetCiv => return to HomeSystem
+                      // >Check Fleets
 
-                        // no AccumulateSector for Minor races > so they are not staying at home all the time
-                        if (_fleet.Owner.IsEmpire
-                            && _accumulateAble
-                            && _accumulateSector != null
-                            && _accumulateSector.Location.ToString() != "(0, 0)")
+                    //else // if nothing special
+
+
+                    //else 
+                    if (_civM.Assault_Location == null
+                     // before > 4 = why just from turn 5 on ?
+                     && _fleet.Ships.Count > 0  // 2024-03-30
+                                                //&& GameContext.Current.TurnNumber > 0
+                     && !_fleet.Ships.Any(o =>
+                        o.ShipType == ShipType.Colony
+                     || o.ShipType == ShipType.Construction
+                     || o.ShipType == ShipType.Medical
+                     || o.ShipType == ShipType.Science
+                     || o.ShipType == ShipType.Scout
+                     || o.ShipType == ShipType.Diplomatic
+                     || o.ShipType == ShipType.Spy)) // do not mess with esorted _fleets or these _ship types 
+                                                     // so any combat _ship without the types above
+                    {
+                        // if not in home _location AND _fleet is busy in Reserve or Escort
+                        // than > Go to OLD: HomeSystem, NEW: AccumulateLocation
+
+                        //if (_fleet.Owner.IsHuman) { Debugger.Break(); }
+
+                        // so combatant ships
+                        if (/*_fleet.Sector != _ourHomeSystem.Sector &&*/
+                            (_fleet.AITypeUnit != UnitAIType.Reserve && _fleet.Route.IsEmpty)) // escort left over after colonizing, construction...
                         {
-                            if (_fleet.AITypeUnit == UnitAIType.SystemAttack)
-                            {
-                                goto NoAccumulateForSystemAttacks;
-                            }
-
+                            _fleet.Owner = _civ;
+                            _fleet.OwnerID = _civ.CivID;
+                            _fleet.AITypeUnit = UnitAIType.Attack;
+                            _fleet.Activity = UnitActivity.NoActivity;
+                            _fleet.SetOrder(new ExploreOrder()); // 2024-03-30
                             _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _accumulateSector }));
+
                             foreach (var ship in _fleet.Ships)
                             {
                                 CreateShipText(ship, out string _shipText);
-                                _text = "Step_6230:; " + _shipText
-                                    //+ " > Heading up to AccumulateSector= " + _accumulateSector.Location
-                                    ;
-                                //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                                _text = "Step_6231:; " + _fleets_Summary + " > Explore";
+                                //if (_writeDirectly_Fleets)
+                                Console.WriteLine(_text);
                                 _fleet_Text += _newline + _text;
                             }
-                        NoAccumulateForSystemAttacks:;
-                        }
-                        else
-                        {
-                            foreach (var ship in _fleet.Ships)
-                            {
-                                CreateShipText(ship, out string _shipText);
-                                _text = "Step_6234:; " + _shipText + " > GOING NOWHERE ... e.g. AccumulateSector " + _accumulateSector.Location + " is not set";
-                                //if (_writeDirectly_Colony) Console.WriteLine(_text);
-                                _fleet_Text += _newline + _text;
-                            }
-                        }
 
-
+                        }
+                        //GameLog.Core.AI.DebugFormat("## NOT Total War, _fleet = {0}, Ships ={1}, {2}, {3}, {4}, {5}", _fleet.Ships[0].DesignName, _fleet.Ships.Count(), _fleet.Owner, _fleet.Sector.Name, _fleet.AITypeUnit, _fleet.Activity, _fleet.Location);
+                        //if (_fleet.Ships.Count() > 1)
+                        //{
+                        //    GameLog.Core.AI.DebugFormat("## NOT Total War, first Ship = {0} {1}", _fleet.Ships[0].Name, _fleet.Ships[0].DesignName);
+                        //    GameLog.Core.AI.DebugFormat("## NOT Total War, second Ship = {0} {1}", _fleet.Ships[1].Name, _fleet.Ships[1].DesignName);
+                        //}
                     }
+                    //else 
 
-                All_Done_UnitAI:;
-                    //else
-                    //{
-                    //    if (_fleet.Ships.Where(o => o.ShipType == ShipType.Construction).Any())
-                    //    {
-                    //        GameLog.Core.AI.DebugFormat("Target null Constructor _fleet = {0}, Ships ={1}, {2}, {3}, {4}, {5}", _fleet.Ships[0].DesignName, _fleet.Ships.Count(), _fleet.Owner, _fleet.Sector.Name, _fleet.AITypeUnit, _fleet.Activity, _fleet.Location);
-                    //        if (_fleet.Ships.Count() > 1)
-                    //        {
-                    //            GameLog.Core.AI.DebugFormat("Top-Target null Construct,first Ship {0} {1} route {2} Activity {3} UnitAI {4}", _fleet.Ships[0].Name, _fleet.Ships[0].DesignName, _fleet.Route.Length, _fleet.Activity, _fleet.AITypeUnit);
-                    //            GameLog.Core.AI.DebugFormat("Top-Target null Construct,second Ship {0} {1} route {2} Activity {3} UnitAI {4}", _fleet.Ships[1].Name, _fleet.Ships[1].DesignName, _fleet.Route.Length, _fleet.Activity, _fleet.AITypeUnit);
-                    //        }
-                    //    }
-                    //}
-
-                    //} // no a) _civM.Assault_TargetCiv == null
-
-
-                    //goto End_Ships;
-                    // **** b) We have a target civilization
-                    //            if (_civM.Assault_TargetCiv != null) // see Step_6260
-                    //            {
-                    //                Fleet _attackFleet = new Fleet();
-
-                    //                StarSystem _targetSystem = homeSystem; // same as home until there is a target _civM
-                    //                                                          // just report to Console + define _targetSystem
-                    //                if (_civM.Assault_TargetCiv != null)
-                    //                {
-                    //                    _targetSystem = GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv].HomeSystem;
-
-                    //                    _text = "Step_6150:; UnitAI = Fleets > "
-                    //                        + homeSystem.Location
-                    //                        + " " + _civM.Name
-                    //                        + " has Assault_TargetCiv > " + _civM.Assault_TargetCiv.Name
-                    //                        + " - HomeSystem at " + _targetSystem.Location;
-                    //                    if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //                    _fleet_Text += _newline + _text;
-                    //                }
-
-                    //                //_fleet.AITypeUnit = AITypeUnit.SystemAttack; //2024-06-09
-                    //                Print_Ships_of_Fleet(_fleet);
-
-                    //                //foreach (var _ship in _fleet.Ships)
-                    //                //{
-                    //                //    CreateShipText(_ship, out string _shipText);
-                    //                //    _text = "Step_3279:; " + GameEngine.LocationString(_targetSystem.Location.ToString())
-                    //                //        + " Ship in Fleet= "
-                    //                //                    //+ _targetSystem.Name + "; Owner= " + _targetSystem.Owner
-                    //                //                    //+ "; Ship= " + _ship.ObjectID + "; Owner= " + _ship.Name
-                    //                //                    //+ "; Ship= " + _ship.Design + "; Owner= " + _ship.Name
-                    //                //                    + _shipText
-                    //                //                    ;
-                    //                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                    //                //    _fleet_Text += _newline + _text;
-                    //                //}
-
-
-                    //                //goto End_Ships;
-
-                    //                // To remove
-                    //                //if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //                //else 
-                    //                if (_fleet.Ships.Any(o => o.ShipType >= ShipType.Scout || o.ShipType == ShipType.Transport))// No systemattack _fleet so make one
-                    //                {
-                    //                    //GameLog.Core.AI.DebugFormat("Combat Ships ={0} with target ={1}", _civM.Name, _civM.Assault_TargetCiv.Name);
-                    //                    // non combat ships in a _fleet with escort
-                    //                    if (_fleet.Ships.Count > 1 && _fleet.Ships.Any(o => o.ShipType < ShipType.Transport))
-                    //                    {
-                    //                        // Break up escorted _fleets to send combat _ship home
-                    //                        if (_fleet.AITypeUnit == AITypeUnit.Colonizer)
-                    //                        {
-                    //                            RemoveEscortShips(_fleet, ShipType.Colony);
-                    //                            continue;
-                    //                        }
-                    //                        if (_fleet.AITypeUnit == AITypeUnit.Constructor)
-                    //                        {
-                    //                            RemoveEscortShips(_fleet, ShipType.Construction);
-                    //                            continue;
-                    //                        }
-
-                    //                        CreateShipText(_fleet.Ships[0], out string _shipText);
-                    //                        // all other ships > AITypeUnit.SystemAttack
-                    //                        if (_fleet.IsCombatant)
-                    //                        {
-                    //                            _fleet.AITypeUnit = AITypeUnit.SystemAttack;
-                    //                            _text = "Step_3265:; " + _targetSystem.Location + " Set to SystemAttack > "
-                    //                                    + homeSystem.Name + ", Owner= " + homeSystem.Owner
-                    //                                    + _shipText
-                    //                                    //+ " > ordered one more facility for > Industry"
-                    //                                    ;
-                    //                            if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //                            _fleet_Text += _newline + _text;
-                    //                        }
-
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        CreateShipText(_fleet.Ships[0], out string _shipText);
-                    //                        // all other ships > AITypeUnit.SystemAttack
-                    //                        if (_fleet.IsCombatant)
-                    //                        {
-                    //                            _fleet.AITypeUnit = AITypeUnit.SystemAttack;
-                    //                            _text = "Step_3266:; " + _targetSystem.Location + " Set to SystemAttack > "
-                    //                                    + homeSystem.Name + ", Owner= " + homeSystem.Owner
-                    //                                    + _shipText
-                    //                                    //+ " > ordered one more facility for > Industry"
-                    //                                    ;
-                    //                            if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //                            _fleet_Text += _newline + _text;
-                    //                        }
-                    //                    }
-                    //                }
-
-
-                    //                if (_fleet.Location != homeSystem.Location && !_fleet.Route.Waypoints.Contains(homeSystem.Location))
-                    //                {
-                    //                    if (_fleet.IsScout)
-                    //                    {
-                    //                        // send scouts home
-                    //                        _fleet.Route.Clear(); // stop exloring
-                    //                        _fleet.SetOrder(new AvoidOrder());
-                    //                        BuildAndSendFleet(_fleet, _civM, UnitActivity.Mission, AITypeUnit.Reserve, homeSystem.Sector);
-                    //                        continue;
-                    //                        // GameLog.Core.AI.DebugFormat("Ordering Scout & FastAttack {0} to explore from {1}", _fleet.ClassName, _fleet.Location);
-                    //                    }
-                    //                    else if (_fleet.Ships.Count() > 1)
-                    //                    {
-                    //                        int numberofships = _fleet.Ships.Count();
-                    //                        //Fleet anotherFleet = new Fleet();
-                    //                        _text = "Step_8789:; " + _fleets_Summary + " > Fleet is to separate into single ships > check the _fleet for crashes here "
-                    //                                //+ _fleets_Summary
-                    //                                ;
-                    //                        if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //                        _fleet_Text += _newline + _text;
-
-                    //                        //try
-                    //                        //{
-                    //                        foreach (Ship currentship in _fleet.Ships)
-                    //                        {
-                    //                            //Ship currentship = _fleet.Ships[i];
-                    //                            //Fleet anotherFleet = new Fleet();
-                    //                            if (currentship != null && currentship.IsCombatant)
-                    //                            {
-                    //                                Fleet anotherFleet = new Fleet();
-                    //                                _fleet.RemoveShip(currentship);
-                    //                                anotherFleet.AddShip(currentship);
-                    //                                BuildAndSendFleet(anotherFleet, _civM, UnitActivity.Mission, AITypeUnit.Reserve, homeSystem.Sector);
-                    //                            }
-                    //                        }
-                    //                        //}
-                    //                        //catch 
-                    //                        //{
-                    //                        //    _text = "Step_8789:; " + _fleets_Summary + " > Fleet is to separate into single ships > check the _fleet for crashes here "
-                    //                        //            //+ _fleets_Summary
-                    //                        //            ;
-                    //                        //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                    //                        //}
-                    //                        //foreach (Ship _ship in _fleet.Ships) // is Colonizer still in _fleet or if not > Crash
-                    //                        //{
-                    //                        //    if (_ship.ShipType != ShipType.Colony || _ship.ShipType != ShipType.Construction || _ship.ShipType != ShipType.Medical)
-                    //                        //    {
-                    //                        //        _fleet.RemoveShip(_ship);
-                    //                        //    }
-
-                    //                        //    anotherFleet.AddShip(_ship);
-                    //                        //    BuildAndSendFleet(anotherFleet, _civM, UnitActivity.Mission, AITypeUnit.Reserve, _ourHomeSystem.Sector);
-                    //                        //    continue;
-                    //                        //}
-                    //                    }
-                    //                }
-                    //                else if (_fleet.Sector == homeSystem.Sector)
-                    //                {
-                    //                    List<Ship> listOfShips = _fleet.Ships.ToList();
-                    //                    if (listOfShips.Count() > 0)
-                    //                    {
-                    //                        foreach (Ship _ship in listOfShips)
-                    //                        {
-                    //                            if (_ship.ShipType >= ShipType.Scout || _ship.ShipType == ShipType.Transport)
-                    //                            {
-                    //                                if (homeSystem.Sector.GetOwnedFleets(_civM).FirstOrDefault(o => o.AITypeUnit == AITypeUnit.SystemAttack) == null)
-                    //                                //&& o.AITypeUnit == AITypeUnit.SystemAttack) == null)
-                    //                                {
-                    //                                    _fleet.AITypeUnit = AITypeUnit.SystemAttack;
-                    //                                    _attackFleet = _fleet;
-                    //                                }
-                    //                                else
-                    //                                {
-                    //                                    _fleet.RemoveShip(_ship);
-                    //                                    _attackFleet.AddShip(_ship);
-                    //                                    //GameLog.Core.AI.DebugFormat("The {0} Attack Fleet adding _ship ={1} attack _fleet count ={2}"
-                    //                                    //       , _civM.Name, _ship.Name, _attackFleet.Ships.Count());
-                    //                                    //foreach (Ship nextShip in _attackFleet.Ships)
-                    //                                    //{
-                    //                                    //    GameLog.Core.AI.DebugFormat("Added The _ship ={0} {1}"
-                    //                                    //        , nextShip.Name, nextShip.OrbitalDesign.ToString());
-                    //                                    //}
-                    //                                    //GameLog.Client.AI.DebugFormat("All _civM {0} _ship count{1}", _civM.Key, _all_Fleets_of_Civ.ToList().Count());
-                    //                                    //foreach (var anotherFleet in _all_Fleets_of_Civ)
-                    //                                    //{
-                    //                                    //    foreach (Ship anotherShip in anotherFleet.Ships)
-                    //                                    //    {
-                    //                                    //        GameLog.Core.AI.DebugFormat("All _civM {0} _ship ={1} {2}"
-                    //                                    //            , _civM.Name, anotherShip.Name, anotherShip.OrbitalDesign.ToString());
-                    //                                    //    }
-                    //                                    //}
-                    //                                }
-                    //                                _attackFleet.Location = homeSystem.Location;
-                    //                                _attackFleet.AITypeUnit = AITypeUnit.SystemAttack;
-                    //                                _attackFleet.Activity = UnitActivity.Hold;
-                    //                                _attackFleet.Owner = _civM;
-                    //                                _attackFleet.OwnerID = _civM.CivID;
-                    //                                _attackFleet.SetOrder(new EngageOrder());
-                    //                                continue;
-                    //                                //GameLog.Core.AI.DebugFormat("## Attackfleet Ship Count={0}, {1}, {2}, {3}, {4},"
-                    //                                //    , _attackFleet.Ships.Count, _attackFleet.Name, _attackFleet.Owner, _attackFleet.AITypeUnit.ToString(), _attackFleet.Location);
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                }
-
-
-
-                    //            }
-
-
-                    //            // **** The non-combat ships, targetciv null or not null
-                    //            if (_fleet.Ships.Count() > 0)
-                    //            {
-                    //                //_text = "Step_6240:; " + _fleets_Summary + " > #### _fleet.IsColonizer ";
-                    //                if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //                //if (_fleet.IsColonizer)// || _fleet.AITypeUnit == AITypeUnit.Colonizer)
-                    //                //{
-                    //                //    _text = "Step_6301:; " + _fleets_Summary + " > _fleet.IsColonizer ";
-                    //                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                    //                //    _fleet_Text += _newline + _text;
-
-                    //            }
-                    //        End_Ships:;
-                    //        } // End of foreach _ship = continues with the next
-
-                    //        //}
-                    //        // ** end of UnitAI _ship by _ship loop for _civM
-                    //        if (_writeDirectly_Fleets) Console.WriteLine(_newline + "Fleet_Text: " + _fleet_Text);
-
-                    //        if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-                    //            _text += ""; // dummy
-
-                    //        //End_Ships:;
-                    //    }
-                    //}
-                }
-
-                if (_civM.SystemAssault_Accumulate_Location_1 != null && _civM.SystemAssault_Accumulate_Location_1.ToString() != "(0, 0)")
-                {
-
-                    _civM.Assault_AttackValue = 0; // _civM.Assault_AttackValue * -1; // it's a += so this sets to zero
-                    //_civM.Assault_AttackValue = 0; // no, it's always a +=
-
-                    List<Fleet> _fleetsAtLocation_All = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
-                .Where(f => /*f.Location.ToString() == _civM.SystemAssault_Accumulate_Location_1.ToString() &&*/ f.OwnerID == _civM.CivilizationID).ToList();
-
-                    List<Fleet> _fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
-                .Where(f => f.Location.ToString() == _civM.SystemAssault_Accumulate_Location_1.ToString() && f.OwnerID == _civM.CivilizationID).ToList();
-
-                    foreach (var _f in _fleetsAtLocation)
+                    // no AccumulateSector for Minor races > so they are not staying at home all the time
+                    if (!_fleet.Owner.IsEmpire
+                        && _accumulateAble
+                        && _accumulateSector != null
+                        && _accumulateSector.Location.ToString() != "(0, 0)")
                     {
-                        if (_f.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
+                        if (_fleet.AITypeUnit == UnitAIType.SystemAttack)
                         {
-                            _civM.Assault_AttackValue += _f.Firepower(); // 
+                            goto NoAccumulateForSystemAttacks;
                         }
 
-                        if (_f.IsTransport)
+                        _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _accumulateSector }));
+                        _fleet.Order = FleetOrders.TravelOrder.Create();
+
+                        foreach (var ship in _fleet.Ships)
                         {
-                            _civM.Assault_AttackValue += (int)_f.Ships[0].ShipDesign.WorkCapacity;
-                        }
-                    }
-
-                    if (_civM.Assault_TargetCiv != null)
-                    {
-
-
-                        MapLocation _targetLocation = GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv.CivID].HomeSystem.Location;
-
-                        if (_civ.IsHuman)
-                        {
-                            //Debugger.Break();
-                        }
-
-
-                        //Checkfor_Power(_civ, _civM.SystemAssault_Accumulate_Location_1, _targetLocation);
-
-                        //int _FirePower_Accumulated = 0;
-                        int _defenseSectorIntValue = 10; // 100 > 10 for testing
-                                                 //StarSystem _targetSystem = 
-                        GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Location.ToString() == _targetLocation.ToString(), out StarSystem _targetSystem);
-                        _defenseSectorIntValue += _targetSystem.Colony.Population.CurrentValue;  // 
-                        if (_targetSystem.Colony.OrbitalBatteries.Count > 0)
-                        {
-                            _defenseSectorIntValue += (_targetSystem.Colony.OrbitalBatteries.Count
-                                             * (_targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Count
-                                             * _targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Damage)
-                                             + (_targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Count
-                                             * _targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Damage))
-                                             /10 // 
-
-                                             ;  // 
-
-
-                        }
-
-                        if (_targetSystem.Sector.Station != null)
-                        {
-                            _defenseSectorIntValue += _targetSystem.Sector.Station.Firepower() / 200;  // station only half
-                        }
-
-                        _text = "Step_3255:; "  /*+ _loc_otherHomeSystem + " > "*/
-                                //+ CreateUpdateFleetText(_fleet, out _fleetText) + Environment.NewLine + " > Set Route to Target system = "
-                                + _targetSystem.Name
-                                + " at " + _targetSystem.Location
-                                + ", Owner= " + _targetSystem.Owner
-                                //+ " > ordered one more facility for > Industry"
-                                + " > _FirePower_Total= " + _civM.Assault_AttackValue
-                                + " vs _defense= " + _defenseSectorIntValue
+                            CreateShipText(ship, out string _shipText);
+                            _text = "Step_6230:; " + _shipText
+                                //+ " > Heading up to AccumulateSector= " + _accumulateSector.Location
                                 ;
-                        if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                        _fleet_Text += Environment.NewLine + _text;
-
-                        if (_civM.Assault_AttackValue > 0 && _civM.Assault_AttackValue > _defenseSectorIntValue)
-                        {
-                            foreach (var _fleet2 in _fleetsAtLocation)
-                            {
-                                _fleet2.AITypeUnit = UnitAIType.SystemAttack;
-                                _fleet2.Activity = UnitActivity.Mission;
-                                _fleet2.SetRoute(AStar.FindPath(_fleet2, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _targetSystem.Sector }));
-
-                            }
-
-                                if (_civ.IsHuman)
-                            {
-                                Debugger.Break();
-                            }
-                        }
-
-                        if (_civ.IsHuman)
-                        {
-                            //Debugger.Break();  // here_DoBattle
-                        }
-
-                        List<Colony> _colonyTargets = GameContext.Current.Universe.FindOwned<Colony>(_civM.Assault_TargetCiv).ToList();
-
-                        string _possTargets = "";
-                        foreach (var item in _colonyTargets)
-                        {
-                            _text = "Step_3441:; " + GameEngine.LocationString(item.Location.ToString())
-                                + " > possible target for SystemAttack"
-                                + " > for " + _civM.Civilization.Key
-                                + " " + GameEngine.LocationString(_ourHomeSystem.Location.ToString())
-                                            //+ _targetSystem.Name + "; Owner= " + _targetSystem.Owner
-                                            //+ "; Ship= " + _ship.ObjectID + "; Owner= " + _ship.Name
-                                            //+ "; Ship= " + _ship.Design + "; Owner= " + _ship.Name
-                                            //+ _shipText
-                                            ;
                             //if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                            _possTargets += Environment.NewLine + _text;
-                            _fleet_Text += Environment.NewLine + _text;
-
-                            //if (_civ.IsHuman)
-                            //{
-                            //    Debugger.Break();
-                            //}
+                            _fleet_Text += _newline + _text;
                         }
-                        if (_writeDirectly_Fleets) 
-                            Console.WriteLine("Step_3442:; _possTargets = " /*+ Environment.NewLine*/
-                            + _possTargets);
+                    NoAccumulateForSystemAttacks:;
                     }
+                    else
+                    {
+                        foreach (var ship in _fleet.Ships)
+                        {
+                            CreateShipText(ship, out string _shipText);
+                            _text = "Step_6234:; " + _shipText + " > GOING NOWHERE ... e.g. AccumulateSector " + _accumulateSector.Location + " is not set";
+                            //if (_writeDirectly_Colony) Console.WriteLine(_text);
+                            _fleet_Text += _newline + _text;
+                        }
+                    }
+
+
                 }
+
+            All_Done_UnitAI:;
+                //else
+                //{
+                //    if (_fleet.Ships.Where(o => o.ShipType == ShipType.Construction).Any())
+                //    {
+                //        GameLog.Core.AI.DebugFormat("Target null Constructor _fleet = {0}, Ships ={1}, {2}, {3}, {4}, {5}", _fleet.Ships[0].DesignName, _fleet.Ships.Count(), _fleet.Owner, _fleet.Sector.Name, _fleet.AITypeUnit, _fleet.Activity, _fleet.Location);
+                //        if (_fleet.Ships.Count() > 1)
+                //        {
+                //            GameLog.Core.AI.DebugFormat("Top-Target null Construct,first Ship {0} {1} route {2} Activity {3} UnitAI {4}", _fleet.Ships[0].Name, _fleet.Ships[0].DesignName, _fleet.Route.Length, _fleet.Activity, _fleet.AITypeUnit);
+                //            GameLog.Core.AI.DebugFormat("Top-Target null Construct,second Ship {0} {1} route {2} Activity {3} UnitAI {4}", _fleet.Ships[1].Name, _fleet.Ships[1].DesignName, _fleet.Route.Length, _fleet.Activity, _fleet.AITypeUnit);
+                //        }
+                //    }
+                //}
+
+                //} // no a) _civM.Assault_TargetCiv == null
+
+
+                //goto End_Ships;
+                // **** b) We have a target civilization
+                //            if (_civM.Assault_TargetCiv != null) // see Step_6260
+                //            {
+                //                Fleet _attackFleet = new Fleet();
+
+                //                StarSystem _targetSystem = homeSystem; // same as home until there is a target _civM
+                //                                                          // just report to Console + define _targetSystem
+                //                if (_civM.Assault_TargetCiv != null)
+                //                {
+                //                    _targetSystem = GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv].HomeSystem;
+
+                //                    _text = "Step_6150:; UnitAI = Fleets > "
+                //                        + homeSystem.Location
+                //                        + " " + _civM.Name
+                //                        + " has Assault_TargetCiv > " + _civM.Assault_TargetCiv.Name
+                //                        + " - HomeSystem at " + _targetSystem.Location;
+                //                    if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //                    _fleet_Text += _newline + _text;
+                //                }
+
+                //                //_fleet.AITypeUnit = AITypeUnit.SystemAttack; //2024-06-09
+                //                Print_Ships_of_Fleet(_fleet);
+
+                //                //foreach (var _ship in _fleet.Ships)
+                //                //{
+                //                //    CreateShipText(_ship, out string _shipText);
+                //                //    _text = "Step_3279:; " + GameEngine.LocationString(_targetSystem.Location.ToString())
+                //                //        + " Ship in Fleet= "
+                //                //                    //+ _targetSystem.Name + "; Owner= " + _targetSystem.Owner
+                //                //                    //+ "; Ship= " + _ship.ObjectID + "; Owner= " + _ship.Name
+                //                //                    //+ "; Ship= " + _ship.Design + "; Owner= " + _ship.Name
+                //                //                    + _shipText
+                //                //                    ;
+                //                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                //                //    _fleet_Text += _newline + _text;
+                //                //}
+
+
+                //                //goto End_Ships;
+
+                //                // To remove
+                //                //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //                //else 
+                //                if (_fleet.Ships.Any(o => o.ShipType >= ShipType.Scout || o.ShipType == ShipType.Transport))// No systemattack _fleet so make one
+                //                {
+                //                    //GameLog.Core.AI.DebugFormat("Combat Ships ={0} with target ={1}", _civM.Name, _civM.Assault_TargetCiv.Name);
+                //                    // non combat ships in a _fleet with escort
+                //                    if (_fleet.Ships.Count > 1 && _fleet.Ships.Any(o => o.ShipType < ShipType.Transport))
+                //                    {
+                //                        // Break up escorted _fleets to send combat _ship home
+                //                        if (_fleet.AITypeUnit == AITypeUnit.Colonizer)
+                //                        {
+                //                            RemoveEscortShips(_fleet, ShipType.Colony);
+                //                            continue;
+                //                        }
+                //                        if (_fleet.AITypeUnit == AITypeUnit.Constructor)
+                //                        {
+                //                            RemoveEscortShips(_fleet, ShipType.Construction);
+                //                            continue;
+                //                        }
+
+                //                        CreateShipText(_fleet.Ships[0], out string _shipText);
+                //                        // all other ships > AITypeUnit.SystemAttack
+                //                        if (_fleet.IsCombatant)
+                //                        {
+                //                            _fleet.AITypeUnit = AITypeUnit.SystemAttack;
+                //                            _text = "Step_3265:; " + _targetSystem.Location + " Set to SystemAttack > "
+                //                                    + homeSystem.Name + ", Owner= " + homeSystem.Owner
+                //                                    + _shipText
+                //                                    //+ " > ordered one more facility for > Industry"
+                //                                    ;
+                //                            if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //                            _fleet_Text += _newline + _text;
+                //                        }
+
+                //                    }
+                //                    else
+                //                    {
+                //                        CreateShipText(_fleet.Ships[0], out string _shipText);
+                //                        // all other ships > AITypeUnit.SystemAttack
+                //                        if (_fleet.IsCombatant)
+                //                        {
+                //                            _fleet.AITypeUnit = AITypeUnit.SystemAttack;
+                //                            _text = "Step_3266:; " + _targetSystem.Location + " Set to SystemAttack > "
+                //                                    + homeSystem.Name + ", Owner= " + homeSystem.Owner
+                //                                    + _shipText
+                //                                    //+ " > ordered one more facility for > Industry"
+                //                                    ;
+                //                            if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //                            _fleet_Text += _newline + _text;
+                //                        }
+                //                    }
+                //                }
+
+
+                //                if (_fleet.Location != homeSystem.Location && !_fleet.Route.Waypoints.Contains(homeSystem.Location))
+                //                {
+                //                    if (_fleet.IsScout)
+                //                    {
+                //                        // send scouts home
+                //                        _fleet.Route.Clear(); // stop exloring
+                //                        _fleet.SetOrder(new AvoidOrder());
+                //                        BuildAndSendFleet(_fleet, _civM, UnitActivity.Mission, AITypeUnit.Reserve, homeSystem.Sector);
+                //                        continue;
+                //                        // GameLog.Core.AI.DebugFormat("Ordering Scout & FastAttack {0} to explore from {1}", _fleet.ClassName, _fleet.Location);
+                //                    }
+                //                    else if (_fleet.Ships.Count() > 1)
+                //                    {
+                //                        int numberofships = _fleet.Ships.Count();
+                //                        //Fleet anotherFleet = new Fleet();
+                //                        _text = "Step_8789:; " + _fleets_Summary + " > Fleet is to separate into single ships > check the _fleet for crashes here "
+                //                                //+ _fleets_Summary
+                //                                ;
+                //                        if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //                        _fleet_Text += _newline + _text;
+
+                //                        //try
+                //                        //{
+                //                        foreach (Ship currentship in _fleet.Ships)
+                //                        {
+                //                            //Ship currentship = _fleet.Ships[i];
+                //                            //Fleet anotherFleet = new Fleet();
+                //                            if (currentship != null && currentship.IsCombatant)
+                //                            {
+                //                                Fleet anotherFleet = new Fleet();
+                //                                _fleet.RemoveShip(currentship);
+                //                                anotherFleet.AddShip(currentship);
+                //                                BuildAndSendFleet(anotherFleet, _civM, UnitActivity.Mission, AITypeUnit.Reserve, homeSystem.Sector);
+                //                            }
+                //                        }
+                //                        //}
+                //                        //catch 
+                //                        //{
+                //                        //    _text = "Step_8789:; " + _fleets_Summary + " > Fleet is to separate into single ships > check the _fleet for crashes here "
+                //                        //            //+ _fleets_Summary
+                //                        //            ;
+                //                        //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                //                        //}
+                //                        //foreach (Ship _ship in _fleet.Ships) // is Colonizer still in _fleet or if not > Crash
+                //                        //{
+                //                        //    if (_ship.ShipType != ShipType.Colony || _ship.ShipType != ShipType.Construction || _ship.ShipType != ShipType.Medical)
+                //                        //    {
+                //                        //        _fleet.RemoveShip(_ship);
+                //                        //    }
+
+                //                        //    anotherFleet.AddShip(_ship);
+                //                        //    BuildAndSendFleet(anotherFleet, _civM, UnitActivity.Mission, AITypeUnit.Reserve, _ourHomeSystem.Sector);
+                //                        //    continue;
+                //                        //}
+                //                    }
+                //                }
+                //                else if (_fleet.Sector == homeSystem.Sector)
+                //                {
+                //                    List<Ship> listOfShips = _fleet.Ships.ToList();
+                //                    if (listOfShips.Count() > 0)
+                //                    {
+                //                        foreach (Ship _ship in listOfShips)
+                //                        {
+                //                            if (_ship.ShipType >= ShipType.Scout || _ship.ShipType == ShipType.Transport)
+                //                            {
+                //                                if (homeSystem.Sector.GetOwnedFleets(_civM).FirstOrDefault(o => o.AITypeUnit == AITypeUnit.SystemAttack) == null)
+                //                                //&& o.AITypeUnit == AITypeUnit.SystemAttack) == null)
+                //                                {
+                //                                    _fleet.AITypeUnit = AITypeUnit.SystemAttack;
+                //                                    _attackFleet = _fleet;
+                //                                }
+                //                                else
+                //                                {
+                //                                    _fleet.RemoveShip(_ship);
+                //                                    _attackFleet.AddShip(_ship);
+                //                                    //GameLog.Core.AI.DebugFormat("The {0} Attack Fleet adding _ship ={1} attack _fleet count ={2}"
+                //                                    //       , _civM.Name, _ship.Name, _attackFleet.Ships.Count());
+                //                                    //foreach (Ship nextShip in _attackFleet.Ships)
+                //                                    //{
+                //                                    //    GameLog.Core.AI.DebugFormat("Added The _ship ={0} {1}"
+                //                                    //        , nextShip.Name, nextShip.OrbitalDesign.ToString());
+                //                                    //}
+                //                                    //GameLog.Client.AI.DebugFormat("All _civM {0} _ship count{1}", _civM.Key, _all_Fleets_of_Civ.ToList().Count());
+                //                                    //foreach (var anotherFleet in _all_Fleets_of_Civ)
+                //                                    //{
+                //                                    //    foreach (Ship anotherShip in anotherFleet.Ships)
+                //                                    //    {
+                //                                    //        GameLog.Core.AI.DebugFormat("All _civM {0} _ship ={1} {2}"
+                //                                    //            , _civM.Name, anotherShip.Name, anotherShip.OrbitalDesign.ToString());
+                //                                    //    }
+                //                                    //}
+                //                                }
+                //                                _attackFleet.Location = homeSystem.Location;
+                //                                _attackFleet.AITypeUnit = AITypeUnit.SystemAttack;
+                //                                _attackFleet.Activity = UnitActivity.Hold;
+                //                                _attackFleet.Owner = _civM;
+                //                                _attackFleet.OwnerID = _civM.CivID;
+                //                                _attackFleet.SetOrder(new EngageOrder());
+                //                                continue;
+                //                                //GameLog.Core.AI.DebugFormat("## Attackfleet Ship Count={0}, {1}, {2}, {3}, {4},"
+                //                                //    , _attackFleet.Ships.Count, _attackFleet.Name, _attackFleet.Owner, _attackFleet.AITypeUnit.ToString(), _attackFleet.Location);
+                //                            }
+                //                        }
+                //                    }
+                //                }
+
+
+
+                //            }
+
+
+                //            // **** The non-combat ships, targetciv null or not null
+                //            if (_fleet.Ships.Count() > 0)
+                //            {
+                //                //_text = "Step_6240:; " + _fleets_Summary + " > #### _fleet.IsColonizer ";
+                //                if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //                //if (_fleet.IsColonizer)// || _fleet.AITypeUnit == AITypeUnit.Colonizer)
+                //                //{
+                //                //    _text = "Step_6301:; " + _fleets_Summary + " > _fleet.IsColonizer ";
+                //                //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                //                //    _fleet_Text += _newline + _text;
+
+                //            }
+                //        End_Ships:;
+                //        } // End of foreach _ship = continues with the next
+
+                //        //}
+                //        // ** end of UnitAI _ship by _ship loop for _civM
+                //        if (_writeDirectly_Fleets) Console.WriteLine(_newline + "Fleet_Text: " + _fleet_Text);
+
+                //        if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
+                //            _text += ""; // dummy
+
+                //        //End_Ships:;
+                //    }
+                //}
             }
+
+            //if (_civ.IsHuman)
+            //{
+            //    Debugger.Break();  // SystemAssault - go there ?
+            //}
+
+            Do_8_SystemAssault(_civM, _civ);
+
+
+            //}
             //}
 
 
@@ -1003,6 +912,214 @@ namespace Supremacy.AI
             //SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/sound001.wav");
         }
 
+        private static void Do_8_SystemAssault(CivilizationManager _civM, Civilization _civ)
+        {
+            string _text = "";
+
+            if (_civ.IsHuman)
+            {
+                //Debugger.Break();  // Combatant && TargetCiv
+            }
+
+            MapLocation _targetLocation = new MapLocation();
+
+            if (_civM.Assault_Accumulate_Location_1 != null && _civM.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
+            {
+
+                _civM.Assault_AttackValue = 0; // _civM.Assault_AttackValue * -1; // it's a += so this sets to zero
+                                               //_civM.Assault_AttackValue = 0; // no, it's always a +=
+
+                int _attackValue_at_Accumulate = 0;
+
+                List<Fleet> _fleetsAtLocation_All = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
+                        .Where(f => /*f.Location.ToString() == _civM.Assault_Accumulate_Location_1.ToString() &&*/ f.OwnerID == _civM.CivilizationID).ToList();
+
+                List<Fleet> _fleetsAtAccumulate = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
+                        .Where(f => f.Location.ToString() == _civM.Assault_Accumulate_Location_1.ToString() && f.OwnerID == _civM.CivilizationID).ToList();
+
+
+                StarSystem _targetSystem = new StarSystem();
+
+                List<Colony> _colonyTargets = GameContext.Current.Universe.FindOwned<Colony>(_civM.Assault_TargetCiv).ToList();
+
+                string _possTargets = "";
+                foreach (var item in _colonyTargets)
+                {
+                    _text = "Step_3441:; " + GameEngine.LocationString(item.Location.ToString())
+                        + " < possible target for SystemAttack"
+                        + " > for " + _civM.Civilization.Key
+                                    //+ " " + GameEngine.LocationString(_civM.HomeSystem.Location.ToString())
+                                    //+ _targetSystem.Name + "; Owner= " + _targetSystem.Owner
+                                    //+ "; Ship= " + _ship.ObjectID + "; Owner= " + _ship.Name
+                                    //+ "; Ship= " + _ship.Design + "; Owner= " + _ship.Name
+                                    //+ _shipText
+                                    ;
+                    //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                    _possTargets += Environment.NewLine + _text;
+                    _fleet_Text += Environment.NewLine + _text;
+
+                    // todo > find nearest
+
+                    _targetLocation = item.Location;
+                    _targetSystem = item.System;
+
+                    //if (_civ.IsHuman)
+                    //{
+                    //    Debugger.Break();
+                    //}
+                }
+                if (_writeDirectly_Fleets)
+                    Console.WriteLine("Step_3442:; _possTargets = " /*+ Environment.NewLine*/
+                    + _possTargets);
+
+                GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Location.ToString() == _targetLocation.ToString(), out _targetSystem);
+
+                if (_civ.IsHuman)
+                {
+                    //Debugger.Break();
+                }
+
+
+                if (_civM.Assault_Location != null && GameContext.Current.Civilizations[_civM.Assault_TargetCiv.CivID] != null)
+                {
+                    _targetLocation = GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv.CivID].HomeSystem.Location;
+                    _targetSystem = GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv.CivID].HomeSystem;
+                }
+                //else
+
+
+                // only Fleets there
+                List<Fleet> _fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
+                        .Where(f => f.Location == _targetLocation).ToList();
+
+                foreach (var _fleet in _fleetsAtLocation)
+                {
+                    if (_fleet.OwnerID != _civ.CivID)
+                    {
+                        //Debugger.Break();
+                        continue;
+                    }
+
+
+                    if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
+                    {
+                        _civM.Assault_AttackValue += _fleet.Firepower(); // 
+                    }
+
+                    if (_fleet.IsTransport)
+                    {
+                        _civM.Assault_AttackValue += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
+                    }
+                }
+
+                foreach (var _fleet in _fleetsAtAccumulate)
+                {
+                    if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
+                    {
+                        _attackValue_at_Accumulate += _fleet.Firepower(); // 
+                    }
+
+                    if (_fleet.IsTransport)
+                    {
+                        _attackValue_at_Accumulate += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
+                    }
+                }
+
+                if (_civM.Assault_TargetCiv != null)
+                {
+
+
+                    //MapLocation _targetLocation = GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv.CivID].HomeSystem.Location;
+
+                    if (_civ.IsHuman)
+                    {
+                        //Debugger.Break();
+                    }
+
+
+                    //Checkfor_Power(_civ, _civM.Assault_Accumulate_Location_1, _targetLocation);
+
+                    //int _FirePower_Accumulated = 0;
+                    int _defenseSectorIntValue = 10; // 100 > 10 for testing
+
+                    
+                    _defenseSectorIntValue += _targetSystem.Colony.Population.CurrentValue;  // 
+                    if (_targetSystem.Colony.OrbitalBatteries.Count > 0)
+                    {
+                        _defenseSectorIntValue += (_targetSystem.Colony.OrbitalBatteries.Count
+                                         * (_targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Count
+                                         * _targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Damage)
+                                         + (_targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Count
+                                         * _targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Damage))
+                                         * 2
+                                         //   / 10 // 
+
+                                         ;  // 
+
+
+                    }
+
+                    if (_targetSystem.Sector.Station != null)
+                    {
+                        _defenseSectorIntValue += _targetSystem.Sector.Station.Firepower() / 200;  // station only half
+                    }
+
+                    _text = "Step_3255:; "  /*+ _loc_otherHomeSystem + " > "*/
+                            //+ CreateUpdateFleetText(_fleet, out _fleetText) + Environment.NewLine + " > Set Route to Target system = "
+                            + _targetSystem.Name
+                            + " at " + _targetSystem.Location
+                            + ", Owner= " + _targetSystem.Owner
+                            //+ " > ordered one more facility for > Industry"
+                            + " > Defense= " + _defenseSectorIntValue
+                            + " vs _FirePower_Total= " + _civM.Assault_AttackValue
+                            + " vs _attackValue_at_Accumulate= " + _attackValue_at_Accumulate
+
+                            ;
+                    if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                    _fleet_Text += Environment.NewLine + _text;
+
+                    if (_attackValue_at_Accumulate > 0 && _attackValue_at_Accumulate + _civM.Assault_AttackValue > _defenseSectorIntValue)
+                    {
+                        foreach (var _fleet2 in _fleetsAtAccumulate)
+                        {
+                            _fleet2.AITypeUnit = UnitAIType.SystemAttack;
+                            _fleet2.Activity = UnitActivity.Mission;
+                            _fleet2.SetRoute(AStar.FindPath(_fleet2, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _targetSystem.Sector }));
+
+                        }
+
+                        if (_civ.IsHuman)
+                        {
+                            Debugger.Break();
+                        }
+                    }
+
+                    if (_civM.Assault_AttackValue > 0 && _civM.Assault_AttackValue > _defenseSectorIntValue)
+                    {
+                        foreach (var _fleet2 in _fleetsAtLocation)
+                        {
+                            _fleet2.AITypeUnit = UnitAIType.SystemAttack;
+                            _fleet2.Activity = UnitActivity.Mission;
+                            //_fleet2.SetRoute(AStar.FindPath(_fleet2, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _targetSystem.Sector }));
+                            SystemAssault(_fleet2);
+                        }
+
+                        if (_civ.IsHuman)
+                        {
+                            //Debugger.Break();
+                        }
+                    }
+
+                    if (_civ.IsHuman)
+                    {
+                        //Debugger.Break();  // here_DoBattle
+                    }
+
+
+                }
+            }
+        }
+
         private static void Checkfor_Power(Civilization _civ, MapLocation _systemAssault_Accumulate_Location_1, MapLocation _targetLocation)
         {
             string _text;
@@ -1013,7 +1130,7 @@ namespace Supremacy.AI
             //Fleet _attackTransporters = new Fleet();
 
             List<Fleet> _fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
-            .Where(f => f.Location == _systemAssault_Accumulate_Location_1 
+            .Where(f => f.Location == _systemAssault_Accumulate_Location_1
             && f.OwnerID == _civ.CivID).ToList();
 
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
@@ -1049,8 +1166,8 @@ namespace Supremacy.AI
             }
 
             int _defenseSector = 10; // 100 > 10 for testing
-            //StarSystem _targetSystem = 
-                GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Location.ToString() == _targetLocation.ToString(),out StarSystem _targetSystem);
+                                     //StarSystem _targetSystem = 
+            GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Location.ToString() == _targetLocation.ToString(), out StarSystem _targetSystem);
             if (_targetSystem.Sector.Station != null)
             {
                 _defenseSector += _targetSystem.Sector.Station.Firepower() / 200;  // station only half
@@ -1070,40 +1187,40 @@ namespace Supremacy.AI
             }
 
             if (_civM.Assault_AttackValue > _defenseSector * 1.1) // 10% more attack power than defense
-                {
-                    _text = "Step_3234:; "
-                        + GameEngine.LocationString(_targetLocation.ToString())
-                         + " > AttackPower= " + _civM.Assault_AttackValue
-                        + " vs " + _defenseSector + " DefenseSector "
+            {
+                _text = "Step_3234:; "
+                    + GameEngine.LocationString(_targetLocation.ToString())
+                     + " > AttackPower= " + _civM.Assault_AttackValue
+                    + " vs " + _defenseSector + " DefenseSector "
+                    ;
+                if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                _fleet_Text += Environment.NewLine + _text;
+
+
+                //_fleetInvades = true;
+                _attackFleet.Route.Clear();
+                _attackFleet.AITypeUnit = UnitAIType.SystemAttack;
+                _attackFleet.Order = FleetOrders.AssaultSystemOrder;
+                // ************* ToDo invasion 
+                SystemAssault(_attackFleet);
+                _text = "Step_3235:; " + CreateUpdateFleetText(_attackFleet, out _fleetText) + " Do Invasion at Target system = "
+                        + _targetLocation
+                        //+ ", Owner= " + _targetSystem.Owner
+                        //+ " > ordered one more facility for > Industry"
                         ;
-                    if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    _fleet_Text += Environment.NewLine + _text;
-
-
-                    //_fleetInvades = true;
-                    _attackFleet.Route.Clear();
-                    _attackFleet.AITypeUnit = UnitAIType.SystemAttack;
-                    _attackFleet.Order = FleetOrders.AssaultSystemOrder;
-                    // ************* ToDo invasion 
-                    SystemAssault(_attackFleet);
-                    _text = "Step_3235:; " + CreateUpdateFleetText(_attackFleet, out _fleetText) + " Do Invasion at Target system = "
-                            + _targetLocation 
-                            //+ ", Owner= " + _targetSystem.Owner
-                            //+ " > ordered one more facility for > Industry"
-                            ;
-                    if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    _fleet_Text += Environment.NewLine + _text;
-                    if (_attackFleet.Owner.IsHuman)
-                    {
-                        //Debugger.Break();
-                    }
-                    //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _
-
-                    //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _civM.Name, _civM.Assault_TargetCiv.Name);
-                    // send home and re-set AITypeUnit / can we already set ships to reserve here for return to home?
+                if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                _fleet_Text += Environment.NewLine + _text;
+                if (_attackFleet.Owner.IsHuman)
+                {
+                    //Debugger.Break();
                 }
+                //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _
+
+                //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _civM.Name, _civM.Assault_TargetCiv.Name);
+                // send home and re-set AITypeUnit / can we already set ships to reserve here for return to home?
             }
-        
+        }
+
 
         //private static void AdaptShips_UNUSED(Fleet _fleet)
         //{
@@ -1146,20 +1263,22 @@ namespace Supremacy.AI
             }
         } // End of Print_Ships_of_Fleet
 
-        private static void DoAccumulate(Fleet _fleet)
+        private static void Do_2_Accumulate(Fleet _fleet)
         {
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_fleet.Owner.CivID];
             Sector _accumulateSector = _civM.AccumulateSector;
-            string _text = _civM.AccumulateLocation.ToString();
+            string _text = "";
+            string _accu_Text = "";
             //string _newline = Environment.NewLine;
 
             _text = "Step_6232:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary)
             + " > AccumulateSector= " + _civM.AccumulateLocation.ToString()
                         //+ " , Home= " + _civM.HomeSystem.Location /*+ " )"*/
                         ;
-            if (_writeDirectly_Fleets) 
-                Console.WriteLine(_text);
-            _fleet_Text += Environment.NewLine + _text;
+            //if (_writeDirectly_Fleets)
+            //    Console.WriteLine(_text);
+            //_accu_Text += /*Environment.NewLine + */_text;
+            //_fleet_Text += Environment.NewLine + _text;
 
             if (_fleet.IsConstructor
                 || _fleet.IsStranded // Stranded
@@ -1181,11 +1300,11 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                //Debugger.Break();
+                //Debugger.Break(); //Do_2_Accumulate
             }
 
 
-            if (_accumulateSector != null && _accumulateSector.Location.ToString() != "(0, 0)")
+            if (_accumulateSector != null && _accumulateSector.Location.ToString() != "(0, 0)" && _fleet.Location != _accumulateSector.Location)
             {
                 //always Fleet.Order > .ToString() because Fleet.Order always contain a special _fleet and more
 
@@ -1197,6 +1316,7 @@ namespace Supremacy.AI
                             + " ... ( no CIV to target > just usual business )"
                             ;
                     if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                    _accu_Text += Environment.NewLine + _text;
                     _fleet_Text += Environment.NewLine + _text;
 
                     //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
@@ -1220,36 +1340,50 @@ namespace Supremacy.AI
                     //{
 
 
-                        _fleet.SetOrder(new AccumulateLocation_Go_There_Order());
-                        _fleet.Activity = UnitActivity.GoToAccumulateSector;
-                        _fleet.UnlockRoute();
-                        _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _accumulateSector }));
-                        foreach (var ship in _fleet.Ships)
-                        {
-                            //CreateShipText(_ship, out string shipText);
-                            _text = "Step_6237:; " + CreateShipText(ship, out string shipText)
-                                + ", Home= " + _civM.HomeSystem.Location /*+ " )"*/
-                                + " > going to AccumulateSector= " + _accumulateSector.Location
+                    _fleet.SetOrder(new AccumulateLocation_Go_There_Order());
+                    _fleet.Activity = UnitActivity.GoToAccumulateSector;
+                    _fleet.UnlockRoute();
+                    _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _accumulateSector }));
+                    foreach (var ship in _fleet.Ships)
+                    {
+                        //CreateShipText(_ship, out string shipText);
+                        _text = "Step_6237:; " + CreateShipText(ship, out string shipText)
+                            + ", Home= " + _civM.HomeSystem.Location /*+ " )"*/
+                            + " > going to AccumulateSector= " + _accumulateSector.Location
 
-                                ;
-                            //if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                            //_fleet_Text += Environment.NewLine + _text;
-                        }
+                            ;
+                        //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                        //_fleet_Text += Environment.NewLine + _text;
+                        _accu_Text += /*Environment.NewLine +*/ _text;
                     }
+                }
 
-                    if (_fleet.IsScout) 
+                if (_fleet.IsScout)
                     DoScout(_fleet);
 
-                    if (_fleet.IsColonizer) 
+                if (_fleet.IsColonizer)
                     DoColonyShip(_fleet);
                 //}
             }
+            else
+            {
+
+                _text = "Step_6227:; " + CreateUpdateFleetText(_fleet, out string _fleetText)
+                                    + ", Home= " + _civM.HomeSystem.Location /*+ " )"*/
+                                    + " > already at AccumulateSector= " + _accumulateSector.Location
+                                    ;
+                //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                _accu_Text += /*Environment.NewLine + */_text;
+            }
         No_Accumulate:;
+
+            if (_writeDirectly_Fleets && _accu_Text != "") // Console.WriteLine(_text);
+                Console.WriteLine(_accu_Text + " > from Step_6229");
 
             //if (_fleet.Ships.Count > 1 && _fleet.Sector == _civM.AccumulateSector)
             //{
             //    _fleet.Order = FleetOrders.IdleOrder;
-            //    SplitIntoSingleShips(_fleet, _fleet.Order); // = at DoAccumulate
+            //    SplitIntoSingleShips(_fleet, _fleet.Order); // = at Do_2_Accumulate
             //}
         }
 
@@ -1394,8 +1528,8 @@ namespace Supremacy.AI
                 if (_fleet.IsScout) goto No_Accumulate;
                 if (_fleet.IsScience) goto No_Accumulate;
 
-                DoAccumulate(_fleet); // Accumulate regulary
-                                      //DoTransportShip();
+                Do_2_Accumulate(_fleet); // Accumulate regulary
+                                         //DoTransportShip();
 
             No_Accumulate:;
             }
@@ -1410,7 +1544,7 @@ namespace Supremacy.AI
             //        GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv.CivID].HomeSystem.Sector
             //        , _civM.HomeSystem.Sector
             //        , out Sector _sectorToAccumulate);
-            //    _civM.SystemAssault_Accumulate_Sector_1 = _targetSector;
+            //    _civM.Assault_Accumulate_Sector_1 = _targetSector;
             //}
 
             if (_fleet.Owner.IsHuman)
@@ -1419,8 +1553,8 @@ namespace Supremacy.AI
             }
 
 
-            // there is a SystemAssault_Accumulate_Sector_1 + Target_Civ
-            if (_civM.Assault_TargetCiv != null && _civM.SystemAssault_Accumulate_Sector_1 != _civM.HomeSystem.Sector) // see Step_6260
+            // there is a Assault_Accumulate_Sector_1 + Target_Civ
+            if (_civM.Assault_TargetCiv != null && _civM.Assault_Accumulate_Sector_1 != _civM.HomeSystem.Sector) // see Step_6260
             {
                 StarSystem _targetSystem = GameContext.Current.CivilizationManagers[_civM.Assault_TargetCiv.CivID].HomeSystem;  // same as home until there is a target _civM
 
@@ -1432,9 +1566,9 @@ namespace Supremacy.AI
                 StarSystem _ourHomeSystem = _civM.HomeSystem;
                 if (_targetSystem == null && _targetSystem.Owner == _ourHomeSystem.Owner)
                 {
-                    _civM.Assault_TargetCiv = null;
-                    _civM.SystemAssault_Accumulate_Sector_1 = null;
-                    _civM.SystemAssault_Accumulate_Location_1 = new MapLocation();
+                    _civM.Assault_Location = _civM.HomeSystem.Location;
+                    _civM.Assault_Accumulate_Sector_1 = null;
+                    _civM.Assault_Accumulate_Location_1 = new MapLocation();
                     return;
                 }
 
@@ -1517,12 +1651,13 @@ namespace Supremacy.AI
                 }
 
                 // Invasion ??
-                if ((_fleet.Location == _targetSystem.Location // _fleet is at target
-                || GameContext.Current.Universe.FindOwned<Colony>(_civM.Assault_TargetCiv).Any(o => o.Location == _fleet.Location))
-                && _fleet.Ships.Any(o => o.ShipType == ShipType.Transport)
-                && _fleet.Ships.Any(o => o.IsCombatant)
-                )
-                {
+
+                //if ((_fleet.Location == _targetSystem.Location // _fleet is at target
+                //|| GameContext.Current.Universe.FindOwned<Colony>(_civM.Assault_TargetCiv).Any(o => o.Location == _fleet.Location))
+                //&& _fleet.Ships.Any(o => o.ShipType == ShipType.Transport)
+                //&& _fleet.Ships.Any(o => o.IsCombatant)
+                //)
+                //{
                     //for 
                     //_allShips.Add(_fleet.Ships[0]);
                     //_allShips.Add(GameContext.Current.Universe.FindOwned<Fleet>(_civ)
@@ -1536,16 +1671,16 @@ namespace Supremacy.AI
 
                     //_civM.Assault_AttackValue = 0;
 
-                    //foreach (var _f in _fleetsAtLocation)
+                    //foreach (var _fleet in _fleetsAtLocation)
                     //{
-                    //    if (_f.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
+                    //    if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
                     //    {
-                    //        _civM.Assault_AttackValue += _f.Firepower(); // 
+                    //        _civM.Assault_AttackValue += _fleet.Firepower(); // 
                     //    }
 
-                    //    if (_f.IsTransport)
+                    //    if (_fleet.IsTransport)
                     //    {
-                    //        _civM.Assault_AttackValue += (int)_f.Ships[0].ShipDesign.WorkCapacity;
+                    //        _civM.Assault_AttackValue += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
                     //    }
                     //}
 
@@ -1606,7 +1741,7 @@ namespace Supremacy.AI
                     //    //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _civM.Name, _civM.Assault_TargetCiv.Name);
                     //    // send home and re-set AITypeUnit / can we already set ships to reserve here for return to home?
                     //}
-                }
+                //}
 
                 if (_fleet.Owner.IsHuman)
                 {
@@ -1614,14 +1749,14 @@ namespace Supremacy.AI
                 }
 
                 //  no invasion due to not at the system location
-                if (!_fleetInvades && _prepareSystemAssault && _civM.SystemAssault_Accumulate_Sector_1 != null)
+                if (!_fleetInvades && _prepareSystemAssault && _civM.Assault_Accumulate_Sector_1 != null)
                 {
                     _text = "Step_3443:; "
                         + "" + CreateUpdateFleetText(_fleet, out _fleetText)
                     //+"" + _civ.Name
                     + " > Sector for SystemAttack="
 
-                    + " " + GameEngine.LocationString(_civM.SystemAssault_Accumulate_Sector_1.Location.ToString())
+                    + " " + GameEngine.LocationString(_civM.Assault_Accumulate_Sector_1.Location.ToString())
                     ;
                     if (_writeDirectly_Fleets) Console.WriteLine(_text);
                     //_fleet_Text += Environment.NewLine + _text;
@@ -1637,9 +1772,9 @@ namespace Supremacy.AI
                     _fleet.AITypeUnit = UnitAIType.SystemAttack;
                     _fleet.Order = FleetOrders.AssaultSystemOrder;
 
-                    if (_fleet.Sector.Location != _targetSystem.Location || _fleet.Sector.Location == _civM.SystemAssault_Accumulate_Location_1)
+                    if (_fleet.Sector.Location != _targetSystem.Location || _fleet.Sector.Location == _civM.Assault_Accumulate_Location_1)
                     {
-                        _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _civM.SystemAssault_Accumulate_Sector_1 }));
+                        _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _civM.Assault_Accumulate_Sector_1 }));
                     }
                     else
                     {
@@ -1685,8 +1820,8 @@ namespace Supremacy.AI
                     //if (_prepareSystemAssault)
                     //    {
                     // send _fleet to other home system
-                    //int civFirePower = CalculateFirePower(_civM);
-                    //int targetFirePower = CalculateFirePower(_civM.Assault_TargetCiv, _targetSystem);
+                    //int civFirePower = Calculate_fire_power_ships_and_station(_civM);
+                    //int targetFirePower = Calculate_fire_power_ships_and_station(_civM.Assault_TargetCiv, _targetSystem);
                     //if (targetFirePower * 1.1 < civFirePower)
                     //{
                     //    //_fleet.Owner = _civM; 
@@ -1717,7 +1852,7 @@ namespace Supremacy.AI
                     //}
                     //else
                     //{
-                    //    _civM.Assault_TargetCiv = null;
+                    //    _civM.Assault_Location = null;
                     //}
 
                     //GameLog.Core.AI.DebugFormat("Civ {0} now in SystemAttack AITypeUnit target ={1}, attack _fleet location ={2} Count() ={3}, Route length {4} "
@@ -1733,7 +1868,7 @@ namespace Supremacy.AI
                     //int _FirePower_Accumulated = 0;
 
                     // AccumulateLocation
-                    //if (_fleet.Location == _civM.SystemAssault_Accumulate_Location_1
+                    //if (_fleet.Location == _civM.Assault_Accumulate_Location_1
                     ////|| GameContext.Current.Universe.FindOwned<Colony>(_civM.Assault_TargetCiv).Any(o => o.Location == _fleet.Location))
                     ////&& (!_fleet.Ships.Any(n => n.ShipType == ShipType.Transport)
                     ////|| !_fleet.Ships.Any(n => n.IsCombatant))
@@ -1842,7 +1977,7 @@ namespace Supremacy.AI
                     //            ;
                     //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
                     //    _fleet_Text += Environment.NewLine + _text;
-                    //    _civM.Assault_TargetCiv = null;  // 2024-06-09 why was this ?? // Target system not longer existing ?
+                    //    _civM.Assault_Location = null;  // 2024-06-09 why was this ?? // Target system not longer existing ?
                     //}
                     //else if (_fleet.Activity == UnitActivity.NoActivity
                     //    && _fleet.AITypeUnit == AITypeUnit.Reserve
@@ -1858,10 +1993,10 @@ namespace Supremacy.AI
                     //    Debugger.Break();
 
                     //_fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars
-                    //    , new List<Sector> { _civM.SystemAssault_Accumulate_Sector_1 }));
+                    //    , new List<Sector> { _civM.Assault_Accumulate_Sector_1 }));
                     _text = "Step_3258:; "  /*+ _loc_otherHomeSystem + " > "*/
                             + CreateUpdateFleetText(_fleet, out _fleetText)
-                            + " > Set Route to SystemAssault_Accumulate_Sector_1= " + _civM.SystemAssault_Accumulate_Sector_1
+                            + " > Set Route to Assault_Accumulate_Sector_1= " + _civM.Assault_Accumulate_Sector_1
                             //+ " > _FirePower_Accumulated=" + _FirePower_Accumulated
                             ;
                     //if (_writeDirectly_Fleets) Console.WriteLine(_text);
@@ -1909,7 +2044,7 @@ namespace Supremacy.AI
                     //, GameContext.Current.TurnNumber.ToString(), _ship.ObjectID, _ship.Name, _ship.ClassName);
                     ship.IsCloaked = true;
                 }
-                //_text = "UnitAI-DoTurn for; " 
+                //_text = "UnitAI-Do_0_Turn_Unit for; " 
                 //    + _fleet.ObjectID + "; "
                 //    + _fleet.Name + "; "
                 //    + _fleet.Owner + "; "
@@ -2328,7 +2463,7 @@ namespace Supremacy.AI
         private static void DoConstructionShip(Fleet _fleet)
         {
 
-            _fleet.AITypeUnit = UnitAIType.Constructor;
+            //_fleet.AITypeUnit = UnitAIType.Constructor;  or Building
             string _shipText = "";
             bool bool_bestSector = false;
             Sector _bestSectorForStation = null;
@@ -2347,8 +2482,13 @@ namespace Supremacy.AI
                     ////+ " to go to " + bestSystemToColonize.Name
                     //+ " " + _fleet.Location
                     ;
-            if (_writeDirectly_Fleets) Console.WriteLine(_text);
+            //if (_writeDirectly_Fleets) 
+            Console.WriteLine(_text);
             _fleet_Text += _newline + _text;
+
+            List<Fleet> _allConstructFleetsHere = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList()
+                        .Where(a => a.Sector == _fleet.Sector)
+                        .Where(a => a.IsConstructor).ToList();// || (a.MultiFleetHasAConstructor && a.Ships.Count == 2)).ToList();
 
             if (_fleet.Owner.IsHuman)
             {
@@ -2357,9 +2497,14 @@ namespace Supremacy.AI
 
             //List<Fleet> allCivFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList();
 
-            List<Fleet> _allConstructFleetsHere = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList()
-                .Where(a => a.Sector == _fleet.Sector)
-                .Where(a => a.IsConstructor).ToList();// || (a.MultiFleetHasAConstructor && a.Ships.Count == 2)).ToList();
+
+
+            if (_fleet.Sector.Station != null)
+            {
+                goto SectorHasAlreadyStation;
+            }
+
+
 
 
             //bool _checkShips_Construction = true;
@@ -2367,65 +2512,99 @@ namespace Supremacy.AI
 
 
             // Borg + System in Sector + No station + No _location owner ( Borg can not colonize )
+            bool _bool_Borg_can_build_station = false;
+
             if (_fleet.Owner.Key == "BORG"
-                && !_fleet.Sector.IsOwned
-                && _fleet.Sector.Station == null
-                && _fleet.Sector.System != null
-                && _fleet.Sector.System.StarType != StarType.NeutronStar
+                //&& _fleet.Sector.Station == null > this was checked before
+                ) 
+            { 
+                if (_fleet.Sector.System != null
+                && _fleet.Sector.System.StarType != StarType.NeutronStar // not at these !
                 && _fleet.Sector.System.StarType != StarType.BlackHole
-                //&& _fleet.Sector.System.StarType != StarType.RadioPulsar 
+                )
+                {
+                    _bool_Borg_can_build_station = true;
+                }
+                else
+                {
+                    //if (_fleet.Sector.System == null)
+                    //{
+                        _bool_Borg_can_build_station = true;
+                    //}
+                }
+            }
+
+                //&& !_fleet.Sector.IsOwned
+                ////&& _fleet.Sector.IsOwned
+                ////&& _fleet.Sector.Station == null
+                ////&& _fleet.Sector.System != null
+                //&& _fleet.Sector.System.StarType != StarType.NeutronStar
+                //&& _fleet.Sector.System.StarType != StarType.BlackHole
+                ////&& _fleet.Sector.System.StarType != StarType.RadioPulsar 
 
 
-                )  // "occupy" system for not falling into other hands - Borg can't colonize !
+                if(_bool_Borg_can_build_station)  // "occupy" system for not falling into other hands - Borg can't colonize !
             {
                 _fleet.Activity = UnitActivity.BuildStation;
                 //_fleet.Order = FleetOrders.BuildStationOrder;
 
                 _text += " - Order to build a station...";
-                if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                _fleet_Text += _newline + _text;
+                if (_writeDirectly_Fleets)
+                {
+                    Console.WriteLine(_text);
+                    _fleet_Text += _newline + _text;
+                }
 
-                //if (_fleet.build == null || _fleet.Order.PercentComplete < 1)
-                //{
-                BuildStation(_fleet, _allConstructFleetsHere);
-                //_fleet.Activity = UnitActivity.Hold;
-                //_fleet.Route.Clear();
+
+                if (!_allConstructFleetsHere.Any(_f => _f.Order.PercentComplete != null && _fleet.Order.PercentComplete > 0))
+                {
+                    
+                    BuildStation(_fleet, _allConstructFleetsHere);
+                    //_fleet.Activity = UnitActivity.Hold;
+                    //_fleet.Route.Clear();
+                }
                 goto EndofConstructionShip;
-                //}
-            }
+            
+        } // end of BORG
 
 
             if (_fleet.Owner.IsHuman)
             {
-                ////Debugger.Break();    //checkconstruction // for search + finding this place
+                //Debugger.Break();    //checkconstruction // for search + finding this place
             }
 
             // normally: Build a station if Activity is "build"
             if (_fleet.Activity == UnitActivity.BuildStation && _fleet.Sector.Station == null && !_fleet.Sector.IsOwned)
             {
-                _fleet.Activity = UnitActivity.BuildStation;
-                //_fleet.Order = FleetOrders.BuildStationOrder;
-                if (_fleet.Activity == UnitActivity.BuildStation/* && _fleet.Order == UnitActivity.BuildStation*/)
+                //_fleet.Activity = UnitActivity.BuildStation;
+                ////_fleet.Order = FleetOrders.BuildStationOrder;
+                //if (_fleet.Activity == UnitActivity.BuildStation/* && _fleet.Order == UnitActivity.BuildStation*/)
+                //{
+
+
+                if (_fleet.Order.PercentComplete == null /*|| _fleet.Order.PercentComplete * 100 < 1*/)
                 {
+                    BuildStation(_fleet, _allConstructFleetsHere);
+                    _fleet.Route.Clear();
 
+                    _text += " - Order to build a station...";
+                    if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                    _fleet_Text += _newline + _text;
 
-                    if (_fleet.Order.PercentComplete == null || _fleet.Order.PercentComplete * 100 < 1)
-                    {
-                        BuildStation(_fleet, _allConstructFleetsHere);
-                        _fleet.Route.Clear();
-
-                        _text += " - Order to build a station...";
-                        if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                        _fleet_Text += _newline + _text;
-
-                        goto EndofConstructionShip;
-                    }
+                    goto EndofConstructionShip;
                 }
+                //}
             }
             else
             {
-                //_fleet.Activity = UnitActivity.NoActivity;
-                //bool_bestSector = GetBestSectorFor_BuildStation(_fleet, _allConstructFleetsHere, out _bestSectorForStation);
+                // important to have it here
+                if (_fleet.Activity != UnitActivity.Hold
+                    || _fleet.Activity != UnitActivity.Mission) // if already building, don't search new _bestSector
+                {
+                    _fleet.Activity = UnitActivity.NoActivity;
+                    bool_bestSector = GetBestSectorFor_BuildStation(_fleet, _allConstructFleetsHere, out _bestSectorForStation);
+                }
+
             }
 
             if (!_fleet.Ships.Any(x => x.ShipType == ShipType.Construction))
@@ -2441,21 +2620,33 @@ namespace Supremacy.AI
             }
 
 
-            //GameLog.Client.AI.DebugFormat("*////*Top of Constuctor, Owner ={0}, shiptype ={1}, #Ships ={2}, Activity ={3} duration ={4} Route empty ={5}",
-            //         _fleet.Owner.Key, _fleet.Ships[0].ShipType, _fleet.Ships.Count(), _fleet.Activity, _fleet.ActivityDuration, _fleet.Route.IsEmpty);
+        //GameLog.Client.AI.DebugFormat("*////*Top of Constuctor, Owner ={0}, shiptype ={1}, #Ships ={2}, Activity ={3} duration ={4} Route empty ={5}",
+        //         _fleet.Owner.Key, _fleet.Ships[0].ShipType, _fleet.Ships.Count(), _fleet.Activity, _fleet.ActivityDuration, _fleet.Route.IsEmpty);
+
+        SectorHasAlreadyStation:;
 
             bool_bestSector = GetBestSectorFor_BuildStation(_fleet, _allConstructFleetsHere, out _bestSectorForStation);
 
-            if (_fleet.Route.IsEmpty || _fleet.Route.Waypoints.Count < 2)
+            if (_civM.StrandedShipsSector != null && _civM.StrandedShipsSector.Location != _civM.HomeSystem.Location)
             {
+                _bestSectorForStation = _civM.StrandedShipsSector;
+            }
+
+            _text = "Step_8896:; " + CreateUpdateFleetText(_fleet, out _fleetText) + " > _bestSectorForStation= " + _bestSectorForStation.Location;
+            //if (_writeDirectly_Fleets) 
+            Console.WriteLine(_text);
+
+            if (_fleet.Activity != UnitActivity.Hold && _fleet.Route.IsEmpty && _fleet.Order.PercentComplete == null) // || _fleet.Route.Waypoints.Count < 1)
+            {
+                BuildStation(_fleet, _allConstructFleetsHere);
                 // is it necassary ?? > yes due to one of the > if (bool_bestSector)
 
                 //bool_bestSector = GetBestSectorFor_BuildStation(_fleet, _allConstructFleetsHere, out _bestSectorForStation);
 
-                if (_civM.StrandedShipsSector != null && _civM.StrandedShipsSector.Location != _civM.HomeSystem.Location)
-                {
-                    _bestSectorForStation = _civM.StrandedShipsSector;
-                }
+                //if (_civM.StrandedShipsSector != null && _civM.StrandedShipsSector.Location != _civM.HomeSystem.Location)
+                //{
+                //    _bestSectorForStation = _civM.StrandedShipsSector;
+                //}
 
                 if (_bestSectorForStation == null)
                 {
@@ -2505,22 +2696,25 @@ namespace Supremacy.AI
 
                 if (bool_bestSector)
                 {
-                    if (_bestSectorForStation.Location == _fleet.Sector.Location || GetDistanceTo(_fleet.Sector.Location, _bestSectorForStation.Location) < 2)
+                    if (_fleet.Sector.Station == null)
                     {
-                        _fleet.Activity = UnitActivity.BuildStation;
-                        //_fleet.Order = FleetOrders.BuildStationOrder;
-                        if (_fleet.Activity == UnitActivity.BuildStation/* && _fleet.Order == UnitActivity.BuildStation*/)
+                        if (_bestSectorForStation.Location == _fleet.Sector.Location || GetDistanceTo(_fleet.Sector.Location, _bestSectorForStation.Location) < 2)
                         {
-                            _text += " - Order to build a station...";
-                            //if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                            _fleet_Text += _newline + _text;
-
-                            if (_fleet.Order.PercentComplete == null || _fleet.Order.PercentComplete * 100 < 1)
+                            //_fleet.Activity = UnitActivity.BuildStation;
+                            //_fleet.Order = FleetOrders.BuildStationOrder;
+                            if (_fleet.Activity == UnitActivity.BuildStation/* && _fleet.Order == UnitActivity.BuildStation*/)
                             {
-                                BuildStation(_fleet, _allConstructFleetsHere);
-                                //_fleet.Route.Clear();
+                                _text += " - Order to build a station...";
+                                //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                                _fleet_Text += _newline + _text;
+
+                                if (_fleet.Order.PercentComplete == null || _fleet.Order.PercentComplete * 100 < 1)
+                                {
+                                    BuildStation(_fleet, _allConstructFleetsHere);
+                                    //_fleet.Route.Clear();
+                                }
+                                goto EndofConstructionShip;
                             }
-                            goto EndofConstructionShip;
                         }
                     }
 
@@ -2605,9 +2799,9 @@ namespace Supremacy.AI
                     }
                 }
 
-                if (_bestSectorForStation != _fleet.Sector && _fleet.Order != FleetOrders.BuildStationOrder) // best _location can change over time
+                if (_bestSectorForStation != _fleet.Sector && _fleet.Order.OrderName != FleetOrders.BuildStationOrder.OrderName) // best _location can change over time
                 {
-                    _fleet.Activity = UnitActivity.Mission;
+                    //_fleet.Activity = UnitActivity.Mission;
                     //if (_fleet.AITypeUnit != AITypeUnit.Constructor 
                     //if (_fleet.Activity != UnitActivity.Hold
                     //&& _fleet.Activity != UnitActivity.BuildStation) // have a place to go and not already trying to move or build then go
@@ -2628,15 +2822,18 @@ namespace Supremacy.AI
                     //_fleet.Route.Clear();
 
                     _fleet.AITypeUnit = UnitAIType.Constructor;
-                    //_fleet.Activity = UnitActivity.Mission;  // double
+                    _fleet.Activity = UnitActivity.Mission;  // double
                     _fleet.Order = FleetOrders.TravelOrder;
+                    //_fleet.Order.TaskForceStatusText = "Going";
                     _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _bestSectorForStation }));
+
 
                     _text = "Step_7666:; " + CreateUpdateFleetText(_fleet, out _fleetText)
                         + " > ordering to bool_bestSector at " + GameEngine.LocationString(_bestSectorForStation.Location.ToString())
                         + " named " + _bestSectorForStation.Name
                         ;
-                    //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                    //if (_writeDirectly_Fleets)
+                    Console.WriteLine(_text);
                     _fleet_Text += _newline + _text;
 
                     //_text = "Step_7667:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary)
@@ -2736,7 +2933,8 @@ namespace Supremacy.AI
             //if (_fleet.IsScout) //(_fleet.Ships.Where(o => o.ShipType == ShipType.Scout).Any())
             //{
             string _text = "Step_6220:; " + CreateUpdateFleetText(_fleet, out string _fleetText) + " > _fleet.IsScout > EXPLORE  ";
-            if (_writeDirectly_Fleets) Console.WriteLine(_text);
+            //if (_writeDirectly_Fleets) 
+            Console.WriteLine(_text);
             _fleet_Text += Environment.NewLine + _text;
 
             //checkScoutShips;
@@ -2864,11 +3062,11 @@ namespace Supremacy.AI
         {
             _fleet.AITypeUnit = UnitAIType.Transport;
             string _newline = Environment.NewLine;
-            CreateUpdateFleetText(_fleet, out string _fleetText);
+            //CreateUpdateFleetText(_fleet, out string _fleetText);
             // Scout
             //if (_fleet.IsScout) //(_fleet.Ships.Where(o => o.ShipType == ShipType.Scout).Any())
             //{
-            string _text = "Step_6228:; " + _fleetText + " > _fleet.IsTransport >  ";
+            string _text = "Step_6228:; " + CreateUpdateFleetText(_fleet, out string _fleetText) + " > _fleet.IsTransport >  ";
             if (_writeDirectly_Fleets) Console.WriteLine(_text);
             _fleet_Text += _newline + _text;
 
@@ -2888,12 +3086,7 @@ namespace Supremacy.AI
 
             if (_targetCiv == null)
             {
-                DoAccumulate(_fleet);
-                // explore is really set in FleetOrders OnTurnBegining()
-
-
-
-                //_fleet.SetOrder(new ExploreOrder());
+                Do_2_Accumulate(_fleet);
             }
             else
             {
@@ -2903,35 +3096,31 @@ namespace Supremacy.AI
                 //}
                 //else
                 //{
-                    //_text = "Step_6229:; " + _fleetText + " > _fleet.IsTransport >  ";
-                    //if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //_fleet_Text += _newline + _text;
-                    if (_civM.SystemAssault_Accumulate_Sector_1 != null && _civM.SystemAssault_Accumulate_Sector_1.Location.ToString() != "(0, 0)")
-                    {
-                        DoAccumulateAt(_fleet, _civM.SystemAssault_Accumulate_Sector_1.Location);
+                //_text = "Step_6229:; " + _fleetText + " > _fleet.IsTransport >  ";
+                //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //_fleet_Text += _newline + _text;
+                if (_civM.Assault_Accumulate_Sector_1 != null && _civM.Assault_Accumulate_Sector_1.Location.ToString() != "(0, 0)")
+                {
+                    DoAccumulateAt(_fleet, _civM.Assault_Accumulate_Sector_1.Location);
 
-                    }
+                }
 
                 //}
 
-                //if (_civM.SystemAssault_Accumulate_Sector_1 == null || _civM.SystemAssaultSector_2.Location.ToString() != "(0, 0)"
+                //if (_civM.Assault_Accumulate_Sector_1 == null || _civM.SystemAssaultSector_2.Location.ToString() != "(0, 0)"
                 //    && _civM.SystemAssaultSector_2 == null || _civM.SystemAssaultSector_2.Location.ToString() != "(0, 0)")
-                //    DoAccumulate(_fleet);
+                //    Do_2_Accumulate(_fleet);
 
-                _text = "Step_6229:; " + _fleetText + " > new _location set to go ?";
-                if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                _text = "Step_6229:; " + CreateUpdateFleetText(_fleet, out _fleetText) + " > new _location set to go ?";
+                //if (_writeDirectly_Fleets) 
+                Console.WriteLine(_text);
                 _fleet_Text += _newline + _text;
 
+                if (_fleet.Owner.IsHuman)
+                {
+                    //Debugger.Break();
+                }
             }
-
-
-            // explore is really set in FleetOrders OnTurnBegining()
-
-            //_fleet.SetOrder(new ExploreOrder());
-
-
-            //_fleet.Activity = UnitActivity.NoActivity;
-
 
             //Print_Ships_of_Fleet(_fleet);
 
@@ -2953,8 +3142,7 @@ namespace Supremacy.AI
                 //Debugger.Break();
             }
 
-
-        }
+        } // end of DoTransportShip 
 
         private static void DoColonyShip(Fleet _fleet)
         {
@@ -3209,7 +3397,7 @@ namespace Supremacy.AI
             _shipText = //"Step_3103:; "+ 
                 GameEngine.LocationString(ship.Location.ToString())
 
-                + " ; " + GameEngine.Do_5_Digit(ship.ObjectID.ToString()) + " ; SHIP"
+                + " ; " + GameEngine.Do_x_Digit_String( 5, ship.ObjectID.ToString()) + " ; SHIP"
 
                 + " ; " + ship.Design
                 + " ; " + ship.Name
@@ -3250,7 +3438,7 @@ namespace Supremacy.AI
             _fleetText = //"Step_3103:; "+ 
                 GameEngine.LocationString(fleet.Location.ToString())
 
-                + " ; " + GameEngine.Do_5_Digit(fleet.ObjectID.ToString()) + " ;Fleet"
+                + " ; " + GameEngine.Do_x_Digit_String( 5, fleet.ObjectID.ToString()) + " ;Fleet"
                 + " ; " + fleet.Ships[0].Design
                 + " ; " + fleet.Name
 
@@ -3962,7 +4150,7 @@ namespace Supremacy.AI
                 int _distance2 = MapLocation.GetDistance(_sec.Location, ourHomeSystem.Location);
                 _text = "Step_6923:; "
                      + "" + _fleets_Summary
-                     + " >  DistfromHome > " + GameEngine.Do_x2_Digit_String(_distance2.ToString())
+                     + " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
                      + ", Value for Sector= " + GetValue_Sector(_sec.Location, ourHomeSystem.Owner, -1500)
                      + " for " + _sec.Location
                      + " " + _sec.Name
@@ -4011,13 +4199,13 @@ namespace Supremacy.AI
             catch { _sector = null; return null; }
 
             //if ()
-            civM.SystemAssault_Accumulate_Sector_1 = _sector;
-            civM.SystemAssault_Accumulate_Location_1 = _sector.Location;
+            civM.Assault_Accumulate_Sector_1 = _sector;
+            civM.Assault_Accumulate_Location_1 = _sector.Location;
 
             _text = "Step_6926:; "
                      + "" + civM.Civilization
-                     + " > Accumulate*Location*= " + civM.SystemAssault_Accumulate_Location_1
-                     + " + AccumulateSector > " + civM.SystemAssault_Accumulate_Sector_1
+                     + " > Accumulate*Location*= " + civM.Assault_Accumulate_Location_1
+                     + " + AccumulateSector > " + civM.Assault_Accumulate_Sector_1
 
                     //+ " for " + _sec.Location
                     //+ " " + _sec.Name
@@ -4346,7 +4534,7 @@ namespace Supremacy.AI
                 else
                 {
                     BuildStation(fleet);
-                    fleet.AITypeUnit = UnitAIType.Constructor;
+                    fleet.AITypeUnit = UnitAIType.Building;
                 }
             }
 
@@ -4388,7 +4576,8 @@ namespace Supremacy.AI
 
             if (_fleet == null)
             {
-                throw new ArgumentNullException(nameof(_fleet));
+                Debugger.Break();
+                //throw new ArgumentNullException(nameof(_fleet));
             }
 
             if (_fleet.Ships.Count == 0)
@@ -4660,7 +4849,7 @@ namespace Supremacy.AI
 
                 _text = "Step_6913:; "
                      + "" + _fleets_Summary
-                     + " >  DistfromHome > " + GameEngine.Do_x2_Digit_String(_distance2.ToString())
+                     + " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
                      + ", Value for Station= " + GetValue_Station(_sector, _fleet, objectsAroundHome)
                      + " for " + _sector.Location
                      + " " + _sector.Name
@@ -4742,6 +4931,17 @@ namespace Supremacy.AI
 
                 if (_bestSector != null)
                 {
+                    _text = "Step_6914:; "
+                             + "" + _fleets_Summary
+                             //+ " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
+                             //+ ", Value for Station= " + GetValue_Station(_sector, _fleet, objectsAroundHome)
+                             + " > _bestSector= " + _bestSector.Location
+                             //+ " " + _sector.Name
+                            ;
+
+                    //if (_write) 
+                    Console.WriteLine(_text);
+
                     return true;
                 }
 
@@ -4788,7 +4988,7 @@ namespace Supremacy.AI
                 //    int distance = MapLocation.GetDistance(item.Location, homeSector.Location);
                 //    _text = "Step_6915:; "
                 //         + "" + _fleets_Summary
-                //         + " >  DistfromHome > " + GameEngine.Do_x2_Digit_String(distance.ToString())
+                //         + " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, distance.ToString())
                 //         + ", Value for Station= " + GetValue_Station(item.Sector, _fleet, objectsAroundHome)
                 //         + " for (object) " + item.Location
                 //         + " " + item.Name + " "
@@ -4821,7 +5021,8 @@ namespace Supremacy.AI
                     + " Name = " + _bestSectorName
 
                      ;
-                //if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //if (_writeDirectly_Fleets)
+                Console.WriteLine(_text);
                 //_fleets_Summary += _newline + _text;
 
                 //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
@@ -4841,7 +5042,8 @@ namespace Supremacy.AI
             //default: // non of the Empires
             //_bestSector = null;
             _text = "Step_7759:; " + CreateUpdateFleetText(_fleet, out _fleet_Text) + " > no _location for station";
-            if (_writeDirectly_Fleets) Console.WriteLine(_text);
+            //if (_writeDirectly_Fleets) 
+            Console.WriteLine(_text);
             //GameLog.Core.AI.DebugFormat(_text);
 
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)

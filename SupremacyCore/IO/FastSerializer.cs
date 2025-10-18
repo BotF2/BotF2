@@ -1445,6 +1445,7 @@ namespace Supremacy.IO.Serialization
                     catch (OutOfMemoryException)
                     {
                         GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                        Console.WriteLine("Ran out of memory serializing game data.  Failed on type=" + value.GetType().Name);
                         GameLog.Client.General.FatalFormat("Ran out of memory serializing game data.  Failed on type '{0}'.", value.GetType().Name);
                     }
                 }
@@ -3167,10 +3168,19 @@ namespace Supremacy.IO.Serialization
         /// <param name="typeCode">The SerializedType to store.</param>
         private void WriteTypeCode(SerializedType typeCode)
         {
+            try
+            {
             Write((byte)typeCode);
 #if DEBUG
             typeUsage[(int)typeCode]++;
 #endif
+            }
+            catch (Exception)
+            {
+
+                typeUsage[(int)typeCode]++;
+                Debugger.Break();
+            }
         }
 
         ///// <summary>

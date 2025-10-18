@@ -232,8 +232,8 @@
     </DataTemplate.Triggers>
   </DataTemplate>
 
-  <DataTemplate x:Key="TechObjectImageTemplate"
-                DataType="{x:Type tech:TechObjectDesign}">
+  <DataTemplate x:Key="TechObjectImageTemplate" DataType="{x:Type tech:TechObjectDesign}">
+               
         <Border BorderBrush="{DynamicResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Margin="0,0,7,7"
             BorderThickness="2"

@@ -822,11 +822,11 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class AccumulateLocation_Go_There_Order : FleetOrder // all = all own ships in the sector
     {
-        private string _text;
+        private string _text = "";
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_GO_THERE");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_GO_THERE");
-        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_GO_THERE"), Status);
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_GO_THERE")/*, Status*/);
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
@@ -835,39 +835,16 @@ namespace Supremacy.Orbitals
         }
         public override bool IsValidOrder(Fleet fleet)
         {
-            _text += _text;  // dummy > just keep
+            if (fleet == null)
+                return false;
+
+            //_text += _text;  // dummy > just keep
 
             //_text = "ShipOrder 'AccumulateLocation_Go_There_Order' is turned off due to not working yet";
             //Console.WriteLine(_text);
 
             //GameLog.Core.Production.DebugFormat(_text);
             //return false;
-
-            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
-
-            //if (_fleets.Count < 2)
-            //    return false;
-
-            //if (fleet.Owner != null)
-            //{
-            //    foreach (var item in _fleets)
-            //    {
-            //        if (fleet.Owner == item.Owner)
-            //            return true;
-            //    }
-
-            //    //return false;
-            //}
-
-            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
-            //{
-            //    return false;
-            //}
-
-            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
-            //{
-            //    return false;
-            //}
 
             return true;  // to be done: coding !!
         }
@@ -898,6 +875,10 @@ namespace Supremacy.Orbitals
 
             foreach (Fleet aFeet in fleets)
             {
+                if (aFeet.Ships == null)
+                {
+                    continue;
+                }
                 Ship ship = aFeet.Ships.Last();
                 MapLocation location = ship.Location;
                 //aFeet.RemoveShip(ship);
@@ -2209,7 +2190,7 @@ namespace Supremacy.Orbitals
                     ResourceManager.GetString("FLEET_ORDER_STATUS_TOW"),
                     TargetFleet);
 
-        public override string TaskForceStatusText//(Fleet fleet)
+        public override string TaskForceStatusText // (Fleet fleet) > status or eta x Turns (to go) 
         {
             get
             {
@@ -2629,7 +2610,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public override string TaskForceStatusText
+        public override string TaskForceStatusText // unknown or FLEET_ORDER_STATUS_BUILD_STATION
         {
             get
             {
@@ -3100,6 +3081,8 @@ namespace Supremacy.Orbitals
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_TRAVEL");
 
         public override string Status => ResourceManager.GetString("FLEET_ORDER_STATUS_TRAVEL");
+
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_STATUS_TRAVEL"), Status);
 
         public override bool WillEngageHostiles => false;
 
