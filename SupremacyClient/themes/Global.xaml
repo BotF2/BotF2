@@ -3893,7 +3893,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type TextBoxBase}">
           <Border x:Name="Border" BorderThickness="2" SnapsToDevicePixels="True"
-                  BorderBrush="Gray">
+                  BorderBrush="YellowGreen">
             <ScrollViewer x:Name="PART_ContentHost" Margin="2" SnapsToDevicePixels="True" />
           </Border>
           <ControlTemplate.Triggers>
@@ -3952,6 +3952,7 @@
     </Setter>
   </Style>
 
+    <!--Global.xaml-->
   <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}" BasedOn="{x:Null}">
     <Setter Property="Template">
       <Setter.Value>

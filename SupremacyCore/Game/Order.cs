@@ -1374,7 +1374,7 @@ namespace Supremacy.Game
                 return false;
             }
 
-            _ = civManager.Resources[_resourceType].AdjustCurrent(_amount);
+            _ = civManager.Resources[_resourceType].AdjustCurrent(_amount);  // give resource
             return true;
         }
     }

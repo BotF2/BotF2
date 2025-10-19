@@ -253,6 +253,8 @@ namespace Supremacy.Universe
             }
         }
 
+
+
         public int LocationFirePower (MapLocation _loc)
         { 
             

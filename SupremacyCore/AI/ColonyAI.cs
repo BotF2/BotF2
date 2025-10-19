@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Supremacy.AI
 {
@@ -62,7 +61,7 @@ namespace Supremacy.AI
                 + " > " + DateTime.Now + ", Console-Output= " + _writeDirectly_Colony.ToString()
                 ;
             //if (_writeDirectly_Colony) 
-                Console.WriteLine(_text);
+            Console.WriteLine(_text);
             string _civ_text_ColonyAI = _text;
 
 
@@ -345,7 +344,7 @@ namespace Supremacy.AI
                         foreach (BuildQueueItem buildQueueItem in colony.BuildQueue) // just > Console.WriteLine
                         {
                             _text = "Step_1206:; " + GameEngine.LocationString(colony.Location.ToString()) + " > " + _name_col
-                                + "; needs " + GameEngine.Do_x_Digit_String( 2, buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
+                                + "; needs " + GameEngine.Do_x_Digit_String(2, buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
                                 + "; buildQueueItem # " + count + " = " + buildQueueItem.Description
 
                                     //+ buildQueueItem.Description
@@ -396,9 +395,9 @@ namespace Supremacy.AI
                             if (/*_colony.Shipyard.BuildSlots != null && */!PlayerAI.IsInFinancialTrouble_BelowMinus2000(colony.Owner))
                             {
                                 Handle_Ship_Production(colony, colony.Owner);//, _listPrioShipBuild_tmp);
-                                                                               //    old
-                                                                               //    if (_civ.IsEmpire) { HandleShipProductionEmpire(_colony, _civ); }
-                                                                               //    else { HandleShipProductionMinor(_colony, _civ); }
+                                                                             //    old
+                                                                             //    if (_civ.IsEmpire) { HandleShipProductionEmpire(_colony, _civ); }
+                                                                             //    else { HandleShipProductionMinor(_colony, _civ); }
                             }
                             else
                             {
@@ -429,7 +428,7 @@ namespace Supremacy.AI
 
                     _text = "Step_1105:; ##################### Problem at ColonyAI.Do_0_Turn_Unit ..." + colony.Name + _newline + e;
                     //if (_writeDirectly_Colony) 
-                        Console.WriteLine(_text);
+                    Console.WriteLine(_text);
                     Debugger.Break();
                 }// end of catch
 
@@ -987,7 +986,7 @@ namespace Supremacy.AI
             _text = Environment.NewLine + "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " *** " + _name_col + " " + _owner_col
                 + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"
                 + "; BuildQueue.Count= " + _colony.BuildQueue.Count // + " ) > Handling _colony"
-                                                                   //+ " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues "
+                                                                    //+ " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues "
                 ;
             if (_writeDirectly_Colony) Console.WriteLine(_text);
             _colony_full_Report += Environment.NewLine + _text;
@@ -1058,27 +1057,28 @@ namespace Supremacy.AI
             }
 
             // if food is minus and all are active
-            if (_colony.Food_Net < 0 && _colony.Facilities_Active1_Food + 2 > _colony.Facilities_Total1_Food)
+            if (_colony.Food_Net < 0 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food)
             {
                 _itemToBuild_Facility = _available_item;
             }
-            else
+
+
+            // if food is plus and active 3 and total 6 
+            if (_colony.Food_Net > 10 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food + 2 )
             {
-                if (_colony.Facilities_Active1_Food + 2 > _colony.Facilities_Total1_Food)
-                {
-                    _colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
-                    _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
-                        + " > " + _name_col + " ; " + _owner_col
-                        + " >  Check for Food > "
-                        + "current " + _colony.Facilities_Total1_Food
-                        //+ ", calc by maxPop= (max) " + _researchCalc
-                        + " > removed ONE facility "
-                        ;
-                    if (_writeDirectly_Colony) Console.WriteLine(_text);
-                    _colony_full_Report += Environment.NewLine + _text;
-                }
+                _colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
+                _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
+                    + " > " + _name_col + " ; " + _owner_col
+                    + " > Check for Food > "
+                    + "current " + _colony.Facilities_Total1_Food
+                    //+ ", calc by maxPop= (max) " + _researchCalc
+                    + " > removed ONE facility "
+                    ;
+                if (_writeDirectly_Colony) Console.WriteLine(_text);
+                _colony_full_Report += Environment.NewLine + _text;
             }
         }
+
 
         //private static void Handle_Research_Distribution(Colony _colony) // this 
         //{
@@ -1208,9 +1208,9 @@ namespace Supremacy.AI
                     + " > " + _name_col
                     + " ; " + _owner_col
                     + "; IsUpgrade= " + GameEngine.BoolString_x5(item.IsUpgrade.ToString())
-                    + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
-                    + " ; TurnsNeeded=;" + GameEngine.Do_x_Digit_String( 2, item.TurnsRemaining.ToString()) // not avaible
-                    + " ; OPTIONS_to_Build_on #;" + GameEngine.Do_x_Digit_String( 2, count.ToString())
+                    + "; BCost=;" + GameEngine.Do_x_Digit_String(5, item.BuildDesign.BuildCost.ToString())
+                    + " ; TurnsNeeded=;" + GameEngine.Do_x_Digit_String(2, item.TurnsRemaining.ToString()) // not avaible
+                    + " ; OPTIONS_to_Build_on #;" + GameEngine.Do_x_Digit_String(2, count.ToString())
                     + " ; ID= " + _designID_string
                     + " ; " + item.BuildDesign.ToString()
 
@@ -1498,23 +1498,23 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
             string _text;
             _text = "Step_2346:; " + GameEngine.LocationString(_colony.Location.ToString())
-        + " > Pool= " + GameEngine.Do_x_Digit_String( 2, _laborPool.ToString())
-            + " vs " + GameEngine.Do_x_Digit_String( 2, _popAvailable.ToString()) // should be zero
+        + " > Pool= " + GameEngine.Do_x_Digit_String(2, _laborPool.ToString())
+            + " vs " + GameEngine.Do_x_Digit_String(2, _popAvailable.ToString()) // should be zero
 
-        + " ,Active: Food= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Food).ToString())
-        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Food).ToString())
-        + ", Ind= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Industry).ToString())
-        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Industry).ToString())
-        + ", En= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Energy).ToString())
-        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Energy).ToString())
-        + ", Res= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Research).ToString())
-        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Research).ToString())
-        + ", Int= " + GameEngine.Do_x_Digit_String( 2, _colony.GetActiveFacilities(ProductionCategory.Intelligence).ToString())
-        + " of " + GameEngine.Do_x_Digit_String( 2, _colony.GetTotalFacilities(ProductionCategory.Intelligence).ToString())
+        + " ,Active: Food= " + GameEngine.Do_x_Digit_String(2, _colony.GetActiveFacilities(ProductionCategory.Food).ToString())
+        + " of " + GameEngine.Do_x_Digit_String(2, _colony.GetTotalFacilities(ProductionCategory.Food).ToString())
+        + ", Ind= " + GameEngine.Do_x_Digit_String(2, _colony.GetActiveFacilities(ProductionCategory.Industry).ToString())
+        + " of " + GameEngine.Do_x_Digit_String(2, _colony.GetTotalFacilities(ProductionCategory.Industry).ToString())
+        + ", En= " + GameEngine.Do_x_Digit_String(2, _colony.GetActiveFacilities(ProductionCategory.Energy).ToString())
+        + " of " + GameEngine.Do_x_Digit_String(2, _colony.GetTotalFacilities(ProductionCategory.Energy).ToString())
+        + ", Res= " + GameEngine.Do_x_Digit_String(2, _colony.GetActiveFacilities(ProductionCategory.Research).ToString())
+        + " of " + GameEngine.Do_x_Digit_String(2, _colony.GetTotalFacilities(ProductionCategory.Research).ToString())
+        + ", Int= " + GameEngine.Do_x_Digit_String(2, _colony.GetActiveFacilities(ProductionCategory.Intelligence).ToString())
+        + " of " + GameEngine.Do_x_Digit_String(2, _colony.GetTotalFacilities(ProductionCategory.Intelligence).ToString())
 
         + " for " + _name_col
-        + ", Pop now " + GameEngine.Do_x_Digit_String( 3, _colony.Population.ToString())
-        + " max " + GameEngine.Do_x_Digit_String( 3, _colony.Population_Max.ToString())
+        + ", Pop now " + GameEngine.Do_x_Digit_String(3, _colony.Population.ToString())
+        + " max " + GameEngine.Do_x_Digit_String(3, _colony.Population_Max.ToString())
         //+ " (Checking Population ...DONE)"
         ;
             if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -1547,7 +1547,7 @@ namespace Supremacy.AI
 
                 if (_o < 5)  // 4 aktive Orb are enough
                 {
-                    
+
                     orb.IsActive = true;
                     _o += 1;
                 }
@@ -1555,11 +1555,11 @@ namespace Supremacy.AI
                 {
                     orb.IsActive = false;
                 }
-                
+
 
             }
 
-            _text = "Step_1248:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col + " ; " + _owner_col 
+            _text = "Step_1248:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col + " ; " + _owner_col
                 + " > OrbBat: active " + _colony.OrbitalBatteries_Active + " of " + _colony.OrbitalBatteries_Total
                 + ", and  > _offlineBuildings: " + _offlineBuilding.Count
                 + ", _offlineShipyardSlots: " + _offlineShipyardSlots.Count
@@ -1625,7 +1625,7 @@ namespace Supremacy.AI
                 //_popAvailable += 1;
             }
 
-            if (_colony.Energy_Net - (3*(int)_energyOutput) > (int)_energyOutput)
+            if (_colony.Energy_Net - (3 * (int)_energyOutput) > (int)_energyOutput)
             {
                 _colony.RemoveFacility(ProductionCategory.Energy);
                 _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Energy on; "*/
@@ -1639,7 +1639,7 @@ namespace Supremacy.AI
                 _colony_full_Report += _newline + _text;
             }
 
-            var _activeOrbBat = new List<OrbitalBattery> ();
+            var _activeOrbBat = new List<OrbitalBattery>();
             foreach (var orb in _colony.OrbitalBatteries)
             {
                 if (_colony.Energy_Net < 1 && orb.IsActive)
@@ -1714,7 +1714,7 @@ namespace Supremacy.AI
                 _colony_full_Report += _newline + _text;
             }
 
-            _text = "Step_1222:; " + GameEngine.LocationString(_colony.Location.ToString()) 
+            _text = "Step_1222:; " + GameEngine.LocationString(_colony.Location.ToString())
                 + " > Colony_Step_05_Handle_Food_Production is DONE; "
                     + _name_col + " ; " + _owner_col
 
@@ -2058,16 +2058,16 @@ namespace Supremacy.AI
                     * _colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue)
                     * (1.0 + _colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
 
-                CivilizationManager manager = GameContext.Current.CivilizationManagers[_civ];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
 
-                Dictionary<ResourceType, int> availableResources = manager.Colonies
+                Dictionary<ResourceType, int> availableResources = _civM.Colonies
                     .SelectMany(c => c.BuildSlots)
                     .Where(os => os.Project != null)
                     .Select(os => os.Project)
                     .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
                     .GroupBy(r => r.Resource)
                     .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
-                    .ToDictionary(r => r.Resource, r => manager.Resources[r.Resource].CurrentValue - r.Used);
+                    .ToDictionary(r => r.Resource, r => _civM.Resources[r.Resource].CurrentValue - r.Used); // availableResources
                 //structureProject
                 StructureBuildProject structureProject = TechTreeHelper
                     .GetBuildProjects(_colony)
@@ -2090,7 +2090,7 @@ namespace Supremacy.AI
             {
                 List<ProductionCategory> flexProduction = new List<ProductionCategory> { ProductionCategory.Industry, ProductionCategory.Research, ProductionCategory.Intelligence };
                 int flexLabors = _colony.GetAvailableLabor() /*- 30*/; // flexProduction.Sum(c => _colony.GetFacilityType(c).LaborCost * _colony.GetActiveFacilities(c));
-                                                                      //if (flexLabors > -21)  // 2 more facilites as available labors, 10 labors = 1 facility
+                                                                       //if (flexLabors > -21)  // 2 more facilites as available labors, 10 labors = 1 facility
                 if (flexLabors > 4)  // 2 more facilites as available labors, 10 labors = 1 facility
                 {
                     if (_colony.GetTotalFacilities(ProductionCategory.Industry) <= _colony.GetTotalFacilities(ProductionCategory.Research) + _colony.GetTotalFacilities(ProductionCategory.Intelligence))
@@ -2177,7 +2177,7 @@ namespace Supremacy.AI
                     .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
                     .GroupBy(r => r.Resource)
                     .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
-                    .ToDictionary(r => r.Resource, r => _civM.Resources[r.Resource].CurrentValue - r.Used);
+                    .ToDictionary(r => r.Resource, r => _civM.Resources[r.Resource].CurrentValue - r.Used); // availableResources
 
                 //foreach (var item in availableResources)
                 //{
@@ -2413,16 +2413,16 @@ namespace Supremacy.AI
                 //;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
-                CivilizationManager civM = GameContext.Current.CivilizationManagers[civ];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[civ];
 
-                Dictionary<ResourceType, int> availableResources = civM.Colonies
+                Dictionary<ResourceType, int> availableResources = _civM.Colonies
                     .SelectMany(c => c.BuildSlots)
                     .Where(os => os.Project != null)
                     .Select(os => os.Project)
                     .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
                     .GroupBy(r => r.Resource)
                     .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
-                    .ToDictionary(r => r.Resource, r => civM.Resources[r.Resource].CurrentValue - r.Used);
+                    .ToDictionary(r => r.Resource, r => _civM.Resources[r.Resource].CurrentValue - r.Used);
 
                 //foreach (var item in availableResources)
                 //{
@@ -2493,7 +2493,7 @@ namespace Supremacy.AI
                 //        ;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
-                _text = "Step_1237:; " + GameEngine.LocationString(colony.Location.ToString()) 
+                _text = "Step_1237:; " + GameEngine.LocationString(colony.Location.ToString())
                         + " > " + _name_col
                         + " ; " + _owner_col
                         + " > Colony_Step_40_Build_for_LaborPool"
@@ -2725,16 +2725,16 @@ namespace Supremacy.AI
                         * _colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue)
                         * (1.0 + _colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
 
-                    CivilizationManager manager = GameContext.Current.CivilizationManagers[_civ];
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
 
-                    Dictionary<ResourceType, int> availableResources = manager.Colonies
+                    Dictionary<ResourceType, int> availableResources = _civM.Colonies
                         .SelectMany(c => c.BuildSlots)
                         .Where(os => os.Project != null)
                         .Select(os => os.Project)
                         .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
                         .GroupBy(r => r.Resource)
                         .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
-                        .ToDictionary(r => r.Resource, r => manager.Resources[r.Resource].CurrentValue - r.Used);
+                        .ToDictionary(r => r.Resource, r => _civM.Resources[r.Resource].CurrentValue - r.Used);
 
                     //structureProject
                     StructureBuildProject structureProject = TechTreeHelper
@@ -2863,7 +2863,7 @@ namespace Supremacy.AI
                             break; // = stop foreach
                         }
 
-                        if (item.TurnsRemaining < _turnsNeeded || _colony.BuildQueue.IsEmpty() == true )
+                        if (item.TurnsRemaining < _turnsNeeded || _colony.BuildQueue.IsEmpty() == true)
                         {
                             _productionFacilityUpgradeProject = item;
                             _turnsNeeded = item.TurnsRemaining;
@@ -3172,7 +3172,7 @@ namespace Supremacy.AI
 
                                 //+ ", Costs= " + cost
                                 + ", industryRemaining= " + structureProject.IndustryRemaining
-                                + ", Industry_Net= " + GameEngine.Do_x_Digit_String( 4, _colony.Industry_Net.ToString())
+                                + ", Industry_Net= " + GameEngine.Do_x_Digit_String(4, _colony.Industry_Net.ToString())
                         //+ ", Industry_Net= " + item.BuildDesign.BuildCost.
 
                         //+ "; Credits.Current= " + _civM.Credits.CurrentValue
@@ -3211,7 +3211,7 @@ namespace Supremacy.AI
 
                                     //+ ", Costs= " + cost
                                     + ", industryRemaining= " + structureProject.IndustryRemaining
-                                    + ", Industry_Net= " + GameEngine.Do_x_Digit_String( 4, _colony.Industry_Net.ToString())
+                                    + ", Industry_Net= " + GameEngine.Do_x_Digit_String(4, _colony.Industry_Net.ToString())
 
                                     + "  ..( max. 18)"
                                 //+ ", Industry_Net= " + item.BuildDesign.BuildCost.
@@ -3291,16 +3291,16 @@ namespace Supremacy.AI
                 //;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
-                CivilizationManager civM = GameContext.Current.CivilizationManagers[_civ];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
 
-                Dictionary<ResourceType, int> availableResources = civM.Colonies
+                Dictionary<ResourceType, int> availableResources = _civM.Colonies
                     .SelectMany(c => c.BuildSlots)
                     .Where(os => os.Project != null)
                     .Select(os => os.Project)
                     .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
                     .GroupBy(r => r.Resource)
                     .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
-                    .ToDictionary(r => r.Resource, r => civM.Resources[r.Resource].CurrentValue - r.Used);
+                    .ToDictionary(r => r.Resource, r => _civM.Resources[r.Resource].CurrentValue - r.Used);
 
                 //foreach (var item in availableResources)
                 //{
@@ -3672,15 +3672,15 @@ namespace Supremacy.AI
             {
                 _colony.Shipyard.BuildQueue.Add(new BuildQueueItem(newProject));
                 _text = "Step_5381:; " //ShipProduction "
-                    + GameEngine.LocationString(_colony.Location.ToString())    
-                    + " - " + _owner_col                    
+                    + GameEngine.LocationString(_colony.Location.ToString())
+                    + " - " + _owner_col
                     //+ ""
 
 
                     + " > ShipProduction: Added Ship- _proj..." + newProject.BuildDesign
 
                     ;
-                if (_writeDirectly_Colony) 
+                if (_writeDirectly_Colony)
                     Console.WriteLine(_text);
             }
 
@@ -3732,7 +3732,7 @@ namespace Supremacy.AI
                         + "potential < _proj.Description= " + _proj.Description
                         ;
                 //if (_writeDirectly_Colony) 
-                    Console.WriteLine(_text);
+                Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
             }
 
@@ -3755,7 +3755,7 @@ namespace Supremacy.AI
                             + " ; " + _owner_col
                             + " > ShipProduction"
 
-                        + " (needs " + GameEngine.Do_x_Digit_String( 2, _proj.TurnsRemaining.ToString()) + " Turns)"
+                        + " (needs " + GameEngine.Do_x_Digit_String(2, _proj.TurnsRemaining.ToString()) + " Turns)"
                         + ": available= " + _proj.BuildDesign
                         ;
                     if (_writeDirectly_Colony) Console.WriteLine(_text);

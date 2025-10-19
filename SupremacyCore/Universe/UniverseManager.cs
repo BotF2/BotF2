@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
+using static Supremacy.Scripting.Ast.Parameter;
 
 namespace Supremacy.Universe
 {
@@ -333,49 +334,60 @@ namespace Supremacy.Universe
         /// <summary>
         /// Scraps all of the facilities at a <see cref="Colony"/> that have been marked for scrapping.
         /// </summary>
-        /// <param name="colony">The colony.</param>
+        /// <param name="_colony">The _colony.</param>
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
-        public bool ScrapNonStructures(Colony colony)
+        public bool ScrapNonStructures(Colony _colony)
         {
-            if (colony == null)
+            if (_colony == null)
             {
                 return false;
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[_colony.OwnerID];
+            if (_civM == null)
             {
                 return false;
             }
 
             foreach (ProductionCategory pc in EnumUtilities.GetValues<ProductionCategory>())
             {
-                int numFacilities = colony.GetScrappedFacilities(pc);
+                int numFacilities = _colony.GetScrappedFacilities(pc);
                 if (numFacilities == 0)
                 {
                     continue;
                 }
 
-                ProductionFacilityDesign design = colony.GetFacilityType(pc);
+                ProductionFacilityDesign design = _colony.GetFacilityType(pc);
                 if (design == null)
                 {
                     continue;
                 }
 
-                double modifier = 1.0 + colony.ScrapBonus;
+                double modifier = 1.0 + _colony.ScrapBonus;
                 design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
                 credits = Math.Min(design.BuildCost, (int)Math.Floor(modifier * credits));
+                _civM.Credits.AdjustCurrent(credits);
+                _text = _colony.LocationStringColony
+                                + " " + _colony.Name
+                                + " > from Scrap of " + numFacilities + " " + design
+                                + " > Credits return=  " + credits
+                                ;
+
                 foreach (ResourceType resource in EnumUtilities.GetValues<ResourceType>())
                 {
                     resources[resource] = Math.Min(
                         design.BuildResourceCosts[resource],
                         (int)Math.Floor(modifier * resources[resource]));
-                    _ = civManager.Resources[resource].AdjustCurrent(resources[resource]);
+                    _civM.Resources[resource].AdjustCurrent(resources[resource]);
+                    _text += " + " + resource + "= " + resources[resource];
+
                 }
-                _ = civManager.Credits.AdjustCurrent(credits);
+
+                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Gray));
+
             }
 
-            colony.ScrapNonStructures();
+            _colony.ScrapNonStructures();
 
             return true;
         }
@@ -397,13 +409,22 @@ namespace Supremacy.Universe
                 return Destroy(target);
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[target.OwnerID];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[target.OwnerID];
+            if (_civM == null)
             {
                 return Destroy(target);
             }
 
             target.Design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
+
+            MapLocation _loc = target.Location;
+
+            _text = GameEngine.LocationString(_loc.ToString())
+                    + " > Scrap- of TechObject= " + target.Design
+                    + " > Credits return=  " + credits
+                    ;
+
+
 
             StarSystem targetSystem = target.Sector.System;
 
@@ -413,7 +434,7 @@ namespace Supremacy.Universe
                 double baseReclaim = (double)credits / target.Design.BuildCost;
 
                 double totalReclaim = (
-                                       from bonus in civManager.GlobalBonuses
+                                       from bonus in _civM.GlobalBonuses
                                        where bonus.BonusType == BonusType.PercentScrapping
                                        select bonus
                                    )
@@ -430,18 +451,25 @@ namespace Supremacy.Universe
                         (int)Math.Floor(totalReclaim * resources[resource]));
                 }
 
-                _ = civManager.Credits.AdjustCurrent(credits);
+                _ = _civM.Credits.AdjustCurrent(credits);
+                
+                _text += " > Credits return=  " + credits;
             }
 
             if (Destroy(target))
             {
                 foreach (ResourceType resource in EnumUtilities.GetValues<ResourceType>())
                 {
-                    _ = civManager.Resources[resource].AdjustCurrent(resources[resource]);
+                    _ = _civM.Resources[resource].AdjustCurrent(resources[resource]);
+                    _text += " + " + resource + "= " + resources[resource];
                 }
+
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _loc, _text, _text, "", SitRepPriority.Gray));
 
                 return true;
             }
+
+
 
             return false;
         }

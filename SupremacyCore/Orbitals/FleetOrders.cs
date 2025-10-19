@@ -2841,9 +2841,11 @@ namespace Supremacy.Orbitals
             }
 
             int buildOutput = project.ProductionCenter.GetBuildOutput(0);
+
+            int _usedDuranium = 1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10;
             ResourceValueCollection resources = new ResourceValueCollection
             {
-                [ResourceType.Duranium] = 1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10
+                [ResourceType.Duranium] = _usedDuranium
             };
 
             ResourceValueCollection usedResources = resources.Clone();
@@ -2856,7 +2858,7 @@ namespace Supremacy.Orbitals
                 + " > project: Builder = " + project.Builder
                 + ", BuildDesign = " + project.BuildDesign
                 + ", Duranium before = " + _civM.Resources[ResourceType.Duranium].CurrentValue
-                //+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
+                + ", AdjustValue = " + _usedDuranium
                 ;
             Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
@@ -2865,8 +2867,14 @@ namespace Supremacy.Orbitals
 
             _ = _civM.Resources[ResourceType.Duranium].AdjustCurrent(
                 //usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
-                1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10 * -1);
+                _usedDuranium * -1);
 
+            _text = GameEngine.LocationString(project.Location.ToString())
+                + " > ...building a station .. used Duranium = " + _usedDuranium
+
+                ;
+
+            _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, project.Location, _text, _text, "", SitRepPriority.Gray));
         }
 
         protected internal override void OnOrderCompleted()

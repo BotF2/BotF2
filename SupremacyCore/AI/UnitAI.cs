@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows;
 
 namespace Supremacy.AI
 {
@@ -1042,7 +1041,7 @@ namespace Supremacy.AI
                     //int _FirePower_Accumulated = 0;
                     int _defenseSectorIntValue = 10; // 100 > 10 for testing
 
-                    
+
                     _defenseSectorIntValue += _targetSystem.Colony.Population.CurrentValue;  // 
                     if (_targetSystem.Colony.OrbitalBatteries.Count > 0)
                     {
@@ -1658,89 +1657,89 @@ namespace Supremacy.AI
                 //&& _fleet.Ships.Any(o => o.IsCombatant)
                 //)
                 //{
-                    //for 
-                    //_allShips.Add(_fleet.Ships[0]);
-                    //_allShips.Add(GameContext.Current.Universe.FindOwned<Fleet>(_civ)
-                    //    .Any(o => o.Location == _fleet.Location));
+                //for 
+                //_allShips.Add(_fleet.Ships[0]);
+                //_allShips.Add(GameContext.Current.Universe.FindOwned<Fleet>(_civ)
+                //    .Any(o => o.Location == _fleet.Location));
 
 
 
 
-                    //List<Fleet> _fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
-                    //        .Where(f => f.Location == _civM.AccumulateLocation && f.OwnerID == _civ.CivID).ToList();
+                //List<Fleet> _fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
+                //        .Where(f => f.Location == _civM.AccumulateLocation && f.OwnerID == _civ.CivID).ToList();
 
-                    //_civM.Assault_AttackValue = 0;
+                //_civM.Assault_AttackValue = 0;
 
-                    //foreach (var _fleet in _fleetsAtLocation)
-                    //{
-                    //    if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
-                    //    {
-                    //        _civM.Assault_AttackValue += _fleet.Firepower(); // 
-                    //    }
+                //foreach (var _fleet in _fleetsAtLocation)
+                //{
+                //    if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
+                //    {
+                //        _civM.Assault_AttackValue += _fleet.Firepower(); // 
+                //    }
 
-                    //    if (_fleet.IsTransport)
-                    //    {
-                    //        _civM.Assault_AttackValue += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
-                    //    }
-                    //}
+                //    if (_fleet.IsTransport)
+                //    {
+                //        _civM.Assault_AttackValue += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
+                //    }
+                //}
 
-                    //string _otherSystemText = GameEngine.LocationString(_targetSystem.Location.ToString())
-                    //    + " " + _targetSystem.Name
-                    //    //+ " > "
+                //string _otherSystemText = GameEngine.LocationString(_targetSystem.Location.ToString())
+                //    + " " + _targetSystem.Name
+                //    //+ " > "
 
-                    //    ;
-                    //int _defenseSectorIntValue = 10; // 100 > 10 for testing
-                    //if (_targetSystem.Sector.Station != null)
-                    //{
-                    //    _defenseSectorIntValue += _targetSystem.Sector.Station.Firepower() / 200;  // station only half
-                    //    _defenseSectorIntValue += _targetSystem.Colony.Population.CurrentValue;  // 
-                    //    if (_targetSystem.Colony.OrbitalBatteries.Count > 0)
-                    //    {
-                    //        _defenseSectorIntValue += _targetSystem.Colony.OrbitalBatteries.Count
-                    //                         * (_targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Count
-                    //                         * _targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Damage)
-                    //                         + (_targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Count
-                    //                         * _targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Damage)
+                //    ;
+                //int _defenseSectorIntValue = 10; // 100 > 10 for testing
+                //if (_targetSystem.Sector.Station != null)
+                //{
+                //    _defenseSectorIntValue += _targetSystem.Sector.Station.Firepower() / 200;  // station only half
+                //    _defenseSectorIntValue += _targetSystem.Colony.Population.CurrentValue;  // 
+                //    if (_targetSystem.Colony.OrbitalBatteries.Count > 0)
+                //    {
+                //        _defenseSectorIntValue += _targetSystem.Colony.OrbitalBatteries.Count
+                //                         * (_targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Count
+                //                         * _targetSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Damage)
+                //                         + (_targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Count
+                //                         * _targetSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Damage)
 
-                    //                         ;  // 
-
-
-                    //    }
-                    //}
+                //                         ;  // 
 
 
-                    //if (_civM.Assault_AttackValue > _defenseSectorIntValue * 1.1) // 10% more attack power than defense
-                    //{
-                    //    _text = "Step_3234:; "
-                    //        + _otherSystemText
-                    //         + " > AttackPower= " + _civM.Assault_AttackValue
-                    //        + " vs " + _defenseSectorIntValue + " DefenseSector "
-                    //        ;
-                    //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //    _fleet_Text += Environment.NewLine + _text;
+                //    }
+                //}
 
 
-                    //    _fleetInvades = true;
-                    //    _fleet.Route.Clear();
-                    //    _fleet.AITypeUnit = UnitAIType.SystemAttack;
-                    //    _fleet.Order = FleetOrders.AssaultSystemOrder;
-                    //    // ************* ToDo invasion 
-                    //    SystemAssault(_fleet);
-                    //    _text = "Step_3235:; " + CreateUpdateFleetText(_fleet, out _fleetText) + " Do Invasion at Target system = "
-                    //            + _targetSystem.Name + ", Owner= " + _targetSystem.Owner
-                    //            //+ " > ordered one more facility for > Industry"
-                    //            ;
-                    //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
-                    //    _fleet_Text += Environment.NewLine + _text;
-                    //    if (_fleet.Owner.IsHuman)
-                    //    {
-                    //        //Debugger.Break();
-                    //    }
-                    //    //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _
+                //if (_civM.Assault_AttackValue > _defenseSectorIntValue * 1.1) // 10% more attack power than defense
+                //{
+                //    _text = "Step_3234:; "
+                //        + _otherSystemText
+                //         + " > AttackPower= " + _civM.Assault_AttackValue
+                //        + " vs " + _defenseSectorIntValue + " DefenseSector "
+                //        ;
+                //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //    _fleet_Text += Environment.NewLine + _text;
 
-                    //    //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _civM.Name, _civM.Assault_TargetCiv.Name);
-                    //    // send home and re-set AITypeUnit / can we already set ships to reserve here for return to home?
-                    //}
+
+                //    _fleetInvades = true;
+                //    _fleet.Route.Clear();
+                //    _fleet.AITypeUnit = UnitAIType.SystemAttack;
+                //    _fleet.Order = FleetOrders.AssaultSystemOrder;
+                //    // ************* ToDo invasion 
+                //    SystemAssault(_fleet);
+                //    _text = "Step_3235:; " + CreateUpdateFleetText(_fleet, out _fleetText) + " Do Invasion at Target system = "
+                //            + _targetSystem.Name + ", Owner= " + _targetSystem.Owner
+                //            //+ " > ordered one more facility for > Industry"
+                //            ;
+                //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
+                //    _fleet_Text += Environment.NewLine + _text;
+                //    if (_fleet.Owner.IsHuman)
+                //    {
+                //        //Debugger.Break();
+                //    }
+                //    //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _
+
+                //    //GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, _civM ={0}, targetCivilization ={1}", _civM.Name, _civM.Assault_TargetCiv.Name);
+                //    // send home and re-set AITypeUnit / can we already set ships to reserve here for return to home?
+                //}
                 //}
 
                 if (_fleet.Owner.IsHuman)
@@ -2142,7 +2141,7 @@ namespace Supremacy.AI
                         }
                         else
                         {
-                            //GetFleetOwner(_fleet);
+                            //GetFleetOwnerOutOfShips(_fleet);
                             _fleet.AITypeUnit = UnitAIType.Science;
                             _fleet.Activity = UnitActivity.Mission;
                             _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { bestSystemForScience.Sector }));
@@ -2225,7 +2224,7 @@ namespace Supremacy.AI
                         }
                         else
                         {
-                            //GetFleetOwner(_fleet);
+                            //GetFleetOwnerOutOfShips(_fleet);
                             Civilization civ = GameContext.Current.CivilizationManagers[_fleet.Owner.CivID].Civilization;
                             _fleet.Owner = civ;
                             _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _bestSystemForDiplomacy.Sector }));
@@ -2323,7 +2322,7 @@ namespace Supremacy.AI
                             }
                             else
                             {
-                                //GetFleetOwner(_fleet);
+                                //GetFleetOwnerOutOfShips(_fleet);
                                 Civilization civ = GameContext.Current.CivilizationManagers[_fleet.Owner.CivID].Civilization;
                                 _fleet.Owner = civ;
 
@@ -2427,7 +2426,7 @@ namespace Supremacy.AI
                     }
                     else if (bestSystemForMedical != null)
                     {
-                        //GetFleetOwner(_fleet);
+                        //GetFleetOwnerOutOfShips(_fleet);
                         Civilization civ = GameContext.Current.CivilizationManagers[_fleet.Owner.CivID].Civilization;
                         _fleet.Owner = civ;
                         _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { bestSystemForMedical.Sector }));
@@ -2476,6 +2475,13 @@ namespace Supremacy.AI
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
             //if (_fleet.IsConstructor) // || _fleet.AITypeUnit == AITypeUnit.Constructor || (_fleet.Ships.Any(a => a.ShipType == ShipType.Construction) && _fleet.Ships.Count() == 2))
             //{
+
+            if (_fleet.Order.ToString() == FleetOrders.IdleOrder.ToString())
+            {
+                _fleet.AITypeUnit = UnitAIType.Constructor;
+                _fleet.Activity = UnitActivity.NoActivity;
+            }
+
             string _text = "Step_6510:; " + CreateUpdateFleetText(_fleet, out string _fleetText) + " > _fleet.IsConstructor:"
                     //+ " " + _fleet.ObjectID
                     //+ " " + _fleet.Name
@@ -2492,7 +2498,7 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                //Debugger.Break();    //checkconstruction // for search + finding this place
+                Debugger.Break();    //checkconstruction // for search + finding this place
             }
 
             //List<Fleet> allCivFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList();
@@ -2516,8 +2522,8 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.Key == "BORG"
                 //&& _fleet.Sector.Station == null > this was checked before
-                ) 
-            { 
+                )
+            {
                 if (_fleet.Sector.System != null
                 && _fleet.Sector.System.StarType != StarType.NeutronStar // not at these !
                 && _fleet.Sector.System.StarType != StarType.BlackHole
@@ -2529,21 +2535,21 @@ namespace Supremacy.AI
                 {
                     //if (_fleet.Sector.System == null)
                     //{
-                        _bool_Borg_can_build_station = true;
+                    _bool_Borg_can_build_station = true;
                     //}
                 }
             }
 
-                //&& !_fleet.Sector.IsOwned
-                ////&& _fleet.Sector.IsOwned
-                ////&& _fleet.Sector.Station == null
-                ////&& _fleet.Sector.System != null
-                //&& _fleet.Sector.System.StarType != StarType.NeutronStar
-                //&& _fleet.Sector.System.StarType != StarType.BlackHole
-                ////&& _fleet.Sector.System.StarType != StarType.RadioPulsar 
+            //&& !_fleet.Sector.IsOwned
+            ////&& _fleet.Sector.IsOwned
+            ////&& _fleet.Sector.Station == null
+            ////&& _fleet.Sector.System != null
+            //&& _fleet.Sector.System.StarType != StarType.NeutronStar
+            //&& _fleet.Sector.System.StarType != StarType.BlackHole
+            ////&& _fleet.Sector.System.StarType != StarType.RadioPulsar 
 
 
-                if(_bool_Borg_can_build_station)  // "occupy" system for not falling into other hands - Borg can't colonize !
+            if (_bool_Borg_can_build_station)  // "occupy" system for not falling into other hands - Borg can't colonize !
             {
                 _fleet.Activity = UnitActivity.BuildStation;
                 //_fleet.Order = FleetOrders.BuildStationOrder;
@@ -2558,14 +2564,14 @@ namespace Supremacy.AI
 
                 if (!_allConstructFleetsHere.Any(_f => _f.Order.PercentComplete != null && _fleet.Order.PercentComplete > 0))
                 {
-                    
+
                     BuildStation(_fleet, _allConstructFleetsHere);
                     //_fleet.Activity = UnitActivity.Hold;
                     //_fleet.Route.Clear();
                 }
                 goto EndofConstructionShip;
-            
-        } // end of BORG
+
+            } // end of BORG
 
 
             if (_fleet.Owner.IsHuman)
@@ -2806,7 +2812,7 @@ namespace Supremacy.AI
                     //if (_fleet.Activity != UnitActivity.Hold
                     //&& _fleet.Activity != UnitActivity.BuildStation) // have a place to go and not already trying to move or build then go
                     //{
-                    //GetFleetOwner(_fleet);
+                    //GetFleetOwnerOutOfShips(_fleet);
 
                     // no more escorts !!
                     //if (!_fleet.Ships.Any(s => s.ShipType >= ShipType.FastAttack) && _civM.Assault_TargetCiv == null)
@@ -2881,7 +2887,7 @@ namespace Supremacy.AI
                 // if you were on hold helping build but now there is a station then look to move
                 if (_fleet.Activity == UnitActivity.Hold && _fleet.Sector.Station != null)
                 {
-                    //GetFleetOwner(_fleet);
+                    //GetFleetOwnerOutOfShips(_fleet);
                     _fleet.Owner = _civ;
                     //_fleet.Route.Clear();
                     _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _bestSectorForStation }));
@@ -3234,7 +3240,7 @@ namespace Supremacy.AI
 
             if (GetBestSystemTo_Colonize(_fleet, out StarSystem bestSystemToColonize) && bestSystemToColonize != null)
             {
-                //GetFleetOwner(_fleet);
+                //GetFleetOwnerOutOfShips(_fleet);
                 //_fleet.Owner = _civM;
 
                 // 2025-01-12: PathOptions.IgnoreDanger instead SafeTerritory
@@ -3397,7 +3403,7 @@ namespace Supremacy.AI
             _shipText = //"Step_3103:; "+ 
                 GameEngine.LocationString(ship.Location.ToString())
 
-                + " ; " + GameEngine.Do_x_Digit_String( 5, ship.ObjectID.ToString()) + " ; SHIP"
+                + " ; " + GameEngine.Do_x_Digit_String(5, ship.ObjectID.ToString()) + " ; SHIP"
 
                 + " ; " + ship.Design
                 + " ; " + ship.Name
@@ -3438,7 +3444,7 @@ namespace Supremacy.AI
             _fleetText = //"Step_3103:; "+ 
                 GameEngine.LocationString(fleet.Location.ToString())
 
-                + " ; " + GameEngine.Do_x_Digit_String( 5, fleet.ObjectID.ToString()) + " ;Fleet"
+                + " ; " + GameEngine.Do_x_Digit_String(5, fleet.ObjectID.ToString()) + " ;Fleet"
                 + " ; " + fleet.Ships[0].Design
                 + " ; " + fleet.Name
 
@@ -3497,7 +3503,7 @@ namespace Supremacy.AI
 
         public static void SystemAssault(Fleet fleet)
         {
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             if (fleet.Order != FleetOrders.AssaultSystemOrder)
             {
                 fleet.SetOrder(new AssaultSystemOrder());
@@ -3544,7 +3550,7 @@ namespace Supremacy.AI
         public static bool GetBestSystemTo_Colonize(Fleet fleet, out StarSystem result)
         {
 
-            //GetFleetOwner(_fleet);
+            //GetFleetOwnerOutOfShips(_fleet);
             if (fleet == null)
             {
                 Debugger.Break();
@@ -3705,7 +3711,7 @@ namespace Supremacy.AI
 
         public static bool SystemIsColonizeable(Fleet fleet)
         {
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             if (fleet == null)
             {
                 throw new ArgumentNullException(nameof(fleet));
@@ -3718,7 +3724,7 @@ namespace Supremacy.AI
                 .Where(o => o.IsColonizer || o.MultiFleetHasAColonizer).ToList();
 
 
-            //GetFleetOwner(_fleet);
+            //GetFleetOwnerOutOfShips(_fleet);
             //_text = "Check for SystemNotAlreadyTaken....";
             //if (_writeDirectly_Fleets) Console.WriteLine(_text);
 
@@ -3817,7 +3823,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static void GetFleetEscort(Fleet fleetToFollow, Sector finalSector)
         {
-            GetFleetOwner(fleetToFollow);
+            GetFleetOwnerOutOfShips(fleetToFollow);
             if (finalSector == null)
             {
                 return;
@@ -3873,7 +3879,7 @@ namespace Supremacy.AI
         private static void RemoveEscortShips(Fleet fleet, ShipType type)
         {
             //int shipCount = _fleet.Ships.Count();
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             //List<Ship> listOfShips = new List<Ship>();
             Fleet newFleet = new Fleet();
             //foreach (Ship _ship in _fleet.Ships)
@@ -3993,7 +3999,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestSectorTo_Explore(Fleet fleet, out Sector sector)
         {
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             if (fleet == null)
             {
                 throw new ArgumentNullException(nameof(fleet));
@@ -4021,7 +4027,7 @@ namespace Supremacy.AI
             CivilizationMapData mapData = civManager.MapData;
             List<StarSystem> starsToExplore = new List<StarSystem>();
             List<Sector> sectorsToExplore = new List<Sector>();
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
 
             if (fleet.Owner.IsHuman)
             {
@@ -4098,7 +4104,7 @@ namespace Supremacy.AI
         {
             //2025-01-04
 
-            //GetFleetOwner(_fleet);
+            //GetFleetOwnerOutOfShips(_fleet);
             //if (_fleet == null)
             //{
             //    throw new ArgumentNullException(nameof(_fleet));
@@ -4126,7 +4132,7 @@ namespace Supremacy.AI
             //CivilizationMapData mapData = _civM.MapData;
             //List<StarSystem> starsToExplore = new List<StarSystem>();
             //List<Sector> sectorsToExplore = new List<Sector>();
-            //GetFleetOwner(_fleet);
+            //GetFleetOwnerOutOfShips(_fleet);
             List<Sector> _availableSectors = new List<Sector>();
             List<Sector> _maybeSectors = new List<Sector>();
             string _newline = Environment.NewLine;
@@ -4150,7 +4156,7 @@ namespace Supremacy.AI
                 int _distance2 = MapLocation.GetDistance(_sec.Location, ourHomeSystem.Location);
                 _text = "Step_6923:; "
                      + "" + _fleets_Summary
-                     + " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
+                     + " >  DistfromHome > " + GameEngine.Do_x_Digit_String(2, _distance2.ToString())
                      + ", Value for Sector= " + GetValue_Sector(_sec.Location, ourHomeSystem.Owner, -1500)
                      + " for " + _sec.Location
                      + " " + _sec.Name
@@ -4225,8 +4231,8 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
             string _text = "";
             //GameLog.Client.AI.DebugFormat("GetValue_Station");
-            //GetFleetOwner(_fleet);
-            //GameLog.Client.AI.DebugFormat("GetFleetOwner");
+            //GetFleetOwnerOutOfShips(_fleet);
+            //GameLog.Client.AI.DebugFormat("GetFleetOwnerOutOfShips");
             if (_loc == null)
             {
                 return -9999;
@@ -4339,13 +4345,13 @@ namespace Supremacy.AI
         /// <param name="_sector"></param>
         /// <param name="_fleet"></param>
         /// <returns></returns>
-        public static int GetValue_Station(Sector _sector, Fleet _fleet, List<UniverseObject> universeObjects)
+        public static int GetValue_Station(Sector _sector, Fleet _fleet)//, List<Sector> universeObjects)
         {
             //GameLog.Client.AI.DebugFormat("GetValue_Station");
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
             string _newline = Environment.NewLine;
             string _text = "";
-            //GameLog.Client.AI.DebugFormat("GetFleetOwner");
+            //GameLog.Client.AI.DebugFormat("GetFleetOwnerOutOfShips");
             if (_sector == null)
             {
                 //GameLog.Client.AI.DebugFormat("null");
@@ -4369,8 +4375,8 @@ namespace Supremacy.AI
             //_text = "Searching for Crash: someObject";
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
-            IEnumerable<UniverseObject> someObject = universeObjects.Where(o => o.Sector == _sector);
-            if (someObject != null)
+            //IEnumerable<UniverseObject> someObject = universeObjects.Where(o => o.Sector == _sector);
+            //if (someObject != null)
             {
                 const int SystemSectorValue = 2500;
                 const int StrandedShipSectorValue = 50000;
@@ -4405,10 +4411,17 @@ namespace Supremacy.AI
                 {
                     int distance = MapLocation.GetDistance(_sector.Location, homeSector.Location);
 
+                    int xloc = GameContext.Current.Universe.Map.Width / 2;
+                    int yloc = GameContext.Current.Universe.Map.Height / 2;
+
+                    MapLocation _center = new MapLocation(xloc, yloc);
+                    int distance2 = MapLocation.GetDistance(_sector.Location, _center);
+
                     if (GameContext.Current.TurnNumber < 9)
                         distance = 5; // not to far at the beginning
 
                     value += DistanceFactor * distance;
+                    value += DistanceFactor * distance2;
                 }
                 catch
                 {
@@ -4449,7 +4462,7 @@ namespace Supremacy.AI
 
         public static void BuildStation(Fleet _fleet)
         {
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
             string _fleetText = "";
             string _text = "";
             //string _newline = Environment.NewLine;
@@ -4552,13 +4565,14 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestSectorFor_BuildStation(Fleet _fleet, List<Fleet> constructionFleets, out Sector _bestSector)
         {
+            _bestSector = null;
+
             if (_fleet == null || _fleet.ObjectID < 0)
             {
-                _bestSector = null;
+                //_bestSector = null;
                 return false;
             }
 
-            _bestSector = null;
             string _bestSectorName = "NO BEST SECTOR";
             string _newline = Environment.NewLine;
 
@@ -4567,12 +4581,9 @@ namespace Supremacy.AI
             if (_writeDirectly_Fleets) Console.WriteLine(_text);
             //GameLog.Client.AI.DebugFormat(_text);
 
-
-
             _fleet.GetCivM(_fleet, out CivilizationManager _civM);
 
-
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
 
             if (_fleet == null)
             {
@@ -4580,9 +4591,11 @@ namespace Supremacy.AI
                 //throw new ArgumentNullException(nameof(_fleet));
             }
 
+            _fleet.Activity = UnitActivity.NoActivity;
+
             if (_fleet.Ships.Count == 0)
             {
-                _bestSector = null;
+                //_bestSector = null;
                 return false;
             }
 
@@ -4798,26 +4811,34 @@ namespace Supremacy.AI
 
             MapLocation _center = new MapLocation(xloc, yloc);
 
+            List<Sector> _availableSectors = new List<Sector>{ homeSector };
+            List<Sector> _maybeSectors = new List<Sector>{ homeSector };
 
-            List<UniverseObject> objectsAroundHome = GameContext.Current.Universe.Objects
-                .Where(s => s.Location != null
-                && s.ObjectType != UniverseObjectType.Ship
-                && s.ObjectType != UniverseObjectType.Fleet
-                //&& s.ObjectType != UniverseObjectType.StarSystem.bla
-                && s.Sector.Station == null
-                && s.Sector.Owner == null
-                && GetDistanceTo(_center, s.Location) < xloc - 3 // but if there is a system + BORG don't colonize... > ToDo 2025-03-16
-                )  // do not build at the edge of the map
-                   //&& GetDistanceTo(_center, s.Location) < lengthThirdMap)
-                .ToList();
 
-            List<Sector> _availableSectors = new List<Sector>();
-            List<Sector> _maybeSectors = new List<Sector>();
+            //List<UniverseObject> objectsAroundHome = GameContext.Current.Universe.Objects
+            //    .Where(s => s.Location != null
+            //    && s.ObjectType != UniverseObjectType.Ship
+            //    && s.ObjectType != UniverseObjectType.Fleet
+            //    //&& s.ObjectType != UniverseObjectType.StarSystem.bla
+            //    && s.Sector.Station == null
+            //    && s.Sector.Owner == null
+            //    && GetDistanceTo(_center, s.Location) < xloc - 3 // but if there is a system + BORG don't colonize... > ToDo 2025-03-16
+            //    )  // do not build at the edge of the map
+            //       //&& GetDistanceTo(_center, s.Location) < lengthThirdMap)
+            //    .ToList();
 
-            int _distance = 4;
+
+
+            int _distance = 5;
 
         _SearchAvailableSectorsOnceAgain:
-            _availableSectors = MapHelper.GetSectorsWithinRadius(_fleet.Sector, _distance).ToList();
+
+            //int _sectorOwnerID = 999;
+            //if (_se)
+
+            _availableSectors = MapHelper.GetSectorsWithinRadius(_fleet.Sector, _distance)
+                //.Where(s => s.Owner.CivID != _fleet.OwnerID)
+                .ToList();
 
             //List<UniverseObject> _allCivFleets = GameContext.Current.Universe.Objects
             //    .Where(o => o.ObjectType == UniverseObjectType.Ship
@@ -4833,76 +4854,86 @@ namespace Supremacy.AI
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
             if (_fleet.Owner.IsHuman)
             {
-                //Debugger.Break();
+                Debugger.Break();
             }
 
             string _availableSectorsText = "";
 
-            foreach (var _sector in _availableSectors)
+            if (_availableSectors != null)
             {
-                int _distance2 = MapLocation.GetDistance(_sector.Location, homeSector.Location);
 
-                if (_distance2 != _distance - 1)  // not all sectors > too much > only the far away
+
+                foreach (var _sector in _availableSectors)
                 {
-                    continue;
-                }
+                    int _distance2 = MapLocation.GetDistance(_sector.Location, homeSector.Location);
 
-                _text = "Step_6913:; "
-                     + "" + _fleets_Summary
-                     + " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
-                     + ", Value for Station= " + GetValue_Station(_sector, _fleet, objectsAroundHome)
-                     + " for " + _sector.Location
-                     + " " + _sector.Name
-                    ;
-
-                //if (_write) 
-                //Console.WriteLine(_text);
-                _availableSectorsText += _text;
-                //_fleet_Text += _newline + _text;
-
-                if (_sector.System != null)
-                {
-                    if (_sector.System.StarType == StarType.BlackHole
-                        || _sector.System.StarType == StarType.NeutronStar
-                        || _sector.System.StarType == StarType.XRayPulsar
-                        || _sector.System.StarType == StarType.RadioPulsar
-                        || _sector.System.StarType == StarType.Quasar
-
-                        )
-                        _text += "";
-
-
-                }
-                else
-                {
-                    if (_fleet.Owner.IsHuman)
+                    if (_distance2 != _distance - 0)  // not all sectors > too much > only the far away
                     {
-                        //Debugger.Break();
+                        continue;
                     }
 
-                    if (GetDistanceTo(_center, _sector.Location) > xloc - 2 || GetDistanceTo(_center, _sector.Location) > yloc - 2) // do not build at the edge of the map
+                    _text = "Step_6913:; "
+                         + "" + _fleets_Summary
+                         + " >  DistfromHome > " + GameEngine.Do_x_Digit_String(2, _distance2.ToString())
+                         + ", Value for Station= " + GetValue_Station(_sector, _fleet)//, objectsAroundHome)
+                         + " for " + _sector.Location
+                         + " " + _sector.Name
+                        ;
+
+                    //if (_write) 
+                    //Console.WriteLine(_text);
+                    _availableSectorsText += _newline + _text;
+                    //_fleet_Text += _newline + _text;
+
+                    if (_sector.System != null)
                     {
-                        // only add if BORG (they don't colonize but need to occupy sectors with planets
-                        if (_fleet.Owner.Key == "BORG" && !_sector.IsOwned && _sector.Station == null)
+                        if (_sector.System.StarType == StarType.BlackHole
+                            || _sector.System.StarType == StarType.NeutronStar
+                            || _sector.System.StarType == StarType.XRayPulsar
+                            || _sector.System.StarType == StarType.RadioPulsar
+                            || _sector.System.StarType == StarType.Quasar
+
+                            )
+                            _text += "";
+
+
+                    }
+                    else
+                    {
+                        if (_fleet.Owner.IsHuman)
+                        {
+                            //Debugger.Break();
+                        }
+
+                        if (_fleet.Owner.Key == "BORG" /*&& !_sector.IsOwned*/ && _sector.Station == null)
                         {
                             _maybeSectors.Add(_sector);
                         }
-                        else
+                        else if (!_sector.IsOwned && _sector.Station == null) // owned _location = no build _order
+                            
                         {
-                            if (!_sector.IsOwned && _sector.Station == null) // owned _location = no build _order
+                            // only add if BORG (they don't colonize but need to occupy sectors with planets
+                            //if (_fleet.Owner.Key == "BORG" && !_sector.IsOwned && _sector.Station == null)
+                            //{
+                            //    _maybeSectors.Add(_sector);
+                            //}
+                            //else
+                            //{
+                            if (GetDistanceTo(_center, _sector.Location) > xloc - 2 || GetDistanceTo(_center, _sector.Location) > yloc - 2) // do not build at the edge of the map
                             {
-                                if (FleetHelper.IsSectorWithinFuelRange(_sector, _fleet))
-                                {
-                                    _maybeSectors.Add(_sector);
+                                    if (FleetHelper.IsSectorWithinFuelRange(_sector, _fleet))
+                                    {
+                                        _maybeSectors.Add(_sector);
+                                    }
+
                                 }
 
-                            }
-
+                            //}
                         }
+
                     }
 
                 }
-
             }
 
             if (_fleet.Owner.IsHuman)
@@ -4920,11 +4951,34 @@ namespace Supremacy.AI
 
             //_fleet.GetCivM(_fleet, out CivilizationManager _civM);
 
+
+            Console.WriteLine(_availableSectorsText + " from Step_5553");
+
+            Dictionary<MapLocation, int> _sectorValues = new Dictionary<MapLocation, int>();
+            string _text_sectorValues = "";
+
+            foreach (var _sect in _maybeSectors)
+            {
+                int _val = GetValue_Station(_sect, _fleet);
+
+                _sectorValues.Add(_sect.Location, GetValue_Station(_sect, _fleet));
+                _text_sectorValues += _newline + "Step_3321:; " + _fleet.Owner + ": "+ _sect.Location + ", val= " + _val
+
+                    ;
+            }
+
+            Console.WriteLine(_text_sectorValues);
+
+            if (_fleet.Owner.IsHuman)
+            {
+                Debugger.Break();
+            }
+
             try
             {
                 _maybeSectors.Sort((a, b) =>
-                              GetValue_Station(a, _fleet, objectsAroundHome)
-                              .CompareTo(GetValue_Station(b, _fleet, objectsAroundHome)));
+                              GetValue_Station(a, _fleet)//, _maybeSectors)
+                              .CompareTo(GetValue_Station(b, _fleet)));//, _maybeSectors)));
 
                 _bestSector = _maybeSectors.Last();
                 _bestSectorName = _bestSector.Name;
@@ -4936,7 +4990,7 @@ namespace Supremacy.AI
                              //+ " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
                              //+ ", Value for Station= " + GetValue_Station(_sector, _fleet, objectsAroundHome)
                              + " > _bestSector= " + _bestSector.Location
-                             //+ " " + _sector.Name
+                            //+ " " + _sector.Name
                             ;
 
                     //if (_write) 
@@ -5118,7 +5172,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestColonyFor_Medical(Fleet fleet, out Colony result)
         {
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             if (fleet == null)
             {
                 throw new ArgumentNullException(nameof(fleet));
@@ -5134,7 +5188,7 @@ namespace Supremacy.AI
             IEnumerable<Fleet> medicalShips = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(s => s.IsMedical);
             List<Colony> possibleColonies = new List<Colony>();
             List<Colony> _col_available = new List<Colony>();
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             if (fleet.Owner != null)
             {
                 _col_available = GameContext.Current.Universe.Find<Colony>()
@@ -5358,7 +5412,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestColonyFor_Diplomacy(Fleet _fleet, out Colony result)
         {
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
             if (_fleet == null)
             {
                 throw new ArgumentNullException(nameof(_fleet));
@@ -5373,7 +5427,7 @@ namespace Supremacy.AI
             CivilizationMapData mapData = civManager.MapData;
             IEnumerable<Fleet> diplomaticShips = GameContext.Current.Universe.FindOwned<Fleet>(_fleet.Owner).Where(s => s.IsDiplomatic);
             List<Colony> possibleColonies = new List<Colony>();
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
             if (_fleet.Owner != null)
             {
                 possibleColonies = GameContext.Current.Universe.Find<Colony>()
@@ -5562,7 +5616,7 @@ namespace Supremacy.AI
         /// 
         public static bool GetBestColonyFor_Spying(Fleet fleet, out Colony result)
         {
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             if (fleet == null)
             {
                 throw new ArgumentNullException(nameof(fleet));
@@ -5578,7 +5632,7 @@ namespace Supremacy.AI
             CivilizationMapData mapData = civManager.MapData;
             IEnumerable<Fleet> spyShips = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(s => s.IsSpy);
             List<Colony> possibleColonies = new List<Colony>();
-            GetFleetOwner(fleet);
+            GetFleetOwnerOutOfShips(fleet);
             if (fleet.Owner != null)
             {
                 possibleColonies = GameContext.Current.Universe.Find<Colony>()
@@ -5628,7 +5682,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static bool GetBestSystemFor_Science(Fleet _fleet, out StarSystem result)
         {
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
             if (_fleet == null)
             {
                 throw new ArgumentNullException(nameof(_fleet));
@@ -5642,7 +5696,7 @@ namespace Supremacy.AI
             CivilizationMapData mapData = civManager.MapData;
             IEnumerable<Fleet> scienceShips = GameContext.Current.Universe.FindOwned<Fleet>(_fleet.Owner).Where(s => s.IsScience);
             List<StarSystem> possibleSystems = new List<StarSystem>();
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
             if (_fleet.Owner != null)
             {
                 possibleSystems = GameContext.Current.Universe.Find<StarSystem>()
@@ -5695,7 +5749,7 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static float HomeSystemDistanceModifier(Fleet _fleet, Sector _targetSector)
         {
-            GetFleetOwner(_fleet);
+            GetFleetOwnerOutOfShips(_fleet);
             if (_fleet == null)
             {
                 throw new ArgumentNullException(nameof(_fleet));
@@ -5770,7 +5824,7 @@ namespace Supremacy.AI
             int distance = (int)Math.Sqrt((int)Math.Pow(startLocation.X - endLocation.X, 2) + (int)Math.Pow(startLocation.Y - endLocation.Y, 2));
             return distance;
         }
-        private static void GetFleetOwner(Fleet _fleet)
+        private static void GetFleetOwnerOutOfShips(Fleet _fleet)
         {
             foreach (Ship _ship in _fleet.Ships)
             {

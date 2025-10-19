@@ -101,7 +101,8 @@ namespace Supremacy.AI
                 }
 
                 //if (_civM.Assault_TargetCiv != null && GameContext.Current.Civilizations[_civM.Assault_TargetCiv.CivID] != null)
-                if (_civM.Assault_Location != null && _civM.Assault_Location.ToString() != "(0, 0)")
+                if (_civM.Assault_Location != null && _civM.Assault_Accumulate_Location_1 != null 
+                    && _civM.Assault_Location.ToString() != "(0, 0)" && _civM.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
                 {
                     //TargetCiv_CheckFirePower(_civM);  // check every turn for a better target
                     int civ_fire_Power_Accumulate_Location = Calculate_fire_power_ships_and_station(_civM.Assault_Accumulate_Location_1); // better: Colony.DefenseValue + Ships + Stations

@@ -121,7 +121,7 @@ namespace Supremacy.Combat
         {
             get
             {
-                //string _text;
+                string _text;
                 string _sectorString = "";
                 int _friendlyEmpireStrength = 0;
 
@@ -166,15 +166,23 @@ namespace Supremacy.Combat
                                 Convert.ToDouble(_friendlyEmpireStrength + fa.Station.Firepower)
                                 + Convert.ToDouble(fa.Station.ShieldStrength + fa.Station.HullStrength)
                                 );
-
-                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
-                            fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
+                        _text = "Step_5566:; "
+                            + "adding _friendlyEmpireStrength for" + fa.Station.Name
+                            + " - in total now= " + _friendlyEmpireStrength
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Core.CombatDetails.DebugFormat(_text); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
                     }
                     //Civilization pair = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
                     //_text = _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength;
 
                     int _hostStrength = AllHostileEmpireStrength;
 
+                    //_text = "Step_5567:; "
+                    //        + "adding _friendlyEmpireStrength for" + fa.Station.Name
+                    //        + " - in total now= " + _friendlyEmpireStrength
+                    //        ;
+                    //Console.WriteLine(_text);
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
                         new ReportEntry_CoS(civ, FriendlyAssets.First().Location
                         , _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength 

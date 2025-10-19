@@ -1849,6 +1849,11 @@ namespace Supremacy.Game
                 int _next_target_fire_power = 999991;
                 //int _targetDistance = 99;
 
+                if (_civ1.IsHuman)
+                {
+                    //Debugger.Break();
+                }
+
                 if (_civM_1.TargetCivList != null && _civM_1.TargetCivList.Count > 0)
                 {
                     foreach (var _item in _civM_1.TargetCivList)
@@ -1883,6 +1888,7 @@ namespace Supremacy.Game
                         }
                         //if (_civ1.IsHuman && _foreignPowerStatus != ForeignPowerStatus.NoContact) { Debugger.Break(); }
                     }
+
                     if (_civ1.IsHuman)
                     {
                         //Debugger.Break();
@@ -1970,7 +1976,7 @@ namespace Supremacy.Game
                                 _text = "Step_7726:; Do_13_Diplomacy > "
                                         + "_civM_1.Assault_Location"
 
-                                        + " for "
+                                        + " for >>> "
                                         + _civ1 + " at " + GameEngine.LocationString(_civM_1.HomeSystem.Location.ToString())
 
                                         + " possible  > "
@@ -2099,7 +2105,7 @@ namespace Supremacy.Game
                 }
 
 
-                Console.WriteLine(_all_attack_location_text + "        > from Step_7724");
+                //Console.WriteLine(_all_attack_location_text + "        > from Step_7724");
 
 
                 if (_writeDirectly)
@@ -2109,7 +2115,7 @@ namespace Supremacy.Game
 
                 if (_civ1.IsHuman)
                 {
-                    Debugger.Break();
+                    //Debugger.Break();
                 }
 
                 //if (_writeDirectly) Console.WriteLine("Step_7727:; _diplomacyBasicsSummary_Text="
@@ -2236,6 +2242,11 @@ namespace Supremacy.Game
                         //Debugger.Break();
                     }
                 }
+
+
+                Console.WriteLine(_all_attack_location_text + "        > from Step_7724");
+
+
 
                 _text = "Step_7718:; Do_13_Diplomacy > "
                             + "_civM_1.Assault_Location"
@@ -4558,6 +4569,13 @@ namespace Supremacy.Game
                     int _newDilithium = _colonies.Sum(c => c.Dilithium_Net);
                     int _newDuranium = _colonies.Sum(c => c.Duranium_Net);
 
+                    _text = "Yields Empire: Duranium=" + _newDuranium
+                        + ", Deuterium= " + _newDeuterium
+                        + ", Dilithium= " + _newDilithium
+
+                        ;
+                    _civM.SitRepEntries.Add(new ReportEntry_NoAction(_civ, _text, _text, "", SitRepPriority.Gray));
+
                     // AI gets an advantage
                     if (!_civ.IsHuman)
                         _newCredits *= 2;
@@ -5237,17 +5255,22 @@ namespace Supremacy.Game
                                 _ = _civM.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
                                 _ = _civM.Resources.Duranium.AdjustCurrent(-1 * duraniumUsed);
 
+                                //_text = 
+                                //if (_writeDirectly) Console.WriteLine(_text);
 
-                                GameLog.Core.ShipProductionDetails.DebugFormat(/*_newline + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ _newline*/,
-                                    deuteriumUsed, dilithiumUsed, duraniumUsed, _slot.Project, _colony, GameContext.Current.TurnNumber, _colony.Owner);
+                                //GameLog.Core.ShipProductionDetails.DebugFormat(/*_newline + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ _newline*/,
+                                //    deuteriumUsed, dilithiumUsed, duraniumUsed, _slot.Project, _colony, GameContext.Current.TurnNumber, _colony.Owner);
 
                                 string _text2 = GameEngine.LocationString(_colony.Location.ToString())  // needs a new _text here !!!!
                                 + " " + _colony.Name
                                 + " > Shipyard-Slot " + _slot.SlotID
                                 + " > has " + _slot.Project.ProductionCenter.GetBuildOutput(_slot.SlotID)
-                                + " industry _output:  " + _slot.Project.BuildDesign
+                                + " industry output:  " + _slot.Project.BuildDesign
                                 + "  is " + _slot.Project.PercentComplete
-                                + " complete "
+                                + " complete - "
+                                + " used: Dur=" + duraniumUsed
+                                + ", Dil=" + dilithiumUsed
+                                + ", Deu=" + deuteriumUsed
                                 ;
 
                                 _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text2, _text2, "", SitRepPriority.Gray));

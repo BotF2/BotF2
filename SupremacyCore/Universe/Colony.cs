@@ -122,6 +122,7 @@ namespace Supremacy.Universe
         private Meter _foodReserves;
         private Meter _health;
         private string _inhabitantId;
+        private string _locationColonyString;
         private bool _isProductionAutomated;
         private Meter _morale;
         private short _originalOwnerId;
@@ -431,6 +432,23 @@ namespace Supremacy.Universe
         /// <value>The name.</value>
         public override string Name => base.Name ?? (System?.Name);
 
+        public string LocationStringColony
+        {
+            get
+            {
+                if (_locationColonyString == null)
+                {
+                    _locationColonyString = GameEngine.LocationString(Location.ToString());
+                    return _locationColonyString;
+
+                }
+                else
+                {
+                    return _locationColonyString;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Gets or sets the name of this <see cref="Colony"/>.
@@ -656,13 +674,13 @@ namespace Supremacy.Universe
             {
                 _shields_max = value;
             }
-        }                    
+        }
 
         #region Properties for System Panel Data Binding
-            /// <summary>
-            /// Gets the credits produced at this <see cref="Colony"/>.
-            /// </summary>
-            /// <value>The credits.</value>
+        /// <summary>
+        /// Gets the credits produced at this <see cref="Colony"/>.
+        /// </summary>
+        /// <value>The credits.</value>
         public int TaxCredits
         {
             get
@@ -850,7 +868,7 @@ namespace Supremacy.Universe
         /// </summary>
         /// <value>The net intelligence production.</value>
         public int Intelligence_Net => GetProductionOutput(ProductionCategory.Intelligence);
-                
+
 
         /// <summary>
         /// Gets the net dilithium production at this <see cref="Colony"/>.
@@ -2163,16 +2181,16 @@ namespace Supremacy.Universe
             _text += colony.Name + " ( " + colony.Population.CurrentValue + " / max " + colony.Population_Max + " ): AvailableLabor: " + AvailableLabor.ToString();
             //int _foodPF_unused = Facilities_Total1_Food - GetActiveFacilities(ProductionCategory.Food);
             _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + Facilities_Total1_Food + " (" + colony.FoodReserves + ")"; // _foodPF_unused;
-            //int _industryPF_unused = Facilities_Total2_Industry - GetActiveFacilities(ProductionCategory.Industry);
+                                                                                                                                                  //int _industryPF_unused = Facilities_Total2_Industry - GetActiveFacilities(ProductionCategory.Industry);
             _text += ", Prod: " + GetActiveFacilities(ProductionCategory.Industry) + "/" + Facilities_Total2_Industry; // _industryPF_unused;
-            // already comes in ... 
-            //int _energyPF_unused = Facilities_Total3_Energy - GetActiveFacilities(ProductionCategory.Energy);
+                                                                                                                       // already comes in ... 
+                                                                                                                       //int _energyPF_unused = Facilities_Total3_Energy - GetActiveFacilities(ProductionCategory.Energy);
             _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + Facilities_Total3_Energy + " (" + colony.Energy_Net + ")"; // _energyPF_unused;
-            //int _researchPF_unused = Facilities_Total4_Research - GetActiveFacilities(ProductionCategory.Research);
+                                                                                                                                                      //int _researchPF_unused = Facilities_Total4_Research - GetActiveFacilities(ProductionCategory.Research);
             _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + Facilities_Total4_Research; // _researchPF_unused;
-            //int _intelPF_unused = Facilities_Total5_Intelligence - GetActiveFacilities(ProductionCategory.Intelligence);
+                                                                                                                      //int _intelPF_unused = Facilities_Total5_Intelligence - GetActiveFacilities(ProductionCategory.Intelligence);
             _text += ", Int: " + GetActiveFacilities(ProductionCategory.Intelligence) + "/" + Facilities_Total5_Intelligence; // _intelPF_unused;
-            //int _orbBatused = colony.OrbitalBatteries_Active;
+                                                                                                                              //int _orbBatused = colony.OrbitalBatteries_Active;
             _text += ", Slots: " + _shipyardSlots;
             //int _orbBatused = colony.OrbitalBatteries_Active;
             _text += ", OrbB: " + colony.OrbitalBatteries_Active.ToString();
