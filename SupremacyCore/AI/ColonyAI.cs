@@ -1056,15 +1056,28 @@ namespace Supremacy.AI
                 //Debugger.Break();  // checkforfood_removing a facility
             }
 
+            //bool _build_for_food = true;
+
+            //if (_colony.FoodReserves.CurrentValue > 500)
+            //{
+            //    _build_for_food = false;
+            //}
+
             // if food is minus and all are active
-            if (_colony.Food_Net < 0 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food)
+            if (_colony.FoodReserves.CurrentValue < 500 && _colony.Food_Net < 0 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food)
             {
+                //_build_for_food = true;
                 _itemToBuild_Facility = _available_item;
             }
 
+            //if (_build_for_food == true)
+            //{
+            //    _itemToBuild_Facility = _available_item;
+            //}
+
 
             // if food is plus and active 3 and total 6 
-            if (_colony.Food_Net > 10 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food + 2 )
+            if (_colony.Food_Net > 10 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food + 2)
             {
                 _colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
                 _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
@@ -1899,8 +1912,11 @@ namespace Supremacy.AI
                     int flexLabors = _colony.GetAvailableLabor() - 30; // flexProduction.Sum(c => _colony.GetFacilityType(c).LaborCost * _colony.GetActiveFacilities(c));
                     if (flexLabors > -21)  // 2 more facilites as available labors
                     {
-                        _text = "Step_1204:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony_Step_65_Handle_Buildings on INDUSTRY at "
-                            + _name_col + " " + _owner_col
+                        _text = "Step_1205:; " + GameEngine.LocationString(_colony.Location.ToString())
+                            + " > " + _name_col
+                            + " ; " + _owner_col
+                            + " > Colony_Step_65_Handle_Buildings on INDUSTRY at "
+
                             + " > " + _colony.GetAvailableLabor() + " labors available"
                             ;
                         if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -1922,8 +1938,10 @@ namespace Supremacy.AI
                         {
                             //than Research
                             _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, _colony.GetFacilityType(ProductionCategory.Industry))));
-                            _text = "Step_1246:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony_Step_65_Handle_Buildings on "
-                                + _name_col + " " + _owner_col
+                            _text = "Step_1246:; " + GameEngine.LocationString(_colony.Location.ToString())
+                                + " > " + _name_col
+                                + " ; " + _owner_col
+                                + " Colony_Step_65_Handle_Buildings on "
                                 + " > added 1 Industry Facility Build Order"
                                 ;
                             if (_writeDirectly_Colony) Console.WriteLine(_text);

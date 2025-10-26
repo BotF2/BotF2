@@ -2070,6 +2070,7 @@
         Value="{x:Null}" />
   </Style>
 
+    <!--Style > CheckBox-->
   <Style TargetType="{x:Type CheckBox}"
        BasedOn="{StaticResource BaseStyle}">
     <Setter Property="FontFamily"

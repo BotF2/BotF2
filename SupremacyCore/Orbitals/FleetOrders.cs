@@ -2874,7 +2874,7 @@ namespace Supremacy.Orbitals
 
                 ;
 
-            _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, project.Location, _text, _text, "", SitRepPriority.Gray));
+            _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, project.Location, _text, _text, "", SitRepPriority.GreenDark2));
         }
 
         protected internal override void OnOrderCompleted()

@@ -184,6 +184,16 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Green);
             }
 
+            if (GreenDarkCheck.IsChecked.HasValue && GreenDarkCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.GreenDark);
+            }
+
+            if (GreenDark2Check.IsChecked.HasValue && GreenDark2Check.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.GreenDark2);
+            }
+
             if (OrangeCheck.IsChecked.HasValue && OrangeCheck.IsChecked.Value)
             {
                 visiblePriorities.Add(SitRepPriority.Orange);
@@ -199,9 +209,24 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Blue);
             }
 
+            if (Blue2Check.IsChecked.HasValue && Blue2Check.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Blue2);
+            }
+
+            if (BlueDarkCheck.IsChecked.HasValue && BlueDarkCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.BlueDark);
+            }
+
             if (GrayCheck.IsChecked.HasValue && GrayCheck.IsChecked.Value)
             {
                 visiblePriorities.Add(SitRepPriority.Gray);
+            }
+
+            if (GrayDarkCheck.IsChecked.HasValue && GrayDarkCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.GrayDark);
             }
 
             if (PurpleCheck.IsChecked.HasValue && PurpleCheck.IsChecked.Value)
@@ -234,9 +259,24 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Yellow);
             }
 
-            if (BlueDarkCheck.IsChecked.HasValue && BlueDarkCheck.IsChecked.Value)
+            if (DilithiumCheck.IsChecked.HasValue && DilithiumCheck.IsChecked.Value)
             {
-                visiblePriorities.Add(SitRepPriority.BlueDark);
+                visiblePriorities.Add(SitRepPriority.Dilithium);
+            }
+
+            if (DeuteriumCheck.IsChecked.HasValue && DeuteriumCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Deuterium);
+            }
+
+            if (DuraniumCheck.IsChecked.HasValue && DuraniumCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Duranium);
+            }
+
+            if (CreditsCheck.IsChecked.HasValue && CreditsCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Credits);
             }
 
             if (RedYellowCheck.IsChecked.HasValue && RedYellowCheck.IsChecked.Value)

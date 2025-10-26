@@ -33,11 +33,23 @@ namespace Supremacy.Game
         /// </summary>
         Blue,
         /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        Blue2,
+        /// <summary>
         /// A green situation report entry reflects a normal or informal status message.
         /// </summary>
         Green,
         /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        GreenDark,
+        /// <summary>
         /// A yellow situation report entry reflects a status message, where the player should consider to react.
+        /// </summary>
+        GreenDark2,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
         /// </summary>
         Orange,
         /// <summary>
@@ -48,6 +60,10 @@ namespace Supremacy.Game
         /// A special event, like a battle, or an event.
         /// </summary>
         Gray,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        GrayDark,
         /// <summary>
         /// A special event, like a battle, or an event.
         /// </summary>
@@ -79,6 +95,20 @@ namespace Supremacy.Game
         /// <summary>
         /// Shutdowns due to Energy or something else
         /// </summary>
+        Dilithium,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>        /// </summary>
+        Deuterium,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>        /// </summary>
+        Duranium,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        /// 
+        Credits,
         BlueDark
     }
 

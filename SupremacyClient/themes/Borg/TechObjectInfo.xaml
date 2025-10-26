@@ -32,6 +32,15 @@
                    Text="{Binding Path=Name}" />
       </DataTemplate>
 
+      <!--<DataTemplate x:Key="BuildQueueItemTemplate" DataType="{x:Type scc:TechObjectDesignViewModel}">
+        <Grid x:Name="Root">
+          --><!-- render a UI control (must be a FrameworkElement) that exposes a DependencyProperty 'Design' --><!--
+                            <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
+                                                 Location="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Location)}"
+                                                 Civilization="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Builder)}" />
+        </Grid>
+      </DataTemplate>-->
+
 
       <DataTemplate x:Key="BuildingTemplate"
                     DataType="{x:Type scc:TechObjectDesignViewModel}">
@@ -1126,6 +1135,7 @@
           </DataTrigger>
         </DataTemplate.Triggers>
       </DataTemplate>
+
 
       <DataTemplate x:Key="StationTemplate"
                     DataType="{x:Type scc:TechObjectDesignViewModel}">

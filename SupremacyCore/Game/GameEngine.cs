@@ -1678,7 +1678,7 @@ namespace Supremacy.Game
 
                 //if (_foreignPowerStatus != ForeignPowerStatus.NoContact)
                 //{
-                _text = "Step_7731:; Do_13_Diplomacy >>>>>>>>>>>>>>>>>>>>>>>>>> " + _civ1
+                _text = _newline + _newline + "Step_7731:; Do_13_Diplomacy >>>>>>>>>>>>>>>>>>>>>>>>>> " + _civ1
                     + " ; Status > " + _foreignPowerStatus
                     + " ; to ; " + _civ2
 
@@ -1847,6 +1847,7 @@ namespace Supremacy.Game
                 int _new_target_fire_power = 999994;
                 string _all_attack_location_text = "";
                 int _next_target_fire_power = 999991;
+                int _lowest_defense_value = 999991;
                 //int _targetDistance = 99;
 
                 if (_civ1.IsHuman)
@@ -1891,7 +1892,7 @@ namespace Supremacy.Game
 
                     if (_civ1.IsHuman)
                     {
-                        //Debugger.Break();
+                        Debugger.Break();
                     }
 
                     //int _minValue = 98;
@@ -1920,18 +1921,18 @@ namespace Supremacy.Game
 
                             if (_targetDistance > 0 && _targetDistance < _lowest_targetDistance)
                             {
-                            _text = "Step_7720:; Do_13_Diplomacy > "
-                                    /*+ "_targetDistance= "*/ + _civM_1.Civilization.Key
-                                    + " > _targetDistance= " + _targetDistance
-                                    + ", _lowest_targetDistance= " + _lowest_targetDistance
-                                        ;
-                            //if (_writeDirectly)
-                            //Console.WriteLine(_text);
-                            //_all_attack_location_text += _newline + _text;
+                                _text = "Step_7720:; Do_13_Diplomacy > "
+                                        /*+ "_targetDistance= "*/ + _civM_1.Civilization.Key
+                                        + " > _targetDistance= " + _targetDistance
+                                        + ", _lowest_targetDistance= " + _lowest_targetDistance
+                                            ;
+                                //if (_writeDirectly)
+                                //Console.WriteLine(_text);
+                                //_all_attack_location_text += _newline + _text;
 
                                 if (_civM_1.Civilization.IsHuman)
                                 {
-                                //Debugger.Break();
+                                    //Debugger.Break();
                                 }
 
                             }
@@ -2005,7 +2006,7 @@ namespace Supremacy.Game
 
                                             ;
                                 //if (_writeDirectly)
-                                Console.WriteLine(_text);
+                                //Console.WriteLine(_text);
                                 _all_attack_location_text += _newline + _text;
                                 //_distance_text += /*_newline +*/ _text;
 
@@ -2021,7 +2022,7 @@ namespace Supremacy.Game
                             //    Debugger.Break();
                             //}
                             ////}
-                        }
+                        
 
                         //Console.WriteLine(_all_attack_location_text + " > from Step_7723");
 
@@ -2031,13 +2032,16 @@ namespace Supremacy.Game
                         //}
 
 
-                        _next_target_fire_power = _target_fire_power + ((_targetDistance + 1) * 100);
+                        _next_target_fire_power = _target_fire_power + ((_targetDistance + 1) * 100); // gives a 100 basic value
 
                         if (_next_target_fire_power < _last_target_fire_power)
                         {
                             _new_assault_location = item.Key;
-                            _lowest_targetDistance = _next_target_fire_power;
+                            _lowest_defense_value = _next_target_fire_power;
+
+                                _last_target_fire_power = _lowest_defense_value;
                         }
+                    }
 
 
                     }
@@ -2059,7 +2063,7 @@ namespace Supremacy.Game
                     _text = "Step_7717:; Do_13_Diplomacy > "
                             + "_civM_1.Assault_Location"
 
-                            + " for "
+                            + " for >>> "
                             + _civ1 + " at " + LocationString(_civM_1.HomeSystem.Location.ToString())
 
                             + " possible  > "
@@ -2089,7 +2093,7 @@ namespace Supremacy.Game
                                 ;
                     //if (_writeDirectly) 
                     //Console.WriteLine(_text);
-                    _all_attack_location_text += _newline + _text;
+                    //_all_attack_location_text += _newline + _text;
 
 
                     _civM_1.Assault_Location = _new_assault_location;
@@ -2108,10 +2112,10 @@ namespace Supremacy.Game
                 //Console.WriteLine(_all_attack_location_text + "        > from Step_7724");
 
 
-                if (_writeDirectly)
-                {
-                    Console.WriteLine(_text + "            > from Step_7727");
-                }
+                //if (_writeDirectly)
+                //{
+                //    Console.WriteLine(_text + "            > from Step_7727");
+                //}
 
                 if (_civ1.IsHuman)
                 {
@@ -2244,14 +2248,14 @@ namespace Supremacy.Game
                 }
 
 
-                Console.WriteLine(_all_attack_location_text + "        > from Step_7724");
+                Console.WriteLine(_all_attack_location_text + "        > from Step_7724 = _all_attack_location_text");
 
 
 
                 _text = "Step_7718:; Do_13_Diplomacy > "
                             + "_civM_1.Assault_Location"
                             //+ " Distance= " + GameEngine.Do_x_Digit_String(_targetDistance.ToString())
-                            + " for "
+                            + " for >>> "
                             + _civ1 + " at " + GameEngine.LocationString(_civM_1.HomeSystem.Location.ToString())
 
                             + " possible  > "
@@ -2272,7 +2276,7 @@ namespace Supremacy.Game
 
                             ;
                 //if (_writeDirectly) 
-                Console.WriteLine(_text);
+                //Console.WriteLine(_text);
 
 
                 if (_civ1.IsHuman)
@@ -2425,7 +2429,7 @@ namespace Supremacy.Game
                     //Debugger.Break();
                 }
 
-                Console.WriteLine(_all_attack_location_text + " > from _all_attack_location_text");
+                Console.WriteLine(_all_attack_location_text + " > from Step_7703 = _all_attack_location_text");
 
                 //Debugger.Break();
             }
@@ -4569,7 +4573,7 @@ namespace Supremacy.Game
                     int _newDilithium = _colonies.Sum(c => c.Dilithium_Net);
                     int _newDuranium = _colonies.Sum(c => c.Duranium_Net);
 
-                    _text = "Yields Empire: Duranium=" + _newDuranium
+                    _text = "Yields Empire: Duranium= " + _newDuranium
                         + ", Deuterium= " + _newDeuterium
                         + ", Dilithium= " + _newDilithium
 
@@ -5273,7 +5277,7 @@ namespace Supremacy.Game
                                 + ", Deu=" + deuteriumUsed
                                 ;
 
-                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text2, _text2, "", SitRepPriority.Gray));
+                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text2, _text2, "", SitRepPriority.Blue2));
 
                                 Console.WriteLine("Step_4736:; " + _text2 + " (SR)");
 
