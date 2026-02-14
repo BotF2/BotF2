@@ -34,9 +34,8 @@ namespace Supremacy.Orbitals
         private bool _isEscort;
         private Meter _fuelReserve;
         private ShipType _shipType;
-//#pragma warning disable IDE0052 // Remove unread private members
         private byte _scanStrength;
-//#pragma warning restore IDE0052 // Remove unread private members
+        //private int _fire_power;
 
         #endregion
 
@@ -111,6 +110,19 @@ namespace Supremacy.Orbitals
                 OnPropertyChanged("Speed");
             }
         }
+
+        //public int Fire_Power_Ship
+        //{
+        //    get
+        //    {
+        //        return _fire_power;
+        //    }
+        //    set
+        //    {
+        //        _fire_power = value;
+        //    }
+
+        //}
 
         /// <summary>
         /// Gets or sets the range.

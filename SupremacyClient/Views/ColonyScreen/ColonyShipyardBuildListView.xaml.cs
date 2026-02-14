@@ -22,7 +22,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            GameLog.Client.ShipProductionDetails.DebugFormat("BuildList doubleclicked", e.ClickCount);
+            GameLog.Client.ShipProduction.DebugFormat("BuildList doubleclicked", e.ClickCount);
             if (!(BuildList.SelectedItem is BuildProject selectedProject))
             {
                 return;

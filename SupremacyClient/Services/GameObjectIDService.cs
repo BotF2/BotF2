@@ -39,7 +39,7 @@ namespace Supremacy.Client.Services
             ClientEvents.GameObjectIDRequested.Publish(args);
 
             DateTime waitStart = DateTime.Now;
-            TimeSpan timeout = TimeSpan.FromSeconds(9);  // TimeOut = 9 seconds (before 5)
+            TimeSpan timeout = TimeSpan.FromSeconds(5);  // TimeOut = 9 seconds (before 5)
             while (!args.WaitHandle.WaitOne(timeout))
             {
                 if ((DateTime.Now - waitStart) > timeout)

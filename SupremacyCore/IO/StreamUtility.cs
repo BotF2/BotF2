@@ -20,15 +20,15 @@ namespace Supremacy.IO
 {
     public static class StreamUtility
     {
-        [NonSerialized]
+        //[NonSerialized]
 //#pragma warning disable IDE0052 // Ungelesene private Member entfernen
-        private static string _text;
-        private static readonly string _newline = Environment.NewLine;
-//#pragma warning restore IDE0052 // Ungelesene private Member entfernen
+        //private static string _text;
+        //private static readonly string _newline = Environment.NewLine;
+        //#pragma warning restore IDE0052 // Ungelesene private Member entfernen
 
-        private static int count;
-        private static string c_hex;
-        private static string X2_text;
+        //private static int count;
+        //private static string c_hex;
+        //private static string X2_text;
 
         //private static int _count;
 
@@ -50,7 +50,12 @@ namespace Supremacy.IO
             //boolHEXreading = true;
             Console.WriteLine("Step_0827:; boolHEXreading = " + boolHEXreading/* + _newline*/);
 
-            _text = "";
+            int count = 0;
+            string X2_text = "";
+            string c_hex = "";
+            string _newline = Environment.NewLine;
+
+            string _text = "";
             if (boolHEXreading == true)
             {
                 Console.WriteLine("Step_0833:; buffer.length = " + buffer.Length + _newline);

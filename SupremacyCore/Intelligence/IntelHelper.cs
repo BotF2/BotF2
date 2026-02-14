@@ -278,7 +278,7 @@ namespace Supremacy.Intelligence
             {
                 Owner = attackingCiv
             };
-            GameLog.Core.DiplomacyDetails.DebugFormat("Create Statement for StealCredits: " + Environment.NewLine
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealCredits: " + Environment.NewLine
                 + "sender = {0} *vs* Recipient = {1}:   StatementType = {2} Tone ={3}, blamed = {4}"
                                 , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
@@ -891,7 +891,7 @@ namespace Supremacy.Intelligence
             {
                 Owner = attackingCiv
             };
-            GameLog.Core.DiplomacyDetails.DebugFormat("Create Statement for SabotageIndustry...");
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageIndustry...");
             //GameLog.Core.DiplomacyDetails.DebugFormat("Create Statement for SabotageIndustry: " + Environment.NewLine
             //    + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, Tone ={3}, blamed = {4}"
             //                    , attackingCiv, attackedCiv, _sendOrder.Statement.StatementType.ToString(),

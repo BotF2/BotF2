@@ -310,10 +310,11 @@ namespace Supremacy.Orbitals
                     {
                         _text = "Step_7605:; Serialize " + _loc
                             + " > Slot= " + _slotID
-                            + " at " + slot.Shipyard.Name
+
                             + " "
                             + " > " + _percent
                             + " done for " + _design
+                            + " at " + slot.Shipyard.Name
                             + "    .. from Step_7607:; "
                         ;
                         //Console.WriteLine(_text);
@@ -324,11 +325,11 @@ namespace Supremacy.Orbitals
                     {
                         _text = "Step_7606:; Serialize " + _loc
                             + " > Slot= " + _slotID  // crashes with a StackOverFlow
-                                                         + " at " + slot.Shipyard.Design
+
                             + " "
                             + " > " + _percent
                             + " done for " + _design
-                            //+_newline
+                            + " at " + slot.Shipyard.Design
                             ;
                         //Console.WriteLine(_text);
 

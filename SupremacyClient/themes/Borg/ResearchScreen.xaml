@@ -1173,10 +1173,8 @@
                                  Margin="3,0,6,0"
                                  VerticalAlignment="Center"
                                  Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
-                      <TextBox x:Name="PART_SearchText"
-                               Grid.Column="1"
-                               BorderBrush="GreenYellow"
-                               BorderThickness="2"
+                      <TextBox x:Name="PART_SearchText" Grid.Column="1"
+                               Text="Put in here" BorderThickness="2" BorderBrush="{DynamicResource HeaderTextBrush}"
                                />
                     </Grid>
 

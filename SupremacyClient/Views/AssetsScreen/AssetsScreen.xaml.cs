@@ -92,7 +92,7 @@ namespace Supremacy.Client.Views
         #endregion 
         public AssetsScreen([NotNull] IUnityContainer container)
         {
-            GameLog.Client.UIDetails.DebugFormat("AssetsScreen - InitializeComponent();");
+            GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
             _container = container ?? throw new ArgumentNullException("container");
             _appContext = _container.Resolve<IAppContext>();
             _localCivManager = _appContext.LocalPlayerEmpire;
@@ -258,7 +258,7 @@ namespace Supremacy.Client.Views
             if (IsVisible)
             {
                 //ResumeAnimations();
-                GameLog.Client.UIDetails.DebugFormat("*********** begin of checking visible ***********");
+                GameLog.Client.UI.DebugFormat("*********** begin of checking visible ***********");
 
                 // GameLog.Client.UI.DebugFormat("Spied_0_Civ checking visible .... _spiedCiv_1 = {0}, _civLocalPlayer = {1}", _spiedCiv_0, _civLocalPlayer);
                 if (AssetsHelper.IsSpied_0_(_civLocalPlayer) || IntelHelper.ShowNetwork_0)
@@ -1202,7 +1202,7 @@ namespace Supremacy.Client.Views
                     OnLocalPlayerEmpireChanged();
                     break;
             }
-            GameLog.Client.UIDetails.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
+            GameLog.Client.UI.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
             return true;
         }
     }

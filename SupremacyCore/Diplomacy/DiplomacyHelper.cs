@@ -765,7 +765,7 @@ namespace Supremacy.Diplomacy
             }
             else { _acceptRejectDictionary.Add(foreignPowerID, accepted); }
 
-            GameLog.Client.DiplomacyDetails.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                 , GameContext.Current.TurnNumber
                 , _acceptRejectDictionary.Count
                 , foreignPowerID
@@ -783,7 +783,7 @@ namespace Supremacy.Diplomacy
             else { _acceptRejectDictionary.Add(civIDs, accepted); }
 
             //if (_acceptRejectDictionary != null)
-            GameLog.Client.DiplomacyDetails.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                 , GameContext.Current.TurnNumber
                 , _acceptRejectDictionary.Count
                 , civIDs);
