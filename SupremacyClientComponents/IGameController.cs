@@ -358,7 +358,7 @@ namespace Supremacy.Client
 
         private void OnTurnStarted(EventArgs args)
         {
-            _text = "Step_4007:; OnTurnStarted... (currentGame)";
+            _text = "Step_4007:; " + DateTime.Now + "OnTurnStarted... (currentGame) ... ";
             Console.WriteLine(_text);
 
             IGameContext currentGame = _appContext.CurrentGame;
@@ -403,11 +403,9 @@ namespace Supremacy.Client
 
             ProcessSitRepEntries();
 
-            _text = "Step_4011:; ProcessSitRepEntries is DONE..." + DateTime.Now;
+            _text = "Step_4011:; "+ DateTime.Now+ " > ProcessSitRepEntries > done";
             Console.WriteLine(_text);
 
-            _text = "Step_4012:; 5 binding errors (only at starting) ... resolve not found out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
-            Console.WriteLine(_text);
         }
 
         private void ProcessSitRepEntries()
@@ -446,7 +444,7 @@ namespace Supremacy.Client
 
             ShowSummary(false);
 
-            _text = "Step_4090:; ProcessSitRepEntries... done ";
+            _text = "Step_4090:; " + DateTime.Now + " > ProcessSitRepEntries... done ... " ;
             Console.WriteLine(_text);
             //GameLog.Core.GeneralDetails.DebugFormat(_text);
         }
@@ -730,31 +728,34 @@ namespace Supremacy.Client
         private void OnGameStarted(DataEventArgs<GameStartData> args)
         {
             CreatePresenters();
-            
+
+            _text = "Step_4012:; 5 binding errors (only at starting) ... resolve not found out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
+            Console.WriteLine(_text);
+
         }
 
         private void CreatePresenters()
         {
             List<IPresenter> initializedPresenters = new List<IPresenter>();
 
-            GameLog.Client.UIDetails.DebugFormat("BEGINNING: CreatePresenters");
+            GameLog.Client.UI.DebugFormat("BEGINNING: CreatePresenters");
 
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IGalaxyScreenPresenter");  // F1-Screen
+                GameLog.Client.UI.DebugFormat("DONE: IGalaxyScreenPresenter");  // F1-Screen
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
+                GameLog.Client.UI.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
 
                 _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, IDiplomacyScreenViewSecond>>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IDiplomacyScreenViewSecond");  // F3-Screen
+                GameLog.Client.UI.DebugFormat("DONE: IDiplomacyScreenViewSecond");  // F3-Screen
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen
+                GameLog.Client.UI.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IAssetsScreenPresenter");  // F5-Screen
+                GameLog.Client.UI.DebugFormat("DONE: IAssetsScreenPresenter");  // F5-Screen
 
                 // XXXXX  not realized yet
                 //_screenPresenters.Add(_container.Resolve<IEncyclopediaScreenPresenter>());
@@ -766,7 +767,7 @@ namespace Supremacy.Client
                     {
                         presenter.Run();
                         initializedPresenters.Add(presenter);
-                        GameLog.Client.UIDetails.DebugFormat("DONE: {0}", presenter.ToString());
+                        GameLog.Client.UI.DebugFormat("DONE: {0}", presenter.ToString());
                     }
                     catch (Exception e)
                     {

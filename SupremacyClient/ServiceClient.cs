@@ -11,6 +11,7 @@ using Supremacy.Combat;
 using Supremacy.Game;
 using Supremacy.WCF;
 using System;
+using System.Diagnostics;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -123,7 +124,10 @@ namespace Supremacy.Client
         {
             // EndTurn pressed = go to next turn
             try { Channel.EndTurn(orders); }
-            catch (FaultException) { }
+            catch (FaultException) 
+            {
+                Debugger.Break();
+            }
 
         }
 

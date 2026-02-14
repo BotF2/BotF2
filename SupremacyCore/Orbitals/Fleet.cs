@@ -646,10 +646,18 @@ namespace Supremacy.Orbitals
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> can enter wormhole.
         /// </summary>
-        /// <value>
+        /// <returns>
         /// <c>true</c> if this <see cref="Fleet"/> can enter wormhole; otherwise, <c>false</c>.
-        /// </value>
-        public bool CanEnterWormhole => Sector.System.StarType == StarType.Wormhole;
+        /// </returns>
+        public bool CanEnterWormhole()
+        {
+            if (Sector.System != null && Sector.System.StarType == StarType.Wormhole)
+            {
+                return true;
+            }
+            else { return false; }
+            
+        }
 
         /// <summary>
         /// Gets a read-only collection of the ships attached to this <see cref="Fleet"/>.

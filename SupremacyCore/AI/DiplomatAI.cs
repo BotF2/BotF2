@@ -165,7 +165,7 @@ namespace Supremacy.AI
                                 break;
                         }
 
-                        //GameLog.Client.DiplomacyDetails.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression from {1}",
+                        //GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression from {1}",
                         _text = "Step_1171: Turn: " + GameContext.Current.TurnNumber
                             + "; regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                             + "; trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
@@ -174,7 +174,7 @@ namespace Supremacy.AI
                             ;
                         Console.WriteLine(_text);
                         _diploSummary = _newline + _text;
-                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+                        //GameLog.Client.Diplomacy.DebugFormat(_text);
 
 
                         TrustAndRegardByTraits(foreignPower, impact, similarTraits);
@@ -188,7 +188,7 @@ namespace Supremacy.AI
                             ;
                         Console.WriteLine(_text);
                         _diploSummary = _newline + _text;
-                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+                        //GameLog.Client.Diplomacy.DebugFormat(_text);
 
 
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower CounterParty ={0} regard ={1} trust ={2}", foreignPower.Counterparty.Key, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
@@ -248,7 +248,7 @@ namespace Supremacy.AI
                     //    ;
                     //Console.WriteLine(_text);
                     //_diploSummary = _newline + _text;
-                    //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+                    //GameLog.Client.Diplomacy.DebugFormat(_text);
 
                     // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                     foreignPower.UpdateStatus();
@@ -462,7 +462,7 @@ namespace Supremacy.AI
                             ;
                         Console.WriteLine(_text);
                         _diploSummary = _newline + _text;
-                        //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+                        //GameLog.Client.Diplomacy.DebugFormat(_text);
 
                         #endregion Proposals
                     }
@@ -758,7 +758,7 @@ namespace Supremacy.AI
                 ;
             Console.WriteLine(_text);
             _DoOngoingRegardTrust = _newline + _text;
-            //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
+            //GameLog.Client.Diplomacy.DebugFormat(_text);
 
             // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
         }

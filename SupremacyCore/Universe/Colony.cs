@@ -1435,7 +1435,7 @@ namespace Supremacy.Universe
                 {
                     int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
 
-                    GameLog.Core.ProductionDetails.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
+                    GameLog.Core.Production.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
                         , GameContext.Current.TurnNumber
                         , _foodActive
                         , Facilities_Total1_Food
@@ -1458,7 +1458,7 @@ namespace Supremacy.Universe
 
                     if (Name == "Borg" && category == ProductionCategory.Food)
                     {
-                        GameLog.Core.ProductionDetails.DebugFormat("Borg and Food"); // just for Breakpoint
+                        GameLog.Core.Production.DebugFormat("Borg and Food"); // just for Breakpoint
                     }
 
                     //while (laborAvailable > 0 && _foodPF_unused > 0)
@@ -1467,7 +1467,7 @@ namespace Supremacy.Universe
                     //    {
                     //        if (Name == "Borg" && category == ProductionCategory.Food)
                     //        {
-                    //            GameLog.Core.ProductionDetails.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
+                    //            GameLog.Core.Production.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
                     //        }
 
                     //        continue;
@@ -2205,7 +2205,7 @@ namespace Supremacy.Universe
 
             Console.WriteLine(_text);
             ;
-            //GameLog.Core.ProductionDetails.DebugFormat(_text);
+            //GameLog.Core.Production.DebugFormat(_text);
 
 
             //#pragma warning disable IDE0059 // Unnecessary assignment of a value

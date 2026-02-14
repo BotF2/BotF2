@@ -25,6 +25,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 
@@ -616,7 +617,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            string _text = "Step_4001:; ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------" + DateTime.Now;
+            string _text = "Step_4001:; "+ DateTime.Now + " ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------" ;
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -745,7 +746,7 @@ namespace Supremacy.Game
         private static Stack<GameContext> _threadStack;
 
 
-        private static Stack<GameContext> ThreadStack
+        private static Stack<GameContext> ThreadStack  // not worth to monitor ... just creating a new one if necessary
         {
             get
             {
@@ -753,6 +754,11 @@ namespace Supremacy.Game
                 {
                     _threadStack = new Stack<GameContext>();
                 }
+
+                //if (_threadStack.Count > 1)
+                //{
+                //    Debugger.Break();
+                //}
 
                 return _threadStack;
             }
@@ -764,7 +770,7 @@ namespace Supremacy.Game
         /// <param name="context">The context.</param>
         public static void PushThreadContext(GameContext context)
         {
-            
+            // to often !
             //Console.WriteLine("Step_0567:; ####### PushThreadContext(GameContext context) !!!!  " + DateTime.Now);
 
             ThreadStack.Push(context);
@@ -778,10 +784,11 @@ namespace Supremacy.Game
         {
             if (!ThreadStack.TryPop(out GameContext result))
             {
-                Console.WriteLine("Step_0568:; ####### PopThreadContext(GameContext context) !!!!  " + DateTime.Now);
+                //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore " );
                 return result;
             }
-
+            Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore ");
+            //Debugger.Break();
             //Console.WriteLine("Step_0569:; ####### PopThreadContext(GameContext) !!!! = null    " + DateTime.Now);
             return null;
         }

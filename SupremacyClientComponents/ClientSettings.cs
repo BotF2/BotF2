@@ -163,6 +163,7 @@ namespace Supremacy.Client
 
         private static ClientSettings LoadCore()
         {
+
             try
             {
                 string settingsDirectory = ResourceManager.GetResourcePath("");
@@ -183,8 +184,9 @@ namespace Supremacy.Client
                         {
                             // filePath = SupremacyClient..Settings.xaml
                             string _text = "Step_0136:; for other problems: just try to deleted " + filePath + " manually from your hard disk !";
+                            Console.WriteLine(_text);                            
                             GameLog.Client.General.InfoFormat(_text);
-                            Console.WriteLine(_text);
+
 
                             settings = XamlReader.Load(fileReader) as ClientSettings ?? new ClientSettings();
 
@@ -2605,38 +2607,38 @@ namespace Supremacy.Client
         }
         #endregion TracesUI Property
 
-        #region TracesUIDetails Property
-        public static readonly DependencyProperty TracesUIDetailsProperty = DependencyProperty.Register(
-            "UIDetails",
-            typeof(bool),
-            typeof(ClientSettings),
-            new FrameworkPropertyMetadata(
-                false,
-                FrameworkPropertyMetadataOptions.None));
+        //#region TracesUIDetails Property
+        //public static readonly DependencyProperty TracesUIDetailsProperty = DependencyProperty.Register(
+        //    "UIDetails",
+        //    typeof(bool),
+        //    typeof(ClientSettings),
+        //    new FrameworkPropertyMetadata(
+        //        false,
+        //        FrameworkPropertyMetadataOptions.None));
 
-        public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesUIDetailsChanged;
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesUIDetailsChanged;
 
-        private void OnTracesUIDetailsChanged(bool oldValue, bool newValue)
-        => TracesUIDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+        //private void OnTracesUIDetailsChanged(bool oldValue, bool newValue)
+        //=> TracesUIDetailsChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
 
-        public bool TracesUIDetails
-        {
-            get => (bool)GetValue(TracesUIDetailsProperty);
-            set
-            {
-                SetValue(TracesUIDetailsProperty, value);
-                //GameLog.Client.General.InfoFormat("TracesUIDetails = {0}", value);
-                if (value)
-                {
-                    GameLog.SetRepositoryToDebug("UIDetails");
-                }
-                else
-                {
-                    GameLog.SetRepositoryToErrorOnly("UIDetails");
-                }
-            }
-        }
-        #endregion TracesUIDetails Property
+        //public bool TracesUIDetails
+        //{
+        //    get => (bool)GetValue(TracesUIDetailsProperty);
+        //    set
+        //    {
+        //        SetValue(TracesUIDetailsProperty, value);
+        //        //GameLog.Client.General.InfoFormat("TracesUIDetails = {0}", value);
+        //        if (value)
+        //        {
+        //            GameLog.SetRepositoryToDebug("UIDetails");
+        //        }
+        //        else
+        //        {
+        //            GameLog.SetRepositoryToErrorOnly("UIDetails");
+        //        }
+        //    }
+        //}
+        //#endregion TracesUIDetails Property
 
         #region TracesXMLCheck Property  
         public static readonly DependencyProperty TracesXMLCheckProperty = DependencyProperty.Register(
@@ -3234,7 +3236,7 @@ namespace Supremacy.Client
                     SetValue(TracesSystemAssaultDetailsProperty, value); OnTracesSystemAssaultDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SystemAssaultDetails");
                     SetValue(TracesTestDetailsProperty, value); OnTracesTestDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TestDetails");
                     SetValue(TracesTradeRoutesDetailsProperty, value); OnTracesTradeRoutesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutesDetails");
-                    SetValue(TracesUIDetailsProperty, value); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
+                    //SetValue(TracesUIDetailsProperty, value); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
                     SetValue(TracesXMLCheckDetailsProperty, value); OnTracesXMLCheckDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheckDetails");
                     SetValue(TracesXML2CSVOutputDetailsProperty, value); OnTracesXML2CSVOutputDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutputDetails");
 
@@ -3351,7 +3353,7 @@ namespace Supremacy.Client
                     SetValue(TracesSystemAssaultDetailsProperty, value); OnTracesSystemAssaultDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SystemAssaultDetails");
                     SetValue(TracesTestDetailsProperty, value); OnTracesTestDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TestDetails");
                     SetValue(TracesTradeRoutesDetailsProperty, value); OnTracesTradeRoutesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutesDetails");
-                    SetValue(TracesUIDetailsProperty, value); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
+                    //SetValue(TracesUIDetailsProperty, value); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
                     SetValue(TracesXMLCheckDetailsProperty, value); OnTracesXMLCheckDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheckDetails");
                     SetValue(TracesXML2CSVOutputDetailsProperty, value); OnTracesXML2CSVOutputDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutputDetails");
 
@@ -3594,7 +3596,7 @@ namespace Supremacy.Client
                     SetValue(TracesSystemAssaultDetailsProperty, value); OnTracesSystemAssaultDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SystemAssaultDetails");
                     SetValue(TracesTestDetailsProperty, value); OnTracesTestDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TestDetails");
                     SetValue(TracesTradeRoutesDetailsProperty, value); OnTracesTradeRoutesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutesDetails");
-                    SetValue(TracesUIDetailsProperty, value); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
+                    //SetValue(TracesUIDetailsProperty, value); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
                     SetValue(TracesXMLCheckDetailsProperty, value); OnTracesXMLCheckDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheckDetails");
                     SetValue(TracesXML2CSVOutputDetailsProperty, value); OnTracesXML2CSVOutputDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutputDetails");
 
@@ -3835,7 +3837,7 @@ namespace Supremacy.Client
                     SetValue(TracesSystemAssaultDetailsProperty, false); OnTracesSystemAssaultDetailsChanged(false, true); GameLog.SetRepositoryToDebug("SystemAssaultDetails");
                     SetValue(TracesTestDetailsProperty, false); OnTracesTestDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TestDetails");
                     SetValue(TracesTradeRoutesDetailsProperty, false); OnTracesTradeRoutesDetailsChanged(false, true); GameLog.SetRepositoryToDebug("TradeRoutesDetails");
-                    SetValue(TracesUIDetailsProperty, false); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
+                    //SetValue(TracesUIDetailsProperty, false); OnTracesUIDetailsChanged(false, true); GameLog.SetRepositoryToDebug("UIDetails");
                     SetValue(TracesXMLCheckDetailsProperty, false); OnTracesXMLCheckDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XMLCheckDetails");
                     SetValue(TracesXML2CSVOutputDetailsProperty, false); OnTracesXML2CSVOutputDetailsChanged(false, true); GameLog.SetRepositoryToDebug("XML2CSVOutputDetails");
 
