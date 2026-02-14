@@ -35,7 +35,7 @@ namespace Supremacy.Client.Themes
 
             string _text = "including Theme > " + themeUri.ToString();
             //Console.WriteLine(_text);
-            GameLog.Client.UIDetails.DebugFormat(_text);
+            GameLog.Client.UI.DebugFormat(_text);
 
             try
             {

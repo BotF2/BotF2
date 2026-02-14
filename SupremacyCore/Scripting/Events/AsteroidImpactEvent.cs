@@ -21,26 +21,26 @@ namespace Supremacy.Scripting.Events
     [Serializable]
     public class AsteroidImpactEvent : UnitScopedEvent<Colony>
     {
-        private bool _productionFinished;         // this is necassary !!!
-        private bool _shipProductionFinished;     // this is necassary !!!
+        //private bool _productionFinished;         // this is necassary !!!
+        //private bool _shipProductionFinished;     // this is necassary !!!
 
         private int _occurrenceChance = 200;
 
-        [NonSerialized]
-        private string _text;
+        //[NonSerialized]
+        //private string _text;
 
         //#pragma warning disable IDE0044 // Modifizierer "readonly" hinzufügen
-        private List<BuildProject> _affectedProjects;
+        //private List<BuildProject> _affectedProjects;
         //#pragma warning restore IDE0044 // Modifizierer "readonly" hinzufügen
 
 
         public AsteroidImpactEvent()
         {
-            _affectedProjects = new List<BuildProject>();
+            List<BuildProject> _affectedProjects = new List<BuildProject>();
 
             //keep the following to avoid error messages while "Build"
-            _text += _productionFinished.ToString() + _text;
-            _text += _shipProductionFinished.ToString();
+            //_text += _productionFinished.ToString() + _text;
+            //_text += _shipProductionFinished.ToString();
         }
 
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
@@ -66,12 +66,17 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnStartedOverride(GameContext game)
         {
-            _productionFinished = false;
-            _shipProductionFinished = false; // turn off production for this turn
+            //_productionFinished = false;
+            //_shipProductionFinished = false; // turn off production for this turn
+
+            //if (_shipProductionFinished == true && _productionFinished == true) { }; // dummy
         }
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
+            string _text = "";
+            List<BuildProject> _affectedProjects = new List<BuildProject>();
+
             if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 20)  // before 80
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
@@ -90,6 +95,7 @@ namespace Supremacy.Scripting.Events
                 foreach (IGrouping<int, Colony> group in targetGroups)
                 {
                     List<Colony> productionCenters = group.ToList();
+                    _affectedProjects = new List<BuildProject>();
 
                     Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
@@ -102,7 +108,7 @@ namespace Supremacy.Scripting.Events
                         }
                     }
 
-                    List<BuildProject> _affectedProjects = target.BuildSlots
+                    _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
                         .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
                         .Select(o => o.Project)
@@ -111,7 +117,11 @@ namespace Supremacy.Scripting.Events
 
                     foreach (BuildProject affectedProject in _affectedProjects)
                     {
-                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
+                        _text = "Step_7222:; " + GameEngine.LocationString(target.Location.ToString())
+                            + " > Turn " + GameContext.Current.TurnNumber
+                            + " > Earthquake - affectedProject= " + affectedProject.Description;
+                        Console.WriteLine(_text);
+                        GameLog.Client.GameData.DebugFormat(_text);
                     }
 
                     Entities.Civilization targetEventCiv = target.Owner;

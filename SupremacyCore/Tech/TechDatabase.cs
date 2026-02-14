@@ -197,7 +197,7 @@ namespace Supremacy.Tech
             bool _checkForProblems = false;
 
             //_text = "Step_3018:; Loading Resources/Data/TechObjectDatabase.xml";
-            _text = "Step_3031:; Loading Resources/Data/TechObj_1_ProdFac.xml";
+            string _text = "Step_3031:; Loading Resources/Data/TechObj_1_ProdFac.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -228,7 +228,7 @@ namespace Supremacy.Tech
                     DesignID = db.GetNewDesignID()
                 };
                 designIdMap[facility.Key] = facility.DesignID;
-                CalculateBuildCostsPF(facility);
+                CalculateBuildCostsPF(facility, false); // false = only one is reported
 
                 _checkForProblems = false;
                 //_checkForProblems = true;
@@ -379,6 +379,8 @@ namespace Supremacy.Tech
                     }
                 }
             }
+
+            
 
             _text = "Step_3022:; Loading Resources/Data/TechObj_2_Buildings.xml";
             Console.WriteLine(_text);
@@ -601,7 +603,7 @@ namespace Supremacy.Tech
                 //    Console.WriteLine(_text);
                 //}
 
-                CalculateBuildCostsShips(ship);
+                CalculateBuildCostsShips(ship, false);  // false = only one is reported
                 CalculateMaintenanceCosts(ship);
                 db.ShipDesigns.Add(ship);
             }
@@ -1304,7 +1306,7 @@ namespace Supremacy.Tech
                         //"CE_SecondaryWeaponName" + separator + // not useful for current working
                         "CE_Torpedo Count" + separator +
                         "CE_Damage" + separator +
-                        "FirePower" + separator +
+                        "Fire_Power_Ship" + separator +
 
                         "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
                         "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
@@ -1505,7 +1507,7 @@ namespace Supremacy.Tech
                         //"CE_SecondaryWeaponName" + separator + // not useful for current working
                         "CE_Torpedo Count" + separator +
                         "CE_Damage" + separator +
-                        "FirePower" + separator +
+                        "Fire_Power_Ship" + separator +
 
                         "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
                         "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
@@ -2200,14 +2202,14 @@ namespace Supremacy.Tech
             return db;
         }
 
-        private static void CalculateBuildCostsPF(ProductionFacilityDesign pf)
+        private static void CalculateBuildCostsPF(ProductionFacilityDesign pf, bool _buildCostIgnored)
         {
             //int _techLevel = 1;
             //int _weapon2 = 0;
             int _buildCostsFromFile = pf.BuildCost;
             string _buildCostText = "";
             string _newline = Environment.NewLine;
-            bool _buildCostIgnored = false;
+            //bool _buildCostIgnored = false; // not here
             //bool _buildCostTextOnlyOnce = false;  // not here
             //if (pf.PrimaryWeapon != null)
             //{
@@ -2261,7 +2263,7 @@ namespace Supremacy.Tech
             {
                 //_text = "Step_4000: AppWindowSize availableSize = " + availableSize;
                 Console.WriteLine("Step_4080:; " + _text);
-                GameLog.Core.UIDetails.DebugFormat(_text);
+                //GameLog.Core.UI.DebugFormat(_text);
 
                 //GameLog.Core.Production.DebugFormat(_buildCostText);
                 Console.WriteLine(_text + " - no more output for Step_4080"); // 
@@ -2283,14 +2285,14 @@ namespace Supremacy.Tech
             }
         }
 
-        private static void CalculateBuildCostsShips(ShipDesign ship)
+        private static void CalculateBuildCostsShips(ShipDesign ship, bool _buildCostShipsIgnored)
         {
             int _weapon1 = 0;
             int _weapon2 = 0;
             int _buildCostsFromFile = ship.BuildCost;
             string _buildCostText = "";
             string _newline = Environment.NewLine;
-            bool _buildCostShipsIgnored = false;
+            //bool _buildCostShipsIgnored = false; // not here
             bool _buildCostTextOnlyOnce = false;
 
             if (ship.PrimaryWeapon != null)
@@ -2301,12 +2303,21 @@ namespace Supremacy.Tech
             {
                 _weapon2 = ship.SecondaryWeapon.Count * ship.SecondaryWeapon.Damage / 4;
             }
-            int _buildcosts = (ship.Duranium * 5)
+
+            int _crew_costs = ship.CrewSize * 4;// new 2024-01-28
+            if (ship.Key.Contains("BORG"))
+            {
+                _crew_costs = ship.CrewSize;
+            }
+
+            
+            
+                int _buildcosts = (ship.Duranium * 5)
                 + (ship.HullStrength * 20)
                 + (ship.ShieldStrength + 2)
                 + (ship.Speed * 20)
                 + (ship.Maneuverability * 20)
-                + (ship.CrewSize * 4) // new 2024-01-28
+                + _crew_costs 
                 + (_weapon1 * 2)
                 + (_weapon2 * 2)
                 ;
@@ -2356,7 +2367,7 @@ namespace Supremacy.Tech
             int _weapon1 = 0;
             int _weapon2 = 0;
             int _maintFromFile = ship.MaintenanceCost;
-            bool _maint_output_done = false;
+            
 
             if (ship.PrimaryWeapon != null)
             {
@@ -2375,7 +2386,7 @@ namespace Supremacy.Tech
 
 
 
-            if (!_maint_output_done)
+            if (ship.Key == "FED_COLONY_SHIP_I")
             {
                 _text = "Step_3200:; Maint old:";
                 Console.WriteLine(_text);
@@ -2397,7 +2408,7 @@ namespace Supremacy.Tech
                     + "; Cr= " + ship.CrewSize / 30
                     + " - no more output or deactivate this line and the boolean"
                     ;
-                _maint_output_done = true;
+                //_maint_output_done = true;
                 Console.WriteLine(_text);
 
                 //string _maintText += _newline + _text;

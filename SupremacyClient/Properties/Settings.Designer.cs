@@ -1082,18 +1082,6 @@ namespace Supremacy.Client.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public string TracesUIDetails {
-            get {
-                return ((string)(this["TracesUIDetails"]));
-            }
-            set {
-                this["TracesUIDetails"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool TracesXMLCheckDetails {
             get {
                 return ((bool)(this["TracesXMLCheckDetails"]));

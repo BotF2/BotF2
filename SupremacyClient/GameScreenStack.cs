@@ -276,7 +276,7 @@ namespace Supremacy.Client
             // works
             Text = "GameScreenStack.cs: screen=" + screen;
             //Console.WriteLine(_text);
-            GameLog.Client.UIDetails.DebugFormat("GameScreenStack.cs: screen={0}", screen);
+            GameLog.Client.UI.DebugFormat("GameScreenStack.cs: screen={0}", screen);
 
             if (screen == null)
             {

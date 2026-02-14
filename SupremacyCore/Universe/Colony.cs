@@ -146,14 +146,22 @@ namespace Supremacy.Universe
         public Colony(StarSystem system, Race inhabitants)
             : this()
         {
+            string _text = "";
             if (system == null)
             {
-                throw new ArgumentNullException("system");
+                _text = "Step_3333:; Colony > System == null";
+                Debugger.Break();
+                //system.Destroy();
+                return;
+
+                //throw new ArgumentNullException("system");
             }
 
             if (inhabitants == null)
             {
-                throw new ArgumentNullException("inhabitants");
+                //throw new ArgumentNullException("inhabitants");
+                _text = "Step_3337:; Colony > inhabitants == null";
+                Debugger.Break();
             }
 
             _population.Maximum = system.GetMaxPopulation(inhabitants);
@@ -458,7 +466,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                string _all_info = base.Name ?? (System?.Name);
+                string _all_info = "Colony > " + base.Name ?? (System?.Name);
                 _all_info += " " + base.Location.ToString() + " " + base.Owner;
 
                 return _all_info;
@@ -962,7 +970,7 @@ namespace Supremacy.Universe
         public void ProcessQueue()
         {
 
-            string _text = "Step_1207:; ProcessQueue ... multiple stuff like remove completed projects etc."
+            string _text = "Step_1217:; ProcessQueue ... multiple stuff like remove completed projects etc."
                     //+ "" + colony.Name + " " + colony.Owner
                     ;
             //Console.WriteLine(_text);
@@ -3164,7 +3172,7 @@ namespace Supremacy.Universe
             int _defensevalue = 10 + colony.Population.CurrentValue; // basic defense value
 
             int _active = colony.orbitalBatteries_active.Value;
-            int _one_orb = colony.OrbitalBatteryDesign != null ? colony.OrbitalBatteries[0].Firepower() : 0;
+            int _one_orb = colony.OrbitalBatteryDesign != null ? colony.OrbitalBatteries[0].Fire_power_calculated() : 0;
 
             _defensevalue += _active * _one_orb;
 
@@ -3174,7 +3182,7 @@ namespace Supremacy.Universe
                 + " Turn " + GameContext.Current.TurnNumber
                 + "; Population: " + colony.Population.CurrentValue
                 + "; Active Orbital Batteries: " + _active
-                + "; One Orbital Battery Firepower: " + _one_orb
+                + "; One Orbital Battery Fire_power_calculated: " + _one_orb
                 + "; Shield Strength: " + colony.ShieldStrength.CurrentValue
                 + " => Defense Value: " + _defensevalue * 1.1f
                 ;

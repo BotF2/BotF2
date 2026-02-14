@@ -192,7 +192,7 @@ namespace Supremacy.Client
                     }
                 }
                 Console.WriteLine(this._text);
-                //GameLog.Client.UIDetails.DebugFormat(_text);
+                //GameLog.Client.UI.DebugFormat(_text);
             }
             catch
             {
@@ -254,7 +254,7 @@ namespace Supremacy.Client
             ResourceDictionary themeDictionary = null;
             try
             {
-                GameLog.Client.UIDetails.DebugFormat("trying to load {0}", themeUri.OriginalString);
+                GameLog.Client.UI.DebugFormat("trying to load {0}", themeUri.OriginalString);
                 themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
             }
             catch

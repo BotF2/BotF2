@@ -123,7 +123,7 @@ namespace Supremacy.Client.Views
             _ = _regionManager.Regions[ClientRegions.GameScreens].Add(View, ViewName, true);
             string _text = "registering Screen " + ViewName;
             //Console.WriteLine(_text);
-            GameLog.Client.UIDetails.DebugFormat(_text);
+            GameLog.Client.UI.DebugFormat(_text);
             //if (ViewName == "ColonyScreen")
             //{
             //    GameLog.Client.UI.InfoFormat(_text);

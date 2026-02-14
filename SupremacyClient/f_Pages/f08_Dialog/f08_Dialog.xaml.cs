@@ -58,7 +58,7 @@ namespace Supremacy.Client
             //        GenericCommands.TracesSetNoneCommand,
             //        OnGenericCommandsTracesSetNoneCommandExecuted));
 
-            GameLog.Client.UIDetails.DebugFormat("F10-Dialog initialized");
+            GameLog.Client.UI.DebugFormat("F10-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)

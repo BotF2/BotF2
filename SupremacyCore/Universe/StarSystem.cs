@@ -33,7 +33,7 @@ namespace Supremacy.Universe
         private ArrayWrapper<Planet> _planets;
         private StarType _starType;
         //public string _text;
-        public bool _checkLoading = true;
+        //public bool _checkLoading = true;
         //private bool _once_only;
 
         //public readonly string newline = Environment.NewLine;
@@ -82,6 +82,8 @@ namespace Supremacy.Universe
         /// <c>true</c> if this instance has a DURANIUM bonus; otherwise, <c>false</c>.
         /// </value>
         public bool HasDuraniumBonus => (_bonuses & SystemBonus.Duranium) == SystemBonus.Duranium;
+
+        public string A_SystemInfo => this.Location + " > " + this.Name + this.Owner + this.StarType;
 
         /// <summary>
         /// Gets or sets the design of the star.

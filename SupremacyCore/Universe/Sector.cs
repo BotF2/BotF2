@@ -1,3 +1,4 @@
+// File:Sector.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -318,6 +319,11 @@ namespace Supremacy.Universe
         public override string ToString()
         {
             return Name;
+        }
+
+        public string All_Info_Sector()
+        {
+            return "Sector" + this.Location + Name;
         }
 
         /// <summary>

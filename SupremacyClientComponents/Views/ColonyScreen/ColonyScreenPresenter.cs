@@ -661,7 +661,7 @@ namespace Supremacy.Client.Views
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 3");
 
             Colony selectedColony = Model.SelectedColony;
-            GameLog.Core.UIDetails.DebugFormat("OnSelectedColonyChanged: selectedColony = {0}", selectedColony);  // Colony changes...
+            GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: selectedColony = {0}", selectedColony);  // Colony changes...
                                                                                                                   // ..."in the background", in F2 = System Screen (only own colonies), not in Galaxy View showing planets of foreign colonies
             if (selectedColony != null)
             {
@@ -676,7 +676,7 @@ namespace Supremacy.Client.Views
                 {
                     Microsoft.Practices.Composite.Regions.IRegion planetsViewRegion = regionManager.Regions[CommonGameScreenRegions.PlanetsView];
                     planetsViewRegion.Context = selectedColony.Sector;
-                    //GameLog.Core.UIDetails.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
+                    //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
                 }
             }
 

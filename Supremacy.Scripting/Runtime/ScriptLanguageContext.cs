@@ -35,9 +35,9 @@ namespace Supremacy.Scripting.Runtime
     {
         private static Parser _parser;
         private static Dictionary<Identifier, Type> _xamlTypeMap;
-#pragma warning disable IDE0052 // Remove unread private members
+//#pragma warning disable IDE0052 // Remove unread private members
         private static readonly Dictionary<string, TypeTracker> _typeGroups = new Dictionary<string, TypeTracker>();
-#pragma warning restore IDE0052 // Remove unread private members
+//#pragma warning restore IDE0052 // Remove unread private members
 
         private readonly HashSet<string> _defines = new HashSet<string>();
         private readonly TopNamespaceTracker _topNamespace;
@@ -239,8 +239,15 @@ namespace Supremacy.Scripting.Runtime
                     _ = DomainManager.LoadAssembly(loadedAssembly);
                     _ = _topNamespace.LoadAssembly(loadedAssembly);
 
+                    string _c_text = c.ToString();  // Output in 2 character length 
+                    if (_c_text.ToString().Length == 1)
+                    {
+                        _c_text = " " + _c_text;
+                    }
                     // works
-                    Console.WriteLine("Step_9881:; ( " + c + " )                loadedAssembly= " + loadedAssembly.ToString());
+                    Console.WriteLine("Step_9881:; ( " + _c_text + " )                loadedAssembly= " 
+                        + loadedAssembly.Location
+                        + " > " + loadedAssembly.ToString());
                     //foreach (var item in loadedAssembly.CustomAttributes)
                     //{
                     //    if (item.ToString().Contains("KeyFileAttribute"))

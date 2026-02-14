@@ -73,7 +73,7 @@ namespace Supremacy.Client
             //        GenericCommands.AcceptCommand,
             //        OnGenericCommandsAcceptCommandExecuted));
 
-            GameLog.Client.UIDetails.DebugFormat("shift_4-Dialog initialized");
+            GameLog.Client.UI.DebugFormat("shift_4-Dialog initialized");
 
         }
 

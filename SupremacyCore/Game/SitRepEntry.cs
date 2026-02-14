@@ -2781,7 +2781,8 @@ namespace Supremacy.Game
         public override SitRepPriority Priority { get => SitRepPriority.RedYellow; set { } }
         public override bool IsPriority => true;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED"), ResourceManager.GetString(Application.Name), Application.Level, Application.Field.TechCategory);
+        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED")
+            , ResourceManager.GetString(Application.Name), Application.Level, Application.Field.TechCategory);
         public override bool HasDetails => true; // turn on/off for extra Dialog window
 
         public override string DetailText

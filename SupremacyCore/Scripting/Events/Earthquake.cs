@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2009 Mike Strobel
+﻿// File:Earthquake.cs
+// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
@@ -23,13 +24,13 @@ namespace Supremacy.Scripting.Events
         private bool _shipProductionFinished;
         private int _occurrenceChance = 100000;
 
-        [NonSerialized]
-        private List<BuildProject> _affectedProjects;
-        private string _text;
+        //[NonSerialized]
+        //private List<BuildProject> _affectedProjects;
+        //private string _text;
 
         public EarthquakeEvent()
         {
-            _affectedProjects = new List<BuildProject>();
+            List<BuildProject> _affectedProjects = new List<BuildProject>();
         }
 
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
@@ -61,6 +62,9 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
+            string _text = "";
+            List<BuildProject> _affectedProjects = new List<BuildProject>();
+
             if (phase == TurnPhase.PreTurnOperations)
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
@@ -81,6 +85,14 @@ namespace Supremacy.Scripting.Events
 
                     Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
+
+                    if (GameContext.Current.TurnNumber < 150)  // impacts on HomeWorlds are hard !!!!
+                    {
+                        if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                        {
+                            return;
+                        }
+                    }
 
                     _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
