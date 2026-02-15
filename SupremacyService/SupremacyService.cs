@@ -588,6 +588,8 @@ namespace Supremacy.WCF
                 //GameLog.Server.GeneralDetails.InfoFormat(_text);
 
                 stopwatch.Restart();
+
+                goto OH;
             OH:
                 //try
                 //{
