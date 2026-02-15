@@ -610,7 +610,7 @@ namespace Supremacy.Tech
 
             _text = "Step_3027:; Ships BuildCost + Maintenance calculated inside Code - ignoring file values";
             Console.WriteLine(_text);
-            GameLog.Core.Production.DebugFormat(_text);
+            //GameLog.Core.Production.DebugFormat(_text);
             //GameLog.Core.Production.DebugFormat(_buildCostText);
             //GameLog.Core.Production.DebugFormat(_maintText);
 
@@ -2410,6 +2410,7 @@ namespace Supremacy.Tech
                     ;
                 //_maint_output_done = true;
                 Console.WriteLine(_text);
+                _text = "";
 
                 //string _maintText += _newline + _text;
                 //GameLog.Core.Production.DebugFormat(_newline + _text);

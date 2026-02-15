@@ -545,7 +545,9 @@ namespace Supremacy.Client.Views
 
         + " " + item.ObjectID
         + " " + item.Name
+
         + " - " + item.Owner.Key/* + " ) "*/
+        //+ ", Defense= " + item.System.Colony.de
             //+ "; " + GameEngine.LocationString(item.Location.ToString())
             //+ "; " + item.ObjectID
             //+ ";Colony"
@@ -612,6 +614,7 @@ namespace Supremacy.Client.Views
             string _text = "";
             string _newline = Environment.NewLine;
             bool writeDirectly = true;
+            bool bool_output = true;
 
             SectorMap _map = _appContext.CurrentGame.Universe.Map;
 
@@ -693,12 +696,12 @@ namespace Supremacy.Client.Views
 
                 foreach (CivilizationManager civM in GameContext.Current.CivilizationManagers)
                 {
-                    string _x_text = GameEngine.LocationString(civM.HomeColony.Location.X.ToString());
-                    string _y_text = GameEngine.LocationString(civM.HomeColony.Location.Y.ToString());
+                    string _x_text = civM.HomeColony.Location.X.ToString();
+                    string _y_text = civM.HomeColony.Location.Y.ToString();
                     _text += civM.Civilization.HomeQuadrant + "-Quadrant"
                         + " ; " + GameEngine.Do_x_String(19, civM.Civilization.Key).ToString()
-                        + " ; " + _x_text
-                        + " ; " + _y_text
+                        + " ; " + GameEngine.Do_x_Digit_String(2, _x_text)
+                        + " ; " + GameEngine.Do_x_Digit_String(2, _y_text)
 
                         + " ; " + civM.Civilization.HomeSystemName
                         + " ; " + civM.Civilization
@@ -1228,7 +1231,7 @@ namespace Supremacy.Client.Views
                 //{
                 //    foreach (var item in GameContext.Current.TechDatabase)
                 //{
-                bool first_shipname = true;
+                bool _first_line_ship_names = true;
                 bool first_stationname = true;
                 bool first_orbbat = true;
                 bool first_pf = true;
@@ -1426,90 +1429,96 @@ namespace Supremacy.Client.Views
                     }
 
                     //StationDesign
-                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
-                    {
+                    _text += "Step_4345: no output for  _stations_text";
+                    //if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
+                    //{
 
-                        if (first_stations)
-                        {
-                            _text += "Step_4345: ---------------" + _newline;
-                            _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
-                            first_stations = false;
-                        }
+                    //    if (first_stations)
+                    //    {
+                    //        _text += "Step_4345: ---------------" + _newline;
+                    //        _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
+                    //        first_stations = false;
+                    //    }
 
-                        StationDesign spec = item as StationDesign;
-                        tdb_text += ";" + spec.ScienceAbility;
-                        tdb_text += ";" + spec.ScanStrength;
-                        tdb_text += ";" + spec.SensorRange;
-                        tdb_text += ";" + spec.HullStrength;
-                        tdb_text += ";" + spec.ShieldStrength;
-                        tdb_text += ";" + spec.ShieldRechargeRate;
+                    //    StationDesign spec = item as StationDesign;
+                    //    tdb_text += ";" + spec.ScienceAbility;
+                    //    tdb_text += ";" + spec.ScanStrength;
+                    //    tdb_text += ";" + spec.SensorRange;
+                    //    tdb_text += ";" + spec.HullStrength;
+                    //    tdb_text += ";" + spec.ShieldStrength;
+                    //    tdb_text += ";" + spec.ShieldRechargeRate;
 
-                        if (spec.PrimaryWeapon != null)
-                        {
-                            tdb_text += ";" + spec.PrimaryWeaponName;
-                            tdb_text += ";" + spec.PrimaryWeapon.Count;
-                            tdb_text += ";" + spec.PrimaryWeapon.Damage;
-                            tdb_text += ";" + spec.PrimaryWeapon.Refire;
-                        }
+                    //    if (spec.PrimaryWeapon != null)
+                    //    {
+                    //        tdb_text += ";" + spec.PrimaryWeaponName;
+                    //        tdb_text += ";" + spec.PrimaryWeapon.Count;
+                    //        tdb_text += ";" + spec.PrimaryWeapon.Damage;
+                    //        tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                    //    }
 
-                        if (spec.SecondaryWeapon != null)
-                        {
-                            tdb_text += ";" + spec.SecondaryWeaponName;
-                            tdb_text += ";" + spec.SecondaryWeapon.Count;
-                            tdb_text += ";" + spec.SecondaryWeapon.Damage;
-                            //tdb_text += ";" + spec.PrimaryWeapon.Refire;
-                        }
+                    //    if (spec.SecondaryWeapon != null)
+                    //    {
+                    //        tdb_text += ";" + spec.SecondaryWeaponName;
+                    //        tdb_text += ";" + spec.SecondaryWeapon.Count;
+                    //        tdb_text += ";" + spec.SecondaryWeapon.Damage;
+                    //        //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                    //    }
 
-                        //StationNames
-                        if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
-                        {
+                    //    //StationNames
+                    //    _stationnames_text += "Step_4359: no output for  _stationnames_text";
+                    //    //if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
+                    //    //{
 
-                            if (first_stationname)
-                            {
-                                //_stationnames_text += "Step_4349: ---------------" + _newline;
-                                _stationnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
-                                first_stationname = false;
-                            }
+                    //    //    if (first_stationname)
+                    //    //    {
+                    //    //        //_stationnames_text += "Step_4349: ---------------" + _newline;
+                    //    //        _stationnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
+                    //    //        first_stationname = false;
+                    //    //    }
 
-                            StationDesign spec2 = item as StationDesign;
+                    //    //    StationDesign spec2 = item as StationDesign;
 
-                            //tdb_text += ";" + spec.Dilithium;
-                            //tdb_text += ";" + spec.Speed;
-                            //tdb_text += ";" + spec.Range;
-                            //tdb_text += ";" + spec.FuelCapacity;
-                            //tdb_text += ";" + spec.Maneuverability;
-                            //tdb_text += ";" + spec.WorkCapacity;
+                    //    //    //tdb_text += ";" + spec.Dilithium;
+                    //    //    //tdb_text += ";" + spec.Speed;
+                    //    //    //tdb_text += ";" + spec.Range;
+                    //    //    //tdb_text += ";" + spec.FuelCapacity;
+                    //    //    //tdb_text += ";" + spec.Maneuverability;
+                    //    //    //tdb_text += ";" + spec.WorkCapacity;
 
-                            //tdb_text += ";" + spec.ScienceAbility;
-                            //tdb_text += ";" + spec.ScanStrength;
-                            //tdb_text += ";" + spec.SensorRange;
-                            //tdb_text += ";" + spec.HullStrength;
-                            //tdb_text += ";" + spec.ShieldStrength;
-                            //tdb_text += ";" + spec.ShieldRechargeRate;
+                    //    //    //tdb_text += ";" + spec.ScienceAbility;
+                    //    //    //tdb_text += ";" + spec.ScanStrength;
+                    //    //    //tdb_text += ";" + spec.SensorRange;
+                    //    //    //tdb_text += ";" + spec.HullStrength;
+                    //    //    //tdb_text += ";" + spec.ShieldStrength;
+                    //    //    //tdb_text += ";" + spec.ShieldRechargeRate;
 
-                            //tdb_text += ";" + spec.CloakStrength;
-                            //tdb_text += ";" + spec.CamouflagedStrength;
+                    //    //    //tdb_text += ";" + spec.CloakStrength;
+                    //    //    //tdb_text += ";" + spec.CamouflagedStrength;
 
-                            //tdb_text += ";" + spec.StationType;
-                            //tdb_text += ";" + spec.ClassName;
+                    //    //    //tdb_text += ";" + spec.StationType;
+                    //    //    //tdb_text += ";" + spec.ClassName;
 
-                            int count = spec2.PossibleNames.Count;
+                    //    //    int count = spec2.PossibleNames.Count;
 
-                            foreach (var name in spec2.PossibleNames)
-                            {
-                                _stationnames_text += "Step_4359:"
-                                    + ";" + count
-                                    + ";" + item.Key
+                    //    //    foreach (var name in spec2.PossibleNames)
+                    //    //    {
+                    //    //        _stationnames_text += "Step_4359:"
+                    //    //            + ";" + count
+                    //    //            + ";" + item.Key
 
-                                    + " ;" + name.Key
-                                    + _newline;
-                            }
+                    //    //            + " ;" + name.Key
+                    //    //            + _newline;
+                    //    //    }
 
-                        }
-                    }
+                    //    //}
+                    //}
+                    bool_output = true; // true again
+
 
                     //ShipDesign
-                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
+                    _text += "### no output for > ships";
+                    bool_output = false;
+                    if (bool_output == true && item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
                     {
 
                         if (first_ships)
@@ -1564,16 +1573,22 @@ namespace Supremacy.Client.Views
 
                         //tdb_text += ";" + item.s;
                     }
+                    bool_output = true; // true again
+
+
+                    // Ship Names
+                    _text += "### no output for > ship_names";
+                    bool_output = false;
 
                     //ShipNames
-                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
+                    if (bool_output == true && item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
                     {
 
-                        if (first_shipname)
+                        if (_first_line_ship_names)
                         {
                             //_shipnames_text += "Step_4349: ---------------" + _newline;
                             _shipnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
-                            first_shipname = false;
+                            _first_line_ship_names = false;
                         }
 
                         ShipDesign spec = item as ShipDesign;
@@ -1608,8 +1623,13 @@ namespace Supremacy.Client.Views
 
                                 + " ;" + name.Key
                                 + _newline;
-                            Console.WriteLine(_shipnames_text);
+
                         }
+                            //Console.WriteLine(_shipnames_text);
+
+
+                        //_shipnames_text = DateTime.Now + ";COUNT;KEY;NAMES;COMMENT   >>> no output" + _newline;
+                        //Console.WriteLine(_shipnames_text);
 
 
                         //if (spec.PossibleNames != null)
@@ -1633,13 +1653,7 @@ namespace Supremacy.Client.Views
 
                         //tdb_text += ";" + item.s;
                     }
-
-
                     _text += tdb_text + _newline;
-
-
-
-
 
                 }
                 //_text += _shipnames_text;

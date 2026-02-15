@@ -32,14 +32,18 @@
                    Text="{Binding Path=Name}" />
       </DataTemplate>
 
-      <!--<DataTemplate x:Key="BuildQueueItemTemplate" DataType="{x:Type scc:TechObjectDesignViewModel}">
+      <DataTemplate x:Key="BuildQueueItemTemplate" DataType="{x:Type scc:TechObjectDesignViewModel}">
         <Grid x:Name="Root">
-          --><!-- render a UI control (must be a FrameworkElement) that exposes a DependencyProperty 'Design' --><!--
-                            <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
+           <!--render a UI control (must be a FrameworkElement) that exposes a DependencyProperty 'Design'--> 
+                            <!--<scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
+                                                 Location="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Location)}"
+                                                 Civilization="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Builder)}" />-->
+          <scc:TechObjectDesignViewModel Design="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.BuildDesign)}"
                                                  Location="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Location)}"
                                                  Civilization="{Binding Path=(s:BuildQueueItem.Project).(s:BuildProject.Builder)}" />
+          
         </Grid>
-      </DataTemplate>-->
+      </DataTemplate>
 
 
       <DataTemplate x:Key="BuildingTemplate"
@@ -1369,6 +1373,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>
+          
           <Grid x:Name="UpgradableDesigns">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />

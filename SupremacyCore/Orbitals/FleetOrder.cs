@@ -145,6 +145,10 @@ namespace Supremacy.Orbitals
                     //taskForceStatusText = string.Format(taskForceStatusText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
                 }
 
+                string _text = "Step_7865:; taskForceStatusText= " + taskForceStatusText;
+                Console.WriteLine(_text);
+                //_ = MessageBox.Show("Input-File not found", "BEWARE", MessageBoxButtons.OK);
+                //return result;
                 //Console.WriteLine("Step_8921:; taskForceStatusText= " + taskForceStatusText + " > for " + UnitAI.CreateUpdateFleetText(Fleet, out String _fleetText));
 
                 return taskForceStatusText;
@@ -163,6 +167,19 @@ namespace Supremacy.Orbitals
                 _fleetId = (value == null) ? -1 : value.ObjectID;
                 OnPropertyChanged("Fleet");
             }
+        }
+
+        /// <summary>
+        /// Gets the fleet to which this <see cref="FleetOrder"/> has been assigned.
+        /// </summary>
+        /// <value>The fleet.</value>
+        public int Fleet_ID
+        {
+            get => Fleet.ObjectID;
+            //{
+            //    int objectID = Fleet.ObjectID;
+            //    int _id = objectID;
+            //}
         }
 
         /// <summary>

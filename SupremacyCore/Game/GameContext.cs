@@ -617,7 +617,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            string _text = "Step_4001:; "+ DateTime.Now + " ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------" ;
+            string _text = "Step_4001:; " + DateTime.Now + " ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -771,8 +771,13 @@ namespace Supremacy.Game
         public static void PushThreadContext(GameContext context)
         {
             // to often !
-            //Console.WriteLine("Step_0567:; ####### PushThreadContext(GameContext context) !!!!  " + DateTime.Now);
-
+            Console.WriteLine("Step_0567:; " + DateTime.Now + " > PushThreadContext(GameContext context) !  "
+                //+ ", _civM= " + context.CivilizationManagers.Count
+                );
+            if (context == null)
+            {
+                Debugger.Break();
+            }
             ThreadStack.Push(context);
         }
 
@@ -782,15 +787,36 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext PopThreadContext()
         {
+            string _text = "";
             if (!ThreadStack.TryPop(out GameContext result))
             {
+                _text = "Step_0568:; " + DateTime.Now + " > GameContext: "
+                    + "result.CivilizationManagers.Count=" + result.CivilizationManagers.Count
+                    ;
+                Console.WriteLine(_text);
                 //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore " );
                 return result;
             }
-            Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore ");
+
+            _text = "Step_0569:; " + DateTime.Now + " > GameContext: "
+                    + "result.CivilizationManagers.Count=" + result.CivilizationManagers.Count
+                    ;
+            Console.WriteLine(_text);
+
+            
+            //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore ");
             //Debugger.Break();
-            //Console.WriteLine("Step_0569:; ####### PopThreadContext(GameContext) !!!! = null    " + DateTime.Now);
-            return null;
+
+                    if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+            return result;
+                }
+
+
         }
 
         /// <summary>
@@ -1306,7 +1332,7 @@ namespace Supremacy.Game
                                 if (facilitiesRequired > 19)
                                 {
                                     _text = "Step_1312:; ####### From HomeSystems.xml > facilitiesRequired= " + facilitiesRequired;
-                                Console.WriteLine(_text);
+                                    Console.WriteLine(_text);
                                 }
 
 

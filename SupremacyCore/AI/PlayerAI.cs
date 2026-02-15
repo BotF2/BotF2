@@ -29,18 +29,18 @@ namespace Supremacy.AI
         private const int DangerRange = 4;
         private const int MaxDistanceInConvexHull = 3;
 
-        [NonSerialized]
-        private static string _text;
+        //[NonSerialized]
+        //private static string _text;
         //private static string blank = " ";
 
         #endregion
 
-        #region Methods
+        //#region Methods
 
         #region DoTurn from GameEngine
-        public static void DoTurn(Civilization _civ)
+        public static void Do_B_Turn_PlayerAI(Civilization _civ)
         {
-            _text = "Step_1131:; PlayerAI begins... for CivID " + _civ.CivID + " " + _civ.Key
+            string _text = "Step_1131:; "+ DateTime.Now + " > PlayerAI begins... for CivID " + _civ.CivID + " " + _civ.Key
                     ;
             Console.WriteLine(_text);
 
@@ -48,7 +48,7 @@ namespace Supremacy.AI
 
             if (_civ.IsEmpire && _civ.CivID != 6 && _civ.SpiedCivList != null)  // Spy
             {
-                _text = "Step_1132:; PlayerAI.Do_0_Turn_Unit ...SpiedCivList is NOT null ... for CivID "
+                _text = "Step_1132:; PlayerAI.Do_C_Turn_UnitAI ...SpiedCivList is NOT null ... for CivID "
                     + _civ.CivID + " " + _civ.Key
                     ;
                 Console.WriteLine(_text);
@@ -101,23 +101,23 @@ namespace Supremacy.AI
                 }
 
                 //if (_civM.Assault_TargetCiv != null && GameContext.Current.Civilizations[_civM.Assault_TargetCiv.CivID] != null)
-                if (_civM.Assault_Location != null && _civM.Assault_Accumulate_Location_1 != null 
+                if (_civM.Assault_Location != null && _civM.Assault_Accumulate_Location_1 != null
                     && _civM.Assault_Location.ToString() != "(0, 0)" && _civM.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
                 {
                     //TargetCiv_CheckFirePower(_civM);  // check every turn for a better target
-                    int civ_fire_Power_Accumulate_Location = Calculate_fire_power_ships_and_station(_civM.Assault_Accumulate_Location_1); // better: Colony.DefenseValue + Ships + Stations
-                    int targetFirePower = Calculate_fire_power_ships_and_station(_civM.Assault_Location);
+                    int civ_fire_Power_Accumulate_Location = Calculate_fire_power_ships_and_station(_civM.Assault_Accumulate_Location_1, _civ.CivID); // better: Colony.DefenseValue + Ships + Stations
+                    int targetFirePower = Calculate_fire_power_ships_and_station(_civM.Assault_Location, _civM.Assault_TargetCiv.CivID);
 
                     _text = "Step_1154:; "
                         /*+ "civ_fire_Power_Accumulate_Location= "*/ + _civM.Civilization.Key + " at " + _civM.Assault_Accumulate_Location_1
-                        + " -civ_fire_Power_Accumulate_Location= * " + civ_fire_Power_Accumulate_Location
+                        + " civ_fire_Power_Accumulate_Location= * " + civ_fire_Power_Accumulate_Location
                         + " vs " + targetFirePower + " * targetcivFirePower at " + _civM.Assault_Location
                         ;
                     Console.WriteLine(_text);
 
                     if (_civ.IsHuman)
                     {
-                        Debugger.Break();  // PlayerAI.DoTurn
+                        //Debugger.Break();  // PlayerAI.Do_B_Turn_PlayerAI
                     }
 
                     if (civ_fire_Power_Accumulate_Location < targetFirePower)
@@ -144,7 +144,7 @@ namespace Supremacy.AI
                     //    TargetCiv_CheckFirePower(_civ);
                     //}
                     //else 
-                    //if (_civM.Assault_TargetCiv == null) //AI empire so look for invasion conditions
+                    //if (_civM.Assault_TargetCiv == null) //AI _civ2_loc_homesystem so look for invasion conditions
                     //{
                     if (_civM.Assault_Location == null || _civM.Assault_Location.ToString() == "(0, 0)")
                     {
@@ -153,8 +153,8 @@ namespace Supremacy.AI
                     //}
                 }
             }
-            _text = "Step_1133:; PlayerAI is done..."
-                ;
+            _text = "Step_1136:; " + DateTime.Now + " > PlayerAI is done... for " + _civM.Civilization;
+                
             Console.WriteLine(_text);
         }
         #endregion
@@ -189,67 +189,97 @@ namespace Supremacy.AI
         //    GameContext.Current.CivilizationManagers[colony.Owner].Research.UpdateResearch(gainedResearchPoints);
         //    }
         //}
-        public static void TargetCiv_CheckFirePower(CivilizationManager _civM)
-        {
-            //CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
 
-            int civFirePower = Calculate_fire_power_ships_and_station(_civM.Assault_Location);
-            int targetFirePower = Calculate_fire_power_ships_and_station(_civM.Assault_Location);
-            if (civFirePower < targetFirePower)
-            {
-                _civM.Assault_Location = _civM.HomeSystem.Location;
-            }
-            else if (IsCivDefeated(_civM.Assault_TargetCiv))
-            {
-                _civM.Assault_Location = _civM.HomeSystem.Location;
-                // break down the fleet in UnitAI
-            }
-        }
+
+        //public static void TargetCiv_CheckFirePower(CivilizationManager _civM)
+        //{
+        //    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
+
+        //    int _civ1_fire_power = Calculate_fire_power_ships_and_station(_civM.Assault_Location, _civM.Assault_TargetCiv.CivID);
+        //    int _civ2_fire_power = Calculate_fire_power_ships_and_station(_civM.Assault_Location);
+        //    if (_civ1_fire_power < _civ2_fire_power)
+        //    {
+        //        _civM.Assault_Location = _civM.HomeSystem.Location;
+        //    }
+        //    else if (IsCivDefeated(_civM.Assault_TargetCiv))
+        //    {
+        //        _civM.Assault_Location = _civM.HomeSystem.Location;
+        //        // break down the fleet in UnitAI
+        //    }
+        //}
         public static void TargetCiv_Find(CivilizationManager _civM_1)
         {
             IList<Civilization> possibleCivs = GameContext.Current.Civilizations.ToList();
             //CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ1.CivID];
             Civilization _civ1 = _civM_1.Civilization;
+            string _text;
 
-            foreach (Civilization _invasionCiv in possibleCivs)
+            foreach (Civilization _civ2 in possibleCivs)
             {
-                //if (_invasionCiv.IsHuman)
+                //if (_civ2.IsHuman)
                 //{
                 //    Debugger.Break();
                 //}
 
                 // even peaceful empires need a target to grow 
-                //if (!_civ1.Traits.Contains("Warlike")) // && _invasionCiv.CivID > 6)  // not warlike and a minor so skip
+                //if (!_civ1.Traits.Contains("Warlike")) // && _civ2.CivID > 6)  // not warlike and a minor so skip
                 //{
                 //    continue;
                 //}
 
-                CivilizationManager _invasionCivM = GameContext.Current.CivilizationManagers[_invasionCiv.CivID];
+                CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[_civ2.CivID];
 
                 double lastRange = 999;
 
-                if (DiplomacyHelper.IsContactMade(_civ1, _invasionCiv)
-                    && !GameContext.Current.CivilizationManagers[_invasionCiv].IsHomeColonyDestroyed
-                    && !DiplomacyHelper.AreAllied(_invasionCiv, _civ1)
-                    && !DiplomacyHelper.IsMember(_invasionCiv, _civ1)
-                    && _invasionCivM.Assault_TargetCiv == null
-                    && _civ1 != _invasionCiv)
+                if (DiplomacyHelper.IsContactMade(_civ1, _civ2)
+                    && !GameContext.Current.CivilizationManagers[_civ2].IsHomeColonyDestroyed
+                    && !DiplomacyHelper.AreAllied(_civ2, _civ1)
+                    && !DiplomacyHelper.IsMember(_civ2, _civ1)
+                    && _civM_2.Assault_TargetCiv == null
+                    && _civ1 != _civ2)
                 {
-                    MapLocation empire = GameContext.Current.CivilizationManagers[_invasionCiv].HomeSystem.Location;
-                    MapLocation ai = GameContext.Current.CivilizationManagers[_civ1].HomeSystem.Location;
-                    double curretRange = Math.Sqrt(Math.Pow(empire.X - ai.X, 2) + Math.Pow(empire.Y - ai.Y, 2));
+                    MapLocation _civ1_loc_homesystem = GameContext.Current.CivilizationManagers[_civ1].HomeSystem.Location;
+                    MapLocation _civ2_loc_homesystem = GameContext.Current.CivilizationManagers[_civ2].HomeSystem.Location;
 
-                    int civFirePower = Calculate_fire_power_ships_and_station(_invasionCivM.Assault_Location);
-                    int targetFirePower = Calculate_fire_power_ships_and_station(_invasionCivM.Assault_Location);
-                    if (_invasionCivM.Assault_TargetCiv == null && targetFirePower * 1.1 < civFirePower)
+                    double _current_range = Math.Sqrt(Math.Pow(_civ2_loc_homesystem.X - _civ1_loc_homesystem.X, 2)
+                                                   + Math.Pow(_civ2_loc_homesystem.Y - _civ1_loc_homesystem.Y, 2));
+
+
+                    int _civ1_fire_power = -1;
+                    int _civ2_fire_power = -1;
+
+                    // calculate fire power at orbit at civ2 home system to decide of target
+                    // not included: ships 'not at home' and not included: planetary attack in this state
+                    //_civ1_fire_power = Calculate_fire_power_ships_and_station(_civ1_loc_homesystem, _civ1.CivID);
+                    _civ1_fire_power = _civM_1.FirePowerSpace;
+
+                    _civ2_fire_power = Calculate_fire_power_ships_and_station(_civ2_loc_homesystem, _civ2.CivID);
+
+
+
+                    _text = "Step_3311:; Checking " + _civ1.Name
+                        + " at " + _civ1_loc_homesystem
+                        + ", Power= " + _civ1_fire_power
+                        + " vs " 
+                        + _civ2_fire_power + " Power "
+                        + " from " + _civ2.Name
+                        + " on " + _civ2_loc_homesystem
+
+                        ;
+                    Console.WriteLine(_text);
+
+
+
+
+                    if (_civM_2.Assault_TargetCiv == null && _civ2_fire_power * 1.1 < _civ1_fire_power)
                     {
-                        if (curretRange < lastRange)
+                        if (_current_range < lastRange)
                         {
-                            if (UnitAI.CanAllShipsGetThere(_civ1, _invasionCiv))
+                            if (UnitAI.CanAllShipsGetThere(_civ1, _civ2))
                             {
 
-                                _civM_1.Assault_TargetCiv = _invasionCiv;
-                                lastRange = curretRange;
+                                _civM_1.Assault_TargetCiv = _civ2;
+                                lastRange = _current_range;
                                 if (!DiplomacyHelper.AreAtWar(_civ1, _civM_1.Assault_TargetCiv))
                                 {
                                     _text = "Step_3321:; Declare War " + _civ1.Name + " on " + _civM_1.Assault_TargetCiv.Name
@@ -544,13 +574,14 @@ namespace Supremacy.AI
             return false;
         }
 
-        private static int Calculate_fire_power_ships_and_station(MapLocation _location)
+        public static int Calculate_fire_power_ships_and_station(MapLocation _location, int _int_civID)
         {
-            int firePower = 0;
-            _text = "Step_1131:; location= " + _location.ToString()
+            int _firePower = 0;
+            //int _defenderID;
+            string _text = "Step_1131:; location= " + _location.ToString()
                     ;
             //Console.WriteLine(_text);
-            
+
             if (_location == null || _location.ToString() == "(0, 0)")
             {
                 return 0;
@@ -558,39 +589,70 @@ namespace Supremacy.AI
 
             Sector _sector = new Sector(_location);
 
+            //if (_sector.IsOwned)
+            //{
+            //    _defenderID = _sector.Owner.CivID;
+            //}
+
+            if (_sector.Station != null && _sector.Station.OwnerID == _int_civID)
+            {
+                _firePower += _sector.Station.Fire_power_calculated();
+
+                _text = "Step_1132:; _location= " + _location.ToString()
+                        + " > for CivID= " + _int_civID
+                        + " - StationsFirePower= " + _firePower
+                        + " > for Calculate_fire_power_ships_and_station"
+                        ;
+                Console.WriteLine(_text);
+                //_defenderID = _sector.Station.OwnerID;
+            }
+
             //Supremacy.Orbitals.Fleet.
-                IList<Fleet> _fleets_at_location = GameContext.Current.Universe.FindAt<Fleet>(_location).ToList();
+            IList<Fleet> _fleets_at_location = GameContext.Current.Universe.FindAt<Fleet>(_location)
+                .Where(f => f.OwnerID == _int_civID)
+                .ToList();
             //.Where(_f => _f.Location == _location)
             //.ToList()
             //; 
 
+            if (_int_civID == 999)
+            {
+                /*IList<Fleet> */
+                _fleets_at_location = GameContext.Current.Universe.FindAt<Fleet>(_location)
+//.Where(f => f.OwnerID == _int_civID)
+.ToList();
+            }
+
+
             _text = "Step_1133:; _location= " + _location.ToString()
+                + " > for CivID= " + _int_civID
                 + " - _fleets_at_location.Count= " + _fleets_at_location.Count
+                + " > for Calculate_fire_power_ships_and_station"
                 ;
             Console.WriteLine(_text);
 
             foreach (Fleet civFleet in _fleets_at_location)
-                //.Where(_f => _f.Location == _location)
-                //.ToList())
+            //.Where(_f => _f.Location == _location)
+            //.ToList())
             {
                 foreach (Ship ship in civFleet.Ships.ToList())
                 {
-                    firePower += ship.Firepower();
+                    _firePower += ship.Fire_power_calculated();
 
-                    _text = "Step_1147:; " + UnitAI.CreateShipText(ship, out string shiptext) + " > has fire power= " + firePower;
+                    _text = "Step_1147:; "
+
+                        + " > new fire power in total= " + _firePower
+                        + " !!!   > for " + UnitAI.CreateShipText(ship, out string shiptext)
+                        ;
                     Console.WriteLine(_text);
-                    
+
                     // GameLog.Client.AI.DebugFormat("A ship all attack ships {0} location ={1}", ship.Name, ship.Location );
                 }
             }
 
-            if (_sector.Station != null)
-            {
-                firePower += _sector.Station.Firepower();
-            }
 
-            return firePower;
+            return _firePower;
         }
-        #endregion
+        //#endregion
     }
 }

@@ -13,6 +13,7 @@ using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,7 +100,7 @@ namespace Supremacy.Combat
             //GameLog.Core.CombatDetails.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
             //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
             string _text = ""; // _newline; // dummy - please keep
-            _text = "Step_3199:; "
+            _text = "Step_3199:; " // cUpda
                 + GameEngine.LocationString(location.ToString())
                 + " cUpda > ### combatId " + combatId
                 + " Round " + this.RoundNumber
@@ -134,7 +135,7 @@ namespace Supremacy.Combat
                     foreach (CombatUnit ncs in fa.NonCombatShips)   // only NonCombat ships 
                     {
                         civ = fa.NonCombatShips.First().Owner;
-                        // Update X 25 june 2019 Total Strength instead of just Firepower
+                        // Update X 25 june 2019 Total Strength instead of just Fire_power_calculated
                         _friendlyEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
                                 + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
@@ -145,7 +146,7 @@ namespace Supremacy.Combat
                     foreach (CombatUnit cs in fa.CombatShips)   // only combat ships
                     {
                         civ = fa.CombatShips.First().Owner;
-                        // Update X 25 june 2019 Total Strength instead of just Firepower
+                        // Update X 25 june 2019 Total Strength instead of just Fire_power_calculated
                         _friendlyEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_friendlyEmpireStrength + cs.Firepower)
                                 + (Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
@@ -161,7 +162,7 @@ namespace Supremacy.Combat
                     if (fa.Station != null)
                     {
                         civ = fa.Station.Owner;
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        // Update X 25 june 2019 Total Strenght instead of just Fire_power_calculated
                         _friendlyEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_friendlyEmpireStrength + fa.Station.Firepower)
                                 + Convert.ToDouble(fa.Station.ShieldStrength + fa.Station.HullStrength)
@@ -185,7 +186,7 @@ namespace Supremacy.Combat
                     //Console.WriteLine(_text);
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
                         new ReportEntry_CoS(civ, FriendlyAssets.First().Location
-                        , _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength 
+                        , _sectorString + " > Combat Durability Friendly Assets = " + _friendlyEmpireStrength 
                             + " vs " + _hostStrength
                         , "", "", SitRepPriority.Red));
                 }
@@ -210,7 +211,7 @@ namespace Supremacy.Combat
                     foreach (CombatUnit ncs in ha.NonCombatShips)   // only NonCombat ships 
                     {
                         civ = ha.NonCombatShips.First().Owner;
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        // Update X 25 june 2019 Total Strenght instead of just Fire_power_calculated
                         _allHostileEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_allHostileEmpireStrength + ncs.Firepower)
                                 + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
@@ -221,8 +222,8 @@ namespace Supremacy.Combat
                     foreach (CombatUnit cs in ha.CombatShips)   // only combat ships
                     {
                         civ = ha.CombatShips.First().Owner;
-                        // _allHostileEmpireStrength += _cs.FirePower;
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        // _allHostileEmpireStrength += _cs.Fire_Power_Ship;
+                        // Update X 25 june 2019 Total Strenght instead of just Fire_power_calculated
 
                         double _maneuverability = 1;
 
@@ -238,15 +239,15 @@ namespace Supremacy.Combat
                                 );
 
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
-                        //    _cs.Source.ObjectID, _cs.Source.Name, _cs.Source.Design, _cs.FirePower, _hostileEmpireStrength);
+                        //    _cs.Source.ObjectID, _cs.Source.Name, _cs.Source.Design, _cs.Fire_Power_Ship, _hostileEmpireStrength);
                     }
 
 
                     if (ha.Station != null)
                     {
                         civ = ha.Station.Owner;
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        //_allHostileEmpireStrength += ha.Station.FirePower;
+                        // Update X 25 june 2019 Total Strenght instead of just Fire_power_calculated
+                        //_allHostileEmpireStrength += ha.Station.Fire_Power_Ship;
                         _allHostileEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_allHostileEmpireStrength + ha.Station.Firepower)
                                 + Convert.ToDouble(ha.Station.ShieldStrength + ha.Station.HullStrength)
@@ -257,7 +258,7 @@ namespace Supremacy.Combat
                     }
                     //_text = _sectorString + " cUpda > Combat Durability Hostile Assets = " + _allHostileEmpireStrength;
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, HostileAssets.First().Location
-                        , _sectorString + " cUpda > Combat Durability Hostile Assets = " + _allHostileEmpireStrength
+                        , _sectorString + " > Combat Durability Hostile Assets = " + _allHostileEmpireStrength
                         , "", "", SitRepPriority.Red));
                 }
                 return _allHostileEmpireStrength;
@@ -537,7 +538,7 @@ namespace Supremacy.Combat
                         {
                             _otherCivStrength += CalculateStrength_Ship_NonCombat_in_CombatUpdate(ncs);
                             //// UPDATE X 25 June 2019: Do total strength instead of just firepower
-                            //_otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + ncs.Firepower)
+                            //_otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + ncs.Fire_power_calculated)
                             //    + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
                             //    * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
                             _ = _otherAssetsLocal.Remove(ha);
@@ -551,7 +552,7 @@ namespace Supremacy.Combat
                             //civStrengthValues[ha.Station.Owner.ToString()] += CalculateStrength_Station_in_CombatUpdate(ha.Station);
                             _otherCivStrength += ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
                             //// UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            //_otherCivStrength += ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+                            //_otherCivStrength += ha.Station.Fire_power_calculated + ha.Station.HullStrength + ha.Station.ShieldStrength;
                         }
                         _ = _otherAssetsLocal.Remove(ha);
                     }
@@ -632,7 +633,7 @@ namespace Supremacy.Combat
         //                {
         //                    _civ1Strength += CalculateStrength_Ship_NonCombat_in_CombatUpdate(ncs);
         //                    //// UPDATE X 25 June 2019: Do total strength instead of just firepower
-        //                    //_otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + ncs.Firepower)
+        //                    //_otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + ncs.Fire_power_calculated)
         //                    //    + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
         //                    //    * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
         //                    _ = _otherAssetsLocal.Remove(ha);
@@ -646,7 +647,7 @@ namespace Supremacy.Combat
         //                    //civStrengthValues[ha.Station.Owner.ToString()] += CalculateStrength_Station_in_CombatUpdate(ha.Station);
         //                    _civ1Strength += CalculateStrength_Station_in_CombatUpdate(ha.Station);
         //                    //// UPDATE X 25 June 2019: Do total strenght instead of just firepower
-        //                    //_otherCivStrength += ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+        //                    //_otherCivStrength += ha.Station.Fire_power_calculated + ha.Station.HullStrength + ha.Station.ShieldStrength;
         //                }
         //                _ = _otherAssetsLocal.Remove(ha);
         //            }
@@ -759,7 +760,7 @@ namespace Supremacy.Combat
                     {
                         _otherCivStrength += CalculateStrength_Ship_NonCombat_in_CombatUpdate(ncs);
                         //// UPDATE X 25 June 2019: Do total strength instead of just firepower
-                        //_otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + ncs.Firepower)
+                        //_otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + ncs.Fire_power_calculated)
                         //    + (Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
                         //    * (1 + (Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
                         _anyAsset = true;
@@ -775,7 +776,7 @@ namespace Supremacy.Combat
                         _otherCivStrength += CalculateStrength_Station_in_CombatUpdate(_hostileAssets[i].Station);
                         _anyAsset = true;
                         //// UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                        //_otherCivStrength += ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+                        //_otherCivStrength += ha.Station.Fire_power_calculated + ha.Station.HullStrength + ha.Station.ShieldStrength;
                     }
                     //_ = _otherAssetsLocal.Remove(ha);
                 }
@@ -1035,31 +1036,31 @@ namespace Supremacy.Combat
                 //    //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", _cs.Owner.Key, pair.Owner.Key);
                 //    foreach (CombatUnit ship in asset.CombatShips)
                 //    {
-                //        currentCivStrength += ship.Firepower;
-                //        _text = "Step_3383:; cUpda: added Firepower into; " + ship.Owner.Key
+                //        currentCivStrength += ship.Fire_power_calculated;
+                //        _text = "Step_3383:; cUpda: added Fire_power_calculated into; " + ship.Owner.Key
                 //            + "; for; " + ship.Source.ObjectID
                 //            + "; " + ship.Source.Name
                 //            + "; " + ship.Source.Design
-                //            + "; " + ship.Source.FirePower
+                //            + "; " + ship.Source.Fire_Power_Ship
                 //            ;
                 //        if (Write_Combat_Directly) Console.WriteLine(_text); 
                 //        _CombatUpdate_Text += _text;
-                //        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                //        //GameLog.Core.CombatDetails.DebugFormat("added Fire_power_calculated into {0} for {1} {2} ({3}) = {4}",
+                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.Fire_Power_Ship);
                 //    }
                 //    if (asset.Station != null)
                 //    {
-                //        currentCivStrength += asset.Station.Firepower;
-                //        _text = "Step_3385:; cUpda: added Firepower into; " + asset.Station.Owner.Key
+                //        currentCivStrength += asset.Station.Fire_power_calculated;
+                //        _text = "Step_3385:; cUpda: added Fire_power_calculated into; " + asset.Station.Owner.Key
                 //                + "; for; " + asset.Station.Source.ObjectID
                 //                + "; " + asset.Station.Source.Name
                 //                + "; " + asset.Station.Source.Design
-                //                + "; " + asset.Station.Source.FirePower
+                //                + "; " + asset.Station.Source.Fire_Power_Ship
                 //                ;
                 //        if (Write_Combat_Directly) Console.WriteLine(_text); 
                 //        _CombatUpdate_Text += _text;
-                //        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                //        //GameLog.Core.CombatDetails.DebugFormat("added Fire_power_calculated into {0} for {1} {2} ({3}) = {4}",
+                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.Fire_Power_Ship);
                 //    }
                 //}
                 //_text = "Step_3388:; cUpda: friendlyAssets(Amount)="
@@ -1089,27 +1090,27 @@ namespace Supremacy.Combat
 
                 //    foreach (CombatUnit ship in asset.CombatShips)
                 //    {
-                //        currentCivStrength += ship.Firepower;
-                //        _text = "Step_3393:; cUpda: added Firepower into; " + ship.Owner.Key
+                //        currentCivStrength += ship.Fire_power_calculated;
+                //        _text = "Step_3393:; cUpda: added Fire_power_calculated into; " + ship.Owner.Key
                 //                + "; for; " + ship.Source.ObjectID
                 //                + "; " + ship.Source.Name
                 //                + "; " + ship.Source.Design
-                //                + "; " + ship.Source.FirePower
+                //                + "; " + ship.Source.Fire_Power_Ship
                 //                ;
                 //        if (Write_Combat_Directly) Console.WriteLine(_text); 
                 //        _CombatUpdate_Text += _text;
-                //        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                //        //GameLog.Core.CombatDetails.DebugFormat("added Fire_power_calculated into {0} for {1} {2} ({3}) = {4}",
+                //        //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.Fire_Power_Ship);
                 //    }
 
                 //    if (asset.Station != null)
                 //    {
-                //        currentCivStrength += asset.Station.Firepower;
-                //        _text = "Step_3395:; cUpda: added Firepower into; " + asset.Station.Owner.Key
+                //        currentCivStrength += asset.Station.Fire_power_calculated;
+                //        _text = "Step_3395:; cUpda: added Fire_power_calculated into; " + asset.Station.Owner.Key
                 //                + "; for; " + asset.Station.Source.ObjectID
                 //                + "; " + asset.Station.Source.Name
                 //                + "; " + asset.Station.Source.Design
-                //                + "; FirePower=" + asset.Station.Source.FirePower
+                //                + "; Fire_Power_Ship=" + asset.Station.Source.Fire_Power_Ship
                 //                ;
                 //        if (Write_Combat_Directly) Console.WriteLine(_text); 
                 //        _CombatUpdate_Text += _text;
@@ -1159,30 +1160,30 @@ namespace Supremacy.Combat
                 foreach (CombatUnit ship in asset.CombatShips)
                 {
                     _currentCivStrength += ship.Firepower;
-                    _text = "Step_3383:; cUpda: added Firepower into; " + ship.Owner.Key
+                    _text = "Step_3383:; cUpda: added Fire_power_calculated into; " + ship.Owner.Key
                         + "; for; " + ship.Source.ObjectID
                         + "; " + ship.Source.Name
                         + "; " + ship.Source.Design
-                        + "; " + ship.Source.FirePower
+                        + "; " + ship.Source.Fire_Power_Orbital
                         ;
                     if (Write_Combat_Directly) Console.WriteLine(_text); 
                     _CombatUpdate_Text += _text;
-                    //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                    //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                    //GameLog.Core.CombatDetails.DebugFormat("added Fire_power_calculated into {0} for {1} {2} ({3}) = {4}",
+                    //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.Fire_Power_Ship);
                 }
                 if (asset.Station != null)
                 {
                     _currentCivStrength += asset.Station.Firepower;
-                    _text = "Step_3385:; cUpda: added Firepower into; " + asset.Station.Owner.Key
+                    _text = "Step_3385:; cUpda: added Fire_power_calculated into; " + asset.Station.Owner.Key
                             + "; for; " + asset.Station.Source.ObjectID
                             + "; " + asset.Station.Source.Name
                             + "; " + asset.Station.Source.Design
-                            + "; " + asset.Station.Source.FirePower
+                            + "; " + asset.Station.Source.Fire_Power_Orbital
                             ;
                     if (Write_Combat_Directly) Console.WriteLine(_text); 
                     _CombatUpdate_Text += _text;
-                    //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                    //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                    //GameLog.Core.CombatDetails.DebugFormat("added Fire_power_calculated into {0} for {1} {2} ({3}) = {4}",
+                    //    pair.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.Fire_Power_Ship);
                 }
             }
             _text = "Step_3389:; cUpda: _assets(Amount)="

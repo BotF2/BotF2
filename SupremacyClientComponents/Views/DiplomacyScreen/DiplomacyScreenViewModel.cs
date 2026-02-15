@@ -97,6 +97,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _membershipCommand;
         private readonly DelegateCommand _editMessageCommand;
         private readonly DelegateCommand _sendMessageCommand;
+        private readonly DelegateCommand _canExecuteSendMessageCommand;
         private readonly DelegateCommand _cancelMessageCommand;
         private readonly DelegateCommand _resetGraphCommand;
         private readonly DelegateCommand<DiplomacyGraphNode> _setSelectedGraphNodeCommand;
@@ -125,6 +126,7 @@ namespace Supremacy.Client.Views
             _membershipCommand = new DelegateCommand(ExecuteMembershipCommand, CanExecuteMembershipCommand);
             _editMessageCommand = new DelegateCommand(ExecuteEditMessageCommand, CanExecuteEditMessageCommand);
             _sendMessageCommand = new DelegateCommand(ExecuteSendMessageCommand, CanExecuteSendMessageCommand);
+            _canExecuteSendMessageCommand = new DelegateCommand(ExecuteSendMessageCommand, CanExecuteSendMessageCommand);
             _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
@@ -719,7 +721,7 @@ namespace Supremacy.Client.Views
             }
 
             SelectedForeignPower.OutgoingMessage.Send();
-            GameLog.Client.DiplomacyDetails.DebugFormat("Diplo Message: SEND button pressed...");
+            GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
             if (SelectedForeignPower != null && SelectedForeignPower.OutgoingMessage != null)
             {
                 int _selectedID = SelectedForeignPower.Counterparty.CivID;
@@ -879,6 +881,7 @@ namespace Supremacy.Client.Views
             _fullAllianceCommand.RaiseCanExecuteChanged();
             _editMessageCommand.RaiseCanExecuteChanged();
             _sendMessageCommand.RaiseCanExecuteChanged();
+            _canExecuteSendMessageCommand.RaiseCanExecuteChanged();
             _cancelMessageCommand.RaiseCanExecuteChanged();
 
             _selectedForeignPower?.InvalidateCommands();
@@ -943,6 +946,13 @@ namespace Supremacy.Client.Views
         public ICommand EditMessageCommand => _editMessageCommand;
 
         public ICommand SendMessageCommand => _sendMessageCommand;
+        public ICommand CanExecuteSendMessage => _canExecuteSendMessageCommand;
+        //{
+        //    get
+        //    {
+        //        return _canExecuteSendMessageCommand;
+        //    }
+        //}
 
         public ICommand CancelMessageCommand => _cancelMessageCommand;
 

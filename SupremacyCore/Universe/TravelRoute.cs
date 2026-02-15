@@ -90,7 +90,18 @@ namespace Supremacy.Universe
         /// Gets a value indicating whether this <see cref="TravelRoute"/> is empty.
         /// </summary>
         /// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-        public bool IsEmpty => _path.Count == 0;
+        public bool IsEmpty
+        {
+            get
+            {
+                bool _empty = false; // 2025-12-28
+                if (_path.Count == 0 || _waypoints.Count == 0)
+                {
+                    _empty = true;
+                }
+                return _empty;
+            }
+        }
 
         /// <summary>
         /// Gets the length of this <see cref="TravelRoute"/>.
@@ -116,6 +127,11 @@ namespace Supremacy.Universe
         /// <returns>The next step.</returns>
         public MapLocation Pop()
         {
+            if (_path.Count < 1)
+            {
+                return _waypoints.LastOrDefault(); // 2025-12-28
+            }
+
             MapLocation result = _path[0];
             if (_path.Count != 0)
             {

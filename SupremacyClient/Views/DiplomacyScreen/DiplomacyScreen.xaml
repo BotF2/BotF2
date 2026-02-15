@@ -1,6 +1,6 @@
 ﻿<!--File:DiplomacyScreen.xaml-->
 <scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
-                       x:Name="_self"
+                       x:Name="Root"
                        x:FieldModifier="private"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -862,7 +862,7 @@
                        
                         <Button Name="SendButton" Content="SEND" Margin="2,0,5,0"
                             Command="{Binding Path=SendMessageCommand}"
-                            IsEnabled="{Binding Path=SendMessageCommand}"     
+                            IsEnabled="{Binding Path=CanExecuteSendMessage}"     
                             MinWidth="150" MaxWidth="151" MaxHeight="28"/>
 
 
@@ -999,7 +999,7 @@
                                                                             TextWrapping="Wrap"
                                                                             TextTrimming="CharacterEllipsis"
                                                                             FontSize="15pt"
-                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                             Foreground="LightCyan"
                                                                             Margin="5,0,10,0"
                                                                             Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AffiliatedHeader, CharacterCasing=Upper}" 
@@ -1011,7 +1011,7 @@
                                                                             TextWrapping="Wrap"
                                                                             TextTrimming="CharacterEllipsis"
                                                                             FontSize="15pt"
-                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                             Foreground="Aqua"
                                                                             Background="Black"
                                                                             Margin="5,0,10,0"
@@ -1087,7 +1087,7 @@
                                                             TextWrapping="Wrap"
                                                             TextTrimming="CharacterEllipsis"
                                                             FontSize="18"
-                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                             Foreground="LimeGreen"
                                                             Margin="10,2,0,0"
                                                             Text="{Binding Path=Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -2084,7 +2084,7 @@
                    --><!--scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph"--><!-- 
                     <Viewbox Stretch="Uniform"
                            StretchDirection="DownOnly"
-                           SnapsToDevicePixels="True">
+                           Snaps to DevicePixels="True">
                         <s:NodeGraph NodesBindingPath="Children"
                          CenterObject="{Binding Path=SelectedGraphNode, Mode=TwoWay}"
                          PenSelector="{x:Static diplomacyScreen:DiplomacyGraphPenSelector.Instance}"

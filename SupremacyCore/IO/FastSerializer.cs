@@ -1,3 +1,4 @@
+// File:FastSerializer.cs
 // Remove the DEBUG condition if you want to always check for not optimizable values at the small expense of runtime speed
 //#if DEBUG___
 //#define THROW_IF_NOT_OPTIMIZABLE
@@ -3170,9 +3171,9 @@ namespace Supremacy.IO.Serialization
         {
             try
             {
-            Write((byte)typeCode);
+                Write((byte)typeCode);
 #if DEBUG
-            typeUsage[(int)typeCode]++;
+                typeUsage[(int)typeCode]++;
 #endif
             }
             catch (Exception)
@@ -3523,12 +3524,12 @@ namespace Supremacy.IO.Serialization
             StringBuilder sb = new StringBuilder("Type Usage Dump\r\n---------------\r\n");
             for (int i = 0; i < 256; i++)
             {
-//#if DEBUG
+                //#if DEBUG
                 if (typeUsage[i] != 0)
                 {
                     sb.AppendFormat("Step_1229:; {0, 8:n0}: {1}\r\n", typeUsage[i], (SerializedType)i);
                 }
-//#endif
+                //#endif
             }
             Console.WriteLine(sb);
         }
@@ -4751,15 +4752,16 @@ namespace Supremacy.IO.Serialization
             {
                 return Type.GetType(ReadOptimizedString());
             }
-            catch
+            catch (Exception e)
             {
                 //throwOnError;
-                _text = "Step_9333:; ##### Error on > Type.GetType(ReadOptimizedString())";
+                _text = "Step_9333:; ##### Error on > Type.GetType(ReadOptimizedString())" + Environment.NewLine + e;
                 //if (_writeDirectly_Colony) 
-                    Console.WriteLine(_text);
+                Console.WriteLine(_text);
+                Debugger.Break();
 
                 //Debugger.Break();
-                
+
                 //_colony_full_Report += _text + _newline;
                 return Type.GetType(ReadOptimizedString());
             }
@@ -5400,12 +5402,12 @@ namespace Supremacy.IO.Serialization
                             //var _x ;
                             //try
                             //{
-                                return _binaryFormatter.Deserialize(BaseStream);
-                            //}
-                            //catch
-                            //{
-                            //    return null;
-                            //}
+                            return _binaryFormatter.Deserialize(BaseStream);
+                        //}
+                        //catch
+                        //{
+                        //    return null;
+                        //}
                         //var _x = _binaryFormatter.Deserialize(BaseStream);
                         //if (_x == null)
                         //    _x = 0;

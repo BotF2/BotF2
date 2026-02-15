@@ -47,14 +47,14 @@ namespace Supremacy.AI
         private static bool _writeDirectly_Colony = true;
         private static bool _shipOrderIsDone;
 
-        public static void DoTurn([NotNull] Civilization _civ)
+        public static void Do_A_Turn_ColonyAI([NotNull] Civilization _civ)
         {
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
             //string _col_location = ClientApp.;
             string _newline = Environment.NewLine;
 
             _writeDirectly_Colony = true;
-            string _text = _newline + "Step_1101:; ColonyAI.cs > Do_0_Turn_Unit begins... for > " + _civ.Key
+            string _text = _newline + "Step_1101:; ColonyAI.cs > Do_C_Turn_UnitAI begins... for > " + _civ.Key
                 + ": Deu=" + _civM.Resources.Deuterium.CurrentValue
                 + ", Dur=" + _civM.Resources.Duranium.CurrentValue
                 + ", Dil=" + _civM.Resources.Dilithium.CurrentValue
@@ -343,8 +343,9 @@ namespace Supremacy.AI
                         int count = 0;
                         foreach (BuildQueueItem buildQueueItem in colony.BuildQueue) // just > Console.WriteLine
                         {
-                            _text = "Step_1206:; " + GameEngine.LocationString(colony.Location.ToString()) + " > " + _name_col
-                                + "; needs " + GameEngine.Do_x_Digit_String(2, buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
+                            _text = "Step_1206:; " + GameEngine.LocationString(colony.Location.ToString()) 
+                                + " > " + _name_col + " ; " + _owner_col
+                                + " > needs " + GameEngine.Do_x_Digit_String(2, buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
                                 + "; buildQueueItem # " + count + " = " + buildQueueItem.Description
 
                                     //+ buildQueueItem.Description
@@ -426,7 +427,7 @@ namespace Supremacy.AI
                 catch (Exception e)
                 {
 
-                    _text = "Step_1105:; ##################### Problem at ColonyAI.Do_0_Turn_Unit ..." + colony.Name + _newline + e;
+                    _text = "Step_1105:; ##################### Problem at ColonyAI.Do_C_Turn_UnitAI ..." + colony.Name + _newline + e;
                     //if (_writeDirectly_Colony) 
                     Console.WriteLine(_text);
                     Debugger.Break();
@@ -448,7 +449,7 @@ namespace Supremacy.AI
 
 
             }// end of 
-            _text = "Step_1109:; Finish of ColonyAI.Do_0_Turn_Unit ";
+            _text = "Step_1109:; " + DateTime.Now + " > Finish of ColonyAI.Do_A_Turn_ColonyAI for " +_civM.Civilization;
             if (_writeDirectly_Colony) Console.WriteLine(_text);
             //Console.WriteLine(_newline + _newline + "_colony_full_Report" + _newline + _newline + _colony_full_Report + _newline + "End of _colony_full_Report");
 
@@ -493,8 +494,9 @@ namespace Supremacy.AI
                     {
                         _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, _colony.GetFacilityType(ProductionCategory.Research))));
                         _text = "Step_1244:; " + GameEngine.LocationString(_colony.Location.ToString())
-                            + " > Colony_Step_80_Handle_Flex_Production on "
-                                + _name_col + ", Owner= " + _owner_col
+
+                                + " > " + _name_col + " ; " + _owner_col
+                                + " > Colony_Step_80_Handle_Flex_Production on "
                                 + " > ordered one more facility for > Research"
                                 ;
                         if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -605,7 +607,7 @@ namespace Supremacy.AI
                 switch (_available_item_Category)
                 {
                     case ProductionCategory.Food:
-                        if (_itemToBuild_Facility == null) CheckFor_1_Food_Facility(_colony, _available_item, _available_item_Category);
+                        if (_itemToBuild_Facility == null) CheckFor_1_Food_Facility(_colony, _available_item, _available_item_Category); // (75) check for all 
                         continue;
                     case ProductionCategory.Industry:
                         if (_itemToBuild_Facility == null) CheckFor_2_Industry_Facility(_colony, _available_item, _available_item_Category);
@@ -767,11 +769,11 @@ namespace Supremacy.AI
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
             }
 
-            //_text = "Step_1109:; Finish of ColonyAI.Do_0_Turn_Unit ";
+            //_text = "Step_1109:; Finish of ColonyAI.Do_C_Turn_UnitAI ";
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
             ////Console.WriteLine(_newline + _newline + "_colony_full_Report" + _newline + _newline + _colony_full_Report + _newline + "End of _colony_full_Report");
 
-        } // End of Do_0_Turn_Unit
+        } // End of Do_C_Turn_UnitAI
 
         private static void CheckFor_OFF_ShipProduction(Colony _colony)
         {
@@ -1511,6 +1513,7 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
             string _text;
             _text = "Step_2346:; " + GameEngine.LocationString(_colony.Location.ToString())
+                                                + " > " + _name_col + " ; " + _owner_col
         + " > Pool= " + GameEngine.Do_x_Digit_String(2, _laborPool.ToString())
             + " vs " + GameEngine.Do_x_Digit_String(2, _popAvailable.ToString()) // should be zero
 
@@ -1670,8 +1673,10 @@ namespace Supremacy.AI
             // labors might be unchanced
             //Print_Labors(_colony, _colony.AvailableLabor, _colony.AvailableLabor / 10);
 
-            _text = "Step_1259:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Handle ENERGY on "
-                    + _name_col + " " + _owner_col
+            _text = "Step_1259:; " + GameEngine.LocationString(_colony.Location.ToString()) 
+                    + " > " + _name_col + " ; " + _owner_col
+                    + " > Handle ENERGY "
+
                     + " >>> _energy_net= " + _colony.Energy_Net
                     + " > OrbBat: active " + _colony.OrbitalBatteries_Active + " of " + _colony.OrbitalBatteries_Total
                     + ", _offlineBuilding= " + _offlineBuilding.Where(b => b.IsActive == false).Count()
@@ -1700,8 +1705,9 @@ namespace Supremacy.AI
 
             double maxFoodProduction = _colony.GetProductionModifier(ProductionCategory.Food).Bonus + (_colony.GetTotalFacilities(ProductionCategory.Food) * foodOutput);
 
-            _text = "Step_1220:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Colony_Step_05_Handle_Food_Production on; "
-                    + _name_col + " ; " + _owner_col
+            _text = "Step_1220:; " + GameEngine.LocationString(_colony.Location.ToString())
+                    + " > " + _name_col + " ; " + _owner_col
+                    + " > Colony_Step_05_Handle_Food_Production on; "
                     + "; neededFood= " + (int)neededFood
                     + "; maxFoodProduction= " + (int)maxFoodProduction
                     + "; for Pop= " + _colony.Population
@@ -1713,7 +1719,16 @@ namespace Supremacy.AI
             //_colony_full_Report += _newline + _text;
 
             ProductionFacilityDesign facilityType = _colony.GetFacilityType(ProductionCategory.Food);
-            if (_colony.Food_Net < 15 && _colony.FoodReserves.CurrentValue + 1 / _colony.Population.CurrentValue + 1 < 5 && !_colony.IsBuilding(facilityType))
+            int _reserves_for_turns = (_colony.FoodReserves.CurrentValue + 1) / (_colony.Population.CurrentValue + 1);
+
+            if (_colony.Owner.IsHuman)
+            {
+                //Debugger.Break();
+            }
+
+            if (_colony.Food_Net < 15 
+                && (_colony.FoodReserves.CurrentValue + 1) / (_colony.Population.CurrentValue + 1) < 5 
+                && !_colony.IsBuilding(facilityType))
             {
                 _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, facilityType)));
                 _text = "Step_1228:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col + " " + _owner_col + " > Handle_FOOD_Production "
@@ -1728,9 +1743,9 @@ namespace Supremacy.AI
             }
 
             _text = "Step_1222:; " + GameEngine.LocationString(_colony.Location.ToString())
-                + " > Colony_Step_05_Handle_Food_Production is DONE; "
-                    + _name_col + " ; " + _owner_col
 
+                    + " > " + _name_col + " ; " + _owner_col
+                    + " > Colony_Step_05_Handle_Food_Production is DONE; "
                     + "; neededFood= " + (int)neededFood
                     + "; maxFoodProduction= " + (int)maxFoodProduction
                     + "; for Pop= " + _colony.Population
@@ -1958,8 +1973,10 @@ namespace Supremacy.AI
                     //if (flexLabors > -21)  // 2 more facilites as available labors, 10 labors = 1 facility
                     if (flexLabors > 4)  // 2 more facilites as available labors, 10 labors = 1 facility
                     {
-                        _text = "Step_1204:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony_Step_65_Handle_Buildings on INDUSTRY at "
-                            + _name_col + " " + _owner_col
+                        _text = "Step_1204:; " + GameEngine.LocationString(_colony.Location.ToString()) 
+
+                            + " > " + _name_col + " ; " + _owner_col
+                            + " Colony_Step_65_Handle_Buildings on INDUSTRY at "
                             + " > " + _colony.GetAvailableLabor() + " labors available"
                             ;
                         if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -1981,8 +1998,10 @@ namespace Supremacy.AI
                         {
                             //than Research
                             _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, _colony.GetFacilityType(ProductionCategory.Industry))));
-                            _text = "Step_1256:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony_Step_65_Handle_Buildings on "
-                                + _name_col + " " + _owner_col
+                            _text = "Step_1256:; " + GameEngine.LocationString(_colony.Location.ToString()) 
+
+                                + " > " + _name_col + " ; " + _owner_col
+                                + " Colony_Step_65_Handle_Buildings on "
                                 + " > added 1 Industry Facility Build Order"
                                 ;
                             if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -2291,13 +2310,13 @@ namespace Supremacy.AI
                 if (structureProject != null && (int)structureProject.BuildDesign.BuildCost < (_civM.Credits.CurrentValue / 4))
                 {
                     _colony.BuildQueue.Add(new BuildQueueItem(structureProject));
-                    _text = "Step_1269:; " + GameEngine.LocationString(_colony.Location.ToString())
+                    _text = "Step_1279:; " + GameEngine.LocationString(_colony.Location.ToString())
                             + " > " + _name_col
                             + " ; " + _owner_col
-                            + "; Morale=; " + _colony.Morale
-                            + "; prodOutput=;" + prodOutput
-                            + "; Industry_Net=;" + _colony.Industry_Net
-                            + "; > Added to Build=;" + structureProject.BuildDesign.ToString()
+                            + " ; Morale=; " + _colony.Morale
+                            + " ; prodOutput=;" + prodOutput
+                            + " ; Industry_Net=;" + _colony.Industry_Net
+                            + " ; > Added to Build=;" + structureProject.BuildDesign.ToString()
 
                             ;
                     if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -2414,7 +2433,7 @@ namespace Supremacy.AI
             {
                 if (colony.Owner.IsHuman)
                 {
-                    Debugger.Break();
+                    //Debugger.Break();
                 }
 
                 double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
@@ -2595,7 +2614,7 @@ namespace Supremacy.AI
                     switch (_available_item_Category)
                     {
                         case ProductionCategory.Food:
-                            CheckFor_1_Food_Facility(colony, _available_item, _available_item_Category);
+                            CheckFor_1_Food_Facility(colony, _available_item, _available_item_Category);  // build for labor pool
                             break;
                         case ProductionCategory.Industry:
                             CheckFor_2_Industry_Facility(colony, _available_item, _available_item_Category);
@@ -2810,6 +2829,7 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
             string _text;
             _text = /*_newline + */"Step_1207:; " + GameEngine.LocationString(_colony.Location.ToString())
+                + " > " + _name_col + " ; " + _owner_col
                     + " > Colony_Step_50_Handle_Upgrades: "
                     + ", BuildQueue.Count= " + _colony.BuildQueue.Count
                     + ", _colony.AvailableLabor= " + _colony.AvailableLabor
@@ -2895,8 +2915,10 @@ namespace Supremacy.AI
                     {
                         _colony.BuildQueue.Add(new BuildQueueItem(_productionFacilityUpgradeProject));
 
-                        _text = "Step_1222:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Colony_Step_50_Handle_Upgrades on "
-                                + _name_col + ", Owner= " + _owner_col
+                        _text = "Step_1227:; " + GameEngine.LocationString(_colony.Location.ToString()) 
+
+                                + " > " + _name_col + " ; " + _owner_col
+                            + " > Colony_Step_50_Handle_Upgrades on "
                                 + " > Upgrade > INDUSTRY"
                                 ;
                         if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -3265,10 +3287,10 @@ namespace Supremacy.AI
             if (_writeDirectly_Colony) Console.WriteLine(_text);
             _colony_full_Report += _newline + _text; // not necessary
 
-            //if (_colony.Owner.IsHuman && _colony.Name == "Sol")
-            //{
-            //    Debugger.Break();
-            //}
+            if (/*_colony.Owner.IsHuman && */_colony.Name == "Insia")
+            {
+                Debugger.Break();
+            }
 
 
             //_colony.ProcessQueue();
@@ -3509,7 +3531,7 @@ namespace Supremacy.AI
                             CheckFor_5_Intelligence_Facility(_colony, _itemToBuild, ProductionCategory.Intelligence);
                             break;
                         case ProductionCategory.Food:
-                            CheckFor_1_Food_Facility(_colony, _itemToBuild, ProductionCategory.Food);
+                            CheckFor_1_Food_Facility(_colony, _itemToBuild, ProductionCategory.Food);  // Build anything
                             break;
                     }
 
@@ -3623,7 +3645,9 @@ namespace Supremacy.AI
 
                     if (_buyQuick == true || turnsNeeded > 1 && turnsNeeded < 3 || cost < 600)  // we buy when turnsNeede = 2 or cost less than 600
                     {
-                        _text = "Step_1210:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Handle_Buy_Build: "
+                        _text = "Step_1210:; " + GameEngine.LocationString(_colony.Location.ToString())
+                                                        + " > " + _name_col + " ; " + _owner_col
+                        + " > Handle_Buy_Build: "
                             + "Credits.Current= " + _civM.Credits.CurrentValue
                             + ", Costs= " + cost
                             + ", industryNeeded= " + industryNeeded
@@ -3746,7 +3770,7 @@ namespace Supremacy.AI
 
             foreach (BuildProject _proj in potentialProjects)  // find Prio
             {
-                _text = "Step_1213:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Handle_Ship_Production: "
+                _text = "Step_1213:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Handle_Ship_Production: "
                         + "potential < _proj.Description= " + _proj.Description
                         ;
                 //if (_writeDirectly_Colony) 
@@ -3976,7 +4000,7 @@ namespace Supremacy.AI
                     if (_civM._neededShiptypesList != null)
                     {
 
-
+                        string _ships = "";
                         foreach (var item in _civM._neededShiptypesList)
                         {
                             if (item.ToString() == "dummy")
@@ -3985,13 +4009,19 @@ namespace Supremacy.AI
                             }
                             else
                             {
-                                _text = "Step_7766:; " + _civM.Civilization
-                                    + " >  _neededShiptypesList= " + item.ToString()
+                                _ships += item.ToString() + ", "
+                                    //_ships = "Step_7766:; " + _civM.Civilization
+                                    //+ " >  _neededShiptypesList= " 
                                     //+ " for " + _civ
                                     ;
                                 Console.WriteLine(_text);
                             }
                         }
+                        _text = "Step_7766:; " + _civM.Civilization
+                                + " >  _neededShiptypesList= " + _ships
+                                //+ " for " + _civ
+                                ;
+                        Console.WriteLine(_text);
                     }
 
                     //check _listPrioShipBuild2

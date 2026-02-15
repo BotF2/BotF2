@@ -171,6 +171,7 @@ namespace Supremacy.Universe
             {
                 throw new ArgumentNullException("startype");
             }
+
             IEnumerable<UniverseObject> items = from item in _objects
                                                 where item != null && item.Sector != null && item.Sector.System != null && item.Sector.System.StarType == starType
                                                 select item;
@@ -491,6 +492,25 @@ namespace Supremacy.Universe
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public bool Destroy(UniverseObject item)
         {
+            string _text = "";
+
+            if (item.Owner != null)
+            {
+                _text = "Step_0887:; " 
+                    + GameEngine.LocationString(item.Location.ToString())
+                    + " > " + item
+                    + " will be DESTROY, Owner= " + item.Owner
+                    ;
+                Console.WriteLine(_text);
+
+
+                if (item.Owner.IsHuman)
+                {
+                    //Debugger.Break();  // Colony and construct ships after doing their jobs
+                }
+
+            }
+
             if (item == null || item.ObjectID == -1)
             {
                 return false;
@@ -592,12 +612,28 @@ namespace Supremacy.Universe
             else if (item is Building)
             {
                 Building building = item as Building;
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[building.OwnerID];
+                _text = GameEngine.LocationString(building.Location.ToString())
+                    + " > Building " + building.ObjectID
+                    + " " + building.Name
+                    + " was destroyed."
+                    ;
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(building.Owner, building.Location, _text, "", "", SitRepPriority.Red));
+
                 building.Sector.System.Colony.RemoveBuilding(building);
             }
 
             else if (item is Shipyard)
             {
                 Shipyard shipyard = item as Shipyard;
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[shipyard.OwnerID];
+                _text = GameEngine.LocationString(shipyard.Location.ToString())
+                    + " > Shipyard " + shipyard.ObjectID
+                    + " " + shipyard.Name
+                    + " was destroyed."
+                    ;
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(shipyard.Owner, shipyard.Location, _text, "", "", SitRepPriority.Red));
+
                 if (Equals(shipyard.Sector.System.Colony.Shipyard, shipyard))
                 {
                     shipyard.Sector.System.Colony.Shipyard = null;
@@ -607,12 +643,28 @@ namespace Supremacy.Universe
             else if (item is Station)
             {
                 Station station = item as Station;
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[station.OwnerID];
+                _text = GameEngine.LocationString(station.Location.ToString())
+                    + " > Station " + station.ObjectID
+                    + " " + station.Name
+                    + " was destroyed."
+                    ;
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(station.Owner, station.Location, _text, "", "", SitRepPriority.Red));
+
                 station.Sector.Station = null;
             }
 
             else if (item is OrbitalBattery)
             {
                 OrbitalBattery orbitalBattery = item as OrbitalBattery;
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[orbitalBattery.OwnerID];
+                _text = GameEngine.LocationString(orbitalBattery.Location.ToString())
+                    + " > OrbitalBattery " + orbitalBattery.ObjectID
+                    + " " + orbitalBattery.Name
+                    + " was destroyed."
+                    ;
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(orbitalBattery.Owner, orbitalBattery.Location, _text, "", "", SitRepPriority.Red));
+
                 orbitalBattery.Sector.System.Colony.OnOrbitalBatteryDestroyed(orbitalBattery);
             }
 

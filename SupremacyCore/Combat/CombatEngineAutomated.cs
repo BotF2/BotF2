@@ -67,8 +67,9 @@ namespace Supremacy.Combat
             MapLocation _loc = _assets.FirstOrDefault().Location;
             bool _write_directly_AutomatedCombat = false;
             string _sectorString = GameEngine.LocationString(_loc.ToString());
-            string _text = ("Step_3007:; " + _sectorString + " > ResolveCombatRoundCore.... _combatShips.Count: " + _combatShips.Count);
-            if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
+            string _text = ("Step_3007:; cEngAuto > " + _sectorString + " > ResolveCombatRoundCore.... _combatShips.Count: " + _combatShips.Count);
+            //if (_write_directly_AutomatedCombat) 
+                Console.WriteLine(_text);
             string _newline = Environment.NewLine;
             string _combat_Automated_full_Report = _newline + _text;
             //GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -226,15 +227,15 @@ namespace Supremacy.Combat
                             combatShip.Item1.Source.ObjectID + " " + combatShip.Item1.Name + " " + combatShip.Item1.Source.Design);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.CombatDetails.DebugFormat(_text);
                     }
                 }
 
                 //Resistance is futile, try assimilation before you attack then retreat if assimilated & no spy or diplomtic assimilated
-                bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.Key == "BORG");
+                bool _found_Borg = _combatShips.Any(borg => borg.Item1.Owner.Key == "BORG");
                 bool assimilationSuccessful = false;
                 List<Tuple<CombatUnit, CombatWeapon[]>> notDaBorg = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg").Select(xborg => xborg).ToList();
-                if (foundDaBorg)
+                if (_found_Borg)
                 {
                     foreach (Tuple<CombatUnit, CombatWeapon[]> target in notDaBorg)
                     {
@@ -253,13 +254,13 @@ namespace Supremacy.Combat
 
                                 _text = (
                                     "Step_3028:; Assimilated= " + target.Item1.Name
-                                    + " found borg=" + foundDaBorg
+                                    + " found borg=" + _found_Borg
                                     + " assimilationSuccessful=" + assimilationSuccessful
                                     + " , chance to Assimiate= " + chanceToAssimilate
                                     );
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.CombatDetails.DebugFormat(_text);
                             }
                         }
                     }
@@ -267,13 +268,13 @@ namespace Supremacy.Combat
             }
 
             // list of civs (owner ids) that are still in combat sector (going into combat) after retreat and assimilation - retreat
-            List<int> ownerIDs = new List<int>();
+            List<int> _ownerIDs = new List<int>();
             foreach (Tuple<CombatUnit, CombatWeapon[]> tupleShip in _combatShips)
             {
-                ownerIDs.Add(tupleShip.Item1.OwnerID);
+                _ownerIDs.Add(tupleShip.Item1.OwnerID);
                 //_targetDictionary[tupleShip.Item1.OwnerID] = _defaultCombatShips;
             }
-            _ = ownerIDs.Distinct().ToList();
+            _ = _ownerIDs.Distinct().ToList();
 
             #region Construct empires (civs) in battle and Ships per empires arrays
             int[,] empiresInBattle = new int[12, 3]; // An Array of who is in the battle with what targets.
@@ -299,7 +300,7 @@ namespace Supremacy.Combat
             List<int> allparticipatings = new List<int>();
             allparticipatings.Clear();
             int z = 0;
-            foreach (int ownerID in ownerIDs.Distinct())
+            foreach (int ownerID in _ownerIDs.Distinct())
             {
                 allparticipatings.Add(ownerID);
                 List<Tuple<CombatUnit, CombatWeapon[]>> ListOfShipsOfEmpire = _combatShips.Where(sc => sc.Item1.OwnerID == ownerID).Select(sc => sc).ToList();
@@ -312,7 +313,7 @@ namespace Supremacy.Combat
 
             #region Add target civs into empires (civs) array
             int q = 0;
-            foreach (int ownerID in ownerIDs.Distinct())
+            foreach (int ownerID in _ownerIDs.Distinct())
             {
                 empiresInBattle[q, 0] = ownerID;
 
@@ -325,12 +326,12 @@ namespace Supremacy.Combat
                 empiresInBattle[q, 1] = Convert.ToInt32(GetTargetOne(dummyship.Item1.Source).CivID);
                 empiresInBattle[q, 2] = Convert.ToInt32(GetTargetTwo(dummyship.Item1.Source).CivID);
                 // If AI DOES NOT HAVE TARGET
-                Civilization civi = GameContext.Current.Civilizations[empiresInBattle[q, 0]];
-                if (civi.CivID == 999)
+                Civilization _civ_i = GameContext.Current.Civilizations[empiresInBattle[q, 0]];
+                if (_civ_i.CivID == 999)
                 {
                     break;
                 }
-                if (civi.IsHuman)
+                if (_civ_i.IsHuman)
                 {   // Update X 03 july 2019 change 888 to 777
                     if (empiresInBattle[q, 1] == 777 && empiresInBattle[q, 2] == 777) /// 777 = No target choosen. 888 = Vuluntarily not firing
                     {
@@ -352,7 +353,7 @@ namespace Supremacy.Combat
                 {
                     // UPDATE X 25 june 2019 added if == 999 & warlike then choose a random target. Also DiplomaticReport needs to change to traits, but currently everyone has trait = compassion
                     // deleted: (empiresInBattle[q, 1] == 777 || empiresInBattle[q, 1] == 999) &&
-                    if (civi.DiplomacyReport.Contains("Warlike") || civi.DiplomacyReport.Contains("Hostile"))
+                    if (_civ_i.DiplomacyReport.Contains("Warlike") || _civ_i.DiplomacyReport.Contains("Hostile"))
                     {
                         while (true)
                         {
@@ -379,7 +380,7 @@ namespace Supremacy.Combat
                     }
                     // UPDATE X 25 june 2019 added if == 999 & warlike then choose a random target. + Minichange, from DiplomacyReport back to Traits
                     // delete (empiresInBattle[q, 2] == 777 || empiresInBattle[q, 2] == 999) && (
-                    if (civi.Traits.Contains("Warlike") || civi.Traits.Contains("Hostile"))
+                    if (_civ_i.Traits.Contains("Warlike") || _civ_i.Traits.Contains("Hostile"))
                     {
                         while (true)
                         {
@@ -406,10 +407,10 @@ namespace Supremacy.Combat
                     }
 
                     bool alreadyAtWar = false;
-                    foreach (int ownerIDWar in ownerIDs)
+                    foreach (int ownerIDWar in _ownerIDs)
                     {
                         Civilization civi2 = GameContext.Current.Civilizations[ownerIDWar];
-                        if (!CombatHelper.AreNotAtWar(civi, civi2))
+                        if (!CombatHelper.AreNotAtWar(_civ_i, civi2))
                         {
                             // if(empiresInBattle[q, 1] = civi2.CivID)
                             //   empiresInBattle[q, 2] = civi2.CivID;
@@ -442,9 +443,9 @@ namespace Supremacy.Combat
                 //    GameLog.Core.CombatDetails.DebugFormat("Empire Civ in Battle: {0} FirstTarget = {1} 2nd Target = {2}", empiresInBattle[q, 0], empiresInBattle[q, 1], empiresInBattle[q, 2]);
             }
             #endregion
-            //foreach (int item in ownerIDs)
+            //foreach (int item in _ownerIDs)
             //{
-            //    GameLog.Core.CombatDetails.DebugFormat("ownerIDs contains = {0}", item);
+            //    GameLog.Core.CombatDetails.DebugFormat("_ownerIDs contains = {0}", item);
             //}
 
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
@@ -457,7 +458,7 @@ namespace Supremacy.Combat
 
             int indexOfAttackerEmpires = 0; // first position x on the array determins the empire who is currently firing. starting with index 0 (first player), [0,0] =which contains a civilization ID.
                                             //int 0 = 0; // 0 is the 2nd index on the array which contains targed one (on position 1) and target two (on position 0). 
-            int TargetOneORTwo = 1; // starts with attacking first target
+            int _target_1_or_2 = 1; // starts with attacking first target
                                     //int shipFirepower = 0;
             int howOftenContinued = 0;
 
@@ -469,7 +470,7 @@ namespace Supremacy.Combat
             #region top of Battle while loop to attacker while loop
             // ENTIRE BATTTLE
             // OVERALL LOOP
-            // Amount of Firepower the other Empire had. Its the base for return fire
+            // Amount of Fire_power_calculated the other Empire had. Its the base for return fire
             // loops from one empire attacking (and recieving return fire) to the next, until all ships have fired
 
             // Counts during 2nd loop (Attacking Loop, how many runs there where)
@@ -525,14 +526,14 @@ namespace Supremacy.Combat
                 int countReturnFireLoop = 0;
                 int returnFireFirepower = 0;
 
-                if (TargetOneORTwo == 3) // if trying to attack target three (not available), target empire one again
+                if (_target_1_or_2 == 3) // if trying to attack target three (not available), target empire one again
                 {
-                    TargetOneORTwo = 1;
+                    _target_1_or_2 = 1;
                 }
 
-                // works   GameLog.Core.CombatDetails.DebugFormat("Current Target One or Two? in Main While {0} ", TargetOneORTwo);
+                // works   GameLog.Core.CombatDetails.DebugFormat("Current Target One or Two? in Main While {0} ", _target_1_or_2);
                 AttackingEmpireID = empiresInBattle[indexOfAttackerEmpires, 0];
-                targetedEmpireID = empiresInBattle[indexOfAttackerEmpires, 0 + TargetOneORTwo];
+                targetedEmpireID = empiresInBattle[indexOfAttackerEmpires, 0 + _target_1_or_2];
 
                 int _shipsCount1 = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID).ToList().Count;
                 int _shipsCount2 = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID).ToList().Count;
@@ -586,12 +587,12 @@ namespace Supremacy.Combat
                     if (empiresInBattle[indexOfAttackerEmpires, 0] == 999)
                     {
                         indexOfAttackerEmpires = 0; // change from empire 12 to 0 again
-                        TargetOneORTwo++;
+                        _target_1_or_2++;
                     }
                     if (indexOfAttackerEmpires > 11)
                     {
                         indexOfAttackerEmpires = 0; // change from empire 12 to 0 again
-                        TargetOneORTwo++;
+                        _target_1_or_2++;
                     }
                     howOftenContinued++; // counts how often we skipped fireing. If 12 times in a row, end Attacking Loop. 
                     if (howOftenContinued == 13)
@@ -608,7 +609,7 @@ namespace Supremacy.Combat
                 {
                     howOftenContinued = 0;
 
-                    returnFireFirepower = AttackingShip.Item1.Firepower; // Tranfers Empire´s Attacking Ship Total Firepower to be the base for the other Empire return fire.
+                    returnFireFirepower = AttackingShip.Item1.Firepower; // Tranfers Empire´s Attacking Ship Total Fire_power_calculated to be the base for the other Empire return fire.
                 }
                 //END NEW123
                 _text = ("Step_3062:; " + _sectorString + " > Saved returnFirepower later used in next loop " + returnFireFirepower);
@@ -622,10 +623,11 @@ namespace Supremacy.Combat
                 bool additionalRun = false; // addtional run  -> more targets
                 // END NEW123
                 // Attacking Ship looks for target(s)
+
                 _text = ("Step_3066:; " + _sectorString + " > Loop for finding an Target(s) for Attacking Ship starts");
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.CombatDetails.DebugFormat(_text);
                 #endregion
 
                 double FavorTheBoldAttackBonus = 1.0;
@@ -665,7 +667,7 @@ namespace Supremacy.Combat
                             );
 
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
-                        //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
+                        //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Fire_Power_Ship, _hostileEmpireStrength);
                     }
 
                     if (_combatStation != null && _combatStation.Item1.OwnerID == EmpireTotalDurabilities[i, 0])
@@ -823,7 +825,7 @@ namespace Supremacy.Combat
                         {            // NO (MORE) TARGET. Save attackingships (remaining) Weapons
                             if (remainingFirepowerInWhile > 0)
                             {
-                                // Remaining Firepower is only set just after fireing
+                                // Remaining Fire_power_calculated is only set just after fireing
                                 // let this AttackShip "RemainingFirepower" be returnFireFirepower
                                 //AttackingShip.Item1.RemainingFirepower = remainingFirepowerInWhile;
                                 _text = ("Step_3086:; " + _sectorString + " > No more target found in AttackingLoop. Trying to update for ship Name: " + AttackingShip.Item1.Name
@@ -2049,7 +2051,7 @@ namespace Supremacy.Combat
                     //        //{
                     //        //        weapon.Discharge();
                     //        //}
-                    //        //AttackingShip.Item1.RemainingFirepower = 0; // Set AttackingShips Firepower to 0
+                    //        //AttackingShip.Item1.RemainingFirepower = 0; // Set AttackingShips Fire_power_calculated to 0
 
                     //            // SETTING SHIP WEAPONS TO 0
                     //        //foreach (var ship in _combatShipsTemp)
@@ -2276,8 +2278,8 @@ namespace Supremacy.Combat
 
                             break;
                         }
-                        TargetOneORTwo++; // cycle to next targeted empire
-                        _text = ("Step_3237:; " + _sectorString + " > ANOTHER TOTAL LOOP, with Target " + TargetOneORTwo);
+                        _target_1_or_2++; // cycle to next targeted empire
+                        _text = ("Step_3237:; " + _sectorString + " > ANOTHER TOTAL LOOP, with Target " + _target_1_or_2);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
                         //GameLog.Core.CombatDetails.DebugFormat(_text);
@@ -2387,7 +2389,7 @@ namespace Supremacy.Combat
                                 //Console.WriteLine("Step_3263: " + "SR: " + _text);
                                 //MessageBox.Show(_text, "INFO", MessageBoxButton.OK);
                                 _thisShipIsReported = false;
-                                foreach (var id in ownerIDs)
+                                foreach (var id in _ownerIDs)
                                 {
                                     if (!_thisShipIsReported && id != combatent.Item1.Owner.CivID)
                                     {
@@ -2467,7 +2469,7 @@ namespace Supremacy.Combat
                             ;
 
                             //_thisStationIsReported = false;
-                            foreach (var id in ownerIDs) // everybody is informed
+                            foreach (var id in _ownerIDs) // everybody is informed
                             {
                                 //if (!_thisShipIsReported && id != combatent.Item1.Owner.CivID)
                                 //{
@@ -2794,7 +2796,7 @@ namespace Supremacy.Combat
                 }
             }
 
-            //foreach (int item in ownerIDs)
+            //foreach (int item in _ownerIDs)
             //{
 
             //    CivilizationManager civM = GameContext.Current.CivilizationManagers[item];

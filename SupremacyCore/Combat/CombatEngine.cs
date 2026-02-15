@@ -413,6 +413,25 @@ namespace Supremacy.Combat
             string _newline = Environment.NewLine;
             bool _combatWriteDirectly = true;
 
+            foreach (var item in _orders)
+            {
+                string _orders = "";
+                foreach (var it in item.Value)
+                {
+                    _orders += item.Key + /*it._orders.Key +*/ " - " + it + " / "/*+ it.Value + it.*/;
+
+                }
+
+                _text += "Step_7791:; CombatID= " 
+                    + CombatID
+                    //+ Combat.
+                    //+ " " + item.Key
+                    + " " + _orders
+                    + _newline
+                    ;
+            }
+            Console.WriteLine(_text);
+
             lock (_orders)
             {
                 Running = true;
@@ -433,6 +452,7 @@ namespace Supremacy.Combat
                 //_text = "Step_3001: _roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
 
                 RechargeWeapons();
+
                 ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
 
                 if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
@@ -441,25 +461,25 @@ namespace Supremacy.Combat
                 }
 
 
-                _text = "Step_3194:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at PerformRetreat";
-                if (_combatWriteDirectly) Console.WriteLine(_text);
-                _combatEngine_full_Report += _newline + _text;
+                        _text = "Step_3194:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at PerformRetreat";
+                        if (_combatWriteDirectly) Console.WriteLine(_text);
+                        _combatEngine_full_Report += _newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 PerformRetreat();
 
-                _text = "Step_3196:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at UpdateOrbitals";
-                if (_combatWriteDirectly) Console.WriteLine(_text);
-                _combatEngine_full_Report += _newline + _text;
+                        _text = "Step_3196:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at UpdateOrbitals";
+                        if (_combatWriteDirectly) Console.WriteLine(_text);
+                        _combatEngine_full_Report += _newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 UpdateOrbitals();
 
-                _text = "Step_3197:; " + _sectorString + "_combatId = " + CombatID + " > If IsCombatOver = " + IsCombatOver
-                    + " > then increment round number " + _roundNumber
-                    ;
+                        _text = "Step_3197:; " + _sectorString + "_combatId = " + CombatID + " > If IsCombatOver = " + IsCombatOver
+                            + " > then increment round number " + _roundNumber
+                            ;
                 //if (_combatWriteDirectly) Console.WriteLine(_text);
-                _combatEngine_full_Report += _newline + _text;
+                        _combatEngine_full_Report += _newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
                 //_text = "Step_3001: If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
 
@@ -838,16 +858,16 @@ namespace Supremacy.Combat
                             {
                                 _currentCivStrength += ship.Firepower;
                                 _civDurability += CalculateStrength_CombatShip_in_CombatEngine(ship);
-                                //_text = "Step_3001: added Firepower into {0} for {1} {2} ({3}) = {4}",
-                                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                                //_text = "Step_3001: added Fire_power_calculated into {0} for {1} {2} ({3}) = {4}",
+                                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.Fire_Power_Ship);
                             }
 
                             foreach (CombatUnit ship in cs.NonCombatShips)
                             {
-                                //_currentCivStrength += ship.Firepower;
+                                //_currentCivStrength += ship.Fire_power_calculated;
                                 _civDurability += CalculateStrength_CombatShip_in_CombatEngine(ship);
-                                //_text = "Step_3001: added Firepower into {0} for {1} {2} ({3}) = {4}",
-                                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                                //_text = "Step_3001: added Fire_power_calculated into {0} for {1} {2} ({3}) = {4}",
+                                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.Fire_Power_Ship);
                             }
 
                             if (cs.Station != null)
@@ -1044,7 +1064,7 @@ namespace Supremacy.Combat
         //private int CalculateStrength_CombatShip_in_CombatEngine(CombatUnit cs)
         //{
         //    // UPDATE X 25 June 2019: Do total strength instead of just firepower
-        //    return Convert.ToInt32(Convert.ToDouble(cs.Firepower)
+        //    return Convert.ToInt32(Convert.ToDouble(cs.Fire_power_calculated)
         //            + (Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
         //            * (1 + (Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
         //}
@@ -1060,13 +1080,13 @@ namespace Supremacy.Combat
             // CHANGE X
             for (int i = 0; i < _assets.Count; i++)
             {
-                _text = "Step_3048:; " + _sectorString + "Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets;
+                _text = "Step_3048:; " + _sectorString + " > Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets;
                 Console.WriteLine(_text);
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 if (!_assets[i].HasSurvivingAssets)
                 {
-                    _text = "Step_3049:; " + _sectorString + "remove defeated assets for Player " + _assets[i].Owner.Key;
+                    _text = "Step_3049:; " + _sectorString + " > remove defeated assets for Player " + _assets[i].Owner.Key;
                     Console.WriteLine(_text);
                     //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -1119,7 +1139,7 @@ namespace Supremacy.Combat
                 {
                     _empireStrengths[combatShip.Item1.Owner.CivID] = 0;
                 }
-                _empireStrengths[combatShip.Item1.Owner.CivID] += combatShip.Item1.Source.Firepower();
+                _empireStrengths[combatShip.Item1.Owner.CivID] += combatShip.Item1.Source.Fire_power_calculated();
             }
             if (_combatStation != null)
             {
@@ -1127,7 +1147,7 @@ namespace Supremacy.Combat
                 {
                     _empireStrengths[_combatStation.Item1.Owner.CivID] = 0;
                 }
-                _empireStrengths[_combatStation.Item1.Owner.CivID] += _combatStation.Item1.Source.Firepower();
+                _empireStrengths[_combatStation.Item1.Owner.CivID] += _combatStation.Item1.Source.Fire_power_calculated();
             }
 
             foreach (KeyValuePair<int, int> empire in _empireStrengths)

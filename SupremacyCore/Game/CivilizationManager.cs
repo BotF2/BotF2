@@ -23,8 +23,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
-
-
 namespace Supremacy.Game
 {
     /// <summary>
@@ -138,6 +136,7 @@ namespace Supremacy.Game
         //private int _rankIntelAttack;
         private bool _destroyOfShipOrdered;
         //private string _text;
+        private int _fire_power_space;
 
 
         //private int bc;  // buildingCosts
@@ -155,6 +154,7 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _maintenanceCostLastTurn = 0;
+
 
             //_buyCostLastTurn = 0;
 
@@ -862,6 +862,27 @@ namespace Supremacy.Game
             }
         }
 
+        public int FirePowerSpace
+        {
+            get
+            {
+                //List<Ship> _combatant_ships = GameContext.Current.Universe.FindOwned<Ship>(Civilization).Where(s => s.IsCombatant).ToList();
+                //int _int = 0;
+                //foreach (Ship ship in _combatant_ships)
+                //{
+                //    _int += ship.Fire_Power_Ship;
+                //    //
+                //    Debugger.Break();
+                //}
+
+                return _fire_power_space;
+            }
+            set
+            {
+                _fire_power_space = value;
+            }
+        }
+
         public int IncomeFromTrade
         {
             get
@@ -1022,6 +1043,14 @@ namespace Supremacy.Game
         public List<Civilization> SpiedCivList => _spiedCivList;
         //public List<Civilization> TargetCivList => _targetCivList;
         public List<Civilization> TargetCivList { get; /*private*/ set; } = new List<Civilization>();
+
+        public List<MapLocation> Locations_To_Explore { get; /*private*/ set; } = new List<MapLocation>();
+
+        public List<MapLocation> Locations_To_Build_Stations { get; /*private*/ set; } = new List<MapLocation>();
+
+        public List<MapLocation> Locations_To_NOT_Build_Stations { get; /*private*/ set; } = new List<MapLocation>();
+
+        public List<Sector> Sectors_To_Enter_Carefully { get; /*private*/ set; } = new List<Sector>();
 
 
 
@@ -1240,15 +1269,15 @@ namespace Supremacy.Game
                 if (_strandedShipsSector == null || _strandedShipsSector.Location.ToString() == "(0, 0)")
                 {
                     _strandedShipsSector = this.HomeSystem.Sector;
-                    string _text = "Step_3343:; Turn= "
-                            + GameContext.Current.TurnNumber
-                            + " >  _strandedShipsSector for " + this.Civilization
-                            + " is set to " + _strandedShipsSector.ToString()
-                            + " ( HomeSystem ) "
-                            ;
+                    //string _text = "Step_3343:; Turn= "
+                    //        + GameContext.Current.TurnNumber
+                    //        + " >  _strandedShipsSector for " + this.Civilization
+                    //        + " is set to " + _strandedShipsSector.ToString()
+                    //        + " ( HomeSystem ) "
+                    //        ;
 
-                    Console.WriteLine(_text);
-                    _text = "Stranded Ship Sector is set to " + _strandedShipsSector.ToString();
+                    //Console.WriteLine(_text);
+                    string _text = "Stranded Ship Sector is set to " + _strandedShipsSector.ToString();
 
                     if (_strandedShipsSector.Location != this.HomeSystem.Sector.Location)
                     {
@@ -1262,7 +1291,20 @@ namespace Supremacy.Game
             internal set
             {
 
+
+                if (value != null)
+                {
                 _strandedShipsSector = value;
+                string _text = "Step_3343:; Turn= "
+                        + GameContext.Current.TurnNumber
+                        + " >  _strandedShipsSector for " + this.Civilization
+                        + " is set to " + _strandedShipsSector.ToString()
+                        + " ( HomeSystem ) "
+                        ;
+
+                //Console.WriteLine(_text);
+                //_text = "Stranded Ship Sector is set to " + _strandedShipsSector.ToString();
+            }
 
             }
         }
@@ -1310,8 +1352,8 @@ namespace Supremacy.Game
         {
             get => _assault_location 
                 + " " + Assault_TargetCiv
-                + ", Defense= " + Assault_DefenseValue
-                + ", Attack= " + Assault_AttackValue
+                + ", Defense= " + Assault_Value_Defense
+                + ", Attack= " + Assault_Attack_Value
                 + " for " + Civilization.Key
 
                 ;
@@ -1322,14 +1364,14 @@ namespace Supremacy.Game
             get => 
                 Civilization.Key
                 //+ " " + Assault_TargetCiv
-                //+ ", Defense= " + Assault_DefenseValue
-                //+ ", Attack= " + Assault_AttackValue
+                //+ ", Defense= " + Assault_Value_Defense
+                //+ ", Attack= " + Assault_Attack_Value
 
 
                 ;
         }
 
-        public int Assault_DefenseValue
+        public int Assault_Value_Defense
         {
             get => _assault_DefenseValue;
 
@@ -1350,13 +1392,23 @@ namespace Supremacy.Game
         }
 
 
-        public int Assault_AttackValue
+        public int Assault_Attack_Value
         {
-            get => _assault_AttackValue;
+            get => _assault_attack_value;
 
             set
             {
-                _assault_AttackValue = value;
+                _assault_attack_value = value;
+            }
+        }
+
+        public int Assault_GroundCombat_Attack_Value
+        {
+            get => _assault_groundcombat_value;
+
+            set
+            {
+                _assault_groundcombat_value = value;
             }
         }
 
@@ -1366,7 +1418,9 @@ namespace Supremacy.Game
 
         //private Civilization _assault_targetCiv;
         private MapLocation _assault_location;
-        private int _assault_AttackValue = 0;
+        private int _assault_attack_value = 0;
+        private int _assault_groundcombat_value = 0;
+
         private int _assault_DefenseValue;
         private int _assault_Value_Defense_and_Distance = 999992;
         //private int z_Ship_Transport_Needed_For_Assaults = 0;
@@ -1375,7 +1429,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_assault_accumulate_location_1 == null || _assault_accumulate_location_1.ToString() == "( 0, 0)")
+                if (_assault_accumulate_location_1 == null && _assault_accumulate_location_1.ToString() == "( 0, 0)")
                 {
                     _assault_accumulate_location_1 = HomeSystem.Location;
                     string _text = "Step_3351:; Turn "
@@ -1390,9 +1444,7 @@ namespace Supremacy.Game
             }
             set
             {
-
                 _assault_accumulate_location_1 = value;
-
             }
         }
 
@@ -1420,10 +1472,8 @@ namespace Supremacy.Game
             }
             set
             {
-
                 _assault_Accumulate_Sector_1 = value;
                 //Assault_Accumulate_Sector_1 = value;
-
             }
         }
 

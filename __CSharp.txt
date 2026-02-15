@@ -1,0 +1,146 @@
+__CSharp.txt ( see also __CSharp.docx )
+
+Visual Studio (more at the bottom of this file)
+- CTRL + ALT + L = open solution explorer
+
+- The ? in bool? makes the bool type nullable = possible values: true, false, or null. It's a shorthand for Nullable<bool>
+
+if turn == 1 ? this : that
+formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN") + " " : ResourceManager.GetString("ORDER_ETA_TURNS");
+
+GameContext.Current.Universe.FindOwned<Colony>(_civM.Assault_TargetCiv).Any(o => o.Location == _fleet.Location))
+
+string _text;
+string _newline = Environment.NewLine;
+
+List<string> items = new List<string> { "apple", "banana", "cherry" };
+items.RemoveAt(0); // Removes "apple"
+
+                        _text = _civM.Civilization
+                            + " _neededShiptypesList= " + item.ToString()
+                            ;
+                        Console.WriteLine(_text);
+
+_fleet.SetRoute(TravelRoute.Empty);
+
+_civM.SitRepEntries.Add(new ReportEntry_CoS(_fleet.Owner, _fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+
+> Debugger.Break();
+if (_civM.Civilization.IsHuman)
+{
+	Debugger.Break();
+}
+
+> Console.WriteLine("_text");
+_text = 
+;
+Console.WriteLine("Step_");
+
++ DateTime.Now
+
+> Stopwatch
+Stopwatch stopwatch = Stopwatch.StartNew();
+                _text = "Step_0675:; AI processing time= " + stopwatch.Elapsed;
+                Console.WriteLine( _text );
+          stopwatch.Restart();
+
+
+
+          Foreach > continue = next item, break = stop foreach
+
+New List: List<BuildProject> _BuildQueueItemsTo_Remove = new List<BuildProject>();
+List<string> fruits = new List<string> { "Apple", "Banana", "Cherry" };
+
+Dictionary<string, int> ages = new Dictionary<string, int>();
+
+string status = _building.IsActive ? "Active" : "Inactive";
+? means “if true”
+: means “else”
+
+> HashSet<Fleet> allFleets = game.Universe.Find<Fleet>();
+            foreach (Fleet fleet in allFleets)
+
+
+            _possible_locations_to_build_stations = _sectorValues.Keys.ToList();
+
+
+Visual Studio:
+CTRL + K + C = comment selected lines
+CTRL + K + U = uncomment selected lines
+CTRL + . = quick actions and refactorings
+CTRL + SHIFT + B = build solution
+CTRL + F5 = start without debugging
+F5 = start with debugging
+F9 = toggle breakpoint
+F10 = step over
+F11 = step into
+SHIFT + F11 = step out
+ALT + F9 = run to cursor
+CTRL + ALT + I = open immediate window
+CTRL + ALT + D = open debug windows
+CTRL + R + R = rename
+CTRL + R + G = find all references
+CTRL + SHIFT + F = find in files
+CTRL + H = replace in files
+CTRL + SHIFT + L = select all occurrences of current selection
+CTRL + SHIFT + U = make uppercase   
+CTRL + U = make lowercase
+CTRL + M + O = collapse to definitions
+CTRL + M + L = expand all
+CTRL + M + M = toggle outlining expansion
+CTRL + SHIFT + SPACE = parameter info
+CTRL + K + D = format document
+ALT + UP/DOWN ARROW = move line up/down
+CTRL + E + C = center selection in screen
+CTRL + SHIFT + V = clipboard ring
+ALT + F8 = quick watch
+CTRL + ALT + T = surround with try/catch
+CTRL + SHIFT + ENTER = toggle full screen mode  
+CTRL + W + S = split editor
+CTRL + W + J = join editor
+CTRL + TAB = switch between open files
+CTRL + SHIFT + T = reopen closed tab
+CTRL + SHIFT + N = new project
+CTRL + N = new file
+CTRL + O = open file
+CTRL + S = save file
+CTRL + SHIFT + S = save all files
+CTRL + P = print
+CTRL + F4 = close tab
+ALT + F4 = close application
+CTRL + SHIFT + F4 = close all tabs
+CTRL + SHIFT + P = go to file
+CTRL + G = go to line
+CTRL + - = navigate back
+CTRL + SHIFT + - = navigate forward
+CTRL + ALT + L = open solution explorer
+CTRL + ALT + X = open toolbox
+CTRL + ALT + M = open class view
+CTRL + ALT + C = open code snippets manager
+CTRL + ALT + F = open find results
+CTRL + ALT + V = open visual studio extensions
+CTRL + ALT + R = open references
+CTRL + ALT + W = open watch window
+CTRL + ALT + U = open unit tests
+CTRL + ALT + Q = open quick launch
+CTRL + ALT + S = open settings
+CTRL + ALT + Y = open sync changes
+CTRL + ALT + B = open bookmarks
+CTRL + ALT + I = open immediate window
+CTRL + ALT + D = open debug windows
+CTRL + ALT + F11 = open object browser
+CTRL + ALT + ENTER = toggle full screen mode
+CTRL + ALT + INS = copy line
+CTRL + ALT + DEL = delete line
+CTRL + ALT + UP/DOWN ARROW = duplicate line up/down
+CTRL + ALT + LEFT/RIGHT ARROW = navigate between split editors
+CTRL + ALT + SHIFT + UP/DOWN ARROW = move line up/down in split editor
+CTRL + ALT + SHIFT + LEFT/RIGHT ARROW = navigate between split editors
+CTRL + ALT + SHIFT + F = format selection
+CTRL + ALT + SHIFT + L = select all occurrences of current selection in split editor
+CTRL + ALT + SHIFT + U = make uppercase in split editor
+c
+ctrl
+
+
+

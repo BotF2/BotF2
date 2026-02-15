@@ -183,7 +183,7 @@ namespace Supremacy.WCF
                         //NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                         if (!SavedGameManager.LoadGame(_gameInitData.SaveGameFileName, out SavedGameHeader header, out _game, out DateTime timestamp))
                         {
-                            _text = "Step_4987: Loading failed - end game ##################################################################";
+                            _text = "Step_4987:; Loading failed - end game ##################################################################";
                             Console.WriteLine(_text);
                             EndGame();
 
@@ -324,6 +324,7 @@ namespace Supremacy.WCF
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
+                Debugger.Break();
                 GameLog.Server.General.Error(e);
             }
 
@@ -507,13 +508,14 @@ namespace Supremacy.WCF
         internal async void ProcessTurn()
         {
             string _text;
+
             try
             {
-                _text = "Step_5001:; ProcessTurn...";
+                _text = "Step_5001:; " + DateTime.Now + " > ProcessTurn...";
                 Console.WriteLine(_text);
 
                 await SendAllTurnEndedNotificationsAsync().ConfigureAwait(false);
-                _ = new AutoResetEvent(false).WaitOne(100, true);
+                _ = new AutoResetEvent(false).WaitOne(100, true);  // Wait_100
 
                 Player gameHost = GetPlayerById(0);
                 List<Order> orders; // fleet orders, not combat orders
@@ -523,8 +525,17 @@ namespace Supremacy.WCF
                 {
                     orders = _playerOrders.Values.SelectMany(v => v.Orders).ToList();
                     autoTurnCivs = _playerOrders.Where(po => po.Value.AutoTurn).Select(po => _game.Civilizations[po.Key.EmpireID]).ToList();
+
+
+                    foreach (var item in orders)
+                    {
+                        Debugger.Break();
+                    }
                     _playerOrders.Clear();
                 }
+
+                _text = "Step_5006:; " + DateTime.Now + " > ProcessTurn orders.Count= " + orders.Count;
+                Console.WriteLine(_text);
 
                 foreach (Order order in orders)
                 {
@@ -534,12 +545,17 @@ namespace Supremacy.WCF
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
+                _text = "Step_5007:; ProcessTurn...";
+                Console.WriteLine(_text);
+
                 OnTurnPhaseChanged(TurnPhase.WaitOnAIPlayers);
 
                 lock (_aiAsyncLock)
                 {
                     Action<GameContext, List<Civilization>> doAiPlayers = _gameEngine.DoAIPlayers;
 
+                    _text = "Step_5005:; ProcessTurn...";
+                    Console.WriteLine(_text);
                     //Thread.Sleep(2000); // just for testing - why is the turn done before all AI is done ?
 
                     _aiAsyncResult = doAiPlayers.BeginInvoke(
@@ -556,7 +572,10 @@ namespace Supremacy.WCF
                             }
                             catch (Exception e) //ToDo: Just log or additional handling necessary?
                             {
-                                Console.WriteLine(e);
+
+                                Console.WriteLine("Step_9977:; " + e);
+                                Debugger.Break();
+                                //Debugger.Break();
                                 GameLog.Server.General.Error(e);
                             }
                         },
@@ -570,19 +589,19 @@ namespace Supremacy.WCF
 
                 stopwatch.Restart();
             OH:
-                try
-                {
+                //try
+                //{
                     await DoTurnCore().ConfigureAwait(false);
-                }
-                catch (Exception)
-                {
-                    _text = "Hit await, ************** issue #398 *******************";
-                    Console.WriteLine(_text);
-                    GameLog.Core.GeneralDetails.DebugFormat(_text);
-                    Thread.Sleep(0050);
+                //}
+                //catch (Exception)
+                //{
+                //    _text = "Step_0398:; Hit await, ************** issue #398 *******************";
+                //    Console.WriteLine(_text);
+                //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+                //    Thread.Sleep(0050);
 
-                    goto OH;  // try again
-                }
+                //    goto OH;  // try again
+                //}
 
                 _text = "Step_4444:; Turn processing time= " + stopwatch.Elapsed;
                 Console.WriteLine(_text);
@@ -624,6 +643,11 @@ namespace Supremacy.WCF
 
                 await SendTurnFinishedNotificationsAsync().ConfigureAwait(false);
             }
+            catch (Exception e)
+            {
+                _text = e.ToString();
+                Debugger.Break();
+            }
             finally
             {
                 _ = Interlocked.Exchange(ref _isProcessingTurn, 0);
@@ -648,6 +672,8 @@ namespace Supremacy.WCF
             _ = Observable
                 .ToAsync(() => _gameEngine.DoTurn(gameContext), _threadPoolScheduler)()
                 .Subscribe(tcs.SetResult, tcs.SetException);
+
+            _text = "for crashes: assumed that the game has crashed done due to long time no action done";
 
             _ = await tcs.Task;
 
@@ -1508,16 +1534,16 @@ namespace Supremacy.WCF
 
                 lock (_combatEngine.SyncLock)
                 {
-                    try
-                    {
+                    //try
+                    //{
                         if (orders.CombatID != -1 && _combatEngine != null)
                         {
                             _combatEngine.SubmitOrders(orders);
                             _text = "Step_7877:; _combatEngine.SubmitOrders > " + orders.Count() + " orders";
                             Console.WriteLine(_text);
                         }
-                    }
-                    catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
+                    //}
+                    //catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
 
                     if (_combatEngine != null && _combatEngine.Ready)
                     {
@@ -1607,14 +1633,14 @@ namespace Supremacy.WCF
             ServerPlayerInfo player = _playerInfo.FromEmpireId(update.OwnerID);
 
             // 2025-02-08
-            if (player != null && update.RoundNumber < 2)
+            if (player != null)// && update.RoundNumber < 2)
             {
                 ISupremacyCallback callback = player.Callback;
                 callback?.NotifyCombatUpdate(update);
             }
 
             //No proper CombatAI, so just for now fake some orders
-            else if (!engine.IsCombatOver && !update.Owner.IsHuman && update.RoundNumber < 2)
+            else if (!engine.IsCombatOver && !update.Owner.IsHuman) // && update.RoundNumber < 2)
             {
                 // works   GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
                 CombatAssets ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
@@ -1678,6 +1704,7 @@ namespace Supremacy.WCF
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {
+                    Debugger.Break();
                     GameLog.Server.Combat.Error(e);
                 }
 
@@ -1749,16 +1776,16 @@ namespace Supremacy.WCF
         {
             Console.WriteLine("Step_3014:; OnInvasionOccurring ... populating _invasionEngine");
 
-            if (invasionArena.LatelyDoneInTurn > GameContext.Current.TurnNumber)
-            {
-                return;
-            }
-            else
-            {
+            //if (invasionArena.LatelyDoneInTurn > GameContext.Current.TurnNumber)
+            //{
+            //    return;
+            //}
+            //else
+            //{
                 invasionArena.LatelyDoneInTurn = GameContext.Current.TurnNumber + 1;
                 _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
                 _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
-            }
+            //}
 
             //_invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
             //_scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
@@ -1865,9 +1892,13 @@ namespace Supremacy.WCF
         private void PingClients()
         {
             ServerPlayerInfo[] players = _playerInfo.ToArray();
+            string _text;
 
             foreach (ServerPlayerInfo player in players)
             {
+                _text = "Step_0266:; " + DateTime.Now + " > PingClients: player= " + player.Player.Empire.ToString();
+                Console.WriteLine(_text);
+
                 ServerPlayerInfo playerCopy = player;
 
                 _ = ((Action<ServerPlayerInfo>)PingPlayer)
@@ -1891,12 +1922,12 @@ namespace Supremacy.WCF
 
         public void Pong(int pingId)
         {
-            //Console.WriteLine("Step_7988:; Pong(int pingId) " + pingId + " at " + DateTime.Now);
+            Console.WriteLine("Step_7988:; " + DateTime.Now+" > Pong(int pingId= " + pingId/* + " at "*/);
         }
 
         internal void StartHeartbeat()
         {
-            _heartbeat = Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(15)) // was 15 seconds
+            _heartbeat = Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(5)) // was 15 seconds  // Wait_15
                 .Select(_ => ((Action)PingClients).ToAsync(_threadPoolScheduler)())
                 .Subscribe();
         }

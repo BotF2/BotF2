@@ -1,0 +1,6 @@
+__CSharp.txt ( see also __CSharp.docx )
+
+
+Install Extension 
+
+- Unobtrusive Code  ( to hide annoying comments which Rainer wants to keep ) -> use ALT+Q to toggle
