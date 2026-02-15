@@ -1219,7 +1219,7 @@ namespace Supremacy.AI
 
                     if (_civ.IsHuman)
                     {
-                        Debugger.Break();
+                        //Debugger.Break();
                     }
 
                     if (_attackValue_at_Accumulate > 0 && _attackValue_at_Accumulate + _civM.Assault_Attack_Value > _defenseSectorIntValue)
@@ -1234,7 +1234,7 @@ namespace Supremacy.AI
 
                         if (_civ.IsHuman)
                         {
-                            Debugger.Break();
+                            //Debugger.Break();
                         }
                     }
 

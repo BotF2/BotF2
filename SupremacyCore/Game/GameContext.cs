@@ -790,7 +790,7 @@ namespace Supremacy.Game
             string _text = "";
             if (!ThreadStack.TryPop(out GameContext result))
             {
-                _text = "Step_0568:; " + DateTime.Now + " > GameContext: "
+                _text = "Step_0568:; " + DateTime.Now + " > PopThreadContext > GameContext: "
                     + "result.CivilizationManagers.Count=" + result.CivilizationManagers.Count
                     ;
                 Console.WriteLine(_text);
