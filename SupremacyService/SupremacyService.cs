@@ -599,7 +599,7 @@ namespace Supremacy.WCF
                 //{
                 //    _text = "Step_0398:; Hit await, ************** issue #398 *******************";
                 //    Console.WriteLine(_text);
-                //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+                //    GameLog.Core.General.DebugFormat(_text);
                 //    Thread.Sleep(0050);
 
                 //    goto OH;  // try again
@@ -607,7 +607,7 @@ namespace Supremacy.WCF
 
                 _text = "Step_4444:; Turn processing time= " + stopwatch.Elapsed;
                 Console.WriteLine(_text);
-                GameLog.Server.GeneralDetails.InfoFormat(_text);
+                GameLog.Server.General.InfoFormat(_text);
 
                 Task autoSaveTask = null;
 
@@ -663,7 +663,7 @@ namespace Supremacy.WCF
         {
             string _text = "Step_0577:; DoTurnCore... to go to the next Turn";
             Console.WriteLine(_text);
-            //GameLog.Core.GameDataDetails.DebugFormat(_text);
+            //GameLog.Core.GameData.DebugFormat(_text);
 
             TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
@@ -696,7 +696,7 @@ namespace Supremacy.WCF
 
             string _text = "Step_0576:; doing SendEndOfTurnUpdateAsync for " + player.Empire.Key;
             Console.WriteLine(_text);
-            GameLog.Core.GameDataDetails.DebugFormat(_text);
+            GameLog.Core.GameData.DebugFormat(_text);
 
             //GameLog.Server.GameDataDetails.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
 

@@ -72,7 +72,7 @@ namespace Supremacy.Combat
                 Console.WriteLine(_text);
             string _newline = Environment.NewLine;
             string _combat_Automated_full_Report = _newline + _text;
-            //GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.Combat.DebugFormat(_text);
 
             //int mainpowerID;
 
@@ -116,7 +116,7 @@ namespace Supremacy.Combat
                 _text = ("Step_3016:; " + _sectorString + " > _combatId = " + CombatID + " > now round number " + _roundNumber);
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
 
                 //_text = _sectorString + ": checking for easyRetreatShips... " ;
@@ -154,7 +154,7 @@ namespace Supremacy.Combat
                 //                    + ": easy retreated."
                 //                    ;
                 //                if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
-                //                GameLog.Core.CombatDetails.DebugFormat(_text);
+                //                GameLog.Core.Combat.DebugFormat(_text);
                 //                //SendUpdates();
                 //            }
                 //        }
@@ -164,7 +164,7 @@ namespace Supremacy.Combat
                 //{
                 //    _text = "Catched: No EasyRetreatShip found....";
                 //    if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
-                //    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //    //GameLog.Core.Combat.DebugFormat(_text);
                 //}
 
 
@@ -201,7 +201,7 @@ namespace Supremacy.Combat
                 //                + ": hard retreated."
                 //                ;
                 //            if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
-                //            GameLog.Core.CombatDetails.DebugFormat(_text);
+                //            GameLog.Core.Combat.DebugFormat(_text);
                 //        }
                 //    }
                 //}
@@ -211,7 +211,7 @@ namespace Supremacy.Combat
                 _text = "Step_3022:; " + _sectorString + " > _cloakedShips = " + _cloakedShips.Count;
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 //Decloak any cloaked ships 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> combatShip in _cloakedShips)
@@ -227,7 +227,7 @@ namespace Supremacy.Combat
                             combatShip.Item1.Source.ObjectID + " " + combatShip.Item1.Name + " " + combatShip.Item1.Source.Design);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
                     }
                 }
 
@@ -260,7 +260,7 @@ namespace Supremacy.Combat
                                     );
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.Combat.DebugFormat(_text);
                             }
                         }
                     }
@@ -436,16 +436,16 @@ namespace Supremacy.Combat
                     );
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 q++;
 
-                //    GameLog.Core.CombatDetails.DebugFormat("Empire Civ in Battle: {0} FirstTarget = {1} 2nd Target = {2}", empiresInBattle[q, 0], empiresInBattle[q, 1], empiresInBattle[q, 2]);
+                //    GameLog.Core.Combat.DebugFormat("Empire Civ in Battle: {0} FirstTarget = {1} 2nd Target = {2}", empiresInBattle[q, 0], empiresInBattle[q, 1], empiresInBattle[q, 2]);
             }
             #endregion
             //foreach (int item in _ownerIDs)
             //{
-            //    GameLog.Core.CombatDetails.DebugFormat("_ownerIDs contains = {0}", item);
+            //    GameLog.Core.Combat.DebugFormat("_ownerIDs contains = {0}", item);
             //}
 
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
@@ -465,7 +465,7 @@ namespace Supremacy.Combat
             _text = ("Step_3042:; " + _sectorString + " > Combat: Main While is starting");
             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
             _combat_Automated_full_Report += _newline + _text;
-            GameLog.Core.CombatDetails.DebugFormat(_text);
+            GameLog.Core.Combat.DebugFormat(_text);
 
             #region top of Battle while loop to attacker while loop
             // ENTIRE BATTTLE
@@ -531,7 +531,7 @@ namespace Supremacy.Combat
                     _target_1_or_2 = 1;
                 }
 
-                // works   GameLog.Core.CombatDetails.DebugFormat("Current Target One or Two? in Main While {0} ", _target_1_or_2);
+                // works   GameLog.Core.Combat.DebugFormat("Current Target One or Two? in Main While {0} ", _target_1_or_2);
                 AttackingEmpireID = empiresInBattle[indexOfAttackerEmpires, 0];
                 targetedEmpireID = empiresInBattle[indexOfAttackerEmpires, 0 + _target_1_or_2];
 
@@ -549,7 +549,7 @@ namespace Supremacy.Combat
 
                 //_text = ("Step_3051:; --------------------------------------");
                 //if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 // CHANGE X (switched AttackingEmpireID and targetedEmpireID)
                 int ReturnFireEmpire = targetedEmpireID;
@@ -566,7 +566,7 @@ namespace Supremacy.Combat
                     _text = ("Step_3052:; " + _sectorString + " > Current Attacking Ship " + _attShipText);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
                 }
                 // COUNT ACTICE FIREROUND PER EMPIRE
                 shipsPerEmpire[indexOfAttackerEmpires, 2]++;
@@ -579,7 +579,7 @@ namespace Supremacy.Combat
                     AttackingShip = null; // refue to fire activly, if user / AI sais so
                 }
 
-                // works    GameLog.Core.CombatDetails.DebugFormat("Index of current Attacker Empire {0}", AttackingEmpireID);
+                // works    GameLog.Core.Combat.DebugFormat("Index of current Attacker Empire {0}", AttackingEmpireID);
 
                 if (AttackingShip is null) // either because they cannot, or they refuse to fire activly. // CHANGE X test
                 {
@@ -615,7 +615,7 @@ namespace Supremacy.Combat
                 _text = ("Step_3062:; " + _sectorString + " > Saved returnFirepower later used in next loop " + returnFireFirepower);
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 double ScissorBonus = 0d; // This adds a bonus e.g. if a destroyer is firing on a command ship
                 int remainingFirepowerInWhile = 0; // Counts if there is remaining firepower that would hit another ship, too.
@@ -627,7 +627,7 @@ namespace Supremacy.Combat
                 _text = ("Step_3066:; " + _sectorString + " > Loop for finding an Target(s) for Attacking Ship starts");
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
                 #endregion
 
                 double FavorTheBoldAttackBonus = 1.0;
@@ -666,7 +666,7 @@ namespace Supremacy.Combat
                                 * (1 + (Convert.ToDouble(ship.Item1.Source.OrbitalDesign.Maneuverability) / 0.24 / 100)))
                             );
 
-                        //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+                        //GameLog.Core.Combat.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
                         //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Fire_Power_Ship, _hostileEmpireStrength);
                     }
 
@@ -685,19 +685,19 @@ namespace Supremacy.Combat
                 _text = ("Step_3072:; " + _sectorString + " > NOW HERE ATTACKING LOOP STARTS!");
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
                 while (true) // Attacking Ship looks for target(s) - all c# collections can be looped
                 {
                     _text = ("Step_3075:; -----------------------");
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    GameLog.Core.Combat.DebugFormat(_text);
 
                     attackingRoundCounts++;
                     _text = ("Step_3076:; " + _sectorString + " > Attacking Loop > Round " + attackingRoundCounts + ", attacking Empire = " + AttackingEmpireID + " vs " + targetedEmpireID);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    GameLog.Core.Combat.DebugFormat(_text);
 
                     int rememberForDamage = 0;
                     if (targetedEmpireID == 999 || targetedEmpireID == 777 || targetedEmpireID == 888) // UPDATE X 8 july 2019 in all 3 cases no active attack
@@ -705,7 +705,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3083:; " + _sectorString + " > Loop for finding an Target(s) for Attacking Ship starts BREAKS, becasue Human/AI has no target selected");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                         break; // refue to fire activly, if user / AI sais so
                     }
@@ -832,7 +832,7 @@ namespace Supremacy.Combat
                                     + "with remaining firepower = " + remainingFirepowerInWhile);
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.Combat.DebugFormat(_text);
 
                                 //var testAttackingShip = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
                                 //        .Where(sc => sc.Item1.RemainingFirepower > 0).Select(sc => sc).ToList();
@@ -842,13 +842,13 @@ namespace Supremacy.Combat
                             else
                             {
                                 //AttackingShip.Item1.RemainingFirepower = 0;//remainingFirepowerInWhile;
-                                //GameLog.Core.CombatDetails.DebugFormat("No more target found in AttackingLoop. Trying to update for ship Name: {0} with remaining firepower = {1}", AttackingShip.Item1.Name, remainingFirepowerInWhile);
+                                //GameLog.Core.Combat.DebugFormat("No more target found in AttackingLoop. Trying to update for ship Name: {0} with remaining firepower = {1}", AttackingShip.Item1.Name, remainingFirepowerInWhile);
                                 //var testAttackingShip = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
                                 //        .Where(sc => sc.Item1.RemainingFirepower > 0).Select(sc => sc).ToList();
                                 _text = ("Step_3088:; " + _sectorString + " > Loop for finding an Target(s) for Attacking Ship starts BREAKS because no target found");
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.Combat.DebugFormat(_text);
 
                                 //if (testAttackingShip != null)
                                 //{
@@ -861,7 +861,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3090:; " + _sectorString + " > Coudn´t find a target in attacker run. BREAK");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
 
                         break;
                     }
@@ -972,17 +972,17 @@ namespace Supremacy.Combat
                     /// FavorTheBoldAttackBonus needs to be used in damage
                     //if (currentTarget is null || currentTargets.Count == 0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
                     //{
-                    //    GameLog.Core.CombatDetails.DebugFormat("current Target is: (for Attacking loop) NONE, BREAK");
+                    //    GameLog.Core.Combat.DebugFormat("current Target is: (for Attacking loop) NONE, BREAK");
                     //    break;
                     //}
                     //else
                     //{
-                    //    GameLog.Core.CombatDetails.DebugFormat("current Target is: (for Attacking loop){0}", currentTarget.Item1.Name);
+                    //    GameLog.Core.Combat.DebugFormat("current Target is: (for Attacking loop){0}", currentTarget.Item1.Name);
                     //}
                     _text = ("Step_3092:; " + _sectorString + " > NEXT: ERROR 1 maybe: 'System.Collections.Generic.KeyNotFoundException' in mscorlib.dll > no order for 999,888,777");
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
                     //CombatOrder attackerOrder = GetCombatOrder(AttackingShip.Item1.Source);
                     CombatOrder attackerOrder = GetCombatOrder(AttackingShip.Item1.Source);
@@ -994,7 +994,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3094:; " + _sectorString + " > Warning. defender OR attackerOrder == null, in Attackerloop");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
 
                     }
                     // UPDATE 07 july 2019 make sure it does not crash, use count >0
@@ -1010,7 +1010,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3096:; " + _sectorString + " > Still Attacking loop: Change target to (Station if station owner is not formation) and station rpesent. (new) target: " + currentTarget.Item1.Name);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                     }
                     else // UPDATE 07 july 2019 make sure it does not crash, use count >0
@@ -1024,7 +1024,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3098:; " + _sectorString + " > Still Attacking loop: No more targets");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                     }
                     // Calculate Bonus/Malus
@@ -1219,7 +1219,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3109:; " + _sectorString + " > Still Attacking loop: No more targets Found after checking transports/frigates etc. Break out of Attacking lopp");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
 
                         if (attackingRoundCounts == 1) // No target in round 1? then
@@ -1277,7 +1277,7 @@ namespace Supremacy.Combat
                     _text = ("Step_3106:; " + _sectorString + " > following Bonus/Malus a) due to Order: = " + combatOrderBonusMalus + ", b) due to Scissor = " + ScissorBonus);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    GameLog.Core.Combat.DebugFormat(_text);
 
                     // Do we have more Weapons then target has shields? FirepowerRemains... /// NEW123 added combatOrderBonusMallus and other changes // Maneuverability 8 = 33% more shields. 1 = 4% more shields
                     int check = currentTarget.Item1.Source.GetManeuverablility(); // allows to check if maneuverability is gotten correctly
@@ -1286,7 +1286,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3113:; " + _sectorString + " > We are in an addtiona´run (next target for attacking loop)");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                         // And new target can now aborb damage
                         if ((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) *
@@ -1296,7 +1296,7 @@ namespace Supremacy.Combat
                             _text = ("Step_3116:; " + _sectorString + " > this time (additional run) in this attacking loop the target absorbt all weapons");
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            GameLog.Core.CombatDetails.DebugFormat(_text);
+                            GameLog.Core.Combat.DebugFormat(_text);
 
                             remainingFirepowerInWhile = -1;
                             //foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire))
@@ -1324,7 +1324,7 @@ namespace Supremacy.Combat
                             _text = ("Step_3124:; " + _sectorString + " > its the run on the first target in attacking loop and it can already absorb all weapons");
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.Combat.DebugFormat(_text);
 
                             //foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire)) // Discharge Weapons
                             //{
@@ -1342,7 +1342,7 @@ namespace Supremacy.Combat
                             _text = ("Step_3126: " + _sectorString + " > its the first run on a target, an weapons remain RemainingFirepowerInWhile = " + remainingFirepowerInWhile);
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            GameLog.Core.CombatDetails.DebugFormat(_text);
+                            GameLog.Core.Combat.DebugFormat(_text);
 
                         }
                     }
@@ -1445,18 +1445,18 @@ namespace Supremacy.Combat
                     _text = ("Step_3133:; " + _sectorString + " > In Attacking Round " + attackingRoundCounts + ", the EmpireID " + AttackingEmpireID + "fired... ");
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
                     _text = ("Step_3135:; " + _sectorString + " > now damage has just been applies either full weapons  (excluding bonus) " + tempDamage
                             + " .. OR lower damage if ship can only absorb that " + tempDamage);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
                     _text = ("Step_3138:; " + _sectorString + " > Target has still hull = " + currentTarget.Item1.HullStrength);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
                     ////weapon.Discharge(); needed yes or no?
                     //END NEW123
@@ -1465,7 +1465,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3143:; " + _sectorString + " > No more weapons on the attacking ship (loop), so no more run, break");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
 
                         // Set AttackingShips TotalWeapons to 0
                         //NEW123
@@ -1477,7 +1477,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3146: " + _sectorString + " > Attacker has more weapons, an additional run is done to get more targets: " + remainingFirepowerInWhile);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                         additionalRun = true; // Remembers if next run is an addtional Target Run.
                                               // set AttackingShips TotalWeapons to remainingFirepower. Loop again
@@ -1511,7 +1511,7 @@ namespace Supremacy.Combat
                 _text = ("Step_3153:; " + _sectorString + " > RETURN FIRE LOOP starts .. Round: " + countReturnFireLoop + " if return fire >0: " + returnFireFirepower);
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 while (needAdditionalAttackingShip || additionalRun) // Either if we need an additional Attacking Ship to fire OR we have one and it needs to fire on more targets
                 {
@@ -1519,7 +1519,7 @@ namespace Supremacy.Combat
                     _text = ("Step_3156:; " + _sectorString + " > Loop for finding an Target(s) for Attacking Ship IN RETURN FIRE HAS STARTED (AGAIN) its loop " + countReturnFireLoop);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
                     if (needAdditionalAttackingShip)
                     {
@@ -1555,7 +1555,7 @@ namespace Supremacy.Combat
                     _text = ("Step_3163:; " + _sectorString + " > First Attacking Ship for RETURN FIRE found " + AttackingShip.Item1.Name);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    GameLog.Core.Combat.DebugFormat(_text);
 
                     // If AttackingShip can supply the required Weapons, we don´t need another attacking ship
                     if (returnFireFirepower < AttackingShip.Item1.RemainingFirepower) // This ship can close retaliation, has remaining firepower = Remaining - applyDamage
@@ -1566,7 +1566,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3165:; " + _sectorString + " > First Attacking Ship has enough weapons to fully RETALIATE " + AttackingShip.Item1.Name);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
 
                     }
                     else // we need another attacking ship, later, for the remaining returnFireFirepower
@@ -1578,7 +1578,7 @@ namespace Supremacy.Combat
                             + ", applied first: " + applyDamage);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                     }
                     // Getting a target // HEREX
@@ -1590,7 +1590,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3173:; " + _sectorString + " > We found a ship to be targeted: " + currentTarget.Item1.Name + " to retaliate");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                     }
 
@@ -1689,7 +1689,7 @@ namespace Supremacy.Combat
                                     _text = ("Step_3183:; " + _sectorString + " > No target in first retaliation run. Haven´t applied damaged. Havend fired, so nothing to set. BREAK");
                                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                     _combat_Automated_full_Report += _newline + _text;
-                                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                    //GameLog.Core.Combat.DebugFormat(_text);
 
                                     break;
                                 }
@@ -1702,7 +1702,7 @@ namespace Supremacy.Combat
                                         + ", which is not used - " + AttackingShip.Item1.Name);
                                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                     _combat_Automated_full_Report += _newline + _text;
-                                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                    //GameLog.Core.Combat.DebugFormat(_text);
 
                                     // use Gamelog/test that ship needs to have reduced weapons in _combatShipsTemp
                                     break;
@@ -1710,8 +1710,8 @@ namespace Supremacy.Combat
                                 //else
                                 //{ No need because set to 0 happens when ships schields/hull >0 down there
                                 //    AttackingShip.Item1.RemainingFirepower = 0;
-                                //    GameLog.Core.CombatDetails.DebugFormat("Warning. no target for RETALIATIONloop. BREAK");
-                                //    GameLog.Core.CombatDetails.DebugFormat("We have no more targets, AND no more firepower to retaliate =  {0} BREAK", returnFireFirepower);
+                                //    GameLog.Core.Combat.DebugFormat("Warning. no target for RETALIATIONloop. BREAK");
+                                //    GameLog.Core.Combat.DebugFormat("We have no more targets, AND no more firepower to retaliate =  {0} BREAK", returnFireFirepower);
                                 //    break;
                                 //}
                             }
@@ -1723,7 +1723,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3188:; " + _sectorString + " > Found a target for retaliation " + currentTarget.Item1.Name);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
 
                     }
 
@@ -1733,12 +1733,12 @@ namespace Supremacy.Combat
                     _text = ("Step_3195:; " + _sectorString + " > ERROR 2 maybe: 'System.Collections.Generic.KeyNotFoundException' in mscorlib.dll");
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
 
                     //if (currentTarget is null  && currentTargets.Count == 0)
                     //{
-                    //    GameLog.Core.CombatDetails.DebugFormat("Warning. no target for RETALIATIONloop. BREAK");
+                    //    GameLog.Core.Combat.DebugFormat("Warning. no target for RETALIATIONloop. BREAK");
                     //    break;
                     //}
                     CombatOrder defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
@@ -1749,7 +1749,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3195:; " + _sectorString + " > Retaliation target has become station");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
 
                     }
 
@@ -1978,7 +1978,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3203: " + _sectorString + " > Retaliation target not available, but no break and code continues...? to determin bonus... PROBLEM!");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                         // Update attacking Ships weapons not nessecary because no weapons fired
                         //AttackingShip.Item1.RemainingFirepower = remainingFirepowerInWhile;
@@ -2024,7 +2024,7 @@ namespace Supremacy.Combat
                         + ", ScissorBonus = " + ScissorBonus);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
                     // DO I USE remainingFirePowerinWHile OR applyDamage
                     // Do we have more Weapons then target has shields? FirepowerRemains... /// NEW123 added combatOrderBonusMallus and other changes // Maneuverability 8 = 33% more shields. 1 = 4% more shields
@@ -2035,7 +2035,7 @@ namespace Supremacy.Combat
                                                                                   //    applyDamage) // if remainingFirepower is absorbed by targets Hull/shields/Maneuverability, set it to -1 and discharge weapons.
                                                                                   //    {
                                                                                   //        additionalRun = false; // if target can absorb remaining returnFireFirepower, no more targets nessecary.
-                                                                                  //        GameLog.Core.CombatDetails.DebugFormat("it was an additional reteliation run, weapons now fully applied");
+                                                                                  //        GameLog.Core.Combat.DebugFormat("it was an additional reteliation run, weapons now fully applied");
                                                                                   //        //applyDamage = remainingFirepowerInWhile;  // save damage to apply damage for dealing damage below
 
                     //        //{
@@ -2072,12 +2072,12 @@ namespace Supremacy.Combat
                     //        }
                     //        else
                     //        {
-                    //            GameLog.Core.CombatDetails.DebugFormat("Should never be reached, because we have more weapons then target in if. no else possible"); 
+                    //            GameLog.Core.Combat.DebugFormat("Should never be reached, because we have more weapons then target in if. no else possible"); 
                     //        }
 
                     //        //remainingFirepowerInWhile = applyDamage
                     //        //                    - Convert.ToInt32((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24)) / 100);
-                    //        //GameLog.Core.CombatDetails.DebugFormat("it was an addtional run, we still have firepower =  {0}", remainingFirepowerInWhile);
+                    //        //GameLog.Core.Combat.DebugFormat("it was an addtional run, we still have firepower =  {0}", remainingFirepowerInWhile);
                     //        // Otherwise we still have remainingFirepower
                     //    }
                     //}
@@ -2105,14 +2105,14 @@ namespace Supremacy.Combat
                     //            weapon.Discharge();
                     //        }
                     //        AttackingShip.Item1.RemainingFirepower = 0; // Set firepower to 0
-                    //        GameLog.Core.CombatDetails.DebugFormat("Retailiation first run ends with first attacking ship has no more weapons. More ships needed");
+                    //        GameLog.Core.Combat.DebugFormat("Retailiation first run ends with first attacking ship has no more weapons. More ships needed");
                     //    }
                     //    else
                     //    {
                     //        // RemainingFirepowerInWhile = remaining firepower of 1 attacking ship
                     //        remainingFirepowerInWhile = Convert.ToInt32(applyDamage * sourceAccuracy) + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
                     //                            - (currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength);
-                    //        GameLog.Core.CombatDetails.DebugFormat("First Retailiation run on target, weapons = {0} reaim", remainingFirepowerInWhile);
+                    //        GameLog.Core.Combat.DebugFormat("First Retailiation run on target, weapons = {0} reaim", remainingFirepowerInWhile);
                     //        needAdditionalAttackingShip = false;
                     //        // Current Attacking Ship still has weapons remaining.
                     //    }
@@ -2193,9 +2193,9 @@ namespace Supremacy.Combat
                         + "  +bonus-random. it has hull left: " + currentTarget.Item1.HullStrength);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    GameLog.Core.Combat.DebugFormat(_text);
 
-                    //GameLog.Core.CombatDetails.DebugFormat("Retailiation damage of this round, now has been applied additional run: {0}, OR first run: {1} + Bonuse", remainingFirepowerInWhile, applyDamage);
+                    //GameLog.Core.Combat.DebugFormat("Retailiation damage of this round, now has been applied additional run: {0}, OR first run: {1} + Bonuse", remainingFirepowerInWhile, applyDamage);
 
                     // Knows we need more targets
                     if (additionalRun) // If additional run = true it means the attacking ship has more weapons then targetsShields/Hull
@@ -2215,7 +2215,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3215:; " + _sectorString + " > Retailiation incomplete. Have ReturnFireFirepower. Need more attacking ships to apply it");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                     }
                     else
@@ -2229,7 +2229,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3218:; " + _sectorString + " > Retailiation complete. No more Attacker nessarcy. Update AttackingShips weapons. Break");
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
 
                         AttackingShip.Item1.RemainingFirepower -= applyDamage; // Weapons remain
                     }
@@ -2243,13 +2243,13 @@ namespace Supremacy.Combat
                 _text = ("Step_3223:; " + _sectorString + " > CHECK IF ANOTHER TOTAL LOOP: IndexofAttackerEmpire = " + indexOfAttackerEmpires);
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 indexOfAttackerEmpires++; // The next Empire in the Array gets its shot in the next whileloop
                 _text = ("Step_3226:; " + _sectorString + " > IndexOfAttackerEmpire now = " + indexOfAttackerEmpires);
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 // SWITCH TO NEXT EMPIREs ACTIVE FIRING OR END THE BATTLE
                 if (indexOfAttackerEmpires > 11 || empiresInBattle[indexOfAttackerEmpires, 0] == 999)
@@ -2264,7 +2264,7 @@ namespace Supremacy.Combat
                             _text = "Step_3233:; " + (_sectorString + " > ANOTHER TOTAL LOOP IndexOfAttackerEmpire now = " + indexOfAttackerEmpires);
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.Combat.DebugFormat(_text);
 
                             break;
                         }
@@ -2274,7 +2274,7 @@ namespace Supremacy.Combat
                             _text = ("Step_3235:; " + _sectorString + " > NO MORE TOTAL LOOP IndexOfAttackerEmpire now = " + indexOfAttackerEmpires);
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.Combat.DebugFormat(_text);
 
                             break;
                         }
@@ -2282,7 +2282,7 @@ namespace Supremacy.Combat
                         _text = ("Step_3237:; " + _sectorString + " > ANOTHER TOTAL LOOP, with Target " + _target_1_or_2);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
 
                     }
                 }
@@ -2291,7 +2291,7 @@ namespace Supremacy.Combat
                 _text = ("Step_3243:; " + _sectorString + " > Current Empire about to fire: " + empiresInBattle[indexOfAttackerEmpires, 0]);
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
 
                 // This is the closing of the Entire battle loop
@@ -2306,15 +2306,15 @@ namespace Supremacy.Combat
             _text = ("Step_3246:; " + _sectorString + " ###  THE ENTIRE BATTLE WAS FULLY COMPLETED. May need to remove destroyed ships");
             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
             _combat_Automated_full_Report += _newline + _text;
-            //GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.Combat.DebugFormat(_text);
 
 
             // IN here is my code (while x3)
 
             //for (int i = 0; i < _combatShips.Count; i++)
             //{
-            //    GameLog.Core.CombatDetails.DebugFormat("the _combatShip[i] ={0}", _combatShips[i].Item1.Name);
-            //    GameLog.Core.CombatDetails.DebugFormat("_combatShipTemp[i] ={0}", _combatShipsTemp[i].Item1.Name);
+            //    GameLog.Core.Combat.DebugFormat("the _combatShip[i] ={0}", _combatShips[i].Item1.Name);
+            //    GameLog.Core.Combat.DebugFormat("_combatShipTemp[i] ={0}", _combatShipsTemp[i].Item1.Name);
             //}
 
             // break out of while loop end combat
@@ -2332,24 +2332,24 @@ namespace Supremacy.Combat
                     );
                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
 
                 bool _thisShipIsReported = true;
 
                 //+ "(Hull = " + combatent.Item1.HullStrength
                 //if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
-                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                //GameLog.Core.Combat.DebugFormat(_text);
                 if (combatent.Item1.IsDestroyed)
                 {
                     CivilizationManager _civM = GameContext.Current.CivilizationManagers[combatent.Item1.Owner.CivID];
-                    //GameLog.Core.CombatDetails.DebugFormat("Combatent {0} {1} IsDestroid ={2} if true see second line Hull ={3}", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
+                    //GameLog.Core.Combat.DebugFormat("Combatent {0} {1} IsDestroid ={2} if true see second line Hull ={3}", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                     CombatAssets Assets = GetAssets(combatent.Item1.Owner);
 
                     _ = Assets.AssimilatedShips.Remove(combatent.Item1);
                     _text = ("Step_3256:; " + _sectorString + " > Combatent was destroyed: " + combatent.Item1.Source.ObjectID + " " + combatent.Item1.Name + " " + combatent.Item1.Source.Design);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
-                    GameLog.Core.CombatDetails.DebugFormat(_text);
+                    GameLog.Core.Combat.DebugFormat(_text);
 
 
                     if (combatent.Item1.Source is Ship)
@@ -2363,7 +2363,7 @@ namespace Supremacy.Combat
                                 + ", Assets.NonCobatShips = " + Assets.NonCombatShips.Count);
                             //if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.Combat.DebugFormat(_text);
 
 
                             if (!Assets.DestroyedShips.Contains(combatent.Item1))
@@ -2402,7 +2402,7 @@ namespace Supremacy.Combat
                                 _text = "Step_3024:; " + _text;
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.Combat.DebugFormat(_text);
 
                             }
                             else
@@ -2419,7 +2419,7 @@ namespace Supremacy.Combat
                                 _text = "Step_3005:; " + _text;
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.Combat.DebugFormat(_text);
 
                                 //MessageBox.Show(_text, "INFO", MessageBoxButton.OK);
 
@@ -2449,7 +2449,7 @@ namespace Supremacy.Combat
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
                             //civM.SitRepEntries.Add(new ReportEntry_CoS(ship.Item1.Owner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Gray));
-                            GameLog.Core.CombatDetails.DebugFormat(_text);
+                            GameLog.Core.Combat.DebugFormat(_text);
 
                         }
                     }
@@ -2486,7 +2486,7 @@ namespace Supremacy.Combat
                             _text = "Step_3306:; " + _text;
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.Combat.DebugFormat(_text);
 
                         }
                     }
@@ -2507,11 +2507,11 @@ namespace Supremacy.Combat
             _text = ("Step_3313:; " + _sectorString + " > NOW HANDLE ALL NOT DESTROYED, Number of destroyed ships in total: " + countDestroyed);
             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
             _combat_Automated_full_Report += _newline + _text;
-            //GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.Combat.DebugFormat(_text);
 
-            //GameLog.Core.CombatDetails.DebugFormat("round# ={0}", _roundNumber);
+            //GameLog.Core.Combat.DebugFormat("round# ={0}", _roundNumber);
             //_roundNumber += 1;
-            //GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
+            //GameLog.Core.Combat.DebugFormat("round# ={0} now", _roundNumber);
             // _combatShips = _combatShipsTemp;
 
             List<Tuple<CombatUnit, CombatWeapon[]>> _combatShipsTempNotDestroyed = _combatShipsTemp
@@ -2540,7 +2540,7 @@ namespace Supremacy.Combat
                     ;
             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
             _combat_Automated_full_Report += _newline + _text;
-            //GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.Combat.DebugFormat(_text);
 
             if (_combatShipsTempNotDestroyed.Count() > 0)
             {
@@ -2577,7 +2577,7 @@ namespace Supremacy.Combat
                         ;
                     //if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     //_combat_Automated_full_Report += _newline + _text;
-                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    //GameLog.Core.Combat.DebugFormat(_text);
 
                     if (systemName != ""
                         && (systemName == ship.Item1.Owner.HomeSystemName
@@ -2592,7 +2592,7 @@ namespace Supremacy.Combat
                                 ;
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
                     }
                     else if (foundStation && !CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
                     {
@@ -2605,7 +2605,7 @@ namespace Supremacy.Combat
                                 ;
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
                     }
                     else if (constructOrColonyShips.Count() > 0) //
                     {
@@ -2621,7 +2621,7 @@ namespace Supremacy.Combat
                                     ;
                             if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat(_text);
+                            //GameLog.Core.Combat.DebugFormat(_text);
                         }
                         else
                         {
@@ -2636,7 +2636,7 @@ namespace Supremacy.Combat
                                         ;
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.Combat.DebugFormat(_text);
                             }
                             else
                             {
@@ -2650,7 +2650,7 @@ namespace Supremacy.Combat
                                         ;
                                 if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                                 _combat_Automated_full_Report += _newline + _text;
-                                //GameLog.Core.CombatDetails.DebugFormat(_text);
+                                //GameLog.Core.Combat.DebugFormat(_text);
                             }
 
                         }
@@ -2669,7 +2669,7 @@ namespace Supremacy.Combat
                                 ;
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
                     }
                     else if (ship.Item1.RemainingFirepower > 100)
                     {
@@ -2685,7 +2685,7 @@ namespace Supremacy.Combat
                                 ;
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
                     }
                     else
                     {
@@ -2701,9 +2701,9 @@ namespace Supremacy.Combat
                                 ;
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.Combat.DebugFormat(_text);
                     }
-                    //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                    //GameLog.Core.Combat.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
 
                     CivilizationManager civM = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
 
@@ -2732,7 +2732,7 @@ namespace Supremacy.Combat
                     //                ;
                     //    //Console.WriteLine("Step_6282:; " + _text);
                     //    //_combat_Automated_full_Report += _newline + _text;
-                    //    //GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
+                    //    //GameLog.Core.Combat.DebugFormat("Step_6282: " + _text);
 
                     //    civM.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
                     //}
@@ -2744,7 +2744,7 @@ namespace Supremacy.Combat
                     //    + ": " + _allRetreatShips.Count + " " + string.Format(ResourceManager.GetString("RETREATED"))
                     //    ;
                     //Console.WriteLine("Step_6283:; " + _text);
-                    ////GameLog.Core.CombatDetails.DebugFormat("Step_6282: " + _text);
+                    ////GameLog.Core.Combat.DebugFormat("Step_6282: " + _text);
 
                     //civM.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
 
@@ -2761,7 +2761,7 @@ namespace Supremacy.Combat
                         _text = (_sectorString + " > END retreated ship = " + ship.Item1.Name + " " + ship.Item1.Description);
                         Console.WriteLine("Step_6284:; " + _text);
                         _combat_Automated_full_Report += _newline + _text;
-                        //GameLog.Core.CombatDetails.DebugFormat("Step_6284: " + _text);
+                        //GameLog.Core.Combat.DebugFormat("Step_6284: " + _text);
 
                         CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
                         if (!ownerAssets.EscapedShips.Contains(ship.Item1))
@@ -2769,7 +2769,7 @@ namespace Supremacy.Combat
                             _text = (_sectorString + " > END Escaped ships = " + ship.Item1.Name + " " + ship.Item1.Description);
                             Console.WriteLine("Step_6286:; " + _text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat("Step_6286:; " + _text);
+                            //GameLog.Core.Combat.DebugFormat("Step_6286:; " + _text);
 
                             ownerAssets.EscapedShips.Add(ship.Item1);
                             _ = ownerAssets.CombatShips.Remove(ship.Item1);
@@ -2787,7 +2787,7 @@ namespace Supremacy.Combat
                                 ;
                             Console.WriteLine("Step_6382:; " + _text);
                             _combat_Automated_full_Report += _newline + _text;
-                            //GameLog.Core.CombatDetails.DebugFormat("Step_6382: " + _text);
+                            //GameLog.Core.Combat.DebugFormat("Step_6382: " + _text);
 
                             civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
                         }
@@ -2815,7 +2815,7 @@ namespace Supremacy.Combat
 
             Console.WriteLine(_newline + _newline + "Step_3097:; cAuto > _combat_Automated_full_Report" + _newline 
                 + _combat_Automated_full_Report + _newline + "end of _combat_Automated_full_Report" + _newline);
-            //GameLog.Core.CombatDetails.DebugFormat(_text);
+            //GameLog.Core.Combat.DebugFormat(_text);
         }
 
         private string CreateShipText(CombatUnit _ship, out string _shipText)

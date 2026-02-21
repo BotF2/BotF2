@@ -784,7 +784,7 @@ namespace Supremacy.Client
      //;
                 Console.WriteLine(_text);
                 Debugger.Break();
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
                 GameLog.Client.General.ErrorFormat("Exception occurred while submitting end-of-turn orders: {0}", e.Message);
                 throw;
             }

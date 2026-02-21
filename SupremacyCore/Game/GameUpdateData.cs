@@ -120,7 +120,7 @@ namespace Supremacy.Game
                 + " > Turn off in the next lines !" 
                 ;
             Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.General.DebugFormat(_text);
 
             //GameLog.Server.MultiplayDetails.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
 
@@ -143,7 +143,7 @@ namespace Supremacy.Game
                     if (item.Status.ToString() != "NoContact")
                     {
                         //Console.WriteLine(_text); // works well !!
-                        //GameLog.Core.GeneralDetails.DebugFormat(_text);
+                        //GameLog.Core.General.DebugFormat(_text);
                     }
                     
                 }

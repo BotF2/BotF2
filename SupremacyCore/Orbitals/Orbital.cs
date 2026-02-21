@@ -370,7 +370,7 @@ namespace Supremacy.Orbitals
             {
                 //Debugger.Break();
             }
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
         }
     }
 

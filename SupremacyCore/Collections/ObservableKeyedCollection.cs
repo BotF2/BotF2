@@ -96,7 +96,7 @@ namespace Supremacy.Collections
                 {
                     _text_ObKeyCol = "Step_0873: Searched Key was null";
                     Console.WriteLine(_text_ObKeyCol);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
+                    GameLog.Client.General.DebugFormat(_text_ObKeyCol);
                     throw new ArgumentNullException(nameof(key));
                 }
 
@@ -112,7 +112,7 @@ namespace Supremacy.Collections
                     _text_ObKeyCol = "Step_0875:; Searched Key was -1, sometimes this crashes";
                     //if (_console) 
                     Console.WriteLine(_text_ObKeyCol);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
+                    GameLog.Client.General.DebugFormat(_text_ObKeyCol);
                     return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
                 }
 

@@ -75,7 +75,7 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException(nameof(source));
             }
 
-            GameLog.Core.CombatDetails.DebugFormat("Set order = {1} for attacker {0}", source.Owner, order.ToString());
+            GameLog.Core.Combat.DebugFormat("Set order = {1} for attacker {0}", source.Owner, order.ToString());
             _orders[source.ObjectID] = order;
         }
 
@@ -116,7 +116,7 @@ namespace Supremacy.Combat
                 throw new ArgumentException("No order has been set for the specified source");
             }
 
-            // works   GameLog.Core.CombatDetails.DebugFormat("GetCombatOrder source {0}", source.Name);
+            // works   GameLog.Core.Combat.DebugFormat("GetCombatOrder source {0}", source.Name);
 
             return _orders[source.ObjectID];
         }

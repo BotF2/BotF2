@@ -205,7 +205,7 @@ namespace Supremacy.Game
             _text = "Step_0705:; " + DateTime.Now + " ...Do_C_Turn_UnitAI in GameEngine.cs  ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             HashSet<Fleet> _fleets;
 
@@ -219,7 +219,7 @@ namespace Supremacy.Game
             //    _text = "Step_0710:; ...Scripted Events > beginning from Turn x on ...";
             //    if (_writeDirectly) Console.WriteLine(_text);
             //    if (_gamelog_bool)
-            //        GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //        GameLog.Core.General.DebugFormat(_text);
 
             //    List<Scripting.ScriptedEvent> eventsToRemove = _game.ScriptedEvents.Where(o => !o.CanExecute).ToList();
             //    foreach (Scripting.ScriptedEvent eventToRemove in eventsToRemove)
@@ -249,7 +249,7 @@ namespace Supremacy.Game
             _text = "Step_0715:; " + DateTime.Now + " ...next > Do_11_PreTurnOperations...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.PreTurnOperations);
             GameContext.PushThreadContext(_game);
@@ -260,7 +260,7 @@ namespace Supremacy.Game
 
             //_text = "Step_0720: ...beginning SpyOperations...";
             //if (_writeDirectly) Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.General.DebugFormat(_text);
 
             //OnTurnPhaseChanged(_game, TurnPhase.SpyOperations);
             //GameContext.PushThreadContext(_game);
@@ -272,7 +272,7 @@ namespace Supremacy.Game
             _text = "Step_0725:; " + DateTime.Now + "next > Do_12_Fleet_Handling...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.FleetMovement);
             GameContext.PushThreadContext(_game);
@@ -286,7 +286,7 @@ namespace Supremacy.Game
             //_text = "Step_0728:; next > Sabotage...";
             //if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             //try { DoSabotage(_game); }
             //finally { _ = GameContext.PopThreadContext(); }
@@ -296,7 +296,7 @@ namespace Supremacy.Game
             _text = "Step_0730:; " + DateTime.Now + " > next > Do_13_Diplomacy...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Diplomacy);
             GameContext.PushThreadContext(_game);
@@ -308,7 +308,7 @@ namespace Supremacy.Game
             _text = "Step_0735:; " + DateTime.Now + "next >  Do_15_Combat...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Combat);
             GameContext.PushThreadContext(_game);
@@ -320,7 +320,7 @@ namespace Supremacy.Game
             _text = "Step_0740:; " + DateTime.Now + " > next > Do_16_PopulationGrowth ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.PopulationGrowth);
             GameContext.PushThreadContext(_game);
@@ -332,7 +332,7 @@ namespace Supremacy.Game
             _text = "Step_0745:; " + DateTime.Now + " > next > Do_17_Research ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Research);
             GameContext.PushThreadContext(_game);
@@ -344,7 +344,7 @@ namespace Supremacy.Game
             _text = "Step_0750:; " + DateTime.Now + " > next > Do_18_Scrapping ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Scrapping);
             GameContext.PushThreadContext(_game);
@@ -356,7 +356,7 @@ namespace Supremacy.Game
             _text = "Step_0755:; " + DateTime.Now + " > next > Do_19_Maintenance ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Maintenance);
             GameContext.PushThreadContext(_game);
@@ -368,7 +368,7 @@ namespace Supremacy.Game
             _text = "Step_0760:; " + DateTime.Now + " > next > Do_20_ShipProduction ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.ShipProduction);
             GameContext.PushThreadContext(_game);
@@ -381,7 +381,7 @@ namespace Supremacy.Game
             _text = "Step_0765:; " + DateTime.Now + " > next > Do_21_Production ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Production);
             GameContext.PushThreadContext(_game);
@@ -393,7 +393,7 @@ namespace Supremacy.Game
             _text = "Step_0770:; " + DateTime.Now + " > next > Do_22_Trade ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Trade);
             GameContext.PushThreadContext(_game);
@@ -401,7 +401,7 @@ namespace Supremacy.Game
             finally { _ = GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(_game, TurnPhase.Trade);
 
-            //GameLog.Core.GeneralDetails.DebugFormat("...beginning Intelligence...");
+            //GameLog.Core.General.DebugFormat("...beginning Intelligence...");
 
             //OnTurnPhaseChanged(_game, TurnPhase.Intelligence);
             //GameContext.PushThreadContext(_game);
@@ -413,7 +413,7 @@ namespace Supremacy.Game
             _text = "Step_0775:; " + DateTime.Now + " > next > Do_23_Morale ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.Morale);
             GameContext.PushThreadContext(_game);
@@ -425,7 +425,7 @@ namespace Supremacy.Game
             _text = "Step_0780:; " + DateTime.Now + " > next > Do_24_MapUpdates ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.MapUpdates);
             GameContext.PushThreadContext(_game);
@@ -437,7 +437,7 @@ namespace Supremacy.Game
             _text = "Step_0785:; " + DateTime.Now + " > next > Do_25_PostTurnOperations ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             OnTurnPhaseChanged(_game, TurnPhase.PostTurnOperations);
             GameContext.PushThreadContext(_game);
@@ -449,14 +449,14 @@ namespace Supremacy.Game
             _text = "Step_0790:; " + DateTime.Now + " > next > SendUpdates ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
             OnTurnPhaseChanged(_game, TurnPhase.SendUpdates);
 
 
             _text = "Step_0795:; " + DateTime.Now + " > next > PushThreadContext ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
             GameContext.PushThreadContext(_game);
             try
             {
@@ -474,7 +474,7 @@ namespace Supremacy.Game
             _text = "Step_0797:; " + DateTime.Now + " > next > HandleFleetLocationChanged ...";
             if (_writeDirectly) Console.WriteLine(_text);
             //if (_gamelog_bool)
-            //    GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //    GameLog.Core.General.DebugFormat(_text);
 
             _fleets = _game.Universe.Find<Fleet>();
             foreach (Fleet fleet in _fleets)
@@ -495,7 +495,7 @@ namespace Supremacy.Game
             if (_writeDirectly) Console.WriteLine(_text);
             bool _gamelog_bool = false;
             if (_gamelog_bool)
-                GameLog.Core.GeneralDetails.DebugFormat(_text);
+                GameLog.Core.General.DebugFormat(_text);
 
             List<Scripting.ScriptedEvent> eventsToRemove = game.ScriptedEvents.Where(o => !o.CanExecute).ToList();
             foreach (Scripting.ScriptedEvent eventToRemove in eventsToRemove)
@@ -1070,7 +1070,7 @@ namespace Supremacy.Game
 
                 //    // only own civilization
                 //    Console.WriteLine("Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text);
-                //    //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
+                //    //GameLog.Core.Combat.DebugFormat("Step_3282: " + _text);
 
                 //    _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
@@ -2365,7 +2365,7 @@ namespace Supremacy.Game
 
                 //Console.WriteLine("Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text);
                 _all_ships_text = Environment.NewLine + "Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text;
-                //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
+                //GameLog.Core.Combat.DebugFormat("Step_3282: " + _text);
 
                 _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
@@ -2435,39 +2435,39 @@ namespace Supremacy.Game
             //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
             GameLog.Core.General.InfoFormat("Step_0900: Options: ---------------------------");
             GameLog.Core.General.InfoFormat("Step_0903: Options:GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0906: Options:GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0913: Options:StarDensity = {0}", GameContext.Current.Options.StarDensity);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0916: Options:PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
+            GameLog.Core.General.DebugFormat("Step_0906: Options:GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
+            GameLog.Core.General.DebugFormat("Step_0913: Options:StarDensity = {0}", GameContext.Current.Options.StarDensity);
+            GameLog.Core.General.DebugFormat("Step_0916: Options:PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
             GameLog.Core.General.InfoFormat("Step_0920: Options:StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0923: Options:MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0926: Options:GalaxyCanon = {0}", GameContext.Current.Options.GalaxyCanon);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0930: Options:---------------------------");
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0933: Options:FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0936: Options:RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0940: Options:KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0943: Options:CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0946: Options:DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0950: Options:BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0953: Options:TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0956: Options:---------------------------");
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0960: Options:FederationModifier = {0}", GameContext.Current.Options.FederationModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0963: Options:RomulanModifier = {0}", GameContext.Current.Options.RomulanModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0966: Options:KlingonModifier = {0}", GameContext.Current.Options.KlingonModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0970: Options:CardassianModifier = {0}", GameContext.Current.Options.CardassianModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0973: Options:DominionModifier = {0}", GameContext.Current.Options.DominionModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0976: Options:BorgModifier = {0}", GameContext.Current.Options.BorgModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0980: Options:TerranEmpireModifier = {0}", GameContext.Current.Options.TerranEmpireModifier);
+            GameLog.Core.General.DebugFormat("Step_0923: Options:MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
+            GameLog.Core.General.DebugFormat("Step_0926: Options:GalaxyCanon = {0}", GameContext.Current.Options.GalaxyCanon);
+            GameLog.Core.General.DebugFormat("Step_0930: Options:---------------------------");
+            GameLog.Core.General.DebugFormat("Step_0933: Options:FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
+            GameLog.Core.General.DebugFormat("Step_0936: Options:RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
+            GameLog.Core.General.DebugFormat("Step_0940: Options:KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
+            GameLog.Core.General.DebugFormat("Step_0943: Options:CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
+            GameLog.Core.General.DebugFormat("Step_0946: Options:DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
+            GameLog.Core.General.DebugFormat("Step_0950: Options:BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
+            GameLog.Core.General.DebugFormat("Step_0953: Options:TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
+            GameLog.Core.General.DebugFormat("Step_0956: Options:---------------------------");
+            GameLog.Core.General.DebugFormat("Step_0960: Options:FederationModifier = {0}", GameContext.Current.Options.FederationModifier);
+            GameLog.Core.General.DebugFormat("Step_0963: Options:RomulanModifier = {0}", GameContext.Current.Options.RomulanModifier);
+            GameLog.Core.General.DebugFormat("Step_0966: Options:KlingonModifier = {0}", GameContext.Current.Options.KlingonModifier);
+            GameLog.Core.General.DebugFormat("Step_0970: Options:CardassianModifier = {0}", GameContext.Current.Options.CardassianModifier);
+            GameLog.Core.General.DebugFormat("Step_0973: Options:DominionModifier = {0}", GameContext.Current.Options.DominionModifier);
+            GameLog.Core.General.DebugFormat("Step_0976: Options:BorgModifier = {0}", GameContext.Current.Options.BorgModifier);
+            GameLog.Core.General.DebugFormat("Step_0980: Options:TerranEmpireModifier = {0}", GameContext.Current.Options.TerranEmpireModifier);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0983: Options:EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0986: Options:GamePace = {0}", GameContext.Current.Options.GamePace);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0990: Options:TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
+            GameLog.Core.General.DebugFormat("Step_0983: Options:EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
+            GameLog.Core.General.DebugFormat("Step_0986: Options:GamePace = {0}", GameContext.Current.Options.GamePace);
+            GameLog.Core.General.DebugFormat("Step_0990: Options:TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
 
             Table ToolTipImageSizeTable = GameContext.Current.Tables.UniverseTables["Sizes"];
             //AAASpecialWidth1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Width"][0]);
             //AAASpecialHeight1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Height"][0]);
             //string _text = "AAASpecialWidth1=" + AAASpecialWidth1 + " x " + "AAASpecialHeight1=" + AAASpecialHeight1;
             //if (_writeDirectly) Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.General.DebugFormat(_text);
 
             Table BuyModTable = GameContext.Current.Tables.GameOptionTables["BuyModifier"];
             int _buyMod = (int)Number.ParseSingle(BuyModTable["BuyMod"][0]);
@@ -2561,7 +2561,7 @@ namespace Supremacy.Game
             if (_writeDirectly)
                 Console.WriteLine(_text);
             string _allFleets_report = _text + _newline;
-            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
             foreach (var _civ in GameContext.Current.Civilizations)
             {
@@ -2680,7 +2680,7 @@ namespace Supremacy.Game
                     ;
                 //if (_writeDirectly) Console.WriteLine(_text);
                 _allFleets_report += _text + _newline;
-                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                 // works - _output for each single ship
                 //if (_fleet.Route.Steps.Count() > 0 && _shipNum > 1)
@@ -3018,7 +3018,7 @@ namespace Supremacy.Game
                     + " > since Turn " + station.TurnCreated /*+ " )"*/
                     ;
                 Console.WriteLine("Step_3482:; " + _text);
-                //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
+                //GameLog.Core.Combat.DebugFormat("Step_3282: " + _text);
 
                 civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, station.Location, _text, "", ""
                     , SitRepPriority.Gray));
@@ -5341,7 +5341,7 @@ namespace Supremacy.Game
 
                                 Console.WriteLine("Step_3281:; Turn " + _turnnumber + ": " + _text);
 
-                                //GameLog.Core.CombatDetails.DebugFormat("Step_3281:; " + _text);
+                                //GameLog.Core.Combat.DebugFormat("Step_3281:; " + _text);
 
                             }
                         }
@@ -5361,7 +5361,7 @@ namespace Supremacy.Game
 
                                 //_civM_1.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Gray));
                                 Console.WriteLine("Step_3282:; Turn " + _turnnumber + ": " + _text);
-                                //GameLog.Core.CombatDetails.DebugFormat("Step_3282:; " + _text);
+                                //GameLog.Core.Combat.DebugFormat("Step_3282:; " + _text);
                             }
                         }
 
@@ -5379,7 +5379,7 @@ namespace Supremacy.Game
 
                                 //_civM_1.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Gray));
                                 Console.WriteLine("Step_3283:; Turn " + _turnnumber + ": " + _text);
-                                //GameLog.Core.CombatDetails.DebugFormat("Step_3283:; " + _text);
+                                //GameLog.Core.Combat.DebugFormat("Step_3283:; " + _text);
                             }
                         }
 
@@ -7951,7 +7951,7 @@ namespace Supremacy.Game
                 //_civM_1.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(_civM_1.Civilization, _civM_1.HomeSystem.Location, _text));
                 _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _civM.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
                 Console.WriteLine("Step_4111:; Turn " + _turnnumber + ": " + _text);
-                //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
+                //GameLog.Core.Combat.DebugFormat("Step_3282: " + _text);
 
                 foreach (Colony col in _civM.Colonies)
                 {
@@ -7981,7 +7981,7 @@ namespace Supremacy.Game
 
                     _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, col.Location, _text, "", "", SitRepPriority.Brown));
                     Console.WriteLine("Step_4112:; Turn " + _turnnumber + " > " + _text);
-                    //GameLog.Core.CombatDetails.DebugFormat("Step_4112: " + _text);
+                    //GameLog.Core.Combat.DebugFormat("Step_4112: " + _text);
                 }
 
                 foreach (Bonus bonus in _civM.GlobalBonuses)
@@ -8082,7 +8082,7 @@ namespace Supremacy.Game
 
                     ;
                 Console.WriteLine("Step_3582:; Turn " + _turnnumber + ": " + _text);
-                //GameLog.Core.CombatDetails.DebugFormat("Step_3582: " + _text);
+                //GameLog.Core.Combat.DebugFormat("Step_3582: " + _text);
 
                 // due to AI has Credit Advantage, no Ranking for Credits reported
                 //_civM_1.SitRepEntries.Add(new Report_NoAction(_civM_1.Civilization, _text, "", "", SitRepPriority.Aqua));
@@ -8098,7 +8098,7 @@ namespace Supremacy.Game
 
                 _civM.SitRepEntries.Add(new ReportEntry_NoAction(_civM.Civilization, _text, "", "", SitRepPriority.Aqua));
                 Console.WriteLine("Step_3682:; Turn " + _turnnumber + ": " + _text);
-                //GameLog.Core.CombatDetails.DebugFormat("Step_3682: " + _text);
+                //GameLog.Core.Combat.DebugFormat("Step_3682: " + _text);
 
 
                 _text = "Ranking: Research > " + _civM.Civilization.Name
@@ -8112,7 +8112,7 @@ namespace Supremacy.Game
 
                 _civM.SitRepEntries.Add(new ReportEntry_NoAction(_civM.Civilization, _text, "", "", SitRepPriority.Aqua));
                 Console.WriteLine("Step_3782:; Turn " + _turnnumber + ": " + _text);
-                //GameLog.Core.CombatDetails.DebugFormat("Step_3782:; " + _text);
+                //GameLog.Core.Combat.DebugFormat("Step_3782:; " + _text);
 
                 _text = "Ranking: Intelligence > " + _civM.Civilization.Name
                     + " = * " + _rankingIntelAttackPositon
@@ -8123,7 +8123,7 @@ namespace Supremacy.Game
                     ;
                 Console.WriteLine("Step_3882:; Turn " + _turnnumber + ": " + _text);
                 _allRanking_Intelligence += _newline + _text;
-                //GameLog.Core.CombatDetails.DebugFormat("Step_3882: " + _text);
+                //GameLog.Core.Combat.DebugFormat("Step_3882: " + _text);
 
                 _civM.SitRepEntries.Add(new ReportEntry_NoAction(_civM.Civilization, _text, "", "", SitRepPriority.Aqua));
             }
@@ -8154,7 +8154,7 @@ namespace Supremacy.Game
             //        + " > since Turn " + station.TurnCreated /*+ " )"*/
             //        ;
             //    Console.WriteLine("Step_3482:; " + _text);
-            //    //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
+            //    //GameLog.Core.Combat.DebugFormat("Step_3282: " + _text);
 
             //    _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, station.Location, _text, "", "", SitRepPriority.Pink));
             //}
@@ -8198,7 +8198,7 @@ namespace Supremacy.Game
 
             //        // only own civilization
             //        Console.WriteLine("Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text);
-            //        //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
+            //        //GameLog.Core.Combat.DebugFormat("Step_3282: " + _text);
 
             //        _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
@@ -8390,7 +8390,7 @@ namespace Supremacy.Game
                     {
                         _text = "Step_5489:; Errors not empty ";
                         if (_writeDirectly) Console.WriteLine(_text);
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        GameLog.Core.Combat.DebugFormat(_text);
                         //
                         Debugger.Break();
                         //throw new AggregateException(errors);
@@ -8443,7 +8443,7 @@ namespace Supremacy.Game
             {
                 _text = "Step_5489:; Errors not empty ";
                 if (_writeDirectly) Console.WriteLine(_text);
-                GameLog.Core.CombatDetails.DebugFormat(_text);
+                GameLog.Core.Combat.DebugFormat(_text);
                 //
                 Debugger.Break();
                 //throw new AggregateException(errors);

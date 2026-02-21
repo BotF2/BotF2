@@ -5008,6 +5008,7 @@ namespace Supremacy.AI
             }
 
         }
+
         private static void BuildStation(Fleet fleet, List<Fleet> allFleets)
         {
             fleet.Route.Clear();

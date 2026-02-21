@@ -172,7 +172,7 @@ namespace Supremacy.Game
                 {
                     _text = "Step_0285:; reading HEADER of " + fileName;
                     Console.WriteLine(_text);
-                    GameLog.Client.SaveLoadDetails.DebugFormat(_text);
+                    GameLog.Client.SaveLoad.DebugFormat(_text);
 
                     header = SavedGameHeader.Read(fileStream);
                 }

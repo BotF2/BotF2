@@ -454,7 +454,7 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
-            //GameLog.Core.CombatDetails.DebugFormat("cleared all ClearUnitTrees");
+            //GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
         }
 
@@ -617,10 +617,10 @@ namespace Supremacy.Client
             TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))))
                 || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))));
 
-            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
+            //GameLog.Core.Combat.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
             string _text_combatWindow = "Step_5487:; Primary Target is set to .. > " + _targeted1Civ.ShortName;
             Console.WriteLine(_text_combatWindow);
-            //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow); //theTargeted1Civ);
+            //GameLog.Core.Combat.DebugFormat(_text_combatWindow); //theTargeted1Civ);
 
         }
 
@@ -645,8 +645,8 @@ namespace Supremacy.Client
 
             string _text_combatWindow = "Step_5487:; Secondary Target is set to .. > " + _targeted2Civ.ShortName;
             Console.WriteLine(_text_combatWindow);
-            //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow);
-            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
+            //GameLog.Core.Combat.DebugFormat(_text_combatWindow);
+            //GameLog.Core.Combat.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)

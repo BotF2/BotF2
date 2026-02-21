@@ -322,8 +322,8 @@ namespace Supremacy.Client.Views
                                                     ;
                 //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
                 //if (writeDirectly) Console.WriteLine(_text);
-                //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //GameLog.Core.SaveLoad.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
             }
 
 
@@ -484,7 +484,7 @@ namespace Supremacy.Client.Views
                     //+ " done for " + _design
                     + _newline;
                 //if (writeDirectly) Console.WriteLine(_text);
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
             }
             //if (writeDirectly) Console.WriteLine(_text);
 
@@ -517,7 +517,7 @@ namespace Supremacy.Client.Views
                             + "  at  " + slot.Shipyard.Name
                             + _newline;
                         //if (writeDirectly) Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Core.SaveLoad.DebugFormat(_text);
                     }
                     else
                     {
@@ -529,7 +529,7 @@ namespace Supremacy.Client.Views
                             + " done for " + _design
                             + _newline;
                         //if (writeDirectly) Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Core.SaveLoad.DebugFormat(_text);
                     }
                 }
             }
@@ -583,8 +583,8 @@ namespace Supremacy.Client.Views
 
             //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
             //if (writeDirectly) Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
             //}
 
 
@@ -784,7 +784,7 @@ namespace Supremacy.Client.Views
 
                                                     + _newline;
                     //if (writeDirectly) Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoad.DebugFormat(_text);
 
                     ILookup<MapLocation, StarSystem> systemLocationLookup = GameContext.Current.Universe.Objects.OfType<StarSystem>().ToLookup(o => o.Location);
 
@@ -933,7 +933,7 @@ namespace Supremacy.Client.Views
                             //+ " done for " + _design
                             + _newline;
                         //if (writeDirectly) Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Core.SaveLoad.DebugFormat(_text);
                     }
                     //if (writeDirectly) Console.WriteLine(_text);
 
@@ -964,7 +964,7 @@ namespace Supremacy.Client.Views
                                         + " at " + slot.Shipyard.Name
                                         + _newline;
                                     //if (writeDirectly) Console.WriteLine(_text);
-                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                    //GameLog.Core.SaveLoad.DebugFormat(_text);
                                 }
                                 else
                                 {
@@ -976,7 +976,7 @@ namespace Supremacy.Client.Views
                                         + " done for " + _design
                                         + _newline;
                                     //if (writeDirectly) Console.WriteLine(_text);
-                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                    //GameLog.Core.SaveLoad.DebugFormat(_text);
                                 }
                             }
                             catch
@@ -990,7 +990,7 @@ namespace Supremacy.Client.Views
                                      //+ " done for " + _design
                                      + _newline;
                                 //if (writeDirectly) Console.WriteLine(_text);
-                                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                //GameLog.Core.SaveLoad.DebugFormat(_text);
                             }
                             ;
                         }
@@ -1044,8 +1044,8 @@ namespace Supremacy.Client.Views
                 //                                        + _newline;
                 //    //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
                 //    //if (writeDirectly) Console.WriteLine(_text);
-                //    //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                //    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //    //GameLog.Core.SaveLoad.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+                //    //GameLog.Core.SaveLoad.DebugFormat(_text);
                 //}
 
 

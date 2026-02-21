@@ -204,7 +204,7 @@ namespace Supremacy.Universe
                     _planetPop = planet.GetMaxPopulation(homePlanetType);
                     //_text = planet.Name + " ( " + planet.PlanetType + " ) gets " + _planetPop + " population (Code 0123)";
                     //Console.WriteLine(_text);
-                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
                 }
                 else
                 {

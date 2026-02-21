@@ -386,7 +386,7 @@ namespace Supremacy.Client
             {
                 _text = "Step_4008:; InfoCard...";
                 Console.WriteLine(_text);
-                //GameLog.Core.GeneralDetails.DebugFormat(_text);
+                //GameLog.Core.General.DebugFormat(_text);
 
                 infoCardSubject.RefreshData();
             }
@@ -412,7 +412,7 @@ namespace Supremacy.Client
         {
             _text = "Step_4004:; ProcessSitRepEntries...";
             Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            GameLog.Core.General.DebugFormat(_text);
 
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
             {
@@ -446,7 +446,7 @@ namespace Supremacy.Client
 
             _text = "Step_4090:; " + DateTime.Now + " > ProcessSitRepEntries... done ... " ;
             Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.General.DebugFormat(_text);
         }
 
         private void ShowSummary(bool showIfEmpty)
@@ -458,7 +458,7 @@ namespace Supremacy.Client
 
             _text = "Step_4050: ShowSummary...";
             //Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.General.DebugFormat(_text);
 
             // works but less sense
             //if (1 == 2)
@@ -498,7 +498,7 @@ namespace Supremacy.Client
 
             _text = "Step_4048:; ShowSummary... before storing";
             //Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.General.DebugFormat(_text);
 
             //string _lastOneDone;
             if (GameContext.Current.TurnNumber > _lastOneDone)
@@ -524,7 +524,7 @@ namespace Supremacy.Client
 
                 _text = "Step_4887:; SaveSUMMARY_TXT... offline - takes to long time";
                 //Console.WriteLine(_text);
-                //GameLog.Core.GeneralDetails.DebugFormat(_text);
+                //GameLog.Core.General.DebugFormat(_text);
                 //SaveSUMMARY_TXT(_text);
                 _lastOneDone = GameContext.Current.TurnNumber;
                 //// \lib\_SUMMARY.txt
@@ -541,7 +541,7 @@ namespace Supremacy.Client
             }
             _text = "Step_4892:; ShowSummary... DONE";
             //Console.WriteLine(_text);
-            //GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.General.DebugFormat(_text);
 
         }
 
@@ -557,7 +557,7 @@ namespace Supremacy.Client
             _text = "Step_4777:; SaveSUMMARY_TXT..." + _text;
 
             Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            GameLog.Core.General.DebugFormat(_text);
 
             if (GameContext.Current == null)
             {
@@ -677,7 +677,7 @@ namespace Supremacy.Client
         {
             _text = "ReadPlayersHistoryFile...";
             Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            GameLog.Core.General.DebugFormat(_text);
 
             _contentHistoryFile = "";
 

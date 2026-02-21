@@ -798,8 +798,18 @@ namespace Supremacy.Game
                 return result;
             }
 
+            int _count = -1;
+            //try
+            //{
+                if(result != null && result.CivilizationManagers != null)
+                {
+                _count = result.CivilizationManagers.Count;
+                }
+
+            //} catch { }
+
             _text = "Step_0569:; " + DateTime.Now + " > GameContext: "
-                    + "result.CivilizationManagers.Count=" + result.CivilizationManagers.Count
+                    + "result.CivilizationManagers.Count=" + _count
                     ;
             Console.WriteLine(_text);
 
@@ -1062,7 +1072,7 @@ namespace Supremacy.Game
                 {
                     //string _text = "Step_0879: No ThreadContext = no GameContext anymore ";
                     //Console.WriteLine(_text);
-                    ////GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    ////GameLog.Core.SaveLoad.DebugFormat(_text);
                     //_bool_Step_0879_FAILED = true;
                 }
 
@@ -1200,7 +1210,7 @@ namespace Supremacy.Game
 
                 _text = "Step_1288:; Galaxy generated...";
                 Console.WriteLine(_text);
-                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                 TechTree.LoadTechTrees(this);
 
@@ -1213,7 +1223,7 @@ namespace Supremacy.Game
                     {
                         //_text = "Generating HomeSystems... > " + colony.Name;
                         //Console.WriteLine(_text);
-                        ////GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                        ////GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                         // get the home system settings
                         Civilization civ = colony.Owner;

@@ -206,7 +206,7 @@ namespace Supremacy.Entities
                     // works 
                     //_text = "Step_0826: de-serialize civ " + civ.Key;
                     //Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoad.DebugFormat(_text);
                     if (civ.SpiedCivList != null)
                     {
                         foreach (Civilization spiedCiv in civ.SpiedCivList)
@@ -214,7 +214,7 @@ namespace Supremacy.Entities
                             _text = "Step_0828: DeserializeOwnedData: civ.Key= " + civ.Key
                                 + ", spying on " + spiedCiv.Key;
                             Console.WriteLine(_text);
-                            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                            GameLog.Core.SaveLoad.DebugFormat(_text);
                         }
                     }
 

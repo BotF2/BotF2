@@ -110,38 +110,38 @@ namespace Supremacy.Utility
             //public const string AIDetails = "AIDetailsDetailsDetails";
             //public const string AudioDetails = "AudioDetails";
             //public const string CivsAndRacesDetails = "CivsAndRacesDetails";
-            public const string ColoniesDetails = "ColoniesDetails";
-            public const string CombatDetails = "CombatDetailsDetails";
-            //public const string CreditsDetails = "CreditsDetails";
-            //public const string DeuteriumDetails = "DeuteriumDetails";
-            //public const string DilithiumDetails = "DilithiumDetails";
-            //public const string DiplomacyDetails = "DiplomacyDetails";
-            //public const string DuraniumDetails = "DuraniumDetails";
-            //public const string EnergyDetails = "EnergyDetails";
-            //public const string EventsDetails = "EventsDetails";
-            public const string GalaxyGeneratorDetails = "GalaxyGeneratorDetails";
-            public const string GameDataDetails = "GameDataDetails";
-            public const string GameInitDataDetails = "GameInitDataDetails";
-            public const string GeneralDetails = "GeneralDetails";
-            //public const string InfoTextDetails = "InfoTextDetails";
-            //public const string IntelDetails = "IntelDetails";
-            public const string MapDataDetails = "MapDataDetails";
-            //public const string MultiplayDetails = "MultiplayDetails";
-            //public const string ProductionDetails = "ProductionDetails";
-            //public const string ReportErrorsToEmail = "ReportErrorsToEmailDetails";  // that's no category
-            public const string ResearchDetails = "ResearchDetails";
-            public const string SaveLoadDetails = "SaveLoadDetails";
-            public const string ShipsDetails = "ShipsDetails";
-            public const string ShipProductionDetails = "ShipProductionDetails";
-            public const string SitRepsDetails = "SitRepsDetails";
-            //public const string StationsDetails = "StationsDetails";
-            //public const string StructuresDetails = "StructuresDetails";
-            public const string SystemAssaultDetails = "SystemAssaultDetails";
-            public const string TestDetails = "TestDetails";
-            //public const string TradeRoutesDetails = "TradeRoutesDetails";
-            //public const string UIDetails = "UIDetails";
-            public const string XMLCheckDetails = "XMLCheckDetails";
-            public const string XML2CSVOutputDetails = "XML2CSVOutputDetails";
+            //public const string ColoniesDetails = "ColoniesDetails";
+            //public const string CombatDetails = "CombatDetailsDetails";
+            ////public const string CreditsDetails = "CreditsDetails";
+            ////public const string DeuteriumDetails = "DeuteriumDetails";
+            ////public const string DilithiumDetails = "DilithiumDetails";
+            ////public const string DiplomacyDetails = "DiplomacyDetails";
+            ////public const string DuraniumDetails = "DuraniumDetails";
+            ////public const string EnergyDetails = "EnergyDetails";
+            ////public const string EventsDetails = "EventsDetails";
+            //public const string GalaxyGeneratorDetails = "GalaxyGeneratorDetails";
+            //public const string GameDataDetails = "GameDataDetails";
+            //public const string GameInitDataDetails = "GameInitDataDetails";
+            //public const string GeneralDetails = "GeneralDetails";
+            ////public const string InfoTextDetails = "InfoTextDetails";
+            ////public const string IntelDetails = "IntelDetails";
+            //public const string MapDataDetails = "MapDataDetails";
+            ////public const string MultiplayDetails = "MultiplayDetails";
+            ////public const string ProductionDetails = "ProductionDetails";
+            ////public const string ReportErrorsToEmail = "ReportErrorsToEmailDetails";  // that's no category
+            //public const string ResearchDetails = "ResearchDetails";
+            //public const string SaveLoadDetails = "SaveLoadDetails";
+            //public const string ShipsDetails = "ShipsDetails";
+            //public const string ShipProductionDetails = "ShipProductionDetails";
+            //public const string SitRepsDetails = "SitRepsDetails";
+            ////public const string StationsDetails = "StationsDetails";
+            ////public const string StructuresDetails = "StructuresDetails";
+            //public const string SystemAssaultDetails = "SystemAssaultDetails";
+            //public const string TestDetails = "TestDetails";
+            ////public const string TradeRoutesDetails = "TradeRoutesDetails";
+            ////public const string UIDetails = "UIDetails";
+            //public const string XMLCheckDetails = "XMLCheckDetails";
+            //public const string XML2CSVOutputDetails = "XML2CSVOutputDetails";
         }
         public ILog AI => LogManager.GetLogger(Repositories.AI);
         //public ILog AIDetails => LogManager.GetLogger(Repositories.AIDetails);
@@ -152,7 +152,7 @@ namespace Supremacy.Utility
         public ILog Colonies => LogManager.GetLogger(Repositories.Colonies);
         //public ILog ColoniesDetails => LogManager.GetLogger(Repositories.ColoniesDetails);
         public ILog Combat => LogManager.GetLogger(Repositories.Combat);
-        public ILog CombatDetails => LogManager.GetLogger(Repositories.CombatDetails);
+        //public ILog CombatDetails => LogManager.GetLogger(Repositories.CombatDetails);
         public ILog Credits => LogManager.GetLogger(Repositories.Credits);
         //public ILog CreditsDetails => LogManager.GetLogger(Repositories.CreditsDetails);
         public ILog Deuterium => LogManager.GetLogger(Repositories.Deuterium);
@@ -168,13 +168,13 @@ namespace Supremacy.Utility
         public ILog Events => LogManager.GetLogger(Repositories.Events);
         //public ILog EventsDetails => LogManager.GetLogger(Repositories.EventsDetails);
         public ILog GalaxyGenerator => LogManager.GetLogger(Repositories.GalaxyGenerator);
-        public ILog GalaxyGeneratorDetails => LogManager.GetLogger(Repositories.GalaxyGeneratorDetails);
+        //public ILog GalaxyGeneratorDetails => LogManager.GetLogger(Repositories.GalaxyGeneratorDetails);
         public ILog GameData => LogManager.GetLogger(Repositories.GameData);
-        public ILog GameDataDetails => LogManager.GetLogger(Repositories.GameDataDetails);
+        //public ILog GameDataDetails => LogManager.GetLogger(Repositories.GameDataDetails);
         public ILog GameInitData => LogManager.GetLogger(Repositories.GameInitData);
-        public ILog GameInitDataDetails => LogManager.GetLogger(Repositories.GameInitDataDetails);
+        //public ILog GameInitDataDetails => LogManager.GetLogger(Repositories.GameInitDataDetails);
         public ILog General => LogManager.GetLogger(Repositories.General);
-        public ILog GeneralDetails => LogManager.GetLogger(Repositories.GeneralDetails);
+        //public ILog GeneralDetails => LogManager.GetLogger(Repositories.GeneralDetails);
         public ILog InfoText => LogManager.GetLogger(Repositories.InfoText);
         //public ILog InfoTextDetails => LogManager.GetLogger(Repositories.InfoTextDetails);
         public ILog Intel => LogManager.GetLogger(Repositories.Intel);
@@ -193,9 +193,9 @@ namespace Supremacy.Utility
         public ILog Research => LogManager.GetLogger(Repositories.Research);
         //public ILog ResearchDetails => LogManager.GetLogger(Repositories.ResearchDetails);
         public ILog SaveLoad => LogManager.GetLogger(Repositories.SaveLoad);
-        public ILog SaveLoadDetails => LogManager.GetLogger(Repositories.SaveLoadDetails);
+        //public ILog SaveLoadDetails => LogManager.GetLogger(Repositories.SaveLoadDetails);
         public ILog Ships => LogManager.GetLogger(Repositories.Ships);
-        public ILog ShipsDetails => LogManager.GetLogger(Repositories.ShipsDetails);
+        //public ILog ShipsDetails => LogManager.GetLogger(Repositories.ShipsDetails);
         public ILog ShipProduction => LogManager.GetLogger(Repositories.ShipProduction);
         //public ILog ShipProductionDetails => LogManager.GetLogger(Repositories.ShipProductionDetails);
         public ILog SitReps => LogManager.GetLogger(Repositories.SitReps);
@@ -205,16 +205,16 @@ namespace Supremacy.Utility
         public ILog Structures => LogManager.GetLogger(Repositories.Structures);
         //public ILog StructuresDetails => LogManager.GetLogger(Repositories.StructuresDetails);
         public ILog SystemAssault => LogManager.GetLogger(Repositories.SystemAssault);
-        public ILog SystemAssaultDetails => LogManager.GetLogger(Repositories.SystemAssaultDetails);
+        //public ILog SystemAssaultDetails => LogManager.GetLogger(Repositories.SystemAssaultDetails);
         public ILog Test => LogManager.GetLogger(Repositories.Test);
         public ILog TradeRoutes => LogManager.GetLogger(Repositories.TradeRoutes);
         //public ILog TradeRoutesDetails => LogManager.GetLogger(Repositories.TradeRoutesDetails);
         public ILog UI => LogManager.GetLogger(Repositories.UI);
         //public ILog UIDetails => LogManager.GetLogger(Repositories.UIDetails);
         public ILog XMLCheck => LogManager.GetLogger(Repositories.XMLCheck);
-        public ILog XMLCheckDetails => LogManager.GetLogger(Repositories.XMLCheckDetails);
+        //public ILog XMLCheckDetails => LogManager.GetLogger(Repositories.XMLCheckDetails);
         public ILog XML2CSVOutput => LogManager.GetLogger(Repositories.XML2CSVOutput);
-        public ILog XML2CSVOutputDetails => LogManager.GetLogger(Repositories.XML2CSVOutputDetails);
+        //public ILog XML2CSVOutputDetails => LogManager.GetLogger(Repositories.XML2CSVOutputDetails);
 
         protected GameLog(Type type)
         {
@@ -252,7 +252,7 @@ namespace Supremacy.Utility
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Debug;
             string _text = "Step_0146:; Log.txt: Trace is set to      DEBUG for > " + repository;
-            GameLog.Client.GeneralDetails.DebugFormat(_text);
+            GameLog.Client.General.DebugFormat(_text);
             Console.WriteLine(_text);
         }
 

@@ -1339,7 +1339,7 @@ namespace Supremacy.IO.Serialization
                 {
                     _text = "Write Object (isTypeRecreatable): " + Environment.NewLine + "Write Object:; " + value.ToString();
                     Console.WriteLine(_text);
-                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    GameLog.Core.SaveLoad.DebugFormat(_text);
                 }
 
                 WriteTypeCode(SerializedType.OwnedDataSerializableAndRecreatableType);
@@ -3767,7 +3767,7 @@ namespace Supremacy.IO.Serialization
             // to often
             //_text = "Step_0430: De-Serialized: " + result.ToString();
             //Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
 
             return (T)result;
         }
@@ -4573,7 +4573,7 @@ namespace Supremacy.IO.Serialization
                 (object[])(elementType == null ? new object[length] : Array.CreateInstance(elementType, length));
             //_text = "Step_0440: De-Serializing: " + result.ToString();
             //Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
             for (int i = 0; i < result.Length; i++)
             {
                 SerializedType t = (SerializedType)ReadByte();
@@ -4607,7 +4607,7 @@ namespace Supremacy.IO.Serialization
             }
             //_text = "Step_0441: De-Serialized: " + result.ToString();
             //Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
 
             return result;
         }
@@ -5497,7 +5497,7 @@ namespace Supremacy.IO.Serialization
                                 //        )
                                 //{
                                 //    //Console.WriteLine(_text);
-                                //    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                //    GameLog.Core.SaveLoad.DebugFormat(_text);
                                 //    _text += "";
                                 //}
 

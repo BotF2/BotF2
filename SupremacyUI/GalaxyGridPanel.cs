@@ -342,7 +342,7 @@ namespace Supremacy.UI
 
 
             }
-            GameLog.Client.GeneralDetails.DebugFormat("Images for Stars loaded...");
+            GameLog.Client.General.DebugFormat("Images for Stars loaded...");
 
             s_textTypeface = new Typeface(
                 new FontFamily("#Resources/Fonts/Calibri"),
@@ -635,7 +635,7 @@ namespace Supremacy.UI
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            GameLog.Client.GeneralDetails.InfoFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
+            GameLog.Client.General.InfoFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
             GalaxyScreenView galaxyScreen = this.FindVisualAncestorByType<GalaxyScreenView>();
             if (galaxyScreen != null)
             {
@@ -1788,7 +1788,7 @@ namespace Supremacy.UI
 
             //    ;
             //Console.WriteLine(_text);
-            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
         }
 
         public void ZoomOut(Point? zoomAroundPoint)
@@ -1817,7 +1817,7 @@ namespace Supremacy.UI
             //     + ", scaleFactor=" + scaleFactor * 50
             //    ;
             //Console.WriteLine(_text);
-            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
         }
 
         //public void Zoom25()
@@ -1863,7 +1863,7 @@ namespace Supremacy.UI
             //     + ", scaleFactor= 25 (fix) "
             //        ;
             //Console.WriteLine(_text);
-            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
         }
 
         public void ZoomMax(Point? zoomAroundPoint)
@@ -1892,7 +1892,7 @@ namespace Supremacy.UI
             //     + ", scaleFactor= 25 (fix) "
             //        ;
             //Console.WriteLine(_text);
-            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
         }
 
         private Visual BuildTradeLine(TradeRoute route, Point endPoint, bool isNew)

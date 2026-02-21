@@ -539,7 +539,7 @@ namespace Supremacy.Client
             GameInitData initData = GameInitData.CreateFromSavedGame(header);
             GameLog.Client.General.Debug("doing ExecuteLoadGameCommand ...");
             RunGameController(gameController => gameController.RunLocal(initData), initData.IsMultiplayerGame);
-            GameLog.Client.GeneralDetails.Debug("doing gameController.RunLocal(initData) ...");
+            GameLog.Client.General.Debug("doing gameController.RunLocal(initData) ...");
 
             startTechLvl = GetStartTechLvl(initData.Options.StartingTechLevel.ToString());
             localEmpire = GetLocalEmpireShortage(initData.LocalPlayerEmpireID, out string localempire);
@@ -1398,7 +1398,7 @@ namespace Supremacy.Client
 
 
 
-            GameLog.Client.GameInitDataDetails.DebugFormat("introTextCase = {0}", introTextCase);
+            GameLog.Client.GameInitData.DebugFormat("introTextCase = {0}", introTextCase);
             //string introTextCase = "FED1"; 
             string introText = Environment.NewLine;
             //+ "----------------------------------------------------------------------------------------------------------------------------------------------"

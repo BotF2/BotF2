@@ -175,7 +175,7 @@ namespace Supremacy.Diplomacy
             //    + ", L_Inc= " + LastIncursion
             //    ;
             //Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

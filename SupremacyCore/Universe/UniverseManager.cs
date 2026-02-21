@@ -834,7 +834,7 @@ namespace Supremacy.Universe
 
         //        ;
         //    Console.WriteLine(_text);
-        //    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+        //    GameLog.Core.SaveLoad.DebugFormat(_text);
         //}
 
         private void PrintColony(Colony item)
@@ -862,7 +862,7 @@ namespace Supremacy.Universe
 
                 ;
             Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            GameLog.Core.SaveLoad.DebugFormat(_text);
         }
         private void Print(Ship item)
         {
@@ -889,8 +889,8 @@ namespace Supremacy.Universe
                 ;
             //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
             Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
+            GameLog.Core.SaveLoad.DebugFormat(_text);
 
         }
 

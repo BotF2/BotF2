@@ -396,14 +396,14 @@ namespace Supremacy.Universe
                                     ;
                                 bool_output_done = true;
                                 Console.WriteLine(_text);
-                                GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text); // hiding info in Log.txt
+                                GameLog.Core.GalaxyGenerator.DebugFormat(_text); // hiding info in Log.txt
                                 count += 1;
                             }
                         }
                     }
                     _text = "Step_1258:; ### MapContent-Count:;" + count;
                     Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+                    GameLog.Core.GalaxyGenerator.DebugFormat(_text);// hiding info in Log.txt
 
                     _text = "Step_1226:; Searching for Crash: next: systemNamesList";
                     Console.WriteLine(_text);
@@ -449,7 +449,7 @@ namespace Supremacy.Universe
                     }
                     _text = "Step_1281:; ### Systems-Count:;" + count;
                     Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                     break;
                 }
@@ -647,7 +647,7 @@ namespace Supremacy.Universe
 
             //        _text = "__Step_1246: ### Apply Map-Canon-Content for " + civ.Key + " at " + _newLoc.ToString();
             //        Console.WriteLine(_text);
-            //        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+            //        GameLog.Core.GalaxyGenerator.DebugFormat(_text);// hiding info in Log.txt
 
             //        location = _newLoc;
             //    }
@@ -753,7 +753,7 @@ namespace Supremacy.Universe
             //    + " as " + civ.CivilizationType
             //    ;
             //Console.WriteLine(_text);
-            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
         }
 
 //#pragma warning disable IDE0051 // Remove unused private members
@@ -957,7 +957,7 @@ namespace Supremacy.Universe
                 //    + " as " + empireCivs[index].CivilizationType
                 //    ;
                 //Console.WriteLine(_text);
-                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                 positions.RemoveAt(iPosition);
             }
@@ -1031,7 +1031,7 @@ namespace Supremacy.Universe
                     + " > breaks if too less available #######" 
                     ;
                 Console.WriteLine(_text);
-                GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                 wantedMinorRaceCount = minorRaceCivs.Count;
             }
@@ -1092,7 +1092,7 @@ namespace Supremacy.Universe
                 //    //+ " as " + minorRaceCivs[index].CivilizationType
                 //    ;
                 //Console.WriteLine(_text);
-                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                 //minorRaceCivs.RemoveAt(index);
                 minorRaceCivs.RemoveAt(iPosition);
@@ -1118,7 +1118,7 @@ namespace Supremacy.Universe
                     + ", positions.Count= " + positions.Count
                     ;
             Console.WriteLine(_text);
-            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
             // have a look why some minors (low populated) generate 255 facilities
             return true;
@@ -1293,7 +1293,7 @@ namespace Supremacy.Universe
         {
             _text = "Step_0536:; GeneratePlanetsWithHomeworld for " + civ.Name;
             Console.WriteLine(_text);
-            GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
+            GameLog.Client.GalaxyGenerator.DebugFormat(_text);
 
             PlanetDescriptor homePlanet = new PlanetDescriptor();
             PlanetSize planetSize;
@@ -1377,7 +1377,7 @@ namespace Supremacy.Universe
 
                             //_text = "PlanetSize = " + planetSize + " at " + system.Name + " Number " + newPlanets;
                             //Console.WriteLine(_text);
-                            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
                         }
 
                         attemptNumber++;
@@ -1527,10 +1527,10 @@ namespace Supremacy.Universe
                         {
                             system.StarType = StarType.BlackHole;
                             system.Name = "Black Hole";
-                            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Step_1264: BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
+                            //GameLog.Core.GalaxyGenerator.DebugFormat("Step_1264: BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
                             break;
                         }
-                        //GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Step_1263: Wormhole placed at {0}", system.Location);
+                        //GameLog.Core.GalaxyGenerator.DebugFormat("Step_1263: Wormhole placed at {0}", system.Location);
                         break;
                     case StarType.White:
                     //break;
@@ -1560,7 +1560,7 @@ namespace Supremacy.Universe
                 //works
                 //_text = "Step_1262: " + system.Location + " " + system.Name + " .. has type > " + system.StarType;
                 //Console.WriteLine(_text);
-                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
 
                 _text = "Step_1286:; Searching for Crash: systemNamesList";
@@ -1575,7 +1575,7 @@ namespace Supremacy.Universe
                     _ = starNames.Remove(system.Name);
                     _text = system.Name + " got used and wiped out from list of Star names";
                     Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                 }
 
@@ -1671,7 +1671,7 @@ namespace Supremacy.Universe
                 {
                     _text = "Step_1269:; Position " + position.X + "/" + position.Y + " is already used !";
                     //Console.WriteLine(_text);
-                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
                 }
                 else
                 {
@@ -1693,7 +1693,7 @@ namespace Supremacy.Universe
                     _ = starNames.Remove(system.Name);
                     _text = system.Name + " got used and wiped out from list of Star names";
                     Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
                 }
 
@@ -1752,7 +1752,7 @@ namespace Supremacy.Universe
                 //    + " Wormholes at " + wormhole.Name
                 //    ;
                 //Console.WriteLine(_text);
-                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
             }
 
             while (wormholes.Count > 1)
@@ -1766,7 +1766,7 @@ namespace Supremacy.Universe
                 //    + " and " + wormholes[1].Sector.Location
                 //    ;
                 //Console.WriteLine(_text);
-                //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
        
                 //Call this twice to remove the first 2 wormholes which are now linked
                 wormholes.RemoveAt(0);

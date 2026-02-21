@@ -338,7 +338,7 @@ namespace Supremacy.Combat
 
                 if (_generateBlanketOrdersTracing && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("{0} {1} {2} is ordered to {3}",
+                    GameLog.Core.Combat.DebugFormat("{0} {1} {2} is ordered to {3}",
                         ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
@@ -377,14 +377,14 @@ namespace Supremacy.Combat
                 if (target.CivID == -1 || target == null)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.CombatDetails.DebugFormat("CombatAsset ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.Combat.DebugFormat("CombatAsset ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
                 {
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                    GameLog.Core.CombatDetails.DebugFormat("Combat ship = {0} {1} real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
+                    GameLog.Core.Combat.DebugFormat("Combat ship = {0} {1} real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
                 }
-                //GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
+                //GameLog.Core.Combat.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (CombatUnit ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
@@ -392,12 +392,12 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.Combat.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
                 {
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
+                    GameLog.Core.Combat.DebugFormat("NonCombat ship = {0} {1} Real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
                 }
             }
 
@@ -406,12 +406,12 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(assets.Station.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.CombatDetails.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.Combat.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
                 {
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);
-                    GameLog.Core.CombatDetails.DebugFormat("Station {0} {1} with Real target = {2}", assets.Station.Name, assets.Station.Owner.Key, target.Key);
+                    GameLog.Core.Combat.DebugFormat("Station {0} {1} with Real target = {2}", assets.Station.Name, assets.Station.Owner.Key, target.Key);
                 }
             }
             return targetOne;
@@ -433,7 +433,7 @@ namespace Supremacy.Combat
                     targetTwo.SetTargetTwoCiv(ship.Source, target);
                 }
 
-                GameLog.Core.CombatDetails.DebugFormat("Combat Ship {0} with target = {2}", ship.Name, ship.Owner, target.Key);
+                GameLog.Core.Combat.DebugFormat("Combat Ship {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (CombatUnit ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
@@ -468,8 +468,8 @@ namespace Supremacy.Combat
                 return 0;
             }
 
-            GameLog.Core.SystemAssaultDetails.DebugFormat("ComputeGroundDefenseMultiplier...");
-            //GameLog.Core.SystemAssaultDetails.DebugFormat("Colony={0}, ComputeGroundDefenseMultiplier={1}",
+            GameLog.Core.SystemAssault.DebugFormat("ComputeGroundDefenseMultiplier...");
+            //GameLog.Core.SystemAssault.DebugFormat("Colony={0}, ComputeGroundDefenseMultiplier={1}",
             //    colony.Name,
             //    Math.Max(
             //    0.1,
@@ -516,7 +516,7 @@ namespace Supremacy.Combat
 
             double result = population * weaponTechMod * raceMod * localGroundCombatMod;
 
-            GameLog.Core.SystemAssaultDetails.DebugFormat("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
+            GameLog.Core.SystemAssault.DebugFormat("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
 
             return (int)result;
         }

@@ -594,7 +594,7 @@ namespace Supremacy.Collections
 
             //_text = "Reader_0801: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + _newline;
             //Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
 
             //string _file = Path.Combine(ResourceManager.GetResourcePath(""),"saved"+ reader.BaseStream.Position + ".txt");
             if (_items.Count > 0 
@@ -612,7 +612,7 @@ namespace Supremacy.Collections
                     //{
                         //_text = "Reader_0803: pos= " + reader.BaseStream.Position + " of = " + reader.BaseStream.Length + ", BytesRemaining= " + reader.BytesRemaining + _newline;
                         //Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Core.SaveLoad.DebugFormat(_text);
                     //writer.Write(_text);
                     //}
 
@@ -623,7 +623,7 @@ namespace Supremacy.Collections
                     //works
                     //_text = "Reader_0804: reader-item_" + i + ": " + _items[i].ToString() + _newline;
                     //Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoad.DebugFormat(_text);
 
 
 

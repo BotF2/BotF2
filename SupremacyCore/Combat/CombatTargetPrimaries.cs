@@ -47,7 +47,7 @@ namespace Supremacy.Combat
                 {
                     //GameLog.Core.Test.DebugFormat("target one Civ = null(!!!)");
 
-                    GameLog.Core.CombatDetails.DebugFormat("Dictionary attacker = {0} {1} Target = {2}", source.Owner.Key, source.Name, targetOne.Key);
+                    GameLog.Core.Combat.DebugFormat("Dictionary attacker = {0} {1} Target = {2}", source.Owner.Key, source.Name, targetOne.Key);
                 }
             }
 
@@ -75,7 +75,7 @@ namespace Supremacy.Combat
                 _targetPrimaries[source.ObjectID] = CombatHelper.GetDefaultHoldFireCiv();
                 //throw new ArgumentException("No target one has been set for the specified source");
             }
-            GameLog.Core.CombatDetails.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);
+            GameLog.Core.Combat.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);
             return _targetPrimaries[source.ObjectID];
         }
     }

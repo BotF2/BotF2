@@ -170,7 +170,7 @@
     <Setting Name="TracesXML2VSCOutput" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TracesAIDetails" Type="System.Boolean" Scope="User">
+    <!--<Setting Name="TracesAIDetails" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="TracesAudioDetails" Type="System.Boolean" Scope="User">
@@ -266,9 +266,9 @@
     <Setting Name="TracesTradeRoutesDetails" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <!--<Setting Name="TracesUIDetails" Type="System.String" Scope="User">
+    <Setting Name="TracesUIDetails" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
-    </Setting>-->
+    </Setting>
     <Setting Name="TracesXMLCheckDetails" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -277,6 +277,6 @@
     </Setting>
     <Setting Name="TracesSystemAssaultDetailsDetails" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
-    </Setting>
+    </Setting>-->
   </Settings>
 </SettingsFile>

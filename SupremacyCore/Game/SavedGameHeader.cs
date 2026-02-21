@@ -218,7 +218,7 @@ namespace Supremacy.Game
 
             for (int i = 0; i < empireCount; i++)
             {
-                //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4560: Writing Empires: empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, {0}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
+                //GameLog.Core.SaveLoad.DebugFormat("Step_4560: Writing Empires: empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, {0}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
                 writer.Write(EmpireIDs[i]);
                 writer.Write(EmpireNames[i]);
                 writer.Write((byte)SlotClaims[i]);

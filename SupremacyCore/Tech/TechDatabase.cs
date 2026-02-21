@@ -2068,7 +2068,7 @@ namespace Supremacy.Tech
                         {
                             obsDesign += obsolete.Key + ",";
                         }
-                        //GameLog.Core.CombatDetails.DebugFormat("{0} has obsolete designs = {1} ", ob.Key, obsDesign);
+                        //GameLog.Core.Combat.DebugFormat("{0} has obsolete designs = {1} ", ob.Key, obsDesign);
 
 
                         //string prerequisitesCollection = "";

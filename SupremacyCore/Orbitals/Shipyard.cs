@@ -243,7 +243,7 @@ namespace Supremacy.Orbitals
 
             //_text = "Step_7601: SerializeOwnedData ------------";
             //Console.WriteLine(_text);
-            //GameLog.Core.CombatDetails.DebugFormat("Step_7601: " + _text);
+            //GameLog.Core.Combat.DebugFormat("Step_7601: " + _text);
 
             try
             {
@@ -267,7 +267,7 @@ namespace Supremacy.Orbitals
                         + " done for " + _design
                         ;
                     //Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoad.DebugFormat(_text);
                     //}
 
                 }
@@ -283,7 +283,7 @@ namespace Supremacy.Orbitals
                      //+ " done for " + _design
                      ;
                 Console.WriteLine(_text);
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
             }
 
             string _slots_summary = "";
@@ -319,7 +319,7 @@ namespace Supremacy.Orbitals
                         ;
                         //Console.WriteLine(_text);
                         _slots_summary += _text + _newline;
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Core.SaveLoad.DebugFormat(_text);
                     }
                     else
                     {
@@ -335,7 +335,7 @@ namespace Supremacy.Orbitals
 
                         //_slots_summary += _newline + _text;
 
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //GameLog.Core.SaveLoad.DebugFormat(_text);
                     }
 
                 }
@@ -352,7 +352,7 @@ namespace Supremacy.Orbitals
                      //+ " done for " + _design
                      ;
                 Console.WriteLine(_text);
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
             }
             if (_slots_summary == "")
             {
@@ -425,7 +425,7 @@ namespace Supremacy.Orbitals
 
                     ;
                     //Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoad.DebugFormat(_text);
                 }
                 //else
                 //{

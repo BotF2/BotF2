@@ -110,7 +110,7 @@ namespace Supremacy.Client
                 
                 _text = "Step_0219:; Time running = " + (DateTime.Now - starttime).ToString();
                 Console.WriteLine(_text);
-                GameLog.Client.GeneralDetails.DebugFormat(_text);
+                GameLog.Client.General.DebugFormat(_text);
 
                 return Current.Version;
             }
@@ -959,7 +959,7 @@ namespace Supremacy.Client
 
             //_text = "Step_0200: UnityBootstrapper";
             //        Console.WriteLine(_text);
-            //        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+            //        GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
             protected override IModuleCatalog GetModuleCatalog()
             {

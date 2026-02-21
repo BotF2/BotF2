@@ -567,7 +567,7 @@ namespace Supremacy.Client.Views
 
                     GroundCombatOddsValue = 100 + attack - defend;
 
-                    GameLog.Client.SystemAssaultDetails.DebugFormat("GroundCombatOdds...");
+                    GameLog.Client.SystemAssault.DebugFormat("GroundCombatOdds...");
                     _text =
                         "Step_6555:; GroundCombatOdds= " + GroundCombatOddsValue
                         + " > Transports: " + SelectedTransportsCombatStrength
@@ -1048,7 +1048,7 @@ namespace Supremacy.Client.Views
 
 
 
-            GameLog.Client.SystemAssaultDetails.DebugFormat("Proceeding Invasion on {0} {1} - Round {4}, Population: Last={2}, _current={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
+            GameLog.Client.SystemAssault.DebugFormat("Proceeding Invasion on {0} {1} - Round {4}, Population: Last={2}, _current={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
                                             GameContext.Current.Universe.Map[colony.Location].System.Colony.Population, DefenderPopulation, RoundNumber);
 
             if (update.IsFinished)

@@ -264,7 +264,7 @@ namespace Supremacy.Diplomacy
 
                     ;
             Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            GameLog.Core.SaveLoad.DebugFormat(_text);
             }
             //foreach (var item in _foreignPowers.)
             //{
