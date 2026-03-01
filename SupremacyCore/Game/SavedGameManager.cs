@@ -188,7 +188,7 @@ namespace Supremacy.Game
             }
             catch
             {
-                _text = "Step_0291:; is the file there ? ...not able to read HEADER of " + fileName; // command line parameter ... e.g. started out of VS
+                _text = "Step_0291:; is the file there ? ...not able to read HEADER of >> " + fileName; // command line parameter ... e.g. started out of VS
                 Console.WriteLine(_text);
                 GameLog.Client.SaveLoad.DebugFormat(_text);
 

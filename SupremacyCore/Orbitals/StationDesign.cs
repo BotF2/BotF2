@@ -7,11 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Xml;
-
 using Supremacy.Encyclopedia;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -19,6 +14,9 @@ using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace Supremacy.Orbitals
 {
@@ -84,28 +82,34 @@ namespace Supremacy.Orbitals
             }
             if (element["StationNames"] == null)
             {
-                GameLog.Core.Stations.DebugFormat("StationNames missing in TechObjectDatabase.xml for {0}", Name);
+                _text = "Step_0497:; StationNames missing in TechObjectDatabase.xml for " + Name; // dummy to avoid Report2GameData is not used.
+                Console.WriteLine(_text);
+                GameLog.Core.GameData.DebugFormat(_text);
             }
             else
             {
-                _text = "Step_0498:; Stations - now reading " + Name; // dummy to avoid Report2GameData is not used.
-                Console.WriteLine(_text);
-                GameLog.Core.GameData.DebugFormat(_text);
+                if (Name == "FED_OUTPOST_I")
+                {
+                    _text = "Step_0498:; Stations - now reading " + Name; // dummy to avoid Report2GameData is not used.
+                    Console.WriteLine(_text);
+                    GameLog.Core.GameData.DebugFormat(_text);
+                }
+
                 //GameLog.Core.GameData.DebugFormat("StationNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
 
                 //bool _possibleStationNames_Done = false;
                 //if (!_possibleStationNames_Done)
                 //{
-                    foreach (XmlElement name in element["StationNames"])
-                    {
-                        _possibleStationNames.Add(name.InnerText.Trim(), 0);
-                        _text = "Step_0499: StationNames - Possible Name for " + Name + " = " + name.InnerText.Trim();
-                        //Console.WriteLine(_text);
-                        //GameLog.Core.GameData.DebugFormat(_text);
-                        //        _possibleStationNames_Done = true;
-                    }
-                    //}
+                foreach (XmlElement name in element["StationNames"])
+                {
+                    _possibleStationNames.Add(name.InnerText.Trim(), 0);
+                    _text = "Step_0499: StationNames - Possible Name for " + Name + " = " + name.InnerText.Trim();
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.GameData.DebugFormat(_text);
+                    //        _possibleStationNames_Done = true;
                 }
+                //}
+            }
         }
 
         //private void _text = string v)
@@ -156,6 +160,7 @@ namespace Supremacy.Orbitals
         /// <param name="spawnedInstance"> </param>
         public override bool TrySpawn(MapLocation location, Civilization owner, out TechObject spawnedInstance)
         {
+            string _text = "";
             //GameLog.Core.Stations.DebugFormat("############# TrySpawn Station ##########");
             if (!CanSpawn(location, owner))
             {
@@ -215,17 +220,16 @@ namespace Supremacy.Orbitals
             if (sectorOwner != null &&
                 sectorOwner != owner)
             {
-                GameLog.Core.Stations.DebugFormat("{0} cannot spawn {1} at location {2} because that sector is owned by {3}.",
-                    owner.Key,
-                    Key ?? UnknownDesignKey,
-                    location,
-                    sectorOwner.Key);
-                GameLog.Core.General.DebugFormat(
-                    "{0} cannot spawn {1} at location {2} because that sector is owned by {3}.",
-                    owner.Key,
-                    Key ?? UnknownDesignKey,
-                    location,
-                    sectorOwner.Key);
+                _text = "Step_0482:; Stations - now reading "
+                    + location
+                    + " > " + Key ?? UnknownDesignKey
+                    + " > cannot spawn " + Key ?? UnknownDesignKey
+                    + " ( " + owner.Key + " )"
+                    + " because that sector is owned by " + sectorOwner.Key
+                    + Name
+                    ;                    ;
+                Console.WriteLine(_text);
+                //GameLog.Core.General.DebugFormat(_text);
 
                 spawnedInstance = null;
                 return false;

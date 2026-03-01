@@ -500,7 +500,7 @@ namespace Supremacy.Client
                 //string _newline = Environment.NewLine;
                 var _text = GetTimeString(); // DateTime.Now;
                 //_text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
-                Console.WriteLine("Output_" + _text);  // "Current Version = "
+                Console.WriteLine("################ Start"+ Environment.NewLine + Environment.NewLine+"Output_" + _text);  // "Current Version = "
                 //GameLog.Client.General.InfoFormat(_text);
 
                 //Add dll subdirectories to current process PATH variable

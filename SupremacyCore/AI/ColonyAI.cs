@@ -54,11 +54,13 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
 
             _writeDirectly_Colony = true;
-            string _text = _newline + "Step_1101:; ColonyAI.cs > Do_C_Turn_UnitAI begins... for > " + _civ.Key
+            string _text = _newline + "Step_1101:; " + DateTime.Now 
+                + " > ColonyAI.cs > Do_C_Turn_UnitAI begins... for > " + _civ.Key
                 + ": Deu=" + _civM.Resources.Deuterium.CurrentValue
                 + ", Dur=" + _civM.Resources.Duranium.CurrentValue
                 + ", Dil=" + _civM.Resources.Dilithium.CurrentValue
-                + " > " + DateTime.Now + ", Console-Output= " + _writeDirectly_Colony.ToString()
+                + ", Console-Output= " + _writeDirectly_Colony.ToString()
+                + _newline
                 ;
             //if (_writeDirectly_Colony) 
             Console.WriteLine(_text);

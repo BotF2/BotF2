@@ -3843,7 +3843,7 @@ namespace Supremacy.AI
 
             if (ship == null || ship.Fleet == null)
             {
-                _shipText = " - no _ship or no _fleet";
+                _shipText = " - no _ship or no _fleet ( station ? )";
                 return _shipText;
             }
 

@@ -358,7 +358,7 @@ namespace Supremacy.Client
 
         private void OnTurnStarted(EventArgs args)
         {
-            _text = "Step_4007:; " + DateTime.Now + "OnTurnStarted... (currentGame) ... ";
+            _text = "Step_4007:; " + DateTime.Now + " > OnTurnStarted... (currentGame) ... ";
             Console.WriteLine(_text);
 
             IGameContext currentGame = _appContext.CurrentGame;

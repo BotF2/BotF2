@@ -106,7 +106,7 @@ namespace Supremacy.Client
                 () =>
                 {
                     Channel.Publish(new TurnProgressChangedMessage(phase));
-                    string _text = "Step_0303:; >> new Phase >>>  " + phase;
+                    string _text = "Step_0303:; " + DateTime.Now +" >> new Phase >>>  " + phase;
                     Console.WriteLine(_text);
                     ClientEvents.TurnPhaseChanged.Publish(new ClientDataEventArgs<TurnPhase>(phase));
                 },
@@ -836,15 +836,15 @@ namespace Supremacy.Client
             //int _i = 0;
             //_i += 1;
 
-            lock (_clientLock)
-            {
+            //lock (_clientLock)
+            //{
                 if (!_isConnected)
                 {
                     return;
                 }
 
                 serviceClient = _serviceClient;
-            }
+            //}
 
             if (serviceClient == null)
             {
@@ -854,15 +854,15 @@ namespace Supremacy.Client
             try { serviceClient.Pong(0); }
             catch (Exception e)
             {
-                lock (_clientLock)
-                {
+                //lock (_clientLock)
+                //{
                     if (!_isConnected)
                     {
                         return;
                     }
 
                     GameLog.Client.General.WarnFormat("Exception occurred while responding to service heartbeat: {0}", e);
-                }
+                //}
             }
 
             //Console.WriteLine("Step_3332:; _i = " + _i);

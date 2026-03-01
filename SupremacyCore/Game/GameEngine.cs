@@ -574,11 +574,13 @@ namespace Supremacy.Game
             foreach (Orbital item in _all_orbitals)
             {
                 item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
-                _text = "Step_1051:; _fleet.Order?.OnTurnBeginning() for= " + UnitAI.CreateShipText(item as Ship, out string _fleet_text)
+                _text = "Step_1051:; _fleet.Order?.OnTurnBeginning() for= " 
+                    + UnitAI.CreateShipText(item as Ship, out string _fleet_text)
+                    //+ " ( station? )"
 //+ " > _fleet.Order?.OnTurnBeginning()"
 //+ " - Name= " + _civM.Civilization
 //+ _newline
-;
+                ;
                 Console.WriteLine(_text);
 
                 //                item.Order?.OnTurnBeginning();
@@ -1186,22 +1188,22 @@ namespace Supremacy.Game
 
             }
 
-            HashSet<Ship> _all_ships = game.Universe.Find<Ship>();
-            foreach (Ship item in _all_ships)
-            {
+            //HashSet<Ship> _all_ships = game.Universe.Find<Ship>();
+            //foreach (Ship item in _all_ships)
+            //{
 
-                item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
-                _text = "Step_1051:; > Ships > " + UnitAI.CreateShipText(item, out string _fleet_text)
-                //+ " > _fleet.Order?.OnTurnBeginning()"
-                //+ " - Name= " + _civM.Civilization
-                + " - item.Fire_Power_Orbital= " + item.Fire_Power_Orbital
-                //+ _newline
-                ;
-                Console.WriteLine(_text);
+            //    item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
+            //    _text = "Step_1051:; > Ships > " + UnitAI.CreateShipText(item, out string _fleet_text)
+            //    //+ " > _fleet.Order?.OnTurnBeginning()"
+            //    //+ " - Name= " + _civM.Civilization
+            //    + " - item.Fire_Power_Orbital= " + item.Fire_Power_Orbital
+            //    //+ _newline
+            //    ;
+            //    Console.WriteLine(_text);
 
-                //_fleet.Order?.OnTurnBeginning();
-                //SitReps_for_Fleets(_fleet);
-            }
+            //    //_fleet.Order?.OnTurnBeginning();
+            //    //SitReps_for_Fleets(_fleet);
+            //}
 
 
             HashSet<Station> _all_stations = game.Universe.Find<Station>();
@@ -1225,7 +1227,7 @@ namespace Supremacy.Game
             HashSet<Fleet> _all_fleets = game.Universe.Find<Fleet>();
             foreach (Fleet _fleet in _all_fleets)
             {
-                _text = "Step_1051:; _fleet.Order?.OnTurnBeginning() for= " + UnitAI.CreateUpdateFleetText(_fleet, out string _fleet_text)
+                _text = "Step_1057:; _fleet.Order?.OnTurnBeginning() for= " + UnitAI.CreateUpdateFleetText(_fleet, out string _fleet_text)
 //+ " > _fleet.Order?.OnTurnBeginning()"
 //+ " - Name= " + _civM.Civilization
 //+ _newline
@@ -7084,13 +7086,15 @@ namespace Supremacy.Game
             //  {
             foreach (CivilizationManager _civM in GameContext.Current.CivilizationManagers)
             {
-                GameContext.PushThreadContext(_game);
+
                 if (GameContext.Current == null)
                 {
                     Debugger.Break();
                     continue;
                 }
 
+                GameContext.PushThreadContext(_game);
+                
                 try
                 {
                     int globalMorale = 0;
@@ -8366,16 +8370,21 @@ namespace Supremacy.Game
                         _text = "Step_9785:; " + DateTime.Now + " > ColonyAI.Do_C_Turn_UnitAI(_civ) for > " + _civ + " is next";
                         if (_writeDirectly) Console.WriteLine(_text);
 
-                        if (_civ.Key == "ZAKONIANS")
+                        if (_civ.Key == "VAADWAUR")
                         {
-                            Debugger.Break();
+                            //Debugger.Break();
                         }
 
                         UnitAI.Do_C_Turn_UnitAI(_civ);
 
                         _text = "Step_9786:; " + DateTime.Now + " > ColonyAI.Do_C_Turn_UnitAI(_civ) for > " + _civ + " is DONE";
                         if (_writeDirectly) Console.WriteLine(_text);
+
+                    if (_civ.Key == "VAADWAUR")
+                    {
+                        Debugger.Break();
                     }
+                }
                     //}
                     //catch (Exception e)
                     //{
@@ -8395,7 +8404,7 @@ namespace Supremacy.Game
                         Debugger.Break();
                         //throw new AggregateException(errors);
                     }
-                    GameContext.PopThreadContext();
+                GameContext.PopThreadContext();
                 //}
 
             }
@@ -8443,13 +8452,14 @@ namespace Supremacy.Game
             {
                 _text = "Step_5489:; Errors not empty ";
                 if (_writeDirectly) Console.WriteLine(_text);
-                GameLog.Core.Combat.DebugFormat(_text);
-                //
+                //GameLog.Core.Combat.DebugFormat(_text);
+                
                 Debugger.Break();
                 //throw new AggregateException(errors);
             }
 
-            //GameContext.PopThreadContext();  // takes too long = "result there is null"
+            GameContext.PopThreadContext();  // takes too long = "result there is null"
+            //GameContext.PushThreadContext(GameContext gameContext,);  // takes too long = "result there is null"
         }
 
         #endregion

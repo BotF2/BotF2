@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
@@ -58,7 +59,7 @@ namespace Supremacy.Tech
         //private static bool _maint_output_done;
         //private static bool _buildCostIgnored;
         //private static bool _buildCostShipsIgnored;
-        private static bool _buildCostTextOnlyOnce;
+        //private static bool _buildCostTextOnlyOnce;
         //public static bool _checkForProblems = false;
         //private static readonly string _newline = Environment.NewLine;
 
@@ -197,7 +198,7 @@ namespace Supremacy.Tech
             bool _checkForProblems = false;
 
             //_text = "Step_3018:; Loading Resources/Data/TechObjectDatabase.xml";
-            string _text = "Step_3031:; Loading Resources/Data/TechObj_1_ProdFac.xml";
+            string _text = "Step_3020:; " + DateTime.Now+" > Loading Resources/Data/TechObj_1_ProdFac.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -296,7 +297,7 @@ namespace Supremacy.Tech
                 }
             }
 
-            _text = "Step_3023:; Loading Resources/Data/TechObj_3_OrbBat.xml";
+            _text = "Step_3023:; " + DateTime.Now + " > Loading Resources/Data/TechObj_3_OrbBat.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -382,7 +383,7 @@ namespace Supremacy.Tech
 
             
 
-            _text = "Step_3022:; Loading Resources/Data/TechObj_2_Buildings.xml";
+            _text = "Step_3022:; " + DateTime.Now + " > Loading Resources/Data/TechObj_2_Buildings.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -470,7 +471,7 @@ namespace Supremacy.Tech
 
             // Shipyards
 
-            _text = "Step_3024:; Loading Resources/Data/TechObj_4_Shipyards.xml";
+            _text = "Step_3024:; " + DateTime.Now + " > Loading Resources/Data/TechObj_4_Shipyards.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -560,7 +561,7 @@ namespace Supremacy.Tech
              * Ships *
              *********/
 
-            _text = "Step_3026:; Loading Resources/Data/TechObj_6_Ships.xml";
+            _text = "Step_3026:; " + DateTime.Now + " > Loading Resources/Data/TechObj_6_Ships.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -767,7 +768,7 @@ namespace Supremacy.Tech
 
             //bool _traceTechObjectDatabase = true;  
             // file is writen while starting a game -> Federation -> Start
-            _text = "Step_0266:; Output of Data files= " + _traceTechObjectDatabase;
+            _text = "Step_0276:; "+DateTime.Now+" > Output of Data files= " + _traceTechObjectDatabase;
             Console.WriteLine(_text);
 
 
@@ -2259,7 +2260,8 @@ namespace Supremacy.Tech
                 ;
             _buildCostText += _newline + _text;
 
-            if (_buildCostTextOnlyOnce == false)
+            //if (_buildCostTextOnlyOnce == false)
+            if (pf.Key == "TYPE_1_REPLICATION_PLANT")
             {
                 //_text = "Step_4000: AppWindowSize availableSize = " + availableSize;
                 Console.WriteLine("Step_4080:; " + _text);
@@ -2267,7 +2269,7 @@ namespace Supremacy.Tech
 
                 //GameLog.Core.Production.DebugFormat(_buildCostText);
                 Console.WriteLine(_text + " - no more output for Step_4080"); // 
-                _buildCostTextOnlyOnce = true;
+                //_buildCostTextOnlyOnce = true;
             }
 
 
@@ -2293,7 +2295,7 @@ namespace Supremacy.Tech
             string _buildCostText = "";
             string _newline = Environment.NewLine;
             //bool _buildCostShipsIgnored = false; // not here
-            bool _buildCostTextOnlyOnce = false;
+            //bool _buildCostTextOnlyOnce = false;
 
             if (ship.PrimaryWeapon != null)
             {
@@ -2342,11 +2344,12 @@ namespace Supremacy.Tech
                 ;
             _buildCostText += _newline + _text;
 
-            if (_buildCostTextOnlyOnce == false)
+            //if (_buildCostTextOnlyOnce == false)
+            if (ship.Key == "FED_COLONY_SHIP_I")
             {
                 //GameLog.Core.Production.DebugFormat(_buildCostText);
                 Console.WriteLine(_text + " - no more output for ShipData");
-                _buildCostTextOnlyOnce = true;
+                //_buildCostTextOnlyOnce = true;
             }
             //GameLog.Core.Production.DebugFormat(_buildCostText);
             //Console.WriteLine(_text);

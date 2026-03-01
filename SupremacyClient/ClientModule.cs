@@ -1086,7 +1086,7 @@ namespace Supremacy.Client
 
             GameLog.Client.General.InfoFormat("Step_0290:; MenuScreen activated... ");
             _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.ogg");
-            Console.WriteLine("Step_0295:; Initialize done...");
+            Console.WriteLine("Step_0295:; "+ DateTime.Now+" > Initialize done...");
         }
 
         private bool AutoLoadSavedGame()
@@ -1922,7 +1922,7 @@ namespace Supremacy.Client
                     break;
             }
 
-            string _text = "Step_1000:; GameInitData.CreateSinglePlayerGame .... ";
+            string _text = "Step_1000:; " + DateTime.Now + " > Game STARTED > GameInitData.CreateSinglePlayerGame .... ";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
             GameInitData initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);

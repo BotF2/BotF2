@@ -750,7 +750,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_threadStack == null)
+                if (_threadStack == null)// > not, otherwise Stack Overflow || _threadStack.Count == 0)
                 {
                     _threadStack = new Stack<GameContext>();
                 }
@@ -771,14 +771,14 @@ namespace Supremacy.Game
         public static void PushThreadContext(GameContext context)
         {
             // to often !
-            Console.WriteLine("Step_0567:; " + DateTime.Now + " > PushThreadContext(GameContext context) !  "
-                //+ ", _civM= " + context.CivilizationManagers.Count
-                );
+            //Console.WriteLine("Step_0567:; " + DateTime.Now + " > PushThreadContext(GameContext context) !  "
+            //    //+ ", _civM= " + context.CivilizationManagers.Count
+            //    );
             if (context == null)
             {
                 Debugger.Break();
             }
-            ThreadStack.Push(context);
+            ThreadStack.Push(context); // PushThreadContext(GameContext context)
         }
 
         /// <summary>
@@ -808,10 +808,10 @@ namespace Supremacy.Game
 
             //} catch { }
 
-            _text = "Step_0569:; " + DateTime.Now + " > GameContext: "
-                    + "result.CivilizationManagers.Count=" + _count
-                    ;
-            Console.WriteLine(_text);
+            //_text = "Step_0569:; " + DateTime.Now + " > GameContext: "
+            //        + "result.CivilizationManagers.Count=" + _count
+            //        ;
+            //Console.WriteLine(_text);
 
             
             //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore ");
@@ -1120,7 +1120,7 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
-            string _text = "Step_3003:; GameContext Initialize...";
+            string _text = "Step_3003:; "+DateTime.Now+" > GameContext Initialize...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -1208,7 +1208,7 @@ namespace Supremacy.Game
 
                 GalaxyGenerator.GenerateGalaxy(this);
 
-                _text = "Step_1288:; Galaxy generated...";
+                _text = "Step_1288:; " + DateTime.Now + " > Galaxy generated...";
                 Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
@@ -1216,6 +1216,8 @@ namespace Supremacy.Game
 
                 // Prep up the settings for initial homeworlds
                 HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
+
+                bool _bool_Fac_Count_Active = false;
 
                 foreach (CivilizationManager civManager in _civManagers)
                 {
@@ -1293,11 +1295,11 @@ namespace Supremacy.Game
                         bool _checkXML;
                         _checkXML = true;
 
-                        bool _bool_Fac_Count_Active = false;
+
 
                         if (_bool_Fac_Count_Active == false)
                         {
-                            _text = "Step_1310:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            _text = "Step_1311:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
                             Console.WriteLine(_text);
                             GameLog.Client.GalaxyGenerator.InfoFormat(_text);
                             _bool_Fac_Count_Active = true; // just do once
