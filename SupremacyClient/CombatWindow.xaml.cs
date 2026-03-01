@@ -174,7 +174,8 @@ namespace Supremacy.Client
                 if (assets.Owner == _appContext.LocalPlayer.Empire)
                 {
                     _playerAssets = assets;
-                    _playerAssets.CombatID = _update.CombatID;
+                    // CombatAssets.CombatID has an internal setter; avoid setting it from the client assembly.
+                    // The combat ID should already be set by the source of the update. Do not attempt to assign here.
                     break;
                 }
                 else

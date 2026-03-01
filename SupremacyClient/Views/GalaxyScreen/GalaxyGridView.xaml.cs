@@ -171,9 +171,12 @@ namespace Supremacy.Client.Views
                 return;
             }
 
+
             SectorMap map = _appContext.CurrentGame.Universe.Map;
             Entities.Civilization playerCiv = _appContext.LocalPlayer.Empire;
             CivilizationMapData mapData = _appContext.LocalPlayerEmpire.MapData;
+
+            string _text = "";
 
             for (int x = 0; x < map.Width; x++)
             {
@@ -194,11 +197,16 @@ namespace Supremacy.Client.Views
                     continue;
                 }
 
-                if (diplomat.GetForeignPower(civ).DiplomacyData.Status == ForeignPowerStatus.NoContact)
-                {
-                    diplomat.GetForeignPower(civ).DiplomacyData.Status = ForeignPowerStatus.Neutral;
-                    //diplomat.GetForeignPower(civ).DiplomacyData.ContactTurn = 999999;   // ships are not visible yet
-                }
+                _text = "Step_4354:; Un-Fog of War not available... " ;
+                //if (writeDirectly) 
+                    Console.WriteLine(_text);
+
+
+                //if (diplomat.GetForeignPower(civ).DiplomacyData.Status == ForeignPowerStatus.NoContact)
+                //{
+                //    diplomat.GetForeignPower(civ).DiplomacyData.Status = ForeignPowerStatus.Neutral;
+                //    //diplomat.GetForeignPower(civ).DiplomacyData.ContactTurn = 999999;   // ships are not visible yet
+                //}
             }
             GalaxyGrid.Update();
         }

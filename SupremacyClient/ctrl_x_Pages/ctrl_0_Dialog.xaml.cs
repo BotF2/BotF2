@@ -113,102 +113,102 @@ namespace Supremacy.Client
         private void LoadEncyclopediaEntries()
         {
             //int playerCivId = 0;
-            //var playerCiv = GameContext.Current.CivilizationManagers[playerCivId].Civilization;
-            CivilizationManager civManager;// = new Civilization("DUMMY");
-            TechTree techTree = new TechTree();
+            ////var playerCiv = GameContext.Current.CivilizationManagers[playerCivId].Civilization;
+            //CivilizationManager civManager;// = new Civilization("DUMMY");
+            //TechTree techTree = new TechTree();
 
-            //techTree.Merge(civManager.TechTree);
+            ////techTree.Merge(civManager.TechTree);
 
-            if (GameContext.Current == null)
-                return;
-            else
-                civManager = GameContext.Current.CivilizationManagers[0];
+            //if (GameContext.Current == null)
+            //    return;
+            //else
+            //    civManager = GameContext.Current.CivilizationManagers[0];
 
 
-            foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
-            {
-                //if (DiplomacyHelper.IsMember(civ, playerCiv))
-                techTree.Merge(GameContext.Current.TechTrees[civ]);
-            }
+            //foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
+            //{
+            //    //if (DiplomacyHelper.IsMember(civ, playerCiv))
+            //    techTree.Merge(GameContext.Current.TechTrees[civ]);
+            //}
 
-            IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
-                             from civ in GameContext.Current.Civilizations
-                                 //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
-                                 //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
-                             let raceEntry = civ.Race as IEncyclopediaEntry
-                             where raceEntry != null
-                             select raceEntry
-                         )
-                .Concat(
+            //IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
+            //                 from civ in GameContext.Current.Civilizations
+            //                     //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+            //                     //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+            //                 let raceEntry = civ.Race as IEncyclopediaEntry
+            //                 where raceEntry != null
+            //                 select raceEntry
+            //             )
+            //    .Concat(
 
-                    from design in techTree
-                    where TechTreeHelper.MeetsTechLevels(civManager, design)
-                    let designEntry = design as IEncyclopediaEntry
-                    where designEntry != null
-                    select designEntry
-                )
-                .OrderBy(o => o.EncyclopediaHeading)
-                .GroupBy(o => o.EncyclopediaCategory)
-                .OrderBy(o => o.Key);
+            //        from design in techTree
+            //        where TechTreeHelper.MeetsTechLevels(civManager, design)
+            //        let designEntry = design as IEncyclopediaEntry
+            //        where designEntry != null
+            //        select designEntry
+            //    )
+            //    .OrderBy(o => o.EncyclopediaHeading)
+            //    .GroupBy(o => o.EncyclopediaCategory)
+            //    .OrderBy(o => o.Key);
 
-            //_raceGroup = new GroupItem("Text") ;
-            //groups.AddRange(_raceGroup as IEncyclopediaEntry);
+            ////_raceGroup = new GroupItem("Text") ;
+            ////groups.AddRange(_raceGroup as IEncyclopediaEntry);
 
-            Style groupStyle = new Style(
-                typeof(TreeViewItem),
-                Application.Current.FindResource(typeof(TreeViewItem)) as Style);
-            Style itemStyle = new Style(
-                typeof(TreeViewItem),
-                Application.Current.FindResource(typeof(TreeViewItem)) as Style);
+            //Style groupStyle = new Style(
+            //    typeof(TreeViewItem),
+            //    Application.Current.FindResource(typeof(TreeViewItem)) as Style);
+            //Style itemStyle = new Style(
+            //    typeof(TreeViewItem),
+            //    Application.Current.FindResource(typeof(TreeViewItem)) as Style);
 
-            groupStyle.Triggers.Add(
-                new Trigger { Property = ItemsControl.HasItemsProperty, Value = false });
-            ((Trigger)groupStyle.Triggers[0]).Setters.Add(
-                new Setter(
-                    VisibilityProperty,
-                    Visibility.Collapsed));
+            //groupStyle.Triggers.Add(
+            //    new Trigger { Property = ItemsControl.HasItemsProperty, Value = false });
+            //((Trigger)groupStyle.Triggers[0]).Setters.Add(
+            //    new Setter(
+            //        VisibilityProperty,
+            //        Visibility.Collapsed));
 
-            itemStyle.Setters.Add(
-                new Setter(
-                    ForegroundProperty,
-                    new DynamicResourceExtension("DefaultTextBrush")));
-            itemStyle.Setters.Add(
-                new Setter(
-                    HeaderedContentControl.HeaderProperty,
-                    new Binding("EncyclopediaHeading")));
+            //itemStyle.Setters.Add(
+            //    new Setter(
+            //        ForegroundProperty,
+            //        new DynamicResourceExtension("DefaultTextBrush")));
+            //itemStyle.Setters.Add(
+            //    new Setter(
+            //        HeaderedContentControl.HeaderProperty,
+            //        new Binding("EncyclopediaHeading")));
 
-            groupStyle.Seal();
-            itemStyle.Seal();
+            //groupStyle.Seal();
+            //itemStyle.Seal();
 
-            if (_encyclopediaEntryListView == null)
-            {
-                return;
-            }
+            //if (_encyclopediaEntryListView == null)
+            //{
+            //    return;
+            //}
 
-            _encyclopediaEntryListView.Items.Clear();
+            //_encyclopediaEntryListView.Items.Clear();
 
-            foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> item in groups)
-            {
-                //item.Key
-                GameLog.Client.Research.DebugFormat("F07_Tree Item = {0}", item.Key);
-            }
+            //foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> item in groups)
+            //{
+            //    //item.Key
+            //    GameLog.Client.Research.DebugFormat("F07_Tree Item = {0}", item.Key);
+            //}
 
-            foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> group in groups)
-            {
-                TreeViewItem groupItem = new TreeViewItem();
-                ICollectionView entriesView = CollectionViewSource.GetDefaultView(group);
-                entriesView.Filter = FilterEncyclopediaEntry;
-                groupItem.Style = groupStyle;
-                groupItem.SetResourceReference(
-                    ForegroundProperty,
-                    "HeaderTextBrush");
-                groupItem.Resources.Add(typeof(TreeViewItem), itemStyle);
-                groupItem.Header = group.Key;
-                groupItem.ItemsSource = entriesView;
-                groupItem.IsExpanded = true;
-                _ = _encyclopediaEntryListView.Items.Add(groupItem);
-                //GameLog.Client.Research.DebugFormat("");
-            }
+            //foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> group in groups)
+            //{
+            //    TreeViewItem groupItem = new TreeViewItem();
+            //    ICollectionView entriesView = CollectionViewSource.GetDefaultView(group);
+            //    entriesView.Filter = FilterEncyclopediaEntry;
+            //    groupItem.Style = groupStyle;
+            //    groupItem.SetResourceReference(
+            //        ForegroundProperty,
+            //        "HeaderTextBrush");
+            //    groupItem.Resources.Add(typeof(TreeViewItem), itemStyle);
+            //    groupItem.Header = group.Key;
+            //    groupItem.ItemsSource = entriesView;
+            //    groupItem.IsExpanded = true;
+            //    _ = _encyclopediaEntryListView.Items.Add(groupItem);
+            //    //GameLog.Client.Research.DebugFormat("");
+            //}
         }
 
         private void DoLink(object sender, RequestNavigateEventArgs e)
