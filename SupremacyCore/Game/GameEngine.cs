@@ -6298,11 +6298,16 @@ namespace Supremacy.Game
                     int _newDilithium = _colonies.Sum(c => c.Dilithium_Net);
                     int _newDuranium = _colonies.Sum(c => c.Duranium_Net);
 
-                    _text = "Yields Empire: "
+                    //string _DuraniumText = string.Format(ResourceManager.GetString("DURANIUM"));
+                    //string _DeuteriumText = string.Format(ResourceManager.GetString("DEUTERIUM"));
+                    //string _DilithiumText = string.Format(ResourceManager.GetString("DILITHIUM"));
 
-                        + "Dilithium= " + _newDilithium
-                        + ", Deuterium= " + _newDeuterium
-                        + ", Duranium= " + _newDuranium
+                    _text = "Yields Empire (before costs): "
+                        + string.Format(ResourceManager.GetString("DURANIUM")) + "= " + _newDuranium
+                        + ", "+ string.Format(ResourceManager.GetString("DEUTERIUM")) + "= " + _newDeuterium
+                        + ", "+ string.Format(ResourceManager.GetString("DILITHIUM")) + "= " + _newDilithium
+                        //+ ", Dilithium= " + _newDilithium
+
 
                         ;
                     _civM.SitRepEntries.Add(new ReportEntry_NoAction(_civ, _text, _text, "", SitRepPriority.Deuterium));
