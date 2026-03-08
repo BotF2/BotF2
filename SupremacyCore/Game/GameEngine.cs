@@ -1892,7 +1892,7 @@ namespace Supremacy.Game
 
                     if (_civ1.IsHuman)
                     {
-                        Debugger.Break();
+                        //Debugger.Break();
                     }
 
                     //int _minValue = 98;
@@ -2103,7 +2103,7 @@ namespace Supremacy.Game
 
                     if (_civ1.IsHuman)
                     {
-                        Debugger.Break();
+                        //Debugger.Break();
                     }
 
                 }

@@ -2501,7 +2501,7 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                Debugger.Break();    //checkconstruction // for search + finding this place
+                //Debugger.Break();    //checkconstruction // for search + finding this place
             }
 
             //List<Fleet> allCivFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList();
@@ -2641,9 +2641,19 @@ namespace Supremacy.AI
                 _bestSectorForStation = _civM.StrandedShipsSector;
             }
 
+            if(_bestSectorForStation != null)
+            {
             _text = "Step_8896:; " + CreateUpdateFleetText(_fleet, out _fleetText) + " > _bestSectorForStation= " + _bestSectorForStation.Location;
             //if (_writeDirectly_Fleets) 
             Console.WriteLine(_text);
+            }
+            else
+            {
+                _text = "Step_8897:; " + CreateUpdateFleetText(_fleet, out _fleetText) + " > _bestSectorForStation= " + "is still NULL";
+                //if (_writeDirectly_Fleets) 
+                Console.WriteLine(_text);
+            }
+
 
             if (_fleet.Activity != UnitActivity.Hold && _fleet.Route.IsEmpty && _fleet.Order.PercentComplete == null) // || _fleet.Route.Waypoints.Count < 1)
             {
@@ -4877,7 +4887,7 @@ namespace Supremacy.AI
             if (_fleet.Owner.IsHuman)
             {
         
-                Debugger.Break(); // in GetBestSectorFor_BuildStation
+                //Debugger.Break(); // in GetBestSectorFor_BuildStation
             }
 
             string _availableSectorsText = "";
@@ -4994,7 +5004,7 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             try
