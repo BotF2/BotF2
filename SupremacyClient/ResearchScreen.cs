@@ -205,7 +205,8 @@ namespace Supremacy.Client
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            string searchText = string.Empty;
+            //string searchText = string.Empty;
+            string searchText = "Put in here";
 
             if (!(value is IEncyclopediaEntry entry))
             {

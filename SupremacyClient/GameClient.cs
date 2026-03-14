@@ -1,4 +1,4 @@
-//
+// File:GameClient.cs at SupremacyClient  (not >  IGameClient.cs at SupremacyClient*Components* )
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -21,6 +21,7 @@ using Supremacy.Utility;
 using Supremacy.WCF;
 using System;
 using System.Concurrency;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
@@ -102,6 +103,8 @@ namespace Supremacy.Client
                 () =>
                 {
                     Channel.Publish(new TurnProgressChangedMessage(phase));
+                    string _text = "Step_0303:; " + DateTime.Now +" >> new Phase >>>  " + phase;
+                    Console.WriteLine(_text);
                     ClientEvents.TurnPhaseChanged.Publish(new ClientDataEventArgs<TurnPhase>(phase));
                 },
                 _scheduler)();
@@ -777,7 +780,8 @@ namespace Supremacy.Client
      //+ " done for " + _design
      //;
                 Console.WriteLine(_text);
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                Debugger.Break();
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
                 GameLog.Client.General.ErrorFormat("Exception occurred while submitting end-of-turn orders: {0}", e.Message);
                 throw;
             }
@@ -826,15 +830,18 @@ namespace Supremacy.Client
         {
             ServiceClient serviceClient;
 
-            lock (_clientLock)
-            {
+            //int _i = 0;
+            //_i += 1;
+
+            //lock (_clientLock)
+            //{
                 if (!_isConnected)
                 {
                     return;
                 }
 
                 serviceClient = _serviceClient;
-            }
+            //}
 
             if (serviceClient == null)
             {
@@ -854,6 +861,13 @@ namespace Supremacy.Client
                     GameLog.Client.General.WarnFormat("Exception occurred while responding to service heartbeat: {0}", e);
                 }
             }
+
+            //Console.WriteLine("Step_3332:; _i = " + _i);
+            //if (_i > 0)
+            //{
+            //    _i = 0;
+            //    return;
+            //}
         }
 
         private void OnDisconnected()
