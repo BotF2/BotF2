@@ -201,6 +201,8 @@
     <Compile Include="Diplomacy\Visitors\RejectProposalVisitor.cs" />
     <Compile Include="Economy\BuildSlotQueueItem.cs" />
     <Compile Include="Economy\EconomyHelper.cs" />
+    <Compile Include="Game\CivRank.cs" />
+    <Compile Include="Game\CivValue.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Intelligence\IntelOrders.cs" />
     <Compile Include="Intelligence\IntelHelper.cs" />
