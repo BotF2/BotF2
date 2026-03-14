@@ -48,7 +48,8 @@ namespace Supremacy.Client
                                                   //private List<Civilization> OtherCivs = new List<Civilization> { }; // just a dummy to avoid: Error: 40 : BindingExpression path error:
                                                   //private List<Civilization> FriendlyCivs = new List<Civilization> { }; // just a dummy to avoid: Error: 40 : BindingExpression path error:  
                                                   //#pragma warning restore IDE0052 // Remove unread private members
-        private readonly Civilization _onlyFireIfFiredAppone;
+        private readonly Civilization _onlyFireIfFiredApp_1;
+        //private readonly Civilization _onlyFireIfFiredApp_2;
         private Civilization _targeted1Civ;
         private Civilization _targeted2Civ;
 
@@ -108,9 +109,9 @@ namespace Supremacy.Client
 
             //OtherCivs = _otherCivs; // just a dummy to avoid: Error: 40 : BindingExpression path error:
 
-            _onlyFireIfFiredAppone = new Civilization
+            _onlyFireIfFiredApp_1 = new Civilization
             {
-                //_onlyFireIfFiredAppone.ShortName = "Only Return Fire";
+                //_onlyFireIfFiredApp_1.ShortName = "Only Return Fire";
                 ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE")
                 ,
                 CivID = 888
@@ -120,11 +121,25 @@ namespace Supremacy.Client
                 //TargetCiv2Status = ""
 
             };
+
+            // be careful for activated ... does the game proceed into the next turn ??
+    //        _onlyFireIfFiredApp_2 = new Civilization
+    //        {
+    //            //_onlyFireIfFiredApp_1.ShortName = "Only Return Fire";
+    //            ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE")
+    //,
+    //            CivID = 888
+    //,
+    //            Key = "Only Return Fire"
+    //            //TargetCiv1Status = "",
+    //            //TargetCiv2Status = ""
+
+    //        };
             // The click of "Only Return Fire" radio button by human player
             // _targeted1Civ = new Civilization();
-            _targeted1Civ = _onlyFireIfFiredAppone;
+            _targeted1Civ = _onlyFireIfFiredApp_1;
             // _targeted2Civ = new Civilization();
-            _targeted2Civ = _onlyFireIfFiredAppone;
+            _targeted2Civ = _onlyFireIfFiredApp_1;
 
         }
 
@@ -160,6 +175,8 @@ namespace Supremacy.Client
                 {
                     _playerAssets = assets;
                     _playerAssets.CombatID = _update.CombatID;
+                    // CombatAssets.CombatID has an internal setter; avoid setting it from the client assembly.
+                    // The combat ID should already be set by the source of the update. Do not attempt to assign here.
                     break;
                 }
                 else
@@ -203,6 +220,7 @@ namespace Supremacy.Client
                 //if (update.CombatUpdate_IsCombatOver)
                 //{
                 string _newline = Environment.NewLine;
+                //string _newline = Environment.NewLine;
 
                 Civilization _localPlayer = _appContext.LocalPlayer.Empire;
                 MapLocation _loc = update.Location;
@@ -359,8 +377,8 @@ namespace Supremacy.Client
             //if (update.CivFirePowers4 != 0) _otherFirePower += update.CivFirePowers4;
 
             //update.GetCivFirePowers
-            _text_combatWindow = "Red Alert at " + update.Location
-                //+ " > our Firepower: " + update.CivFirePowers1
+            _text_combatWindow =  GameEngine.LocationString(update.Location.ToString()) + " Red Alert > "
+                //+ " > our Fire_power_calculated: " + update.CivFirePowers1
                 //+ " vs " + update.CivFirePowers2
                 //+ " + " + update.CivFirePowers3
                 //+ " + " + update.CivFirePowers4
@@ -389,6 +407,7 @@ namespace Supremacy.Client
             //We need assets to be able to retreat
             RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0); // && fa.Owner != fa.Sector.Station.Owner);
             //Can hail
+
             HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null); //(update.RoundNumber == 1);
 
             UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
@@ -407,17 +426,17 @@ namespace Supremacy.Client
 
         }
 
-        private string CreateShipText(CombatUnit _ship, out string _shipText)
-        {
-            _shipText = Environment.NewLine +
-                    "ICH: " + _ship.HullIntegrity
-                    + ", S: " + _ship.ShieldIntegrity
-                    //+ " f." + _ship.Owner.ShortName
-                    + " Ship " + GameEngine.Do_x_Digit_String(5,_ship.Source.ObjectID.ToString())
-                    + " - " + _ship.Source.OrbitalDesign.Key
-                    + " - " + _ship.Source.Name;
-            return _shipText;
-        }
+        //private string CreateShipText(CombatUnit _ship, out string _shipText)
+        //{
+        //    _shipText = Environment.NewLine +
+        //            "ICH: " + _ship.HullIntegrity
+        //            + ", S: " + _ship.ShieldIntegrity
+        //            //+ " f." + _ship.Owner.ShortName
+        //            + " Ship " + GameEngine.Do_x_Digit_String(5, _ship.Source.ObjectID.ToString())
+        //            + " - " + _ship.Source.OrbitalDesign.Key
+        //            + " - " + _ship.Source.Name;
+        //    return _shipText;
+        //}
 
         private void ClearUnitTrees()
         {
@@ -547,7 +566,7 @@ namespace Supremacy.Client
                 }
 
             }
-            _ = OtherCivilizationsSummaryItem1.Items.Add(_onlyFireIfFiredAppone);
+            _ = OtherCivilizationsSummaryItem1.Items.Add(_onlyFireIfFiredApp_1);
             ShowHideUnitTrees();
         }
 

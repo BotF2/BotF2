@@ -412,7 +412,7 @@ namespace Supremacy.Client
 
         private void ProcessSitRepEntries()
         {
-            _text = "Step_4004:; ProcessSitRepEntries...";
+            _text = "Step_4014:; ProcessSitRepEntries...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -522,6 +522,7 @@ namespace Supremacy.Client
                         ;
                 }
                 Console.WriteLine(_text);
+                GameLog.Client.General.Info(_newline + _text + _newline);
                 //GameLog.Core.SitReps.InfoFormat(_text);
 
                 _text = "Step_4887:; SaveSUMMARY_TXT... offline - takes to long time";

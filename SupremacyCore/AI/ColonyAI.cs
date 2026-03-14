@@ -2414,7 +2414,7 @@ namespace Supremacy.AI
             {
                 if (colony.Owner.IsHuman)
                 {
-                    Debugger.Break();
+                    //Debugger.Break();
                 }
 
                 double prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput

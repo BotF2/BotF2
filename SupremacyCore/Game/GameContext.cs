@@ -25,6 +25,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 
@@ -616,7 +617,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            string _text = "Step_4001:; ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------" + DateTime.Now;
+            string _text = "Step_4001:; " + DateTime.Now + " ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -745,14 +746,19 @@ namespace Supremacy.Game
         private static Stack<GameContext> _threadStack;
 
 
-        private static Stack<GameContext> ThreadStack
+        private static Stack<GameContext> ThreadStack  // not worth to monitor ... just creating a new one if necessary
         {
             get
             {
-                if (_threadStack == null)
+                if (_threadStack == null)// > not, otherwise Stack Overflow || _threadStack.Count == 0)
                 {
                     _threadStack = new Stack<GameContext>();
                 }
+
+                //if (_threadStack.Count > 1)
+                //{
+                //    Debugger.Break();
+                //}
 
                 return _threadStack;
             }
@@ -764,10 +770,15 @@ namespace Supremacy.Game
         /// <param name="context">The context.</param>
         public static void PushThreadContext(GameContext context)
         {
-            
-            //Console.WriteLine("Step_0567:; ####### PushThreadContext(GameContext context) !!!!  " + DateTime.Now);
-
-            ThreadStack.Push(context);
+            // to often !
+            //Console.WriteLine("Step_0567:; " + DateTime.Now + " > PushThreadContext(GameContext context) !  "
+            //    //+ ", _civM= " + context.CivilizationManagers.Count
+            //    );
+            if (context == null)
+            {
+                Debugger.Break();
+            }
+            ThreadStack.Push(context); // PushThreadContext(GameContext context)
         }
 
         /// <summary>
@@ -776,14 +787,46 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext PopThreadContext()
         {
+            string _text = "";
             if (!ThreadStack.TryPop(out GameContext result))
             {
-                Console.WriteLine("Step_0568:; ####### PopThreadContext(GameContext context) !!!!  " + DateTime.Now);
+                _text = "Step_0568:; " + DateTime.Now + " > PopThreadContext > GameContext: "
+                    + "result.CivilizationManagers.Count=" + result.CivilizationManagers.Count
+                    ;
+                Console.WriteLine(_text);
+                //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore " );
                 return result;
             }
 
-            //Console.WriteLine("Step_0569:; ####### PopThreadContext(GameContext) !!!! = null    " + DateTime.Now);
-            return null;
+            int _count = -1;
+            //try
+            //{
+                if(result != null && result.CivilizationManagers != null)
+                {
+                _count = result.CivilizationManagers.Count;
+                }
+
+            //} catch { }
+
+            //_text = "Step_0569:; " + DateTime.Now + " > GameContext: "
+            //        + "result.CivilizationManagers.Count=" + _count
+            //        ;
+            //Console.WriteLine(_text);
+
+            
+            //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore ");
+            //Debugger.Break();
+
+                    if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+            return result;
+                }
+
+
         }
 
         /// <summary>
@@ -1077,7 +1120,7 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
-            string _text = "Step_3003:; GameContext Initialize...";
+            string _text = "Step_3003:; "+DateTime.Now+" > GameContext Initialize...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -1165,7 +1208,7 @@ namespace Supremacy.Game
 
                 GalaxyGenerator.GenerateGalaxy(this);
 
-                _text = "Step_1288:; Galaxy generated...";
+                _text = "Step_1288:; " + DateTime.Now + " > Galaxy generated...";
                 Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
@@ -1173,6 +1216,8 @@ namespace Supremacy.Game
 
                 // Prep up the settings for initial homeworlds
                 HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
+
+                bool _bool_Fac_Count_Active = false;
 
                 foreach (CivilizationManager civManager in _civManagers)
                 {
@@ -1250,11 +1295,12 @@ namespace Supremacy.Game
                         bool _checkXML;
                         _checkXML = true;
 
-                        bool _bool_Fac_Count_Active = false;
+                        _bool_Fac_Count_Active = false;
+
 
                         if (_bool_Fac_Count_Active == false)
                         {
-                            _text = "Step_1310:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            _text = "Step_1311:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
                             Console.WriteLine(_text);
                             GameLog.Client.GalaxyGenerator.InfoFormat(_text);
                             _bool_Fac_Count_Active = true; // just do once

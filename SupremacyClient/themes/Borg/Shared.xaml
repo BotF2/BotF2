@@ -2267,9 +2267,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Border"
-                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
-                  Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
+                    <Border x:Name="Border" Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
+                  <!--Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"-->
+                 
                         <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                               ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
                               ContentTemplateSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplateSelector}"
@@ -2277,12 +2277,13 @@
                               VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
                               SnapsToDevicePixels="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SnapsToDevicePixels}" />
                     </Border>
-                    <ControlTemplate.Triggers>
+                    <!--<ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Border" Property="Background"
-                      Value="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                      Value="Black" />
+                      --><!--Value="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />--><!--
                         </Trigger>
-                    </ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

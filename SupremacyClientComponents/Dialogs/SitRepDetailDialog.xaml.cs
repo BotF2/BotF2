@@ -22,7 +22,8 @@ namespace Supremacy.Client.Dialogs
         {
             _sitRepEntry = sitRepEntry;
 
-            GameLog.Core.SitReps.InfoFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
+            //GameLog.Core.SitReps.InfoFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
+            GameLog.Client.General.InfoFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
                 , sitRepEntry.Owner
                 , sitRepEntry.HeaderText
                 , sitRepEntry.HasSoundEffect
