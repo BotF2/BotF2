@@ -536,22 +536,1320 @@ namespace Supremacy.Game
         }
         #endregion
 
-        #region DoPreTurnOperations() Method
+        //#region DoPreTurnOperations() Method
         private void Do_11_PreTurnOperations(GameContext _game)
         {
             // these here > foreach....
-            HashSet<UniverseObject> _objects = GameContext.Current.Universe.Objects.ToHashSet();
             HashSet<CivilizationManager> _civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
             //HashSet<Fleet> _fleets = _objects.OfType<Fleet>().ToHashSet();
 
             string _text;
+            string _newline = Environment.NewLine;
 
+            Reset_Items(_game);
+
+            foreach (CivilizationManager _civM in GameContext.Current.CivilizationManagers)
+            {
+                _civM.SitRepEntries.Clear();
+            }
+            //{
+            //    //GameContext.PushThreadContext(_game);
+
+            //}
 
             ConcurrentStack<Exception> errors = new ConcurrentStack<Exception>();
 
             CivilizationKeyedMap<Diplomat> diplomatCheck = _game.Diplomats;
 
             Console.WriteLine("Step_1152:; ...Do_11_PreTurnOperations");
+
+            HashSet<Orbital> _all_orbitals = _game.Universe.Find<Orbital>();
+            foreach (Orbital item in _all_orbitals)
+            {
+                item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
+                _text = "Step_1051:; _fleet.Order?.OnTurnBeginning() for= "
+                    + UnitAI.CreateShipText(item as Ship, out string _fleet_text)
+                //+ " ( station? )"
+                //+ " > _fleet.Order?.OnTurnBeginning()"
+                //+ " - Name= " + _civM.Civilization
+                //+ _newline
+                ;
+                Console.WriteLine(_text);
+
+                //                _item.Order?.OnTurnBeginning();
+                //SitReps_for_Fleets(_fleet);
+            }
+
+            //Console.WriteLine("Step_1154:; resetting items...");
+            ////_ = ParallelForEach(objects, _item =>
+            //foreach (var item in objects)
+            //{
+            //    //GameContext.PushThreadContext(_game);
+            //    // GameLog.Core.General.DebugFormat("next _item will be: ID = {0}, Name = {1}", _item.ObjectID, _item.Name);
+            //    try
+            //    {
+            //        // GameLog.Core.General.DebugFormat("_item: ID = {0}, Name = {1} is trying to reset", _item.ObjectID, _item.Name);
+            //        item.Reset();
+            //        // works well but gives hidden info
+            //        // GameLog.Core.General.DebugFormat("_item: ID = {0}, Name = {1} is successfully resetted", _item.ObjectID, _item.Name);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        _text = "Step_1156:; ### Object = _item.Reset() at Do_11_PreTurnOperations > crashed for ID= " + item.ObjectID
+            //            + " - Name= " + item.Name
+            //            ;
+            //        Console.WriteLine(_text);
+            //        GameLog.Core.General.ErrorFormat(_text);
+            //        Debugger.Break();
+            //        _errors.Push(e);
+            //    }
+            //    finally
+            //    {
+
+            //        GameContext.PushThreadContext(_game);
+            //    }
+            //}
+            //// jump over and break here
+            ////Debugger.Break();
+            ////;
+            ////});
+
+
+            //if (!_errors.IsEmpty)
+            //{
+            //    foreach (var err in _errors)
+            //    {
+            //        _text = "Step_1157:; ERROR > " + err.Message + err.StackTrace;
+            //        Console.WriteLine(_text);
+            //        GameLog.Core.General.DebugFormat(_text);
+
+            //        Debugger.Break();
+            //    }
+
+            //    //throw new AggregateException(_errors);   // avoid crashes = stopps for player as much as possible !
+            //}
+
+            //_errors.Clear();
+
+            // PreTurn CivManagers
+            foreach (CivilizationManager _civM in GameContext.Current.CivilizationManagers)
+            {
+                //lock (_civM)
+                //{
+
+
+                if (_civM.Civilization.Key == "ZALKONIANS")
+                {
+                    Debugger.Break();
+                }
+                //_text = "Step_1151:; Pre_Turn For= " + _civM.Civilization
+                //    //+ " - Name= " + _civM.Civilization
+                //    + _newline
+                //    ;
+                //Console.WriteLine(_text);
+                //GameContext.PushThreadContext(_game);
+                //_civM.SitRepEntries.Clear();
+
+                bool _bool_is_human = _civM.Civilization.IsHuman;
+
+                Civ_Fire_Power_Space(_civM);
+
+                _text = "Step_1151:;" + " Fire_Power_Space= " + _civM.FirePowerSpace
+                    + "  ###########  Pre_Turn For= " + _civM.Civilization;
+                Console.WriteLine(_text);
+
+                if (_bool_is_human == true)
+                {
+                    //Debugger.Break();
+                }
+                // _civM.FirePowerSpace
+                //List<Ship> _combatant_ships = GameContext.Current.Universe.FindOwned<Ship>(_civM.Civilization)
+                //    .Where(s => s.IsCombatant).ToList();
+                //int _int = 0;
+                //foreach (Ship ship in _combatant_ships)
+                //{
+                //    _int += ship.Fire_Power_Ship;
+                //    //
+                //    //Debugger.Break();
+                //}
+                //_civM.FirePowerSpace = _int;
+
+                // _civM.Locations_To_Explore
+
+
+                //List<Fleet> _ownFleets = new List<Fleet>();
+                //try
+                //{
+                //List<Fleet> _ownFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civM.Civilization)
+                //    .Where(f => f.CanMove /*&& !f.Route.IsEmpty*/).ToList();
+                //}
+                //catch (Exception e)
+                //{
+                //    //if (_fleet != null)
+                //    //{
+                //    //    _text = "Step_2211:; "
+                //    //        + "_fleet.ObjectId= " + _fleet.ObjectID
+                //    //        + "" + _fleet.Name
+                //    //        + "" + _fleet.ClassName
+                //    //        + " > error=" + e
+                //    //        ;
+                //    //    Console.WriteLine(_text);
+                //    Debugger.Break();
+                //    Console.WriteLine(e);
+                //    //GameLog.Client.General.ErrorFormat("_fleet.ObjectId ={0} {1} {2} error ={3}", _fleet.ObjectID, _fleet.Name, _fleet.ClassName, e);
+                //}
+
+
+
+
+                //    List<MapLocation> _possible_locations_to_explore = new List<MapLocation>(); // locations need less storage
+                //    List<Sector> _possible_sectors_to_explore = new List<Sector>();
+                //    int _radius = 2;
+                //Expand_Radius:;
+
+                Find_Locations_To_Explore(_civM);
+
+                //Find_Locations_To_NOT_Build_Stations(_civM);
+
+                Find_Locations_To_Build_Stations(_civM);
+
+                _text = "Step_1152:;"
+                    + " Locations_To_Explore.Count= " + _civM.Locations_To_Explore.Count
+                    + ", Locations_To_Build_Stations.Count= " + _civM.Locations_To_Build_Stations.Count
+                    + ", Locations_To_NOT_Build_Stations.Count= " + _civM.Locations_To_NOT_Build_Stations.Count
+                    + " for= " + _civM.Civilization;
+                Console.WriteLine(_text);
+
+                if (_bool_is_human == true)
+                {
+                    Debugger.Break();
+                }
+                //}
+                //}
+                //    List<MapLocation> _prior_objects_to_build_stations = new List<MapLocation>();
+                //    List<MapLocation> _possible_locations_to_NOT_build_stations = new List<MapLocation>();
+                //    List<Sector> _no_build_sectors = new List<Sector>();
+
+                //    _civM.Locations_To_Build_Stations = null;
+                //    _radius = 2;
+
+                //    if (_civM.Locations_To_NOT_Build_Stations != null)
+                //    {
+                //        _possible_locations_to_NOT_build_stations = _civM.Locations_To_NOT_Build_Stations;
+                //        Report_Locations_To_NOT_Build_Stations(_civM);  // list out of _civM
+                //    }
+
+                //    List<Fleet> _ownConstructorFleets = new List<Fleet>();
+                //    _ownConstructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civM.Civilization).Where(f => f.IsConstructor).ToList();
+
+                //    if (_ownConstructorFleets.Count < 1)
+                //    {
+                //        goto No_construction_ships_at_all;
+                //    }
+
+                //Expand_Radius_For_Build_Stations:;
+
+                //    // find new solution
+
+                //    _no_build_sectors = MapHelper.GetSectorsWithinRadius(_civM.HomeSystem.Sector, _radius).ToList();
+                //    foreach (var _sector in _no_build_sectors)
+                //    {
+                //        Report_Sector(_sector);
+
+                //        //bool _bool_is_human = _civM.Civilization.IsHuman;
+                //        if (_bool_is_human == true)
+                //        {
+                //            //Debugger.Break();
+                //        }
+
+                //        if (_civM.Locations_To_NOT_Build_Stations != null
+                //        && _civM.Locations_To_NOT_Build_Stations.Contains(_sector.Location))
+                //        {
+                //            continue;
+                //        }
+
+                //        if (DiplomacyHelper.IsTravelAllowed(_civM.Civilization, _sector) == false)
+                //        {
+                //            continue;
+                //        }
+
+                //        //bool _bool_is_human = _civM.Civilization.IsHuman;
+                //        if (_bool_is_human == true)
+                //        {
+                //            Debugger.Break();
+                //        }
+
+                //        if (_sector.System != null
+                //            && _sector.System.StarType == StarType.BlackHole
+                //            && _sector.System.StarType == StarType.XRayPulsar
+                //            && _sector.System.StarType == StarType.NeutronStar
+                //            && _sector.System.StarType == StarType.Quasar
+                //            && _sector.System.StarType == StarType.RadioPulsar
+                //            )
+                //        {
+                //            if (!_possible_locations_to_NOT_build_stations.Contains(_sector.Location))
+                //            {
+                //            _possible_locations_to_NOT_build_stations.Add(_sector.Location); // added to *locations*  !!
+                //            }
+
+                //            //_possible_locations_to_NOT_build_stations.Distinct();
+                //        }
+
+                //        _text = _civM.MapData.GetFuelRange(_sector.Location).ToString();
+                //        if (_civM.MapData.GetFuelRange(_sector.Location) < 1)
+                //        {
+                //            if (!_possible_locations_to_NOT_build_stations.Contains(_sector.Location))
+                //            {
+                //                _possible_locations_to_NOT_build_stations.Add(_sector.Location); // added to *locations*  !!
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if (!_prior_objects_to_build_stations.Contains(_sector.Location))
+                //            {
+                //                _prior_objects_to_build_stations.Add(_sector.Location); // added to *locations*  !!
+                //            }
+                //        }
+
+
+                //        if (_sector.Owner != null && _sector.System.Owner != _civM.Civilization)
+                //        {
+                //            _possible_locations_to_NOT_build_stations.Add(_sector.Location); // nothing
+                //        }
+                //        else
+                //        {
+                //            if (!_possible_locations_to_NOT_build_stations.Contains(_sector.Location))
+                //            {
+                //                _possible_locations_to_NOT_build_stations.Add(_sector.Location); // added to *locations*  !!
+                //            }
+                //        }
+
+                //        //CivilizationMapData _civMapData = GetMapDataForCivilization(_civM.Civilization);
+
+
+                //        if (!_possible_locations_to_NOT_build_stations.Contains(_sector.Location))
+                //        {
+                //            _possible_locations_to_NOT_build_stations.Add(_sector.Location); // added to *locations*  !!
+                //        }
+
+
+
+                //        _civM.Locations_To_NOT_Build_Stations = _possible_locations_to_NOT_build_stations;
+                //        //continue;
+
+                //        _i = 0;
+                //        foreach (var _item in _possible_locations_to_NOT_build_stations)
+                //        {
+                //            _i += 1;
+                //            Console.WriteLine("Step_6662:; GameEngine > possible_locations_to_NOT_build_stations= " + _i + " > " + _item + " for " + _civM.Civilization);
+                //        }
+
+                //        //bool _bool_is_human = _civM.Civilization.IsHuman;
+                //        if (_bool_is_human == true)
+                //        {
+                //            Debugger.Break();
+                //        }
+
+                //        List<Fleet> _ownConstructionFleets = new List<Fleet>();
+                //        foreach (var _item in _ownFleets)
+                //        {
+                //            if (_item.IsConstructor)
+                //            {
+                //                _ownConstructionFleets.Add(_item);
+                //                _ownConstructionFleets.Distinct();
+
+                //            }
+                //        }
+
+
+                //        if (_ownConstructionFleets.Any(f => f.Route.Waypoints.Any(wp => _sector.Location == wp)))
+                //        {
+                //            continue;
+                //        }
+
+                //        if (!_possible_locations_to_NOT_build_stations.Contains(_sector.Location))
+                //        {
+                //            _prior_objects_to_build_stations.Add(_sector.Location);
+                //        }
+
+                //        _prior_objects_to_build_stations.Distinct();
+                //    }
+
+                //    if (_no_build_sectors == null || _no_build_sectors.Count == 0)
+                //    {
+                //        _no_build_sectors.Add(_civM.HomeSystem.Sector);
+                //    }
+
+                //    _i = 0;
+                //    //Report_possible_locations_to_explore(_possible_locations_to_explore);
+                //    foreach (var _item in _no_build_sectors)
+                //    {
+                //        _i += 1;
+                //        Console.WriteLine("Step_6665:; GameEngine > possible_locations_to_build_stations= " + _i + " > " + _item + " for " + _civM.Civilization);
+                //    }
+
+
+                //    Dictionary<MapLocation, int> _sectorValues = new Dictionary<MapLocation, int>();
+                //    string _text_sectorValues = "";
+
+                //    int _xloc = GameContext.Current.Universe.Map.Width / 2;
+                //    int _yloc = GameContext.Current.Universe.Map.Height / 2;
+
+                //    MapLocation _center = new MapLocation(_xloc, _yloc);
+
+
+                //    if (_radius < 100 && _no_build_sectors.Count < 9)
+                //    {
+                //        _radius += 1;
+                //        goto Expand_Radius_For_Build_Stations;
+                //    }
+                //    else
+                //    {
+
+                //        foreach (var _sector in _no_build_sectors)
+                //        {
+                //            int _distance_from_center = MapLocation.GetDistance(_sector.Location, _center);
+                //            int _distance_from_home = MapLocation.GetDistance(_sector.Location, _civM.HomeSystem.Location);
+                //            int _distance_from_stranded = -1;
+                //            if (_civM.StrandedShipsSector != null)
+                //            {
+                //                if (_ownFleets.Any(_f => _f.IsStranded)) // is still stranded
+                //                {
+                //                    _distance_from_stranded += 20000 + MapLocation.GetDistance(_sector.Location, _civM.StrandedShipsSector.Location) * 1000;
+                //                }
+                //                else
+                //                {
+                //                    _civM.StrandedShipsSector = null;
+                //                }
+                //            }
+
+                //            int _val = 40000 - (_distance_from_center * 1000);
+                //            _val += 80000 - (_distance_from_home * 1000);
+                //            _val += _distance_from_stranded;
+
+                //            const int SystemSectorValue = 2500;
+                //            //const int StrandedShipSectorValue = 50000;
+                //            //const int PastFuelRange = 30000;     // FuelRange is above
+                //            //const int DistanceFactor = 3000; // was 100
+
+                //            if (_sector.System != null)
+                //            {
+                //                _val += SystemSectorValue;
+
+                //                if (_sector.System.HasColony)
+                //                {
+                //                    _val += SystemSectorValue; // another 'value'
+                //                }
+                //            }
+
+                //            //if (_sector)
+
+                //            _sectorValues.Add(_sector.Location, _val);
+                //            //_sectorValues.Distinct();
+                //            ////_text_sectorValues += _newline + "Step_3361:; " + _fleet.Owner + ": " + _sector.Location + ", val= " + _val
+                //            // //_sectorValues.OrderBy(_y => _y.Value)/*.ToList()*/;
+                //            // var _sortedDict = _sectorValues
+                //            //            .OrderBy(kv => kv.Value)
+                //            //            .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+
+                //            //_prior_objects_to_build_stations = _sectorValues.Keys.ToList();
+                //            //    ;
+                //        }
+
+                //        _sectorValues.Distinct();
+                //        //_text_sectorValues += _newline + "Step_3361:; " + _fleet.Owner + ": " + _sector.Location + ", val= " + _val
+                //        //_sectorValues.OrderBy(_y => _y.Value)/*.ToList()*/;
+                //        var _sortedDict = _sectorValues
+                //                   .OrderByDescending(kv => kv.Value)
+                //                   .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+
+                //        _prior_objects_to_build_stations = _sortedDict.Keys.ToList();
+
+                //        String _values = "";
+                //        foreach (var _item in _sortedDict)
+                //        {
+                //            _values += "Step_3367:; sorted _prior_objects_to_build_stations= " 
+                //                + GameEngine.LocationString(_item.Key.ToString())
+                //                + ": Value= " + _item.Value
+                //                + " for " + _civM.Civilization
+                //                + _newline
+                //                ;
+                //        }
+                //        Console.WriteLine(_values);
+
+
+                //        //_sectorValues = 
+                //        //_sectorValues.OrderBy(_y => _y.Value)/*.ToList()*/;
+                //        foreach (var _item in _prior_objects_to_build_stations)
+                //        {
+                //            //Console.WriteLine("Step_3365:; sorted possible_locations_to_build_stations= " + _item + " for " + _civM.Civilization);
+                //        }
+
+                //        if (_bool_is_human)
+                //        {
+                //            //Debugger.Break();
+                //        }
+
+                //        _civM.Locations_To_Build_Stations = _prior_objects_to_build_stations;
+
+                //        UnitAI.Clear_Locations_To_Build_Stations_in_UnitAI(_civM); // clear in UnitAI too
+
+
+
+
+
+                //        //No_construction_ships_at_all:;
+                //    }
+
+                //}
+                //No_construction_ships_at_all:;
+
+                // _fleet.Order?.OnTurnBeginning();
+                //            HashSet<Fleet> _all_fleets = _game.Universe.Find<Fleet>();
+                //            foreach (Fleet _fleet in _all_fleets)
+                //            {
+                //                _text = "Step_1051:; _fleet.Order?.OnTurnBeginning() for= " + UnitAI.CreateUpdateFleetText(_fleet, out string _fleet_text)
+                ////+ " > _fleet.Order?.OnTurnBeginning()"
+                ////+ " - Name= " + _civM.Civilization
+                ////+ _newline
+                //;
+                //                Console.WriteLine(_text);
+
+                //                _fleet.Order?.OnTurnBeginning();
+                //                //SitReps_for_Fleets(_fleet);
+                //            }
+                //if (_fleet == null)
+                //{
+                //    Debugger.Break();
+                //    continue;
+                //}
+
+                //_fleet.Order?.OnTurnBeginning();
+
+                //foreach (Ship ship in _fleet.Ships)
+                //{
+                //    //if (!_fleet.Route.IsEmpty) 
+                //    _text = GameEngine.LocationString(ship.Location.ToString()) + " > Ship ";
+                //    string _design = ship.DesignName + "  ";
+                //    while (_design.Length < 28)
+                //    {
+                //        _design += "_";
+                //    }
+
+
+                //    _text += GameEngine.Do_x_Digit_String( 5, (ship.ObjectID.ToString()) + ": " /*+ " < " */+ _design + " - Maint. " + ship.Design.MaintenanceCost + " > * " + " " + ship.Name + "  * > ";
+                //    _text += " " + _fleet.Order;
+                //    if (!_fleet.Route.IsEmpty)
+                //    {
+                //        MapLocation _aim = _fleet.Route.Waypoints.LastOrDefault();
+                //        Sector _aimSector = GameContext.Current.Universe.Map[_aim];
+                //        _fleet.Order = FleetOrders.TravelOrder.Create();
+                //        //GameContext.Current.Universe.Find<MapLocation>().TryFindFirstItem(o => o == _aim, out Sector _aimSector);
+                //        _text += " # going to " + _aim.ToString() + " named " + _aimSector.Name/* + " (PostTurnOps)"*/;
+                //    }
+
+                //    // is here something to do ? 2024-12-29
+
+                //    //if (_fleet.Route.IsEmpty)
+                //    //{
+                //    //    if (_fleet.Order == FleetOrders.EngageOrder)
+                //    //    {
+                //    //        _fleet.SetOrder(FleetOrders.IdleOrder);
+                //    //    }
+                //    //}
+
+                //    CivilizationManager _civM = GameContext.Current.CivilizationManagers[ship.OwnerID];
+                //    CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+
+                //    // only own civilization
+                //    Console.WriteLine("Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text);
+                //    //GameLog.Core.Combat.DebugFormat("Step_3282: " + _text);
+
+                //    _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
+
+                //    // all ships shown
+                //    //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
+                //} // end of each ship
+                //}
+
+                //HashSet<Fleet> _fleets = _game.Universe.Find<Fleet>();
+
+                //foreach (Fleet _fleet in _fleets)
+                //{
+                //    if (_fleet == null)
+                //    {
+                //        Debugger.Break();
+                //        continue;
+                //    }
+
+                //    // that'_sector too much Console.Writeline and why PreTurn ?
+                //    //if (_fleet.ObjectID == -1)
+                //    //{
+                //    //    // for example construction ship destroyed after build is finished ?
+                //    //    //Debugger.Break();
+                //    //}
+                //    //else
+                //    //{
+                //    //    //_text = "Step_1151:; trying > " + _fleet.ObjectID + " "+ _fleet.Name;
+                //    //    //if (_writeDirectly) Console.WriteLine(_text);
+
+                //    //    _text += "Step_1157:; " + UnitAI.CreateUpdateFleetText(_fleet, out string _fleetText)
+                //    //        ;
+                //    //    //if (_writeDirectly) Console.WriteLine(_text);
+                //    //    _allFleetsReport += _newline + _text;
+                //    //}
+                //    //if (_writeDirectly) Console.WriteLine("Step_1158:; begin of > _allFleetsReport:" + _newline 
+                //    //    + _allFleetsReport + _newline
+                //    //    + "end of > _allFleetsReport" 
+                //    //    );
+
+
+                //}
+
+
+                //Debugger.Break();
+
+                //_ = ParallelForEach(_civManagers, _civM_1 =>
+                //  {
+
+                //    //GameContext.PushThreadContext(_game);
+                //    //_civM.SitRepEntries.Clear();
+                //    try
+                //{
+                //    //_civM_1.SitRepEntries.Clear();
+
+                //    try
+                //        {
+                //            List<SitRepEntry> civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == _civM.Civilization).ToList();
+
+                //            if (civSitReps.Count > 0)
+                //            {
+                //                foreach (SitRepEntry entry in civSitReps)
+                //                {
+                //                    _civM.SitRepEntries.Add(entry);
+                //                }
+                //            }
+                //        }
+                //        catch (Exception e)
+                //        {
+                //            _text = "Step_1159:; ERROR > " + e.Message;
+                //            Console.WriteLine(_text);
+                //            GameLog.Client.General.ErrorFormat(_text);
+                //        }
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        _errors.Push(e);
+                //        _text = "Step_1158:; ERROR > " + e.Message;
+                //        Console.WriteLine(_text);
+                //        //GameLog.Client.General.ErrorFormat("SitRepEntries clear error ={0}", e);
+                //    }
+                //    finally
+                //    {
+                //        _text = "Step_1152:; Foreach _civM is done for > " + _civM.Civilization.Key;
+                //        Console.WriteLine(_text);
+                //        //GameLog.Client.General.DebugFormat(_text);
+
+                //        //_ = GameContext.PopThreadContext();
+                //    }
+
+                //});
+
+
+
+                //IntelHelper.SitReps_Temp.Clear();
+
+                //turnnumber = GameContext.Current.TurnNumber;
+
+                //if (!_errors.IsEmpty)
+                //{
+                //    Debugger.Break();
+                //    throw new AggregateException(innerExceptions: _errors);
+                //}
+                //else
+                //{
+                //    _ = GameContext.PopThreadContext();
+                //}
+
+                // This block is not guaranteed to be safe for parallel execution.
+                //GameContext.PushThreadContext(_game);
+
+                //string _allFleetsReport = "";
+
+
+            }
+
+            //HashSet<Ship> _all_ships = game.Universe.Find<Ship>();
+            //foreach (Ship item in _all_ships)
+            //{
+
+            //    item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
+            //    _text = "Step_1051:; > Ships > " + UnitAI.CreateShipText(item, out string _fleet_text)
+            //    //+ " > _fleet.Order?.OnTurnBeginning()"
+            //    //+ " - Name= " + _civM.Civilization
+            //    + " - item.Fire_Power_Orbital= " + item.Fire_Power_Orbital
+            //    //+ _newline
+            //    ;
+            //    Console.WriteLine(_text);
+
+            //    //_fleet.Order?.OnTurnBeginning();
+            //    //SitReps_for_Fleets(_fleet);
+            //}
+
+
+            HashSet<Station> _all_stations = _game.Universe.Find<Station>();
+            foreach (Station item in _all_stations)
+            {
+                item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
+                _text = "Step_1051:; > Stations >  "
+                //+ " > _fleet.Order?.OnTurnBeginning()"
+                //+ " - Name= " + _civM.Civilization
+                + " - item= " + item.Name
+                + " - item.Fire_Power_Orbital= " + item.Fire_Power_Orbital
+                //+ _newline
+                ;
+                Console.WriteLine(_text);
+
+                //_fleet.Order?.OnTurnBeginning();
+                //SitReps_for_Fleets(_fleet);
+            }
+
+
+            HashSet<Fleet> _all_fleets = _game.Universe.Find<Fleet>();
+            foreach (Fleet _fleet in _all_fleets)
+            {
+                _text = "Step_1057:; _fleet.Order?.OnTurnBeginning() for= " + UnitAI.CreateUpdateFleetText(_fleet, out string _fleet_text)
+//+ " > _fleet.Order?.OnTurnBeginning()"
+//+ " - Name= " + _civM.Civilization
+//+ _newline
+;
+                Console.WriteLine(_text);
+
+                _fleet.Order?.OnTurnBeginning();
+                //SitReps_for_Fleets(_fleet);
+
+            }
+        }
+        //#endregion DoPreTurnSetup
+//#endregion DoPreTurnOperations()
+
+
+        private void Find_Locations_To_Build_Stations(CivilizationManager _civM)
+        {
+            int _radius = 4 + GameContext.Current.TurnNumber / 10;
+            List<Sector> _no_build_sectors = new List<Sector>();
+            List<MapLocation> _locations_to_NOT_build_stations = new List<MapLocation>();
+            _no_build_sectors = MapHelper.GetSectorsWithinRadius(_civM.HomeSystem.Sector, _radius).ToList();
+            bool _bool_is_human = _civM.Civilization.IsHuman;
+
+            foreach (var _sector in _no_build_sectors)
+            {
+                //if (_bool_is_human == true)
+                //{
+                Report_Sector(_sector);
+
+                Debugger.Break();
+                //}
+
+                if (_sector.IsOwned
+                    && _sector.Owner.CivID == _civM.CivilizationID
+                    //&& _sector.System == null
+                    )
+                {
+                    _locations_to_NOT_build_stations.Add(_sector.Location);
+                }
+
+                //if (!_sector.IsOwned
+                //        && _sector.System == null)
+                //{
+                //    _locations_to_NOT_build_stations.Add(_sector.Location);
+                //}
+
+                if (_sector.System != null
+                    && _sector.System.StarType == StarType.BlackHole)
+                {
+                    _locations_to_NOT_build_stations.Add(_sector.Location);
+                }
+
+                if (_sector.Station != null)
+                {
+                    _locations_to_NOT_build_stations.Add(_sector.Location);
+                }
+
+                if (_bool_is_human == true)
+                {
+                    //Report_Sector(_sector);
+
+                    //Debugger.Break();
+                }
+                //_locations_to_NOT_build_stations.Add(_sector.Location);
+            }
+
+            List<Station> _own_stations = GameContext.Current.Universe.FindOwned<Station>(_civM.Civilization).ToList();
+
+            foreach (var _item in _own_stations)
+            {
+                _no_build_sectors = MapHelper.GetSectorsWithinRadius(_item.Sector, 2).ToList();
+
+                foreach (var _sector in _no_build_sectors)
+                {
+                    _locations_to_NOT_build_stations.Add(_sector.Location);
+                }
+            }
+
+            _locations_to_NOT_build_stations.Distinct();
+
+            _civM.Locations_To_NOT_Build_Stations = _locations_to_NOT_build_stations;
+
+            if (_bool_is_human == true)
+            {
+                Report_Locations_To_NOT_Build_Stations(_civM);
+
+                //Debugger.Break();
+            }
+        }
+
+        private void Report_Locations_To_NOT_Build_Stations(CivilizationManager _civM)
+        {
+            string _text = "";
+
+            if (_civM.Locations_To_NOT_Build_Stations == null || _civM.Locations_To_NOT_Build_Stations.Count == 0)
+            {
+                _text += "Step_6664:; GameEngine > _possible_locations_to_Not_Build_Stations= empty or Count= 0 " + " for " + _civM.Civilization;
+                Console.WriteLine(_text);
+                return;
+            }
+
+            int _count = 0;
+            foreach (var item in _civM.Locations_To_NOT_Build_Stations)
+            {
+                _count += 1;
+                _text += "Step_6665:; GameEngine > _possible_locations_to_Not_Build_Stations= "
+                                        + " # " + _count + " > "
+                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
+                    + Environment.NewLine
+
+                    ;
+            }
+            Console.WriteLine(_text);
+        }
+
+        private void Find_Locations_To_NOT_Build_Stations(CivilizationManager _civM)
+        {
+            List<Fleet> _ownConstructorFleets = new List<Fleet>();
+            //return; > 
+            string _text = "Step_6666:; GameEngine > Find_Locations_To_NOT_Build_Stations .. starts .." + " for " + _civM.Civilization;
+            Console.WriteLine(_text);
+
+            _ownConstructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civM.Civilization).Where(f => f.IsConstructor).ToList();
+
+            List<MapLocation> _possible_locations_to_NOT_build_stations = new List<MapLocation>();
+            _possible_locations_to_NOT_build_stations.Add(_civM.HomeSystem.Location);
+            _civM.Locations_To_Build_Stations = _possible_locations_to_NOT_build_stations;
+
+            //Debugger.Break();
+
+            if (_ownConstructorFleets.Count == 0)
+            {
+                return;
+            }
+
+            List<MapLocation> _prior_objects_to_build_stations = new List<MapLocation>();
+            List<MapLocation> _possible_locations_to_build_stations = new List<MapLocation>();  // unused ??
+
+
+            // _ownfleets for checking stranded ships
+            List<Fleet> _ownFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civM.Civilization).Where(f => f.CanMove /*&& !f.Route.IsEmpty*/).ToList();
+
+            Sector _home_sector = _civM.HomeSystem.Sector;
+
+            List<Sector> _availableSectors = new List<Sector> { _home_sector };
+            List<Sector> _maybeSectors = new List<Sector> { _home_sector };
+
+
+            _civM.Locations_To_Build_Stations = null;
+            int _i = 0;
+            int _radius = 3;
+            bool _bool_is_human = _civM.Civilization.IsHuman;
+            //string _text = "";
+            string _newline = Environment.NewLine;
+
+            //Sector _homeSector = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Sector;
+
+            MapLocation _home_location = _civM.HomeSystem.Location;
+            int _home_x = _civM.HomeSystem.Location.X;
+            int _home_y = _civM.HomeSystem.Location.Y;
+            Quadrant _home_quadrant = _civM.HomeSystem.Quadrant;
+            int _width_direction = 0;
+            int _height_direction = 0;
+
+            int _map_width = GameContext.Current.Universe.Map.Width;
+            int _map_heigth = GameContext.Current.Universe.Map.Height;
+
+            MapLocation _center = new MapLocation(_map_width / 2, _map_heigth / 2);
+
+            switch (_home_quadrant)
+            {
+                case Quadrant.Gamma:
+                    _width_direction = 5;
+                    _height_direction = 5;
+                    break;
+
+                case Quadrant.Delta:
+                    _width_direction = -5;
+                    _height_direction = 5;
+                    break;
+
+                case Quadrant.Alpha:
+                    _width_direction = 5;
+                    _height_direction = -5;
+                    break;
+
+                case Quadrant.Beta:
+                    _width_direction = -5;
+                    _height_direction = -5;
+                    break;
+
+            }
+            int _new_x = _home_x + _width_direction;
+            int _new_y = _home_y + _height_direction;
+            MapLocation _new_loc = new MapLocation(_new_x, _new_y);
+
+            _text = "Step_6671:; GameEngine > _possible_locations_to_Not_Build_Stations > checking > nt= 0 " 
+                + "  > checking " + _new_loc.ToString()
+                + " for " + _civM.Civilization
+                ;
+            Console.WriteLine(_text);
+
+            //int _step = 5; // each fifth sector one station
+
+
+            List<UniverseObject> _objects_around_home = GameContext.Current.Universe.Objects
+                .Where(s => s.Location != null
+                && s.ObjectType != UniverseObjectType.Ship
+                && s.ObjectType != UniverseObjectType.Fleet
+                //&& s.ObjectType != UniverseObjectType.StarSystem.bla
+                && s.Sector.Station == null
+                //&& s.Sector.Owner == null  > not own sectors =  just a few objects left in "not own sectors"
+                && MapLocation.GetDistance(_home_location, s.Location) < 5 + ( GameContext.Current.TurnNumber / 4 )
+                //&& GetDistanceTo(_center, s.Location) < xloc - 3 // but if there is a system + BORG don't colonize... > ToDo 2025-03-16
+                )  // do not build at the edge of the map
+                   //&& GetDistanceTo(_center, s.Location) < lengthThirdMap)
+                .ToList();
+
+            _text = "Step_6674:; GameEngine > _possible_locations_to_Not_Build_Stations"
+                + " > checking > " + _objects_around_home.Count + " objects around home location " + _home_location.ToString()
+                + " for " + _civM.Civilization
+                ;
+            Console.WriteLine(_text);
+
+            int _distance_to_home = 4;
+
+            //Debugger.Break();
+
+            if (_bool_is_human == true)
+            {
+                Debugger.Break();
+            }
+
+        Expand_distance_to_home:;
+
+            //List<Object> _blackholes = new List<object>();
+            //_i = 0;
+            foreach (var _obj in _objects_around_home)
+            {
+                if (_obj.Sector != null && _obj.Sector.System != null)
+                {
+                    switch (_obj.Sector.System.StarType)
+                    {
+                        //case StarType.White:
+                        //    break;
+                        //case StarType.Blue:
+                        //    break;
+                        //case StarType.Yellow:
+                        //    break;
+                        //case StarType.Orange:
+                        //    break;
+                        //case StarType.Red:
+                        //    break;
+                        //case StarType.Nebula:
+                        //    break;
+                        //case StarType.Wormhole:
+                        //    break;
+                        //case StarType.NeutronStar:
+                        //    break;
+                        //case StarType.RadioPulsar:
+                        //    break;
+                        //case StarType.XRayPulsar:
+                        //    break;
+                        //case StarType.Quasar:
+                        //    break;
+                        case StarType.BlackHole:
+                            //_blackholes.Add(_obj); // and than ??? // already 
+                            continue;
+                            //break;
+                            //default:
+                            //    break;
+                    }
+                }
+
+                Report_Sector(_obj.Sector);
+
+                if (_bool_is_human == true)
+                {
+                    Report_Sector(_obj.Sector);
+                }
+                //Report_Sector(_obj.Sector);
+                //_distance_to_home = MapLocation.GetDistance(_home_location, _obj.Location);
+                if (!_prior_objects_to_build_stations.Contains(_obj.Location)
+                    && MapLocation.GetDistance(_home_location, _obj.Location) < _distance_to_home)
+                {
+                    if (_obj.Sector != null && _obj.Sector.System != null && _obj.Sector.System.StarType != StarType.BlackHole)
+                    {
+                        continue;
+                    }
+
+                    if (_obj.Sector.System.HasColony && !_obj.Sector.System.Colony.Owner.IsEmpire)
+                    {
+                        continue;
+                    }
+
+                    _prior_objects_to_build_stations.Add(_obj.Location);
+                    if (_bool_is_human == true)
+                    {
+                        Report_Sector(_obj.Sector);
+                        //Debugger.Break();
+                    }
+                }
+            }
+            _distance_to_home += 1;
+            _prior_objects_to_build_stations.Distinct();
+
+
+            _text = "Step_6671:; GameEngine > _possible_locations_to_Not_Build_Stations"
+    + "  > _distance_to_home= " + _distance_to_home
+    + "  > found > " + _prior_objects_to_build_stations.Count
+    + " for " + _civM.Civilization
+    ;
+            Console.WriteLine(_text);
+            Debugger.Break();
+
+
+
+            //if (_prior_objects_to_build_stations.Count < 4)
+            //{
+            //    //Debugger.Break();
+            //    goto Expand_distance_to_home;
+            //}
+
+
+
+
+            //_prior_objects_to_build_stations.Add(_new_loc);
+            _prior_objects_to_build_stations.Distinct();
+
+            if (_prior_objects_to_build_stations.Count > 0)
+            {
+                _civM.Locations_To_Build_Stations = _prior_objects_to_build_stations;
+            }
+
+            Report_Locations_To_Build_Stations(_civM);
+
+            if (_bool_is_human)
+            {
+                //Debugger.Break();
+            }
+
+
+            //Clear_Locations_To_Build_Stations(_civM);
+
+            if (_civM.Locations_To_Build_Stations.Count < 5)
+            {
+                //Locations_To_Build_Stations_ADD_by_Grid(_civM);
+
+                for (int i = 1; i < 9; i++)
+                {
+                    _new_x = _home_x + (_width_direction * i);
+                    if (_new_x < 0 || _new_x > _map_width)
+                    {
+                        return;
+                    }
+                    _new_y = _home_y + (_height_direction * i);
+                    if (_new_y < 0 || _new_y > _map_heigth)
+                    {
+                        return;
+                    }
+
+                    _new_loc = new MapLocation(_new_x, _new_y);
+                    Sector _check_sector = new Sector(_new_loc);
+
+                    List<Sector> _grid_sectors = MapHelper.GetSectorsWithinRadius(_check_sector, 3).ToList();
+                    List<Sector> _provided_sectors = new List<Sector> { _home_sector };
+
+                    foreach (var item in _grid_sectors)
+                    {
+                        _provided_sectors.Distinct();
+
+                        if (_provided_sectors.Contains(item))
+                        {
+                            continue;
+                        }
+
+                        if (item.Station == null)
+                        {
+                            continue;
+                        }
+
+                        if (item.Station.OwnerID == _civM.CivilizationID)
+                        {
+                            _provided_sectors = MapHelper.GetSectorsWithinRadius(_check_sector, 3).ToList();
+                            _provided_sectors.Distinct();
+                        }
+
+                        if (item.System != null && item.System.StarType != StarType.BlackHole)
+                        {
+                            if (item.System.Colony != null && !item.System.Colony.Owner.IsEmpire
+                                && !_provided_sectors.Contains(item))
+                            {
+                                _civM.Locations_To_Build_Stations.Add(item.Location);
+                            }
+                        }
+
+                        if (item.System == null && _provided_sectors.Contains(item))
+                        {
+                            _civM.Locations_To_Build_Stations.Add(item.Location);
+                            break; // only select one sector in this area
+                        }
+                    }
+                }
+
+
+            }
+        }
+
+        private void Report_Locations_To_Build_Stations(CivilizationManager _civM)
+        {
+            if (_civM.Locations_To_Build_Stations == null)
+            {
+                return;
+            }
+            string _text = "";
+            int _count = 0;
+            foreach (var item in _civM.Locations_To_Build_Stations)
+            {
+                _count += 1;
+                _text += "Step_6665:; possible_locations_to_build_stations= "
+                                        + " # " + _count + " > "
+                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
+                    + Environment.NewLine
+
+                    ;
+            }
+            Console.WriteLine(_text);
+        }
+
+        private void Report_Sector(Sector _sector)
+        {
+            if (_sector == null)
+            {
+                return;
+            }
+
+
+            string _text = "Step_6661:; ..checking > " + SectorString(_sector, out string _sector_text);
+
+            Console.WriteLine(_text);
+        }
+
+        private string SectorString(Sector _sector, out string _sector_text)
+        {
+            _sector_text = "";
+            string _star_type = "";
+            if (_sector == null)
+            {
+                return "no _sector available";
+            }
+
+
+
+            _sector_text = LocationString(_sector.Location.ToString())
+                //+ " > Sector " + _sector.Name
+
+
+                ;
+
+            if (_sector.Owner != null)
+            {
+                _sector_text += " > Owner= " + _sector.Owner;
+            }
+            else
+            {
+                _sector_text += " > Owner= NOBODY";
+            }
+
+            if (_sector.System != null)
+            {
+
+
+
+                if (_sector.System.Colony != null)
+                {
+                    _sector_text += " ,Colony= " + _sector.System.Colony.Name;
+                }
+                else
+                {
+                    _sector_text += " ,Colony= NO";
+                }
+                _star_type = " ( " + _sector.System.StarType + " )";
+            }
+
+            _sector_text += " for Sector= " + _sector.Name + _star_type;
+
+            return _sector_text;
+        }
+
+        private void Find_Locations_To_Explore(CivilizationManager _civM)
+        {
+            List<MapLocation> _possible_locations_to_explore = new List<MapLocation>(); // locations need less storage
+            List<Sector> _possible_sectors_to_explore = new List<Sector>();
+            int _radius = 2;
+            List<Fleet> _ownFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civM.Civilization).Where(f => f.CanMove /*&& !f.Route.IsEmpty*/).ToList();
+
+        Expand_Radius:;
+
+            _possible_sectors_to_explore = MapHelper.GetSectorsWithinRadius(_civM.HomeSystem.Sector, _radius).ToList();
+            foreach (var _sector in _possible_sectors_to_explore)
+            {
+                //Console.WriteLine("Step_6665:; possible_locations_to_explore= " + _i + " > " + _item + " for " + _civM.Civilization);
+                if (_civM.MapData.IsExplored(_sector.Location))
+                {
+                    continue;
+                }
+
+                if (DiplomacyHelper.IsTravelAllowed(_civM.Civilization, _sector) == false)
+                {
+                    continue;
+                }
+
+                if (_sector.System != null
+                    && _sector.System.StarType == StarType.BlackHole
+                    //&& _sector.System.StarType != StarType.XRayPulsar
+                    //&& _sector.System.StarType != StarType.NeutronStar
+                    //&& _sector.System.StarType != StarType.Quasar
+                    //&& _sector.System.StarType != StarType.RadioPulsar
+                    //&& _sector.System.StarType != StarType.Wormhole
+                    )
+                {
+                    continue;
+                }
+
+                foreach (var item in _ownFleets)
+                {
+                    if (item.Route != null && item.Route.Waypoints.Count > 0 && item.Route.Waypoints.Last() == _sector.Location)
+                    {
+                        continue;
+                    }
+                }
+                // old 
+                //if (_ownFleets.Any(f => f.Route.Waypoints.Any(wp => _sector.Location == wp)))
+                //{
+                //    continue;
+                //}
+
+                // else
+                _possible_locations_to_explore.Add(_sector.Location);
+                _possible_locations_to_explore.Distinct();
+            }
+
+            //int _i = 0;
+
+
+
+            if (_possible_locations_to_explore.Count < 9)
+            {
+                _radius += 1;
+                goto Expand_Radius;
+            }
+            else
+            {
+                _civM.Locations_To_Explore = _possible_locations_to_explore;
+            }
+
+            //Report_possible_locations_to_explore(_possible_locations_to_explore);
+            //foreach (var _item in _possible_locations_to_explore)
+            //{
+            //    _i += 1;
+            //    Console.WriteLine("Step_6663:; possible_locations_to_explore= " + _i + " > " 
+            //        +GameEngine.LocationString(_item.ToString()) + " for " + _civM.Civilization);
+            //}
+
+            //sectors_to_build_stations
+
+            Report_Locations_To_Explore(_civM);  // list out of _civM
+        }
+
+        private void Report_Locations_To_Explore(CivilizationManager _civM)
+        {
+            if (_civM.Locations_To_Explore == null)
+            {
+                return;
+            }
+            string _text = "";
+            int _count = 0;
+            foreach (var item in _civM.Locations_To_Explore)
+            {
+                _count += 1;
+                _text += "Step_6663:; possible_locations_to_explore= "
+                                        + " # " + _count + " > "
+                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
+                    + Environment.NewLine
+
+                    ;
+            }
+        }
+
+        private void Civ_Fire_Power_Space(CivilizationManager _civM)
+        {
+            List<Ship> _combatant_ships = GameContext.Current.Universe.FindOwned<Ship>(_civM.Civilization)
+                    .Where(s => s.IsCombatant).ToList();
+
+            int _int = 0;
+            foreach (Ship ship in _combatant_ships)
+            {
+                //int _int_ship = ship.ShipDesign.PrimaryWeapon.Damage
+                //                + ship.ShipDesign.SecondaryWeapon.Damage;
+
+
+                _int += ship.Fire_Power_Orbital;
+                //_int += ship.Fire_power_calculated();
+
+
+                if (_civM.Civilization.IsHuman)
+                {
+                    //Debugger.Break();
+                }
+                //ship.Fire_power_calculated = _int_ship;
+            }
+            _civM.FirePowerSpace = _int;
+            //_civM.FirePowerSpace = _combatant_ships.Fire_Power_Orbital.Sum();
+
+
+            //if (_civM.Civilization.IsHuman)
+            //{
+            //Debugger.Break();
+            //}
+
+        }
+
+        //private void Reset_Items(HashSet<UniverseObject> objects)
+        private void Reset_Items(GameContext _game)
+        {
+            HashSet<UniverseObject> _objects = GameContext.Current.Universe.Objects.ToHashSet();
+
+            ConcurrentStack<Exception> _errors = new ConcurrentStack<Exception>();
+            string _text = "";
 
             Console.WriteLine("Step_1154:; resetting items...");
             //_ = ParallelForEach(_objects, _item =>
@@ -574,7 +1872,7 @@ namespace Supremacy.Game
                     Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text);
                     Debugger.Break();
-                    errors.Push(e);
+                    _errors.Push(e);
                 }
                 finally
                 {
@@ -588,9 +1886,9 @@ namespace Supremacy.Game
             //});
 
 
-            if (!errors.IsEmpty)
+            if (!_errors.IsEmpty)
             {
-                foreach (var err in errors)
+                foreach (var err in _errors)
                 {
                     _text = "Step_1157:; ERROR > " + err.Message + err.StackTrace;
                     Console.WriteLine(_text);
@@ -602,7 +1900,7 @@ namespace Supremacy.Game
                 //throw new AggregateException(_errors);   // avoid crashes = stopps for player as much as possible !
             }
 
-            errors.Clear();
+            _errors.Clear();
 
             foreach (CivilizationManager _civM in GameContext.Current.CivilizationManagers)
             {
@@ -738,7 +2036,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    errors.Push(e);
+                    _errors.Push(e);
                     _text = "Step_1158:; ERROR > " + e.Message;
                     Console.WriteLine(_text);
                     //GameLog.Client.General.ErrorFormat("SitRepEntries clear error ={0}", e);
@@ -759,9 +2057,9 @@ namespace Supremacy.Game
 
             //turnnumber = GameContext.Current.TurnNumber;
 
-            if (!errors.IsEmpty)
+            if (!_errors.IsEmpty)
             {
-                throw new AggregateException(innerExceptions: errors);
+                throw new AggregateException(innerExceptions: _errors);
             }
 
             // This block is not guaranteed to be safe for parallel execution.
@@ -834,7 +2132,7 @@ namespace Supremacy.Game
                 //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
             } // end of each ship
         }
-        #endregion DoPreTurnSetup
+        
 
         #region DoPreGameSetup() Method
         public void Do_04_PreGameSetup(GameContext _game)
@@ -2490,165 +3788,6 @@ namespace Supremacy.Game
             //var _ships_in_location = GetShipsAtLocation(_loc);
             return _location_fire_power;
         }
-
-
-        private static void Report_Location(MapLocation item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            string _text = "Step_6671:; ..checking Location > " + item;
-            Console.WriteLine(_text);
-        }
-
-        //private void Locations_To_NOT_Build_Stations(CivilizationManager civM)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private void Locations_To_Build_Stations_ADD_by_Grid(CivilizationManager civM)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public void Report_Sector(Sector _sector)
-        {
-            if (_sector == null)
-            {
-                return;
-            }
-
-
-            string _text = "Step_6661:; ..checking > " + SectorString(_sector, out string _sector_text);
-
-            Console.WriteLine(_text);
-        }
-
-        public string SectorString(Sector _sector, out string _sector_text)
-        {
-            _sector_text = "";
-            string _star_type = "";
-            if (_sector == null)
-            {
-                return "no _sector available";
-            }
-
-
-
-            _sector_text = LocationString(_sector.Location.ToString())
-                //+ " > Sector " + _sector.Name
-
-
-                ;
-
-            if (_sector.Owner != null)
-            {
-                _sector_text += " > Owner= " + _sector.Owner;
-            }
-            else
-            {
-                _sector_text += " > Owner= NOBODY";
-            }
-
-            if (_sector.System != null)
-            {
-
-
-
-                if (_sector.System.Colony != null)
-                {
-                    _sector_text += " ,Colony= " + _sector.System.Colony.Name;
-                }
-                else
-                {
-                    _sector_text += " ,Colony= NO";
-                }
-                _star_type = " ( " + _sector.System.StarType + " )";
-            }
-
-            _sector_text += " for Sector= " + _sector.Name + _star_type;
-
-            return _sector_text;
-        }
-
-        public void Report_Locations_To_Explore(CivilizationManager _civM)
-        {
-            if (_civM.Locations_To_Explore == null)
-            {
-                return;
-            }
-            string _text = "";
-            int _count = 0;
-            foreach (var item in _civM.Locations_To_Explore)
-            {
-                _count += 1;
-                _text += "Step_6663:; possible_locations_to_explore= "
-                                        + " # " + _count + " > "
-                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
-                    + Environment.NewLine
-
-                    ;
-            }
-            //Console.WriteLine(_text);
-        }
-
-        public void Report_Locations_To_Build_Stations(CivilizationManager _civM)
-        {
-            if (_civM.Locations_To_Build_Stations == null)
-            {
-                return;
-            }
-            string _text = "";
-            int _count = 0;
-            foreach (var item in _civM.Locations_To_Build_Stations)
-            {
-                _count += 1;
-                _text += "Step_6665:; possible_locations_to_build_stations= "
-                                        + " # " + _count + " > "
-                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
-                    + Environment.NewLine
-
-                    ;
-            }
-            Console.WriteLine(_text);
-        }
-
-        public void Report_Locations_To_NOT_Build_Stations(CivilizationManager _civM)
-        {
-            string _text = "";
-
-            if (_civM.Locations_To_NOT_Build_Stations == null || _civM.Locations_To_NOT_Build_Stations.Count == 0)
-            {
-                _text += "Step_6664:; GameEngine > _possible_locations_to_Not_Build_Stations= empty or Count= 0 " + " for " + _civM.Civilization;
-                Console.WriteLine(_text);
-                return;
-            }
-
-            int _count = 0;
-            foreach (var item in _civM.Locations_To_NOT_Build_Stations)
-            {
-                _count += 1;
-                _text += "Step_6665:; GameEngine > _possible_locations_to_Not_Build_Stations= "
-                                        + " # " + _count + " > "
-                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
-                    + Environment.NewLine
-
-                    ;
-            }
-            Console.WriteLine(_text);
-        }
-        //private void Report_possible_locations_to_explore(List<MapLocation> possible_locations_to_explore)
-        //{
-        //    foreach (var _item in possible_locations_to_explore)
-        //    {
-
-        //        Console.WriteLine("Step_6665:; possible_locations_to_explore=" + _item);
-        //    }
-        //}
-
-
 
         private void Report_SomeSectors(Civilization _civ1, CivilizationManager _civM_1)
         {
@@ -7123,12 +8262,12 @@ public enum TurnPhase : byte
 }
 
 /// <summary>
-/// Delegate used for event handlers related to changes in the current turnnumber _phase.
+/// Delegate used for event handlers related to changes in the current turnnumber phase.
 /// </summary>
 public delegate void TurnPhaseEventHandler(TurnPhase phase);
 
 /// <summary>
-/// Delegate used for event handlers related to the initiation of _combat.
+/// Delegate used for event handlers related to the initiation of combat.
 /// </summary>
 public delegate void CombatEventHandler(List<CombatAssets> assets);
 
