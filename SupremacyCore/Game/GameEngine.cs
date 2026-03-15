@@ -2491,6 +2491,165 @@ namespace Supremacy.Game
             return _location_fire_power;
         }
 
+
+        private static void Report_Location(MapLocation item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            string _text = "Step_6671:; ..checking Location > " + item;
+            Console.WriteLine(_text);
+        }
+
+        //private void Locations_To_NOT_Build_Stations(CivilizationManager civM)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //private void Locations_To_Build_Stations_ADD_by_Grid(CivilizationManager civM)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public void Report_Sector(Sector _sector)
+        {
+            if (_sector == null)
+            {
+                return;
+            }
+
+
+            string _text = "Step_6661:; ..checking > " + SectorString(_sector, out string _sector_text);
+
+            Console.WriteLine(_text);
+        }
+
+        public string SectorString(Sector _sector, out string _sector_text)
+        {
+            _sector_text = "";
+            string _star_type = "";
+            if (_sector == null)
+            {
+                return "no _sector available";
+            }
+
+
+
+            _sector_text = LocationString(_sector.Location.ToString())
+                //+ " > Sector " + _sector.Name
+
+
+                ;
+
+            if (_sector.Owner != null)
+            {
+                _sector_text += " > Owner= " + _sector.Owner;
+            }
+            else
+            {
+                _sector_text += " > Owner= NOBODY";
+            }
+
+            if (_sector.System != null)
+            {
+
+
+
+                if (_sector.System.Colony != null)
+                {
+                    _sector_text += " ,Colony= " + _sector.System.Colony.Name;
+                }
+                else
+                {
+                    _sector_text += " ,Colony= NO";
+                }
+                _star_type = " ( " + _sector.System.StarType + " )";
+            }
+
+            _sector_text += " for Sector= " + _sector.Name + _star_type;
+
+            return _sector_text;
+        }
+
+        public void Report_Locations_To_Explore(CivilizationManager _civM)
+        {
+            if (_civM.Locations_To_Explore == null)
+            {
+                return;
+            }
+            string _text = "";
+            int _count = 0;
+            foreach (var item in _civM.Locations_To_Explore)
+            {
+                _count += 1;
+                _text += "Step_6663:; possible_locations_to_explore= "
+                                        + " # " + _count + " > "
+                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
+                    + Environment.NewLine
+
+                    ;
+            }
+            //Console.WriteLine(_text);
+        }
+
+        public void Report_Locations_To_Build_Stations(CivilizationManager _civM)
+        {
+            if (_civM.Locations_To_Build_Stations == null)
+            {
+                return;
+            }
+            string _text = "";
+            int _count = 0;
+            foreach (var item in _civM.Locations_To_Build_Stations)
+            {
+                _count += 1;
+                _text += "Step_6665:; possible_locations_to_build_stations= "
+                                        + " # " + _count + " > "
+                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
+                    + Environment.NewLine
+
+                    ;
+            }
+            Console.WriteLine(_text);
+        }
+
+        public void Report_Locations_To_NOT_Build_Stations(CivilizationManager _civM)
+        {
+            string _text = "";
+
+            if (_civM.Locations_To_NOT_Build_Stations == null || _civM.Locations_To_NOT_Build_Stations.Count == 0)
+            {
+                _text += "Step_6664:; GameEngine > _possible_locations_to_Not_Build_Stations= empty or Count= 0 " + " for " + _civM.Civilization;
+                Console.WriteLine(_text);
+                return;
+            }
+
+            int _count = 0;
+            foreach (var item in _civM.Locations_To_NOT_Build_Stations)
+            {
+                _count += 1;
+                _text += "Step_6665:; GameEngine > _possible_locations_to_Not_Build_Stations= "
+                                        + " # " + _count + " > "
+                    + GameEngine.LocationString(item.ToString()) + " for " + _civM.Civilization
+                    + Environment.NewLine
+
+                    ;
+            }
+            Console.WriteLine(_text);
+        }
+        //private void Report_possible_locations_to_explore(List<MapLocation> possible_locations_to_explore)
+        //{
+        //    foreach (var _item in possible_locations_to_explore)
+        //    {
+
+        //        Console.WriteLine("Step_6665:; possible_locations_to_explore=" + _item);
+        //    }
+        //}
+
+
+
         private void Report_SomeSectors(Civilization _civ1, CivilizationManager _civM_1)
         {
             string _text;
