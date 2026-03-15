@@ -1,4 +1,4 @@
-// File:Orbital.cs
+// File:Orbital.cs   ( for search only: Orbitals.cs )
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -30,8 +30,9 @@ namespace Supremacy.Orbitals
         private Meter _shieldStrength;
         private Meter _cloakStrength;
         private Meter _camouflagedMeter;
+
         [NonSerialized]
-        private Meter _firePower;
+        private int _firePower;
         //private string _text;
 
         /// <summary>
@@ -60,7 +61,19 @@ namespace Supremacy.Orbitals
         /// Gets the fire power.
         /// </summary>
         /// <value>The crew.</value>
-        public Meter FirePower => _firePower;
+        public int Fire_Power_Orbital
+        {
+            get
+            {
+                return _firePower;
+                //return this.OrbitalDesign.SecondaryWeapon.Damage * ;
+            }
+            set
+            {
+                _firePower = value;
+
+            }
+        }
 
         /// <summary>
         /// Gets the hull strength.
@@ -174,8 +187,9 @@ namespace Supremacy.Orbitals
             _cloakStrength = new Meter(design.CloakStrength, 0, design.CloakStrength);
             _camouflagedMeter = new Meter(design.CamouflagedStrength, 0, design.CamouflagedStrength);
 
-            int _fp = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
-            _firePower = new Meter(_fp, 0, _fp);
+            //int _fp = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
+            _firePower = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
+            //_firePower = _fp;
         }
 
         /// <summary>
@@ -337,22 +351,27 @@ namespace Supremacy.Orbitals
             _cloakStrength = (Meter)reader.ReadObject();
             _camouflagedMeter = (Meter)reader.ReadObject();
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
-            _firePower = (Meter)reader.ReadObject();
+            _firePower = (int)reader.ReadObject();
 
             //string _text;
 
-            //_text = "Orbital: " 
-            //    + "crew=" + _crew
-            //    + ", exp=" + _experienceLevel
-            //    + ", hull=" + _hullStrength
-            //    + ", sh=" + _shieldStrength
-            //    + ", cloa=" + _cloakStrength
-            //    + ", camo=" + _shieldStrength
-            //    + ", crew+-= nv" /*+ Crew_CurrentValueChanged.tostring()*/
-            //    + ", firepower=" + _firePower
-            //    ;
-            ////Console.WriteLine(_text);
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            string _text = "Step_7322:; Orbital: "
+                + "crew=" + _crew
+                + ", exp=" + _experienceLevel
+                + ", hull=" + _hullStrength
+                + ", sh=" + _shieldStrength
+                + ", cloa=" + _cloakStrength
+                + ", camo=" + _shieldStrength
+                + ", crew+-= nv" /*+ Crew_CurrentValueChanged.tostring()*/
+                + ", firepower=" + _firePower
+                ;
+            //Console.WriteLine(_text);
+
+            if (_firePower > 0)  // oh .. does it work ???
+            {
+                //Debugger.Break();
+            }
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
         }
     }
 

@@ -84,14 +84,14 @@ namespace Supremacy.Orbitals
             return mapData.GetFuelRange(sector.Location) <= fleet.Range;
         }
 
-        public static int Firepower(this Fleet fleet)
+        public static int Fire_power_fleet(this Fleet fleet)
         {
             if (fleet == null)
             {
                 throw new ArgumentNullException("fleet");
             }
 
-            return fleet.Ships.Sum(f => f.Firepower());
+            return fleet.Ships.Sum(f => f.Fire_power_calculated());
         }
 
         public static int EffectiveCombatStrength(this Fleet fleet)

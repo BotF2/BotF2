@@ -575,7 +575,7 @@ namespace Supremacy.AI
             {
                 foreach (Ship ship in civFleet.Ships.ToList())
                 {
-                    firePower += ship.Firepower();
+                    firePower += ship.Fire_Power_Orbital;
 
                     _text = "Step_1147:; " + UnitAI.CreateShipText(ship, out string shiptext) + " > has fire power= " + firePower;
                     Console.WriteLine(_text);
@@ -586,7 +586,7 @@ namespace Supremacy.AI
 
             if (_sector.Station != null)
             {
-                firePower += _sector.Station.Firepower();
+                firePower += _sector.Station.Fire_Power_Orbital;
             }
 
             return firePower;

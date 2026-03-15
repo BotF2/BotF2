@@ -1119,7 +1119,7 @@ namespace Supremacy.Combat
                 {
                     _empireStrengths[combatShip.Item1.Owner.CivID] = 0;
                 }
-                _empireStrengths[combatShip.Item1.Owner.CivID] += combatShip.Item1.Source.Firepower();
+                _empireStrengths[combatShip.Item1.Owner.CivID] += combatShip.Item1.Source.Fire_Power_Orbital;
             }
             if (_combatStation != null)
             {
@@ -1127,7 +1127,7 @@ namespace Supremacy.Combat
                 {
                     _empireStrengths[_combatStation.Item1.Owner.CivID] = 0;
                 }
-                _empireStrengths[_combatStation.Item1.Owner.CivID] += _combatStation.Item1.Source.Firepower();
+                _empireStrengths[_combatStation.Item1.Owner.CivID] += _combatStation.Item1.Source.Fire_Power_Orbital;
             }
 
             foreach (KeyValuePair<int, int> empire in _empireStrengths)

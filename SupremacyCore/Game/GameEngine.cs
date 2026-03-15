@@ -1575,7 +1575,7 @@ namespace Supremacy.Game
 
                         if (_civM_2.HomeSystem.Sector.Station != null)
                         {
-                            _defense += _civM_2.HomeSystem.Sector.Station.Firepower() / 200;  // station only half
+                            _defense += _civM_2.HomeSystem.Sector.Station.Fire_Power_Orbital / 200;  // station only half
                             _defense += _civM_2.HomeSystem.Colony.Population.CurrentValue;  // 
                             if (_civM_2.HomeSystem.Colony.OrbitalBatteries.Count > 0)
                             {
@@ -1995,7 +1995,7 @@ namespace Supremacy.Game
                                         + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _target_fire_power.ToString())
 
                                         //+ "   ; _regard= " + _regard
-                                        + "   ; Attack= " + _civM_1.Assault_AttackValue
+                                        + "   ; Attack= " + _civM_1.Assault_Attack_Value
                                         + "   ; Distance= " + GameEngine.Do_x_Digit_String(2, _targetDistance.ToString())
                                         + "   ; _next_target_fire_power= " + GameEngine.Do_x_Digit_String(5, _next_target_fire_power.ToString())
                                         + "   ; AssVal_Defense+Dist= " + GameEngine.Do_x_Digit_String(5, _civM_1.Assault_Value_Defense_and_Distance.ToString())
@@ -2081,7 +2081,7 @@ namespace Supremacy.Game
                             + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _civM_1.Assault_DefenseValue.ToString())
 
                             //+ "   ; _regard= " + _regard
-                            + "   ; Attack= " + _civM_1.Assault_AttackValue //GameEngine.Do_x_Digit_String(5, _civM_1.Assault_AttackValue.ToString())
+                            + "   ; Attack= " + _civM_1.Assault_Attack_Value //GameEngine.Do_x_Digit_String(5, _civM_1.Assault_AttackValue.ToString())
                                                                             //+ "  ; Distance= " + GameEngine.Do_x_Digit_String(_targetDistance.ToString())
 
                                 //+ "_civM_1.Assault_Location possible  >"
@@ -2273,7 +2273,7 @@ namespace Supremacy.Game
                             + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _civM_1.Assault_DefenseValue.ToString())
 
                             ////+ "   ; _regard= " + _regard
-                            + "   ; Attack= " + _civM_1.Assault_AttackValue //GameEngine.Do_x_Digit_String(5, _civM_1.Assault_AttackValue.ToString())
+                            + "   ; Attack= " + _civM_1.Assault_Attack_Value //GameEngine.Do_x_Digit_String(5, _civM_1.Assault_AttackValue.ToString())
                             + "   ; Distance= " + GameEngine.Do_x_Digit_String(2, MapLocation.GetDistance(_civM_1.HomeSystem.Location, _new_assault_location).ToString())
 
                             //+ "; _target_fire_power= " + _target_fire_power
@@ -2466,7 +2466,7 @@ namespace Supremacy.Game
 
             foreach (var item in _all_fleets_here)
             {
-                _location_fire_power += item.Firepower();
+                _location_fire_power += item.Fire_power_fleet();
 
                 if (!_involved_civs.Contains(item.Owner.ToString()))
                 {
@@ -2476,7 +2476,7 @@ namespace Supremacy.Game
 
             if (_sector.Station != null)// && _sector.Station.OwnerID != this._civ)
             {
-                _location_fire_power += _sector.Station.Firepower();
+                _location_fire_power += _sector.Station.Fire_Power_Orbital;
             }
 
             if (_sector.System != null && _sector.System.Colony != null)// && _sector.Station.OwnerID != this._civ)
@@ -5839,7 +5839,7 @@ namespace Supremacy.Game
                 _count = commandShips.Count();
                 if (_count > 0)
                 {
-                    _fp = commandShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = commandShips.LastOrDefault().Fire_Power_Orbital * _count;
                     civValueShipSummary2 += "Command " + _count + "x (FP: " + _fp + " ), "; _fpAll += _fp; // if _count = 0 don't show, there are nothing 
                 }
 
@@ -5850,7 +5850,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = cruiserShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = cruiserShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 civValueShipSummary2 += "Cruiser " + _count + "x (FP: " + _fp + " )"; _fpAll += _fp; // if _count = 0 >>> show 0 
 
@@ -5861,7 +5861,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = fastAttackShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = fastAttackShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 civValueShipSummary2 += ", Attack " + _count + "x (FP: " + _fp + " )"; _fpAll += _fp;
 
@@ -5871,7 +5871,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = scoutShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = scoutShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 civValueShipSummary2 += ", Scouts " + _count + "x (FP: " + _fp + " )"; _fpAll += _fp;
 
@@ -5881,7 +5881,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = scienceShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = scienceShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 // civValueShipSummary1 ... first line, no semi colon 
 
@@ -5901,7 +5901,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = spyShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = spyShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 civValueShipSummary1 += ", Spy " + _count + "x ";// (FP: " + _fp + ")";
 
@@ -5911,7 +5911,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = diplomaticShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = diplomaticShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 civValueShipSummary1 += ", Diplo " + _count + "x ";// (FP: " + _fp + ")";
 
@@ -5921,7 +5921,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = medicalShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = medicalShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 civValueShipSummary1 += ", Medical " + _count + "x ";// (FP: " + _fp + ")";
 
@@ -5931,7 +5931,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = transportShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = transportShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 if (_count > 0)
                 {
@@ -5944,7 +5944,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = constructionShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = constructionShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 if (_count > 0)
                 {
@@ -5957,7 +5957,7 @@ namespace Supremacy.Game
                 _fp = 0;
                 if (_count > 0)
                 {
-                    _fp = colonyShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    _fp = colonyShips.LastOrDefault().Fire_Power_Orbital * _count;
                 }
                 if (_count > 0)
                 {

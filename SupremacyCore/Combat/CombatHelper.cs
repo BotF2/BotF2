@@ -40,7 +40,7 @@ namespace Supremacy.Combat
                     from s in assets.Sector.GetNeighbors()
                     let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
                     let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
-                    let hostileOrbitalPower = hostileOrbitals.Sum(o => o.Firepower())
+                    let hostileOrbitalPower = hostileOrbitals.Sum(o => o.Fire_Power_Orbital)
                     orderby hostileOrbitalPower ascending, distance descending
                     select s
                 ;

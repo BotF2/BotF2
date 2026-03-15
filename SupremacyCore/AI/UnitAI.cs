@@ -113,7 +113,7 @@ namespace Supremacy.AI
             //_fleets_Summary = "" + _fleets_Summary;
             string _newline = Environment.NewLine;
 
-            //_civM.Assault_AttackValue = _civM.Assault_AttackValue * -1; // it's a += so this sets to zero
+            //_civM.Assault_Attack_Value = _civM.Assault_Attack_Value * -1; // it's a += so this sets to zero
 
 
             if (_civ == null)
@@ -928,8 +928,8 @@ namespace Supremacy.AI
             if (_civM.Assault_Accumulate_Location_1 != null && _civM.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
             {
 
-                _civM.Assault_AttackValue = 0; // _civM.Assault_AttackValue * -1; // it's a += so this sets to zero
-                                               //_civM.Assault_AttackValue = 0; // no, it's always a +=
+                _civM.Assault_Attack_Value = 0; // _civM.Assault_Attack_Value * -1; // it's a += so this sets to zero
+                                               //_civM.Assault_Attack_Value = 0; // no, it's always a +=
 
                 int _attackValue_at_Accumulate = 0;
 
@@ -1005,12 +1005,12 @@ namespace Supremacy.AI
 
                     if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
                     {
-                        _civM.Assault_AttackValue += _fleet.Firepower(); // 
+                        _civM.Assault_Attack_Value += _fleet.Fire_power_fleet(); // 
                     }
 
                     if (_fleet.IsTransport)
                     {
-                        _civM.Assault_AttackValue += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
+                        _civM.Assault_Attack_Value += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
                     }
                 }
 
@@ -1018,7 +1018,7 @@ namespace Supremacy.AI
                 {
                     if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
                     {
-                        _attackValue_at_Accumulate += _fleet.Firepower(); // 
+                        _attackValue_at_Accumulate += _fleet.Fire_power_fleet(); // 
                     }
 
                     if (_fleet.IsTransport)
@@ -1063,7 +1063,7 @@ namespace Supremacy.AI
 
                     if (_targetSystem.Sector.Station != null)
                     {
-                        _defenseSectorIntValue += _targetSystem.Sector.Station.Firepower() / 200;  // station only half
+                        _defenseSectorIntValue += _targetSystem.Sector.Station.Fire_Power_Orbital / 200;  // station only half
                     }
 
                     _text = "Step_3255:; "  /*+ _loc_otherHomeSystem + " > "*/
@@ -1073,14 +1073,14 @@ namespace Supremacy.AI
                             + ", Owner= " + _targetSystem.Owner
                             //+ " > ordered one more facility for > Industry"
                             + " > Defense= " + _defenseSectorIntValue
-                            + " vs _FirePower_Total= " + _civM.Assault_AttackValue
+                            + " vs _FirePower_Total= " + _civM.Assault_Attack_Value
                             + " vs _attackValue_at_Accumulate= " + _attackValue_at_Accumulate
 
                             ;
                     if (_writeDirectly_Fleets) Console.WriteLine(_text);
                     _fleet_Text += Environment.NewLine + _text;
 
-                    if (_attackValue_at_Accumulate > 0 && _attackValue_at_Accumulate + _civM.Assault_AttackValue > _defenseSectorIntValue)
+                    if (_attackValue_at_Accumulate > 0 && _attackValue_at_Accumulate + _civM.Assault_Attack_Value > _defenseSectorIntValue)
                     {
                         foreach (var _fleet2 in _fleetsAtAccumulate)
                         {
@@ -1096,7 +1096,7 @@ namespace Supremacy.AI
                         }
                     }
 
-                    if (_civM.Assault_AttackValue > 0 && _civM.Assault_AttackValue > _defenseSectorIntValue)
+                    if (_civM.Assault_Attack_Value > 0 && _civM.Assault_Attack_Value > _defenseSectorIntValue)
                     {
                         foreach (var _fleet2 in _fleetsAtLocation)
                         {
@@ -1137,7 +1137,7 @@ namespace Supremacy.AI
 
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
 
-            _civM.Assault_AttackValue = 0;
+            _civM.Assault_Attack_Value = 0;
 
             if (_civ.IsHuman)
             {
@@ -1150,7 +1150,7 @@ namespace Supremacy.AI
             {
                 if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
                 {
-                    _civM.Assault_AttackValue += _fleet.Firepower(); // 
+                    _civM.Assault_Attack_Value += _fleet.Fire_power_fleet(); // 
                     foreach (var item in _fleet.Ships)
                     {
                         _attackFleet.AddShip(item);
@@ -1159,7 +1159,7 @@ namespace Supremacy.AI
 
                 if (_fleet.IsTransport)
                 {
-                    _civM.Assault_AttackValue += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
+                    _civM.Assault_Attack_Value += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
                     foreach (var item in _fleet.Ships)
                     {
                         _attackFleet.AddShip(item);
@@ -1172,7 +1172,7 @@ namespace Supremacy.AI
             GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Location.ToString() == _targetLocation.ToString(), out StarSystem _targetSystem);
             if (_targetSystem.Sector.Station != null)
             {
-                _defenseSector += _targetSystem.Sector.Station.Firepower() / 200;  // station only half
+                _defenseSector += _targetSystem.Sector.Station.Fire_Power_Orbital / 200;  // station only half
                 _defenseSector += _targetSystem.Colony.Population.CurrentValue;  // 
                 if (_targetSystem.Colony.OrbitalBatteries.Count > 0)
                 {
@@ -1188,11 +1188,11 @@ namespace Supremacy.AI
                 }
             }
 
-            if (_civM.Assault_AttackValue > _defenseSector * 1.1) // 10% more attack power than defense
+            if (_civM.Assault_Attack_Value > _defenseSector * 1.1) // 10% more attack power than defense
             {
                 _text = "Step_3234:; "
                     + GameEngine.LocationString(_targetLocation.ToString())
-                     + " > AttackPower= " + _civM.Assault_AttackValue
+                     + " > AttackPower= " + _civM.Assault_Attack_Value
                     + " vs " + _defenseSector + " DefenseSector "
                     ;
                 if (_writeDirectly_Fleets) Console.WriteLine(_text);
@@ -1671,18 +1671,18 @@ namespace Supremacy.AI
                 //List<Fleet> _fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
                 //        .Where(f => f.Location == _civM.AccumulateLocation && f.OwnerID == _civ.CivID).ToList();
 
-                //_civM.Assault_AttackValue = 0;
+                //_civM.Assault_Attack_Value = 0;
 
                 //foreach (var _fleet in _fleetsAtLocation)
                 //{
                 //    if (_fleet.IsCombatant) // && _fleetAtLocation.Ships.Any(o => o.ShipType == ShipType.Transport))
                 //    {
-                //        _civM.Assault_AttackValue += _fleet.Firepower(); // 
+                //        _civM.Assault_Attack_Value += _fleet.Fire_power_fleet()wer(); // 
                 //    }
 
                 //    if (_fleet.IsTransport)
                 //    {
-                //        _civM.Assault_AttackValue += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
+                //        _civM.Assault_Attack_Value += (int)_fleet.Ships[0].ShipDesign.WorkCapacity;
                 //    }
                 //}
 
@@ -1711,11 +1711,11 @@ namespace Supremacy.AI
                 //}
 
 
-                //if (_civM.Assault_AttackValue > _defenseSectorIntValue * 1.1) // 10% more attack power than defense
+                //if (_civM.Assault_Attack_Value > _defenseSectorIntValue * 1.1) // 10% more attack power than defense
                 //{
                 //    _text = "Step_3234:; "
                 //        + _otherSystemText
-                //         + " > AttackPower= " + _civM.Assault_AttackValue
+                //         + " > AttackPower= " + _civM.Assault_Attack_Value
                 //        + " vs " + _defenseSectorIntValue + " DefenseSector "
                 //        ;
                 //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
@@ -3498,7 +3498,7 @@ namespace Supremacy.AI
             {
                 foreach (Ship ship in civFleet.Ships.Where(s => s.ShipType >= ShipType.Scout || s.ShipType == ShipType.Transport).ToList())
                 {
-                    firePower += ship.Firepower();
+                    firePower += ship.Fire_Power_Orbital    ;
                     // GameLog.Client.AI.DebugFormat("A _ship all attack ships {0} location ={1}", _ship.Name, _ship.Location );
                 }
             }
@@ -3512,13 +3512,13 @@ namespace Supremacy.AI
             {
                 foreach (Ship ship in civFleet.Ships.Where(s => s.ShipType >= ShipType.Scout || s.ShipType == ShipType.Transport).ToList())
                 {
-                    firePower += ship.Firepower();
+                    firePower += ship.Fire_Power_Orbital;
                     // GameLog.Client.AI.DebugFormat("A _ship all attack ships {0} location ={1}", _ship.Name, _ship.Location );
                 }
             }
             if (otherHomeSystem.Sector.Station != null)
             {
-                firePower += otherHomeSystem.Sector.Station.Firepower();
+                firePower += otherHomeSystem.Sector.Station.Fire_Power_Orbital;
             }
             return firePower;
         }

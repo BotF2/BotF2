@@ -1,4 +1,5 @@
-﻿using System;
+﻿// File:OrbitalHelper.cs
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -151,7 +152,7 @@ namespace Supremacy.Orbitals
         /// </summary>
         /// <param name="orbital"></param>
         /// <returns></returns>
-        public static int Firepower(this Orbital orbital)
+        public static int Fire_power_calculated(this Orbital orbital)
         {
             if (orbital == null)
             {

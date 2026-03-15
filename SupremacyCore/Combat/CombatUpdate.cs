@@ -1163,7 +1163,7 @@ namespace Supremacy.Combat
                         + "; for; " + ship.Source.ObjectID
                         + "; " + ship.Source.Name
                         + "; " + ship.Source.Design
-                        + "; " + ship.Source.FirePower
+                        + "; " + ship.Source.Fire_Power_Orbital
                         ;
                     if (Write_Combat_Directly) Console.WriteLine(_text); 
                     _CombatUpdate_Text += _text;
@@ -1177,7 +1177,7 @@ namespace Supremacy.Combat
                             + "; for; " + asset.Station.Source.ObjectID
                             + "; " + asset.Station.Source.Name
                             + "; " + asset.Station.Source.Design
-                            + "; " + asset.Station.Source.FirePower
+                            + "; " + asset.Station.Source.Fire_Power_Orbital
                             ;
                     if (Write_Combat_Directly) Console.WriteLine(_text); 
                     _CombatUpdate_Text += _text;
