@@ -21,8 +21,8 @@ namespace Supremacy.Universe
             MapLocation location = origin.Location;
             int startX = Math.Max(0, location.X - radius);
             int startY = Math.Max(0, location.Y - radius);
-            int endX = Math.Min(map.Width - 1, location.X + radius);
-            int endY = Math.Min(map.Height - 1, location.Y + radius);
+            int endX = Math.Min(map.Width - 1, location.X + radius +1);
+            int endY = Math.Min(map.Height - 1, location.Y + radius + 1);
 
             for (int x = startX; x < endX; x++)
             {

@@ -918,13 +918,13 @@ namespace Supremacy.Combat
                     if (CombatHelper.WillFightAlongside(_leftSideCiv, _rightsideAssets.Owner))
                     {
                         _friendlyAssets.Add(_rightsideAssets);
-                        _ = _friendlyAssets.Distinct().ToList();
+                        _friendlyAssets = _friendlyAssets.Distinct().ToList();
                         //GameLog.Core.Combat.DebugFormat("asset of {0} added to friendlies", _rightsideAssets.Owner.Key);
                     }
                     else
                     {
                         _hostileAssets.Add(_rightsideAssets);
-                        _ = _hostileAssets.Distinct().ToList();
+                        _hostileAssets = _hostileAssets.Distinct().ToList();
                         //GameLog.Core.Combat.DebugFormat("asset for {0} added to hostilies", _rightsideAssets.Owner.Key);
                     }
                 }

@@ -777,7 +777,7 @@ namespace Supremacy.AI
         {
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_colony.Owner.CivID];
 
-            //_civM.ShipsOrdered_Check();
+            //_civM.ShipBuildOrdered_Check();
 
             string _newline = Environment.NewLine;
             //string _text;
@@ -1146,7 +1146,7 @@ namespace Supremacy.AI
                             _BuildQueueItemsTo_Remove.Add(_colony.BuildQueue[i].Project);
                     }
                 }
-                _BuildQueueItemsTo_Remove.Distinct();  // this seems not to work ??
+                _BuildQueueItemsTo_Remove = _BuildQueueItemsTo_Remove.Distinct().ToList();  
             }
 
             foreach (var item in _BuildQueueItemsTo_Remove)
@@ -2269,7 +2269,7 @@ namespace Supremacy.AI
                 _text = "Step_1258:; " + GameEngine.LocationString(_colony.Location.ToString()) //+ " > Colony_Step_60_Handle_Basic_Structures"
                         + " > " + _name_col
                         + " ; " + _owner_col
-                        + " ; Morale=; " + _colony.Morale
+                        + " > Morale=; " + _colony.Morale
                         //+ "; prodOutput=;" + prodOutput // per unit
                         + "; Industry_Net=;" + _colony.Industry_Net
                         + "; BuildQueue.Count=; " + _colony.BuildQueue.Count
@@ -2809,7 +2809,9 @@ namespace Supremacy.AI
         {
             string _newline = Environment.NewLine;
             string _text;
-            _text = /*_newline + */"Step_1207:; " + GameEngine.LocationString(_colony.Location.ToString())
+            _text = /*_newline + */"Step_1207:; "
+                            + GameEngine.LocationString(_colony.Location.ToString())
+                            + " > " + _name_col + " ; " + _owner_col
                     + " > Colony_Step_50_Handle_Upgrades: "
                     + ", BuildQueue.Count= " + _colony.BuildQueue.Count
                     + ", _colony.AvailableLabor= " + _colony.AvailableLabor
@@ -2844,7 +2846,8 @@ namespace Supremacy.AI
             {
                 try
                 {
-                    _text = "Step_1208:; " + GameEngine.LocationString(_colony.Location.ToString())
+                    _text = "Step_1208:; " 
+                            + GameEngine.LocationString(_colony.Location.ToString())
                             + " > " + _name_col + " ; " + _owner_col
                             + " > Colony_Step_50_Handle_Upgrades "
                             ;

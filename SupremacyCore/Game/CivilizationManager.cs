@@ -1034,7 +1034,7 @@ namespace Supremacy.Game
                     }
 
                 }
-                _ = _sitRepEntries.Distinct();
+                //_sitRepEntries = _sitRepEntries.Distinct().ToList();
                 _sitRepEntries.OrderBy(o => o.SummaryText);
                 return _sitRepEntries;
             }
@@ -1619,7 +1619,7 @@ namespace Supremacy.Game
 
         //    if (_targetCivList != null)
         //    {
-        //        _targetCivList.Distinct();
+        //        _targetCivList = _targetCivList.Distinct().ToList();
         //    }
         //    //
         //    //foreach (var item in _civList)
@@ -1628,7 +1628,7 @@ namespace Supremacy.Game
         //    //}
         //}
 
-        public void ShipsOrdered_Check()
+        public void ShipBuildOrdered_Check()
         {
             _neededShiptypesList = new List<string> { "dummy" };
 
@@ -1732,7 +1732,7 @@ namespace Supremacy.Game
 
             if (Civilization.IsHuman)
             {
-                Debugger.Break();  // Chekc Colonize shis needed
+                //Debugger.Break();  // Chekc Colonize shis needed
             }
 
 
@@ -1872,7 +1872,7 @@ namespace Supremacy.Game
 
         public void OnTurnBeginn()
         {
-            ShipsOrdered_Check(); // to have the list of needed ships updated
+            ShipBuildOrdered_Check(); // to have the list of needed ships updated
             CheckFor_SystemsToColonizeProject(Colonies.FirstOrDefault);
         }
 

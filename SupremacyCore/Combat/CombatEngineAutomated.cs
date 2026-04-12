@@ -273,7 +273,7 @@ namespace Supremacy.Combat
                 ownerIDs.Add(tupleShip.Item1.OwnerID);
                 //_targetDictionary[tupleShip.Item1.OwnerID] = _defaultCombatShips;
             }
-            _ = ownerIDs.Distinct().ToList();
+            ownerIDs = ownerIDs.Distinct().ToList();
 
             #region Construct empires (civs) in battle and Ships per empires arrays
             int[,] empiresInBattle = new int[12, 3]; // An Array of who is in the battle with what targets.

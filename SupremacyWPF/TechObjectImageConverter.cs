@@ -65,8 +65,18 @@ namespace Supremacy.Client
 
             try
             {
-                Uri imageUri = GetImageUri(path);
-                return ImageCache.Current.Get(imageUri);
+                //Uri imageUri = GetImageUri(path);
+                //return ImageCache.Current.Get(imageUri);
+                var uri = new Uri(path, UriKind.Absolute);
+                var bitmap = new BitmapImage();
+
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;  // Lädt komplett in Speicher
+                bitmap.UriSource = uri;
+                bitmap.EndInit();
+
+                bitmap.Freeze();  // Optional: Thread-sicher
+                return bitmap;
             }
             catch (Exception e)
             {

@@ -51,7 +51,7 @@ namespace Supremacy.Tech
 
         [NonSerialized]
         private Dictionary<string, int> _designIdMap;
-        private static string _text;
+        //private static string _text;
 
         //private static string _maintText;
         //private static string _buildCostText;
@@ -59,6 +59,9 @@ namespace Supremacy.Tech
         //private static bool _buildCostIgnored;
         //private static bool _buildCostShipsIgnored;
         private static bool _buildCostTextOnlyOnce;
+        private static bool _maint_output_done;
+        private static bool _buildCostShipsIgnored;
+
         //public static bool _checkForProblems = false;
         //private static readonly string _newline = Environment.NewLine;
 
@@ -197,7 +200,7 @@ namespace Supremacy.Tech
             bool _checkForProblems = false;
 
             //_text = "Step_3018:; Loading Resources/Data/TechObjectDatabase.xml";
-            _text = "Step_3031:; Loading Resources/Data/TechObj_1_ProdFac.xml";
+            string _text = "Step_3031:; Loading Resources/Data/TechObj_1_ProdFac.xml";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
 
@@ -2238,7 +2241,7 @@ namespace Supremacy.Tech
             ;
             //_buildcosts = 1500 + _buildcosts;// * pf.TechRequirements.HighestTechLevel;// + (pf.CrewSize * 2) / 4000;
 
-            _text = pf.Key
+            string _text = pf.Key
                 + "; BC old:; " + _buildCostsFromFile
                 + "; - new:; " + _buildcosts
                 //+ "; Du= " + pf.Duranium
@@ -2290,8 +2293,8 @@ namespace Supremacy.Tech
             int _buildCostsFromFile = ship.BuildCost;
             string _buildCostText = "";
             string _newline = Environment.NewLine;
-            bool _buildCostShipsIgnored = false;
-            bool _buildCostTextOnlyOnce = false;
+            //bool _buildCostShipsIgnored = false;
+            //bool _buildCostTextOnlyOnce = false;
 
             if (ship.PrimaryWeapon != null)
             {
@@ -2312,7 +2315,7 @@ namespace Supremacy.Tech
                 ;
             _buildcosts = 300 + _buildcosts * ship.TechRequirements.HighestTechLevel;//;// + (ship.CrewSize * 2) / 4000;
 
-            _text = ship.Key
+            string _text = ship.Key
                 + "; BC old:; " + _buildCostsFromFile
                 + "; - new:; " + _buildcosts
                 + "; Du= " + ship.Duranium
@@ -2334,7 +2337,7 @@ namespace Supremacy.Tech
             if (_buildCostTextOnlyOnce == false)
             {
                 //GameLog.Core.Production.DebugFormat(_buildCostText);
-                Console.WriteLine(_text + " - no more output for ShipData");
+                Console.WriteLine("Step_0187:; "+  _text + " - no more output for ShipData");
                 _buildCostTextOnlyOnce = true;
             }
             //GameLog.Core.Production.DebugFormat(_buildCostText);
@@ -2345,7 +2348,7 @@ namespace Supremacy.Tech
 
             if (_buildCostShipsIgnored == false)
             {
-                _text = "Step_0197: Build Costs ignored and calculated inside game code > for Ships";
+                _text = "Step_0197:; Build Costs ignored and calculated inside game code > for Ships";
                 GameLog.Core.General.InfoFormat(_text);
                 _buildCostShipsIgnored = true; // just report once
             }
@@ -2356,7 +2359,8 @@ namespace Supremacy.Tech
             int _weapon1 = 0;
             int _weapon2 = 0;
             int _maintFromFile = ship.MaintenanceCost;
-            bool _maint_output_done = false;
+            //bool _maint_output_done = false;
+            string _text;
 
             if (ship.PrimaryWeapon != null)
             {

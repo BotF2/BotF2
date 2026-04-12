@@ -2874,7 +2874,7 @@ namespace Supremacy.Orbitals
 
                 ;
 
-            _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, project.Location, _text, _text, "", SitRepPriority.GreenDark2));
+            _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, project.Location, _text, _text, "", SitRepPriority.GrayDark));
         }
 
         protected internal override void OnOrderCompleted()
@@ -3101,8 +3101,10 @@ namespace Supremacy.Orbitals
             return new TravelOrder();
         }
 
-        protected internal override void OnTurnBeginning()
+        protected internal override void OnTurnBeginning() 
         {
+            GameEngine.DummyCodeComment("TravelOrder");
+
             base.OnTurnBeginning();
             if (!IsAssigned)
             {

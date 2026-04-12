@@ -616,39 +616,8 @@
 
                                 </StackPanel>
               </Expander>
+
               <TabControl Margin="4,0,0,0">
-                <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
-                  <Grid>
-                    <Grid.RowDefinitions>
-                      <RowDefinition Height="Auto"/>
-                      <RowDefinition Height="2*"
-                                     MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>
-                      <RowDefinition Height="*"
-                                     MinHeight="128"/>
-                    </Grid.RowDefinitions>
-                    <Border x:Name="PART_ResearchFieldItemsHost"
-                            Grid.Row="0"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,5"
-                            Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
-                    <ScrollViewer x:Name="ResearchMatrixScrollViewer"
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Visible"
-                                  CanContentScroll="False"
-                                  Grid.Row="1">
-                      <Border x:Name="PART_ResearchMatrixHost"
-                              BorderBrush="White"
-                              BorderThickness="0,0,1,1"
-                              SnapsToDevicePixels="True"
-                              Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
-                    </ScrollViewer>
-                    <ContentControl Grid.Row="2"
-                                    Margin="0,7,0,0"
-                                    Style="{StaticResource LCARS_ThinBorderStyle}">
-                      <Border x:Name="PART_ApplicationDetailsHost"/>
-                    </ContentControl>
-                  </Grid>
-                </TabItem>
                 <TabItem Header="{s:StringResource Key=ENCYCLOPEDIA, Case=Upper}">
                   <!--
                     ***************************
@@ -879,6 +848,40 @@
                     * END ENCYCLOPEDIA GRID *
                     *************************
                   -->
+                </TabItem>
+              <!--TAB > RESEARCH_MATRIX-->
+
+                <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="2*"
+                                     MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>
+                      <RowDefinition Height="*"
+                                     MinHeight="128"/>
+                    </Grid.RowDefinitions>
+                    <Border x:Name="PART_ResearchFieldItemsHost"
+                            Grid.Row="0"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,5"
+                            Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+                    <ScrollViewer x:Name="ResearchMatrixScrollViewer"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Visible"
+                                  CanContentScroll="False"
+                                  Grid.Row="1">
+                      <Border x:Name="PART_ResearchMatrixHost"
+                              BorderBrush="White"
+                              BorderThickness="0,0,1,1"
+                              SnapsToDevicePixels="True"
+                              Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+                    </ScrollViewer>
+                    <ContentControl Grid.Row="2"
+                                    Margin="0,7,0,0"
+                                    Style="{StaticResource LCARS_ThinBorderStyle}">
+                      <Border x:Name="PART_ApplicationDetailsHost"/>
+                    </ContentControl>
+                  </Grid>
                 </TabItem>
               </TabControl>
             </DockPanel>

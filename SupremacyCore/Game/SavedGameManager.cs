@@ -240,10 +240,16 @@ namespace Supremacy.Game
                     }
                 }
 
-                GameLog.Core.SaveLoad.DebugFormat("Step_0333:; loading GameTables from HDD...");
+                _text = "Step_0333:; loading GameTables from HDD...";
+                Console.WriteLine(_text);   
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
                 game.Tables = GameTables.Load();
-                GameLog.Core.SaveLoad.DebugFormat("Step_0344:; loading ResearchMatrix from HDD...");
+
+                _text = "Step_0344:; loading ResearchMatrix from HDD...";
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
                 game.ResearchMatrix = ResearchMatrix.Load();
+
                 game.OnDeserialized();
                 
                 //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);

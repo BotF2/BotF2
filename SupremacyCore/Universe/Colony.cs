@@ -1978,6 +1978,7 @@ namespace Supremacy.Universe
             //int _intelPF_unused = Facilities_Total5_Intelligence - GetActiveFacilities(ProductionCategory.Intelligence);
 
             int _orbBat_used = OrbitalBatteries_Active;
+            
 
 
             //        var energyBuildings = Buildings.
@@ -2011,7 +2012,7 @@ namespace Supremacy.Universe
                     }
 
                     _ = Facility_Activate(ProductionCategory.Food);
-                    _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
+                    _text = LocationStringColony + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
 
@@ -2029,7 +2030,7 @@ namespace Supremacy.Universe
                     ReduceOneOtherPF();
 
                     _ = Facility_Activate(ProductionCategory.Food);
-                    _text = Location + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
+                    _text = LocationStringColony + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     Console.WriteLine("Step_2384:; " + _text);
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
@@ -2147,13 +2148,13 @@ namespace Supremacy.Universe
             if (GetActiveFacilities(ProductionCategory.Intelligence) > 0)
             {
                 _ = Facility_Deactivate(ProductionCategory.Intelligence);
-                _text = Location + " " + Name + " > One Intelligence facility deactivated - labours sent to other duties";
+                _text = LocationStringColony + " " + Name + " > One Intelligence facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Research) > 0)
             {
                 _ = Facility_Deactivate(ProductionCategory.Research);
-                _text = Location + " " + Name + " > One Research facility deactivated - labours sent to other duties";
+                _text = LocationStringColony + " " + Name + " > One Research facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
             else if (GetActiveFacilities(ProductionCategory.Industry) > 0)
@@ -2165,7 +2166,7 @@ namespace Supremacy.Universe
             else if (GetActiveFacilities(ProductionCategory.Energy) > 0)
             {
                 _ = Facility_Deactivate(ProductionCategory.Energy);
-                _text = Location + " " + Name + " > One Energy facility deactivated - labours sent to other duties";
+                _text = LocationStringColony + " " + Name + " > One Energy facility deactivated - labours sent to other duties";
                 GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
             }
         }

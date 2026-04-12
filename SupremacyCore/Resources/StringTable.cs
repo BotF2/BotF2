@@ -7,19 +7,14 @@
 //
 // All other rights reserved.
 
+using Supremacy.Types;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
-
-using Supremacy.Types;
-using Supremacy.Game;
-using System.Windows.Automation;
-using static System.Net.Mime.MediaTypeNames;
-using System.Web.UI.WebControls;
-using Supremacy.Utility;
 
 namespace Supremacy.Resources
 {
@@ -116,7 +111,7 @@ namespace Supremacy.Resources
             }
 
 
-            _text = "Step_0134:; no output for EN-Txt-Content";
+            _text = "Step_0134:; " + DateTime.Now + " > no output for EN-Txt-Content ( " + fileName + " )";
             Console.WriteLine(_text);
             GameLog.Core.General.DebugFormat(_text);
             // doesn't work
@@ -148,7 +143,7 @@ namespace Supremacy.Resources
 
                     //throw;
                 }
-        }
+            }
 
             return result;
         }

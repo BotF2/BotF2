@@ -62,7 +62,7 @@ namespace Supremacy.Universe
 
             //PreparedMapLocation = new Dictionary<string, string>();
 
-            _text = "Step_0501:; GalaxyGenerator starts...";
+            _text = "Step_0501:; " + DateTime.Now + " > GalaxyGenerator starts...";
             Console.WriteLine(_text);
             GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
@@ -284,7 +284,7 @@ namespace Supremacy.Universe
                         Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Width"]),
                         Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Height"]));
 
-                    _text = "Step_0872:; mapSize= " + mapSize.Width + " x "+ mapSize.Height;
+                    _text = "Step_0872:; mapSize= " + mapSize.Width + " x " + mapSize.Height;
                     Console.WriteLine(_text);
 
                     GameContext.Current.Universe = new UniverseManager(mapSize);
@@ -756,9 +756,9 @@ namespace Supremacy.Universe
             //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
-//#pragma warning disable IDE0051 // Remove unused private members
+        //#pragma warning disable IDE0051 // Remove unused private members
         private static void MAP_Load(string fileNameCanonMAP)
-//#pragma warning restore IDE0051 // Remove unused private members
+        //#pragma warning restore IDE0051 // Remove unused private members
         {
             _loadedMapEntries.Clear();
 
@@ -1019,16 +1019,16 @@ namespace Supremacy.Universe
 
             if (wantedMinorRaceCount < 5) wantedMinorRaceCount += 4;
             if (wantedMinorRaceCount < 7) wantedMinorRaceCount += 4;
-                        
+
             wantedMinorRaceCount = Math.Min(wantedMinorRaceCount, minorRaceLimit);
 
             //We now know how many minor races we need. Check whether there are enough
-            
+
             if (wantedMinorRaceCount > minorRaceCivs.Count)
             {
                 _text = "Step_1249: wantedMinorRaceCount= " + wantedMinorRaceCount
                     + " : minorRaceCivs.Count " + minorRaceCivs.Count
-                    + " > breaks if too less available #######" 
+                    + " > breaks if too less available #######"
                     ;
                 Console.WriteLine(_text);
                 GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
@@ -1064,7 +1064,7 @@ namespace Supremacy.Universe
                 {
                     iPosition = 0;
                 }
-                
+
 
                 //If we have failed to find a position, error out
                 if (iPosition == -1 || index == minorRaceLimit)
@@ -1767,7 +1767,7 @@ namespace Supremacy.Universe
                 //    ;
                 //Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
-       
+
                 //Call this twice to remove the first 2 wormholes which are now linked
                 wormholes.RemoveAt(0);
                 wormholes.RemoveAt(0);

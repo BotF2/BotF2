@@ -403,10 +403,10 @@ namespace Supremacy.Client
 
             ProcessSitRepEntries();
 
-            _text = "Step_4011:; ProcessSitRepEntries is DONE..." + DateTime.Now;
+            _text = _newline + "Step_4011:; " + DateTime.Now+ " > ProcessSitRepEntries is DONE...";
             Console.WriteLine(_text);
 
-            _text = "Step_4012:; 5 binding errors (only at starting) ... resolve not found out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
+            _text = "Step_4012:; 5 binding errors (only at starting) ... resolve not figured out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
             Console.WriteLine(_text);
         }
 
@@ -446,7 +446,7 @@ namespace Supremacy.Client
 
             ShowSummary(false);
 
-            _text = "Step_4090:; ProcessSitRepEntries... done ";
+            _text = _newline + "Step_4090:; "+ DateTime.Now + " > ProcessSitRepEntries... done ";
             Console.WriteLine(_text);
             //GameLog.Core.GeneralDetails.DebugFormat(_text);
         }

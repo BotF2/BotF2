@@ -1,4 +1,4 @@
-// DialogBase.cs
+// File:DialogBase.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -840,7 +840,7 @@ namespace Supremacy.Client.Dialogs
             {
                 if (!_showingAsDialog)
                 {
-                    Console.WriteLine("Step_7766:; ### DialogResult can only be set when the dialog is shown with ShowDialog().");
+                    Console.WriteLine("Step_7767:; ### DialogResult can only be set when the dialog is shown with ShowDialog().");
                     //throw new InvalidOperationException("DialogResult can only be set when the dialog is shown with ShowDialog().");
                     return;
                 }

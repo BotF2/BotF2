@@ -23,7 +23,6 @@
 //      - DI pattern                https://en.wikipedia.org/wiki/Dependency_injection#Examples
 //      - Bootstrapper              https://msdn.microsoft.com/en-us/library/ff921139.aspx
 //      - Tutorial:                 https://www.codeproject.com/Articles/37164/Introduction-to-Composite-WPF-CAL-Prism-Part
-using FMOD;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Presentation.Regions;
 using Microsoft.Practices.Composite.UnityExtensions;
@@ -36,8 +35,6 @@ using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Services;
 using Supremacy.Resources;
-using Supremacy.Scripting.Ast;
-using Supremacy.Universe;
 using Supremacy.Utility;
 using Supremacy.VFS;
 using System;
@@ -52,7 +49,6 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Xceed.Wpf.DataGrid;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.Client
@@ -102,15 +98,15 @@ namespace Supremacy.Client
                 }
                 //_text = "Step_0200: Current Version = " + Current.Version + _text2;
                 //if (_ConsoleWriteline_bool) 
-                    Console.WriteLine(_text);  
+                Console.WriteLine(_text);
                 GameLog.Client.General.InfoFormat(_text);
 
 
 
-                
-                _text = "Step_0219:; Time running = " + (DateTime.Now - starttime).ToString();
-                Console.WriteLine(_text);
-                GameLog.Client.GeneralDetails.DebugFormat(_text);
+
+                //_text = "Step_0219:; Time running = " + (DateTime.Now - starttime).ToString();
+                //Console.WriteLine(_text);
+                //GameLog.Client.GeneralDetails.DebugFormat(_text);
 
                 return Current.Version;
             }
@@ -498,6 +494,7 @@ namespace Supremacy.Client
                 GameLog.Initialize();
 
                 //string _newline = Environment.NewLine;
+                Console.WriteLine("######################" + Environment.NewLine + Environment.NewLine);
                 var _text = GetTimeString(); // DateTime.Now;
                 //_text = "Output_" + time.Year + "_" + time.Month + "_" + time.Day + "-" + time.Hour + "_" + time.Minute + "_" + time.Second + ".txt";
                 Console.WriteLine("Output_" + _text);  // "Current Version = "
@@ -539,7 +536,7 @@ namespace Supremacy.Client
                 Console.WriteLine(_text);
                 //GameLog.Core.General.InfoFormat(_text);
 
-                
+
 
                 //if (!CheckXNAFramework31())
                 //{
@@ -626,7 +623,7 @@ namespace Supremacy.Client
 
 
                     if (ClientSettings.Current.EnableSoundStartSplashScreen
-                        && File.Exists(_soundfileSplashScreen)&&ClientSettings.Current.EnableSoundStartSplashScreen)
+                        && File.Exists(_soundfileSplashScreen) && ClientSettings.Current.EnableSoundStartSplashScreen)
                     {
                         GameLog.Client.General.Debug("Step_0205: Playing LoadingSplash.wav");
                         //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
@@ -680,13 +677,13 @@ namespace Supremacy.Client
                 string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
                 string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
                 string Second = time.Second.ToString(); Second = CheckDateString(Second);
-                return Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second + ".txt";
+                return Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second;
             }
 
             private static string CheckDateString(string _string)
             {
                 if (_string.Length == 1)
-                    _string = "0" + _string; 
+                    _string = "0" + _string;
 
                 return _string;
             }
@@ -809,20 +806,20 @@ namespace Supremacy.Client
             else if (version >= 394254)
             {
                 _text = ".NET Framework 4.6.1 found"; // no need to check older ones
-                                                                           //} else if (version >= 393295) {
-                                                                           //    GameLog.Client.General.Info(".NET Framework 4.6 found"); 
-                                                                           //} else if (version >= 379893) {
-                                                                           //    GameLog.Client.General.Info(".NET Framework 4.5.2 found");
-                                                                           //} else if (version >= 378675) {
-                                                                           //    GameLog.Client.General.Info(".NET Framework 4.5.1 found");
-                                                                           //} else if (version >= 378389) {
-                                                                           //    GameLog.Client.General.Info(".NET Framework 4.5 found");
+                                                      //} else if (version >= 393295) {
+                                                      //    GameLog.Client.General.Info(".NET Framework 4.6 found"); 
+                                                      //} else if (version >= 379893) {
+                                                      //    GameLog.Client.General.Info(".NET Framework 4.5.2 found");
+                                                      //} else if (version >= 378675) {
+                                                      //    GameLog.Client.General.Info(".NET Framework 4.5.1 found");
+                                                      //} else if (version >= 378389) {
+                                                      //    GameLog.Client.General.Info(".NET Framework 4.5 found");
             }
             else
             {
                 _text = ".NET Framework is less than 4.6.1";
             }
-            _text = "Step_0120:; " + _text;
+            _text = Environment.NewLine + "Step_0120:; " + _text;
             Console.WriteLine(_text);
             GameLog.Client.General.Info(_text);
 
@@ -873,7 +870,7 @@ namespace Supremacy.Client
                 //errorFile.WriteLine("Hello");
                 //errorFile.WriteLine(DateTime.Now.ToString());
                 //if (ClientSettings.Current.EnableOutputToTXT) Console.WriteLine("Time111: " + DateTime.Now);
-                if (true) Console.WriteLine("Time_0103:; " + DateTime.Now);
+                //if (true) Console.WriteLine("Time_0103:; " + DateTime.Now);
                 //just starts an empty file 
                 // System.Diagnostics.Process.Start("Error.txt");
             }

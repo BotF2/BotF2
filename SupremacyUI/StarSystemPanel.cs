@@ -7,19 +7,12 @@
 //
 // All other rights reserved.
 
-using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Microsoft.Practices.Composite.Presentation;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Composite.Presentation.Regions;
 using Microsoft.Practices.ServiceLocation;
-
 using Supremacy.Client;
+using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Game;
 using Supremacy.Messages;
@@ -28,9 +21,15 @@ using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Xna;
-
+using System;
+using System.ComponentModel;
 using System.Linq;
-using Supremacy.Client.Context;
+using System.Security.Policy;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Supremacy.UI
 {
@@ -50,24 +49,26 @@ namespace Supremacy.UI
 
         #region Constants
 
-        private static readonly CachedBitmap BlueStarImage;
-        private static readonly CachedBitmap OrangeStarImage;
-        private static readonly CachedBitmap RedStarImage;
-        private static readonly CachedBitmap WhiteStarImage;
-        private static readonly CachedBitmap YellowStarImage;
+        //private static readonly CachedBitmap BlueStarImage;
+        private static readonly BitmapImage BlueStarImage;
+        private static readonly BitmapImage OrangeStarImage;
+        private static readonly BitmapImage RedStarImage;
+        private static readonly BitmapImage WhiteStarImage;
+        private static readonly BitmapImage YellowStarImage;
 
-        private static readonly CachedBitmap BlackHoleImage;
-        private static readonly CachedBitmap NebulaImage;
-        private static readonly CachedBitmap NeutronStarImage;
-        private static readonly CachedBitmap QuasarImage;
-        private static readonly CachedBitmap RadioPulsarImage;
-        private static readonly CachedBitmap WormholeImage;
-        private static readonly CachedBitmap XRayPulsarImage;
+        private static readonly BitmapImage BlackHoleImage;
+        private static readonly BitmapImage NebulaImage;
+        private static readonly BitmapImage NeutronStarImage;
+        private static readonly BitmapImage QuasarImage;
+        private static readonly BitmapImage RadioPulsarImage;
+        private static readonly BitmapImage WormholeImage;
+        private static readonly BitmapImage XRayPulsarImage;
 
-        private static readonly CachedBitmap FoodBonusImage;
-        private static readonly CachedBitmap EnergyBonusImage;
-        private static readonly CachedBitmap DuraniumBonusImage;
-        private static readonly CachedBitmap DilithiumBonusImage;
+        private static readonly BitmapImage FoodBonusImage;
+        //private static readonly BitmapImage EnergyBonusImage;
+        private static readonly BitmapImage EnergyBonusImage;
+        private static readonly BitmapImage DuraniumBonusImage;
+        private static readonly BitmapImage DilithiumBonusImage;
 
         public static readonly DependencyProperty ShowStatsProperty;
         #endregion
@@ -93,155 +94,195 @@ namespace Supremacy.UI
                     true,
                     ShowStatsChangedCallback));
 
-            BlueStarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/Sun_Blue.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            var uri = "Resources/Images/UI/Stars/Map/Sun_Blue.png";
+            //
+            BlueStarImage = ImageCache.Current.Get(uri);
+            //BlueStarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/Sun_Blue.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             BlueStarImage.Freeze();
 
-            OrangeStarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/Sun_Orange.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/Sun_Orange.png";
+            
+            OrangeStarImage = ImageCache.Current.Get(uri);
+            //OrangeStarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/Sun_Orange.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             OrangeStarImage.Freeze();
 
-
-            RedStarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/Sun_Red.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/Sun_Red.png";
+            
+            RedStarImage = ImageCache.Current.Get(uri);
+            //RedStarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/Sun_Red.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             RedStarImage.Freeze();
 
-
-            WhiteStarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/Sun_White.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/Sun_White.png";
+            
+            WhiteStarImage = ImageCache.Current.Get(uri);
+            //WhiteStarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/Sun_White.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             WhiteStarImage.Freeze();
 
-
-            YellowStarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/Sun_Yellow.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/Sun_Yellow.png";
+            
+            YellowStarImage = ImageCache.Current.Get(uri);
+            //YellowStarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/Sun_Yellow.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             YellowStarImage.Freeze();
 
-
-            BlackHoleImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/BlackHole.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/BlackHole.png";
+            //
+            BlackHoleImage = ImageCache.Current.Get(uri);
+            //BlackHoleImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/BlackHole.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             BlackHoleImage.Freeze();
 
-
-            NebulaImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Nebula.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Nebula.png";
+            //
+            NebulaImage = ImageCache.Current.Get(uri);
+            //NebulaImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Nebula.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             NebulaImage.Freeze();
 
-            NeutronStarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/NeutronStar.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/NeutronStar.png";
+            //
+            NeutronStarImage = ImageCache.Current.Get(uri);
+            //NeutronStarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/NeutronStar.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             NeutronStarImage.Freeze();
 
-            QuasarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/Quasar.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/Quasar.png";
+            //
+            QuasarImage = ImageCache.Current.Get(uri);
+            //QuasarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/Quasar.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             QuasarImage.Freeze();
 
-            RadioPulsarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/RadioPulsar.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/RadioPulsar.png";
+            
+            RadioPulsarImage = ImageCache.Current.Get(uri);
+            //RadioPulsarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/RadioPulsar.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             RadioPulsarImage.Freeze();
 
+            uri = "Resources/Images/UI/Stars/Map/Wormhole.png";
+            
 
-
-            WormholeImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/Wormhole.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            WormholeImage = ImageCache.Current.Get(uri);
+            //WormholeImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/Wormhole.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             WormholeImage.Freeze();
 
-            XRayPulsarImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/Stars/Map/XRayPulsar.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/Stars/Map/XRayPulsar.png";
+            
+            XRayPulsarImage = ImageCache.Current.Get(uri);
+            //XRayPulsarImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/Stars/Map/XRayPulsar.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             XRayPulsarImage.Freeze();
 
-            FoodBonusImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/ScreenIcons/food.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/ScreenIcons/food.png";
+            
+            FoodBonusImage = ImageCache.Current.Get(uri);
+            //FoodBonusImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/ScreenIcons/food.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             FoodBonusImage.Freeze();
 
-            EnergyBonusImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/ScreenIcons/energy_bonus.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/ScreenIcons/energy_bonus.png";
+            EnergyBonusImage = ImageCache.Current.Get(uri);
+            //EnergyBonusImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/ScreenIcons/energy_bonus.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             EnergyBonusImage.Freeze();
 
-            DilithiumBonusImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/ScreenIcons/dilithium.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/ScreenIcons/dilithium.png";
+            
+            DilithiumBonusImage = ImageCache.Current.Get(uri);
+            //DilithiumBonusImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/ScreenIcons/dilithium.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             DilithiumBonusImage.Freeze();
 
-            DuraniumBonusImage = new CachedBitmap(
-                new BitmapImage(
-                    new Uri(
-                        "Resources/Images/UI/ScreenIcons/duranium.png",
-                        UriKind.Relative)),
-                BitmapCreateOptions.None,
-                BitmapCacheOption.OnLoad);
+            uri = "Resources/Images/UI/ScreenIcons/duranium.png";
+            DuraniumBonusImage = ImageCache.Current.Get(uri);
+            //DuraniumBonusImage = new CachedBitmap(
+            //    new BitmapImage(
+            //        new Uri(
+            //            "Resources/Images/UI/ScreenIcons/duranium.png",
+            //            UriKind.Relative)),
+            //    BitmapCreateOptions.None,
+            //    BitmapCacheOption.OnLoad);
             DuraniumBonusImage.Freeze();
         }
         #endregion

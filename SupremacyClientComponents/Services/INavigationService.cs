@@ -1,3 +1,4 @@
+//File:INavigationService.cs
 using Microsoft.Practices.Composite.Regions;
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;

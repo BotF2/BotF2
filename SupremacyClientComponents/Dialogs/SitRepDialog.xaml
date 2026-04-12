@@ -1,4 +1,4 @@
-﻿    <!--File:SitRepDialog.xaml-->
+﻿<!--File:SitRepDialog.xaml-->
 <dialogs:Dialog x:Class="Supremacy.Client.Dialogs.SitRepDialog"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -301,7 +301,7 @@
 
                 <!--no Stackpanel to place row 1 + 2 identical <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="8" Orientation="Horizontal">-->
 
-                <CheckBox x:Name="PinkCheck" Foreground="DeepPink" Grid.Row="0" Grid.Column="1" Margin="14,0,0,0"
+                <CheckBox x:Name="PinkCheck" Foreground="Pink" Grid.Row="0" Grid.Column="1" Margin="14,0,0,0"
                 Content="{scc:StringResource Key=SITREP_DIALOG_PINK_CHECKBOX}"
                 VerticalAlignment="Center" HorizontalAlignment="Left" Checked="OnFilterItemIsCheckedChanged"
                 Unchecked="OnFilterItemIsCheckedChanged"
@@ -658,7 +658,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>-->
 
-                <CheckBox x:Name="DilithiumCheck" Foreground="Pink" Grid.Row="2" Grid.Column="2" Margin="14,0,0,0"
+                <CheckBox x:Name="DilithiumCheck" Foreground="HotPink" Grid.Row="2" Grid.Column="2" Margin="14,0,0,0"
                 Content="{scc:StringResource Key=SITREP_DIALOG_DILITHIUM_CHECKBOX}"
                 VerticalAlignment="Center" 
                 Checked="OnFilterItemIsCheckedChanged"
@@ -820,4 +820,10 @@
             </Grid>
         </StackPanel>
     </Grid>
+    <!-- Replace incorrect IsEnabled="{Binding SendMessageCommand}" with Command binding.
+         Let WPF use ICommand.CanExecute to enable/disable the button at runtime. -->
+    <!--<Button x:Name="SendButton"
+            Command="{Binding SendMessageCommand}"
+            Content="{scc:StringResource Key=SITREP_SEND_BUTTON, Case=Upper}"
+            Grid.Row="5" Grid.Column="7" />-->
 </dialogs:Dialog>

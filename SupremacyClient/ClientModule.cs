@@ -31,14 +31,14 @@ using Supremacy.UI;
 using Supremacy.Utility;
 using Supremacy.WCF;
 using System;
+using System.Collections.Generic;
 using System.Concurrency;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
-using System.Collections.Generic;
 //using System.Windows.Forms;
 
 
@@ -299,67 +299,67 @@ namespace Supremacy.Client
 
             _optionsDialog = new ClientOptionsDialog();
             _optionsCommand = new DelegateCommand<object>(ExecuteOptionsCommand);
-                
+
 
             _tracesDialog = new ClientTracesDialog();
             _tracesCommand = new DelegateCommand<object>(ExecuteTracesCommand);
-                
+
 
             _f06_Dialog = new F06_Dialog();
             _f06_Command = new DelegateCommand<object>(Execute_f06_Command);
-                
+
 
             _f07_Dialog = new F07_Dialog();
             _f07_Command = new DelegateCommand<object>(Execute_f07_Command);
-                
+
 
             _f08_Dialog = new F08_Dialog();
             _f08_Command = new DelegateCommand<object>(Execute_f08_Command);
-                
+
 
             _f09_Dialog = new F09_Dialog();
             _f09_Command = new DelegateCommand<object>(Execute_f09_Command);
-                
+
 
             _f10_Dialog = new F10_Dialog();
             _f10_Command = new DelegateCommand<object>(Execute_f10_Command);
-                
+
 
             _f11_Dialog = new F11_Dialog();
             _f11_Command = new DelegateCommand<object>(Execute_f11_Command);
-                
+
 
             _f12_Dialog = new F12_Dialog();
             _f12_Command = new DelegateCommand<object>(Execute_f12_Command);
-                
+
 
             _ctrl_f01_Dialog = new CTRL_F01_Dialog();
             _ctrl_f01_Command = new DelegateCommand<object>(
                 Execute_ctrl_f01_Command);
-            
+
             //_ctrl_f02_Dialog = new CTRL_F02_Dialog();
             //_ctrl_f02_Command = new DelegateCommand<object>(
             //    Execute_ctrl_f02_Command);
-            
+
             //_ctrl_f03_Dialog = new CTRL_F03_Dialog();
             //_ctrl_f03_Command = new DelegateCommand<object>(
             //    Execute_ctrl_f03_Command);
-            
+
             //_ctrl_f04_Dialog = new CTRL_F04_Dialog();
             //_ctrl_f04_Command = new DelegateCommand<object>(
             //    Execute_ctrl_f04_Command);
-            
+
             //_ctrl_f05_Dialog = new CTRL_F05_Dialog();
             //_ctrl_f05_Command = new DelegateCommand<object>(
             //    Execute_ctrl_f05_Command);
 
             _ctrl_f06_Dialog = new CTRL_F06_Dialog();
             _ctrl_f06_Command = new DelegateCommand<object>(Execute_ctrl_f06_Command);
-                
+
 
             _ctrl_f07_Dialog = new CTRL_F07_Dialog();
             _ctrl_f07_Command = new DelegateCommand<object>(Execute_ctrl_f07_Command);
-                
+
 
             _s0_Command = new DelegateCommand<object>(Execute_s0_Command); // start Single Player Empire 0
             _s1_Command = new DelegateCommand<object>(Execute_s1_Command);
@@ -402,7 +402,7 @@ namespace Supremacy.Client
             _shift_8_Dialog = new SHIFT_8_Dialog();
             _shift_9_Dialog = new SHIFT_9_Dialog();
 
-            _shift_0_Command = new DelegateCommand<object>(Execute_SHIFT_0_Command); 
+            _shift_0_Command = new DelegateCommand<object>(Execute_SHIFT_0_Command);
             _shift_1_Command = new DelegateCommand<object>(Execute_SHIFT_1_Command);
             _shift_2_Command = new DelegateCommand<object>(Execute_SHIFT_2_Command);
             _shift_3_Command = new DelegateCommand<object>(Execute_SHIFT_3_Command);
@@ -569,8 +569,8 @@ namespace Supremacy.Client
             }
         }
 
-    // temporary switched to German _f07 > OFF now
-    //private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
+        // temporary switched to German _f07 > OFF now
+        //private void Execute_f07_Command(object obj) => _ = _f07_Dialog.ShowDialog();
         private void Execute_f07_Command(object obj)
         {
             _f07_Dialog.ShowDialog();
@@ -583,7 +583,7 @@ namespace Supremacy.Client
 
 
 
-    private void Execute_f08_Command(object obj)
+        private void Execute_f08_Command(object obj)
         {
             _f08_Dialog.ShowDialog();
             if (_musicPlayer != null)
@@ -631,8 +631,8 @@ namespace Supremacy.Client
         //private void Execute_ctrl_f04_Command(object obj) { _ = _ctrl_f04_Dialog.ShowDialog(); }
         //private void Execute_ctrl_f05_Command(object obj) { _ = _ctrl_f05_Dialog.ShowDialog(); }
         private void Execute_ctrl_f06_Command(object obj) => _ = _ctrl_f06_Dialog.ShowDialog();
-        
-        
+
+
         private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog();
         // temporary switched to German _f07 > OFF now
         //private void Execute_ctrl_f07_Command(object obj) => _ = _ctrl_f07_Dialog.ShowDialog(); // temporary
@@ -656,12 +656,12 @@ namespace Supremacy.Client
         private void Execute_ctrl_8_Command(object obj) => _ = _ctrl_8_Dialog.ShowDialog();
         private void Execute_ctrl_9_Command(object obj) => _ = _ctrl_9_Dialog.ShowDialog();
 
-        private void Execute_SHIFT_0_Command(object obj) => _ = _shift_0_Dialog.ShowDialog(); 
-        private void Execute_SHIFT_1_Command(object obj) => _ = _shift_1_Dialog.ShowDialog(); 
-        private void Execute_SHIFT_2_Command(object obj) => _ = _shift_2_Dialog.ShowDialog(); 
-        private void Execute_SHIFT_3_Command(object obj) => _ = _shift_3_Dialog.ShowDialog(); 
-        private void Execute_SHIFT_4_Command(object obj) => _ = _shift_4_Dialog.ShowDialog(); 
-        private void Execute_SHIFT_5_Command(object obj) => _ = _shift_5_Dialog.ShowDialog(); 
+        private void Execute_SHIFT_0_Command(object obj) => _ = _shift_0_Dialog.ShowDialog();
+        private void Execute_SHIFT_1_Command(object obj) => _ = _shift_1_Dialog.ShowDialog();
+        private void Execute_SHIFT_2_Command(object obj) => _ = _shift_2_Dialog.ShowDialog();
+        private void Execute_SHIFT_3_Command(object obj) => _ = _shift_3_Dialog.ShowDialog();
+        private void Execute_SHIFT_4_Command(object obj) => _ = _shift_4_Dialog.ShowDialog();
+        private void Execute_SHIFT_5_Command(object obj) => _ = _shift_5_Dialog.ShowDialog();
         private void Execute_SHIFT_6_Command(object obj) => _ = _shift_6_Dialog.ShowDialog();
         private void Execute_SHIFT_7_Command(object obj) => _ = _shift_7_Dialog.ShowDialog();
         private void Execute_SHIFT_8_Command(object obj) => _ = _shift_8_Dialog.ShowDialog();
@@ -722,7 +722,7 @@ namespace Supremacy.Client
                 ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = errorFile };
 
                 try { _ = Process.Start(processStartInfo); }
-                catch { _ = MessageBox.Show("Could not load Error.txt"+fileSize); }
+                catch { _ = MessageBox.Show("Could not load Error.txt" + fileSize); }
             }
         }
 
@@ -829,15 +829,15 @@ namespace Supremacy.Client
             //streamWriter.Close();
             file += ".bat";
 
-                //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
-                if (!string.IsNullOrEmpty(file) && File.Exists(file))
-                {
-                    ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
+            //string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = file };
 
-                    try { _ = Process.Start(processStartInfo); }
-                    catch { _ = MessageBox.Show("Could not load Text-File about Players History"); }
-                }
-            
+                try { _ = Process.Start(processStartInfo); }
+                catch { _ = MessageBox.Show("Could not load Text-File about Players History"); }
+            }
+
         }
 
         private void StartFile(string file)
@@ -1061,7 +1061,7 @@ namespace Supremacy.Client
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Initialize()
         {
-            string _text = "Step_0210:; Initializing... !";
+            string _text = "Step_0210:; " + DateTime.Now + " > Initializing... !";
             _text += Environment.NewLine + "Step_0211:; ..just notice: all these Step-Numbers have no logic inside (sorry) .. but easy to find by a search";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
@@ -1086,7 +1086,7 @@ namespace Supremacy.Client
 
             GameLog.Client.General.InfoFormat("Step_0290:; MenuScreen activated... ");
             _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.ogg");
-            Console.WriteLine("Step_0295:; Initialize done...");
+            Console.WriteLine("Step_0295:; " + DateTime.Now + " > Initialize done...");
         }
 
         private bool AutoLoadSavedGame()
@@ -1307,7 +1307,7 @@ namespace Supremacy.Client
                     _resourceManager.GetStringFormat("PLAYER_EXITED_MESSAGE_CONTENT", player.Name),
                     MessageDialogButtons.Ok);
             }
-            
+
         }
 
         //public MessageDialogShow(string _header, string _message, MessageDialogButtons _buttons/*, out MessageDialogResult _dialog_result*/)
@@ -1333,8 +1333,8 @@ namespace Supremacy.Client
         }
 
         public void AShowDialog(string _header, string _message)
-            {
-             MessageDialog.Show(_header, _message, MessageDialogButtons.Ok);
+        {
+            MessageDialog.Show(_header, _message, MessageDialogButtons.Ok);
         }
 
         private void ShowLoadingScreen()
@@ -1356,12 +1356,12 @@ namespace Supremacy.Client
             + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
             + Environment.NewLine + "This work is licensed under the Creative Commons"
             + Environment.NewLine + "Attribution - NonCommercial - ShareAlike 4.0 International ( CC BY - NC - SA 4.0 )"
-            + Environment.NewLine 
-            + Environment.NewLine 
+            + Environment.NewLine
+            + Environment.NewLine
             + Environment.NewLine + ">>>  if you reach an empty screen press F1 or do a right click"
             ;
 
-            
+
 
             //string techlvl = "3";
             //var options = localEmpireID;
@@ -1413,14 +1413,14 @@ namespace Supremacy.Client
 
             //var _red = statusWindow.
 
-////Brush GlobalBlueBrush = Brush.;
-//            switch (localEmpire)
-//            {
-//                default:
-//                    statusWindow.Background = Path. GlobalBlueBrush;
-//                    break;
-//            }
-            
+            ////Brush GlobalBlueBrush = Brush.;
+            //            switch (localEmpire)
+            //            {
+            //                default:
+            //                    statusWindow.Background = Path. GlobalBlueBrush;
+            //                    break;
+            //            }
+
 
 
 
@@ -1456,7 +1456,7 @@ namespace Supremacy.Client
         {
             _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/Game_Ending.ogg");
             UpdateCommands();
-        } 
+        }
 
         private void OnClientConnected(ClientConnectedEventArgs obj) => UpdateCommands();
 
@@ -1922,11 +1922,11 @@ namespace Supremacy.Client
                     break;
             }
 
-            string _text = "Step_1000:; GameInitData.CreateSinglePlayerGame .... ";
+            string _text = Environment.NewLine + "Step_1001:; " + DateTime.Now + " > GameInitData.CreateSinglePlayerGame .... ";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
             GameInitData initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
-            
+
             localEmpire = GetLocalEmpireShortage(_id, out string localempire);
             startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
 
@@ -2121,7 +2121,7 @@ namespace Supremacy.Client
         //private void ExecuteOnMA_Ferengi(object parameter) { Process.Start("https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"); }
 
 
-            private IGameController ResolveGameController()
+        private IGameController ResolveGameController()
         {
             GCHelper.Collect();
 

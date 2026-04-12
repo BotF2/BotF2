@@ -1,4 +1,4 @@
-// DialogManager.cs
+//  File:DialogManager.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
