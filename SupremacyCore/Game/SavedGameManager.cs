@@ -364,6 +364,8 @@ namespace Supremacy.Game
                 GameLog.Client.GameData.DebugFormat(_text);
 
                 byte[] buffer = StreamUtility.Write(game);
+                _text = "hier > StreamUtility.Write austauschen";
+                _text = "objekt in xml serialisieren";
 
                 using (FileStream fileStream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                 {

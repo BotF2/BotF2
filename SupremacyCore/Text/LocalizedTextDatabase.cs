@@ -360,7 +360,7 @@ namespace Supremacy.Text
             {
                 _text = "WARN_0123: Localized text group ' "+ FormatGroupKey() + " ' has more than one default entry defined.";
                 Console.WriteLine(_text);
-                GameLog.Client.GameData.WarnFormat(_text);
+                //GameLog.Client.GameData.WarnFormat(_text);
             }
             else
             {
@@ -370,7 +370,7 @@ namespace Supremacy.Text
                 //    key);
                 _text = "WARN_0124: Localized text group ' "+ FormatGroupKey() + " ' already contains entry ' " + key + " '";
                 Console.WriteLine(_text);
-                GameLog.Client.GameData.WarnFormat(_text);
+                //GameLog.Client.GameData.WarnFormat(_text);
             }
         }
 
