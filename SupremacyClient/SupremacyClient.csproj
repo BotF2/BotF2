@@ -19,7 +19,8 @@
     <SccProvider>
     </SccProvider>
     <StartupObject>Supremacy.Client.ClientApp.EntryPoint</StartupObject>
-    <ApplicationIcon>SupremacyXP.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <!--<SignManifests>true</SignManifests>
     <SignAssembly>false</SignAssembly>-->
     <AssemblyOriginatorKeyFile>..\Common\Supremacy.snk</AssemblyOriginatorKeyFile>
@@ -117,6 +118,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\BindingOriented.SyncLinq.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="log4net, Version 3.3.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1a2a">
+      <HintPath>..\packages\log4net.3.3.0\lib\net462\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Expression.Controls, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -2010,7 +2015,7 @@
       <Version>1.0.2</Version>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.12</Version>
+      <Version>3.3.0</Version>
     </PackageReference>
     <PackageReference Include="MicrosoftExpressionInteractions">
       <Version>3.0.40218</Version>
