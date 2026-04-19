@@ -1,0 +1,23 @@
+_B2_NuGet.txt 
+
+> AvalonLibrary > 
+>> AvalonLibrary 4.0.1 is not compatible with net48 (.NETFramework,Version=v4.8) 
+used in > SupremacyClient
+used in > SupremacyClientComponents
+
+> C5
+used in > SupremacyCore
+used in > SupremacyClient
+
+> Expression.Blend.Sdk
+used in > SupremacyClient
+used in > SupremacyClientComponents
+
+> log4net
+used in > everywhere
+
+> MicrosoftExpressionInteractions
+used in > SupremacyClient
+
+> PowerThreading
+used in > SupremacyClient
