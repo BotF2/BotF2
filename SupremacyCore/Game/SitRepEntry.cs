@@ -176,7 +176,7 @@ namespace Supremacy.Game
     {
         protected readonly int _ownerId;
         protected SitRepPriority _priority;
-        public string _newline = Environment.NewLine;
+        //public string _newline = Environment.NewLine;
         //protected string _sitRepComment;
 
         /// <summary>
@@ -1940,7 +1940,7 @@ namespace Supremacy.Game
             get
             {
                 string _detailText = SummaryText;
-                _detailText = _detailText.Replace("  ", _newline + _newline);
+                _detailText = _detailText.Replace("  ", Environment.NewLine + Environment.NewLine);
 
                 return _detailText;
             }
@@ -2068,7 +2068,7 @@ namespace Supremacy.Game
             get
             {
                 string _detailText = SummaryText;
-                _detailText = _detailText.Replace("  ", _newline + _newline);
+                _detailText = _detailText.Replace("  ", Environment.NewLine + Environment.NewLine);
 
                 return _detailText;
             }
@@ -2792,7 +2792,9 @@ namespace Supremacy.Game
                 _ = sb.AppendLine(ResourceManager.GetString(Application.Description));
                 if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
                 {
-                    _ = sb.Append(_newline + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + _newline);
+                    _ = sb.Append(Environment.NewLine 
+                        + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") 
+                        + Environment.NewLine);
                     for (int i = 0; i < _newDesignIds.Length; i++)
                     {
                         TechObjectDesign design = GameContext.Current.TechDatabase[_newDesignIds[i]];
@@ -2801,7 +2803,7 @@ namespace Supremacy.Game
                             continue;
                         }
 
-                        _ = sb.Append(_newline);
+                        _ = sb.Append(Environment.NewLine);
                         _ = sb.Append(ResourceManager.GetString(design.Name));
 
                     }

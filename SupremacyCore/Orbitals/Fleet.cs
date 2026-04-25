@@ -897,6 +897,8 @@ namespace Supremacy.Orbitals
 
             SetRouteInternal(route);
             OnPropertyChanged("Route");
+
+            this.Activity = UnitActivity.Mission;
             //GameLog.Core.Combat.DebugFormat("SetRoute changed...");
 
             if ((lastRoute == route) || (_order == null) || !_order.IsAssigned)

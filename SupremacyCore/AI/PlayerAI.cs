@@ -396,7 +396,8 @@ namespace Supremacy.AI
 
             foreach (IEnumerable<MapLocation> disjointSet in disjointSets)
             {
-                convexHulls.Add(new ConvexHull(disjointSet));
+                _text = "C5 Nuget de-installed";
+                //convexHulls.Add(new ConvexHull(disjointSet));
             }
 
             return new ConvexHullSet(convexHulls);

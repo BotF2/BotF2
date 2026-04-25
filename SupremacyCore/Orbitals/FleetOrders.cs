@@ -666,11 +666,12 @@ namespace Supremacy.Orbitals
             CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
             civM.AccumulateLocation = fleet.Location;
             civM.AccumulateSector = new Sector(fleet.Location);
-            _text = "Step_3765:; AccumulateLocation_Set_Here_Order for:"
-                    + ";Fleet; " + fleet.Name
-                    + " ;Ship:;" + fleet.ObjectID
+            _text = "Step_3765:; AccumulateLocation_* Set *_Here_Order to "
                     + " ;to:;" + civM.AccumulateLocation
                     + " ;=;" + civM.AccumulateSector.ToString()
+                    + ";from Fleet; " + fleet.Name
+                    + " ;Ship:;" + fleet.ObjectID
+
                     ;
             Console.WriteLine(_text);
         }

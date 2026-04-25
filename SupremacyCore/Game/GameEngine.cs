@@ -1175,7 +1175,7 @@ namespace Supremacy.Game
             Console.WriteLine(_pre_turn_text + _newline + "End of Do_11_PreTurn");
 
             _text = "Debugger.Break();";
-            Debugger.Break();
+            //Debugger.Break();
             //_text = "End of Do_11_PreTurn";
         }
 
@@ -4459,7 +4459,7 @@ namespace Supremacy.Game
             if (_diplomatCiv2.PendingAction.ToString() != "None")
             {
                 _text = "Step_7721:; Do_13_Diplomacy > * " + civ1.Key + " * vs * " + civ2.Key
-                        + ": PendingAction > Accept Status= >>> " + _diplomatCiv2.PendingAction.ToString()
+                        + ": PendingAction > Status= >>> " + _diplomatCiv2.PendingAction.ToString()
                         ;
                 //if (_writeDirectly)
                 Console.WriteLine(_text);
@@ -4853,12 +4853,12 @@ namespace Supremacy.Game
             string _text;
             bool _writeDirectly = true;
             //_ = ParallelForEach(GameContext.Current.Civilizations, _civ =>
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (var _civ in GameContext.Current.Civilizations)
             {
                 GameContext.PushThreadContext(_game);
                 try
                 {
-                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[civ.CivID];
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
 
                     _civM.TotalPopulation.Reset();
 
@@ -8185,7 +8185,7 @@ namespace Supremacy.Game
             return _v;
         }
 
-        public bool IsCivM_Human_Player(CivilizationManager _civM) // string = orientated left
+        public static bool IsCivM_Human_Player(CivilizationManager _civM) // string = orientated left
         {
             if (_civM.Civilization.IsHuman)
             {

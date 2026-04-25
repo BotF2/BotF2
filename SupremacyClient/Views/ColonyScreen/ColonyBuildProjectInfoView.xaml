@@ -17,14 +17,15 @@
                 <DockPanel LastChildFill="True" 
                    Margin="0,0,0,7">
                     
-                    <!--<TextBlock DockPanel.Dock="Top"
+                    <!--2026-04-25-->
+                    <TextBlock DockPanel.Dock="Top"
                      Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      Background="Black"
                      FontSize="14pt"
                      Margin="0,0,0,14"
                      TextWrapping="Wrap"
-                     Text="{Binding Path=BuildDesign.Name, Converter={StaticResource StringResourceConverter}}" />-->
+                     Text="{Binding Path=BuildDesign.Name, Converter={StaticResource StringResourceConverter}}" />
 
                     <TextBlock DockPanel.Dock="Bottom" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"

@@ -408,6 +408,7 @@ namespace Supremacy.Universe
 
                 int _population_Max = baseValue + (maxPopPerMoonSize * totalMoonSizes);
 
+                string _text = "INFO-2026-04-19-a: for each turn max population increases (2 or 3 for Borg) until a new limit is reached...";
                 if (this.Owner.Key == "BORG")
                 {
                     int _borgPopPlus = 3 * GameContext.Current.TurnNumber;
@@ -415,7 +416,14 @@ namespace Supremacy.Universe
                         _borgPopPlus = 210;
 
                     _population_Max = baseValue + _borgPopPlus;
+                }
+                else
+                {
+                    int _popPlus = 2 * GameContext.Current.TurnNumber;
+                    if (_popPlus > 190)
+                        _popPlus = 190;
 
+                    _population_Max = baseValue + _popPlus;
                 }
 
                 return _population_Max;
@@ -2012,7 +2020,8 @@ namespace Supremacy.Universe
                     }
 
                     _ = Facility_Activate(ProductionCategory.Food);
-                    _text = LocationStringColony + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
+                    _text = LocationStringColony + " " + Name + " " 
+                        + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
 

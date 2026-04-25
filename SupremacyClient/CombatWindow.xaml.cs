@@ -49,7 +49,7 @@ namespace Supremacy.Client
                                                   //private List<Civilization> FriendlyCivs = new List<Civilization> { }; // just a dummy to avoid: Error: 40 : BindingExpression path error:  
                                                   //#pragma warning restore IDE0052 // Remove unread private members
         private readonly Civilization _onlyFireIfFiredApp_1;
-        //private readonly Civilization _onlyFireIfFiredApp_2;
+        private readonly Civilization _onlyFireIfFiredApp_2;
         private Civilization _targeted1Civ;
         private Civilization _targeted2Civ;
 
@@ -122,24 +122,27 @@ namespace Supremacy.Client
 
             };
 
-            // be careful for activated ... does the game proceed into the next turn ??
-    //        _onlyFireIfFiredApp_2 = new Civilization
-    //        {
-    //            //_onlyFireIfFiredApp_1.ShortName = "Only Return Fire";
-    //            ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE")
-    //,
-    //            CivID = 888
-    //,
-    //            Key = "Only Return Fire"
-    //            //TargetCiv1Status = "",
-    //            //TargetCiv2Status = ""
+            //_targeted1Civ = (Civilization)radioButton1.DataContext;
+            _targeted1Civ = this.
 
-    //        };
+            // be careful for activated ... does the game proceed into the next turn ??
+            _onlyFireIfFiredApp_2 = new Civilization
+            {
+                //_onlyFireIfFiredApp_1.ShortName = "Only Return Fire";
+                ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE")
+    ,
+                CivID = 888
+    ,
+                Key = "Only Return Fire"
+                //TargetCiv1Status = "",
+                //TargetCiv2Status = ""
+
+            };
             // The click of "Only Return Fire" radio button by human player
             // _targeted1Civ = new Civilization();
             _targeted1Civ = _onlyFireIfFiredApp_1;
             // _targeted2Civ = new Civilization();
-            _targeted2Civ = _onlyFireIfFiredApp_1;
+            _targeted2Civ = _onlyFireIfFiredApp_2;
 
         }
 
