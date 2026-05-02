@@ -625,7 +625,7 @@ namespace Supremacy.Game
 
                 if (_civM.Civilization.Key == "ZALKONIANS")
                 {
-                    Debugger.Break();
+                    //Debugger.Break();
                 }
                 //_text = "Step_1151:; Pre_Turn For= " + _civM.Civilization
                 //    //+ " - Name= " + _civM.Civilization
@@ -2738,6 +2738,7 @@ namespace Supremacy.Game
                 } // End of Black Hole
 
                 //if (_fleet.Route != null && _fleet.Location == _fleet.Route.Waypoints[_fleet.Route.Length])
+
                 if (_fleet.Owner.IsHuman && _fleet.Route != null && _fleetAim != "None" && _fleet.Route.Length < 1)
                 {
                     _text = GameEngine.LocationString(_fleet.Location.ToString())
@@ -7896,8 +7897,8 @@ namespace Supremacy.Game
                         if (_writeDirectly) Console.WriteLine(_text);
                     }
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[_civ];
-                    civManager.DesiredBorders = PlayerAI.CreateDesiredBorders(_civ);
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
+                    _civM.DesiredBorders = PlayerAI.CreateDesiredBorders(_civ);
 
                     //if (_civ.Key == "BORG")
                     //{

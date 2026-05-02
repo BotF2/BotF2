@@ -15,23 +15,49 @@ using Supremacy.Tech;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Markup;
+using System.Xml.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Supremacy.Game
 {
+    //public class XML_Item
+    //{
+    //    public string Key { get; set; }
+    //    public string Value { get; set; }
+    //}
+
+    //public class XML_Items
+    //{
+    //    [XmlElement("Item")]
+    //    public List<XML_Item> Items { get; set; } = new List<XML_Item>();
+    //}
+
+    public class CsvItem
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+    }
+
     /// <summary>
-    /// Helper class for managing saved game files.
+    /// Helper class for managing saved _game files.
     /// </summary>
     public static class SavedGameManager
     {
         [NonSerialized]
         public const string AutoSaveFileName = ".autosav";
+
+        static List<CsvItem> _csv_data = new List<CsvItem>();
+
         //private static readonly string _newline=Environment.NewLine;
         //private static string _text;
 
@@ -101,21 +127,21 @@ namespace Supremacy.Game
                         if (fileName.Contains("V17"))
                         {
                             _text = "Step_4500:; " + "currentGameVersion =" + _currentGameVersionString
-                               
+
                                 + ", but " + header.GameVersion
                                 + " for " + header.FileName
                                 ;
                             Console.WriteLine("Step_4500:; " + _text);
-                            GameLog.Client.SaveLoad.DebugFormat(_text);   
+                            GameLog.Client.SaveLoad.DebugFormat(_text);
                             //GameLog.Client.SaveLoad.DebugFormat("currentGameVersion = {2}, but {1} for {0}"
                             //    , header.FileName
                             //    , header.GameVersion
                             //    , _currentGameVersionString
                             //    );
                             header.GameVersion = _currentGameVersionString;
-                            savedGames.Add(header);                            
+                            savedGames.Add(header);
 
-                            
+
                             //var result = MessageBox.Show(_text, "Loading this different version file might cause troubles ! - please move out of the SavedGame-folder !", MessageBoxButton.YesNo) ;
                             //if (result == MessageBoxResult.No) // no - this creates an endless loop
                             //{
@@ -129,7 +155,7 @@ namespace Supremacy.Game
         }
 
         /// <summary>
-        /// Loads the saved game header.
+        /// Loads the saved _game header.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <returns></returns>
@@ -197,11 +223,11 @@ namespace Supremacy.Game
         }
 
         /// <summary>
-        /// Loads a game and stores the game data in the output parameters.
+        /// Loads a _game and stores the _game _xml_data in the output parameters.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="header">The header.</param>
-        /// <param name="game">The game context.</param>
+        /// <param name="game">The _game context.</param>
         /// <param name="timestamp">The timestamp.</param>
         /// <returns></returns>
         public static bool LoadGame(string fileName, out SavedGameHeader header, out GameContext game, out DateTime timestamp)
@@ -213,7 +239,7 @@ namespace Supremacy.Game
                 {
                     fileName = Path.Combine(SavedGameDirectory, FixFileName(fileName));
                 }
-                GameLog.Core.General.InfoFormat("Step_0275:; Loading saved game {0}", fileName);
+                GameLog.Core.General.InfoFormat("Step_0275:; Loading saved _game {0}", fileName);
 
                 using (FileStream fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
@@ -223,7 +249,7 @@ namespace Supremacy.Game
                     if (header.GameVersion != thisGameVersion)
                     {
                         if (!fileName.Contains("V17"))
-                        throw new Exception(string.Format("Incompatible game save - {0} vs {1}", header.GameVersion, thisGameVersion));
+                            throw new Exception(string.Format("Incompatible _game save - {0} vs {1}", header.GameVersion, thisGameVersion));
                     }
                     GameLog.Core.SaveLoad.DebugFormat("Step_0286:; loading SavedGameHeader of {0}", fileName);
                     using (MemoryStream memoryStream = new MemoryStream())
@@ -235,13 +261,13 @@ namespace Supremacy.Game
                         }
                         GameLog.Core.SaveLoad.DebugFormat("Step_0283:; loading {0}, Stream was read...", fileName);
                         _ = memoryStream.Seek(0, SeekOrigin.Begin);
-                        Console.WriteLine("Step_0288:; reading memoryStream into game");
+                        Console.WriteLine("Step_0288:; reading memoryStream into _game");
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }
                 }
 
                 _text = "Step_0333:; loading GameTables from HDD...";
-                Console.WriteLine(_text);   
+                Console.WriteLine(_text);
                 //GameLog.Core.SaveLoad.DebugFormat(_text);
                 game.Tables = GameTables.Load();
 
@@ -251,13 +277,13 @@ namespace Supremacy.Game
                 game.ResearchMatrix = ResearchMatrix.Load();
 
                 game.OnDeserialized();
-                
+
                 //_navigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
                 timestamp = File.GetLastWriteTime(fileName);
             }
             catch (Exception e)
             {
-                _text = "Step_4098:; Error occurred loading saved game" + e;
+                _text = "Step_4098:; Error occurred loading saved _game" + e;
                 Console.WriteLine(_text);
                 GameLog.Core.General.Error(_text);
 
@@ -300,12 +326,12 @@ namespace Supremacy.Game
         }
 
         /// <summary>
-        /// Saves the game to the disk.
+        /// Saves the _game to the disk.
         /// </summary>
         /// <param name="fileName">The outpu filename.</param>
-        /// <param name="game">The game.</param>
+        /// <param name="game">The _game.</param>
         /// <param name="localPlayer">The local player.</param>
-        /// <param name="lobbyData">The server lobby data.</param>
+        /// <param name="lobbyData">The server lobby _xml_data.</param>
         /// <returns></returns>
         public static bool SaveGame([NotNull] string fileName, [NotNull] GameContext game, [NotNull] Player localPlayer, [NotNull] LobbyData lobbyData)
         {
@@ -321,7 +347,7 @@ namespace Supremacy.Game
 
             if (game == null)
             {
-                throw new ArgumentNullException("game");
+                throw new ArgumentNullException("_game");
             }
 
             if (localPlayer == null)
@@ -359,7 +385,7 @@ namespace Supremacy.Game
                     header.IsAutoSave = true;
                 }
 
-                _text = "Step_9000:; Writing game... Turn " + game.TurnNumber;
+                _text = "Step_9000:; Writing _game... Turn " + game.TurnNumber;
                 Console.WriteLine(_text);
                 GameLog.Client.GameData.DebugFormat(_text);
 
@@ -372,10 +398,16 @@ namespace Supremacy.Game
                     header.Write(fileStream);
                     fileStream.Write(buffer, 0, buffer.Length);
                 }
+
+                //XML_Utility_Write(game);
+                CSV_Utility_Write(game);
+
+
+
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error("Error saving game", e);
+                GameLog.Core.General.Error("Error saving _game", e);
 
                 return false;
             }
@@ -389,6 +421,136 @@ namespace Supremacy.Game
             return true;
         }
 
+        private static void CSV_Utility_Write(GameContext _game)
+        {
+            //var _csv_data = new List<CsvItem>();
+            
+        //{
+        //    new CsvItem { Key = "TurnNumber", Value = "12" },
+        //    new CsvItem { Key = "IsMultiplayerGame", Value = "True" }
+        //};
+
+
+            string _game_mod_text = "null";
+            if (_game.GameMod != null) _game_mod_text = _game.GameMod.ToString();
+
+            CSV_ADD("TurnNumber", _game.TurnNumber.ToString() );
+            CSV_ADD("IsMultiplayerGame", _game.IsMultiplayerGame.ToString() );
+            CSV_ADD("GameMod", _game_mod_text );
+            CSV_ADD("CivCount", _game.Civilizations.Count.ToString() );
+
+            foreach (var item in _game.Civilizations)
+            {
+                CSV_ADD("CivID", item.CivID.ToString() 
+                                 +";"+ item.Key
+                );
+                
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[item.CivID];
+                CSV_ADD("CivM"
+                    , _civM.Credits.CurrentValue.ToString()
+                    + ";" + _civM.Z_RankingCredits
+
+                    + ";" + _civM.MaintenanceCostLastTurn
+                    + ";" + _civM.Z_RankingMaint
+                    + ";" + _civM.Z_RankingResearch
+                    + ";" + _civM.Z_RankingIntelAttack
+
+                    + ";" + _civM.AverageMorale
+                    + ";" + _civM.AverageTechLevel
+                    );
+            }
+
+            bool bool_debugger = true;
+            if (bool_debugger)
+            {
+                //Debugger.Break();
+            }
+
+            //var serializer = new XmlSerializer(typeof(XML_Items));
+
+            //using (var fs = new FileStream("Saved_B2data.xml", FileMode.Create))
+            //{
+            //    serializer.Serialize(fs, _xml_data, ns);
+            //}
+
+            using (var writer = new StreamWriter("Saved_B2data.csv", false, Encoding.UTF8))
+            {
+                writer.WriteLine("Key,Value");
+                foreach (var item in _csv_data)
+                {
+                    writer.WriteLine(Escape(item.Key) + "," + Escape(item.Value));
+                }
+            }
+        }
+
+        private static void CSV_ADD(string v1, string v2)
+        {
+            _csv_data.Add(new CsvItem
+            {
+                Key = Escape(v1),
+                Value = Escape(v2)
+            });
+        }
+
+        private static void XML_Utility_Write(GameContext _game)
+        {
+            //var ns = new XmlSerializerNamespaces();
+            //ns.Add("xsi", "noNamespaceSchemaLocation=\"Saved_B2data.xsd\"");
+
+            var data = new List<CsvItem>
+        {
+            new CsvItem { Key = "TurnNumber", Value = "12" },
+            new CsvItem { Key = "IsMultiplayerGame", Value = "True" }
+        };
+
+
+            string _game_mod_text = "null";
+            if (_game.GameMod != null) _game_mod_text = _game.GameMod.ToString();
+
+
+
+            //var _xml_data = new XML_Items();
+            //_xml_data.Items.Add(new XML_Item { Key = "TurnNumber", Value = _game.TurnNumber.ToString() });
+            //_xml_data.Items.Add(new XML_Item { Key = "IsMultiplayerGame", Value = _game.IsMultiplayerGame.ToString() });
+            //_xml_data.Items.Add(new XML_Item { Key = "GameMod", Value = _game_mod_text });
+            //_xml_data.Items.Add(new XML_Item { Key = "CivCount", Value = _game.Civilizations.Count.ToString() });
+
+            //foreach (var item in _game.Civilizations)
+            //{
+            //    _xml_data.Items.Add(new XML_Item { Key = "CivID", Value = item.CivID.ToString() });
+            //    _xml_data.Items.Add(new XML_Item { Key = "CivKey", Value = item.Key.ToString() });
+            //}
+
+
+
+            //var serializer = new XmlSerializer(typeof(XML_Items));
+
+            //using (var fs = new FileStream("Saved_B2data.xml", FileMode.Create))
+            //{
+            //    serializer.Serialize(fs, _xml_data, ns);
+            //}
+
+            using (var writer = new StreamWriter("Saved_B2data.csv", false, Encoding.UTF8))
+            {
+                writer.WriteLine("Key,Value");
+                foreach (var item in data)
+                {
+                    writer.WriteLine(Escape(item.Key) + "," + Escape(item.Value));
+                }
+            }
+        }
+
+        static string Escape(string value)
+        {
+            if (value == null)
+                return "";
+
+            if (value.IndexOf(',') >= 0 || value.IndexOf('"') >= 0 || value.IndexOf('\n') >= 0 || value.IndexOf('\r') >= 0)
+                return "\"" + value.Replace("\"", "\"\"") + "\"";
+
+            return value;
+        }
+
 
         public static bool SaveGameDeleteManualSaved()
         {
@@ -397,7 +559,7 @@ namespace Supremacy.Game
             //ResourceManager.GetString("Do you really want to delete > ")
             var result = MessageBox.Show(
                 "ALT+S: Do you really want to delete > "
-                + " " + file,"REALLY ?",
+                + " " + file, "REALLY ?",
                 MessageBoxButton.YesNo);
             if (result == MessageBoxResult.No)
             {
@@ -439,9 +601,9 @@ namespace Supremacy.Game
                     File.Delete(file);
                     _text = "Deleted: " + file;
                     Console.WriteLine(_text);
-                
-                //_ = MessageBox.Show("Deleted: " + file /*+ _newline + "Create again with CTRL+S"*/);
-                return true;
+
+                    //_ = MessageBox.Show("Deleted: " + file /*+ _newline + "Create again with CTRL+S");
+                    return true;
                 }
             }
             catch { _ = MessageBox.Show("Problem at deleting: " + file); ; return false; }
@@ -449,10 +611,10 @@ namespace Supremacy.Game
         }
 
         /// <summary>
-        /// Automatically saves the current game.
+        /// Automatically saves the current _game.
         /// </summary>
         /// <param name="localPlayer">The local player.</param>
-        /// <param name="lobbyData">The server lobby data.</param>
+        /// <param name="lobbyData">The server lobby _xml_data.</param>
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool AutoSave(Player localPlayer, LobbyData lobbyData)
         {
@@ -494,4 +656,8 @@ namespace Supremacy.Game
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);
         }
     }
+
+
+
+
 }

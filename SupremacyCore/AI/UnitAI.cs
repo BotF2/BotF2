@@ -2316,7 +2316,7 @@ namespace Supremacy.AI
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Spy)
             if (_fleet.Owner.IsHuman)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
 

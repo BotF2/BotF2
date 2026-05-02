@@ -80,7 +80,7 @@ namespace Supremacy.Client
             }
             catch (Exception e)
             {
-                GameLog.Client.General.Error(e);
+                //GameLog.Client.General.Error(e);
             }
 
             return null;
