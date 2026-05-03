@@ -162,7 +162,7 @@ namespace Supremacy.AI
                         //Debugger.Break();
 
                         //_colonyAIControlled = false;
-                        _colonyAIControlled = true;
+                        //_colonyAIControlled = /*true;*/
 
                         //_text = /*_newline +*/ "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " * " + _name_col + " " + _owner_col
                         //    + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"
@@ -981,7 +981,7 @@ namespace Supremacy.AI
 
         private static void Print_Colony_Owner_IsHuman(Colony _colony)
         {
-            _colonyAIControlled = true;
+            _colonyAIControlled = GameEngine.IsPlayer_AIControllend();
             string _text;
             _text = Environment.NewLine + "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " *** " + _name_col + " " + _owner_col
                 + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"

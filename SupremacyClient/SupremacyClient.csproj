@@ -2011,7 +2011,7 @@
       <Version>1.0.2</Version>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>3.3.0</Version>
+      <Version>3.3.1</Version>
     </PackageReference>
     <PackageReference Include="MicrosoftExpressionInteractions">
       <Version>3.0.40218</Version>

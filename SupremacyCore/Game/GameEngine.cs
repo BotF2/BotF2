@@ -42,6 +42,12 @@ namespace Supremacy.Game
     /// </summary>
     public partial class GameEngine 
     {
+        public static bool IsPlayer_AIControllend() // string = orientated left
+        {
+            //return true;
+            return false;
+        }
+
         //public int _tn = 0;  // internal use // Turn Number
 
         public readonly List<CivValue> CivValueList = new List<CivValue>();
@@ -49,6 +55,8 @@ namespace Supremacy.Game
 
         //public int AAASpecialWidth1;  // resize images in Game to a player's setting outside
         //public int AAASpecialHeight1;
+
+
 
         #region Public Members
 
@@ -8197,6 +8205,8 @@ namespace Supremacy.Game
                 return false;
             }
         }
+
+
 
         public static string Do_x_Digit_String(int _how_many, string _v) // digit = orientated right
         {

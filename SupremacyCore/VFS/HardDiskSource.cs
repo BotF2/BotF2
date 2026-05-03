@@ -313,7 +313,7 @@ namespace Supremacy.VFS
                 //GameLog.Client.General.ErrorFormat(message);
                 //var path = "vfs:///Resources/Images/";
                 //var file = path + "__image_missing.png";
-                return File.Open("__image_missing.png", FileMode.Open, access, share);
+                return File.Open("\\Resources\\Images\\__image_missing.png", FileMode.Open, access, share);
             }
         }
 

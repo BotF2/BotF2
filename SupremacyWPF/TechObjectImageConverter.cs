@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -80,6 +81,8 @@ namespace Supremacy.Client
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
+                Debugger.Break();
                 //GameLog.Client.General.Error(e);
             }
 
