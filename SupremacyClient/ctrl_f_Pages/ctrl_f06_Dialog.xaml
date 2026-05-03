@@ -337,7 +337,7 @@
                         Style="{DynamicResource LCARS_SimpleButtonStyle}"
                         IsCancel="True"
                         Margin="0,0,6,0">
-                        <AccessText Text="Close (original REDEPLOY)" />
+                        <AccessText Text="Close (original RE-DEPLOY)" />
                     </Button>
                     <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
 

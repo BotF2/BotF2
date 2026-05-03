@@ -104,15 +104,20 @@ namespace Supremacy.AI
         public static void Do_0_Turn_Unit([NotNull] Civilization _civ)
         {
             string _newline = Environment.NewLine;
+            string _comment_inside_code = "outcommented not shown by extension but these lines are shown";
+            bool _is_player_AI_controlled = GameEngine.IsPlayer_AIControllend();
+
             //_soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
             if (_civ == null) { throw new ArgumentNullException(nameof(_civ)); }
 
 
             StarSystem _ourHomeSystem = _civM.HomeSystem;
-            //MapLocation accumulateSystem = GameContext.Current.CivilizationManagers[_civM].AccumulateLocation;
+            StarSystem othersHomeSystem = GameContext.Current.CivilizationManagers[_civ].HomeSystem; // dummy
+
             Sector _accumulateSector = _ourHomeSystem.Sector;
             _accumulateSector = GameContext.Current.CivilizationManagers[_civM].AccumulateSector;
+
             Sector _strandedShips_Sector = GameContext.Current.CivilizationManagers[_civM].StrandedShipsSector;
             //_fleets_Summary = "" + _fleets_Summary;
 
@@ -132,7 +137,7 @@ namespace Supremacy.AI
 
             //    // just report to Console + define _targetSystem
 
-            StarSystem othersHomeSystem = GameContext.Current.CivilizationManagers[_civ].HomeSystem; // dummy
+
 
             //    _text = "Step_6140:;" // UnitAI = Fleets > "
             //                          //+ _ourHomeSystem.Location
@@ -226,7 +231,7 @@ namespace Supremacy.AI
 
 
 
-
+            _comment_inside_code = "AI for all civs";
             //if (_civ.CivID < 999) // unit AI only for empires >> 999 is 'for all', below '7' is just Empires
             //{
             //_text = "Step_3102:; ##########################################   UnitAI for Empires or as well for minors...";
@@ -284,6 +289,7 @@ namespace Supremacy.AI
                     continue;
                 }
 
+                bool _is_owner_human = _fleet.Owner.IsHuman;
 
 
                 //if (_writeDirectly_Colony)
@@ -364,7 +370,11 @@ namespace Supremacy.AI
                 //_fleet_Text += _newline + _text;
                 // as well go to CTRL+F and 'checking _fleets'
 
+                if (!_is_owner_human)
+                {
                 CloakAll(_fleet);
+                }
+
 
                 if (_fleet.IsStranded)  // is stranded
                 {
@@ -374,11 +384,14 @@ namespace Supremacy.AI
 
 
                 // hm .. Tow is coded !!!! ???
-                if (_fleet.LowestFuelLevel < 3        // running out of fuel
+                if (!_is_owner_human && _is_player_AI_controlled && _fleet.LowestFuelLevel < 3        // running out of fuel
                     && _fleet.IsConstructor == false) // not for Constructors on "Rescue Mission"
                 {
                     _fleet.Route.Clear();
-                    _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _ourHomeSystem.Sector }));
+                    MapLocation _nearestFriendly_location = MapHelper.FindNearestFriendlySector(_fleet);
+                    Sector _nearestFriendly_sector = new Sector(_nearestFriendly_location);
+                    //Sector _nearestFriendly_sector = sector;
+                    _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _nearestFriendly_sector }));
 
                     if (_fleet.Owner.IsHuman)
                     {
@@ -445,6 +458,10 @@ namespace Supremacy.AI
 
                 //SELECT
                 //_checkShips_Construction = true;
+                if (_is_owner_human)
+                {
+                    goto All_Done_UnitAI;
+                }
 
                 if (_fleet.IsConstructor) DoConstructionShip(_fleet); // Constructor get the first "GetEscort"
                                                                       //_checkShips_Colony = true;

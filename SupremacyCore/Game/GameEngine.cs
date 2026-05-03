@@ -8271,6 +8271,7 @@ namespace Supremacy.Game
             string Second = time.Second.ToString(); Second = CheckDateString(Second);
             return "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second;
         }
+
         public static string CheckDateString(string _string)
         {
             if (_string.Length == 1)

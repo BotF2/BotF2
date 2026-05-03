@@ -61,6 +61,7 @@ namespace Supremacy.Tech
         private static bool _buildCostTextOnlyOnce;
         private static bool _maint_output_done;
         private static bool _buildCostShipsIgnored;
+        private static bool _buildCostIgnored;
 
         //public static bool _checkForProblems = false;
         //private static readonly string _newline = Environment.NewLine;
@@ -2210,7 +2211,7 @@ namespace Supremacy.Tech
             int _buildCostsFromFile = pf.BuildCost;
             string _buildCostText = "";
             string _newline = Environment.NewLine;
-            bool _buildCostIgnored = false;
+            //bool _buildCostIgnored = false;
             //bool _buildCostTextOnlyOnce = false;  // not here
             //if (pf.PrimaryWeapon != null)
             //{
