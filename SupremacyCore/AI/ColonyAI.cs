@@ -1537,8 +1537,15 @@ namespace Supremacy.AI
 
         private static void Colony_Step_03_Handle_Energy_Production(Colony _colony)
         {
-            string _newline = Environment.NewLine;
             string _text;
+            _text = "complete no AI controlled ?";
+            //if (_colony.Owner.IsHuman)  // complete no AI controlled ?
+            //{
+            //    return;
+            //}
+
+            string _newline = Environment.NewLine;
+
             _text = "Step_1229:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Handle ENERGY on; "
                     + _name_col + " ; " + _owner_col
                     ;
@@ -1601,7 +1608,11 @@ namespace Supremacy.AI
             if ((_colony.Buildings.Any(b => !b.IsActive && b.BuildingDesign.EnergyCost > 0)
                 || (_colony.Shipyard?.BuildSlots.Any(s => !s.IsActive) == true)) && !_colony.IsBuilding(facilityType))
             {
+                if (_colonyAIControlled)
+                {
                 _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, facilityType)));
+                }
+
 
                 _text = "Step_1247:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col + " ; " + _owner_col + " > Handle ENERGY "
                     + " > added 1 ENERGY Facility Build Order"
@@ -3663,6 +3674,10 @@ namespace Supremacy.AI
 
         private static void Handle_Ship_Production(Colony _colony, Civilization _civ) //, Dictionary<ShipType, Tuple<int, string>> _listPrioShipBuild)
         {
+            //bool bool_is_human = GameEngine.IsPlayer_AIControllend;
+            if (_civ.IsHuman)
+                return;
+
             if (_colony.Shipyard == null) { return; }
 
             if (_colony.Shipyard.BuildQueue.Count > 1)
