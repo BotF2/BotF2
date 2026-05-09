@@ -1093,6 +1093,7 @@ namespace Supremacy.AI
         }
 
 
+
         //private static void Handle_Research_Distribution(Colony _colony) // this 
         //{
         //    _text = "Step_1631:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Food on; "*/

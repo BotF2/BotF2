@@ -7864,6 +7864,7 @@ namespace Supremacy.Game
         #region DoAIPlayers() Method ... called from SupremacyService.cs
         public void DoAIPlayers(object _gameContext, List<Civilization> _autoTurnCiv)
         {
+            
             string _text;
             string _newline = Environment.NewLine;
             bool _writeDirectly = true;

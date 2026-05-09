@@ -702,17 +702,17 @@ namespace Supremacy.Client.Views
             if (GameContext.Current != null)
             {
 
-                foreach (CivilizationManager civM in GameContext.Current.CivilizationManagers)
+                foreach (CivilizationManager _civM in GameContext.Current.CivilizationManagers)
                 {
-                    string _x_text = GameEngine.LocationString(civM.HomeColony.Location.X.ToString());
-                    string _y_text = GameEngine.LocationString(civM.HomeColony.Location.Y.ToString());
-                    _text += civM.Civilization.HomeQuadrant + "-Quadrant"
-                        + " ; " + GameEngine.Do_x_String(19, civM.Civilization.Key).ToString()
+                    string _x_text = _civM.HomeColony.Location.X.ToString();
+                    string _y_text = _civM.HomeColony.Location.Y.ToString();
+                    _text += _civM.Civilization.HomeQuadrant + "-Quadrant"
+                        + " ; " + GameEngine.Do_x_String(19, _civM.Civilization.Key).ToString()
                         + " ; " + GameEngine.Do_x_Digit_String(2, _x_text)
                         + " ; " + GameEngine.Do_x_Digit_String(2, _y_text)
 
-                        + " ; " + civM.Civilization.HomeSystemName
-                        + " ; " + civM.Civilization
+                        + " ; " + _civM.Civilization.HomeSystemName
+                        + " ; " + _civM.Civilization
                         + _newline;
                     _text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
                 }

@@ -68,16 +68,38 @@ namespace Supremacy.Client
             {
                 //Uri imageUri = GetImageUri(path);
                 //return ImageCache.Current.Get(imageUri);
-                var uri = new Uri(path, UriKind.Absolute);
-                var bitmap = new BitmapImage();
+                //var uri = new Uri(path, UriKind.Absolute);
+                //var bitmap = new BitmapImage();
 
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;  // Lädt komplett in Speicher
-                bitmap.UriSource = uri;
-                bitmap.EndInit();
+                //bitmap.BeginInit();
+                //bitmap.CacheOption = BitmapCacheOption.OnLoad;  // Lädt komplett in Speicher
+                //bitmap.UriSource = uri;
+                //bitmap.EndInit();
 
-                bitmap.Freeze();  // Optional: Thread-sicher
-                return bitmap;
+                //bitmap.Freeze();  // Optional: Thread-sicher
+                //return bitmap;
+                if (Uri.TryCreate(path, UriKind.Absolute, out Uri uri))
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.UriSource = uri;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                    return bitmap;
+                }
+                else
+                {
+                    // Lokaler Pfad, falls kein geparster URI rauskommt
+                    uri = new Uri("file:///" + Path.GetFullPath(path));
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.UriSource = uri;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                    return bitmap;
+                }
             }
             catch (Exception e)
             {
