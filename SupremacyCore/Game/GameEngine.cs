@@ -5165,7 +5165,7 @@ namespace Supremacy.Game
                     //if (GameContext.Current.TurnNumber / 2 == (float)GameContext.Current.TurnNumber / 2)
                     //{
                     //if (!_civM_1.Civilization.IsHuman) 
-                    if (civManager.Civilization.IsHuman)
+                    if (!civManager.Civilization.IsHuman)
                     {
                         civManager.Research.Distributions[0].SetValueInternal(0.16f);
                         civManager.Research.Distributions[1].SetValueInternal(0.19f); // these 3 are more important
