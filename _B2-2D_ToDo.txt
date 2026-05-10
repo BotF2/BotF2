@@ -1,0 +1,21 @@
+- Rasse in der Diplomatie
+- Anzeige Turns to go für Schiffe
+
+
+- bilder fehlermeldung
+
+
+geschafft
+- techlevel bei ship build kosten
+
+- autosav auf 4 turns ago => sollte funktionieren
+- #3 Arbeiter auto-assigned => hoffentlich jetzt nicht mehr
+- Shipyard Output-Wert => wird jetzt angezeigt
+- Workcapacity anzeige
+- anzeige gebäude nicht nur text
+
+
+5) fast keine planetaren Scanner
+die will ich neu ordnen - bitte neue Datei (Anhang) > alte ersetzen + neues Spiel starten
+- Start TechLevel 1 > Forschen = Scanner ab 2, ebenso ab 5, ebenso ab 8
+

@@ -623,6 +623,7 @@ namespace Supremacy.Game
             {
                 return false;
             }
+            string _text;
 
             try
             {
@@ -632,25 +633,41 @@ namespace Supremacy.Game
 
 
                 string file_autosav_current = SavedGameFolder + ".autosav";
-                string file_autosav_one_turn_ago = SavedGameFolder + "autosav_one_turn_ago.sav";
-                string file_autosav_two_turns_ago = SavedGameFolder + "autosav_two_turns_ago";
+                string file_autosav_1_turn_ago = SavedGameFolder + "autosav_1_turn_ago.sav";
+                string file_autosav_2_turns_ago = SavedGameFolder + "autosav_2_turns_ago.sav";
+                string file_autosav_3_turns_ago = SavedGameFolder + "autosav_3_turns_ago.sav";
+                string file_autosav_4_turns_ago = SavedGameFolder + "autosav_4_turns_ago.sav";
 
-                GameLog.Core.General.InfoFormat("Step_9500: saving {0}", file_autosav_current);
+                _text = "Step_9500:; Turn " + game.TurnNumber + "Autosaving > " + file_autosav_current;
+                Console.WriteLine(_text);
+                GameLog.Core.General.InfoFormat(_text);
 
-                if (File.Exists(file_autosav_one_turn_ago))
+                if (File.Exists(file_autosav_3_turns_ago))
                 {
-                    File.Copy(file_autosav_one_turn_ago, file_autosav_two_turns_ago, true);
+                    File.Copy(file_autosav_3_turns_ago, file_autosav_4_turns_ago, true);
+                }
+
+                if (File.Exists(file_autosav_2_turns_ago))
+                {
+                    File.Copy(file_autosav_2_turns_ago, file_autosav_3_turns_ago, true);
+                }
+
+                if (File.Exists(file_autosav_1_turn_ago))
+                {
+                    File.Copy(file_autosav_1_turn_ago, file_autosav_2_turns_ago, true);
                 }
 
                 if (File.Exists(file_autosav_current))
                 {
-                    File.Copy(file_autosav_current, file_autosav_one_turn_ago, true);
+                    File.Copy(file_autosav_current, file_autosav_1_turn_ago, true);
                 }
 
             }
             catch (Exception e)
             {
-                GameLog.Core.SaveLoad.WarnFormat("Step_9505:; Problem at saving autosav and previous autosav Exception {0} {1}", e.Message, e.StackTrace);
+                _text = "Step_9505:; Problem at saving autosav and previous autosav Exception "
+                    + e.Message + Environment.NewLine + e.StackTrace;
+                //GameLog.Core.SaveLoad.WarnFormat("Step_9505:; Problem at saving autosav and previous autosav Exception {0} {1}", e.Message, e.StackTrace);
             }
 
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);

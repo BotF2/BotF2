@@ -607,12 +607,13 @@ namespace Supremacy.Tech
 
                 CalculateBuildCostsShips(ship);
                 CalculateMaintenanceCosts(ship);
+
                 db.ShipDesigns.Add(ship);
             }
 
             _text = "Step_3027:; Ships BuildCost + Maintenance calculated inside Code - ignoring file values";
             Console.WriteLine(_text);
-            GameLog.Core.Production.DebugFormat(_text);
+            //GameLog.Core.Production.DebugFormat(_text);
             //GameLog.Core.Production.DebugFormat(_buildCostText);
             //GameLog.Core.Production.DebugFormat(_maintText);
 
@@ -2314,7 +2315,9 @@ namespace Supremacy.Tech
                 + (_weapon1 * 2)
                 + (_weapon2 * 2)
                 ;
-            _buildcosts = 300 + _buildcosts * ship.TechRequirements.HighestTechLevel;//;// + (ship.CrewSize * 2) / 4000;
+            _buildcosts = 300 + _buildcosts;
+            // TechLevel already included by Hull, Shield, Speed, Weapons and more
+            // * ship.TechRequirements.HighestTechLevel;//;// + (ship.CrewSize * 2) / 4000;
 
             string _text = ship.Key
                 + "; BC old:; " + _buildCostsFromFile

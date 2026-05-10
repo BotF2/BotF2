@@ -1808,6 +1808,10 @@ namespace Supremacy.AI
 
         private static void Handle_Labors_for_Nothing_to_Build(Colony _colony)
         {
+            if (_colony.Owner.IsHuman)
+            {
+                return;
+            }
 
             //if (_colony.Owner.IsHuman && _colony.Name == "Sol")
             //{

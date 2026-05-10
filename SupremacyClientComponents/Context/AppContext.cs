@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Threading;
@@ -20,6 +21,8 @@ using Supremacy.Collections;
 using Supremacy.Game;
 using Supremacy.Client.Audio;
 using Supremacy.Utility;
+using Supremacy.Resources;
+using Supremacy.Pathfinding;
 
 namespace Supremacy.Client.Context
 {
@@ -94,6 +97,11 @@ namespace Supremacy.Client.Context
             DefaultMusicLibrary.Load(DefaultMusicLibraryPath);
             _audioTrace = false;    // just tracing audio into Log.txt
             HookEventHandlers();
+        }
+
+        public string Path_Resources_Data_Addon()
+        {
+            return ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon");
         }
         #endregion
 
