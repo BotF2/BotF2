@@ -1539,10 +1539,10 @@ namespace Supremacy.AI
         {
             string _text;
             _text = "complete no AI controlled ?";
-            //if (_colony.Owner.IsHuman)  // complete no AI controlled ?
-            //{
-            //    return;
-            //}
+            if (_colony.Owner.IsHuman)  // complete no AI controlled ?
+            {
+                return;
+            }
 
             string _newline = Environment.NewLine;
 
@@ -1701,6 +1701,11 @@ namespace Supremacy.AI
 
         private static void Colony_Step_05_Handle_Food_Production(Colony _colony)
         {
+            if (_colony.Owner.IsHuman)
+            {
+                return;
+            }
+
             string _newline = Environment.NewLine;
             string _text;
 

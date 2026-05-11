@@ -1,5 +1,8 @@
+- #1 > ich denke, die Diplo bricht ab, und deshalb passiert nichts ... muss aber schauen
+- #2 > kein Update des tatsächlichen diplomatischen Status
 - Rasse in der Diplomatie
-- Anzeige Turns to go für Schiffe
+- Anzeige Turns to go für Schiffe bzw. % gebaut Outpost
+- Avoid für Schiffe
 
 
 - bilder fehlermeldung

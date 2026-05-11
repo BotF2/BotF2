@@ -444,7 +444,8 @@ namespace Supremacy.AI
                 bool _accumulateAble = false;
                 AccumulateAble_Get(_fleet, out _accumulateAble);
 
-                if (_accumulateAble)
+                _text = "ToDo - bring back ACCUMULATE for human players";
+                if (_accumulateAble && !_fleet.Owner.IsHuman)
                 {
                     Do_2_Accumulate(_fleet);
                 }

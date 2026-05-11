@@ -182,7 +182,7 @@ namespace Supremacy.Game
 
             if (destinationFleet != null)
             {
-                //destinationFleet.AddShip(ship);
+                destinationFleet.AddShip(ship);
             }
             else
             {
