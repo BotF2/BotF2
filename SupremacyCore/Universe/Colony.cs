@@ -415,7 +415,7 @@ namespace Supremacy.Universe
                     if (_borgPopPlus > 210)
                         _borgPopPlus = 210;
 
-                    _population_Max = baseValue + _borgPopPlus;
+                    _population_Max += _borgPopPlus;
                 }
                 else
                 {
@@ -423,7 +423,7 @@ namespace Supremacy.Universe
                     if (_popPlus > 190)
                         _popPlus = 190;
 
-                    _population_Max = baseValue + _popPlus;
+                    _population_Max += _popPlus;
                 }
 
                 return _population_Max;
@@ -1443,6 +1443,7 @@ namespace Supremacy.Universe
                 {
                     int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
 
+
                     GameLog.Core.ProductionDetails.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
                         , GameContext.Current.TurnNumber
                         , _foodActive
@@ -1869,6 +1870,12 @@ namespace Supremacy.Universe
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public bool Facility_Deactivate(ProductionCategory category)
         {
+            // use also whenever a human player clicks
+            //if (this.Owner.IsHuman)
+            //{
+            //    return true;
+            //}
+
             lock (facilities_active)
             {
                 if (facilities_active[(int)category].Value < 1)

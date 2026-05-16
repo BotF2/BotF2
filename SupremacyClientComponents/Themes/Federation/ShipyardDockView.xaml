@@ -331,7 +331,7 @@
 
 
                                 <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/Industry.png" Width="16" 
-                                        ToolTip="{xs:EnumString {x:Static s:ResourceType.Industry}}" />
+                                        ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TURNS_UNTIL_COMPLETION_FORMAT}" />
 
                                 <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                                     <TextBlock.Text>

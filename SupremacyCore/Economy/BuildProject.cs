@@ -621,6 +621,10 @@ namespace Supremacy.Economy
 
             ResourceType[] resourceTypes = EnumHelper.GetValues<ResourceType>();
 
+            _text = "_output_SUMMARY_deactivated = ;";
+
+            string _output_SUMMARY_deactivated = " > Output SUMMARY deactivated !";
+
             for (int i = 0; i < resourceTypes.Length; i++)
             {
                 ResourceType resource = resourceTypes[i];
@@ -642,12 +646,12 @@ namespace Supremacy.Economy
                         + ", delta/missing= " + delta.ToString()
                         + " for " + BuildDesign.Key
                         ;
-                    Console.WriteLine("Step_4733:; " + _text + " (SR)");
+                    Console.WriteLine("Step_4733:; " + _text + " (SR)" + _output_SUMMARY_deactivated);
                     //GameLog.Core.Test.DebugFormat(_text);
 
                     //Debugger.Break();
 
-                    civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+                    civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.GreenDark2));
                     //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
 
                     deltaIndustry -= delta;
@@ -666,7 +670,7 @@ namespace Supremacy.Economy
                     //;
                     //GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn... checking for resources: _resource = {0}, delta/needed for finish = {1} for {2}"
                     //    , _resource.ToString(), delta.ToString(), BuildDesign, GameContext.Current.TurnNumber);
-                    Console.WriteLine(_text);
+                    Console.WriteLine(_text + _output_SUMMARY_deactivated);
                     //GameLog.Core.ProductionDetails.DebugFormat(_text);
 
                     if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
@@ -678,9 +682,11 @@ namespace Supremacy.Economy
                             + ", delta/missing= " + delta.ToString()
                             + " for " + BuildDesign.Key
                             ;
-                        Console.WriteLine("Step_4284:; " + _text + " (SR)");
+                        Console.WriteLine("Step_4284:; " + _text + " (SR)" + _output_SUMMARY_deactivated);
+                        //civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.GreenDark2));
+
                         //GameLog.Core.Test.DebugFormat("Step_4286:; _resource = {0}, delta/missing = {1}, too less available !!!", _resource.ToString(), delta);
-                        civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+
                         //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
                     }
                     //deltaIndustry -= delta;
@@ -694,9 +700,11 @@ namespace Supremacy.Economy
                             + ", delta/missing= " + delta.ToString()
                             + " for " + BuildDesign.Key
                             ;
-                        Console.WriteLine(_text);
+                        Console.WriteLine(_text + _output_SUMMARY_deactivated);
+                        //civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.GreenDark2));
+
                         //GameLog.Core.Test.DebugFormat("Step_4286:; _resource = {0}, delta/missing = {1}, too less available !!!", _resource.ToString(), delta);
-                        civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+
                         //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
                     }
 
@@ -709,9 +717,11 @@ namespace Supremacy.Economy
                             + ", delta/missing= " + delta.ToString()
                             + " for " + BuildDesign.Key
                             ;
-                        Console.WriteLine(_text);
+                        Console.WriteLine(_text + _output_SUMMARY_deactivated);
+                        //civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.GreenDark2));
+
                         //GameLog.Core.Test.DebugFormat("Step_4286:; _resource = {0}, delta/missing = {1}, too less available !!!", _resource.ToString(), delta);
-                        civManager.SitRepEntries.Add(new ReportEntry_NoAction(civ, _text, "", "", SitRepPriority.Orange));
+
                         //civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, _resource.ToString(), delta.ToString(), BuildDesign.Description));
                     }
 

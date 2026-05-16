@@ -436,7 +436,19 @@
                             <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
                         </scc:GameButton.CommandParameter>
                     </scc:GameButton>
-                    
+
+                    <scc:GameButton x:Name="PART_ViewButton_Refresh"
+                          Label="REFRESH"
+                          DisplayMode="GroupedVertically"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OutboxButtonTooltipText'}"
+                          Command="{Binding Path=RefreshForeignPowers}"
+                          IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
+                          Margin="0,0,0,2">
+                        <scc:GameButton.CommandParameter>
+                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
+                        </scc:GameButton.CommandParameter>
+                    </scc:GameButton>
+
                     <!--next one is a COMMON button for all empires-->
                             <!--Background="{StaticResource Dom2Gradient_Bottom_Top}"-->               
                     <scc:GameButton x:Name="SummaryButton"                             
@@ -686,6 +698,8 @@
                         </DataTemplate>
                     </Grid.Resources>
                     <Grid>
+                        
+                        
                         <!--PART_CivilizationList-->
                         <xcdg:DataGridControl x:Name="PART_CivilizationList"
                                 scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"

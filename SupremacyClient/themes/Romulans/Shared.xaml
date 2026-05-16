@@ -408,6 +408,7 @@
                        RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
                        RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
 
+              
                 <DockPanel LastChildFill="True">
                     <Border x:Name="Decorations"
                   DockPanel.Dock="Right"

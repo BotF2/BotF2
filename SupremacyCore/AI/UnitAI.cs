@@ -372,7 +372,7 @@ namespace Supremacy.AI
 
                 if (!_is_owner_human)
                 {
-                CloakAll(_fleet);
+                    CloakAll(_fleet);
                 }
 
 
@@ -2344,14 +2344,12 @@ namespace Supremacy.AI
             {
                 if (_fleet.Sector.System.Colony.ToString() == _text_bestSystemFor_Spying)
                 {
-                _fleet.SetOrder(new SpyOnOrder());
+                    _fleet.SetOrder(new SpyOnOrder());
                 }
-
-
             }
             else if (_fleet.Order.ToString() == FleetOrders.IdleOrder.ToString())
             {
-                // ff Idle set NoActivity
+                // if Idle set NoActivity
                 _fleet.Activity = UnitActivity.NoActivity;
             }
 

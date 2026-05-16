@@ -2873,7 +2873,10 @@ namespace Supremacy.Game
 
 
                 // Third: Fulfill agreement obligations
-                foreach (IAgreement agreement in GameContext.Current.AgreementMatrix) { AgreementFulfillmentVisitor.Visit(agreement); }
+                foreach (IAgreement agreement in GameContext.Current.AgreementMatrix) 
+                { 
+                    AgreementFulfillmentVisitor.Visit(agreement); 
+                }
 
 
                 //_civM_1.TargetCivList.Add(_civ2);
@@ -2991,7 +2994,33 @@ namespace Supremacy.Game
 
 
             } // End of foreach civ1
+            Report_Agreement_Matrix();
         } // End of Do_13_Diplo
+
+        private void Report_Agreement_Matrix()
+        {
+            string _text = "";
+            string _agreement_total_text = Environment.NewLine 
+                + "Step_2278:; Report_Agreement_Matrix" + Environment.NewLine;
+            foreach (IAgreement _agreement in GameContext.Current.AgreementMatrix)
+            {
+                //AgreementFulfillmentVisitor.Visit(_agreement);
+                _agreement_total_text +=
+                    /*+ " for " + */_agreement.Proposal.Clauses[0].ClauseType.ToString()
+                    + ", Start-Turn= " + _agreement.StartTurn
+                    + ", End= " + _agreement.EndTurn
+
+                    + ", Sender= " + _agreement.Sender
+                    + " to " + _agreement.Recipient
+                    //+ ", DATA= " + _agreement.Data
+
+                    ;
+                //Console.WriteLine(_agreement_total_text);
+                //Debugger.Break();
+            }
+            Console.WriteLine(_agreement_total_text);
+            //Debugger.Break();
+        }
 
         private void Diplomacy_1_Basics(Civilization _civ1, CivilizationManager _civM_1)
         {
@@ -3329,7 +3358,7 @@ namespace Supremacy.Game
 
                                         + " for >>> "
                                         + _civ1 + " at " + GameEngine.LocationString(_civM_1.HomeSystem.Location.ToString())
-
+                                        + _newline
                                         + " possible  > "
                                         + " Colony= " + GameEngine.LocationString(_new_assault_location.ToString())
                                         + " "
@@ -3396,7 +3425,7 @@ namespace Supremacy.Game
 
                     }
 
-                    //Console.WriteLine(_all_attack_location_text + " > from Step_7724"); // see below
+                    //Console.WriteLine(_all_attack_location_text + " > from Step_7725"); // see below
 
                     if (_civ1.IsHuman)
                     {
@@ -3459,7 +3488,7 @@ namespace Supremacy.Game
                 }
 
 
-                //Console.WriteLine(_all_attack_location_text + "        > from Step_7724");
+                //Console.WriteLine(_all_attack_location_text + "        > from Step_7725");
 
 
                 //if (_writeDirectly)
@@ -3598,7 +3627,7 @@ namespace Supremacy.Game
                 }
 
 
-                Console.WriteLine(_all_attack_location_text + "        > from Step_7724 = _all_attack_location_text");
+                //Console.WriteLine(_all_attack_location_text + "        > from Step_7725 = _all_attack_location_text");
 
 
 
@@ -3759,7 +3788,7 @@ namespace Supremacy.Game
                     //Console.WriteLine("Step_7429:; " + _text + "; Turn " + GameContext.Current.TurnNumber + ";SR for " + _civ2.Name);
 
                     GameContext.Current.CivilizationManagers[_civ2].SitRepEntries.Add(
-                        new ReportEntry_ShowDiplo(_civ2, _text, "", "", SitRepPriority.BlueDark));
+                        new ReportEntry_ShowDiplo(_civ2, _text, "", "", SitRepPriority.Blue2));
 
                 }
 
@@ -4490,7 +4519,7 @@ namespace Supremacy.Game
                         //if (_writeDirectly)
                         Console.WriteLine(_text);
 
-                        Debugger.Break();
+                        //Debugger.Break();
                         //GameLog.Core.DiplomacyDetails.DebugFormat(_text);
 
                         if (_diplomatCiv2.ProposalReceived != null)
@@ -5185,10 +5214,12 @@ namespace Supremacy.Game
                         try
                         {
                             _rp += ScienceShipsGainResearch(item);
+                            item.Fleet.Order = FleetOrders.MissionOrder;
+                            item.Fleet.Activity = UnitActivity.Mission;
                         }
                         catch
                         {
-
+                            Debugger.Break();
                         }
 
                     }
@@ -5246,7 +5277,7 @@ namespace Supremacy.Game
 
         private int ScienceShipsGainResearch(Ship scienceShip)
         {
-            string _newline = Environment.NewLine;
+            //string _newline = Environment.NewLine;
             string _text;
 
             //always problems with Science ships because so after it Research breaks
@@ -5280,6 +5311,7 @@ namespace Supremacy.Game
 
                 int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility) + 10;
                 researchGained += 1;
+                //scienceShip
 
                 // works GameLog.Core.Research.DebugFormat("Turn {3}: Base research gained for {0} {1} is {2}",
                 //scienceShip.ObjectID, scienceShip.Name, researchGained, GameContext.Current.TurnNumber);
@@ -5366,7 +5398,7 @@ namespace Supremacy.Game
                 else
                 {
                     _text = string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
-                  scienceShip.Sector.Location, scienceShip.Name, scienceShip.ObjectID, researchGained, _starType);
+                  GameEngine.LocationString(scienceShip.Sector.Location.ToString()), scienceShip.Name, scienceShip.ObjectID, researchGained, _starType);
                     //{0} > Science Ship {2} {1} gained {3} research points studying this {4}.
                 }
 
@@ -5383,7 +5415,7 @@ namespace Supremacy.Game
             catch (Exception ex)
             {
                 _text = "Problem at DoResearchForScienceShip";
-                Console.WriteLine("Step_8766:; " + _text + _newline + ex);
+                Console.WriteLine("Step_8766:; " + _text + Environment.NewLine + ex);
 
                 return 0;
             }

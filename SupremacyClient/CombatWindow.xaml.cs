@@ -23,6 +23,7 @@ using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -50,8 +51,8 @@ namespace Supremacy.Client
                                                   //#pragma warning restore IDE0052 // Remove unread private members
         private readonly Civilization _onlyFireIfFiredApp_1;
         private readonly Civilization _onlyFireIfFiredApp_2;
-        private Civilization _targeted1Civ;
-        private Civilization _targeted2Civ;
+        private Civilization _targeted_civ_1;
+        private Civilization _targeted_civ_2;
 
         private readonly IAppContext _appContext;
 
@@ -70,8 +71,8 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
-            _targeted1Civ = null;
-            _targeted2Civ = null;
+            _targeted_civ_1 = null;
+            _targeted_civ_2 = null;
 
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             _ = ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
@@ -122,8 +123,24 @@ namespace Supremacy.Client
 
             };
 
-            //_targeted1Civ = (Civilization)radioButton1.DataContext;
-            _targeted1Civ = this.
+            //_targeted_civ_1 = (Civilization)radioButton1.DataContext;
+            //_targeted_civ_1 = this.
+
+            try
+            {
+                if (_otherCivs != null)
+                {
+                _targeted_civ_1 = GameContext.Current.CivilizationManagers[_otherCivs.FirstOrDefault().CivID].Civilization;
+                }
+
+                //Debugger.Break();
+            }
+            catch
+            {
+                Debugger.Break();
+            }
+
+
 
             // be careful for activated ... does the game proceed into the next turn ??
             _onlyFireIfFiredApp_2 = new Civilization
@@ -139,10 +156,10 @@ namespace Supremacy.Client
 
             };
             // The click of "Only Return Fire" radio button by human player
-            // _targeted1Civ = new Civilization();
-            _targeted1Civ = _onlyFireIfFiredApp_1;
-            // _targeted2Civ = new Civilization();
-            _targeted2Civ = _onlyFireIfFiredApp_2;
+            // _targeted_civ_1 = new Civilization();
+            _targeted_civ_1 = _onlyFireIfFiredApp_1;
+            // _targeted_civ_2 = new Civilization();
+            _targeted_civ_2 = _onlyFireIfFiredApp_2;
 
         }
 
@@ -604,8 +621,8 @@ namespace Supremacy.Client
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
-            _targeted1Civ = (Civilization)radioButton1.DataContext;
-            if (_targeted1Civ.ShortName == "Only Return Fire" && _targeted2Civ.ShortName == "Only Return Fire")
+            _targeted_civ_1 = (Civilization)radioButton1.DataContext;
+            if (_targeted_civ_1.ShortName == "Only Return Fire" && _targeted_civ_2.ShortName == "Only Return Fire")
             {
                 EngageButton.IsEnabled = false;
                 RushButton.IsEnabled = false;
@@ -619,11 +636,11 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))))
-                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))));
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))))
+                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))));
 
-            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
-            string _text_combatWindow = "Step_5487:; Primary Target is set to .. > " + _targeted1Civ.ShortName;
+            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted_civ_2.ShortName);
+            string _text_combatWindow = "Step_5486:; Primary Target is set to .. > " + _targeted_civ_1.ShortName;
             Console.WriteLine(_text_combatWindow);
             //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow); //theTargeted1Civ);
 
@@ -632,8 +649,8 @@ namespace Supremacy.Client
         private void TargetButton2_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton2 = (RadioButton)sender;
-            _targeted2Civ = (Civilization)radioButton2.DataContext;
-            if (_targeted1Civ.ShortName == "Only Return Fire" && _targeted2Civ.ShortName == "Only Return Fire")
+            _targeted_civ_2 = (Civilization)radioButton2.DataContext;
+            if (_targeted_civ_1.ShortName == "Only Return Fire" && _targeted_civ_2.ShortName == "Only Return Fire")
             {
                 EngageButton.IsEnabled = false;
                 RushButton.IsEnabled = false;
@@ -645,13 +662,13 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))))
-               || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted1Civ) || (ncs.Owner == _targeted2Civ))));
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))))
+               || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))));
 
-            string _text_combatWindow = "Step_5487:; Secondary Target is set to .. > " + _targeted2Civ.ShortName;
+            string _text_combatWindow = "Step_5487:; Secondary Target is set to .. > " + _targeted_civ_2.ShortName;
             Console.WriteLine(_text_combatWindow);
             //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow);
-            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted2Civ.ShortName);
+            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted_civ_2.ShortName);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -693,12 +710,13 @@ namespace Supremacy.Client
 
             string _text_combatWindow = /*"###########################" +*/
                 GameEngine.LocationString(_playerAssets.Location.ToString()) + " > Red Alert at " + _playerAssets.Sector
-                + " > Target 1: " + _targeted1Civ.Name + ", 2: " + _targeted2Civ.Name
+                + " > Target 1: " + _targeted_civ_1.Name + ", 2: " + _targeted_civ_2.Name
                 + " > Player's choice: " + order /*+ " button was clicked by player "*/
                 ;
 
             CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-            playerCivManager.SitRepEntries.Add(new ReportEntry_NoAction(playerCivManager.Civilization, _text_combatWindow, "", "", SitRepPriority.Yellow));
+            playerCivManager.SitRepEntries.Add(new ReportEntry_NoAction(playerCivManager.Civilization
+                , _text_combatWindow, "", "", SitRepPriority.Yellow));
 
             _text_combatWindow = "Step_5389:; " + _text_combatWindow;
             Console.WriteLine(_text_combatWindow);
@@ -708,8 +726,8 @@ namespace Supremacy.Client
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;
             // send targets before order - order updates
-            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, _targeted1Civ));
-            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, _targeted2Civ));
+            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, _targeted_civ_1));
+            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, _targeted_civ_2));
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
 
             DialogResult = true;

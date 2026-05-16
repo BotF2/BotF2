@@ -372,7 +372,7 @@
                        TextWrapping="NoWrap" />
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlotOutputString)}"
+                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlotOutput)}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>          

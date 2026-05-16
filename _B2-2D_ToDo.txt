@@ -3,6 +3,10 @@
 - Rasse in der Diplomatie
 - Anzeige Turns to go für Schiffe bzw. % gebaut Outpost
 - Avoid für Schiffe
+- separate color for progress in building stations
+- build not only the last available station > TargetSelectionDialog.xaml.cs "Targets" ?
+- animation federt ?? (nur dialog animation)
+- Sound Combat wav ??
 
 
 - bilder fehlermeldung

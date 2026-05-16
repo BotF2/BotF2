@@ -1200,6 +1200,7 @@ namespace Supremacy.Orbitals
 
         protected internal override void OnTurnEnding()
         {
+            string _text;
             //Medicate the colony --- // PopulationHealth is a percent value !!  // healthAdjustment is also a percent valuee.g. 80% * 1,3= 104% 
             //PopHealth = 0.16 (not 16)
             //int helpByShip = Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth);
@@ -1208,7 +1209,7 @@ namespace Supremacy.Orbitals
             float healthAdjustment = 0f;
 
             if (Fleet is null)
-            { /*do nothing*/ }
+            { _text = "do nothing"; }
             else
             {
                 Colony colony = Fleet.Sector.System.Colony;
@@ -1227,7 +1228,7 @@ namespace Supremacy.Orbitals
 
 
                 if (Fleet.Sector.System.Colony is null)
-                { /*do nothing*/ }
+                { _text = "do nothing"; }
                 else if (Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
                 {
                     _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(1); // at least 1
@@ -1236,7 +1237,7 @@ namespace Supremacy.Orbitals
                     Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
                     //301 RSE Torvath 1(Medical Ship I Torvath Class) doing Medical help at Romulus(13, 13): value adjusted = 1,08 %, new = 92(old = 86)
-                    string _text = "Step_3987:; " + Fleet.Sector.System.Colony.Location
+                    _text = "Step_3987:; " + Fleet.Sector.System.Colony.Location
                         + " " + Fleet.Sector.System.Colony.Name
                         + " > " + Fleet.ObjectID
                         + " " + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help: value adjusted ="
@@ -1262,7 +1263,7 @@ namespace Supremacy.Orbitals
                 //If the colony is not ours, just doing small medical help + increase regard + trust etc
                 if (Fleet.Sector.System.Colony is null) // currentx
                 {
-                    //do nothing
+                    _text = "do nothing";
                 }
                 else if (Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
                 {
@@ -1293,7 +1294,7 @@ namespace Supremacy.Orbitals
                         ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
                     }
 
-                    string _text = Fleet.ObjectID
+                    _text = Fleet.ObjectID
                         + " " + Fleet.Name + " doing Medical help at "
                         + " " + Fleet.Sector.System.Colony.Name
                         //+ " " + Fleet.Sector.System.Colony.ObjectID 
@@ -1307,8 +1308,8 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public override bool IsComplete //=> Fleet.Sector.System.Colony.Health.CurrentValue >= 100;
-        {
+        public override bool IsComplete
+        { 
             get
             {
                 if (Fleet is null)
@@ -1317,11 +1318,10 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    return Fleet.Sector.System.Colony.Health.CurrentValue >= 100;
+                    Fleet.Order = FleetOrders.IdleOrder;
+                    return Fleet.Sector.System.Colony.Health.CurrentValue > 94;
                 }
             }
-
-
         }
     }
     #endregion
@@ -2843,10 +2843,14 @@ namespace Supremacy.Orbitals
 
             int buildOutput = project.ProductionCenter.GetBuildOutput(0);
 
-            int _usedDuranium = 1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10;
+            int _used_Duranium_2 = 1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10;
+            int _used_Duranium_1 = 1 + _civM.AverageTechLevel * 10; // 2026-05-13
+
+            int _used_Duranium = (_used_Duranium_1 > _used_Duranium_2) ? _used_Duranium_2 : _used_Duranium_1;
+
             ResourceValueCollection resources = new ResourceValueCollection
             {
-                [ResourceType.Duranium] = _usedDuranium
+                [ResourceType.Duranium] = _used_Duranium
             };
 
             ResourceValueCollection usedResources = resources.Clone();
@@ -2859,7 +2863,7 @@ namespace Supremacy.Orbitals
                 + " > project: Builder = " + project.Builder
                 + ", BuildDesign = " + project.BuildDesign
                 + ", Duranium before = " + _civM.Resources[ResourceType.Duranium].CurrentValue
-                + ", AdjustValue = " + _usedDuranium
+                + ", AdjustValue = " + _used_Duranium
                 ;
             Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
@@ -2868,10 +2872,10 @@ namespace Supremacy.Orbitals
 
             _ = _civM.Resources[ResourceType.Duranium].AdjustCurrent(
                 //usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
-                _usedDuranium * -1);
+                _used_Duranium * -1);
 
             _text = GameEngine.LocationString(project.Location.ToString())
-                + " > ...building a station .. used Duranium = " + _usedDuranium
+                + " > ...building a station .. used Duranium = " + _used_Duranium
 
                 ;
 

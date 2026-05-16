@@ -95,10 +95,10 @@
                             Height="16"
                             Stretch="Uniform">
                     </Image>
-                    <Border.ToolTip>
+                    <!--<Border.ToolTip>
                         <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
                                     Stretch="UniformToFill"/>
-                    </Border.ToolTip>
+                    </Border.ToolTip>-->
                 </Border>
                 <StackPanel Orientation="Vertical"
                             Margin="6,0,0,0"

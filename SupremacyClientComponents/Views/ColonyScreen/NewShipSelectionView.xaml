@@ -12,10 +12,10 @@
              xmlns:Commands="clr-namespace:Supremacy.Client.Commands"
              mc:Ignorable="d"
              d:DesignHeight="690"
-             d:DesignWidth="1099"
+             d:DesignWidth="1199"
              Height="690"
-             Width="1130"
-             Margin="300,80,0,0"
+             Width="1180"
+             Margin="350,80,0,0"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
@@ -37,7 +37,7 @@
 
         <Grid.ColumnDefinitions>
 
-            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="380" />
             <ColumnDefinition Width="390" />
             <ColumnDefinition Width="380" />
         </Grid.ColumnDefinitions>
@@ -110,7 +110,7 @@
                 StretchDirection="DownOnly"
                 Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}">
 
-                <Image.ToolTip>
+                <!--<Image.ToolTip>
                     <Border x:Name="ImageToolTipBorder"
                             Grid.Column="0"
                             VerticalAlignment="Center"
@@ -121,10 +121,10 @@
                             Width="576"
                             Height="480"
                             >
-                        <!--Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}, Mode=OneWay}"-->
+                        --><!--Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}, Mode=OneWay}"-->
                         
                             <!--Width="{Binding ElementName=_self, Path=SpecialWidth1}"
-                            Height="{Binding ElementName=_self, Path=SpecialHeight1}"-->                        
+                            Height="{Binding ElementName=_self, Path=SpecialHeight1}"--><!--                        
                         <Border.Background>
                             <ImageBrush>
                                 <ImageBrush.ImageSource>
@@ -133,7 +133,7 @@
                             </ImageBrush> 
                         </Border.Background>
                     </Border>
-                </Image.ToolTip>
+                </Image.ToolTip>-->
             </Image>
             <!--Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}"-->
 

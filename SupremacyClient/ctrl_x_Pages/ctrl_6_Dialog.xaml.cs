@@ -165,8 +165,7 @@ namespace Supremacy.Client
 
             IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
                              from civ in GameContext.Current.Civilizations
-                                 //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
-                                 //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+
                              let raceEntry = civ.Race as IEncyclopediaEntry
                              where raceEntry != null
                              select raceEntry

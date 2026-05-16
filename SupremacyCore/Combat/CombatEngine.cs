@@ -1060,13 +1060,13 @@ namespace Supremacy.Combat
             // CHANGE X
             for (int i = 0; i < _assets.Count; i++)
             {
-                _text = "Step_3048:; " + _sectorString + "Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets;
+                _text = "Step_3048:; " + _sectorString + " > Surviving assets for " + _assets[i].Owner.Key + ": " + _assets[i].HasSurvivingAssets;
                 Console.WriteLine(_text);
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 if (!_assets[i].HasSurvivingAssets)
                 {
-                    _text = "Step_3049:; " + _sectorString + "remove defeated assets for Player " + _assets[i].Owner.Key;
+                    _text = "Step_3049:; " + _sectorString + " > remove defeated assets for Player " + _assets[i].Owner.Key;
                     Console.WriteLine(_text);
                     //GameLog.Core.CombatDetails.DebugFormat(_text);
 

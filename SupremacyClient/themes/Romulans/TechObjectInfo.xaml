@@ -364,7 +364,7 @@
                        TextWrapping="NoWrap" />
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
-                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlotOutputString)}"
+                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlotOutput)}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>          
@@ -972,6 +972,25 @@
             <TextBlock VerticalAlignment="Top"
                        TextAlignment="Right"
                        Text="{Binding Path=Design.(orbitals:ShipDesign.FuelCapacity)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_WORK_CAPACITY'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipDesign.WorkCapacity)}"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </Grid>

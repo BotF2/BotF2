@@ -2096,6 +2096,20 @@
                                                   BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                   Click = "OnCredits_3_Click"/>
                                         </Grid>
+                                        <scc:GameButton
+                                                  x:Name="EDIT_SABOTAGE"
+                                            Margin="30"
+                                                  Grid.Row="1"
+                                                  DisplayMode="Tiny"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                Label="{s:StringResource Key=EDIT}" 
+                                                  Visibility="Collapsed"
+                                                  FontWeight="DemiBold"
+                                                  Foreground="Black"
+                                                  Background="Transparent"
+                                                  BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                  Click = "OnCredits_3_Click"/>
                                     </StackPanel>
                                     <!-- Colonies - Three -->
                                     <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
