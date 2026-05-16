@@ -6656,6 +6656,9 @@ namespace Supremacy.Game
                                 //GameLog.Core.ShipProductionDetails.DebugFormat(/*_newline + "       */"Turn {5}: {0} de, {2} du, {1} di applied on {4} ({6}) to {3} " /*+ _newline*/,
                                 //    deuteriumUsed, dilithiumUsed, duraniumUsed, _slot.Project, _colony, GameContext.Current.TurnNumber, _colony.Owner);
 
+                                //int _test = _slot.Project.ProductionCenter.GetBuildOutput(_slot.SlotID);
+
+
                                 string _text2 = GameEngine.LocationString(_colony.Location.ToString())  // needs a new _text here !!!!
                                 + " " + _colony.Name
                                 + " > Shipyard-Slot " + _slot.SlotID

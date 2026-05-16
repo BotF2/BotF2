@@ -100,10 +100,10 @@ namespace Supremacy.Orbitals
                 switch (ShipyardDesign.BuildSlotOutputType)
                 {
                     case ShipyardOutputType.PopulationRatio:
-                        output = output / 100 * Sector.System.Colony.Population.CurrentValue;
+                        output = Sector.System.Colony.Population.CurrentValue* output / 100 ;
                         break;
                     case ShipyardOutputType.IndustryRatio:
-                        output = output / 100 * Sector.System.Colony.Industry_Net / Sector.System.Colony.Facilities_Active2_Industry;
+                        output = Sector.System.Colony.Industry_Net * output / 1000 ;// / Sector.System.Colony.Facilities_Active2_Industry;
                         break;
                     case ShipyardOutputType.Static:
                     default:
@@ -111,10 +111,11 @@ namespace Supremacy.Orbitals
                 }
             }
 
-            if (ShipyardDesign.BuildSlotMaxOutput > 0)
-            {
-                output = Math.Min(output, ShipyardDesign.BuildSlotMaxOutput);
-            }
+            // ignoring BuildSlotMaxOutput because the value makes no sense
+            //if (ShipyardDesign.BuildSlotMaxOutput > 0)
+            //{
+            //    output = Math.Min(output, ShipyardDesign.BuildSlotMaxOutput);
+            //}
 
             float shipBuildingBonus = Sector.System.Colony.Buildings
                 .Where(o => o.IsActive)

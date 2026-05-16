@@ -10,6 +10,7 @@
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.ServiceLocation;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
@@ -26,7 +27,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Media;
+//using System.Media;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,6 +56,8 @@ namespace Supremacy.Client
         private Civilization _targeted_civ_2;
 
         private readonly IAppContext _appContext;
+        private readonly IMusicPlayer _musicPlayer;
+        private readonly ISoundPlayer _soundPlayer;
 
         //[NonSerialized]
         //private string _text_combatWindow;
@@ -376,11 +379,15 @@ namespace Supremacy.Client
                     ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
                     _update.Sector.Name);
 
-                SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
+                //_soundPlayer.PlayFile("Resources/SoundFX/REDALERT.ogg");
+                //SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
                 {
-                    if (File.Exists("Resources/SoundFX/REDALERT.wav") && ClientSettings.Current.EnableSoundRedAlert)
+                    if (File.Exists("Resources/SoundFX/REDALERT.ogg") && ClientSettings.Current.EnableSoundRedAlert)
+                        //if (File.Exists("Resources/SoundFX/REDALERT.wav") && ClientSettings.Current.EnableSoundRedAlert)
                     {
-                        soundPlayer.Play();
+                        //ToDo
+                        //_soundPlayer.PlayFile("Resources/SoundFX/REDALERT.ogg");
+                        //soundPlayer.Play();
                     }
                 }
             }

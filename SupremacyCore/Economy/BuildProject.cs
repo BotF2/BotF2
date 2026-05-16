@@ -18,6 +18,7 @@ using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Supremacy.Economy
 {
@@ -519,6 +520,12 @@ namespace Supremacy.Economy
         /// <returns>The time estimate.</returns>
         public virtual int GetTimeEstimate()
         {
+            if (this.ProductionCenter.Owner.IsHuman)
+            {
+                //Debugger.Break();
+            }
+
+
             int industryAvailable = GetIndustryAvailable();
             if (industryAvailable == 0)
             {

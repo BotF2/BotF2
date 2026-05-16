@@ -7,6 +7,9 @@
 - build not only the last available station > TargetSelectionDialog.xaml.cs "Targets" ?
 - animation federt ?? (nur dialog animation)
 - Sound Combat wav ??
+- use more of the available images of minor colony ships
+- it's possible to build minor ships ?!?!
+
 
 
 - bilder fehlermeldung

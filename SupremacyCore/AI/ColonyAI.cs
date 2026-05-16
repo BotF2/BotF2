@@ -1223,7 +1223,7 @@ namespace Supremacy.AI
             string _check_colony = GetCheckColony();
             if (_colony.Name == _check_colony)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_colony.Owner.IsHuman)
@@ -1618,7 +1618,7 @@ namespace Supremacy.AI
             if (_colony.Name == _text)
             {
                 Console.WriteLine(_text);
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_colony.Owner.IsHuman)

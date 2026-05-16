@@ -950,19 +950,21 @@ namespace Supremacy.Client.Views
                 return false;
             }
 
-            CivilizationManager civMan = CivilizationManager.For(Model.SelectedColony.Owner);
+            CivilizationManager _civM = CivilizationManager.For(Model.SelectedColony.Owner);
+            // "buy"
 
-            if (civMan.Credits.CurrentValue < project.GetTotalCreditsCost() * 5)  // 5 times expensive
+
+            if (_civM.Credits.CurrentValue < project.GetTotalCreditsCost() * 2)  // 2 times expensive
             {
-                int missingCredits = (5 * project.GetCurrentIndustryCost()) - civMan.Credits.CurrentValue;
-                //int missingCredits = (5 * project.GetCurrentIndustryCost()) - project.IndustryInvested;
+                int missingCredits = (2 * project.GetCurrentIndustryCost()) - _civM.Credits.CurrentValue;
+                //int missingCredits = (2 * project.GetCurrentIndustryCost()) - project.IndustryInvested;
                 string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"), missingCredits);
 
                 //string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"));
                 _ = MessageDialog.Show(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_HEADER"), message, MessageDialogButtons.Ok);
                 _text = message
                     + " - project.GetCurrentIndustryCost() = " + project.GetCurrentIndustryCost()
-                    + "; civMan.Credits.CurrentValue=" + civMan.Credits.CurrentValue
+                    + "; _civM.Credits.CurrentValue=" + _civM.Credits.CurrentValue
                     + " "
                     ;
                 Console.WriteLine("Step_1212:; " + _text);
@@ -1006,8 +1008,8 @@ namespace Supremacy.Client.Views
 
             // Temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
             _ = civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost()*2);
-            //_ = civMan.BuyCostLastTurn.AdjustCurrent(project.GetTotalCreditsCost());
-            //civMan.BuyCostLastTurn += project.GetTotalCreditsCost();
+            //_ = _civM.BuyCostLastTurn.AdjustCurrent(project.GetTotalCreditsCost());
+            //_civM.BuyCostLastTurn += project.GetTotalCreditsCost();
 
             project.IsRushed = true;
             PlayerOrderService.AddOrder(new RushProductionOrder(productionCenter));

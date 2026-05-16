@@ -1176,7 +1176,7 @@ namespace Supremacy.Tech
                    (p.HasRestriction(BuildRestriction.OnePerEmpire) &&
                     IsBuildLimitReachedCore(colony, design, 1, BuildLimitScope.Civilization, includeConstruction)) ||
                    (p.HasRestriction(BuildRestriction.OnePer100MaxPopUnits) &&
-                    IsBuildLimitReachedCore(colony, design, colony.Population.Maximum / 100, BuildLimitScope.System, includeConstruction));
+                    IsBuildLimitReachedCore(colony, design, colony.Population.Maximum / 50, BuildLimitScope.System, includeConstruction));
         }
 
         private static bool IsBuildLimitReachedCore(Colony colony, TechObjectDesign design, int buildLimit, BuildLimitScope buildLimitScope, bool includeConstruction = false)
