@@ -56,8 +56,8 @@ namespace Supremacy.Client
         private Civilization _targeted_civ_2;
 
         private readonly IAppContext _appContext;
-        private readonly IMusicPlayer _musicPlayer;
-        private readonly ISoundPlayer _soundPlayer;
+        //private readonly IMusicPlayer _musicPlayer;
+        //private readonly ISoundPlayer _soundPlayer;
 
         //[NonSerialized]
         //private string _text_combatWindow;

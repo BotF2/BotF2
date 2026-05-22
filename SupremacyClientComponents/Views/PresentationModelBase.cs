@@ -1,4 +1,4 @@
-// PresentationModelBase.cs
+// File:PresentationModelBase.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -28,7 +28,7 @@ namespace Supremacy.Client.Views
 
         public IAppContext AppContext { get; }
 
-        public string TurnNumberText => "Turn " + GameContext.Current.TurnNumber;
+        //public string TurnNumberText => "Turn " + GameContext.Current.TurnNumber;
 
         public void NotifyLoaded()
         {

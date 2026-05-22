@@ -638,7 +638,7 @@ namespace Supremacy.Game
                 string file_autosav_3_turns_ago = SavedGameFolder + "autosav_3_turns_ago.sav";
                 string file_autosav_4_turns_ago = SavedGameFolder + "autosav_4_turns_ago.sav";
 
-                _text = "Step_9500:; Turn " + game.TurnNumber + "Autosaving > " + file_autosav_current;
+                _text = "Step_9501:; Turn " + game.TurnNumber + " > Autosaving > " + file_autosav_current;
                 Console.WriteLine(_text);
                 GameLog.Core.General.InfoFormat(_text);
 

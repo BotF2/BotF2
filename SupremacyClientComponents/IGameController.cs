@@ -738,24 +738,32 @@ namespace Supremacy.Client
         {
             List<IPresenter> initializedPresenters = new List<IPresenter>();
 
-            GameLog.Client.UIDetails.DebugFormat("BEGINNING: CreatePresenters");
+            string _text = "Step_0711:; > BEGINNING: CreatePresenters";
+            Console.WriteLine(_text);
+            //GameLog.Client.UIDetails.DebugFormat("BEGINNING: CreatePresenters");
 
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IGalaxyScreenPresenter");  // F1-Screen
+                _text = "Step_0711:; > DONE: IGalaxyScreenPresenter = F1-Screen";
+                Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
-
-                _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, IDiplomacyScreenViewSecond>>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IDiplomacyScreenViewSecond");  // F3-Screen
+                _text = "Step_0712:; > DONE: IGalaxyScreenPresenter = F2-Screen";
+                Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen
+                _text = "Step_0714:; > DONE: IGalaxyScreenPresenter = F3-Screen";
+                Console.WriteLine(_text);
+
+                _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, IDiplomacyScreenViewSecond>>());
+                _text = "Step_0713:; > DONE: IGalaxyScreenPresenter = F4-Screen";
+                Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IAssetsScreenPresenter");  // F5-Screen
+                _text = "Step_0715:; > DONE: IGalaxyScreenPresenter = F5-Screen";
+                Console.WriteLine(_text);
+
 
                 // XXXXX  not realized yet
                 //_screenPresenters.Add(_container.Resolve<IEncyclopediaScreenPresenter>());
@@ -767,14 +775,20 @@ namespace Supremacy.Client
                     {
                         presenter.Run();
                         initializedPresenters.Add(presenter);
-                        GameLog.Client.UIDetails.DebugFormat("DONE: {0}", presenter.ToString());
+                        _text = "Step_0718:; > DONE: " + presenter.ToString();
+                        Console.WriteLine(_text);
+                        //GameLog.Client.UIDetails.DebugFormat("DONE: {0}", presenter.ToString());
                     }
                     catch (Exception e)
                     {
-                        GameLog.Client.UI.Error(string.Format("###### problem with {0}",
-                            presenter.ToString()),
-                            e);
+                        _text = "Step_0719:; > ###### problem with " + presenter.ToString() 
+                            + Environment.NewLine + e;
+                        Console.WriteLine(_text);
+                        Debugger.Break();
+
                         throw;
+                        //GameLog.Client.UI.Error(string.Format("###### problem with {0}",
+                        //    presenter.ToString()), e);
                     }
                 }
             }

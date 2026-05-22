@@ -7,19 +7,17 @@
 //
 // All other rights reserved.
 
-using System;
-
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
-
-using System.Linq;
-
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Dynamic;
+using System.Linq;
 
 namespace Supremacy.Diplomacy
 {
@@ -128,6 +126,20 @@ namespace Supremacy.Diplomacy
         public DiplomacyDataInternal DiplomacyData => _diplomacyData;
 
         public IDiplomacyData CounterpartyDiplomacyData => GameContext.Current.DiplomacyData[CounterpartyID, OwnerID];
+
+        public String All_Info
+        {
+            get
+            {
+                string _all_info ="Step_6661:; "+ Owner + ", Counterparty= " + Counterparty
+                    + " > " + this.Owner
+
+                    ;
+                return _all_info;
+            }
+        }
+
+
 
         public Civilization Owner
         {

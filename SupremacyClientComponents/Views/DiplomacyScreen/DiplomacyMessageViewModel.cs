@@ -675,6 +675,7 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("REQUEST_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                        Console.WriteLine(_text);
                         //Console.WriteLine("REQUEST_DIALOG_HINT is outcommented");
                     }
                     break;
@@ -696,10 +697,10 @@ namespace Supremacy.Client.Views
                         //    element.ElementType.ToString());
                     }
                     _text = "Step_8732:; "
-                            + "Proposal element added to _treatyElements > " + element.ElementType.ToString()
+                            + "Proposal element added > " + element.ElementType.ToString()
                             //+ ", " + element.SelectedParameter.ToString()
-                            + " > " + element.ElementType.ToString()
-
+                            //+ " > " + element.ElementType.ToString()
+                            + " > " + element.Description
                             ;
                     Console.WriteLine(_text);
 

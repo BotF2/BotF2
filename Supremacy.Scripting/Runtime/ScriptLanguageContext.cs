@@ -22,6 +22,7 @@ using SourceSpan = Microsoft.Scripting.SourceSpan;
 using ReflectionUtils = Microsoft.Scripting.Utils.ReflectionUtils;
 
 using MGraphXamlReader;
+using System.Diagnostics;
 
 [assembly: ScriptVisibleNamespace("System", "mscorlib")]
 [assembly: ScriptVisibleNamespace("System.Collections", "mscorlib")]
@@ -35,9 +36,7 @@ namespace Supremacy.Scripting.Runtime
     {
         private static Parser _parser;
         private static Dictionary<Identifier, Type> _xamlTypeMap;
-#pragma warning disable IDE0052 // Remove unread private members
         private static readonly Dictionary<string, TypeTracker> _typeGroups = new Dictionary<string, TypeTracker>();
-#pragma warning restore IDE0052 // Remove unread private members
 
         private readonly HashSet<string> _defines = new HashSet<string>();
         private readonly TopNamespaceTracker _topNamespace;
@@ -224,8 +223,15 @@ namespace Supremacy.Scripting.Runtime
 
         private void LoadAssemblyScriptImports(Assembly assembly)
         {
-            ScriptVisibleNamespace[] scriptVisibleNamespaces = assembly.GetScriptVisibleNamespaces();
             int c = 0;
+            string _text = "Step_9882:; ( " + c + " )                assembly= " + assembly.Location.ToString()
+    //+ ", ns= " + ns.ToString()
+    + " for " + assembly.CodeBase.ToString()
+    ;
+            Console.WriteLine(_text);
+            ScriptVisibleNamespace[] scriptVisibleNamespaces = assembly.GetScriptVisibleNamespaces();
+
+            //string _text = "";
             //Console.WriteLine("Step_9880:; ( " + c + " )                LoadAssemblyScriptImports are done " );
             // is this the case ?? > https://www.devgem.io/posts/understanding-why-pattern-matching-causes-compiler-errors-in-c-expression-trees
             foreach (ScriptVisibleNamespace s in scriptVisibleNamespaces)
@@ -240,7 +246,12 @@ namespace Supremacy.Scripting.Runtime
                     _ = _topNamespace.LoadAssembly(loadedAssembly);
 
                     // works
-                    Console.WriteLine("Step_9881:; ( " + c + " )                loadedAssembly= " + loadedAssembly.ToString());
+                    _text = "Step_9881:; ( " + c + " )                loadedAssembly= " + loadedAssembly.Location.ToString()
+                        //+ ", ns= " + ns.ToString()
+                        + " for " + assembly.CodeBase.ToString()
+                        ;
+                    Console.WriteLine(_text);
+                    //Debugger.Break();
                     //foreach (var item in loadedAssembly.CustomAttributes)
                     //{
                     //    if (item.ToString().Contains("KeyFileAttribute"))

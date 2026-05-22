@@ -586,7 +586,7 @@ namespace Supremacy.WCF
 
                 _text = "Step_4444:; Turn processing time= " + stopwatch.Elapsed;
                 Console.WriteLine(_text);
-                GameLog.Server.GeneralDetails.InfoFormat(_text);
+                //GameLog.Server.GeneralDetails.InfoFormat(_text);
 
                 Task autoSaveTask = null;
 
@@ -623,6 +623,9 @@ namespace Supremacy.WCF
                 }
 
                 await SendTurnFinishedNotificationsAsync().ConfigureAwait(false);
+
+            _text = "Step_0678:; AI processing time= " + stopwatch.Elapsed;
+            Console.WriteLine(_text);
             }
             finally
             {
@@ -637,19 +640,21 @@ namespace Supremacy.WCF
         {
             string _text = "Step_0577:; DoTurnCore... to go to the next Turn";
             Console.WriteLine(_text);
-            //GameLog.Core.GameDataDetails.DebugFormat(_text);
+            _text = "//GameLog.Core.GameDataDetails.DebugFormat(_text);";
 
-            TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
+            //TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
             _gameEngine.TurnPhaseChanged += OnGameEngineTurnPhaseChanged;
 
             GameContext gameContext = _game;
 
-            _ = Observable
-                .ToAsync(() => _gameEngine.DoTurn(gameContext), _threadPoolScheduler)()
-                .Subscribe(tcs.SetResult, tcs.SetException);
+            await Task.Run(() => _gameEngine.DoTurn(gameContext));
 
-            _ = await tcs.Task;
+            //Observable
+            //    .ToAsync(() => _gameEngine.DoTurn(gameContext), _threadPoolScheduler)()
+            //    .Subscribe(tcs.SetResult, tcs.SetException);
+
+            //await tcs.Task;
 
             _gameEngine.TurnPhaseChanged -= OnGameEngineTurnPhaseChanged;
         }

@@ -92,6 +92,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
         {
 
         }
+
+        public string TurnNumberText => "Turn " + GameContext.Current.TurnNumber;
     }
 
     internal class DiplomacyGraphPenSelector : INodeGraphPenSelector
