@@ -1585,7 +1585,7 @@
                 <xcdg:FixedCellPanel x:Name="PART_CellsHost"
                                      DockPanel.Dock="Left"
                                      Margin="{TemplateBinding BorderThickness}" />
-                <Rectangle Fill="{StaticResource Rom2Gradient_Bottom_Top}" />
+                <Rectangle Fill="{StaticResource Rom1Gradient_Top_Bottom}" />
               </DockPanel>
             </Decorator>
           </Grid>

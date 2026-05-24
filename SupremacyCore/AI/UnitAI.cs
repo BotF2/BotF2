@@ -2445,9 +2445,9 @@ namespace Supremacy.AI
 
             //checkMedicalShips = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Medical)
-            if (_fleet.Owner.IsHuman)
+            if (GameEngine.IsCivM_Human_Player(_civM))
             {
-                //Debugger.Break();
+                Debugger.Break();
             }
 
             //Medical

@@ -105,6 +105,10 @@
       <HintPath>..\Common\Microsoft.Xna.Framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="nRoute.Framework, Version=0.5.0.170, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\nRoute.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>

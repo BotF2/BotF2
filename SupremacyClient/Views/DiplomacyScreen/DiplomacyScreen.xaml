@@ -748,7 +748,7 @@
                                 <xcdg:Column FieldName="Location" 
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Location, CharacterCasing=Upper}"
                                          Width="150"
-                                         DisplayMemberBinding="{Binding Path=TurnNumberText, Mode=OneWay}"
+                                         DisplayMemberBinding="{Binding Path=CounterpartyLocation}"
                                          IsMainColumn="True"
                                          VisiblePosition="3" />
 
@@ -1277,9 +1277,10 @@
                                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                                     ItemTemplate="{StaticResource StipulationTreeItemTemplate}"
                                                                     ItemsSource="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements}"
-                                                                    IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements}"
+                                                                    
                                                                           
                                                                     Visibility="Visible">
+                                                                <!--IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements}"-->
                                                                 <!--DEBUG ItemsControl.IsEnabled-->
                                                                 <ItemsControl.GroupStyle>
                                                                     <GroupStyle HeaderTemplate="{StaticResource StipulationTreeHeaderTemplate}" />

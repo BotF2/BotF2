@@ -224,10 +224,11 @@ namespace Supremacy.Scripting.Runtime
         private void LoadAssemblyScriptImports(Assembly assembly)
         {
             int c = 0;
-            string _text = "Step_9882:; ( " + c + " )                assembly= " + assembly.Location.ToString()
-    //+ ", ns= " + ns.ToString()
-    + " for " + assembly.CodeBase.ToString()
-    ;
+            
+            string _text = "Step_9881:; ( " + c + " ) " 
+                + " for " + assembly.CodeBase.ToString()
+                + " > assembly= " + assembly.Location.ToString()
+                ;
             Console.WriteLine(_text);
             ScriptVisibleNamespace[] scriptVisibleNamespaces = assembly.GetScriptVisibleNamespaces();
 
@@ -246,9 +247,9 @@ namespace Supremacy.Scripting.Runtime
                     _ = _topNamespace.LoadAssembly(loadedAssembly);
 
                     // works
-                    _text = "Step_9881:; ( " + c + " )                loadedAssembly= " + loadedAssembly.Location.ToString()
-                        //+ ", ns= " + ns.ToString()
-                        + " for " + assembly.CodeBase.ToString()
+                    _text = "Step_9882:; ( " + c + " ) "//               loadedAssembly= " + loadedAssembly.Location.ToString()
+                            + " for " + assembly.CodeBase.ToString()
+                            + " > assembly= " + assembly.Location.ToString()
                         ;
                     Console.WriteLine(_text);
                     //Debugger.Break();

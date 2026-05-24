@@ -204,6 +204,44 @@ namespace Supremacy.Economy
         {
             get
             {
+                int _dilithium_used = 0;
+                int _deuterium_used = 0;
+                int _duranium_used = 0;
+
+
+                foreach (ResourceType _resource in EnumUtilities.GetValues<ResourceType>())
+                {
+                    if (_resourcesInvested[_resource] < ResourcesRequired[_resource])
+                    {
+                        _text = "Step_8555:; " + _locationString
+                            + " > " + BuildDesign
+                            + " not complete - insufficient " + _resource + " invested, but no checking whether enough resources there "
+                            ;
+                        Console.WriteLine(_text);
+                        switch (_resource)
+                        {
+                            case ResourceType.Deuterium:
+                                _deuterium_used = ResourcesRequired[_resource] - _resourcesInvested[_resource];
+                                break;
+                            case ResourceType.Dilithium:
+                                _dilithium_used = ResourcesRequired[_resource] - _resourcesInvested[_resource];
+                                break;
+                            case ResourceType.Duranium:
+                                _duranium_used = ResourcesRequired[_resource] - _resourcesInvested[_resource];
+                                break;
+                        }
+
+                        //GameLog.Core.ProductionDetails.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
+                        //    BuildDesign, _location, _resource);
+
+                        //GameLog.Core.ProductionDetails.DebugFormat("not checking whether enough resources there");
+
+                        return true;  // cheating
+
+                        //return false;
+                    }
+                }
+
                 if (_industryInvested < IndustryRequired)
                 {
 
@@ -211,7 +249,13 @@ namespace Supremacy.Economy
 
                     if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
                     {
-                        _text = _locationString + " > " + BuildDesign + " not complete... " + PercentComplete.ToString() + " done";
+                        _text = _locationString + " > " 
+                            + BuildDesign + " not complete... " 
+                            + PercentComplete.ToString() + " done"
+                            + " > used: Dil=" + _dilithium_used
+                            + ", Deu=" + _deuterium_used
+                            + ", Dur=" + _duranium_used
+                            ;
                         civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Gray));
                         //GameLog.Core.Stations.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
                         //BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
@@ -228,25 +272,25 @@ namespace Supremacy.Economy
                     return false;
                 }
 
-                foreach (ResourceType _resource in EnumUtilities.GetValues<ResourceType>())
-                {
-                    if (_resourcesInvested[_resource] < ResourcesRequired[_resource])
-                    {
-                        _text = "Step_8555:; " + _locationString
-                            + " > " + BuildDesign
-                            + " not complete - insufficient " + _resource + " invested, but no checking whether enough resources there "
-                            ;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.ProductionDetails.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
-                        //    BuildDesign, _location, _resource);
+                //foreach (ResourceType _resource in EnumUtilities.GetValues<ResourceType>())
+                //{
+                //    if (_resourcesInvested[_resource] < ResourcesRequired[_resource])
+                //    {
+                //        _text = "Step_8555:; " + _locationString
+                //            + " > " + BuildDesign
+                //            + " not complete - insufficient " + _resource + " invested, but no checking whether enough resources there "
+                //            ;
+                //        Console.WriteLine(_text);
+                //        //GameLog.Core.ProductionDetails.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
+                //        //    BuildDesign, _location, _resource);
 
-                        //GameLog.Core.ProductionDetails.DebugFormat("not checking whether enough resources there");
+                //        //GameLog.Core.ProductionDetails.DebugFormat("not checking whether enough resources there");
 
-                        return true;  // cheating
+                //        return true;  // cheating
 
-                        //return false;
-                    }
-                }
+                //        //return false;
+                //    }
+                //}
 
                 return true;
             }

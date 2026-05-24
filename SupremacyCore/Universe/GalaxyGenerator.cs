@@ -518,7 +518,7 @@ namespace Supremacy.Universe
 
             _text = "Step_0532: GenerateHomeSystem for " + civ.Name;
             Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
 
             StarSystemDescriptor system = new StarSystemDescriptor
             {

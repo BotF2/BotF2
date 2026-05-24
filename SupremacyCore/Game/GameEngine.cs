@@ -2814,15 +2814,16 @@ namespace Supremacy.Game
                 string _newline = Environment.NewLine;
                 //Console.WriteLine(_text);
 
+                CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ1];
+                Report_SomeSectors(_civ1, _civM_1); // reports for _civ1: Sectors for Accumulate, SystemAttack, TargetCiv
+                
                 string _diploStatusText = "";
                 _diploStatusText += " " + _diploStatusText; // dummy - please keep
 
 
-                CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ1];
+
                 Diplomat _diplomatCiv1 = Diplomat.Get(_civ1);
                 _civM_1.Assault_Value_Defense_and_Distance = 999993;
-
-                Report_SomeSectors(_civ1, _civM_1); // reports for _civ1: Sectors for Accumulate, SystemAttack, TargetCiv
 
                 if (!_civ1.IsHuman)
                 {
@@ -3063,11 +3064,12 @@ namespace Supremacy.Game
 
                 //if (_foreignPowerStatus != ForeignPowerStatus.NoContact)
                 //{
-                _text = _newline + _newline + "Step_7731:; Do_13_Diplomacy >>>>>>>>>>>>>>>>>>>>>>>>>> " + _civ1
-                    + " ; Status > " + _foreignPowerStatus
-                    + " ; to ; " + _civ2
+                _text = string.Concat("\r\nStep_7731:; Do_13_Diplomacy >>>>>>>>>>>>>>>>>>>>>>>>>> "
+                    , _civ1
+                    , " ; Status > ", _foreignPowerStatus
+                    , " ; to ; ", _civ2
+                    ); 
 
-                    ;
                 if (_writeDirectly)
                     Console.WriteLine(_text);
                 _diplomacyBasicsSummary_Text += _newline + _text;
@@ -3233,6 +3235,7 @@ namespace Supremacy.Game
                 string _all_attack_location_text = "";
                 int _next_target_fire_power = 999991;
                 int _lowest_defense_value = 999991;
+                string _text_header = "";
                 //int _targetDistance = 99;
 
                 if (_civ1.IsHuman)
@@ -3282,12 +3285,11 @@ namespace Supremacy.Game
 
                     //int _minValue = 98;
 
-
                     //MapLocation _new_assault_location = new MapLocation();
-
 
                     foreach (var item in _targetColoniesLocations)
                     {
+                        
                         //if (item.Value < _minValue)
                         //{
                         //    _minValue = item.Value;
@@ -3306,21 +3308,24 @@ namespace Supremacy.Game
 
                             if (_targetDistance > 0 && _targetDistance < _lowest_targetDistance)
                             {
-                                _text = "Step_7720:; Do_13_Diplomacy > "
-                                        /*+ "_targetDistance= "*/ + _civM_1.Civilization.Key
-                                        + " > _targetDistance= " + _targetDistance
-                                        + ", _lowest_targetDistance= " + _lowest_targetDistance
-                                            ;
+                                //_text = "Step_7720:; Do_13_Diplomacy > "
+                                //        /*+ "_targetDistance= "*/
+                                //        + _civM_1.Civilization.Key
+                                //        + " > " + item.Key
+                                //        + " > _targetDistance= " + _targetDistance
+                                //        + ", _lowest_targetDistance= " + _lowest_targetDistance
+                                //            ;
                                 //if (_writeDirectly)
                                 //Console.WriteLine(_text);
                                 //_all_attack_location_text += _newline + _text;
 
                                 if (_civM_1.Civilization.IsHuman)
                                 {
-                                    //Debugger.Break();
+                                    Debugger.Break();
                                 }
 
                             }
+
 
 
                             if (_targetDistance > 0 && _targetDistance < _lowest_targetDistance)
@@ -3329,7 +3334,7 @@ namespace Supremacy.Game
                                 LocationFirePower(item.Key, out _target_fire_power);
 
                                 List<Colony> _colony_there = GameContext.Current.Universe.Find<Colony>()//(_civ).ToList()
-                                                            .Where(a => a.Location.ToString() == item.ToString())
+                                                            .Where(a => a.Location.ToString() == item.Key.ToString())
                                                             .ToList()
                                                             ;
 
@@ -3350,50 +3355,58 @@ namespace Supremacy.Game
                                 //    Debugger.Break(); // no _colony is this sector > just a station ?
                                 //}
 
+                                _text = "";
+                                //string _text_header ="";
+
+                                _text_header = "Step_7726:; Assault_Location"
+                                            //+ "_civM_1.Assault_Location"Do_13_Diplomacy > 
+
+                                            + " for >>> "
+                                            + _civ1 + " at " + GameEngine.LocationString(_civM_1.HomeSystem.Location.ToString())
+        ;
 
                                 if (_colony_local != null)
                                 {
                                     //_target_fire_power += _colony_there[0].Population.CurrentValue;
                                     _target_fire_power += Colony.DefenseValue(_colony_local);
+
+                                    _text += _newline
+                                    + " possible  > "
+                                    + " Colony= " + _colony_local.LocationStringColony
+                                    + " "
+                                    + _civM_2.Civilization /*+ " at " + LocationString(item.Key.ToString())*/
+
+                                    + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _target_fire_power.ToString())
+
+                                    //+ "   ; _regard= " + _regard
+                                    + "   ; Attack= " + _civM_1.Assault_Attack_Value
+                                    + "   ; Distance= " + GameEngine.Do_x_Digit_String(2, _targetDistance.ToString())
+                                    + "   ; _next_target_fire_power= " + GameEngine.Do_x_Digit_String(5, _next_target_fire_power.ToString())
+                                    + "   ; AssVal_Defense+Dist= " + GameEngine.Do_x_Digit_String(5, _civM_1.Assault_Value_Defense_and_Distance.ToString())
+                                        //+ "XXXXX >"
+                                        //+ " Distance= " + GameEngine.Do_x_Digit_String(_targetDistance.ToString())
+                                        //+ " for "
+                                        //+ _civ1 + " at " + LocationString(_civM_1.HomeSystem.Location.ToString()) + "   ; vs ; "
+                                        //+ _civM_2.Civilization /*+ " at " + LocationString(item.Key.ToString())*/
+                                        ////+ "   ; _regard= " + _regard
+                                        //+ "; Colony= " + item.Key
+                                        //+ "; _target_fire_power= " + GameEngine.Do_x_Digit_String( 5, (_target_fire_power.ToString())
+                                        ////+ _civ2 + " at " + GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv].HomeSystem.Location
+
+                                        ////+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
+
+                                        ;
                                 }
 
-                                _next_target_fire_power = _target_fire_power + ((_targetDistance * _targetDistance) * 100);
+                                _next_target_fire_power = _target_fire_power
+                                    + ((_targetDistance * _targetDistance) * 100);
 
-                                _text = "Step_7726:; Do_13_Diplomacy > "
-                                        + "_civM_1.Assault_Location"
 
-                                        + " for >>> "
-                                        + _civ1 + " at " + GameEngine.LocationString(_civM_1.HomeSystem.Location.ToString())
-                                        + _newline
-                                        + " possible  > "
-                                        + " Colony= " + GameEngine.LocationString(_new_assault_location.ToString())
-                                        + " "
-                                        + _civM_2.Civilization /*+ " at " + LocationString(item.Key.ToString())*/
-
-                                        + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _target_fire_power.ToString())
-
-                                        //+ "   ; _regard= " + _regard
-                                        + "   ; Attack= " + _civM_1.Assault_Attack_Value
-                                        + "   ; Distance= " + GameEngine.Do_x_Digit_String(2, _targetDistance.ToString())
-                                        + "   ; _next_target_fire_power= " + GameEngine.Do_x_Digit_String(5, _next_target_fire_power.ToString())
-                                        + "   ; AssVal_Defense+Dist= " + GameEngine.Do_x_Digit_String(5, _civM_1.Assault_Value_Defense_and_Distance.ToString())
-                                            //+ "XXXXX >"
-                                            //+ " Distance= " + GameEngine.Do_x_Digit_String(_targetDistance.ToString())
-                                            //+ " for "
-                                            //+ _civ1 + " at " + LocationString(_civM_1.HomeSystem.Location.ToString()) + "   ; vs ; "
-                                            //+ _civM_2.Civilization /*+ " at " + LocationString(item.Key.ToString())*/
-                                            ////+ "   ; _regard= " + _regard
-                                            //+ "; Colony= " + item.Key
-                                            //+ "; _target_fire_power= " + GameEngine.Do_x_Digit_String( 5, (_target_fire_power.ToString())
-                                            ////+ _civ2 + " at " + GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv].HomeSystem.Location
-
-                                            ////+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
-
-                                            ;
                                 //if (_writeDirectly)
                                 //Console.WriteLine(_text);
-                                _all_attack_location_text += _newline + _text;
+                                _all_attack_location_text += string.Concat(_text, /*_newline, */_all_attack_location_text);
                                 //_distance_text += /*_newline +*/ _text;
+                                Console.WriteLine(_all_attack_location_text);
 
 
                             }
@@ -3429,9 +3442,10 @@ namespace Supremacy.Game
                         }
 
 
-                    }
+                    
 
-                    //Console.WriteLine(_all_attack_location_text + " > from Step_7725"); // see below
+                    Console.WriteLine(_text_header + _all_attack_location_text + " > from Step_7725"); // see below
+                }
 
                     if (_civ1.IsHuman)
                     {

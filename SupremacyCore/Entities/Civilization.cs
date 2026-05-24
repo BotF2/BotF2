@@ -170,6 +170,7 @@ namespace Supremacy.Entities
         /// <param name="element">The XML element.</param>
         public Civilization(XElement element)
         {
+            string _text = "";
             XNamespace ns = element.Document.Root.Name.Namespace;
 
             _key = (string)element.Attribute("Key");
@@ -213,17 +214,50 @@ namespace Supremacy.Entities
             _traits = _traits.Trim();
             _spiedCivList = SpiedCivList;
 
+            switch (_traits)
+            {
+                case "Warlike":
+                    _baseMoraleLevel -= 2;
+                    break;
+                case "Peaceful":
+                    _baseMoraleLevel += 2;
+                    break;
+                case "Superiority":
+                    _baseMoraleLevel += 3;
+                    break;
+                case "Submissive":
+                    _baseMoraleLevel -= 3;
+                    break;
+                case "Materialistic":
+                    _baseMoraleLevel -= 3;
+                    break;
+                case "Spiritual":
+                    _baseMoraleLevel += 5;
+                    break;
+                case "Kindness":
+                    _baseMoraleLevel += 2;
+                    break;
+                case "Hostile":
+                    _baseMoraleLevel -= 4;
+                    break;
+                case "Honourable":
+                    _baseMoraleLevel += 4;
+                    break;
+                case "Subversive":
+                    _baseMoraleLevel -= 1;
+                    break;
+            }
 
-            if (_traits.Contains("Warlike")) _baseMoraleLevel -= 2;
-            if (_traits.Contains("Peaceful")) _baseMoraleLevel += 2;
-            if (_traits.Contains("Superiority")) _baseMoraleLevel += 3;
-            if (_traits.Contains("Submissive")) _baseMoraleLevel -= 3;
-            //if (_traits.Contains("Materialistic")) _baseMoraleLevel -= 3;
-            if (_traits.Contains("Spiritual")) _baseMoraleLevel += 5;
-            if (_traits.Contains("Kindness")) _baseMoraleLevel += 2;
-            if (_traits.Contains("Hostile")) _baseMoraleLevel -= 4;
-            if (_traits.Contains("Honourable")) _baseMoraleLevel += 4;
-            if (_traits.Contains("Subversive")) _baseMoraleLevel -= 1;
+            //if (_traits.Contains("Warlike")) _baseMoraleLevel -= 2;
+            //if (_traits.Contains("Peaceful")) _baseMoraleLevel += 2;
+            //if (_traits.Contains("Superiority")) _baseMoraleLevel += 3;
+            //if (_traits.Contains("Submissive")) _baseMoraleLevel -= 3;
+            ////if (_traits.Contains("Materialistic")) _baseMoraleLevel -= 3;
+            //if (_traits.Contains("Spiritual")) _baseMoraleLevel += 5;
+            //if (_traits.Contains("Kindness")) _baseMoraleLevel += 2;
+            //if (_traits.Contains("Hostile")) _baseMoraleLevel -= 4;
+            //if (_traits.Contains("Honourable")) _baseMoraleLevel += 4;
+            //if (_traits.Contains("Subversive")) _baseMoraleLevel -= 1;
 
 
             //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
@@ -232,47 +266,93 @@ namespace Supremacy.Entities
             //TODO: This should be in with the code to start the game
             if (GameContext.Current.Options != null)
             {
-                if ((_key == "FEDERATION") && (GameContext.Current.Options.FederationPlayable == EmpirePlayable.No))
+                bool forceExpandingPower = false;
+
+                switch (_key)
                 {
-                    _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                    case "FEDERATION":
+                        forceExpandingPower = GameContext.Current.Options.FederationPlayable == EmpirePlayable.No;
+                        _text = "Civilization {0} is set to ExpandingPower" + Name;
+                        break;
+
+                    case "ROMULANS":
+                        forceExpandingPower = GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No;
+                        _text = "Civilization {0} is set to ExpandingPower" + Name;
+                        break;
+
+                    case "KLINGONS":
+                        forceExpandingPower = GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No;
+                        _text = "Civilization {0} is set to ExpandingPower" + Name;
+                        break;
+
+                    case "CARDASSIANS":
+                        forceExpandingPower = GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No;
+                        _text = "Civilization {0} is set to ExpandingPower" + Name;
+                        break;
+
+                    case "DOMINION":
+                        forceExpandingPower = GameContext.Current.Options.DominionPlayable == EmpirePlayable.No;
+                        _text = "Civilization {0} is set to ExpandingPower" + Name;
+                        break;
+
+                    case "BORG":
+                        forceExpandingPower = GameContext.Current.Options.BorgPlayable == EmpirePlayable.No;
+                        _text = "Civilization {0} is set to ExpandingPower" + Name;
+                        break;
+
+                    case "TERRANEMPIRE":
+                        forceExpandingPower = GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No;
+                        _text = "Civilization {0} is set to ExpandingPower" + Name;
+                        break;
                 }
 
-                if ((_key == "ROMULANS") && (GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No))
+                if (forceExpandingPower)
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
+                //if ((_key == "FEDERATION") && (GameContext.Current.Options.FederationPlayable == EmpirePlayable.No))
+                //{
+                //    _civType = CivilizationType.ExpandingPower;
+                //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                //}
 
-                if ((_key == "KLINGONS") && (GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No))
-                {
-                    _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
-                }
+                //if ((_key == "ROMULANS") && (GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No))
+                //{
+                //    _civType = CivilizationType.ExpandingPower;
+                //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                //}
 
-                if ((_key == "CARDASSIANS") && (GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No))
-                {
-                    _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
-                }
+                //if ((_key == "KLINGONS") && (GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No))
+                //{
+                //    _civType = CivilizationType.ExpandingPower;
+                //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                //}
 
-                if ((_key == "DOMINION") && (GameContext.Current.Options.DominionPlayable == EmpirePlayable.No))
-                {
-                    _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
-                }
+                //if ((_key == "CARDASSIANS") && (GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No))
+                //{
+                //    _civType = CivilizationType.ExpandingPower;
+                //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                //}
 
-                if ((_key == "BORG") && (GameContext.Current.Options.BorgPlayable == EmpirePlayable.No))
-                {
-                    _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
-                }
+                //if ((_key == "DOMINION") && (GameContext.Current.Options.DominionPlayable == EmpirePlayable.No))
+                //{
+                //    _civType = CivilizationType.ExpandingPower;
+                //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                //}
 
-                if ((_key == "TERRANEMPIRE") && (GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No))
-                {
-                    _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
-                }
+                //if ((_key == "BORG") && (GameContext.Current.Options.BorgPlayable == EmpirePlayable.No))
+                //{
+                //    _civType = CivilizationType.ExpandingPower;
+                //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                //}
+
+                //if ((_key == "TERRANEMPIRE") && (GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No))
+                //{
+                //    _civType = CivilizationType.ExpandingPower;
+                //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
+                //}
             }
 
             if (string.IsNullOrEmpty(_raceId))

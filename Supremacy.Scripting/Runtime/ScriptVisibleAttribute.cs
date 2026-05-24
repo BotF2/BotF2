@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -46,10 +47,24 @@ namespace Supremacy.Scripting.Runtime
         public ScriptVisibleNamespace(string clrNamespace, AssemblyName assemblyName)
         {
             ClrNamespace = clrNamespace ?? throw new ArgumentNullException("clrNamespace");
+            string _text;
 
             if (assemblyName == null)
             {
                 return;
+            }
+
+            if (assemblyName.ToString() == "System.Core" || assemblyName.ToString() == "Supremacy.Core")
+            {
+                _text = string.Concat("\"Step_9883:; next: Exception thrown: 'System.IO.FileNotFoundException' in mscorlib.dll"
+                    , " for ", assemblyName.ToString()
+                    );
+    //            string _text = "Step_9883:; ( " + c + " ) "
+    //+ " for " + assembly.CodeBase.ToString()
+    //+ " > assembly= " + assembly.Location.ToString()
+    //;
+                Console.WriteLine(_text);
+                Debugger.Break();
             }
 
             try { Assembly = Assembly.Load(assemblyName); }

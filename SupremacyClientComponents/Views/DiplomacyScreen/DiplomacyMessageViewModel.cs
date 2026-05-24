@@ -697,7 +697,7 @@ namespace Supremacy.Client.Views
                         //    element.ElementType.ToString());
                     }
                     _text = "Step_8732:; "
-                            + "Proposal element added > " + element.ElementType.ToString()
+                            + "Proposal added > " + element.ElementType.ToString()
                             //+ ", " + element.SelectedParameter.ToString()
                             //+ " > " + element.ElementType.ToString()
                             + " > " + element.Description

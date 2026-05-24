@@ -122,9 +122,24 @@ namespace Supremacy.Client.Views
                 //works, but too long    GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
                 _foreignPower.Counterparty.DiplomacyReport;
 
-        public string CounterpartyLocation =>
+        public string CounterpartyLocation
         //works, but too long    GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
-        _foreignPower.Counterparty.CivID.ToString();
+        {
+            get
+            {
+                if (_foreignPower.Counterparty.IsEmpire)
+                {
+                    return ("( Empire )");
+                }
+                else
+                {
+                    return GameEngine.Get_civM(_foreignPower.Counterparty).HomeSystem.Location.ToString();
+                    //return _foreignPower.Counterparty.CivID.ToString();
+                }
+
+            }
+
+            }
 
         public Civilization Owner => _foreignPower.Owner;
 
