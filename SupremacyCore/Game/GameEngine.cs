@@ -3037,6 +3037,7 @@ namespace Supremacy.Game
             int _targetDistance = 99;
             _civM_1.Assault_Value_Defense_and_Distance = 9999997;
             bool _writeDirectly = true;
+            bool _player_is_human = GameEngine.IsCivM_Human_Player(_civM_1);
 
             //Dictionary<Civilization, int> _possibleTargetCivs = new Dictionary<Civilization, int >(); // for Assault or better SystemAssault
             List<Civilization> _possibleTargetCivs = new List<Civilization>(); // for Assault or better SystemAssault
@@ -3080,7 +3081,7 @@ namespace Supremacy.Game
 
 
                 // Find Assault_TargetCiv
-                if (_civ1.IsHuman)
+                if (_player_is_human)
                 {
                     //Debugger.Break();
                 }
@@ -3181,7 +3182,7 @@ namespace Supremacy.Game
                 // Find new TargetCiv
                 List<Civilization> _target_help_list = new List<Civilization>() { _civ1 };
 
-                if (_civ1.IsHuman)
+                if (_player_is_human)
                 {
                     //Debugger.Break(); // see below
                 }
@@ -3229,7 +3230,7 @@ namespace Supremacy.Game
 
                 MapLocation _new_assault_location = new MapLocation();
                 _civM_1.Assault_Value_Defense_and_Distance = 999996;
-                int _target_fire_power = 0;
+                int _target_colony_defense_value = 0;
                 int _last_target_fire_power = 999995;
                 int _new_target_fire_power = 999994;
                 string _all_attack_location_text = "";
@@ -3238,7 +3239,7 @@ namespace Supremacy.Game
                 string _text_header = "";
                 //int _targetDistance = 99;
 
-                if (_civ1.IsHuman)
+                if (_player_is_human)
                 {
                     //Debugger.Break();
                 }
@@ -3278,7 +3279,7 @@ namespace Supremacy.Game
                         //if (_civ1.IsHuman && _foreignPowerStatus != ForeignPowerStatus.NoContact) { Debugger.Break(); }
                     }
 
-                    if (_civ1.IsHuman)
+                    if (_player_is_human)
                     {
                         //Debugger.Break();
                     }
@@ -3319,7 +3320,7 @@ namespace Supremacy.Game
                                 //Console.WriteLine(_text);
                                 //_all_attack_location_text += _newline + _text;
 
-                                if (_civM_1.Civilization.IsHuman)
+                                if (_player_is_human)
                                 {
                                     Debugger.Break();
                                 }
@@ -3331,7 +3332,7 @@ namespace Supremacy.Game
                             if (_targetDistance > 0 && _targetDistance < _lowest_targetDistance)
                             {
                                 _lowest_targetDistance = _targetDistance;
-                                LocationFirePower(item.Key, out _target_fire_power);
+                                LocationFirePower(item.Key, out _target_colony_defense_value);
 
                                 List<Colony> _colony_there = GameContext.Current.Universe.Find<Colony>()//(_civ).ToList()
                                                             .Where(a => a.Location.ToString() == item.Key.ToString())
@@ -3367,8 +3368,8 @@ namespace Supremacy.Game
 
                                 if (_colony_local != null)
                                 {
-                                    //_target_fire_power += _colony_there[0].Population.CurrentValue;
-                                    _target_fire_power += Colony.DefenseValue(_colony_local);
+                                    //_target_colony_defense_value += _colony_there[0].Population.CurrentValue;
+                                    _target_colony_defense_value += Colony.DefenseValue(_colony_local);
 
                                     _text += _newline
                                     + " possible  > "
@@ -3376,7 +3377,7 @@ namespace Supremacy.Game
                                     + " "
                                     + _civM_2.Civilization /*+ " at " + LocationString(item.Key.ToString())*/
 
-                                    + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _target_fire_power.ToString())
+                                    + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _target_colony_defense_value.ToString())
 
                                     //+ "   ; _regard= " + _regard
                                     + "   ; Attack= " + _civM_1.Assault_Attack_Value
@@ -3390,7 +3391,7 @@ namespace Supremacy.Game
                                         //+ _civM_2.Civilization /*+ " at " + LocationString(item.Key.ToString())*/
                                         ////+ "   ; _regard= " + _regard
                                         //+ "; Colony= " + item.Key
-                                        //+ "; _target_fire_power= " + GameEngine.Do_x_Digit_String( 5, (_target_fire_power.ToString())
+                                        //+ "; _target_colony_defense_value= " + GameEngine.Do_x_Digit_String( 5, (_target_colony_defense_value.ToString())
                                         ////+ _civ2 + " at " + GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv].HomeSystem.Location
 
                                         ////+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
@@ -3398,7 +3399,7 @@ namespace Supremacy.Game
                                         ;
                                 }
 
-                                _next_target_fire_power = _target_fire_power
+                                _next_target_fire_power = _target_colony_defense_value
                                     + ((_targetDistance * _targetDistance) * 100);
 
 
@@ -3430,7 +3431,7 @@ namespace Supremacy.Game
                             //}
 
 
-                            _next_target_fire_power = _target_fire_power + ((_targetDistance + 1) * 100); // gives a 100 basic value
+                            _next_target_fire_power = _target_colony_defense_value + ((_targetDistance + 1) * 100); // gives a 100 basic value
 
                             if (_next_target_fire_power < _last_target_fire_power)
                             {
@@ -3444,10 +3445,17 @@ namespace Supremacy.Game
 
                     
 
+                    //Console.WriteLine(_text_header + " > from Step_7725 TH"); // see below
+                    Console.WriteLine(_all_attack_location_text + " > from Step_7725 ALL"); // see below
                     Console.WriteLine(_text_header + _all_attack_location_text + " > from Step_7725"); // see below
-                }
 
-                    if (_civ1.IsHuman)
+                        if (_player_is_human)
+                        {
+                            Debugger.Break();
+                        }
+                    }
+
+                    if (_player_is_human)
                     {
                         //Debugger.Break();
                     }
@@ -3484,7 +3492,7 @@ namespace Supremacy.Game
                                 //+ " for Colony= " + _new_assault_location
                                 ////+ "   ; _regard= " + _regard
 
-                                //+ "; _target_fire_power= " + _target_fire_power
+                                //+ "; _target_colony_defense_value= " + _target_colony_defense_value
                                 //+ _civ2 + " at " + GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv].HomeSystem.Location
 
                                 //+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
@@ -3500,7 +3508,7 @@ namespace Supremacy.Game
 
                     _last_target_fire_power = _new_target_fire_power;
 
-                    if (_civ1.IsHuman)
+                    if (_player_is_human)
                     {
                         //Debugger.Break();
                     }
@@ -3516,7 +3524,7 @@ namespace Supremacy.Game
                 //    Console.WriteLine(_text + "            > from Step_7727");
                 //}
 
-                if (_civ1.IsHuman)
+                if (_player_is_human)
                 {
                     //Debugger.Break();
                 }
@@ -3579,7 +3587,7 @@ namespace Supremacy.Game
 
 
 
-                    if (_civ1.IsHuman)
+                    if (_player_is_human)
                     {
                         //Debugger.Break();
                     }
@@ -3626,7 +3634,7 @@ namespace Supremacy.Game
                     _diplomacyBasicsSummary_Text += _newline + _text;
                     _atWarText = _text;
 
-                    if (_civ1.IsHuman)
+                    if (_player_is_human)
                     {
                         //Debugger.Break(); 
                     }
@@ -3636,7 +3644,7 @@ namespace Supremacy.Game
 
                     //if (_civ1.IsHuman) { Debugger.Break(); }
 
-                    if (_civ1.IsHuman
+                    if (_player_is_human
                         //&& _foreignPowerStatus != ForeignPowerStatus.NoContact
                         && _foreignPowerStatus != ForeignPowerStatus.AtWar)
                     {
@@ -3668,7 +3676,7 @@ namespace Supremacy.Game
                             + "   ; Attack= " + _civM_1.Assault_Attack_Value //GameEngine.Do_x_Digit_String(5, _civM_1.Assault_AttackValue.ToString())
                             + "   ; Distance= " + GameEngine.Do_x_Digit_String(2, MapLocation.GetDistance(_civM_1.HomeSystem.Location, _new_assault_location).ToString())
 
-                            //+ "; _target_fire_power= " + _target_fire_power
+                            //+ "; _target_colony_defense_value= " + _target_colony_defense_value
                             //+ _civ2 + " at " + GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv].HomeSystem.Location
 
                             //+ ", Distance=" + MapLocation.GetDistance(_civM_1.HomeSystem.Location, GameContext.Current.CivilizationManagers[_civ2.CivID].HomeSystem.Location)
@@ -3678,7 +3686,7 @@ namespace Supremacy.Game
                 //Console.WriteLine(_text);
 
 
-                if (_civ1.IsHuman)
+                if (_player_is_human)
                 {
                     //Debugger.Break();
                 }

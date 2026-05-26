@@ -14,6 +14,7 @@
 - Sabotage=Kriegserklärung > Sobald man irgendetwas sabotiert, wird auch der Krieg erklärt. In der alten Version ist das noch nicht so.
 Ist das gewollt? Bei der Föderation kann ich es bedingt nachvollziehen (auch wenn Sektion 31 mir da sicher widersprechend würde), aber der Rest?
 
+- Bilddateien > SOLAR, aber BORG_SOLAR
 
 
 - bilder fehlermeldung

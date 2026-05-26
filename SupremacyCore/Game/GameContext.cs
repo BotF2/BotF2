@@ -1288,6 +1288,25 @@ namespace Supremacy.Game
                         _ = civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
                         int _laborAvailable = colony.Population.CurrentValue / 10;
 
+                        int _more_by_start_level = 0;
+                        switch (this.Options.StartingTechLevel)
+                        {
+                            case StartingTechLevel.Early:
+                                break;
+                            case StartingTechLevel.Developed:
+                                _more_by_start_level = 2;
+                                break;
+                            case StartingTechLevel.Sophisticated:
+                                _more_by_start_level = 3;
+                                break;
+                            case StartingTechLevel.Advanced:
+                                _more_by_start_level = 4;
+                                break;
+                            case StartingTechLevel.Supreme:
+                                _more_by_start_level = 5;
+                                break;
+                        }
+
 
                         //_text = "Adjusting facilities if necessary...";
                         //Console.WriteLine(_text);
@@ -1366,6 +1385,7 @@ namespace Supremacy.Game
                             }
                         }
 
+                        _text = "EnergyPF";
                         if (homeSystemDescriptor.EnergyPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
@@ -1389,7 +1409,7 @@ namespace Supremacy.Game
                                     facilitiesRequired = (int)homeSystemDescriptor.EnergyPF.Count;
                                 }
 
-                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + 4);
+                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + 4 + _more_by_start_level);
 
                                 if (!_checkXML && homeSystemDescriptor.EnergyPF.Active != -1.0f)
                                 {
@@ -1404,6 +1424,8 @@ namespace Supremacy.Game
                             }
                         }
 
+                        _text = "IndustryPF";
+                        //IndustryPF
                         if (homeSystemDescriptor.IndustryPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
@@ -1447,6 +1469,7 @@ namespace Supremacy.Game
                             }
                         }
 
+                        _text = "IntelligencePF";
                         if (homeSystemDescriptor.IntelligencePF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
@@ -1482,6 +1505,7 @@ namespace Supremacy.Game
                             }
                         }
 
+                        _text = "ResearchPF";
                         if (homeSystemDescriptor.ResearchPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
