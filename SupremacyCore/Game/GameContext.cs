@@ -1331,12 +1331,16 @@ namespace Supremacy.Game
                             _bool_Fac_Count_Active = true; // just do once
                         }
 
+                            int facilitiesRequired = 0;
+                            int _additional_facilities = 0;
                         // readjust production facilities if needed
                         if (homeSystemDescriptor.FoodPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
 
                             ProductionFacilityDesign foodFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.FoodPF.DesignType]];
+
+
 
                             if (foodFacility != null)
                             {
@@ -1360,11 +1364,15 @@ namespace Supremacy.Game
 
                                 int foodNeeded = (int)(pop * (1 + (3 * growth)));
                                 /* should take into account planetary food bonuses */
-                                int facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1);
+                                facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1);
 
                                 if (_use_value_from_XML && homeSystemDescriptor.FoodPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.FoodPF.Count;
+                                }
+                                else
+                                {
+                                    _additional_facilities = 2;
                                 }
 
                                 if (facilitiesRequired > 19)
@@ -1376,12 +1384,14 @@ namespace Supremacy.Game
 
 
 
-                                colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);
+                                colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + _additional_facilities);
 
                                 if (_use_value_from_XML && homeSystemDescriptor.FoodPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.FoodPF.Active, colony.GetTotalFacilities(ProductionCategory.Food));
                                 }
+
+                                //colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
@@ -1407,20 +1417,27 @@ namespace Supremacy.Game
 
                                 //int energyNeeded = colony.GetEnergyUsage();
 
-                                int facilitiesRequired = 2;
+                                facilitiesRequired = 2;
+                                //int _additional_energy = 0;
 
 
                                 if (_use_value_from_XML && homeSystemDescriptor.EnergyPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.EnergyPF.Count;
                                 }
+                                else
+                                {
+                                    _additional_facilities = 4 + _more_by_start_level;
+                                }
 
-                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + 4 + _more_by_start_level);
+                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + _additional_facilities);
 
                                 if (_use_value_from_XML && homeSystemDescriptor.EnergyPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.EnergyPF.Active, colony.GetTotalFacilities(ProductionCategory.Energy));
                                 }
+
+                                //colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + _additional_energy);
 
                                 for (int i = 0; i < facilitiesRequired + 2; i++)
                                 {
@@ -1445,7 +1462,7 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Industry, industryFacility);
 
-                                int facilitiesRequired = _laborAvailable;
+                                facilitiesRequired = _laborAvailable;
 
                                 // facilitiesRequired.Value is reduce each time as well !!
                                 if (facilitiesRequired > 4) facilitiesRequired -= 2; // 3 to industry, 1 to research, 1 to intelligence
@@ -1459,13 +1476,19 @@ namespace Supremacy.Game
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.IndustryPF.Count;
                                 }
+                                else
+                                {
+                                    _additional_facilities = 1;
+                                }
 
-                                colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + 1);
+                                colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + _additional_facilities);
 
                                 if (_use_value_from_XML && homeSystemDescriptor.IndustryPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.IndustryPF.Active, colony.GetTotalFacilities(ProductionCategory.Industry));
                                 }
+
+                                //colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + 1);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
@@ -1489,19 +1512,25 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
 
-                                int facilitiesRequired = _laborAvailable / 2;
+                                facilitiesRequired = _laborAvailable / 2;
 
                                 if (_use_value_from_XML && homeSystemDescriptor.IntelligencePF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.IntelligencePF.Count;
                                 }
+                                else
+                                {
+                                    _additional_facilities = 0;
+                                }
 
-                                colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired);
+                                colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired + _additional_facilities);
 
                                 if (_use_value_from_XML && homeSystemDescriptor.IntelligencePF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.IntelligencePF.Active, colony.GetTotalFacilities(ProductionCategory.Intelligence));
                                 }
+
+                                //colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
@@ -1525,19 +1554,25 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Research, researchFacility);
 
-                                int facilitiesRequired = _laborAvailable;
+                                facilitiesRequired = _laborAvailable;
 
                                 if (_use_value_from_XML && homeSystemDescriptor.ResearchPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.ResearchPF.Count;
                                 }
+                                else
+                                {
+                                    _additional_facilities = 0;
+                                }
 
-                                colony.AddFacilities(ProductionCategory.Research, facilitiesRequired);
+                                colony.AddFacilities(ProductionCategory.Research, facilitiesRequired + _additional_facilities);
 
                                 if (_use_value_from_XML && homeSystemDescriptor.ResearchPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.ResearchPF.Active, colony.GetTotalFacilities(ProductionCategory.Research));
                                 }
+
+                                //colony.AddFacilities(ProductionCategory.Research, facilitiesRequired);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {

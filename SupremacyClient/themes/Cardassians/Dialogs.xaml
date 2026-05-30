@@ -9,6 +9,7 @@
 
   <Style x:Key="{x:Static scc:ClientResources.MessageDialogButtonStyleKey}"
          TargetType="{x:Type Button}"
-         BasedOn="{StaticResource 4-CARD-LCARS_StandardButtonStyle}" />
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+         <!--BasedOn="{StaticResource 4-CARD-LCARS_StandardButtonStyle}" />-->
 
 </ResourceDictionary>
