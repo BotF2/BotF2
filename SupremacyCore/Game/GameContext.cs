@@ -1311,8 +1311,14 @@ namespace Supremacy.Game
                         //_text = "Adjusting facilities if necessary...";
                         //Console.WriteLine(_text);
 
-                        bool _checkXML;
-                        _checkXML = true;
+                        bool _use_value_from_XML = true;
+
+                        if (!colony.Owner.IsEmpire)
+                        {
+                            _use_value_from_XML = false;
+                        }
+                        //bool _use_value_from_XML = false;
+
 
                         _bool_Fac_Count_Active = false;
 
@@ -1356,7 +1362,7 @@ namespace Supremacy.Game
                                 /* should take into account planetary food bonuses */
                                 int facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1);
 
-                                if (!_checkXML && homeSystemDescriptor.FoodPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.FoodPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.FoodPF.Count;
                                 }
@@ -1372,7 +1378,7 @@ namespace Supremacy.Game
 
                                 colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);
 
-                                if (!_checkXML && homeSystemDescriptor.FoodPF.Active != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.FoodPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.FoodPF.Active, colony.GetTotalFacilities(ProductionCategory.Food));
                                 }
@@ -1404,14 +1410,14 @@ namespace Supremacy.Game
                                 int facilitiesRequired = 2;
 
 
-                                if (!_checkXML && homeSystemDescriptor.EnergyPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.EnergyPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.EnergyPF.Count;
                                 }
 
                                 colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + 4 + _more_by_start_level);
 
-                                if (!_checkXML && homeSystemDescriptor.EnergyPF.Active != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.EnergyPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.EnergyPF.Active, colony.GetTotalFacilities(ProductionCategory.Energy));
                                 }
@@ -1449,14 +1455,14 @@ namespace Supremacy.Game
                                 if (facilitiesRequired > 12) facilitiesRequired -= 2;
 
 
-                                if (!_checkXML && homeSystemDescriptor.IndustryPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.IndustryPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.IndustryPF.Count;
                                 }
 
                                 colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + 1);
 
-                                if (!_checkXML && homeSystemDescriptor.IndustryPF.Active != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.IndustryPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.IndustryPF.Active, colony.GetTotalFacilities(ProductionCategory.Industry));
                                 }
@@ -1485,14 +1491,14 @@ namespace Supremacy.Game
 
                                 int facilitiesRequired = _laborAvailable / 2;
 
-                                if (!_checkXML && homeSystemDescriptor.IntelligencePF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.IntelligencePF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.IntelligencePF.Count;
                                 }
 
                                 colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired);
 
-                                if (!_checkXML && homeSystemDescriptor.IntelligencePF.Active != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.IntelligencePF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.IntelligencePF.Active, colony.GetTotalFacilities(ProductionCategory.Intelligence));
                                 }
@@ -1521,14 +1527,14 @@ namespace Supremacy.Game
 
                                 int facilitiesRequired = _laborAvailable;
 
-                                if (!_checkXML && homeSystemDescriptor.ResearchPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.ResearchPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.ResearchPF.Count;
                                 }
 
                                 colony.AddFacilities(ProductionCategory.Research, facilitiesRequired);
 
-                                if (!_checkXML && homeSystemDescriptor.ResearchPF.Active != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.ResearchPF.Active != -1.0f)
                                 {
                                     facilitiesRequired = Math.Min((int)homeSystemDescriptor.ResearchPF.Active, colony.GetTotalFacilities(ProductionCategory.Research));
                                 }

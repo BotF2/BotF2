@@ -18,7 +18,6 @@ using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Supremacy.Economy
 {
@@ -204,6 +203,8 @@ namespace Supremacy.Economy
         {
             get
             {
+                bool bool_is_complete = true;
+
                 int _dilithium_used = 0;
                 int _deuterium_used = 0;
                 int _duranium_used = 0;
@@ -236,7 +237,7 @@ namespace Supremacy.Economy
 
                         //GameLog.Core.ProductionDetails.DebugFormat("not checking whether enough resources there");
 
-                        return true;  // cheating
+                        bool_is_complete = true;  // cheating
 
                         //return false;
                     }
@@ -249,8 +250,8 @@ namespace Supremacy.Economy
 
                     if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
                     {
-                        _text = _locationString + " > " 
-                            + BuildDesign + " not complete... " 
+                        _text = _locationString + " > "
+                            + BuildDesign + " not complete... "
                             + PercentComplete.ToString() + " done"
                             + " > used: Dil=" + _dilithium_used
                             + ", Deu=" + _deuterium_used
@@ -292,7 +293,9 @@ namespace Supremacy.Economy
                 //    }
                 //}
 
-                return true;
+                //return true;
+
+                return bool_is_complete;
             }
         }
 
@@ -527,7 +530,7 @@ namespace Supremacy.Economy
                     newEntry = new ReportItemBuiltSpawned(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
                     //newEntry = new ReportEntry_ShowColony(Builder, BuildDesign, _location, (spawnedInstance as Building).IsActive, SitRepPriority.Green);
 
-                    _text = "Step_4283:; " + GameEngine.LocationString(Location.ToString()) 
+                    _text = "Step_4283:; " + GameEngine.LocationString(Location.ToString())
                         + " ; " + Builder
                         + "; Turn " + GameContext.Current.TurnNumber
                         //+ ": " + Builder
@@ -540,7 +543,7 @@ namespace Supremacy.Economy
 
             if (newEntry == null)
             {
-                _text = GameEngine.LocationString(Location.ToString()) 
+                _text = GameEngine.LocationString(Location.ToString())
                     //+ " " + Builder.
                     + " > " + Builder
                     + " built " + " > " + BuildDesign
@@ -726,7 +729,7 @@ namespace Supremacy.Economy
 
                     if (delta > 0 && resource == ResourceType.Duranium && delta > civManager.Resources.Duranium.CurrentValue)
                     {
-                        _text = /*"Step_4284:; "*/ 
+                        _text = /*"Step_4284:; "*/
                             /*+ ":  + "*/GameEngine.LocationString(Location.ToString())
                             + " > Turn " + GameContext.Current.TurnNumber
                             + " > Estimated One Turn: _resource= " + resource.ToString()

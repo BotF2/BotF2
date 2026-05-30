@@ -1238,7 +1238,7 @@ namespace Supremacy.Game
                 {
                     _locations_to_NOT_build_stations.Add(_sector.Location);
                     if (_bool_is_human)
-                        Report_Sector_Message(_sector, " > no building > has an Empire's colony  ");
+                        Report_Sector_Message(_sector, " > no building > has an Empire's _colony  ");
                     continue;
                 }
 
@@ -6866,40 +6866,40 @@ namespace Supremacy.Game
                     //}
 
                     /* Iterate through each _colony. */
-                    foreach (Colony colony in _civM.Colonies)
+                    foreach (Colony _colony in _civM.Colonies)
                     {
                         /* Add the empire-wide morale adjustments. */
-                        _ = colony.Morale.AdjustCurrent(globalMorale);
+                        _ = _colony.Morale.AdjustCurrent(globalMorale);
 
-                        if (colony.OriginalOwner != colony.Owner)
-                            _ = colony.Morale.AdjustCurrent(-1); // TODO: Malus for Subjageted
+                        if (_colony.OriginalOwner != _colony.Owner)
+                            _ = _colony.Morale.AdjustCurrent(-1); // TODO: Malus for Subjageted
 
                         /* Add any morale bonuses from active buildings at the _colony. */
-                        int colonyBonus = (from building in colony.Buildings
+                        int colonyBonus = (from building in _colony.Buildings
                                            where building.IsActive
                                            from bonus in building.BuildingDesign.Bonuses
                                            where bonus.BonusType == BonusType.Morale
                                            select bonus.Amount).Sum();
 
-                        _ = colony.Morale.AdjustCurrent(colonyBonus);
+                        _ = _colony.Morale.AdjustCurrent(colonyBonus);
 
                         // slow down Morale above 120
-                        if (colony.Morale.CurrentValue > 120)
+                        if (_colony.Morale.CurrentValue > 120)
                         {
-                            _ = colony.Morale.AdjustCurrent(-1);
+                            _ = _colony.Morale.AdjustCurrent(-1);
 
                             // slow * more * down Morale above 130
-                            if (colony.Morale.CurrentValue > 150)
+                            if (_colony.Morale.CurrentValue > 150)
                             {
-                                _ = colony.Morale.AdjustCurrent(-1);
+                                _ = _colony.Morale.AdjustCurrent(-1);
                             }
                         }
 
-                        if (colony.Morale.CurrentValue < 70)
+                        if (_colony.Morale.CurrentValue < 70)
                         {
-                            _ = colony.Morale.AdjustCurrent(1);
+                            _ = _colony.Morale.AdjustCurrent(1);
 
-                            _moraleBuildingsID = (List<int>)(from building in colony.Buildings
+                            _moraleBuildingsID = (List<int>)(from building in _colony.Buildings
                                                              where building.IsActive
                                                              from bonus in building.BuildingDesign.Bonuses
                                                              where bonus.BonusType == BonusType.Morale
@@ -6908,19 +6908,21 @@ namespace Supremacy.Game
 
                             foreach (var objID in _moraleBuildingsID)
                             {
-                                var b = GameContext.Current.Universe.Objects[objID] as Building;
-                                b.IsActive = false;
+                                var _building = GameContext.Current.Universe.Objects[objID] as Building;
+                                _building.IsActive = false;
+
                                 _text = "Step_5456:; "
-                                + b.Location
-                                  + b.Sector.Name
+                                + _building.Location
+                                  + _building.Sector.Name
                                   + " > "
-                                  + b.Name
+                                  + _building.Name
                                   + "was de-activated due to low morale level"
                                   ;
                                 if (_writeDirectly) Console.WriteLine(_text);
-                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, colony, _text, _text, "", SitRepPriority.Red));
+                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.Red));
 
-                                //if (b.)
+                                
+                                //if (_building.)
                                 //{
 
                                 //}
@@ -6928,14 +6930,14 @@ namespace Supremacy.Game
 
                         }
 
-                        if (colony.Morale.CurrentValue < 50)
+                        if (_colony.Morale.CurrentValue < 50)
                         {
-                            _ = colony.Morale.AdjustCurrent(1);  // another 1 
+                            _ = _colony.Morale.AdjustCurrent(1);  // another 1 
                         }
 
-                        if (colony.Morale.CurrentValue < 25)
+                        if (_colony.Morale.CurrentValue < 25)
                         {
-                            _ = colony.Morale.AdjustCurrent(1);  // another 1 
+                            _ = _colony.Morale.AdjustCurrent(1);  // another 1 
                         }
 
                         /*
@@ -6943,45 +6945,45 @@ namespace Supremacy.Game
                          * cause the morale level to drift towards the founding civilization's
                          * base morale level.
                          */
-                        if (colony.Morale.CurrentChange == 0)
+                        if (_colony.Morale.CurrentChange == 0)
                         {
                             int drift = 0;
-                            Civilization originalCiv = colony.OriginalOwner;
+                            Civilization originalCiv = _colony.OriginalOwner;
 
                             //We're below the base, so drift up to it
-                            if (colony.Morale.CurrentValue < originalCiv.BaseMoraleLevel)
+                            if (_colony.Morale.CurrentValue < originalCiv.BaseMoraleLevel)
                             {
                                 drift = originalCiv.MoraleDriftRate;
                             }
                             //We're above the base, so drift down to it
-                            else if (colony.Morale.CurrentValue > originalCiv.BaseMoraleLevel)
+                            else if (_colony.Morale.CurrentValue > originalCiv.BaseMoraleLevel)
                             {
                                 drift = -originalCiv.MoraleDriftRate;
                             }
 
-                            _ = colony.Morale.AdjustCurrent(drift);
+                            _ = _colony.Morale.AdjustCurrent(drift);
                         }
 
                         // Health below 50 means morale -1
-                        if (colony.Health.CurrentValue < 50)
-                            _ = colony.Morale.AdjustCurrent(-1);
+                        if (_colony.Health.CurrentValue < 50)
+                            _ = _colony.Morale.AdjustCurrent(-1);
 
                         // limited by health value
-                        int moraleByHealth = (colony.Health.CurrentValue * 2) - 10;
+                        int moraleByHealth = (_colony.Health.CurrentValue * 2) - 10;
                         if (moraleByHealth < 30) moraleByHealth = 30;
-                        if (colony.Morale.CurrentValue > moraleByHealth)
-                            _ = colony.Morale.AdjustCurrent((colony.Morale.CurrentValue - moraleByHealth) * -1);
+                        if (_colony.Morale.CurrentValue > moraleByHealth)
+                            _ = _colony.Morale.AdjustCurrent((_colony.Morale.CurrentValue - moraleByHealth) * -1);
 
                         // lowest level for AI-controlled _colonies
-                        if (!colony.Owner.IsHuman && colony.Morale.CurrentValue < 80)
-                            colony.Morale.AdjustCurrent(80 - colony.Morale.CurrentValue);
+                        if (!_colony.Owner.IsHuman && _colony.Morale.CurrentValue < 80)
+                            _colony.Morale.AdjustCurrent(80 - _colony.Morale.CurrentValue);
 
                         if (_civM.Civilization.Key == "BORG")
                         {
-                            colony.Morale.CurrentValue = 101;
+                            _colony.Morale.CurrentValue = 101;
                         }
 
-                        colony.Morale.UpdateAndReset();
+                        _colony.Morale.UpdateAndReset();
                     }
                 }
                 catch (Exception e)
