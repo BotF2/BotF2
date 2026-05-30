@@ -1123,7 +1123,7 @@ namespace Supremacy.Universe
 
             _population = new Meter(0, 0, Meter.MaxValue);
             _population.PropertyChanged += PopulationPropertyChanged;
-            _health = new Meter(60, 10, 100);
+            _health = new Meter(75, 10, 100);
 
             _shieldStrength = new Meter(0, 0, 0) { AutoClamp = false };
 

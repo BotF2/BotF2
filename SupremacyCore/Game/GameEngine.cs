@@ -6803,7 +6803,7 @@ namespace Supremacy.Game
                 //GameContext.PushThreadContext(_game);
                 try
                 {
-                    int globalMorale = 0;
+                    int _global_morale_by_buildings = 0;
                     CivilizationManager _civM = GameContext.Current.CivilizationManagers[civ.CivID];
 
                     /* Calculate any empire-wide morale bonuses */
@@ -6811,7 +6811,7 @@ namespace Supremacy.Game
                     {
                         if (bonus.BonusType == BonusType.MoraleEmpireWide)
                         {
-                            globalMorale += bonus.Amount;
+                            _global_morale_by_buildings += bonus.Amount;
                         }
                         // EmpireWide Morale > see CivHistory
                         //_text = "EmpireWide Morale = "
@@ -6833,13 +6833,13 @@ namespace Supremacy.Game
 
                     if (_civM.Credits.CurrentValue < _creditsLowerLimit)
                     {
-                        //globalMorale -= 1;
+                        //_global_morale_by_buildings -= 1;
                         _creditsSitRep = true;
                     }
 
                     if (_civM.Credits.LastChange < _incomeLowerLimit && _civM.Credits.CurrentValue < _incomeLowerLimit)
                     {
-                        //globalMorale -= 1;
+                        //_global_morale_by_buildings -= 1;
                         _creditsSitRep = true;
                     }
 
@@ -6847,7 +6847,7 @@ namespace Supremacy.Game
                     {
                         if (_civM.Civilization.Key != "BORG")
                         {
-                            globalMorale -= 1;
+                            _global_morale_by_buildings -= 1;
                             _text = "Empire: Morale decreased due to deficit of credits"
                             + ": OneTurnLimit= " + _incomeLowerLimit
                             + " (actual " + _civM.Credits.CurrentChange
@@ -6869,7 +6869,7 @@ namespace Supremacy.Game
                     foreach (Colony _colony in _civM.Colonies)
                     {
                         /* Add the empire-wide morale adjustments. */
-                        _ = _colony.Morale.AdjustCurrent(globalMorale);
+                        _colony.Morale.AdjustCurrent(_global_morale_by_buildings);
 
                         if (_colony.OriginalOwner != _colony.Owner)
                             _ = _colony.Morale.AdjustCurrent(-1); // TODO: Malus for Subjageted
@@ -6945,7 +6945,7 @@ namespace Supremacy.Game
                          * cause the morale level to drift towards the founding civilization's
                          * base morale level.
                          */
-                        if (_colony.Morale.CurrentChange == 0)
+                        if (_colony.Morale.CurrentChange == 0 && _colony.OriginalOwner.BaseMoraleLevel != null)
                         {
                             int drift = 0;
                             Civilization originalCiv = _colony.OriginalOwner;
