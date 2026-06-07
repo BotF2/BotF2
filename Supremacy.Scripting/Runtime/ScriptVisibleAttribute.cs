@@ -64,10 +64,13 @@ namespace Supremacy.Scripting.Runtime
     //+ " > assembly= " + assembly.Location.ToString()
     //;
                 Console.WriteLine(_text);
-                Debugger.Break();
+                //Debugger.Break();
             }
 
-            try { Assembly = Assembly.Load(assemblyName); }
+            try { 
+                //Assembly = Assembly.Load(assemblyName); 
+                Assembly = Assembly.Load(assemblyName); 
+            }
             catch
             {
                 Assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(o => o.GetName().Name == assemblyName.Name);

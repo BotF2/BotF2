@@ -30,31 +30,38 @@
                         </ToolTip>
                     </Grid.ToolTip>
                     <Border x:Name="ImageBorder"
-                              Grid.Column="0"
+                              Grid.Column="0" Grid.Row="1"
+                              Margin="26,20,0,0"
+                              VerticalAlignment="Bottom" HorizontalAlignment="Left"
                               BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                               BorderThickness="1"
                               CornerRadius="4"
-                              Width="40"
+                              Width="50"
                               Height="40"
-                              VerticalAlignment="Top">
+                              >
                         <Border.Background>
                             <ImageBrush Stretch="UniformToFill"
                                      ImageSource="{Binding Path=Project.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
                         </Border.Background>
                     </Border>
                     <TextBlock x:Name="TextArea"
-                             Grid.Column="1"
+                             Grid.Column="0"
                              TextWrapping="Wrap"
                              VerticalAlignment="Top"
                              Margin="7,0,0,0"
                              TextTrimming="CharacterEllipsis"
                              FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                              FontSize="14pt">
+                        
+                        <!--Description-->
+                        <!--Height="56"--> 
             <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                       TextWrapping="Wrap"
+                       TextWrapping="Wrap" FontSize="12pt"
                        Text="{Binding Path=Description, Converter={StaticResource UpperCaseConverter}}" />
             <LineBreak />
-            <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
+            <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                       Margin="75,0,0,0"
+                       >
               <TextBlock Text="{Binding Path=TurnsRemaining}" />
               <TextBlock x:Name="TurnsText"
                          Text="{s:StringResource Key=BUILD_QUEUE_TURNS_REMAINING, Case=Upper}" />

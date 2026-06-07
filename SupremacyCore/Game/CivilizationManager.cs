@@ -1063,10 +1063,19 @@ namespace Supremacy.Game
         {
             get
             {
+                double totalMorale = 99;
                 //int totalPopulation = _totalPopulation.CurrentValue;
                 //double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * (1d / totalPopulation * colony.Population.CurrentValue));
                 //double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * (1d / colony.Population.CurrentValue * colony.Population.CurrentValue));
-                double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue) / Colonies.Count();
+                if (Colonies.Count > 0)
+                {
+                    totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue) / Colonies.Count();
+                }
+                //else
+                //{
+                //    double totalMorale = 99;
+                //}
+
                 return (int)totalMorale;
             }
         }

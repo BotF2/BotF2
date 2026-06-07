@@ -2886,7 +2886,7 @@ namespace Supremacy.Game
 
                 if (_civ1.IsHuman)
                 {
-                    Debugger.Break();
+                    //Debugger.Break();
                     goto Do_not_war;
                 }
 
@@ -3322,15 +3322,9 @@ namespace Supremacy.Game
 
                                 if (_player_is_human)
                                 {
-                                    Debugger.Break();
+                                    //Debugger.Break();
                                 }
 
-                            }
-
-
-
-                            if (_targetDistance > 0 && _targetDistance < _lowest_targetDistance)
-                            {
                                 _lowest_targetDistance = _targetDistance;
                                 LocationFirePower(item.Key, out _target_colony_defense_value);
 
@@ -3451,7 +3445,7 @@ namespace Supremacy.Game
 
                         if (_player_is_human)
                         {
-                            Debugger.Break();
+                            //Debugger.Break();
                         }
                     }
 
@@ -4200,7 +4194,8 @@ namespace Supremacy.Game
 
             if (_text.Length > 44)  // not only the entry phrase...
             {
-                GameLog.Core.DiplomacyDetails.DebugFormat(_text);
+                Console.WriteLine("Step_0718:; > " + _text);
+                //GameLog.Core.DiplomacyDetails.DebugFormat(_text);
             }
 
             _text = "what's next + ";
@@ -4555,6 +4550,7 @@ namespace Supremacy.Game
                         {
                             _text = "Step_7722:; Do_13_Diplomacy > * " + civ1.Key + " * vs * " + civ2.Key
                                 + ", Accept Status=" + _diplomatCiv2.PendingAction.ToString()
+
                                 ;
                             //if (_writeDirectly)
                             Console.WriteLine(_text);
@@ -6945,7 +6941,7 @@ namespace Supremacy.Game
                          * cause the morale level to drift towards the founding civilization's
                          * base morale level.
                          */
-                        if (_colony.Morale.CurrentChange == 0 && _colony.OriginalOwner.BaseMoraleLevel != null)
+                        if (_colony.Morale.CurrentChange == 0 && _colony.OriginalOwner.BaseMoraleLevel != 0)
                         {
                             int drift = 0;
                             Civilization originalCiv = _colony.OriginalOwner;
@@ -8356,7 +8352,7 @@ namespace Supremacy.Game
             string Hour = time.Hour.ToString(); Hour = CheckDateString(Hour);
             string Minute = time.Minute.ToString(); Minute = CheckDateString(Minute);
             string Second = time.Second.ToString(); Second = CheckDateString(Second);
-            return "Output_" + Year + "_" + Month + "_" + Day + "-" + Hour + "_" + Minute + "_" + Second;
+            return "Output_" + Year + "_" + Month + "_" + Day + "_at_" + Hour + "_" + Minute + "_" + Second;
         }
 
         public static string CheckDateString(string _string)

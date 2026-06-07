@@ -765,27 +765,27 @@ namespace Supremacy.Tech
             //var _saveFile = Path.Combine(Environment.CurrentDirectory, "Resources/Data/TechObjectDatabase_SAVED.xml");
             //db.Save(); // test
 
-            bool _traceTechObjectDatabase = false;
-            // file is writen while starting a game -> Federation -> Start
 
-            //bool _traceTechObjectDatabase = true;  
+
+            //bool _traceTechObjectDatabase = false;
+            bool _traceTechObjectDatabase = true;
             // file is writen while starting a game -> Federation -> Start
+            // and also whenever ALT+M is pressed at(!!) GalaxyMap
             _text = "Step_0266:; Output of Data files= " + _traceTechObjectDatabase;
             Console.WriteLine(_text);
 
-
             //if (ClientSettings.TracesXML2CSV == true)
-
             if (_traceTechObjectDatabase == true)
             {
-                string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                string pathOutputFile = "./Resources/Data/Addon/";  // instead of ./Resources/Data/
                 string separator = ";";
                 string line = "";
+                string file = "";
                 StreamWriter streamWriter;
 
-                string file = pathOutputFile + "test-Output.txt";
-                streamWriter = new StreamWriter(file);
-                streamWriter.Close();
+                //string file = pathOutputFile + "test-Output.txt";
+                //streamWriter = new StreamWriter(file);
+                //streamWriter.Close();
 
                 string strHeader = "";  // first line of output files
 
@@ -1447,7 +1447,8 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // Ships    
-                    file = pathOutputFile + "ShipData.csv";   //Console.WriteLine("writing {0}", file);
+                    file = pathOutputFile + "zz_ShipData_for_external_usage.csv";   //  e.g. UnityEngine
+                                                                                    //  Console.WriteLine("writing {0}", file);
 
                     if (file == null)
                     {
@@ -2185,7 +2186,7 @@ namespace Supremacy.Tech
 
 
                 // End of Autocreated files 
-                streamWriter.Close();
+                //streamWriter.Close();
 
             WriterClose:;
             }

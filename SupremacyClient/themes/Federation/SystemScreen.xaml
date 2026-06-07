@@ -265,7 +265,9 @@
                                     <Grid x:Name="ShipbuildingTabContent">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+
                         <RowDefinition Height="*" />
+                        <!--<RowDefinition Height="Auto" />-->                      
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -300,6 +302,24 @@
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                                      <!--<Button x:Name="ScrapShipyardButton"-->
+                                      <!--Width="50" Height="70"-->
+                                      <Button x:Name="ScrapShipyardButton"
+        
+     Grid.Column="1"
+     Grid.ColumnSpan="1"
+     Grid.Row="1"
+     Content="{s:StringResource Key=SCRAP_SHIPYARD_TEXT}"
+     Width="50" Height="70"
+     VerticalAlignment="Bottom"
+     HorizontalAlignment="Right"
+     Margin="1,85,0,0"
+     Visibility="Visible"
+     ToolTip="{s:StringResource Key=SCRAP_SHIPYARD_TEXT_TOOLTIP}"
+     Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"
+     CommandParameter="{Binding}" />
+                                      
                 </Grid>
                 </TabItem>
                 <!-- END SHIPYARD BUILD QUEUE AREA -->

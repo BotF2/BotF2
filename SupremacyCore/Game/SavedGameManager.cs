@@ -494,50 +494,50 @@ namespace Supremacy.Game
 
         private static void XML_Utility_Write(GameContext _game)
         {
-            //var ns = new XmlSerializerNamespaces();
-            //ns.Add("xsi", "noNamespaceSchemaLocation=\"Saved_B2data.xsd\"");
+        //    //var ns = new XmlSerializerNamespaces();
+        //    //ns.Add("xsi", "noNamespaceSchemaLocation=\"Saved_B2data.xsd\"");
 
-            var data = new List<CsvItem>
-        {
-            new CsvItem { Key = "TurnNumber", Value = "12" },
-            new CsvItem { Key = "IsMultiplayerGame", Value = "True" }
-        };
-
-
-            string _game_mod_text = "null";
-            if (_game.GameMod != null) _game_mod_text = _game.GameMod.ToString();
+        //    var data = new List<CsvItem>
+        //{
+        //    new CsvItem { Key = "TurnNumber", Value = "12" },
+        //    new CsvItem { Key = "IsMultiplayerGame", Value = "True" }
+        //};
 
 
-
-            //var _xml_data = new XML_Items();
-            //_xml_data.Items.Add(new XML_Item { Key = "TurnNumber", Value = _game.TurnNumber.ToString() });
-            //_xml_data.Items.Add(new XML_Item { Key = "IsMultiplayerGame", Value = _game.IsMultiplayerGame.ToString() });
-            //_xml_data.Items.Add(new XML_Item { Key = "GameMod", Value = _game_mod_text });
-            //_xml_data.Items.Add(new XML_Item { Key = "CivCount", Value = _game.Civilizations.Count.ToString() });
-
-            //foreach (var item in _game.Civilizations)
-            //{
-            //    _xml_data.Items.Add(new XML_Item { Key = "CivID", Value = item.CivID.ToString() });
-            //    _xml_data.Items.Add(new XML_Item { Key = "CivKey", Value = item.Key.ToString() });
-            //}
+        //    string _game_mod_text = "null";
+        //    if (_game.GameMod != null) _game_mod_text = _game.GameMod.ToString();
 
 
 
-            //var serializer = new XmlSerializer(typeof(XML_Items));
+        //    //var _xml_data = new XML_Items();
+        //    //_xml_data.Items.Add(new XML_Item { Key = "TurnNumber", Value = _game.TurnNumber.ToString() });
+        //    //_xml_data.Items.Add(new XML_Item { Key = "IsMultiplayerGame", Value = _game.IsMultiplayerGame.ToString() });
+        //    //_xml_data.Items.Add(new XML_Item { Key = "GameMod", Value = _game_mod_text });
+        //    //_xml_data.Items.Add(new XML_Item { Key = "CivCount", Value = _game.Civilizations.Count.ToString() });
 
-            //using (var fs = new FileStream("Saved_B2data.xml", FileMode.Create))
-            //{
-            //    serializer.Serialize(fs, _xml_data, ns);
-            //}
+        //    //foreach (var item in _game.Civilizations)
+        //    //{
+        //    //    _xml_data.Items.Add(new XML_Item { Key = "CivID", Value = item.CivID.ToString() });
+        //    //    _xml_data.Items.Add(new XML_Item { Key = "CivKey", Value = item.Key.ToString() });
+        //    //}
 
-            using (var writer = new StreamWriter("Saved_B2data.csv", false, Encoding.UTF8))
-            {
-                writer.WriteLine("Key,Value");
-                foreach (var item in data)
-                {
-                    writer.WriteLine(Escape(item.Key) + "," + Escape(item.Value));
-                }
-            }
+
+
+        //    //var serializer = new XmlSerializer(typeof(XML_Items));
+
+        //    //using (var fs = new FileStream("Saved_B2data.xml", FileMode.Create))
+        //    //{
+        //    //    serializer.Serialize(fs, _xml_data, ns);
+        //    //}
+
+        //    //using (var writer = new StreamWriter("Saved_B2data.csv", false, Encoding.UTF8))
+        //    {
+        //        writer.WriteLine("Key,Value");
+        //        foreach (var item in data)
+        //        {
+        //            writer.WriteLine(Escape(item.Key) + "," + Escape(item.Value));
+        //        }
+        //    }
         }
 
         static string Escape(string value)

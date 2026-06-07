@@ -63,7 +63,7 @@ namespace Supremacy.Client.Views
 
 ;
                 Console.WriteLine(_text);
-                Debugger.Break();
+                //Debugger.Break();
                 //GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner ={0} CounterParty ={1} Message Treaty Leadin text ={2}"
                 //    , _foreignPower.Owner.Key
                 //    , _foreignPower.Counterparty.Key

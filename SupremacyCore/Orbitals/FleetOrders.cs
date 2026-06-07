@@ -2111,9 +2111,9 @@ namespace Supremacy.Orbitals
             {
                 Diplomat diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
                 ForeignPower foreignPower = diplomat.GetForeignPower(Fleet.Owner);
-                DiplomacyHelper.ApplyRegardChange(influencerCiv.Civilization, influencedCiv.Civilization, +55);
+                DiplomacyHelper.ApplyRegardChange(influencerCiv.Civilization, influencedCiv.Civilization, +25);
                 //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
-                DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +50);
+                DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +20);
 
                 _text = _fleetText + " > "
                          + influencerCiv.Civilization + " is attempting to influence the "
@@ -2878,6 +2878,7 @@ namespace Supremacy.Orbitals
                 + " > ...building a station .. used Duranium = " + _used_Duranium
 
                 ;
+            Console.WriteLine("Step_5476:; > " + _text);
 
             _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, project.Location, _text, _text, "", SitRepPriority.GrayDark));
         }

@@ -170,7 +170,7 @@ namespace Supremacy.Universe
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
                                       .Sum(o => 0.01 * o.Amount);
 
-                    int _creditsFromTradeRoute = (int)((1.0 + bonus) * Credits);
+                    int _creditsFromTradeRoute = (int)((1.0 + bonus) * Credits) / 4;
 
                     // to often = everytime it is click > do it on GameEngine = once per turn
                     _text = "Step_4888:; Turn " + GameContext.Current.TurnNumber

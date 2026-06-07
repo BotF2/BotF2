@@ -2942,7 +2942,7 @@ namespace Supremacy.AI
                     _fleet.AITypeUnit = UnitAIType.Constructor;
                     _fleet.Activity = UnitActivity.Mission;  // double
                     _fleet.Order = FleetOrders.TravelOrder;
-                    //_fleet.Order.TaskForceStatusText = "Going";
+                    //_fleet.Order.TaskForce--StatusText = "Going";
                     _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _best_SectorForStation }));
 
 

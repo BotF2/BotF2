@@ -4196,13 +4196,9 @@
                   <RowDefinition Height="28" />
                   <RowDefinition MaxHeight="14" />
                 </Grid.RowDefinitions>
+                  
                 <Rectangle x:Name="TopLeftExpanded" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
-                          
-                          
-                          
-                           Width="21"
-                           Height="42"
-                           Visibility="Collapsed">
+                           Width="21" Height="42" Visibility="Collapsed">
                   <Rectangle.Fill>
                     <DrawingBrush>
                       <DrawingBrush.Drawing>

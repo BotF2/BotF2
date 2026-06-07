@@ -247,11 +247,12 @@ namespace Supremacy.Scripting.Runtime
                     _ = _topNamespace.LoadAssembly(loadedAssembly);
 
                     // works
-                    _text = "Step_9882:; ( " + c + " ) "//               loadedAssembly= " + loadedAssembly.Location.ToString()
+                    _text = "Step_9883:; ( " + c + " ) "//               loadedAssembly= " + loadedAssembly.Location.ToString()
                             + " for " + assembly.CodeBase.ToString()
                             + " > assembly= " + assembly.Location.ToString()
                         ;
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
+
                     //Debugger.Break();
                     //foreach (var item in loadedAssembly.CustomAttributes)
                     //{

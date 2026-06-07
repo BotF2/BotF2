@@ -9,6 +9,7 @@
 
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.ServiceLocation;
+//using Microsoft.Xna.Framework.Graphics;
 using Supremacy.Annotations;
 using Supremacy.Client;
 using Supremacy.Client.Audio;
@@ -319,19 +320,48 @@ namespace Supremacy.UI
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(1, 1)
             };
+
             List<SolidColorBrush> uniqueEmpireFills = s_empireFills.Values.Distinct().ToList();
             double stepOffset = 1.0 / uniqueEmpireFills.Count / 2;
             int i = 0;
-            foreach (SolidColorBrush empireBrush in uniqueEmpireFills)
-            {
-                s_disputedSectorFill.GradientStops.Add(
-                    new GradientStop(empireBrush.Color,
-                                     stepOffset * i));
-                s_disputedSectorFill.GradientStops.Add(
-                    new GradientStop(empireBrush.Color,
-                                     0.5 + (stepOffset * i)));
-                i++;
-            }
+
+
+            //for (int j = 0; j < 4; j++)
+            //{
+            var color1 = new SolidColorBrush(Colors.Indigo) { Opacity = 0.05 };
+            s_disputedSectorFill.GradientStops.Add(
+                //new GradientStop(uniqueEmpireFills[0].Color,
+                new GradientStop(color1.Color,
+                                 stepOffset * i));
+
+            var color2 = new SolidColorBrush(Color.FromArgb(40, 165, 42, 42));
+            s_disputedSectorFill.GradientStops.Add(
+                    new GradientStop(color2.Color,
+            0.2 + (stepOffset * i)));
+            //new GradientStop(uniqueEmpireFills[1].Color,
+
+
+            // old code: original for 5 empires, but with 7 empires this just looks like ... so replaced with just 2 colors
+            //foreach (SolidColorBrush empireBrush in uniqueEmpireFills)
+            //{
+            //    s_disputedSectorFill.GradientStops.Add(
+            //        new GradientStop(empireBrush.Color,
+            //                         stepOffset * i));
+            //    //s_disputedSectorFill.GradientStops.Add(    // would like to add color Aqua
+            //    //    new GradientStop(uniqueEmpireFills.
+            //    //     0.3 + (stepOffset * i)));
+            //    s_disputedSectorFill.GradientStops.Add(
+            //        new GradientStop(empireBrush.Color,
+            //                         0.5 + (stepOffset * i)));
+            //    i++;
+            //}
+
+            //Color 
+            //System.Windows.Media.Color color_disputed = Avalon.Windows.Utility.ColorHelpers.Lighten(
+            //    (System.Windows.Media.Color)ColorConverter.ConvertFromString("Aqua"),
+            //        0.67f);
+
+
             s_disputedSectorFill.Freeze();
 
 

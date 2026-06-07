@@ -254,7 +254,8 @@
             </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Margin="15,0,0,-10" 
                             Text="{Binding Path=(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.LocalizedName), Mode=OneWay}" />
-                        <Button x:Name="PowerButton"
+                        
+              <Button x:Name="PowerButton"
                     Grid.Column="0"
                     Grid.ColumnSpan="1"
                     Grid.Row="0"

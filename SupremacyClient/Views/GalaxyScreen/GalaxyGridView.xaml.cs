@@ -47,7 +47,7 @@ namespace Supremacy.Client.Views
 
         //[NonSerialized]
         //private readonly string _newline = Environment.NewLine;
-        //private readonly string _text;
+        //private readonly string _text_all_out;
         //private string _restriction_text;
         //private string _ownerText;
         //private bool writeDirectly = true;
@@ -71,7 +71,7 @@ namespace Supremacy.Client.Views
             string _newline = Environment.NewLine;
 
             _text = "Step_2101:; GalaxyGridView Initialize...";
-            if (writeDirectly) 
+            if (writeDirectly)
                 Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -112,7 +112,7 @@ namespace Supremacy.Client.Views
             DebugCommands.F06_Screen.RegisterCommand(_f06_ScreenCommand);
 
             _text = "Step_2102:; GalaxyGridView Initialize done...";
-            if (writeDirectly) 
+            if (writeDirectly)
                 Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
         }
@@ -199,9 +199,9 @@ namespace Supremacy.Client.Views
                     continue;
                 }
 
-                //_text = "Step_4354:; Un-Fog of War not available... " ;
+                //_text_all_out = "Step_4354:; Un-Fog of War not available... " ;
                 //if (writeDirectly) 
-                //    Console.WriteLine(_text);
+                //    Console.WriteLine(_text_all_out);
 
 
                 if (diplomat.GetForeignPower(civ).DiplomacyData.Status == ForeignPowerStatus.NoContact)
@@ -327,7 +327,7 @@ namespace Supremacy.Client.Views
 
                         + " > " + item.ObjectID
                         //+ " " + item.Design
-                        
+
                         + " " + item.Name
 
                         //+ "; Crew=;" + item.Crew
@@ -339,9 +339,9 @@ namespace Supremacy.Client.Views
                                                     //+ _newline
                                                     ;
                 //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                //if (writeDirectly) Console.WriteLine(_text);
+                //if (writeDirectly) Console.WriteLine(_text_all_out);
                 //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
             }
 
 
@@ -401,7 +401,7 @@ namespace Supremacy.Client.Views
             {
                 _buildings_Text += ""
                         + "Building"
-                        + " since Turn;" + GameEngine.Do_x_Digit_String(3,_building.TurnCreated.ToString())
+                        + " since Turn;" + GameEngine.Do_x_Digit_String(3, _building.TurnCreated.ToString())
                         + ", " + (_building.IsActive ? "__Active" : "Inactive").ToString()
                         + "; " + _building.ObjectID
                         + "; " + _building.Design
@@ -451,7 +451,7 @@ namespace Supremacy.Client.Views
                               //+ "; " + item.Owner
                         ""
 
-                        + "costs " + GameEngine.Do_x_Digit_String(5,item2.GetCurrentIndustryCost().ToString())
+                        + "costs " + GameEngine.Do_x_Digit_String(5, item2.GetCurrentIndustryCost().ToString())
                         + " aka " + GameEngine.Do_x_Digit_String(2, item2.TurnsRemaining.ToString()) + " turns"
                         + " > " + item2.BuildDesign.Key
                         + " (Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
@@ -459,7 +459,7 @@ namespace Supremacy.Client.Views
                         + ", Dil=" + item2.GetCurrentResourceCost(ResourceType.Dilithium) + " )"
                         + _newline
                         ;
-                //if (writeDirectly) Console.WriteLine(_text);
+                //if (writeDirectly) Console.WriteLine(_text_all_out);
 
             }
 
@@ -484,7 +484,7 @@ namespace Supremacy.Client.Views
 
             string _buildQueue_Text = "";//"""Build Queue" + _newline;
             // not necessary
-            //_text += "Step_7609:; "
+            //_text_all_out += "Step_7609:; "
             //        + _col
             //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
             foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
@@ -501,10 +501,10 @@ namespace Supremacy.Client.Views
                     //+ " > " + _percent
                     //+ " done for " + _design
                     + _newline;
-                //if (writeDirectly) Console.WriteLine(_text);
-                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //if (writeDirectly) Console.WriteLine(_text_all_out);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
             }
-            //if (writeDirectly) Console.WriteLine(_text);
+            //if (writeDirectly) Console.WriteLine(_text_all_out);
 
 
             string _slots_Text = "";
@@ -534,20 +534,20 @@ namespace Supremacy.Client.Views
                             + " done for " + _design
                             + "  at  " + slot.Shipyard.Name
                             + _newline;
-                        //if (writeDirectly) Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //if (writeDirectly) Console.WriteLine(_text_all_out);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
                     }
                     else
                     {
                         _slots_Text += "" // "Step_7607:; " + _col //+ slot.Shipyard.Location
                             + "Shipyard-Slot= " + slot.SlotID  // crashes with a StackOverFlow
-                                                        //+ " at " + slot.Shipyard.Name
+                                                               //+ " at " + slot.Shipyard.Name
                             + " "
                             + " > " + _percent
                             + " done for " + _design
                             + _newline;
-                        //if (writeDirectly) Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //if (writeDirectly) Console.WriteLine(_text_all_out);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
                     }
                 }
             }
@@ -565,7 +565,7 @@ namespace Supremacy.Client.Views
         + " " + item.Name
 
         + " - " + item.Owner.Key/* + " ) "*/
-        //+ ", Defense= " + item.System.Colony.de
+            //+ ", Defense= " + item.System.Colony.de
             //+ "; " + GameEngine.LocationString(item.Location.ToString())
             //+ "; " + item.ObjectID
             //+ ";Colony"
@@ -596,13 +596,13 @@ namespace Supremacy.Client.Views
 + _proj_Text + _newline
             + _buildings_Text //+ _newline
 
-                                    //+ _newline
+            //+ _newline
             ;
 
             //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-            //if (writeDirectly) Console.WriteLine(_text);
+            //if (writeDirectly) Console.WriteLine(_text_all_out);
             //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
             //}
 
 
@@ -622,17 +622,19 @@ namespace Supremacy.Client.Views
             string _timeString = GameEngine.GetTimeString();
 
             string _shipnames_text = "";
-            string _stationnames_text = "";
+            string _station_names_text = "";
 
+            string _text_all_out = "";
             string _text = "";
+            string _file = "";
             string _newline = Environment.NewLine;
             bool writeDirectly = true;
             bool bool_output = true;
 
             SectorMap _map = _appContext.CurrentGame.Universe.Map;
 
-            _text = _timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + _newline;
-            _text += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   "
+            _text_all_out = _timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + _newline;
+            _text_all_out += "** Example:  MAP Location (2,5) = line 5, column 2 ** use CTRL+F for searching... ** ...before half width ('|') add some few minus **   "
                 + _newline
                 + _newline
                 + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline
@@ -643,13 +645,13 @@ namespace Supremacy.Client.Views
 
             for (int y = 0; y < _map.Height; y++)
             {
-                if (y < 10) _text += " ";  // 1 to 9 getting a blank before
+                if (y < 10) _text_all_out += " ";  // 1 to 9 getting a blank before
 
-                if (y == yhalf) _text += "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline;
-                _text += y + ":  ";
+                if (y == yhalf) _text_all_out += "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline;
+                _text_all_out += y + ":  ";
                 for (int x = 0; x < _map.Width; x++)
                 {
-                    if (x == xhalf) _text += "| ";
+                    if (x == xhalf) _text_all_out += "| ";
                     string owner = ".";
                     if (_map[x, y].Owner != null)
                     {
@@ -668,14 +670,14 @@ namespace Supremacy.Client.Views
                         if (_map[x, y].System.StarType == StarType.XRayPulsar) type = "x";
                         if (_map[x, y].System.StarType == StarType.Wormhole) type = "w";
                     }
-                    _text += owner + type + " ";
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    _text_all_out += owner + type + " ";
+                    //if (writeDirectly) Console.WriteLine(_text_all_out);
                 }
-                _text += _newline;
-                //if (writeDirectly) Console.WriteLine(_text);
+                _text_all_out += _newline;
+                //if (writeDirectly) Console.WriteLine(_text_all_out);
             }
 
-            _text +=
+            _text_all_out +=
                 _newline + "------0--------------5-------------10-------------15-------------20-------------25-------------30-------------35-------------40-------------45-------------50-------------55----------59" + _newline
                 + _newline
                 + "1st character:                                     2nd character: StarSystem" + _newline
@@ -704,7 +706,7 @@ namespace Supremacy.Client.Views
                 {
                     string _x_text = _civM.HomeColony.Location.X.ToString();
                     string _y_text = _civM.HomeColony.Location.Y.ToString();
-                    _text += _civM.Civilization.HomeQuadrant + "-Quadrant"
+                    _text_all_out += _civM.Civilization.HomeQuadrant + "-Quadrant"
                         + " ; " + GameEngine.Do_x_String(19, _civM.Civilization.Key).ToString()
                         + " ; " + GameEngine.Do_x_Digit_String(2, _x_text)
                         + " ; " + GameEngine.Do_x_Digit_String(2, _y_text)
@@ -712,10 +714,10 @@ namespace Supremacy.Client.Views
                         + " ; " + _civM.Civilization.HomeSystemName
                         + " ; " + _civM.Civilization
                         + _newline;
-                    _text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
+                    _text_all_out = _text_all_out.Replace("Beta-Quadrant", "Beta -Quadrant");
                 }
 
-                _text += _newline;
+                _text_all_out += _newline;
 
                 IEnumerable<StarSystem> otherSystems = GameContext.Current.Universe.Objects.OfType<StarSystem>();
                 foreach (StarSystem _sec in otherSystems)
@@ -732,7 +734,7 @@ namespace Supremacy.Client.Views
 
                     string _x_text = GameEngine.Do_x_Digit_String(2, _sec.Location.X.ToString());
                     string _y_text = GameEngine.Do_x_Digit_String(2, _sec.Location.Y.ToString());
-                    _text += "--------------"//Quadrant"
+                    _text_all_out += "--------------"//Quadrant"
                         + " ; " + _owner
                         + " ; " + _x_text
                         + " ; " + _y_text
@@ -740,7 +742,7 @@ namespace Supremacy.Client.Views
                         + " ; " + _sec.StarType
 
                         + _newline;
-                    //_text = _text.Replace("Beta-Quadrant", "Beta -Quadrant");
+                    //_text_all_out = _text_all_out.Replace("Beta-Quadrant", "Beta -Quadrant");
 
 
                 }
@@ -765,7 +767,7 @@ namespace Supremacy.Client.Views
 
                         ;
 
-                    _text += _newline + _timeString + _newline
+                    _text_all_out += _newline + _timeString + _newline
                         + "Step_4363:"
                         + "; " + GameEngine.LocationString(item.Location.ToString())
                         + "; " + item.ObjectID
@@ -789,12 +791,12 @@ namespace Supremacy.Client.Views
                                                     //+ ";since Turn;" + item.TurnCreated
 
                                                     + _newline;
-                    //if (writeDirectly) Console.WriteLine(_text);
-                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //if (writeDirectly) Console.WriteLine(_text_all_out);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
 
                     ILookup<MapLocation, StarSystem> systemLocationLookup = GameContext.Current.Universe.Objects.OfType<StarSystem>().ToLookup(o => o.Location);
 
-                    //_text += _newline;
+                    //_text_all_out += _newline;
                     //ILookup<MapLocation, GameObject> gameObjectLocationLookup = GameContext.Current.Universe.Objects.OfType<GameObject>().ToLookup(o => o.GetType() != Type.EmptyTypes);
                     //int pf = item.Facilities_Total1_Food
                     //        + item.Facilities_Total2_Industry
@@ -805,7 +807,7 @@ namespace Supremacy.Client.Views
                     //    ;
                     //foreach (var item2 in pf)
                     //{
-                    //_text += "Step_4366:; "
+                    //_text_all_out += "Step_4366:; "
                     //    + _col
                     //    //+ "; " + pf.IsActive + "_for_Active"
                     //    //+ "; Building"
@@ -816,7 +818,7 @@ namespace Supremacy.Client.Views
 
                     //    + _newline;
 
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (writeDirectly) Console.WriteLine(_text_all_out);
 
                     //}
 
@@ -825,14 +827,14 @@ namespace Supremacy.Client.Views
 
                     //}
 
-                    //_text += _newline;
+                    //_text_all_out += _newline;
                     ILookup<MapLocation, Building> buildingLocationLookup = GameContext.Current.Universe.Objects.OfType<Building>().ToLookup(o => o.Location);
                     foreach (Building building in buildingLocationLookup[item.Location])
                     {
-                        _text += "Step_4367:; "
+                        _text_all_out += "Step_4367:; "
                             + _col
                             + "; " + building.IsActive + "_for_Active"
-                            + "; since Turn;" + GameEngine.Do_x_Digit_String(3,building.TurnCreated.ToString())
+                            + "; since Turn;" + GameEngine.Do_x_Digit_String(3, building.TurnCreated.ToString())
                             + "; Building"
                             + "; " + building.ObjectID
                             + "; " + building.Design
@@ -841,7 +843,7 @@ namespace Supremacy.Client.Views
 
                             + _newline;
 
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (writeDirectly) Console.WriteLine(_text_all_out);
 
                     }
 
@@ -859,23 +861,23 @@ namespace Supremacy.Client.Views
                         ;
                     foreach (var item2 in Project_Available)
                     {
-                        _text += "Step_4235:; " + _col + ";  Available to build"
+                        _text_all_out += "Step_4235:; " + _col + ";  Available to build"
                                 //+ " on; " + item.Name
                                 //+ "; " + item.Owner
 
                                 + "; needs " + GameEngine.Do_x_Digit_String(2, item2.TurnsRemaining.ToString()) + " turns"
-                                + "; costs= " + GameEngine.Do_x_Digit_String(5,item2.GetCurrentIndustryCost().ToString())
+                                + "; costs= " + GameEngine.Do_x_Digit_String(5, item2.GetCurrentIndustryCost().ToString())
                                 + "; " + item2.BuildDesign.Key
                                 + "; and Deu=" + item2.GetCurrentResourceCost(ResourceType.Deuterium)
                                 + "; Dur=" + item2.GetCurrentResourceCost(ResourceType.Duranium)
                                 + "; Dil=" + item2.GetCurrentResourceCost(ResourceType.Dilithium)
                                 + _newline
                                 ;
-                        //if (writeDirectly) Console.WriteLine(_text);
+                        //if (writeDirectly) Console.WriteLine(_text_all_out);
 
                     }
 
-                    _text += "Step_7604:; " + _col
+                    _text_all_out += "Step_7604:; " + _col
 
                             + "; Stockpile Deu= " + item.Deuterium_Net
                             + "; Dur= " + item.Duranium_Net
@@ -883,7 +885,7 @@ namespace Supremacy.Client.Views
                             + "; Credits= " + item.CreditsEmpire
                             + _newline;
 
-                    _text += "Step_4369:"
+                    _text_all_out += "Step_4369:"
                             + "; " + GameEngine.LocationString(item.Location.ToString())
                             + "; " + item.ObjectID
                             + ";Colony"
@@ -906,7 +908,7 @@ namespace Supremacy.Client.Views
 
                     if (item.BuildSlots[0].HasProject)
                     {
-                        _text += "Step_7607:; "
+                        _text_all_out += "Step_7607:; "
                                 + _col
                                 + "; IS BUILDING > " + item.BuildSlots[0].Project.BuildDesign
                                 + " > needs " + item.BuildSlots[0].Project.TurnsRemaining + " turns or a BUY"
@@ -915,18 +917,18 @@ namespace Supremacy.Client.Views
                     }
                     else
                     {
-                        _text += "Step_7602:; "
+                        _text_all_out += "Step_7602:; "
                             + _col
                             + "; is _building > * NOTHING * or just finished this turn" + _newline;
                     }
 
                     // not necessary
-                    //_text += "Step_7609:; "
+                    //_text_all_out += "Step_7609:; "
                     //        + _col
                     //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
                     foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
                     {
-                        _text += "Step_7608:; "
+                        _text_all_out += "Step_7608:; "
                             + _col
                             + "; BUILDQUEUE  > " + buildQueueItem.Description + " > Turns needed= " + buildQueueItem.TurnsRemaining.ToString()
                             //+ " ; for; " + 
@@ -938,10 +940,10 @@ namespace Supremacy.Client.Views
                             //+ " > " + _percent
                             //+ " done for " + _design
                             + _newline;
-                        //if (writeDirectly) Console.WriteLine(_text);
-                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                        //if (writeDirectly) Console.WriteLine(_text_all_out);
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
                     }
-                    //if (writeDirectly) Console.WriteLine(_text);
+                    //if (writeDirectly) Console.WriteLine(_text_all_out);
 
                     if (item.Shipyard != null)
                     {
@@ -961,7 +963,7 @@ namespace Supremacy.Client.Views
 
                                 if (_percent != "0 %")
                                 {
-                                    _text += "Step_7603:; " + _col //+ slot.Shipyard.Location
+                                    _text_all_out += "Step_7603:; " + _col //+ slot.Shipyard.Location
                                         + "; Slot= " + slot.SlotID
 
                                         + " "
@@ -969,25 +971,25 @@ namespace Supremacy.Client.Views
                                         + " done for " + _design
                                         + " at " + slot.Shipyard.Name
                                         + _newline;
-                                    //if (writeDirectly) Console.WriteLine(_text);
-                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                    //if (writeDirectly) Console.WriteLine(_text_all_out);
+                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
                                 }
                                 else
                                 {
-                                    _text += "Step_7607:; " + _col //+ slot.Shipyard.Location
+                                    _text_all_out += "Step_7607:; " + _col //+ slot.Shipyard.Location
                                         + "; Slot= " + slot.SlotID  // crashes with a StackOverFlow
                                                                     //+ " at " + slot.Shipyard.Name
                                         + " "
                                         + " > " + _percent
                                         + " done for " + _design
                                         + _newline;
-                                    //if (writeDirectly) Console.WriteLine(_text);
-                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                    //if (writeDirectly) Console.WriteLine(_text_all_out);
+                                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
                                 }
                             }
                             catch
                             {
-                                _text += "Step_7609: Serialize failed"
+                                _text_all_out += "Step_7609: Serialize failed"
                                      //+ slot.Project.Location
                                      //+ " > Slot= " + slot.SlotID
                                      //+ " at " + slot.Shipyard.Name
@@ -995,8 +997,8 @@ namespace Supremacy.Client.Views
                                      //+ " > " + _percent
                                      //+ " done for " + _design
                                      + _newline;
-                                //if (writeDirectly) Console.WriteLine(_text);
-                                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                //if (writeDirectly) Console.WriteLine(_text_all_out);
+                                //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
                             }
                             ;
                         }
@@ -1011,9 +1013,9 @@ namespace Supremacy.Client.Views
                 }
 
 
-                if (writeDirectly) 
-                    Console.WriteLine(_text);
-                _text += _newline;
+                if (writeDirectly)
+                    Console.WriteLine(_text_all_out);
+                _text_all_out += _newline;
 
 
 
@@ -1024,10 +1026,10 @@ namespace Supremacy.Client.Views
                 //foreach (Ship item in ships)
                 //{
                 //    if (item.Owner.Key != _ownerText)
-                //        _text += _newline + _newline;
+                //        _text_all_out += _newline + _newline;
                 //    _ownerText = item.Owner.Key;
 
-                //    _text += "Step_4381:"
+                //    _text_all_out += "Step_4381:"
                 //            + "; " + GameEngine.LocationString(item.Location.ToString())
                 //            + "; Ship"
 
@@ -1049,18 +1051,18 @@ namespace Supremacy.Client.Views
 
                 //                                        + _newline;
                 //    //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                //    //if (writeDirectly) Console.WriteLine(_text);
+                //    //if (writeDirectly) Console.WriteLine(_text_all_out);
                 //    //GameLog.Core.SaveLoadDetails.DebugFormat("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
-                //    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                //    //GameLog.Core.SaveLoadDetails.DebugFormat(_text_all_out);
                 //}
 
 
-                //_text += _newline;
+                _text_all_out += _timeString + _newline;
 
                 IEnumerable<Station> stations = GameContext.Current.Universe.Objects.OfType<Station>();
                 foreach (Station item in stations)
                 {
-                    _text += "Step_4391:"
+                    _text_all_out += "Step_4392:"
                             + "; " + GameEngine.LocationString(item.Location.ToString())
                             + "; Station"
 
@@ -1083,12 +1085,12 @@ namespace Supremacy.Client.Views
                                                         + _newline;
                 }
 
-                _text += _newline;
+                _text_all_out += _timeString + _newline;
 
                 IEnumerable<Shipyard> shipyards = GameContext.Current.Universe.Objects.OfType<Shipyard>();
                 foreach (Shipyard item in shipyards)
                 {
-                    _text += "Step_4391:"
+                    _text_all_out += "Step_4391:"
                             + "; " + GameEngine.LocationString(item.Location.ToString())
                             + "; Shipyard"
 
@@ -1111,12 +1113,12 @@ namespace Supremacy.Client.Views
                                                         + _newline;
                 }
 
-                _text += _newline;
+                _text_all_out += _timeString + _newline;
 
                 var races = GameContext.Current.Races.ToList();
                 foreach (var item in races)
                 {
-                    _text += "Step_4396:"
+                    _text_all_out += "Step_4396:"
                             //+ "; " + item.
                             + "; Race"
 
@@ -1142,11 +1144,11 @@ namespace Supremacy.Client.Views
                 //var events = null;
                 if (GameContext.Current.ScriptedEvents != null)
                 {
-                    _text += "Step_4356:; Events following..." + _newline;
+                    _text_all_out += "Step_4356:; Events following..." + _newline;
                     var events = GameContext.Current.ScriptedEvents.ToList();
                     foreach (var item in events)
                     {
-                        _text += "Step_4356:"
+                        _text_all_out += "Step_4356:"
                                 //+ "; " + item.
                                 + "; Events"
 
@@ -1170,12 +1172,12 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-                _text += _newline;
+                _text_all_out += _timeString + _newline;
 
                 var civs = GameContext.Current.Civilizations.ToList();
                 foreach (Civilization item in civs)
                 {
-                    _text += "Step_4346:"
+                    _text_all_out += "Step_4346:"
                             //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
                             + "; Civ"
                             + "; " + item.Name
@@ -1198,12 +1200,12 @@ namespace Supremacy.Client.Views
                                                         + _newline;
                 }
 
-                _text += _newline;
+                _text_all_out += _timeString + _newline;
 
                 var civMans = GameContext.Current.CivilizationManagers.ToList();
                 foreach (CivilizationManager item in civMans)
                 {
-                    _text += "Step_4348:"
+                    _text_all_out += "Step_4348:"
                             //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
                             + "; CivMan"
                             + "; " + item.Civilization
@@ -1213,14 +1215,14 @@ namespace Supremacy.Client.Views
                                                         + _newline;
                 }
 
-                _text += _newline;
+                _text_all_out += _newline;
 
                 //var civMans = GameContext.Current.ScriptedEvents;
                 if (GameContext.Current.ScriptedEvents != null)
                 {
                     foreach (var item in GameContext.Current.ScriptedEvents)
                     {
-                        _text += "Step_4349:"
+                        _text_all_out += "Step_4349:"
                                 //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
                                 + "; CivMan"
                                 + "; " + item.EventID
@@ -1230,7 +1232,7 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-                _text += _newline;
+                _text_all_out += _newline;
 
                 //IEnumerable<ShipDesign> bd = GameContext.Current.TechDatabase.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign);
                 //if (GameContext.Current.TechDatabase)
@@ -1273,13 +1275,6 @@ namespace Supremacy.Client.Views
                     tdb_text += ";" + item.EncyclopediaCategory;
                     tdb_text += ";" + item.ObsoletedDesigns.Count;
                     tdb_text += ";" + item.UpgradableDesigns.Count;
-                    //tdb_text += ";" + item.des;
-
-
-
-
-                    //+ "; " + item.DesignID
-                    //+ "; " + item.Name;
                     ;
 
 
@@ -1290,8 +1285,8 @@ namespace Supremacy.Client.Views
 
                         if (first_orbbat)
                         {
-                            _text += "Step_4341: ---------------" + _newline;
-                            _text += "Step_4341:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
+                            _text_all_out += "Step_4341: ---------------" + _newline;
+                            _text_all_out += "Step_4341:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
                             first_orbbat = false;
                         }
 
@@ -1328,8 +1323,8 @@ namespace Supremacy.Client.Views
 
                         if (first_pf)
                         {
-                            _text += "Step_4342: ---------------" + _newline;
-                            _text += "Step_4342:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;LA;FIELD;OUTP;COMMENT" + _newline;
+                            _text_all_out += "Step_4342: ---------------" + _timeString + _newline;
+                            _text_all_out += "Step_4342:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;LA;FIELD;OUTP;COMMENT" + _newline;
                             first_pf = false;
                         }
 
@@ -1376,8 +1371,8 @@ namespace Supremacy.Client.Views
 
                         if (first_buildings)
                         {
-                            _text += "Step_4343: ---------------" + _newline;
-                            _text += "Step_4343:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;R1;R2;R3;R4;Bo1;B1V;Bo2;B2V;COMMENT" + _newline;
+                            tdb_text += "Step_4343: ---------------" + _timeString + _newline;
+                            tdb_text += "Step_4343:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;R1;R2;R3;R4;Bo1;B1V;Bo2;B2V;COMMENT" + _newline;
                             first_buildings = false;
                         }
 
@@ -1418,8 +1413,8 @@ namespace Supremacy.Client.Views
 
                         if (first_shipyards)
                         {
-                            _text += "Step_4344: ---------------" + _newline;
-                            _text += "Step_4344:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;SL;OUTP;OUTPm;TYPE;maxLvl;COMMENT" + _newline;
+                            _text_all_out += "Step_4344: ---------------" + _timeString + _newline;
+                            _text_all_out += "Step_4344:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;EN;SL;OUTP;OUTPm;TYPE;maxLvl;COMMENT" + _newline;
                             first_shipyards = false;
                         }
 
@@ -1435,143 +1430,158 @@ namespace Supremacy.Client.Views
                     }
 
                     //StationDesign
-                    _text += "Step_4345: no output for  _stations_text";
-                    //if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
-                    //{
+                    string _text_stations = "Step_4345: _stations_text >  (or no output)";
 
-                    ////    if (first_stations)
-                    ////    {
-                    ////        _text += "Step_4345: ---------------" + _newline;
-                    ////        _text += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
-                    ////        first_stations = false;
-                    ////    }
+                    if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
+                    {
+                        if (first_stations)
+                        {
+                            _text_stations += "Step_4345: ---------------" + _timeString + _newline;
+                            _text_stations += "Step_4345:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Sc%;SP;SR;HULL;SH;ShR;W1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
+                            first_stations = false;
+                        }
 
-                    ////    StationDesign spec = item as StationDesign;
-                    ////    tdb_text += ";" + spec.ScienceAbility;
-                    ////    tdb_text += ";" + spec.ScanStrength;
-                    ////    tdb_text += ";" + spec.SensorRange;
-                    ////    tdb_text += ";" + spec.HullStrength;
-                    ////    tdb_text += ";" + spec.ShieldStrength;
-                    ////    tdb_text += ";" + spec.ShieldRechargeRate;
+                        StationDesign spec = item as StationDesign;
+                        _text_stations += ";" + spec.ScienceAbility;
+                        _text_stations += ";" + spec.ScanStrength;
+                        _text_stations += ";" + spec.SensorRange;
+                        _text_stations += ";" + spec.HullStrength;
+                        _text_stations += ";" + spec.ShieldStrength;
+                        _text_stations += ";" + spec.ShieldRechargeRate;
 
-                    ////    if (spec.PrimaryWeapon != null)
-                    ////    {
-                    ////        tdb_text += ";" + spec.PrimaryWeaponName;
-                    ////        tdb_text += ";" + spec.PrimaryWeapon.Count;
-                    ////        tdb_text += ";" + spec.PrimaryWeapon.Damage;
-                    ////        tdb_text += ";" + spec.PrimaryWeapon.Refire;
-                    ////    }
+                        if (spec.PrimaryWeapon != null)
+                        {
+                            _text_stations += ";" + spec.PrimaryWeaponName;
+                            _text_stations += ";" + spec.PrimaryWeapon.Count;
+                            _text_stations += ";" + spec.PrimaryWeapon.Damage;
+                            _text_stations += ";" + spec.PrimaryWeapon.Refire;
+                        }
 
-                    ////    if (spec.SecondaryWeapon != null)
-                    ////    {
-                    ////        tdb_text += ";" + spec.SecondaryWeaponName;
-                    ////        tdb_text += ";" + spec.SecondaryWeapon.Count;
-                    ////        tdb_text += ";" + spec.SecondaryWeapon.Damage;
-                    ////        //tdb_text += ";" + spec.PrimaryWeapon.Refire;
-                    ////    }
+                        if (spec.SecondaryWeapon != null)
+                        {
+                            _text_stations += ";" + spec.SecondaryWeaponName;
+                            _text_stations += ";" + spec.SecondaryWeapon.Count;
+                            _text_stations += ";" + spec.SecondaryWeapon.Damage;
+                        }
 
-                    ////    //StationNames
-                    ////    _stationnames_text += "Step_4359: no output for  _stationnames_text";
-                    ////    //if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
-                    ////    //{
 
-                    ////    //    if (first_stationname)
-                    ////    //    {
-                    ////    //        //_stationnames_text += "Step_4349: ---------------" + _newline;
-                    ////    //        _stationnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
-                    ////    //        first_stationname = false;
-                    ////    //    }
 
-                    ////    //    StationDesign spec2 = item as StationDesign;
+                        //StationNames
+                        _station_names_text += "Step_4359: no output for  _station_names_text";
+                        //if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
+                        //{
 
-                    ////    //    //tdb_text += ";" + spec.Dilithium;
-                    ////    //    //tdb_text += ";" + spec.Speed;
-                    ////    //    //tdb_text += ";" + spec.Range;
-                    ////    //    //tdb_text += ";" + spec.FuelCapacity;
-                    ////    //    //tdb_text += ";" + spec.Maneuverability;
-                    ////    //    //tdb_text += ";" + spec.WorkCapacity;
+                        //    if (first_stationname)
+                        //    {
+                        //        _station_names_text += "Step_4349: ---------------" + _timeString + _newline;
+                        //        _station_names_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
+                        //        first_stationname = false;
+                        //    }
 
-                    ////    //    //tdb_text += ";" + spec.ScienceAbility;
-                    ////    //    //tdb_text += ";" + spec.ScanStrength;
-                    ////    //    //tdb_text += ";" + spec.SensorRange;
-                    ////    //    //tdb_text += ";" + spec.HullStrength;
-                    ////    //    //tdb_text += ";" + spec.ShieldStrength;
-                    ////    //    //tdb_text += ";" + spec.ShieldRechargeRate;
+                        //    StationDesign spec2 = item as StationDesign;
 
-                    ////    //    //tdb_text += ";" + spec.CloakStrength;
-                    ////    //    //tdb_text += ";" + spec.CamouflagedStrength;
+                        //    tdb_text += ";" + spec.Dilithium;
+                        //    tdb_text += ";" + spec.Speed;
+                        //    tdb_text += ";" + spec.Range;
+                        //    tdb_text += ";" + spec.FuelCapacity;
+                        //    tdb_text += ";" + spec.Maneuverability;
+                        //    tdb_text += ";" + spec.WorkCapacity;
 
-                    ////    //    //tdb_text += ";" + spec.StationType;
-                    ////    //    //tdb_text += ";" + spec.ClassName;
+                        //    tdb_text += ";" + spec.ScienceAbility;
+                        //    tdb_text += ";" + spec.ScanStrength;
+                        //    tdb_text += ";" + spec.SensorRange;
+                        //    tdb_text += ";" + spec.HullStrength;
+                        //    tdb_text += ";" + spec.ShieldStrength;
+                        //    tdb_text += ";" + spec.ShieldRechargeRate;
 
-                    ////    //    int count = spec2.PossibleNames.Count;
+                        //    tdb_text += ";" + spec.CloakStrength;
+                        //    tdb_text += ";" + spec.CamouflagedStrength;
 
-                    ////    //    foreach (var name in spec2.PossibleNames)
-                    ////    //    {
-                    ////    //        _stationnames_text += "Step_4359:"
-                    ////    //            + ";" + count
-                    ////    //            + ";" + item.Key
+                        //    tdb_text += ";" + spec.StationType;
+                        //    tdb_text += ";" + spec.ClassName;
 
-                    ////    //            + " ;" + name.Key
-                    ////    //            + _newline;
-                    ////    //    }
+                        //    int count = spec2.PossibleNames.Count;
 
-                    ////    //}
-                    ////}
+                        //    foreach (var name in spec2.PossibleNames)
+                        //    {
+                        //        _station_names_text += "Step_4359:"
+                        //            + ";" + count
+                        //            + ";" + item.Key
+
+                        //            + " ;" + name.Key
+                        //            + _newline;
+                        //    }
+
+                        //ToDo: test it on this place of code
+                        //_file = Path.Combine(_path_Resources_Data_Addon, "_StationNames.csv"); // by ALT+M at GalaxyMap
+                        //if (!string.IsNullOrEmpty(_file))
+                        //{
+                        //    StreamWriter streamWriter = new StreamWriter(_file);
+                        //    streamWriter.Write(_station_names_text);
+                        //    streamWriter.Close();
+                        //    _text_stations = "output of _StationNames done to " + _file;
+                        //    if (writeDirectly)
+                        //        Console.WriteLine(_text_stations);
+                        //}
+
+                        //}
+
+                    }
+                    tdb_text += _text_stations;
                     bool_output = true; // true again
 
 
                     //ShipDesign
-                    _text += "### no output for > ships";
-                    bool_output = false;
+                    string _text_ships = "### output for > ships  (or no output)";
+                    bool_output = true;
+                    //bool_output = false;
                     if (bool_output == true && item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Ships)
                     {
 
                         if (first_ships)
                         {
-                            _text += "Step_4346: ---------------" + _newline;
-                            _text += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Dil;Spe;Ra;Fu;Man;WO;Sc%;SP;SR;"
+                            _text_ships += "Step_4346: ---------------" + _timeString + _newline;
+                            _text_ships += "Step_4346:;ID;KEY;BIO;CP;CS;EN;PR;WP;UNIVE;BCo;DUR;MA;PoH;CATE;Obs;Up;Dil;Spe;Ra;Fu;Man;WO;Sc%;SP;SR;"
                                                             + "HULL;SH;ShR;Cl;Ca;TYPE;CLASSNAME;N_+_Sp;W1=Weapon 1;W1C;W1D;W1R;W2;W2C;W2D;COMMENT" + _newline;
                             first_ships = false;
                         }
 
                         ShipDesign spec = item as ShipDesign;
 
-                        tdb_text += ";" + spec.Dilithium;
-                        tdb_text += ";" + spec.Speed;
-                        tdb_text += ";" + spec.Range;
-                        tdb_text += ";" + spec.FuelCapacity;
-                        tdb_text += ";" + spec.Maneuverability;
-                        tdb_text += ";" + spec.WorkCapacity;
+                        _text_ships += ";" + spec.Dilithium;
+                        _text_ships += ";" + spec.Speed;
+                        _text_ships += ";" + spec.Range;
+                        _text_ships += ";" + spec.FuelCapacity;
+                        _text_ships += ";" + spec.Maneuverability;
+                        _text_ships += ";" + spec.WorkCapacity;
 
-                        tdb_text += ";" + spec.ScienceAbility;
-                        tdb_text += ";" + spec.ScanStrength;
-                        tdb_text += ";" + spec.SensorRange;
-                        tdb_text += ";" + spec.HullStrength;
-                        tdb_text += ";" + spec.ShieldStrength;
-                        tdb_text += ";" + spec.ShieldRechargeRate;
+                        _text_ships += ";" + spec.ScienceAbility;
+                        _text_ships += ";" + spec.ScanStrength;
+                        _text_ships += ";" + spec.SensorRange;
+                        _text_ships += ";" + spec.HullStrength;
+                        _text_ships += ";" + spec.ShieldStrength;
+                        _text_ships += ";" + spec.ShieldRechargeRate;
 
-                        tdb_text += ";" + spec.CloakStrength;
-                        tdb_text += ";" + spec.CamouflagedStrength;
+                        _text_ships += ";" + spec.CloakStrength;
+                        _text_ships += ";" + spec.CamouflagedStrength;
 
-                        tdb_text += ";" + spec.ShipType;
-                        tdb_text += ";" + spec.ClassName;
-                        tdb_text += ";" + spec.EncyclopediaHeading;
+                        _text_ships += ";" + spec.ShipType;
+                        _text_ships += ";" + spec.ClassName;
+                        _text_ships += ";" + spec.EncyclopediaHeading;
 
                         if (spec.PrimaryWeapon != null)
                         {
-                            tdb_text += ";" + spec.PrimaryWeaponName;
-                            tdb_text += ";" + spec.PrimaryWeapon.Count;
-                            tdb_text += ";" + spec.PrimaryWeapon.Damage;
-                            tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                            _text_ships += ";" + spec.PrimaryWeaponName;
+                            _text_ships += ";" + spec.PrimaryWeapon.Count;
+                            _text_ships += ";" + spec.PrimaryWeapon.Damage;
+                            _text_ships += ";" + spec.PrimaryWeapon.Refire;
                         }
 
                         if (spec.SecondaryWeapon != null)
                         {
-                            tdb_text += ";" + spec.SecondaryWeaponName;
-                            tdb_text += ";" + spec.SecondaryWeapon.Count;
-                            tdb_text += ";" + spec.SecondaryWeapon.Damage;
-                            //tdb_text += ";" + spec.PrimaryWeapon.Refire;
+                            _text_ships += ";" + spec.SecondaryWeaponName;
+                            _text_ships += ";" + spec.SecondaryWeapon.Count;
+                            _text_ships += ";" + spec.SecondaryWeapon.Damage;
                         }
 
                         //tdb_text += ";" + spec.ShipType;
@@ -1579,11 +1589,12 @@ namespace Supremacy.Client.Views
 
                         //tdb_text += ";" + item.s;
                     }
+                    tdb_text += _text_ships;
                     bool_output = true; // true again
 
 
                     // Ship Names
-                    _text += "### no output for > ship_names";
+                    _shipnames_text = "### output for > ship_names  ( or no output )";
                     bool_output = false;
 
                     //ShipNames
@@ -1592,32 +1603,12 @@ namespace Supremacy.Client.Views
 
                         if (_first_line_ship_names)
                         {
-                            //_shipnames_text += "Step_4349: ---------------" + _newline;
+                            _shipnames_text += "Step_4349: ---------------" + _timeString + _newline;
                             _shipnames_text += DateTime.Now + ";COUNT;KEY;NAMES;COMMENT" + _newline;
                             _first_line_ship_names = false;
                         }
 
                         ShipDesign spec = item as ShipDesign;
-
-                        //tdb_text += ";" + spec.Dilithium;
-                        //tdb_text += ";" + spec.Speed;
-                        //tdb_text += ";" + spec.Range;
-                        //tdb_text += ";" + spec.FuelCapacity;
-                        //tdb_text += ";" + spec.Maneuverability;
-                        //tdb_text += ";" + spec.WorkCapacity;
-
-                        //tdb_text += ";" + spec.ScienceAbility;
-                        //tdb_text += ";" + spec.ScanStrength;
-                        //tdb_text += ";" + spec.SensorRange;
-                        //tdb_text += ";" + spec.HullStrength;
-                        //tdb_text += ";" + spec.ShieldStrength;
-                        //tdb_text += ";" + spec.ShieldRechargeRate;
-
-                        //tdb_text += ";" + spec.CloakStrength;
-                        //tdb_text += ";" + spec.CamouflagedStrength;
-
-                        //tdb_text += ";" + spec.ShipType;
-                        //tdb_text += ";" + spec.ClassName;
 
                         int count = spec.PossibleNames.Count;
 
@@ -1631,11 +1622,23 @@ namespace Supremacy.Client.Views
                                 + _newline;
                             Console.WriteLine(_shipnames_text);
                         }
-                            //Console.WriteLine(_shipnames_text);
+                        //Console.WriteLine(_shipnames_text);
 
 
                         //_shipnames_text = DateTime.Now + ";COUNT;KEY;NAMES;COMMENT   >>> no output" + _newline;
                         //Console.WriteLine(_shipnames_text);
+
+                        string _comment_inside_code = "No _ShipNames.csv because there is already a > _TechObj - 6 - Ships_NAMES_List(autoCreated).csv";
+                        //_file = Path.Combine(_path_Resources_Data_Addon, "zz_ShipNames.csv");
+                        //if (!string.IsNullOrEmpty(_file))
+                        //{
+                        //    StreamWriter streamWriter = new StreamWriter(_file);
+                        //    streamWriter.Write(_shipnames_text);
+                        //    streamWriter.Close();
+                        //    _text_all_out = "output of _ShipNames done to " + _file;
+                        //    if (writeDirectly)
+                        //        Console.WriteLine(_text_all_out);
+                        //}
 
 
                         //if (spec.PossibleNames != null)
@@ -1660,48 +1663,41 @@ namespace Supremacy.Client.Views
                         //tdb_text += ";" + item.s;
                     }
 
-                    _text += tdb_text + _newline;
+                    _text_all_out += tdb_text + _newline;
 
                 }
-                //_text += _shipnames_text;
+
+
+
+                _text_all_out += _shipnames_text;
                 //}
 
             }
 
-            if (writeDirectly) Console.WriteLine(_text);   // Output here as well
+            if (writeDirectly) 
+                Console.WriteLine(_text_all_out);   // Output here as well
 
-            
-            
-            string file = Path.Combine(_path_Resources_Data_Addon, "_MapData.txt");
-            //string file = Path.Combine(AppContext., "_MapData.txt");
-            if (!string.IsNullOrEmpty(file)/* && File.Exists(file)*/)
+
+
+
+
+
+            _file = Path.Combine(_path_Resources_Data_Addon, "_MapData.txt");  // by ALT+M at GalaxyMap
+            //string _file = Path.Combine(AppContext., "_MapData.txt");
+            if (!string.IsNullOrEmpty(_file)/* && File.Exists(_file)*/)
             {
-                StreamWriter streamWriter = new StreamWriter(file);
-                streamWriter.Write(_text);
+                StreamWriter streamWriter = new StreamWriter(_file);
+                streamWriter.Write(_text_all_out);
                 streamWriter.Close();
-                _text = "output of _MapData done to " + file;
-                if (writeDirectly) Console.WriteLine(_text);
-            }
-            //string _path_lib = ResourceManager.GetResourcePath(".\\lib")
-            file = Path.Combine(_path_Resources_Data_Addon, "_ShipNames.csv");
-            if (!string.IsNullOrEmpty(file))
-            {
-                StreamWriter streamWriter = new StreamWriter(file);
-                streamWriter.Write(_shipnames_text);
-                streamWriter.Close();
-                _text = "output of _ShipNames done to " + file;
-                if (writeDirectly) Console.WriteLine(_text);
+                _text_all_out = "output of _MapData done to " + _file;
+                if (writeDirectly) 
+                    Console.WriteLine(_text_all_out);
             }
 
-            file = Path.Combine(_path_Resources_Data_Addon, "_StationNames.csv");
-            if (!string.IsNullOrEmpty(file))
-            {
-                StreamWriter streamWriter = new StreamWriter(file);
-                streamWriter.Write(_stationnames_text);
-                streamWriter.Close();
-                _text = "output of _StationNames done to " + file;
-                if (writeDirectly) Console.WriteLine(_text);
-            }
+
+
+            //_also do for more output-files
+            TechDatabase.Load();
 
             System.Media.SoundPlayer wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound001.wav");
             wav_player.Play();

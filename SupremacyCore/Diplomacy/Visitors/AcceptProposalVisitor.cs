@@ -34,9 +34,10 @@ namespace Supremacy.Diplomacy.Visitors
             }
 
             string _text = "Step_2334:; " 
-                + "Proposal ACCEPTED: Sender " + proposal.Sender.Key
+                /*+ " for " */+ proposal.Clauses[0].ClauseType
+                + " > Proposal ACCEPTED: Sender was " + proposal.Sender.Key
                 + " to " + proposal.Recipient.Key
-                + " for " + proposal.Clauses[0].ClauseType
+
                 ;
             Console.WriteLine(_text);
             //GameLog.Client.DiplomacyDetails.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
@@ -61,14 +62,16 @@ namespace Supremacy.Diplomacy.Visitors
 
             Response response = new Response(ResponseType.Accept, proposal);
 
-            _text = "Step_2336:; "
-                    + "Agreement recipient= " + agreement.Recipient
-                    + ", sender was= " + agreement.Sender
-                    + ", turn sent= " + agreement.Proposal.TurnSent
-                    + ", clauses= " + proposal.Clauses.Count
-                    + ", response= " + response.ResponseType.ToString()
-                    ;
-            Console.WriteLine(_text);
+            // doubled
+            //_text = "Step_2336:; "
+            //        + "Agreement recipient= " + agreement.Recipient
+            //        + ", sender was= " + agreement.Sender
+            //        + ", turn sent= " + agreement.Proposal.TurnSent
+            //        + ", clauses= " + proposal.Clauses.Count
+            //        + ", response= " + response.ResponseType.ToString()
+            //        ;
+            //Console.WriteLine(_text);
+
             //GameLog.Core.DiplomacyDetails.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
             //    agreement.Recipient, agreement.Sender, agreement.Proposal.TurnSent, proposal.Clauses.Count, response.ResponseType.ToString());
 

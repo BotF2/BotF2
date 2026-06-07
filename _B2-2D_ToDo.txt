@@ -16,6 +16,12 @@ Ist das gewollt? Bei der Föderation kann ich es bedingt nachvollziehen (auch we
 
 - Bilddateien > SOLAR, aber BORG_SOLAR
 - SitRep for reducing morale by health issues Do_23_morale
+- Population distribution
+- Abriss von Schiffswerften
+- BuildSlotMaxOutput noch benutzt
+- MAPData > Minors are not building anything ?
+- Colors / Shade for umstrittene sectors
+
 
 
 - bilder fehlermeldung

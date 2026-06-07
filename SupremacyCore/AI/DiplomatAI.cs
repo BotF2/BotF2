@@ -20,16 +20,16 @@ namespace Supremacy.AI
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy + Sabotage
         {
             string _diploSummary = "";
-            string _newline = Environment.NewLine;
+            //string _newline = Environment.NewLine;
 
             if (civ == null)
             {
                 throw new ArgumentNullException("civ");
             }
 
-            Civilization aCiv = (Civilization)civ;
+            Civilization _civ1 = (Civilization)civ;
 
-            Diplomat diplomat = Diplomat.Get(civ);
+            Diplomat _diplomat_1 = Diplomat.Get(civ);
 
             /*
              * Process messages which have already been delivered
@@ -37,55 +37,55 @@ namespace Supremacy.AI
             foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             // we can control regard and trust for both human otherCivs and AI otherCivs
             {
-                if (otherCiv.CivID == civ.CivID)
+                if (otherCiv.CivID == _civ1.CivID)
                 {
                     continue;
                 }
 
-                if (!DiplomacyHelper.IsContactMade(civ.CivID, otherCiv.CivID))
+                if (!DiplomacyHelper.IsContactMade(_civ1.CivID, otherCiv.CivID))
                 {
                     continue;
                 }
 
-                //if (!otherCiv.IsEmpire && !aCiv.IsEmpire)
+                //if (!otherCiv.IsEmpire && !_civ1.IsEmpire)
                 //{
                 //    continue; // is Minor
                 //}
 
-                ForeignPower foreignPower = diplomat.GetForeignPower(otherCiv);
+                ForeignPower foreignPower = _diplomat_1.GetForeignPower(otherCiv);
                 Diplomat otherdiplomat = Diplomat.Get(otherCiv);
-                ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
+                ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(_civ1);
 
                 _text = "Step_5405:; "
                     + "; regard= " + GameEngine.Do_x_Digit_String( 4, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
 
                     + "; regard= " + GameEngine.Do_x_Digit_String( 4, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
                     + ", Status= * " + GameEngine.Do_x_String(12,foreignPower.DiplomacyData.Status.ToString())
-                    + aCiv.Key
+                    + _civ1.Key
 
                     + " vs " + otherCiv.Key
                     + " (DiplomatAI.cs)" 
 
 
-                    + " * > Traits= " + aCiv.Traits
+                    + " * > Traits= " + _civ1.Traits
                     + " - vs - " + otherCiv.Traits
 
                     ;
                 //Console.WriteLine(_text);
-                _diploSummary = _newline + _text;
+                _diploSummary = Environment.NewLine + _text;
 
                 if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || otherForeignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
                 {
                     continue;  // is Member
                 }
 
-                //CheckTraits(otherCiv, aCiv);
+                //CheckTraits(otherCiv, _civ1);
 
                 string traitsOfForeignCiv = otherCiv.Traits;
                 string[] foreignTraits = traitsOfForeignCiv.Split(',');
 
 
-                string traitsOfCiv = aCiv.Traits;
+                string traitsOfCiv = _civ1.Traits;
                 string[] theCivTraits = traitsOfCiv.Split(',');
 
 
@@ -108,13 +108,13 @@ namespace Supremacy.AI
                 /*
                  * look for human to human proposals
                  */
-                //if (aCiv.IsHuman && otherCiv.IsHuman)
+                //if (_civ1.IsHuman && otherCiv.IsHuman)
                 //{
                 //    GameLog.Client.Diplomacy.DebugFormat("$$ HUMAN counterparty {0} to HUMAN owner {1}...",
                 //        foreignPower.Counterparty.Key, foreignPower.Owner.Key);
                 //    if (foreignPower.ProposalReceived != null)
                 //    {
-                //        if (aCiv == foreignPower.ProposalReceived.Recipient)
+                //        if (_civ1 == foreignPower.ProposalReceived.Recipient)
                 //        {
                 //            foreach (var clause in foreignPower.ProposalReceived.Clauses)
                 //            {
@@ -125,11 +125,11 @@ namespace Supremacy.AI
                 //    }
                 //}
 
-                if (true)//(!aCiv.IsHuman)
+                if (true)//(!_civ1.IsHuman)
                 {
                     //_text = "## Beging DiplomacyAI ......................." + foreignPower.Owner + " vs " + foreignPower.Counterparty;
                     //Console.WriteLine(_text);
-                    //GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
+                    //GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for _civ1 AI .......................");
                     #region First Impression
                     /*
                      First impression delta trust and regard by traits
@@ -166,36 +166,36 @@ namespace Supremacy.AI
                         }
 
                         //GameLog.Client.DiplomacyDetails.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression from {1}",
-                        _text = "Step_1171: Turn: " + GameContext.Current.TurnNumber
+                        _text = "Step_1171:; Turn: " + GameContext.Current.TurnNumber
                             + "; regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                             + "; trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                             + " for " + foreignPower.Counterparty.Key
                             + " BEFORE First Impression from " + foreignPower.Owner.Key
                             ;
                         Console.WriteLine(_text);
-                        _diploSummary = _newline + _text;
+                        _diploSummary = Environment.NewLine + _text;
                         //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
 
                         TrustAndRegardByTraits(foreignPower, impact, similarTraits);
 
 
-                        _text = "Step_1173: Turn: " + GameContext.Current.TurnNumber
+                        _text = "Step_1173:; Turn: " + GameContext.Current.TurnNumber
                             + ": regard= " + foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue
                             + ", trust= " + foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue
                             + " for " + foreignPower.Counterparty.Key
                             + " AFTER First Impression from " + foreignPower.Owner.Key
                             ;
                         Console.WriteLine(_text);
-                        _diploSummary = _newline + _text;
+                        _diploSummary = Environment.NewLine + _text;
                         //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
 
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower CounterParty ={0} regard ={1} trust ={2}", foreignPower.Counterparty.Key, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
                         //GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2}", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                         //foreignPower.UpdateStatus();
-                        //GameLog.Client.Diplomacy.DebugFormat("## current aCiv ={0} otherCiv ={1} foreighPower.Counterparty ={2} foreighPower.Owner ={3}",
-                        //    aCiv.ShortName, otherCiv.ShortName, foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
+                        //GameLog.Client.Diplomacy.DebugFormat("## current _civ1 ={0} otherCiv ={1} foreighPower.Counterparty ={2} foreighPower.Owner ={3}",
+                        //    _civ1.ShortName, otherCiv.ShortName, foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
                         //GameLog.Client.Diplomacy.DebugFormat("## Counterparty Status {0} Owner Status {1}",
                         //    foreignPower.CounterpartyDiplomacyData.Status.ToString(),
                         //    foreignPower.DiplomacyData.Status.ToString());
@@ -256,7 +256,7 @@ namespace Supremacy.AI
 
                     if (foreignPower.DiplomacyData.Status < ForeignPowerStatus.Peace)
                     {
-                        if (aCiv.SpiedCivList != null && aCiv.SpiedCivList.Contains(otherCiv))
+                        if (_civ1.SpiedCivList != null && _civ1.SpiedCivList.Contains(otherCiv))
                         {
                             _boolDoSabotage = true;
                         }
@@ -294,7 +294,7 @@ namespace Supremacy.AI
                     */
                     if (foreignPower.ProposalReceived != null)
                     {
-                        if (aCiv == foreignPower.ProposalReceived.Recipient)
+                        if (_civ1 == foreignPower.ProposalReceived.Recipient)
                         {
                             // give credit regard and trust
                             foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
@@ -336,7 +336,7 @@ namespace Supremacy.AI
                         /*
                          AI evaluates accept reject
                          */
-                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                        if (foreignPower.ProposalReceived != null && !_civ1.IsHuman) // _civ1 is owner of the foreignpower looking for a ProposalRecieved
                         {
                             bool accepted = false;
                             int regard = foreignPower.DiplomacyData.Regard.CurrentValue;
@@ -461,7 +461,7 @@ namespace Supremacy.AI
                             + " to " + foreignPower.Counterparty.Key
                             ;
                         Console.WriteLine(_text);
-                        _diploSummary = _newline + _text;
+                        _diploSummary = Environment.NewLine + _text;
                         //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
                         #endregion Proposals
@@ -475,8 +475,8 @@ namespace Supremacy.AI
                     //GameLog.Client.Diplomacy.DebugFormat("## Begin Statements, Human and AI civs .............................");
                     // did proposals received (incoming) now Statements outgoing
 
-                    //GameLog.Client.Diplomacy.DebugFormat("## current ..................aCiv ={0} ...............otherCiv ={1}",
-                    //        aCiv.ShortName, otherCiv.ShortName);
+                    //GameLog.Client.Diplomacy.DebugFormat("## current .................._civ1 ={0} ...............otherCiv ={1}",
+                    //        _civ1.ShortName, otherCiv.ShortName);
                     //GameLog.Client.Diplomacy.DebugFormat("## otherForeignPower.Counterparty ={0} otherForeignPower.Owner ={1}",
                     //    otherForeignPower.Counterparty.ShortName, otherForeignPower.Owner.ShortName);
                     //GameLog.Client.Diplomacy.DebugFormat("## .....foreignPower.Counterparty ={0} .....foreignPower.Owner ={1}", 
@@ -495,7 +495,7 @@ namespace Supremacy.AI
                             + "; Trust= " + foreignPower.DiplomacyData.Trust.CurrentValue
                             ;
                         Console.WriteLine(_text);
-                        _diploSummary = _newline + _text;
+                        _diploSummary = Environment.NewLine + _text;
                         //GameLog.Client.Diplomacy.DebugFormat(_text);
 
                         // DOING: Process statements (apply regard/trust changes, etc.)
@@ -603,7 +603,7 @@ namespace Supremacy.AI
                                     + "; Trust= " + foreignPower.DiplomacyData.Trust.CurrentValue
                                     ;
                             Console.WriteLine(_text);
-                            _diploSummary = _newline + _text;
+                            _diploSummary = Environment.NewLine + _text;
                             GameLog.Client.Diplomacy.DebugFormat(_text);
 
                             //GameLog.Client.Diplomacy.DebugFormat(

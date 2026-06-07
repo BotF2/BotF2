@@ -1993,7 +1993,7 @@ namespace Supremacy.Universe
             //int _intelPF_unused = Facilities_Total5_Intelligence - GetActiveFacilities(ProductionCategory.Intelligence);
 
             int _orbBat_used = OrbitalBatteries_Active;
-            
+
 
 
             //        var energyBuildings = Buildings.
@@ -2027,7 +2027,7 @@ namespace Supremacy.Universe
                     }
 
                     _ = Facility_Activate(ProductionCategory.Food);
-                    _text = LocationStringColony + " " + Name + " " 
+                    _text = LocationStringColony + " " + Name + " "
                         + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
@@ -3186,44 +3186,67 @@ namespace Supremacy.Universe
 
         public static int DefenseValue(Colony colony)
         {
-            int _defensevalue = 10 + colony.Population.CurrentValue; // basic defense value
+            int _return_value = 9;
+            string _text;
 
-            int _active = colony.orbitalBatteries_active.Value;
-            int _one_orb = colony.OrbitalBatteryDesign != null ? colony.OrbitalBatteries[0].Fire_power_calculated() : 0;
+            try
+            {
+                int _defensevalue = 10 + colony.Population.CurrentValue; // basic defense value
 
-            _defensevalue += _active * _one_orb;
+                int _active = colony.orbitalBatteries_active.Value;
 
-            _defensevalue = colony.ShieldStrength.CurrentValue;
 
-            string _text = "Step_3449:; Colony Defense Value for " + colony.Name
-                + " Turn " + GameContext.Current.TurnNumber
-                + "; Population: " + colony.Population.CurrentValue
-                + "; Active Orbital Batteries: " + _active
-                + "; One Orbital Battery Fire_power_calculated: " + _one_orb
-                + "; Shield Strength: " + colony.ShieldStrength.CurrentValue
-                + " => Defense Value: " + _defensevalue * 1.1f
-                ;
+                
+                int _one_orb = colony.OrbitalBatteryDesign != null ? colony.OrbitalBatteries[0].Fire_power_calculated() : 0;
 
-            return (int)(1.1f * _defensevalue);
+                //string 
+                    _text = "avoid 0";
+                if (_active != 0 && _one_orb != 0)
+                {
+                    _defensevalue += _active * _one_orb;
+
+                }
+                else
+                {
+                    _defensevalue += 1;
+                }
+
+
+                _defensevalue = colony.ShieldStrength.CurrentValue;
+
+                _text = "Step_3449:; Colony Defense Value for " + colony.Name
+                    + " Turn " + GameContext.Current.TurnNumber
+                    + "; Population: " + colony.Population.CurrentValue
+                    + "; Active Orbital Batteries: " + _active
+                    + "; One Orbital Battery Fire_power_calculated: " + _one_orb
+                    + "; Shield Strength: " + colony.ShieldStrength.CurrentValue
+                    + " => Defense Value: " + _defensevalue * 1.1f
+                    ;
+
+                _return_value = (int)(1.1f * _defensevalue);
+            }
+            catch (Exception ex)
+            {
+                //Debugger.Break();
+            }
+            return _return_value;
         }
     }
-
-    public interface IContactCenter { }
-
-    [Serializable]
-    public sealed class ColonyFacilitiesAccessor
-    {
-        private readonly IValueProvider<int>[] _array;
-
-        public ColonyFacilitiesAccessor([NotNull] IValueProvider<int>[] array)
+        public interface IContactCenter { }
+        [Serializable]
+        public sealed class ColonyFacilitiesAccessor
         {
-            _array = array ?? throw new ArgumentNullException("array");
+            private readonly IValueProvider<int>[] _array;
+
+            public ColonyFacilitiesAccessor([NotNull] IValueProvider<int>[] array)
+            {
+                _array = array ?? throw new ArgumentNullException("array");
+            }
+
+            public IValueProvider<int> this[ProductionCategory category]
+            {
+                get { return _array[(int)category]; }
+            }
         }
 
-        public IValueProvider<int> this[ProductionCategory category]
-        {
-            get { return _array[(int)category]; }
-        }
     }
-
-}
