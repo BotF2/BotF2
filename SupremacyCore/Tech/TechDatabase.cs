@@ -18,6 +18,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -1319,6 +1320,13 @@ namespace Supremacy.Tech
 
                     strHeader = strHeader.Replace("CE_", "");
 
+                    // add formula for FirePower
+                    if (true)
+                    {
+                        strHeader += Environment.NewLine + "If costs for Maintenance or even BuildCosts are different to the XML-file"
+                            + " the build-in-code calculation is activated";
+                        strHeader += Environment.NewLine + "Formula FirePower = (Beam Count * Damage) + (Torpedo Count * Damage) // =([@[Beam'#]][@[BeamD]])+([@[Torp'#]][@[TorpD]])";
+                    }
 
                     streamWriter.WriteLine(strHeader);
                     // End of head line
@@ -1662,6 +1670,7 @@ namespace Supremacy.Tech
                 {
                     _text = "Cannot write ... " + file + e;
                     GameLog.Core.GameData.ErrorFormat(_text);
+                    Debugger.Break();
                 }
 
                 // End of Ships
@@ -1807,6 +1816,8 @@ namespace Supremacy.Tech
 
                 // End of Shipyards
                 #endregion Shipyards_To_CSV
+
+
 
 
                 #region Stations_To_CSV

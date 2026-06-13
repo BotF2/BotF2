@@ -1201,8 +1201,9 @@ namespace Supremacy.Orbitals
         protected internal override void OnTurnEnding()
         {
             string _text;
-            //Medicate the colony --- // PopulationHealth is a percent value !!  // healthAdjustment is also a percent valuee.g. 80% * 1,3= 104% 
-            //PopHealth = 0.16 (not 16)
+            //Medicate the colony --- // PopulationHealth is a percent value !!  
+            // healthAdjustment is also a percent valuee.g. 80% * 1,3= 104% 
+            // PopHealth = 0.16 (not 16)
             //int helpByShip = Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth);
 
             int oldHealth = 0;
@@ -1253,11 +1254,18 @@ namespace Supremacy.Orbitals
                     //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
                     //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
 
-                    _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name + " * (our Medical Ship) provided help: health before: " + oldHealth + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
-                    GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                    _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name 
+                        + " * (our Medical Ship) provided help: health before: " + oldHealth 
+                        + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
+                    GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries
+                        .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
 
-                    _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * " + Fleet.Name + " * ( " + Fleet.Owner.ShortName + " Medical Ship ): health before: " + oldHealth + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
-                    GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                    _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * " 
+                        + Fleet.Name + " * ( " + Fleet.Owner.ShortName 
+                        + " Medical Ship ): health before: " + oldHealth + " > new: " 
+                        + Fleet.Sector.System.Colony.Health.CurrentValue;
+                    GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries
+                        .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
                 }
 
                 //If the colony is not ours, just doing small medical help + increase regard + trust etc
@@ -2735,7 +2743,7 @@ namespace Supremacy.Orbitals
         {
             if (fleet.Sector.Station != null)
             {
-                return false;
+                return true;
             }
 
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
