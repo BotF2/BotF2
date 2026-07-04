@@ -114,7 +114,7 @@ namespace Supremacy.Diplomacy
                 {
                     //case ClauseType.RequestBreakAgreement:
                     //case ClauseType.RequestEndEmbargo:
-                    case ClauseType.RequestGiveCredits:
+                    case ClauseType.RequestCredits:
                     //case ClauseType.RequestGiveResources:
                     //case ClauseType.RequestHonorMilitaryAgreement:
                     //case ClauseType.RequestMapData:
@@ -153,7 +153,7 @@ namespace Supremacy.Diplomacy
                 {
                     //case ClauseType.OfferBreakAgreement:
                     //case ClauseType.OfferEndEmbargo:
-                    case ClauseType.OfferGiveCredits:
+                    case ClauseType.OfferCredits:
                     //case ClauseType.OfferGiveResources:
                     //case ClauseType.OfferHonorMilitaryAgreement:
                     //case ClauseType.OfferMapData:

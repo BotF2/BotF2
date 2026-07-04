@@ -3,6 +3,12 @@ __CSharp.txt ( see also __CSharp.docx )
 Visual Studio (more at the bottom of this file)
 - CTRL + ALT + L = open solution explorer
 
+var sb = new StringBuilder();
+sb.Append("Hello");
+sb.Append(" ");
+sb.Append("World");
+string result = sb.ToString();
+
 
 <ListView.ItemContainerStyle>
     <Style TargetType="{x:Type ListViewItem}">

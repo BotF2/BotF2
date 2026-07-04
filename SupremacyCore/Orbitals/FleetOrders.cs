@@ -1198,7 +1198,7 @@ namespace Supremacy.Orbitals
             return fleet.Ships.Any(s => s.ShipType == ShipType.Medical);
         }
 
-        protected internal override void OnTurnEnding()
+        protected internal override void OnTurnEnding()  // MedicalOrder
         {
             string _text;
             //Medicate the colony --- // PopulationHealth is a percent value !!  
@@ -1206,6 +1206,8 @@ namespace Supremacy.Orbitals
             // PopHealth = 0.16 (not 16)
             //int helpByShip = Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth);
 
+            int _delta_trust = 5;
+            int _delta_regard = 8;
             int oldHealth = 0;
             float healthAdjustment = 0f;
 
@@ -1215,6 +1217,10 @@ namespace Supremacy.Orbitals
             {
                 Colony colony = Fleet.Sector.System.Colony;
                 oldHealth = colony.Health.CurrentValue;
+                if (oldHealth > 98)
+                {
+                    goto Skip_Help;
+                }
                 healthAdjustment = 1.01f + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 2);
                 //healthAdjustment = helpByShip / 10;
                 if (healthAdjustment > 1.24f)
@@ -1240,7 +1246,7 @@ namespace Supremacy.Orbitals
                     //301 RSE Torvath 1(Medical Ship I Torvath Class) doing Medical help at Romulus(13, 13): value adjusted = 1,08 %, new = 92(old = 86)
                     _text = "Step_3987:; " + Fleet.Sector.System.Colony.Location
                         + " " + Fleet.Sector.System.Colony.Name
-                        + " > " + Fleet.ObjectID
+                        + " > " /*+ Fleet.ObjectID*/
                         + " " + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help: value adjusted ="
                         //+ " " + ": value adjusted ="
                         + " " + healthAdjustment + "%, new ="
@@ -1259,6 +1265,7 @@ namespace Supremacy.Orbitals
                         + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
                     GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries
                         .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                    //Console.WriteLine(_text);
 
                     _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * " 
                         + Fleet.Name + " * ( " + Fleet.Owner.ShortName 
@@ -1266,51 +1273,97 @@ namespace Supremacy.Orbitals
                         + Fleet.Sector.System.Colony.Health.CurrentValue;
                     GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries
                         .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                    //Console.WriteLine(_text);
                 }
 
+                //for actual help > double values
+                _delta_trust *= 2;
+                _delta_regard *= 2;
+
+            Skip_Help:;
                 //If the colony is not ours, just doing small medical help + increase regard + trust etc
                 if (Fleet.Sector.System.Colony is null) // currentx
                 {
                     _text = "do nothing";
                 }
-                else if (Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
+                else if (Fleet.Sector.System.Owner != null
+                    && Fleet.Sector.System.Colony.Owner != null
+                    && Fleet.Sector.System.Owner != Fleet.Owner)
                 {
                     ForeignPower foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
-                    healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
+                    // healt was already Adjusted above
+                    //healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
 
                     // only small medical help = +1
-                    _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
-                    Fleet.Sector.System.Colony.Health.UpdateAndReset();
+                    //_ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
+                    //Fleet.Sector.System.Colony.Health.UpdateAndReset();
                     //ToDo: SitRep
 
                     // send a medical ship to other civilization's colony and get trust
-                    if (Fleet.Sector.System.Colony.Owner != Fleet.Owner && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
+                    if (Fleet.Sector.System.Colony.Owner != Fleet.Owner
+                        && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
                     {
-                        DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 50);
-                        DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, 55);
+                        DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, _delta_trust);
+                        DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, _delta_regard);
                         Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name
+                            + " * (our Medical Ship) provided help and increased: TRUST +"+ _delta_trust 
+                            +", REGARD +" + _delta_regard
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        //Console.WriteLine(_text);
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * "
+                            + Fleet.Name + " * ( " + Fleet.Owner.ShortName
+                            + " Medical Ship ): this increased: TRUST +" + _delta_trust
+                            + ", REGARD +" + _delta_regard
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        //Console.WriteLine(_text);
                     }
                     // Nonaggression treaty - you promissed not to go into the other empires space - go there and trust is lost, aggrement canceled
-                    else if (GameContext.Current.AgreementMatrix.IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
+                    else if (GameContext.Current.AgreementMatrix
+                        .IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
                     {
-                        DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -55);
-                        DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, -65);
+                        DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, _delta_trust * -1);
+                        DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, _delta_regard *-1);
                         Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
-                        foreignPower.CancelTreaty();
+                        // foreignPower.CancelTreaty();  // no cancel, just decrease regard+trust
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name
+                            + " * (our Medical Ship) provided NO help. This decreased: TRUST -" + _delta_trust * -1
+                            + ", REGARD +" + _delta_regard *-1
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        Console.WriteLine(_text);
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got NO medical supply from * "
+                            + Fleet.Name + " * ( " + Fleet.Owner.ShortName
+                            + " Medical Ship ): This decreased: TRUST -" + _delta_trust *-1
+                            + ", REGARD +" + _delta_regard *-1
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        Console.WriteLine(_text);
+
+
                         //firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                         //secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                         ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
                     }
 
                     _text = Fleet.ObjectID
-                        + " " + Fleet.Name + " doing Medical help at "
+                        + " " + Fleet.Name + " at "
                         + " " + Fleet.Sector.System.Colony.Name
                         //+ " " + Fleet.Sector.System.Colony.ObjectID 
-                        + " " + Fleet.Sector.System.Colony.Location + ": value adjusted = "
-                        + " " + healthAdjustment + "%, new = "
-                        + " " + Fleet.Sector.System.Colony.Health.CurrentValue;
+                        + " " + Fleet.Sector.System.Colony.Location + ": REGARD + TRUST adjusted = "
+                        ;
 
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
                     //GameLog.Core.ColoniesDetails.DebugFormat(_text);
                 }
             }
@@ -1925,49 +1978,7 @@ namespace Supremacy.Orbitals
                     Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
 
             Fleet.Destroy();
-            //foreach (Ship ship in this.Fleet.Ships)
-            //{
-            //    //Ship _ScrapShip = fleet;
-            //    if (ship == null)
-            //    {
-            //        return;
-            //    }
-            //    Destr;
-            //}
 
-            //CivilizationManager ScrapShipdCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
-            //CivilizationManager civ = GameContext.Current.CivilizationManagers[Fleet.Owner];
-
-            // plan is: 
-            // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
-            // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Data\DiplomacyTables.txt Line 1 RegardLevels
-
-            // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
-            //if (Fleet.Sector.System.Owner == Fleet.Owner)
-            //{
-            //    GameLog.Core.Diplomacy.DebugFormat("{0} is influencing their colony at {1}",
-            //        Fleet.Owner, Fleet.Sector.System.Name);
-            //    if (Fleet.Sector.System.Colony.Morale.CurrentValue < 95)
-            //    {
-            //        _ = Fleet.Sector.System.Colony.Morale.AdjustCurrent(+3);
-            //        Fleet.Sector.System.Colony.Morale.UpdateAndReset();
-            //        GameLog.Core.Diplomacy.DebugFormat("{0} successfully increased the morale at {1}",
-            //            ScrapShiprCiv, Fleet.Sector.System.Name);
-            //    }
-            //    return;
-            //}
-            //// part 2: to AI race
-            //if (!Fleet.Sector.System.Owner.IsHuman)
-            //{
-            //    Diplomat diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
-            //    ForeignPower foreignPower = diplomat.GetForeignPower(Fleet.Owner);
-            //    DiplomacyHelper.ApplyRegardChange(ScrapShiprCiv.Civilization, ScrapShipdCiv.Civilization, +55);
-            //    //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
-            //    DiplomacyHelper.ApplyTrustChange(ScrapShiprCiv.Civilization, ScrapShipdCiv.Civilization, +50);
-            //    GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to ScrapShip the {1} at {2} regard ={3} trust ={4}",
-            //           ScrapShiprCiv, ScrapShipdCiv, Fleet.Sector.System,
-            //           foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
-            //}
         }
 
         protected internal override void OnOrderAssigned()
@@ -2353,7 +2364,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected internal override void OnTurnEnding()
+        protected internal override void OnTurnEnding()  // TowOrder
         {
             base.OnTurnEnding();
 
@@ -2451,7 +2462,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected internal override void OnTurnEnding()
+        protected internal override void OnTurnEnding()  // WormholeOrder
         {
 
             if (Fleet != null)

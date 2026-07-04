@@ -288,27 +288,34 @@ namespace Supremacy.Collections
 
         protected internal TKey GetKeyForItem(TValue item)
         {
-            try
+            string _text = "";
+                try
             {
                 if (_keyRetriever != null)
                 {
-                return _keyRetriever(item);
+                    return _keyRetriever(item);
                 }
                 else
                 {
-                    throw new InvalidOperationException();
+                    Debugger.Break();
+
+                    return default(TKey);
+                    //    throw new InvalidOperationException();
+                    //}
                 }
             }
             catch
             {
-                //var x = new TValue();
+                //var x = new TKey();
 
                 _text = "Step_3345:; Problem here > " + item;
                 Console.WriteLine(_text);
 
                 Debugger.Break();
 
-                throw new InvalidOperationException();
+                return default(TKey);
+
+                //throw new InvalidOperationException();
             }
         }
 

@@ -147,9 +147,9 @@
       <Name>SupremacyClientComponents</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\SupremacyCore\SupremacyCore.csproj">
+    <ProjectReference Include="..\SupremacyCore\Supremacy_1_Core.csproj">
       <Project>{04E34C27-6942-4EA8-93FF-DF3C4026B22A}</Project>
-      <Name>SupremacyCore</Name>
+      <Name>Supremacy_1_Core</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

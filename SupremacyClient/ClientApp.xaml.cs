@@ -646,7 +646,7 @@ namespace Supremacy.Client
                         }
                     }
 
-                    if (File.Exists("Resources\\Data\\Civilizations.xml"))
+                    if (File.Exists("Resources\\Data\\Civilizations.xml")) // used to check if the Resources folder is available
                     {
                         StartClient(args);
                     }

@@ -158,8 +158,8 @@ namespace Supremacy.Diplomacy
         //OfferBreakAgreement,
         //RequestBreakAgreement,
         // proposal
-        OfferGiveCredits,
-        RequestGiveCredits,
+        OfferCredits,
+        RequestCredits,
 
         //OfferGiveResources,
         //RequestGiveResources,

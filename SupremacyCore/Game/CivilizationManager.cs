@@ -48,59 +48,12 @@ namespace Supremacy.Game
         private readonly Treasury _treasury;
         private int _maintenanceCostLastTurn;
 
-        //private int z_shipColonyNeeded;
-        private int z_ship_Colony_Ordered;
-        //private int z_shipColonyAvailable;
-        //private int z_shipConstructionNeeded;
-        private int z_ship_Construction_Ordered;
-        //private int z_shipConstructionAvailable;
-        //private int z_shipMedicalNeeded;
-        private int z_ship_Medical_Ordered;
-        //private int z_shipMedicalAvailable;
-        //private int z_shipTransportNeeded;
-        private int z_ship_Transport_Ordered;
-        private int z_Ship_Transport_Needed_For_Assaults = 0;
-        //private int z_shipTransportAvailable;
-        //private int z_shipSpyNeeded;
-        private int z_ship_Spy_Ordered;
-        //private int z_shipSpyAvailable;
-        //private int z_shipDiplomaticNeeded;
-        private int z_ship_Diplomatic_Ordered;
-        //private int z_shipDiplomaticAvailable;
-        //private int z_shipScienceNeeded;
-        private int z_ship_Science_Ordered;
-        //private int z_shipScienceAvailable;
-        //private int z_shipScoutNeeded;
-        private int z_ship_Scout_Ordered;
-        //private int z_shipScoutAvailable;
-        //private int z_shipFastAttackNeeded;
-        private int z_ship_FastAttack_Ordered;
-        //private int z_shipFastAttackAvailable;
-        //private int z_ShipCombatantNeeded;
-
-        private int z_ship_Combatant_Ordered = -2;  // to avoid "is never assigned"
-        //private int z_ShipCombatantAvailable;
-        //private int z_shipCruiserNeeded;
-        private int z_ship_Cruiser_Ordered;
-        //private int z_shipCruiserAvailable;
-        //private int z_shipHeavyCruiserNeeded;
-        private int z_ship_HeavyCruiser_Ordered;
-        //private int z_shipHeavyCruiserAvailable;
-        //private int z_shipStrikeCruiserNeeded;
-        private int z_ship_StrikeCruiser_Ordered;
-        //private int z_shipStrikeCruiserAvailable;
-        //private int z_shipCommandNeeded;
-        private int z_ship_Command_Ordered;
-        //private int z_shipCommandAvailable;
-        //private int _buyCostLastTurn;
-        //private int _rankCredits;
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
+        public List<string> _traits_civ_list = new List<string>();
 
-        //#pragma warning disable IDE0044 // Add readonly modifier
         private List<Civilization> _spiedCivList;
         private List<Civilization> _targetCivList;
-        //#pragma warning restore IDE0044 // Add readonly modifier
 
         public List<string> _neededShiptypesList;
 
@@ -121,24 +74,82 @@ namespace Supremacy.Game
         //private Sector _systemAssault_Accumulate_Sector_2;
         //private int _systemAssaultPower_2;
 
-
-
-        //#pragma warning disable IDE0052 // Remove unread private members
         private Sector _strandedShipsSector;
 
-
-
-        //private int _buyCostLastTurn;
-        //#pragma warning restore IDE0052 // Remove unread private members
         private int _seatOfGovernmentId = -1;
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
+
+        private bool _destroyOfShipOrdered;
+        private int _fire_power_space;
+
+        private int z_ship_Colony_Ordered;
+        private int z_ship_Construction_Ordered;
+        private int z_ship_Medical_Ordered;
+        private int z_ship_Transport_Ordered;
+        private int z_Ship_Transport_Needed_For_Assaults = 0;
+        private int z_ship_Spy_Ordered;
+        private int z_ship_Diplomatic_Ordered;
+        private int z_ship_Science_Ordered;
+        private int z_ship_Scout_Ordered;
+        private int z_ship_FastAttack_Ordered;
+        private int z_ship_Combatant_Ordered = -2;  // to avoid "is never assigned"
+        private int z_ship_Cruiser_Ordered;
+        private int z_ship_HeavyCruiser_Ordered;
+        private int z_ship_StrikeCruiser_Ordered;
+        private int z_ship_Command_Ordered;
+
+        //private int z_shipColonyNeeded;
+        //private int z_ship_Colony_Ordered;
+        //private int z_shipColonyAvailable;
+        //private int z_shipConstructionNeeded;
+        //private int z_ship_Construction_Ordered;
+        //private int z_shipConstructionAvailable;
+        //private int z_shipMedicalNeeded;
+        //private int z_ship_Medical_Ordered;
+        //private int z_shipMedicalAvailable;
+        //private int z_shipTransportNeeded;
+        //private int z_ship_Transport_Ordered;
+        //private int z_Ship_Transport_Needed_For_Assaults = 0;
+        //private int z_shipTransportAvailable;
+        //private int z_shipSpyNeeded;
+        //private int z_ship_Spy_Ordered;
+        //private int z_shipSpyAvailable;
+        //private int z_shipDiplomaticNeeded;
+        //private int z_ship_Diplomatic_Ordered;
+        //private int z_shipDiplomaticAvailable;
+        //private int z_shipScienceNeeded;
+        //private int z_ship_Science_Ordered;
+        //private int z_shipScienceAvailable;
+        //private int z_shipScoutNeeded;
+        //private int z_ship_Scout_Ordered;
+        //private int z_shipScoutAvailable;
+        //private int z_shipFastAttackNeeded;
+        //private int z_ship_FastAttack_Ordered;
+        //private int z_shipFastAttackAvailable;
+        //private int z_ShipCombatantNeeded;
+
+        //private int z_ship_Combatant_Ordered = -2;  // to avoid "is never assigned"
+        //private int z_ShipCombatantAvailable;
+        //private int z_shipCruiserNeeded;
+        //private int z_ship_Cruiser_Ordered;
+        //private int z_shipCruiserAvailable;
+        //private int z_shipHeavyCruiserNeeded;
+        //private int z_ship_HeavyCruiser_Ordered;
+        //private int z_shipHeavyCruiserAvailable;
+        //private int z_shipStrikeCruiserNeeded;
+        //private int z_ship_StrikeCruiser_Ordered;
+        //private int z_shipStrikeCruiserAvailable;
+        //private int z_shipCommandNeeded;
+        //private int z_ship_Command_Ordered;
+        //private int z_shipCommandAvailable;
+
+        //private int _buyCostLastTurn;
+        //private int _rankCredits;
         //private int _rankMaint;
         //private int _rankResearch;
         //private int _rankIntelAttack;
-        private bool _destroyOfShipOrdered;
-        //private string _text;
-        private int _fire_power_space;
+
 
 
         //private int bc;  // buildingCosts
@@ -184,6 +195,7 @@ namespace Supremacy.Game
             _spiedCivList = new List<Civilization>();
             _targetCivList = new List<Civilization>();
             _civHist_List = new List<CivHistory>();
+            _traits_civ_list = new List<string>();
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -465,13 +477,13 @@ namespace Supremacy.Game
             get
             {
                 int z_shipNeeded = 4 - ((int)GameContext.Current.TurnNumber / 10); // no common need after Turn 55
-                
+
                 z_shipNeeded -= (Z_Ship_Construction_Available + z_ship_Construction_Ordered);
                 if (z_shipNeeded > 0)
                 {
                     _neededShiptypesList.Add("Construction");
                 }
-                
+
                 return z_shipNeeded;
             }
             //set
@@ -537,7 +549,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if (this.Civilization.IsHuman) 
+                if (this.Civilization.IsHuman)
                 {
                     //Debugger.Break();
                 }
@@ -634,15 +646,15 @@ namespace Supremacy.Game
             get
             {
                 int z_shipNeeded = 2; //*+ (int)GameContext.Current.TurnNumber / 10*/ - (Z_Ship_Science_Available + z_ship_Science_Ordered);
-                                    
-                    z_shipNeeded -= (Z_Ship_Science_Available + z_ship_Science_Ordered);
+
+                z_shipNeeded -= (Z_Ship_Science_Available + z_ship_Science_Ordered);
                 if (z_shipNeeded > 0 && Civilization.Key != "BORG")
                 {
                     _neededShiptypesList.Add("Science");
                 }
 
                 return z_shipNeeded;
-               
+
             }
             //set => z_shipScienceNeeded = value;
         }
@@ -722,7 +734,7 @@ namespace Supremacy.Game
                 //z_shipNeeded -= (Z_Ship_Construction_Available + z_ship_Construction_Ordered);
                 //if (z_shipNeeded > 0)
                 //{
-                    _neededShiptypesList.Add("FastAttack");
+                _neededShiptypesList.Add("FastAttack");
                 //}
 
                 return 5;
@@ -858,7 +870,7 @@ namespace Supremacy.Game
         {
             get
             {
-                
+
                 return Colonies.Sum(colony => colony.TaxCredits);
             }
         }
@@ -1042,6 +1054,7 @@ namespace Supremacy.Game
 
 
         public List<Civilization> SpiedCivList => _spiedCivList;
+        public List<string> TraitsCivList => _traits_civ_list;
         //public List<Civilization> TargetCivList => _targetCivList;
         public List<Civilization> TargetCivList { get; /*private*/ set; } = new List<Civilization>();
 
@@ -1306,17 +1319,17 @@ namespace Supremacy.Game
 
                 if (value != null)
                 {
-                _strandedShipsSector = value;
-                string _text = "Step_3343:; Turn= "
-                        + GameContext.Current.TurnNumber
-                        + " >  _strandedShipsSector for " + this.Civilization
-                        + " is set to " + _strandedShipsSector.ToString()
-                        + " ( HomeSystem ) "
-                        ;
+                    _strandedShipsSector = value;
+                    string _text = "Step_3343:; Turn= "
+                            + GameContext.Current.TurnNumber
+                            + " >  _strandedShipsSector for " + this.Civilization
+                            + " is set to " + _strandedShipsSector.ToString()
+                            + " ( HomeSystem ) "
+                            ;
 
-                //Console.WriteLine(_text);
-                //_text = "Stranded Ship Sector is set to " + _strandedShipsSector.ToString();
-            }
+                    //Console.WriteLine(_text);
+                    //_text = "Stranded Ship Sector is set to " + _strandedShipsSector.ToString();
+                }
 
             }
         }
@@ -1349,8 +1362,8 @@ namespace Supremacy.Game
 
                 //if (value != null /*&& _assault_targetCiv == null*/)  //always overwrite with new values
                 //{
-                    _assault_location = value;
-                    //Assault_TargetCiv = _assault_targetCiv;   // no no no !!
+                _assault_location = value;
+                //Assault_TargetCiv = _assault_targetCiv;   // no no no !!
                 //}
                 //if (Civilization == Assault_TargetCiv)
                 //{
@@ -1362,7 +1375,7 @@ namespace Supremacy.Game
 
         public string Assault_A_Info // for systems and outposts as well
         {
-            get => _assault_location 
+            get => _assault_location
                 + " " + Assault_TargetCiv
                 + ", Defense= " + Assault_DefenseValue
                 + ", Attack= " + Assault_Attack_Value
@@ -1373,7 +1386,7 @@ namespace Supremacy.Game
 
         public string A_Info_CivM // for systems and outposts as well
         {
-            get => 
+            get =>
                 Civilization.Key
                 //+ " " + Assault_TargetCiv
                 //+ ", Defense= " + Assault_DefenseValue
@@ -1736,7 +1749,7 @@ namespace Supremacy.Game
                 Console.WriteLine(_text);
             }
             //neededColonizer = possibleSystems.Count;
-           //  _civM.Z_Ship_Colony_Needed = possibleSystems.Count - _civM.Z_Ship_Colony_Available - _civM.Z_Ship_Colony_Ordered;  // set _civM.z_ShipColonyNeeded
+            //  _civM.Z_Ship_Colony_Needed = possibleSystems.Count - _civM.Z_Ship_Colony_Available - _civM.Z_Ship_Colony_Ordered;  // set _civM.z_ShipColonyNeeded
 
 
             //Report_Ships_Demand();
@@ -1756,65 +1769,65 @@ namespace Supremacy.Game
             string _newline = Environment.NewLine;
 
             string _text = _newline + "Step_7455:; " + Civilization + "-Ships-Overview ( Available / Needed / Ordered ) for "
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Colony_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Colony_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Colony_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Colony_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Colony_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Colony_Ordered.ToString())
                     + " > Colonizer"
                     //+ _newline + Z_Ship_Construction_Available + "  #  " + Z_Ship_Construction_Needed + "  #  " + Z_Ship_Construction_Ordered + " > Constructor"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Medical_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Medical_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Medical_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Medical_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Medical_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Medical_Ordered.ToString())
                     + " > Medical Ship"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Spy_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Spy_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Spy_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Spy_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Spy_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Spy_Ordered.ToString())
                     + " > Spy Ship"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Diplomatic_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Diplomatic_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Diplomatic_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Diplomatic_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Diplomatic_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Diplomatic_Ordered.ToString())
                     + " > Diplomatic Ship"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Science_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Science_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Science_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Science_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Science_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Science_Ordered.ToString())
                     + " > Science Ship"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Scout_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Scout_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Scout_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Scout_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Scout_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Scout_Ordered.ToString())
                     + " > Scout Ship"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Transport_Available.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Transport_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Transport_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Transport_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Transport_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Transport_Ordered.ToString())
                     + " > Transport Ship Fleet"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Construction_Available.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Construction_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Construction_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Construction_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Construction_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Construction_Ordered.ToString())
                     + " > Constructor"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Combatant_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Combatant_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Combatant_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Combatant_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Combatant_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Combatant_Ordered.ToString())
                     + " > Combatant Ship ###"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_FastAttack_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_FastAttack_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_FastAttack_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_FastAttack_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_FastAttack_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_FastAttack_Ordered.ToString())
                     + " > Fast Attack Ship"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Cruiser_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Cruiser_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Cruiser_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Cruiser_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Cruiser_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Cruiser_Ordered.ToString())
                     + " > Cruiser"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_HeavyCruiser_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_HeavyCruiser_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_HeavyCruiser_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_HeavyCruiser_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_HeavyCruiser_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_HeavyCruiser_Ordered.ToString())
                     + " > HeavyCruiser"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_StrikeCruiser_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_StrikeCruiser_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_StrikeCruiser_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_StrikeCruiser_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_StrikeCruiser_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_StrikeCruiser_Ordered.ToString())
                     + " > StrikeCruiser"
-                    + _newline + GameEngine.Do_x_Digit_String( 2, Z_Ship_Command_Available.ToString()) 
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, Z_Ship_Command_Needed.ToString())
-                    + "  #  " + GameEngine.Do_x_Digit_String( 2, z_ship_Command_Ordered.ToString())
+                    + _newline + GameEngine.Do_x_Digit_String(2, Z_Ship_Command_Available.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, Z_Ship_Command_Needed.ToString())
+                    + "  #  " + GameEngine.Do_x_Digit_String(2, z_ship_Command_Ordered.ToString())
                     + " > Command Ship"
                     ;
-            
+
             if (true)
             {
                 //Console.WriteLine(_text);
@@ -2011,6 +2024,10 @@ namespace Supremacy.Game
         {
             if (civ == null)
             {
+                string _text = "Step_3341:; CivilizationManager.For() called with civ= NULL";
+                Console.WriteLine(_text);
+
+                Debugger.Break();
                 throw new ArgumentNullException("civ");
             }
 
@@ -2021,6 +2038,10 @@ namespace Supremacy.Game
         {
             if (civKey == null)
             {
+                string _text = "Step_3342:; CivilizationManager.For() called with civKEY= NULL";
+                Console.WriteLine(_text);
+
+                Debugger.Break();
                 throw new ArgumentNullException("civKey");
             }
 
@@ -2029,6 +2050,15 @@ namespace Supremacy.Game
 
         public static CivilizationManager For(int civId)
         {
+            if (civId < 0)
+            {
+                string _text = "Step_3343:; CivilizationManager.For() called with civId= " + civId;
+                Console.WriteLine(_text);
+
+                Debugger.Break();
+                throw new ArgumentOutOfRangeException("civId");
+            }
+
             return GameContext.Current.CivilizationManagers[civId];
         }
 
@@ -2072,6 +2102,10 @@ namespace Supremacy.Game
             {
                 if (civilization == null)
                 {
+                    string _text = "Step_3341:; CivilizationManager.For() called with civ= NULL";
+                    Console.WriteLine(_text);
+
+                    Debugger.Break();
                     throw new ArgumentNullException("civilization");
                 }
 

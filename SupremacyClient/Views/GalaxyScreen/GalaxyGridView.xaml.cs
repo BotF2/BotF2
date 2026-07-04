@@ -1,6 +1,7 @@
 ﻿// File:GalaxyGridView.xaml.cs
 //using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Unity;
+using Supremacy.AI;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Client.Commands;
@@ -631,6 +632,22 @@ namespace Supremacy.Client.Views
             bool writeDirectly = true;
             bool bool_output = true;
 
+            //Report_DiplomacyData();
+            Supremacy.Game.GameContext.Report_DiplomacyData();
+
+
+            // is doubled
+            //foreach (var _civ1 in GameContext.Current.Civilizations)
+            //{
+            //    foreach (var _civ2 in GameContext.Current.Civilizations)
+            //    {
+            //        DiplomacyHelper.ShouldTheyGoToWar(_civ1, _civ2);
+            //        _text = "this reports some data";
+            //    }
+            //} 
+
+            // MapData
+
             SectorMap _map = _appContext.CurrentGame.Universe.Map;
 
             _text_all_out = _timeString + "_Turn_" + _appContext.CurrentGame.TurnNumber + ".txt" + _newline;
@@ -746,6 +763,8 @@ namespace Supremacy.Client.Views
 
 
                 }
+
+                //DiplomacyHelper.rep
 
                 IEnumerable<Colony> colonies = GameContext.Current.Universe.Objects.OfType<Colony>();
                 foreach (Colony item in colonies)
@@ -1128,7 +1147,7 @@ namespace Supremacy.Client.Views
                             + "; " + item.Key
 
                                                         + "; HomePlanet=;" + item.HomePlanetType
-                                                        + "; Eff=;" + item.CombatEffectiveness
+                                                        + "; Eff=;" + item.GroundCombatEffectiveness
                                                         //+ "; Hull=;" + item.HullStrength
                                                         //+ "; Sh=;" + item.ShieldStrength
                                                         //+ "; Cloak=;" + item.CloakStrength
@@ -1158,7 +1177,7 @@ namespace Supremacy.Client.Views
                                 + "; " + item.EventID
 
                                                             + "; Last=;" + item.LastExecution
-                                                            //+ "; Eff=;" + item.CombatEffectiveness
+                                                            //+ "; Eff=;" + item.GroundCombatEffectiveness
                                                             //+ "; Hull=;" + item.HullStrength
                                                             //+ "; Sh=;" + item.ShieldStrength
                                                             //+ "; Cloak=;" + item.CloakStrength

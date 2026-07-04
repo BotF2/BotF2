@@ -56,6 +56,10 @@ namespace Supremacy.Combat
         private string _civFirePowers2Text;
         private string _civFirePowers3Text;
         private string _civFirePowers4Text;
+        private string _civStatus2;
+        private string _civStatus3;
+        private string _civStatus4;
+
         //private bool _anyAsset;
         //#pragma warning disable IDE0052 // Remove unread private members
         //private bool Write_Combat_Directly = true;
@@ -368,6 +372,10 @@ namespace Supremacy.Combat
             _civName3 = "";
             _civName4 = "";
 
+            _civStatus2 = "";
+            _civStatus3 = "";
+            _civStatus4 = "";
+
             _civInsigniaOther1 = "BlackInsignia";
             _civInsigniaOther2 = "BlackInsignia";
             _civInsigniaOther3 = "BlackInsignia";
@@ -378,9 +386,18 @@ namespace Supremacy.Combat
                 if (_civNameList[i] != null)
                 {
                     if (i == 0) { _civName1 = _civNameList[i]; _civInsigniaOther1 = _civNameList[i]; _civInsigniaOther1 = _civInsigniaOther1.Replace(" ", ""); }
-                    if (i == 1) { _civName2 = _civNameList[i]; _civInsigniaOther2 = _civNameList[i]; _civInsigniaOther2 = _civInsigniaOther2.Replace(" ", ""); }
-                    if (i == 2) { _civName3 = _civNameList[i]; _civInsigniaOther3 = _civNameList[i]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", ""); }
-                    if (i == 3) { _civName4 = _civNameList[i]; _civInsigniaOther4 = _civNameList[i]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", ""); }
+                    if (i == 1) { _civName2 = _civNameList[i]; 
+                        _civInsigniaOther2 = _civNameList[i]; _civInsigniaOther2 = _civInsigniaOther2.Replace(" ", "");
+                        _civStatus2 = "Hallo2";
+                    }
+                    if (i == 2) { _civName3 = _civNameList[i]; 
+                        _civInsigniaOther3 = _civNameList[i]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", "");
+                        _civStatus3 = "Hallo3";
+                    }
+                    if (i == 3) { _civName4 = _civNameList[i]; 
+                        _civInsigniaOther4 = _civNameList[i]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", "");
+                        _civStatus4 = "Hallo4";
+                    }
                 }
             }
             //_ = _civ_name_list.Remove(_civ_short_name);
@@ -418,7 +435,8 @@ namespace Supremacy.Combat
             }
         }
 
-        public string CivStatus2 => CivStatus_GetOthers(out string _status);
+        //public string CivStatus2 => CivStatus_GetOthers(out string _status);
+        public string CivStatus2 => _civStatus2;
         //{
         //    get
         //    {
@@ -428,13 +446,16 @@ namespace Supremacy.Combat
         //    }
         //}
 
-        public string CivStatus3 => CivStatus_GetOthers(out string _status);
+        public string CivStatus3 => _civStatus3;
+        //public string CivStatus3 => CivStatus_GetOthers(out string _status);
 
-        public string CivStatus4 => CivStatus_GetOthers(out string _status);
+        public string CivStatus4 => _civStatus4;
+        //public string CivStatus4 => CivStatus_GetOthers(out string _status);
         #endregion
 
         public string CivStatus_GetOthers(out string _targetCivStatus)
         {
+            string _text = "";
             if (_civStatusList.Count > 0)
             {
                 Civilization _current_civ = _civStatusList.FirstOrDefault();
@@ -446,6 +467,8 @@ namespace Supremacy.Combat
                     _civ_status_list.Add(_civ);
                     _civ_status_list = _civ_status_list.Distinct().ToList();
                 }
+                _text = "Step_8477:; _targetCiv1Status= " + _targetCiv1Status;
+
                 GameLog.Core.CombatDetails.DebugFormat("_targetCiv1Status = {0}", _targetCiv1Status);
                 _ = _civ_status_list.Remove(_current_civ);
                 _civ_status_list = _civ_status_list.Distinct().ToList();
@@ -458,7 +481,6 @@ namespace Supremacy.Combat
         }
 
         private string ReturnTextOfStatus(string status)
-
         {
             switch ((ForeignPowerStatus)Enum.Parse(typeof(ForeignPowerStatus), status))
             {

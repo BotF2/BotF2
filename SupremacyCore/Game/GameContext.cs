@@ -26,7 +26,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 
 namespace Supremacy.Game
@@ -426,8 +428,10 @@ namespace Supremacy.Game
                 _text = "Step_3990:; already read _diplomacyDatabase.....";
                 Console.WriteLine(_text);
 
-
+                Report_DiplomacyData();
                 FixupDiplomacyData();
+                _text = "Step_3995:; already done > FixupDiplomacyData().....";
+                Console.WriteLine(_text);
             }
             finally
             {
@@ -440,25 +444,123 @@ namespace Supremacy.Game
             CivilizationPairedMap<IDiplomacyData> diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
 
             // going through civ managers better reflects which civ got spawned
-            foreach (CivilizationManager civMgr1 in _civManagers)
+            foreach (CivilizationManager _civM_1 in _civManagers)
             {
-                Civilization civ1 = civMgr1.Civilization;
-                Diplomat diplomat = _diplomats[civ1];
+                Civilization _civ1 = _civM_1.Civilization;
+                Diplomat _diplomat = _diplomats[_civ1];
 
-                foreach (CivilizationManager civMgr2 in _civManagers)
+                foreach (CivilizationManager _civM_2 in _civManagers)
                 {
-                    Civilization civ2 = civMgr2.Civilization;
-                    if (civ1 == civ2)
+                    Civilization _civ2 = _civM_2.Civilization;
+                    if (_civ1 == _civ2)
                     {
                         continue;
                     }
 
-                    diplomacyData.Add(civ1, civ2, diplomat.GetData(civ2));
+                    diplomacyData.Add(_civ1, _civ2, _diplomat.GetData(_civ2));
                 }
             }
 
+            //Report_DiplomacyData();
+
+
+
             _diplomacyData = diplomacyData;
+
+            //Report_DiplomacyData();
+
         }
+
+        public static void Report_DiplomacyData()
+        {
+            CivilizationPairedMap<IDiplomacyData> diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
+            CivilizationKeyedMap<Diplomat> _diplomats = GameContext.Current._diplomats;
+
+            foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
+            {
+                Civilization _civ1 = _civM_1.Civilization;
+                Diplomat _diplomat = _diplomats[_civ1];
+
+                foreach (CivilizationManager _civM_2 in GameContext.Current._civManagers)
+                {
+                    Civilization _civ2 = _civM_2.Civilization;
+                    if (_civ1 == _civ2)
+                    {
+                        continue;
+                    }
+
+                    diplomacyData.Add(_civ1, _civ2, _diplomat.GetData(_civ2));
+                }
+            }
+
+            string _text_diplomacyData = ""; // "Step_1777:; no diplomacyData yet";
+
+            // going through civ managers better reflects which civ got spawned
+            //foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
+            //{
+            //    Civilization _civ1 = _civM_1.Civilization;
+            //    Diplomat _diplomat = _diplomats[_civ1];
+
+            //foreach (CivilizationManager _civM_2 in GameContext.Current._civManagers)
+            //{
+            foreach (var item in diplomacyData)
+            {
+                if (item.Status != ForeignPowerStatus.NoContact)
+                {
+
+
+                    var _sb = new StringBuilder();
+                    _sb.Append("Step_1777:; ");
+                    //_sb.Append(" for ");
+
+                    _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.OwnerID].Civilization.ToString()));
+                    //_sb.Append("= ");
+
+
+                    _sb.Append(" vs ");
+
+
+                    _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.CounterpartyID].Civilization.ToString()));
+                    _sb.Append(" > ");
+                    _sb.Append(GameEngine.Do_x_String(15, item.Status.ToString()));
+                    _sb.Append(" > R= ");
+                    _sb.Append(GameEngine.Do_x_Digit_String(4, item.Regard.ToString()));
+                    _sb.Append(" > T= ");
+                    _sb.Append(GameEngine.Do_x_Digit_String(4, item.Trust.ToString()));
+
+                    _sb.Append(" > FirePowerSpace: ");
+                    _sb.Append(GameContext.Current.CivilizationManagers[item.OwnerID].FirePowerSpace);
+                    _sb.Append(" vs ");
+                    _sb.Append(GameContext.Current.CivilizationManagers[item.CounterpartyID].FirePowerSpace);
+                    //_sb.Append(" > ContactDuration= ");
+                    //_sb.Append(GameEngine.Do_x_Digit_String(3, item.ContactDuration.ToString()));
+                    //_sb.Append(" > LastStatusChange= ");
+                    //_sb.Append(GameEngine.Do_x_Digit_String(3, item.TurnsSinceLastStatusChange.ToString()));
+
+                    _sb.Append(Environment.NewLine);
+
+                    _text_diplomacyData += _sb.ToString();// + "/r/n";
+                                                          //Console.WriteLine(_sb.ToString());
+                                                          //    }
+                                                          //}
+                }
+            }
+            Console.WriteLine(_text_diplomacyData);
+
+            string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon");
+            string _file = Path.Combine(_path_Resources_Data_Addon, "_diplomacyData.txt"); // by ALT+M at GalaxyMap
+            if (!string.IsNullOrEmpty(_file))
+            {
+                StreamWriter streamWriter = new StreamWriter(_file);
+                streamWriter.WriteLine(_text_diplomacyData);
+                streamWriter.Close();
+                _text_diplomacyData = "Step_1778:; output of _diplomacyData.txt done to " + _file;
+                //if (writeDirectly)
+                Console.WriteLine(_text_diplomacyData);
+            }
+
+        }
+
 
         public bool IsMultiplayerGame { get; internal set; }
 
@@ -801,10 +903,10 @@ namespace Supremacy.Game
             int _count = -1;
             //try
             //{
-                if(result != null && result.CivilizationManagers != null)
-                {
+            if (result != null && result.CivilizationManagers != null)
+            {
                 _count = result.CivilizationManagers.Count;
-                }
+            }
 
             //} catch { }
 
@@ -813,18 +915,18 @@ namespace Supremacy.Game
             //        ;
             //Console.WriteLine(_text);
 
-            
+
             //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore ");
             //Debugger.Break();
 
-                    if (result == null)
-                {
-                    return null;
-                }
-                else
-                {
-            return result;
-                }
+            if (result == null)
+            {
+                return null;
+            }
+            else
+            {
+                return result;
+            }
 
 
         }
@@ -1120,7 +1222,7 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
-            string _text = "Step_3003:; "+DateTime.Now+" > GameContext Initialize...";
+            string _text = "Step_3003:; " + DateTime.Now + " > GameContext Initialize...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -1331,8 +1433,8 @@ namespace Supremacy.Game
                             _bool_Fac_Count_Active = true; // just do once
                         }
 
-                            int facilitiesRequired = 0;
-                            int _additional_facilities = 0;
+                        int facilitiesRequired = 0;
+                        int _additional_facilities = 0;
                         // readjust production facilities if needed
                         if (homeSystemDescriptor.FoodPF != null)
                         {
@@ -1378,7 +1480,7 @@ namespace Supremacy.Game
                                 if (facilitiesRequired > 19)
                                 {
                                     _text = "Step_1312:; ####### From HomeSystems.xml > facilitiesRequired= " + facilitiesRequired;
-                                Console.WriteLine(_text);
+                                    Console.WriteLine(_text);
                                 }
 
 

@@ -153,7 +153,7 @@ namespace Supremacy.Diplomacy
 
                 switch (clause.ClauseType)
                 {
-                    case ClauseType.OfferGiveCredits:
+                    case ClauseType.OfferCredits:
                         if (proposal.Sender == Owner)
                         {
                             if (ownerTreasury.CurrentLevel < clause.GetData<int>())
@@ -163,7 +163,7 @@ namespace Supremacy.Diplomacy
                         }
                         break;
 
-                    case ClauseType.RequestGiveCredits:
+                    case ClauseType.RequestCredits:
                         if (proposal.Recipient == Owner)
                         {
                             if (ownerTreasury.CurrentLevel < clause.GetData<int>())

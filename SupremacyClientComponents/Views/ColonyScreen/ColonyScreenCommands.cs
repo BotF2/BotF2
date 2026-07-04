@@ -14,6 +14,7 @@ namespace Supremacy.Client.Views
     public static class ColonyScreenCommands
     {
         public static CompositeCommand ToggleBuildingScrapCommand = new CompositeCommand();
+        public static CompositeCommand ScrapShipyardCommand = new CompositeCommand();
         public static CompositeCommand FirstColonyCommand = new CompositeCommand();
         public static CompositeCommand ColonyUpdateCommand = new CompositeCommand();
         public static CompositeCommand NextColonyCommand = new CompositeCommand();

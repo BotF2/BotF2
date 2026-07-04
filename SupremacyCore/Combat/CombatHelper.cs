@@ -510,7 +510,7 @@ namespace Supremacy.Combat
                     .Sum(b => b.Amount);
             }
 
-            double raceMod = Math.Max(0.1, Math.Min(2.0, civ.Race.CombatEffectiveness));
+            double raceMod = Math.Max(0.1, Math.Min(2.0, civ.Race.GroundCombatEffectiveness));
             double weaponTechMod = 1.0 + (0.1 * GameContext.Current.CivilizationManagers[civ].Research.GetTechLevel(TechCategory.Weapons));
             double localGroundCombatMod = 1.0 + (0.01 * localGroundCombatBonus);
 

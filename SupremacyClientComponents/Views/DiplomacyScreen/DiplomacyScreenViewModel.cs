@@ -76,7 +76,7 @@ namespace Supremacy.Client.Views
         public bool localIsHost => ServiceLocator.Current.GetInstance<IAppContext>().IsGameHost;
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
-        //private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowersNew;
+        //private /*readonly*/ ObservableCollection<ForeignPowerViewModel> _foreignPowersNew;
 
         /*
           DISPLAY MODE
@@ -110,7 +110,7 @@ namespace Supremacy.Client.Views
             ForeignPowers = new ReadOnlyObservableCollection<ForeignPowerViewModel>(_foreignPowers);
             // DISPLAY MODE
             _setDisplayModeCommand = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetDisplayModeComand, CanExecuteSetDisplayModeComand);
-            
+
 
             _commendCommand = new DelegateCommand(ExecuteCommendCommand, CanExecuteCommendCommand);
             _denounceCommand = new DelegateCommand(ExecuteDenounceCommand, CanExecuteDenounceCommand);
@@ -240,7 +240,7 @@ namespace Supremacy.Client.Views
             InvalidateCommands();
             _text = "Step_3335:; maybe crash";
             Console.WriteLine(_text);
-            //Refresh(); //crashes
+            Refresh(); //crashes
         }
 
         #region DeclareWarCommandButton
@@ -705,13 +705,13 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteSendMessageCommand()
         {
-            return DisplayMode == DiplomacyScreenDisplayMode.Outbox 
-                   && SelectedForeignPower != null 
-                   && SelectedForeignPower.OutgoingMessage != null 
+            return DisplayMode == DiplomacyScreenDisplayMode.Outbox
+                   && SelectedForeignPower != null
+                   && SelectedForeignPower.OutgoingMessage != null
                    && SelectedForeignPower.OutgoingMessage.IsEditing
                    && SelectedForeignPower.OutgoingMessage.Elements.Count != 0
                    ; //&&
-                                                                   //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
+                     //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
         }
 
         private void ExecuteSendMessageCommand()
@@ -839,9 +839,9 @@ namespace Supremacy.Client.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-//#pragma warning disable IDE0051 // Remove unused private members
+        //#pragma warning disable IDE0051 // Remove unused private members
         private void RaisePropertyChanged(string propertyName)
-//#pragma warning restore IDE0051 // Remove unused private members
+        //#pragma warning restore IDE0051 // Remove unused private members
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -900,8 +900,8 @@ namespace Supremacy.Client.Views
         {
             PlayerCivilization = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
 
-            PerformRefreshForeignPowers();
-            //RefreshForeignPowers();
+            //PerformRefreshForeignPowers();
+            RefreshForeignPowers();
             //RefreshRelationshipGraph();
         }
 
@@ -1105,10 +1105,10 @@ namespace Supremacy.Client.Views
 
             if (AreNewMessageCommandsVisible) { }
             OnAreNewMessageCommandsVisibleChanged();
-            
+
             if (IsMembershipButtonVisible) { }
             OnMembershipButtonVisibleChanged();
-            
+
             if (IsFullAllianceButtonVisible) { }
             OnFullAllianceButtonVisibleChanged();
         }
@@ -1309,7 +1309,7 @@ namespace Supremacy.Client.Views
             OnAreNewMessageCommandsVisibleChanged();
         }
 
-        private void RefreshForeignPowers2()
+        private void RefreshForeignPowers()
         {
             //if (_foreignPowers.Count > 0)
             //    _foreignPowers.Clear();  // crashes due to the screen has a selected one
@@ -1343,41 +1343,53 @@ namespace Supremacy.Client.Views
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
 
-                if (civ.CivID == playerEmpireId 
-                    || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) 
+                if (civ.CivID == playerEmpireId
+                    || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID)
                     || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
                 {
                     continue;
+                }
+
+                foreach (var item in _foreignPowers)
+                {
+                    if (item.Counterparty.ToString() == civ.ToString())
+                    {
+                        goto Skip_Add_Existing_Ones;
+                    }
                 }
                 //Console.WriteLine("Step_9332:; RefreshForeignPowers... " + civ.Name);
 
                 ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
                 ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
-                //if (!_foreignPowers.Contains(foreignPowerViewModel))
-                //{
-                _foreignPowers.Add(foreignPowerViewModel);
-                //}
-
-                // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
-                //, foreignPowerViewModel.Status
-                //, foreignPowerViewModel.CounterpartyRegard
-                //, foreignPowerViewModel.CounterpartyTrust
-                //);
+                if (!_foreignPowers.Contains(foreignPowerViewModel))
+                {
+                    _foreignPowers.Add(foreignPowerViewModel);
+                    //_foreignPowers.Distinct();
             }
+
+            // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
+            //, foreignPowerViewModel.Status
+            //, foreignPowerViewModel.CounterpartyRegard
+            //, foreignPowerViewModel.CounterpartyTrust
+            //);
+        }
 
             //_foreignPowers = _foreignPowers.Distinct();
             //_foreignPowers = _foreignPowersNew;
 
+        Skip_Add_Existing_Ones:;
+
+        //SelectedForeignPower:;
             if (selectedForeignPower != null)
             {
                 SelectedForeignPower = _foreignPowers.FirstOrDefault(o => o.Counterparty.CivID == selectedForeignPower.CivID);
             }
         }
 
-//#pragma warning disable IDE0051 // Remove unused private members
+        //#pragma warning disable IDE0051 // Remove unused private members
         private void RefreshRelationshipGraph()  // de-activated atm ... this is just a gimmick content
-//#pragma warning restore IDE0051 // Remove unused private members
+                                                 //#pragma warning restore IDE0051 // Remove unused private members
         {
             int count = GameContext.Current.Civilizations.Count;
             List<DiplomacyGraphNode> nodes = new List<DiplomacyGraphNode>(count);
@@ -1432,9 +1444,9 @@ namespace Supremacy.Client.Views
                 //    return DiplomacyMessageElementType.OfferBreakAgreementClause;
                 //case ClauseType.RequestBreakAgreement:
                 //    return DiplomacyMessageElementType.RequestBreakAgreementClause;
-                case ClauseType.OfferGiveCredits:
+                case ClauseType.OfferCredits:
                     return DiplomacyMessageElementType.OfferGiveCreditsClause;
-                case ClauseType.RequestGiveCredits:
+                case ClauseType.RequestCredits:
                     return DiplomacyMessageElementType.RequestGiveCreditsClause;
                 //case ClauseType.OfferGiveResources:
                 //    return DiplomacyMessageElementType.OfferGiveResourcesClause;
@@ -1497,9 +1509,9 @@ namespace Supremacy.Client.Views
                 //case DiplomacyMessageElementType.RequestBreakAgreementClause:
                 //    return ClauseType.RequestBreakAgreement;
                 case DiplomacyMessageElementType.OfferGiveCreditsClause:
-                    return ClauseType.OfferGiveCredits;
+                    return ClauseType.OfferCredits;
                 case DiplomacyMessageElementType.RequestGiveCreditsClause:
-                    return ClauseType.RequestGiveCredits;
+                    return ClauseType.RequestCredits;
                 //case DiplomacyMessageElementType.OfferGiveResourcesClause:
                 //    return ClauseType.OfferGiveResources;
                 //case DiplomacyMessageElementType.RequestGiveResourcesClause:
@@ -1590,21 +1602,21 @@ namespace Supremacy.Client.Views
 
         public System.Windows.Data.BindingBase TurnsSinceLastStatusChange { get => turnsSinceLastStatusChange; set => SetProperty(ref turnsSinceLastStatusChange, value); }
 
-        private ActionCommand refreshForeignPowers;
+        //private ActionCommand refreshForeignPowers;
 
-        public ICommand RefreshForeignPowers
-        {
-            get
-            {
-                
-                if (refreshForeignPowers == null)
-                {
-                    refreshForeignPowers = new ActionCommand(PerformRefreshForeignPowers);
-                }
+        //public ICommand RefreshForeignPowers
+        //{
+        //    get
+        //    {
 
-                return refreshForeignPowers;
-            }
-        }
+        //        if (refreshForeignPowers == null)
+        //        {
+        //            refreshForeignPowers = new ActionCommand(PerformRefreshForeignPowers);
+        //        }
+
+        //        return refreshForeignPowers;
+        //    }
+        //}
 
         private void PerformRefreshForeignPowers()
         {
@@ -1619,7 +1631,18 @@ namespace Supremacy.Client.Views
             int playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
             Diplomat playerDiplomat = Diplomat.Get(playerEmpireId);
 
-            _foreignPowers.Clear();
+
+            //_foreignPowers.Clear();
+            _foreignPowers.Distinct();
+
+
+            //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    yourObservableCollection.Add(newItem);
+            //    // oder yourObservableCollection.Clear();
+            //    // oder yourObservableCollection.RemoveAt(index);
+            //}));
+
 
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
@@ -1647,7 +1670,7 @@ namespace Supremacy.Client.Views
                 //);
             }
 
-            //_foreignPowers = _foreignPowers.Distinct();
+            //var _foreignPowersNew = _foreignPowers.Distinct();
             //_foreignPowers = _foreignPowersNew;
 
             if (selectedForeignPower != null)
@@ -1656,6 +1679,24 @@ namespace Supremacy.Client.Views
             }
         }
 
+        //private ActionCommand refreshForeignPowers;
+
+        //public ICommand RefreshForeignPowers
+        //{
+        //    get
+        //    {
+        //        if (refreshForeignPowers == null)
+        //        {
+        //            refreshForeignPowers = new ActionCommand(PerformRefreshForeignPowers1);
+        //        }
+
+        //        return refreshForeignPowers;
+        //    }
+        //}
+
+        private void PerformRefreshForeignPowers1()
+        {
+        }
         //private System.Windows.Data.BindingBase counterpartyLocation => "Hello";
         ////{
         ////    return "Hello";

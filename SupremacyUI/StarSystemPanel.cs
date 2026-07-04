@@ -437,6 +437,8 @@ namespace Supremacy.UI
             TextBlock name = new TextBlock();
             TextBlock details = new TextBlock();
 
+            string _text = "";
+
             name.FontFamily = FontFamily;
             name.FontSize = (double)fontSize.ConvertFrom("14pt");
             name.Foreground = Brushes.LightBlue;
@@ -592,28 +594,30 @@ namespace Supremacy.UI
                             morale.ToolTip = ResourceManager.GetString("MORALE_TOOLTIP");
                             growth.ToolTip = ResourceManager.GetString("SYSTEM_GROWTH_RATE_TOOLTIP");
                             health.ToolTip = ResourceManager.GetString("SYSTEM_HEALTH_TOOLTIP");
-                            orbitals.ToolTip = ResourceManager.GetString("SYSTEM_SHIELDS_TOOLTIP");
 
-                            _ = orbitals.SetBinding(
-                                TextBlock.TextProperty,
-                                new MultiBinding
-                                {
-                                    StringFormat = string.Format("{0}: {{0}} / {{1}}", ResourceManager.GetString("SYSTEM_SHIELDS")),
-                                    Bindings =
-                                        {
-                                            new Binding
-                                            {
-                                                Source = system.Colony,
-                                                Path = new PropertyPath("ShieldStrength.CurrentValue")
-                                            },
-                                            new Binding
-                                            {
-                                                Source = system.Colony,
-                                                Path = new PropertyPath("ShieldStrength.Maximum")
-                                            }
-                                        }
+                            _text = "Do NOT give information on Orbitals";
+                            //orbitals.ToolTip = ResourceManager.GetString("SYSTEM_SHIELDS_TOOLTIP");
 
-                                });
+                            //_ = orbitals.SetBinding(
+                            //    TextBlock.TextProperty,
+                            //    new MultiBinding
+                            //    {
+                            //        StringFormat = string.Format("{0}: {{0}} / {{1}}", ResourceManager.GetString("SYSTEM_SHIELDS")),
+                            //        Bindings =
+                            //            {
+                            //                new Binding
+                            //                {
+                            //                    Source = system.Colony,
+                            //                    Path = new PropertyPath("ShieldStrength.CurrentValue")
+                            //                },
+                            //                new Binding
+                            //                {
+                            //                    Source = system.Colony,
+                            //                    Path = new PropertyPath("ShieldStrength.Maximum")
+                            //                }
+                            //            }
+
+                            //    });
                         }
                         else
                         {

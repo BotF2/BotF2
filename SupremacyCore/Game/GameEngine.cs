@@ -2816,7 +2816,7 @@ namespace Supremacy.Game
 
                 CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ1];
                 Report_SomeSectors(_civ1, _civM_1); // reports for _civ1: Sectors for Accumulate, SystemAttack, TargetCiv
-                
+
                 string _diploStatusText = "";
                 _diploStatusText += " " + _diploStatusText; // dummy - please keep
 
@@ -2861,11 +2861,23 @@ namespace Supremacy.Game
                         Diplomacy_Statement_Received(_civ1, _civ2);
                     }
 
-                    Diplomacy_Proposal_Sent(_civ1, _civ2);//  Second.2 = proposalSent
 
-                    Diplomacy_Statement_Sent(_civ1, _civ2);//  Second.3 = statementSent
+                    if (_diplomatCiv2.ProposalSent != null)
+                    {
+                        Diplomacy_Proposal_Sent(_civ1, _civ2);//  Second.2 = proposalSent
+                    }
 
-                    Diplomacy_Response_Sent(_civ1, _civ2);//  Second.4 = responseSent
+                    if (_diplomatCiv2.StatementSent != null)
+                    {
+                        Diplomacy_Statement_Sent(_civ1, _civ2);//  Second.3 = statementSent
+                    }
+
+                    if (_diplomatCiv2.StatementSent != null)
+                    {
+                        Diplomacy_Response_Sent(_civ1, _civ2);//  Second.4 = responseSent
+                    }
+
+
 
                     //_civM_1.TargetCivList.Add(_civ2);
                 }
@@ -2887,10 +2899,11 @@ namespace Supremacy.Game
                 if (_civ1.IsHuman)
                 {
                     //Debugger.Break();
-                    goto Do_not_war;
+                    goto For_Human_Players_no_AI_Assault_Locations;
                 }
 
-                if (_civM_1.Assault_Location != null && _civM_1.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
+                if (_civM_1.Assault_Location != null
+                    && _civM_1.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
                 {
                     Civilization _civ2 = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID].Civilization;
                     //_text += "SystemAssault Location 1 = " + _civM_1.Assault_Accumulate_Location_1 + ", ";
@@ -2997,7 +3010,7 @@ namespace Supremacy.Game
                     //if (_writeDirectly)
                     Console.WriteLine(_text);
                 }
-            Do_not_war:;
+            For_Human_Players_no_AI_Assault_Locations:;
 
 
             } // End of foreach civ1
@@ -3031,11 +3044,13 @@ namespace Supremacy.Game
 
         private void Diplomacy_1_Basics(Civilization _civ1, CivilizationManager _civM_1)
         {
+            int _targetDistance = 99;
+            _civM_1.Assault_Value_Defense_and_Distance = 9999997;
+
             string _text;
             string _diplomacyBasicsSummary_Text = "";
             string _newline = Environment.NewLine;
-            int _targetDistance = 99;
-            _civM_1.Assault_Value_Defense_and_Distance = 9999997;
+
             bool _writeDirectly = true;
             bool _player_is_human = GameEngine.IsCivM_Human_Player(_civM_1);
 
@@ -3044,7 +3059,7 @@ namespace Supremacy.Game
 
             foreach (Civilization _civ2 in GameContext.Current.Civilizations)
             {
-                #region DiplomacyBasics
+
                 if (_civ1 == _civ2)
                 {
                     continue;
@@ -3069,7 +3084,7 @@ namespace Supremacy.Game
                     , _civ1
                     , " ; Status > ", _foreignPowerStatus
                     , " ; to ; ", _civ2
-                    ); 
+                    );
 
                 if (_writeDirectly)
                     Console.WriteLine(_text);
@@ -3178,6 +3193,26 @@ namespace Supremacy.Game
                     //_possibleTargetCivs.Distinct();
 
                 }
+
+                _text = "if xy than offer treaty ... or is this done somewhere else";
+                _text = "" +
+                    "NoContact = 0," +
+                    "OwnerIsSubjugated," +
+                    "CounterpartyIsSubjugated," +
+                    "AtWar,+" +
+                    "Hostile,+" +
+                    "Cold,+" +
+                    "Neutral,+" +
+                    "Peace,+" +
+                    "Friendly,+" +
+                    "Affiliated,+" +
+                    "OwnerIsMember,+" +
+                    "CounterpartyIsMember,+" +
+                    "Allied,+" +
+                    "Self,+" +
+                    "OwnerIsUnreachable,+ " +
+                    "CounterpartyIsUnreachable";
+
 
                 // Find new TargetCiv
                 List<Civilization> _target_help_list = new List<Civilization>() { _civ1 };
@@ -3290,7 +3325,7 @@ namespace Supremacy.Game
 
                     foreach (var item in _targetColoniesLocations)
                     {
-                        
+
                         //if (item.Value < _minValue)
                         //{
                         //    _minValue = item.Value;
@@ -3437,11 +3472,11 @@ namespace Supremacy.Game
                         }
 
 
-                    
 
-                    //Console.WriteLine(_text_header + " > from Step_7725 TH"); // see below
-                    Console.WriteLine(_all_attack_location_text + " > from Step_7725 ALL"); // see below
-                    Console.WriteLine(_text_header + _all_attack_location_text + " > from Step_7725"); // see below
+
+                        //Console.WriteLine(_text_header + " > from Step_7725 TH"); // see below
+                        Console.WriteLine(_all_attack_location_text + " > from Step_7725 ALL"); // see below
+                        Console.WriteLine(_text_header + _all_attack_location_text + " > from Step_7725"); // see below
 
                         if (_player_is_human)
                         {
@@ -3980,7 +4015,8 @@ namespace Supremacy.Game
                 _diplomatCiv2.LastResponseSent = responseSent;
                 _text =
                         /*_diplomatForeignPower_Civ2.Owner.Key
-                        + */" Response Sent stored in LastResponseSent " + _diplomatCiv2.ResponseSent.ToString()
+                        + */    
+                        " Response Sent stored in LastResponseSent " + _diplomatCiv2.ResponseSent.ToString()
                         ;
                 if (_writeDirectly) Console.WriteLine(_text);
                 //GameLog.Client.DiplomacyDetails.DebugFormat("Response Sent stored in LastResponseSent, {0}", _diplomatForeignPower_Civ2.ResponseSent.ToString());
@@ -4097,7 +4133,7 @@ namespace Supremacy.Game
                     + "; to; " + _diplomatCiv2.Counterparty.ToString()
 
                     ;
-                if (_writeDirectly) 
+                if (_writeDirectly)
                     Console.WriteLine(_text);
 
                 //GameLog.Client.DiplomacyDetails.DebugFormat("** ProposalSent becomes Counterparty ProposalReceived [{0}], Counterparty = {1}, Owner = {2}"
@@ -4221,7 +4257,7 @@ namespace Supremacy.Game
 
             if (_text != "what's next + ")
             {
-            Console.WriteLine("Step_0717:; > " + _text);
+                Console.WriteLine("Step_0717:; > " + _text);
                 //GameLog.Core.DiplomacyDetails.DebugFormat(_text);
             }
 
@@ -4530,7 +4566,7 @@ namespace Supremacy.Game
                 //        ;
                 ////if (_writeDirectly)
                 //Console.WriteLine(_text);
-                
+
 
                 //if (_checkRace) Debugger.Break();
 
@@ -4570,7 +4606,7 @@ namespace Supremacy.Game
 
                     case PendingDiplomacyAction.RejectProposal:
                         {
-                            _text = "Step_7724:; Do_13_Diplomacy > * " 
+                            _text = "Step_7724:; Do_13_Diplomacy > * "
                                     + civ1.Key + " * vs * " + civ2.Key
                                     + ", Reject Status=" + _diplomatCiv2.PendingAction.ToString()
                                     ;
@@ -4813,7 +4849,7 @@ namespace Supremacy.Game
             }
         }
 
-        #endregion
+        //#endregion
 
         #region DoCombat() Method
         void Do_15_Combat(GameContext _game)
@@ -6917,7 +6953,7 @@ namespace Supremacy.Game
                                 if (_writeDirectly) Console.WriteLine(_text);
                                 _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.Red));
 
-                                
+
                                 //if (_building.)
                                 //{
 
@@ -7217,7 +7253,7 @@ namespace Supremacy.Game
         void Do_25_PostTurnOperations(GameContext game)
         {
             string _text;
-            string _newline = Environment.NewLine;
+            //string _newline = Environment.NewLine;
             string _turnnumber = GameContext.Current.TurnNumber.ToString();
             //int turn = _game.TurnNumber;  // Dummy, do not remove
             //DiplomacyHelper.ClearAcceptRejectDictionary(); do this for older turns?
@@ -7234,7 +7270,7 @@ namespace Supremacy.Game
 
             foreach (Orbital orbital in destroyedOrbitals)
             {
-                _ = GameContext.Current.Universe.Destroy(orbital);
+                GameContext.Current.Universe.Destroy(orbital);
             }
 
             foreach (Fleet fleet in allFleets)
@@ -7242,9 +7278,12 @@ namespace Supremacy.Game
                 if (fleet.Ships.Count == 0)
                 {
                     fleet.Order?.OnOrderCancelled();
-                    _ = GameContext.Current.Universe.Destroy(fleet);
+                    GameContext.Current.Universe.Destroy(fleet);
                 }
-                else fleet.Order?.OnTurnEnding();
+                else
+                {
+                    fleet.Order?.OnTurnEnding();
+                }
             }
 
 
@@ -7829,14 +7868,14 @@ namespace Supremacy.Game
 
                     ;
                 Console.WriteLine("Step_3882:; Turn " + _turnnumber + ": " + _text);
-                _allRanking_Intelligence += _newline + _text;
+                _allRanking_Intelligence += Environment.NewLine + _text;
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3882: " + _text);
 
                 _civM.SitRepEntries.Add(new ReportEntry_NoAction(_civM.Civilization, _text, "", "", SitRepPriority.Aqua));
             }
             Console.WriteLine("Step_3883:; begin of _allRanking_Intelligence"
-                + _newline + _allRanking_Intelligence
-                + _newline + "end of _allRanking_Intelligence");
+                + Environment.NewLine + _allRanking_Intelligence
+                + Environment.NewLine + "end of _allRanking_Intelligence");
 
 
             //        foreach (CivilizationManager _civM_1 in GameContext.Current.CivilizationManagers)

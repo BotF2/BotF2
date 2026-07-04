@@ -44,7 +44,7 @@ namespace Supremacy.Universe
     public class Sector : IEquatable<Sector>, INotifyPropertyChanged
     {
         private MapLocation _location;
-        private int _defense_value_sector;
+        //private int _defense_value_sector;
 
 
         [NonSerialized]

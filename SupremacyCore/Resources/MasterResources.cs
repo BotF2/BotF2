@@ -103,7 +103,7 @@ namespace Supremacy.Resources
                                 RaceName + separator +
                                 civ.HomeSystemName + separator +
                                 civ.Race.HomePlanetType + separator +
-                                civ.Race.CombatEffectiveness + separator +
+                                civ.Race.GroundCombatEffectiveness + separator +
                                 civ.Color + separator +
                                 civ.HomeQuadrant.ToString() + separator +
                                 civ.CivilizationType.ToString() + separator +

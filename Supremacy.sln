@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32112.339
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11925.98 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{97FA3AB7-20A5-4EE0-A5EC-392E4892E904}"
 	ProjectSection(SolutionItems) = preProject
@@ -123,7 +123,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyClient", "Supremac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyWPF", "SupremacyWPF\SupremacyWPF.csproj", "{1D1ACB96-9C27-4A1F-AE76-B5083A36ED05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyCore", "SupremacyCore\SupremacyCore.csproj", "{04E34C27-6942-4EA8-93FF-DF3C4026B22A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_1_Core", "SupremacyCore\Supremacy_1_Core.csproj", "{04E34C27-6942-4EA8-93FF-DF3C4026B22A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyUI", "SupremacyUI\SupremacyUI.csproj", "{529A2A01-9D15-4BAF-AB7B-C3398F5F2B14}"
 EndProject

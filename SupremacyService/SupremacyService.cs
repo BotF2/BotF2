@@ -538,31 +538,41 @@ namespace Supremacy.WCF
 
                 lock (_aiAsyncLock)
                 {
-                    Action<GameContext, List<Civilization>> doAiPlayers = _gameEngine.DoAIPlayers;
+                    // Run AI synchronously - main thread waits until all AI is done
+                    _gameEngine.DoAIPlayers(_game, autoTurnCivs);
 
-                    //Thread.Sleep(2000); // just for testing - why is the turn done before all AI is done ?
-
-                    _aiAsyncResult = doAiPlayers.BeginInvoke(
-                        _game, autoTurnCivs,
-                        delegate (IAsyncResult result)
-                        {
-                            lock (_aiAsyncLock)
-                            {
-                                _ = Interlocked.Exchange(ref _aiAsyncResult, null);
-                            }
-                            try
-                            {
-                                doAiPlayers.EndInvoke(result);
-                            }
-                            catch (Exception e) //ToDo: Just log or additional handling necessary?
-                            {
-                                Console.WriteLine(e);
-                                GameLog.Server.General.Error(e);
-                            }
-                        },
-                        null);
-
+                    // No need for _aiAsyncResult, BeginInvoke, or EndInvoke anymore
                 }
+
+                //lock (_aiAsyncLock)
+                //{
+                //    Action<GameContext, List<Civilization>> doAiPlayers = _gameEngine.DoAIPlayers;
+
+                //    //Thread.Sleep(2000); // just for testing - why is the turn done before all AI is done ?
+
+                //    _aiAsyncResult = doAiPlayers.BeginInvoke(
+                //        _game, autoTurnCivs,
+                //        delegate (IAsyncResult result)
+                //        {
+                //            lock (_aiAsyncLock)
+                //            {
+                //                _ = Interlocked.Exchange(ref _aiAsyncResult, null);
+                //            }
+                //            try
+                //            {
+                //                doAiPlayers.EndInvoke(result);
+                //            }
+                //            catch (Exception e) //ToDo: Just log or additional handling necessary?
+                //            {
+                                
+                //                Console.WriteLine(e);
+                //                GameLog.Server.General.Error(e);
+                //                Debugger.Break();
+                //            }
+                //        },
+                //        null);
+
+                //}
 
                 _text = "Step_0675:; AI processing time= " + stopwatch.Elapsed;
                 Console.WriteLine(_text);

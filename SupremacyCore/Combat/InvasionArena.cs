@@ -558,7 +558,7 @@ namespace Supremacy.Combat
                     .Where(o => o.ShipType == ShipType.Transport)
                     .Select(o => o.ShipDesign.WorkCapacity) // * borgFactor)
                     .Sum();
-            double raceMod = Math.Max(0.1, Math.Min(2.0, Invader.Race.CombatEffectiveness));
+            double raceMod = Math.Max(0.1, Math.Min(2.0, Invader.Race.GroundCombatEffectiveness));
             double weaponTechMod = 1.0 + (0.1 * GameContext.Current.CivilizationManagers[Invader].Research.GetTechLevel(TechCategory.Weapons));
             double result = invaderPopulation * weaponTechMod * raceMod;
             //int borgFactor = 1;

@@ -40,6 +40,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<ProductionCategory> _scrapFacilityCommand;
         private readonly DelegateCommand<ProductionCategory> _unscrapFacilityCommand;
         private readonly DelegateCommand<object> _toggleBuildingScrapCommand;
+        private readonly DelegateCommand<Shipyard> _scrapShipyardCommand;
         private readonly DelegateCommand<Building> _toggleBuildingIsActiveCommand;
         private readonly DelegateCommand<ShipyardBuildSlot> _toggleShipyardBuildSlotCommand;
         private readonly DelegateCommand<ShipyardBuildSlot> _selectShipBuildProjectCommand;
@@ -117,6 +118,10 @@ namespace Supremacy.Client.Views
             _toggleBuildingScrapCommand = new DelegateCommand<object>(
                 ExecuteToggleBuildingScrapCommand,
                 CanExecuteToggleBuildingScrapCommand);
+
+            _scrapShipyardCommand = new DelegateCommand<Shipyard>(
+                ExecuteScrapShipyardCommand,
+                CanExecuteScrapShipyardCommand);
 
             _toggleBuildingIsActiveCommand = new DelegateCommand<Building>(
                 ExecuteToggleBuildingIsActiveCommand,
@@ -373,6 +378,40 @@ namespace Supremacy.Client.Views
             _ = buildSlot.IsActive ? colony.ShipyardBuildSlot_Deactivate(buildSlot) : colony.ShipyardBuildSlot_Activate(buildSlot);
 
             PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(buildSlot));
+        }
+
+        private bool CanExecuteScrapShipyardCommand(Shipyard shipyard)
+        {
+            if (shipyard == null)
+            {
+                return false;
+            }
+
+            Colony colony = Model.SelectedColony;
+            //if (colony == null || colony.Shipyard != buildSlot.Shipyard)
+            //{
+            //    return false;
+            //}
+
+            return true; //buildSlot.IsActive; // && !buildSlot.HasProject;
+        }
+
+        private void ExecuteScrapShipyardCommand(Shipyard shipyard)
+        {
+            if (shipyard == null)
+            {
+                return;
+            }
+
+            Colony colony = Model.SelectedColony;
+            if (colony == null)// || colony.Shipyard != shipyard.Shipyard)
+            {
+                return;
+            }
+
+            shipyard.Destroy();// ? 
+
+            //PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(shipyard));
         }
 
         private bool CanExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
@@ -836,6 +875,7 @@ namespace Supremacy.Client.Views
             Model.OrbitalBatteries_ActiveChanged += OnOrbitalBatteries_ActiveChanged;
 
             ColonyScreenCommands.ToggleBuildingScrapCommand.RegisterCommand(_toggleBuildingScrapCommand);
+            ColonyScreenCommands.ScrapShipyardCommand.RegisterCommand(_scrapShipyardCommand);
             ColonyScreenCommands.FirstColonyCommand.RegisterCommand(_firstColonyCommand);
             ColonyScreenCommands.ColonyUpdateCommand.RegisterCommand(_colonyUpdateCommand);
             ColonyScreenCommands.PreviousColonyCommand.RegisterCommand(_previousColonyCommand);

@@ -3227,6 +3227,7 @@ namespace Supremacy.Universe
             }
             catch (Exception ex)
             {
+                _text = ex.ToString();
                 //Debugger.Break();
             }
             return _return_value;
