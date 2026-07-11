@@ -21,6 +21,7 @@ Ist das gewollt? Bei der Föderation kann ich es bedingt nachvollziehen (auch we
 - BuildSlotMaxOutput noch benutzt
 - MAPData > Minors are not building anything ?
 - Colors / Shade for umstrittene sectors
+- CeaseFire
 
 
 

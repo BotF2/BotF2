@@ -7,16 +7,22 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Scripting;
 using Supremacy.Utility;
+//using Supremacy.;
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+//using Supremacy.views
 
 namespace Supremacy.Diplomacy
 {
@@ -82,6 +88,149 @@ namespace Supremacy.Diplomacy
         public Tone Tone => Tone.Calm;
 
         #endregion
+        //}
+
+        public static NewProposal CreateProposal(Civilization _civ1, Civilization _civ2, bool allowIncomplete = false)
+        {
+            //private readonly 
+            ObservableCollection<DiplomacyMessageElement> _elements = null;
+            //private readonly 
+            //Civilization _recipient;
+            //private readonly ObservableCollection<DiplomacyMessageElement> _elements;
+            //ObservableCollection<DiplomacyMessageElement> _offerElements;
+            //ObservableCollection<DiplomacyMessageElement> _requestElements;
+            //ObservableCollection<DiplomacyMessageElement> _statementElements;
+            //ObservableCollection<DiplomacyMessageElement> _treatyElements;
+            //ReadOnlyObservableCollection<DiplomacyMessageElement> _treatyElementsView;
+            // ReadOnlyObservableCollection<DiplomacyMessageElement> _acceptRejectElementsView; // no view of this???
+            //ObservableCollection<DiplomacyMessageAvailableElement> _availableElements;
+            //DelegateCommand<DiplomacyMessageElement> _removeElementCommand;
+
+
+            if (_elements.Count == 0)
+            {
+                return null;
+            }
+            string _text;
+
+            List<Clause> clauses = new List<Clause>();
+
+            //foreach (DiplomacyMessageElement element in _elements)
+            //{
+            //    ClauseType clauseType = DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType);
+            //    // GameLog.Client.Diplomacy.DebugFormat("((()))ElementTypeToClause out Clause ={0}", DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType).ToString());
+            //    if (clauseType == ClauseType.NoClause)
+            //    {
+            //        continue;
+            //    }
+
+            //    if (element.HasParameter)
+            //    {
+            //        object selectedParameter = element.SelectedParameter;
+            //        if (selectedParameter == null && !allowIncomplete)
+            //        {
+            //            continue;
+            //        }
+
+            //        if (selectedParameter is IClauseParameterInfo parameterInfo)
+            //        {
+            //            if (parameterInfo.IsParameterValid)
+            //            {
+            //                selectedParameter = parameterInfo.GetParameterData();
+            //            }
+            //            else if (!allowIncomplete)
+            //            {
+            //                continue;
+            //            }
+            //        }
+
+            //        //
+            //        // It's possible for 'selectedParameter' to be null here.  We assume this is okay
+            //        // if IClauseParameterInfo.IsParameterValid returned 'true'.
+            //        //
+            //        clauses.Add(new Clause(clauseType, selectedParameter));
+            //    }
+            //    else
+            //    {
+            //        clauses.Add(new Clause(clauseType));
+            //    }
+            //}
+
+            if (clauses.Count == 0)
+            {
+                return null;
+            }
+
+            foreach (Clause clause in clauses)
+            {
+
+                //GameLog.Core.Diplomacy.DebugFormat("((()))Create Proposal sender {0}, Recipient = {1}: Tone = {2} clause type = {3} data = {4} duration = {5}",
+                _text =
+                "Turn " + GameContext.Current.TurnNumber
+                + ": Proposal created: Sender " + _civ1.ShortName
+                + " to > " + _civ2.ShortName
+                + ": " + clause.ClauseType.ToString()
+                //+ " ( " + _tone 
+                + "," + clause.Duration + clause.Data + " )"
+                ;
+                //Console.WriteLine(_text);
+                GameLog.Core.Diplomacy.DebugFormat(_text);
+                // if ClauseType == TreatyWarPact then clause.Data = string shortname of target civilization
+            }
+            return new NewProposal(_civ1, _civ2, clauses);
+        }
+
+        public interface IClauseParameterInfo
+        {
+            bool IsParameterValid { get; }
+            object GetParameterData();
+        }
+
+        private class DiplomacyMessageElement
+        {
+            private readonly Civilization _sender;
+            private readonly Civilization _recipient;
+            private readonly ScriptExpression _scriptExpression;
+            //private readonly DelegateCommand<DataTemplate> _editParameterCommand;
+            public DiplomacyMessageElement(
+    [NotNull] Civilization sender,
+    [NotNull] Civilization recipient,
+    //DiplomacyMessageElementActionCategory actionCategory,
+    //DiplomacyMessageElementType elementType,
+    ICommand removeCommand)
+            {
+                _sender = sender ?? throw new ArgumentNullException("sender");
+                _recipient = recipient ?? throw new ArgumentNullException("recipient");
+                //ActionCategory = actionCategory;
+                //ElementType = elementType; // includes TreatyWarPact
+                //RemoveCommand = removeCommand;
+
+                //_editParameterCommand = new DelegateCommand<DataTemplate>(
+                //    ExecuteEditParameterCommand,
+                //    CanExecuteEditParameterCommand);
+
+                //Type parameterType = GetViewModelParameterTypeForElementType(elementType);
+
+                ScriptParameters scriptParameters = new ScriptParameters(
+                    new ScriptParameter("$sender", typeof(Civilization)),
+                    new ScriptParameter("$recipient", typeof(Civilization)));
+                //new ScriptParameter("$target", typeof(Civilization)));
+
+                //if (parameterType != null) // for target of war pact, who do both sender and recipient declare war on
+                //{
+                //    scriptParameters = scriptParameters.Merge(
+                //        new ScriptParameter(
+                //            "$parameter",
+                //            GetViewModelParameterTypeForElementType(elementType)));
+                //}
+
+                _scriptExpression = new ScriptExpression(returnObservableResult: false)
+                {
+                    Parameters = scriptParameters
+                };
+
+            }
+        }
     }
 
     public static class ProposalExtensions

@@ -225,7 +225,7 @@ namespace Supremacy.Client.Views
 
         internal IDiplomaticExchange CreateMessage()
         {
-            return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
+            return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal_ViewModel();
         }
 
         public void Send()
@@ -245,7 +245,7 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                NewProposal proposal = CreateProposal();
+                NewProposal proposal = CreateProposal_ViewModel();
                 if (proposal == null)
                 {
                     return;
@@ -763,7 +763,7 @@ namespace Supremacy.Client.Views
             UpdateLeadInText();
         }
 
-        private NewProposal CreateProposal(bool allowIncomplete = false)
+        private NewProposal CreateProposal_ViewModel(bool allowIncomplete = false)
         {
             if (_elements.Count == 0)
             {
@@ -876,7 +876,7 @@ namespace Supremacy.Client.Views
             _availableElements.Clear();
 
             Diplomat diplomat = GameContext.Current.Diplomats[Sender];
-            NewProposal currentProposal = CreateProposal(allowIncomplete: true);
+            NewProposal currentProposal = CreateProposal_ViewModel(allowIncomplete: true);
             Statement currentStatement = CreateStatement();
             bool recipientIsMember = DiplomacyHelper.IsMember(_recipient, Sender);
 

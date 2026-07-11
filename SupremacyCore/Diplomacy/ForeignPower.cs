@@ -51,8 +51,8 @@ namespace Supremacy.Diplomacy
         public IResponse LastResponseReceived { get; set; }
         public PendingDiplomacyAction PendingAction { get; set; }
 
-        [NonSerialized]
-        private string _text;
+        //[NonSerialized]
+        //private string _text;
         //private string _detailImage;
 
         //     public bool IsTotalWarInPlace { get; set; }
@@ -69,7 +69,8 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("counterparty");
             }
 
-            _text += "s" + _text;  // dummy - do not remove
+            //string _text = "";
+            //string _text += "s" + _text;  // dummy - do not remove
 
             _regardEvents = new CollectionBase<RegardEvent>();
             _diplomacyData = new DiplomacyDataInternal(owner.CivID, counterparty.CivID);
@@ -283,11 +284,8 @@ namespace Supremacy.Diplomacy
                 if (civ == owner ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
                 {
-                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
-                        new WarDeclaredSitRepEntry(
-                            civ,
-                            owner,
-                            counterparty));
+                    GameContext.Current.CivilizationManagers[civ]
+                        .SitRepEntries.Add(new WarDeclaredSitRepEntry(civ, owner, counterparty));
                 }
             }
         }
@@ -296,6 +294,8 @@ namespace Supremacy.Diplomacy
         {
             Civilization owner = Owner;
             Civilization counterparty = Counterparty;
+            string _text;
+
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.IsHuman && (civ == counterparty ||
@@ -317,6 +317,8 @@ namespace Supremacy.Diplomacy
         {
             Civilization owner = Owner;
             Civilization counterparty = Counterparty;
+            string _text;
+
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.IsHuman && (civ == counterparty ||
@@ -373,11 +375,8 @@ namespace Supremacy.Diplomacy
                 if (civ == owner ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
                 {
-                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
-                        new ViolateTreatySitRepEntry(
-                            civ,
-                            aggressor,
-                            counterparty));
+                    GameContext.Current.CivilizationManagers[civ]
+                        .SitRepEntries.Add(new ViolateTreatySitRepEntry(civ, aggressor, counterparty));
                 }
             }
         }

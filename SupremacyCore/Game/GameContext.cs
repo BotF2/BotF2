@@ -429,6 +429,7 @@ namespace Supremacy.Game
                 Console.WriteLine(_text);
 
                 Report_DiplomacyData();
+
                 FixupDiplomacyData();
                 _text = "Step_3995:; already done > FixupDiplomacyData().....";
                 Console.WriteLine(_text);
@@ -476,6 +477,10 @@ namespace Supremacy.Game
             CivilizationPairedMap<IDiplomacyData> diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
             CivilizationKeyedMap<Diplomat> _diplomats = GameContext.Current._diplomats;
 
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            Collections.IIndexedCollection<IAgreement> _active_agreements;
+            string _active_agreements_text = "";
+
             foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
             {
                 Civilization _civ1 = _civM_1.Civilization;
@@ -490,6 +495,9 @@ namespace Supremacy.Game
                     }
 
                     diplomacyData.Add(_civ1, _civ2, _diplomat.GetData(_civ2));
+
+                    _active_agreements = agreementMatrix[_civ1.CivID, _civ2.CivID];
+
                 }
             }
 
@@ -508,6 +516,7 @@ namespace Supremacy.Game
                 if (item.Status != ForeignPowerStatus.NoContact)
                 {
 
+                    //ForeignPower foreignPower = _diplomat.GetForeignPower(civ);
 
                     var _sb = new StringBuilder();
                     _sb.Append("Step_1777:; ");
@@ -518,7 +527,8 @@ namespace Supremacy.Game
 
 
                     _sb.Append(" vs ");
-
+                    //_foreignPower.CounterpartyDiplomacyData.Status;
+                    //ForeignPowerStatus.coun
 
                     _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.CounterpartyID].Civilization.ToString()));
                     _sb.Append(" > ");
